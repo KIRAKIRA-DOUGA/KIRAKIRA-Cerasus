@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@nuxtjs/eslint-config": "^11.0.0",
+    "eslint": "^8.27.0",
+    "nuxt": "3.0.0-rc.13"
+  },
+  "dependencies": {
+    "@nuxtjs/eslint-config-typescript": "^11.0.0",
+    "@vueuse/head": "^1.0.0-rc.14",
+    "eslint-plugin-nuxt": "^4.0.0",
+    "eslint-plugin-vue": "^9.7.0",
+    "scss": "^0.2.4"
+  }
+}
