@@ -1,3 +1,4 @@
+### 哦天哪，看在上帝的份上，千万不要用 yarn 启动它，否则整个程序就会变得和珍妮婶婶做的苹果派一样烂了，真是该死。
 # Nuxt 3 Minimal Starter
 
 Look at the [nuxt 3 documentation](https://v3.nuxtjs.org) to learn more.
