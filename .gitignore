@@ -28,3 +28,9 @@ node_modules
 
 # nuxt
 .nuxt
+
+# macOS
+.DS_Store
+
+# Windows
+desktop.ini

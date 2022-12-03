@@ -1,0 +1,20 @@
+{
+	"Init": {
+		"prefix": "init",
+		"body": [
+			"<script setup lang=\"ts\">",
+			"\t$0",
+			"</script>",
+			"",
+			"<template>",
+			"\t",
+			"</template>",
+			"",
+			"<style scoped lang=\"scss\">",
+			"\t",
+			"</style>",
+			"",
+		],
+		"description": "初始化Vue组件模板",
+	}
+}
