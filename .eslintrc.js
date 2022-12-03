@@ -194,5 +194,6 @@ module.exports = {
 		"vue/mustache-interpolation-spacing": "error",
 		"vue/attribute-hyphenation": ["error", "never"],
 		"vue/singleline-html-element-content-newline": "off",
+		"vue/no-unused-vars": "warn",
 	},
 };

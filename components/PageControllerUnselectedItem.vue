@@ -25,7 +25,6 @@
 		color: $light-mode-icon-color;
 		flex-shrink: 0;
 		cursor: pointer;
-		position: relative;
 
 		& > span {
 			position: relative;
