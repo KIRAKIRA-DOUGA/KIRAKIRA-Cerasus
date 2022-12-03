@@ -9,7 +9,7 @@
 </template>
 
 <style scoped lang="scss">
-	@import "@/styles/theme.scss";
+	@import "@/styles/colors.scss";
 
 	button {
 		appearance: none;

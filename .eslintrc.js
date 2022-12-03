@@ -102,6 +102,8 @@ module.exports = {
 		"prefer-template": "warn",
 		"template-curly-spacing": "error",
 		"no-undef": "off", // 这波nuxt的锅。
+		"multiline-ternary": "off",
+		"operator-linebreak": "off",
 		"@typescript-eslint/no-unused-vars": ["warn", {
 			"argsIgnorePattern": "^_",
 			"varsIgnorePattern": "^_",

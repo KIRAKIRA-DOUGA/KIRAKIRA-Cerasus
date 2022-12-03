@@ -2,11 +2,18 @@
 	import { computed, onMounted } from "vue";
 
 	const props = withDefaults(defineProps<{
+		/** 页码数目 */
 		pages: number;
-		current?: number;
+		/** 当前页码 */
+		current: number;
+		/** 显示在组件上的最多页码数目 */
 		displayPageCount: number;
+		/** 允许用户使用键盘上左右箭头键翻页 */
+		enableArrowKeyMove: boolean;
 	}>(), {
 		current: 1,
+		displayPageCount: 7,
+		arrowKeyMove: false,
 	});
 
 	const actualPages = computed(() => Math.min(props.pages, props.displayPageCount));
@@ -21,11 +28,32 @@
 		(_event: "changePage", _eventArg: { page: number }): void;
 	}>();
 
-	const changePage = (page: number) => emits("changePage", { page });
+	const changePage = (page: number) => {
+		if (page < 1 || page > props.pages)
+			throw new RangeError("超出页码范围");
+		emits("changePage", { page });
+	};
+	const movePage = (movement: number) => {
+		if (movement === 0) return;
+		const newPage = props.current + movement;
+		changePage(newPage);
+	};
+	const onArrowKeyDown = (e: KeyboardEvent) => {
+		if (!props.enableArrowKeyMove) return;
+		const movement =
+			e.key === "ArrowLeft" ? -1 :
+			e.key === "ArrowRight" ? 1 : 0;
+		if (movement) movePage(movement);
+	};
 
 	onMounted(() => {
 		if (props.pages < 1 || props.displayPageCount < 5 || props.current < 1 || props.current > props.pages)
 			throw new RangeError("参数错误");
+		document.addEventListener("keydown", onArrowKeyDown);
+	});
+
+	onBeforeUnmount(() => {
+		document.removeEventListener("keydown", onArrowKeyDown);
 	});
 </script>
 
@@ -45,7 +73,7 @@
 </template>
 
 <style scoped lang="scss">
-	@import "@/styles/theme.scss";
+	@import "@/styles/colors.scss";
 	@import "@/styles/ease.scss";
 	@import "@/styles/mixin.scss";
 

@@ -10,7 +10,7 @@
 		<NuxtLink to="/VideoPlay">
 			video
 		</NuxtLink>
-		<PageController :pages="7" :displayPageCount="7" :current="page" @changePage="e => page = e.page" />
+		<PageController :pages="7" :displayPageCount="7" :current="page" enableArrowKeyMove @changePage="e => page = e.page" />
 		<br />
 		<Button>123</Button>
 		<Button disabled>123</Button>
