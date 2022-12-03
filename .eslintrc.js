@@ -191,5 +191,6 @@ module.exports = {
 		"vue/multi-word-component-names": "off",
 		"vue/mustache-interpolation-spacing": "error",
 		"vue/attribute-hyphenation": ["error", "never"],
+		"vue/singleline-html-element-content-newline": "off",
 	},
 };

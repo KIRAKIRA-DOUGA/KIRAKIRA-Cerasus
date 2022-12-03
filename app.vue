@@ -10,20 +10,10 @@
 </template>
 
 <script setup lang="ts">
-	import { ref, onMounted } from "vue";
-	import type { Ref } from "vue";
-
-	// import SideBar from "./components/SideBar/SideBar.vue";
-
-	// const a: Ref<string> = ref("aaaaa");
-	// onMounted(() => {
-	// 	setInterval(() => {
-	// 		a.value += "a";
-	// 	}, 1000);
-	// });
+	import "@/styles/reset.scss";
 </script>
 
-<style>
+<style lang="scss">
 
 	/* colors */
 	body {
