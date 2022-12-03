@@ -26,8 +26,22 @@ feature-<日期>-<修改内容简称>-<创建者>
 ```
 refactoring-<日期>-<修改内容简称>-<创建者>
 ```
+<br/>
+
+---  
+
+<br/>
 
 从 `develop` 分支创建开发分支 `feature-xxxxxxxxxxx-xxxxxxx-xxxx`，开发完成后 ***Merge*** 回 `develop` 分支；  
 在 `feature` 上执行单元测试， 在 `develop` 上进行结合测试 ——（如果可能的话）  
-将 `develop` 分支的内容 ***Merge*** 到 `deployment` 分支，并创建 `tag`
+将 `develop` 分支的内容 ***Merge*** 到 `deployment` 分支，并创建 `tag`  
+
+<br/>
+
+创建分支后，***Merge*** `develop` 分支到自己的分支，并解决冲突  
+编写代码前，***Merge*** `develop` 分支到自己的分支，并解决冲突  
+编写代码后，***Merge*** `develop` 分支到自己的分支，并解决冲突  
+合并代码前，***Merge*** `develop` 分支到自己的分支，并解决冲突  
+
+
 
