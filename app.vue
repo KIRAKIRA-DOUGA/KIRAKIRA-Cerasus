@@ -1,16 +1,24 @@
 <template>
-	<!-- <NuxtWelcome /> -->
-	<!-- <HelloWorld /> -->
-	<div>
-		<SideBar />
-		<div class="kirakira-router-box">
+	<NuxtLayout :name="layout">
+		<template #[slotName]>
 			<router-view />
-		</div>
-	</div>
+		</template>
+	</NuxtLayout>
 </template>
 
 <script setup lang="ts">
 	import "@/styles/global.scss";
+	import { ref } from "vue";
+
+	const layout = ref("desktop-web");
+	const slotName = ref("desktop-web-slot");
+
+	// 下方为测试用，5秒延时后将具名layout和具名插槽的名字赋值为 PE 端
+
+	// setTimeout(() => {
+	// 	layout.value = "pocket-edition-web";
+	// 	slotName.value = "pocket-edition-web-slot";
+	// }, 5000);
 </script>
 
 <style lang="scss">
