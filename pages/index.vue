@@ -1,5 +1,7 @@
 <template>
-	<div>
-		aaa
-	</div>
+	<HomePage />
 </template>
+
+<script setup>
+	import HomePage from "./HomePage.vue";
+</script>
