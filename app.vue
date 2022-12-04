@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-	import "@/styles/global.scss";
+	import "assets/scss/global.scss";
 	import { ref } from "vue";
 
 	const layout = ref("desktop-web");
@@ -22,7 +22,6 @@
 </script>
 
 <style lang="scss">
-
 	/* colors */
 	body {
 		--kirakira-side-bar-background-color: #66ccff;

@@ -7,24 +7,26 @@
 <template>
 	<div class="item">
 		<div class="background hover"></div>
-		<div class="background pressed"></div> <!-- 按下状态统一叫pressed不叫active是为了与活跃状态区分开 -->
+		<div class="background pressed"></div> <!-- 按下状态统一叫 pressed 不叫 active 是为了与活跃状态区分开。 -->
 		<span>{{ page }}</span>
 	</div>
 </template>
 
 <style scoped lang="scss">
-	@import "@/styles/colors.scss";
-	@import "@/styles/mixin.scss";
+	@use "sass:color";
+	@import "assets/scss/theme";
 
 	$size: 36px;
 
 	.item {
 		@include flex-center;
+
 		width: $size;
 		height: $size;
 		color: $light-mode-icon-color;
 		flex-shrink: 0;
 		cursor: pointer;
+		transition: none !important;
 		position: relative;
 
 		& > span {
@@ -43,11 +45,11 @@
 			z-index: 0 !important;
 
 			&.hover {
-				background: radial-gradient(50% 250% at 50% 50%, $light-mode-gray 33.33%, transparentize($color: $light-mode-gray, $amount: 1) 100%);
+				background: radial-gradient(50% 250% at 50% 50%, $light-mode-gray 33.33%, color.adjust($light-mode-gray, $alpha: -1) 100%);
 			}
 
 			&.pressed {
-				background: radial-gradient(50% 250% at 50% 50%, $light-mode-gray-2 33.33%, transparentize($color: $light-mode-gray-2, $amount: 1) 100%);
+				background: radial-gradient(50% 250% at 50% 50%, $light-mode-gray-2 33.33%, color.adjust($light-mode-gray-2, $alpha: -1) 100%);
 			}
 		}
 

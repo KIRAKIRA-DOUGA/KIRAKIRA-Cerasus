@@ -12,7 +12,6 @@ module.exports = {
 		"eslint:recommended",
 		"plugin:@typescript-eslint/recommended",
 		"plugin:vue/vue3-essential",
-		// "@vue/eslint-config-typescript",
 	],
 	overrides: [],
 	parser: "vue-eslint-parser",
@@ -46,11 +45,7 @@ module.exports = {
 		"no-floating-decimal": "error",
 		"no-mixed-spaces-and-tabs": ["error", false],
 		"no-var": "error",
-		"no-unused-vars": ["warn", { // 非要使用未使用变量，前面加下划线。
-			"argsIgnorePattern": "^_",
-			"varsIgnorePattern": "^_",
-			"caughtErrorsIgnorePattern": "^_",
-		}],
+		"no-unused-vars": "off",
 		"no-tabs": "off",
 		"no-empty": ["error", { "allowEmptyCatch": true }],
 		"no-constant-condition": ["error", { "checkLoops": false }],
@@ -72,7 +67,7 @@ module.exports = {
 		"require-await": "error",
 		"yoda": "error",
 		"block-spacing": "error",
-		"func-call-spacing": "off", // 开启后会与ts产生冲突！使用ts版的代替。
+		"func-call-spacing": "off", // 开启后会与 ts 产生冲突！使用 ts 版的代替。
 		"computed-property-spacing": ["error", "never"],
 		"no-whitespace-before-property": "error",
 		"object-curly-spacing": ["error", "always"],
@@ -101,10 +96,15 @@ module.exports = {
 		"object-shorthand": "error",
 		"prefer-template": "warn",
 		"template-curly-spacing": "error",
-		"no-undef": "off", // 这波nuxt的锅。
+		"no-undef": "off", // 这波 nuxt 的锅。
 		"multiline-ternary": "off",
 		"operator-linebreak": "off",
-		"@typescript-eslint/no-unused-vars": ["warn", {
+		"no-trailing-spaces": ["error", { "skipBlankLines": true }],
+		"one-var": "off",
+		"arrow-parens": ["error", "as-needed"],
+		"camelcase": "off",
+		"spaced-comment": ["error", "always", { "exceptions": ["+", "-", "*", "/"], "markers": ["/", "!", "@", "#", "#region", "#endregion"] }],
+		"@typescript-eslint/no-unused-vars": ["warn", { // 非要使用未使用变量，前面加下划线。
 			"argsIgnorePattern": "^_",
 			"varsIgnorePattern": "^_",
 			"caughtErrorsIgnorePattern": "^_",
@@ -130,6 +130,7 @@ module.exports = {
 				"requireLast": false,
 			},
 		}],
+		"@typescript-eslint/semi": ["error", "always"],
 		// "@typescript-eslint/no-confusing-void-expression": "error",
 		// "@typescript-eslint/no-floating-promises": "error",
 		// 嗯对这几个不晓得怎么用不了。
@@ -194,5 +195,6 @@ module.exports = {
 		"vue/mustache-interpolation-spacing": "error",
 		"vue/attribute-hyphenation": ["error", "never"],
 		"vue/singleline-html-element-content-newline": "off",
+		"vue/no-unused-vars": "warn",
 	},
 };

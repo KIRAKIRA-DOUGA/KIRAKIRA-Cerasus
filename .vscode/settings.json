@@ -1,0 +1,40 @@
+{
+	"prettier.useTabs": true,
+	"editor.insertSpaces": false,
+	"editor.detectIndentation": false,
+	"editor.formatOnPaste": true,
+	"editor.formatOnType": true,
+	"emmet.includeLanguages": {
+		"vue-html": "html",
+		"vue": "html"
+	},
+	"volar.format.initialIndent": {
+		"html": true,
+		"css": true,
+		"javascript": true,
+		"typescript": true,
+		"scss": true,
+		"less": true,
+		"javascriptreact": true,
+		"typescriptreact": true,
+		"json": true,
+		"jsonc": true,
+	},
+	"volar.completion.preferredAttrNameCase": "auto-camel",
+	"stylelint.snippet": [
+		"css",
+		"less",
+		"postcss",
+		"sass",
+		"scss",
+		"vue"
+	],
+	"stylelint.validate": [
+		"css",
+		"less",
+		"postcss",
+		"sass",
+		"scss",
+		"vue"
+	],
+}
