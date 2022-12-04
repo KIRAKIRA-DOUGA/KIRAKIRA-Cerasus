@@ -18,6 +18,10 @@
 
 	$size: 36px;
 
+	:global(.scrollArea .item) { // 他奶奶滴居然 scss 和 vue 冲突了。
+		position: absolute !important;
+	}
+
 	.item {
 		@include flex-center;
 

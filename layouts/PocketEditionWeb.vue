@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-	import "@/styles/global.scss";
+	import "assets/scss/global.scss";
 </script>
 
 <style lang="scss">
