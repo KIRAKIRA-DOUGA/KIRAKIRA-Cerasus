@@ -7,7 +7,7 @@
 <template>
 	<div class="item">
 		<div class="background hover"></div>
-		<div class="background pressed"></div> <!-- 按下状态统一叫pressed不叫active是为了与活跃状态区分开 -->
+		<div class="background pressed"></div> <!-- 按下状态统一叫 pressed 不叫 active 是为了与活跃状态区分开。 -->
 		<span>{{ page }}</span>
 	</div>
 </template>

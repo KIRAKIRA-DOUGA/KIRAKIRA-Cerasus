@@ -1,5 +1,6 @@
 <script setup lang="ts">
 	const page = ref(1);
+	const toggle = ref(false);
 </script>
 
 <template>
@@ -12,9 +13,12 @@
 		</NuxtLink>
 		<div class="component-test">
 			<PageController :pages="99" :displayPageCount="7" :current="page" enableArrowKeyMove @changePage="e => page = e.page" />
-			<br />
 			<Button>123</Button>
 			<Button disabled>123</Button>
+			<ToggleSwitch :on="toggle" @change="e => (toggle = e.on)" />
+			<ToggleSwitch disabled />
+			<ToggleSwitch on disabled />
+			<LogoCover />
 		</div>
 	</div>
 </template>
@@ -25,7 +29,7 @@
 	}
 
 	.component-test {
-		padding: 2rem 1rem;
+		padding: 1rem;
 
 		> * {
 			margin: 0.25rem 0.5rem;

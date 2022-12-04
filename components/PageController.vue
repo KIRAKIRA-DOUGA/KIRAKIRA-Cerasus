@@ -7,9 +7,9 @@
 		/** 当前页码。 */
 		current: number;
 		/** 显示在组件上的最多页码数目。 */
-		displayPageCount: number;
+		displayPageCount?: number;
 		/** 允许用户使用键盘上左右箭头键翻页。 */
-		enableArrowKeyMove: boolean;
+		enableArrowKeyMove?: boolean;
 	}>(), {
 		current: 1,
 		displayPageCount: 7,
@@ -30,7 +30,7 @@
 			Math.floor((actualPages.value + 1) / 2)
 		) - 1;
 	});
-	const _currentEdited = ref(String(props.current)); // 注意类型得是string。
+	const _currentEdited = ref(String(props.current)); // 注意类型得是 string。
 	const currentEdited = computed({
 		get: () => _currentEdited.value,
 		set: async value_str => {
@@ -54,7 +54,7 @@
 	const newPageNumber = ref<HTMLDivElement>();
 
 	const emits = defineEmits<{
-		(_event: "changePage", _eventArg: { page: number }): void;
+		(event: "changePage", arg: { page: number }): void;
 	}>();
 
 	watch(() => props.current, (page, prevPage) => {
