@@ -263,6 +263,7 @@
 		text-align: center;
 		line-height: $size;
 		overflow: hidden;
+		font-weight: bold;
 
 		&:hover {
 			background: $brand-pink-30;
