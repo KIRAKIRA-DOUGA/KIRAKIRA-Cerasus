@@ -104,6 +104,11 @@ module.exports = {
 		"no-undef": "off", // 这波nuxt的锅。
 		"multiline-ternary": "off",
 		"operator-linebreak": "off",
+		"no-trailing-spaces": ["error", { "skipBlankLines": true }],
+		"one-var": "off",
+		"arrow-parens": ["error", "as-needed"],
+		"camelcase": "off",
+		"spaced-comment": ["error", "always", { "exceptions": ["+", "-", "*", "/"], "markers": ["/", "!", "@", "#", "#region", "#endregion"] }],
 		"@typescript-eslint/no-unused-vars": ["warn", {
 			"argsIgnorePattern": "^_",
 			"varsIgnorePattern": "^_",
@@ -130,6 +135,7 @@ module.exports = {
 				"requireLast": false,
 			},
 		}],
+		"@typescript-eslint/semi": ["error", "always"],
 		// "@typescript-eslint/no-confusing-void-expression": "error",
 		// "@typescript-eslint/no-floating-promises": "error",
 		// 嗯对这几个不晓得怎么用不了。

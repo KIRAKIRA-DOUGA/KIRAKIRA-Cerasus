@@ -13,18 +13,21 @@
 </template>
 
 <style scoped lang="scss">
-	@import "@/styles/colors.scss";
-	@import "@/styles/mixin.scss";
+	@use "sass:color";
+	@import "assets/scss/theme";
 
 	$size: 36px;
 
 	.item {
 		@include flex-center;
+
 		width: $size;
 		height: $size;
 		color: $light-mode-icon-color;
 		flex-shrink: 0;
 		cursor: pointer;
+		transition: none !important;
+		position: relative;
 
 		& > span {
 			position: relative;
@@ -42,11 +45,11 @@
 			z-index: 0 !important;
 
 			&.hover {
-				background: radial-gradient(50% 250% at 50% 50%, $light-mode-gray 33.33%, transparentize($color: $light-mode-gray, $amount: 1) 100%);
+				background: radial-gradient(50% 250% at 50% 50%, $light-mode-gray 33.33%, color.adjust($light-mode-gray, $alpha: -1) 100%);
 			}
 
 			&.pressed {
-				background: radial-gradient(50% 250% at 50% 50%, $light-mode-gray-2 33.33%, transparentize($color: $light-mode-gray-2, $amount: 1) 100%);
+				background: radial-gradient(50% 250% at 50% 50%, $light-mode-gray-2 33.33%, color.adjust($light-mode-gray-2, $alpha: -1) 100%);
 			}
 		}
 

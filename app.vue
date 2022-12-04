@@ -10,11 +10,10 @@
 </template>
 
 <script setup lang="ts">
-	import "@/styles/global.scss";
+	import "assets/scss/global.scss";
 </script>
 
 <style lang="scss">
-
 	/* colors */
 	body {
 		--kirakira-side-bar-background-color: #66ccff;
