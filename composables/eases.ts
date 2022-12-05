@@ -1,0 +1,35 @@
+// 在 TypeScript 中也可以使用缓动值的参数。
+import eases from "assets/scss/eases.module.scss";
+export default eases as {
+	linear: string;
+	ease: string;
+	easeIn: string;
+	easeOut: string;
+	easeInOut: string;
+	easeInQuad: string;
+	easeInCubic: string;
+	easeInQuart: string;
+	easeInQuint: string;
+	easeInSine: string;
+	easeInExpo: string;
+	easeInCirc: string;
+	easeInBack: string;
+	easeOutQuad: string;
+	easeOutCubic: string;
+	easeOutQuart: string;
+	easeOutQuint: string;
+	easeOutSine: string;
+	easeOutExpo: string;
+	easeOutCirc: string;
+	easeOutBack: string;
+	easeInOutQuad: string;
+	easeInOutCubic: string;
+	easeInOutQuart: string;
+	easeInOutQuint: string;
+	easeInOutSine: string;
+	easeInOutExpo: string;
+	easeInOutCirc: string;
+	easeInOutBack: string;
+	easeOutMax: string;
+	easeInOutMax: string;
+};

@@ -2,7 +2,7 @@
 	<div>
 		<SideBar />
 		<div class="kirakiraRouterBox">
-			<slot name="desktop-web-slot" />
+			<slot name="desktop-web-slot"></slot>
 		</div>
 	</div>
 </template>

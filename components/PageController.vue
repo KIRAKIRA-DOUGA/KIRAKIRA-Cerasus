@@ -17,7 +17,10 @@
 	/** 页码项目坐标与页码值的键值对。 */
 	type PositionPageItemPair = { [pos: number]: number };
 
+	const showLast = computed(() => props.displayPageCount >= 5);
+	const showFirst = computed(() => props.displayPageCount >= 4);
 	const actualPages = computed(() => Math.min(props.pages, props.displayPageCount));
+	const scrolledItemCount = computed(() => actualPages.value - (+showFirst.value + +showLast.value));
 	const scrolledPages = ref<PositionPageItemPair>(getScrolledItems(props.current));
 	const scrollArea = ref<HTMLDivElement>();
 	const pageEdit = ref<HTMLDivElement>();
@@ -25,6 +28,7 @@
 		return (
 			props.current < actualPages.value / 2 ? props.current :
 			props.pages - props.current < actualPages.value / 2 ? actualPages.value - (props.pages - props.current) :
+			props.displayPageCount === 4 && props.current !== 2 ? 3 :
 			Math.floor((actualPages.value + 1) / 2)
 		) - 1;
 	});
@@ -62,7 +66,7 @@
 		const merged = mergePosition(prevItems, nextItems);
 		const animationOptions = (hasExistAnimations: boolean) => ({
 			duration: 500,
-			easing: hasExistAnimations ? "cubic-bezier(0, 0, 0, 1)" : "cubic-bezier(1, 0, 0, 1)", // 连续快速滚动时切换成缓出插值。
+			easing: hasExistAnimations ? eases.easeOutMax : eases.easeInOutMax, // 连续快速滚动时切换成缓出插值。
 		});
 		if (merged) {
 			scrolledPages.value = merged.items;
@@ -83,8 +87,13 @@
 		const pageLeft = page < prevPage;
 		const isUserInputPage = currentEdited.value === String(page);
 		if (!isUserInputPage && pageEdit.value && newPageNumber.value) {
+			const thumb = pageEdit.value.parentElement as HTMLDivElement;
 			const hasExistAnimations = removeExistAnimations(pageEdit.value, newPageNumber.value);
-			if (hasExistAnimations) currentEdited.value = String(prevPage);
+			if (hasExistAnimations) {
+				currentEdited.value = String(prevPage);
+				thumb.style.transitionTimingFunction = eases.easeOutMax;
+			}
+			newPageNumber.value.hidden = false;
 			pageEdit.value.animate([
 				{ left: 0 },
 				{ left: `${pageLeft ? 36 : -36}px` },
@@ -92,14 +101,22 @@
 			newPageNumber.value.animate([
 				{ left: `${pageLeft ? -36 : 36}px` },
 				{ left: 0 },
-			], animationOptions(hasExistAnimations)).finished.then(() => (currentEdited.value = String(page)));
+			], animationOptions(hasExistAnimations)).finished.then(() => {
+				currentEdited.value = String(page);
+				if (newPageNumber.value) newPageNumber.value.hidden = true;
+				thumb.style.removeProperty("transition-timing-function");
+			});
 		} else currentEdited.value = String(page);
 		//#endregion
 	});
 
 	onMounted(() => {
-		if (props.pages < 1 || props.displayPageCount < 5 || props.current < 1 || props.current > props.pages)
-			throw new RangeError("参数错误");
+		if (props.pages < 1)
+			throw new RangeError(`参数错误。页码值不能小于 1，当前值为 ${props.pages}。`);
+		if (props.current < 1 || props.current > props.pages)
+			throw new RangeError(`超出页码范围。当前页码值取值范围为 1 ~ ${props.pages}，当前设定值为 ${props.current}。`);
+		if (props.displayPageCount < 3)
+			throw new RangeError(`参数错误。显示的最多页码数目不能小于 3，当前设定值为 ${props.displayPageCount}。`);
 		document.addEventListener("keydown", onArrowKeyDown);
 	});
 
@@ -113,7 +130,7 @@
 	 */
 	function changePage(page: number) {
 		if (page < 1 || page > props.pages)
-			throw new RangeError("超出页码范围");
+			throw new RangeError(`超出页码范围。当前页码值取值范围为 1 ~ ${props.pages}，当前设定值为 ${page}。`);
 		emits("changePage", { page });
 	}
 	/**
@@ -144,13 +161,13 @@
 	 */
 	function getScrolledItems(current: number): number[] {
 		const result: number[] = [];
-		const scrolledItemCount = actualPages.value - 2;
-		let left = Math.floor((scrolledItemCount - 1) / 2);
-		left = Math.max(current - left, 2);
-		let right = left + (scrolledItemCount - 1);
-		if (right > props.pages - 1) {
-			right = props.pages - 1;
-			left = Math.max(right - (scrolledItemCount - 1), 2);
+		const scrolledItemCount_1 = scrolledItemCount.value - 1;
+		let left = Math.floor(scrolledItemCount_1 / 2);
+		left = Math.max(current - left, 1 + +showFirst.value);
+		let right = left + scrolledItemCount_1;
+		if (right > props.pages - +showLast.value) {
+			right = props.pages - +showLast.value;
+			left = Math.max(right - scrolledItemCount_1, 1 + +showFirst.value);
 		}
 		for (let i = left; i <= right; i++)
 			result.push(i);
@@ -195,7 +212,7 @@
 <template>
 	<div class="page">
 		<div class="track">
-			<PageControllerUnselectedItem :page="1" @click="changePage(1)" />
+			<PageControllerUnselectedItem v-if="showFirst" :page="1" @click="changePage(1)" />
 			<div class="scrollMask" :class="{ clip: isScrolling }">
 				<div v-if="(pages >= 3)" ref="scrollArea" class="scrollArea">
 					<PageControllerUnselectedItem
@@ -207,7 +224,7 @@
 					/>
 				</div>
 			</div>
-			<PageControllerUnselectedItem v-if="(pages >= 2)" :page="pages" @click="changePage(pages)" />
+			<PageControllerUnselectedItem v-if="(pages >= 2 && showLast)" :page="pages" @click="changePage(pages)" />
 		</div>
 		<div class="thumb">
 			<div class="focusLine"></div>
@@ -309,7 +326,7 @@
 
 		&,
 		.scrollMask {
-			width: calc((v-bind(actualPages) - 2) * $size);
+			width: calc(v-bind(scrolledItemCount) * $size);
 			height: $size;
 		}
 

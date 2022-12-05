@@ -2,9 +2,9 @@
 	<div>
 		<SideBar />
 		<div class="kirakiraRouterBox">
-			<slot name="pocket-edition-web-slot" />
+			<slot name="pocket-edition-web-slot"></slot>
 			这里是 PE 版的 KIRAKIRA, 正在施工中
-			<!-- TODO -->
+			<!-- TODO: 这里是 PE 版的 KIRAKIRA, 正在施工中…… -->
 		</div>
 	</div>
 </template>
