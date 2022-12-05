@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<SideBar />
-		<div class="kirakira-router-box">
+		<div class="kirakiraRouterBox">
 			<slot name="pocket-edition-web-slot" />
 			这里是 PE 版的 KIRAKIRA, 正在施工中
 			<!-- TODO -->
@@ -10,14 +10,14 @@
 </template>
 
 <script setup lang="ts">
-	import "assets/scss/global.scss";
+
 </script>
 
 <style lang="scss">
-	.kirakira-router-box {
+	.kirakiraRouterBox {
 		position: absolute;
 		left: var(--kirakira-main-side-bar-width);
-		top: var(--ZERO);
+		top: var(--zero);
 
 		width: calc(var(--full-screen-width) - var(--kirakira-main-side-bar-width));
 		height: var(--full-screen-height);

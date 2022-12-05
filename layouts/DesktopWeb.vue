@@ -1,21 +1,21 @@
 <template>
 	<div>
 		<SideBar />
-		<div class="kirakira-router-box">
+		<div class="kirakiraRouterBox">
 			<slot name="desktop-web-slot" />
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-	import "assets/scss/global.scss";
+
 </script>
 
 <style lang="scss">
-	.kirakira-router-box {
+	.kirakiraRouterBox {
 		position: absolute;
 		left: var(--kirakira-main-side-bar-width);
-		top: var(--ZERO);
+		top: var(--zero);
 
 		width: calc(var(--full-screen-width) - var(--kirakira-main-side-bar-width));
 		height: var(--full-screen-height);

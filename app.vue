@@ -22,22 +22,18 @@
 </script>
 
 <style lang="scss">
-	/* colors */
-	body {
-		--kirakira-side-bar-background-color: #66ccff;
-	}
+	:root {
+		/* colors */
+		--kirakira-side-bar-background-color: #6cf;
 
-	/* css size */
-	body {
+		/* css size */
 		--full-screen-height: 100vh;
 		--full-screen-width: 100vw;
 
-		--ZERO: 0;
-		--ZERO-PIXEL: 0px;
-	}
+		--zero: 0;
+		--zero-pixel: 0;
 
-	/* side bar size */
-	body {
+		/* side bar size */
 		--kirakira-main-side-bar-width: 60px;
 	}
 
@@ -46,10 +42,10 @@
 		margin: 0;
 	}
 
-	.kirakira-router-box {
+	.kirakiraRouterBox {
 		position: absolute;
 		left: var(--kirakira-main-side-bar-width);
-		top: var(--ZERO);
+		top: var(--zero);
 
 		width: calc(var(--full-screen-width) - var(--kirakira-main-side-bar-width));
 		height: var(--full-screen-height);
