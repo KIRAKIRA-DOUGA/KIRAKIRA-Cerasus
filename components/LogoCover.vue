@@ -20,7 +20,7 @@
 				</span>
 			</div>
 		</div>
-		<div class="triangle triangle1"></div> <!-- CSS 怎么做仅有边框的三角形啊啊啊啊。 -->
+		<div class="triangle triangle1"></div> <!-- TODO: CSS 怎么做仅有边框的三角形啊啊啊啊。 -->
 		<div class="triangle triangle2"></div>
 		<div class="title">KiRAKiRA☆</div>
 		<div class="circle circle1"></div>

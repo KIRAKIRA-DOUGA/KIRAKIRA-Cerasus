@@ -1,15 +1,15 @@
 <template>
-	<div class="kirakira-main-side-bar-box">
+	<div class="kirakiraMainSideBarBox">
 		<SideBarHomeButton />
 	</div>
 </template>
 
 <style scoped>
-	.kirakira-main-side-bar-box{
+	.kirakiraMainSideBarBox {
 
 		position: absolute;
-		top: var(--ZERO);
-		left: var(--ZERO);
+		top: var(--zero);
+		left: var(--zero);
 
 		width: 60px;
 		height: var(--full-screen-height);
