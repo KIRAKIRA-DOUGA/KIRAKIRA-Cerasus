@@ -1,6 +1,4 @@
 <script setup lang="ts">
-	import { computed, onMounted } from "vue";
-
 	const props = withDefaults(defineProps<{
 		/** 页码总数。 */
 		pages: number;

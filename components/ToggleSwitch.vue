@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	const _props = withDefaults(defineProps<{
+	const props = withDefaults(defineProps<{
 		/** 打开。 */
 		on?: boolean;
 		/** 禁用。 */
@@ -12,14 +12,54 @@
 	const emits = defineEmits<{
 		(event: "update:on", on: boolean): void;
 	}>();
+
+	const isDraging = ref(false);
+
+	/**
+	 * 拖拽滑块逻辑处理。
+	 * @param e - 鼠标事件。
+	 */
+	function onThumbDown(e: MouseEvent) {
+		const thumb = e.target as HTMLDivElement;
+		const control = thumb.parentElement as HTMLDivElement;
+		const thumbWidth = thumb.getClientRects()[0].width;
+		const controlRect = control.getClientRects()[0];
+		const left = controlRect.left, right = controlRect.right - thumbWidth;
+		const x = e.pageX - left - thumb.offsetLeft;
+		const firstTime = new Date().getTime();
+		const mouseMove = (e: MouseEvent) => {
+			thumb.style.left = `${clamp(e.pageX - x, left, right) - left}px`;
+		};
+		const mouseUp = (e: MouseEvent) => {
+			document.removeEventListener("mousemove", mouseMove);
+			document.removeEventListener("mouseup", mouseUp);
+			const center = (left + right) / 2;
+			const isOn = e.pageX - x > center;
+			emits("update:on", isOn);
+			thumb.style.removeProperty("left");
+			const lastTime = new Date().getTime();
+			isDraging.value = lastTime - firstTime > 200; // 定义识别为拖动而不是点击的时间差。
+		};
+		document.addEventListener("mousemove", mouseMove);
+		document.addEventListener("mouseup", mouseUp);
+	}
+
+	/**
+	 * 点击事件。为了和拖拽事件让位。
+	 * @param _ - 鼠标事件。
+	 */
+	function onClick(_: MouseEvent) {
+		if (!isDraging.value) emits("update:on", !props.on);
+		isDraging.value = false;
+	}
 </script>
 
 <template>
-	<div class="item" :class="{ on, disabled }" :tabindex="disabled ? -1 : 0" @click="emits('update:on', !on)">
+	<div class="item" :class="{ on, disabled }" :tabindex="disabled ? -1 : 0" @click="onClick">
 		<slot></slot>
 		<div class="switch">
-			<div class="track"></div>
-			<div v-drag class="thumb"></div>
+			<div class="base"></div>
+			<div class="thumb" @mousedown="onThumbDown"></div>
 		</div>
 	</div>
 </template>
@@ -33,7 +73,7 @@
 	}
 
 	$width: 34px;
-	$track-height: 14px;
+	$base-height: 14px;
 	$thumb-size: 20px;
 	$focus-ring-thickness: 10px;
 
@@ -42,12 +82,12 @@
 		width: $width;
 		height: $thumb-size;
 
-		.track {
+		.base {
 			width: $width;
-			height: $track-height;
+			height: $base-height;
 			background-color: $light-mode-gray-2;
 			position: absolute;
-			top: calc(($thumb-size - $track-height) / 2);
+			top: calc(($thumb-size - $base-height) / 2);
 			border-radius: 9999rem;
 
 			.on & {
@@ -101,6 +141,8 @@
 			.item:active & {
 				transform: scale(calc(19 / 20));
 			}
+
+			// TODO: 目前缺少 hover 样式。
 		}
 	}
 
