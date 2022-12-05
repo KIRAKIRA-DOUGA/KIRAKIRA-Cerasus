@@ -197,5 +197,6 @@ module.exports = {
 		"vue/attribute-hyphenation": ["error", "never"],
 		"vue/singleline-html-element-content-newline": "off",
 		"vue/no-unused-vars": "warn",
+		"vue/no-v-model-argument": "off",
 	},
 };

@@ -1,9 +1,11 @@
 <script setup lang="ts">
-
+	const _emits = defineEmits<{
+		(event: "click"): void;
+	}>();
 </script>
 
 <template>
-	<button>
+	<button @click="$emit('click')">
 		<slot></slot>
 	</button>
 </template>

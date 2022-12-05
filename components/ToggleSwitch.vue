@@ -1,6 +1,8 @@
 <script setup lang="ts">
 	const _props = withDefaults(defineProps<{
+		/** 打开。 */
 		on?: boolean;
+		/** 禁用。 */
 		disabled?: boolean;
 	}>(), {
 		on: false,
@@ -8,16 +10,16 @@
 	});
 
 	const emits = defineEmits<{
-		(event: "change", arg: { on: boolean }): void;
+		(event: "update:on", on: boolean): void;
 	}>();
 </script>
 
 <template>
-	<div class="item" :class="{ on, disabled }" :tabindex="disabled ? -1 : 0" @click="emits('change', { on: !on })">
+	<div class="item" :class="{ on, disabled }" :tabindex="disabled ? -1 : 0" @click="emits('update:on', !on)">
 		<slot></slot>
 		<div class="switch">
 			<div class="track"></div>
-			<div class="thumb"></div>
+			<div v-drag class="thumb"></div>
 		</div>
 	</div>
 </template>
@@ -30,17 +32,22 @@
 		justify-content: space-between;
 	}
 
+	$width: 34px;
+	$track-height: 14px;
+	$thumb-size: 20px;
+	$focus-ring-thickness: 10px;
+
 	.switch {
 		position: relative;
-		width: 34px;
-		height: 20px;
+		width: $width;
+		height: $thumb-size;
 
 		.track {
-			width: 34px;
-			height: 14px;
+			width: $width;
+			height: $track-height;
 			background-color: $light-mode-gray-2;
 			position: absolute;
-			top: 3px;
+			top: calc(($thumb-size - $track-height) / 2);
 			border-radius: 9999rem;
 
 			.on & {
@@ -57,9 +64,8 @@
 		}
 
 		.thumb {
-			$size: 20px;
-			width: $size;
-			height: $size;
+			width: $thumb-size;
+			height: $thumb-size;
 			background-color: $light-mode-main-bg;
 			box-shadow: 0 1px 6px #79717380;
 			position: absolute;
@@ -68,7 +74,7 @@
 			left: 0;
 
 			.on & {
-				left: 14px;
+				left: $width - $thumb-size;
 			}
 
 			.on:not(.disabled) & {
@@ -84,14 +90,16 @@
 				background-color: $light-mode-gray-2;
 			}
 
-			$focus-ring-size: 10px;
-
 			.item:focus & {
-				box-shadow: 0 1px 6px #79717380, 0 0 0 $focus-ring-size #cccccc80;
+				box-shadow: 0 1px 6px #79717380, 0 0 0 $focus-ring-thickness #cccccc80;
 			}
 
 			.item.on:focus & {
-				box-shadow: 0 1px 6px #f06e8ecc, 0 0 0 $focus-ring-size #f8afb880;
+				box-shadow: 0 1px 6px #f06e8ecc, 0 0 0 $focus-ring-thickness #f8afb880;
+			}
+
+			.item:active & {
+				transform: scale(calc(19 / 20));
 			}
 		}
 	}

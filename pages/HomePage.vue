@@ -1,34 +1,41 @@
 <script setup lang="ts">
 	const page = ref(1);
 	const toggle = ref(false);
+	const isClicked = ref(false);
+
+	async function onClickButton() {
+		isClicked.value = true;
+		await delay(2000);
+		isClicked.value = false;
+	}
 </script>
 
 <template>
-	<div class="kirakira-home-page-box">
+	<div class="kirakiraHomePageBox">
 		<div>
 			kirakira home
 		</div>
 		<NuxtLink to="/VideoPlay">
 			video
 		</NuxtLink>
-		<div class="component-test">
+		<div class="componentTest">
 			<PageController :pages="99" :displayPageCount="7" :current="page" enableArrowKeyMove @changePage="e => page = e.page" />
-			<Button>123</Button>
-			<Button disabled>123</Button>
-			<ToggleSwitch :on="toggle" @change="e => (toggle = e.on)" />
-			<ToggleSwitch disabled />
-			<ToggleSwitch on disabled />
+			<Button @click="onClickButton">{{ isClicked ? "我被单击了 呜呜呜~" : "按钮" }}</Button>
+			<Button disabled>按钮被禁用</Button>
+			<ToggleSwitch v-model:on="toggle">切换开关 {{ toggle ? "开" : "关" }}</ToggleSwitch>
+			<ToggleSwitch disabled>禁用 关</ToggleSwitch>
+			<ToggleSwitch on disabled>禁用 开</ToggleSwitch>
 			<LogoCover />
 		</div>
 	</div>
 </template>
 
 <style scoped lang="scss">
-	.kirakira-home-page-box {
+	.kirakiraHomePageBox {
 		background-color: yellow;
 	}
 
-	.component-test {
+	.componentTest {
 		padding: 1rem;
 
 		> * {
