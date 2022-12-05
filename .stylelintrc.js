@@ -35,7 +35,7 @@ module.exports = {
 		"function-no-unknown": null,
 		"declaration-empty-line-before": null,
 		"custom-property-empty-line-before": null,
-		"selector-pseudo-class-no-unknown": [true, { ignorePseudoClasses: ["deep", "global"] }],
+		"selector-pseudo-class-no-unknown": [true, { ignorePseudoClasses: ["deep", "global", "export"] }],
 		"scss/dollar-variable-empty-line-before": null,
 	},
 };
