@@ -316,7 +316,7 @@
 		}
 
 		> * {
-			position: absolute;
+			position: absolute !important;
 			left: calc(var(--position) * $size);
 		}
 	}
