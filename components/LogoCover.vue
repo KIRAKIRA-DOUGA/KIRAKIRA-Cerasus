@@ -31,9 +31,6 @@
 </template>
 
 <style scoped lang="scss">
-	@use "sass:color";
-	@import "assets/scss/theme";
-
 	.title {
 		font-size: 3.5rem;
 		animation: blinking 2s infinite ease-in alternate;

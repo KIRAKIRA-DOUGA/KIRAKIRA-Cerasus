@@ -15,7 +15,7 @@
 	});
 
 	/** 页码项目坐标与页码值的键值对。 */
-	type PositionPageItemPair = { [pos: number]: number };
+	type PositionPageItemPair = Record<number, number>;
 
 	const showLast = computed(() => props.displayPageCount >= 5);
 	const showFirst = computed(() => props.displayPageCount >= 4);
@@ -207,6 +207,11 @@
 			(e.target as HTMLDivElement).blur();
 		}
 	}
+	function onBlurEdited() {
+		if (currentEdited.value.trim() === "")
+			currentEdited.value = String(props.current);
+		window.getSelection()?.removeAllRanges();
+	}
 </script>
 
 <template>
@@ -226,14 +231,15 @@
 			</div>
 			<PageControllerUnselectedItem v-if="(pages >= 2 && showLast)" :page="pages" @click="changePage(pages)" />
 		</div>
-		<div class="thumb">
+		<div v-ripple class="thumb">
 			<div class="focusLine"></div>
 			<div
 				ref="pageEdit"
+				class="pageEdit"
 				contenteditable="true"
 				@input="e => currentEdited = (e.target as HTMLDivElement).innerText"
 				@keydown="onEnterEdited"
-				@blur="() => { if (currentEdited.trim() === '') currentEdited = String(current) }"
+				@blur="onBlurEdited"
 			>
 				{{ currentEdited }}
 			</div>
@@ -243,8 +249,6 @@
 </template>
 
 <style scoped lang="scss">
-	@import "assets/scss/theme";
-
 	$size: 36px;
 
 	.track {
@@ -314,6 +318,11 @@
 		> .newPageNumber {
 			top: 0;
 			left: -$size;
+		}
+
+		> .pageEdit {
+			position: absolute !important;
+			top: 0 !important;
 		}
 	}
 

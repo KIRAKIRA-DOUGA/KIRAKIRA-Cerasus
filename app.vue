@@ -7,8 +7,20 @@
 </template>
 
 <script setup lang="ts">
-	import "assets/scss/global.scss";
 	import { ref } from "vue";
+
+	useHead({
+		htmlAttrs: {
+			lang: "zh-cmn-Hans-CN", // 中文-普通话-简体字-大陆地区
+		},
+		bodyAttrs: {
+			id: "root",
+		},
+		titleTemplate: "%s - KiRAKiRA☆DOUGA",
+		link: [
+			{ rel: "icon", type: "image/vnd.microsoft.icon", href: "/favicon.ico" }, // 不是 image/x-icon
+		],
+	});
 
 	const layout = ref("desktop-web");
 	const slotName = ref("desktop-web-slot");
@@ -43,12 +55,13 @@
 	}
 
 	.kirakiraRouterBox {
-		position: absolute;
-		left: var(--kirakira-main-side-bar-width);
-		top: var(--zero);
+		// position: absolute;
+		// left: var(--kirakira-main-side-bar-width);
+		// top: var(--zero);
 
-		width: calc(var(--full-screen-width) - var(--kirakira-main-side-bar-width));
-		height: var(--full-screen-height);
+		// width: calc(var(--full-screen-width) - var(--kirakira-main-side-bar-width));
+
+		// height: var(--full-screen-height);
 
 		/* background-color: yellow; */
 	}

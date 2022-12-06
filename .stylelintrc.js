@@ -37,5 +37,6 @@ module.exports = {
 		"custom-property-empty-line-before": null,
 		"selector-pseudo-class-no-unknown": [true, { ignorePseudoClasses: ["deep", "global", "export"] }],
 		"scss/dollar-variable-empty-line-before": null,
+		// "scss/no-global-function-names": null, // 无奈之举，后期考虑会去除。
 	},
 };

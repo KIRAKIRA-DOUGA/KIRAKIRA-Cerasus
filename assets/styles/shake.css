@@ -1,0 +1,70 @@
+.filedrop[_ngcontent-nni-c41] {
+	cursor: pointer !important;
+	background-position: center 2.5rem;
+	padding: 50px 100px 20px;
+	margin: 10px auto 20px;
+	width: 80%;
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTMyIDc5LjE1OTI4NCwgMjAxNi8wNC8xOS0xMzoxMzo0MCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUuNSAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6N0YyMkRENzM1RkYxMTFFODhFNkVDNDNBOTY5QzNBODYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6N0YyMkRENzQ1RkYxMTFFODhFNkVDNDNBOTY5QzNBODYiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo3RjIyREQ3MTVGRjExMUU4OEU2RUM0M0E5NjlDM0E4NiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo3RjIyREQ3MjVGRjExMUU4OEU2RUM0M0E5NjlDM0E4NiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsUkwuUAAAYTSURBVHja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);
+}
+.filedrop[_ngcontent-nni-c41] label[_ngcontent-nni-c41] {
+	padding-top: 2.5rem;
+}
+.fileover[_ngcontent-nni-c41] {
+	animation: _ngcontent-nni-c41_shake 1s;
+	animation-iteration-count: infinite;
+}
+.filename[_ngcontent-nni-c41] {
+	display: flex;
+	justify-content: center;
+}
+@media (max-width: 668px) {
+	.filedrop[_ngcontent-nni-c41] {
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+@keyframes _ngcontent-nni-c41_shake {
+	0% {
+		transform: translate(1px, 1px) rotate(0);
+	}
+	10% {
+		transform: translate(-1px, -2px) rotate(-1deg);
+	}
+	20% {
+		transform: translate(-3px) rotate(1deg);
+	}
+	30% {
+		transform: translate(3px, 2px) rotate(0);
+	}
+	40% {
+		transform: translate(1px, -1px) rotate(1deg);
+	}
+	50% {
+		transform: translate(-1px, 2px) rotate(-1deg);
+	}
+	60% {
+		transform: translate(-3px, 1px) rotate(0);
+	}
+	70% {
+		transform: translate(3px, 1px) rotate(-1deg);
+	}
+	80% {
+		transform: translate(-1px, -1px) rotate(1deg);
+	}
+	90% {
+		transform: translate(1px, 2px) rotate(0);
+	}
+	to {
+		transform: translate(1px, -2px) rotate(-1deg);
+	}
+}
+#legal[_ngcontent-nni-c41] {
+	color: #fff;
+	font-size: 16px;
+	margin-bottom: 20px;
+}
+#legal[_ngcontent-nni-c41] a[_ngcontent-nni-c41] {
+	color: #333;
+	font-weight: bolder;
+	text-decoration: none;
+}

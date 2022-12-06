@@ -22,11 +22,5 @@
 		"allowSyntheticDefaultImports": true,
 		"experimentalDecorators": true,
 		"resolveJsonModule": true,
-		"baseUrl": ".",
-		"paths": {
-			"@scss": [
-				"assets/scss"
-			]
-		},
 	}
 }

@@ -2,12 +2,15 @@
 	const page = ref(1);
 	const toggle = ref(false);
 	const isClicked = ref(false);
+	const radioSelected = ref("1");
 
 	async function onClickButton() {
 		isClicked.value = true;
 		await delay(2000);
 		isClicked.value = false;
 	}
+
+	useHead({ title: "首页" });
 </script>
 
 <template>
@@ -25,6 +28,9 @@
 			<ToggleSwitch v-model:on="toggle">切换开关 {{ toggle ? "开" : "关" }}</ToggleSwitch>
 			<ToggleSwitch disabled>禁用 关</ToggleSwitch>
 			<ToggleSwitch on disabled>禁用 开</ToggleSwitch>
+			<RadioButton value="1" v-bind="radioSelected">单选框</RadioButton>
+			<RadioButton value="2" v-bind="radioSelected">单选框</RadioButton>
+			<ProgressRing />
 			<LogoCover />
 		</div>
 	</div>

@@ -24,17 +24,16 @@
 		const control = thumb.parentElement as HTMLDivElement;
 		const thumbWidth = thumb.getClientRects()[0].width;
 		const controlRect = control.getClientRects()[0];
-		const left = controlRect.left, right = controlRect.right - thumbWidth;
+		const left = controlRect.left, max = controlRect.width - thumbWidth;
 		const x = e.pageX - left - thumb.offsetLeft;
 		const firstTime = new Date().getTime();
 		const mouseMove = (e: MouseEvent) => {
-			thumb.style.left = `${clamp(e.pageX - x, left, right) - left}px`;
+			thumb.style.left = `${clamp(e.pageX - left - x, 0, max)}px`;
 		};
 		const mouseUp = (e: MouseEvent) => {
 			document.removeEventListener("mousemove", mouseMove);
 			document.removeEventListener("mouseup", mouseUp);
-			const center = (left + right) / 2;
-			const isOn = e.pageX - x > center;
+			const isOn = e.pageX - x > left + max / 2;
 			emits("update:on", isOn);
 			thumb.style.removeProperty("left");
 			const lastTime = new Date().getTime();
@@ -46,9 +45,8 @@
 
 	/**
 	 * 点击事件。为了和拖拽事件让位。
-	 * @param _ - 鼠标事件。
 	 */
-	function onClick(_: MouseEvent) {
+	function onClick() {
 		if (!isDraging.value) emits("update:on", !props.on);
 		isDraging.value = false;
 	}
@@ -65,11 +63,10 @@
 </template>
 
 <style scoped lang="scss">
-	@import "assets/scss/theme";
-
 	.item {
 		display: flex;
 		justify-content: space-between;
+		align-items: center;
 	}
 
 	$width: 34px;

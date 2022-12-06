@@ -13,9 +13,6 @@
 </template>
 
 <style scoped lang="scss">
-	@use "sass:color";
-	@import "assets/scss/theme";
-
 	$size: 36px;
 
 	.item {
