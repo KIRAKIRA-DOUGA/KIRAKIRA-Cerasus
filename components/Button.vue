@@ -19,6 +19,7 @@
 		border: none;
 		padding: 8px 16px;
 		color: white;
+		transition: all $ease-out-back 250ms;
 
 		&:hover {
 			background: $brand-pink-30;

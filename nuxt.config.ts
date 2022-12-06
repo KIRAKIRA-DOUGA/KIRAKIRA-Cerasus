@@ -15,9 +15,14 @@ export default defineNuxtConfig({
 	],
 	vite: {
 		css: styleResources({
-			scss: [
-				"styles/theme.scss",
-			],
+			scss: {
+				use: [
+					"sass:color",
+				],
+				"import": [
+					"styles/theme.scss",
+				],
+			},
 		}),
 	},
 });

@@ -65,7 +65,7 @@
 		transform: rotate(-32deg);
 
 		* {
-			background-color: adjust-color($brand-pink-50, $alpha: -0.52);
+			background-color: color.adjust($brand-pink-50, $alpha: -0.52);
 			border-radius: 9999rem;
 			--height: 1rem;
 			width: calc(var(--height) * 15);

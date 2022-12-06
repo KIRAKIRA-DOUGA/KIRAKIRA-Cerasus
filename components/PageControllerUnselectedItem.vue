@@ -42,11 +42,11 @@
 			z-index: 0 !important;
 
 			&.hover {
-				background: radial-gradient(50% 250% at 50% 50%, $light-mode-gray 33.33%, adjust-color($light-mode-gray, $alpha: -1) 100%);
+				background: radial-gradient(50% 250% at 50% 50%, $light-mode-gray 33.33%, color.adjust($light-mode-gray, $alpha: -1) 100%);
 			}
 
 			&.pressed {
-				background: radial-gradient(50% 250% at 50% 50%, $light-mode-gray-2 33.33%, adjust-color($light-mode-gray-2, $alpha: -1) 100%);
+				background: radial-gradient(50% 250% at 50% 50%, $light-mode-gray-2 33.33%, color.adjust($light-mode-gray-2, $alpha: -1) 100%);
 			}
 		}
 

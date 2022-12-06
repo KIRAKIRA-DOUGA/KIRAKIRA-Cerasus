@@ -30,6 +30,7 @@ export default eases as {
 	easeInOutExpo: string;
 	easeInOutCirc: string;
 	easeInOutBack: string;
+	easeInMax: string;
 	easeOutMax: string;
 	easeInOutMax: string;
 };
