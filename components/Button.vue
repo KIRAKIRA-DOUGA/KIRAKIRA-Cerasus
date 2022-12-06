@@ -5,14 +5,12 @@
 </script>
 
 <template>
-	<button @click="$emit('click')">
+	<button v-ripple @click="$emit('click')">
 		<slot></slot>
 	</button>
 </template>
 
 <style scoped lang="scss">
-	@import "assets/scss/theme";
-
 	button {
 		appearance: none;
 		background: $brand-pink-50;
@@ -28,7 +26,7 @@
 		}
 
 		&:active {
-			background: $brand-pink-70;
+			background: $brand-pink-50;
 			transform: scale(calc(35 / 36));
 			box-shadow: none !important;
 		}

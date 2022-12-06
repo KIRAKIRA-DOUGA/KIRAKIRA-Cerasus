@@ -8,6 +8,8 @@
 		await delay(2000);
 		isClicked.value = false;
 	}
+
+	useHead({ title: "首页" });
 </script>
 
 <template>
@@ -25,6 +27,8 @@
 			<ToggleSwitch v-model:on="toggle">切换开关 {{ toggle ? "开" : "关" }}</ToggleSwitch>
 			<ToggleSwitch disabled>禁用 关</ToggleSwitch>
 			<ToggleSwitch on disabled>禁用 开</ToggleSwitch>
+			<RadioButton>单选框</RadioButton>
+			<ProgressRing />
 			<LogoCover />
 		</div>
 	</div>

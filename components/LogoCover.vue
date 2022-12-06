@@ -31,9 +31,6 @@
 </template>
 
 <style scoped lang="scss">
-	@use "sass:color";
-	@import "assets/scss/theme";
-
 	.title {
 		font-size: 3.5rem;
 		animation: blinking 2s infinite ease-in alternate;
@@ -68,7 +65,7 @@
 		transform: rotate(-32deg);
 
 		* {
-			background-color: color.adjust($brand-pink-50, $alpha: -0.52);
+			background-color: adjust-color($brand-pink-50, $alpha: -0.52);
 			border-radius: 9999rem;
 			--height: 1rem;
 			width: calc(var(--height) * 15);
