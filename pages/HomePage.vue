@@ -14,7 +14,7 @@
 </script>
 
 <template>
-	<div class="kirakiraHomePageBox">
+	<div class="kirakira-home-page-box">
 		<div>
 			kirakira home
 		</div>
@@ -37,10 +37,9 @@
 </template>
 
 <style scoped lang="scss">
-	.kirakiraHomePageBox {
-
-		/* please romove when deploy  下方CSS请在部署前移除 */
-		background-color: rgba(0, 30, 255, 0.05);
+	.kirakira-home-page-box {
+		// please romove when deploy 下方CSS请在部署前移除
+		background-color: #001eff0d;
 	}
 
 	.component-test {
