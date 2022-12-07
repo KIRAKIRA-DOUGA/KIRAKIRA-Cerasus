@@ -1,37 +1,49 @@
 <script setup lang="ts">
-	const _props = withDefaults(defineProps<{
-		checked?: boolean;
+	const props = withDefaults(defineProps<{
 		/** 禁用。 */
 		disabled?: boolean;
+		/** 值。 */
 		value: string;
-		modelValue: string;
+		/** 当前绑定值。 */
+		modelValue?: string;
 	}>(), {
-		checked: false,
 		disabled: false,
+		modelValue: "",
 	});
 
 	const emits = defineEmits<{
-		(event: "update:modelValue", arg: Event): void;
+		(event: "update:modelValue", value: string): void;
 	}>();
+
+	const radio = ref<HTMLInputElement>();
+	const isChecked = computed(() => props.modelValue === props.value);
+
+	/**
+	 * 数据改变事件。
+	 */
+	function onChange() {
+		if (!radio.value) return;
+		emits("update:modelValue", radio.value.value);
+	}
 	// FIXME: 目前模型部分全是问题，赶快修。
 </script>
 
 <template>
-	<div class="item" @click="e => emits('update:modelValue', e)">
+	<label @click="onChange">
 		<input
+			ref="radio"
 			class="radio"
 			type="radio"
-			name="稍后更改模型"
-			value="value"
-			modelValue="modelValue"
-			@change="e => emits('update:modelValue', e)"
+			:checked="isChecked"
+			:value="value"
+			@change="onChange"
 		/>
 		<slot></slot>
-	</div>
+	</label>
 </template>
 
 <style scoped lang="scss">
-	.item {
+	label {
 		display: flex;
 		align-items: center;
 	}

@@ -53,17 +53,17 @@
 </script>
 
 <template>
-	<div class="item" :class="{ on, disabled }" :tabindex="disabled ? -1 : 0" @click="onClick">
+	<label :class="{ on, disabled }" :tabindex="disabled ? -1 : 0" @click="onClick">
 		<slot></slot>
 		<div class="switch">
 			<div class="base"></div>
 			<div class="thumb" @mousedown="onThumbDown"></div>
 		</div>
-	</div>
+	</label>
 </template>
 
 <style scoped lang="scss">
-	.item {
+	label {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -127,15 +127,15 @@
 				background-color: var(--gray-2);
 			}
 
-			.item:focus & {
+			label:focus & {
 				box-shadow: 0 1px 6px #79717380, 0 0 0 $focus-ring-thickness #cccccc80;
 			}
 
-			.item.on:focus & {
+			label.on:focus & {
 				box-shadow: 0 1px 6px #f06e8ecc, 0 0 0 $focus-ring-thickness #f8afb880;
 			}
 
-			.item:active & {
+			label:active & {
 				transform: scale(calc(19 / 20));
 			}
 
