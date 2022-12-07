@@ -2,7 +2,7 @@
 	const page = ref(1);
 	const toggle = ref(false);
 	const isClicked = ref(false);
-	const radioSelected = ref("");
+	const radioSelected = ref<"foo" | "bar">("foo");
 
 	async function onClickButton() {
 		isClicked.value = true;
@@ -14,14 +14,14 @@
 </script>
 
 <template>
-	<div class="kirakiraHomePageBox">
+	<div class="kirakira-home-page-box">
 		<div>
 			kirakira home
 		</div>
 		<NuxtLink to="/VideoPlay">
 			video
 		</NuxtLink>
-		<div class="componentTest">
+		<div class="component-test">
 			<PageController :pages="99" :displayPageCount="7" :current="page" enableArrowKeyMove @changePage="e => page = e.page" />
 			<Button @click="onClickButton">{{ isClicked ? "我被单击了 呜呜呜~" : "按钮" }}</Button>
 			<Button disabled>按钮被禁用</Button>
@@ -37,13 +37,12 @@
 </template>
 
 <style scoped lang="scss">
-	.kirakiraHomePageBox {
-
-		/* please romove when deploy  下方CSS请在部署前移除 */
-		background-color: rgba(0, 30, 255, 0.05);
+	.kirakira-home-page-box {
+		// please romove when deploy 下方CSS请在部署前移除
+		background-color: #001eff0d;
 	}
 
-	.componentTest {
+	.component-test {
 		padding: 1rem;
 
 		> * {

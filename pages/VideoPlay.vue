@@ -9,6 +9,6 @@
 
 <style scoped>
 	.kirakira-video-page-box {
-		background-color: rgb(0, 255, 0);
+		background-color: var(--green);
 	}
 </style>

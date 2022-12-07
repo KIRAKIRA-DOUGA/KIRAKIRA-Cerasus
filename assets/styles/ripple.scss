@@ -1,8 +1,8 @@
-.rippleButton {
+.ripple-button {
 	overflow: hidden;
 	position: relative;
 
-	.rippleCircle {
+	.ripple-circle {
 		display: block;
 		background-color: #00000048;
 		$size: 20px;
@@ -14,22 +14,22 @@
 		top: 0;
 		z-index: 2;
 
-		~ :not(.rippleCircle) {
+		~ :not(.ripple-circle) {
 			z-index: 3;
 			position: relative;
 		}
 	}
 
-	&.rippleLighter {
-		.rippleCircle {
+	&.ripple-lighter {
+		.ripple-circle {
 			background-color: #ffffff48;
 		}
 
-		&:focus.focusAlways:not(:hover, :active),
+		&:focus.focus-always:not(:hover, :active),
 		&:focus-visible:not(:hover, :active),
 		&:active:not(:hover),
 		&:focus-visible:hover {
-			.rippleCircle {
+			.ripple-circle {
 				background-color: #00000048;
 			}
 		}

@@ -32,8 +32,8 @@ function getMaxRadius(rect: DOMRect, e: MouseEvent) {
 export default defineNuxtPlugin(nuxtApp => {
 	nuxtApp.vueApp.directive("ripple", {
 		mounted(element: HTMLElement) {
-			const rippleClass = "rippleButton";
-			const circleClass = "rippleCircle";
+			const rippleClass = "ripple-button";
+			const circleClass = "ripple-circle";
 
 			element.classList.add(rippleClass);
 			element.addEventListener("mousedown", e => {
@@ -62,7 +62,7 @@ export default defineNuxtPlugin(nuxtApp => {
 				const mouseUp = () => {
 					document.removeEventListener("mouseup", mouseUp);
 					const FADE_TIME = 250;
-					const IS_FADING_CLASS = "isFading";
+					const IS_FADING_CLASS = "is-fading";
 					for (const circle of document.getElementsByClassName(circleClass)) {
 						if (circle.classList.contains(IS_FADING_CLASS)) return;
 						circle.classList.add(IS_FADING_CLASS);

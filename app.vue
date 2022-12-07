@@ -59,7 +59,7 @@
 		margin: 0;
 	}
 
-	.kirakiraRouterBox {
+	.kirakira-router-box {
 		// position: absolute;
 		// left: var(--kirakira-main-side-bar-width);
 		// top: var(--zero);
