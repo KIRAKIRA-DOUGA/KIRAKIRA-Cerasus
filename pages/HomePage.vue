@@ -2,7 +2,7 @@
 	const page = ref(1);
 	const toggle = ref(false);
 	const isClicked = ref(false);
-	const radioSelected = ref("");
+	const radioSelected = ref<"foo" | "bar">("foo");
 
 	async function onClickButton() {
 		isClicked.value = true;
@@ -21,7 +21,7 @@
 		<NuxtLink to="/VideoPlay">
 			video
 		</NuxtLink>
-		<div class="componentTest">
+		<div class="component-test">
 			<PageController :pages="99" :displayPageCount="7" :current="page" enableArrowKeyMove @changePage="e => page = e.page" />
 			<Button @click="onClickButton">{{ isClicked ? "我被单击了 呜呜呜~" : "按钮" }}</Button>
 			<Button disabled>按钮被禁用</Button>
@@ -41,7 +41,7 @@
 		background-color: var(--main-bg);
 	} */
 
-	.componentTest {
+	.component-test {
 		padding: 1rem;
 
 		> * {

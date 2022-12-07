@@ -21,7 +21,7 @@ module.exports = {
 		"color-hex-length": "short", // 颜色值能短则短。
 		"indentation": "tab",
 		"length-zero-no-unit": true,
-		"selector-class-pattern": /^[A-Za-z0-9]+$/,
+		// "selector-class-pattern": /^[A-Za-z0-9]+$/, // 换回连字符了。
 		"value-keyword-case": null, // 与 v-bind 冲突了。
 		"value-list-comma-newline-after": null,
 		"max-line-length": null,

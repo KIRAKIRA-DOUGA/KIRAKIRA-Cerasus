@@ -1,7 +1,7 @@
 <template>
-	<div class="desktopWeb">
+	<div class="desktop-web">
 		<SideBar />
-		<div class="kirakiraRouterBox">
+		<div class="kirakira-router-box">
 			<slot name="desktop-web-slot"></slot>
 		</div>
 	</div>
@@ -12,13 +12,13 @@
 </script>
 
 <style lang="scss">
-	.desktopWeb {
+	.desktop-web {
 		display: flex;
 		width: 100vw;
 		height: 100vh;
 	}
 
-	.kirakiraRouterBox {
+	.kirakira-router-box {
 		width: 100%;
 		height: 100%;
 		overflow-y: auto;

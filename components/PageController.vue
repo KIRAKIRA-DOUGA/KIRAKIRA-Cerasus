@@ -15,11 +15,11 @@
 	});
 
 	if (props.pages < 1)
-		throw new RangeError(`PageController 参数错误。页码值不能小于 1，当前值为 ${props.pages}。`);
+		throw new RangeError(`PageController pages 参数错误。页码值不能小于 1，当前值为 ${props.pages}。`);
 	if (props.current < 1 || props.current > props.pages)
-		throw new RangeError(`PageController 超出页码范围。当前页码值取值范围为 1 ~ ${props.pages}，当前设定值为 ${props.current}。`);
+		throw new RangeError(`PageController current 超出页码范围。当前页码值取值范围为 1 ~ ${props.pages}，当前设定值为 ${props.current}。`);
 	if (props.displayPageCount < 3)
-		throw new RangeError(`PageController 参数错误。显示的最多页码数目不能小于 3，当前设定值为 ${props.displayPageCount}。`);
+		throw new RangeError(`PageController displayPageCount 参数错误。显示的最多页码数目不能小于 3，当前设定值为 ${props.displayPageCount}。`);
 
 	/** 页码项目坐标与页码值的键值对。 */
 	type PositionPageItemPair = Record<number, number>;
@@ -218,7 +218,7 @@
 		window.getSelection()?.removeAllRanges();
 	}
 
-	const styles = useCssModule("unselectedItem");
+	const styles = useCamelCssModule("unselectedItem");
 	/** 未选中项目组件。 */
 	const UnselectedItem = (props: { page: number }) => (
 		<div class={styles.unselectedItem}>
@@ -234,8 +234,8 @@
 	<div class="page">
 		<div class="track">
 			<UnselectedItem v-if="showFirst" :page="1" @click="changePage(1)" />
-			<div class="scrollMask" :class="{ clip: isScrolling }">
-				<div v-if="(pages >= 3)" ref="scrollArea" class="scrollArea">
+			<div class="scroll-mask" :class="{ clip: isScrolling }">
+				<div v-if="(pages >= 3)" ref="scrollArea" class="scroll-area">
 					<UnselectedItem
 						v-for="(item, position) in scrolledPages"
 						:key="`item-${item}`"
@@ -248,10 +248,10 @@
 			<UnselectedItem v-if="(pages >= 2 && showLast)" :page="pages" @click="changePage(pages)" />
 		</div>
 		<div v-ripple class="thumb">
-			<div class="focusLine"></div>
+			<div class="focus-line"></div>
 			<div
 				ref="pageEdit"
-				class="pageEdit"
+				class="page-edit"
 				contenteditable="true"
 				@input="e => currentEdited = (e.target as HTMLDivElement).innerText"
 				@keydown="onEnterEdited"
@@ -259,7 +259,7 @@
 			>
 				{{ currentEdited }}
 			</div>
-			<div ref="newPageNumber" class="newPageNumber">{{ current }}</div>
+			<div ref="newPageNumber" class="new-page-number">{{ current }}</div>
 		</div>
 	</div>
 </template>
@@ -313,12 +313,12 @@
 		&:has(:focus) {
 			box-shadow: 0 2px 4px #f06e8e99, 0 0 0 3px #f8afb880;
 
-			> .focusLine {
+			> .focus-line {
 				top: 0;
 			}
 		}
 
-		> .focusLine {
+		> .focus-line {
 			$line-height: 2px;
 			border-bottom: var(--accent-10) $line-height solid;
 			top: $line-height;
@@ -331,26 +331,26 @@
 			position: absolute;
 		}
 
-		> .newPageNumber {
+		> .new-page-number {
 			top: 0;
 			left: -$size;
 		}
 
-		> .pageEdit {
+		> .page-edit {
 			position: absolute !important;
 			top: 0 !important;
 		}
 	}
 
-	.scrollMask.clip {
+	.scroll-mask.clip {
 		overflow: hidden;
 	}
 
-	.scrollArea {
+	.scroll-area {
 		position: relative;
 
 		&,
-		.scrollMask {
+		.scroll-mask {
 			width: calc(v-bind(scrolledItemCount) * $size);
 			height: $size;
 		}
@@ -365,7 +365,7 @@
 <style module="unselectedItem" lang="scss">
 	$size: 36px;
 
-	.unselectedItem {
+	.unselected-item {
 		@include flex-center;
 
 		width: $size;
