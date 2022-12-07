@@ -9,6 +9,7 @@
 <script setup lang="ts">
 	import { ref } from "vue";
 
+	// @ts-ignore
 	useHead({
 		htmlAttrs: {
 			lang: "zh-cmn-Hans-CN", // 中文-普通话-简体字-大陆地区
