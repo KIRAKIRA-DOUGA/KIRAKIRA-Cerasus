@@ -25,7 +25,7 @@
 		if (!radio.value) return;
 		emits("update:modelValue", radio.value.value);
 	}
-	// FIXME: 目前模型部分全是问题，赶快修。
+	// BUG: 目前的问题，如果在页面刚刚加载时快速选中两个单选框，会发生两个单选框同时被选中的 bug。
 </script>
 
 <template>
