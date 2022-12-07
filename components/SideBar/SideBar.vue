@@ -6,7 +6,7 @@
 
 <style scoped lang="scss">
 	.kirakiraMainSideBarBox {
-		width: 60px;
+		width: var(--kirakira-side-bar-width);
 		background-color: var(--kirakira-side-bar-background-color);
 	}
 </style>

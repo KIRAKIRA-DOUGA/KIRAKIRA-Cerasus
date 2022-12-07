@@ -38,7 +38,9 @@
 
 <style scoped lang="scss">
 	.kirakiraHomePageBox {
-		background-color: yellow;
+
+		/* please romove when deploy  下方CSS请在部署前移除 */
+		background-color: rgba(0, 30, 255, 0.05);
 	}
 
 	.componentTest {
