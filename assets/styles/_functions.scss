@@ -1,0 +1,24 @@
+@use "sass:color";
+
+/// 将指定颜色反转亮度。
+/// @param {Color} $color - 颜色值。
+/// @return {Color} 反转亮度后的颜色值。
+@function invert-lightness($color) {
+	$lightness: 100% - color.lightness($color);
+
+	@return hsla(hue($color), saturation($color), $lightness, alpha($color));
+}
+
+/// 将 Sass 映射的键名转换为 CSS 属性的属性名。
+/// @param {String} $key - Sass 映射的键名。
+/// @return {String} CSS 属性的属性名。
+@function key-to-css-var($key) {
+	@return unquote($string: "--" + $key);
+}
+
+/// 将颜色值中的“#”号转义，放在 background url data svg 中。
+/// @param {Color} $color - 颜色值。
+/// @return {String} 转义 SVG 中的颜色值。
+@function color-to-svg-color($color) {
+	@return unquote("%23" + str-slice(#{$color}, -6));
+}

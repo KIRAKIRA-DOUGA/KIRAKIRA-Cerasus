@@ -1,0 +1,9 @@
+$light-theme: ":root";
+$dark-theme: ":root[data-theme=dark]";
+
+$mobile-max-width: 575px;
+$tablet-max-width: 991px;
+
+$mobile: "(max-width: #{$mobile-max-width})";
+$tablet: "(max-width: #{$tablet-max-width})";
+$computer: "(min-width: #{$tablet-max-width + 1px})";

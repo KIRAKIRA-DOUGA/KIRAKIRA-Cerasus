@@ -12,12 +12,19 @@ export default defineNuxtConfig({
 	},
 	css: [
 		"styles/global.scss",
+		"styles/colors.scss",
 	],
 	vite: {
 		css: styleResources({
 			scss: {
 				use: [
 					"sass:color",
+					"sass:list",
+					"sass:map",
+					"sass:math",
+					"sass:meta",
+					"sass:selector",
+					"sass:string",
 				],
 				"import": [
 					"styles/theme.scss",
