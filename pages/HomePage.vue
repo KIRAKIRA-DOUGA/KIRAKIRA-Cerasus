@@ -37,9 +37,11 @@
 </template>
 
 <style scoped lang="scss">
-	/* .kirakiraHomePageBox {
-		background-color: var(--main-bg);
-	} */
+	.kirakiraHomePageBox {
+
+		/* please romove when deploy  下方CSS请在部署前移除 */
+		background-color: rgba(0, 30, 255, 0.05);
+	}
 
 	.component-test {
 		padding: 1rem;

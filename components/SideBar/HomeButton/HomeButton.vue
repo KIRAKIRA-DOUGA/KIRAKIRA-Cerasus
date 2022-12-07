@@ -1,5 +1,5 @@
 <template>
-	<NuxtLink to="/HomePage">
+	<NuxtLink to="/">
 		Home
 	</NuxtLink>
 </template>

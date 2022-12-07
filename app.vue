@@ -1,14 +1,13 @@
 <template>
 	<NuxtLayout :name="layout">
-		<template #[slotName]>
-			<router-view />
-		</template>
+		<router-view />
 	</NuxtLayout>
 </template>
 
 <script setup lang="ts">
 	import { ref } from "vue";
 
+	// @ts-ignore
 	useHead({
 		htmlAttrs: {
 			lang: "zh-cmn-Hans-CN", // 中文-普通话-简体字-大陆地区
@@ -25,7 +24,7 @@
 	});
 
 	const layout = ref("desktop-web");
-	const slotName = ref("desktop-web-slot");
+	// const slotName = ref("desktop-web-slot");
 
 	// 下方为测试用，5秒延时后将具名layout和具名插槽的名字赋值为 PE 端
 
@@ -38,11 +37,15 @@
 <style lang="scss">
 	:root {
 		/* colors */
-		--kirakira-side-bar-background-color: #6cf;
+		--kirakira-side-bar-background-color: #66CCFF; // ♬ 66CCFF ♬
 
 		/* css size */
 		--full-screen-height: 100vh;
 		--full-screen-width: 100vw;
+
+		--kirakira-side-bar-width: 48px; // side bar width
+
+		--kirakira-main-page-banner-height: 140px;
 
 		--zero: 0;
 		--zero-pixel: 0;
