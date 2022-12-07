@@ -2,7 +2,7 @@
 	const page = ref(1);
 	const toggle = ref(false);
 	const isClicked = ref(false);
-	const radioSelected = ref("1");
+	const radioSelected = ref("");
 
 	async function onClickButton() {
 		isClicked.value = true;
@@ -28,8 +28,8 @@
 			<ToggleSwitch v-model:on="toggle">切换开关 {{ toggle ? "开" : "关" }}</ToggleSwitch>
 			<ToggleSwitch disabled>禁用 关</ToggleSwitch>
 			<ToggleSwitch on disabled>禁用 开</ToggleSwitch>
-			<RadioButton value="1" v-bind="radioSelected">单选框</RadioButton>
-			<RadioButton value="2" v-bind="radioSelected">单选框</RadioButton>
+			<RadioButton v-model="radioSelected" value="foo">单选框</RadioButton>
+			<RadioButton v-model="radioSelected" value="bar">单选框</RadioButton>
 			<ProgressRing />
 			<LogoCover />
 		</div>
@@ -37,9 +37,9 @@
 </template>
 
 <style scoped lang="scss">
-	.kirakiraHomePageBox {
-		background-color: yellow;
-	}
+	/* .kirakiraHomePageBox {
+		background-color: var(--main-bg);
+	} */
 
 	.componentTest {
 		padding: 1rem;

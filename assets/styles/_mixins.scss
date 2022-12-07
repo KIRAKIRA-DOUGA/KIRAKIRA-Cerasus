@@ -1,3 +1,5 @@
+/// 一键弹性布局加居中元素。
+/// @output flex - center - center.
 @mixin flex-center {
 	display: flex;
 	justify-content: center;
