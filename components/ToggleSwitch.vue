@@ -82,7 +82,7 @@
 		.base {
 			width: $width;
 			height: $base-height;
-			background-color: $light-mode-gray-2;
+			background-color: var(--gray-2);
 			position: absolute;
 			top: calc(($thumb-size - $base-height) / 2);
 			border-radius: 9999rem;
@@ -92,7 +92,7 @@
 			}
 
 			.disabled & {
-				background-color: $light-mode-gray;
+				background-color: var(--gray);
 			}
 
 			.on.disabled & {
@@ -103,7 +103,7 @@
 		.thumb {
 			width: $thumb-size;
 			height: $thumb-size;
-			background-color: $light-mode-main-bg;
+			background-color: var(--main-bg);
 			box-shadow: 0 1px 6px #79717380;
 			position: absolute;
 			top: 0;
@@ -115,16 +115,16 @@
 			}
 
 			.on:not(.disabled) & {
-				background-color: $brand-pink-50;
+				background-color: var(--accent);
 				box-shadow: 0 1px 6px #f06e8ecc;
 			}
 
 			.disabled & {
-				background-color: $light-mode-gray;
+				background-color: var(--gray);
 			}
 
 			.on.disabled & {
-				background-color: $light-mode-gray-2;
+				background-color: var(--gray-2);
 			}
 
 			.item:focus & {

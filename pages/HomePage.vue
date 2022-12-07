@@ -37,9 +37,9 @@
 </template>
 
 <style scoped lang="scss">
-	.kirakiraHomePageBox {
-		background-color: yellow;
-	}
+	/* .kirakiraHomePageBox {
+		background-color: var(--main-bg);
+	} */
 
 	.componentTest {
 		padding: 1rem;

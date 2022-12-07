@@ -42,14 +42,14 @@
 	$border-size: 2px;
 	$duration-half: 250ms;
 
-	// @property --color {
-	// 	syntax: "<color>";
-	// 	inherits: true;
-	// }
+	@property --color {
+		syntax: "<color>";
+		inherits: true;
+	}
 
 	.radio {
-		// --color: #{$light-mode-icon-color-400};
-		--color: #{$brand-pink-50}; // TODO: 颜色过渡动画有些问题，暂时改为 filter 过渡动画。
+		// --color: #{$light-mode-icon-color-400}; // TODO: 颜色过渡动画有些问题，暂时改为 filter 过渡动画。
+		--color: var(--accent);
 
 		appearance: none;
 		margin: 0;
@@ -85,7 +85,7 @@
 		}
 
 		&:checked {
-			// --color: #{$brand-pink-50};
+			// --color: var(--accent);
 
 			filter: grayscale(0);
 			animation:

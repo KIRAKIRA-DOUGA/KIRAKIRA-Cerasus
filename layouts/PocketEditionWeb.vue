@@ -22,6 +22,6 @@
 		width: calc(var(--full-screen-width) - var(--kirakira-main-side-bar-width));
 		height: var(--full-screen-height);
 
-		/* background-color: yellow; */
+		// background-color: var(--main-bg);
 	}
 </style>

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 	const props = withDefaults(defineProps<{
 		/** 页码总数。 */
 		pages: number;
@@ -13,6 +13,13 @@
 		displayPageCount: 7,
 		arrowKeyMove: false,
 	});
+
+	if (props.pages < 1)
+		throw new RangeError(`PageController 参数错误。页码值不能小于 1，当前值为 ${props.pages}。`);
+	if (props.current < 1 || props.current > props.pages)
+		throw new RangeError(`PageController 超出页码范围。当前页码值取值范围为 1 ~ ${props.pages}，当前设定值为 ${props.current}。`);
+	if (props.displayPageCount < 3)
+		throw new RangeError(`PageController 参数错误。显示的最多页码数目不能小于 3，当前设定值为 ${props.displayPageCount}。`);
 
 	/** 页码项目坐标与页码值的键值对。 */
 	type PositionPageItemPair = Record<number, number>;
@@ -111,12 +118,6 @@
 	});
 
 	onMounted(() => {
-		if (props.pages < 1)
-			throw new RangeError(`参数错误。页码值不能小于 1，当前值为 ${props.pages}。`);
-		if (props.current < 1 || props.current > props.pages)
-			throw new RangeError(`超出页码范围。当前页码值取值范围为 1 ~ ${props.pages}，当前设定值为 ${props.current}。`);
-		if (props.displayPageCount < 3)
-			throw new RangeError(`参数错误。显示的最多页码数目不能小于 3，当前设定值为 ${props.displayPageCount}。`);
 		document.addEventListener("keydown", onArrowKeyDown);
 	});
 
@@ -207,20 +208,35 @@
 			(e.target as HTMLDivElement).blur();
 		}
 	}
+	/**
+	 * 编辑页码值时失焦事件。
+	 * 此时应当取消选中文本。
+	 */
 	function onBlurEdited() {
 		if (currentEdited.value.trim() === "")
 			currentEdited.value = String(props.current);
 		window.getSelection()?.removeAllRanges();
 	}
+
+	const styles = useCssModule("unselectedItem");
+	/** 未选中项目组件。 */
+	const UnselectedItem = (props: { page: number }) => (
+		<div class={styles.unselectedItem}>
+			<div class={[styles.background, styles.hover]}></div>
+			<div class={[styles.background, styles.pressed]}></div>
+			{/* 按下状态统一叫 pressed 不叫 active 是为了与活跃状态区分开。 */}
+			<span>{props.page}</span>
+		</div>
+	);
 </script>
 
 <template>
 	<div class="page">
 		<div class="track">
-			<PageControllerUnselectedItem v-if="showFirst" :page="1" @click="changePage(1)" />
+			<UnselectedItem v-if="showFirst" :page="1" @click="changePage(1)" />
 			<div class="scrollMask" :class="{ clip: isScrolling }">
 				<div v-if="(pages >= 3)" ref="scrollArea" class="scrollArea">
-					<PageControllerUnselectedItem
+					<UnselectedItem
 						v-for="(item, position) in scrolledPages"
 						:key="`item-${item}`"
 						:page="item"
@@ -229,7 +245,7 @@
 					/>
 				</div>
 			</div>
-			<PageControllerUnselectedItem v-if="(pages >= 2 && showLast)" :page="pages" @click="changePage(pages)" />
+			<UnselectedItem v-if="(pages >= 2 && showLast)" :page="pages" @click="changePage(pages)" />
 		</div>
 		<div v-ripple class="thumb">
 			<div class="focusLine"></div>
@@ -252,7 +268,7 @@
 	$size: 36px;
 
 	.track {
-		background-color: $light-mode-controls-inner-color;
+		background-color: var(--inner-color);
 		box-shadow: inset 0 4px 4px #0000000a;
 		border-radius: 4px;
 		display: flex;
@@ -272,7 +288,7 @@
 		left: calc(v-bind(thumbPosition) * $size);
 		width: $size;
 		height: $size;
-		background: $brand-pink-50;
+		background: var(--accent);
 		box-shadow: 0 2px 4px #f06e8e99;
 		border-radius: 4px;
 		color: white;
@@ -285,12 +301,12 @@
 		font-weight: bold;
 
 		&:hover {
-			background: $brand-pink-30;
+			background: var(--accent-hover);
 			box-shadow: 0 9px 9px #f06e8e4d;
 		}
 
 		&:active {
-			background: $brand-pink-70;
+			background: var(--accent);
 			transform: scale(calc(35 / 36));
 		}
 
@@ -304,7 +320,7 @@
 
 		> .focusLine {
 			$line-height: 2px;
-			border-bottom: $brand-pink-10 $line-height solid;
+			border-bottom: var(--accent-10) $line-height solid;
 			top: $line-height;
 			pointer-events: none;
 		}
@@ -342,6 +358,51 @@
 		> * {
 			position: absolute !important;
 			left: calc(var(--position) * $size);
+		}
+	}
+</style>
+
+<style module="unselectedItem" lang="scss">
+	$size: 36px;
+
+	.unselectedItem {
+		@include flex-center;
+
+		width: $size;
+		height: $size;
+		color: var(--icon-color);
+		flex-shrink: 0;
+		cursor: pointer;
+		transition: none !important;
+		position: relative;
+
+		& > span {
+			position: relative;
+			z-index: 2;
+		}
+
+		.background {
+			color: gray;
+			position: absolute;
+			width: 300%;
+			height: 100%;
+			flex-shrink: 0;
+			opacity: 0;
+			pointer-events: none;
+			z-index: 0 !important;
+
+			&.hover {
+				background: radial-gradient(50% 250% at 50% 50%, var(--gray) 33.33%, #e9e9e900 100%);
+			}
+
+			&.pressed {
+				background: radial-gradient(50% 250% at 50% 50%, var(--gray-2) 33.33%, #ccc0 100%);
+			}
+		}
+
+		&:hover:not(:active) .background.hover,
+		&:active .background.pressed {
+			opacity: 1;
 		}
 	}
 </style>

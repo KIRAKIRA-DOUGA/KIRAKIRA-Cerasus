@@ -65,7 +65,7 @@
 
 		// height: var(--full-screen-height);
 
-		/* background-color: yellow; */
+		// background-color: var(--main-bg);
 	}
 
 </style>
