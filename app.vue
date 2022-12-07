@@ -12,6 +12,8 @@
 	useHead({
 		htmlAttrs: {
 			lang: "zh-cmn-Hans-CN", // 中文-普通话-简体字-大陆地区
+			"data-theme": "light",
+			"data-palette": "pink",
 		},
 		bodyAttrs: {
 			id: "root",

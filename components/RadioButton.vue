@@ -42,8 +42,14 @@
 	$border-size: 2px;
 	$duration-half: 250ms;
 
+	// @property --color {
+	// 	syntax: "<color>";
+	// 	inherits: true;
+	// }
+
 	.radio {
-		--color: #{$light-mode-icon-color-400};
+		// --color: #{$light-mode-icon-color-400};
+		--color: #{$brand-pink-50}; // TODO: 颜色过渡动画有些问题，暂时改为 filter 过渡动画。
 
 		appearance: none;
 		margin: 0;
@@ -58,6 +64,8 @@
 			outer-border-change-back $duration-half $duration-half $ease-in-max reverse,
 			pressing-back $duration-half $ease-in alternate 2;
 		overflow: hidden;
+		filter: grayscale(1);
+		transition: all $ease-in-out-max calc($duration-half * 2);
 
 		&::before {
 			content: "";
@@ -77,8 +85,9 @@
 		}
 
 		&:checked {
-			--color: #{$brand-pink-50};
+			// --color: #{$brand-pink-50};
 
+			filter: grayscale(0);
 			animation:
 				outer-border-change $duration-half $ease-in-max,
 				pressing $duration-half $ease-in alternate 2;
@@ -90,6 +99,10 @@
 					cut-in $duration-half step-start;
 			}
 		}
+
+		/* &:focus { // TODO: 聚焦环炸了。
+			box-shadow: 0 1px 6px #f06e8ecc, 0 0 0 10px #f8afb880;
+		} */
 	}
 
 	$animation-key: "", "-back"; // 故意把动画写两遍，让 CSS 以为是两个动画。
