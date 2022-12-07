@@ -47,7 +47,7 @@
 		justify-content: center;
 		align-items: center;
 		position: relative;
-		color: $brand-pink-50;
+		color: var(--accent);
 		user-select: none !important;
 
 		> * {
@@ -65,7 +65,7 @@
 		transform: rotate(-32deg);
 
 		* {
-			background-color: color.adjust($brand-pink-50, $alpha: -0.52);
+			background-color: var(--accent-20);
 			border-radius: 9999rem;
 			--height: 1rem;
 			width: calc(var(--height) * 15);
@@ -129,7 +129,7 @@
 		--length: 5rem;
 		height: var(--length);
 		width: calc(var(--length) / 2 * 1.732);
-		background-color: $brand-pink-50;
+		background-color: var(--accent);
 		clip-path: polygon(0 0, 100% 50%, 0 100%);
 		animation: triangle-movement 4s cubic-bezier(0, 0.5, 1, 0.5) infinite, triangle-blinking 2s cubic-bezier(0, 0, 0, 1) infinite alternate;
 	}
@@ -157,7 +157,7 @@
 	.circle1 {
 		right: -3rem;
 		top: 15%;
-		border: $brand-pink-50 2px solid;
+		border: var(--accent) 2px solid;
 		animation: circle-scaling 4s cubic-bezier(0, 0, 0, 1) infinite alternate;
 	}
 
@@ -170,7 +170,7 @@
 		> * {
 			width: 100%;
 			height: 1rem;
-			background-color: $brand-pink-50;
+			background-color: var(--accent);
 			animation: shades 2s ease-in-out infinite alternate;
 		}
 	}

@@ -13,7 +13,7 @@
 <style scoped lang="scss">
 	button {
 		appearance: none;
-		background: $brand-pink-50;
+		background: var(--accent);
 		box-shadow: 0 4px 4px #f06e8e4d;
 		border-radius: 4px;
 		border: none;
@@ -22,18 +22,18 @@
 		transition: all $ease-out-back 250ms;
 
 		&:hover {
-			background: $brand-pink-30;
+			background: var(--accent-hover);
 			box-shadow: 0 9px 9px #f06e8e4d;
 		}
 
 		&:active {
-			background: $brand-pink-50;
+			background: var(--accent);
 			transform: scale(calc(35 / 36));
 			box-shadow: none !important;
 		}
 
 		&[disabled] {
-			background: $brand-pink-20;
+			background: var(--accent-disabled);
 			box-shadow: none !important;
 		}
 

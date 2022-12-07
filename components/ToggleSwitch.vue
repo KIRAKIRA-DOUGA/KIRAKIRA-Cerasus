@@ -53,17 +53,17 @@
 </script>
 
 <template>
-	<div class="item" :class="{ on, disabled }" :tabindex="disabled ? -1 : 0" @click="onClick">
+	<label :class="{ on, disabled }" :tabindex="disabled ? -1 : 0" @click="onClick">
 		<slot></slot>
 		<div class="switch">
 			<div class="base"></div>
 			<div class="thumb" @mousedown="onThumbDown"></div>
 		</div>
-	</div>
+	</label>
 </template>
 
 <style scoped lang="scss">
-	.item {
+	label {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -82,7 +82,7 @@
 		.base {
 			width: $width;
 			height: $base-height;
-			background-color: $light-mode-gray-2;
+			background-color: var(--gray-2);
 			position: absolute;
 			top: calc(($thumb-size - $base-height) / 2);
 			border-radius: 9999rem;
@@ -92,7 +92,7 @@
 			}
 
 			.disabled & {
-				background-color: $light-mode-gray;
+				background-color: var(--gray);
 			}
 
 			.on.disabled & {
@@ -103,7 +103,7 @@
 		.thumb {
 			width: $thumb-size;
 			height: $thumb-size;
-			background-color: $light-mode-main-bg;
+			background-color: var(--main-bg);
 			box-shadow: 0 1px 6px #79717380;
 			position: absolute;
 			top: 0;
@@ -115,27 +115,27 @@
 			}
 
 			.on:not(.disabled) & {
-				background-color: $brand-pink-50;
+				background-color: var(--accent);
 				box-shadow: 0 1px 6px #f06e8ecc;
 			}
 
 			.disabled & {
-				background-color: $light-mode-gray;
+				background-color: var(--gray);
 			}
 
 			.on.disabled & {
-				background-color: $light-mode-gray-2;
+				background-color: var(--gray-2);
 			}
 
-			.item:focus & {
+			label:focus & {
 				box-shadow: 0 1px 6px #79717380, 0 0 0 $focus-ring-thickness #cccccc80;
 			}
 
-			.item.on:focus & {
+			label.on:focus & {
 				box-shadow: 0 1px 6px #f06e8ecc, 0 0 0 $focus-ring-thickness #f8afb880;
 			}
 
-			.item:active & {
+			label:active & {
 				transform: scale(calc(19 / 20));
 			}
 

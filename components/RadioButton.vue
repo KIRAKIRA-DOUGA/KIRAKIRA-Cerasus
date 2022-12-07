@@ -1,37 +1,49 @@
 <script setup lang="ts">
-	const _props = withDefaults(defineProps<{
-		checked?: boolean;
+	const props = withDefaults(defineProps<{
 		/** 禁用。 */
 		disabled?: boolean;
+		/** 值。 */
 		value: string;
-		modelValue: string;
+		/** 当前绑定值。 */
+		modelValue?: string;
 	}>(), {
-		checked: false,
 		disabled: false,
+		modelValue: "",
 	});
 
 	const emits = defineEmits<{
-		(event: "update:modelValue", arg: Event): void;
+		(event: "update:modelValue", value: string): void;
 	}>();
-	// FIXME: 目前模型部分全是问题，赶快修。
+
+	const radio = ref<HTMLInputElement>();
+	const isChecked = computed(() => props.modelValue === props.value);
+
+	/**
+	 * 数据改变事件。
+	 */
+	function onChange() {
+		if (!radio.value) return;
+		emits("update:modelValue", radio.value.value);
+	}
+	// BUG: 目前的问题，如果在页面刚刚加载时快速选中两个单选框，会发生两个单选框同时被选中的 bug。
 </script>
 
 <template>
-	<div class="item" @click="e => emits('update:modelValue', e)">
+	<label @click="onChange">
 		<input
+			ref="radio"
 			class="radio"
 			type="radio"
-			name="稍后更改模型"
-			value="value"
-			modelValue="modelValue"
-			@change="e => emits('update:modelValue', e)"
+			:checked="isChecked"
+			:value="value"
+			@change="onChange"
 		/>
 		<slot></slot>
-	</div>
+	</label>
 </template>
 
 <style scoped lang="scss">
-	.item {
+	label {
 		display: flex;
 		align-items: center;
 	}
@@ -42,14 +54,14 @@
 	$border-size: 2px;
 	$duration-half: 250ms;
 
-	// @property --color {
-	// 	syntax: "<color>";
-	// 	inherits: true;
-	// }
+	@property --color {
+		syntax: "<color>";
+		inherits: true;
+	}
 
 	.radio {
-		// --color: #{$light-mode-icon-color-400};
-		--color: #{$brand-pink-50}; // TODO: 颜色过渡动画有些问题，暂时改为 filter 过渡动画。
+		// --color: #{$light-mode-icon-color-400}; // TODO: 颜色过渡动画有些问题，暂时改为 filter 过渡动画。
+		--color: var(--accent);
 
 		appearance: none;
 		margin: 0;
@@ -85,7 +97,7 @@
 		}
 
 		&:checked {
-			// --color: #{$brand-pink-50};
+			// --color: var(--accent);
 
 			filter: grayscale(0);
 			animation:

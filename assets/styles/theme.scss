@@ -1,5 +1,3 @@
-// @forward "sass:color"; // color.scale 和内置 scale 成功冲突了。
-@forward "./colors-temp.scss"; // 即将删除。
 @forward "./eases";
 @forward "./mixins";
 @forward "./functions";
