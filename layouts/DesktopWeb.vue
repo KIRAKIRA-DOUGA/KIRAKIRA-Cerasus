@@ -1,7 +1,7 @@
 <template>
 	<div class="desktop-web">
 		<SideBar />
-		<div class="main-page-box">
+		<div class="main-container-box">
 			<Banner :collapsed="!showBanner" />
 			<div class="kirakira-router-box">
 				<slot></slot>
@@ -24,17 +24,15 @@
 		height: var(--full-screen-height);
 	}
 
-	.main-page-box {
+	.main-container-box {
 		width: 100%;
 		height: 100%;
-
-		display: flex;
-		flex-direction: column;
+		overflow-y: auto;
 	}
 
 	.kirakira-router-box {
 		width: 100%;
 		height: 100%;
-		overflow-y: auto;
+		// overflow-y: auto;
 	}
 </style>
