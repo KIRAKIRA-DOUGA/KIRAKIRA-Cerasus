@@ -20,6 +20,7 @@
 		overflow: hidden;
 		width: 100%;
 		height: var(--kirakira-main-page-banner-height);
+		transition: height $ease-out-expo 600ms;
 
 		&.collapsed {
 			height: 0;
