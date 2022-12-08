@@ -1,4 +1,4 @@
-declare const eases: {
+declare const styles: {
 	linear: string;
 	ease: string;
 	easeIn: string;
@@ -32,4 +32,4 @@ declare const eases: {
 	easeOutMax: string;
 	easeInOutMax: easeInOutMax;
 };
-export default eases;
+export default styles;

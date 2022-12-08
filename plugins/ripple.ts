@@ -1,6 +1,6 @@
 /* eslint-disable prefer-template */
 
-import "styles/ripple.scss";
+import styles from "styles/ripple.module.scss";
 
 class Point {
 	x: number;
@@ -32,8 +32,8 @@ function getMaxRadius(rect: DOMRect, e: MouseEvent) {
 export default defineNuxtPlugin(nuxtApp => {
 	nuxtApp.vueApp.directive("ripple", {
 		mounted(element: HTMLElement) {
-			const rippleClass = "ripple-button";
-			const circleClass = "ripple-circle";
+			const rippleClass = styles.rippleButton;
+			const circleClass = styles.rippleCircle;
 
 			element.classList.add(rippleClass);
 			element.addEventListener("mousedown", e => {
@@ -61,7 +61,7 @@ export default defineNuxtPlugin(nuxtApp => {
 
 				const mouseUp = () => {
 					document.removeEventListener("mouseup", mouseUp);
-					const FADE_TIME = 250;
+					const FADE_TIME = 500;
 					const IS_FADING_CLASS = "is-fading";
 					for (const circle of document.getElementsByClassName(circleClass)) {
 						if (circle.classList.contains(IS_FADING_CLASS)) return;
@@ -71,7 +71,7 @@ export default defineNuxtPlugin(nuxtApp => {
 							{ opacity: 0 },
 						], {
 							duration: FADE_TIME,
-							easing: "ease-out",
+							easing: eases.easeOutMax,
 						}).finished.then(() => circle.remove());
 					}
 				};
