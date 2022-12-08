@@ -1,6 +1,11 @@
+<script setup lang="ts">
+	function getRoute() {
+		console.log("getRouter: ", getRoutePath());
+	}
+</script>
 <template>
 	<div class="kirakira-video-page-box">
-		<div>
+		<div @click="getRoute">
 			video playing....
 		</div>
 		<SideBarHomeButton />

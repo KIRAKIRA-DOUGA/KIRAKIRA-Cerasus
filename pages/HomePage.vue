@@ -3,12 +3,18 @@
 	const toggle = ref(false);
 	const isClicked = ref(false);
 	const radioSelected = ref<"foo" | "bar">("foo");
+	
+	const router = useRouter();
 
 	async function onClickButton() {
 		isClicked.value = true;
 		await delay(2000);
 		isClicked.value = false;
 	}
+
+	const goToVideo = () => {
+		router.push("/VideoPlay");
+	};
 
 	useHead({ title: "首页" });
 </script>
@@ -18,9 +24,9 @@
 		<div>
 			kirakira home
 		</div>
-		<NuxtLink to="/VideoPlay">
+		<div @click="goToVideo">
 			video
-		</NuxtLink>
+		</div>
 		<div class="component-test">
 			<PageController :pages="99" :displayPageCount="7" :current="page" enableArrowKeyMove @changePage="e => page = e.page" />
 			<Button @click="onClickButton">{{ isClicked ? "我被单击了 呜呜呜~" : "按钮" }}</Button>
