@@ -16,6 +16,7 @@ export type Styles = {
 	easeInOutQuart: string;
 	easeInOutQuint: string;
 	easeInOutSine: string;
+	easeInOutSmooth: string;
 	easeInQuad: string;
 	easeInQuart: string;
 	easeInQuint: string;

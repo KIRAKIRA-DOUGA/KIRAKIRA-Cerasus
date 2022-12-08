@@ -52,7 +52,7 @@
 	$white-size: 16px;
 	$dot-size: 10px;
 	$border-size: 2px;
-	$duration-half: 250ms;
+	$duration-half: 150ms;
 
 	@property --color {
 		syntax: "<color>";
