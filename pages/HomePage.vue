@@ -20,6 +20,10 @@
 	onUpdated(() => {
 		useHead({ title: "首页", htmlAttrs: { "data-theme": theme.value, "data-palette": palette.value } });
 	});
+
+	onMounted(() => {
+		showConfetti();
+	});
 </script>
 
 <template>
