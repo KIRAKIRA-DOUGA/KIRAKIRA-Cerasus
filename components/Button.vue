@@ -35,6 +35,7 @@
 		&[disabled] {
 			background: var(--accent-disabled);
 			box-shadow: none !important;
+			pointer-events: none;
 		}
 
 		&:focus {

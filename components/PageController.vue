@@ -337,8 +337,8 @@
 		}
 
 		> .page-edit {
-			position: absolute !important;
-			top: 0 !important;
+			position: absolute;
+			top: 0;
 		}
 	}
 
@@ -356,7 +356,7 @@
 		}
 
 		> * {
-			position: absolute !important;
+			position: absolute;
 			left: calc(var(--position) * $size);
 		}
 	}
@@ -374,7 +374,10 @@
 		flex-shrink: 0;
 		cursor: pointer;
 		transition: none !important;
-		position: relative;
+
+		:where(&) {
+			position: relative;
+		}
 
 		& > span {
 			position: relative;

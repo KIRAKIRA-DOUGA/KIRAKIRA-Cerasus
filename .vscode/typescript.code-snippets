@@ -1,0 +1,13 @@
+{
+	"定义属性": {
+		"prefix": "props",
+		"body": [
+			"const props = withDefaults(defineProps<{",
+			"\t$1",
+			"}>(), {",
+			"\t$2",
+			"});$0",
+		],
+		"description": "定义Vue组件属性"
+	}
+}

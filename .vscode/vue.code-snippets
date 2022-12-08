@@ -1,5 +1,5 @@
 {
-	"Init": {
+	"初始化模板": {
 		"prefix": "init",
 		"body": [
 			"<script setup lang=\"ts\">",

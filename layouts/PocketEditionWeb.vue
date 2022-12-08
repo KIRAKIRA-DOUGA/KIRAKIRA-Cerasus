@@ -13,7 +13,7 @@
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	.kirakira-router-box {
 		position: absolute;
 		left: var(--kirakira-main-side-bar-width);

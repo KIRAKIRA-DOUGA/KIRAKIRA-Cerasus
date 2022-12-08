@@ -2,7 +2,7 @@
 	<div class="desktop-web">
 		<SideBar />
 		<div class="main-page-box">
-			<Banner />
+			<Banner :collapsed="!showBanner" />
 			<div class="kirakira-router-box">
 				<slot></slot>
 			</div>
@@ -11,10 +11,13 @@
 </template>
 
 <script setup lang="ts">
-
+	const isHomePage = () => location.pathname === "/";
+	const showBanner = ref(false);
+	onMounted(() => (showBanner.value = isHomePage()));
+	onUpdated(() => (showBanner.value = isHomePage()));
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	.desktop-web {
 		display: flex;
 		width: var(--full-screen-width);

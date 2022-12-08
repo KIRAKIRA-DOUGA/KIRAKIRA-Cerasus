@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	const _props = withDefaults(defineProps<{
+	const props = withDefaults(defineProps<{
 		width?: number;
 		height?: number;
 	}>(), {

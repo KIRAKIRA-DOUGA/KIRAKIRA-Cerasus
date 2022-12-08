@@ -37,7 +37,7 @@
 <style lang="scss">
 	:root {
 		/* colors */
-		--kirakira-side-bar-background-color: #66CCFF; // ♬ 66CCFF ♬
+		--kirakira-side-bar-background-color: #6cf; // ♬ 66CCFF ♬
 
 		/* css size */
 		--full-screen-height: 100vh;
