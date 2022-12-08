@@ -2,7 +2,7 @@
 
 <br>
 
-# Project Codename「Cerasus」
+# Project Codename ｢Cerasus｣
 Frontend
 
 <br>

@@ -73,7 +73,7 @@
 		const merged = mergePosition(prevItems, nextItems);
 		const animationOptions = (hasExistAnimations: boolean) => ({
 			duration: 500,
-			easing: hasExistAnimations ? eases.easeOutMax : eases.easeInOutMax, // 连续快速滚动时切换成缓出插值。
+			easing: hasExistAnimations ? eases.easeOutMax : eases.easeInOutSmooth, // 连续快速滚动时切换成缓出插值。
 		});
 		if (merged) {
 			scrolledPages.value = merged.items;
@@ -293,7 +293,7 @@
 		border-radius: 4px;
 		color: white;
 		cursor: text;
-		transition: all $ease-out-max 500ms, left $ease-in-out-max 500ms;
+		transition: all $ease-out-max 500ms, left $ease-in-out-smooth 500ms;
 		z-index: 3;
 		text-align: center;
 		line-height: $size;

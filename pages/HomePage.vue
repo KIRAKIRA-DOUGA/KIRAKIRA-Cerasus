@@ -2,7 +2,10 @@
 	const page = ref(1);
 	const toggle = ref(false);
 	const isClicked = ref(false);
-	const radioSelected = ref<"foo" | "bar">("foo");
+	const theme = ref<"light" | "dark">("light");
+	const palette = ref<"pink" | "cyan">("pink");
+
+	const router = useRouter();
 
 	async function onClickButton() {
 		isClicked.value = true;
@@ -10,7 +13,13 @@
 		isClicked.value = false;
 	}
 
-	useHead({ title: "首页" });
+	const goToVideo = () => {
+		router.push("/VideoPlay");
+	};
+
+	onUpdated(() => {
+		useHead({ title: "首页", htmlAttrs: { "data-theme": theme.value, "data-palette": palette.value } });
+	});
 </script>
 
 <template>
@@ -18,9 +27,9 @@
 		<div>
 			kirakira home
 		</div>
-		<NuxtLink to="/VideoPlay">
+		<div @click="goToVideo">
 			video
-		</NuxtLink>
+		</div>
 		<div class="component-test">
 			<PageController :pages="99" :displayPageCount="7" :current="page" enableArrowKeyMove @changePage="e => page = e.page" />
 			<Button @click="onClickButton">{{ isClicked ? "我被单击了 呜呜呜~" : "按钮" }}</Button>
@@ -28,8 +37,11 @@
 			<ToggleSwitch v-model:on="toggle">切换开关 {{ toggle ? "开" : "关" }}</ToggleSwitch>
 			<ToggleSwitch disabled>禁用 关</ToggleSwitch>
 			<ToggleSwitch on disabled>禁用 开</ToggleSwitch>
-			<RadioButton v-model="radioSelected" value="foo">单选框</RadioButton>
-			<RadioButton v-model="radioSelected" value="bar">单选框</RadioButton>
+			<RadioButton v-model="theme" value="light">浅色主题</RadioButton>
+			<RadioButton v-model="theme" value="dark">深色主题</RadioButton>
+			<hr />
+			<RadioButton v-model="palette" value="pink">玫瑰粉</RadioButton>
+			<RadioButton v-model="palette" value="cyan">智乃蓝</RadioButton>
 			<ProgressRing />
 			<LogoCover />
 		</div>
