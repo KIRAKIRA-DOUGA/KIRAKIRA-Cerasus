@@ -1,7 +1,7 @@
 *,
 *::before,
 *::after {
-	transition: all $ease-out-max 250ms, color $ease-out-max 100ms, fill $ease-out-max 100ms;
+	transition: all $ease-out-expo 250ms, color $ease-out-expo 100ms, fill $ease-out-expo 100ms;
 	font-family: "Segoe UI", "Microsoft Yahei UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 	user-select: none;
 	box-sizing: border-box;
