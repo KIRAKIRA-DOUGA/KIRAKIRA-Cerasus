@@ -22,3 +22,10 @@
 @function color-to-svg-color($color) {
 	@return unquote("%23" + str-slice(#{$color}, -6));
 }
+
+/// 将颜色（如 `#f00`）转换为 RGB 列表（如 `255, 0, 0`），方便用于调用 rgba 函数。
+/// @param {Color} $color - 颜色值。
+/// @return {List} RGB 三色的列表。
+@function color-to-rgb-list($color) {
+	@return color.red($color), color.green($color), color.blue($color);
+}
