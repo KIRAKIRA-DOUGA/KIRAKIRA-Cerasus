@@ -68,7 +68,7 @@
 		margin-right: 0.5rem;
 		width: $size;
 		height: $size;
-		background-color: transparent;
+		background-color: var(--main-bg);
 		box-shadow: inset 0 0 0 $border-size var(--color);
 		border-radius: 100%;
 		position: relative;
