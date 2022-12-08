@@ -1,6 +1,6 @@
 /**
- * 获取系统当前的路由
- * @returns string 系统路由
+ * 获取系统当前的路由。
+ * @returns 系统路由。
  */
 export function getRoutePath(): string {
 	const router = useRouter();
@@ -8,10 +8,10 @@ export function getRoutePath(): string {
 }
 
 /**
- * 传入路由发生变化后的回调函数
- * @param callback (nowValue: object, oldValue: object) => void
+ * 传入路由发生变化后的回调函数。
+ * @param callback 回调函数，其参数依次为新值、旧值。
  */
-export function watchRoute(callback: (nowValue: object, oldValue: object) => void): void {
+export function watchRoute(callback: (newValue: string, oldValue: string) => void): void {
 	const router = useRouter();
 
 	watch(
