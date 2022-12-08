@@ -4,7 +4,7 @@
 
 	.ripple-circle {
 		display: block;
-		background-color: #00000048;
+		background-color: #0000002d;
 		$size: 20px;
 		width: $size;
 		height: $size;
@@ -22,7 +22,7 @@
 
 	&.ripple-lighter {
 		.ripple-circle {
-			background-color: #ffffff48;
+			background-color: #ffffff2d;
 		}
 
 		&:focus.focus-always:not(:hover, :active),
@@ -30,7 +30,7 @@
 		&:active:not(:hover),
 		&:focus-visible:hover {
 			.ripple-circle {
-				background-color: #00000048;
+				background-color: #0000002d;
 			}
 		}
 	}

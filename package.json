@@ -6,7 +6,8 @@
 		"generate": "nuxt generate",
 		"preview": "nuxt preview",
 		"postinstall": "nuxt prepare",
-		"lint:css": "stylelint **/*.{html,vue,css,sass,scss}"
+		"lint:css": "stylelint **/*.{html,vue,css,sass,scss}",
+		"typed-scss-modules": "typed-scss-modules assets/styles/*.module.scss --exportType default"
 	},
 	"lint-staged": {
 		"*.{html,vue,css,sass,scss}": [
@@ -31,6 +32,7 @@
 		"sass": "^1.56.1",
 		"stylelint-config-standard": "^29.0.0",
 		"stylelint-config-standard-scss": "^6.1.0",
-		"stylelint-order": "^5.0.0"
+		"stylelint-order": "^5.0.0",
+		"typed-scss-modules": "^7.0.1"
 	}
 }

@@ -1,5 +1,7 @@
 // stylelint-disable property-no-unknown
 
+@import "./eases";
+
 :export {
 	linear: $linear;
 	ease: $ease;
