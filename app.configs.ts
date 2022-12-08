@@ -7,7 +7,7 @@ export default defineAppConfig({
 			bodyAttrs: {
 				id: "root",
 			},
-			titleTemplate: "%s - KiRAKiRA☆DOUGA",
+			titleTemplate: "%s - KIRAKIRA☆DOUGA",
 			link: [
 				{ rel: "icon", type: "image/vnd.microsoft.icon", href: "/favicon.ico" }, // 不是 image/x-icon
 			],

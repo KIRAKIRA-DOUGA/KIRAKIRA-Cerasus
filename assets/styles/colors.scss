@@ -27,24 +27,24 @@ $secondary-colors: (
 // 此处的颜色根据主题色自动变换。
 $primary-colors: (
 	pink: (
-		accent-80: (#821c38, #ffedf2),
-		accent-70: (#9e3852, #ffd3de),
-		accent-60: (#cc5775, #f8afc1), // pressed
-		accent-50: (#f06e8e, #f390a9), // normal
-		accent-40: (#f390a9, #f06e8e), // hover
-		accent-30: (#f8afc1, #cc5775),
-		accent-20: (#ffd3de, #9e3852), // disabled
-		accent-10: (#ffedf2, #821c38),
+		accent-80: (#a23b57, #ffd3de),
+		accent-70: (#b64561, #f8afc1),
+		accent-60: (#cc5775, #f390a9), // pressed
+		accent-50: (#f06e8e, #f06e8e), // normal
+		accent-40: (#f390a9, #cc5775), // hover
+		accent-30: (#f8afc1, #b64561),
+		accent-20: (#ffd3de, #a23b57), // disabled
+		accent-10: (#ffedf2, #a23b57),
 	),
 	cyan: (
-		accent-80: #821c38,
-		accent-70: #9e3852,
-		accent-60: #cc5775,
-		accent-50: #45b3e1, // 更改其它配色，我只改了一个，这么不统一，02 肯定骂死我。
-		accent-40: #f390a9,
-		accent-30: #f8afc1,
-		accent-20: #ffd3de,
-		accent-10: #ffedf2,
+		accent-80: (#3a82a1, #c4ebfc),
+		accent-70: (#4593b5, #93dbfa),
+		accent-60: (#57a9cb, #73caef),
+		accent-50: (#45b3e1, #45b3e1), // 更改其它配色，我只改了一个，这么不统一，02 肯定骂死我。
+		accent-40: (#73caef, #57a9cb),
+		accent-30: (#93dbfa, #4593b5),
+		accent-20: (#c4ebfc, #3a82a1),
+		accent-10: (#e8f8ff, #3a82a1),
 	),
 	green: (
 		accent-80: #821c38,

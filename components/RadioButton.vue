@@ -52,7 +52,7 @@
 	$white-size: 16px;
 	$dot-size: 10px;
 	$border-size: 2px;
-	$duration-half: 250ms;
+	$duration-half: 150ms;
 
 	@property --color {
 		syntax: "<color>";
@@ -68,7 +68,7 @@
 		margin-right: 0.5rem;
 		width: $size;
 		height: $size;
-		background-color: transparent;
+		background-color: var(--main-bg);
 		box-shadow: inset 0 0 0 $border-size var(--color);
 		border-radius: 100%;
 		position: relative;
