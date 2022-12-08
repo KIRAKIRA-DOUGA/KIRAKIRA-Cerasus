@@ -5,20 +5,15 @@
 		collapsed: false,
 	});
 
-	const getRoute = () => {
-		console.log("useRoute", route);
-	};
+	watchRoute((nowRoute, oldRoute) => console.log("route watch: ", nowRoute, oldRoute));
 
-	const route = useRoute();
-	// const routePath = ref(route.path);
-	watch(
-		route,
-		(oldRoute, newRoute) => console.log("route: ", oldRoute, newRoute),
-	);
+	function getRoute() {
+		console.log("getRouter: ", getRoutePath());
+	}
 </script>
 
 <template>
-	<div class="kirakira-main-page-banner-box kirakira-main-page-banner-box-opened" :class="{ collapsed }" @click="{ getRoute }">
+	<div class="kirakira-main-page-banner-box kirakira-main-page-banner-box-opened" :class="{ collapsed }" @click="getRoute">
 		hello, banner
 		<div class="shadow"></div>
 	</div>
