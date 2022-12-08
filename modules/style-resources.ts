@@ -24,7 +24,5 @@ export default function styleResources(userOptions: Partial<Entries>) {
 		}
 		if (additionalData.trim() !== "") options[preprocessor] = { additionalData };
 	}
-	return {
-		preprocessorOptions: options,
-	};
+	return options;
 }

@@ -30,6 +30,7 @@
 		"sass": "^1.56.1",
 		"stylelint-config-standard": "^29.0.0",
 		"stylelint-config-standard-scss": "^6.1.0",
-		"stylelint-order": "^5.0.0"
+		"stylelint-order": "^5.0.0",
+		"typed-css-modules": "^0.7.2"
 	}
 }

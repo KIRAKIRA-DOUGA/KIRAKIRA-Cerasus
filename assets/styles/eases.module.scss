@@ -1,37 +1,36 @@
 // stylelint-disable property-no-unknown
-// stylelint-disable property-case
 
 :export {
 	linear: $linear;
 	ease: $ease;
-	easeIn: $ease-in;
-	easeOut: $ease-out;
-	easeInOut: $ease-in-out;
-	easeInQuad: $ease-in-quad;
-	easeInCubic: $ease-in-cubic;
-	easeInQuart: $ease-in-quart;
-	easeInQuint: $ease-in-quint;
-	easeInSine: $ease-in-sine;
-	easeInExpo: $ease-in-expo;
-	easeInCirc: $ease-in-circ;
-	easeInBack: $ease-in-back;
-	easeOutQuad: $ease-out-quad;
-	easeOutCubic: $ease-out-cubic;
-	easeOutQuart: $ease-out-quart;
-	easeOutQuint: $ease-out-quint;
-	easeOutSine: $ease-out-sine;
-	easeOutExpo: $ease-out-expo;
-	easeOutCirc: $ease-out-circ;
-	easeOutBack: $ease-out-back;
-	easeInOutQuad: $ease-in-out-quad;
-	easeInOutCubic: $ease-in-out-cubic;
-	easeInOutQuart: $ease-in-out-quart;
-	easeInOutQuint: $ease-in-out-quint;
-	easeInOutSine: $ease-in-out-sine;
-	easeInOutExpo: $ease-in-out-expo;
-	easeInOutCirc: $ease-in-out-circ;
-	easeInOutBack: $ease-in-out-back;
-	easeInMax: $ease-in-max;
-	easeOutMax: $ease-out-max;
-	easeInOutMax: $ease-in-out-max;
+	ease-in: $ease-in;
+	ease-out: $ease-out;
+	ease-in-out: $ease-in-out;
+	ease-in-quad: $ease-in-quad;
+	ease-in-cubic: $ease-in-cubic;
+	ease-in-quart: $ease-in-quart;
+	ease-in-quint: $ease-in-quint;
+	ease-in-sine: $ease-in-sine;
+	ease-in-expo: $ease-in-expo;
+	ease-in-circ: $ease-in-circ;
+	ease-in-back: $ease-in-back;
+	ease-out-quad: $ease-out-quad;
+	ease-out-cubic: $ease-out-cubic;
+	ease-out-quart: $ease-out-quart;
+	ease-out-quint: $ease-out-quint;
+	ease-out-sine: $ease-out-sine;
+	ease-out-expo: $ease-out-expo;
+	ease-out-circ: $ease-out-circ;
+	ease-out-back: $ease-out-back;
+	ease-in-out-quad: $ease-in-out-quad;
+	ease-in-out-cubic: $ease-in-out-cubic;
+	ease-in-out-quart: $ease-in-out-quart;
+	ease-in-out-quint: $ease-in-out-quint;
+	ease-in-out-sine: $ease-in-out-sine;
+	ease-in-out-expo: $ease-in-out-expo;
+	ease-in-out-circ: $ease-in-out-circ;
+	ease-in-out-back: $ease-in-out-back;
+	ease-in-max: $ease-in-max;
+	ease-out-max: $ease-out-max;
+	ease-in-out-max: $ease-in-out-max;
 }

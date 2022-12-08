@@ -218,7 +218,7 @@
 		window.getSelection()?.removeAllRanges();
 	}
 
-	const styles = useCamelCssModule("unselectedItem");
+	const styles = useCssModule("unselectedItem");
 	/** 未选中项目组件。 */
 	const UnselectedItem = (props: { page: number }) => (
 		<div class={styles.unselectedItem}>

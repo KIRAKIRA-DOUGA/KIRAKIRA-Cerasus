@@ -15,21 +15,26 @@ export default defineNuxtConfig({
 		"styles/colors.scss",
 	],
 	vite: {
-		css: styleResources({
-			scss: {
-				use: [
-					"sass:color",
-					"sass:list",
-					"sass:map",
-					"sass:math",
-					"sass:meta",
-					"sass:selector",
-					"sass:string",
-				],
-				"import": [
-					"styles/theme.scss",
-				],
+		css: {
+			preprocessorOptions: styleResources({
+				scss: {
+					use: [
+						"sass:color",
+						"sass:list",
+						"sass:map",
+						"sass:math",
+						"sass:meta",
+						"sass:selector",
+						"sass:string",
+					],
+					"import": [
+						"styles/theme.scss",
+					],
+				},
+			}),
+			modules: {
+				localsConvention: "camelCaseOnly",
 			},
-		}),
+		},
 	},
 });
