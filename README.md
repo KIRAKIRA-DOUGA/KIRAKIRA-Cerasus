@@ -1,17 +1,13 @@
 ## 噢天呐，看在上帝的份上，千万不要用 yarn（纱线）启动它，否则整个程序就会变得和珍妮婶婶做的苹果派一样烂了，真是该死。
 
-<br>
-
 # Project Codename ｢Cerasus｣
 Frontend
-
-<br>
 
 ## Nuxt 3
 
 首先，Nuxt 读作 **/nʌkst/**（
 
-查看 [Nuxt 3 文档](https://v3.nuxtjs.org) 以了解更多信息。
+查看 [Nuxt 3 文档](https://v3.nuxtjs.org)以了解更多信息。
 
 ## 安装
 
