@@ -62,10 +62,10 @@ export default defineNuxtPlugin(nuxtApp => {
 				const mouseUp = () => {
 					document.removeEventListener("mouseup", mouseUp);
 					const FADE_TIME = 500;
-					const IS_FADING_CLASS = "is-fading";
+					const isFadingClass = styles.isFading;
 					for (const circle of document.getElementsByClassName(circleClass)) {
-						if (circle.classList.contains(IS_FADING_CLASS)) return;
-						circle.classList.add(IS_FADING_CLASS);
+						if (circle.classList.contains(isFadingClass)) return;
+						circle.classList.add(isFadingClass);
 						circle.animate([
 							{ opacity: 1 },
 							{ opacity: 0 },

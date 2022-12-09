@@ -1,11 +1,21 @@
-// scss模块声明
-declare module "*.scss" {
-	const content: { [property: string]: string };
-	export = content;
+declare module "*.module.css" {
+	const content: Record<string, string>;
+	export default content;
 }
-// less模块声明
-declare module "*.less" {
-	const content: { [property: string]: string };
+declare module "*.module.scss" {
+	const content: Record<string, string>;
+	export default content;
+}
+declare module "*.module.sass" {
+	const content: Record<string, string>;
+	export default content;
+}
+declare module "*.module.less" {
+	const content: Record<string, string>;
+	export default content;
+}
+declare module "*.module.styl" {
+	const content: Record<string, string>;
 	export default content;
 }
 

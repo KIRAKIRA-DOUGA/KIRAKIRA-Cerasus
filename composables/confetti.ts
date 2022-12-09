@@ -1,6 +1,8 @@
 import JSConfetti from "js-confetti";
 
+let confetti: JSConfetti | undefined;
+
 export function showConfetti() {
-	const confetti = new JSConfetti();
+	if (!confetti) confetti = new JSConfetti();
 	confetti.addConfetti();
 }
