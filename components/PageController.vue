@@ -340,6 +340,11 @@
 			position: absolute;
 			top: 0;
 		}
+
+		::selection {
+			background-color: #fff9;
+			color: c(accent);
+		}
 	}
 
 	.scroll-mask.clip {
