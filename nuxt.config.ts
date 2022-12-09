@@ -12,7 +12,7 @@ export default defineNuxtConfig({
 	},
 	css: [
 		"styles/global.scss",
-		"styles/_colors.scss",
+		"styles/global-colors.scss",
 	],
 	vite: {
 		css: {
