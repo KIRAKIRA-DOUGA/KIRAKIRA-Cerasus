@@ -69,7 +69,7 @@
 		width: $size;
 		height: $size;
 		background-color: var(--main-bg);
-		box-shadow: inset 0 0 0 $border-size var(--color);
+		box-shadow: inset 0 0 0 $border-size c(color);
 		border-radius: 100%;
 		position: relative;
 		animation:
@@ -83,7 +83,7 @@
 			content: "";
 			width: $dot-size;
 			height: $dot-size;
-			background-color: var(--color);
+			background-color: c(color);
 			display: block;
 			border-radius: 100%;
 			$margin: calc(($size - $dot-size) / 2);
@@ -97,7 +97,7 @@
 		}
 
 		&:checked {
-			// --color: var(--accent);
+			// --color: c(accent);
 
 			filter: grayscale(0);
 			animation:
@@ -122,11 +122,11 @@
 	@each $key in $animation-key {
 		@keyframes outer-border-change#{$key} {
 			from {
-				box-shadow: inset 0 0 0 $border-size var(--color);
+				box-shadow: inset 0 0 0 $border-size c(color);
 			}
 
 			to {
-				box-shadow: inset 0 0 0 calc($size / 2) var(--color);
+				box-shadow: inset 0 0 0 calc($size / 2) c(color);
 			}
 		}
 

@@ -11,10 +11,10 @@
 </template>
 
 <script setup lang="ts">
-	const isHomePage = () => location.pathname === "/";
-	const showBanner = ref(false);
-	onMounted(() => (showBanner.value = isHomePage()));
-	onUpdated(() => (showBanner.value = isHomePage()));
+	const showBanner = ref(getRoutePath() === "/");
+	watchRoute(route => {
+		showBanner.value = route === "/";
+	});
 </script>
 
 <style lang="scss" scoped>

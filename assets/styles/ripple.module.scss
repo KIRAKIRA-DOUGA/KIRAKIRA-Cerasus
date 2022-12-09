@@ -14,13 +14,17 @@
 		top: 0;
 		z-index: 2;
 
+		:root[data-theme="dark"] & {
+			background-color: #ffffff2d;
+		}
+
 		~ :where(:not(.ripple-circle)) {
 			z-index: 3;
 			position: relative;
 		}
 	}
 
-	&.ripple-lighter {
+	/* &.ripple-lighter {
 		.ripple-circle {
 			background-color: #ffffff2d;
 		}
@@ -33,9 +37,5 @@
 				background-color: #0000002d;
 			}
 		}
-	}
-
-	&.is-fading {
-		content: ""; // 该选择器不包含任何规则，仅仅是为了导出一个模块类名。
-	}
+	} */
 }

@@ -268,8 +268,8 @@
 	$size: 36px;
 
 	.track {
-		background-color: var(--inner-color);
-		box-shadow: inset 0 4px 4px #0000000a;
+		background-color: c(inner-color);
+		box-shadow: inset 0 4px 4px #0000000a; // TODO: 魔色待修改。
 		border-radius: 4px;
 		display: flex;
 		width: fit-content;
@@ -288,8 +288,8 @@
 		left: calc(v-bind(thumbPosition) * $size);
 		width: $size;
 		height: $size;
-		background: var(--accent);
-		box-shadow: 0 2px 4px #f06e8e99;
+		background: c(accent);
+		box-shadow: 0 2px 4px c(accent, 60%);
 		border-radius: 4px;
 		color: white;
 		cursor: text;
@@ -301,17 +301,17 @@
 		font-weight: bold;
 
 		&:hover {
-			background: var(--accent-hover);
-			box-shadow: 0 9px 9px #f06e8e4d;
+			background: c(accent-hover);
+			box-shadow: 0 9px 9px c(accent, 30%);
 		}
 
 		&:active {
-			background: var(--accent);
+			background: c(accent);
 			transform: scale(calc(35 / 36));
 		}
 
 		&:has(:focus) {
-			box-shadow: 0 2px 4px #f06e8e99, 0 0 0 3px #f8afb880;
+			box-shadow: 0 2px 4px c(accent, 60%), 0 0 0 3px c(accent-focus, 50%);
 
 			> .focus-line {
 				top: 0;
@@ -320,7 +320,7 @@
 
 		> .focus-line {
 			$line-height: 2px;
-			border-bottom: var(--accent-10) $line-height solid;
+			border-bottom: c(accent-10) $line-height solid;
 			top: $line-height;
 			pointer-events: none;
 		}
@@ -370,7 +370,7 @@
 
 		width: $size;
 		height: $size;
-		color: var(--icon-color);
+		color: c(icon-color);
 		flex-shrink: 0;
 		cursor: pointer;
 		transition: none !important;
@@ -395,11 +395,11 @@
 			z-index: 0 !important;
 
 			&.hover {
-				background: radial-gradient(50% 250% at 50% 50%, var(--gray) 33.33%, #e9e9e900 100%);
+				background: radial-gradient(50% 250% at 50% 50%, c(gray) 33.33%, c(gray, 0) 100%);
 			}
 
 			&.pressed {
-				background: radial-gradient(50% 250% at 50% 50%, var(--gray-2) 33.33%, #ccc0 100%);
+				background: radial-gradient(50% 250% at 50% 50%, c(gray-2) 33.33%, c(gray-2, 0) 100%);
 			}
 		}
 

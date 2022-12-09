@@ -22,7 +22,7 @@
 <style scoped lang="scss">
 	.kirakira-main-page-banner-box {
 		// please romove when deploy 下方CSS请在部署前移除
-		background-color: #0080001a;
+		background-color: #0080001a; // TODO: 魔色待修改。
 
 		position: relative;
 		overflow: hidden;
@@ -38,7 +38,7 @@
 			width: 100%;
 			height: 100%;
 			bottom: 0;
-			background: linear-gradient(#0005 80%, #000a);
+			background: linear-gradient(#0005 80%, #000a); // TODO: 魔色待修改。
 			opacity: 0;
 		}
 

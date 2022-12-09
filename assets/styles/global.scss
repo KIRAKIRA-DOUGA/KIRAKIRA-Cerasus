@@ -19,7 +19,11 @@ body {
 	padding: 0;
 	position: relative;
 	height: 100vh;
-	transition: none !important;
-	background-color: var(--main-bg);
-	color: var(--text-color);
+	transition: margin 0s, padding 0s, all $ease-out-expo 250ms;
+	background-color: c(main-bg);
+	color: c(text-color);
+}
+
+a {
+	cursor: pointer !important;
 }

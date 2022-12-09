@@ -1,7 +1,7 @@
 <template>
-	<div @click="goHome">
+	<a @click="goHome">
 		Home
-	</div>
+	</a>
 </template>
 
 <script setup lang="ts">

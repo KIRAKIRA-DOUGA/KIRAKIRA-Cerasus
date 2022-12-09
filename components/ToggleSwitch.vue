@@ -82,29 +82,29 @@
 		.base {
 			width: $width;
 			height: $base-height;
-			background-color: var(--gray-2);
+			background-color: c(gray-2);
 			position: absolute;
 			top: calc(($thumb-size - $base-height) / 2);
 			border-radius: 9999rem;
 
 			.on & {
-				background-color: #f06e8e61;
+				background-color: c(accent, 40%);
 			}
 
 			.disabled & {
-				background-color: var(--gray);
+				background-color: c(gray);
 			}
 
 			.on.disabled & {
-				background-color: #afafaf61;
+				background-color: #afafaf61; // TODO: 魔色待修改。
 			}
 		}
 
 		.thumb {
 			width: $thumb-size;
 			height: $thumb-size;
-			background-color: var(--main-bg);
-			box-shadow: 0 1px 6px #79717380;
+			background-color: c(main-bg);
+			box-shadow: 0 1px 6px c(icon-color, 50%);
 			position: absolute;
 			top: 0;
 			border-radius: 100%;
@@ -115,24 +115,24 @@
 			}
 
 			.on:not(.disabled) & {
-				background-color: var(--accent);
-				box-shadow: 0 1px 6px #f06e8ecc;
+				background-color: c(accent);
+				box-shadow: 0 1px 6px c(accent, 80%);
 			}
 
 			.disabled & {
-				background-color: var(--gray);
+				background-color: c(gray);
 			}
 
 			.on.disabled & {
-				background-color: var(--gray-2);
+				background-color: c(gray-2);
 			}
 
 			label:focus & {
-				box-shadow: 0 1px 6px #79717380, 0 0 0 $focus-ring-thickness #cccccc80;
+				box-shadow: 0 1px 6px c(icon-color, 50%), 0 0 0 $focus-ring-thickness c(gray-2, 50%);
 			}
 
 			label.on:focus & {
-				box-shadow: 0 1px 6px #f06e8ecc, 0 0 0 $focus-ring-thickness #f8afb880;
+				box-shadow: 0 1px 6px c(accent, 80%), 0 0 0 $focus-ring-thickness c(accent-focus, 50%);
 			}
 
 			label:active & {

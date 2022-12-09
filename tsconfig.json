@@ -27,7 +27,6 @@
 				"name": "typescript-plugin-css-modules",
 				"options": {
 					"classnameTransform": "camelCaseOnly",
-					"goToDefinition": true,
 				},
 			},
 		],

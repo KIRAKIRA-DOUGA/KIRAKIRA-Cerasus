@@ -5,15 +5,13 @@
 </script>
 <template>
 	<div class="kirakira-video-page-box">
-		<div @click="getRoute">
-			video playing....
-		</div>
+		<div @click="getRoute">video playing....</div>
 		<SideBarHomeButton />
 	</div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 	.kirakira-video-page-box {
-		background-color: var(--green);
+		background-color: c(green);
 	}
 </style>

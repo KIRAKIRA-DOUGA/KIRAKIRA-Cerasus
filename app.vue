@@ -44,7 +44,6 @@
 		--full-screen-width: 100vw;
 
 		--kirakira-side-bar-width: 48px; // side bar width
-
 		--kirakira-main-page-banner-height: 140px;
 
 		--zero: 0;
@@ -53,22 +52,4 @@
 		/* side bar size */
 		--kirakira-main-side-bar-width: 60px;
 	}
-
-	body {
-		padding: 0;
-		margin: 0;
-	}
-
-	.kirakira-router-box {
-		// position: absolute;
-		// left: var(--kirakira-main-side-bar-width);
-		// top: var(--zero);
-
-		// width: calc(var(--full-screen-width) - var(--kirakira-main-side-bar-width));
-
-		// height: var(--full-screen-height);
-
-		// background-color: var(--main-bg);
-	}
-
 </style>

@@ -12,7 +12,7 @@ export default defineNuxtConfig({
 	},
 	css: [
 		"styles/global.scss",
-		"styles/colors.scss",
+		"styles/_colors.scss",
 	],
 	vite: {
 		css: {
@@ -28,7 +28,7 @@ export default defineNuxtConfig({
 						"sass:string",
 					],
 					"import": [
-						"styles/theme.scss",
+						"styles/_theme.scss",
 					],
 				},
 			}),

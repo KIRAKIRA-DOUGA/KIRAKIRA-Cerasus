@@ -44,7 +44,7 @@
 		stroke-dashoffset: 0;
 		transform-origin: center;
 		animation: dash $duration ease-in-out infinite;
-		stroke: var(--accent);
+		stroke: c(accent);
 	}
 
 	@keyframes dash {
