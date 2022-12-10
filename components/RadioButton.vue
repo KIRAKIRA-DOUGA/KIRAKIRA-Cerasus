@@ -52,7 +52,7 @@
 	$white-size: 16px;
 	$dot-size: 10px;
 	$border-size: 2px;
-	$duration-half: 150ms;
+	$duration-half: 200ms;
 
 	@property --color {
 		syntax: "<color>";
@@ -60,46 +60,43 @@
 	}
 
 	.radio {
-		// --color: #{$light-mode-icon-color-400}; // TODO: 颜色过渡动画有些问题，暂时改为 filter 过渡动画。
-		--color: var(--accent);
+		// --color: #{c(icon-color)}; // TODO: 颜色过渡动画有些问题，暂时改为 filter 过渡动画。
+		// --color: var(--accent);
 
 		appearance: none;
 		margin: 0;
 		margin-right: 0.5rem;
 		width: $size;
 		height: $size;
-		background-color: var(--main-bg);
-		box-shadow: inset 0 0 0 $border-size c(color);
+		background-color: c(main-bg);
+		box-shadow: inset 0 0 0 $border-size c(icon-color);
 		border-radius: 100%;
 		position: relative;
 		animation:
 			outer-border-change-back $duration-half $duration-half $ease-in-max reverse,
 			pressing-back $duration-half $ease-in alternate 2;
 		overflow: hidden;
-		filter: grayscale(1);
 		transition: all $ease-in-out-max calc($duration-half * 2);
 
 		&::before {
 			content: "";
-			width: $dot-size;
-			height: $dot-size;
-			background-color: c(color);
+			width: $size;
+			height: $size;
+			background-color: c(icon-color);
 			display: block;
 			border-radius: 100%;
-			$margin: calc(($size - $dot-size) / 2);
 			position: absolute;
-			left: $margin;
-			top: $margin;
+			transform: scale(0.5);
 			opacity: 0;
 			animation:
 				inner-resize-back $duration-half $ease-out-max reverse,
 				cut-out $duration-half step-start;
+			transition: all $ease-in-out-max calc($duration-half * 2);
 		}
 
 		&:checked {
-			// --color: c(accent);
-
-			filter: grayscale(0);
+			// --color: #{c(accent)};
+			box-shadow: inset 0 0 0 2px c(accent);
 			animation:
 				outer-border-change $duration-half $ease-in-max,
 				pressing $duration-half $ease-in alternate 2;
@@ -109,6 +106,7 @@
 				animation:
 					inner-resize $duration-half $duration-half $ease-out-max,
 					cut-in $duration-half step-start;
+				background-color: c(accent);
 			}
 		}
 
@@ -122,21 +120,21 @@
 	@each $key in $animation-key {
 		@keyframes outer-border-change#{$key} {
 			from {
-				box-shadow: inset 0 0 0 $border-size c(color);
+				box-shadow: inset 0 0 0 $border-size c(icon-color);
 			}
 
 			to {
-				box-shadow: inset 0 0 0 calc($size / 2) c(color);
+				box-shadow: inset 0 0 0 calc($size / 2) c(accent);
 			}
 		}
 
 		@keyframes inner-resize#{$key} {
 			from {
-				transform: scale(2);
+				transform: scale(1);
 			}
 
 			to {
-				transform: scale(1);
+				transform: scale(0.5);
 			}
 		}
 

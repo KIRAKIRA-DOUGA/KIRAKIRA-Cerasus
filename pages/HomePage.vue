@@ -58,7 +58,7 @@
 		padding: 1rem;
 
 		> * {
-			margin: 0.25rem 0.5rem;
+			margin: 0.8rem 0.5rem;
 		}
 	}
 </style>
