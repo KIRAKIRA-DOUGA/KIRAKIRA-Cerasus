@@ -45,6 +45,7 @@
 			<ProgressRing />
 			<LogoCover />
 		</div>
+		<img src="@/assets/images/recycle.png" />
 	</div>
 </template>
 
