@@ -54,15 +54,7 @@
 	$border-size: 2px;
 	$duration-half: 200ms;
 
-	@property --color {
-		syntax: "<color>";
-		inherits: true;
-	}
-
 	.radio {
-		// --color: #{c(icon-color)}; // TODO: 颜色过渡动画有些问题，暂时改为 filter 过渡动画。
-		// --color: var(--accent);
-
 		appearance: none;
 		margin: 0;
 		margin-right: 0.5rem;
@@ -95,7 +87,6 @@
 		}
 
 		&:checked {
-			// --color: #{c(accent)};
 			box-shadow: inset 0 0 0 2px c(accent);
 			animation:
 				outer-border-change $duration-half $ease-in-max,
@@ -138,7 +129,7 @@
 			}
 		}
 
-		@keyframes pressing {
+		@keyframes pressing#{$key} {
 			from {
 				transform: scale(1);
 			}
