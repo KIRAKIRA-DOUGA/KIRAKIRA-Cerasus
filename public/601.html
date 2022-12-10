@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>请升级您的浏览器</title>
+	<style>
+		html,
+		body {
+			font-family: "Segoe UI", "Microsoft Yahei UI", Tahoma, Geneva, Verdana, sans-serif;
+			background-color: #fafafa;
+			color: #797173;
+			padding: 0;
+			margin: 0;
+		}
+
+		*,
+		*::before,
+		*::after {
+			box-sizing: border-box;
+		}
+
+		h1 {
+			font-size: 40px;
+			font-weight: bold;
+			color: #f06e8e;
+			margin-top: 0;
+		}
+
+		.container {
+			width: 900px;
+			margin: 32px auto 0;
+			background-color: white;
+			padding: 32px;
+			padding-bottom: 16px;
+			box-shadow: 0 5px 10px rgba(193, 159, 168, 0.3);
+			border-radius: 6px;
+			display: flex;
+			flex-direction: row;
+		}
+
+		.modern-browsers {
+			display: flex;
+		}
+
+		.modern-browsers > * {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			align-content: center;
+			box-shadow: 0 2px 4px rgba(193, 159, 168, 0.3);
+			border-radius: 6px;
+			background-color: white;
+			padding: 20px 36px 10px;
+			margin-right: 10px;
+			text-align: center;
+			text-decoration: none;
+			color: #797173;
+		}
+
+		.modern-browsers > * > img {
+			margin-bottom: 10px;
+		}
+
+		.ie-icon {
+			width: 222px;
+			height: 217px;
+		}
+
+		.container .left {
+			margin-right: 32px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			align-content: center;
+		}
+
+		.container .left img {
+			display: block;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="left">
+			<img class="ie-icon" src="../assets/svg/internet_explorer.svg" />
+			<img src="./recycle.png" />
+		</div>
+		<div class="right">
+			<h1>是时候更换你的浏览器了</h1>
+			<p>
+				非常抱歉！你的浏览器过于苍老，无法渲染我们的网站！<br />
+				我们不支持这么老旧的技术，你也不该继续使用这个老旧的浏览器！<br />
+				<br />
+				Internet Explorer代表了过去，代表了21世纪初互联网曾经的美好。<br />
+				虽然你可能和我们一样，厌恶新时代的狂躁、忙碌与封闭，<br />
+				怀念过去的欢笑、慢节奏与开放，但是我们要做的，是像这个网站一样，<br />
+				去改变时代，为这新时代添上一笔自己的色彩，而不是将自己困在过去。<br />
+				<br />
+				请使用下面的浏览器继续浏览本网站：
+				<div class="modern-browsers">
+					<a href="https://www.microsoft.com/edge/">
+						<img src="../assets/svg/edge.svg" />
+						<div>Microsoft<br />Edge</div>
+					</a>
+					<a href="https://www.google.cn/chrome/index.html">
+						<img src="../assets/svg/chrome.svg" />
+						<div>Google<br />Chrome</div>
+					</a>
+					<a href="https://www.mozilla.org/zh-CN/firefox/windows/">
+						<img src="../assets/svg/firefox.svg" />
+						<div>Firefox<br />Browser</div>
+					</a>
+				</div>
+			</p>
+		</div>
+	</div>
+</body>
+</html>
