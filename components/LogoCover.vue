@@ -20,7 +20,11 @@
 				</span>
 			</div>
 		</div>
-		<div class="triangle triangle1"></div> <!-- TODO: CSS 怎么做仅有边框的三角形啊啊啊啊。 -->
+		<div class="triangle triangle1">
+			<svg height="70" width="60">
+				<polygon points="4,4 4,66 56,37.5" />
+			</svg>
+		</div>
 		<div class="triangle triangle2"></div>
 		<div class="title">KiRAKiRA☆</div>
 		<div class="circle circle1"></div>
@@ -138,6 +142,14 @@
 		bottom: 2rem;
 		right: calc(var(--cover-width) - 40%);
 		animation-delay: -1s;
+		background-color: transparent;
+		clip-path: none;
+
+		svg polygon {
+			fill: transparent;
+			stroke: var(--accent);
+			stroke-width: 2px;
+		}
 	}
 
 	.triangle2 {
