@@ -1,120 +1,238 @@
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans-CN">
+
 <head>
-	<meta charset="UTF-8">
+	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>请升级您的浏览器</title>
+	<title>浏览器升级提示</title>
 	<style>
 		html,
 		body {
-			font-family: "Segoe UI", "Microsoft Yahei UI", Tahoma, Geneva, Verdana, sans-serif;
+			background: #fafafa;
 			background-color: #fafafa;
-			color: #797173;
+			font-family: Microsoft YaHei, sans-serif;
 			padding: 0;
 			margin: 0;
 		}
 
-		*,
-		*::before,
-		*::after {
-			box-sizing: border-box;
+		@keyframes intro {
+			from {
+				transform: translateY(200px);
+				opacity: 0;
+			}
+
+			to {
+				transform: translateY(0);
+				opacity: 1;
+			}
 		}
 
-		h1 {
+		.main-card {
+			box-shadow: 0px 5px 10px rgba(193, 159, 168, 0.3);
+			width: 1024px;
+			height: 600px;
+			border-radius: 6px;
+			margin: -300px 0 0 -512px;
+			top: 50%;
+			left: 50%;
+			position: absolute;
+			background-color: #ffffff;
+			background: #ffffff;
+			animation: intro cubic-bezier(0.1, 0.9, 0.2, 1) 0.6s backwards;
+		}
+
+		.main-card .right {
+			position: absolute;
+			left: 432px;
+			width: 450px;
+		}
+
+		.main-card h1 {
+			position: absolute;
+			top: 90px;
 			font-size: 40px;
-			font-weight: bold;
 			color: #f06e8e;
-			margin-top: 0;
+			font-weight: bold;
+			padding: 0;
+			margin: 0;
+			width: 500px;
 		}
 
-		.container {
-			width: 900px;
-			margin: 32px auto 0;
-			background-color: white;
-			padding: 32px;
-			padding-bottom: 16px;
-			box-shadow: 0 5px 10px rgba(193, 159, 168, 0.3);
-			border-radius: 6px;
-			display: flex;
-			flex-direction: row;
-		}
-
-		.modern-browsers {
-			display: flex;
-		}
-
-		.modern-browsers > * {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			align-content: center;
-			box-shadow: 0 2px 4px rgba(193, 159, 168, 0.3);
-			border-radius: 6px;
-			background-color: white;
-			padding: 20px 36px 10px;
-			margin-right: 10px;
-			text-align: center;
-			text-decoration: none;
+		.main-card p {
 			color: #797173;
+			position: absolute;
+			top: 155px;
+			font-size: 14px;
 		}
 
-		.modern-browsers > * > img {
-			margin-bottom: 10px;
+		p.browsers-title {
+			top: 325px;
+			width: 452px;
+			text-align: center;
+		}
+
+		.browser-cards {
+			position: absolute;
+			top: 367px;
+			width: 500px;
+			margin: 0;
+			padding: 0;
+			text-decoration: none;
+		}
+
+		.browser-card {
+			width: 140px;
+			height: 155px;
+			min-width: 140px;
+			min-height: 155px;
+			box-shadow: 0px 2px 4px rgba(193, 159, 168, 0.3);
+			background-color: #ffffff;
+			*background-color: #fafafa;
+			border-radius: 6px;
+			list-style: none;
+			display: block;
+			float: left;
+			padding: 0;
+			margin: 0;
+			border: 0;
+			transition: box-shadow 0.2s;
+			cursor: pointer;
+		}
+
+		.browser-card:hover {
+			box-shadow: 0px 4px 8px rgba(193, 159, 168, 0.4);
+		}
+
+		.browser-card:active {
+			box-shadow: none;
+		}
+
+		.browser-card h4 {
+			font-weight: normal;
+			text-align: center;
+			padding: 0;
+			margin-top: 4px;
+			color: #797173;
+			text-decoration: none;
+		}
+
+		.browser-card a {
+			text-decoration: none;
+		}
+
+		.browser-card-2 {
+			margin: 0 16px;
+		}
+
+		.browser-image {
+			margin: 26px 38px 0 38px;
+			padding: 0;
+			border: 0;
+			width: 66px;
+			height: 66px;
+			display: block;
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: 64px;
+		}
+
+		.browser-image-1 {
+			background-image: url(_nuxt/assets/svg/601/Microsoft_Edge.svg);
+			*background-image: url(_nuxt/assets/images/601/Microsoft_Edge.png);
+		}
+
+		.browser-image-2 {
+			background-image: url(_nuxt/assets/svg/601/Google_Chrome.svg);
+			*background-image: url(_nuxt/assets/images/601/Google_Chrome.png);
+		}
+
+		.browser-image-3 {
+			background-image: url(_nuxt/assets/svg/601/Firefox_Browser.svg);
+			*background-image: url(_nuxt/assets/images/601/Firefox_Browser.png);
+		}
+
+		.left {
+			width: 482px;
+			position: absolute;
+		}
+
+		.recycle {
+			background-image: url(_nuxt/assets/images/601/recycle.png);
+			position: absolute;
+			left: 97px;
+			top: 240px;
+			width: 256px;
+			height: 256px;
+		}
+
+		.recycle-front {
+			background-image: url(_nuxt/assets/images/601/recycle_front.png);
+			position: absolute;
+			left: 84px;
+			top: 279px;
+			width: 269px;
+			height: 261px;
 		}
 
 		.ie-icon {
+			background-image: url(_nuxt/assets/svg/601/IE.svg);
+			*background-image: url(_nuxt/assets/images/601/IE.png);
+			position: absolute;
+			left: 102px;
+			top: 116px;
 			width: 222px;
 			height: 217px;
 		}
-
-		.container .left {
-			margin-right: 32px;
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			align-content: center;
-		}
-
-		.container .left img {
-			display: block;
-		}
 	</style>
+	<!--[if IE 8]>
+		<style>.browser-card{background-color:#fafafa}.browser-image-1{background-image:url(_nuxt/assets/images/601/Microsoft_Edge.png);}.browser-image-2{background-image: url(_nuxt/assets/images/601/Google_Chrome.png);}.browser-image-3{background-image:url(_nuxt/assets/images/601/Firefox_Browser.png)}.ie-icon{background-image:url(_nuxt/assets/images/601/IE.png)}</style>
+	<![endif]-->
 </head>
+
 <body>
-	<div class="container">
+	<div class="main-card">
+
 		<div class="left">
-			<img class="ie-icon" src="_nuxt/assets/svg/internet_explorer.svg" />
-			<img src="_nuxt/assets/images/recycle.png" />
+			<div class="recycle"></div>
+			<div class="ie-icon"></div>
+			<div class="recycle-front"></div>
 		</div>
+
 		<div class="right">
 			<h1>是时候更换你的浏览器了</h1>
-			<p>
-				非常抱歉！你的浏览器过于苍老，无法渲染我们的网站！<br />
-				我们不支持这么老旧的技术，你也不该继续使用这个老旧的浏览器！<br />
-				<br />
-				Internet Explorer代表了过去，代表了21世纪初互联网曾经的美好。<br />
-				虽然你可能和我们一样，厌恶新时代的狂躁、忙碌与封闭，<br />
-				怀念过去的欢笑、慢节奏与开放，但是我们要做的，是像这个网站一样，<br />
-				去改变时代，为这新时代添上一笔自己的色彩，而不是将自己困在过去。<br />
-				<br />
-				请使用下面的浏览器继续浏览本网站：
-				<div class="modern-browsers">
-					<a href="https://www.microsoft.com/edge/">
-						<img src="_nuxt/assets/svg/edge.svg" />
-						<div>Microsoft<br />Edge</div>
-					</a>
-					<a href="https://www.google.cn/chrome/index.html">
-						<img src="_nuxt/assets/svg/chrome.svg" />
-						<div>Google<br />Chrome</div>
-					</a>
-					<a href="https://www.mozilla.org/firefox/windows/">
-						<img src="_nuxt/assets/svg/firefox.svg" />
-						<div>Firefox<br />Browser</div>
-					</a>
-				</div>
+			<p>非常抱歉！你的浏览器过于苍老，无法渲染我们的网站！
+				我们不支持这么老旧的技术，你也不该继续使用这个老旧的浏览器！
+				<br><br>
+				Internet Explorer代表了过去，代表了21世纪初互联网曾经的美好。
+				虽然你可能和我们一样，厌恶新时代的狂躁、忙碌与封闭，
+				怀念过去的欢笑、慢节奏与开放，但是我们要做的，是像这个网站一样，
+				去改变时代，为这新时代添上一笔自己的色彩，而不是将自己困在过去。
 			</p>
+			<p class="browsers-title">请使用下面的浏览器继续浏览本网站</p>
+			<ul class="browser-cards">
+				<li class="browser-card browser-card-1">
+					<a href="https://www.microsoft.com/edge/download" target="_blank">
+						<div class="browser-image browser-image-1"></div>
+						<h4>Microsoft<br>Edge</h4>
+					</a>
+				</li>
+				<li class="browser-card browser-card-2">
+					<a href="https://www.google.cn/chrome/index.html" target="_blank">
+						<div class="browser-image browser-image-2"></div>
+						<h4>Google<br>Chrome</h4>
+					</a>
+				</li>
+				<li class="browser-card browser-card-3">
+					<a href="https://www.mozilla.org/firefox/new" target="_blank">
+						<div class="browser-image browser-image-3"></div>
+						<h4>Firefox<br>Browser</h4>
+					</a>
+				</li>
+			</ul>
 		</div>
+
 	</div>
 </body>
+
 </html>
