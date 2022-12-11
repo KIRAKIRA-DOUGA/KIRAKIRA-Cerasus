@@ -23,6 +23,9 @@
 *.scss text
 *.less text
 *.styl text
+*.stylus text
+*.pcss text
+*.sss text
 *.js text
 *.coffee text
 *.json text
@@ -93,39 +96,54 @@ AUTHORS text
 #
 
 # (binary is a macro for -text -diff)
+
+# images
 *.png binary
 *.jpg binary
 *.jpeg binary
+*.jpe binary
+*.jfif binary
+*.pjpeg binary
+*.pjp binary
 *.gif binary
 *.ico binary
+*.webp binary
+*.tif binary
+*.tiff binary
+*.bmp binary
+*.avif binary
+
+# media
 *.mov binary
 *.mp4 binary
 *.mp3 binary
 *.flv binary
 *.fla binary
 *.swf binary
-*.gz binary
-*.zip binary
-*.7z binary
-*.ttf binary
-*.eot binary
-*.woff binary
-*.pyc binary
-*.pdf binary
-*.rar binary
-*.webp binary
-*.jpe binary
-*.tif binary
-*.tiff binary
 *.wmv binary
 *.wav binary
-*.bmp binary
-*.otf binary
-*.woff2 binary
 *.wma binary
 *.m4a binary
 *.aac binary
 *.ogg binary
 *.ape binary
 *.flac binary
-*.avif binary
+*.webm binary
+
+# zips
+*.gz binary
+*.zip binary
+*.7z binary
+*.rar binary
+
+# fonts
+*.ttf binary
+*.eot binary
+*.woff binary
+*.woff2 binary
+*.pyc binary
+*.otf binary
+
+# other
+*.pdf binary
+

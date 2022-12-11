@@ -108,6 +108,10 @@ declare module "*.jpeg" {
 	const src: string;
 	export default src;
 }
+declare module "*.jpe" {
+	const src: string;
+	export default src;
+}
 declare module "*.jfif" {
 	const src: string;
 	export default src;
@@ -137,6 +141,10 @@ declare module "*.webp" {
 	export default src;
 }
 declare module "*.avif" {
+	const src: string;
+	export default src;
+}
+declare module "*.tif" {
 	const src: string;
 	export default src;
 }
