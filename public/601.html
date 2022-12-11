@@ -40,9 +40,9 @@
 			width: 1024px;
 			height: 600px;
 			border-radius: 6px;
-			margin: -300px 0 0 -512px;
+			/* margin: -300px 0 0 -512px;
 			top: 50%;
-			left: 50%;
+			left: 50%; */
 			position: absolute;
 			background-color: white;
 			background: white;
@@ -229,8 +229,7 @@
 </head>
 
 <body>
-	<div class="main-card">
-
+	<div class="main-card" id="main-card">
 		<div class="left">
 			<div class="recycle"></div>
 			<div class="ie-icon"></div>
@@ -267,6 +266,7 @@
 	</div>
 
 	<script type="text/javascript">
+		// 解决点击 browser-card 外边缘无效的问题。
 		var links = [
 			"https://www.microsoft.com/edge/download",
 			"https://www.google.cn/chrome/index.html",
@@ -280,6 +280,20 @@
 				};
 			})(i);
 		}
+		// 解决窗口过小导致纯 CSS 居中裁掉部分内容问题。
+		function centerMainCard() {
+			var mainCard = document.getElementById("main-card");
+			var minWidth = mainCard.clientWidth,
+				minHeight = mainCard.clientHeight,
+				windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+				windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+			var left = windowWidth < minWidth ? 0 : (windowWidth - minWidth) / 2,
+				top = windowHeight < minHeight ? 0 : (windowHeight - minHeight) / 2;
+			mainCard.style.left = left + "px";
+			mainCard.style.top = top + "px";
+		}
+		centerMainCard();
+		window.onresize = centerMainCard;
 	</script>
 </body>
 
