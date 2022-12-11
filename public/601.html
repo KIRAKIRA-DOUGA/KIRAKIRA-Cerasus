@@ -7,34 +7,36 @@
 <html lang="zh-cmn-Hans-CN">
 
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>浏览器升级提示</title>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>请升级你的浏览器</title>
 	<style>
 		html,
 		body {
 			background: #fafafa;
 			background-color: #fafafa;
-			font-family: Microsoft YaHei, sans-serif;
+			font-family: "Segoe UI", "Microsoft Yahei", Tahoma, Geneva, Verdana, Arial, Simhei, sans-serif;
 			padding: 0;
 			margin: 0;
+			-ms-user-select: none;
+			user-select: none;
 		}
 
 		@keyframes intro {
 			from {
-				transform: translateY(200px);
+				transform: scale(1.05);
 				opacity: 0;
 			}
 
 			to {
-				transform: translateY(0);
+				transform: scale(1);
 				opacity: 1;
 			}
 		}
 
 		.main-card {
-			box-shadow: 0px 5px 10px rgba(193, 159, 168, 0.3);
+			box-shadow: 0 5px 10px rgba(193, 159, 168, 0.3);
 			width: 1024px;
 			height: 600px;
 			border-radius: 6px;
@@ -42,8 +44,8 @@
 			top: 50%;
 			left: 50%;
 			position: absolute;
-			background-color: #ffffff;
-			background: #ffffff;
+			background-color: white;
+			background: white;
 			animation: intro cubic-bezier(0.1, 0.9, 0.2, 1) 0.6s backwards;
 		}
 
@@ -72,7 +74,7 @@
 		}
 
 		p.browsers-title {
-			top: 325px;
+			top: 315px;
 			width: 452px;
 			text-align: center;
 		}
@@ -91,8 +93,8 @@
 			height: 155px;
 			min-width: 140px;
 			min-height: 155px;
-			box-shadow: 0px 2px 4px rgba(193, 159, 168, 0.3);
-			background-color: #ffffff;
+			box-shadow: 0 2px 4px rgba(193, 159, 168, 0.3);
+			background-color: white;
 			*background-color: #fafafa;
 			border-radius: 6px;
 			list-style: none;
@@ -106,11 +108,13 @@
 		}
 
 		.browser-card:hover {
-			box-shadow: 0px 4px 8px rgba(193, 159, 168, 0.4);
+			box-shadow: 0 4px 8px rgba(193, 159, 168, 0.4);
+			*background-color: #fdfdfd;
 		}
 
 		.browser-card:active {
 			box-shadow: none;
+			*background-color: gray;
 		}
 
 		.browser-card h4 {
@@ -126,7 +130,7 @@
 			text-decoration: none;
 		}
 
-		.browser-card-2 {
+		#browser-card-2 {
 			margin: 0 16px;
 		}
 
@@ -143,18 +147,18 @@
 		}
 
 		.browser-image-1 {
-			background-image: url(_nuxt/assets/svg/601/Microsoft_Edge.svg);
-			*background-image: url(_nuxt/assets/images/601/Microsoft_Edge.png);
+			background-image: url(_nuxt/assets/svg/601/microsoft_edge.svg);
+			*background-image: url(_nuxt/assets/images/601/microsoft_edge.png);
 		}
 
 		.browser-image-2 {
-			background-image: url(_nuxt/assets/svg/601/Google_Chrome.svg);
-			*background-image: url(_nuxt/assets/images/601/Google_Chrome.png);
+			background-image: url(_nuxt/assets/svg/601/google_chrome.svg);
+			*background-image: url(_nuxt/assets/images/601/google_chrome.png);
 		}
 
 		.browser-image-3 {
-			background-image: url(_nuxt/assets/svg/601/Firefox_Browser.svg);
-			*background-image: url(_nuxt/assets/images/601/Firefox_Browser.png);
+			background-image: url(_nuxt/assets/svg/601/firefox_browser.svg);
+			*background-image: url(_nuxt/assets/images/601/firefox_browser.png);
 		}
 
 		.left {
@@ -181,8 +185,8 @@
 		}
 
 		.ie-icon {
-			background-image: url(_nuxt/assets/svg/601/IE.svg);
-			*background-image: url(_nuxt/assets/images/601/IE.png);
+			background-image: url(_nuxt/assets/svg/601/internet_explorer.svg);
+			*background-image: url(_nuxt/assets/images/601/internet_explorer.png);
 			position: absolute;
 			left: 102px;
 			top: 116px;
@@ -190,8 +194,37 @@
 			height: 217px;
 		}
 	</style>
+
 	<!--[if IE 8]>
-		<style>.browser-card{background-color:#fafafa}.browser-image-1{background-image:url(_nuxt/assets/images/601/Microsoft_Edge.png);}.browser-image-2{background-image: url(_nuxt/assets/images/601/Google_Chrome.png);}.browser-image-3{background-image:url(_nuxt/assets/images/601/Firefox_Browser.png)}.ie-icon{background-image:url(_nuxt/assets/images/601/IE.png)}</style>
+		<style>
+			.browser-card {
+				background-color: #fafafa;
+			}
+
+			.browser-image-1 {
+				background-image: url(_nuxt/assets/images/601/microsoft_edge.png);
+			}
+
+			.browser-image-2 {
+				background-image: url(_nuxt/assets/images/601/google_chrome.png);
+			}
+
+			.browser-image-3 {
+				background-image: url(_nuxt/assets/images/601/firefox_browser.png)
+			}
+
+			.ie-icon {
+				background-image: url(_nuxt/assets/images/601/internet_explorer.png)
+			}
+
+			.browser-card:hover {
+				background-color: #fdfdfd;
+			}
+
+			.browser-card:active {
+				background-color: gray;
+			}
+		</style>
 	<![endif]-->
 </head>
 
@@ -206,38 +239,48 @@
 
 		<div class="right">
 			<h1>是时候更换你的浏览器了</h1>
-			<p>非常抱歉！你的浏览器过于苍老，无法渲染我们的网站！
-				我们不支持这么老旧的技术，你也不该继续使用这个老旧的浏览器！
-				<br><br>
-				Internet Explorer代表了过去，代表了21世纪初互联网曾经的美好。
-				虽然你可能和我们一样，厌恶新时代的狂躁、忙碌与封闭，
-				怀念过去的欢笑、慢节奏与开放，但是我们要做的，是像这个网站一样，
-				去改变时代，为这新时代添上一笔自己的色彩，而不是将自己困在过去。
+			<p>
+				非常抱歉！你的浏览器过于苍老，无法渲染我们的网站！<br />
+				我们不支持这么老旧的技术，你也不该继续使用这个老旧的浏览器！<br />
+				<br />
+				Internet Explorer代表了过去，代表了21世纪初互联网曾经的美好。<br />
+				虽然你可能和我们一样，厌恶新时代的狂躁、忙碌与封闭，<br />
+				怀念过去的欢笑、慢节奏与开放，但是我们要做的，是像这个网站一样，<br />
+				去改变时代，为这新时代添上一笔自己的色彩，而不是将自己困在过去。<br />
 			</p>
 			<p class="browsers-title">请使用下面的浏览器继续浏览本网站</p>
 			<ul class="browser-cards">
-				<li class="browser-card browser-card-1">
-					<a href="https://www.microsoft.com/edge/download" target="_blank">
-						<div class="browser-image browser-image-1"></div>
-						<h4>Microsoft<br>Edge</h4>
-					</a>
+				<li class="browser-card" id="browser-card-1">
+					<div class="browser-image browser-image-1"></div>
+					<h4><b>Microsoft</b><br />Edge</h4>
 				</li>
-				<li class="browser-card browser-card-2">
-					<a href="https://www.google.cn/chrome/index.html" target="_blank">
-						<div class="browser-image browser-image-2"></div>
-						<h4>Google<br>Chrome</h4>
-					</a>
+				<li class="browser-card" id="browser-card-2">
+					<div class="browser-image browser-image-2"></div>
+					<h4><b>Google</b><br />Chrome</h4>
 				</li>
-				<li class="browser-card browser-card-3">
-					<a href="https://www.mozilla.org/firefox/new" target="_blank">
-						<div class="browser-image browser-image-3"></div>
-						<h4>Firefox<br>Browser</h4>
-					</a>
+				<li class="browser-card" id="browser-card-3">
+					<div class="browser-image browser-image-3"></div>
+					<h4><b>Firefox</b><br />Browser</h4>
 				</li>
 			</ul>
 		</div>
-
 	</div>
+
+	<script type="text/javascript">
+		var links = [
+			"https://www.microsoft.com/edge/download",
+			"https://www.google.cn/chrome/index.html",
+			"https://www.mozilla.org/firefox/new"
+		];
+		for (var i = 0; i < links.length; i++) {
+			var id = "browser-card-" + (i + 1);
+			document.getElementById(id).onclick = (function (i) {
+				return function () {
+					window.open(links[i]);
+				};
+			})(i);
+		}
+	</script>
 </body>
 
 </html>
