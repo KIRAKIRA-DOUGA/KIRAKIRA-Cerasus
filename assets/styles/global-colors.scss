@@ -63,3 +63,11 @@
 		--#{$state}-rgb: var(--#{$color}-rgb);
 	}
 }
+
+:root[data-theme="dark"] {
+	color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+	color-scheme: light;
+}
