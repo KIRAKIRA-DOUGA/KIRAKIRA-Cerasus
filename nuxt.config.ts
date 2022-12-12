@@ -10,9 +10,6 @@ export default defineNuxtConfig({
 	alias: {
 		styles: resolve(__dirname, "./assets/styles"),
 	},
-	modules: [
-		"@nuxtjs/pwa",
-	],
 	css: [
 		"styles/global.scss",
 		"styles/global-colors.scss",
