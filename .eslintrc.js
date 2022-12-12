@@ -105,6 +105,7 @@ module.exports = {
 		"camelcase": "off",
 		"spaced-comment": ["error", "always", { "exceptions": ["+", "-", "*", "/"], "markers": ["/", "!", "@", "#", "#region", "#endregion"] }],
 		"radix": "error", // parseInt 必须要指明是十进制。
+		"no-self-assign": "off",
 		"@typescript-eslint/no-unused-vars": ["warn", { // 非要使用未使用变量，前面加下划线。
 			"argsIgnorePattern": "^_",
 			"varsIgnorePattern": "^_",

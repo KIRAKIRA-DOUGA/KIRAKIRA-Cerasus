@@ -1,9 +1,11 @@
 <script setup lang="ts">
+	import { ThemeType, PaletteType } from "@/composables/theme";
+
 	const page = ref(1);
 	const toggle = ref(false);
 	const isClicked = ref(false);
-	const theme = ref<"light" | "dark">("light");
-	const palette = ref<"pink" | "cyan">("pink");
+	const theme = ref<ThemeType>("light");
+	const palette = ref<PaletteType>("pink");
 
 	const router = useRouter();
 
@@ -17,13 +19,12 @@
 		router.push("/VideoPlay");
 	};
 
-	onUpdated(() => {
-		useHead({ title: "首页", htmlAttrs: { "data-theme": theme.value, "data-palette": palette.value } });
-	});
+	useHead({ title: "首页" });
+	onMounted(() => { theme.value = Theme.theme; palette.value = Theme.palette; });
+	watch(theme, theme => (Theme.theme = theme));
+	watch(palette, palette => (Theme.palette = palette));
 
-	onMounted(() => {
-		showConfetti();
-	});
+	showConfetti();
 </script>
 
 <template>
