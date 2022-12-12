@@ -170,7 +170,8 @@
 		}
 
 		.recycle {
-			background-image: url(/static/601/recycle.png);
+			background-image: url(/static/601/recycle_bin_back.svg);
+			*background-image: url(/static/601/recycle_bin.png);
 			position: absolute;
 			left: 97px;
 			top: 240px;
@@ -179,12 +180,13 @@
 		}
 
 		.recycle-front {
-			background-image: url(/static/601/recycle_front.png);
+			background-image: url(/static/601/recycle_bin_front.svg);
+			*background-image: url(/static/601/recycle_bin_front.png);
 			position: absolute;
-			left: 84px;
-			top: 279px;
-			width: 269px;
-			height: 261px;
+			left: 97px;
+			top: 240px;
+			width: 256px;
+			height: 256px;
 		}
 
 		.ie-icon {
@@ -198,7 +200,7 @@
 		}
 	</style>
 
-	<!--[if IE 8]>
+	<!--[if lte IE 8]>
 		<style>
 			.browser-card {
 				background-color: #fafafa;
@@ -226,6 +228,14 @@
 
 			.browser-card:active {
 				background-color: gray;
+			}
+
+			.recycle {
+				background-image: url(/static/601/recycle_bin.png);
+			}
+
+			.recycle-front {
+				background-image: url(/static/601/recycle_bin_front.png);
 			}
 		</style>
 	<![endif]-->
