@@ -18,6 +18,8 @@
 		titleTemplate: "%s - KIRAKIRA☆DOUGA",
 		link: [
 			{ rel: "icon", type: "image/vnd.microsoft.icon", href: "/favicon.ico" }, // 不是 image/x-icon
+			{ rel: "apple-touch-icon", href: "/public/static/touch/logo_x48.png" },
+			{ rel: "manifest", href: "/app.webmanifest" },
 		],
 	});
 	Theme.init();
