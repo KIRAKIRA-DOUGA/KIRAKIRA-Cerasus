@@ -23,6 +23,7 @@
 			-moz-user-select: none;
 			-ms-user-select: none;
 			user-select: none;
+			cursor: default;
 		}
 
 		@keyframes intro {
@@ -42,9 +43,6 @@
 			width: 1024px;
 			height: 600px;
 			border-radius: 6px;
-			/* margin: -300px 0 0 -512px;
-			top: 50%;
-			left: 50%; */
 			position: absolute;
 			background-color: white;
 			background: white;
@@ -98,7 +96,6 @@
 			min-height: 155px;
 			box-shadow: 0 2px 4px rgba(193, 159, 168, 0.3);
 			background-color: white;
-			*background-color: #fafafa;
 			border-radius: 6px;
 			list-style: none;
 			display: block;
@@ -112,12 +109,10 @@
 
 		.browser-card:hover {
 			box-shadow: 0 4px 8px rgba(193, 159, 168, 0.4);
-			*background-color: #fdfdfd;
 		}
 
 		.browser-card:active {
 			box-shadow: none;
-			*background-color: gray;
 		}
 
 		.browser-card h4 {
@@ -151,17 +146,14 @@
 
 		.browser-image-1 {
 			background-image: url(/static/601/microsoft_edge.svg);
-			*background-image: url(/static/601/microsoft_edge.png);
 		}
 
 		.browser-image-2 {
 			background-image: url(/static/601/google_chrome.svg);
-			*background-image: url(/static/601/google_chrome.png);
 		}
 
 		.browser-image-3 {
 			background-image: url(/static/601/firefox_browser.svg);
-			*background-image: url(/static/601/firefox_browser.png);
 		}
 
 		.left {
@@ -169,9 +161,12 @@
 			position: absolute;
 		}
 
+		.left * {
+			cursor: url(/static/601/crying_face.cur), default;
+		}
+
 		.recycle {
 			background-image: url(/static/601/recycle_bin_back.svg);
-			*background-image: url(/static/601/recycle_bin.png);
 			position: absolute;
 			left: 97px;
 			top: 240px;
@@ -181,7 +176,6 @@
 
 		.recycle-front {
 			background-image: url(/static/601/recycle_bin_front.svg);
-			*background-image: url(/static/601/recycle_bin_front.png);
 			position: absolute;
 			left: 97px;
 			top: 240px;
@@ -191,7 +185,6 @@
 
 		.ie-icon {
 			background-image: url(/static/601/internet_explorer.svg);
-			*background-image: url(/static/601/internet_explorer.png);
 			position: absolute;
 			left: 102px;
 			top: 116px;
