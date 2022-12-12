@@ -20,15 +20,15 @@
 				</span>
 			</div>
 		</div>
-		<div class="triangle triangle1">
+		<div class="triangle triangle-1">
 			<svg height="70" width="60">
-				<polygon points="4,4 4,66 56,37.5" />
+				<polygon points="4,4 4,66 56,35" />
 			</svg>
 		</div>
-		<div class="triangle triangle2"></div>
+		<div class="triangle triangle-2"></div>
 		<div class="title">KiRAKiRA☆</div>
-		<div class="circle circle1"></div>
-		<div class="circle circle2">
+		<div class="circle circle-1"></div>
+		<div class="circle circle-2">
 			<div v-for="i in 13" :key="`circle-line-${i}`"></div>
 		</div>
 	</div>
@@ -42,7 +42,7 @@
 	}
 
 	.cover {
-		--cover-width: calc(v-bind(width) * 1px); // v-bind 基于运行时，因此没办法赋值给 css 变量。
+		--cover-width: calc(v-bind(width) * 1px); // v-bind 基于运行时，因此没办法赋值给 scss 变量。
 		--cover-height: calc(v-bind(height) * 1px);
 		width: var(--cover-width);
 		height: var(--cover-height);
@@ -138,7 +138,7 @@
 		animation: triangle-movement 4s cubic-bezier(0, 0.5, 1, 0.5) infinite, triangle-blinking 2s cubic-bezier(0, 0, 0, 1) infinite alternate;
 	}
 
-	.triangle1 {
+	.triangle-1 {
 		bottom: 2rem;
 		right: calc(var(--cover-width) - 40%);
 		animation-delay: -1s;
@@ -147,12 +147,12 @@
 
 		svg polygon {
 			fill: transparent;
-			stroke: var(--accent);
+			stroke: c(accent);
 			stroke-width: 2px;
 		}
 	}
 
-	.triangle2 {
+	.triangle-2 {
 		bottom: 36%;
 		right: 4rem;
 		--length: 2rem;
@@ -166,14 +166,14 @@
 		overflow: hidden;
 	}
 
-	.circle1 {
+	.circle-1 {
 		right: -3rem;
 		top: 15%;
 		border: c(accent) 2px solid;
 		animation: circle-scaling 4s cubic-bezier(0, 0, 0, 1) infinite alternate;
 	}
 
-	.circle2 {
+	.circle-2 {
 		--cover-size: 12rem;
 		right: calc(var(--cover-size) + 5rem);
 		bottom: -3rem;

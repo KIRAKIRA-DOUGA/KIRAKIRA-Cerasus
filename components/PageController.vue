@@ -116,6 +116,8 @@
 		} else currentEdited.value = String(page);
 		//#endregion
 	});
+	// BUG: 以非常快速翻页会导致报错，但不影响使用：Uncaught (in promise) DOMException: The user aborted a request.
+	// BUG: 以非常快速翻页然后突然以反方向翻页，会导致当前页码显示错误。
 
 	onMounted(() => {
 		document.addEventListener("keydown", onArrowKeyDown);
