@@ -4,6 +4,7 @@
 		"vue.vscode-typescript-vue-plugin",
 		"dbaeumer.vscode-eslint",
 		"editorconfig.editorconfig",
-		"stylelint.vscode-stylelint"
+		"stylelint.vscode-stylelint",
+		"somewhatstationery.some-sass"
 	]
 }
