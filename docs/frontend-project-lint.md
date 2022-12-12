@@ -1,7 +1,5 @@
 ﻿# KIRAKIRA☆DOUGA 前端项目规范
 
-本文系草案，有待项目成员共同商议修改。
-
 ## 简要
 1. **JavaScript 框架：**<wbr>Vue 3
 1. **Vue API 风格：**<wbr>组合式 [(?)](https://cn.vuejs.org/guide/introduction.html#single-file-components)
