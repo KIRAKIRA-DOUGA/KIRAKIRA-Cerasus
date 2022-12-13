@@ -5,20 +5,23 @@
 </template>
 
 <script setup lang="ts">
-	import { ref } from "vue";
-
-	// @ts-ignore
 	useHead({
 		htmlAttrs: {
 			lang: "zh-cmn-Hans-CN", // 中文-普通话-简体字-大陆地区
 		},
-		bodyAttrs: {
-			id: "root",
-		},
 		titleTemplate: "%s - KIRAKIRA☆DOUGA",
+		meta: [
+			{ "http-equiv": "Content-Type", content: "text/html;charset=UTF-8" },
+			{ "http-equiv": "X-UA-Compatible", content: "IE=Edge,chrome=1" },
+			{ name: "renderer", content: "webkit" },
+			{ name: "theme-color", content: "#f06e8e" },
+			{ name: "description", content: "一个可爱的视频网站，献给可爱的你。" },
+			{ name: "keywords", content: "视频,弹幕,字幕,音频,相簿,相册,视频网站,弹幕视频,二次元,动漫,动画,音乐,动漫音乐,音MAD,AMV,MAD,ANIME,ACG,NOVA,艾拉,艾了个拉,02" },
+		],
 		link: [
-			{ rel: "icon", type: "image/vnd.microsoft.icon", href: "/favicon.ico" }, // 不是 image/x-icon
-			{ rel: "apple-touch-icon", href: "/public/static/touch/logo_x48.png" },
+			{ rel: "icon", type: "image/vnd.microsoft.icon", href: "/favicon.ico" },
+			{ rel: "shortcut icon", type: "image/x-icon", href: "/favicon.ico" },
+			{ rel: "apple-touch-icon", href: "/public/static/touch/48.png" },
 			{ rel: "manifest", href: "/app.webmanifest" },
 		],
 	});
@@ -33,6 +36,13 @@
 	// 	layout.value = "pocket-edition-web";
 	// 	slotName.value = "pocket-edition-web-slot";
 	// }, 5000);
+
+	if (process.client)
+		window.addEventListener("load", () => {
+			if (!("serviceWorker" in navigator))
+				throw new Error("serviceWorker is not supported in current browser!");
+			navigator.serviceWorker.register("/sw.js");
+		});
 </script>
 
 <style lang="scss">

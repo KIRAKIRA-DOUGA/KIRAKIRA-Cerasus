@@ -8,7 +8,7 @@
 	"description": "一个可爱的视频网站，献给可爱的你。",
 	"icons": [
 		{
-			"src": "/static/touch/logo_x48.png",
+			"src": "/static/touch/48.png",
 			"sizes": "48x48",
 			"type": "image/png"
 		}
