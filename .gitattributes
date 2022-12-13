@@ -18,7 +18,7 @@
 
 # source code
 *.php text
-*.css text
+*.css text linguist-vendored
 *.sass text
 *.scss text
 *.less text
@@ -26,13 +26,13 @@
 *.stylus text
 *.pcss text
 *.sss text
-*.js text
+*.js text linguist-vendored
 *.coffee text
-*.json text
-*.htm text
-*.html text
-*.xml text
-*.svg text
+*.json text linguist-vendored
+*.htm text linguist-vendored
+*.html text linguist-vendored
+*.xml text linguist-vendored
+*.svg text linguist-vendored
 *.txt text
 *.ini text
 *.inc text
@@ -45,7 +45,7 @@
 *.bat text
 *.ts text
 *.tsx text
-*.jsx text
+*.jsx text linguist-vendored
 *.vue text
 
 # templates
