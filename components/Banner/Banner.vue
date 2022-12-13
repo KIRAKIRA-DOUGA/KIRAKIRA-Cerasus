@@ -38,14 +38,15 @@
 			width: 100%;
 			height: 100%;
 			bottom: 0;
-			background: linear-gradient(#0005 80%, #000a); // TODO: 魔色待修改。
-			opacity: 0;
+			background: linear-gradient(transparent 0%, transparent 95%, #0005 100%);
+			opacity: 0.1;
 		}
 
 		&.collapsed {
 			height: 0;
 
 			> .shadow {
+				background: linear-gradient(#0005 80%, #000c); // TODO: 魔色待修改。
 				opacity: 1;
 			}
 		}
