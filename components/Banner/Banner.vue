@@ -38,7 +38,8 @@
 			width: 100%;
 			height: 100%;
 			bottom: 0;
-			background: linear-gradient(transparent 0%, transparent 95%, #0005 100%);
+			background: linear-gradient(transparent 0%, transparent 95%, #0005 100%); // TODO: 魔色待修改。
+			// 任何情况均不允许在除主题样式定义文件外使用字面量颜色（如#开头、rgb常量颜色等）。
 			opacity: 0.1;
 		}
 
