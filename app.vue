@@ -16,7 +16,7 @@
 			{ name: "renderer", content: "webkit" },
 			{ name: "theme-color", content: "#f06e8e" },
 			{ name: "description", content: "一个可爱的视频网站，献给可爱的你。" },
-			{ name: "keywords", content: "视频,弹幕,字幕,音频,相簿,相册,视频网站,弹幕视频,二次元,动漫,动画,音乐,动漫音乐,音MAD,AMV,MAD,ANIME,ACG,NOVA,艾拉,艾了个拉,02" },
+			{ name: "keywords", content: "视频,弹幕,字幕,音频,相簿,相册,视频网站,弹幕视频,二次元,动漫,动画,音乐,动漫音乐,音MAD,AMV,MAD,ANIME,ACG,NOVA" },
 		],
 		link: [
 			{ rel: "icon", type: "image/vnd.microsoft.icon", href: "/favicon.ico" },
