@@ -1,5 +1,5 @@
 # Auto detect text files and perform LF normalization
-* text eol=lf
+# * text eol=lf
 
 # These settings are for any web project
 
@@ -17,79 +17,79 @@
 #
 
 # source code
-*.php text
-*.css text linguist-vendored
-*.sass text
-*.scss text
-*.less text
-*.styl text
-*.stylus text
-*.pcss text
-*.sss text
-*.js text linguist-vendored
-*.coffee text
-*.json text linguist-vendored
-*.htm text linguist-vendored
-*.html text linguist-vendored
-*.xml text linguist-vendored
-*.svg text linguist-vendored
-*.txt text
-*.ini text
-*.inc text
-*.pl text
-*.rb text
-*.py text
-*.scm text
-*.sql text
-*.sh text
-*.bat text
-*.ts text
-*.tsx text
-*.jsx text linguist-vendored
-*.vue text
+*.php text eol=lf
+*.css text eol=lf linguist-vendored
+*.sass text eol=lf
+*.scss text eol=lf
+*.less text eol=lf
+*.styl text eol=lf
+*.stylus text eol=lf
+*.pcss text eol=lf
+*.sss text eol=lf
+*.js text eol=lf linguist-vendored
+*.coffee text eol=lf
+*.json text eol=lf linguist-vendored
+*.htm text eol=lf linguist-vendored
+*.html text eol=lf linguist-vendored
+*.xml text eol=lf linguist-vendored
+*.svg text eol=lf linguist-vendored
+*.txt text eol=lf
+*.ini text eol=lf
+*.inc text eol=lf
+*.pl text eol=lf
+*.rb text eol=lf
+*.py text eol=lf
+*.scm text eol=lf
+*.sql text eol=lf
+*.sh text eol=lf
+*.bat text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.jsx text eol=lf linguist-vendored
+*.vue text eol=lf
 
 # templates
-*.ejs text
-*.hbt text
-*.jade text
-*.haml text
-*.hbs text
-*.dot text
-*.tmpl text
-*.phtml text
+*.ejs text eol=lf
+*.hbt text eol=lf
+*.jade text eol=lf
+*.haml text eol=lf
+*.hbs text eol=lf
+*.dot text eol=lf
+*.tmpl text eol=lf
+*.phtml text eol=lf
 
 # server config
-.htaccess text
+.htaccess text eol=lf
 
 # git config
-.gitattributes text
-.gitignore text
-.gitconfig text
+.gitattributes text eol=lf
+.gitignore text eol=lf
+.gitconfig text eol=lf
 
 # code analysis config
-.jshintrc text
-.jscsrc text
-.jshintignore text
-.csslintrc text
+.jshintrc text eol=lf
+.jscsrc text eol=lf
+.jshintignore text eol=lf
+.csslintrc text eol=lf
 
 # misc config
-*.yaml text
-*.yml text
-.editorconfig text
-.code-snippets text
+*.yaml text eol=lf
+*.yml text eol=lf
+.editorconfig text eol=lf
+.code-snippets text eol=lf
 
 # build config
-*.npmignore text
-*.bowerrc text
+*.npmignore text eol=lf
+*.bowerrc text eol=lf
 
 # Heroku
-Procfile text
-.slugignore text
+Procfile text eol=lf
+.slugignore text eol=lf
 
 # Documentation
-*.md text
-LICENSE text
-AUTHORS text
+*.md text eol=lf
+LICENSE text eol=lf
+AUTHORS text eol=lf
 
 #
 ## These files are binary and should be left untouched
