@@ -3,7 +3,7 @@
  * @param elements - HTML DOM 元素。
  * @returns 是否有移除动画。
  */
- export function removeExistAnimations(...elements: Element[]) {
+export function removeExistAnimations(...elements: Element[]) {
 	let hasExistAnimations = false;
 	for (const element of elements) {
 		const existAnimations = element.getAnimations();
