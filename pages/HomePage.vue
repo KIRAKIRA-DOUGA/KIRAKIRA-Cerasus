@@ -2,6 +2,8 @@
 	import { ThemeType, PaletteType } from "@/composables/theme";
 
 	const page = ref(1);
+	const pages = ref(99);
+	const displayPageCount = ref(7);
 	const toggle = ref(false);
 	const isClicked = ref(false);
 	const theme = ref<ThemeType>("light");
@@ -32,7 +34,7 @@
 		<div>kirakira home</div>
 		<a @click="goToVideo">video</a>
 		<div class="component-test">
-			<PageController :pages="99" :displayPageCount="7" :current="page" enableArrowKeyMove @changePage="e => page = e.page" />
+			<PageController :pages="pages" :displayPageCount="displayPageCount" :current="page" enableArrowKeyMove @changePage="e => page = e.page" />
 			<Button @click="onClickButton">{{ isClicked ? "我被单击了 呜呜呜~" : "按钮" }}</Button>
 			<Button disabled>按钮被禁用</Button>
 			<ToggleSwitch v-model:on="toggle">切换开关 {{ toggle ? "开" : "关" }}</ToggleSwitch>
