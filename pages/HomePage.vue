@@ -47,7 +47,7 @@
 			<RadioButton v-model="palette" value="pink">玫瑰粉</RadioButton>
 			<RadioButton v-model="palette" value="cyan">智乃蓝</RadioButton>
 			<ProgressRing />
-			<Lottie :options="{ loop: true, autoplay: true, animationData }" />
+			<Lottie loop autoplay :animationData="animationData" />
 			<LogoCover />
 		</div>
 	</div>

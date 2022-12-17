@@ -1,19 +1,19 @@
 <template>
-	<div ref="lavContainer" :style="style"></div>
+	<div ref="lavContainer" class="lav-container" :style="style"></div>
 </template>
 
 <script setup lang="ts">
 	import lottie, { AnimationItem } from "lottie-web";
 
 	const props = withDefaults(defineProps<{
-		options: Partial<{
-			loop: boolean;
-			autoplay: boolean;
-			animationData: object;
-		}>;
+		loop?: boolean;
+		autoplay?: boolean;
+		animationData: object;
 		height?: number;
 		width?: number;
 	}>(), {
+		loop: false,
+		autoplay: false,
 		height: 100,
 		width: 100,
 	});
@@ -34,9 +34,9 @@
 		anim.value = lottie.loadAnimation({
 			container: lavContainer.value!,
 			renderer: "svg",
-			loop: props.options.loop !== false,
-			autoplay: props.options.autoplay !== false,
-			animationData: props.options.animationData,
+			loop: props.loop,
+			autoplay: props.autoplay,
+			animationData: props.animationData,
 		});
 		emits("animCreated", anim.value);
 	});
@@ -45,3 +45,10 @@
 		anim.value && anim.value.destroy();
 	});
 </script>
+
+<style scoped lang="scss">
+	.lav-container,
+	.lav-container :deep(*) {
+		transition: none;
+	}
+</style>
