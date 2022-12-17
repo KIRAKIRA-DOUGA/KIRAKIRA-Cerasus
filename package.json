@@ -29,6 +29,7 @@
 		"eslint-plugin-nuxt": "^4.0.0",
 		"eslint-plugin-vue": "^9.7.0",
 		"js-confetti": "^0.11.0",
+		"lottie-web": "^5.10.0",
 		"postcss-html": "^1.5.0",
 		"sass": "^1.56.1",
 		"stylelint-config-standard": "^29.0.0",

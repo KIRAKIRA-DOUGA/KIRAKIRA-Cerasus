@@ -1,4 +1,5 @@
 <script setup lang="ts">
+	import animationData from "@/components/spinner-dev1.json";
 	import { ThemeType, PaletteType } from "@/composables/theme";
 
 	const page = ref(1);
@@ -46,6 +47,7 @@
 			<RadioButton v-model="palette" value="pink">玫瑰粉</RadioButton>
 			<RadioButton v-model="palette" value="cyan">智乃蓝</RadioButton>
 			<ProgressRing />
+			<Lottie :options="{ loop: true, autoplay: true, animationData }" />
 			<LogoCover />
 		</div>
 	</div>
