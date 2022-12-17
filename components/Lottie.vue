@@ -27,8 +27,9 @@
 	const lavContainer = ref<HTMLDivElement>();
 
 	onMounted(() => {
+		if (!lavContainer.value) return;
 		anim.value = lottie.loadAnimation({
-			container: lavContainer.value!,
+			container: lavContainer.value,
 			renderer: "svg",
 			loop: props.loop,
 			autoplay: props.autoplay,
