@@ -9,8 +9,7 @@
 		options: Partial<{
 			loop: boolean;
 			autoplay: boolean;
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			animationData: any;
+			animationData: object;
 		}>;
 		height?: number;
 		width?: number;
