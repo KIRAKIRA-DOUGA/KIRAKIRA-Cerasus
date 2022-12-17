@@ -1,7 +1,3 @@
-<template>
-	<div ref="lavContainer" class="lav-container" :style="style"></div>
-</template>
-
 <script setup lang="ts">
 	import lottie, { AnimationItem } from "lottie-web";
 
@@ -45,6 +41,10 @@
 		anim.value && anim.value.destroy();
 	});
 </script>
+
+<template>
+	<div ref="lavContainer" class="lav-container" :style="style"></div>
+</template>
 
 <style scoped lang="scss">
 	.lav-container,
