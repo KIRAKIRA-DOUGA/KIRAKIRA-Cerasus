@@ -1,4 +1,6 @@
 <script setup lang="ts" generic="T">
+	type T = string | number | boolean | symbol | bigint | object | unknown[];
+
 	const props = withDefaults(defineProps<{
 		/** 禁用。 */
 		disabled?: boolean;

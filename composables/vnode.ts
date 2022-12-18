@@ -7,3 +7,10 @@ export function useRender(render: () => VNode): void {
 	// @ts-ignore
 	vm.render = render;
 }
+
+export type VueJsx<Props, Emits, Slots = { default: VNode }> = (props: Props, context: {
+	attrs: object;
+	slots: Slots;
+	emit: Emits;
+	expose: Function;
+}) => JSX.Element;
