@@ -3,10 +3,10 @@
 *,
 *::before,
 *::after {
-	transition: all $ease-out-expo 250ms, color $ease-out-expo 100ms, fill $ease-out-expo 100ms;
-	font-family: "Segoe UI", "Microsoft Yahei UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-	user-select: none;
 	box-sizing: border-box;
+	font-family: "Segoe UI", "Microsoft Yahei UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+	transition: all $ease-out-expo 250ms, color $ease-out-expo 100ms, fill $ease-out-expo 100ms;
+	user-select: none;
 }
 
 *:focus,
@@ -16,14 +16,14 @@
 
 html,
 body {
-	font-size: 14px;
-	margin: 0;
-	padding: 0;
 	position: relative;
 	height: 100vh;
-	transition: margin 0s, padding 0s, all $ease-out-expo 250ms;
-	background-color: c(main-bg);
+	margin: 0;
+	padding: 0;
 	color: c(text-color);
+	font-size: 14px;
+	background-color: c(main-bg);
+	transition: margin 0s, padding 0s, all $ease-out-expo 250ms;
 }
 
 a {

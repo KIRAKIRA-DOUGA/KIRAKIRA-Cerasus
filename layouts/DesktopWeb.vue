@@ -1,3 +1,10 @@
+<script setup lang="ts">
+	const showBanner = ref(getRoutePath() === "/");
+	watchRoute(route => {
+		showBanner.value = route === "/";
+	});
+</script>
+
 <template>
 	<div class="desktop-web">
 		<SideBar />
@@ -10,14 +17,7 @@
 	</div>
 </template>
 
-<script setup lang="ts">
-	const showBanner = ref(getRoutePath() === "/");
-	watchRoute(route => {
-		showBanner.value = route === "/";
-	});
-</script>
-
-<style lang="scss" scoped>
+<style scoped lang="scss">
 	.desktop-web {
 		display: flex;
 		width: var(--full-screen-width);

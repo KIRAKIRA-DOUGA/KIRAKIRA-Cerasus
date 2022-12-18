@@ -270,13 +270,13 @@
 	$size: 36px;
 
 	.track {
-		background-color: c(inner-color);
-		box-shadow: inset 0 4px 4px #0000000a; // TODO: 魔色待修改。
-		border-radius: 4px;
+		position: relative;
 		display: flex;
 		width: fit-content;
 		overflow: hidden;
-		position: relative;
+		background-color: c(inner-color);
+		border-radius: 4px;
+		box-shadow: inset 0 4px 4px #0000000a; // TODO: 魔色待修改。
 	}
 
 	.page {
@@ -288,19 +288,19 @@
 		position: absolute;
 		top: 0;
 		left: calc(v-bind(thumbPosition) * $size);
+		z-index: 3;
 		width: $size;
 		height: $size;
-		background: c(accent);
-		box-shadow: 0 2px 4px c(accent, 60%);
-		border-radius: 4px;
+		overflow: hidden;
 		color: white;
+		font-weight: bold;
+		line-height: $size;
+		text-align: center;
+		background: c(accent);
+		border-radius: 4px;
+		box-shadow: 0 2px 4px c(accent, 60%);
 		cursor: text;
 		transition: all $ease-out-max 500ms, left $ease-in-out-smooth 500ms;
-		z-index: 3;
-		text-align: center;
-		line-height: $size;
-		overflow: hidden;
-		font-weight: bold;
 
 		&:hover {
 			background: c(accent-hover);
@@ -322,15 +322,15 @@
 
 		> .focus-line {
 			$line-height: 2px;
-			border-bottom: c(accent-10) $line-height solid;
 			top: $line-height;
+			border-bottom: c(accent-10) $line-height solid;
 			pointer-events: none;
 		}
 
 		> * {
+			position: absolute;
 			width: 100%;
 			height: 100%;
-			position: absolute;
 		}
 
 		> .new-page-number {
@@ -344,8 +344,8 @@
 		}
 
 		::selection {
-			background-color: #fff9;
 			color: c(accent);
+			background-color: #fff9;
 		}
 	}
 
@@ -374,11 +374,11 @@
 
 	.unselected-item {
 		@include flex-center;
+		flex-shrink: 0;
 
 		width: $size;
 		height: $size;
 		color: c(icon-color);
-		flex-shrink: 0;
 		cursor: pointer;
 		transition: none !important;
 
@@ -392,14 +392,14 @@
 		}
 
 		.background {
-			color: gray;
 			position: absolute;
+			z-index: 0 !important;
+			flex-shrink: 0;
 			width: 300%;
 			height: 100%;
-			flex-shrink: 0;
+			color: gray;
 			opacity: 0;
 			pointer-events: none;
-			z-index: 0 !important;
 
 			&.hover {
 				background: radial-gradient(50% 250% at 50% 50%, c(gray) 33.33%, c(gray, 0) 100%);

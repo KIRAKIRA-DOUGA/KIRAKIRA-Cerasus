@@ -41,6 +41,14 @@ module.exports = {
 		"declaration-empty-line-before": null,
 		"custom-property-empty-line-before": null,
 		"selector-pseudo-class-no-unknown": [true, { ignorePseudoClasses: ["deep", "global", "export"] }],
+		"declaration-block-no-duplicate-properties": true,
+		"declaration-block-no-duplicate-custom-properties": true,
+		"font-family-no-duplicate-names": true,
+		"keyframe-block-no-duplicate-selectors": true,
+		"custom-property-no-missing-var-function": true,
+		"keyframe-declaration-no-important": true,
+		"font-family-no-missing-generic-family-keyword": true,
+		"font-family-name-quotes": "always-where-recommended",
 		"comment-empty-line-before": ["always", {
 			except: ["first-nested"],
 			ignore: ["stylelint-commands"],
@@ -52,5 +60,10 @@ module.exports = {
 			ignore: ["between-comments", "stylelint-commands"],
 			severity: "warning",
 		}],
+		"scss/dollar-variable-first-in-block": [true, {
+			ignore: ["comments", "imports"],
+			except: ["root", "function"],
+		}],
+		"order/properties-order": [[], { severity: "warning" }],
 	},
 };

@@ -1,26 +1,26 @@
 .ripple-button {
-	overflow: hidden;
 	position: relative;
+	overflow: hidden;
 
 	.ripple-circle {
-		display: block;
-		background-color: #0000002d;
 		$size: 20px;
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 2;
+		display: block;
 		width: $size;
 		height: $size;
-		position: absolute;
+		background-color: #0000002d;
 		border-radius: 100%;
-		left: 0;
-		top: 0;
-		z-index: 2;
 
 		:root[data-theme="dark"] & {
 			background-color: #ffffff2d;
 		}
 
 		~ :where(:not(.ripple-circle)) {
-			z-index: 3;
 			position: relative;
+			z-index: 3;
 		}
 	}
 

@@ -55,35 +55,35 @@
 	$duration-half: 200ms;
 
 	.radio {
-		appearance: none;
-		margin: 0;
-		margin-right: 0.5rem;
+		position: relative;
 		width: $size;
 		height: $size;
+		margin: 0;
+		margin-right: 0.5rem;
+		overflow: hidden;
 		background-color: c(main-bg);
-		box-shadow: inset 0 0 0 $border-size c(icon-color);
 		border-radius: 100%;
-		position: relative;
+		box-shadow: inset 0 0 0 $border-size c(icon-color);
+		transition: all $ease-in-out-max calc($duration-half * 2);
 		animation:
 			outer-border-change-back $duration-half $duration-half $ease-in-max reverse,
 			pressing-back $duration-half $ease-in alternate 2;
-		overflow: hidden;
-		transition: all $ease-in-out-max calc($duration-half * 2);
+		appearance: none;
 
 		&::before {
-			content: "";
+			position: absolute;
+			display: block;
 			width: $size;
 			height: $size;
 			background-color: c(icon-color);
-			display: block;
 			border-radius: 100%;
-			position: absolute;
 			transform: scale(0.5);
 			opacity: 0;
+			transition: all $ease-in-out-max calc($duration-half * 2);
 			animation:
 				inner-resize-back $duration-half $ease-out-max reverse,
 				cut-out $duration-half step-start;
-			transition: all $ease-in-out-max calc($duration-half * 2);
+			content: "";
 		}
 
 		&:checked {
@@ -93,11 +93,11 @@
 				pressing $duration-half $ease-in alternate 2;
 
 			&::before {
+				background-color: c(accent);
 				opacity: 1;
 				animation:
 					inner-resize $duration-half $duration-half $ease-out-max,
 					cut-in $duration-half step-start;
-				background-color: c(accent);
 			}
 		}
 

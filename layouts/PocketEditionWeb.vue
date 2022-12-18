@@ -16,12 +16,9 @@
 <style lang="scss" scoped>
 	.kirakira-router-box {
 		position: absolute;
-		left: var(--kirakira-main-side-bar-width);
 		top: var(--zero);
-
+		left: var(--kirakira-main-side-bar-width);
 		width: calc(var(--full-screen-width) - var(--kirakira-main-side-bar-width));
 		height: var(--full-screen-height);
-
-		// background-color: var(--main-bg);
 	}
 </style>

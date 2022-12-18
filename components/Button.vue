@@ -12,14 +12,14 @@
 
 <style scoped lang="scss">
 	button {
-		appearance: none;
-		background: c(accent);
-		box-shadow: 0 4px 4px c(accent, 30%);
-		border-radius: 4px;
-		border: none;
 		padding: 8px 16px;
 		color: white;
+		background: c(accent);
+		border: none;
+		border-radius: 4px;
+		box-shadow: 0 4px 4px c(accent, 30%);
 		transition: all $ease-out-back 250ms;
+		appearance: none;
 
 		&:hover {
 			background: c(accent-hover);
@@ -28,8 +28,8 @@
 
 		&:active {
 			background: c(accent);
-			transform: scale(calc(35 / 36));
 			box-shadow: none !important;
+			transform: scale(calc(35 / 36));
 		}
 
 		&[disabled] {

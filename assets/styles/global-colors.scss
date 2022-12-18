@@ -37,7 +37,7 @@
 
 @for $i from 1 through 2 {
 	$is-light: $i == 1;
-	$selector: if($is-light, $light-theme, $dark-theme);
+	$selector: if($is-light, ":root", ":root[data-theme=dark]");
 	#{$selector} {
 		@each $key, $color in $grayscale-colors {
 			@include hex-and-rgb-color($key, $color, $is-light);

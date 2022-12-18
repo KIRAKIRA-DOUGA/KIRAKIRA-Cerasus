@@ -65,8 +65,8 @@
 <style scoped lang="scss">
 	label {
 		display: flex;
-		justify-content: space-between;
 		align-items: center;
+		justify-content: space-between;
 	}
 
 	$width: 34px;
@@ -80,11 +80,11 @@
 		height: $thumb-size;
 
 		.base {
+			position: absolute;
+			top: calc(($thumb-size - $base-height) / 2);
 			width: $width;
 			height: $base-height;
 			background-color: c(gray-2);
-			position: absolute;
-			top: calc(($thumb-size - $base-height) / 2);
 			border-radius: 9999rem;
 
 			.on & {
@@ -101,14 +101,14 @@
 		}
 
 		.thumb {
+			position: absolute;
+			top: 0;
+			left: 0;
 			width: $thumb-size;
 			height: $thumb-size;
 			background-color: c(main-bg);
-			box-shadow: 0 1px 6px c(icon-color, 50%);
-			position: absolute;
-			top: 0;
 			border-radius: 100%;
-			left: 0;
+			box-shadow: 0 1px 6px c(icon-color, 50%);
 
 			.on & {
 				left: $width - $thumb-size;
