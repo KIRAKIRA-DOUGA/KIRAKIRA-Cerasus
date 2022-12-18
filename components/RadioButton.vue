@@ -118,6 +118,8 @@
 		display: none;
 	}
 
+	// TODO: hover、pressed、disabled 样式还没写。
+
 	$animation-key: "", "-back"; // 故意把动画写两遍，让 CSS 以为是两个动画。
 
 	@each $key in $animation-key {
