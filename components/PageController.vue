@@ -14,6 +14,10 @@
 		arrowKeyMove: false,
 	});
 
+	const emits = defineEmits<{
+		(event: "changePage", arg: { page: number }): void;
+	}>();
+
 	if (props.pages < 1)
 		throw new RangeError(`PageController pages 参数错误。页码值不能小于 1，当前值为 ${props.pages}。`);
 	if (props.current < 1 || props.current > props.pages)
@@ -61,10 +65,6 @@
 	});
 	const isScrolling = ref(false);
 	const newPageNumber = ref<HTMLDivElement>();
-
-	const emits = defineEmits<{
-		(event: "changePage", arg: { page: number }): void;
-	}>();
 
 	watch(() => props.current, (page, prevPage) => {
 		//#region 导轨动画

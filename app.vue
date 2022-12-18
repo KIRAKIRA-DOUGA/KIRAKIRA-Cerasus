@@ -1,9 +1,3 @@
-<template>
-	<NuxtLayout :name="layout">
-		<router-view />
-	</NuxtLayout>
-</template>
-
 <script setup lang="ts">
 	useHead({
 		htmlAttrs: {
@@ -44,6 +38,12 @@
 			navigator.serviceWorker.register("/sw.js");
 		});
 </script>
+
+<template>
+	<NuxtLayout :name="layout">
+		<router-view />
+	</NuxtLayout>
+</template>
 
 <style lang="scss">
 	:root {

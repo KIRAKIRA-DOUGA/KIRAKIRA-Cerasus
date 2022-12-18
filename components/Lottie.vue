@@ -14,14 +14,14 @@
 		width: 100,
 	});
 
+	const emits = defineEmits<{
+		(event: "animCreated", anim: AnimationItem): void;
+	}>();
+
 	const style = computed(() => ({
 		width: props.width ? `${props.width}px` : "100%",
 		height: props.height ? `${props.height}px` : "100%",
 	}));
-
-	const emits = defineEmits<{
-		(event: "animCreated", anim: AnimationItem): void;
-	}>();
 
 	const anim = ref<AnimationItem>();
 	const lavContainer = ref<HTMLDivElement>();

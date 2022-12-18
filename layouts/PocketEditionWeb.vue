@@ -1,3 +1,7 @@
+<script setup lang="ts">
+
+</script>
+
 <template>
 	<div>
 		<SideBar />
@@ -9,11 +13,7 @@
 	</div>
 </template>
 
-<script setup lang="ts">
-
-</script>
-
-<style lang="scss" scoped>
+<style scoped lang="scss">
 	.kirakira-router-box {
 		position: absolute;
 		top: var(--zero);

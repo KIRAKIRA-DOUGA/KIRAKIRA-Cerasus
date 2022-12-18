@@ -200,5 +200,27 @@ module.exports = {
 		"vue/singleline-html-element-content-newline": "off",
 		"vue/no-unused-vars": "warn",
 		"vue/no-v-model-argument": "off",
+		"vue/block-lang": ["error", {
+			"script": {
+				"lang": ["ts", "tsx"],
+			},
+			"style": {
+				"lang": "scss",
+			},
+		}],
+		"vue/block-tag-newline": ["error", {
+			"singleline": "always",
+			"multiline": "always",
+			"maxEmptyLines": 0,
+		}],
+		"vue/define-macros-order": ["error", {
+			"order": ["defineProps", "defineEmits"],
+		}],
+		"vue/component-options-name-casing": ["error", "PascalCase"],
+		"vue/next-tick-style": ["error", "promise"],
+		"vue/padding-line-between-blocks": ["error", "always"],
+		"vue/component-tags-order": ["error", {
+			"order": ["docs", "script:not([setup])", "script[setup]", "template", "i18n:not([locale=en])", "i18n[locale=en]", "style[scoped]", "style[module]", "style:not([scoped]):not([module])"],
+		}],
 	},
 };
