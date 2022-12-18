@@ -3,6 +3,7 @@ module.exports = {
 	extends: [
 		"stylelint-config-standard",
 		"stylelint-config-standard-scss",
+		"stylelint-config-rational-order",
 	],
 	overrides: [ // 扫描.vue/html文件中的<style>标签内的样式
 		{
@@ -10,7 +11,11 @@ module.exports = {
 			customSyntax: "postcss-html"
 		}
 	],
-	plugins: ["stylelint-scss"],
+	plugins: [
+		"stylelint-scss",
+		"stylelint-order",
+		"stylelint-config-rational-order/plugin",
+	],
 	rules: {
 		"media-feature-name-no-vendor-prefix": true, // 不要使用已被 autoprefixer 支持的浏览器前缀。
 		"at-rule-no-vendor-prefix": true,
@@ -36,7 +41,16 @@ module.exports = {
 		"declaration-empty-line-before": null,
 		"custom-property-empty-line-before": null,
 		"selector-pseudo-class-no-unknown": [true, { ignorePseudoClasses: ["deep", "global", "export"] }],
+		"comment-empty-line-before": ["always", {
+			except: ["first-nested"],
+			ignore: ["stylelint-commands"],
+			severity: "warning",
+		}],
 		"scss/dollar-variable-empty-line-before": null,
-		// "scss/no-global-function-names": null, // 无奈之举，后期考虑会去除。
+		"scss/double-slash-comment-empty-line-before": ["always", {
+			except: ["first-nested"],
+			ignore: ["between-comments", "stylelint-commands"],
+			severity: "warning",
+		}],
 	},
 };
