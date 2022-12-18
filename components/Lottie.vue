@@ -8,8 +8,6 @@
 		height?: number;
 		width?: number;
 	}>(), {
-		loop: false,
-		autoplay: false,
 		height: 100,
 		width: 100,
 	});

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-	import animationData from "@/components/spinner-dev1.json";
-	import { ThemeType, PaletteType } from "@/composables/theme";
+	import animationData from "lotties/spinner-dev1.json";
+	import { ThemeType, PaletteType } from "composables/theme";
 
 	const page = ref(1);
 	const pages = ref(99);

@@ -8,6 +8,15 @@
 			"\t$2",
 			"});$0",
 		],
-		"description": "定义Vue组件属性"
-	}
+		"description": "定义Vue组件属性",
+	},
+	"定义事件": {
+		"prefix": "emits",
+		"body": [
+			"const emits = defineEmits<{",
+			"\t(event: \"${1:update}\", arg: $2): void;$0",
+			"}>();",
+		],
+		"description": "定义Vue组件事件",
+	},
 }
