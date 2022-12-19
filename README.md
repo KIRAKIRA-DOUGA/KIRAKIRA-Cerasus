@@ -59,6 +59,7 @@ npm run preview
 <summary>不要使用</summary>
 
 * Sublime Text
+* Atom
 * Dreamweaver
 * Notepad++
 * EditPlus
