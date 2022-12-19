@@ -1,6 +1,4 @@
 <script setup lang="ts" generic="T">
-	type T = string | number | boolean | symbol | bigint | object | unknown[];
-
 	const props = withDefaults(defineProps<{
 		/** 禁用。 */
 		disabled?: boolean;
@@ -25,7 +23,7 @@
 	 */
 	function onChange() {
 		if (!radio.value) return;
-		emits("update:modelValue", radio.value.value);
+		emits("update:modelValue", radio.value.value as T);
 	}
 	// BUG: 目前的问题，如果在页面刚刚加载时快速选中两个单选框，会发生两个单选框同时被选中的 bug。
 </script>

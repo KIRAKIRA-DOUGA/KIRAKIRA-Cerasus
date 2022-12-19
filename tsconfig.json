@@ -30,8 +30,8 @@
 				},
 			},
 		],
-		"vueCompilerOptions": {
-			"experimentalRfc436": true
-		},
-	}
+	},
+	"vueCompilerOptions": {
+		"experimentalRfc436": true,
+	},
 }

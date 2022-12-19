@@ -15,7 +15,7 @@ export default defineNuxtConfig({
 		modules: resolve(__dirname, "./modules"),
 		pages: resolve(__dirname, "./pages"),
 		plugins: resolve(__dirname, "./plugins"),
-		"static": resolve(__dirname, "./public/static"),
+		static: resolve(__dirname, "./public/static"),
 		lotties: resolve(__dirname, "./assets/lotties"),
 
 	},
@@ -36,7 +36,7 @@ export default defineNuxtConfig({
 						"sass:selector",
 						"sass:string",
 					],
-					"import": [
+					import: [
 						"styles/_theme.scss",
 					],
 				},

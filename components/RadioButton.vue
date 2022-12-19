@@ -32,7 +32,7 @@
 				<div class={styles.radioFocus}>
 					<div class={styles.radio}></div>
 				</div>
-				{ slots["default"] && slots["default"]() }
+				{ slots?.default?.() }
 			</div>
 		);
 	}
