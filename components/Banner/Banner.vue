@@ -38,8 +38,7 @@
 			bottom: 0;
 			width: 100%;
 			height: 100%;
-			background: linear-gradient(transparent 0%, transparent 95%, #0005 100%); // TODO: 魔色待修改。
-			// 任何情况均不允许在除主题样式定义文件外使用字面量颜色（如#开头、rgb常量颜色等）。
+			background: linear-gradient(transparent 0%, transparent 95%, c(black, 33%) 100%);
 			opacity: 0.1;
 		}
 
@@ -47,7 +46,7 @@
 			height: 0;
 
 			> .shadow {
-				background: linear-gradient(#0005 80%, #000c); // TODO: 魔色待修改。
+				background: linear-gradient(c(black, 33%) 80%, c(black, 80%));
 				opacity: 1;
 			}
 		}

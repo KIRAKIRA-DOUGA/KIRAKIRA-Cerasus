@@ -31,10 +31,14 @@
 }
 
 /// 调用主题色。
-/// @param {String} $css-var-name - 颜色的 CSS 属性名称，不必加前面的“--”。
+/// @param {String} $css-var-name - 颜色的 CSS 属性名称，不必加前面的“--”。也可以是 white 或 black。
 /// @param {Number | null} $alpha [null] - Alpha 值，如果留空表示不透明色。
 /// @return {Color} 返回由 var 调用的自定义属性纯色，或 rgba 封装的透明色。
 @function c($css-var-name, $alpha: null) {
+	@if $css-var-name == white or $css-var-name == black {
+		@return if(not $alpha, $css-var-name, color.change($color: $css-var-name, $alpha: $alpha / 100%));
+	}
+
 	@if not $alpha {
 		@return var(--#{$css-var-name});
 	} @else {

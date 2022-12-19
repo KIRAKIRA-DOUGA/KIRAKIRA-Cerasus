@@ -101,7 +101,7 @@
 			}
 		}
 
-		/* &:focus { // TODO: 聚焦环炸了。
+		/* &:focus { // NOTODO: 聚焦环炸了。
 			box-shadow: 0 1px 6px #f06e8ecc, 0 0 0 10px #f8afb880;
 		} */
 	}

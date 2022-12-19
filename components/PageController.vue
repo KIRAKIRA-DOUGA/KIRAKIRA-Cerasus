@@ -276,7 +276,7 @@
 		overflow: hidden;
 		background-color: c(inner-color);
 		border-radius: 4px;
-		box-shadow: inset 0 4px 4px #0000000a; // TODO: 魔色待修改。
+		box-shadow: inset 0 4px 4px c(black, 4%);
 	}
 
 	.page {

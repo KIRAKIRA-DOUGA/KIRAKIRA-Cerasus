@@ -20,6 +20,7 @@
 			emit("update:modelValue", radio.value.value as T);
 		};
 		const styles = useCssModule();
+		const slot = slots.default && <span>{slots.default()}</span>;
 
 		return (
 			<div class={styles.label} onClick={onChange} tabindex={0}>
@@ -32,7 +33,7 @@
 				<div class={styles.radioFocus}>
 					<div class={styles.radio}></div>
 				</div>
-				{ slots?.default?.() }
+				{slot}
 			</div>
 		);
 	}
@@ -102,7 +103,6 @@
 	.radio-focus {
 		width: $size;
 		height: $size;
-		margin-right: 0.5rem;
 		border-radius: 100%;
 
 		.label:focus & {
@@ -112,13 +112,19 @@
 		.label:focus input:checked + & {
 			box-shadow: 0 1px 6px c(accent, 80%), 0 0 0 10px c(accent-focus, 50%);
 		}
+
+		& + span {
+			margin-left: 0.5rem;
+		}
+
+		// TODO: 目前单击时，聚焦环暂时还没有一起变小一下的动画。
 	}
 
 	input {
 		display: none;
 	}
 
-	// TODO: hover、pressed、disabled 样式还没写。
+	// TODO: 接下来请你编写 hover、pressed、disabled 样式。
 
 	$animation-key: "", "-back"; // 故意把动画写两遍，让 CSS 以为是两个动画。
 

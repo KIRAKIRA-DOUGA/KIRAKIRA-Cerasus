@@ -139,7 +139,7 @@
 				transform: scale(calc(19 / 20));
 			}
 
-			// TODO: 目前缺少 hover 样式。
+			// TODO: 接下来请你编写 hover、pressed 样式。
 		}
 	}
 

@@ -44,7 +44,7 @@
 			<RadioButton v-model="theme" value="light">浅色主题</RadioButton>
 			<RadioButton v-model="theme" value="dark">深色主题</RadioButton>
 			<hr />
-			<RadioButton v-model="palette" value="pink" />
+			<RadioButton v-model="palette" value="pink">玫瑰粉</RadioButton>
 			<RadioButton v-model="palette" value="cyan">智乃蓝</RadioButton>
 			<ProgressRing />
 			<Lottie loop autoplay :animationData="animationData" />
