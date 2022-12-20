@@ -1,4 +1,4 @@
-export type ThemeType = "light" | "dark";
+export type ThemeType = "light" | "dark"; // 想加高对比色、红绿色盲配色吗？
 export type ThemeSetType = ThemeType | "auto";
 export type PaletteType = "pink" | "cyan" | "green" | "orange" | "purple" | "red" | "yellow" | "custom";
 
@@ -13,12 +13,12 @@ export const Theme = {
 	get palette() { return useState<PaletteType>("palette", () => "pink"); },
 	watchTheme() {
 		watch(Theme.themeSet, themeSet => {
-			if (themeSet === "auto") themeSet = "light";
-			Theme.theme.value = themeSet;
+			if (themeSet === "auto") autoChange();
+			else Theme.theme.value = themeSet;
 		});
 		function autoChange() {
 			if (Theme.themeSet.value !== "auto") return;
-			Theme.theme.value = systemDark().matches ? "dark" : "light";
+			Theme.theme.value = process.client ? systemDark().matches ? "dark" : "light" : "light";
 		}
 		if (process.client) {
 			autoChange();
