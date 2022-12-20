@@ -1,15 +1,13 @@
 <script setup lang="ts">
 	import animationData from "lotties/spinner-dev1.json";
-	import { ThemeType, PaletteType } from "composables/theme";
 
 	const page = ref(1);
 	const pages = ref(99);
 	const displayPageCount = ref(7);
 	const toggle = ref(false);
 	const isClicked = ref(false);
-	const theme = ref<ThemeType>("light");
-	const palette = ref<PaletteType>("pink");
-
+	const theme = Theme.themeSet;
+	const palette = Theme.palette;
 	const router = useRouter();
 
 	async function onClickButton() {
@@ -23,10 +21,6 @@
 	};
 
 	useHead({ title: "首页" });
-	onMounted(() => { theme.value = Theme.theme; palette.value = Theme.palette; });
-	watch(theme, theme => (Theme.theme = theme));
-	watch(palette, palette => (Theme.palette = palette));
-
 	showConfetti();
 </script>
 
@@ -43,6 +37,7 @@
 			<ToggleSwitch on disabled>禁用 开</ToggleSwitch>
 			<RadioButton v-model="theme" value="light">浅色主题</RadioButton>
 			<RadioButton v-model="theme" value="dark">深色主题</RadioButton>
+			<RadioButton v-model="theme" value="auto">使用默认值</RadioButton>
 			<hr />
 			<RadioButton v-model="palette" value="pink">玫瑰粉</RadioButton>
 			<RadioButton v-model="palette" value="cyan">智乃蓝</RadioButton>

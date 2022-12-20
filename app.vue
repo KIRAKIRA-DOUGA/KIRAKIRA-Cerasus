@@ -1,7 +1,10 @@
 <script setup lang="ts">
+	Theme.watchTheme();
 	useHead({
 		htmlAttrs: {
 			lang: "zh-cmn-Hans-CN", // 中文-普通话-简体字-大陆地区
+			"data-theme": Theme.theme,
+			"data-palette": Theme.palette,
 		},
 		titleTemplate: "%s - KIRAKIRA☆DOUGA",
 		meta: [
@@ -19,7 +22,6 @@
 			{ rel: "manifest", href: "/app.webmanifest" },
 		],
 	});
-	Theme.init();
 
 	const layout = ref("desktop-web");
 	// const slotName = ref("desktop-web-slot");

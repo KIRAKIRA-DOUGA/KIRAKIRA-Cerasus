@@ -61,9 +61,7 @@
 		border-radius: 100%;
 		box-shadow: inset 0 0 0 $border-size c(icon-color);
 		transition: all $ease-in-out-max calc($duration-half * 2);
-		animation:
-			outer-border-change-back $duration-half $duration-half $ease-in-max reverse,
-			pressing-back $duration-half $ease-in alternate 2;
+		animation: outer-border-change-back $duration-half $duration-half $ease-in-max reverse;
 		appearance: none;
 
 		&::before {
@@ -84,11 +82,11 @@
 	}
 
 	input:checked + .radio-focus {
+		animation: pressing $duration-half $ease-in alternate 2;
+
 		& .radio {
 			box-shadow: inset 0 0 0 2px c(accent);
-			animation:
-				outer-border-change $duration-half $ease-in-max,
-				pressing $duration-half $ease-in alternate 2;
+			animation: outer-border-change $duration-half $ease-in-max;
 
 			&::before {
 				background-color: c(accent);
@@ -104,6 +102,7 @@
 		width: $size;
 		height: $size;
 		border-radius: 100%;
+		animation: pressing-back $duration-half $ease-in alternate 2;
 
 		.label:focus & {
 			box-shadow: 0 1px 6px c(icon-color, 50%), 0 0 0 10px c(gray-2, 50%);
@@ -116,8 +115,6 @@
 		& + span {
 			margin-left: 0.5rem;
 		}
-
-		// TODO: 目前单击时，聚焦环暂时还没有一起变小一下的动画。
 	}
 
 	input {
