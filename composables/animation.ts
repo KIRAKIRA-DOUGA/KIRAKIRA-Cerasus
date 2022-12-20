@@ -17,3 +17,5 @@ export function removeExistAnimations(...elements: Element[]) {
 	}
 	return hasExistAnimations;
 }
+
+onErrorCaptured(hook => console.log(hook));

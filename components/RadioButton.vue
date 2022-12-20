@@ -1,45 +1,43 @@
-<script lang="tsx">
-	interface Props<T> {
+<script setup lang="ts" generic="T">
+	const props = withDefaults(defineProps<{
 		/** 禁用。 */
 		disabled?: boolean;
 		/** 值。 */
 		value: T;
 		/** 当前绑定值。 */
-		modelValue?: T;
-	}
+		modelValue: T;
+	}>(), {
+		disabled: false,
+	});
 
-	interface Emits<T> {
+	const emits = defineEmits<{
 		(event: "update:modelValue", value: T): void;
-	}
+	}>();
 
-	export default function RadioButton<T>(props: Props<T>, { slots, emit }: { slots: { default?: Function }; emit: Emits<T> }) {
-		const radio = ref<HTMLInputElement>();
-		const isChecked = props.modelValue === props.value;
-		const onChange = () => {
-			if (!radio.value) return;
-			emit("update:modelValue", radio.value.value as T);
-		};
-		const styles = useCssModule();
-		const slot = slots.default && <span>{slots.default()}</span>;
-
-		return (
-			<div class={styles.label} onClick={onChange} tabindex={0}>
-				<input
-					ref={radio}
-					type="radio"
-					checked={isChecked}
-					value={props.value}
-				/>
-				<div class={styles.radioFocus}>
-					<div class={styles.radio}></div>
-				</div>
-				{slot}
-			</div>
-		);
-	}
+	const radio = ref<HTMLInputElement>();
+	const isChecked = computed(() => props.modelValue === props.value);
+	/**
+	 * 数据改变事件。
+	 */
+	const onChange = () => {
+		if (!radio.value) return;
+		emits("update:modelValue", radio.value.value as T);
+	};
 </script>
 
-<style module lang="scss">
+<template>
+	<div class="label" tabindex="0" @click="onChange">
+		<input ref="radio" type="radio" :checked="isChecked" :value="props.value" />
+		<div class="radio-focus">
+			<div class="radio"></div>
+		</div>
+		<span v-if="$slots.default">
+			<slot></slot>
+		</span>
+	</div>
+</template>
+
+<style scoped lang="scss">
 	.label {
 		display: flex;
 		align-items: center;
@@ -119,6 +117,17 @@
 
 	input {
 		display: none;
+	}
+
+	.no-animation {
+		&,
+		* {
+			&,
+			&::before,
+			&::after {
+				animation: none !important;
+			}
+		}
 	}
 
 	// TODO: 接下来请你编写 hover、pressed、disabled 样式。
