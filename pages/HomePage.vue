@@ -13,10 +13,12 @@
 	const { locale: currentLocale, locales } = useI18n();
 	const switchLocalePath = useSwitchLocalePath();
 	const availableLocales = computed(() => (locales.value as LocaleObject[]).filter(i => i.code !== currentLocale.value));
+	const timeoutId = ref<NodeJS.Timeout>();
 
 	async function onClickButton() {
+		clearTimeout(timeoutId.value);
 		isClicked.value = true;
-		await delay(2000);
+		await new Promise(resolve => (timeoutId.value = setTimeout(resolve, 2000)));
 		isClicked.value = false;
 	}
 
