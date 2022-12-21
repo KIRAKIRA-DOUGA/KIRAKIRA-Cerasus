@@ -8,7 +8,7 @@ export function getFunctionBody(func: Function) {
 }
 
 export default defineNuxtModule({
-	setup(options, nuxt) {
+	setup(_options, nuxt) {
 		addPlugin(resolve(__dirname, "plugin"));
 		addImports({ name: "Theme", as: "Theme", from: resolve(__dirname, "composables").replaceAll("\\", "/") });
 		nuxt.hook("nitro:config", config => {
