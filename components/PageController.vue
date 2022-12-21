@@ -3,25 +3,30 @@
 		/** 页码总数。 */
 		pages: number;
 		/** 当前页码。 */
-		current: number;
+		modelValue?: number;
+		/** 当前页码，兼容使用。 */
+		current?: number;
 		/** 显示在组件上的最多页码数目。 */
 		displayPageCount?: number;
 		/** 允许用户使用键盘上左右箭头键翻页。 */
 		enableArrowKeyMove?: boolean;
 	}>(), {
+		modelValue: undefined,
 		current: 1,
 		displayPageCount: 7,
-		arrowKeyMove: false,
+		enableArrowKeyMove: false,
 	});
 
 	const emits = defineEmits<{
-		(event: "changePage", arg: { page: number }): void;
+		(event: "update:modelValue", page: number): void;
 	}>();
+
+	const currentPage = computed(() => props.modelValue ?? props.current);
 
 	if (props.pages < 1)
 		throw new RangeError(`PageController pages 参数错误。页码值不能小于 1，当前值为 ${props.pages}。`);
-	if (props.current < 1 || props.current > props.pages)
-		throw new RangeError(`PageController current 超出页码范围。当前页码值取值范围为 1 ~ ${props.pages}，当前设定值为 ${props.current}。`);
+	if (currentPage.value < 1 || currentPage.value > props.pages)
+		throw new RangeError(`PageController current 超出页码范围。当前页码值取值范围为 1 ~ ${props.pages}，当前设定值为 ${currentPage.value}。`);
 	if (props.displayPageCount < 3)
 		throw new RangeError(`PageController displayPageCount 参数错误。显示的最多页码数目不能小于 3，当前设定值为 ${props.displayPageCount}。`);
 
@@ -32,18 +37,18 @@
 	const showFirst = computed(() => props.displayPageCount >= 4);
 	const actualPages = computed(() => Math.min(props.pages, props.displayPageCount));
 	const scrolledItemCount = computed(() => actualPages.value - (+showFirst.value + +showLast.value));
-	const scrolledPages = ref<PositionPageItemPair>(getScrolledItems(props.current));
+	const scrolledPages = ref<PositionPageItemPair>(getScrolledItems(currentPage.value));
 	const scrollArea = ref<HTMLDivElement>();
 	const pageEdit = ref<HTMLDivElement>();
 	const thumbPosition = computed(() => {
 		return (
-			props.current < actualPages.value / 2 ? props.current :
-			props.pages - props.current < actualPages.value / 2 ? actualPages.value - (props.pages - props.current) :
-			props.displayPageCount === 4 && props.current !== 2 ? 3 :
+			currentPage.value < actualPages.value / 2 ? currentPage.value :
+			props.pages - currentPage.value < actualPages.value / 2 ? actualPages.value - (props.pages - currentPage.value) :
+			props.displayPageCount === 4 && currentPage.value !== 2 ? 3 :
 			Math.floor((actualPages.value + 1) / 2)
 		) - 1;
 	});
-	const _currentEdited = ref(String(props.current)); // 注意类型得是 string。
+	const _currentEdited = ref(String(currentPage.value)); // 注意类型得是 string。
 	const currentEdited = computed({
 		get: () => _currentEdited.value,
 		set: async value_str => {
@@ -66,7 +71,7 @@
 	const isScrolling = ref(false);
 	const newPageNumber = ref<HTMLDivElement>();
 
-	watch(() => props.current, (page, prevPage) => {
+	watch(() => currentPage.value, (page, prevPage) => {
 		//#region 导轨动画
 		const prevItems = getScrolledItems(prevPage);
 		const nextItems = getScrolledItems(page);
@@ -134,7 +139,7 @@
 	function changePage(page: number) {
 		if (page < 1 || page > props.pages)
 			throw new RangeError(`超出页码范围。当前页码值取值范围为 1 ~ ${props.pages}，当前设定值为 ${page}。`);
-		emits("changePage", { page });
+		emits("update:modelValue", page);
 	}
 	/**
 	 * 移动页码值。如 +1、-1。
@@ -142,7 +147,7 @@
 	 */
 	function movePage(movement: number) {
 		if (movement === 0) return;
-		const newPage = props.current + movement;
+		const newPage = currentPage.value + movement;
 		if (newPage < 1 || newPage > props.pages) return;
 		changePage(newPage);
 	}
@@ -216,7 +221,7 @@
 	 */
 	function onBlurEdited() {
 		if (currentEdited.value.trim() === "")
-			currentEdited.value = String(props.current);
+			currentEdited.value = String(currentPage.value);
 		window.getSelection()?.removeAllRanges();
 	}
 
@@ -261,7 +266,7 @@
 			>
 				{{ currentEdited }}
 			</div>
-			<div ref="newPageNumber" class="new-page-number">{{ current }}</div>
+			<div ref="newPageNumber" class="new-page-number">{{ currentPage }}</div>
 		</div>
 	</div>
 </template>

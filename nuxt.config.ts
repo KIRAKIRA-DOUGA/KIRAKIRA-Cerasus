@@ -8,10 +8,11 @@ export default defineNuxtConfig({
 		"plugins/ripple.ts",
 	],
 	modules: [
-		"@nuxtjs/color-mode",
+		// "@nuxtjs/color-mode",
 		"@nuxtjs/i18n",
 		"@nuxt/content",
 		// "@nuxtjs/robots",
+		"modules/theme/module.ts",
 	],
 	alias: {
 		styles: resolve(__dirname, "./assets/styles"),
@@ -55,11 +56,31 @@ export default defineNuxtConfig({
 		},
 	},
 	i18n: {
-		locales: ["zh", "en", "ja"],
+		locales: [
+			{ code: "zh", name: "简体中文" },
+			{ code: "en", name: "English" },
+			{ code: "ja", name: "日本語" },
+		],
 		defaultLocale: "zh",
 		vueI18n: {
 			legacy: false,
 			locale: "zh",
+		},
+	},
+	content: {
+		markdown: {
+			remarkPlugins: {
+				"remark-emoji": {
+					emoticon: true,
+				},
+			},
+		},
+		highlight: {
+			theme: {
+				default: "github-light",
+				dark: "github-dark",
+				sepia: "monokai",
+			},
 		},
 	},
 });

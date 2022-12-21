@@ -10,8 +10,11 @@
 		disabled: false,
 	});
 
+	type Movement = "previous" | "next";
+
 	const emits = defineEmits<{
 		(event: "update:modelValue", value: T): void;
+		(event: "move", value: Movement): void;
 	}>();
 
 	const radio = ref<HTMLInputElement>();
@@ -23,10 +26,26 @@
 		if (!radio.value) return;
 		emits("update:modelValue", radio.value.value as T);
 	};
+
+	// 如果单选框勾选情况与 prop 不同，就强制使其相同。
+	watch(() => radio.value?.checked, () => {
+		if (radio.value && isChecked.value !== radio.value.checked)
+			radio.value.checked = isChecked.value;
+	}, { immediate: true });
+
+	/**
+	 * 键盘按下方向键时移动到前一个或后一个单选框事件。
+	 */
+	function onKeydown(e: KeyboardEvent) {
+		const movePrev = e.key === "ArrowUp" || e.key === "ArrowLeft";
+		const moveNext = e.key === "ArrowDown" || e.key === "ArrowRight";
+		if (!movePrev && !moveNext) return;
+		emits("move", moveNext ? "next" : "previous");
+	}
 </script>
 
 <template>
-	<div class="label" tabindex="0" @click="onChange">
+	<div class="label" :tabindex="isChecked ? 0 : -1" @click="onChange" @keydown="onKeydown">
 		<input ref="radio" type="radio" :checked="isChecked" :value="props.value" />
 		<div class="radio-focus">
 			<div class="radio"></div>

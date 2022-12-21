@@ -7,7 +7,5 @@
 </script>
 
 <template>
-	<a @click="goHome">
-		Home
-	</a>
+	<LocaleLink to="/">Home</LocaleLink>
 </template>

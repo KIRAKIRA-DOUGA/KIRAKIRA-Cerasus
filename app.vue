@@ -1,17 +1,28 @@
 <script setup lang="ts">
 	// const colorMode = useColorMode();
 	// console.log(colorMode);
-	Theme.watchTheme();
+	// Theme.watchTheme();
+	const { locale } = useI18n();
+	const langTag = computed(() => {
+		const langs = {
+			zh: "zh-cmn-Hans-CN", // 中文-普通话-简体字-大陆地区
+			en: "en-US",
+			ja: "ja-JP",
+		};
+		return langs[locale.value as keyof typeof langs] ?? locale.value;
+	});
 	useHead({
 		htmlAttrs: {
-			lang: "zh-cmn-Hans-CN", // 中文-普通话-简体字-大陆地区
-			"data-theme": Theme.theme,
-			"data-palette": Theme.palette,
+			lang: langTag,
+			// "data-theme": Theme.theme,
+			// "data-palette": Theme.palette,
+			// class: () => [Theme.theme, Theme.palette].map(ref => ref.value).join(" "),
+			// TODO: 池沼 Nuxt 自作聪明不清空原有 class 而是增加新 class。
 		},
 		titleTemplate: "%s - KIRAKIRA☆DOUGA",
 		meta: [
-			{ "http-equiv": "Content-Type", content: "text/html;charset=UTF-8" },
-			{ "http-equiv": "X-UA-Compatible", content: "IE=Edge,chrome=1" },
+			{ "http-equiv": "content-type", content: "text/html;charset=UTF-8" },
+			{ "http-equiv": "x-ua-compatible", content: "IE=Edge,chrome=1" },
 			{ name: "renderer", content: "webkit" },
 			{ name: "theme-color", content: "#f06e8e" },
 			{ name: "description", content: "一个可爱的视频网站，献给可爱的你～" },

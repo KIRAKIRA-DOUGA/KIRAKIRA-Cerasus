@@ -1,16 +1,18 @@
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
 		/** 打开。 */
+		modelValue?: boolean;
+		/** 打开，兼容使用。 */
 		on?: boolean;
 		/** 禁用。 */
 		disabled?: boolean;
 	}>(), {
-		on: false,
+		modelValue: undefined,
 		disabled: false,
 	});
 
 	const emits = defineEmits<{
-		(event: "update:on", on: boolean): void;
+		(event: "update:modelValue", on: boolean): void;
 	}>();
 
 	const isDraging = ref(false);
@@ -34,7 +36,7 @@
 			document.removeEventListener("mousemove", mouseMove);
 			document.removeEventListener("mouseup", mouseUp);
 			const isOn = e.pageX - x > left + max / 2;
-			emits("update:on", isOn);
+			emits("update:modelValue", isOn);
 			thumb.style.removeProperty("left");
 			const lastTime = new Date().getTime();
 			isDraging.value = lastTime - firstTime > 200; // 定义识别为拖动而不是点击的时间差。
@@ -47,13 +49,13 @@
 	 * 点击事件。为了和拖拽事件让位。
 	 */
 	function onClick() {
-		if (!isDraging.value) emits("update:on", !props.on);
+		if (!isDraging.value) emits("update:modelValue", !props.modelValue);
 		isDraging.value = false;
 	}
 </script>
 
 <template>
-	<label :class="{ on, disabled }" :tabindex="disabled ? -1 : 0" @click="onClick">
+	<label :class="{ on: modelValue ?? on, disabled }" :tabindex="disabled ? -1 : 0" @click="onClick">
 		<slot></slot>
 		<div class="switch">
 			<div class="base"></div>

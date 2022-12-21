@@ -1,17 +1,15 @@
-@use "sass:map";
-@use "sass:list";
 @use "./functions" as *;
-@use "./colors" as *;
 
 a {
 	color: c(accent);
+	text-decoration: underline;
 
 	&:hover,
 	&:focus,
 	&:active {
-		$svg-color: color-to-svg-color(list.nth(map.get(map.get($primary-colors, pink), accent-40), 1));
 		color: c(accent-hover);
-		background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 4'%3E%3Cpath fill='none' stroke='#{$svg-color}' d='M0 3.5c5 0 5-3 10-3s5 3 10 3 5-3 10-3 5 3 10 3'/%3E%3C/svg%3E") repeat-x 0 100%;
+		text-decoration: none;
+		background: var(--accent-hover-wave-link-background) repeat-x 0 100%;
 		background-size: 20px auto;
 		animation: wave-move 1s infinite linear;
 	}

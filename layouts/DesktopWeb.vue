@@ -1,7 +1,8 @@
 <script setup lang="ts">
 	const showBanner = ref(getRoutePath() === "/");
+	const rootPaths = ["/", "/zh", "/en", "/ja"];
 	watchRoute(route => {
-		showBanner.value = route === "/";
+		showBanner.value = rootPaths.includes(route);
 	});
 </script>
 

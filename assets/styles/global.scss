@@ -1,12 +1,18 @@
 @import "./hyperlink";
 
+$fallback-fonts: system-ui, -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+
 *,
 *::before,
 *::after {
 	box-sizing: border-box;
-	font-family: "Segoe UI", "Microsoft Yahei UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+	font-family: "Segoe UI", "Microsoft Yahei UI", $fallback-fonts;
 	transition: all $ease-out-expo 250ms, color $ease-out-expo 100ms, fill $ease-out-expo 100ms;
 	user-select: none;
+
+	html:lang(ja) & {
+		font-family: "Segoe UI", "Yu Gothic UI", "Microsoft Yahei UI", $fallback-fonts;
+	}
 }
 
 *:focus,

@@ -106,6 +106,8 @@ module.exports = {
 		"spaced-comment": ["error", "always", { "exceptions": ["+", "-", "*", "/"], "markers": ["/", "!", "@", "#", "#region", "#endregion"] }],
 		"radix": "error", // parseInt 必须要指明是十进制。
 		"no-self-assign": "off",
+		"no-debugger": "warn",
+		"import/order": "off",
 		"@typescript-eslint/no-unused-vars": ["warn", { // 非要使用未使用变量，前面加下划线。
 			"argsIgnorePattern": "^_",
 			"varsIgnorePattern": "^_",
@@ -213,7 +215,7 @@ module.exports = {
 			"multiline": "always",
 			"maxEmptyLines": 0,
 		}],
-		"vue/define-macros-order": ["error", {
+		"vue/define-macros-order": ["off", { // 与 typescript 冲突了。
 			"order": ["defineProps", "defineEmits"],
 		}],
 		"vue/component-options-name-casing": ["error", "PascalCase"],
