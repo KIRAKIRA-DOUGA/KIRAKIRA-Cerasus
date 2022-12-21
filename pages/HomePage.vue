@@ -37,7 +37,7 @@
 			<LocaleLink to="/VideoPlay">{{ t.video }}</LocaleLink>
 			<LocaleLink to="/hello">{{ t.content }}</LocaleLink>
 			<LocaleLink to="/search">{{ t.search }}</LocaleLink>
-			<NuxtLink to="/404">404</NuxtLink>
+			<a href="/404">404</a>
 		</div>
 		<div class="component-test">
 			<PageController v-model="page" :pages="pages" :displayPageCount="displayPageCount" enableArrowKeyMove />
