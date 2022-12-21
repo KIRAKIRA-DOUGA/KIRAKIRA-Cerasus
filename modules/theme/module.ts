@@ -1,10 +1,12 @@
 import { addImports, addPlugin, defineNuxtModule } from "@nuxt/kit";
 import { resolve } from "path";
 
-export function getFunctionBody(func: Function) {
+export function getFunctionBody(func: Function, compressed: false) {
 	const str = func.toString();
 	const leftBraceIndex = str.indexOf("{");
-	return str.slice(leftBraceIndex + 1, -1);
+	const result = str.slice(leftBraceIndex + 1, -1);
+	if (compressed) return result.replaceAll(/\n\s*/g, " ");
+	else return result;
 }
 
 export default defineNuxtModule({

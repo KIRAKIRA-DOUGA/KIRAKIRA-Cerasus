@@ -1,4 +1,14 @@
 <script setup lang="ts">
+	definePageMeta({
+		validate: route => {
+			const _nuxtApp = useNuxtApp();
+			const routeNumber = +route.path.slice(1);
+			if (isFinite(routeNumber)) // 测试，如果输入的路由是数字就可以触发 404。
+				return false;
+			return true;
+		},
+	});
+
 	function reload() {
 		location.reload();
 	}
