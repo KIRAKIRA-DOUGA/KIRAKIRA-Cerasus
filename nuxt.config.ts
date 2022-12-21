@@ -1,7 +1,7 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 
 import { resolve } from "path";
-import styleResources from "./modules/style-resources";
+import styleResources from "./helpers/style-resources";
 
 export default defineNuxtConfig({
 	plugins: [

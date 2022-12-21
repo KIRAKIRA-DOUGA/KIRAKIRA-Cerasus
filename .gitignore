@@ -34,3 +34,7 @@ node_modules
 
 # Windows
 desktop.ini
+
+# build
+.output
+dist
