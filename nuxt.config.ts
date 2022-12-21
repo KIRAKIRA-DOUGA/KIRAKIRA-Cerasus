@@ -8,11 +8,12 @@ export default defineNuxtConfig({
 		"plugins/ripple.ts",
 	],
 	modules: [
-		// "@nuxtjs/color-mode",
 		"@nuxtjs/i18n",
 		"@nuxt/content",
-		// "@nuxtjs/robots",
 		"modules/theme/module.ts",
+		// "@nuxtjs/color-mode", // 这个已经重写了，不用开启。
+		// "@nuxtjs/robots", // BUG: 打不开。
+		// "@nuxtjs/sitemap", // BUG: 打不开。
 	],
 	alias: {
 		styles: resolve(__dirname, "./assets/styles"),
