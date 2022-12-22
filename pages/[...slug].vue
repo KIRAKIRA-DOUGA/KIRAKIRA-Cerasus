@@ -1,10 +1,15 @@
 <script setup lang="ts">
 	definePageMeta({
 		validate: route => {
-			const _nuxtApp = useNuxtApp();
 			const routeNumber = +route.path.slice(1);
-			if (isFinite(routeNumber)) // 测试，如果输入的路由是数字就可以触发 404。
+			if (routeNumber === 601)
+				navigateTo("/601.html");
+			if (routeNumber === 404)
 				return false;
+			if (isFinite(routeNumber)) // 测试，如果输入的路由是数字就可以触发对应数字的错误代码。
+				return {
+					statusCode: routeNumber,
+				};
 			return true;
 		},
 	});

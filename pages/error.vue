@@ -1,17 +1,13 @@
 <script setup lang="ts">
-	// 把该文件移动到根目录即可自定义错误（如 404）页面样式。
+	// 把该文件移动到根目录即可自定义错误（如 404、500）页面样式。
 
-	interface ErrorInfo {
-		message: string;
-		stack: string;
-		statusCode: string;
-		statusMessage: string;
-		url: string;
-	}
+	import { NuxtError } from "nuxt/dist/app/composables/error";
 
 	const props = defineProps<{
-		error?: ErrorInfo; // BUG: TypeScript WCNM，你把多少人的生活，都 TM 给毁了。
+		error?: NuxtError; // BUG: TypeScript WCNM，你把多少人的生活，都 TM 给毁了。
 	}>();
+
+	onMounted(() => console.log(props.error));
 </script>
 
 <template>
