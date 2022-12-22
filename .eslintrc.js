@@ -224,5 +224,6 @@ module.exports = {
 		"vue/component-tags-order": ["error", {
 			"order": ["docs", "script:not([setup])", "script[setup]", "template", "i18n:not([locale=en])", "i18n[locale=en]", "style[scoped]", "style[module]", "style:not([scoped]):not([module])"],
 		}],
+		"vue/no-multiple-template-root": "off",
 	},
 };

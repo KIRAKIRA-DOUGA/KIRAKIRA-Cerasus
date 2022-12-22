@@ -55,6 +55,7 @@
 </script>
 
 <template>
+	<NoScriptMask />
 	<NuxtLayout :name="layout">
 		<router-view />
 	</NuxtLayout>

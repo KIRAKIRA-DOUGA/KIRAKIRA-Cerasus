@@ -50,6 +50,10 @@
 			@include hex-and-rgb-color($key, $color, $is-light);
 		}
 
+		@each $key, $color in map.get($map: $primary-colors, $key: pink) {
+			@include hex-and-rgb-color($key, $color, $is-light); // fallback 颜色。
+		}
+
 		@each $palette, $accents in $primary-colors {
 			&.#{"" + $palette} {
 				@each $key, $color in $accents {
