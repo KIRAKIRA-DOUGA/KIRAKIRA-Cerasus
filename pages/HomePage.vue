@@ -129,4 +129,11 @@
 		display: flex;
 		gap: 8px;
 	}
+
+	hr {
+		border-top: rgb(80 80 80 / 10%) 1px solid;
+		border-right: none;
+		border-bottom: none;
+		border-left: none;
+	}
 </style>
