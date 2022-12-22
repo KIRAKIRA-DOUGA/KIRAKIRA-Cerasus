@@ -48,7 +48,7 @@
 	<div class="label" :tabindex="isChecked ? 0 : -1" @click="onChange" @keydown="onKeydown">
 		<input ref="radio" type="radio" :checked="isChecked" :value="props.value" />
 		<div class="radio-focus">
-			<div class="radio-wrapper">
+			<div class="radio-shadow">
 				<div class="radio"></div>
 			</div>
 		</div>
@@ -62,6 +62,14 @@
 	.label {
 		display: flex;
 		align-items: center;
+
+		&:hover input:checked + .radio-focus .radio-shadow {
+			box-shadow: 0 9px 9px c(accent, 30%);
+		}
+
+		&:active input:checked + .radio-focus .radio-shadow {
+			box-shadow: none !important;
+		}
 	}
 
 	$size: 20px;
@@ -70,7 +78,7 @@
 	$border-size: 2px;
 	$duration-half: 200ms;
 
-	.radio-wrapper {
+	.radio-shadow {
 		width: $size;
 		height: $size;
 		border-radius: 100%;
@@ -109,17 +117,9 @@
 	input:checked + .radio-focus {
 		animation: pressing $duration-half $ease-in alternate 2;
 
-		& .radio-wrapper {
+		& .radio-shadow {
 			box-shadow: 0 4px 4px c(accent, 30%);
 			transition: 0.2s;
-
-			&:hover {
-				box-shadow: 0 9px 9px c(accent, 30%);
-			}
-
-			&:active {
-				box-shadow: none !important;
-			}
 		}
 
 		& .radio {
@@ -134,7 +134,7 @@
 					cut-in $duration-half step-start;
 			}
 
-			&:active::before {
+			.label:active &::before {
 				transform: scale(0.4);
 				transition: 0.2s;
 			}
@@ -152,7 +152,7 @@
 		}
 
 		.label:focus input:checked + & {
-			box-shadow: 0 0 0 10px c(accent-focus, 50%);
+			box-shadow: 0 1px 6px c(accent, 0%), 0 0 0 10px c(accent-focus, 50%);
 		}
 
 		& + span {
