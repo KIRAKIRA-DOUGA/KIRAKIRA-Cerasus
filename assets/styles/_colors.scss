@@ -16,6 +16,7 @@ $grayscale-colors: (
 $secondary-colors: (
 	pink: #f06e8e,
 	cyan: #45b3e1,
+	blue: #4581e1,
 	green: #4bb530,
 	orange: #e09627,
 	purple: #b252d4,
@@ -40,11 +41,21 @@ $primary-colors: (
 		accent-80: (#3a82a1, #c4ebfc),
 		accent-70: (#4593b5, #93dbfa),
 		accent-60: (#57a9cb, #73caef),
-		accent-50: (#45b3e1, #45b3e1), // 更改其它配色，我只改了一个，这么不统一，02 肯定骂死我。
+		accent-50: (#45b3e1, #45b3e1),
 		accent-40: (#73caef, #57a9cb),
 		accent-30: (#93dbfa, #4593b5),
 		accent-20: (#c4ebfc, #3a82a1),
 		accent-10: (#e8f8ff, #3a82a1),
+	),
+	blue: (
+		accent-80: (#3a61a1, #c4dafc),
+		accent-70: (#4570b5, #93bbfa),
+		accent-60: (#5784cb, #73a3ef),
+		accent-50: (#4581e1, #4581e1),
+		accent-40: (#73a3ef, #5784cb),
+		accent-30: (#93bbfa, #4570b5),
+		accent-20: (#c4dafc, #3a61a1),
+		accent-10: (#e8f1ff, #3a61a1),
 	),
 	green: (
 		accent-80: #821c38,
