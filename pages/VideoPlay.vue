@@ -11,7 +11,7 @@
 	</div>
 </template>
 
-<i18n lang="js">
+<i18n lang="json5">
 {
 	zh: {
 		videoPlaying: "视频播放中……",

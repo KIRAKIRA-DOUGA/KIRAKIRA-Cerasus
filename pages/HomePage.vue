@@ -64,7 +64,7 @@
 	</div>
 </template>
 
-<i18n lang="js">
+<i18n lang="json5">
 {
 	zh: {
 		home: "KIRAKIRA 首页",

@@ -209,6 +209,9 @@ module.exports = {
 			"style": {
 				"lang": "scss",
 			},
+			"i18n": {
+				"lang": "json5",
+			},
 		}],
 		"vue/block-tag-newline": ["error", {
 			"singleline": "always",
@@ -222,7 +225,7 @@ module.exports = {
 		"vue/next-tick-style": ["error", "promise"],
 		"vue/padding-line-between-blocks": ["error", "always"],
 		"vue/component-tags-order": ["error", {
-			"order": ["docs", "script:not([setup])", "script[setup]", "template", "i18n:not([locale=en])", "i18n[locale=en]", "style[scoped]", "style[module]", "style:not([scoped]):not([module])"],
+			"order": ["docs", "script:not([setup])", "script[setup]", "template", "i18n", "style[scoped]", "style[module]", "style:not([scoped]):not([module])"],
 		}],
 		"vue/no-multiple-template-root": "off",
 	},
