@@ -16,6 +16,8 @@
 					</div>
 				</noscript>
 			);
+			// BUG: 一旦包含 noscript 标签，会在控制台打印一个警告和一个错误，但不影响使用。
+			// 目前还没查出是 vue 的问题还是 nuxt 的问题。找出问题来源后稍后去 GitHub 提 issue。
 		},
 	});
 </script>
