@@ -108,7 +108,7 @@
 			left: 0;
 			width: $thumb-size;
 			height: $thumb-size;
-			background-color: c(main-bg);
+			background-color: c(white);
 			border-radius: 100%;
 			box-shadow: 0 1px 6px c(icon-color, 50%);
 

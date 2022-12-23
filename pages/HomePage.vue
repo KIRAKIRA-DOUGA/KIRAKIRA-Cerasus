@@ -52,6 +52,7 @@
 			<hr />
 			<RadioButton v-model="palette" value="pink">{{ t.pink }}</RadioButton>
 			<RadioButton v-model="palette" value="cyan">{{ t.cyan }}</RadioButton>
+			<RadioButton v-model="palette" value="blue">{{ t.blue }}</RadioButton>
 			<hr />
 			<NuxtLink v-for="locale in availableLocales" :key="locale.code" :to="switchLocalePath(locale.code)">
 				{{ locale.name }}
@@ -77,8 +78,9 @@
 		lightTheme: "浅色主题",
 		darkTheme: "深色主题",
 		systemTheme: "使用默认值",
-		pink: "玫瑰粉",
-		cyan: "智乃蓝",
+		pink: "萌妹粉",
+		cyan: "胖次蓝",
+		blue: "智乃蓝",
 	},
 	en: {
 		home: "KIRAKIRA Home",
@@ -91,8 +93,9 @@
 		lightTheme: "Light",
 		darkTheme: "Dark",
 		systemTheme: "System",
-		pink: "Rose Pink",
-		cyan: "Chino Cyan",
+		pink: "Kawaii Pink",
+		cyan: "Pants Cyan",
+		blue: "Chino Blue",
 	},
 	ja: {
 		home: "KIRAKIRA ホーム",
@@ -105,8 +108,9 @@
 		lightTheme: "ライト",
 		darkTheme: "暗い",
 		systemTheme: "自動",
-		pink: "薔薇 ピンク",
-		cyan: "チノ 青",
+		pink: "かわいい ピンク",
+		cyan: "パンツ 青",
+		blue: "チノ 青",
 	},
 }
 </i18n>
@@ -128,5 +132,12 @@
 	.links {
 		display: flex;
 		gap: 8px;
+	}
+
+	hr {
+		border-top: rgb(80 80 80 / 10%) 1px solid;
+		border-right: none;
+		border-bottom: none;
+		border-left: none;
 	}
 </style>
