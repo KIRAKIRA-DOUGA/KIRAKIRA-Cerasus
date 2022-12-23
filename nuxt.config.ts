@@ -10,10 +10,11 @@ export default defineNuxtConfig({
 	modules: [
 		"@nuxtjs/i18n",
 		"@nuxt/content",
+		"nuxt-icons",
 		"modules/theme/module.ts",
-		// "@nuxtjs/color-mode", // 这个已经重写了，不用开启。
 		// "@nuxtjs/robots", // BUG: 打不开。
 		// "@nuxtjs/sitemap", // BUG: 打不开。
+		// "@nuxtjs/color-mode", // 这个已经重写了，不用开启。
 	],
 	alias: {
 		styles: resolve(__dirname, "./assets/styles"),

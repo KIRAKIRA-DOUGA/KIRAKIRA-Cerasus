@@ -53,15 +53,14 @@
 				<div class="radio"></div>
 			</div>
 		</div>
-		<span v-if="$slots.default">
-			<slot></slot>
-		</span>
+		<slot></slot>
 	</div>
 </template>
 
 <style scoped lang="scss">
 	.label {
 		display: flex;
+		gap: 0.5rem;
 		align-items: center;
 	}
 
@@ -115,7 +114,8 @@
 			transition: 0.2s;
 
 			.label:hover & {
-				box-shadow: 0 9px 9px c(accent, 30%);
+				box-shadow: 0 9px 9px c(accent, 30%); // TODO: 关于 box-shadow 我打算改成类似 figma 那样使用全局变量统一管辖。
+				// 毕竟单选框的 box-shadow 样式明显可以和 button 复用。
 			}
 
 			.label:active & {
@@ -133,11 +133,11 @@
 				animation:
 					inner-resize $duration-half $duration-half $ease-out-max,
 					cut-in $duration-half step-start;
-			}
 
-			.label:active &::before {
-				transform: scale(0.4);
-				transition: 0.2s;
+				.label:active & {
+					transform: scale(0.4);
+					transition: 0.2s;
+				}
 			}
 		}
 	}
@@ -154,10 +154,6 @@
 
 		.label:focus input:checked + & {
 			box-shadow: 0 1px 6px c(accent, 0%), 0 0 0 10px c(accent-focus, 50%);
-		}
-
-		+ span {
-			margin-left: 0.5rem;
 		}
 	}
 

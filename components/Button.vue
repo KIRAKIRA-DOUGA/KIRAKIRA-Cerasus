@@ -1,4 +1,9 @@
 <script setup lang="ts">
+	const props = defineProps<{
+		icon?: string;
+		iconBehind?: boolean;
+	}>();
+
 	const emits = defineEmits<{
 		(event: "click"): void;
 	}>();
@@ -6,14 +11,19 @@
 
 <template>
 	<button v-ripple @click="emits('click')">
+		<NuxtIcon v-if="icon && !iconBehind" :name="icon" class="icon" />
 		<slot></slot>
+		<NuxtIcon v-if="icon && iconBehind" :name="icon" class="icon" />
 	</button>
 </template>
 
 <style scoped lang="scss">
 	button {
+		display: inline-flex;
+		gap: 8px;
 		padding: 8px 16px;
 		color: white;
+		vertical-align: middle;
 		background: c(accent);
 		border: none;
 		border-radius: 4px;
@@ -44,6 +54,16 @@
 
 		&:hover:focus {
 			box-shadow: 0 9px 9px c(accent, 30%), 0 0 0 3px c(accent-focus, 50%);
+		}
+	}
+
+	.icon {
+		display: inline-flex;
+		font-size: 18px;
+		vertical-align: middle;
+
+		> :deep(svg) {
+			margin-bottom: 0 !important;
 		}
 	}
 </style>

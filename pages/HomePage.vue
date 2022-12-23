@@ -43,6 +43,7 @@
 			<PageController v-model="page" :pages="pages" :displayPageCount="displayPageCount" enableArrowKeyMove />
 			<Button @click="onClickButton">{{ isClicked ? t.buttonClicked : t.button }}</Button>
 			<Button disabled>{{ t.buttonDisabled }}</Button>
+			<Button icon="send">发送</Button>
 			<ToggleSwitch v-model="toggle">切换开关 {{ toggle ? "开" : "关" }}</ToggleSwitch>
 			<ToggleSwitch disabled>禁用 关</ToggleSwitch>
 			<ToggleSwitch on disabled>禁用 开</ToggleSwitch>

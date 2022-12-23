@@ -47,6 +47,7 @@
 		"@storyblok/vue": "^6.3.2",
 		"@vueuse/head": "^1.0.0-rc.14",
 		"js-confetti": "^0.11.0",
-		"lottie-web": "^5.10.0"
+		"lottie-web": "^5.10.0",
+		"nuxt-icons": "^3.0.0"
 	}
 }
