@@ -109,7 +109,7 @@
 		darkTheme: "暗い",
 		systemTheme: "自動",
 		pink: "かわいい ピンク",
-		cyan: "パンツ 青",
+		cyan: "パンツ シャン",
 		blue: "チノ 青",
 	},
 }

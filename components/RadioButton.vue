@@ -117,12 +117,12 @@
 	input:checked + .radio-focus {
 		animation: pressing $duration-half $ease-in alternate 2;
 
-		& .radio-shadow {
+		.radio-shadow {
 			box-shadow: 0 4px 4px c(accent, 30%);
 			transition: 0.2s;
 		}
 
-		& .radio {
+		.radio {
 			box-shadow: inset 0 0 0 2px c(accent);
 			animation: outer-border-change $duration-half $ease-in-max;
 
@@ -155,7 +155,7 @@
 			box-shadow: 0 1px 6px c(accent, 0%), 0 0 0 10px c(accent-focus, 50%);
 		}
 
-		& + span {
+		+ span {
 			margin-left: 0.5rem;
 		}
 	}
@@ -177,9 +177,9 @@
 
 	// TODO: 接下来请你编写 hover、pressed、disabled 样式。
 
-	$animation-key: "", "-back"; // 故意把动画写两遍，让 CSS 以为是两个动画。
+	$animation-key: "", "-back";
 
-	@each $key in $animation-key {
+	@each $key in $animation-key { // 故意把动画写两遍，让 CSS 以为是两个动画。
 		@keyframes outer-border-change#{$key} {
 			from {
 				box-shadow: inset 0 0 0 $border-size c(icon-color);
