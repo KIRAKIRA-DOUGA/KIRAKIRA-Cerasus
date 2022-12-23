@@ -19,9 +19,9 @@
 
 	/**
 	 * 拖拽滑块逻辑处理。
-	 * @param e - 鼠标事件。
+	 * @param e - 指针事件（包括鼠标和触摸）。
 	 */
-	function onThumbDown(e: MouseEvent) {
+	function onThumbDown(e: PointerEvent) {
 		const thumb = e.target as HTMLDivElement;
 		const control = thumb.parentElement as HTMLDivElement;
 		const thumbWidth = thumb.getClientRects()[0].width;
@@ -29,20 +29,20 @@
 		const left = controlRect.left, max = controlRect.width - thumbWidth;
 		const x = e.pageX - left - thumb.offsetLeft;
 		const firstTime = new Date().getTime();
-		const mouseMove = (e: MouseEvent) => {
+		const pointerMove = (e: PointerEvent) => {
 			thumb.style.left = `${clamp(e.pageX - left - x, 0, max)}px`;
 		};
-		const mouseUp = (e: MouseEvent) => {
-			document.removeEventListener("mousemove", mouseMove);
-			document.removeEventListener("mouseup", mouseUp);
+		const pointerUp = (e: PointerEvent) => { // BUG: 触摸屏抬起事件有点问题。
+			document.removeEventListener("pointermove", pointerMove);
+			document.removeEventListener("pointerup", pointerUp);
 			const isOn = e.pageX - x > left + max / 2;
 			emits("update:modelValue", isOn);
 			thumb.style.removeProperty("left");
 			const lastTime = new Date().getTime();
 			isDraging.value = lastTime - firstTime > 200; // 定义识别为拖动而不是点击的时间差。
 		};
-		document.addEventListener("mousemove", mouseMove);
-		document.addEventListener("mouseup", mouseUp);
+		document.addEventListener("pointermove", pointerMove);
+		document.addEventListener("pointerup", pointerUp);
 	}
 
 	/**
@@ -59,7 +59,7 @@
 		<slot></slot>
 		<div class="switch">
 			<div class="base"></div>
-			<div class="thumb" @mousedown="onThumbDown"></div>
+			<div class="thumb" @pointerdown="onThumbDown"></div>
 		</div>
 	</label>
 </template>

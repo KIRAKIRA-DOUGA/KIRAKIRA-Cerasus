@@ -9,6 +9,7 @@ $fallback-fonts: system-ui, -apple-system, BlinkMacSystemFont, Roboto, Oxygen, U
 	font-family: "Segoe UI", "Microsoft Yahei UI", $fallback-fonts;
 	transition: all $ease-out-expo 250ms, color $ease-out-expo 100ms, fill $ease-out-expo 100ms;
 	user-select: none;
+	-webkit-tap-highlight-color: c(accent, 30%);
 
 	html:lang(ja) & {
 		font-family: "Segoe UI", "Yu Gothic UI", "Microsoft Yahei UI", $fallback-fonts;
@@ -26,6 +27,7 @@ body {
 	height: 100vh;
 	margin: 0;
 	padding: 0;
+	overflow-x: hidden;
 	color: c(text-color);
 	font-size: 14px;
 	background-color: c(main-bg);

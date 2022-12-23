@@ -386,6 +386,7 @@
 		color: c(icon-color);
 		cursor: pointer;
 		transition: none !important;
+		-webkit-tap-highlight-color: transparent;
 
 		:where(&) {
 			position: relative;
