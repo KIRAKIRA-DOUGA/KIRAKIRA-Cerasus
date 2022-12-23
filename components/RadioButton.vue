@@ -40,6 +40,7 @@
 		const movePrev = e.key === "ArrowUp" || e.key === "ArrowLeft";
 		const moveNext = e.key === "ArrowDown" || e.key === "ArrowRight";
 		if (!movePrev && !moveNext) return;
+		e.preventDefault();
 		emits("move", moveNext ? "next" : "previous");
 	}
 </script>
@@ -62,14 +63,6 @@
 	.label {
 		display: flex;
 		align-items: center;
-
-		&:hover input:checked + .radio-focus .radio-shadow {
-			box-shadow: 0 9px 9px c(accent, 30%);
-		}
-
-		&:active input:checked + .radio-focus .radio-shadow {
-			box-shadow: none !important;
-		}
 	}
 
 	$size: 20px;
@@ -120,6 +113,14 @@
 		.radio-shadow {
 			box-shadow: 0 4px 4px c(accent, 30%);
 			transition: 0.2s;
+
+			.label:hover & {
+				box-shadow: 0 9px 9px c(accent, 30%);
+			}
+
+			.label:active & {
+				box-shadow: none !important;
+			}
 		}
 
 		.radio {
@@ -175,7 +176,7 @@
 		}
 	}
 
-	// TODO: 接下来请你编写 hover、pressed、disabled 样式。
+	// TODO: 接下来请你编写 disabled 样式和 unchecked 的 hover、pressed、disabled 样式。
 
 	$animation-key: "", "-back";
 
