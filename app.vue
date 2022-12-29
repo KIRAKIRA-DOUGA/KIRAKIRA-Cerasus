@@ -64,19 +64,19 @@
 <style lang="scss">
 	:root {
 		/* colors */
-		--kirakira-side-bar-background-color: #6cf; // ♬ 66CCFF ♬
+		--kirakira-sidebar-background-color: c(main-bg); // ♬ 66CCFF ♬
 
 		/* css size */
 		--full-screen-height: 100vh;
 		--full-screen-width: 100vw;
 
-		--kirakira-side-bar-width: 48px; // side bar width
+		--kirakira-sidebar-width: 48px; // side bar width
 		--kirakira-main-page-banner-height: 140px;
 
 		--zero: 0;
 		--zero-pixel: 0;
 
 		/* side bar size */
-		--kirakira-main-side-bar-width: 60px;
+		--kirakira-main-sidebar-width: 60px;
 	}
 </style>

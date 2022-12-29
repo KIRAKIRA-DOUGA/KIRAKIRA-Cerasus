@@ -54,13 +54,16 @@
 			<RadioButton v-model="palette" value="pink">{{ t.pink }}</RadioButton>
 			<RadioButton v-model="palette" value="sky">{{ t.sky }}</RadioButton>
 			<RadioButton v-model="palette" value="blue">{{ t.blue }}</RadioButton>
+			<RadioButton v-model="palette" value="orange">{{ t.orange }}</RadioButton>
+			<RadioButton v-model="palette" value="purple">{{ t.purple }}</RadioButton>
+			<RadioButton v-model="palette" value="green">{{ t.green }}</RadioButton>
 			<hr />
 			<NuxtLink v-for="locale in availableLocales" :key="locale.code" :to="switchLocalePath(locale.code)">
 				{{ locale.name }}
 			</NuxtLink>
 			<br />
 			<ProgressRing />
-			<Lottie loop autoplay :animationData="animationData" />
+			<!-- Lottie loop autoplay :animationData="animationData" / -->
 			<LogoCover />
 		</div>
 	</div>
@@ -82,6 +85,9 @@
 		pink: "萌妹粉",
 		sky: "天蓝色",
 		blue: "智乃蓝",
+		green: "千夜绿",
+		orange: "心爱橙",
+		purple: "理世紫",
 	},
 	en: {
 		home: "KIRAKIRA Home",
@@ -97,6 +103,9 @@
 		pink: "Kawaii Pink",
 		sky: "Sky Blue",
 		blue: "Chino Blue",
+		green: "Chiya Green",
+		orange: "Cocoa Orange",
+		purple: "Rize Purple",
 	},
 	ja: {
 		home: "KIRAKIRA ホーム",
@@ -112,6 +121,9 @@
 		pink: "かわいい ピンク",
 		sky: "空色",
 		blue: "チノ 青",
+		green: "千夜 緑",
+		orange: "ココア オレンジ",
+		purple: "リゼ 紫",
 	},
 }
 </i18n>
@@ -119,12 +131,11 @@
 <style scoped lang="scss">
 	.kirakira-home-page-box {
 		// please romove when deploy 下方CSS请在部署前移除
-		background-color: #001eff0d; // TODO: 魔色待修改。
+		// background-color: #001eff0d; // TODO: 魔色待修改。
+		padding: 26px 100px;
 	}
 
 	.component-test {
-		padding: 1rem;
-
 		> * {
 			margin: 0.8rem 0.5rem;
 		}

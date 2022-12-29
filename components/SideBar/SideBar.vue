@@ -6,7 +6,8 @@
 
 <style scoped lang="scss">
 	.kirakira-main-sidebar-box {
-		width: var(--kirakira-side-bar-width);
-		background-color: var(--kirakira-side-bar-background-color);
+		width: var(--kirakira-sidebar-width);
+		background-color: var(--kirakira-sidebar-background-color);
+		box-shadow: 0 0 24px c(accent, 30%);
 	}
 </style>
