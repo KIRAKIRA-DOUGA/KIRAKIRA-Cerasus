@@ -82,7 +82,6 @@
 		height: $size;
 		margin: 0;
 		overflow: hidden;
-		background-color: c(main-bg);
 		border-radius: 100%;
 		box-shadow: inset 0 0 0 $border-size c(icon-color);
 		transition: all $ease-in-out-max calc($duration-half * 2);
