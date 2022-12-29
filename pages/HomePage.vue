@@ -63,7 +63,7 @@
 			</NuxtLink>
 			<br />
 			<ProgressRing />
-			<!-- Lottie loop autoplay :animationData="animationData" / -->
+			<!-- <Lottie loop autoplay :animationData="animationData" /> -->
 			<LogoCover />
 		</div>
 	</div>
@@ -130,8 +130,6 @@
 
 <style scoped lang="scss">
 	.kirakira-home-page-box {
-		// please romove when deploy 下方CSS请在部署前移除
-		// background-color: #001eff0d; // TODO: 魔色待修改。
 		padding: 26px 100px;
 	}
 
@@ -147,9 +145,7 @@
 	}
 
 	hr {
-		border-top: rgb(80 80 80 / 10%) 1px solid;
-		border-right: none;
-		border-bottom: none;
-		border-left: none;
+		border: none;
+		border-top: #5050501a 1px solid; // TODO: 魔色待修改。
 	}
 </style>
