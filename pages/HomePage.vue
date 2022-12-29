@@ -52,7 +52,7 @@
 			<RadioButton v-model="theme" value="system">{{ t.systemTheme }}</RadioButton>
 			<hr />
 			<RadioButton v-model="palette" value="pink">{{ t.pink }}</RadioButton>
-			<RadioButton v-model="palette" value="cyan">{{ t.cyan }}</RadioButton>
+			<RadioButton v-model="palette" value="sky">{{ t.sky }}</RadioButton>
 			<RadioButton v-model="palette" value="blue">{{ t.blue }}</RadioButton>
 			<hr />
 			<NuxtLink v-for="locale in availableLocales" :key="locale.code" :to="switchLocalePath(locale.code)">
@@ -80,7 +80,7 @@
 		darkTheme: "深色主题",
 		systemTheme: "使用默认值",
 		pink: "萌妹粉",
-		cyan: "青色",
+		sky: "天蓝色",
 		blue: "智乃蓝",
 	},
 	en: {
@@ -95,7 +95,7 @@
 		darkTheme: "Dark",
 		systemTheme: "System",
 		pink: "Kawaii Pink",
-		cyan: "Cyan",
+		sky: "Sky Blue",
 		blue: "Chino Blue",
 	},
 	ja: {
@@ -110,7 +110,7 @@
 		darkTheme: "暗い",
 		systemTheme: "自動",
 		pink: "かわいい ピンク",
-		cyan: "シアン",
+		sky: "空色",
 		blue: "チノ 青",
 	},
 }

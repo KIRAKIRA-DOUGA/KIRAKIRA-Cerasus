@@ -15,7 +15,7 @@ $grayscale-colors: (
 // 我打算以后改成自动根据获取主要主题色的 accent-50 色号自动获取。
 $secondary-colors: (
 	pink: #f06e8e,
-	cyan: #45b3e1,
+	sky: #45b3e1,
 	blue: #4581e1,
 	green: #4bb530,
 	orange: #e09627,
@@ -37,7 +37,7 @@ $primary-colors: (
 		accent-20: (#ffd3de, #a23b57), // disabled
 		accent-10: (#ffedf2, #a23b57),
 	),
-	cyan: (
+	sky: (
 		accent-80: (#3a82a1, #c4ebfc),
 		accent-70: (#4593b5, #93dbfa),
 		accent-60: (#57a9cb, #73caef),
