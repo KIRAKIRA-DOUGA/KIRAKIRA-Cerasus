@@ -24,6 +24,8 @@ module.exports = {
 		"value-no-vendor-prefix": true,
 		"color-hex-case": "lower", // 颜色值要小写。
 		"color-hex-length": "short", // 颜色值能短则短。
+		"color-named": "always-where-possible", // 颜色若有名字则必须写为其名字。
+		"function-disallowed-list": [/^rgb/, /^hsl/, /^hwb/], // 只允许用 16 进制表示颜色，不允许使用 rgb、rgba 等表示颜色。
 		"indentation": "tab",
 		"length-zero-no-unit": true,
 		// "selector-class-pattern": /^[A-Za-z0-9]+$/, // 换回连字符了。
