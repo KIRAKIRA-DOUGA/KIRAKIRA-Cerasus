@@ -80,7 +80,7 @@
 		darkTheme: "深色主题",
 		systemTheme: "使用默认值",
 		pink: "萌妹粉",
-		cyan: "胖次蓝",
+		cyan: "青色",
 		blue: "智乃蓝",
 	},
 	en: {
@@ -95,7 +95,7 @@
 		darkTheme: "Dark",
 		systemTheme: "System",
 		pink: "Kawaii Pink",
-		cyan: "Pants Cyan",
+		cyan: "Cyan",
 		blue: "Chino Blue",
 	},
 	ja: {
@@ -110,7 +110,7 @@
 		darkTheme: "暗い",
 		systemTheme: "自動",
 		pink: "かわいい ピンク",
-		cyan: "パンツ シャン",
+		cyan: "シアン",
 		blue: "チノ 青",
 	},
 }
