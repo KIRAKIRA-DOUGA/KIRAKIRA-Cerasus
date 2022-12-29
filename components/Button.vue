@@ -59,6 +59,7 @@
 
 	.icon {
 		display: inline-flex;
+		color: white;
 		font-size: 18px;
 		vertical-align: middle;
 
