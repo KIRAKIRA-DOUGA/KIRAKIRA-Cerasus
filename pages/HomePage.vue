@@ -83,7 +83,7 @@
 		darkTheme: "深色主题",
 		systemTheme: "使用默认值",
 		pink: "萌妹粉",
-		sky: "天蓝色",
+		sky: "天空蓝",
 		blue: "智乃蓝",
 		green: "千夜绿",
 		orange: "心爱橙",
