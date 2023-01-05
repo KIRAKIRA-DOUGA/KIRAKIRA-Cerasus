@@ -14,6 +14,7 @@
 	const switchLocalePath = useSwitchLocalePath();
 	const availableLocales = computed(() => (locales.value as LocaleObject[]).filter(i => i.code !== currentLocale.value));
 	const timeoutId = ref<NodeJS.Timeout>();
+	const isTagChecked = ref(false);
 
 	async function onClickButton() {
 		clearTimeout(timeoutId.value);
@@ -64,6 +65,13 @@
 			<br />
 			<ProgressRing />
 			<!-- <Lottie loop autoplay :animationData="animationData" /> -->
+			<br />
+			<Tag v-model="isTagChecked">标签</Tag>
+			<TabBar>
+				<TabItem>全部</TabItem>
+				<TabItem>视频</TabItem>
+				<TabItem>图片</TabItem>
+			</TabBar>
 			<LogoCover />
 		</div>
 	</div>

@@ -30,11 +30,11 @@ function getMaxRadius(rect: DOMRect, e: MouseEvent) {
 }
 
 export default defineNuxtPlugin(nuxtApp => {
+	const rippleClass = styles.rippleButton;
+	const circleClass = styles.rippleCircle;
+
 	nuxtApp.vueApp.directive("ripple", {
 		mounted(element: HTMLElement) {
-			const rippleClass = styles.rippleButton;
-			const circleClass = styles.rippleCircle;
-
 			element.classList.add(rippleClass);
 			element.addEventListener("mousedown", e => {
 				const rect = element.getClientRects()[0];
@@ -58,25 +58,26 @@ export default defineNuxtPlugin(nuxtApp => {
 					duration: 1000,
 					easing: eases.easeOutMax,
 				});
-
-				const mouseUp = () => {
-					document.removeEventListener("mouseup", mouseUp);
-					const FADE_TIME = 500;
-					const IS_FADING_CLASS = "is-fading";
-					for (const circle of document.getElementsByClassName(circleClass)) {
-						if (circle.classList.contains(IS_FADING_CLASS)) return;
-						circle.classList.add(IS_FADING_CLASS);
-						circle.animate([
-							{ opacity: 1 },
-							{ opacity: 0 },
-						], {
-							duration: FADE_TIME,
-							easing: eases.easeOutMax,
-						}).finished.then(() => circle.remove());
-					}
-				};
-				document.addEventListener("mouseup", mouseUp);
 			});
+			const mouseUp = () => {
+				const FADE_TIME = 500;
+				const IS_FADING_CLASS = "is-fading";
+				for (const circle of document.getElementsByClassName(circleClass)) {
+					// if (circle.classList.contains(IS_FADING_CLASS)) return;
+					circle.classList.add(IS_FADING_CLASS);
+					circle.animate([
+						{ opacity: 1 },
+						{ opacity: 0 },
+					], {
+						duration: FADE_TIME,
+						easing: eases.easeOutMax,
+					}).finished.then(() => circle.remove());
+				}
+			};
+			document.addEventListener("mouseup", mouseUp);
+		},
+		updated(element: HTMLElement) {
+			element.classList.add(rippleClass);
 		},
 	});
 });

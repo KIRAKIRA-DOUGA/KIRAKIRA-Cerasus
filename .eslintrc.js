@@ -225,7 +225,7 @@ module.exports = {
 		"vue/next-tick-style": ["error", "promise"],
 		"vue/padding-line-between-blocks": ["error", "always"],
 		"vue/component-tags-order": ["error", {
-			"order": ["docs", "script:not([setup])", "script[setup]", "template", "i18n", "style[scoped]", "style[module]", "style:not([scoped]):not([module])"],
+			"order": ["docs", ["script:not([setup])", "script[setup]"], "template", "i18n", "style[scoped]", "style[module]", "style:not([scoped]):not([module])"],
 		}],
 		"vue/no-multiple-template-root": "off",
 	},
