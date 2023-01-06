@@ -20,6 +20,7 @@
 <style scoped lang="scss">
 	button {
 		@include button-shadow;
+		@include radius-small;
 		display: inline-flex;
 		gap: 8px;
 		padding: 8px 16px;
@@ -27,7 +28,6 @@
 		vertical-align: middle;
 		background: c(accent);
 		border: none;
-		border-radius: 4px;
 		transition: all $ease-out-back 250ms;
 		appearance: none;
 

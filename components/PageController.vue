@@ -276,12 +276,12 @@
 
 	.track {
 		@include control-inner-shadow;
+		@include radius-small;
 		position: relative;
 		display: flex;
 		width: fit-content;
 		overflow: hidden;
 		background-color: c(inner-color);
-		border-radius: 4px;
 	}
 
 	.page {
@@ -291,19 +291,18 @@
 
 	.thumb {
 		@include page-active;
+		@include square($size);
+		@include radius-small;
 		position: absolute;
 		top: 0;
 		left: calc(v-bind(thumbPosition) * $size);
 		z-index: 3;
-		width: $size;
-		height: $size;
 		overflow: hidden;
 		color: white;
 		font-weight: bold;
 		line-height: $size;
 		text-align: center;
 		background: c(accent);
-		border-radius: 4px;
 		cursor: text;
 		transition: all $ease-out-max 500ms, left $ease-in-out-smooth 500ms;
 

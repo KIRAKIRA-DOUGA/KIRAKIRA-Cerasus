@@ -90,14 +90,13 @@
 	}
 
 	.circle {
+		@include square(10px);
+		@include circle;
 		position: absolute;
 		top: 0;
 		left: 0;
 		z-index: 1;
 		display: none; // TODO: 圆圈动画效果待做。
-		width: 10px;
-		height: 10px;
 		background-color: c(accent);
-		border-radius: 100%;
 	}
 </style>

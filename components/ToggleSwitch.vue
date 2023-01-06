@@ -103,14 +103,13 @@
 		}
 
 		.thumb {
+			@include square($thumb-size);
+			@include circle;
 			@include control-ball-shadow-off;
 			position: absolute;
 			top: 0;
 			left: 0;
-			width: $thumb-size;
-			height: $thumb-size;
 			background-color: c(white);
-			border-radius: 100%;
 
 			.on & {
 				left: $width - $thumb-size;

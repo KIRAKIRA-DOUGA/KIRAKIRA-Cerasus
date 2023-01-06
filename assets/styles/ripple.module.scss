@@ -3,18 +3,16 @@
 	overflow: hidden;
 
 	.ripple-circle {
-		$size: 20px;
+		@include square(20px);
+		@include circle;
 		position: absolute;
 		top: 0;
 		left: 0;
 		z-index: 2;
 		display: block;
-		width: $size;
-		height: $size;
 		background-color: #0000002d;
-		border-radius: 100%;
 
-		:root[data-theme="dark"] & {
+		:global(:root.dark) & {
 			background-color: #ffffff2d;
 		}
 

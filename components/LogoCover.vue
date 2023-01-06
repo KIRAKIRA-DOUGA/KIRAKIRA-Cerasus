@@ -159,11 +159,9 @@
 	}
 
 	.circle {
-		--cover-size: 8rem;
-		width: var(--cover-size);
-		height: var(--cover-size);
+		@include square(8rem);
+		@include circle;
 		overflow: hidden;
-		border-radius: 100%;
 	}
 
 	.circle-1 {

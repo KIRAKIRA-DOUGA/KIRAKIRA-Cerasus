@@ -75,18 +75,16 @@
 	}
 
 	.radio-shadow {
-		width: $size;
-		height: $size;
-		border-radius: 100%;
+		@include square($size);
+		@include circle;
 	}
 
 	.radio {
+		@include square($size);
+		@include circle;
 		position: relative;
-		width: $size;
-		height: $size;
 		margin: 0;
 		overflow: hidden;
-		border-radius: 100%;
 		box-shadow: inset 0 0 0 $border-size c(icon-color);
 		transition: all $ease-in-out-max calc($duration-half * 2), background-color $ease-out-max 200ms;
 		animation: outer-border-change-back $duration-half $duration-half $ease-in-max reverse;
@@ -97,12 +95,11 @@
 		}
 
 		&::before {
+			@include square($size);
+			@include circle;
 			position: absolute;
 			display: block;
-			width: $size;
-			height: $size;
 			background-color: c(icon-color);
-			border-radius: 100%;
 			opacity: 0;
 			transition: all $ease-in-out-max calc($duration-half * 2);
 			animation:
@@ -153,9 +150,8 @@
 	}
 
 	.radio-focus {
-		width: $size;
-		height: $size;
-		border-radius: 100%;
+		@include square($size);
+		@include circle;
 		animation: pressing-back $duration-half $ease-in alternate 2;
 
 		section:focus & {

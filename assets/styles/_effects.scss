@@ -1,5 +1,18 @@
 @use "./functions" as *;
 
+// 圆角
+/// 大卡片/缩略图。
+/// @output 使用 6px 大小的圆角。
+@mixin radius-large {
+	border-radius: 6px;
+}
+
+/// 按钮/控制组件。
+/// @output 使用 4px 大小的圆角。
+@mixin radius-small {
+	border-radius: 4px;
+}
+
 // 灰阶类
 /// 控制球阴影 关闭
 @mixin control-ball-shadow-off {

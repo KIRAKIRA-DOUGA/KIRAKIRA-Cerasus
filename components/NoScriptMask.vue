@@ -36,11 +36,10 @@
 	}
 
 	.card {
-		width: 100%;
-		height: 100%;
+		@include square(100%);
+		@include radius-large;
 		padding: 2rem;
 		background-color: c(white, 75%);
-		border-radius: 6px;
 
 		h1 {
 			margin: 0;
