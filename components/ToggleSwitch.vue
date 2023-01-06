@@ -82,12 +82,12 @@
 		height: $thumb-size;
 
 		.base {
+			@include oval;
 			position: absolute;
 			top: calc(($thumb-size - $base-height) / 2);
 			width: $width;
 			height: $base-height;
 			background-color: c(gray-2);
-			border-radius: 9999rem;
 
 			.on & {
 				background-color: c(accent, 40%);
@@ -98,11 +98,12 @@
 			}
 
 			.on.disabled & {
-				background-color: #afafaf61; // TODO: 魔色待修改。
+				background-color: c(icon-color, 40%);
 			}
 		}
 
 		.thumb {
+			@include control-ball-shadow-off;
 			position: absolute;
 			top: 0;
 			left: 0;
@@ -110,15 +111,14 @@
 			height: $thumb-size;
 			background-color: c(white);
 			border-radius: 100%;
-			box-shadow: 0 1px 6px c(icon-color, 50%);
 
 			.on & {
 				left: $width - $thumb-size;
 			}
 
 			.on:not(.disabled) & {
+				@include control-ball-shadow;
 				background-color: c(accent);
-				box-shadow: 0 1px 6px c(accent, 80%);
 			}
 
 			.disabled & {
@@ -130,11 +130,11 @@
 			}
 
 			label:focus & {
-				box-shadow: 0 1px 6px c(icon-color, 50%), 0 0 0 $focus-ring-thickness c(gray-2, 50%);
+				@include large-shadow-unchecked-focus;
 			}
 
 			label.on:focus & {
-				box-shadow: 0 1px 6px c(accent, 80%), 0 0 0 $focus-ring-thickness c(accent-focus, 50%);
+				@include large-shadow-focus;
 			}
 
 			label:active & {

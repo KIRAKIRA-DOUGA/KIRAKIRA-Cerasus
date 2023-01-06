@@ -5,7 +5,7 @@
 </script>
 
 <template>
-	<div class="kirakira-video-page-box">
+	<div class="container">
 		<div @click="getRoute">{{ t.videoPlaying }}</div>
 		<SideBarHomeButton />
 	</div>
@@ -26,7 +26,7 @@
 </i18n>
 
 <style scoped lang="scss">
-	.kirakira-video-page-box {
+	.container {
 		background-color: c(green);
 	}
 </style>

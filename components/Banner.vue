@@ -30,7 +30,8 @@
 	}
 
 	.kirakira-main-page-banner-box-opened {
-		height: var(--kirakira-main-page-banner-height);
+		$banner-height: 140px;
+		height: $banner-height;
 		transition: height $ease-out-expo 600ms;
 
 		> .shadow {
@@ -53,6 +54,6 @@
 	}
 
 	.kirakira-main-page-banner-box-closed {
-		height: var(--zero);
+		height: 0;
 	}
 </style>

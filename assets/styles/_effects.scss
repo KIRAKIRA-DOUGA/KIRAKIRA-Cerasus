@@ -1,0 +1,90 @@
+@use "./functions" as *;
+
+// 灰阶类
+/// 控制球阴影 关闭
+@mixin control-ball-shadow-off {
+	box-shadow: 0 1px 6px c(icon-color, 50%);
+}
+
+@mixin page-normal {
+	box-shadow: 0 2px 4px c(black, 10%);
+}
+
+@mixin control-inner-shadow {
+	box-shadow: inset 0 4px 4px c(black, 4%);
+}
+
+@mixin button-shadow-unchecked-focus {
+	// box-shadow: 0 4px 4px c(unchecked, 30%), 0 0 0 3px c(unchecked-focus, 50%);
+	box-shadow: 0 4px 4px c(icon-color, 30%), 0 0 0 3px c(gray-2, 50%);
+}
+
+@mixin large-shadow-unchecked-focus {
+	// box-shadow: 0 4px 4px c(unchecked, 30%), 0 0 0 10px c(unchecked-focus, 50%);
+	box-shadow: 0 1px 6px c(icon-color, 30%), 0 0 0 10px c(gray-2, 50%);
+}
+
+// 主题色
+@mixin button-shadow {
+	box-shadow: 0 4px 4px c(accent, 30%);
+}
+
+@mixin button-shadow-hover {
+	box-shadow: 0 9px 9px c(accent, 30%);
+}
+
+@mixin button-shadow-focus {
+	box-shadow: 0 4px 4px c(accent, 30%), 0 0 0 3px c(accent-focus, 50%);
+}
+
+@mixin button-shadow-hover-focus {
+	box-shadow: 0 9px 9px c(accent, 30%), 0 0 0 3px c(accent-focus, 50%);
+}
+
+@mixin large-shadow-focus {
+	box-shadow: 0 1px 6px c(accent, 30%), 0 0 0 10px c(accent-focus, 50%);
+}
+
+@mixin sidebar-shadow {
+	box-shadow: 0 0 24px c(accent, 30%);
+}
+
+@mixin card-shadow {
+	box-shadow: 0 5px 10px c(accent-card, 30%);
+}
+
+@mixin card-shadow-with-blur {
+	@include card-shadow;
+	backdrop-filter: blur(16px);
+}
+
+@mixin player-shadow {
+	box-shadow: 0 2px 8px c(accent-card, 20%);
+}
+
+/// 控制球阴影
+@mixin control-ball-shadow {
+	box-shadow: 0 1px 6px c(accent, 80%);
+}
+
+@mixin page-active {
+	box-shadow: 0 2px 4px c(accent, 60%);
+}
+
+@mixin system-card {
+	box-shadow: 0 8px 16px c(accent-card, 30%);
+	backdrop-filter: blur(32px);
+}
+
+@mixin dropdown-flyouts {
+	box-shadow: 0 8px 16px c(accent-card, 50%);
+	backdrop-filter: blur(8px);
+}
+
+@mixin chip-shadow {
+	box-shadow: 0 2px 4px c(accent-card, 30%);
+}
+
+@mixin card-in-card-shadow {
+	box-shadow: 0 2px 8px c(accent-card, 8%);
+}

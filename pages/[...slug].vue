@@ -1,7 +1,12 @@
 <script setup lang="ts">
 	definePageMeta({
 		validate: route => {
-			const routeNumber = +route.path.slice(1);
+			const validRoutes = ["hello", "search"];
+
+			const routePath = getRoutePath({ route });
+			const routeNumber = +routePath;
+			if (validRoutes.includes(routePath))
+				return true;
 			if (routeNumber === 601)
 				navigateTo("/601.html");
 			if (routeNumber === 404)
@@ -10,7 +15,7 @@
 				return {
 					statusCode: routeNumber,
 				};
-			return true;
+			return false;
 		},
 	});
 

@@ -14,10 +14,10 @@
 	$thickness: 3px;
 
 	.indicator {
+		@include oval;
 		width: $length;
 		height: $thickness;
 		background-color: c(accent);
-		border-radius: 9999rem;
 
 		&.clipped:not(.vertical) {
 			border-bottom-right-radius: 0;

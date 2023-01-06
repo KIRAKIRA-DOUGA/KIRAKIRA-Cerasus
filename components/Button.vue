@@ -19,6 +19,7 @@
 
 <style scoped lang="scss">
 	button {
+		@include button-shadow;
 		display: inline-flex;
 		gap: 8px;
 		padding: 8px 16px;
@@ -27,19 +28,18 @@
 		background: c(accent);
 		border: none;
 		border-radius: 4px;
-		box-shadow: 0 4px 4px c(accent, 30%);
 		transition: all $ease-out-back 250ms;
 		appearance: none;
 
 		&:hover {
+			@include button-shadow-hover;
 			background: c(accent-hover);
-			box-shadow: 0 9px 9px c(accent, 30%);
 		}
 
 		&:active {
 			background: c(accent);
 			box-shadow: none !important;
-			transform: scale(calc(35 / 36));
+			scale: calc(35 / 36);
 		}
 
 		&[disabled] {
@@ -49,11 +49,11 @@
 		}
 
 		&:focus {
-			box-shadow: 0 4px 4px c(accent, 30%), 0 0 0 3px c(accent-focus, 50%);
+			@include button-shadow-focus;
 		}
 
 		&:hover:focus {
-			box-shadow: 0 9px 9px c(accent, 30%), 0 0 0 3px c(accent-focus, 50%);
+			@include button-shadow-hover-focus;
 		}
 	}
 

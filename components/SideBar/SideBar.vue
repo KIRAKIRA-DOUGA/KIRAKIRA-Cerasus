@@ -1,13 +1,13 @@
 <template>
-	<div class="kirakira-main-sidebar-box">
+	<div class="sidebar">
 		<SideBarHomeButton />
 	</div>
 </template>
 
 <style scoped lang="scss">
-	.kirakira-main-sidebar-box {
-		width: var(--kirakira-sidebar-width);
-		background-color: var(--kirakira-sidebar-background-color);
-		box-shadow: 0 0 24px c(accent, 30%);
+	.sidebar {
+		@include sidebar-shadow;
+		width: 48px;
+		background-color: c(main-bg);
 	}
 </style>

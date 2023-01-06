@@ -46,7 +46,7 @@
 </script>
 
 <template>
-	<div class="label" :tabindex="isChecked ? 0 : -1" @click="onChange" @keydown="onKeydown">
+	<section :tabindex="isChecked ? 0 : -1" @click="onChange" @keydown="onKeydown">
 		<input ref="radio" type="radio" :checked="isChecked" :value="props.value" />
 		<div class="radio-focus">
 			<div class="radio-shadow">
@@ -54,11 +54,11 @@
 			</div>
 		</div>
 		<slot></slot>
-	</div>
+	</section>
 </template>
 
 <style scoped lang="scss">
-	.label {
+	section {
 		display: flex;
 		gap: 0.5rem;
 		align-items: center;
@@ -69,6 +69,10 @@
 	$dot-size: 10px;
 	$border-size: 2px;
 	$duration-half: 200ms;
+
+	@mixin short-transition {
+		transition: all $ease-out-max 200ms;
+	}
 
 	.radio-shadow {
 		width: $size;
@@ -84,9 +88,13 @@
 		overflow: hidden;
 		border-radius: 100%;
 		box-shadow: inset 0 0 0 $border-size c(icon-color);
-		transition: all $ease-in-out-max calc($duration-half * 2);
+		transition: all $ease-in-out-max calc($duration-half * 2), background-color $ease-out-max 200ms;
 		animation: outer-border-change-back $duration-half $duration-half $ease-in-max reverse;
 		appearance: none;
+
+		section:is(:hover, :active) & {
+			background-color: c(gray, 50%);
+		}
 
 		&::before {
 			position: absolute;
@@ -95,13 +103,13 @@
 			height: $size;
 			background-color: c(icon-color);
 			border-radius: 100%;
-			transform: scale(0.5);
 			opacity: 0;
 			transition: all $ease-in-out-max calc($duration-half * 2);
 			animation:
 				inner-resize-back $duration-half $ease-out-max reverse,
 				cut-out $duration-half step-start;
 			content: "";
+			scale: 0.5;
 		}
 	}
 
@@ -109,15 +117,14 @@
 		animation: pressing $duration-half $ease-in alternate 2;
 
 		.radio-shadow {
-			box-shadow: 0 4px 4px c(accent, 30%);
-			transition: 0.2s;
+			@include button-shadow;
+			@include short-transition;
 
-			.label:hover & {
-				box-shadow: 0 9px 9px c(accent, 30%); // TODO: 关于 box-shadow 我打算改成类似 figma 那样使用全局变量统一管辖。
-				// 毕竟单选框的 box-shadow 样式明显可以和 button 复用。
+			section:hover & {
+				@include button-shadow-hover;
 			}
 
-			.label:active & {
+			section:active & {
 				box-shadow: none !important;
 			}
 		}
@@ -127,15 +134,19 @@
 			animation: outer-border-change $duration-half $ease-in-max;
 
 			&::before {
+				@include short-transition;
 				background-color: c(accent);
 				opacity: 1;
 				animation:
 					inner-resize $duration-half $duration-half $ease-out-max,
 					cut-in $duration-half step-start;
 
-				.label:active & {
-					transform: scale(0.4);
-					transition: 0.2s;
+				section:hover & {
+					scale: 0.6;
+				}
+
+				section:active & {
+					scale: 0.4;
 				}
 			}
 		}
@@ -147,12 +158,12 @@
 		border-radius: 100%;
 		animation: pressing-back $duration-half $ease-in alternate 2;
 
-		.label:focus & {
-			box-shadow: 0 1px 6px c(icon-color, 50%), 0 0 0 10px c(gray-2, 50%);
+		section:focus & {
+			@include large-shadow-unchecked-focus;
 		}
 
-		.label:focus input:checked + & {
-			box-shadow: 0 1px 6px c(accent, 0%), 0 0 0 10px c(accent-focus, 50%);
+		section:focus input:checked + & {
+			@include large-shadow-focus;
 		}
 	}
 
@@ -188,21 +199,21 @@
 
 		@keyframes inner-resize#{$key} {
 			from {
-				transform: scale(1);
+				scale: 1;
 			}
 
 			to {
-				transform: scale(0.5);
+				scale: 0.5;
 			}
 		}
 
 		@keyframes pressing#{$key} {
 			from {
-				transform: scale(1);
+				scale: 1;
 			}
 
 			to {
-				transform: scale(calc(18 / 20));
+				scale: calc(18 / 20);
 			}
 		}
 	}

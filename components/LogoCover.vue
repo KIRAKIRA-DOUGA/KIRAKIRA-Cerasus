@@ -69,6 +69,7 @@
 		transform: rotate(-32deg);
 
 		* {
+			@include oval;
 			--height: 1rem;
 			--from: 100%;
 			--to: -100%;
@@ -76,7 +77,6 @@
 			width: calc(var(--height) * 15);
 			height: var(--height);
 			background-color: c(accent-20);
-			border-radius: 9999rem;
 			animation: movement 4s infinite linear;
 		}
 

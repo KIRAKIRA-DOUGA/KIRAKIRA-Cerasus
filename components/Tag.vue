@@ -35,12 +35,12 @@
 	$duration: 400ms;
 
 	.tag {
+		@include oval;
 		position: relative;
 		display: inline-flex;
 		padding: 6px 12px;
 		overflow: hidden;
 		background-color: c(text-color, 5%);
-		border-radius: 9999rem;
 		cursor: pointer;
 
 		&.checked {

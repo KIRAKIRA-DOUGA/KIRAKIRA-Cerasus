@@ -1,7 +1,4 @@
 <script setup lang="ts">
-	// const colorMode = useColorMode();
-	// console.log(colorMode);
-	// Theme.watchTheme();
 	const { locale } = useI18n();
 	const langTag = computed(() => {
 		const langs = {
@@ -14,10 +11,6 @@
 	useHead({
 		htmlAttrs: {
 			lang: langTag,
-			// "data-theme": Theme.theme,
-			// "data-palette": Theme.palette,
-			// class: () => [Theme.theme, Theme.palette].map(ref => ref.value).join(" "),
-			// TODO: 池沼 Nuxt 自作聪明不清空原有 class 而是增加新 class。
 		},
 		titleTemplate: "%s - KIRAKIRA☆DOUGA",
 		meta: [
@@ -60,23 +53,3 @@
 		<router-view />
 	</NuxtLayout>
 </template>
-
-<style lang="scss">
-	:root {
-		/* colors */
-		--kirakira-sidebar-background-color: c(main-bg); // ♬ 66CCFF ♬
-
-		/* css size */
-		--full-screen-height: 100vh;
-		--full-screen-width: 100vw;
-
-		--kirakira-sidebar-width: 48px; // side bar width
-		--kirakira-main-page-banner-height: 140px;
-
-		--zero: 0;
-		--zero-pixel: 0;
-
-		/* side bar size */
-		--kirakira-main-sidebar-width: 60px;
-	}
-</style>

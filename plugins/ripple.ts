@@ -63,7 +63,8 @@ export default defineNuxtPlugin(nuxtApp => {
 				const FADE_TIME = 500;
 				const IS_FADING_CLASS = "is-fading";
 				for (const circle of document.getElementsByClassName(circleClass)) {
-					// if (circle.classList.contains(IS_FADING_CLASS)) return;
+					if (circle.classList.contains(IS_FADING_CLASS)) return;
+					// BUG: 快速点两个按钮会概率性出现水波纹不会自动消失的问题。
 					circle.classList.add(IS_FADING_CLASS);
 					circle.animate([
 						{ opacity: 1 },

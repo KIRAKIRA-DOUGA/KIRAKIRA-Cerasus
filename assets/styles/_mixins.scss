@@ -5,3 +5,23 @@
 	align-items: center;
 	justify-content: center;
 }
+
+/// 变成椭圆形。
+/// @output 将 border-radius 设为一个非常大的值。
+@mixin oval {
+	border-radius: 9999rem;
+}
+
+/// 变成正方形。
+/// @param {Number} $size - 长度。
+/// @output 长宽均相等。
+@mixin square($size) {
+	width: $size;
+	height: $size;
+}
+
+/// 变成圆形。
+/// @output 将 border-radius 设为 100%。
+@mixin circle {
+	border-radius: 100%;
+}

@@ -32,7 +32,7 @@
 </script>
 
 <template>
-	<div class="kirakira-home-page-box">
+	<div class="container">
 		<div>{{ t.home }}</div>
 		<div class="links">
 			<LocaleLink to="/VideoPlay">{{ t.video }}</LocaleLink>
@@ -67,6 +67,7 @@
 			<!-- <Lottie loop autoplay :animationData="animationData" /> -->
 			<br />
 			<Tag v-model="isTagChecked">标签</Tag>
+			<SlideBar />
 			<TabBar>
 				<TabItem>全部</TabItem>
 				<TabItem>视频</TabItem>
@@ -137,7 +138,7 @@
 </i18n>
 
 <style scoped lang="scss">
-	.kirakira-home-page-box {
+	.container {
 		padding: 26px 100px;
 	}
 
@@ -154,6 +155,6 @@
 
 	hr {
 		border: none;
-		border-top: #5050501a 1px solid; // TODO: 魔色待修改。
+		border-top: c(divider, 10%) 1px solid;
 	}
 </style>

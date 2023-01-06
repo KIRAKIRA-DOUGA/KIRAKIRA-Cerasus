@@ -275,13 +275,13 @@
 	$size: 36px;
 
 	.track {
+		@include control-inner-shadow;
 		position: relative;
 		display: flex;
 		width: fit-content;
 		overflow: hidden;
 		background-color: c(inner-color);
 		border-radius: 4px;
-		box-shadow: inset 0 4px 4px c(black, 4%);
 	}
 
 	.page {
@@ -290,6 +290,7 @@
 	}
 
 	.thumb {
+		@include page-active;
 		position: absolute;
 		top: 0;
 		left: calc(v-bind(thumbPosition) * $size);
@@ -303,13 +304,16 @@
 		text-align: center;
 		background: c(accent);
 		border-radius: 4px;
-		box-shadow: 0 2px 4px c(accent, 60%);
 		cursor: text;
 		transition: all $ease-out-max 500ms, left $ease-in-out-smooth 500ms;
 
 		&:hover {
+			@include button-shadow-hover;
 			background: c(accent-hover);
-			box-shadow: 0 9px 9px c(accent, 30%);
+
+			&:has(:focus) {
+				@include button-shadow-hover-focus;
+			}
 		}
 
 		&:active {
@@ -318,7 +322,7 @@
 		}
 
 		&:has(:focus) {
-			box-shadow: 0 2px 4px c(accent, 60%), 0 0 0 3px c(accent-focus, 50%);
+			@include button-shadow-focus;
 
 			> .focus-line {
 				top: 0;

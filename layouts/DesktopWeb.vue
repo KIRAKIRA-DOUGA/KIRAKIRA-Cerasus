@@ -1,9 +1,6 @@
 <script setup lang="ts">
-	const showBanner = ref(getRoutePath() === "/");
-	const rootPaths = ["/", "/zh", "/en", "/ja"];
-	watchRoute(route => {
-		showBanner.value = rootPaths.includes(route);
-	});
+	const showBanner = ref(false);
+	watchRoute(() => (showBanner.value = getRoutePath() === ""), true);
 </script>
 
 <template>
@@ -21,8 +18,8 @@
 <style scoped lang="scss">
 	.desktop-web {
 		display: flex;
-		width: var(--full-screen-width);
-		height: var(--full-screen-height);
+		width: 100vw;
+		height: 100vh;
 	}
 
 	.main-container-box {
