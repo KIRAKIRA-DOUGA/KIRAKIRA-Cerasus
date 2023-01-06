@@ -1,6 +1,9 @@
 <script lang="tsx">
 	// 写个屁的 script，你写了它也不会跑的。
 
+	import { NuxtIcon } from "#components";
+	import LogoDisableJavascript from "components/Logo/DisableJavascript.vue";
+
 	export default defineComponent({
 		render() {
 			const styles = useCssModule();
@@ -10,8 +13,19 @@
 				<noscript>
 					<div class={styles.mask}>
 						<div class={styles.card}>
-							<h1>JavaScript被禁用</h1>
-							<a href="https://www.enable-javascript.com/" target="_blank">如何启用 JavaScript？</a>
+							<div class={styles.cardBack}>
+								{forMap(2, i => <NuxtIcon name="settings" class={styles.settingsIcon} key={`settings-${i}`} />)}
+							</div>
+							<div class={styles.cardBody}>
+								<h1>警告，JavaScript被禁用</h1>
+								<LogoDisableJavascript class={styles.logo} />
+								<p>
+									嘿！为什么禁用JavaScript？<br />
+									我们的站点使用了大量JavaScript技术，<br />
+									需要开启JavaScript才能使用。<br />
+									<a href="https://www.enable-javascript.com/" target="_blank">如何启用JavaScript？</a>
+								</p>
+							</div>
 						</div>
 					</div>
 				</noscript>
@@ -23,14 +37,18 @@
 </script>
 
 <style module lang="scss">
+	@import "styles/animations";
+
+	$animation-options: $ease-out-expo 600ms backwards;
+
 	.mask {
+		@include flex-center;
 		position: fixed;
 		top: 0;
 		left: 0;
 		z-index: 100;
 		width: 100vw;
 		height: 100vh;
-		padding: 6rem;
 		background-color: c(white, 50%);
 		backdrop-filter: blur(5px);
 	}
@@ -38,12 +56,114 @@
 	.card {
 		@include square(100%);
 		@include radius-large;
-		padding: 2rem;
+		@include card-shadow;
+		position: relative;
+		width: 1024px;
+		height: 600px;
+		overflow: hidden;
 		background-color: c(white, 75%);
+		animation: intro $animation-options;
 
-		h1 {
-			margin: 0;
-			color: c(accent);
+		.card-body {
+			position: relative;
+			z-index: 2;
+			display: grid;
+			grid-template-rows: auto 1fr;
+			grid-template-columns: auto 1fr;
+			gap: 36px 60px;
+			padding: 60px 70px;
+
+			h1 {
+				top: 70px;
+				right: 50px;
+				grid-column: 1 / 3;
+				margin: 0;
+				color: c(accent);
+				font-size: 64px;
+				text-align: right;
+				animation: move-down $animation-options;
+			}
+
+			.logo {
+				bottom: 60px;
+				left: 70px;
+				animation: move-up $animation-options;
+			}
+
+			p {
+				top: 200px;
+				left: 500px;
+				margin: 0;
+				font-size: 20px;
+				line-height: 30px;
+				animation: move-left $animation-options;
+			}
+		}
+
+		.card-back {
+			@include square(100%);
+			position: absolute;
+			z-index: 1;
+
+			.settings-icon {
+				position: absolute;
+				color: c(accent-10);
+				animation: rotation $ease-out-expo 16s infinite;
+
+				&:first-of-type {
+					top: -120px;
+					left: -100px;
+					font-size: 450px;
+				}
+
+				&:last-of-type {
+					right: -100px;
+					bottom: -200px;
+					font-size: 612px;
+				}
+			}
+		}
+	}
+
+	@keyframes move-down {
+		from {
+			translate: 0 -50px;
+		}
+
+		to {
+			translate: 0;
+		}
+	}
+
+	@keyframes move-left {
+		from {
+			translate: 50px;
+		}
+
+		to {
+			translate: 0;
+		}
+	}
+
+	@keyframes move-up {
+		from {
+			translate: 0 50px;
+		}
+
+		to {
+			translate: 0;
+		}
+	}
+
+	@keyframes rotation {
+		$length: 16;
+
+		@for $i from 0 to $length {
+			$progress: calc($i / $length);
+
+			#{$progress * 100%} {
+				rotate: $progress * 360deg;
+			}
 		}
 	}
 </style>

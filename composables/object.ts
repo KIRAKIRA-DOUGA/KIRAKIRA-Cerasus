@@ -8,3 +8,14 @@
 export function entries<K extends string | number | symbol, V>(obj: { [s in K]?: V }) {
 	return Object.entries(obj) as [K, V][];
 }
+
+/**
+ * 创建一个重复指定次数对象的数组，用于循环创建组件。
+ * 但是只需关心循环次数，不关心数组的内容。
+ * @param length - 循环次数。
+ * @param callback - map 回调函数。
+ * @returns 重复指定次数对象的数组。
+ */
+export function forMap<T>(length: number, callback: (index: number) => T) {
+	return Array(length).fill(undefined).map((_, index) => callback(index + 1));
+}

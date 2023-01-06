@@ -6,13 +6,13 @@ $fallback-fonts: system-ui, -apple-system, BlinkMacSystemFont, Roboto, Oxygen, U
 *::before,
 *::after {
 	box-sizing: border-box;
-	font-family: "Segoe UI", "Microsoft Yahei UI", $fallback-fonts;
+	font-family: "Segoe UI", "Microsoft Yahei", $fallback-fonts;
 	transition: all $ease-out-expo 250ms, color $ease-out-expo 100ms, fill $ease-out-expo 100ms;
 	user-select: none;
 	-webkit-tap-highlight-color: c(accent, 30%);
 
 	html:lang(ja) & {
-		font-family: "Segoe UI", "Yu Gothic UI", "Microsoft Yahei UI", $fallback-fonts;
+		font-family: "Segoe UI", "Yu Gothic UI", "Microsoft Yahei", $fallback-fonts;
 	}
 }
 

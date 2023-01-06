@@ -35,6 +35,18 @@
 	#{$property}-rgb: color-to-rgb-list($result-color);
 }
 
+/// 根据指定的键名确定是否生成波浪下划线链接背景。
+/// @param {String} $key - 当前颜色键名。
+/// @param {String} $color - 当前颜色值。
+/// @param {Bool} $is-light - 当前是否是浅色主题？
+/// @output 波浪下划线链接背景。
+@mixin wave-link($key, $color, $is-light) {
+	@if map.get($map: $state-colors, $key: accent-hover) == $key {
+		$svg-color: color-to-svg-color(themed-color($color, $is-light));
+		--accent-hover-wave-link-background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 4'%3E%3Cpath fill='none' stroke='#{$svg-color}' d='M0 3.5c5 0 5-3 10-3s5 3 10 3 5-3 10-3 5 3 10 3'/%3E%3C/svg%3E");
+	}
+}
+
 @for $i from 1 through 2 {
 	$is-light: $i == 1;
 	$selector: if($is-light, ":root", ":root.dark");
@@ -52,17 +64,14 @@
 
 		@each $key, $color in map.get($map: $primary-colors, $key: pink) {
 			@include hex-and-rgb-color($key, $color, $is-light); // fallback 颜色。
+			@include wave-link($key, $color, $is-light);
 		}
 
 		@each $palette, $accents in $primary-colors {
 			&.#{"" + $palette} {
 				@each $key, $color in $accents {
 					@include hex-and-rgb-color($key, $color, $is-light);
-
-					@if map.get($map: $state-colors, $key: accent-hover) == $key {
-						$svg-color: color-to-svg-color(themed-color($color, $is-light));
-						--accent-hover-wave-link-background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 4'%3E%3Cpath fill='none' stroke='#{$svg-color}' d='M0 3.5c5 0 5-3 10-3s5 3 10 3 5-3 10-3 5 3 10 3'/%3E%3C/svg%3E");
-					}
+					@include wave-link($key, $color, $is-light);
 				}
 			}
 		}
