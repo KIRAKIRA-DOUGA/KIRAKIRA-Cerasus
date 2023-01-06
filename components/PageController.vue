@@ -99,7 +99,7 @@
 		const pageLeft = page < prevPage;
 		const isUserInputPage = currentEdited.value === String(page);
 		if (!isUserInputPage && pageEdit.value && newPageNumber.value) {
-			const thumb = pageEdit.value.parentElement as HTMLDivElement;
+			const thumb = pageEdit.value.parentElement!;
 			const hasExistAnimations = removeExistAnimations(pageEdit.value, newPageNumber.value);
 			if (hasExistAnimations) {
 				currentEdited.value = String(prevPage);

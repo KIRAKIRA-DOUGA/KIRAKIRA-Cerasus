@@ -1,39 +1,129 @@
 <script setup lang="ts">
+	const props = withDefaults(defineProps<{
+		modelValue: number;
+		min?: number;
+		max?: number;
+	}>(), {
+		min: 0,
+		max: 100,
+	});
 
+	const emits = defineEmits<{
+		(event: "update:modelValue", value: number): void;
+	}>();
+
+	const value = computed(() => map(props.modelValue, props.min, props.max, 0, 1));
+
+	/**
+	 * 拖拽滑块逻辑处理。
+	 * @param e - 指针事件（包括鼠标和触摸）。
+	 */
+	function onThumbDown(e: PointerEvent) {
+		const thumb = (e.target as HTMLDivElement).parentElement!.querySelector(".thumb") as HTMLDivElement;
+		const track = thumb.parentElement!.querySelector(".track")!;
+		const { left, width: max } = track.getClientRects()[0];
+		const x = e.pageX - left - thumb.offsetLeft;
+		const pointerMove = (e: PointerEvent) => {
+			const position = clamp(e.pageX - left - x, 0, max);
+			const value = map(position, 0, max, props.min, props.max);
+			emits("update:modelValue", value);
+		};
+		const pointerUp = () => { // BUG: 触摸屏抬起事件有点问题。
+			document.removeEventListener("pointermove", pointerMove);
+			document.removeEventListener("pointerup", pointerUp);
+		};
+		document.addEventListener("pointermove", pointerMove);
+		document.addEventListener("pointerup", pointerUp);
+	}
+
+	/**
+	 * 点击轨道逻辑处理。
+	 * @param e - 指针事件（包括鼠标和触摸）。
+	 */
+	async function onTrackDown(e: PointerEvent) {
+		const track = e.target as HTMLDivElement;
+		const { width } = track.getClientRects()[0];
+		const value = map(e.offsetX, 0, width, props.min, props.max);
+		emits("update:modelValue", value);
+		await nextTick();
+		onThumbDown(e); // 再去调用拖拽滑块的事件。
+	}
 </script>
 
 <template>
-	<section>
-		<div class="track"></div>
-		<div class="thumb"></div>
+	<section tabindex="0" :style="{ '--value': value }">
+		<div class="track" @pointerdown="onTrackDown"></div>
+		<div class="passed"></div>
+		<div class="thumb" @pointerdown="onThumbDown"></div>
 	</section>
 </template>
 
 <style scoped lang="scss">
 	section {
+		--value: 0;
 		position: relative;
 	}
 
-	.track {
+	$thumb-size: 16px;
+	$thumb-size-half: calc($thumb-size / 2);
+	$value: calc(var(--value) * (100% - $thumb-size));
+
+	.track,
+	.passed {
 		@include oval;
 		height: 6px;
+		margin: $thumb-size-half;
+	}
+
+	.track {
 		background-color: c(accent-disabled);
+		cursor: pointer;
+	}
+
+	.passed {
+		position: absolute;
+		top: 0;
+		width: $value;
+		margin-top: 0;
+		background-color: c(accent);
+		opacity: map(var(--value), 0, 1, 0.4, 1, true);
+		transition: none; // 关掉，关掉动画，一定要关掉。否则动画会卡到你怀疑人生。
+		pointer-events: none;
 	}
 
 	.thumb {
-		@include square(16px);
+		@include square($thumb-size);
 		@include circle;
 		@include flex-center;
+		@include control-ball-shadow;
 		position: absolute;
-		top: 0;
+		top: calc($thumb-size / -4);
+		left: $value;
 		background-color: c(main-bg);
+		cursor: pointer;
+		transition: all $ease-out-max 250ms, left 0ms;
 
 		&::after {
-			@include square(8px);
+			@include square(100%);
 			@include circle;
 			display: block;
 			background-color: c(accent);
+			transition: all $ease-out-max 250ms;
 			content: "";
+			scale: 0.5;
+		}
+
+		&:hover::after {
+			scale: 0.7;
+		}
+
+		.track:active ~ &::after,
+		&:active::after {
+			scale: 0.4;
+		}
+
+		section:focus & {
+			@include large-shadow-focus;
 		}
 	}
 </style>

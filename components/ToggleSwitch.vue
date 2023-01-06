@@ -23,7 +23,7 @@
 	 */
 	function onThumbDown(e: PointerEvent) {
 		const thumb = e.target as HTMLDivElement;
-		const control = thumb.parentElement as HTMLDivElement;
+		const control = thumb.parentElement!;
 		const thumbWidth = thumb.getClientRects()[0].width;
 		const controlRect = control.getClientRects()[0];
 		const left = controlRect.left, max = controlRect.width - thumbWidth;
@@ -55,17 +55,17 @@
 </script>
 
 <template>
-	<label :class="{ on: modelValue ?? on, disabled }" :tabindex="disabled ? -1 : 0" @click="onClick">
+	<section :class="{ on: modelValue ?? on, disabled }" :tabindex="disabled ? -1 : 0" @click="onClick">
 		<slot></slot>
 		<div class="switch">
 			<div class="base"></div>
 			<div class="thumb" @pointerdown="onThumbDown"></div>
 		</div>
-	</label>
+	</section>
 </template>
 
 <style scoped lang="scss">
-	label {
+	section {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -128,15 +128,15 @@
 				background-color: c(gray-2);
 			}
 
-			label:focus & {
+			section:focus & {
 				@include large-shadow-unchecked-focus;
 			}
 
-			label.on:focus & {
+			section.on:focus & {
 				@include large-shadow-focus;
 			}
 
-			label:active & {
+			section:active & {
 				transform: scale(calc(19 / 20));
 			}
 

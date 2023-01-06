@@ -71,7 +71,7 @@
 	$duration-half: 200ms;
 
 	@mixin short-transition {
-		transition: all $ease-out-max 200ms;
+		transition: all $ease-out-max 250ms;
 	}
 
 	.radio-shadow {

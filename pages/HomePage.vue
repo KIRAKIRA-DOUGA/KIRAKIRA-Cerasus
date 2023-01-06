@@ -15,6 +15,7 @@
 	const availableLocales = computed(() => (locales.value as LocaleObject[]).filter(i => i.code !== currentLocale.value));
 	const timeoutId = ref<NodeJS.Timeout>();
 	const isTagChecked = ref(false);
+	const sliderValue = ref(0);
 
 	async function onClickButton() {
 		clearTimeout(timeoutId.value);
@@ -67,7 +68,7 @@
 			<!-- <Lottie loop autoplay :animationData="animationData" /> -->
 			<br />
 			<Tag v-model="isTagChecked">标签</Tag>
-			<SlideBar />
+			<SlideBar v-model="sliderValue" />
 			<TabBar>
 				<TabItem>全部</TabItem>
 				<TabItem>视频</TabItem>

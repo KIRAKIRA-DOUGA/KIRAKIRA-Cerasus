@@ -16,7 +16,7 @@
 </script>
 
 <template>
-	<div v-ripple class="tag" :class="{ checked: isChecked }" @click="emits('update:modelValue', !modelValue)">
+	<section v-ripple :class="{ checked: isChecked }" @click="emits('update:modelValue', !modelValue)">
 		<div class="circle"></div>
 		<div class="content">
 			<Transition name="check">
@@ -26,7 +26,7 @@
 			</Transition>
 			<slot></slot>
 		</div>
-	</div>
+	</section>
 </template>
 
 <style scoped lang="scss">
@@ -34,7 +34,7 @@
 	$color-transition: color $ease-out-expo 100ms, fill $ease-out-expo 100ms;
 	$duration: 400ms;
 
-	.tag {
+	section {
 		@include oval;
 		position: relative;
 		display: inline-flex;
