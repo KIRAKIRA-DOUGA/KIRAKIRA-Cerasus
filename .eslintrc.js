@@ -94,7 +94,7 @@ module.exports = {
 		"no-loss-of-precision": "error",
 		"no-useless-concat": "error",
 		"object-shorthand": "error",
-		"prefer-template": "warn",
+		"prefer-template": "off",
 		"template-curly-spacing": "error",
 		"no-undef": "off", // 这波 nuxt 的锅。
 		"multiline-ternary": "off",
@@ -189,7 +189,7 @@ module.exports = {
 		"vue/no-useless-concat": "error",
 		"vue/object-curly-spacing": ["error", "always"],
 		"vue/object-shorthand": "error",
-		"vue/prefer-template": "warn",
+		"vue/prefer-template": "off",
 		"vue/quote-props": ["error", "as-needed"],
 		"vue/space-in-parens": ["error", "never"],
 		"vue/space-infix-ops": "error",

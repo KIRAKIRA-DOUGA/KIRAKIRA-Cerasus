@@ -13,7 +13,6 @@ export default function styleResources(userOptions: Partial<Entries>) {
 		let additionalData = "";
 		for (const [atRule, paths] of entries(atRules)) {
 			if (paths.length === 0) continue;
-			// eslint-disable-next-line prefer-template
 			additionalData += paths.map(path => `@${atRule} "${path}";`).join("\n") + "\n";
 		}
 		if (additionalData.trim() !== "") options[preprocessor] = { additionalData };

@@ -45,7 +45,7 @@
 			<PageController v-model="page" :pages="pages" :displayPageCount="displayPageCount" enableArrowKeyMove />
 			<Button @click="onClickButton">{{ isClicked ? t.buttonClicked : t.button }}</Button>
 			<Button disabled>{{ t.buttonDisabled }}</Button>
-			<Button icon="send">发送</Button>
+			<Button icon="send">{{ t.send }}</Button>
 			<ToggleSwitch v-model="toggle">切换开关 {{ toggle ? "开" : "关" }}</ToggleSwitch>
 			<ToggleSwitch disabled>禁用 关</ToggleSwitch>
 			<ToggleSwitch on disabled>禁用 开</ToggleSwitch>
@@ -89,6 +89,7 @@
 		button: "按钮",
 		buttonDisabled: "按钮被禁用",
 		buttonClicked: "我被单击了 呜呜呜~",
+		send: "发送",
 		lightTheme: "浅色主题",
 		darkTheme: "深色主题",
 		systemTheme: "使用默认值",
@@ -107,6 +108,7 @@
 		button: "Button",
 		buttonDisabled: "Button disabled",
 		buttonClicked: "I was clicked~",
+		send: "Send",
 		lightTheme: "Light",
 		darkTheme: "Dark",
 		systemTheme: "System",
@@ -125,6 +127,7 @@
 		button: "ボタン",
 		buttonDisabled: "ボタン無効",
 		buttonClicked: "私はクリックされました ううう~",
+		send: "送信",
 		lightTheme: "ライト",
 		darkTheme: "暗い",
 		systemTheme: "自動",

@@ -1,5 +1,3 @@
-/* eslint-disable prefer-template */
-
 import styles from "styles/ripple.module.scss";
 
 class Point {

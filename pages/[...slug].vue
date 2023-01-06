@@ -11,6 +11,11 @@
 				navigateTo("/601.html");
 			if (routeNumber === 404)
 				return false;
+			if (routeNumber === 233)
+				return {
+					statusCode: 233,
+					message: "乐",
+				};
 			if (isFinite(routeNumber)) // 测试，如果输入的路由是数字就可以触发对应数字的错误代码。
 				return {
 					statusCode: routeNumber,

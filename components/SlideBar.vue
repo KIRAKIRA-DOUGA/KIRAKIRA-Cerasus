@@ -12,6 +12,14 @@
 		(event: "update:modelValue", value: number): void;
 	}>();
 
+	const errorInfo = `取值范围应在 [${props.min}, ${props.max}] 其中，当前值为 ${props.modelValue}。`;
+	if (props.min > props.max)
+		throw new RangeError(`SlideBar 的最小值比最大值要大？最小值为 ${props.min}，最大值为 ${props.max}。`);
+	if (props.modelValue < props.min)
+		throw new RangeError("SlideBar 的值比最小值要小。" + errorInfo);
+	if (props.modelValue > props.max)
+		throw new RangeError("SlideBar 的值比最大值要大。" + errorInfo);
+
 	const value = computed(() => map(props.modelValue, props.min, props.max, 0, 1));
 
 	/**

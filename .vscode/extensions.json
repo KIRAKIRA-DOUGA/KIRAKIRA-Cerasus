@@ -5,6 +5,7 @@
 		"dbaeumer.vscode-eslint",
 		"editorconfig.editorconfig",
 		"stylelint.vscode-stylelint",
-		"somewhatstationery.some-sass"
+		"somewhatstationery.some-sass",
+		"mrmlnc.vscode-json5"
 	]
 }

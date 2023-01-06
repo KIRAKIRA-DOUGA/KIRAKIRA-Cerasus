@@ -1,27 +1,14 @@
-<script setup lang="ts">
-	// 把该文件移动到根目录即可自定义错误（如 404、500）页面样式。
-
-	import { NuxtError } from "nuxt/dist/app/composables/error";
-
-	const props = defineProps<{
-		error?: NuxtError; // BUG: TypeScript WCNM，你把多少人的生活，都 TM 给毁了。
-	}>();
-
-	onMounted(() => console.log(props.error));
-</script>
-
 <template>
 	<main>
+		<div class="mountains">
+			<div v-for="i in 11" :key="`mount-${i}`">
+				<div></div>
+			</div>
+		</div>
 		<div class="spotlight"></div>
 		<div class="content">
-			<template v-if="error">
-				<h1>{{ error.statusCode }}</h1>
-				<p>{{ error.message }}</p>
-			</template>
-			<template v-else>
-				<h1>233</h1>
-				<p>乐</p>
-			</template>
+			<h1><slot name="statusCode">233</slot></h1>
+			<p><slot name="message">乐</slot></p>
 			<nuxt-link to="/" class="home-link">返回首页</nuxt-link>
 		</div>
 	</main>
@@ -42,15 +29,20 @@
 
 	.content {
 		@include flex-center;
+		position: relative;
+		z-index: 20;
 		flex-direction: column;
+		justify-content: flex-start;
 		width: 100%;
 		height: 100%;
+		padding-top: 5rem;
 
 		h1 {
 			margin: 0;
 			margin-bottom: 2rem;
-			font-weight: 500;
+			font-weight: bold;
 			font-size: 6rem;
+			font-family: Montserrat, sans-serif;
 			line-height: 1;
 		}
 
@@ -91,7 +83,7 @@
 			opacity: 0.5;
 			transition: background-position 0.3s ease-in-out, opacity 0.2s ease-in-out;
 			content: "";
-			mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+			mask: linear-gradient(white 0 0) content-box, linear-gradient(white 0 0);
 			// stylelint-disable-next-line property-no-vendor-prefix
 			-webkit-mask-composite: xor;
 			mask-composite: exclude;
@@ -127,6 +119,42 @@
 		.home-link {
 			font-size: 1.25rem;
 			line-height: 1.75rem;
+		}
+	}
+
+	.mountains {
+		$height: 80vh;
+		$sqrt3: math.sqrt(3);
+
+		@include square(100%);
+		position: fixed;
+		left: calc((100vw / 11 - $height * 2 / $sqrt3) / 2);
+		display: flex;
+
+		> * {
+			@include square(100%);
+
+			> * {
+				position: absolute;
+				bottom: 0;
+				width: 0;
+				height: 0;
+				border-color: transparent;
+				border-style: solid;
+				border-width: 0 calc($height / $sqrt3) $height;
+			}
+
+			@for $i from 1 through 11 {
+				$colors: #f06e8e, #f1587e, #f58ca6, #ec7f9a, #dd91a3, #ecd2d8;
+
+				&:nth-of-type(#{$i}) > * {
+					$j: $i - 1;
+					$layer: 5 - math.abs($j - 5);
+					translate: 0 calc(40% * $layer / 5);
+					z-index: 6 - $layer;
+					border-bottom-color: list.nth($colors, $layer + 1);
+				}
+			}
 		}
 	}
 </style>
