@@ -304,7 +304,7 @@
 		text-align: center;
 		background: c(accent);
 		cursor: text;
-		transition: all $ease-out-max 500ms, left $ease-in-out-smooth 500ms;
+		transition: $fallback-transitions, all $ease-out-max 500ms, left $ease-in-out-smooth 500ms;
 
 		&:hover {
 			@include button-shadow-hover;

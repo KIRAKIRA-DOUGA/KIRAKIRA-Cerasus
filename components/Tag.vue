@@ -31,7 +31,6 @@
 
 <style scoped lang="scss">
 	$check-icon-size: 19px;
-	$color-transition: color $ease-out-expo 100ms, fill $ease-out-expo 100ms;
 	$duration: 400ms;
 
 	section {
@@ -50,13 +49,13 @@
 
 			&,
 			& * {
-				transition: all $ease-out-back $duration, $color-transition;
+				transition: $fallback-transitions, all $ease-out-back $duration;
 			}
 		}
 
 		&,
 		& * {
-			transition: all $ease-out-expo $duration, $color-transition;
+			transition: $fallback-transitions, all $ease-out-expo $duration;
 		}
 	}
 

@@ -59,7 +59,7 @@
 		}
 
 		* {
-			font-family: Montserrat, "Segoe UI", Arial, Helvetica, sans-serif;
+			font-family: $english-logo-fonts;
 		}
 	}
 

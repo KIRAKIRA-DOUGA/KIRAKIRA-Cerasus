@@ -53,7 +53,7 @@
 			margin-bottom: 2rem;
 			font-weight: bold;
 			font-size: 6rem;
-			font-family: Montserrat, sans-serif;
+			font-family: $english-logo-fonts;
 			line-height: 1;
 			animation: move-down $title-animation-options;
 		}

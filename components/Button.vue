@@ -28,7 +28,7 @@
 		vertical-align: middle;
 		background: c(accent);
 		border: none;
-		transition: all $ease-out-back 250ms;
+		transition: $fallback-transitions, all $ease-out-back 250ms;
 		appearance: none;
 
 		&:hover {

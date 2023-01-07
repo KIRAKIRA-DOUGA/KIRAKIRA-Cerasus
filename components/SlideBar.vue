@@ -109,14 +109,14 @@
 		left: $value;
 		background-color: c(main-bg);
 		cursor: pointer;
-		transition: all $ease-out-max 250ms, left 0ms;
+		transition: $fallback-transitions, left 0ms;
 
 		&::after {
 			@include square(100%);
 			@include circle;
 			display: block;
 			background-color: c(accent);
-			transition: all $ease-out-max 250ms;
+			transition: $fallback-transitions;
 			content: "";
 			scale: 0.5;
 		}

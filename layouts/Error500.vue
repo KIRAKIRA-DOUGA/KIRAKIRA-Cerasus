@@ -54,7 +54,7 @@
 
 				* {
 					margin: 0;
-					font-family: Montserrat, sans-serif;
+					font-family: $english-logo-fonts;
 				}
 
 				h1 {
@@ -76,7 +76,7 @@
 
 			:deep(*) {
 				margin: 0;
-				font-family: "Cascadia Code", "JetBrains Mono", Consolas, monospace !important;
+				font-family: $monospace-fonts !important;
 			}
 
 			pre {

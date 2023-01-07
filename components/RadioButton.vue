@@ -71,7 +71,7 @@
 	$duration-half: 200ms;
 
 	@mixin short-transition {
-		transition: all $ease-out-max 250ms;
+		transition: $fallback-transitions;
 	}
 
 	.radio-shadow {
@@ -86,7 +86,7 @@
 		margin: 0;
 		overflow: hidden;
 		box-shadow: inset 0 0 0 $border-size c(icon-color);
-		transition: all $ease-in-out-max calc($duration-half * 2), background-color $ease-out-max 200ms;
+		transition: $fallback-transitions, all $ease-in-out-max calc($duration-half * 2), background-color $ease-out-max 200ms;
 		animation: outer-border-change-back $duration-half $duration-half $ease-in-max reverse;
 		appearance: none;
 
@@ -101,7 +101,7 @@
 			display: block;
 			background-color: c(icon-color);
 			opacity: 0;
-			transition: all $ease-in-out-max calc($duration-half * 2);
+			transition: $fallback-transitions, all $ease-in-out-max calc($duration-half * 2);
 			animation:
 				inner-resize-back $duration-half $ease-out-max reverse,
 				cut-out $duration-half step-start;
