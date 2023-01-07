@@ -29,6 +29,7 @@ export default defineNuxtConfig({
 		content: resolve(__dirname, "./content"),
 		middleware: resolve(__dirname, "./middleware"),
 		server: resolve(__dirname, "./server"),
+		helpers: resolve(__dirname, "./helpers"),
 	},
 	css: [
 		"styles/global.scss",

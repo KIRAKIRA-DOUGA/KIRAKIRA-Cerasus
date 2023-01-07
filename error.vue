@@ -32,12 +32,6 @@
 </script>
 
 <template>
-	<Error404 v-if="isStatusCode(404, 233)">
-		<template #statusCode>{{ error.statusCode }}</template>
-		<template #message>{{ error.message }}</template>
-	</Error404>
-	<Error500 v-else :stack="error.stack">
-		<template #statusCode>{{ error.statusCode }}</template>
-		<template #message>{{ error.message }}</template>
-	</Error500>
+	<Error404 v-if="isStatusCode(404, 233)" :statusCode="error.statusCode" :message="error.message" />
+	<Error500 v-else :statusCode="error.statusCode" :message="error.message" :stack="error.stack ?? ''" />
 </template>

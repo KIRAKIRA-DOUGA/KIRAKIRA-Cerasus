@@ -1,23 +1,27 @@
 <script setup lang="ts">
-	const props = withDefaults(defineProps<{
-		stack?: string;
-	}>(), {
-		stack: "",
-	});
+	import { httpResponseStatusCodes } from "helpers/http-status";
+
+	const props = defineProps<{
+		statusCode: number | string;
+		message: string;
+		stack: string;
+	}>();
+
+	const title = computed(() => httpResponseStatusCodes[props.statusCode]);
 </script>
 
 <template>
 	<div class="card">
 		<div class="stack">
-			<h2><slot name="message">Uncaught ReferenceError: Aira is not defined</slot></h2>
+			<h2>{{ message }}</h2>
 			<!-- eslint-disable-next-line vue/no-v-html -->
 			<pre v-html="stack"></pre>
 		</div>
 		<div class="card-bottom">
 			<LogoLuXun />
 			<div class="title">
-				<h1><slot name="statusCode">500</slot></h1>
-				<p><slot name="title">Internal Server Error</slot></p>
+				<h1>{{ statusCode }}</h1>
+				<p>{{ title }}</p>
 			</div>
 		</div>
 	</div>

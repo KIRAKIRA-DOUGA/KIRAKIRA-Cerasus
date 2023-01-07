@@ -111,7 +111,7 @@ module.exports = {
 		"n/no-callback-literal": "off", // 这是啥？
 		"@typescript-eslint/no-unused-vars": ["warn", { // 非要使用未使用变量，前面加下划线。
 			"argsIgnorePattern": "^_",
-			"varsIgnorePattern": "^_",
+			"varsIgnorePattern": "^_|^props$|^emits$",
 			"caughtErrorsIgnorePattern": "^_",
 		}],
 		"@typescript-eslint/no-inferrable-types": "off",

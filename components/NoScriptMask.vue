@@ -22,7 +22,7 @@
 								<p>
 									嘿！为什么禁用JavaScript？<br />
 									我们的站点使用了大量JavaScript技术，<br />
-									需要开启JavaScript才能使用。<br />
+									需要启用JavaScript才能使用。<br />
 									<a href="https://www.enable-javascript.com/" target="_blank">如何启用JavaScript？</a>
 								</p>
 							</div>
@@ -129,19 +129,11 @@
 		from {
 			translate: 0 -50px;
 		}
-
-		to {
-			translate: 0;
-		}
 	}
 
 	@keyframes move-left {
 		from {
 			translate: 50px;
-		}
-
-		to {
-			translate: 0;
 		}
 	}
 

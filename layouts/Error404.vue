@@ -1,3 +1,10 @@
+<script setup lang="ts">
+	const props = defineProps<{
+		statusCode: number | string;
+		message: string;
+	}>();
+</script>
+
 <template>
 	<main>
 		<div class="mountains">
@@ -7,14 +14,17 @@
 		</div>
 		<div class="spotlight"></div>
 		<div class="content">
-			<h1><slot name="statusCode">233</slot></h1>
-			<p><slot name="message">乐</slot></p>
+			<h1>{{ statusCode }}</h1>
+			<p>{{ message }}</p>
 			<nuxt-link to="/" class="home-link">返回首页</nuxt-link>
 		</div>
 	</main>
 </template>
 
 <style scoped lang="scss">
+	$title-animation-options: $ease-out-expo 600ms backwards calc(100ms * var(--i));
+	$mountain-animation-options: $ease-out-expo 1500ms backwards;
+
 	.spotlight {
 		position: fixed;
 		bottom: -30vh;
@@ -38,24 +48,29 @@
 		padding-top: 5rem;
 
 		h1 {
+			--i: 2;
 			margin: 0;
 			margin-bottom: 2rem;
 			font-weight: bold;
 			font-size: 6rem;
 			font-family: Montserrat, sans-serif;
 			line-height: 1;
+			animation: move-down $title-animation-options;
 		}
 
 		p {
+			--i: 1;
 			margin: 0;
 			margin-bottom: 4rem;
 			font-weight: 300;
 			font-size: 1.25rem;
 			line-height: 1.25;
+			animation: move-down $title-animation-options;
 		}
 	}
 
 	.home-link {
+		--i: 0;
 		position: relative;
 		padding: 0.75rem 1.5rem;
 		color: initial;
@@ -64,6 +79,7 @@
 		background-color: #ffffff4d;
 		border-radius: 0.5rem;
 		backdrop-filter: blur(10px);
+		animation: move-down $title-animation-options;
 
 		:root.dark & {
 			background-color: #1414144d;
@@ -142,6 +158,7 @@
 				border-color: transparent;
 				border-style: solid;
 				border-width: 0 calc($height / $sqrt3) $height;
+				animation: move-up $mountain-animation-options;
 			}
 
 			@for $i from 1 through 11 {
@@ -150,11 +167,25 @@
 				&:nth-of-type(#{$i}) > * {
 					$j: $i - 1;
 					$layer: 5 - math.abs($j - 5);
-					translate: 0 calc(40% * $layer / 5);
+					--from: calc(175px * (5 - #{$layer}) / 5 + 20px);
+					bottom: calc(40% * $layer / -5);
 					z-index: 6 - $layer;
 					border-bottom-color: list.nth($colors, $layer + 1);
 				}
 			}
+		}
+	}
+
+	@keyframes move-down {
+		from {
+			opacity: 0;
+			translate: 0 -50px;
+		}
+	}
+
+	@keyframes move-up {
+		from {
+			translate: 0 var(--from);
 		}
 	}
 </style>

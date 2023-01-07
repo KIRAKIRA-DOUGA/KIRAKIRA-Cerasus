@@ -6,6 +6,7 @@
 		"editorconfig.editorconfig",
 		"stylelint.vscode-stylelint",
 		"somewhatstationery.some-sass",
-		"mrmlnc.vscode-json5"
+		"mrmlnc.vscode-json5",
+		"gruntfuggly.todo-tree"
 	]
 }
