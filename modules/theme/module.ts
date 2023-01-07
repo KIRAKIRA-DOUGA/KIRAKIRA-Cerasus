@@ -1,7 +1,7 @@
 import { addImports, addPlugin, defineNuxtModule } from "@nuxt/kit";
 import { resolve } from "path";
 
-export function getFunctionBody(func: Function, compressed: false) {
+export function getFunctionBody(func: Function, compressed: boolean) {
 	const str = func.toString();
 	const leftBraceIndex = str.indexOf("{");
 	const result = str.slice(leftBraceIndex + 1, -1);
