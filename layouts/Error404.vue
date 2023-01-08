@@ -139,10 +139,9 @@
 	}
 
 	.mountains {
+		@include square(100%);
 		$height: 80vh;
 		$sqrt3: math.sqrt(3);
-
-		@include square(100%);
 		position: fixed;
 		left: calc((100vw / 11 - $height * 2 / $sqrt3) / 2);
 		display: flex;

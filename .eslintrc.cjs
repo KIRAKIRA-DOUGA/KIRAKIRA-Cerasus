@@ -108,6 +108,7 @@ module.exports = {
 		"no-self-assign": "off",
 		"no-debugger": "warn",
 		"import/order": "off",
+		"no-use-before-define": "off",
 		"n/no-callback-literal": "off", // 这是啥？
 		"@typescript-eslint/no-unused-vars": ["warn", { // 非要使用未使用变量，前面加下划线。
 			"argsIgnorePattern": "^_",
@@ -137,6 +138,7 @@ module.exports = {
 		}],
 		"@typescript-eslint/semi": ["error", "always"],
 		"@typescript-eslint/no-explicit-any": "error",
+		"@typescript-eslint/no-use-before-define": "warn",
 		// "@typescript-eslint/no-confusing-void-expression": "error",
 		// "@typescript-eslint/no-floating-promises": "error",
 		// 嗯对这几个不晓得怎么用不了。

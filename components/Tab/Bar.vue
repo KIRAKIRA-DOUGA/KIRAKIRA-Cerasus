@@ -1,4 +1,5 @@
 <script setup lang="ts">
+	import { IndicatorState } from "./Indicator.vue";
 	import TabItem from "./Item.vue";
 
 	const props = defineProps<{
@@ -17,16 +18,38 @@
 			if (comp.type !== TabItem)
 				throw typeError;
 
+	const childDoms = reactive({} as Record<string, HTMLElement>);
+	const tabBar = ref<HTMLElement>();
+	const indicatorState = ref<IndicatorState>("hidden");
+	const indicatorWrapperLength = ref(28);
+	const indicatorLeft = ref(0);
+
 	function changeTab(id: string) {
 		emits("update:modelValue", id);
 	}
 
+	function updateIndicator(id: string) {
+		const item = childDoms[id];
+		indicatorWrapperLength.value = item.clientWidth;
+		let { left } = item.getClientRects()[0];
+		left -= tabBar.value!.getClientRects()[0].left;
+		indicatorLeft.value = left;
+	}
+
 	watch(() => props.modelValue, id => {
-		console.log(slots);
-	}, { immediate: true });
+		updateIndicator(id);
+		indicatorState.value = "hover";
+		setTimeout(() => (indicatorState.value = "normal"), 250);
+	});
+
+	onMounted(() => {
+		updateIndicator(props.modelValue);
+		indicatorState.value = "normal";
+	});
 
 	defineExpose({
 		changeTab,
+		childDoms,
 	});
 </script>
 
@@ -35,12 +58,12 @@
 </script>
 
 <template>
-	<div class="tab-bar">
+	<section ref="tabBar">
 		<div class="items" :class="{ vertical }">
 			<slot></slot>
 		</div>
-		<TabIndicator :clipped="clipped" :vertical="vertical" />
-	</div>
+		<TabIndicator :clipped="clipped" :vertical="vertical" :state="indicatorState" :wrapperLength="indicatorWrapperLength" :left="indicatorLeft" />
+	</section>
 </template>
 
 <style scoped lang="scss">
@@ -52,5 +75,9 @@
 		> :deep(*) {
 			cursor: pointer;
 		}
+	}
+
+	section {
+		position: relative;
 	}
 </style>

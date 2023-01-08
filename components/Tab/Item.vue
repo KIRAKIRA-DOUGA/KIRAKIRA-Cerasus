@@ -1,6 +1,4 @@
 <script setup lang="ts">
-	import TabBar, { typeError } from "./Bar.vue";
-
 	const props = defineProps<{
 		id: string;
 	}>();
@@ -8,15 +6,18 @@
 	const dom = ref<HTMLDivElement>();
 	const parent = getParent()!;
 
-	if (parent?.type !== TabBar)
-		throw typeError;
-
 	function onClick() {
 		parent.exposed?.changeTab(props.id);
 	}
 
-	defineExpose({
-		dom,
+	onMounted(() => {
+		parent.exposed!.childDoms[props.id] = dom.value;
+		if (!parent.exposed || !dom.value) return;
+		const childDoms = parent.exposed.childDoms as Record<string, HTMLElement>;
+		/* Object.defineProperty(childDoms, props.id, {
+			get() { return dom.value; },
+		}); */
+		childDoms[props.id] = dom.value;
 	});
 </script>
 

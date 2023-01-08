@@ -29,10 +29,9 @@
 
 <style scoped lang="scss">
 	.card {
-		$margin-y: 3.5rem;
-
 		@include radius-large;
 		@include card-shadow;
+		$margin-y: 3.5rem;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
