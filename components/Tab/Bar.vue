@@ -4,6 +4,11 @@
 	const props = defineProps<{
 		clipped?: boolean;
 		vertical?: boolean;
+		modelValue: string;
+	}>();
+
+	const emits = defineEmits<{
+		(event: "update:modelValue", arg: string): void;
 	}>();
 
 	const slots = useSlots().default?.();
@@ -12,9 +17,17 @@
 			if (comp.type !== TabItem)
 				throw typeError;
 
-	function changeTab(index: number) {
-
+	function changeTab(id: string) {
+		emits("update:modelValue", id);
 	}
+
+	watch(() => props.modelValue, id => {
+		console.log(slots);
+	}, { immediate: true });
+
+	defineExpose({
+		changeTab,
+	});
 </script>
 
 <script lang="ts">

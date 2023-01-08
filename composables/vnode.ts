@@ -1,4 +1,4 @@
-import { VNode } from "vue";
+import { ComponentInternalInstance, VNode } from "vue";
 
 export function useRender(render: () => VNode): void {
 	const vm = getCurrentInstance();
@@ -13,3 +13,7 @@ export type VueJsx<Props, Emits, Slots = { default: VNode }> = (props: Props, co
 	emit: Emits;
 	expose: Function;
 }) => JSX.Element;
+
+export function getParent<T extends ComponentInternalInstance>() {
+	return getCurrentInstance()?.parent as T | null || null;
+}

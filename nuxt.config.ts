@@ -58,9 +58,6 @@ export default defineNuxtConfig({
 			},
 		},
 	},
-	webpack: {
-		extractCSS: true,
-	},
 	i18n: {
 		locales: [
 			{ code: "zh", name: "简体中文" },

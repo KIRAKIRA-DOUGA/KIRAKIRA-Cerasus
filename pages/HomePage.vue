@@ -16,6 +16,7 @@
 	const timeoutId = ref<NodeJS.Timeout>();
 	const isTagChecked = ref(false);
 	const sliderValue = ref(0);
+	const selectedTab = ref("all");
 
 	async function onClickButton() {
 		clearTimeout(timeoutId.value);
@@ -69,10 +70,10 @@
 			<br />
 			<Tag v-model="isTagChecked">标签</Tag>
 			<SlideBar v-model="sliderValue" />
-			<TabBar>
-				<TabItem>全部</TabItem>
-				<TabItem>视频</TabItem>
-				<TabItem>图片</TabItem>
+			<TabBar v-model="selectedTab">
+				<TabItem id="all">全部</TabItem>
+				<TabItem id="video">视频</TabItem>
+				<TabItem id="picture">图片</TabItem>
 			</TabBar>
 			<LogoCover />
 		</div>

@@ -1,20 +1,27 @@
 <script setup lang="ts">
-	import { ComponentInternalInstance } from "vue";
 	import TabBar, { typeError } from "./Bar.vue";
 
-	const item = getCurrentInstance() as ComponentInternalInstance;
-	const tabBar = item?.parent as ComponentInternalInstance;
-	if (tabBar?.type !== TabBar)
+	const props = defineProps<{
+		id: string;
+	}>();
+
+	const dom = ref<HTMLDivElement>();
+	const parent = getParent()!;
+
+	if (parent?.type !== TabBar)
 		throw typeError;
 
 	function onClick() {
-		console.log(item);
-		console.log(tabBar?.slots?.default?.());
+		parent.exposed?.changeTab(props.id);
 	}
+
+	defineExpose({
+		dom,
+	});
 </script>
 
 <template>
-	<div @click="onClick">
+	<div ref="dom" @click="onClick">
 		<slot></slot>
 	</div>
 </template>

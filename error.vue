@@ -2,8 +2,6 @@
 	// 把该文件移动到根目录即可自定义错误（如 404、500）页面样式。
 
 	import { NuxtError } from "nuxt/dist/app/composables/error";
-	import Error404 from "layouts/Error404.vue";
-	import Error500 from "layouts/Error500.vue";
 
 	const props = withDefaults(defineProps<{
 		error: NuxtError; // BUG: TypeScript WCNM，你把多少人的生活，都 TM 给毁了。
@@ -32,6 +30,6 @@
 </script>
 
 <template>
-	<Error404 v-if="isStatusCode(404, 233)" :statusCode="error.statusCode" :message="error.message" />
-	<Error500 v-else :statusCode="error.statusCode" :message="error.message" :stack="error.stack ?? ''" />
+	<NuxtLayout v-if="isStatusCode(404, 233)" name="error404" :statusCode="error.statusCode" :message="error.message" />
+	<NuxtLayout v-else name="error500" :statusCode="error.statusCode" :message="error.message" :stack="error.stack ?? ''" />
 </template>
