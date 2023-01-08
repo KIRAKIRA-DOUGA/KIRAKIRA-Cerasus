@@ -5,7 +5,6 @@
 /// @return {Color} 反转亮度后的颜色值。
 @function invert-lightness($color) {
 	$lightness: 100% - color.lightness($color);
-
 	@return hsla(hue($color), saturation($color), $lightness, alpha($color));
 }
 

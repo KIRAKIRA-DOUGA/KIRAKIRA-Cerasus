@@ -56,16 +56,32 @@ module.exports = {
 			ignore: ["stylelint-commands"],
 			severity: "warning",
 		}],
+		"at-rule-empty-line-before": ["always", {
+			except: ["first-nested"],
+			ignore: ["after-comment"],
+			ignoreAtRules: ["import", "include", "else", "return", "forward", "use"],
+		}],
 		"scss/dollar-variable-empty-line-before": null,
 		"scss/double-slash-comment-empty-line-before": ["always", {
 			except: ["first-nested"],
 			ignore: ["between-comments", "stylelint-commands"],
 			severity: "warning",
 		}],
-		"scss/dollar-variable-first-in-block": [true, {
+		/* "scss/dollar-variable-first-in-block": [true, {
 			ignore: ["comments", "imports"],
 			except: ["root", "function"],
-		}],
+		}], */
+		"order/order": [
+			{
+				"type": "at-rule",
+				"name": "include",
+			},
+			"dollar-variables",
+			"custom-properties",
+			"declarations",
+			// "at-rules", // <-- important, `@media` should go before `&:pseudo`
+			"rules",
+		],
 		"order/properties-order": [[], { severity: "warning" }],
 	},
 };

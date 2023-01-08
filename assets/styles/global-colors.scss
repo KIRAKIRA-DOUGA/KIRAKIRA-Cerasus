@@ -18,7 +18,6 @@
 		$light-color: $color;
 		$dark-color: invert-lightness($color);
 	}
-
 	@return if($is-light, $light-color, $dark-color);
 }
 
@@ -61,11 +60,6 @@
 		@each $key, $color in $secondary-colors {
 			@include hex-and-rgb-color($key, $color, $is-light);
 		}
-
-		// @each $key, $color in map.get($map: $primary-colors, $key: pink) {
-		// 	@include hex-and-rgb-color($key, $color, $is-light); // fallback 颜色。
-		// 	@include wave-link($key, $color, $is-light);
-		// }
 
 		@each $palette, $accents in $primary-colors {
 			&.#{"" + $palette} {

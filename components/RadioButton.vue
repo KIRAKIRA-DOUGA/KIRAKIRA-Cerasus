@@ -58,17 +58,17 @@
 </template>
 
 <style scoped lang="scss">
-	section {
-		display: flex;
-		gap: 0.5rem;
-		align-items: center;
-	}
-
 	$size: 20px;
 	$white-size: 16px;
 	$dot-size: 10px;
 	$border-size: 2px;
 	$duration-half: 200ms;
+
+	section {
+		display: flex;
+		gap: 0.5rem;
+		align-items: center;
+	}
 
 	@mixin short-transition {
 		transition: $fallback-transitions;
@@ -180,9 +180,7 @@
 
 	// TODO: 接下来请你编写 disabled 样式和 unchecked 的 hover、pressed、disabled 样式。
 
-	$animation-key: "", "-back";
-
-	@each $key in $animation-key { // 故意把动画写两遍，让 CSS 以为是两个动画。
+	@each $key in "", "-back" { // 故意把动画写两遍，让 CSS 以为是两个动画。
 		@keyframes outer-border-change#{$key} {
 			from {
 				box-shadow: inset 0 0 0 $border-size c(icon-color);

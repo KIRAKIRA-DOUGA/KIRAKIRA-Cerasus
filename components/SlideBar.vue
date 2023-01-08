@@ -67,14 +67,14 @@
 </template>
 
 <style scoped lang="scss">
+	$thumb-size: 16px;
+	$thumb-size-half: calc($thumb-size / 2);
+	$value: calc(var(--value) * (100% - $thumb-size));
+
 	section {
 		--value: 0;
 		position: relative;
 	}
-
-	$thumb-size: 16px;
-	$thumb-size-half: calc($thumb-size / 2);
-	$value: calc(var(--value) * (100% - $thumb-size));
 
 	.track,
 	.passed {

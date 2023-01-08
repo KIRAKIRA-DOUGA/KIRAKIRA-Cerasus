@@ -42,12 +42,10 @@
 	}
 
 	.cover {
+		@include flex-center;
 		--cover-width: calc(v-bind(width) * 1px); // v-bind 基于运行时，因此没办法赋值给 scss 变量。
 		--cover-height: calc(v-bind(height) * 1px);
 		position: relative;
-		display: flex;
-		align-items: center;
-		justify-content: center;
 		width: var(--cover-width);
 		height: var(--cover-height);
 		overflow: hidden;

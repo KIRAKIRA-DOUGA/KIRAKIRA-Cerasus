@@ -65,16 +65,16 @@
 </template>
 
 <style scoped lang="scss">
+	$width: 34px;
+	$base-height: 14px;
+	$thumb-size: 20px;
+	$focus-ring-thickness: 10px;
+
 	section {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 	}
-
-	$width: 34px;
-	$base-height: 14px;
-	$thumb-size: 20px;
-	$focus-ring-thickness: 10px;
 
 	.switch {
 		position: relative;

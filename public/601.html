@@ -8,18 +8,23 @@
 	<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
 	<title>请升级你的浏览器</title>
 	<style>
+		/* stylelint-disable function-disallowed-list */
+		/* stylelint-disable alpha-value-notation */
+		/* stylelint-disable color-function-notation */
+		/* stylelint-disable property-no-vendor-prefix */
+
 		html,
 		body {
+			margin: 0;
+			padding: 0;
+			font-family: "Segoe UI", "Microsoft Yahei", Tahoma, Geneva, Verdana, Arial, Simhei, sans-serif;
 			background: #fafafa;
 			background-color: #fafafa;
-			font-family: "Segoe UI", "Microsoft Yahei", Tahoma, Geneva, Verdana, Arial, Simhei, sans-serif;
-			padding: 0;
-			margin: 0;
+			cursor: default;
 			-webkit-user-select: none;
 			-moz-user-select: none;
 			-ms-user-select: none;
 			user-select: none;
-			cursor: default;
 		}
 
 		@keyframes intro {
@@ -35,13 +40,13 @@
 		}
 
 		.main-card {
-			box-shadow: 0 5px 10px rgba(193, 159, 168, 0.3);
+			position: absolute;
 			width: 1024px;
 			height: 600px;
-			border-radius: 6px;
-			position: absolute;
-			background-color: white;
 			background: white;
+			background-color: white;
+			border-radius: 6px;
+			box-shadow: 0 5px 10px rgba(193, 159, 168, 0.3);
 			animation: intro cubic-bezier(0.1, 0.9, 0.2, 1) 600ms backwards;
 		}
 
@@ -54,26 +59,26 @@
 		.main-card h1 {
 			position: absolute;
 			top: 90px;
-			font-size: 40px;
+			width: 500px;
+			margin: 0;
+			padding: 0;
 			color: #f06e8e;
 			font-weight: bold;
-			padding: 0;
-			margin: 0;
-			width: 500px;
+			font-size: 40px;
 		}
 
 		.main-card p {
-			color: #797173;
 			position: absolute;
 			top: 155px;
+			color: #797173;
 			font-size: 14px;
 		}
 
 		p.browsers-title {
 			top: 315px;
 			width: 452px;
-			text-align: center;
 			font-weight: bold;
+			text-align: center;
 		}
 
 		.browser-cards {
@@ -86,21 +91,21 @@
 		}
 
 		.browser-card {
-			width: 140px;
-			height: 155px;
-			min-width: 140px;
-			min-height: 155px;
-			box-shadow: 0 2px 4px rgba(193, 159, 168, 0.3);
-			background-color: white;
-			border-radius: 6px;
-			list-style: none;
 			display: block;
 			float: left;
-			padding: 0;
+			width: 140px;
+			min-width: 140px;
+			height: 155px;
+			min-height: 155px;
 			margin: 0;
+			padding: 0;
+			list-style: none;
+			background-color: white;
 			border: 0;
-			transition: box-shadow 0.2s;
+			border-radius: 6px;
+			box-shadow: 0 2px 4px rgba(193, 159, 168, 0.3);
 			cursor: pointer;
+			transition: box-shadow 0.2s;
 		}
 
 		.browser-card:hover {
@@ -112,11 +117,11 @@
 		}
 
 		.browser-card h4 {
+			margin-top: 4px;
+			padding: 0;
+			color: #797173;
 			font-weight: normal;
 			text-align: center;
-			padding: 0;
-			margin-top: 4px;
-			color: #797173;
 			text-decoration: none;
 		}
 
@@ -129,63 +134,63 @@
 		}
 
 		.browser-image {
-			margin: 26px 38px 0 38px;
-			padding: 0;
-			border: 0;
+			display: block;
 			width: 66px;
 			height: 66px;
-			display: block;
+			margin: 26px 38px 0;
+			padding: 0;
 			background-repeat: no-repeat;
 			background-position: center;
 			background-size: 64px;
+			border: 0;
 		}
 
 		.browser-image-1 {
-			background-image: url(/static/601/microsoft_edge.svg);
+			background-image: url("/static/601/microsoft_edge.svg");
 		}
 
 		.browser-image-2 {
-			background-image: url(/static/601/google_chrome.svg);
+			background-image: url("/static/601/google_chrome.svg");
 		}
 
 		.browser-image-3 {
-			background-image: url(/static/601/firefox_browser.svg);
+			background-image: url("/static/601/firefox_browser.svg");
 		}
 
 		.left {
-			width: 482px;
 			position: absolute;
+			width: 482px;
 		}
 
 		.left * {
-			cursor: url(/static/601/crying_face.cur), default;
+			cursor: url("/static/601/crying_face.cur"), default;
 		}
 
 		.recycle {
-			background-image: url(/static/601/recycle_bin_back.svg);
 			position: absolute;
-			left: 97px;
 			top: 240px;
+			left: 97px;
 			width: 256px;
 			height: 256px;
+			background-image: url("/static/601/recycle_bin_back.svg");
 		}
 
 		.recycle-front {
-			background-image: url(/static/601/recycle_bin_front.svg);
 			position: absolute;
-			left: 97px;
 			top: 240px;
+			left: 97px;
 			width: 256px;
 			height: 256px;
+			background-image: url("/static/601/recycle_bin_front.svg");
 		}
 
 		.ie-icon {
-			background-image: url(/static/601/internet_explorer.svg);
 			position: absolute;
-			left: 102px;
 			top: 116px;
+			left: 102px;
 			width: 222px;
 			height: 217px;
+			background-image: url("/static/601/internet_explorer.svg");
 		}
 	</style>
 
@@ -196,19 +201,19 @@
 			}
 
 			.browser-image-1 {
-				background-image: url(/static/601/microsoft_edge.png);
+				background-image: url("/static/601/microsoft_edge.png");
 			}
 
 			.browser-image-2 {
-				background-image: url(/static/601/google_chrome.png);
+				background-image: url("/static/601/google_chrome.png");
 			}
 
 			.browser-image-3 {
-				background-image: url(/static/601/firefox_browser.png)
+				background-image: url("/static/601/firefox_browser.png");
 			}
 
 			.ie-icon {
-				background-image: url(/static/601/internet_explorer.png)
+				background-image: url("/static/601/internet_explorer.png");
 			}
 
 			.browser-card:hover {
@@ -220,11 +225,11 @@
 			}
 
 			.recycle {
-				background-image: url(/static/601/recycle_bin.png);
+				background-image: url("/static/601/recycle_bin.png");
 			}
 
 			.recycle-front {
-				background-image: url(/static/601/recycle_bin_front.png);
+				background-image: url("/static/601/recycle_bin_front.png");
 			}
 		</style>
 	<![endif]-->
