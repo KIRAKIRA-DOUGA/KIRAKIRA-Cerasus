@@ -32,7 +32,7 @@ module.exports = {
 		"value-keyword-case": null, // 与 v-bind 冲突了。
 		"value-list-comma-newline-after": null,
 		"max-line-length": null,
-		"no-eol-whitespace": [true, { ignore: ["empty-lines"] }],
+		"no-eol-whitespace": [true, { "ignore": ["empty-lines"] }],
 		"no-descending-specificity": null,
 		"function-url-quotes": "always",
 		"string-quotes": "double",
@@ -42,7 +42,7 @@ module.exports = {
 		"function-no-unknown": null,
 		"declaration-empty-line-before": null,
 		"custom-property-empty-line-before": null,
-		"selector-pseudo-class-no-unknown": [true, { ignorePseudoClasses: ["deep", "global", "export"] }],
+		"selector-pseudo-class-no-unknown": [true, { "ignorePseudoClasses": ["deep", "global", "export"] }],
 		"declaration-block-no-duplicate-properties": true,
 		"declaration-block-no-duplicate-custom-properties": true,
 		"font-family-no-duplicate-names": true,
@@ -52,24 +52,24 @@ module.exports = {
 		"font-family-no-missing-generic-family-keyword": true,
 		"font-family-name-quotes": "always-where-recommended",
 		"comment-empty-line-before": ["always", {
-			except: ["first-nested"],
-			ignore: ["stylelint-commands"],
-			severity: "warning",
+			"except": ["first-nested"],
+			"ignore": ["stylelint-commands"],
+			"severity": "warning",
 		}],
 		"at-rule-empty-line-before": ["always", {
-			except: ["first-nested"],
-			ignore: ["after-comment"],
-			ignoreAtRules: ["import", "include", "else", "return", "forward", "use"],
+			"except": ["first-nested"],
+			"ignore": ["after-comment"],
+			"ignoreAtRules": ["import", "include", "else", "return", "forward", "use"],
 		}],
 		"scss/dollar-variable-empty-line-before": null,
 		"scss/double-slash-comment-empty-line-before": ["always", {
-			except: ["first-nested"],
-			ignore: ["between-comments", "stylelint-commands"],
-			severity: "warning",
+			"except": ["first-nested"],
+			"ignore": ["between-comments", "stylelint-commands"],
+			"severity": "warning",
 		}],
 		/* "scss/dollar-variable-first-in-block": [true, {
-			ignore: ["comments", "imports"],
-			except: ["root", "function"],
+			"ignore": ["comments", "imports"],
+			"except": ["root", "function"],
 		}], */
 		"order/order": [
 			{
@@ -82,6 +82,6 @@ module.exports = {
 			// "at-rules", // <-- important, `@media` should go before `&:pseudo`
 			"rules",
 		],
-		"order/properties-order": [[], { severity: "warning" }],
+		"order/properties-order": [[], { "severity": "warning" }],
 	},
 };

@@ -2,6 +2,7 @@
 
 import { resolve } from "path";
 import styleResources from "./helpers/style-resources";
+type _NuxtConfig = Parameters<typeof defineNuxtConfig>[0] & Record<string, object>; // 还敢报错吗？
 
 export default defineNuxtConfig({
 	plugins: [
@@ -86,4 +87,4 @@ export default defineNuxtConfig({
 			},
 		},
 	},
-});
+} as _NuxtConfig);

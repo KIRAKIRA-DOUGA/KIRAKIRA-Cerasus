@@ -45,6 +45,8 @@
 				throw new Error("serviceWorker is not supported in current browser!");
 			navigator.serviceWorker.register("/sw.js");
 		});
+
+	onMounted(() => console.clear());
 </script>
 
 <template>

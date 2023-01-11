@@ -138,7 +138,9 @@ module.exports = {
 		}],
 		"@typescript-eslint/semi": ["error", "always"],
 		"@typescript-eslint/no-explicit-any": "error",
-		"@typescript-eslint/no-use-before-define": "warn",
+		"@typescript-eslint/no-use-before-define": ["warn", {
+			"functions": false,
+		}],
 		// "@typescript-eslint/no-confusing-void-expression": "error",
 		// "@typescript-eslint/no-floating-promises": "error",
 		// 嗯对这几个不晓得怎么用不了。

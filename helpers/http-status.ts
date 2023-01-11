@@ -1,4 +1,4 @@
-export const httpResponseStatusCodes = new Proxy({
+const httpResponseStatusCodesTarget = {
 	100: "Continue",
 	101: "Switching Protocols",
 	102: "Processing",
@@ -64,8 +64,10 @@ export const httpResponseStatusCodes = new Proxy({
 	510: "Not Extended",
 	511: "Network Authentication Required",
 	601: "Update Your Browser",
-}, {
+} as const;
+
+export const httpResponseStatusCodes = new Proxy(httpResponseStatusCodesTarget, {
 	get(target, name: string): string {
 		return name in target ? target[name as unknown as keyof typeof target] : "Error";
 	},
-}) as Record<string | number, string>;
+}) as typeof httpResponseStatusCodesTarget & Record<string | number, "Error">;
