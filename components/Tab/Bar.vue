@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { IndicatorState } from "./Indicator.vue";
+	import Indicator, { IndicatorState } from "./Indicator.vue";
 	import TabItem from "./Item.vue";
 
 	const props = defineProps<{
@@ -23,6 +23,8 @@
 	const indicatorState = ref<IndicatorState>("hidden");
 	const indicatorWrapperLength = ref(28);
 	const indicatorLeft = ref(0);
+	// @ts-ignore
+	const indicator = ref<InstanceType<typeof Indicator>>();
 
 	function changeTab(id: string) {
 		emits("update:modelValue", id);
@@ -38,8 +40,7 @@
 
 	watch(() => props.modelValue, id => {
 		updateIndicator(id);
-		indicatorState.value = "hover";
-		setTimeout(() => (indicatorState.value = "normal"), 250);
+		indicator.value?.replayIndicatorAnimation();
 	});
 
 	onMounted(() => {
@@ -62,7 +63,14 @@
 		<div class="items" :class="{ vertical }">
 			<slot></slot>
 		</div>
-		<TabIndicator :clipped="clipped" :vertical="vertical" :state="indicatorState" :wrapperLength="indicatorWrapperLength" :left="indicatorLeft" />
+		<TabIndicator
+			ref="indicator"
+			:clipped="clipped"
+			:vertical="vertical"
+			:state="indicatorState"
+			:wrapperLength="indicatorWrapperLength"
+			:left="indicatorLeft"
+		/>
 	</section>
 </template>
 

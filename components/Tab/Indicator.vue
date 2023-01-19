@@ -6,6 +6,17 @@
 		wrapperLength: number;
 		left: number;
 	}>();
+
+	const indicator = ref<HTMLDivElement>();
+
+	function replayIndicatorAnimation() {
+		if (!indicator.value) return;
+		replayAnimation(indicator.value, "changing");
+	}
+
+	defineExpose({
+		replayIndicatorAnimation,
+	});
 </script>
 
 <script lang="ts">
@@ -14,13 +25,13 @@
 
 <template>
 	<div class="wrapper" :style="{ '--length': wrapperLength + 'px', left: left + 'px' }">
-		<div class="indicator" :class="{ clipped, vertical, hidden: state === 'hidden', hover: state === 'hover' }"></div>
+		<div ref="indicator" class="indicator" :class="{ clipped, vertical, hidden: state === 'hidden', hover: state === 'hover' }"></div>
 	</div>
 </template>
 
 <style scoped lang="scss">
 	$length: 20px;
-	$hover-length: 40px;
+	$hover-length: 30px;
 	$thickness: 3px;
 
 	.indicator {
@@ -54,6 +65,14 @@
 		}
 	}
 
+	:deep(.indicator.changing) {
+		$animation-1-duration: 75ms;
+		$animation-2-duration: 200ms;
+		animation:
+			indicator-change-1 $animation-1-duration $ease-out-sine,
+			indicator-change-2 $animation-2-duration $animation-1-duration $ease-in-sine;
+	}
+
 	.wrapper {
 		@include flex-center;
 		--length: 2em;
@@ -65,6 +84,26 @@
 		&.vertical {
 			width: $thickness;
 			height: var(--length);
+		}
+	}
+
+	@keyframes indicator-change-1 {
+		from {
+			width: $length;
+		}
+
+		to {
+			width: $hover-length;
+		}
+	}
+
+	@keyframes indicator-change-2 {
+		from {
+			width: $hover-length;
+		}
+
+		to {
+			width: $length;
 		}
 	}
 </style>
