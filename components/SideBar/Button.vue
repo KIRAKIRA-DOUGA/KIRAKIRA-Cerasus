@@ -10,13 +10,13 @@
 <template>
 	<NuxtLink v-if="to" :to="localePath(to)" class="sidebar-button-wrapper">
 		<div class="sidebar-button">
-			<NuxtIcon v-if="icon" :name="icon" class="icon" />
+			<NuxtIcon :name="icon" class="icon" />
 		</div>
 	</NuxtLink>
 
 	<a v-else class="sidebar-button-wrapper">
 		<div class="sidebar-button">
-			<NuxtIcon v-if="icon" :name="icon" class="icon" />
+			<NuxtIcon :name="icon" class="icon" />
 		</div>
 	</a>
 </template>
