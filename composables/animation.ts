@@ -14,7 +14,8 @@ export function removeExistAnimations(...elements: Element[]) {
 			// Uncaught (in promise) DOMException: The user aborted a request.
 			// 哪位懂王帮忙看一下把这个傻逼报错吞掉？
 			// setTimeout(() => console.clear(), 10);
-			nextAnimationTick().then(() => console.clear()); // 已 “解决” bug。
+			// nextAnimationTick().then(() => console.clear()); // 已 “解决” bug。
+			// 开发阶段这些给自己人看的没必要清除吧...
 		}
 	}
 	return hasExistAnimations;

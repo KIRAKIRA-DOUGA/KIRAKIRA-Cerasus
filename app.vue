@@ -46,7 +46,8 @@
 			navigator.serviceWorker.register("/sw.js");
 		});
 
-	onMounted(() => console.clear());
+	// onMounted(() => console.clear());
+	// 开发阶段这些给自己人看的没必要清除吧...
 </script>
 
 <template>
