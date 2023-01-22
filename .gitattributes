@@ -27,6 +27,8 @@
 *.pcss text eol=lf
 *.sss text eol=lf
 *.js text eol=lf linguist-vendored
+*.cjs text eol=lf linguist-vendored
+*.mjs text eol=lf linguist-vendored
 *.coffee text eol=lf
 *.json text eol=lf linguist-vendored
 *.htm text eol=lf linguist-vendored
