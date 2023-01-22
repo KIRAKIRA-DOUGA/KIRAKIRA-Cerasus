@@ -1,17 +1,36 @@
 <script setup lang="ts">
 	const props = defineProps<{
-		icon?: string;
-		iconBehind?: boolean;
+		icon: string;
+		to?: string;
 	}>();
+
+	const localePath = useLocalePath();
 </script>
 
 <template>
-	<div class="sidebar-button">
-		<NuxtIcon v-if="icon" :name="icon" class="icon" />
-	</div>
+	<NuxtLink v-if="to" :to="localePath(to)" class="sidebar-button-wrapper">
+		<div class="sidebar-button">
+			<NuxtIcon v-if="icon" :name="icon" class="icon" />
+		</div>
+	</NuxtLink>
+
+	<a v-else class="sidebar-button-wrapper">
+		<div class="sidebar-button">
+			<NuxtIcon v-if="icon" :name="icon" class="icon" />
+		</div>
+	</a>
 </template>
 
 <style scoped lang="scss">
+	.sidebar-button-wrapper {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 40px;
+		background: none;
+		border-radius: 50%;
+	}
+
 	.sidebar-button {
 		display: flex;
 		align-content: center;
