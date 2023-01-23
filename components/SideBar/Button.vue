@@ -14,11 +14,11 @@
 		</div>
 	</NuxtLink>
 
-	<a v-else class="sidebar-button-wrapper">
+	<div v-else class="sidebar-button-wrapper">
 		<div class="sidebar-button">
 			<NuxtIcon :name="icon" class="icon" />
 		</div>
-	</a>
+	</div>
 </template>
 
 <style scoped lang="scss">
@@ -29,6 +29,7 @@
 		width: 40px;
 		background: none;
 		border-radius: 50%;
+		cursor: pointer;
 	}
 
 	.sidebar-button {
