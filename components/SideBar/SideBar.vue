@@ -89,6 +89,7 @@
 					</svg>
 				</div>
 			</div>
+
 			<div class="sidebar-stripes">
 				<div class="sidebar-stripe" />
 				<div class="sidebar-stripe" />
@@ -104,22 +105,25 @@
 </template>
 
 <style scoped lang="scss">
+	$bar-size: 48px;
+
 	.sidebar {
 		@include sidebar-shadow;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		width: 48px;
+		width: $bar-size;
 		background-color: c(main-bg);
 
 		> div {
-			width: 48px;
+			width: $bar-size;
 		}
 
 		.sidebar-icons {
 			display: flex;
 			flex-direction: column;
+			gap: 8px;
 			align-content: center;
 			align-items: center;
 			justify-content: center;
@@ -127,11 +131,8 @@
 
 		.sidebar-top {
 			flex: 1;
+			max-height: 280px;
 			margin-top: 8px;
-
-			.sidebar-button-wrapper {
-				margin-bottom: 8px;
-			}
 		}
 
 		.sidebar-center {
@@ -143,7 +144,11 @@
 			overflow: hidden;
 
 			.sidebar-logo {
+				display: flex;
+				justify-content: center;
+				width: $bar-size;
 				color: c(accent);
+				background: none;
 			}
 
 			.sidebar-stripes {
@@ -163,14 +168,10 @@
 		.sidebar-bottom {
 			flex: 3;
 			justify-content: flex-end;
-			height: 150px;
-			min-height: 150px;
-			max-height: 150px;
+			height: 136px;
+			min-height: 136px;
+			max-height: 136px;
 			margin-bottom: 8px;
-
-			.sidebar-button-wrapper {
-				margin-top: 8px;
-			}
 		}
 	}
 
@@ -195,6 +196,28 @@
 
 		.sidebar-logo-big {
 			display: none;
+		}
+	}
+
+	@media screen and (max-height: 540px) {
+		.sidebar {
+			.sidebar-stripes {
+				display: none;
+			}
+		}
+	}
+
+	@media screen and (max-height: 432px) {
+		.sidebar {
+			.sidebar-icons {
+				gap: 0;
+			}
+
+			.sidebar-bottom {
+				height: 120px;
+				min-height: 120px;
+				max-height: 120px;
+			}
 		}
 	}
 </style>
