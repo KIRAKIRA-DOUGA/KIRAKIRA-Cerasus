@@ -4,11 +4,11 @@
 </script>
 
 <template>
-	<div class="desktop-web">
+	<div class="desktop">
 		<SideBar />
-		<div class="main-container-box">
+		<div class="container">
 			<Banner :collapsed="!showBanner" />
-			<div class="kirakira-router-box">
+			<div class="page">
 				<slot></slot>
 			</div>
 		</div>
@@ -16,21 +16,20 @@
 </template>
 
 <style scoped lang="scss">
-	.desktop-web {
+	.desktop {
+		$resize-duration: 100ms;
 		display: flex;
 		width: 100vw;
 		height: 100vh;
+		transition: $fallback-transitions, width $resize-duration, height $resize-duration;
 	}
 
-	.main-container-box {
-		width: 100%;
-		height: 100%;
-		overflow-x: hidden;
-		overflow-y: auto;
+	.container {
+		@include square(100%);
+		overflow: hidden auto;
 	}
 
-	.kirakira-router-box {
-		width: 100%;
-		height: 100%;
+	.page {
+		@include square(100%);
 	}
 </style>

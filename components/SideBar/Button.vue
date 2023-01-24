@@ -1,4 +1,6 @@
 <script setup lang="ts">
+	import { NuxtLink } from "#components";
+
 	const props = defineProps<{
 		icon: string;
 		to?: string;
@@ -8,31 +10,23 @@
 </script>
 
 <template>
-	<NuxtLink v-if="to" :to="localePath(to)" class="sidebar-button-wrapper">
-		<div class="sidebar-button">
+	<component :is="to ? NuxtLink : 'div'" :to="to && localePath(to)" class="button-wrapper">
+		<div class="button">
 			<NuxtIcon :name="icon" class="icon" />
 		</div>
-	</NuxtLink>
-
-	<div v-else class="sidebar-button-wrapper">
-		<div class="sidebar-button">
-			<NuxtIcon :name="icon" class="icon" />
-		</div>
-	</div>
+	</component>
 </template>
 
 <style scoped lang="scss">
-	.sidebar-button-wrapper {
-		display: flex;
-		align-items: center;
-		justify-content: center;
+	.button-wrapper {
+		@include flex-center;
 		width: 40px;
 		background: none;
 		border-radius: 50%;
 		cursor: pointer;
 	}
 
-	.sidebar-button {
+	.button {
 		display: flex;
 		align-content: center;
 		align-items: center;
@@ -43,9 +37,9 @@
 		font-size: 24px;
 		border-radius: 50%;
 		user-select: none;
-	}
 
-	.router-link-active .sidebar-button {
-		color: c(accent);
+		.router-link-active & {
+			color: c(accent);
+		}
 	}
 </style>

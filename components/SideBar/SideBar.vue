@@ -1,6 +1,6 @@
 <template>
 	<div class="sidebar">
-		<div class="sidebar-top sidebar-icons">
+		<div class="top icons">
 			<SideBarButton v-ripple icon="home" to="/" />
 			<SideBarButton v-ripple icon="search" to="/search" />
 			<SideBarButton v-ripple icon="history" />
@@ -9,9 +9,9 @@
 			<SideBarButton v-ripple icon="upload" />
 		</div>
 
-		<div class="sidebar-center">
-			<div class="sidebar-logo">
-				<div class="sidebar-logo-small">
+		<div class="center">
+			<div class="logo">
+				<div class="logo-small">
 					<svg width="16" height="116" viewBox="0 0 16 116" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 						<path
 							d="M9.23036 111.072L11.5384 113.265L15.1654 113.265L15.1654 115.835L0.984659 115.835L0.984659 113.266L8.25872 113.266L0.984659 106.433L0.984659 103.548L7.32583 109.354L15.1654 103.191L15.1654 106.194L9.23036 111.072Z"
@@ -42,7 +42,7 @@
 						/>
 					</svg>
 				</div>
-				<div class="sidebar-logo-big">
+				<div class="logo-big">
 					<svg width="16" height="198" viewBox="0 0 16 198" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 						<path
 							d="M9.23038 192.432L11.5384 194.625L15.1654 194.625L15.1654 197.195L0.98468 197.195L0.98468 194.626L8.25874 194.626L0.98468 187.793L0.98468 184.908L7.32585 190.714L15.1654 184.551L15.1654 187.554L9.23038 192.432Z"
@@ -90,13 +90,13 @@
 				</div>
 			</div>
 
-			<div class="sidebar-stripes">
-				<div class="sidebar-stripe" />
-				<div class="sidebar-stripe" />
+			<div class="stripes">
+				<div class="stripe" />
+				<div class="stripe" />
 			</div>
 		</div>
 
-		<div class="sidebar-bottom sidebar-icons">
+		<div class="bottom icons">
 			<SideBarButton v-ripple icon="person" />
 			<SideBarButton v-ripple icon="email" />
 			<SideBarButton v-ripple icon="settings" to="/my/settings" />
@@ -120,7 +120,7 @@
 			width: $bar-size;
 		}
 
-		.sidebar-icons {
+		.icons {
 			display: flex;
 			flex-direction: column;
 			gap: 8px;
@@ -129,13 +129,13 @@
 			justify-content: center;
 		}
 
-		.sidebar-top {
+		.top {
 			flex: 1;
 			max-height: 280px;
 			margin-top: 8px;
 		}
 
-		.sidebar-center {
+		.center {
 			display: flex;
 			flex: 2;
 			flex-direction: column;
@@ -143,7 +143,7 @@
 			justify-content: center;
 			overflow: hidden;
 
-			.sidebar-logo {
+			.logo {
 				display: flex;
 				justify-content: center;
 				width: $bar-size;
@@ -151,12 +151,12 @@
 				background: none;
 			}
 
-			.sidebar-stripes {
+			.stripes {
 				margin-top: 32px;
 				margin-left: -7px;
 				transform: rotate(-33deg);
 
-				.sidebar-stripe {
+				.stripe {
 					width: 76px;
 					height: 8px;
 					margin-top: 12px;
@@ -165,7 +165,7 @@
 			}
 		}
 
-		.sidebar-bottom {
+		.bottom {
 			flex: 3;
 			justify-content: flex-end;
 			height: 136px;
@@ -175,33 +175,33 @@
 		}
 	}
 
-	.sidebar-logo-small {
+	.logo-small {
 		display: none;
 	}
 
 	@media screen and (max-height: 765px) {
-		.sidebar-logo-small {
+		.logo-small {
 			display: flex;
 		}
 
-		.sidebar-logo-big {
+		.logo-big {
 			display: none;
 		}
 	}
 
 	@media screen and (max-height: 678px) {
-		.sidebar-logo-small {
+		.logo-small {
 			display: none;
 		}
 
-		.sidebar-logo-big {
+		.logo-big {
 			display: none;
 		}
 	}
 
 	@media screen and (max-height: 540px) {
 		.sidebar {
-			.sidebar-stripes {
+			.stripes {
 				display: none;
 			}
 		}
@@ -209,11 +209,11 @@
 
 	@media screen and (max-height: 432px) {
 		.sidebar {
-			.sidebar-icons {
+			.icons {
 				gap: 0;
 			}
 
-			.sidebar-bottom {
+			.bottom {
 				height: 120px;
 				min-height: 120px;
 				max-height: 120px;

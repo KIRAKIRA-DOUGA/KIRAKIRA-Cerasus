@@ -3,10 +3,10 @@
 </script>
 
 <template>
-	<div>
+	<div class="mobile">
 		<SideBar />
-		<div class="kirakira-router-box">
-			<slot name="pocket-edition-web-slot"></slot>
+		<div class="page">
+			<slot></slot>
 			这里是 PE 版的 KIRAKIRA, 正在施工中
 			<!-- TODO: 这里是 PE 版的 KIRAKIRA, 正在施工中…… -->
 		</div>
@@ -14,7 +14,7 @@
 </template>
 
 <style scoped lang="scss">
-	.kirakira-router-box {
+	.page {
 		display: flex;
 	}
 </style>

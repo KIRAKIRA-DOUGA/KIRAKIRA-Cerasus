@@ -25,12 +25,8 @@
 		isClicked.value = false;
 	}
 
-	function triggerConfetti() {
-		showConfetti();
-	}
-
 	const goToVideo = () => {
-		router.push("/VideoPlay");
+		router.push("/video");
 	};
 
 	useHead({ title: "首页" });
@@ -40,7 +36,7 @@
 	<div class="container">
 		<div>{{ t.home }}</div>
 		<div class="links">
-			<LocaleLink to="/VideoPlay">{{ t.video }}</LocaleLink>
+			<LocaleLink to="/video">{{ t.video }}</LocaleLink>
 			<LocaleLink to="/hello">{{ t.content }}</LocaleLink>
 			<LocaleLink to="/search">{{ t.search }}</LocaleLink>
 			<a href="/404">404</a>
@@ -49,7 +45,7 @@
 			<PageController v-model="page" :pages="pages" :displayPageCount="displayPageCount" enableArrowKeyMove />
 			<Button @click="onClickButton">{{ isClicked ? t.buttonClicked : t.button }}</Button>
 			<Button disabled>{{ t.buttonDisabled }}</Button>
-			<Button @click="triggerConfetti">Confetti</Button>
+			<Button @click="showConfetti">Confetti</Button>
 			<Button icon="send">{{ t.send }}</Button>
 			<ToggleSwitch v-model="toggle">切换开关 {{ toggle ? "开" : "关" }}</ToggleSwitch>
 			<ToggleSwitch disabled>禁用 关</ToggleSwitch>

@@ -7,7 +7,7 @@
 <template>
 	<div class="container">
 		<div @click="getRoute">{{ t.videoPlaying }}</div>
-		<SideBarHomeButton />
+		<LocaleLink to="/">Home</LocaleLink>
 	</div>
 </template>
 
