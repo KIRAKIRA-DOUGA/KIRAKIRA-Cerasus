@@ -82,7 +82,7 @@
 			rotate: -90deg;
 
 			.stripes {
-				margin-right: 7px;
+				margin-right: 24px;
 				rotate: -33deg;
 
 				.stripe {
