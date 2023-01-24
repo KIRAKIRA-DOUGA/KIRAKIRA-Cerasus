@@ -81,7 +81,7 @@
 			<RadioButton v-model="logoTextForm" value="half">LOGO半显示</RadioButton>
 			<RadioButton v-model="logoTextForm" value="full">LOGO全显示</RadioButton>
 			<div style="text-align: center;">
-				<LogoText v-model="logoTextForm" />
+				<LogoText :form="logoTextForm" />
 			</div>
 			<LogoCover />
 		</div>
