@@ -97,9 +97,9 @@
 		</div>
 
 		<div class="bottom icons">
-			<SideBarButton v-ripple icon="person" />
-			<SideBarButton v-ripple icon="email" />
-			<SideBarButton v-ripple icon="settings" to="/my/settings" />
+			<SideBarButton icon="person" />
+			<SideBarButton icon="email" />
+			<SideBarButton icon="settings" to="/settings" />
 		</div>
 	</div>
 </template>

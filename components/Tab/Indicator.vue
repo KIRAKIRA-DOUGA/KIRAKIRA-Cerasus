@@ -1,3 +1,7 @@
+<script lang="ts">
+	export type IndicatorState = "hidden" | "normal" | "hover";
+</script>
+
 <script setup lang="ts">
 	const props = defineProps<{
 		clipped?: boolean;
@@ -17,10 +21,6 @@
 	defineExpose({
 		replayIndicatorAnimation,
 	});
-</script>
-
-<script lang="ts">
-	export type IndicatorState = "hidden" | "normal" | "hover";
 </script>
 
 <template>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 	import { LocaleObject } from "@nuxtjs/i18n/dist/runtime/composables";
 	import animationData from "lotties/spinner-dev1.json";
+	import { LogoTextFormType } from "components/Logo/Text.vue";
 
 	const page = ref(1);
 	const pages = ref(99);
@@ -17,6 +18,7 @@
 	const isTagChecked = ref(false);
 	const sliderValue = ref(0);
 	const selectedTab = ref("all");
+	const logoTextForm = ref<LogoTextFormType>("full");
 
 	async function onClickButton() {
 		clearTimeout(timeoutId.value);
@@ -75,6 +77,12 @@
 				<TabItem id="video">视频</TabItem>
 				<TabItem id="picture">图片</TabItem>
 			</TabBar>
+			<RadioButton v-model="logoTextForm" value="hidden">LOGO隐藏</RadioButton>
+			<RadioButton v-model="logoTextForm" value="half">LOGO半显示</RadioButton>
+			<RadioButton v-model="logoTextForm" value="full">LOGO全显示</RadioButton>
+			<div style="text-align: center;">
+				<LogoText v-model="logoTextForm" />
+			</div>
 			<LogoCover />
 		</div>
 	</div>

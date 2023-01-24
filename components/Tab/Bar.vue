@@ -1,3 +1,7 @@
+<script lang="ts">
+	export const typeError = new TypeError("TabBar 的插槽中只能包含 TabItem 组件。");
+</script>
+
 <script setup lang="ts">
 	import Indicator, { IndicatorState } from "./Indicator.vue";
 	import TabItem from "./Item.vue";
@@ -52,10 +56,6 @@
 		changeTab,
 		childDoms,
 	});
-</script>
-
-<script lang="ts">
-	export const typeError = new TypeError("TabBar 的插槽中只能包含 TabItem 组件。");
 </script>
 
 <template>

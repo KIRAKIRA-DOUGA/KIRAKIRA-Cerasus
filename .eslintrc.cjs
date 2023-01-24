@@ -107,8 +107,9 @@ module.exports = {
 		"radix": "error", // parseInt 必须要指明是十进制。
 		"no-self-assign": "off",
 		"no-debugger": "warn",
-		"import/order": "off",
 		"no-use-before-define": "off",
+		"import/order": "off", // 与 VSCode 内置导入排序特性打架。
+		"import/first": "off", // 与 Vue 特性冲突。
 		"n/no-callback-literal": "off", // 这是啥？
 		"@typescript-eslint/no-unused-vars": ["warn", { // 非要使用未使用变量，前面加下划线。
 			"argsIgnorePattern": "^_",
