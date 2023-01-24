@@ -1,16 +1,14 @@
 <script setup lang="ts">
-	import { NuxtLink } from "#components";
+	import { LocaleLink } from "#components"; // 注意千万不要用 NuxtLink，要用 LocaleLink。
 
 	const props = defineProps<{
 		icon: string;
 		to?: string;
 	}>();
-
-	const localePath = useLocalePath();
 </script>
 
 <template>
-	<component :is="to ? NuxtLink : 'div'" :to="to && localePath(to)" class="button-wrapper">
+	<component :is="to ? LocaleLink : 'div'" :to="to" class="button-wrapper">
 		<div class="button">
 			<NuxtIcon :name="icon" class="icon" />
 		</div>
@@ -18,25 +16,22 @@
 </template>
 
 <style scoped lang="scss">
+	$icon-size: 40px;
+
 	.button-wrapper {
 		@include flex-center;
-		width: 40px;
+		@include circle;
+		width: $icon-size;
 		background: none;
-		border-radius: 50%;
 		cursor: pointer;
 	}
 
 	.button {
-		display: flex;
-		align-content: center;
-		align-items: center;
-		justify-content: center;
-		width: 40px;
-		height: 40px;
+		@include flex-center;
+		@include square($icon-size);
+		@include circle;
 		color: c(icon-color);
 		font-size: 24px;
-		border-radius: 50%;
-		user-select: none;
 
 		.router-link-active & {
 			color: c(accent);
