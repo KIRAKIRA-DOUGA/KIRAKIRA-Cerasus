@@ -30,6 +30,7 @@ function getMaxRadius(rect: DOMRect, e: MouseEvent) {
 export default defineNuxtPlugin(nuxtApp => {
 	const rippleClass = styles.rippleButton;
 	const circleClass = styles.rippleCircle;
+	let isInitedMouseUp = false;
 
 	nuxtApp.vueApp.directive("ripple", {
 		mounted(element: HTMLElement) {
@@ -57,12 +58,13 @@ export default defineNuxtPlugin(nuxtApp => {
 					easing: eases.easeOutMax,
 				});
 			});
-			const mouseUp = () => {
+			if (isInitedMouseUp) return;
+			isInitedMouseUp = true;
+			document.addEventListener("mouseup", () => {
 				const FADE_TIME = 500;
 				const IS_FADING_CLASS = "is-fading";
 				for (const circle of document.getElementsByClassName(circleClass)) {
-					if (circle.classList.contains(IS_FADING_CLASS)) return;
-					// BUG: 快速点两个按钮会概率性出现水波纹不会自动消失的问题。
+					if (circle.classList.contains(IS_FADING_CLASS)) continue;
 					circle.classList.add(IS_FADING_CLASS);
 					circle.animate([
 						{ opacity: 1 },
@@ -72,8 +74,7 @@ export default defineNuxtPlugin(nuxtApp => {
 						easing: eases.easeOutMax,
 					}).finished.then(() => circle.remove());
 				}
-			};
-			document.addEventListener("mouseup", mouseUp);
+			});
 		},
 		updated(element: HTMLElement) {
 			element.classList.add(rippleClass);

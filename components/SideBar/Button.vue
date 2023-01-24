@@ -8,7 +8,7 @@
 </script>
 
 <template>
-	<component :is="to ? LocaleLink : 'div'" :to="to" class="button-wrapper">
+	<component :is="to ? LocaleLink : 'div'" v-ripple :to="to" class="button-wrapper" draggable="false">
 		<div class="button">
 			<NuxtIcon :name="icon" class="icon" />
 		</div>

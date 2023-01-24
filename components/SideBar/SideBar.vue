@@ -1,12 +1,12 @@
 <template>
 	<div class="sidebar">
 		<div class="top icons">
-			<SideBarButton v-ripple icon="home" to="/" />
-			<SideBarButton v-ripple icon="search" to="/search" />
-			<SideBarButton v-ripple icon="history" />
-			<SideBarButton v-ripple icon="star" />
-			<SideBarButton v-ripple icon="feed" />
-			<SideBarButton v-ripple icon="upload" />
+			<SideBarButton icon="home" to="/" />
+			<SideBarButton icon="search" to="/search" />
+			<SideBarButton icon="history" />
+			<SideBarButton icon="star" />
+			<SideBarButton icon="feed" />
+			<SideBarButton icon="upload" />
 		</div>
 
 		<div class="center">
