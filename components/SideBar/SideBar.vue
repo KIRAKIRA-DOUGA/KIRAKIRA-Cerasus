@@ -31,7 +31,7 @@
 				<div class="stripes">
 					<div v-for="i in 2" :key="`stripe-${i}`" class="stripe"></div>
 				</div>
-				<LogoText :form="logoTextForm" />
+				<LogoText :form="logoTextForm" class="logo-text" />
 			</div>
 		</Transition>
 
@@ -100,6 +100,10 @@
 					opacity: 0;
 					rotate: 0deg;
 				}
+			}
+
+			.logo-text {
+				pointer-events: none;
 			}
 		}
 
