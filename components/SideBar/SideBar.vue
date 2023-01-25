@@ -31,7 +31,7 @@
 				<div class="stripes">
 					<div v-for="i in 2" :key="`stripe-${i}`" class="stripe"></div>
 				</div>
-				<LogoText :form="logoTextForm" class="logo-text" />
+				<LogoText :form="logoTextForm" />
 			</div>
 		</Transition>
 
@@ -44,7 +44,7 @@
 </template>
 
 <style scoped lang="scss">
-	$bar-size: 48px;
+	$bar-width: 48px;
 	$icons-gap: 8px;
 
 	.sidebar {
@@ -52,14 +52,14 @@
 		@include flex-center;
 		flex-direction: column;
 		justify-content: space-between;
-		width: $bar-size;
+		width: $bar-width;
 		padding: $icons-gap 0;
 		overflow: hidden;
 		background-color: c(main-bg);
 
 		> div {
 			flex-grow: 0;
-			width: $bar-size;
+			width: $bar-width;
 		}
 
 		.icons {
@@ -72,10 +72,6 @@
 			}
 		}
 
-		.top {
-			max-height: 280px;
-		}
-
 		.center {
 			@include flex-center;
 			width: max-content;
@@ -83,33 +79,28 @@
 
 			.stripes {
 				margin-right: 24px;
-				rotate: -33deg;
+				transform: skewX(30deg);
 
 				.stripe {
 					display: inline-block;
 					width: 8px;
-					height: 76px;
+					height: $bar-width;
 					margin-right: 12px;
 					background-color: c(accent);
+				}
+
+				&:has(+ .hidden) {
+					margin-right: 0;
 				}
 			}
 
 			&.stripes-enter-from,
 			&.stripes-leave-to {
 				.stripes {
+					transform: none;
 					opacity: 0;
-					rotate: 0deg;
 				}
 			}
-
-			.logo-text {
-				pointer-events: none;
-			}
-		}
-
-		.bottom {
-			justify-content: flex-end;
-			height: 136px;
 		}
 	}
 </style>

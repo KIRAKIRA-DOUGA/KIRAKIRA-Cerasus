@@ -77,12 +77,11 @@
 				<TabItem id="video">视频</TabItem>
 				<TabItem id="picture">图片</TabItem>
 			</TabBar>
+			<br />
 			<RadioButton v-model="logoTextForm" value="hidden">LOGO隐藏</RadioButton>
 			<RadioButton v-model="logoTextForm" value="half">LOGO半显示</RadioButton>
 			<RadioButton v-model="logoTextForm" value="full">LOGO全显示</RadioButton>
-			<div style="text-align: center;">
-				<LogoText :form="logoTextForm" />
-			</div>
+			<LogoText :form="logoTextForm" />
 			<LogoCover />
 		</div>
 	</div>
