@@ -21,9 +21,8 @@
 
 <style scoped lang="scss">
 	.desktop {
+		@include full-screen;
 		display: flex;
-		width: 100vw;
-		height: 100vh;
 		transition: none;
 	}
 

@@ -25,3 +25,11 @@
 @mixin circle {
 	border-radius: 100%;
 }
+
+/// 将元素占满整个屏幕。
+/// 注意：100vh 将不会包含手机浏览器的地址栏和工具栏的高度。
+/// @output 将长宽均设为 100% 视窗宽高度值。
+@mixin full-screen {
+	width: 100vw;
+	height: 100vh;
+}

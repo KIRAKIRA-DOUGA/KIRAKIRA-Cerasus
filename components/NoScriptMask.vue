@@ -43,12 +43,11 @@
 
 	.mask {
 		@include flex-center;
+		@include full-screen;
 		position: fixed;
 		top: 0;
 		left: 0;
 		z-index: 100;
-		width: 100vw;
-		height: 100vh;
 		background-color: c(white, 50%);
 		backdrop-filter: blur(5px);
 	}
