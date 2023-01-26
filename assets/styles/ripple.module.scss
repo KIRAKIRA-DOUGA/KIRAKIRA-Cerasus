@@ -10,10 +10,10 @@
 		left: 0;
 		z-index: 2;
 		display: block;
-		background-color: #0000002d;
+		background-color: c(black, 20%);
 
 		:global(:root.dark) & {
-			background-color: #ffffff2d;
+			background-color: c(white, 20%);
 		}
 
 		~ :where(:not(.ripple-circle)) {
@@ -24,7 +24,7 @@
 
 	/* &.ripple-lighter {
 		.ripple-circle {
-			background-color: #ffffff2d;
+			background-color: c(white, 20%);
 		}
 
 		&:focus.focus-always:not(:hover, :active),
@@ -32,7 +32,7 @@
 		&:active:not(:hover),
 		&:focus-visible:hover {
 			.ripple-circle {
-				background-color: #0000002d;
+				background-color: c(black, 20%);
 			}
 		}
 	} */
