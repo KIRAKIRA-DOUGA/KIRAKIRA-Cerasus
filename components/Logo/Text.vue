@@ -49,7 +49,6 @@
 		width: $left-half-width;
 		height: $height;
 		color: c(accent);
-		pointer-events: none;
 
 		.hidden-wrapper {
 			@include flex-center;
@@ -78,6 +77,7 @@
 
 		&.hidden {
 			width: 0;
+			pointer-events: none;
 
 			.hidden-wrapper {
 				opacity: 0;
