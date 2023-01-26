@@ -8,9 +8,16 @@
 </script>
 
 <template>
-	<component :is="to ? LocaleLink : 'div'" v-ripple :to="to" class="button-wrapper" draggable="false">
+	<component
+		:is="to ? LocaleLink : 'div'"
+		v-ripple
+		:to="to"
+		class="button-wrapper"
+		draggable="false"
+		:tabindex="0"
+	>
 		<div class="button">
-			<NuxtIcon :name="icon" class="icon" />
+			<NuxtIcon :name="icon" class="icon" :tabindex="-1" />
 		</div>
 	</component>
 </template>
@@ -24,6 +31,10 @@
 		width: $icon-size;
 		background: none;
 		cursor: pointer;
+
+		&:focus-visible {
+			@include button-shadow-focus;
+		}
 	}
 
 	.button {

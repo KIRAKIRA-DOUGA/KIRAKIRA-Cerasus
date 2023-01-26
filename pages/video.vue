@@ -2,12 +2,15 @@
 	function getRoute() {
 		console.log("getRouter: ", getRoutePath());
 	}
+
+	useHead({ title: "测试视频" });
 </script>
 
 <template>
 	<div class="container">
 		<div @click="getRoute">{{ t.videoPlaying }}</div>
 		<LocaleLink to="/">Home</LocaleLink>
+		<PlayerVideo />
 	</div>
 </template>
 
@@ -27,6 +30,6 @@
 
 <style scoped lang="scss">
 	.container {
-		background-color: c(green);
+		padding: 26px 100px;
 	}
 </style>

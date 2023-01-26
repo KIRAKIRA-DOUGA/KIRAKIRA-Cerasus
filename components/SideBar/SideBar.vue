@@ -18,12 +18,12 @@
 <template>
 	<div class="sidebar">
 		<div class="top icons">
-			<SideBarButton icon="home" to="/" />
-			<SideBarButton icon="search" to="/search" />
-			<SideBarButton icon="history" />
-			<SideBarButton icon="star" />
-			<SideBarButton icon="feed" />
-			<SideBarButton icon="upload" />
+			<SideBarButton title="主页" icon="home" to="/" />
+			<SideBarButton title="搜索" icon="search" to="/search" />
+			<SideBarButton title="历史" icon="history" />
+			<SideBarButton title="收藏" icon="star" />
+			<SideBarButton title="关注" icon="feed" />
+			<SideBarButton title="投稿" icon="upload" />
 		</div>
 
 		<Transition name="stripes">
@@ -36,9 +36,9 @@
 		</Transition>
 
 		<div class="bottom icons">
-			<SideBarButton icon="person" />
-			<SideBarButton icon="email" />
-			<SideBarButton icon="settings" to="/settings" />
+			<SideBarButton title="我的" icon="person" />
+			<SideBarButton title="消息" icon="email" />
+			<SideBarButton title="设置" icon="settings" to="/settings" />
 		</div>
 	</div>
 </template>
@@ -84,7 +84,7 @@
 				.stripe {
 					display: inline-block;
 					width: 8px;
-					height: $bar-width;
+					height: $bar-width * 1.5;
 					margin-right: 12px;
 					background-color: c(accent);
 				}

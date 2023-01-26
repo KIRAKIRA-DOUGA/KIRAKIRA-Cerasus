@@ -69,6 +69,7 @@
 <style scoped lang="scss">
 	$thumb-size: 16px;
 	$thumb-size-half: calc($thumb-size / 2);
+	$track-thickness: 6px;
 	$value: calc(var(--value) * (100% - $thumb-size));
 
 	section {
@@ -79,7 +80,7 @@
 	.track,
 	.passed {
 		@include oval;
-		height: 6px;
+		height: $track-thickness;
 		margin: $thumb-size-half;
 	}
 
