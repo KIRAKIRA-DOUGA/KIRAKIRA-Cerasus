@@ -1,7 +1,9 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 
+import CopyPlugin from "copy-webpack-plugin";
 import { resolve } from "path";
 import styleResources from "./helpers/style-resources";
+const wasmFile = resolve("node_modules/mediainfo.js/dist/MediaInfoModule.wasm");
 type _NuxtConfig = Parameters<typeof defineNuxtConfig>[0] & Record<string, object>; // 还敢报错吗？
 
 export default defineNuxtConfig({
@@ -17,6 +19,22 @@ export default defineNuxtConfig({
 		// "@nuxtjs/sitemap", // BUG: 打不开。
 		// "@nuxtjs/color-mode", // 这个已经重写了，不用开启。
 	],
+	build: {
+		plugins: [
+			new CopyPlugin({
+				patterns: [
+					{
+						from: wasmFile,
+						to: ".",
+					},
+					{
+						from: "CNAME",
+						to: ".",
+					},
+				],
+			}),
+		],
+	},
 	alias: {
 		styles: resolve(__dirname, "./assets/styles"),
 		components: resolve(__dirname, "./components"),
