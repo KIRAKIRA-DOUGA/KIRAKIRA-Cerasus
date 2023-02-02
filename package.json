@@ -24,7 +24,7 @@
 		"eslint": "^8.27.0",
 		"eslint-plugin-nuxt": "^4.0.0",
 		"eslint-plugin-vue": "^9.7.0",
-		"nuxt": "npm:nuxt3@^3.0.1-rc.0-27880943.da38c62",
+		"nuxt": "^3.1.1",
 		"nuxt-typed-router": "^1.2.3",
 		"postcss-html": "^1.5.0",
 		"sass": "^1.56.1",
@@ -47,6 +47,7 @@
 		"@nuxtjs/sitemap": "^2.4.0",
 		"@storyblok/vue": "^6.3.2",
 		"@vueuse/head": "^1.0.0-rc.14",
+		"@vueuse/nuxt": "^9.12.0",
 		"js-confetti": "^0.11.0",
 		"lottie-web": "^5.10.0",
 		"nuxt-icons": "^3.1.0"
