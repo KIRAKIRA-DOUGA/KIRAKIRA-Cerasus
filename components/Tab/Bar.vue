@@ -1,9 +1,11 @@
 <script lang="ts">
 	export const typeError = new TypeError("TabBar 的插槽中只能包含 TabItem 组件。");
+	export type TabBarChildren = Record<string, {
+		dom: HTMLElement;
+	}>;
 </script>
 
 <script setup lang="ts">
-	import Indicator, { IndicatorState } from "./Indicator.vue";
 	import TabItem from "./Item.vue";
 
 	const props = defineProps<{
@@ -22,20 +24,23 @@
 			if (comp.type !== TabItem)
 				throw typeError;
 
-	const childDoms = reactive({} as Record<string, HTMLElement>);
+	const children = reactive({} as TabBarChildren);
 	const tabBar = ref<HTMLElement>();
-	const indicatorState = ref<IndicatorState>("hidden");
-	const indicatorWrapperLength = ref(28);
-	const indicatorLeft = ref(0);
-	// @ts-ignore
-	const indicator = ref<InstanceType<typeof Indicator>>();
 
 	function changeTab(id: string) {
 		emits("update:modelValue", id);
 	}
 
-	function updateIndicator(id: string) {
-		const item = childDoms[id];
+	function update(id: string) {
+		"";
+	}
+
+	watch(() => props.modelValue, id => {
+		update(id);
+	});
+
+	/* function updateIndicator(id: string) {
+		const item = children[id];
 		indicatorWrapperLength.value = item.clientWidth;
 		let { left } = item.getClientRects()[0];
 		left -= tabBar.value!.getClientRects()[0].left;
@@ -50,11 +55,11 @@
 	onMounted(() => {
 		updateIndicator(props.modelValue);
 		indicatorState.value = "normal";
-	});
+	}); */
 
 	defineExpose({
 		changeTab,
-		childDoms,
+		children,
 	});
 </script>
 
@@ -63,14 +68,7 @@
 		<div class="items" :class="{ vertical }">
 			<slot></slot>
 		</div>
-		<TabIndicator
-			ref="indicator"
-			:clipped="clipped"
-			:vertical="vertical"
-			:state="indicatorState"
-			:wrapperLength="indicatorWrapperLength"
-			:left="indicatorLeft"
-		/>
+		<div class="indicator"></div>
 	</section>
 </template>
 
@@ -87,5 +85,14 @@
 
 	section {
 		position: relative;
+	}
+
+	.indicator {
+		@include oval;
+		$thickness: 3px;
+		flex-shrink: 0;
+		width: 20px;
+		height: $thickness;
+		background-color: c(accent);
 	}
 </style>
