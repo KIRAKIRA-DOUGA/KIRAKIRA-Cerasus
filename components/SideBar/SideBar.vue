@@ -44,22 +44,22 @@
 </template>
 
 <style scoped lang="scss">
-	$bar-width: 48px;
 	$icons-gap: 8px;
 
 	.sidebar {
 		@include sidebar-shadow;
 		@include flex-center;
+		z-index: 50;
 		flex-direction: column;
 		justify-content: space-between;
-		width: $bar-width;
+		width: $sidebar-width;
 		padding: $icons-gap 0;
 		overflow: hidden;
 		background-color: c(main-bg);
 
 		> div {
 			flex-grow: 0;
-			width: $bar-width;
+			width: $sidebar-width;
 		}
 
 		.icons {
@@ -84,7 +84,7 @@
 				.stripe {
 					display: inline-block;
 					width: 8px;
-					height: $bar-width * 1.5;
+					height: $sidebar-width * 1.5;
 					margin-right: 12px;
 					background-color: c(accent);
 				}

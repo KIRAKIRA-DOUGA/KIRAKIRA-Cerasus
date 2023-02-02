@@ -51,8 +51,11 @@
 </script>
 
 <template>
-	<!-- <NoScriptMask /> -->
 	<NuxtLayout :name="layout">
-		<router-view />
+		<RouterView v-slot="{ Component }">
+			<Transition name="page" mode="out-in">
+				<component :is="Component" />
+			</Transition>
+		</RouterView>
 	</NuxtLayout>
 </template>
