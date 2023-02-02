@@ -48,3 +48,11 @@ a {
 		margin-bottom: 0 !important;
 	}
 }
+
+iframe.noscript-mask {
+	position: fixed;
+	z-index: 100;
+	width: 100vw;
+	height: 100vh;
+	border: none;
+}
