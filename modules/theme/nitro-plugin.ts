@@ -1,4 +1,4 @@
-type HtmlContext = Record<"body" | "bodyAppend" | "bodyAttrs" | "bodyPrepend" | "head" | "htmlAttrs", string[]>;
+import { HtmlContext } from "modules/types";
 
 export default defineNitroPlugin(nitro => {
 	nitro.hooks.hook("render:html", (html: HtmlContext) => {
