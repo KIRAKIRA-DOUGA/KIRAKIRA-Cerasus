@@ -112,9 +112,8 @@
 
 	onMounted(() => {
 		update();
+		window.addEventListener("resize", () => update());
 	});
-
-	window.addEventListener("resize", () => update());
 
 	defineExpose({
 		changeTab,
