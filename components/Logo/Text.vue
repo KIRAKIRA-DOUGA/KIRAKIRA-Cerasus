@@ -84,11 +84,6 @@
 				scale: 0.8;
 			}
 		}
-
-		&,
-		& * {
-			transition-duration: 500ms;
-		}
 	}
 
 	svg {
