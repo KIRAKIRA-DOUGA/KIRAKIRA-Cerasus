@@ -58,14 +58,14 @@ iframe.noscript-mask {
 }
 
 // #region 页面过渡
-$page-translate: 8rem;
+$page-translate: 16rem;
 
 .page-enter-active {
-	transition: all $ease-out-expo 3000ms;
+	transition: all $ease-out-smooth 600ms;
 }
 
 .page-leave-active {
-	transition: all $ease-in-expo 2000ms;
+	transition: all $ease-in-expo 100ms;
 }
 
 .page-enter-from {
@@ -75,6 +75,6 @@ $page-translate: 8rem;
 
 .page-leave-to {
 	opacity: 0;
-	translate: -$page-translate;
+	translate: -1rem;
 }
 // #endregion
