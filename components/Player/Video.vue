@@ -9,10 +9,10 @@
 	const currentTime = ref(NaN);
 	const duration = ref(NaN);
 	const isTimeUpdating = ref(false);
-	const fullScreen = ref(false);
 
 	const video = ref<HTMLVideoElement>();
 	const videoPlayer = ref<HTMLElement>();
+	const { isFullscreen: fullScreen, toggle } = useFullscreen(video);
 
 	watch(playing, playing => {
 		if (!video.value) return;
@@ -29,11 +29,11 @@
 		video.value.preservesPitch = preservesPitch;
 	});
 
-	watch(fullScreen, fullScreen => {
+	/* watch(fullScreen, fullScreen => {
 		if (!videoPlayer.value) return;
 		if (fullScreen) videoPlayer.value.requestFullscreen();
 		else if (document.fullscreenElement) document.exitFullscreen();
-	});
+	}); */
 
 	watch(playbackRate, playbackRate => {
 		if (!video.value) return;
@@ -80,6 +80,7 @@
 			v-model:fullScreen="fullScreen"
 			v-model:playbackRate="playbackRate"
 			:duration="duration"
+			:toggleFullScreen="toggle"
 		/>
 	</section>
 </template>

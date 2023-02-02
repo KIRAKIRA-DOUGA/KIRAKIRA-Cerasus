@@ -46,6 +46,7 @@
 		"@nuxtjs/robots": "^3.0.0",
 		"@nuxtjs/sitemap": "^2.4.0",
 		"@storyblok/vue": "^6.3.2",
+		"@vueuse/components": "^9.12.0",
 		"@vueuse/head": "^1.0.0-rc.14",
 		"@vueuse/nuxt": "^9.12.0",
 		"js-confetti": "^0.11.0",

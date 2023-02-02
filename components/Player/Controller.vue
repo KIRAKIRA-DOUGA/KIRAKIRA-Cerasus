@@ -6,10 +6,12 @@
 		currentTime?: number;
 		duration?: number;
 		fullScreen?: boolean;
+		toggleFullScreen?: Function;
 	}>(), {
 		playbackRate: 1,
 		currentTime: NaN,
 		duration: NaN,
+		toggleFullScreen: undefined,
 	});
 
 	const emits = defineEmits<{
@@ -77,7 +79,7 @@
 		</div>
 		<span>{{ convertTime(currentTime) }} / {{ convertTime(duration) }}</span>
 		<PlayerButton :text="playbackRateText" @click="switchSpeed" />
-		<PlayerButton icon="full_screen" @click="emits('update:fullScreen', !fullScreen)" />
+		<PlayerButton icon="full_screen" @click="() => toggleFullScreen?.()" />
 	</section>
 </template>
 

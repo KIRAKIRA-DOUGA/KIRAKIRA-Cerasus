@@ -12,6 +12,7 @@ export default defineNuxtConfig({
 		"@nuxtjs/i18n",
 		"@nuxt/content",
 		"nuxt-icons",
+		"@vueuse/nuxt",
 		"modules/theme/module.ts",
 		// "@nuxtjs/robots", // BUG: 打不开。
 		// "@nuxtjs/sitemap", // BUG: 打不开。
