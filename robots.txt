@@ -1,4 +1,0 @@
-Disallow:https://localhost:3000/sitemap.xml
-Disallow:/admin/
-User-agent: *
-Disallow:

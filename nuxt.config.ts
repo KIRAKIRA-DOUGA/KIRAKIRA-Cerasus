@@ -15,7 +15,7 @@ export default defineNuxtConfig({
 		"@vueuse/nuxt",
 		"modules/theme/module.ts",
 		"modules/noscript/module.ts",
-		// "@nuxtjs/robots", // BUG: 打不开。
+		"@nuxtjs/robots",
 		// "@nuxtjs/sitemap", // BUG: 打不开。
 		// "@nuxtjs/color-mode", // 这个已经重写了，不用开启。
 	],
