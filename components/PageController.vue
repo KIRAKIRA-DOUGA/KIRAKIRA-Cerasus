@@ -80,6 +80,8 @@
 			duration: 500,
 			easing: hasExistAnimations ? eases.easeOutMax : eases.easeInOutSmooth, // 连续快速滚动时切换成缓出插值。
 		});
+		/** `Uncaught (in promise) DOMException: The user aborted a request.` 给👴爬！ */
+		const IGNORE = () => { };
 		if (merged) {
 			scrolledPages.value = merged.items;
 			if (scrollArea.value) {
@@ -91,7 +93,7 @@
 				], animationOptions(hasExistAnimations)).finished.then(() => {
 					scrolledPages.value = nextItems;
 					isScrolling.value = false;
-				});
+				}).catch(IGNORE);
 			}
 		}
 		//#endregion
@@ -117,12 +119,10 @@
 				currentEdited.value = String(page);
 				if (newPageNumber.value) newPageNumber.value.hidden = true;
 				thumb.style.removeProperty("transition-timing-function");
-			});
+			}).catch(IGNORE);
 		} else currentEdited.value = String(page);
 		//#endregion
 	});
-	// BUG: 以非常快速翻页会导致报错，但不影响使用：Uncaught (in promise) DOMException: The user aborted a request.
-	// BUG: 以非常快速翻页然后突然以反方向翻页，会导致当前页码显示错误。
 
 	onMounted(() => {
 		document.addEventListener("keydown", onArrowKeyDown);
