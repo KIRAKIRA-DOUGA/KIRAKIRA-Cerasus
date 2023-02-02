@@ -72,7 +72,7 @@
 			@timeupdate="onTimeUpdate"
 			@canplay="onCanPlay"
 			@click="playing = !playing"
-			@dblclick="fullScreen = !fullScreen"
+			@dblclick="toggle"
 		></video>
 		<PlayerController
 			v-model:currentTime="currentTime"
