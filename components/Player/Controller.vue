@@ -6,10 +6,12 @@
 		currentTime?: number;
 		duration?: number;
 		fullScreen?: boolean;
+		toggleFullScreen?: Function;
 	}>(), {
 		playbackRate: 1,
 		currentTime: NaN,
 		duration: NaN,
+		toggleFullScreen: undefined,
 	});
 
 	const emits = defineEmits<{
@@ -60,8 +62,7 @@
 		if (index === -1) {
 			index = playbackRates.indexOf(1);
 			if (index === -1) throw new Error("在 playbackRates 速度列表中必须包含原速 1。");
-		}
-		index = (index + 1) % playbackRates.length;
+		} else index = (index + 1) % playbackRates.length;
 		const newRate = playbackRates[index];
 		emits("update:playbackRate", newRate);
 	}
@@ -77,7 +78,7 @@
 		</div>
 		<span>{{ convertTime(currentTime) }} / {{ convertTime(duration) }}</span>
 		<PlayerButton :text="playbackRateText" @click="switchSpeed" />
-		<PlayerButton icon="full_screen" @click="emits('update:fullScreen', !fullScreen)" />
+		<PlayerButton icon="full_screen" @click="() => toggleFullScreen?.()" />
 	</section>
 </template>
 

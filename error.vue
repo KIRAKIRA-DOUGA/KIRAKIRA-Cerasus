@@ -4,7 +4,7 @@
 	import { NuxtError } from "nuxt/dist/app/composables/error";
 
 	const props = withDefaults(defineProps<{
-		error: NuxtError; // BUG: TypeScript WCNM，你把多少人的生活，都 TM 给毁了。
+		error: NuxtError;
 	}>(), {
 		error: {
 			// @ts-ignore

@@ -75,7 +75,9 @@
 			<TabBar v-model="selectedTab">
 				<TabItem id="all">全部</TabItem>
 				<TabItem id="video">视频</TabItem>
-				<TabItem id="picture">图片</TabItem>
+				<TabItem id="image">图片</TabItem>
+				<TabItem id="long">测试很长很长很长</TabItem>
+				<TabItem id="short">短</TabItem>
 			</TabBar>
 			<br />
 			<RadioButton v-model="logoTextForm" value="hidden">LOGO隐藏</RadioButton>

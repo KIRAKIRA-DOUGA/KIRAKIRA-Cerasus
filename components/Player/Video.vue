@@ -1,5 +1,7 @@
 <script setup lang="ts">
-	import videoPath from "assets/videos/test.mp4";
+	const props = defineProps<{
+		src: string;
+	}>();
 
 	const playing = ref(false);
 	const playbackRate = ref(1);
@@ -7,10 +9,10 @@
 	const currentTime = ref(NaN);
 	const duration = ref(NaN);
 	const isTimeUpdating = ref(false);
-	const fullScreen = ref(false);
 
 	const video = ref<HTMLVideoElement>();
 	const videoPlayer = ref<HTMLElement>();
+	const { isFullscreen: fullScreen, toggle } = useFullscreen(video);
 
 	watch(playing, playing => {
 		if (!video.value) return;
@@ -25,12 +27,6 @@
 	watch(preservesPitch, preservesPitch => {
 		if (!video.value) return;
 		video.value.preservesPitch = preservesPitch;
-	});
-
-	watch(fullScreen, fullScreen => {
-		if (!videoPlayer.value) return;
-		if (fullScreen) videoPlayer.value.requestFullscreen();
-		else if (document.fullscreenElement) document.exitFullscreen();
 	});
 
 	watch(playbackRate, playbackRate => {
@@ -48,6 +44,7 @@
 		playbackRate.value = video.playbackRate;
 		currentTime.value = video.currentTime;
 		duration.value = video.duration;
+		video.preservesPitch = preservesPitch.value;
 	}
 
 	async function onTimeUpdate(e: Event) {
@@ -63,14 +60,14 @@
 	<section ref="videoPlayer" class="video-player">
 		<video
 			ref="video"
-			:src="videoPath"
+			:src="src"
 			@play="() => (playing = true)"
 			@pause="() => (playing = false)"
 			@ratechange="e => (playbackRate = (e.target as HTMLVideoElement).playbackRate)"
 			@timeupdate="onTimeUpdate"
 			@canplay="onCanPlay"
 			@click="playing = !playing"
-			@dblclick="fullScreen = !fullScreen"
+			@dblclick="toggle"
 		></video>
 		<PlayerController
 			v-model:currentTime="currentTime"
@@ -78,6 +75,7 @@
 			v-model:fullScreen="fullScreen"
 			v-model:playbackRate="playbackRate"
 			:duration="duration"
+			:toggleFullScreen="toggle"
 		/>
 	</section>
 </template>

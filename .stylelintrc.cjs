@@ -51,11 +51,12 @@ module.exports = {
 		"keyframe-declaration-no-important": true,
 		"font-family-no-missing-generic-family-keyword": true,
 		"font-family-name-quotes": "always-where-recommended",
-		"comment-empty-line-before": ["always", {
+		"comment-empty-line-before": null,
+		/* "comment-empty-line-before": ["always", {
 			"except": ["first-nested"],
 			"ignore": ["stylelint-commands"],
 			"severity": "warning",
-		}],
+		}], */
 		"at-rule-empty-line-before": ["always", {
 			"except": ["first-nested"],
 			"ignore": ["after-comment"],
@@ -67,6 +68,7 @@ module.exports = {
 			"ignore": ["between-comments", "stylelint-commands"],
 			"severity": "warning",
 		}],
+		"scss/double-slash-comment-empty-line-before": null,
 		/* "scss/dollar-variable-first-in-block": [true, {
 			"ignore": ["comments", "imports"],
 			"except": ["root", "function"],

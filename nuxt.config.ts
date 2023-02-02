@@ -14,9 +14,11 @@ export default defineNuxtConfig({
 		"@nuxtjs/i18n",
 		"@nuxt/content",
 		"nuxt-icons",
+		"@vueuse/nuxt",
 		"modules/theme/module.ts",
-		// "@nuxtjs/robots", // BUG: 打不开。
-		// "@nuxtjs/sitemap", // BUG: 打不开。
+		"modules/noscript/module.ts",
+		"@nuxtjs/robots",
+		"nuxt-simple-sitemap",
 		// "@nuxtjs/color-mode", // 这个已经重写了，不用开启。
 	],
 	build: {
@@ -103,6 +105,11 @@ export default defineNuxtConfig({
 				dark: "github-dark",
 				sepia: "monokai",
 			},
+		},
+	},
+	runtimeConfig: {
+		public: {
+			siteUrl: "http://localhost:3000",
 		},
 	},
 } as _NuxtConfig);

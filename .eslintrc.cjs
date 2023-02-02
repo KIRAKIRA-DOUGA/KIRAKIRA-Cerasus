@@ -108,6 +108,8 @@ module.exports = {
 		"no-self-assign": "off",
 		"no-debugger": "warn",
 		"no-use-before-define": "off",
+		"accessor-pairs": "off",
+		"no-empty-function": "off",
 		"import/order": "off", // 与 VSCode 内置导入排序特性打架。
 		"import/first": "off", // 与 Vue 特性冲突。
 		"n/no-callback-literal": "off", // 这是啥？
@@ -142,6 +144,7 @@ module.exports = {
 		"@typescript-eslint/no-use-before-define": ["warn", {
 			"functions": false,
 		}],
+		"@typescript-eslint/no-empty-function": "off",
 		// "@typescript-eslint/no-confusing-void-expression": "error",
 		// "@typescript-eslint/no-floating-promises": "error",
 		// 嗯对这几个不晓得怎么用不了。

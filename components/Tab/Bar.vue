@@ -1,9 +1,11 @@
 <script lang="ts">
 	export const typeError = new TypeError("TabBar 的插槽中只能包含 TabItem 组件。");
+	export type TabBarChildren = Record<string, {
+		dom: HTMLElement;
+	}>;
 </script>
 
 <script setup lang="ts">
-	import Indicator, { IndicatorState } from "./Indicator.vue";
 	import TabItem from "./Item.vue";
 
 	const props = defineProps<{
@@ -22,39 +24,100 @@
 			if (comp.type !== TabItem)
 				throw typeError;
 
-	const childDoms = reactive({} as Record<string, HTMLElement>);
+	const children = reactive({} as TabBarChildren);
 	const tabBar = ref<HTMLElement>();
-	const indicatorState = ref<IndicatorState>("hidden");
-	const indicatorWrapperLength = ref(28);
-	const indicatorLeft = ref(0);
-	// @ts-ignore
-	const indicator = ref<InstanceType<typeof Indicator>>();
+	const indicator = ref<HTMLDivElement>();
 
+	/**
+	 * 根据标识符切换选项卡。
+	 * @param id - 选项卡标识符。
+	 */
 	function changeTab(id: string) {
 		emits("update:modelValue", id);
 	}
 
-	function updateIndicator(id: string) {
-		const item = childDoms[id];
-		indicatorWrapperLength.value = item.clientWidth;
-		let { left } = item.getClientRects()[0];
-		left -= tabBar.value!.getClientRects()[0].left;
-		indicatorLeft.value = left;
+	/**
+	 * 获取指示器的左边和右边值。
+	 * @param item - 选项卡项目。
+	 * @param maxLength - 指示器的最大长度。
+	 * @returns 指示器的左边和右边值。
+	 */
+	function getIndicatorLeftRight(item: HTMLElement, maxLength: number) {
+		if (!tabBar.value) throw new ReferenceError("DOM 未完全初始化。");
+		const { left: itemLeft, right: itemRight, width: itemWidth } = item.getClientRects()[0];
+		const { left: tabBarLeft, right: tabBarRight } = tabBar.value.getClientRects()[0];
+		const offset = (itemWidth - maxLength) / 2;
+		return {
+			left: (itemWidth <= maxLength ? itemLeft : itemLeft + offset) - tabBarLeft,
+			right: -(itemWidth <= maxLength ? itemRight : itemRight - offset) + tabBarRight,
+		};
 	}
 
-	watch(() => props.modelValue, id => {
-		updateIndicator(id);
-		indicator.value?.replayIndicatorAnimation();
+	/**
+	 * 更新选项卡指示器。
+	 * @param id - 当前选项卡标识符。
+	 * @param prevId - 先前选项卡标识符。
+	 */
+	async function update(id?: string, prevId?: string) {
+		const LENGTH = 28; // 指定选项卡指示器的最大长度。
+		id ??= props.modelValue;
+		if (!indicator.value) return;
+		const indicatorStyle = indicator.value.style;
+		const style = {
+			set left(value: number) { indicatorStyle.left = value + "px"; },
+			set right(value: number) { indicatorStyle.right = value + "px"; },
+		};
+		const item = children[id].dom;
+		const itemLr = getIndicatorLeftRight(item, LENGTH);
+		let prevItemLr: ReturnType<typeof getIndicatorLeftRight>;
+		enum MoveDirection {
+			LEFT = -1,
+			NONE,
+			RIGHT,
+		}
+		let moveDirection = MoveDirection.NONE;
+		if (prevId) {
+			const prevItem = children[prevId].dom;
+			prevItemLr = getIndicatorLeftRight(prevItem, LENGTH);
+			moveDirection = itemLr.left >= prevItemLr.left ? MoveDirection.RIGHT : MoveDirection.LEFT;
+		} else
+			prevItemLr = getIndicatorLeftRight(item, 0);
+		const setLeft = () => (style.left = itemLr.left);
+		const setRight = () => (style.right = itemLr.right);
+		const delayTime = () => delay(100);
+		switch (moveDirection) {
+			case MoveDirection.RIGHT:
+				setRight();
+				await delayTime();
+				setLeft();
+				break;
+			case MoveDirection.LEFT:
+				setLeft();
+				await delayTime();
+				setRight();
+				break;
+			default:
+				style.left = prevItemLr.left;
+				style.right = prevItemLr.right;
+				await nextAnimationTick();
+				setLeft();
+				setRight();
+				break;
+		}
+	}
+
+	watch(() => props.modelValue, (id, prevId) => {
+		update(id, prevId);
 	});
 
 	onMounted(() => {
-		updateIndicator(props.modelValue);
-		indicatorState.value = "normal";
+		update();
+		window.addEventListener("resize", () => update());
 	});
 
 	defineExpose({
 		changeTab,
-		childDoms,
+		children,
 	});
 </script>
 
@@ -63,14 +126,7 @@
 		<div class="items" :class="{ vertical }">
 			<slot></slot>
 		</div>
-		<TabIndicator
-			ref="indicator"
-			:clipped="clipped"
-			:vertical="vertical"
-			:state="indicatorState"
-			:wrapperLength="indicatorWrapperLength"
-			:left="indicatorLeft"
-		/>
+		<div ref="indicator" class="indicator"></div>
 	</section>
 </template>
 
@@ -87,5 +143,14 @@
 
 	section {
 		position: relative;
+	}
+
+	.indicator {
+		@include oval;
+		$thickness: 3px;
+		position: absolute;
+		flex-shrink: 0;
+		height: $thickness;
+		background-color: c(accent);
 	}
 </style>
