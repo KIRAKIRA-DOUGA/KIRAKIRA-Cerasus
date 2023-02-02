@@ -29,12 +29,6 @@
 		video.value.preservesPitch = preservesPitch;
 	});
 
-	/* watch(fullScreen, fullScreen => {
-		if (!videoPlayer.value) return;
-		if (fullScreen) videoPlayer.value.requestFullscreen();
-		else if (document.fullscreenElement) document.exitFullscreen();
-	}); */
-
 	watch(playbackRate, playbackRate => {
 		if (!video.value) return;
 		video.value.playbackRate = playbackRate;
@@ -50,6 +44,7 @@
 		playbackRate.value = video.playbackRate;
 		currentTime.value = video.currentTime;
 		duration.value = video.duration;
+		video.preservesPitch = preservesPitch.value;
 	}
 
 	async function onTimeUpdate(e: Event) {

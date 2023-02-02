@@ -108,6 +108,7 @@ module.exports = {
 		"no-self-assign": "off",
 		"no-debugger": "warn",
 		"no-use-before-define": "off",
+		"accessor-pairs": "off",
 		"import/order": "off", // 与 VSCode 内置导入排序特性打架。
 		"import/first": "off", // 与 Vue 特性冲突。
 		"n/no-callback-literal": "off", // 这是啥？

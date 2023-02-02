@@ -62,8 +62,7 @@
 		if (index === -1) {
 			index = playbackRates.indexOf(1);
 			if (index === -1) throw new Error("在 playbackRates 速度列表中必须包含原速 1。");
-		}
-		index = (index + 1) % playbackRates.length;
+		} else index = (index + 1) % playbackRates.length;
 		const newRate = playbackRates[index];
 		emits("update:playbackRate", newRate);
 	}
