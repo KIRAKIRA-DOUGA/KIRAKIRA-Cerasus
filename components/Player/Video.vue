@@ -1,5 +1,7 @@
 <script setup lang="ts">
-	import videoPath from "assets/videos/test.mp4";
+	const props = defineProps<{
+		src: string;
+	}>();
 
 	const playing = ref(false);
 	const playbackRate = ref(1);
@@ -63,7 +65,7 @@
 	<section ref="videoPlayer" class="video-player">
 		<video
 			ref="video"
-			:src="videoPath"
+			:src="src"
 			@play="() => (playing = true)"
 			@pause="() => (playing = false)"
 			@ratechange="e => (playbackRate = (e.target as HTMLVideoElement).playbackRate)"

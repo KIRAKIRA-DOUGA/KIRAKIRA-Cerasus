@@ -1,4 +1,6 @@
 <script setup lang="ts">
+	import videoPath from "assets/videos/test.mp4";
+
 	function getRoute() {
 		console.log("getRouter: ", getRoutePath());
 	}
@@ -10,7 +12,7 @@
 	<div class="container">
 		<div @click="getRoute">{{ t.videoPlaying }}</div>
 		<LocaleLink to="/">Home</LocaleLink>
-		<PlayerVideo />
+		<PlayerVideo :src="videoPath" />
 	</div>
 </template>
 
