@@ -1,4 +1,5 @@
-import { addImports, addPlugin, createResolver, defineNuxtModule } from "@nuxt/kit";
+import { addImports, addPlugin, addTemplate, createResolver, defineNuxtModule } from "@nuxt/kit";
+import script from "./script";
 
 export function getFunctionBody(func: Function, compressed: boolean) {
 	const str = func.toString();
@@ -13,6 +14,13 @@ export default defineNuxtModule({
 		const { resolve } = createResolver(import.meta.url);
 		addPlugin(resolve(__dirname, "plugin"));
 		addImports({ name: "Theme", as: "Theme", from: resolve(__dirname, "composables").replaceAll("\\", "/") });
+		addTemplate({
+			filename: "theme.script.js",
+			write: true,
+			getContents() {
+				return `(function (autoCall) {${getFunctionBody(script, true)}})();`;
+			},
+		});
 		nuxt.hook("nitro:config", nitro => {
 			nitro.plugins ??= [];
 			nitro.plugins.push(resolve("nitro-plugin.ts"));
