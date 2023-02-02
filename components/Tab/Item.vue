@@ -14,9 +14,6 @@
 		parent.exposed!.childDoms[props.id] = dom.value;
 		if (!parent.exposed || !dom.value) return;
 		const childDoms = parent.exposed.childDoms as Record<string, HTMLElement>;
-		/* Object.defineProperty(childDoms, props.id, {
-			get() { return dom.value; },
-		}); */
 		childDoms[props.id] = dom.value;
 	});
 </script>
@@ -26,7 +23,3 @@
 		<slot></slot>
 	</div>
 </template>
-
-<style scoped lang="scss">
-
-</style>
