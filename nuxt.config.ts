@@ -16,7 +16,7 @@ export default defineNuxtConfig({
 		"modules/theme/module.ts",
 		"modules/noscript/module.ts",
 		"@nuxtjs/robots",
-		// "@nuxtjs/sitemap", // BUG: 打不开。
+		"nuxt-simple-sitemap",
 		// "@nuxtjs/color-mode", // 这个已经重写了，不用开启。
 	],
 	alias: {
@@ -87,6 +87,11 @@ export default defineNuxtConfig({
 				dark: "github-dark",
 				sepia: "monokai",
 			},
+		},
+	},
+	runtimeConfig: {
+		public: {
+			siteUrl: "http://localhost:3000",
 		},
 	},
 } as _NuxtConfig);
