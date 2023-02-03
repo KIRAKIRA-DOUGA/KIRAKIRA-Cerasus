@@ -4,10 +4,9 @@
 
 :export {
 	linear: $linear;
+	linear-approach: $linear-approach;
 	ease: $ease;
 	ease-in: $ease-in;
-	ease-out: $ease-out;
-	ease-in-out: $ease-in-out;
 	ease-in-quad: $ease-in-quad;
 	ease-in-cubic: $ease-in-cubic;
 	ease-in-quart: $ease-in-quart;
@@ -16,6 +15,9 @@
 	ease-in-expo: $ease-in-expo;
 	ease-in-circ: $ease-in-circ;
 	ease-in-back: $ease-in-back;
+	ease-in-max: $ease-in-max;
+	ease-in-smooth: $ease-in-smooth;
+	ease-out: $ease-out;
 	ease-out-quad: $ease-out-quad;
 	ease-out-cubic: $ease-out-cubic;
 	ease-out-quart: $ease-out-quart;
@@ -24,6 +26,9 @@
 	ease-out-expo: $ease-out-expo;
 	ease-out-circ: $ease-out-circ;
 	ease-out-back: $ease-out-back;
+	ease-out-max: $ease-out-max;
+	ease-out-smooth: $ease-out-smooth;
+	ease-in-out: $ease-in-out;
 	ease-in-out-quad: $ease-in-out-quad;
 	ease-in-out-cubic: $ease-in-out-cubic;
 	ease-in-out-quart: $ease-in-out-quart;
@@ -32,9 +37,6 @@
 	ease-in-out-expo: $ease-in-out-expo;
 	ease-in-out-circ: $ease-in-out-circ;
 	ease-in-out-back: $ease-in-out-back;
-	ease-in-max: $ease-in-max;
-	ease-out-max: $ease-out-max;
 	ease-in-out-max: $ease-in-out-max;
-	ease-out-smooth: $ease-out-smooth;
 	ease-in-out-smooth: $ease-in-out-smooth;
 }

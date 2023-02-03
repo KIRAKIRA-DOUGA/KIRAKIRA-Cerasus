@@ -1,6 +1,6 @@
 @use "./functions" as *;
 
-// 圆角
+// #region 圆角
 /// 大卡片/缩略图。
 /// @output 使用 6px 大小的圆角。
 @mixin radius-large {
@@ -12,8 +12,9 @@
 @mixin radius-small {
 	border-radius: 4px;
 }
+// #endregion
 
-// 灰阶类
+// #region 灰阶类
 /// 控制球阴影 关闭
 @mixin control-ball-shadow-off {
 	box-shadow: 0 1px 6px c(icon-color, 50%);
@@ -36,8 +37,9 @@
 	// box-shadow: 0 4px 4px c(unchecked, 30%), 0 0 0 10px c(unchecked-focus, 50%);
 	box-shadow: 0 1px 6px c(icon-color, 30%), 0 0 0 10px c(gray-2, 50%);
 }
+// #endregion
 
-// 主题色
+// #region 主题色
 @mixin button-shadow {
 	box-shadow: 0 4px 4px c(accent, 30%);
 }
@@ -101,3 +103,4 @@
 @mixin card-in-card-shadow {
 	box-shadow: 0 2px 8px c(accent-card, 8%);
 }
+// #endregion
