@@ -49,9 +49,9 @@
 			<Button disabled>{{ t.buttonDisabled }}</Button>
 			<Button @click="showConfetti">{{ t.confetti }}</Button>
 			<Button icon="send">{{ t.send }}</Button>
-			<ToggleSwitch v-model="toggle">切换开关 {{ toggle ? "开" : "关" }}</ToggleSwitch>
-			<ToggleSwitch disabled>禁用 关</ToggleSwitch>
-			<ToggleSwitch on disabled>禁用 开</ToggleSwitch>
+			<ToggleSwitch v-model="toggle">{{ t.toggleSwitch }} {{ toggle ? t.on : t.off }}</ToggleSwitch>
+			<ToggleSwitch disabled>{{ t.offDisabled }} </ToggleSwitch>
+			<ToggleSwitch on disabled>{{ t.onDisabled }}</ToggleSwitch>
 			<RadioButton v-model="theme" value="light">{{ t.lightTheme }}</RadioButton>
 			<RadioButton v-model="theme" value="dark">{{ t.darkTheme }}</RadioButton>
 			<RadioButton v-model="theme" value="system">{{ t.systemTheme }}</RadioButton>
@@ -70,19 +70,19 @@
 			<ProgressRing />
 			<!-- <Lottie loop autoplay :animationData="animationData" /> -->
 			<br />
-			<Tag v-model="isTagChecked">标签</Tag>
+			<Tag v-model="isTagChecked">{{ t.tag }}</Tag>
 			<SlideBar v-model="sliderValue" />
 			<TabBar v-model="selectedTab">
-				<TabItem id="all">全部</TabItem>
-				<TabItem id="video">视频</TabItem>
-				<TabItem id="image">图片</TabItem>
+				<TabItem id="all">{{ t.all }}</TabItem>
+				<TabItem id="video">{{ t.video }}</TabItem>
+				<TabItem id="images">{{ t.images }}</TabItem>
 				<TabItem id="long">测试很长很长很长</TabItem>
 				<TabItem id="short">短</TabItem>
 			</TabBar>
 			<br />
-			<RadioButton v-model="logoTextForm" value="hidden">LOGO隐藏</RadioButton>
-			<RadioButton v-model="logoTextForm" value="half">LOGO半显示</RadioButton>
-			<RadioButton v-model="logoTextForm" value="full">LOGO全显示</RadioButton>
+			<RadioButton v-model="logoTextForm" value="hidden">{{ t.logoHidden }}</RadioButton>
+			<RadioButton v-model="logoTextForm" value="half">{{ t.logoHalf }}</RadioButton>
+			<RadioButton v-model="logoTextForm" value="full">{{ t.logoShow }}</RadioButton>
 			<LogoText :form="logoTextForm" />
 			<LogoCover />
 		</div>
@@ -101,15 +101,27 @@
 		buttonClicked: "我被单击了 呜呜呜~",
 		confetti: "五彩纸屑",
 		send: "发送",
+		toggleSwitch: "切换开关",
+		on: "开",
+		off: "关",
+		onDisabled: "禁用 开",
+		offDisabled: "禁用 关",
 		lightTheme: "浅色主题",
 		darkTheme: "深色主题",
-		systemTheme: "使用默认值",
+		systemTheme: "跟随系统",
 		pink: "萌妹粉",
 		sky: "天空蓝",
 		blue: "智乃蓝",
 		green: "千夜绿",
 		orange: "心爱橙",
 		purple: "理世紫",
+		tag: "标签",
+		all: "全部",
+		video: "视频",
+		images: "图片",
+		logoHidden: "LOGO隐藏",
+		logoHalf: "LOGO半显示",
+		logoShow: "LOGO全显示",
 	},
 	en: {
 		home: "KIRAKIRA Home",
@@ -121,35 +133,59 @@
 		buttonClicked: "I was clicked~",
 		confetti: "Confetti",
 		send: "Send",
-		lightTheme: "Light",
-		darkTheme: "Dark",
-		systemTheme: "System",
+		toggleSwitch: "Toggle Switch",
+		on: "On",
+		off: "Off",
+		onDisabled: "Disabled on",
+		offDisabled: "Disabled off",
+		lightTheme: "Light theme",
+		darkTheme: "Dark theme",
+		systemTheme: "Follow system theme",
 		pink: "Kawaii Pink",
 		sky: "Sky Blue",
 		blue: "Chino Blue",
 		green: "Chiya Green",
 		orange: "Cocoa Orange",
 		purple: "Rize Purple",
+		tag: "Tag",
+		all: "All",
+		video: "Videos",
+		images: "Images",
+		logoHidden: "Hidden LOGO",
+		logoHalf: "Half hidden LOGO",
+		logoShow: "Full LOGO",
 	},
 	ja: {
 		home: "KIRAKIRA ホーム",
 		video: "動画",
-		content: "内容",
+		content: "コンテンツ",
 		search: "検索",
 		button: "ボタン",
-		buttonDisabled: "ボタン無効",
-		buttonClicked: "私はクリックされました ううう~",
-		confetti: "色紙片",
+		buttonDisabled: "無効化されたボタン",
+		buttonClicked: "私はクリックされました ううっ~",
+		confetti: "紙吹雪",
 		send: "送信",
-		lightTheme: "ライト",
-		darkTheme: "暗い",
-		systemTheme: "自動",
-		pink: "かわいい ピンク",
+		toggleSwitch: "スイッチ",
+		onDisabled: "無効化されたスイッチ オン",
+		offDisabled: "無効化されたスイッチ オフ",
+		on: "オン",
+		off: "オフ",
+		lightTheme: "ライトテーマ",
+		darkTheme: "ダークテーマ",
+		systemTheme: "システムのテーマ設定を使用する",
+		pink: "カワイイ ピンク",
 		sky: "空色",
 		blue: "チノ 青",
 		green: "千夜 緑",
 		orange: "ココア オレンジ",
 		purple: "リゼ 紫",
+		tag: "タグ",
+		all: "すべて",
+		video: "動画",
+		images: "画像",
+		logoHidden: "LOGO非表示",
+		logoHalf: "LOGO部分表示",
+		logoShow: "LOGO全表示",
 	},
 }
 </i18n>
