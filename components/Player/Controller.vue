@@ -24,7 +24,7 @@
 	const currentPercent = computed({
 		get() {
 			const result = props.currentTime / props.duration;
-			return isFinite(result) ? result : 0;
+			return Number.isFinite(result) ? result : 0;
 		},
 		set(percent) {
 			const newTime = percent * props.duration;
@@ -38,7 +38,7 @@
 	 * @returns （时）分秒字符串。
 	 */
 	function convertTime(time: number): string {
-		if (!isFinite(time)) return "--:--"; // 当没有时间数据时显示占位符字符串。
+		if (!Number.isFinite(time)) return "--:--"; // 当没有时间数据时显示占位符字符串。
 		const padStart = (s: string | number) => String(s).padStart(2, "0");
 		time |= 0; // 去掉小数（毫秒值等）。
 		const seconds = time % 60;

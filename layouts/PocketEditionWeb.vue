@@ -3,7 +3,7 @@
 </script>
 
 <template>
-	<div class="mobile">
+	<div class="container">
 		<SideBar />
 		<div class="page">
 			<slot></slot>

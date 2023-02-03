@@ -1,11 +1,11 @@
-// 灰阶类颜色
+// 中性色
 // 此处的颜色各主题色均通用。
-$grayscale-colors: (
+$neutral-colors: (
 	main-bg: (white, #171414),
 	inner-color: #fafafa,
 	inner-color-85: #f8f8f8,
-	gray: (#e9e9e9, #2b2b2b),
-	gray-2: (#ccc, #4e4e4e),
+	gray: (#e9e9e9, #4e4e4e),
+	gray-2: (#ccc, #555),
 	icon-color-400: #bcb3b6,
 	icon-color: (#797173, #e5e4e4),
 	divider: #505050,
@@ -42,7 +42,7 @@ $primary-colors: (
 		accent-30: (#f8afc1, #b64561), // focus
 		accent-20: (#ffd3de, #802f45), // disabled
 		accent-10: (#ffedf2, #752b3f),
-		accent-card: #c19fa8, // card-shadow
+		neutral-10: #c19fa8, // card-shadow
 	),
 	sky: (
 		accent-80: (#3a82a1, #c4ebfc),
@@ -53,7 +53,7 @@ $primary-colors: (
 		accent-30: (#93dbfa, #4593b5),
 		accent-20: (#c4ebfc, #367894),
 		accent-10: (#e8f8ff, #2f6b85),
-		accent-card: #c19fa8,
+		neutral-10: #9fb7c1,
 	),
 	blue: (
 		accent-80: (#2e599e, #c4dafc),
@@ -64,7 +64,7 @@ $primary-colors: (
 		accent-30: (#93bbfa, #3665b2),
 		accent-20: (#c4dafc, #2a518f),
 		accent-10: (#e8f1ff, #264a82),
-		accent-card: #c19fa8,
+		neutral-10: #9fadc1,
 	),
 	green: (
 		accent-80: (#427a34, #c5fab8),
@@ -75,7 +75,7 @@ $primary-colors: (
 		accent-30: (#91e57c, #4a893b),
 		accent-20: (#c5fab8, #37652c),
 		accent-10: (#7c9f74, #294d20),
-		accent-card: #c19fa8,
+		neutral-10: #99b191,
 	),
 	orange: (
 		accent-80: (#a67109, #ffe6b3),
@@ -86,7 +86,7 @@ $primary-colors: (
 		accent-30: (#f7c86a, #bf8105),
 		accent-20: (#ffe6b3, #986909),
 		accent-10: (#fff6e6, #6f4d07),
-		accent-card: #c19fa8,
+		neutral-10: #b9ab90,
 	),
 	purple: (
 		accent-80: (#7b3f91, #f3d3ff),
@@ -97,7 +97,7 @@ $primary-colors: (
 		accent-30: (#e2adf5, #9a46b9),
 		accent-20: (#f3d3ff, #572a68),
 		accent-10: (#faedff, #592e69),
-		accent-card: #c19fa8,
+		neutral-10: #a989b6,
 	),
 );
 
@@ -108,4 +108,5 @@ $state-colors: (
 	accent-focus: accent-30,
 	accent-pressed: accent-60,
 	accent-disabled: accent-20,
+	accent-shadow: neutral-10,
 );

@@ -16,6 +16,13 @@
 			"problemMatcher": [],
 			"label": "npm: build",
 			"detail": "nuxt build"
+		},
+		{
+			"type": "npm",
+			"script": "update-eases",
+			"problemMatcher": [],
+			"label": "npm: update-eases",
+			"detail": "npx tsx scripts/update-eases.ts"
 		}
 	]
 }

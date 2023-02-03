@@ -9,6 +9,7 @@ type _NuxtConfig = Parameters<typeof defineNuxtConfig>[0] & Record<string, objec
 export default defineNuxtConfig({
 	plugins: [
 		"plugins/ripple.ts",
+		"plugins/css-var-i.ts",
 	],
 	modules: [
 		"@nuxtjs/i18n",

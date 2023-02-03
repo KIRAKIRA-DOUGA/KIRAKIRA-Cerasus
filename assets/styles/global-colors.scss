@@ -53,7 +53,7 @@
 	#{$selector} {
 		color-scheme: if($is-light, light, dark);
 
-		@each $key, $color in $grayscale-colors {
+		@each $key, $color in $neutral-colors {
 			@include hex-and-rgb-color($key, $color, $is-light);
 		}
 

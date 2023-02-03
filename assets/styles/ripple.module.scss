@@ -3,7 +3,7 @@
 	overflow: hidden;
 
 	.ripple-circle {
-		@include square(20px);
+		@include square(1rem);
 		@include circle;
 		position: absolute;
 		top: 0;

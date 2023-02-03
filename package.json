@@ -8,7 +8,8 @@
 		"preview": "nuxt preview",
 		"postinstall": "nuxt prepare",
 		"lint:css": "stylelint **/*.{html,vue,css,sass,scss}",
-		"typed-scss-modules": "typed-scss-modules assets/styles/*.module.scss --exportType default"
+		"typed-scss-modules": "typed-scss-modules assets/styles/*.module.scss --exportType default",
+		"update-eases": "npx tsx scripts/update-eases.ts"
 	},
 	"lint-staged": {
 		"*.{html,vue,css,sass,scss}": [
@@ -17,7 +18,7 @@
 		]
 	},
 	"devDependencies": {
-		"@nuxt/content": "^2.3.0",
+		"@nuxt/content": "^2.4.3",
 		"@nuxtjs/eslint-config": "^11.0.0",
 		"@nuxtjs/eslint-config-typescript": "^11.0.0",
 		"@nuxtjs/i18n": "^8.0.0-beta.7",
@@ -35,6 +36,7 @@
 		"stylelint-config-standard-scss": "^6.1.0",
 		"stylelint-order": "^5.0.0",
 		"stylelint-scss": "^4.3.0",
+		"tsx": "^3.12.2",
 		"typescript": "^4.9.4",
 		"typescript-plugin-css-modules": "^4.1.1",
 		"unified": "^10.1.2",

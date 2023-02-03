@@ -1,21 +1,24 @@
 @use "./eases" as *;
 
-// 响应式布局
+// #region 响应式布局
 $mobile-max-width: 575px;
 $tablet-max-width: 991px;
 $mobile: "(max-width: #{$mobile-max-width})";
 $tablet: "(max-width: #{$tablet-max-width})";
 $computer: "(min-width: #{$tablet-max-width + 1px})";
+// #endregion
 
-// 过渡动画
+// #region 过渡动画
 $fallback-transitions: all $ease-out-expo 250ms, color $ease-out-expo 100ms, fill $ease-out-expo 100ms;
+// #endregion
 
-// 字体
+// #region 字体
 $fallback-fonts: system-ui, -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 $chinese-fonts: "Segoe UI", "Microsoft Yahei", $fallback-fonts;
 $japanese-fonts: "Segoe UI", "Yu Gothic UI", "Microsoft Yahei", $fallback-fonts;
 $english-logo-fonts: Montserrat, "Segoe UI", $fallback-fonts;
 $monospace-fonts: "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+// #endregion
 
 /// 侧边栏宽度
 $sidebar-width: 48px;

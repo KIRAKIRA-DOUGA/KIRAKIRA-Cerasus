@@ -237,5 +237,77 @@ module.exports = {
 			"order": ["docs", ["script:not([setup])", "script[setup]"], "template", "i18n", "style[scoped]", "style[module]", "style:not([scoped]):not([module])"],
 		}],
 		"vue/no-multiple-template-root": "off",
+		"no-restricted-properties": ["error", {
+			object: "arguments",
+			property: "callee",
+			message: "arguments.callee is deprecated.",
+		}, {
+			object: "global",
+			property: "isFinite",
+			message: "Please use Number.isFinite instead.",
+		}, {
+			object: "self",
+			property: "isFinite",
+			message: "Please use Number.isFinite instead.",
+		}, {
+			object: "window",
+			property: "isFinite",
+			message: "Please use Number.isFinite instead.",
+		}, {
+			object: "globalThis",
+			property: "isFinite",
+			message: "Please use Number.isFinite instead.",
+		}, {
+			object: "global",
+			property: "isNaN",
+			message: "Please use Number.isNaN instead.",
+		}, {
+			object: "self",
+			property: "isNaN",
+			message: "Please use Number.isNaN instead.",
+		}, {
+			object: "window",
+			property: "isNaN",
+			message: "Please use Number.isNaN instead.",
+		}, {
+			object: "globalThis",
+			property: "isNaN",
+			message: "Please use Number.isNaN instead.",
+		}, {
+			property: "__defineGetter__",
+			message: "Please use Object.defineProperty instead.",
+		}, {
+			property: "__defineSetter__",
+			message: "Please use Object.defineProperty instead.",
+		}, {
+			object: "Math",
+			property: "pow",
+			message: "Use the exponentiation operator (**) instead.",
+		}],
+		"no-restricted-globals": ["error", {
+			name: "parseFloat",
+			message: "Use + instead.",
+		}, {
+			name: "isFinite",
+			message: "Please use Number.isFinite instead.",
+		}, {
+			name: "isNaN",
+			message: "Please use Number.isNaN instead.",
+		}, {
+			name: "addEventListener",
+			message: "Please use window.addEventListener instead.",
+		}, {
+			name: "innerHeight",
+			message: "Please use window.innerHeight instead.",
+		}, {
+			name: "outerHeight",
+			message: "Please use window.outerHeight instead.",
+		}, {
+			name: "innerWidth",
+			message: "Please use window.innerWidth instead.",
+		}, {
+			name: "outerWidth",
+			message: "Please use window.outerWidth instead.",
+		}],
 	},
 };

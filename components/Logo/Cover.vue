@@ -15,7 +15,7 @@
 		</div>
 		<div class="pluses">
 			<div v-for="i in 4" :key="`plus-${i}`">
-				<span v-for="j in 4" :key="`plus-${i}-${j}`" :style="{ '--i': i + j - 2 }">
+				<span v-for="j in 4" :key="`plus-${i}-${j}`" v-i="i + j - 2">
 					+
 				</span>
 			</div>

@@ -30,8 +30,9 @@
 					</div>
 				</noscript>
 			);
-			// BUG: 一旦包含 noscript 标签，会在控制台打印一个警告和一个错误，但不影响使用。
+			// 在 Vue 中一旦包含 noscript 标签，会在控制台打印一个警告和一个错误，但不影响使用。
 			// 此题无解：https://github.com/nuxt/framework/issues/9988
+			// OK，现在已经解决了。
 		},
 	});
 </script>

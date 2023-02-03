@@ -1,27 +1,8 @@
 <script setup lang="ts">
-	definePageMeta({
-		validate: route => {
-			const validRoutes = ["hello", "search"];
+	import { slugValidate } from "middleware/validate.global";
 
-			const routePath = getRoutePath({ route });
-			const routeNumber = +routePath;
-			if (validRoutes.includes(routePath))
-				return true;
-			if (routeNumber === 601)
-				navigateTo("/601.html");
-			if (routeNumber === 404)
-				return false;
-			if (routeNumber === 233)
-				return {
-					statusCode: 233,
-					message: "乐",
-				};
-			if (isFinite(routeNumber)) // 测试，如果输入的路由是数字就可以触发对应数字的错误代码。
-				return {
-					statusCode: routeNumber,
-				};
-			return false;
-		},
+	definePageMeta({
+		validate: slugValidate(["hello", "search", "next"]),
 	});
 
 	function reload() {

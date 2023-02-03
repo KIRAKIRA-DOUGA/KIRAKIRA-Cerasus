@@ -1,4 +1,4 @@
-import { entries } from "../composables/object";
+import { entries } from "../utils/object";
 
 type Preprocessor = "scss" | "sass" | "less" | "stylus" | "postcss";
 type AtRule = "import" | "use" | "require" | "forward";

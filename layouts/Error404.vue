@@ -39,12 +39,11 @@
 
 	.content {
 		@include flex-center;
+		@include square(100%);
 		position: relative;
 		z-index: 20;
 		flex-direction: column;
 		justify-content: flex-start;
-		width: 100%;
-		height: 100%;
 		padding-top: 5rem;
 
 		h1 {
@@ -70,6 +69,7 @@
 	}
 
 	.home-link {
+		@include radius-large;
 		--i: 0;
 		position: relative;
 		padding: 0.75rem 1.5rem;
@@ -77,7 +77,6 @@
 		text-decoration: none;
 		background: none;
 		background-color: #ffffff4d;
-		border-radius: 0.5rem;
 		backdrop-filter: blur(10px);
 		animation: move-down $title-animation-options;
 
@@ -86,6 +85,7 @@
 		}
 
 		&::before {
+			@include radius-large;
 			position: absolute;
 			top: 0;
 			right: 0;
@@ -95,7 +95,6 @@
 			padding: 2px;
 			background: linear-gradient(90deg, #e2e2e2 0%, #e2e2e2 25%, #00dc82 50%, #36e4da 75%, #0047e1 100%);
 			background-size: 400% auto !important;
-			border-radius: 0.5rem;
 			opacity: 0.5;
 			transition: background-position 0.3s ease-in-out, opacity 0.2s ease-in-out;
 			content: "";
