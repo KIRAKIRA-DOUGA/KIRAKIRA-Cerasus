@@ -1,18 +1,8 @@
 <script setup lang="ts">
-	definePageMeta({
-		validate: route => {
-			const validRoutes = ["hello", "search", "next"];
+	import { slugValidate } from "middleware/validate.global";
 
-			const routePath = getRoutePath({ route });
-			const routeNumber = +routePath;
-			if (validRoutes.includes(routePath))
-				return true;
-			if (routeNumber === 404)
-				return false;
-			if (isFinite(routeNumber))
-				return true;
-			return false;
-		},
+	definePageMeta({
+		validate: slugValidate(["hello", "search", "next"]),
 	});
 
 	function reload() {
