@@ -10,8 +10,7 @@
 	const isTimeUpdating = ref(false);
 	const fullScreen = ref(false);
 	const mediaInfoDiv = ref(false);
-	const mediaInfo = ref([]);
-
+	const mediaInfos = ref();
 	const video = ref<HTMLVideoElement>();
 	const videoPlayer = ref<HTMLElement>();
 
@@ -22,26 +21,30 @@
 		let file: File;
 		urlToBlob(videoPath, (result: Blob) => {
 			file = new File([result], "test.mp4", { type: "video/mp4" });
-		});
-		const getSize = () => file.size;
-		const readChunk = (chunkSize:number, offset:number) =>
-			new Promise(resolve => {
-				const reader = new FileReader();
-				reader.onload = event => {
-					resolve(new Uint8Array(((event.target as FileReader).result as ArrayBuffer)));
-				};
-				reader.readAsArrayBuffer(file.slice(offset, offset + chunkSize));
-			});
-		mediainfo().then(mediainfo => {
-			mediainfo
-				.analyzeData(getSize, (readChunk as ReadChunkFunc))
-				.then(result => {
-					// 虽然这是result类型，但它的确是一个对象数组
-					// 详细内容填充部分还没写，坐等有缘人~
-					// (原因：明天开学了)
-					// @ts-ignore
-					console.log(result.media.track);
+			const getSize = () => file.size;
+			const readChunk = (chunkSize: number, offset: number) =>
+				new Promise(resolve => {
+					const reader = new FileReader();
+					reader.onload = event => {
+						resolve(new Uint8Array(((event.target as FileReader).result as ArrayBuffer)));
+					};
+					reader.readAsArrayBuffer(file.slice(offset, offset + chunkSize));
 				});
+			mediainfo().then(mediainfo => {
+				mediainfo
+					.analyzeData(getSize, (readChunk as ReadChunkFunc))
+					.then(result => {
+						// 虽然这是result类型，但它的确是一个对象数组
+						mediaInfos.value = {
+							// @ts-ignore
+							...result.media.track[0],
+							// @ts-ignore
+							...result.media.track[1],
+							// @ts-ignore
+							...result.media.track[2],
+						};
+					});
+			});
 		});
 		mediaInfoDiv.value = !mediaInfoDiv.value;
 	}
@@ -97,7 +100,7 @@
 		<div v-if="mediaInfoDiv">
 			视频详细信息
 			<!-- eslint-disable-next-line vue/require-v-for-key -->
-			<p v-for="i in 100">详细内容</p>
+			<p v-for="(mediaInfo, key) in mediaInfos">{{ key }}:{{ mediaInfo }},</p>
 		</div>
 		<video
 			ref="video"
@@ -123,29 +126,24 @@
 </template>
 
 <style scoped lang="scss">
-	section.video-player {
-		@include player-shadow;
-		display: flex;
-		flex-direction: column;
-	}
+section.video-player {
+	@include player-shadow;
+	display: flex;
+	flex-direction: column;
+}
 
-	video {
-		width: 100%;
-	}
+video {
+	width: 100%;
+}
 
-	div {
-		position: absolute;
-		width: 800px;
-		height: 350px;
-		color: white;
-		font-weight: 800;
-		background-color: #5c5858;
-		border-radius: 10px;
-		opacity: 0.4;
-	}
-
-	a {
-		color: white;
-		opacity: 1;
-	}
+div {
+	position: absolute;
+	display: block;
+	width: 800px;
+	color: white;
+	font-weight: 800;
+	background-color: #5c5858;
+	border-radius: 10px;
+	opacity: 0.4;
+}
 </style>
