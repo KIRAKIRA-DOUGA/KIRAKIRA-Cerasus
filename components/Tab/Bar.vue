@@ -143,6 +143,7 @@
 
 	section {
 		position: relative;
+		display: inline-block;
 	}
 
 	.indicator {
