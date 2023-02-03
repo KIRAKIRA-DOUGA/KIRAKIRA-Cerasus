@@ -13,7 +13,7 @@
 <template>
 	<Transition name="banner">
 		<div v-if="!collapsed" class="banner opened" @click="getRoute">
-			hello, banner
+			<span class="title">KiRAKiRA☆DOUGA</span>
 			<div class="shadow"></div>
 		</div>
 	</Transition>
@@ -26,11 +26,8 @@
 		width: 100%;
 		overflow: hidden;
 
-		// please romove when deploy 下方CSS请在部署前移除
-		background-color: #0080001a; // TODO: 魔色待修改。
-
 		&.opened {
-			$banner-height: 140px;
+			$banner-height: 10rem;
 			height: $banner-height;
 
 			> .shadow {
@@ -56,6 +53,13 @@
 		&,
 		& * {
 			transition: all $ease-out-expo 600ms;
+		}
+
+		.title {
+			color: c(accent);
+			font-weight: 500;
+			font-size: 4rem;
+			font-family: $english-logo-fonts;
 		}
 	}
 </style>

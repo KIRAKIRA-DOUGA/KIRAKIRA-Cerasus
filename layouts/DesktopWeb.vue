@@ -23,6 +23,6 @@
 		top: 0;
 		left: 0;
 		height: 100vh;
-		transition: none;
+		transition: background $ease-out-max 250ms;
 	}
 </style>

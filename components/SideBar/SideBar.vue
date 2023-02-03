@@ -3,6 +3,7 @@
 
 	const logoTextForm = ref<LogoTextFormType>("hidden");
 	const showStripes = ref(false);
+	const ready = ref(false);
 
 	onMounted(() => {
 		function onResize() {
@@ -12,22 +13,24 @@
 		}
 		window.addEventListener("resize", onResize);
 		onResize();
+		ready.value = true;
+		setTimeout(() => (ready.value = false), 2000); // 定时移除开场动画。
 	});
 </script>
 
 <template>
-	<div class="sidebar">
+	<div class="sidebar" :class="{ ready }">
 		<div class="top icons">
-			<SideBarButton title="主页" icon="home" to="/" />
-			<SideBarButton title="搜索" icon="search" to="/search" />
-			<SideBarButton title="历史" icon="history" />
-			<SideBarButton title="收藏" icon="star" />
-			<SideBarButton title="关注" icon="feed" />
-			<SideBarButton title="投稿" icon="upload" />
+			<SideBarButton v-i="0" title="主页" icon="home" to="/" />
+			<SideBarButton v-i="1" title="搜索" icon="search" to="/search" />
+			<SideBarButton v-i="2" title="历史" icon="history" />
+			<SideBarButton v-i="3" title="收藏" icon="star" />
+			<SideBarButton v-i="4" title="关注" icon="feed" />
+			<SideBarButton v-i="5" title="投稿" icon="upload" />
 		</div>
 
 		<Transition name="stripes">
-			<div v-if="showStripes" class="center">
+			<div v-if="showStripes" v-i="6" class="center">
 				<div class="stripes">
 					<div v-for="i in 2" :key="`stripe-${i}`" class="stripe"></div>
 				</div>
@@ -36,9 +39,9 @@
 		</Transition>
 
 		<div class="bottom icons">
-			<SideBarButton title="我的" icon="person" />
-			<SideBarButton title="消息" icon="email" />
-			<SideBarButton title="设置" icon="settings" to="/settings" />
+			<SideBarButton v-i="7" title="我的" icon="person" />
+			<SideBarButton v-i="8" title="消息" icon="email" />
+			<SideBarButton v-i="9" title="设置" icon="settings" to="/settings" />
 		</div>
 	</div>
 </template>
@@ -57,9 +60,13 @@
 		overflow: hidden;
 		background-color: c(main-bg);
 
-		> div {
+		> * {
 			flex-grow: 0;
 			width: $sidebar-width;
+		}
+
+		&.ready [style*="--i"] {
+			animation: jump-in 300ms calc(var(--i) * 100ms) $ease-out-back both;
 		}
 
 		.icons {
@@ -78,13 +85,14 @@
 			rotate: -90deg;
 
 			.stripes {
+				display: flex; // 结论：池沼 block 布局会恶意在元素之间加空隙还找不出原因。
 				margin-right: 24px;
 				transform: skewX(30deg);
 
 				.stripe {
 					display: inline-block;
 					width: 8px;
-					height: $sidebar-width * 1.5;
+					height: $sidebar-width;
 					margin-right: 12px;
 					background-color: c(accent);
 				}
@@ -101,6 +109,12 @@
 					opacity: 0;
 				}
 			}
+		}
+	}
+
+	@keyframes jump-in {
+		from {
+			translate: -$sidebar-width;
 		}
 	}
 </style>

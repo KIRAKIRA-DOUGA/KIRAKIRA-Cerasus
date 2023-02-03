@@ -1,18 +1,37 @@
+/**
+ * 使用 `v-ripple`，为元素创建类 Material Design 的水波纹效果。
+ */
+
 import styles from "styles/ripple.module.scss";
 
+/**
+ * 点类。
+ */
 class Point {
 	x: number;
 	y: number;
+
 	constructor(x: number, y: number) {
 		this.x = x;
 		this.y = y;
 	}
 
+	/**
+	 * 求两点间距离。
+	 * @param point - 另一个点。
+	 * @returns 距离。
+	 */
 	distance(point: Point): number {
 		return Math.sqrt((point.x - this.x) ** 2 + (point.y - this.y) ** 2);
 	}
 }
 
+/**
+ * 获取点到矩形四个角的最大距离，即水波纹最大半径。
+ * @param rect - DOM 矩形边缘。
+ * @param e - 鼠标事件。
+ * @returns 水波纹最大半径。
+ */
 function getMaxRadius(rect: DOMRect, e: MouseEvent) {
 	const pointer = new Point(e.clientX, e.clientY);
 	const leftTop = new Point(rect.left, rect.top);
@@ -27,6 +46,7 @@ function getMaxRadius(rect: DOMRect, e: MouseEvent) {
 	);
 }
 
+// 水波纹效果。
 export default defineNuxtPlugin(nuxtApp => {
 	const rippleClass = styles.rippleButton;
 	const circleClass = styles.rippleCircle;
