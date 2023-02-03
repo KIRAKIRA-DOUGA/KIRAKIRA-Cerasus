@@ -14,7 +14,7 @@
 }
 // #endregion
 
-// #region 灰阶类
+// #region 中性色
 /// 控制球阴影 关闭
 @mixin control-ball-shadow-off {
 	box-shadow: 0 1px 6px c(icon-color, 50%);
@@ -65,7 +65,7 @@
 }
 
 @mixin card-shadow {
-	box-shadow: 0 5px 10px c(accent-card, 30%);
+	box-shadow: 0 5px 10px c(accent-shadow, 30%);
 }
 
 @mixin card-shadow-with-blur {
@@ -74,7 +74,7 @@
 }
 
 @mixin player-shadow {
-	box-shadow: 0 2px 8px c(accent-card, 20%);
+	box-shadow: 0 2px 8px c(accent-shadow, 20%);
 }
 
 /// 控制球阴影
@@ -87,20 +87,20 @@
 }
 
 @mixin system-card {
-	box-shadow: 0 8px 16px c(accent-card, 30%);
+	box-shadow: 0 8px 16px c(accent-shadow, 30%);
 	backdrop-filter: blur(32px);
 }
 
 @mixin dropdown-flyouts {
-	box-shadow: 0 8px 16px c(accent-card, 50%);
+	box-shadow: 0 8px 16px c(accent-shadow, 50%);
 	backdrop-filter: blur(8px);
 }
 
 @mixin chip-shadow {
-	box-shadow: 0 2px 4px c(accent-card, 30%);
+	box-shadow: 0 2px 4px c(accent-shadow, 30%);
 }
 
 @mixin card-in-card-shadow {
-	box-shadow: 0 2px 8px c(accent-card, 8%);
+	box-shadow: 0 2px 8px c(accent-shadow, 8%);
 }
 // #endregion
