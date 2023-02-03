@@ -66,7 +66,7 @@
 		}
 
 		&.ready [style*="--i"] {
-			animation: jump-in 300ms calc(var(--i) * 100ms) $ease-out-back both;
+			animation: jump-in 300ms calc(var(--i) * 50ms) $ease-out-back both;
 		}
 
 		.icons {
