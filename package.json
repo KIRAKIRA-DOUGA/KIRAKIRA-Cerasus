@@ -8,8 +8,7 @@
 		"preview": "nuxt preview",
 		"postinstall": "nuxt prepare",
 		"lint:css": "stylelint **/*.{html,vue,css,sass,scss}",
-		"typed-scss-modules": "typed-scss-modules assets/styles/*.module.scss --exportType default",
-		"update-eases": "npx tsx scripts/update-eases.ts"
+		"typed-scss-modules": "typed-scss-modules assets/styles/*.module.scss --exportType default"
 	},
 	"lint-staged": {
 		"*.{html,vue,css,sass,scss}": [
@@ -18,7 +17,7 @@
 		]
 	},
 	"devDependencies": {
-		"@nuxt/content": "^2.4.3",
+		"@nuxt/content": "^2.3.0",
 		"@nuxtjs/eslint-config": "^11.0.0",
 		"@nuxtjs/eslint-config-typescript": "^11.0.0",
 		"@nuxtjs/i18n": "^8.0.0-beta.7",
@@ -36,7 +35,6 @@
 		"stylelint-config-standard-scss": "^6.1.0",
 		"stylelint-order": "^5.0.0",
 		"stylelint-scss": "^4.3.0",
-		"tsx": "^3.12.2",
 		"typescript": "^4.9.4",
 		"typescript-plugin-css-modules": "^4.1.1",
 		"unified": "^10.1.2",
@@ -51,8 +49,10 @@
 		"@vueuse/components": "^9.12.0",
 		"@vueuse/head": "^1.0.0-rc.14",
 		"@vueuse/nuxt": "^9.12.0",
+		"copy-webpack-plugin": "^11.0.0",
 		"js-confetti": "^0.11.0",
 		"lottie-web": "^5.10.0",
+		"mediainfo.js": "^0.1.9",
 		"nuxt-icons": "^3.1.0"
 	}
 }
