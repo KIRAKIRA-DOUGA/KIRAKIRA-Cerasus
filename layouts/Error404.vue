@@ -39,12 +39,11 @@
 
 	.content {
 		@include flex-center;
+		@include square(100%);
 		position: relative;
 		z-index: 20;
 		flex-direction: column;
 		justify-content: flex-start;
-		width: 100%;
-		height: 100%;
 		padding-top: 5rem;
 
 		h1 {
