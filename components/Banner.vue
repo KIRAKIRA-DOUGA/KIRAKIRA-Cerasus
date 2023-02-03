@@ -21,9 +21,8 @@
 
 <style scoped lang="scss">
 	.banner {
+		@include flex-center;
 		position: relative;
-		display: flex;
-		align-items: center;
 		width: 100%;
 		overflow: hidden;
 
