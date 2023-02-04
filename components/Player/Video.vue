@@ -1,4 +1,4 @@
- <script setup lang="ts">
+<script setup lang="ts">
 	const props = defineProps<{
 		src: string;
 	}>();
@@ -14,7 +14,7 @@
 	const mediaInfos = ref();
 	const video = ref<HTMLVideoElement>();
 	const videoPlayer = ref<HTMLElement>();
-	const { isFullScreen: fullScreen, toggle } = useFullScreen(video);
+	const { isFullscreen: fullScreen, toggle } = useFullscreen(video);
 
 	/**
 	 * 获取视频详细信息，使用库mediainfo.js
