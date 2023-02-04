@@ -1,9 +1,11 @@
 <script setup lang="ts">
+	import mediainfo, { ReadChunkFunc } from "mediainfo.js";
+	import urlToBlob from "components/Player/transform"; // TODO: 稍后移动到 utils 文件夹。
+	
 	const props = defineProps<{
 		src: string;
 	}>();
-	import mediainfo, { ReadChunkFunc } from "mediainfo.js";
-	import urlToBlob from "components/Player/transform"; // TODO: 稍后移动到 utils 文件夹。
+	
 	const playing = ref(false);
 	const playbackRate = ref(1);
 	const preservesPitch = ref(false);
