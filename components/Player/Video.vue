@@ -1,26 +1,28 @@
-<script setup lang="ts">
-	import videoPath from "assets/videos/test.mp4";
+ <script setup lang="ts">
+	const props = defineProps<{
+		src: string;
+	}>();
 	import mediainfo, { ReadChunkFunc } from "mediainfo.js";
-	import urlToBlob from "components/Player/transform";
+	import urlToBlob from "components/Player/transform"; // TODO: 稍后移动到 utils 文件夹。
 	const playing = ref(false);
 	const playbackRate = ref(1);
 	const preservesPitch = ref(false);
 	const currentTime = ref(NaN);
 	const duration = ref(NaN);
 	const isTimeUpdating = ref(false);
-	const fullScreen = ref(false);
 	const mediaInfoDiv = ref(false);
 	const mediaInfos = ref();
 	const video = ref<HTMLVideoElement>();
 	const videoPlayer = ref<HTMLElement>();
+	const { isFullScreen: fullScreen, toggle } = useFullScreen(video);
 
 	/**
 	 * 获取视频详细信息，使用库mediainfo.js
-	*/
+	 */
 	function getInfo(videoPath: string) {
 		let file: File;
 		urlToBlob(videoPath, (result: Blob) => {
-			file = new File([result], "test.mp4", { type: "video/mp4" });
+			file = new File([result], "test.mp4", { type: "video/mp4" }); // TODO: 字面量文件地址？
 			const getSize = () => file.size;
 			const readChunk = (chunkSize: number, offset: number) =>
 				new Promise(resolve => {
@@ -63,12 +65,6 @@
 		video.value.preservesPitch = preservesPitch;
 	});
 
-	watch(fullScreen, fullScreen => {
-		if (!videoPlayer.value) return;
-		if (fullScreen) videoPlayer.value.requestFullscreen();
-		else if (document.fullscreenElement) document.exitFullscreen();
-	});
-
 	watch(playbackRate, playbackRate => {
 		if (!video.value) return;
 		video.value.playbackRate = playbackRate;
@@ -84,6 +80,7 @@
 		playbackRate.value = video.playbackRate;
 		currentTime.value = video.currentTime;
 		duration.value = video.duration;
+		video.preservesPitch = preservesPitch.value;
 	}
 
 	async function onTimeUpdate(e: Event) {
@@ -97,21 +94,21 @@
 
 <template>
 	<section ref="videoPlayer" class="video-player">
-		<div v-if="mediaInfoDiv">
+		<div v-if="mediaInfoDiv" class="media-info">
 			视频详细信息
 			<!-- eslint-disable-next-line vue/require-v-for-key -->
 			<p v-for="(mediaInfo, key) in mediaInfos">{{ key }}:{{ mediaInfo }},</p>
 		</div>
 		<video
 			ref="video"
-			:src="videoPath"
+			:src="src"
 			@play="() => (playing = true)"
 			@pause="() => (playing = false)"
 			@ratechange="e => (playbackRate = (e.target as HTMLVideoElement).playbackRate)"
 			@timeupdate="onTimeUpdate"
 			@canplay="onCanPlay"
 			@click="playing = !playing"
-			@dblclick="fullScreen = !fullScreen"
+			@dblclick="toggle"
 			@contextmenu.prevent="getInfo(videoPath)"
 		>
 		</video>
@@ -121,29 +118,32 @@
 			v-model:fullScreen="fullScreen"
 			v-model:playbackRate="playbackRate"
 			:duration="duration"
+			:toggleFullScreen="toggle"
 		/>
 	</section>
 </template>
 
 <style scoped lang="scss">
-section.video-player {
-	@include player-shadow;
-	display: flex;
-	flex-direction: column;
-}
+	section.video-player {
+		@include player-shadow;
+		display: flex;
+		flex-direction: column;
+	}
 
-video {
-	width: 100%;
-}
+	video {
+		width: 100%;
+	}
 
-div {
-	position: absolute;
-	display: block;
-	width: 800px;
-	color: white;
-	font-weight: 800;
-	background-color: #5c5858;
-	border-radius: 10px;
-	opacity: 0.4;
-}
+	.media-info {
+		position: absolute;
+		display: block;
+		width: 800px;
+		color: white;
+		font-weight: 800;
+		background-color: #5c5858;
+		border-radius: 10px;
+		opacity: 0.4;
+	}
 </style>
+
+
