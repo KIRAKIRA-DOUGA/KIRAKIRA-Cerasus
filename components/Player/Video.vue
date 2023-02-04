@@ -5,7 +5,7 @@
 	const props = defineProps<{
 		src: string;
 	}>();
-	
+
 	const playing = ref(false);
 	const playbackRate = ref(1);
 	const preservesPitch = ref(false);
