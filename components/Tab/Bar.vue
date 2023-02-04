@@ -59,7 +59,7 @@
 	 * @param prevId - 先前选项卡标识符。
 	 */
 	async function update(id?: string, prevId?: string) {
-		const LENGTH = 28; // 指定选项卡指示器的最大长度。
+		const LENGTH = 16; // 指定选项卡指示器的最大长度。
 		id ??= props.modelValue;
 		if (!indicator.value) return;
 		const indicatorStyle = indicator.value.style;
