@@ -106,7 +106,7 @@
 		@include flex-center;
 		@include control-ball-shadow;
 		position: absolute;
-		top: calc($thumb-size / -4);
+		top: calc($track-thickness / 2 - $thumb-size-half);
 		left: $value;
 		background-color: c(main-bg);
 		cursor: pointer;
