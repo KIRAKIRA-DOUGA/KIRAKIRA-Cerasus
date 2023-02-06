@@ -49,7 +49,7 @@
 
 			&,
 			& * {
-				transition: $fallback-transitions, all $ease-out-back $duration;
+				transition: $fallback-transitions, all $ease-out-back $duration, color 50ms;
 			}
 		}
 
