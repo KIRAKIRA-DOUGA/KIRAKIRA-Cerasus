@@ -6,7 +6,7 @@
 </script>
 
 <script setup lang="ts">
-	import TabItem from "./Item.vue";
+	import TabItem from "./TabItem.vue";
 
 	const props = defineProps<{
 		clipped?: boolean;

@@ -119,7 +119,7 @@
 			@contextmenu.prevent="getInfo(src)"
 		>
 		</video>
-		<PlayerController
+		<PlayerVideoController
 			v-model:currentTime="currentTime"
 			v-model:playing="playing"
 			v-model:fullScreen="fullScreen"

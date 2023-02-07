@@ -22,22 +22,6 @@ export default defineNuxtConfig({
 		"nuxt-simple-sitemap",
 		// "@nuxtjs/color-mode", // 这个已经重写了，不用开启。
 	],
-	build: {
-		plugins: [
-			new CopyPlugin({
-				patterns: [
-					{
-						from: wasmFile,
-						to: ".",
-					},
-					{
-						from: "CNAME",
-						to: ".",
-					},
-				],
-			}),
-		],
-	},
 	alias: {
 		styles: resolve(__dirname, "./assets/styles"),
 		components: resolve(__dirname, "./components"),
@@ -79,6 +63,19 @@ export default defineNuxtConfig({
 				localsConvention: "camelCaseOnly",
 			},
 		},
+	},
+	build: {
+		plugins: [
+			new CopyPlugin({
+				patterns: [{
+					from: wasmFile,
+					to: ".",
+				}, {
+					from: "CNAME",
+					to: ".",
+				}],
+			}),
+		],
 	},
 	i18n: {
 		locales: [

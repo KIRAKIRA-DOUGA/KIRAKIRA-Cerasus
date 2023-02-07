@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	import { LocaleObject } from "@nuxtjs/i18n/dist/runtime/composables";
 	import animationData from "lotties/spinner-dev1.json";
-	import { LogoTextFormType } from "components/Logo/Text.vue";
+	import { LogoTextFormType } from "components/Logo/LogoText.vue";
 
 	const page = ref(1);
 	const pages = ref(99);
