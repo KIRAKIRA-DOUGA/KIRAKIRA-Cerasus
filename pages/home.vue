@@ -63,6 +63,10 @@
 			<RadioButton v-model="palette" value="purple">{{ t.purple }}</RadioButton>
 			<RadioButton v-model="palette" value="green">{{ t.green }}</RadioButton>
 			<hr />
+			<TextBox placeholder="正常的" />
+			<TextBox small placeholder="小小的" />
+			<TextBox big placeholder="大大的" />
+			<hr />
 			<NuxtLink v-for="locale in availableLocales" :key="locale.code" :to="switchLocalePath(locale.code)">
 				{{ locale.name }}
 			</NuxtLink>
