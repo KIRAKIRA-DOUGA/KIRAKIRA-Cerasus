@@ -53,7 +53,7 @@
 /// @param {Number} $max - 原标度值（大）。
 /// @param {Number} $a - 新标度值（小）。
 /// @param {Number} $b - 新标度值（大）。
-/// @param {Number} $css-calc - 如是，则返回为基于 CSS 运行时的计算表达式。
+/// @param {Number} $css-calc [false] - 如是，则返回为基于 CSS 运行时的计算表达式。
 /// @return {Number} 转换后的新标度数值。
 @function map($x, $min, $max, $a, $b, $css-calc: false) {
 	@if not $css-calc {

@@ -3,11 +3,15 @@
 		/** 禁用。 */
 		disabled?: boolean;
 		/** 值。 */
-		value: T;
+		value?: T;
 		/** 当前绑定值。 */
-		modelValue: T;
+		modelValue?: T;
+		/** 打开，兼容使用。 */
+		on?: boolean;
 	}>(), {
 		disabled: false,
+		value: undefined,
+		modelValue: undefined,
 	});
 
 	type Movement = "previous" | "next";
@@ -18,7 +22,11 @@
 	}>();
 
 	const radio = ref<HTMLInputElement>();
-	const isChecked = computed(() => props.modelValue === props.value);
+	const isChecked = computed(() => {
+		if (props.modelValue && props.value)
+			return props.modelValue === props.value;
+		else return !!props.on;
+	});
 	/**
 	 * 数据改变事件。
 	 */
@@ -35,6 +43,7 @@
 
 	/**
 	 * 键盘按下方向键时移动到前一个或后一个单选框事件。
+	 * @param e - 键盘事件。
 	 */
 	function onKeydown(e: KeyboardEvent) {
 		const movePrev = e.key === "ArrowUp" || e.key === "ArrowLeft";
@@ -46,8 +55,8 @@
 </script>
 
 <template>
-	<section :tabindex="isChecked ? 0 : -1" @click="onChange" @keydown="onKeydown">
-		<input ref="radio" type="radio" :checked="isChecked" :value="props.value" />
+	<section :tabindex="isChecked ? 0 : -1" :class="{ disabled }" @click="onChange" @keydown="onKeydown">
+		<input ref="radio" type="radio" :checked="isChecked" :value="props.value" :disabled="disabled" />
 		<div class="radio-focus">
 			<div class="radio-shadow">
 				<div class="radio"></div>
@@ -176,6 +185,11 @@
 				animation: none !important;
 			}
 		}
+	}
+
+	.disabled {
+		filter: grayscale(1);
+		pointer-events: none;
 	}
 
 	// TODO: 接下来请你编写 disabled 样式和 unchecked 的 hover、pressed、disabled 样式。

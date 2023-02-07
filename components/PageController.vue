@@ -226,7 +226,11 @@
 	}
 
 	const styles = useCssModule("unselectedItem");
-	/** 未选中项目组件。 */
+	/**
+	 * @param props - 属性。
+	 * @param props.page - 显示的页码值。
+	 * @returns 未选中项目组件。
+	 */
 	const UnselectedItem = (props: { page: number }) => (
 		<div class={styles.unselectedItem}>
 			<div class={[styles.background, styles.hover]}></div>

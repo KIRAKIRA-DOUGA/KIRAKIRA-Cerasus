@@ -75,7 +75,11 @@ module.exports = {
 		"quote-props": ["error", "as-needed"],
 		"semi-spacing": "error",
 		"semi-style": ["error", "last"],
-		"space-before-function-paren": ["error", { "anonymous": "always", "named": "never", "asyncArrow": "always" }],
+		"space-before-function-paren": ["error", {
+			"anonymous": "always",
+			"named": "never",
+			"asyncArrow": "always",
+		}],
 		"space-infix-ops": "error",
 		"space-in-parens": ["error", "never"],
 		"space-unary-ops": "error",
@@ -103,13 +107,22 @@ module.exports = {
 		"one-var": "off",
 		"arrow-parens": ["error", "as-needed"],
 		"camelcase": "off",
-		"spaced-comment": ["error", "always", { "exceptions": ["+", "-", "*", "/"], "markers": ["/", "!", "@", "#", "#region", "#endregion"] }],
+		"spaced-comment": ["error", "always", {
+			"exceptions": ["+", "-", "*", "/"],
+			"markers": ["/", "!", "@", "#", "#region", "#endregion"],
+		}],
 		"radix": "error", // parseInt 必须要指明是十进制。
 		"no-self-assign": "off",
 		"no-debugger": "warn",
 		"no-use-before-define": "off",
 		"accessor-pairs": "off",
 		"no-empty-function": "off",
+		"require-jsdoc": "error",
+		"valid-jsdoc": ["error", {
+			"requireReturn": false,
+			"requireParamType": false, // TypeScript 不需要 JSDoc 的 type。
+			"requireReturnType": false,
+		}],
 		"import/order": "off", // 与 VSCode 内置导入排序特性打架。
 		"import/first": "off", // 与 Vue 特性冲突。
 		"n/no-callback-literal": "off", // 这是啥？

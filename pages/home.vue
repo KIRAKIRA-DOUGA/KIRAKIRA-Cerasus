@@ -20,6 +20,9 @@
 	const selectedTab = ref("all");
 	const logoTextForm = ref<LogoTextFormType>("full");
 
+	/**
+	 * 单击按钮事件。
+	 */
 	async function onClickButton() {
 		clearTimeout(timeoutId.value);
 		isClicked.value = true;
@@ -62,6 +65,8 @@
 			<RadioButton v-model="palette" value="orange">{{ t.orange }}</RadioButton>
 			<RadioButton v-model="palette" value="purple">{{ t.purple }}</RadioButton>
 			<RadioButton v-model="palette" value="green">{{ t.green }}</RadioButton>
+			<RadioButton disabled>{{ t.custom }}</RadioButton>
+			<RadioButton on disabled>{{ t.onDisabled }}</RadioButton>
 			<hr />
 			<NuxtLink v-for="locale in availableLocales" :key="locale.code" :to="switchLocalePath(locale.code)">
 				{{ locale.name }}
@@ -115,6 +120,7 @@
 		green: "千夜绿",
 		orange: "心爱橙",
 		purple: "理世紫",
+		custom: "自定义",
 		tag: "标签",
 		all: "全部",
 		video: "视频",
@@ -147,6 +153,7 @@
 		green: "Chiya Green",
 		orange: "Cocoa Orange",
 		purple: "Rize Purple",
+		custom: "Custom",
 		tag: "Tag",
 		all: "All",
 		video: "Videos",
@@ -179,6 +186,7 @@
 		green: "千夜 緑",
 		orange: "ココア オレンジ",
 		purple: "リゼ 紫",
+		custom: "カスタム",
 		tag: "タグ",
 		all: "すべて",
 		video: "動画",

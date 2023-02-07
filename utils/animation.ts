@@ -15,13 +15,9 @@ export function removeExistAnimations(...elements: Element[]) {
 	return hasExistAnimations;
 }
 
-export function ignoreAbort(animation: Animation) {
-	animation.ready.catch(() => { });
-	return animation;
-}
-
 /**
  * 等待下一时刻 CSS 动画更新刷新。
+ * @returns 空承诺。
  */
 export function nextAnimationTick() {
 	return new Promise<void>(resolve => {

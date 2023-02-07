@@ -1,6 +1,5 @@
 <script setup lang="ts">
 	import mediainfo, { ReadChunkFunc } from "mediainfo.js";
-	import urlToBlob from "components/Player/transform"; // TODO: 稍后移动到 utils 文件夹。
 
 	const props = defineProps<{
 		src: string;
@@ -19,11 +18,12 @@
 	const { isFullscreen: fullScreen, toggle } = useFullscreen(video);
 
 	/**
-	 * 获取视频详细信息，使用库mediainfo.js
+	 * 获取视频详细信息，使用库 `mediainfo.js`。
+	 * @param videoPath - 视频地址。
 	 */
 	function getInfo(videoPath: string) {
 		let file: File;
-		urlToBlob(videoPath, (result: Blob) => {
+		urlToBlob(videoPath, result => {
 			file = new File([result], "test.mp4", { type: "video/mp4" }); // TODO: 字面量文件地址？
 			const getSize = () => file.size;
 			const readChunk = (chunkSize: number, offset: number) =>
@@ -35,19 +35,17 @@
 					reader.readAsArrayBuffer(file.slice(offset, offset + chunkSize));
 				});
 			mediainfo().then(mediainfo => {
-				mediainfo
-					.analyzeData(getSize, (readChunk as ReadChunkFunc))
-					.then(result => {
-						// 虽然这是result类型，但它的确是一个对象数组
-						mediaInfos.value = {
-							// @ts-ignore
-							...result.media.track[0],
-							// @ts-ignore
-							...result.media.track[1],
-							// @ts-ignore
-							...result.media.track[2],
-						};
-					});
+				mediainfo.analyzeData(getSize, (readChunk as ReadChunkFunc)).then(result => {
+					// 虽然这是 result 类型，但它的确是一个对象数组
+					mediaInfos.value = {
+						// @ts-ignore
+						...result.media.track[0],
+						// @ts-ignore
+						...result.media.track[1],
+						// @ts-ignore
+						...result.media.track[2],
+					};
+				});
 			});
 		});
 		mediaInfoDiv.value = !mediaInfoDiv.value;
@@ -76,6 +74,10 @@
 		if (video.value) onCanPlay({ target: video.value });
 	});
 
+	/**
+	 * 当视频已经准备好可以播放时执行的事件。
+	 * @param e - 普通事件。
+	 */
 	function onCanPlay(e: Event | { target: EventTarget }) {
 		const video = e.target as HTMLVideoElement;
 		playing.value = !video.paused;
@@ -85,6 +87,10 @@
 		video.preservesPitch = preservesPitch.value;
 	}
 
+	/**
+	 * 视频时间码变化事件。
+	 * @param e - 普通事件。
+	 */
 	async function onTimeUpdate(e: Event) {
 		const video = e.target as HTMLVideoElement;
 		isTimeUpdating.value = true;
@@ -98,8 +104,7 @@
 	<section ref="videoPlayer" class="video-player">
 		<div v-if="mediaInfoDiv" class="media-info">
 			视频详细信息
-			<!-- eslint-disable-next-line vue/require-v-for-key -->
-			<p v-for="(mediaInfo, key) in mediaInfos">{{ key }}:{{ mediaInfo }},</p>
+			<p v-for="(mediaInfo, key) in mediaInfos" :key="`media-info-${key}`">{{ key }}:{{ mediaInfo }},</p>
 		</div>
 		<video
 			ref="video"
@@ -111,7 +116,7 @@
 			@canplay="onCanPlay"
 			@click="playing = !playing"
 			@dblclick="toggle"
-			@contextmenu.prevent="getInfo(videoPath)"
+			@contextmenu.prevent="getInfo(src)"
 		>
 		</video>
 		<PlayerController

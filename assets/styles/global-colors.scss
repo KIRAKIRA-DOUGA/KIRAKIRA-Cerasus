@@ -4,6 +4,7 @@
 
 /// 给定一个颜色值，可以是单个浅色主题颜色（深色主题颜色自动反转颜色获得），也可以是由浅色主题颜色和深色主题颜色组成的列表。
 /// 根据当前的主题返回所需的颜色值。
+/// @access private
 /// @param {Color | List} $color - 颜色值。
 /// @param {Bool} $is-light - 当前是否是浅色主题？
 /// @return {Color} 返回所需的主题颜色。
@@ -22,6 +23,7 @@
 }
 
 /// 生成十六进制表示的本色，和 RGB 三色的列表。
+/// @access private
 /// @param {String} $name - 颜色名称（Sass 映射键名）。
 /// @param {Color} $color - 浅色主题的颜色，或是由浅色主题颜色和深色主题颜色组成的列表。
 /// @param {Bool} $is-light - 当前是否是浅色主题？
@@ -35,6 +37,7 @@
 }
 
 /// 根据指定的键名确定是否生成波浪下划线链接背景。
+/// @access private
 /// @param {String} $key - 当前颜色键名。
 /// @param {String} $color - 当前颜色值。
 /// @param {Bool} $is-light - 当前是否是浅色主题？

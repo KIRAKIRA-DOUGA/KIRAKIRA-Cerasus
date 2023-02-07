@@ -6,6 +6,9 @@
 	const ready = ref(false);
 
 	onMounted(() => {
+		/**
+		 * 窗口大小改变时的回调函数。
+		 */
 		function onResize() {
 			const height = window.innerHeight;
 			logoTextForm.value = height < 678 ? "hidden" : height < 765 ? "half" : "full";

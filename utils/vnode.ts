@@ -7,6 +7,10 @@ export type VueJsx<Props, Emits, Slots = { default: VNode }> = (props: Props, co
 	expose: Function;
 }) => JSX.Element;
 
+/**
+ * 获取父组件。
+ * @returns 父组件或 null（如果没有）。
+ */
 export function getParent<T extends ComponentInternalInstance>() {
 	return getCurrentInstance()?.parent as T | null || null;
 }
