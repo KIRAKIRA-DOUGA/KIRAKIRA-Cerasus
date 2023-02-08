@@ -94,6 +94,17 @@
 			<RadioButton v-model="logoTextForm" value="full">{{ t.logoShow }}</RadioButton>
 			<LogoText :form="logoTextForm" />
 			<LogoCover />
+			<hr />
+			<details>
+				<summary>点击此处辣眼睛</summary>
+				<section class="marquee-section">
+					<marquee>KiRAKiRA☆DOUGA</marquee>
+					<marquee direction="up">让你的前端设计师气到脑中风</marquee>
+					<marquee direction="down" width="250" height="200" behavior="alternate" class="marquee">
+						<marquee behavior="alternate">DVD</marquee>
+					</marquee>
+				</section>
+			</details>
 		</div>
 	</div>
 </template>
@@ -221,5 +232,20 @@
 	hr {
 		border: none;
 		border-top: c(divider, 10%) 1px solid;
+	}
+
+	.marquee {
+		font-size: 3rem;
+		font-style: italic;
+		border: solid red;
+	}
+
+	.marquee-section {
+		color: red;
+		font-weight: 900;
+
+		> :not(.marquee) {
+			font-family: "Comic Sans MS", "华文彩云", fantasy;
+		}
 	}
 </style>
