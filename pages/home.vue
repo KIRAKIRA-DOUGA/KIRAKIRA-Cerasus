@@ -72,8 +72,8 @@
 			<RadioButton on disabled>{{ t.onDisabled }}</RadioButton>
 			<hr />
 			<TextBox placeholder="正常的" />
-			<TextBox small placeholder="小小的软软的香香的" />
-			<TextBox big icon="email" error placeholder="邮箱" />
+			<TextBox size="small" placeholder="小小的软软的香香的" />
+			<TextBox size="large" icon="lock" type="password" placeholder="密码" />
 			<hr />
 			<NuxtLink v-for="locale in availableLocales" :key="locale.code" :to="switchLocalePath(locale.code)">
 				{{ locale.name }}

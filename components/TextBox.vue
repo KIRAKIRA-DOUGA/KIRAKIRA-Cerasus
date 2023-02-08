@@ -1,22 +1,34 @@
 <script setup lang="ts">
-	const props = defineProps<{
-		small?: boolean;
-		big?: boolean;
-		error?: boolean;
+	const props = withDefaults(defineProps<{
+		illegal?: boolean;
+		password?: boolean;
+		showPassword?: boolean;
 		placeholder: string;
 		icon?: string;
-	}>();
+		id?: string;
+		size?: "small" | "normal" | "large";
+		type?: string;
+	}>(), {
+		icon: undefined,
+		size: "normal",
+		type: "text",
+	});
 </script>
 
 <template>
-	<div class="textbox" :class="{ small, big, error, 'icon-enabled': icon }">
+	<div class="textbox" :class="{ small: size === 'small', large: size === 'large', illegal, 'icon-enabled': icon }">
 		<div class="wrapper">
-			<NuxtIcon v-if="icon" :name="icon" class="front-icon" :tabindex="-1" />
-			<input required type="text" :placeholder="placeholder" />
-			<label v-if="big">{{ placeholder }}</label>
-			<NuxtIcon v-if="error" name="error" class="error-icon" :tabindex="-1" />
+			<NuxtIcon v-if="icon" :name="icon" class="before-icon" />
+			<input required :type="type" :id="id" :placeholder="placeholder" />
+			<label v-if="size === 'large'">{{ placeholder }}</label>
+			<div v-ripple v-if="type === 'password'" class="after-icon-wrapper">
+				<NuxtIcon name="visibility_off" class="after-icon" />
+			</div>
+			<div v-if="illegal" class="after-icon-wrapper">
+				<NuxtIcon name="error" class="after-icon illegal-icon" />
+			</div>
 		</div>
-		<div v-if="big" class="big-stripe"></div>
+		<div v-if="size === 'large'" class="large-stripe"></div>
 		<div class="focus-stripe"></div>
 	</div>
 </template>
@@ -25,32 +37,32 @@
 	$focus-stripe-height: 2px;
 	$default-height: 36px;
 	$small-height: 28px;
-	$big-height: 44px;
+	$large-height: 44px;
 	$front-indent: 12px;
 
 	.textbox {
 		@include radius-small;
+		@include control-inner-shadow;
 		height: $default-height;
 		overflow: hidden;
 		background-color: c(inner-color);
 		border: 0;
-		box-shadow: inset 0 4px 4px c(black, 4%);
 
 		&.small {
 			height: $small-height;
 		}
 
-		&.big {
-			height: $big-height;
+		&.large {
+			height: $large-height;
 		}
 
-		&.error {
+		&.illegal {
 			.focus-stripe {
 				background-color: c(red) !important;
-				transform: scaleX(1);
+				scale: 1;
 			}
 
-			.front-icon,
+			.before-icon,
 			label {
 				color: c(red) !important;
 			}
@@ -59,27 +71,26 @@
 		&:focus-within {
 			.focus-stripe {
 				background-color: c(accent);
-				transform: scaleX(1);
+				scale: 1;
 			}
 
 			label {
 				color: c(accent);
-				transform: scale(0.7) translateY(calc($big-height / -2 + 9px));
-
-				// TODO: 判断input内容是否为空以控制label浮动
+				scale: 0.7;
 			}
 
-			.front-icon {
+			.before-icon {
 				color: c(accent);
 			}
 		}
 	}
 
-	.big-stripe {
+	.large-stripe {
 		width: 100%;
 		height: $focus-stripe-height;
 		margin-top: -$focus-stripe-height;
 		background-color: c(icon-color-400);
+		pointer-events: none;
 	}
 
 	.focus-stripe {
@@ -87,7 +98,8 @@
 		height: $focus-stripe-height;
 		margin-top: -$focus-stripe-height;
 		background-color: c(accent);
-		transform: scaleX(0);
+		scale: 0 1;
+		pointer-events: none;
 	}
 
 	.wrapper {
@@ -100,14 +112,14 @@
 		position: absolute;
 		display: block;
 		width: 100%;
-		margin-top: -3px;
 		margin-left: $front-indent;
 		color: c(icon-color);
-		transform: scale(1) translateY(0);
+		scale: 1;
+		translate: 0;
 		transform-origin: left;
 		pointer-events: none;
 
-		.front-icon ~ & {
+		.before-icon ~ & {
 			margin-left: calc($front-indent + 24px + 16px);
 		}
 	}
@@ -125,24 +137,32 @@
 		border-radius: 4px 0 0 4px;
 		appearance: none;
 
-		::placeholder {
+		&::placeholder {
 			color: c(icon-color);
 		}
 
-		&:valid ~ label {
-			transform: scale(0.7) translateY(calc($big-height / -2 + 9px));
+		&::-ms-reveal,
+		&::-ms-clear {
+			display: none;
 		}
 
-		.front-icon ~ & {
-			text-indent: calc($front-indent + 24px + 4px);
+		&:valid ~ label,
+		&:focus-visible ~ label {
+			translate: 0 calc($large-height / -2 + 12px);
+			scale: 0.7;
+		}
 
-			.big & {
-				text-indent: calc($front-indent + 24px + 16px);
+		.before-icon ~ & {
+			padding-left: calc($front-indent + 24px + 4px);
+			text-indent: 0;
+
+			.large & {
+				padding-left: calc($front-indent + 24px + 16px);
 			}
 		}
 
-		.big & {
-			padding-top: calc($big-height / 2 - 11px);
+		.large & {
+			padding-top: calc($large-height / 2 - 11px);
 
 			&::placeholder {
 				color: transparent;
@@ -150,23 +170,46 @@
 		}
 	}
 
-	.front-icon {
+	.before-icon {
 		position: absolute;
 		margin-left: 8px;
 		color: c(icon-color);
 		font-size: 24px;
 		pointer-events: none;
 
-		.big & {
+		.large & {
 			margin-left: 12px;
 			text-indent: calc($front-indent + 24px + 16px);
 		}
 	}
 
-	.error-icon {
-		margin: 0 12px;
-		color: c(red);
+	.after-icon {
+		color: c(icon-color);
 		font-size: 24px;
-		pointer-events: none;
+	}
+
+	.illegal-icon {
+		color: c(red);
+	}
+
+	.after-icon-wrapper {
+		@include flex-center;
+		@include square($default-height);
+		@include circle;
+		min-width: $default-height;
+
+		.large & {
+			@include square($large-height);
+			min-width: $large-height;
+		}
+
+		.small & {
+			@include square($small-height);
+			min-width: $small-height;
+		}
+
+		&:nth-last-child {
+			margin-right: 4px;
+		}
 	}
 </style>
