@@ -9,10 +9,10 @@
 </script>
 
 <template>
-	<div class="textbox" :class="{ small, big, error }">
+	<div class="textbox" :class="{ small, big, error, 'icon-enabled': icon }">
 		<div class="wrapper">
 			<NuxtIcon v-if="icon" :name="icon" class="front-icon" :tabindex="-1" />
-			<input type="text" :placeholder="placeholder" />
+			<input required type="text" :placeholder="placeholder" />
 			<label v-if="big">{{ placeholder }}</label>
 			<NuxtIcon v-if="error" name="error" class="error-icon" :tabindex="-1" />
 		</div>
@@ -127,6 +127,10 @@
 
 		::placeholder {
 			color: c(icon-color);
+		}
+
+		&:valid ~ label {
+			transform: scale(0.7) translateY(calc($big-height / -2 + 9px));
 		}
 
 		.front-icon ~ & {
