@@ -122,12 +122,12 @@
 </script>
 
 <template>
-	<Comp ref="tabBar" class="tab-bar">
+	<kira-component ref="tabBar" class="tab-bar">
 		<div class="items" :class="{ vertical }">
 			<slot></slot>
 		</div>
 		<div ref="indicator" class="indicator"></div>
-	</Comp>
+	</kira-component>
 </template>
 
 <style scoped lang="scss">

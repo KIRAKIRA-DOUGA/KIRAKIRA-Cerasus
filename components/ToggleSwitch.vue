@@ -56,13 +56,13 @@
 </script>
 
 <template>
-	<Comp class="toggle-switch" :class="{ on: isOn, disabled }" :tabindex="disabled ? -1 : 0" @click="onClick">
+	<kira-component class="toggle-switch" :class="{ on: isOn, disabled }" :tabindex="disabled ? -1 : 0" @click="onClick">
 		<slot></slot>
 		<div class="switch">
 			<div class="base"></div>
 			<div class="thumb" @pointerdown="onThumbDown"></div>
 		</div>
-	</Comp>
+	</kira-component>
 </template>
 
 <style scoped lang="scss">

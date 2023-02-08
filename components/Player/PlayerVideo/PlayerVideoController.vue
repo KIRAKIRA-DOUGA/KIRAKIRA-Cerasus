@@ -71,7 +71,7 @@
 </script>
 
 <template>
-	<Comp class="player-video-controller">
+	<kira-component class="player-video-controller">
 		<PlayerButton :icon="playing ? 'pause' : 'play'" @click="emits('update:playing', !playing)" />
 		<div class="slidebar">
 			<SlideBar v-model="currentPercent" :min="0" :max="1" />
@@ -79,7 +79,7 @@
 		<span>{{ convertTime(currentTime) }} / {{ convertTime(duration) }}</span>
 		<PlayerButton :text="playbackRateText" @click="switchSpeed" />
 		<PlayerButton icon="full_screen" @click="() => toggleFullScreen?.()" />
-	</Comp>
+	</kira-component>
 </template>
 
 <style scoped lang="scss">

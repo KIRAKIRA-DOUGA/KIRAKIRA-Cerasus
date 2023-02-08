@@ -59,11 +59,11 @@
 </script>
 
 <template>
-	<Comp class="slide-bar" tabindex="0" :style="{ '--value': value }">
+	<kira-component class="slide-bar" tabindex="0" :style="{ '--value': value }">
 		<div class="track" @pointerdown="onTrackDown"></div>
 		<div class="passed"></div>
 		<div class="thumb" @pointerdown="onThumbDown"></div>
-	</Comp>
+	</kira-component>
 </template>
 
 <style scoped lang="scss">

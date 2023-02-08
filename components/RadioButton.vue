@@ -55,7 +55,7 @@
 </script>
 
 <template>
-	<Comp :tabindex="isChecked ? 0 : -1" class="radio-button" :class="{ disabled }" @click="onChange" @keydown="onKeydown">
+	<kira-component :tabindex="isChecked ? 0 : -1" class="radio-button" :class="{ disabled }" @click="onChange" @keydown="onKeydown">
 		<input ref="radio" type="radio" :checked="isChecked" :value="props.value" :disabled="disabled" />
 		<div class="radio-focus">
 			<div class="radio-shadow">
@@ -63,7 +63,7 @@
 			</div>
 		</div>
 		<slot></slot>
-	</Comp>
+	</kira-component>
 </template>
 
 <style scoped lang="scss">

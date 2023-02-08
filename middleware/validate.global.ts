@@ -5,7 +5,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
 	const routePath = getRoutePath({ route: to });
 	const routeNumber = +routePath;
-	console.log(routeNumber);
 	if (routePath === "") // 论空字符串被转换成 0 ……
 		return;
 	if (routeNumber === 404)

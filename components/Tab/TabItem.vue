@@ -6,7 +6,7 @@
 	}>();
 
 	const dom = ref<HTMLDivElement>();
-	const parent = getParent()!.parent!;
+	const parent = getParent()!;
 	const active = computed(() => parent.props.modelValue === props.id);
 
 	/**

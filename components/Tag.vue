@@ -16,7 +16,7 @@
 </script>
 
 <template>
-	<Comp v-ripple class="tag" :class="{ checked: isChecked }" @click="emits('update:modelValue', !modelValue)">
+	<kira-component v-ripple class="tag" :class="{ checked: isChecked }" @click="emits('update:modelValue', !modelValue)">
 		<div class="circle"></div>
 		<div class="content">
 			<Transition name="check">
@@ -26,7 +26,7 @@
 			</Transition>
 			<slot></slot>
 		</div>
-	</Comp>
+	</kira-component>
 </template>
 
 <style scoped lang="scss">

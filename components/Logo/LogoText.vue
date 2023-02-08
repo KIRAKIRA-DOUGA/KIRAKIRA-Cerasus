@@ -9,7 +9,7 @@
 </script>
 
 <template>
-	<Comp class="logo-text" :class="{ hidden: form === 'hidden', expand: form === 'full' }">
+	<kira-component class="logo-text" :class="{ hidden: form === 'hidden', expand: form === 'full' }">
 		<div class="hidden-wrapper">
 			<svg width="129" height="18" viewBox="0 0 129 18" xmlns="http://www.w3.org/2000/svg">
 				<path d="M5.27406 10.2215L2.84599 12.7774L2.84599 16.7938H0L0 1.09039L2.84427 1.09039L2.84427 9.14552L10.4114 1.09039L13.6059 1.09039L7.17645 8.11247L14.0012 16.7938H10.6762L5.27406 10.2215Z" />
@@ -34,7 +34,7 @@
 				</svg>
 			</div>
 		</div>
-	</Comp>
+	</kira-component>
 </template>
 
 <style scoped lang="scss">
