@@ -16,6 +16,11 @@
 		if (open) dialog.value.showModal();
 		else dialog.value.close();
 	}, { immediate: true });
+
+	onMounted(() => {
+		if (!dialog.value) return;
+		dialog.value.addEventListener("close", () => emits("update:modelValue", false));
+	});
 </script>
 
 <template>
