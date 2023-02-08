@@ -72,8 +72,9 @@
 	$dot-size: 10px;
 	$border-size: 2px;
 	$duration-half: 200ms;
+	$component-class: ".radio-button";
 
-	.radio-button {
+	#{$component-class} {
 		display: flex;
 		gap: 0.5rem;
 		align-items: center;
@@ -99,7 +100,7 @@
 		animation: outer-border-change-back $duration-half $duration-half $ease-in-max reverse;
 		appearance: none;
 
-		section:is(:hover, :active) & {
+		#{$component-class}:is(:hover, :active) & {
 			background-color: c(gray, 50%);
 		}
 
@@ -126,11 +127,11 @@
 			@include button-shadow;
 			@include short-transition;
 
-			section:hover & {
+			#{$component-class}:hover & {
 				@include button-shadow-hover;
 			}
 
-			section:active & {
+			#{$component-class}:active & {
 				box-shadow: none !important;
 			}
 		}
@@ -147,11 +148,11 @@
 					inner-resize $duration-half $duration-half $ease-out-max,
 					cut-in $duration-half step-start;
 
-				section:hover & {
+				#{$component-class}:hover & {
 					scale: 0.6;
 				}
 
-				section:active & {
+				#{$component-class}:active & {
 					scale: 0.4;
 				}
 			}
@@ -163,11 +164,11 @@
 		@include circle;
 		animation: pressing-back $duration-half $ease-in alternate 2;
 
-		section:focus & {
+		#{$component-class}:focus & {
 			@include large-shadow-unchecked-focus;
 		}
 
-		section:focus input:checked + & {
+		#{$component-class}:focus input:checked + & {
 			@include large-shadow-focus;
 		}
 	}

@@ -2,7 +2,7 @@
  * 使用 `v-ripple`，为元素创建类 Material Design 的水波纹效果。
  */
 
-import styles from "styles/ripple.module.scss";
+import styles from "styles/elements/ripple.module.scss";
 
 /**
  * 点类。

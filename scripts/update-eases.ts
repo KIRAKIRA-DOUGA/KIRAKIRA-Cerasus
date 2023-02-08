@@ -5,7 +5,7 @@ import { kebabToCamelCase } from "../utils/string";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const stylesPath = resolve(__dirname, "../assets/styles");
+const stylesPath = resolve(__dirname, "../assets/styles/theme");
 
 const scss = await fs.promises.readFile(resolve(stylesPath, "_eases.scss"), "utf-8");
 const variables = scss.match(/(?<=\$).*(?=:)/g);

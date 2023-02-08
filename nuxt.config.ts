@@ -55,7 +55,7 @@ export default defineNuxtConfig({
 						"sass:string",
 					],
 					import: [
-						"styles/_theme.scss",
+						"styles/theme/_theme.scss",
 					],
 				},
 			}),
