@@ -39,3 +39,34 @@ export async function replayAnimation(element: Element, ...className: string[]) 
 	await nextAnimationTick();
 	element.classList.add(...className);
 }
+
+/**
+ * 当高度值设为 auto 时的动画高度。
+ * @param element - HTML DOM 元素。
+ * @param changeFunc - 使高度将会改变的回调函数。
+ * @param startHeight - 指定初始高度（可选）。
+ * @param duration - 动画时间。
+ * @returns 动画异步承诺。
+ */
+export function animateHeight(
+	element: Element,
+	changeFunc: (() => void) | undefined | null,
+	{
+		startHeight,
+		duration = 250,
+	}: {
+		startHeight?: number;
+		duration?: number;
+	},
+) {
+	startHeight ??= element.clientHeight;
+	changeFunc?.();
+	const endHeight = element.clientHeight;
+	return element.animate([
+		{ height: startHeight },
+		{ height: endHeight + "px" },
+	], {
+		duration,
+		easing: eases.easeOutMax,
+	}).finished;
+}

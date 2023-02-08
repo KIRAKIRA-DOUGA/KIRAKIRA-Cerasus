@@ -3,6 +3,7 @@
 		modelValue?: boolean;
 		shown?: boolean;
 		zIndex?: number;
+		static?: boolean;
 	}>(), {
 		zIndex: 50,
 	});
@@ -25,28 +26,34 @@
 </script>
 
 <template>
-	<ClientOnly>
-		<Teleport to="body">
-			<Transition>
-				<div v-if="shown" ref="mask" class="mask" :style="{ zIndex }" @click="close">
-					<slot></slot>
-				</div>
-			</Transition>
-		</Teleport>
-	</ClientOnly>
+	<ClientOnlyTeleport to="body">
+		<Transition name="mask">
+			<div
+				v-if="shown"
+				ref="mask"
+				class="mask"
+				:class="{ static }"
+				:style="{ zIndex }"
+				@click="close"
+			>
+				<slot></slot>
+			</div>
+		</Transition>
+	</ClientOnlyTeleport>
 </template>
 
 <style scoped lang="scss">
 	.mask {
-		@include full-screen;
-		position: fixed;
-		top: 0;
-		left: 0;
-		background-color: c(white, 40%);
+		@include full-screen(fixed);
 
-		&.v-enter-from,
-		&.v-leave-to {
-			opacity: 0;
+		&:not(.static) {
+			background-color: c(white, 40%);
+			backdrop-filter: grayscale(0.4);
+
+			&.mask-enter-from,
+			&.mask-leave-to {
+				opacity: 0;
+			}
 		}
 	}
 </style>

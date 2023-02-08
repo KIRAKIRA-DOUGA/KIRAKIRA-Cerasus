@@ -1,3 +1,5 @@
+@use "./variables" as *;
+
 /// 一键弹性布局加居中元素 (flex - center - center)。
 /// @output display, align-items, justify-content
 @mixin flex-center {
@@ -32,10 +34,15 @@
 /// 将长宽均设为 100% 视窗宽高度值。
 ///
 /// **注意：100vh 将不会包含手机浏览器的地址栏和工具栏的高度。**
+/// @param {String} $position [fixed] - 指定元素的 position 属性。
 /// @output width, height
-@mixin full-screen {
+@mixin full-screen($position: fixed) {
+	position: $position;
+	top: 0;
+	left: 0;
 	width: 100vw;
 	height: 100vh;
+	transition: $fallback-transitions, width 0s, height 0s;
 }
 
 /// 池沼 block 布局会恶意在元素之间加空隙，使用 flex 得永恒。

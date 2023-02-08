@@ -13,7 +13,7 @@
 <template>
 	<Transition name="banner">
 		<div v-if="!collapsed" class="banner opened" @click="getRoute">
-			<span class="title">KiRAKiRA☆DOUGA</span>
+			<LogoText form="full" class="title" />
 			<div class="shadow"></div>
 		</div>
 	</Transition>
@@ -56,10 +56,7 @@
 		}
 
 		.title {
-			color: c(accent);
-			font-weight: 500;
-			font-size: 4rem;
-			font-family: $english-logo-fonts;
+			zoom: 2.5;
 		}
 	}
 </style>

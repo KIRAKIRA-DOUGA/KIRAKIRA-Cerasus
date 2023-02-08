@@ -21,9 +21,7 @@
 
 html,
 body {
-	position: relative;
-	width: 100vw;
-	height: 100vh;
+	@include full-screen(relative);
 	margin: 0;
 	padding: 0;
 	overflow-x: hidden;
@@ -51,10 +49,8 @@ a {
 }
 
 iframe.noscript-mask {
-	position: fixed;
+	@include full-screen;
 	z-index: 100;
-	width: 100vw;
-	height: 100vh;
 	border: none;
 }
 

@@ -26,7 +26,7 @@
 			</svg>
 		</div>
 		<div class="triangle triangle-2"></div>
-		<div class="title">KiRAKiRA☆</div>
+		<LogoText form="half" class="title" />
 		<div class="circle circle-1"></div>
 		<div class="circle circle-2">
 			<div v-for="i in 13" :key="i"></div>
@@ -36,9 +36,8 @@
 
 <style scoped lang="scss">
 	.title {
-		font-weight: 600;
-		font-size: 3.5rem;
 		animation: blinking 2s infinite ease-in alternate;
+		zoom: 2.5;
 	}
 
 	.cover {

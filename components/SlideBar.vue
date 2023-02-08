@@ -75,6 +75,7 @@
 	.slide-bar {
 		--value: 0;
 		position: relative;
+		display: block;
 	}
 
 	.track,
@@ -131,7 +132,7 @@
 			scale: 0.4;
 		}
 
-		section:focus & {
+		slide-bar:focus & {
 			@include large-shadow-focus;
 		}
 	}

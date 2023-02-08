@@ -101,8 +101,7 @@
 
 <template>
 	<kira-component ref="videoPlayer" class="player-video">
-		<div v-if="showMediaInfo" class="media-info">
-			<h3>视频详细信息</h3>
+		<Dialog v-model="showMediaInfo" title="视频详细信息">
 			<details v-for="(info, type) in mediaInfos" :key="type">
 				<summary>{{ type }}</summary>
 				<table>
@@ -114,7 +113,7 @@
 					</tbody>
 				</table>
 			</details>
-		</div>
+		</Dialog>
 		<video
 			ref="video"
 			:src="src"
