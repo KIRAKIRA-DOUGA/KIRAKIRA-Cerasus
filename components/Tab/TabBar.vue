@@ -122,12 +122,12 @@
 </script>
 
 <template>
-	<section ref="tabBar">
+	<Comp ref="tabBar" class="tab-bar">
 		<div class="items" :class="{ vertical }">
 			<slot></slot>
 		</div>
 		<div ref="indicator" class="indicator"></div>
-	</section>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
@@ -141,7 +141,7 @@
 		}
 	}
 
-	section {
+	.tab-bar {
 		position: relative;
 		display: inline-block;
 	}

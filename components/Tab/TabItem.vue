@@ -1,14 +1,17 @@
 <script setup lang="ts">
-	import { TabBarChildren } from "./Bar.vue";
+	import { TabBarChildren } from "./TabBar.vue";
 
 	const props = defineProps<{
 		id: string;
 	}>();
 
 	const dom = ref<HTMLDivElement>();
-	const parent = getParent()!;
+	const parent = getParent()!.parent!;
 	const active = computed(() => parent.props.modelValue === props.id);
 
+	/**
+	 * 单击切换选项卡事件。
+	 */
 	function onClick() {
 		parent.exposed?.changeTab(props.id);
 	}

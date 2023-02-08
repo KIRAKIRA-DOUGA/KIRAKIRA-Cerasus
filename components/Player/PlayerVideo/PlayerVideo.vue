@@ -100,7 +100,7 @@
 </script>
 
 <template>
-	<section ref="videoPlayer" class="video-player">
+	<Comp ref="videoPlayer" class="player-video">
 		<div v-if="showMediaInfo" class="media-info">
 			<h3>视频详细信息</h3>
 			<details v-for="(info, type) in mediaInfos" :key="type">
@@ -136,11 +136,11 @@
 			:duration="duration"
 			:toggleFullScreen="toggle"
 		/>
-	</section>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
-	section.video-player {
+	.player-video {
 		@include player-shadow;
 		display: flex;
 		flex-direction: column;

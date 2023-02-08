@@ -77,6 +77,16 @@ export default defineNuxtConfig({
 			}),
 		],
 	},
+	vue: {
+		compilerOptions: {
+			isCustomElement(tag) {
+				return (
+					tag === "marquee" ||
+					tag.includes("-")
+				);
+			},
+		},
+	},
 	i18n: {
 		locales: [
 			{ code: "zh", name: "简体中文" },

@@ -19,6 +19,7 @@
 	const sliderValue = ref(0);
 	const selectedTab = ref("all");
 	const logoTextForm = ref<LogoTextFormType>("full");
+	const showDialog = ref(false);
 
 	/**
 	 * 单击按钮事件。
@@ -52,6 +53,8 @@
 			<Button disabled>{{ t.buttonDisabled }}</Button>
 			<Button @click="showConfetti">{{ t.confetti }}</Button>
 			<Button icon="send">{{ t.send }}</Button>
+			<Button @click="() => (showDialog = true)">显示对话框</Button>
+			<Dialog v-model="showDialog" />
 			<ToggleSwitch v-model="toggle">{{ t.toggleSwitch }} {{ toggle ? t.on : t.off }}</ToggleSwitch>
 			<ToggleSwitch disabled>{{ t.offDisabled }} </ToggleSwitch>
 			<ToggleSwitch on disabled>{{ t.onDisabled }}</ToggleSwitch>

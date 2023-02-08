@@ -16,6 +16,7 @@
 	}>();
 
 	const isDraging = ref(false);
+	const isOn = computed(() => props.modelValue ?? props.on);
 
 	/**
 	 * 拖拽滑块逻辑处理。
@@ -55,13 +56,13 @@
 </script>
 
 <template>
-	<section :class="{ on: modelValue ?? on, disabled }" :tabindex="disabled ? -1 : 0" @click="onClick">
+	<Comp class="toggle-switch" :class="{ on: isOn, disabled }" :tabindex="disabled ? -1 : 0" @click="onClick">
 		<slot></slot>
 		<div class="switch">
 			<div class="base"></div>
 			<div class="thumb" @pointerdown="onThumbDown"></div>
 		</div>
-	</section>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
@@ -70,7 +71,7 @@
 	$thumb-size: 20px;
 	$focus-ring-thickness: 10px;
 
-	section {
+	.toggle-switch {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;

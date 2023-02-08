@@ -55,7 +55,7 @@
 </script>
 
 <template>
-	<section :tabindex="isChecked ? 0 : -1" :class="{ disabled }" @click="onChange" @keydown="onKeydown">
+	<Comp :tabindex="isChecked ? 0 : -1" class="radio-button" :class="{ disabled }" @click="onChange" @keydown="onKeydown">
 		<input ref="radio" type="radio" :checked="isChecked" :value="props.value" :disabled="disabled" />
 		<div class="radio-focus">
 			<div class="radio-shadow">
@@ -63,7 +63,7 @@
 			</div>
 		</div>
 		<slot></slot>
-	</section>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
@@ -73,7 +73,7 @@
 	$border-size: 2px;
 	$duration-half: 200ms;
 
-	section {
+	.radio-button {
 		display: flex;
 		gap: 0.5rem;
 		align-items: center;

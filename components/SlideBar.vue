@@ -59,11 +59,11 @@
 </script>
 
 <template>
-	<section tabindex="0" :style="{ '--value': value }">
+	<Comp class="slide-bar" tabindex="0" :style="{ '--value': value }">
 		<div class="track" @pointerdown="onTrackDown"></div>
 		<div class="passed"></div>
 		<div class="thumb" @pointerdown="onThumbDown"></div>
-	</section>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
@@ -72,7 +72,7 @@
 	$track-thickness: 6px;
 	$value: calc(var(--value) * (100% - $thumb-size));
 
-	section {
+	.slide-bar {
 		--value: 0;
 		position: relative;
 	}

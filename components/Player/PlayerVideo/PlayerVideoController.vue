@@ -71,7 +71,7 @@
 </script>
 
 <template>
-	<section class="video-controller">
+	<Comp class="player-video-controller">
 		<PlayerButton :icon="playing ? 'pause' : 'play'" @click="emits('update:playing', !playing)" />
 		<div class="slidebar">
 			<SlideBar v-model="currentPercent" :min="0" :max="1" />
@@ -79,11 +79,11 @@
 		<span>{{ convertTime(currentTime) }} / {{ convertTime(duration) }}</span>
 		<PlayerButton :text="playbackRateText" @click="switchSpeed" />
 		<PlayerButton icon="full_screen" @click="() => toggleFullScreen?.()" />
-	</section>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
-	section.video-controller { // 完蛋了，垃圾 Vue 样式泄漏了。
+	.player-video-controller {
 		display: flex;
 		gap: 4px;
 		align-items: center;
