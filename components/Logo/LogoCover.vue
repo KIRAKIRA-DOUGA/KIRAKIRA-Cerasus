@@ -11,11 +11,11 @@
 <template>
 	<div class="cover">
 		<div class="lines">
-			<div v-for="i in 5" :key="`line-${i}`"></div>
+			<div v-for="i in 5" :key="i"></div>
 		</div>
 		<div class="pluses">
-			<div v-for="i in 4" :key="`plus-${i}`">
-				<span v-for="j in 4" :key="`plus-${i}-${j}`" v-i="i + j - 2">
+			<div v-for="i in 4" :key="i">
+				<span v-for="j in 4" :key="j" v-i="i + j - 2">
 					+
 				</span>
 			</div>
@@ -29,7 +29,7 @@
 		<div class="title">KiRAKiRA☆</div>
 		<div class="circle circle-1"></div>
 		<div class="circle circle-2">
-			<div v-for="i in 13" :key="`circle-line-${i}`"></div>
+			<div v-for="i in 13" :key="i"></div>
 		</div>
 	</div>
 </template>

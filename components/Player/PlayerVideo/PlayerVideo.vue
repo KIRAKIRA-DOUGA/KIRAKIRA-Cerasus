@@ -12,11 +12,15 @@
 	const currentTime = ref(NaN);
 	const duration = ref(NaN);
 	const isTimeUpdating = ref(false);
-	const mediaInfoDiv = ref(false);
-	const mediaInfos = ref();
+	const showMediaInfo = ref(false);
+	const mediaInfos = ref<MediaInfo>();
 	const video = ref<HTMLVideoElement>();
 	const videoPlayer = ref<HTMLElement>();
 	const { isFullscreen: fullScreen, toggle } = useFullscreen(video);
+
+	type MediaInfo = {
+		[type: string]: Record<string, unknown>;
+	};
 
 	/**
 	 * 获取视频详细信息，使用库 `mediainfo.js`。
@@ -34,16 +38,15 @@
 			reader.readAsArrayBuffer(file.slice(offset, offset + chunkSize));
 		});
 		const mediaInfo = await mediainfo();
-		const result = mediaInfo.analyzeData(getSize, readChunk);
-		mediaInfos.value = {
-			// @ts-ignore
-			...result.media.track[0],
-			// @ts-ignore
-			...result.media.track[1],
-			// @ts-ignore
-			...result.media.track[2],
-		};
-		mediaInfoDiv.value = !mediaInfoDiv.value;
+		const _result = await mediaInfo.analyzeData(getSize, readChunk);
+		const result = _result as Exclude<typeof _result, string>;
+		const tracks = result.media.track;
+		mediaInfos.value = {};
+		for (const track of tracks) {
+			const { "@type": type, ...info } = track;
+			mediaInfos.value[type] = info;
+		}
+		showMediaInfo.value = !showMediaInfo.value;
 	}
 
 	watch(playing, playing => {
@@ -98,9 +101,19 @@
 
 <template>
 	<section ref="videoPlayer" class="video-player">
-		<div v-if="mediaInfoDiv" class="media-info">
-			视频详细信息
-			<p v-for="(mediaInfo, key) in mediaInfos" :key="`media-info-${key}`">{{ key }}:{{ mediaInfo }},</p>
+		<div v-if="showMediaInfo" class="media-info">
+			<h3>视频详细信息</h3>
+			<details v-for="(info, type) in mediaInfos" :key="type">
+				<summary>{{ type }}</summary>
+				<table>
+					<tbody>
+						<tr v-for="(value, property) in info" :key="property">
+							<td>{{ property }}</td>
+							<td>{{ value }}</td>
+						</tr>
+					</tbody>
+				</table>
+			</details>
 		</div>
 		<video
 			ref="video"
@@ -138,13 +151,14 @@
 	}
 
 	.media-info {
+		@include radius-large;
 		position: absolute;
-		display: block;
+		z-index: 2;
 		width: 800px;
+		padding: 1rem;
 		color: white;
 		font-weight: 800;
 		background-color: #5c5858;
-		border-radius: 10px;
-		opacity: 0.4;
+		opacity: 0.5;
 	}
 </style>

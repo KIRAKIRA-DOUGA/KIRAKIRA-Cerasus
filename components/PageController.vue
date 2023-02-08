@@ -249,7 +249,7 @@
 				<div v-if="(pages >= 3)" ref="scrollArea" class="scroll-area">
 					<UnselectedItem
 						v-for="(item, position) in scrolledPages"
-						:key="`item-${item}`"
+						:key="item"
 						:page="item"
 						:style="{ '--position': position }"
 						@click="changePage(item)"

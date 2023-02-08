@@ -8,7 +8,7 @@
 <template>
 	<main>
 		<div class="mountains">
-			<div v-for="i in 11" :key="`mount-${i}`">
+			<div v-for="i in 11" :key="i">
 				<div></div>
 			</div>
 		</div>

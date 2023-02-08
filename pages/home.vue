@@ -69,7 +69,7 @@
 			<RadioButton on disabled>{{ t.onDisabled }}</RadioButton>
 			<hr />
 			<TextBox placeholder="正常的" />
-			<TextBox small placeholder="小小的" />
+			<TextBox small placeholder="小小的软软的香香的" />
 			<TextBox big placeholder="大大的" />
 			<hr />
 			<NuxtLink v-for="locale in availableLocales" :key="locale.code" :to="switchLocalePath(locale.code)">

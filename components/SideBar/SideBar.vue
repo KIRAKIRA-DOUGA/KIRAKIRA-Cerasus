@@ -35,7 +35,7 @@
 		<Transition name="stripes">
 			<div v-if="showStripes" v-i="6" class="center">
 				<div class="stripes">
-					<div v-for="i in 2" :key="`stripe-${i}`" class="stripe"></div>
+					<div v-for="i in 2" :key="i" class="stripe"></div>
 				</div>
 				<LogoText :form="logoTextForm" />
 			</div>
