@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { LogoTextFormType } from "components/Logo/Text.vue";
+	import { LogoTextFormType } from "components/Logo/LogoText.vue";
 
 	const logoTextForm = ref<LogoTextFormType>("hidden");
 	const showStripes = ref(false);
@@ -33,7 +33,7 @@
 		</div>
 
 		<Transition name="stripes">
-			<div v-if="showStripes" v-i="6" class="center">
+			<div v-show="showStripes" v-i="6" class="center">
 				<div class="stripes">
 					<div v-for="i in 2" :key="i" class="stripe"></div>
 				</div>
