@@ -27,7 +27,7 @@
 /// @param {String} $name - 颜色名称（Sass 映射键名）。
 /// @param {Color} $color - 浅色主题的颜色，或是由浅色主题颜色和深色主题颜色组成的列表。
 /// @param {Bool} $is-light - 当前是否是浅色主题？
-/// @output 十六进制表示的本色，和 RGB 三色的列表。
+/// @output $property, $property-rgb
 @mixin hex-and-rgb-color($name, $color, $is-light) {
 	$property: key-to-css-var($name);
 	$result-color: themed-color($color, $is-light);
@@ -41,7 +41,7 @@
 /// @param {String} $key - 当前颜色键名。
 /// @param {String} $color - 当前颜色值。
 /// @param {Bool} $is-light - 当前是否是浅色主题？
-/// @output 波浪下划线链接背景。
+/// @output --accent-hover-wave-link-background
 @mixin wave-link($key, $color, $is-light) {
 	@if map.get($map: $state-colors, $key: accent-hover) == $key {
 		$svg-color: color-to-svg-color(themed-color($color, $is-light));

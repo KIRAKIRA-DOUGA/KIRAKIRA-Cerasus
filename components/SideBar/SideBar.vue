@@ -55,7 +55,7 @@
 	.sidebar {
 		@include sidebar-shadow;
 		@include flex-center;
-		z-index: 50;
+		z-index: 40;
 		flex-direction: column;
 		justify-content: space-between;
 		width: $sidebar-width;

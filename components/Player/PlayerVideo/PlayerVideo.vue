@@ -118,8 +118,8 @@
 		<video
 			ref="video"
 			:src="src"
-			@play="() => (playing = true)"
-			@pause="() => (playing = false)"
+			@play="playing = true"
+			@pause="playing = false"
 			@ratechange="e => (playbackRate = (e.target as HTMLVideoElement).playbackRate)"
 			@timeupdate="onTimeUpdate"
 			@canplay="onCanPlay"
@@ -142,8 +142,7 @@
 <style scoped lang="scss">
 	.player-video {
 		@include player-shadow;
-		display: flex;
-		flex-direction: column;
+		@include flex-block;
 	}
 
 	video {

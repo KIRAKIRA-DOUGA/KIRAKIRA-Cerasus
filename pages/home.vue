@@ -53,7 +53,7 @@
 			<Button disabled>{{ t.buttonDisabled }}</Button>
 			<Button @click="showConfetti">{{ t.confetti }}</Button>
 			<Button icon="send">{{ t.send }}</Button>
-			<Button @click="() => (showDialog = true)">显示对话框</Button>
+			<Button @click="showDialog = true">显示对话框</Button>
 			<Dialog v-model="showDialog" />
 			<ToggleSwitch v-model="toggle">{{ t.toggleSwitch }} {{ toggle ? t.on : t.off }}</ToggleSwitch>
 			<ToggleSwitch disabled>{{ t.offDisabled }} </ToggleSwitch>

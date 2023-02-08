@@ -1,5 +1,5 @@
-/// 一键弹性布局加居中元素。
-/// @output flex - center - center.
+/// 一键弹性布局加居中元素 (flex - center - center)。
+/// @output display, align-items, justify-content
 @mixin flex-center {
 	display: flex;
 	align-items: center;
@@ -7,29 +7,40 @@
 }
 
 /// 变成椭圆形。
-/// @output 将 border-radius 设为一个非常大的值。
+/// 将 border-radius 设为一个非常大的值。
+/// @output border-radius
 @mixin oval {
 	border-radius: 9999rem;
 }
 
-/// 变成正方形。
+/// 变成正方形。长宽均相等。
 /// @param {Number} $size - 长度。
-/// @output 长宽均相等。
+/// @output width, height
 @mixin square($size) {
 	width: $size;
 	height: $size;
 }
 
 /// 变成圆形。
-/// @output 将 border-radius 设为 100%。
+/// 将 border-radius 设为 100%。
+/// @output border-radius
 @mixin circle {
 	border-radius: 100%;
 }
 
 /// 将元素占满整个屏幕。
-/// 注意：100vh 将不会包含手机浏览器的地址栏和工具栏的高度。
-/// @output 将长宽均设为 100% 视窗宽高度值。
+/// 将长宽均设为 100% 视窗宽高度值。
+///
+/// **注意：100vh 将不会包含手机浏览器的地址栏和工具栏的高度。**
+/// @output width, height
 @mixin full-screen {
 	width: 100vw;
 	height: 100vh;
+}
+
+/// 池沼 block 布局会恶意在元素之间加空隙，使用 flex 得永恒。
+/// @output display, flex-direction
+@mixin flex-block {
+	display: flex;
+	flex-direction: column;
 }

@@ -16,7 +16,7 @@
 	}>();
 
 	const isDraging = ref(false);
-	const isOn = computed(() => props.modelValue ?? props.on);
+	const on = computed(() => props.modelValue ?? props.on);
 
 	/**
 	 * 拖拽滑块逻辑处理。
@@ -56,7 +56,7 @@
 </script>
 
 <template>
-	<kira-component class="toggle-switch" :class="{ on: isOn, disabled }" :tabindex="disabled ? -1 : 0" @click="onClick">
+	<kira-component class="toggle-switch" :class="{ on, disabled }" :tabindex="disabled ? -1 : 0" @click="onClick">
 		<slot></slot>
 		<div class="switch">
 			<div class="base"></div>
