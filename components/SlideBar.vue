@@ -75,7 +75,6 @@
 	.slide-bar {
 		--value: 0;
 		position: relative;
-		display: block;
 	}
 
 	.track,
