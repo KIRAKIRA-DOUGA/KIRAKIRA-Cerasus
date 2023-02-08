@@ -91,7 +91,6 @@
 
 	.dialog {
 		@include dropdown-flyouts;
-		@include flex-block;
 		width: 100vw;
 		max-width: $max-width;
 		max-height: 100vh;
@@ -107,7 +106,6 @@
 			@include card-in-card-shadow;
 			display: flex;
 			gap: 1rem;
-			height: 80%;
 			padding: $padding;
 			overflow: hidden;
 			background-color: c(white, 75%);

@@ -54,6 +54,10 @@ iframe.noscript-mask {
 	border: none;
 }
 
+kira-component {
+	display: block;
+}
+
 // #region 页面过渡
 .page-enter-active {
 	transition: all $ease-out-smooth 600ms;
