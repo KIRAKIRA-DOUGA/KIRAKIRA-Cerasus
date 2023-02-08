@@ -1,5 +1,6 @@
 <script setup lang="ts">
-	import mediainfo, { ReadChunkFunc } from "mediainfo.js";
+	import mediainfo from "mediainfo.js";
+	import { basename } from "path-browserify";
 
 	const props = defineProps<{
 		src: string;
@@ -21,35 +22,30 @@
 	 * 获取视频详细信息，使用库 `mediainfo.js`。
 	 * @param videoPath - 视频地址。
 	 */
-	function getInfo(videoPath: string) {
-		let file: File;
-		urlToBlob(videoPath, result => {
-			file = new File([result], "test.mp4", { type: "video/mp4" }); // TODO: 字面量文件地址？
-			const getSize = () => file.size;
-			const readChunk = (chunkSize: number, offset: number) =>
-				new Promise(resolve => {
-					const reader = new FileReader();
-					reader.onload = event => {
-						resolve(new Uint8Array(((event.target as FileReader).result as ArrayBuffer)));
-					};
-					reader.readAsArrayBuffer(file.slice(offset, offset + chunkSize));
-				});
-			mediainfo().then(mediainfo => {
-				mediainfo.analyzeData(getSize, (readChunk as ReadChunkFunc)).then(result => {
-					// 虽然这是 result 类型，但它的确是一个对象数组
-					mediaInfos.value = {
-						// @ts-ignore
-						...result.media.track[0],
-						// @ts-ignore
-						...result.media.track[1],
-						// @ts-ignore
-						...result.media.track[2],
-					};
-				});
-			});
+	async function getInfo(videoPath: string) {
+		const blob = await fetch(videoPath).then(response => response.blob());
+		const fileName = basename(videoPath);
+		const file = new File([blob], fileName, { type: "video/mp4" });
+		const getSize = () => file.size;
+		const readChunk = (chunkSize: number, offset: number) => new Promise<Uint8Array>(resolve => {
+			const reader = new FileReader();
+			reader.onload = event =>
+				resolve(new Uint8Array(((event.target as FileReader).result as ArrayBuffer)));
+			reader.readAsArrayBuffer(file.slice(offset, offset + chunkSize));
 		});
+		const mediaInfo = await mediainfo();
+		const result = mediaInfo.analyzeData(getSize, readChunk);
+		mediaInfos.value = {
+			// @ts-ignore
+			...result.media.track[0],
+			// @ts-ignore
+			...result.media.track[1],
+			// @ts-ignore
+			...result.media.track[2],
+		};
 		mediaInfoDiv.value = !mediaInfoDiv.value;
 	}
+
 	watch(playing, playing => {
 		if (!video.value) return;
 		playing ? video.value.play() : video.value.pause();

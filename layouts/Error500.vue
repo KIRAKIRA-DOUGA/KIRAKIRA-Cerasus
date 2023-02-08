@@ -76,6 +76,7 @@
 			:deep(*) {
 				margin: 0;
 				font-family: $monospace-fonts !important;
+				user-select: text;
 			}
 
 			pre {

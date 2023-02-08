@@ -1,6 +1,7 @@
 import fs from "fs";
 import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
+import { kebabToCamelCase } from "../utils/string";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -10,6 +11,12 @@ const scss = await fs.promises.readFile(resolve(stylesPath, "_eases.scss"), "utf
 const variables = scss.match(/(?<=\$).*(?=:)/g);
 if (!variables) throw new TypeError("No variable found!");
 
+/**
+ * 根据变量名称获取其 SassDoc。
+ * @param scss - SCSS 样式表文本内容。
+ * @param variable - 变量名称。
+ * @returns SassDoc。
+ */
 function getSassDoc(scss: string, variable: string) {
 	const lines = scss.split("\n");
 	for (let i = 0; i < lines.length; i++) {
@@ -27,8 +34,6 @@ function getSassDoc(scss: string, variable: string) {
 	return "";
 }
 
-const kebabToCamelCase = (str: string) => str.toLowerCase().replace(/-(\w)/g, (_, w: string) => w.toUpperCase());
-
 interface EaseInfo {
 	kebabName: string;
 	camelName: string;
@@ -44,6 +49,12 @@ for (const variable of variables)
 		doc: getSassDoc(scss, variable),
 	});
 
+/**
+ * 创建 JSDoc。
+ * @param doc - JSDoc 文本内容。
+ * @param indent - 左边缩进的 TAB 值。
+ * @returns JSDoc。
+ */
 function createJsDoc(doc: string, indent: number = 0) {
 	doc = doc.trim();
 	if (doc === "") return "";

@@ -16,6 +16,7 @@
 	/**
 	 * 判断是否是该错误代码。
 	 * @param statusCode - 错误代码。
+	 * @returns 是否是该错误代码。
 	 */
 	function isStatusCode(...statusCodes: number[]) {
 		for (const statusCode of statusCodes)
