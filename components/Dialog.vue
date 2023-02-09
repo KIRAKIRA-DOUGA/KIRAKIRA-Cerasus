@@ -27,7 +27,7 @@
 <template>
 	<Mask v-model="open" />
 	<ClientOnlyTeleport to="body">
-		<Transition name="dialog" :duration="{ enter: DURATION, leave: undefined as unknown as number }">
+		<Transition name="dialog" :duration="{ enter: DURATION, leave: 250 }">
 			<div v-if="open" ref="dialog" class="dialog">
 				<div class="body">
 					<NuxtIcon name="info" class="icon" />
@@ -95,7 +95,7 @@
 		@include flex-block;
 		width: 100vw;
 		max-width: $max-width;
-		max-height: 100vh;
+		max-height: var(--inner-height);
 		margin: 0 auto;
 		overflow: hidden;
 		background-color: c(inner-color-85, 50%);

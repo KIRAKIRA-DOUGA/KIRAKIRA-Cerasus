@@ -1,3 +1,5 @@
+import { defineNitroPlugin } from "types/nitro";
+
 export default defineNitroPlugin(nitro => {
 	nitro.hooks.hook("render:html", html => {
 		html.htmlAttrs.push('class="pink"'); // 加上缺省的主题色，在禁用 JavaScript 时生效。

@@ -6,15 +6,15 @@ const getSSRProps = (binding: DirectiveBinding, vnode: VNode) => {
 	return {};
 };
 
-export default defineNuxtPlugin(nuxtApp => {
-	nuxtApp.vueApp.directive("focus", {
+export default defineNuxtPlugin(nuxt => {
+	nuxt.vueApp.directive("focus", {
 		mounted(el: HTMLElement) {
 			el.focus();
 		},
 		getSSRProps,
 	});
 
-	nuxtApp.vueApp.directive("drag", {
+	nuxt.vueApp.directive("drag", {
 		// 1.指令绑定到元素上回立刻执行bind(改名为beforeMount)函数，只执行一次
 		// 2.每个函数中第一个参数永远是el，表示绑定指令的元素，el参数是原生js对象
 		// 3.通过el.focus()是无法获取焦点的，因为只有插入DOM后才生效

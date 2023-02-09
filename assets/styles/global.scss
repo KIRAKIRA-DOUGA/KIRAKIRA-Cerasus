@@ -19,6 +19,10 @@
 	outline: none !important;
 }
 
+:root {
+	--inner-height: 100vh;
+}
+
 html,
 body {
 	@include full-screen(relative);

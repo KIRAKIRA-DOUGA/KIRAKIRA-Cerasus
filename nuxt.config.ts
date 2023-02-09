@@ -10,6 +10,7 @@ export default defineNuxtConfig({
 	plugins: [
 		"plugins/ripple.ts",
 		"plugins/css-var-i.ts",
+		"plugins/innerheight.ts",
 	],
 	modules: [
 		"@nuxtjs/i18n",

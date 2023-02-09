@@ -47,12 +47,12 @@ function getMaxRadius(rect: DOMRect, e: MouseEvent) {
 }
 
 // 水波纹效果。
-export default defineNuxtPlugin(nuxtApp => {
+export default defineNuxtPlugin(nuxt => {
 	const rippleClass = styles.rippleButton;
 	const circleClass = styles.rippleCircle;
 	let isInitedMouseUp = false;
 
-	nuxtApp.vueApp.directive("ripple", {
+	nuxt.vueApp.directive("ripple", {
 		mounted(element: HTMLElement) {
 			element.classList.add(rippleClass);
 			element.addEventListener("mousedown", e => {
