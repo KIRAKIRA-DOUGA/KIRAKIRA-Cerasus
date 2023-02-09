@@ -142,7 +142,7 @@ module.exports = {
 		"@typescript-eslint/consistent-type-assertions": ["error", { assertionStyle: "as" }],
 		"@typescript-eslint/no-confusing-non-null-assertion": "error",
 		"@typescript-eslint/no-duplicate-enum-values": "error",
-		"@typescript-eslint/no-empty-interface": "error",
+		"@typescript-eslint/no-empty-interface": "off",
 		"@typescript-eslint/member-delimiter-style": ["error", {
 			"multiline": {
 				"delimiter": "semi",

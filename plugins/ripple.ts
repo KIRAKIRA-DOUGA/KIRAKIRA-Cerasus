@@ -1,3 +1,5 @@
+import { Directive } from "vue";
+
 /**
  * 使用 `v-ripple`，为元素创建类 Material Design 的水波纹效果。
  */
@@ -53,7 +55,7 @@ export default defineNuxtPlugin(nuxt => {
 	let isInitedMouseUp = false;
 
 	nuxt.vueApp.directive("ripple", {
-		mounted(element: HTMLElement) {
+		mounted(element) {
 			element.classList.add(rippleClass);
 			element.addEventListener("mousedown", e => {
 				const rect = element.getClientRects()[0];
@@ -96,8 +98,8 @@ export default defineNuxtPlugin(nuxt => {
 				}
 			});
 		},
-		updated(element: HTMLElement) {
+		updated(element) {
 			element.classList.add(rippleClass);
 		},
-	});
+	} as Directive<HTMLElement>);
 });

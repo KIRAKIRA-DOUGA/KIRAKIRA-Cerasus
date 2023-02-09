@@ -4,8 +4,9 @@ import { NuxtRenderHTMLContext, NuxtRenderResponse } from "node_modules/nuxt/dis
 type EventHandler = ReturnType<typeof eventHandler>;
 type EventParam = { event: EventHandler };
 type HookResult = Promise<void> | void;
+type DefineNitroPlugin = (def: NitroAppPlugin) => NitroAppPlugin;
 
-export declare function defineNitroPlugin(def: NitroAppPlugin): NitroAppPlugin;
+export declare const defineNitroPlugin: DefineNitroPlugin;
 export interface NitroAppPlugin {
 	(nitro: NitroApp): void;
 }
@@ -21,5 +22,5 @@ export interface NitroApp extends Omit<OriginalNitroApp, "hooks"> {
 }
 
 declare global { // Doesn't work.
-	export declare function defineNitroPlugin(def: NitroAppPlugin): NitroAppPlugin;
+	export declare const defineNitroPlugin: DefineNitroPlugin;
 }

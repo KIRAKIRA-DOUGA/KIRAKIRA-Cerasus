@@ -121,4 +121,9 @@ export default defineNuxtConfig({
 			siteUrl: "http://localhost:3000",
 		},
 	},
+	imports: {
+		dirs: [
+			"#components",
+		],
+	},
 } as _NuxtConfig);
