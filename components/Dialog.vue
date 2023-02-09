@@ -14,20 +14,19 @@
 		set: value => emits("update:modelValue", value),
 	});
 	const dialog = ref<HTMLDivElement>();
-	const DURATION = 500;
 
 	watch(open, async open => {
 		await nextTick();
 		if (!dialog.value) return;
 		if (open)
-			animateHeight(dialog.value, null, { startHeight: 0, duration: DURATION });
+			animateHeight(dialog.value, null, { startHeight: 0, duration: 500 });
 	}, { immediate: true });
 </script>
 
 <template>
 	<Mask v-model="open" />
 	<ClientOnlyTeleport to="body">
-		<Transition name="dialog" :duration="{ enter: DURATION, leave: 250 }">
+		<Transition name="dialog">
 			<div v-if="open" ref="dialog" class="dialog">
 				<div class="body">
 					<NuxtIcon name="info" class="icon" />
@@ -66,6 +65,11 @@
 		z-index: 50;
 		transform-origin: center top;
 		translate: -50%;
+		transition-duration: 500ms;
+
+		&.dialog-leave-active {
+			transition-duration: 250ms;
+		}
 
 		&.dialog-enter-from,
 		&.dialog-leave-to {

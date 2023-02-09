@@ -47,7 +47,7 @@
 		@include full-screen(fixed);
 
 		&:not(.static) {
-			background-color: c(white, 40%);
+			background-color: c(main-bg, 40%);
 			backdrop-filter: grayscale(0.4);
 
 			&.mask-enter-from,
