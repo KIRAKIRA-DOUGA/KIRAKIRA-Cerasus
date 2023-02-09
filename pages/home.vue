@@ -20,6 +20,7 @@
 	const selectedTab = ref("all");
 	const logoTextForm = ref<LogoTextFormType>("full");
 	const showDialog = ref(false);
+	const inputValue = ref("");
 
 	/**
 	 * 单击按钮事件。
@@ -71,9 +72,10 @@
 			<RadioButton disabled>{{ t.custom }}</RadioButton>
 			<RadioButton on disabled>{{ t.onDisabled }}</RadioButton>
 			<hr />
-			<TextBox placeholder="正常的" />
-			<TextBox size="small" placeholder="小小的软软的香香的" />
-			<TextBox size="large" icon="lock" type="password" placeholder="密码" />
+			<TextBox v-model="inputValue" placeholder="正常的" />
+			<TextBox v-model="inputValue" size="small" placeholder="小小的软软的香香的" />
+			<TextBox v-model="inputValue" size="large" icon="lock" type="password" placeholder="密码" />
+			<em>所有输入框的内容同时输入属正常现象，因为懒得做三个变量。</em>
 			<hr />
 			<NuxtLink v-for="locale in availableLocales" :key="locale.code" :to="switchLocalePath(locale.code)">
 				{{ locale.name }}

@@ -4,6 +4,9 @@ import { NuxtColorMode } from "./types";
 
 const systemDark = () => window.matchMedia("(prefers-color-scheme: dark)");
 
+/**
+ * 监测主题色变化而更新。
+ */
 function update() {
 	const theme = Theme.theme.value, palette = Theme.palette.value;
 	let actualTheme = theme;

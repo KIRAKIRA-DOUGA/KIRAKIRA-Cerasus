@@ -1,28 +1,58 @@
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
+		/** 当前输入是否不合法。 */
 		illegal?: boolean;
-		password?: boolean;
-		showPassword?: boolean;
-		placeholder: string;
+		/** 内容占位符。 */
+		placeholder?: string;
+		/** 图标名称。 */
 		icon?: string;
-		id?: string;
+		/** 输入框尺寸。 */
 		size?: "small" | "normal" | "large";
+		/** 输入框类型。 */
 		type?: string;
+		/** 值。 */
+		modelValue: string;
 	}>(), {
 		icon: undefined,
 		size: "normal",
 		type: "text",
+		placeholder: "",
+	});
+
+	const emits = defineEmits<{
+		(event: "update:modelValue", value: string): void;
+	}>();
+
+	/** 用户是否输入了值。 */
+	const typed = computed(() => props.modelValue !== "");
+	const value = computed({
+		get: () => props.modelValue,
+		set: value => emits("update:modelValue", value),
+	});
+	/** 是否显示密码。 */
+	const showPassword = ref(false);
+	const type = computed(() => {
+		if (props.type !== "password") return props.type;
+		return showPassword.value ? "text" : "password";
 	});
 </script>
 
 <template>
-	<div class="textbox" :class="{ small: size === 'small', large: size === 'large', illegal, 'icon-enabled': icon }">
+	<kira-component
+		class="text-box"
+		:class="{
+			small: size === 'small',
+			large: size === 'large',
+			illegal,
+			'icon-enabled': icon,
+		}"
+	>
 		<div class="wrapper">
 			<NuxtIcon v-if="icon" :name="icon" class="before-icon" />
-			<input required :type="type" :id="id" :placeholder="placeholder" />
+			<input v-model="value" :type="type" :placeholder="placeholder" :class="{ typed }" />
 			<label v-if="size === 'large'">{{ placeholder }}</label>
-			<div v-ripple v-if="type === 'password'" class="after-icon-wrapper">
-				<NuxtIcon name="visibility_off" class="after-icon" />
+			<div v-if="props.type === 'password'" v-ripple class="after-icon-wrapper" @click="showPassword = !showPassword">
+				<NuxtIcon :name="showPassword ? 'visibility' : 'visibility_off'" class="after-icon" />
 			</div>
 			<div v-if="illegal" class="after-icon-wrapper">
 				<NuxtIcon name="error" class="after-icon illegal-icon" />
@@ -30,7 +60,7 @@
 		</div>
 		<div v-if="size === 'large'" class="large-stripe"></div>
 		<div class="focus-stripe"></div>
-	</div>
+	</kira-component>
 </template>
 
 <style scoped lang="scss">
@@ -40,7 +70,7 @@
 	$large-height: 44px;
 	$front-indent: 12px;
 
-	.textbox {
+	.text-box {
 		@include radius-small;
 		@include control-inner-shadow;
 		height: $default-height;
@@ -120,7 +150,7 @@
 		pointer-events: none;
 
 		.before-icon ~ & {
-			margin-left: calc($front-indent + 24px + 16px);
+			margin-left: $front-indent + 24px + 16px;
 		}
 	}
 
@@ -146,18 +176,18 @@
 			display: none;
 		}
 
-		&:valid ~ label,
+		&.typed ~ label,
 		&:focus-visible ~ label {
 			translate: 0 calc($large-height / -2 + 12px);
 			scale: 0.7;
 		}
 
 		.before-icon ~ & {
-			padding-left: calc($front-indent + 24px + 4px);
+			padding-left: $front-indent + 24px + 4px;
 			text-indent: 0;
 
 			.large & {
-				padding-left: calc($front-indent + 24px + 16px);
+				padding-left: $front-indent + 24px + 16px;
 			}
 		}
 
@@ -179,7 +209,7 @@
 
 		.large & {
 			margin-left: 12px;
-			text-indent: calc($front-indent + 24px + 16px);
+			text-indent: $front-indent + 24px + 16px;
 		}
 	}
 

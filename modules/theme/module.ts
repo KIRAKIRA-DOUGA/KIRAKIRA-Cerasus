@@ -1,6 +1,12 @@
 import { addImports, addPlugin, addTemplate, createResolver, defineNuxtModule } from "@nuxt/kit";
 import script from "./script";
 
+/**
+ * 获取函数体内容。
+ * @param func - 函数。
+ * @param compressed - 是否压缩代码？
+ * @returns 函数的内容字符串。
+ */
 export function getFunctionBody(func: Function, compressed: boolean) {
 	const str = func.toString();
 	const leftBraceIndex = str.indexOf("{");

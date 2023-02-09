@@ -2,6 +2,11 @@ import { NuxtColorMode } from "./types";
 
 function script(): void;
 function script(autoCall: false): NuxtColorMode;
+/**
+ * 在 DOM 加载之前执行的脚本。
+ * @param autoCall - 是否自启动？
+ * @returns 当前颜色模式。
+ */
 function script(autoCall = true) {
 	const isSystemDark = () => window.matchMedia("(prefers-color-scheme: dark)").matches;
 	const lastColorMode_str = window.localStorage.getItem("nuxt-color-mode");
