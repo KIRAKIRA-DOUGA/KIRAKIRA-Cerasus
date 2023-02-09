@@ -14,49 +14,39 @@
 		set: value => emits("update:modelValue", value),
 	});
 	const dialog = ref<HTMLDivElement>();
-	const mask = ref<HTMLDivElement>();
+	const DURATION = 500;
 
 	watch(open, async open => {
 		await nextTick();
 		if (!dialog.value) return;
 		if (open)
-			animateHeight(dialog.value, null, { startHeight: 0, duration: 500 });
+			animateHeight(dialog.value, null, { startHeight: 0, duration: DURATION });
 	}, { immediate: true });
-
-	/**
-	 * 单击遮罩部分关闭内容。
-	 * @param e - 鼠标单击事件。
-	 */
-	function close(e: MouseEvent) {
-		if (e.target === mask.value) // 单击的最终元素必须是遮罩本身，不能是其内容。
-			emits("update:modelValue", false);
-	}
 </script>
 
 <template>
 	<Mask v-model="open" />
 	<ClientOnlyTeleport to="body">
-		<Transition name="dialog">
-			<div v-if="open" ref="mask" class="dialog-container" @click="close">
-				<div ref="dialog" class="dialog">
-					<div class="body">
-						<NuxtIcon name="info" class="icon" />
-						<div>
-							<h2>{{ title ?? "KIRAKIRA 提示您" }}</h2>
-							<div class="content">
-								<slot><em>没有内容。</em></slot>
-							</div>
+		<Transition name="dialog" :duration="{ enter: DURATION, leave: undefined as unknown as number }">
+			<div v-if="open" ref="dialog" class="dialog">
+				<div class="body">
+					<NuxtIcon name="info" class="icon" />
+					<div>
+						<h2>{{ title ?? "KIRAKIRA 提示您" }}</h2>
+						<div class="content">
+							<slot><em>没有内容。</em></slot>
 						</div>
+						<div class="content-bottom-space"></div>
 					</div>
-					<div class="footer">
-						<div class="left">
-							<slot name="footer-left"></slot>
-						</div>
-						<div class="right">
-							<slot name="footer-right">
-								<Button @click="emits('update:modelValue', false)">了然</Button>
-							</slot>
-						</div>
+				</div>
+				<div class="footer">
+					<div class="left">
+						<slot name="footer-left"></slot>
+					</div>
+					<div class="right">
+						<slot name="footer-right">
+							<Button @click="emits('update:modelValue', false)">了然</Button>
+						</slot>
 					</div>
 				</div>
 			</div>
@@ -69,10 +59,13 @@
 	$animation-options: 500ms calc(var(--i) * 100ms) $ease-out-max backwards;
 	$padding: 24px;
 
-	.dialog-container {
-		@include full-screen;
+	.dialog {
+		position: fixed;
+		top: 0;
+		left: 50%;
 		z-index: 50;
 		transform-origin: center top;
+		translate: -50%;
 
 		&.dialog-enter-from,
 		&.dialog-leave-to {
@@ -87,10 +80,19 @@
 				translate: 0 $padding;
 			}
 		}
+
+		&.dialog-enter-active,
+		&.dialog-leave-active {
+			.body {
+				overflow: visible;
+			}
+		}
 	}
 
+	// stylelint-disable-next-line no-duplicate-selectors
 	.dialog {
 		@include dropdown-flyouts;
+		@include flex-block;
 		width: 100vw;
 		max-width: $max-width;
 		max-height: 100vh;
@@ -107,8 +109,9 @@
 			display: flex;
 			gap: 1rem;
 			padding: $padding;
-			overflow: hidden;
-			background-color: c(white, 75%);
+			padding-bottom: 0;
+			overflow: hidden auto;
+			background-color: c(main-bg, 75%);
 
 			.icon {
 				@include flex-block;
@@ -121,14 +124,18 @@
 
 			h2 {
 				--i: 0;
-				margin: 0 0 12px;
+				margin: 0;
 				animation: move-left $animation-options;
 			}
 
 			.content { // TODO: 内容太多，下方按钮就会看不到了。待解决。
 				--i: 1;
-				overflow: auto;
+				margin-top: calc($padding / 2);
 				animation: move-left $animation-options;
+			}
+
+			.content-bottom-space {
+				height: $padding;
 			}
 		}
 
