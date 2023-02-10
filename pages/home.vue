@@ -96,6 +96,7 @@
 				<TabItem id="long">测试很长很长很长</TabItem>
 				<TabItem id="short">短</TabItem>
 			</TabBar>
+			<hr />
 			<div>
 				<Button @click="showMenu">显示菜单</Button>
 				<Menu ref="menu">
@@ -106,11 +107,13 @@
 					<MenuItem icon="delete">删除</MenuItem>
 				</Menu>
 			</div>
+			<hr />
+			<LoginWindow />
+			<hr />
 			<RadioButton v-model="logoTextForm" value="hidden">{{ t.logoHidden }}</RadioButton>
 			<RadioButton v-model="logoTextForm" value="half">{{ t.logoHalf }}</RadioButton>
 			<RadioButton v-model="logoTextForm" value="full">{{ t.logoShow }}</RadioButton>
 			<LogoText :form="logoTextForm" />
-			<LogoCover />
 			<hr />
 			<details>
 				<summary>点击此处辣眼睛</summary>
