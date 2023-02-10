@@ -53,17 +53,19 @@ export function animateHeight(
 	changeFunc: (() => void) | undefined | null,
 	{
 		startHeight,
+		endHeight,
 		duration = 250,
 	}: {
 		startHeight?: number;
+		endHeight?: number;
 		duration?: number;
 	},
 ) {
 	startHeight ??= element.clientHeight;
 	changeFunc?.();
-	const endHeight = element.clientHeight;
+	endHeight ??= element.clientHeight;
 	return element.animate([
-		{ height: startHeight },
+		{ height: startHeight + "px" },
 		{ height: endHeight + "px" },
 	], {
 		duration,

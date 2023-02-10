@@ -11,13 +11,15 @@ export interface NitroAppPlugin {
 	(nitro: NitroApp): void;
 }
 
+export type NitroHooks = Hookable<{
+	/** 在发送响应之前调用。 */
+	"render:response": (response: NuxtRenderResponse, { event }: EventParam) => HookResult;
+	/** 在构造 HTML 之前调用。 */
+	"render:html": (html: NuxtRenderHTMLContext, { event }: EventParam) => HookResult;
+}>;
+
 export interface NitroApp extends Omit<OriginalNitroApp, "hooks"> {
-	hooks: Hookable<{
-		/** 在发送响应之前调用。 */
-		"render:response": (response: NuxtRenderResponse, { event }: EventParam) => HookResult;
-		/** 在构造 HTML 之前调用。 */
-		"render:html": (html: NuxtRenderHTMLContext, { event }: EventParam) => HookResult;
-	}>;
+	hooks: NitroHooks;
 	// hooks: Hookable<Record<string, HookCallback>, string>;
 }
 

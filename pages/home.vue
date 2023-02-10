@@ -2,6 +2,7 @@
 	import { LocaleObject } from "@nuxtjs/i18n/dist/runtime/composables";
 	import animationData from "lotties/spinner-dev1.json";
 	import { LogoTextFormType } from "components/Logo/LogoText.vue";
+	import Menu from "components/Menu/Menu.vue";
 
 	const page = ref(1);
 	const pages = ref(99);
@@ -21,6 +22,8 @@
 	const logoTextForm = ref<LogoTextFormType>("full");
 	const showDialog = ref(false);
 	const inputValue = ref("");
+	const menu = ref<InstanceType<typeof Menu>>(); // FIXME: 会 Vue 的帮忙来解决一下。
+	const showMenu = () => menu.value?.show();
 
 	/**
 	 * 单击按钮事件。
@@ -93,7 +96,16 @@
 				<TabItem id="long">测试很长很长很长</TabItem>
 				<TabItem id="short">短</TabItem>
 			</TabBar>
-			<br />
+			<div>
+				<Button @click="showMenu">显示菜单</Button>
+				<Menu ref="menu">
+					<MenuItem>复制</MenuItem>
+					<MenuItem>剪切</MenuItem>
+					<MenuItem>粘贴</MenuItem>
+					<hr />
+					<MenuItem icon="delete">删除</MenuItem>
+				</Menu>
+			</div>
 			<RadioButton v-model="logoTextForm" value="hidden">{{ t.logoHidden }}</RadioButton>
 			<RadioButton v-model="logoTextForm" value="half">{{ t.logoHalf }}</RadioButton>
 			<RadioButton v-model="logoTextForm" value="full">{{ t.logoShow }}</RadioButton>

@@ -51,3 +51,27 @@
 	display: flex;
 	flex-direction: column;
 }
+
+/// 去除垂直方向上的间距空隙，在高度变化动画中很有用。
+/// @output margin-top, margin-bottom, padding-top, padding-bottom
+@mixin no-vertical-spacing {
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+/// 修复在 flex 布局 overflow 开启滚动之后，页面末尾的边距消失了的问题。
+/// 在 flex 布局的 after 伪元素中使用。
+/// @example scss
+/// 	.flex::after {
+/// 		@include fix-page-end-padding;
+/// 	}
+/// @output display, clear, height, visibility, content
+@mixin fix-page-end-padding {
+	display: block;
+	clear: both;
+	height: 0;
+	visibility: hidden; // 占位但不可见。
+	content: "."; // 内容不能为空。
+}

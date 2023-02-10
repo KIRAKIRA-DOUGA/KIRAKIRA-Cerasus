@@ -1,12 +1,12 @@
 <script setup lang="ts">
-	import { TabBarChildren } from "./TabBar.vue";
+	import TabBar, { TabBarChildren } from "./TabBar.vue";
 
 	const props = defineProps<{
 		id: string;
 	}>();
 
 	const dom = ref<HTMLDivElement>();
-	const parent = getParent()!;
+	const parent = getParent(TabBar)!;
 	const active = computed(() => parent.props.modelValue === props.id);
 
 	/**

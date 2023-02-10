@@ -30,12 +30,11 @@
 			<div v-if="open" ref="dialog" class="dialog">
 				<div class="body">
 					<NuxtIcon name="info" class="icon" />
-					<div>
+					<div class="content-part">
 						<h2>{{ title ?? "KIRAKIRA 提示您" }}</h2>
 						<div class="content">
 							<slot><em>没有内容。</em></slot>
 						</div>
-						<div class="content-bottom-space"></div>
 					</div>
 				</div>
 				<div class="footer">
@@ -113,7 +112,7 @@
 			display: flex;
 			gap: 1rem;
 			padding: $padding;
-			padding-bottom: 0;
+			/* padding-bottom: 0; */
 			overflow: hidden auto;
 			background-color: c(main-bg, 75%);
 
@@ -132,14 +131,14 @@
 				animation: move-left $animation-options;
 			}
 
-			.content { // TODO: 内容太多，下方按钮就会看不到了。待解决。
+			.content {
 				--i: 1;
 				margin-top: calc($padding / 2);
 				animation: move-left $animation-options;
 			}
 
-			.content-bottom-space {
-				height: $padding;
+			.content-part::after {
+				@include fix-page-end-padding;
 			}
 		}
 
