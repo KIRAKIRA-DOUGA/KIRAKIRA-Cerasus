@@ -55,15 +55,18 @@ export function animateHeight(
 		startHeight,
 		endHeight,
 		duration = 250,
+		getSize,
 	}: {
 		startHeight?: number;
 		endHeight?: number;
 		duration?: number;
+		getSize?: (result: [number, number]) => void;
 	},
 ) {
 	startHeight ??= element.clientHeight;
 	changeFunc?.();
 	endHeight ??= element.clientHeight;
+	getSize?.([element.clientWidth, element.clientHeight]);
 	return element.animate([
 		{ height: startHeight + "px" },
 		{ height: endHeight + "px" },

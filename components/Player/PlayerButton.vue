@@ -32,6 +32,7 @@
 		font-size: 14px;
 		background: none;
 		border: none;
+		cursor: pointer;
 		appearance: none;
 
 		&:focus-visible {

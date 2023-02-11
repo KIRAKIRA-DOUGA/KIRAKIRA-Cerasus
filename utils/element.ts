@@ -1,10 +1,13 @@
+type TargetType = Node | Element | Event | EventTarget | null;
+
 /**
  * 获取从指定元素节点，一直追溯到根元素的数组。
  * 用于查找事件目标并向上冒泡，找到需要的元素。
  * @param target - HTML DOM 节点。
  * @returns 从指定元素节点，一直追溯到根元素的数组。
  */
-export function getPath(target: Node | Element | null): Element[] {
+export function getPath(target: TargetType): Element[] {
+	if (target instanceof Event) target = target.target;
 	if (!(target instanceof Element)) return [];
 	const path: Element[] = [];
 	while (target instanceof Element) {
@@ -12,6 +15,17 @@ export function getPath(target: Node | Element | null): Element[] {
 		target = target.parentElement;
 	}
 	return path;
+}
+
+/**
+ * 根据鼠标事件的目标节点，查找要查询的元素是否是或是其父系节点。比如查找元素是否被点击等。
+ * @param target - 点击事件中的目标 HTML DOM 节点。
+ * @param element - 要查找的冒泡 HTML DOM 节点。
+ * @returns 要查询的元素是或是其父系节点。
+ */
+export function isInPath(target: TargetType, element: Element): boolean {
+	const path = getPath(target);
+	return path.includes(element);
 }
 
 /**

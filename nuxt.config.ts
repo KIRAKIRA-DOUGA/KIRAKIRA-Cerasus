@@ -4,7 +4,8 @@ import CopyPlugin from "copy-webpack-plugin";
 import { resolve } from "path";
 import styleResources from "./helpers/style-resources";
 const wasmFile = resolve("node_modules/mediainfo.js/dist/MediaInfoModule.wasm");
-type _NuxtConfig = Parameters<typeof defineNuxtConfig>[0] & Record<string, object>; // 还敢报错吗？
+type _NuxtConfig = Parameters<typeof defineNuxtConfig>[0] & Record<string, object | string>; // 还敢报错吗？
+// TODO: 水合异常，这是 nuxt 那边的问题，详情请关注：https://github.com/nuxt/nuxt/issues/18635
 
 export default defineNuxtConfig({
 	plugins: [

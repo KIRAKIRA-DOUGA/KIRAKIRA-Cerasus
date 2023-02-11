@@ -98,7 +98,7 @@
 			</TabBar>
 			<hr />
 			<div>
-				<Button @click="showMenu">显示菜单</Button>
+				<Button :style="{ marginBottom: '1rem' }" @click="showMenu">显示菜单</Button>
 				<Menu ref="menu">
 					<MenuItem>复制</MenuItem>
 					<MenuItem>剪切</MenuItem>

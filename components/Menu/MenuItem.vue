@@ -50,6 +50,7 @@
 		flex-shrink: 0;
 		gap: $menu-padding;
 		justify-content: flex-start;
+		width: max-content;
 		margin: 0 $menu-padding;
 		padding: 9px 12px;
 		cursor: pointer;
