@@ -112,7 +112,6 @@
 			display: flex;
 			gap: 1rem;
 			padding: $padding;
-			/* padding-bottom: 0; */
 			overflow: hidden auto;
 			background-color: c(main-bg, 75%);
 
