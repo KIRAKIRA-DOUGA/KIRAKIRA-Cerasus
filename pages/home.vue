@@ -75,7 +75,7 @@
 			<RadioButton disabled>{{ t.custom }}</RadioButton>
 			<RadioButton on disabled>{{ t.onDisabled }}</RadioButton>
 			<hr />
-			<TextBox v-model="inputValue" illegal placeholder="正常的" />
+			<TextBox v-model="inputValue" illegal placeholder="正常错误的" />
 			<TextBox v-model="inputValue" size="small" placeholder="小小的软软的香香的" />
 			<TextBox v-model="inputValue" size="large" icon="lock" type="password" placeholder="密码" />
 			<em>所有输入框的内容同时输入属正常现象，因为懒得做三个变量。</em>
@@ -107,9 +107,7 @@
 					<MenuItem icon="delete">删除</MenuItem>
 				</Menu>
 			</div>
-			<hr />
 			<LoginWindow />
-			<hr />
 			<RadioButton v-model="logoTextForm" value="hidden">{{ t.logoHidden }}</RadioButton>
 			<RadioButton v-model="logoTextForm" value="half">{{ t.logoHalf }}</RadioButton>
 			<RadioButton v-model="logoTextForm" value="full">{{ t.logoShow }}</RadioButton>

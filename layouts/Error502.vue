@@ -16,6 +16,8 @@
 </template>
 
 <style scoped lang="scss">
+	$title-animation-options: $ease-out-expo 600ms backwards calc(100ms * var(--i));
+
 	.card {
 		@include radius-large;
 		@include card-shadow;
@@ -27,6 +29,7 @@
 		height: calc(100vh - 2 * $margin-y);
 		margin: $margin-y 2.5rem 0;
 		overflow: hidden;
+		animation: intro 600ms $ease-out-smooth;
 
 		.content {
 			@include flex-center;
@@ -39,27 +42,46 @@
 			color: c(accent);
 
 			h1 {
-				--i: 2;
+				--i: 1;
 				margin: 0;
 				font-weight: bold;
 				font-size: 6rem;
 				font-family: $english-logo-fonts;
 				line-height: 1;
+				animation: move-down $title-animation-options;
 			}
 
-			p {
-				--i: 1;
-				margin: 0;
-				margin-bottom: 4rem;
-				font-weight: 300;
-				font-size: 1.25rem;
-				line-height: 1.25;
+			h2 {
+				--i: 0;
+				margin: 0.5rem;
+				animation: move-down $title-animation-options;
 			}
 		}
 
 		.fire {
 			@include square(100%);
 			position: absolute;
+			animation: fade-in 1s $ease-out-sine;
+		}
+	}
+
+	@keyframes move-down {
+		from {
+			opacity: 0;
+			translate: 0 -50px;
+		}
+	}
+
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+	}
+
+	@keyframes intro {
+		from {
+			scale: 1.1;
+			opacity: 0;
 		}
 	}
 </style>
