@@ -4,7 +4,7 @@
 </script>
 
 <template>
-	<div class="login-window">
+	<kira-component class="login-window">
 		<div class="main">
 			<div class="title">
 				<TitleMain>登录</TitleMain>
@@ -19,7 +19,7 @@
 		<div class="cover-wrapper">
 			<LogoCover />
 		</div>
-	</div>
+	</kira-component>
 </template>
 
 <style scoped lang="scss">
