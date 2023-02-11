@@ -54,9 +54,11 @@
 			<div v-if="props.type === 'password'" v-ripple class="after-icon-wrapper" @click="showPassword = !showPassword">
 				<NuxtIcon :name="showPassword ? 'visibility' : 'visibility_off'" class="after-icon" />
 			</div>
-			<div v-if="illegal" class="after-icon-wrapper">
-				<NuxtIcon name="error" class="after-icon illegal-icon" />
-			</div>
+			<Transition name="scale">
+				<div v-if="illegal" class="after-icon-wrapper">
+					<NuxtIcon name="error" class="after-icon illegal-icon" />
+				</div>
+			</Transition>
 		</div>
 		<div v-if="size === 'large'" class="large-stripe"></div>
 		<div class="focus-stripe"></div>
@@ -241,5 +243,23 @@
 		&:nth-last-child {
 			margin-right: 4px;
 		}
+	}
+
+	.scale-enter-active {
+		transition: scale 300ms $ease-out-max;
+	}
+
+	.scale-leave-active {
+		transform: scale 300ms $ease-in-max;
+	}
+
+	.scale-enter-to,
+	.scale-leave-from {
+		scale: 1;
+	}
+
+	.scale-enter-from,
+	.scale-leave-to {
+		scale: 0;
 	}
 </style>

@@ -81,3 +81,10 @@ kira-component {
 	translate: -1rem;
 }
 // #endregion
+
+@font-face {
+	font-weight: bold;
+	font-family: TitleSmall;
+	font-style: italic;
+	src: url("assets/fonts/Montserrat-BoldItalic.woff") format("woff");
+}

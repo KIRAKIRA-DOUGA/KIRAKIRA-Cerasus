@@ -19,10 +19,12 @@
 
 <style scoped lang="scss">
 	button {
+		@include flex-center;
 		@include button-shadow;
 		@include radius-small;
 		display: inline-flex;
 		gap: 8px;
+		min-height: 36px;
 		padding: 8px 16px;
 		color: white;
 		vertical-align: middle;
