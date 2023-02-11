@@ -1,0 +1,7 @@
+/// 标题小号 Montserrat 字体粗斜体。
+@font-face {
+	font-weight: bold;
+	font-family: TitleSmall; // TODO: 将各字重字体补全，即可使用 Montserrat 名称。
+	font-style: italic;
+	src: url("assets/fonts/Montserrat-BoldItalic.woff") format("woff");
+}

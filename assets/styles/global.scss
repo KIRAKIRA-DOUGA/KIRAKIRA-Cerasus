@@ -1,4 +1,4 @@
-@import "./elements/hyperlink";
+@import "elements";
 
 *,
 *::before,
@@ -32,7 +32,7 @@ body {
 	color: c(text-color);
 	font-size: 14px;
 	background-color: c(main-bg);
-	transition: background $ease-out-max 250ms;
+	transition: background-color $ease-out-max 250ms;
 }
 
 a {
@@ -81,10 +81,3 @@ kira-component {
 	translate: -1rem;
 }
 // #endregion
-
-@font-face {
-	font-weight: bold;
-	font-family: TitleSmall;
-	font-style: italic;
-	src: url("assets/fonts/Montserrat-BoldItalic.woff") format("woff");
-}

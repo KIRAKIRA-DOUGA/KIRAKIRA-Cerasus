@@ -70,11 +70,13 @@
 	$base-height: 14px;
 	$thumb-size: 20px;
 	$focus-ring-thickness: 10px;
+	$component-class: ".toggle-switch";
 
-	.toggle-switch {
+	#{$component-class} {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		cursor: pointer;
 	}
 
 	.switch {
@@ -111,6 +113,11 @@
 			top: 0;
 			left: 0;
 			background-color: c(white);
+			cursor: w-resize;
+
+			&:active {
+				cursor: col-resize;
+			}
 
 			.on & {
 				left: $width - $thumb-size;
@@ -129,15 +136,15 @@
 				background-color: c(gray-2);
 			}
 
-			section:focus & {
+			#{$component-class}:focus & {
 				@include large-shadow-unchecked-focus;
 			}
 
-			section.on:focus & {
+			#{$component-class}.on:focus & {
 				@include large-shadow-focus;
 			}
 
-			section:active & {
+			#{$component-class}:active & {
 				transform: scale(calc(19 / 20));
 			}
 

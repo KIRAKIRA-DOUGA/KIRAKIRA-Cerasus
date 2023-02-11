@@ -51,7 +51,7 @@
 			<NuxtIcon v-if="icon" :name="icon" class="before-icon" />
 			<input v-model="value" :type="type" :placeholder="placeholder" :class="{ typed }" />
 			<label v-if="size === 'large'">{{ placeholder }}</label>
-			<div v-if="props.type === 'password'" v-ripple class="after-icon-wrapper" @click="showPassword = !showPassword">
+			<div v-if="props.type === 'password'" v-ripple class="after-icon-wrapper password-button" @click="showPassword = !showPassword">
 				<NuxtIcon :name="showPassword ? 'visibility' : 'visibility_off'" class="after-icon" />
 			</div>
 			<Transition name="scale">
@@ -243,6 +243,10 @@
 		&:nth-last-child {
 			margin-right: 4px;
 		}
+	}
+
+	.password-button {
+		cursor: pointer;
 	}
 
 	.scale-enter-active {

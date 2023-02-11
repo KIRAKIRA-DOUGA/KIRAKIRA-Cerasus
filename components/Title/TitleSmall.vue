@@ -13,7 +13,7 @@
 		color: c(accent);
 		font-weight: 700;
 		font-size: 30px;
-		font-family: TitleSmall, $fallback-fonts;
+		font-family: $english-logo-fonts;
 		font-style: italic;
 		text-transform: uppercase;
 		background-clip: text;

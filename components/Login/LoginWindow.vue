@@ -45,6 +45,7 @@
 
 		.login-button {
 			height: 44px;
+			font-family: $english-logo-fonts;
 			text-transform: uppercase;
 		}
 	}

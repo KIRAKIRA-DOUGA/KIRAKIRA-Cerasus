@@ -30,6 +30,7 @@
 		vertical-align: middle;
 		background: c(accent);
 		border: none;
+		cursor: pointer;
 		transition: $fallback-transitions, all $ease-out-back 250ms;
 		appearance: none;
 

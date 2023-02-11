@@ -69,7 +69,7 @@ function createJsDoc(doc: string, indent: number = 0) {
 
 let scssModule = `// stylelint-disable property-no-unknown
 
-@import "./eases";
+@import "eases";
 
 :export {
 `;
