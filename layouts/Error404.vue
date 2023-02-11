@@ -3,11 +3,22 @@
 		statusCode: number | string;
 		message: string;
 	}>();
+
+	const mouse = useMouse();
+	const gsensor = useDeviceOrientation(); // TODO: 加速度传感器（重力感应）在我的手机上目前测试有问题，问题未知。
+	const parallax = computed(() => {
+		const dimen = (x: number, y: number) => ({ x, y });
+		if (process.server) return dimen(0, 0);
+		return dimen(
+			(mouse.x.value / window.innerWidth) * 2 - 1,
+			mouse.y.value / window.innerHeight,
+		);
+	});
 </script>
 
 <template>
 	<main>
-		<div class="mountains">
+		<div class="mountains" :style="{ '--x': parallax.x, '--y': parallax.y }">
 			<div v-for="i in 11" :key="i">
 				<div></div>
 			</div>
@@ -16,7 +27,9 @@
 		<div class="content">
 			<h1>{{ statusCode }}</h1>
 			<p>{{ message }}</p>
-			<nuxt-link to="/" class="home-link">返回首页</nuxt-link>
+			<div>test pointer: {{ parallax.x }}, {{ parallax.y }}</div>
+			<div>test gsensor: {{ gsensor.alpha }}, {{ gsensor.beta }}, {{ gsensor.gamma }}</div>
+			<NuxtLink to="/" class="home-link">返回首页</NuxtLink>
 		</div>
 	</main>
 </template>
@@ -118,6 +131,47 @@
 		height: 100vh;
 	}
 
+	.mountains {
+		@include square(100%);
+		$height: 80vh;
+		$sqrt3: math.sqrt(3);
+		--x: 0;
+		--y: 0;
+		position: fixed;
+		left: calc((100vw / 11 - $height * 2 / $sqrt3) / 2);
+		display: flex;
+
+		> * {
+			@include square(100%);
+
+			> * {
+				position: absolute;
+				bottom: 0;
+				width: 0;
+				height: 0;
+				border-color: transparent;
+				border-style: solid;
+				border-width: 0 calc($height / $sqrt3) $height;
+				transition: none;
+				animation: move-up $mountain-animation-options;
+			}
+
+			@for $i from 1 through 11 {
+				$colors: #f06e8e, #f1587e, #f58ca6, #ec7f9a, #dd91a3, #ecd2d8;
+
+				&:nth-of-type(#{$i}) > * {
+					$j: $i - 1;
+					$layer: 5 - math.abs($j - 5);
+					--from: calc(175px * (5 - #{$layer}) / 5 + 20px);
+					bottom: calc(40% * $layer / -5);
+					z-index: 6 - $layer;
+					border-bottom-color: list.nth($colors, $layer + 1);
+					translate: calc(var(--x) * (1.1 - $layer / 5) * 60px) calc(var(--y) * (1.1 - $layer / 5) * 100px);
+				}
+			}
+		}
+	}
+
 	@media (min-width: 640px) {
 		.content {
 			h1 {
@@ -134,43 +188,6 @@
 		.home-link {
 			font-size: 1.25rem;
 			line-height: 1.75rem;
-		}
-	}
-
-	.mountains {
-		@include square(100%);
-		$height: 80vh;
-		$sqrt3: math.sqrt(3);
-		position: fixed;
-		left: calc((100vw / 11 - $height * 2 / $sqrt3) / 2);
-		display: flex;
-
-		> * {
-			@include square(100%);
-
-			> * {
-				position: absolute;
-				bottom: 0;
-				width: 0;
-				height: 0;
-				border-color: transparent;
-				border-style: solid;
-				border-width: 0 calc($height / $sqrt3) $height;
-				animation: move-up $mountain-animation-options;
-			}
-
-			@for $i from 1 through 11 {
-				$colors: #f06e8e, #f1587e, #f58ca6, #ec7f9a, #dd91a3, #ecd2d8;
-
-				&:nth-of-type(#{$i}) > * {
-					$j: $i - 1;
-					$layer: 5 - math.abs($j - 5);
-					--from: calc(175px * (5 - #{$layer}) / 5 + 20px);
-					bottom: calc(40% * $layer / -5);
-					z-index: 6 - $layer;
-					border-bottom-color: list.nth($colors, $layer + 1);
-				}
-			}
 		}
 	}
 
