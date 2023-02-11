@@ -9,9 +9,13 @@
 	const parallax = computed(() => {
 		const dimen = (x: number, y: number) => ({ x, y });
 		if (process.server) return dimen(0, 0);
-		return dimen(
+		if (gsensor.beta.value === null) return dimen(
 			(mouse.x.value / window.innerWidth) * 2 - 1,
 			mouse.y.value / window.innerHeight,
+		);
+		return dimen(
+			(gsensor.gamma.value ?? 0) / 45,
+			1 - clamp(gsensor.beta.value ?? 90, 0, 90) / 90,
 		);
 	});
 </script>
