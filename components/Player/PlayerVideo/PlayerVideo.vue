@@ -1,6 +1,7 @@
 <script setup lang="ts">
 	import mediainfo from "mediainfo.js";
 	import { basename } from "path-browserify";
+	import { Menu } from "#components";
 
 	const props = defineProps<{
 		src: string;
@@ -17,6 +18,7 @@
 	const video = ref<HTMLVideoElement>();
 	const videoPlayer = ref<HTMLElement>();
 	const { isFullscreen: fullScreen, toggle } = useFullscreen(video);
+	const menu = ref();
 
 	type MediaInfo = {
 		[type: string]: Record<string, unknown>;
@@ -97,6 +99,8 @@
 		await nextTick();
 		isTimeUpdating.value = false;
 	}
+
+	const showMenu = (e: MouseEvent) => menu.value?.show(e);
 </script>
 
 <template>
@@ -124,7 +128,7 @@
 			@canplay="onCanPlay"
 			@click="playing = !playing"
 			@dblclick="toggle"
-			@contextmenu.prevent="getInfo(src)"
+			@contextmenu.prevent="showMenu"
 		>
 		</video>
 		<PlayerVideoController
@@ -135,6 +139,9 @@
 			:duration="duration"
 			:toggleFullScreen="toggle"
 		/>
+		<Menu ref="menu">
+			<MenuItem @click="getInfo(src)">查看视频详细信息</MenuItem>
+		</Menu>
 	</kira-component>
 </template>
 
