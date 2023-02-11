@@ -10,11 +10,11 @@
 				<TitleMain>登录</TitleMain>
 				<TitleSmall>Login</TitleSmall>
 			</div>
-			<form>
+			<div class="form">
 				<TextBox v-model="loginEmail" type="email" placeholder="邮箱" size="large" icon="email" />
 				<TextBox v-model="loginPassword" type="password" placeholder="密码" size="large" icon="lock" />
 				<Button class="login-button">Link Start!</Button>
-			</form>
+			</div>
 		</div>
 		<div class="cover-wrapper">
 			<LogoCover />
@@ -39,12 +39,13 @@
 		}
 	}
 
-	form {
+	.form {
 		@include flex-block;
 		gap: 24px;
 
 		.login-button {
 			height: 44px;
+			text-transform: uppercase;
 		}
 	}
 
