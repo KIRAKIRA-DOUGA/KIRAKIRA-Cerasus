@@ -27,6 +27,7 @@
 		min-height: 36px;
 		padding: 8px 16px;
 		color: white;
+		font-size: inherit;
 		vertical-align: middle;
 		background: c(accent);
 		border: none;

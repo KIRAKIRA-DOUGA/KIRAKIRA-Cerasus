@@ -163,6 +163,7 @@
 		margin: 0;
 		padding: 0;
 		color: c(text-color);
+		font-size: inherit;
 		text-indent: $front-indent;
 		background: transparent;
 		border: 0;

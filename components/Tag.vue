@@ -39,6 +39,7 @@
 		display: inline-flex;
 		padding: 6px 12px;
 		overflow: hidden;
+		font-size: inherit;
 		background-color: c(text-color, 5%);
 		cursor: pointer;
 
