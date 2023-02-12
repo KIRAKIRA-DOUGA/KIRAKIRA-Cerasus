@@ -1,7 +1,19 @@
 /// 标题小号 Montserrat 字体粗斜体。
-@font-face {
-	font-weight: bold;
-	font-family: TitleSmall; // TODO: 将各字重字体补全，即可使用 Montserrat 名称。
-	font-style: italic;
-	src: url("assets/fonts/Montserrat-BoldItalic.woff") format("woff");
+
+@for $weight from 1 to 9 {
+	@font-face {
+		font-weight: $weight * 100;
+		font-family: Montserrat;
+		font-style: normal;
+		src: url("assets/fonts/Montserrat/#{$weight * 100}.woff2") format("woff2");
+	}
+}
+
+@for $weight from 1 to 9 {
+	@font-face {
+		font-weight: $weight * 100;
+		font-family: Montserrat;
+		font-style: italic;
+		src: url("assets/fonts/Montserrat/#{$weight * 100}_italic.woff2") format("woff2");
+	}
 }
