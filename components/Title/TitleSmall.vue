@@ -10,6 +10,7 @@
 
 <style scoped lang="scss">
 	.sub {
+		margin-bottom: 1px;
 		color: c(accent);
 		font-weight: 700;
 		font-size: 30px;
@@ -17,8 +18,8 @@
 		font-style: italic;
 		text-transform: uppercase;
 		background-clip: text;
+		opacity: 0.4;
 		-webkit-text-stroke-width: 1px;
 		-webkit-text-fill-color: transparent;
-		opacity: 0.4;
 	}
 </style>
