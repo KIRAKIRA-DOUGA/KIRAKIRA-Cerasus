@@ -10,6 +10,10 @@
 
 	const emits = defineEmits<{
 		(event: "update:modelValue", value: number): void;
+		/** 当滑块拖动时即触发事件。 */
+		(event: "changing", value: number): void;
+		/** 当滑块拖动完成抬起后才触发事件。 */
+		(event: "changed", value: number): void;
 	}>();
 
 	const errorInfo = `取值范围应在 [${props.min}, ${props.max}] 其中，当前值为 ${props.modelValue}。`;
@@ -35,10 +39,12 @@
 			const position = clamp(e.pageX - left - x, 0, max);
 			const value = map(position, 0, max, props.min, props.max);
 			emits("update:modelValue", value);
+			emits("changing", value);
 		};
 		const pointerUp = () => { // BUG: 触摸屏抬起事件有点问题。
 			document.removeEventListener("pointermove", pointerMove);
 			document.removeEventListener("pointerup", pointerUp);
+			emits("changed", props.modelValue);
 		};
 		document.addEventListener("pointermove", pointerMove);
 		document.addEventListener("pointerup", pointerUp);

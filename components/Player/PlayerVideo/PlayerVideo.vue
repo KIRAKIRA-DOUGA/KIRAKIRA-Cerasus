@@ -18,7 +18,7 @@
 	const video = ref<HTMLVideoElement>();
 	const videoPlayer = ref<HTMLElement>();
 	const { isFullscreen: fullScreen, toggle } = useFullscreen(video);
-	const menu = ref();
+	const menu = ref/* <InstanceType<typeof Menu>> */();
 
 	type MediaInfo = {
 		[type: string]: Record<string, unknown>;

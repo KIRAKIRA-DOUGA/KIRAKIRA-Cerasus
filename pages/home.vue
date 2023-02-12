@@ -3,6 +3,7 @@
 	import animationData from "lotties/spinner-dev1.json";
 	import { LogoTextFormType } from "components/Logo/LogoText.vue";
 	import Menu from "components/Menu/Menu.vue";
+	import beepSrc from "assets/audios/NOVA 2022.1 Alert Quick.ogg";
 
 	const page = ref(1);
 	const pages = ref(99);
@@ -17,13 +18,14 @@
 	const availableLocales = computed(() => (locales.value as LocaleObject[]).filter(i => i.code !== currentLocale.value));
 	const timeoutId = ref<NodeJS.Timeout>();
 	const isTagChecked = ref(false);
-	const sliderValue = ref(0);
+	const sliderValue = ref(100);
 	const selectedTab = ref("all");
 	const logoTextForm = ref<LogoTextFormType>("full");
 	const showDialog = ref(false);
 	const inputValue = ref("");
-	const menu = ref(); // TODO: Vue 组合式 API 使用 InstanceType 必定会报错，等 Vue 自行解决。
+	const menu = ref/* <InstanceType<typeof Menu>> */(); // TODO: Vue 组合式 API 使用 InstanceType 必定会报错，等 Vue 自行解决。
 	const showMenu = () => menu.value?.show();
+	const beep = ref<HTMLAudioElement>();
 
 	/**
 	 * 单击按钮事件。
@@ -33,6 +35,17 @@
 		isClicked.value = true;
 		await new Promise(resolve => (timeoutId.value = setTimeout(resolve, 2000)));
 		isClicked.value = false;
+	}
+
+	/**
+	 * 滑动滑动条完成后事件。
+	 * @param value - 滑动条数值。
+	 */
+	function onSlided(value: number) {
+		if (!beep.value) return;
+		beep.value.volume = value / 100;
+		beep.value.currentTime = 0;
+		beep.value.play();
 	}
 
 	const goToVideo = () => {
@@ -88,7 +101,8 @@
 			<!-- <Lottie loop autoplay :animationData="animationData" /> -->
 			<br />
 			<Tag v-model="isTagChecked">{{ t.tag }}</Tag>
-			<SlideBar v-model="sliderValue" />
+			<SlideBar v-model="sliderValue" @changed="onSlided" />
+			<audio ref="beep" :src="beepSrc"></audio>
 			<TabBar v-model="selectedTab">
 				<TabItem id="all">{{ t.all }}</TabItem>
 				<TabItem id="video">{{ t.video }}</TabItem>
