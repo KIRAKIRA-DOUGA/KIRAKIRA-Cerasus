@@ -15,7 +15,7 @@
 				<TextBox v-model="loginPassword" type="password" placeholder="密码" size="large" icon="lock" />
 				<Button class="login-button">Link Start!</Button>
 			</div>
-			<div class="more-action">
+			<div class="action">
 				<Button class="flat">忘记密码</Button>
 				<!-- TODO: button的:class不生效修复之后将这里的class="flat"改为flat -->
 				<Button class="flat">注册新账号</Button>
@@ -69,10 +69,10 @@
 		@include card-in-card-shadow;
 	}
 
-	.more-action {
+	.action {
 		display: flex;
 		justify-content: space-between;
-		margin-top: 26px;
+		margin-top: 24px;
 
 		button.flat {
 			&:nth-child(1) {
