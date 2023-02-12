@@ -2,6 +2,7 @@
 	const props = defineProps<{
 		icon?: string;
 		iconBehind?: boolean;
+		flat?: boolean;
 	}>();
 
 	const emits = defineEmits<{
@@ -10,7 +11,8 @@
 </script>
 
 <template>
-	<button v-ripple @click="emits('click')">
+	<button v-ripple :class="flat" @click="emits('click')">
+		<!-- FIXME: 这里:class怎么没效果 -->
 		<NuxtIcon v-if="icon && !iconBehind" :name="icon" class="icon" />
 		<slot></slot>
 		<NuxtIcon v-if="icon && iconBehind" :name="icon" class="icon" />
@@ -28,6 +30,7 @@
 		padding: 8px 16px;
 		color: white;
 		font-size: inherit;
+		letter-spacing: 0.05em;
 		vertical-align: middle;
 		background: c(accent);
 		border: none;
@@ -58,6 +61,17 @@
 
 		&:hover:focus {
 			@include button-shadow-hover-focus;
+		}
+
+		&.flat {
+			color: c(accent);
+			background: transparent;
+			box-shadow: none !important;
+
+			&:hover,
+			&:focus {
+				background: c(accent, 8%);
+			}
 		}
 	}
 
