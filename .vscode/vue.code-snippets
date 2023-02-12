@@ -1,6 +1,6 @@
 {
 	"初始化模板": {
-		"prefix": "init",
+		"prefix": ["vue", "init"],
 		"body": [
 			"<script setup lang=\"ts\">",
 			"\t$0",

@@ -22,6 +22,7 @@
 	 */
 	async function show(e?: MouseEvent) {
 		const context = isContextMenu.value = !!e;
+		await nextTick();
 		if (!context) location.value = [0, 0];
 		else location.value = [e.clientX, e.clientY];
 		shown.value = true;

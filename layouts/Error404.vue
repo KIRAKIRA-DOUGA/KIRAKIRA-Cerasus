@@ -18,10 +18,37 @@
 			1 - clamp(gsensor.beta.value ?? 90, 0, 90) / 90,
 		);
 	});
+	const timestamp = useTimestamp({ interval: 1_000 });
+	const dayNight = ref<HTMLDivElement>();
+	const rotationDeg = computed(() => {
+		const date = new Date(timestamp.value);
+		let deg = date.getMilliseconds(); // ms
+		deg = deg / 1000 + date.getSeconds(); // s
+		deg = deg / 60 + date.getMinutes(); // min
+		deg = deg / 60 + date.getHours(); // h
+		deg = deg / 24 * 360; // deg
+		return deg;
+	});
+	const inited = ref(false);
+
+	onMounted(() => {
+		inited.value = true;
+		if (!dayNight.value) return;
+		const deg = rotationDeg.value;
+		const PRE_DEG = 10;
+		dayNight.value.animate([
+			{ rotate: deg - PRE_DEG + "deg", opacity: 0 },
+			{ rotate: deg + "deg", opacity: 1 },
+		], { duration: 500, easing: eases.easeOutMax });
+	});
 </script>
 
 <template>
 	<main>
+		<div ref="dayNight" class="day-night" :hidden="!inited" :style="{ rotate: rotationDeg + 'deg' }">
+			<LogoMoon />
+			<LogoSun />
+		</div>
 		<div class="mountains" :style="{ '--x': parallax.x, '--y': parallax.y }">
 			<div v-for="i in 11" :key="i">
 				<div></div>
@@ -31,8 +58,9 @@
 		<div class="content">
 			<h1>{{ statusCode }}</h1>
 			<p>{{ message }}</p>
-			<div>test pointer: {{ parallax.x }}, {{ parallax.y }}</div>
+			<!-- <div>test pointer: {{ parallax.x }}, {{ parallax.y }}</div>
 			<div>test gsensor: {{ gsensor.alpha }}, {{ gsensor.beta }}, {{ gsensor.gamma }}</div>
+			<div>{{ rotationDeg }}</div> -->
 			<NuxtLink to="/" class="home-link">返回首页</NuxtLink>
 		</div>
 	</main>
@@ -173,6 +201,23 @@
 					translate: calc(var(--x) * (1.1 - $layer / 5) * 60px) calc(var(--y) * (1.1 - $layer / 5) * 100px);
 				}
 			}
+		}
+	}
+
+	.day-night {
+		@include square(1.5 * 100vh);
+		@include flex-block;
+		@include flex-center;
+		position: fixed;
+		top: 0.25 * 100vh;
+		left: 50%;
+		translate: -50%;
+		justify-content: space-between;
+		transition: none;
+
+		> * {
+			@include square(calc(100vmin / 5));
+			fill: c(accent-20);
 		}
 	}
 
