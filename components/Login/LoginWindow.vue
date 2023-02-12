@@ -15,6 +15,11 @@
 				<TextBox v-model="loginPassword" type="password" placeholder="密码" size="large" icon="lock" />
 				<Button class="login-button">Link Start!</Button>
 			</div>
+			<div class="more-action">
+				<Button class="flat">忘记密码</Button>
+				<!-- TODO: button的:class不生效修复之后将这里的class="flat"改为flat -->
+				<Button class="flat">注册新账号</Button>
+			</div>
 		</div>
 		<div class="cover-wrapper">
 			<LogoCover />
@@ -29,6 +34,7 @@
 		display: flex;
 		width: 800px;
 		height: 400px;
+		overflow: hidden;
 		background-color: c(inner-color-85, 50%);
 
 		.main {
@@ -45,6 +51,7 @@
 
 		.login-button {
 			height: 44px;
+			font-weight: 600;
 			font-family: $english-logo-fonts;
 			text-transform: uppercase;
 		}
@@ -56,5 +63,25 @@
 		gap: 10px;
 		align-items: flex-end;
 		margin-bottom: 40px;
+	}
+
+	.cover-wrapper {
+		@include card-in-card-shadow;
+	}
+
+	.more-action {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 26px;
+
+		button.flat {
+			&:nth-child(1) {
+				margin-left: -16px;
+			}
+
+			&:nth-last-child(1) {
+				margin-right: -16px;
+			}
+		}
 	}
 </style>
