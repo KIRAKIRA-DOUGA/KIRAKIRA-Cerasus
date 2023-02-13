@@ -3,7 +3,7 @@
 	"type": "module",
 	"scripts": {
 		"build": "nuxt build",
-		"dev": "nuxt dev --https --ssl-cert server/server.pem --ssl-key server/server-key.pem",
+		"dev": "nuxt dev --https --ssl-cert server/server.cer --ssl-key server/server.key",
 		"generate": "nuxt generate",
 		"preview": "nuxt preview",
 		"postinstall": "nuxt prepare",
