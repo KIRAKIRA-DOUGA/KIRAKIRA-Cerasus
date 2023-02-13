@@ -71,7 +71,7 @@
 				background: c(accent-hover, 8%);
 			}
 
-			&:focus:not(:hover) { // TODO: focus 样式感觉要重制一下，和 hover 样式有些违和。
+			&:focus:not(:hover) { // TODO: focus 样式感觉要重制一下，和 hover 样式相同有些违和。
 				background: c(accent-focus, 8%);
 			}
 
