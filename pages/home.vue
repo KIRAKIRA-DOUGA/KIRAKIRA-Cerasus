@@ -23,7 +23,7 @@
 	const logoTextForm = ref<LogoTextFormType>("full");
 	const showDialog = ref(false);
 	const inputValue = ref("");
-	const menu = ref/* <InstanceType<typeof Menu>> */(); // TODO: Vue 组合式 API 使用 InstanceType 必定会报错，等 Vue 自行解决。
+	const menu = ref<ReturnType<typeof Menu>>();
 	const showMenu = () => menu.value?.show();
 	const beep = ref<HTMLAudioElement>();
 
