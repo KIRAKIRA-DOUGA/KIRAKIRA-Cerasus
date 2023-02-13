@@ -18,7 +18,8 @@
 	const availableLocales = computed(() => (locales.value as LocaleObject[]).filter(i => i.code !== currentLocale.value));
 	const timeoutId = ref<NodeJS.Timeout>();
 	const isTagChecked = ref(false);
-	const sliderValue = ref(100);
+	const volume = ref(100);
+	const pitch = ref(0);
 	const selectedTab = ref("all");
 	const logoTextForm = ref<LogoTextFormType>("full");
 	const showDialog = ref(false);
@@ -39,13 +40,16 @@
 
 	/**
 	 * 滑动滑动条完成后事件。
-	 * @param value - 滑动条数值。
+	 * @param _value - 滑动条数值。
 	 */
-	function onSlided(value: number) {
-		if (!beep.value) return;
-		beep.value.volume = value / 100;
-		beep.value.currentTime = 0;
-		beep.value.play();
+	function onSlided(_value: number) {
+		const b = beep.value;
+		if (!b) return;
+		b.currentTime = 0;
+		b.play();
+		b.preservesPitch = false;
+		b.volume = (volume.value / 100) ** 2;
+		b.playbackRate = 2 ** (pitch.value / 12);
 	}
 
 	const goToVideo = () => {
@@ -101,7 +105,9 @@
 			<!-- <Lottie loop autoplay :animationData="animationData" /> -->
 			<br />
 			<Tag v-model="isTagChecked">{{ t.tag }}</Tag>
-			<SlideBar v-model="sliderValue" @changed="onSlided" />
+			<br />
+			音量<SlideBar v-model="volume" @changed="onSlided" />
+			音调<SlideBar v-model="pitch" :min="-24" :max="24" @changed="onSlided" />
 			<audio ref="beep" :src="beepSrc"></audio>
 			<TabBar v-model="selectedTab">
 				<TabItem id="all">{{ t.all }}</TabItem>
