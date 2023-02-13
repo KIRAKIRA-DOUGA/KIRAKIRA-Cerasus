@@ -1,11 +1,13 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 
-import CopyPlugin from "copy-webpack-plugin";
 import { resolve } from "path";
 import styleResources from "./helpers/style-resources";
-const wasmFile = resolve("node_modules/mediainfo.js/dist/MediaInfoModule.wasm");
+/* import CopyPlugin from "copy-webpack-plugin";
+const wasmFile = resolve("node_modules/mediainfo.js/dist/MediaInfoModule.wasm"); */
 type _NuxtConfig = Parameters<typeof defineNuxtConfig>[0] & Record<string, object | string>; // 还敢报错吗？
 // TODO: 水合异常，这是 nuxt 那边的问题，详情请关注：https://github.com/nuxt/nuxt/issues/18635
+const res = (...path: string[]) => resolve(__dirname, ...path);
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 export default defineNuxtConfig({
 	plugins: [
@@ -25,19 +27,19 @@ export default defineNuxtConfig({
 		// "@nuxtjs/color-mode", // 这个已经重写了，不用开启。
 	],
 	alias: {
-		styles: resolve(__dirname, "./assets/styles"),
-		components: resolve(__dirname, "./components"),
-		composables: resolve(__dirname, "./composables"),
-		layouts: resolve(__dirname, "./layouts"),
-		pages: resolve(__dirname, "./pages"),
-		plugins: resolve(__dirname, "./plugins"),
-		static: resolve(__dirname, "./public/static"),
-		lotties: resolve(__dirname, "./assets/lotties"),
-		modules: resolve(__dirname, "./modules"),
-		content: resolve(__dirname, "./content"),
-		middleware: resolve(__dirname, "./middleware"),
-		server: resolve(__dirname, "./server"),
-		helpers: resolve(__dirname, "./helpers"),
+		styles: res("assets/styles"),
+		components: res("components"),
+		composables: res("composables"),
+		layouts: res("layouts"),
+		pages: res("pages"),
+		plugins: res("plugins"),
+		static: res("public/static"),
+		lotties: res("assets/lotties"),
+		modules: res("modules"),
+		content: res("content"),
+		middleware: res("middleware"),
+		server: res("server"),
+		helpers: res("helpers"),
 	},
 	css: [
 		"styles/global.scss",
@@ -66,7 +68,7 @@ export default defineNuxtConfig({
 			},
 		},
 	},
-	build: {
+	/* build: {
 		plugins: [
 			new CopyPlugin({
 				patterns: [{
@@ -78,7 +80,7 @@ export default defineNuxtConfig({
 				}],
 			}),
 		],
-	},
+	}, */
 	vue: {
 		compilerOptions: {
 			isCustomElement(tag) {
@@ -119,12 +121,7 @@ export default defineNuxtConfig({
 	},
 	runtimeConfig: {
 		public: {
-			siteUrl: "http://localhost:3000",
+			siteUrl: "https://localhost:3000",
 		},
-	},
-	imports: {
-		dirs: [
-			"#components",
-		],
 	},
 } as _NuxtConfig);
