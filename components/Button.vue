@@ -71,8 +71,13 @@
 				background: c(accent-hover, 8%);
 			}
 
-			&:focus:not(:hover) { // TODO: focus 样式感觉要重制一下，和 hover 样式相同有些违和。
-				background: c(accent-focus, 8%);
+			&:focus {
+				box-shadow: 0 0 0 3px c(accent-focus, 50%) !important;
+			}
+
+			&:hover:focus {
+				background: c(accent-hover, 8%);
+				box-shadow: 0 0 0 3px c(accent-focus, 50%) !important;
 			}
 
 			&[disabled] {
