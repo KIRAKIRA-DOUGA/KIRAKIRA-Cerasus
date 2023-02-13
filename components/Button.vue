@@ -11,7 +11,7 @@
 </script>
 
 <template>
-	<button v-ripple :class="{ secondary }" @click="emits('click')">
+	<button v-ripple type="button" :class="{ secondary }" @click="emits('click')">
 		<NuxtIcon v-if="icon && !iconBehind" :name="icon" class="icon" />
 		<slot></slot>
 		<NuxtIcon v-if="icon && iconBehind" :name="icon" class="icon" />

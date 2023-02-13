@@ -10,7 +10,7 @@
 </script>
 
 <template>
-	<button v-ripple @click="emits('click')">
+	<button v-ripple type="button" @click="emits('click')">
 		<NuxtIcon v-if="icon" :name="icon" class="icon" />
 		<span v-if="text">{{ text }}</span>
 	</button>
