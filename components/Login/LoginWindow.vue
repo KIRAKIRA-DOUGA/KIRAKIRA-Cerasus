@@ -1,6 +1,6 @@
 <script setup lang="ts">
-	const loginEmail = ref("");
-	const loginPassword = ref("");
+	const email = ref("");
+	const password = ref("");
 </script>
 
 <template>
@@ -11,14 +11,13 @@
 				<TitleSmall>Login</TitleSmall>
 			</div>
 			<div class="form">
-				<TextBox v-model="loginEmail" type="email" placeholder="邮箱" size="large" icon="email" />
-				<TextBox v-model="loginPassword" type="password" placeholder="密码" size="large" icon="lock" />
+				<TextBox v-model="email" type="email" placeholder="邮箱" size="large" icon="email" />
+				<TextBox v-model="password" type="password" placeholder="密码" size="large" icon="lock" />
 				<Button class="login-button">Link Start!</Button>
 			</div>
 			<div class="action">
-				<Button class="flat">忘记密码</Button>
-				<!-- TODO: button的:class不生效修复之后将这里的class="flat"改为flat -->
-				<Button class="flat">注册新账号</Button>
+				<Button secondary>忘记了密码</Button>
+				<Button secondary>没有账号？注册</Button>
 			</div>
 		</div>
 		<div class="cover-wrapper">
@@ -39,6 +38,7 @@
 
 		.main {
 			@include flex-block;
+			justify-content: space-between;
 			width: 400px;
 			height: 100%;
 			padding: 35px 45px;
@@ -62,7 +62,6 @@
 		flex-direction: row;
 		gap: 10px;
 		align-items: flex-end;
-		margin-bottom: 40px;
 	}
 
 	.cover-wrapper {
@@ -72,16 +71,6 @@
 	.action {
 		display: flex;
 		justify-content: space-between;
-		margin-top: 24px;
-
-		button.flat {
-			&:nth-child(1) {
-				margin-left: -16px;
-			}
-
-			&:nth-last-child(1) {
-				margin-right: -16px;
-			}
-		}
+		margin: 0 -16px;
 	}
 </style>

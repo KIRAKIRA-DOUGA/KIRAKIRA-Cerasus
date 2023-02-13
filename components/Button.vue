@@ -2,7 +2,7 @@
 	const props = defineProps<{
 		icon?: string;
 		iconBehind?: boolean;
-		flat?: boolean;
+		secondary?: boolean;
 	}>();
 
 	const emits = defineEmits<{
@@ -11,8 +11,7 @@
 </script>
 
 <template>
-	<button v-ripple :class="flat" @click="emits('click')">
-		<!-- FIXME: 这里:class怎么没效果 -->
+	<button v-ripple :class="{ secondary }" @click="emits('click')">
 		<NuxtIcon v-if="icon && !iconBehind" :name="icon" class="icon" />
 		<slot></slot>
 		<NuxtIcon v-if="icon && iconBehind" :name="icon" class="icon" />
@@ -63,14 +62,21 @@
 			@include button-shadow-hover-focus;
 		}
 
-		&.flat {
+		&.secondary {
 			color: c(accent);
 			background: transparent;
 			box-shadow: none !important;
 
-			&:hover,
-			&:focus {
-				background: c(accent, 8%);
+			&:hover {
+				background: c(accent-hover, 8%);
+			}
+
+			&:focus:not(:hover) { // TODO: focus 样式感觉要重制一下，和 hover 样式有些违和。
+				background: c(accent-focus, 8%);
+			}
+
+			&[disabled] {
+				color: c(accent-disabled);
 			}
 		}
 	}
