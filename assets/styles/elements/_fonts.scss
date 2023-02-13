@@ -1,19 +1,13 @@
-/// 标题小号 Montserrat 字体粗斜体。
+/// 英文标题字体 Montserrat。
+@for $_weight from 1 through 9 {
+	$weight: $_weight * 100;
 
-@for $weight from 1 to 9 {
-	@font-face {
-		font-weight: $weight * 100;
-		font-family: Montserrat;
-		font-style: normal;
-		src: url("assets/fonts/Montserrat/#{$weight * 100}.woff2") format("woff2");
-	}
-}
-
-@for $weight from 1 to 9 {
-	@font-face {
-		font-weight: $weight * 100;
-		font-family: Montserrat;
-		font-style: italic;
-		src: url("assets/fonts/Montserrat/#{$weight * 100}_italic.woff2") format("woff2");
+	@for $_style from 1 through 2 {
+		@font-face {
+			font-weight: $weight;
+			font-family: Montserrat;
+			font-style: if($_style == 1, normal, italic);
+			src: url("assets/fonts/Montserrat/#{$weight}#{if($_style == 1, '', _italic)}.woff2") format("woff2");
+		}
 	}
 }
