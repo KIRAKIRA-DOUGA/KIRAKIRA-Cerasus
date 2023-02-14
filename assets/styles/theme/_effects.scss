@@ -62,6 +62,10 @@
 	box-shadow: 0 1px 6px c(accent, 30%), 0 0 0 10px c(accent-focus, 50%);
 }
 
+@mixin button-shadow-focus-only {
+	box-shadow: 0 0 0 3px c(accent-focus, 50%);
+}
+
 @mixin sidebar-shadow {
 	box-shadow: 0 0 24px c(accent, 30%);
 }

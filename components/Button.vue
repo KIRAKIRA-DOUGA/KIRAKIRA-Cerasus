@@ -65,19 +65,22 @@
 		&.secondary {
 			color: c(accent);
 			background: transparent;
-			box-shadow: none !important;
+			box-shadow: none;
 
 			&:hover {
 				background: c(accent-hover, 8%);
 			}
 
-			&:focus {
-				box-shadow: 0 0 0 3px c(accent-focus, 50%) !important;
+			&:active {
+				background: c(accent-pressed, 8%);
 			}
 
-			&:hover:focus {
-				background: c(accent-hover, 8%);
-				box-shadow: 0 0 0 3px c(accent-focus, 50%) !important;
+			&:focus {
+				box-shadow: none;
+			}
+
+			&:focus-visible {
+				@include button-shadow-focus-only;
 			}
 
 			&[disabled] {
