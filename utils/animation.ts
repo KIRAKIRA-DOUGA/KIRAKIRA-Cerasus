@@ -72,6 +72,6 @@ export function animateHeight(
 		{ height: endHeight + "px" },
 	], {
 		duration,
-		easing: eases.easeOutMax,
+		easing: eases.easeOutSmooth,
 	}).finished;
 }
