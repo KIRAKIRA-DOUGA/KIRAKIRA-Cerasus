@@ -52,7 +52,7 @@
 		width: 800px;
 		height: 400px;
 		overflow: hidden;
-		background-color: c(inner-color-85, 50%);
+		background-color: c(inner-color-85, 75%);
 		transition-duration: 500ms;
 
 		.main {
