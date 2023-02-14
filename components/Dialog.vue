@@ -24,8 +24,7 @@
 </script>
 
 <template>
-	<Mask v-model="open" />
-	<ClientOnlyTeleport to="body">
+	<Mask v-model="open" position="center top">
 		<Transition name="dialog">
 			<div v-if="open" ref="dialog" class="dialog">
 				<div class="body">
@@ -49,7 +48,7 @@
 				</div>
 			</div>
 		</Transition>
-	</ClientOnlyTeleport>
+	</Mask>
 </template>
 
 <style scoped lang="scss">
@@ -58,12 +57,7 @@
 	$padding: 24px;
 
 	.dialog {
-		position: fixed;
-		top: 0;
-		left: 50%;
-		z-index: 50;
 		transform-origin: center top;
-		translate: -50%;
 		transition-duration: 500ms;
 
 		&.dialog-leave-active {

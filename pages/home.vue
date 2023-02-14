@@ -127,7 +127,6 @@
 					<MenuItem icon="delete">删除</MenuItem>
 				</Menu>
 			</div>
-			<LoginWindow />
 			<RadioButton v-model="logoTextForm" value="hidden">{{ t.logoHidden }}</RadioButton>
 			<RadioButton v-model="logoTextForm" value="half">{{ t.logoHalf }}</RadioButton>
 			<RadioButton v-model="logoTextForm" value="full">{{ t.logoShow }}</RadioButton>

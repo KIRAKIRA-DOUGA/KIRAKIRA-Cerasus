@@ -4,6 +4,7 @@
 	const logoTextForm = ref<LogoTextFormType>("hidden");
 	const showStripes = ref(false);
 	const ready = ref(false);
+	const showLogin = ref(false);
 
 	onMounted(() => {
 		/**
@@ -42,10 +43,12 @@
 		</Transition>
 
 		<div class="bottom icons">
-			<SideBarButton v-i="7" title="我的" icon="person" />
+			<SideBarButton v-i="7" title="我的" icon="person" @click="showLogin = true" />
 			<SideBarButton v-i="8" title="消息" icon="email" />
 			<SideBarButton v-i="9" title="设置" icon="settings" to="/settings" />
 		</div>
+
+		<LoginWindow v-model="showLogin" />
 	</div>
 </template>
 
@@ -55,7 +58,7 @@
 	.sidebar {
 		@include sidebar-shadow;
 		@include flex-center;
-		z-index: 40;
+		z-index: 30;
 		flex-direction: column;
 		justify-content: space-between;
 		width: $sidebar-width;
