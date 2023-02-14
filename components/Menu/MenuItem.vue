@@ -61,7 +61,7 @@
 		}
 
 		.icon-placeholder {
-			width: $icon-size;
+			@include square($icon-size);
 		}
 
 		&:hover {
