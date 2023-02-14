@@ -48,11 +48,12 @@
 		@include radius-small;
 		@include flex-center;
 		flex-shrink: 0;
-		gap: $menu-padding;
+		gap: $menu-padding + 2px;
 		justify-content: flex-start;
 		width: max-content;
+		height: 36px; // TODO: 强行指定菜单项目高度可以临时用来解决跳动问题，解决高度动画跳动问题后去掉这个。
 		margin: 0 $menu-padding;
-		padding: 9px 12px;
+		padding: 8px 16px 8px 14px;
 		cursor: pointer;
 
 		.icon {
@@ -66,7 +67,7 @@
 		}
 
 		&:hover {
-			padding-right: 8px;
+			padding-right: 14px;
 			padding-left: 16px;
 			background-color: c(text-color, 5%);
 		}

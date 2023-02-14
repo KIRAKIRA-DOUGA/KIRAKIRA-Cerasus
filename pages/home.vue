@@ -120,9 +120,9 @@
 			<div>
 				<Button :style="{ marginBottom: '1rem' }" @click="showMenu">显示菜单</Button>
 				<Menu ref="menu">
-					<MenuItem>复制</MenuItem>
-					<MenuItem>剪切</MenuItem>
-					<MenuItem>粘贴</MenuItem>
+					<MenuItem icon="copy">复制</MenuItem>
+					<MenuItem icon="cut">剪切</MenuItem>
+					<MenuItem icon="paste">粘贴</MenuItem>
 					<hr />
 					<MenuItem icon="delete">删除</MenuItem>
 				</Menu>
