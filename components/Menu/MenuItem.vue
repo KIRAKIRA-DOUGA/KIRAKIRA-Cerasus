@@ -60,6 +60,7 @@
 			font-size: $icon-size;
 		}
 
+		.icon,
 		.icon-placeholder {
 			@include square($icon-size);
 		}
