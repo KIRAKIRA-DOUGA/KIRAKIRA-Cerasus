@@ -51,7 +51,7 @@
 <style scoped lang="scss">
 	.mask {
 		@include full-screen(fixed);
-		$slot: "+ :deep(*)";
+		$slot: "+ :slotted(*)";
 
 		&:not(.static) {
 			background-color: c(main-bg, 40%);
@@ -66,6 +66,7 @@
 		&,
 		& #{$slot} {
 			z-index: var(--z-index);
+			// z-index: v-bind(zIndex); // TODO: v-bind 在 Teleport 内部不可用。请时刻关注 Vue 的更新：https://github.com/vuejs/core/issues/4605
 		}
 
 		#{$slot} {

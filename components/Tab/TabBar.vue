@@ -136,7 +136,7 @@
 		gap: 1rem;
 		align-items: flex-end;
 
-		> :deep(*) {
+		> :slotted(*) {
 			cursor: pointer;
 		}
 	}

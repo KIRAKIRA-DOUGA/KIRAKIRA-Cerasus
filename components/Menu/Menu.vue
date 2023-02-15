@@ -6,7 +6,10 @@
 	const menu = ref<HTMLMenuElement>();
 	const isContextMenu = ref(false);
 	const location = ref<[number, number]>([0, 0]);
-	const locationStyle = computed(() => ({ left: location.value[0] + "px", top: location.value[1] + "px" }));
+	const locationStyle = computed(() => {
+		const l = location.value;
+		return l[0] !== 0 && l[1] !== 0 ? { left: l[0] + "px", top: l[1] + "px" } : undefined;
+	});
 	const size = ref<[number, number]>([0, 0]);
 
 	/**
@@ -99,6 +102,8 @@
 		@include radius-large;
 		@include flex-block;
 		@include dropdown-flyouts;
+		top: 0;
+		left: 0;
 		width: fit-content;
 		margin: 0;
 		padding: $menu-padding 0;
@@ -109,7 +114,7 @@
 			position: fixed;
 		}
 
-		:deep(hr) {
+		:slotted(hr) {
 			margin: 6px 0;
 			border: none;
 			border-top: c(divider, 10%) 1px solid;
@@ -120,7 +125,7 @@
 			transition-duration: 1s;
 		}
 
-		:deep(.menu-item) {
+		:slotted(.menu-item) {
 			animation: move-right 500ms calc(var(--i) * 40ms) $ease-out-smooth backwards;
 		}
 
