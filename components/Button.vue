@@ -12,9 +12,9 @@
 
 <template>
 	<button v-ripple type="button" :class="{ secondary }" @click="emits('click')">
-		<NuxtIcon v-if="icon && !iconBehind" :name="icon" class="icon" />
+		<NuxtIcon v-if="icon && !iconBehind" :name="icon" class="icon front" />
 		<slot></slot>
-		<NuxtIcon v-if="icon && iconBehind" :name="icon" class="icon" />
+		<NuxtIcon v-if="icon && iconBehind" :name="icon" class="icon behind" />
 	</button>
 </template>
 
@@ -90,7 +90,16 @@
 	}
 
 	.icon {
+		$padding-inset: 2px;
 		color: white;
 		font-size: 18px;
+
+		&.front {
+			margin-left: -$padding-inset;
+		}
+
+		&.behind {
+			margin-right: -$padding-inset;
+		}
 	}
 </style>

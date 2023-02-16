@@ -75,3 +75,26 @@
 	visibility: hidden; // 占位但不可见。
 	content: "."; // 内容不能为空。
 }
+
+/// 未知宽度的绝对定位的居中。
+/// @param {String} $position [fixed] - 指定元素的 position 属性。
+/// @output position, top, left, translate
+@mixin absolute-center($position: absolute) {
+	position: $position;
+	top: 50%;
+	left: 50%;
+	translate: -50% -50%;
+}
+
+/// 已知宽/高度的绝对定位的居中。
+/// 注意：使用此混合必须指定宽高度。
+/// @param {String} $position [fixed] - 指定元素的 position 属性。
+/// @output -
+@mixin absolute-center-widthful($position: absolute) {
+	position: $position;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	margin: auto;
+}

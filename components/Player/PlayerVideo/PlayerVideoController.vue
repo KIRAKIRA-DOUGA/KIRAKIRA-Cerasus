@@ -78,7 +78,7 @@
 		</div>
 		<span>{{ convertTime(currentTime) }} / {{ convertTime(duration) }}</span>
 		<PlayerButton :text="playbackRateText" @click="switchSpeed" />
-		<PlayerButton icon="full_screen" @click="() => toggleFullScreen?.()" />
+		<PlayerButton icon="fullscreen" @click="() => toggleFullScreen?.()" />
 	</kira-component>
 </template>
 

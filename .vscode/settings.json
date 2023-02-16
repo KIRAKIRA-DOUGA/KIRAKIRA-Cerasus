@@ -3,7 +3,7 @@
 	"editor.insertSpaces": false,
 	"editor.detectIndentation": false,
 	"editor.formatOnPaste": true,
-	"editor.formatOnType": true,
+	"editor.formatOnType": false, // Volar 最新版吃醋了，暂时禁用。
 	"emmet.includeLanguages": {
 		"vue-html": "html",
 		"vue": "html"

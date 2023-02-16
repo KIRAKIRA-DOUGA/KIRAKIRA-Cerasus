@@ -2,6 +2,7 @@
 	const props = withDefaults(defineProps<{
 		width?: number;
 		height?: number;
+		welcome?: boolean;
 	}>(), {
 		width: 400,
 		height: 400,
@@ -26,7 +27,10 @@
 			</svg>
 		</div>
 		<div class="triangle triangle-2"></div>
-		<LogoText form="half" class="title" />
+		<div class="titles" :class="{ welcome }">
+			<div class="title welcome">Welcome</div>
+			<LogoText form="half" class="title kirakira" />
+		</div>
 		<div class="circle circle-1"></div>
 		<div class="circle circle-2">
 			<div v-for="i in 13" :key="i"></div>
@@ -35,9 +39,28 @@
 </template>
 
 <style scoped lang="scss">
-	.title {
+	.titles {
+		position: relative;
 		animation: blinking 2s infinite ease-in alternate;
+	}
+
+	.title {
+		@include absolute-center;
+		$move-distance: 2rem;
+		font-weight: 600;
+		font-size: 1.5rem;
+		text-transform: uppercase;
 		zoom: 2.5;
+
+		.titles:not(.welcome) > &.welcome {
+			margin-top: $move-distance;
+			opacity: 0;
+		}
+
+		.titles.welcome > &.kirakira {
+			margin-top: -$move-distance;
+			opacity: 0;
+		}
 	}
 
 	.cover {
