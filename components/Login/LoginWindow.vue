@@ -131,7 +131,7 @@
 
 		&,
 		& * {
-			transition-duration: 500ms;
+			transition-duration: 700ms;
 		}
 
 		&.dialog-leave-active {
@@ -144,7 +144,7 @@
 		&.dialog-enter-from,
 		&.dialog-leave-to {
 			opacity: 0;
-			translate: 0 2rem;
+			translate: 0 6rem;
 
 			.cover-wrapper {
 				translate: 3rem;
@@ -197,17 +197,35 @@
 	}
 
 	.title {
-		--i: 0;
 		display: flex;
 		flex-direction: row;
 		gap: 1rem;
 		align-items: flex-end;
+
+		.big {
+			--i: 1.5;
+		}
+
+		.sub {
+			--i: 2;
+		}
 	}
 
 	.form {
 		@include flex-block;
-		--i: 1;
 		gap: 24px;
+
+		*:nth-child(1) {
+			--i: 1;
+		}
+
+		*:nth-child(2) {
+			--i: 1.25;
+		}
+
+		*:nth-child(3) {
+			--i: 1.5;
+		}
 
 		.button {
 			height: 44px;
@@ -245,8 +263,8 @@
 		}
 	}
 
-	.title,
-	.form,
+	.title *,
+	.form *,
 	.action {
 		animation: float-left 500ms calc(var(--i) * 100ms) $ease-out-max backwards;
 	}
