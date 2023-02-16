@@ -51,7 +51,6 @@
 		gap: $menu-padding + 2px;
 		justify-content: flex-start;
 		width: max-content;
-		/* height: 36px; // TODO: 强行指定菜单项目高度可以临时用来解决跳动问题，解决高度动画跳动问题后去掉这个。 */
 		margin: 0 $menu-padding;
 		padding: 8px 16px;
 		padding-left: 14px;
