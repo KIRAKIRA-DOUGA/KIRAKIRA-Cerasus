@@ -128,9 +128,11 @@
 		height: $height;
 		overflow: hidden;
 		background-color: c(inner-color-85, 75%);
+		transition-timing-function: $ease-out-smooth;
+		transition-duration: 700ms;
 
-		&,
 		& * {
+			transition-timing-function: $ease-in-out-smooth;
 			transition-duration: 700ms;
 		}
 
@@ -145,10 +147,6 @@
 		&.dialog-leave-to {
 			opacity: 0;
 			translate: 0 6rem;
-
-			.cover-wrapper {
-				translate: 3rem;
-			}
 		}
 	}
 
@@ -162,10 +160,11 @@
 		$parent-selector: ".login-window" + if($is-not, ":not(#{$current-page})", $current-page);
 
 		#{$parent-selector} &#{$specified-page} {
-			$move-distance: 2rem;
-			translate: if($direction == left, -$move-distance, $move-distance);
-			opacity: 0;
+			$move-distance: calc($width / 2);
+			transition-timing-function: $ease-in-out-smooth;
+			transition-duration: 700ms;
 			pointer-events: none;
+			translate: if($direction == left, -$move-distance, $move-distance);
 		}
 	}
 
@@ -173,6 +172,7 @@
 		position: relative;
 		width: 50%;
 		height: 100%;
+		overflow: hidden;
 
 		> * {
 			@include flex-block;
@@ -251,6 +251,7 @@
 	}
 
 	.cover-wrapper {
+		@include card-in-card-shadow;
 		position: absolute;
 		left: calc($width / 2);
 
@@ -259,7 +260,16 @@
 		}
 
 		.dialog-enter-active & {
-			transition-duration: 1s;
+			transition-timing-function: $ease-out-max;
+			transition-duration: 700ms;
+		}
+
+		.dialog-enter-from & {
+			translate: 6rem 0;
+		}
+
+		.dialog-leave-to & {
+			translate: 0;
 		}
 	}
 
