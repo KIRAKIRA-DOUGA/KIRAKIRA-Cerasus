@@ -69,7 +69,7 @@
 						</div>
 						<div class="form">
 							<div>我们已向您的邮箱中发送了验证码，请在此输入验证码。<br />如未收到，您可以重新发送。</div>
-							<TextBox v-model="email" type="email" placeholder="邮箱" size="large" icon="email" />
+							<TextBox v-model="verificationCode" type="text" placeholder="验证码" size="large" icon="verified" />
 							<TextBox v-model="confirmPassword" type="password" placeholder="确认密码" size="large" icon="lock" />
 						</div>
 						<div class="action">
@@ -84,11 +84,26 @@
 						</div>
 						<div class="form">
 							<div>请在此输入您的邮箱。<br />我们将会给您的邮箱发送一封邮件，请点击邮件中的链接重置密码。</div>
-							<TextBox v-model="verificationCode" type="text" placeholder="验证码" size="large" icon="verified" />
+							<TextBox v-model="email" type="email" placeholder="邮箱" size="large" icon="email" />
 							<Button icon="send" class="button">发送</Button>
 						</div>
 						<div class="action margin-left-inset">
 							<Button secondary @click="currentPage = 'login'">想起来密码了</Button>
+						</div>
+					</div>
+					<div class="reset">
+						<div class="title">
+							<TitleMain>重置密码</TitleMain>
+							<TitleSmall>Reset</TitleSmall>
+						</div>
+						<div class="form">
+							<div>您已成功重置密码。<br />请务必牢记您的新密码。</div>
+							<TextBox v-model="password" type="password" placeholder="新密码" size="large" icon="lock" />
+							<TextBox v-model="confirmPassword" type="password" placeholder="确认新密码" size="large" icon="lock" />
+						</div>
+						<div class="action margin-left-inset">
+							<div></div>
+							<Button icon="check" class="button" @click="open = false">完成</Button>
 						</div>
 					</div>
 				</div>
@@ -113,16 +128,27 @@
 		height: $height;
 		overflow: hidden;
 		background-color: c(inner-color-85, 75%);
-		transition-duration: 500ms;
+
+		&,
+		& * {
+			transition-duration: 500ms;
+		}
 
 		&.dialog-leave-active {
-			transition-duration: 250ms;
+			&,
+			& * {
+				transition-duration: 250ms;
+			}
 		}
 
 		&.dialog-enter-from,
 		&.dialog-leave-to {
 			opacity: 0;
 			translate: 0 2rem;
+
+			.cover-wrapper {
+				translate: 3rem;
+			}
 		}
 	}
 
@@ -164,13 +190,23 @@
 				@include page("!.register", ".register", right);
 				@include page("!.register2", ".register2", right);
 				@include page("!.forget", ".forget", right);
+				@include page("!.reset", ".reset", right);
 				@include page(".register2", ".register", left);
 			}
 		}
 	}
 
+	.title {
+		--i: 0;
+		display: flex;
+		flex-direction: row;
+		gap: 1rem;
+		align-items: flex-end;
+	}
+
 	.form {
 		@include flex-block;
+		--i: 1;
 		gap: 24px;
 
 		.button {
@@ -181,27 +217,10 @@
 		}
 	}
 
-	.title {
-		display: flex;
-		flex-direction: row;
-		gap: 1rem;
-		align-items: flex-end;
-	}
-
-	.cover-wrapper {
-		@include card-in-card-shadow;
-		position: absolute;
-		left: calc($width / 2);
-		background-color: c(main-bg);
-
-		&.move-left {
-			left: 0;
-		}
-	}
-
 	.action {
 		@include flex-center;
 		$margin-inset: 16px;
+		--i: 2;
 		justify-content: space-between;
 
 		&.margin-left-inset {
@@ -210,6 +229,32 @@
 
 		&.margin-right-inset {
 			margin-right: -$margin-inset;
+		}
+	}
+
+	.cover-wrapper {
+		position: absolute;
+		left: calc($width / 2);
+
+		&.move-left {
+			left: 0;
+		}
+
+		.dialog-enter-active & {
+			transition-duration: 1s;
+		}
+	}
+
+	.title,
+	.form,
+	.action {
+		animation: float-left 500ms calc(var(--i) * 100ms) $ease-out-max backwards;
+	}
+
+	@keyframes float-left {
+		from {
+			translate: 3rem;
+			opacity: 0;
 		}
 	}
 </style>
