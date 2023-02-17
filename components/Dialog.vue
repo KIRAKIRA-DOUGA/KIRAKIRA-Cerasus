@@ -99,6 +99,7 @@
 
 		@media (min-width: $max-width) {
 			@include radius-large;
+			margin-top: 24px;
 		}
 
 		.body {
