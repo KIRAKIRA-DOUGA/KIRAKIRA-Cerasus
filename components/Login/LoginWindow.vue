@@ -28,8 +28,8 @@
 <template>
 	<Mask v-model="open" position="center" :zIndex="40">
 		<Transition name="dialog">
-			<kira-component v-if="open" class="login-window" :class="[currentPage]">
-				<div class="main">
+			<kira-component v-if="open" class="login-window" :class="[currentPage, { 'move-left': coverMoveLeft }] ">
+				<div class="main left-wrapper">
 					<div class="login">
 						<div class="title">
 							<TitleMain>登录</TitleMain>
@@ -46,7 +46,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="main">
+				<div class="main right-wrapper">
 					<div class="register">
 						<div class="title">
 							<TitleMain>注册</TitleMain>
@@ -97,7 +97,7 @@
 							<TitleSmall>Reset</TitleSmall>
 						</div>
 						<div class="form">
-							<div>您已成功重置密码。<br />请务必牢记您的新密码。</div>
+							<div>您已成功重置密码。(/≧▽≦)/<br />请务必牢记您的新密码。</div>
 							<TextBox v-model="password" type="password" placeholder="新密码" size="large" icon="lock" />
 							<TextBox v-model="confirmPassword" type="password" placeholder="确认新密码" size="large" icon="lock" />
 						</div>
@@ -118,7 +118,8 @@
 <style scoped lang="scss">
 	$width: 800px;
 	$height: 400px;
-	$enter-duration: 500ms;
+	$enter-duration: 1s;
+	$transition-ease: $ease-out-smooth;
 
 	.login-window {
 		@include dropdown-flyouts;
@@ -129,10 +130,10 @@
 		height: $height;
 		overflow: hidden;
 		background-color: c(inner-color-85, 75%);
-		transition: all $ease-out-smooth $enter-duration;
+		transition: all $transition-ease $enter-duration;
 
 		& * {
-			transition: all $ease-out-smooth $enter-duration;
+			transition: all $transition-ease $enter-duration;
 		}
 
 		&.dialog-leave-active {
@@ -159,18 +160,21 @@
 		$parent-selector: ".login-window" + if($is-not, ":not(#{$current-page})", $current-page);
 
 		#{$parent-selector} &#{$specified-page} {
-			$move-distance: $width * 0.25;
+			$move-distance: $width * 0.5;
 			opacity: 0;
-			transition: all $ease-out-smooth $enter-duration;
+			transition: all $transition-ease $enter-duration;
 			animation: none !important;
 			pointer-events: none;
 			translate: if($direction == left, -$move-distance, $move-distance);
 		}
 	}
 
+	.login-window:not(.move-left) .main > *:nth-child(1) {
+		translate: 0 !important;
+	}
+
 	.main {
 		position: relative;
-		width: 50%;
 		height: 100%;
 		overflow: hidden;
 
@@ -179,19 +183,51 @@
 			@include square(100%);
 			position: absolute;
 			top: 0;
-			left: 0;
 			justify-content: space-between;
-			width: 100%;
+			width: $width * 0.5;
 			height: 100%;
 			padding: 35px 45px;
 
 			@if true {
-				@include page("!.login", ".login", left);
+				// @include page("!.login", ".login", left);
 				@include page("!.register", ".register", right);
 				@include page("!.register2", ".register2", right);
 				@include page("!.forget", ".forget", right);
 				@include page("!.reset", ".reset", right);
 				@include page(".register2", ".register", left);
+			}
+		}
+
+		&.left-wrapper {
+			width: 50%;
+
+			.move-left & {
+				width: 0;
+
+				> * {
+					left: 0;
+					opacity: 0;
+					pointer-events: none;
+					translate: $width * -0.25 0;
+				}
+			}
+		}
+
+		&.right-wrapper {
+			width: 0;
+
+			> * {
+				position: absolute;
+				right: 0;
+				transform: translateX($width * 0.25);
+			}
+
+			.move-left & {
+				width: 50%;
+
+				> * {
+					transform: translateX(0);
+				}
 			}
 		}
 	}

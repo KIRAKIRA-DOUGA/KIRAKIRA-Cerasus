@@ -41,6 +41,9 @@
 <style scoped lang="scss">
 	.titles {
 		position: relative;
+		width: 330px;
+		height: 70px;
+		overflow: hidden;
 		animation: blinking 2s infinite ease-in alternate;
 	}
 
@@ -50,17 +53,17 @@
 		font-weight: 600;
 		font-size: 1.5rem;
 		text-transform: uppercase;
-		transition: all $ease-out-smooth 500ms;
+		transition: all $ease-in-out-smooth 800ms;
 		zoom: 2.5;
 
 		.titles:not(.welcome) > &.welcome {
 			margin-top: $move-distance;
-			opacity: 0;
+			// opacity: 0;
 		}
 
 		.titles.welcome > &.kirakira {
 			margin-top: -$move-distance;
-			opacity: 0;
+			// opacity: 0;
 		}
 	}
 
