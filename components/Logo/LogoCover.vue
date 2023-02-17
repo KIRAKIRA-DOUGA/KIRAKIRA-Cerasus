@@ -49,12 +49,12 @@
 
 	.title {
 		@include absolute-center;
-		$move-distance: 2rem;
+		$move-distance: 4rem;
 		font-weight: 600;
 		font-size: 1.5rem;
 		text-transform: uppercase;
 		transition: all $ease-in-out-smooth 800ms;
-		zoom: 2.5;
+		scale: 2.5;
 
 		.titles:not(.welcome) > &.welcome {
 			margin-top: $move-distance;
