@@ -46,4 +46,5 @@
 	"javascript.updateImportsOnFileMove.enabled": "never",
 	"typescript.updateImportsOnFileMove.enabled": "never",
 	"volar.updateImportsOnFileMove.enabled": false,
+	"volar.autoCompleteRefs": true,
 }
