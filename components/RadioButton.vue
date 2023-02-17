@@ -190,12 +190,14 @@
 	}
 
 	.disabled {
-		cursor: not-allowed;
-		pointer-events: none;
+		cursor: default;
+
+		.radio-focus {
+			filter: grayscale(0.8);
+		}
 
 		.radio-shadow {
 			box-shadow: none !important;
-			filter: grayscale(0.8);
 		}
 
 		.radio {

@@ -113,11 +113,6 @@
 			top: 0;
 			left: 0;
 			background-color: c(white);
-			cursor: w-resize;
-
-			&:active {
-				cursor: col-resize;
-			}
 
 			.on & {
 				left: $width - $thumb-size;
@@ -129,6 +124,7 @@
 			}
 
 			.disabled & {
+				@include control-ball-shadow-disabled;
 				background-color: c(gray);
 			}
 
@@ -140,7 +136,7 @@
 				@include large-shadow-unchecked-focus;
 			}
 
-			#{$component-class}.on:focus & {
+			#{$component-class}.on:not(.disabled):focus & {
 				@include large-shadow-focus;
 			}
 
@@ -150,9 +146,5 @@
 
 			// TODO: 接下来请你编写 hover、pressed 样式。
 		}
-	}
-
-	.disabled {
-		pointer-events: none !important;
 	}
 </style>

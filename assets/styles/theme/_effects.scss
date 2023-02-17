@@ -22,6 +22,10 @@
 	box-shadow: 0 1px 6px c(accent-shadow, 50%);
 }
 
+@mixin control-ball-shadow-disabled {
+	box-shadow: 0 1px 6px c(black, 10%);
+}
+
 @mixin page-normal {
 	box-shadow: 0 2px 4px c(black, 10%);
 }
