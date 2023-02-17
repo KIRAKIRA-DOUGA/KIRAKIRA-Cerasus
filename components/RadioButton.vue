@@ -190,8 +190,17 @@
 	}
 
 	.disabled {
-		filter: grayscale(1);
+		cursor: not-allowed;
 		pointer-events: none;
+
+		.radio-shadow {
+			box-shadow: none !important;
+			filter: grayscale(0.8);
+		}
+
+		.radio {
+			opacity: 0.5;
+		}
 	}
 
 	// TODO: 接下来请你编写 disabled 样式和 unchecked 的 hover、pressed、disabled 样式。
