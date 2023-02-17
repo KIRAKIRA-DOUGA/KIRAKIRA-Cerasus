@@ -128,12 +128,10 @@
 		height: $height;
 		overflow: hidden;
 		background-color: c(inner-color-85, 75%);
-		transition-timing-function: $ease-out-smooth;
-		transition-duration: 700ms;
+		transition: all $ease-out-smooth 700ms;
 
 		& * {
-			transition-timing-function: $ease-in-out-smooth;
-			transition-duration: 700ms;
+			transition: all $ease-in-out-smooth 700ms;
 		}
 
 		&.dialog-leave-active {
@@ -161,8 +159,7 @@
 
 		#{$parent-selector} &#{$specified-page} {
 			$move-distance: calc($width / 2);
-			transition-timing-function: $ease-in-out-smooth;
-			transition-duration: 700ms;
+			transition: all $ease-in-out-smooth 700ms;
 			pointer-events: none;
 			translate: if($direction == left, -$move-distance, $move-distance);
 		}
@@ -260,8 +257,7 @@
 		}
 
 		.dialog-enter-active & {
-			transition-timing-function: $ease-out-max;
-			transition-duration: 700ms;
+			transition: all $ease-out-max 700ms;
 		}
 
 		.dialog-enter-from & {
