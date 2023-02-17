@@ -118,6 +118,7 @@
 <style scoped lang="scss">
 	$width: 800px;
 	$height: 400px;
+	$enter-duration: 500ms;
 
 	.login-window {
 		@include dropdown-flyouts;
@@ -128,10 +129,10 @@
 		height: $height;
 		overflow: hidden;
 		background-color: c(inner-color-85, 75%);
-		transition: all $ease-out-smooth 700ms;
+		transition: all $ease-out-smooth $enter-duration;
 
 		& * {
-			transition: all $ease-in-out-smooth 700ms;
+			transition: all $ease-out-smooth $enter-duration;
 		}
 
 		&.dialog-leave-active {
@@ -158,8 +159,10 @@
 		$parent-selector: ".login-window" + if($is-not, ":not(#{$current-page})", $current-page);
 
 		#{$parent-selector} &#{$specified-page} {
-			$move-distance: calc($width / 2);
-			transition: all $ease-in-out-smooth 700ms;
+			$move-distance: $width * 0.25;
+			opacity: 0;
+			transition: all $ease-out-smooth $enter-duration;
+			animation: none !important;
 			pointer-events: none;
 			translate: if($direction == left, -$move-distance, $move-distance);
 		}
@@ -212,16 +215,10 @@
 		@include flex-block;
 		gap: 24px;
 
-		*:nth-child(1) {
-			--i: 1;
-		}
-
-		*:nth-child(2) {
-			--i: 1.25;
-		}
-
-		*:nth-child(3) {
-			--i: 1.5;
+		@for $i from 1 through 3 {
+			*:nth-child(#{$i}) {
+				--i: #{1 + ($i - 1) * 0.25};
+			}
 		}
 
 		.button {
@@ -257,15 +254,12 @@
 		}
 
 		.dialog-enter-active & {
-			transition: all $ease-out-max 700ms;
+			transition: all $ease-out-max $enter-duration;
 		}
 
-		.dialog-enter-from & {
-			translate: 6rem 0;
-		}
-
+		.dialog-enter-from &,
 		.dialog-leave-to & {
-			translate: 0;
+			translate: 6rem 0;
 		}
 	}
 

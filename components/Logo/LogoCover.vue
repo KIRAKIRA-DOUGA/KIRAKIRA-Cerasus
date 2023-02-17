@@ -50,7 +50,7 @@
 		font-weight: 600;
 		font-size: 1.5rem;
 		text-transform: uppercase;
-		transition: all $ease-in-out-smooth 700ms;
+		transition: all $ease-out-smooth 500ms;
 		zoom: 2.5;
 
 		.titles:not(.welcome) > &.welcome {
