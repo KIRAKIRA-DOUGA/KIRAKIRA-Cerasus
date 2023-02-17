@@ -1,8 +1,9 @@
 // #region 基本
 /// ### 线性
-/// 以相同速度开始至结束的过渡效果。
+/// 以相同速度开始至结束的过渡效果 `t`。
 $linear: cubic-bezier(0, 0, 1, 1);
-/// ### 助跑线性（？）
+/// ### 助跑线性
+/// 与线性效果几乎相同 `1t`。
 $linear-approach: cubic-bezier(0.25, 0.25, 0.75, 0.75);
 /// ### 缓动
 /// 以慢速开始，然后变快，然后慢速结束的过渡效果。
@@ -38,6 +39,7 @@ $ease-in-circ: cubic-bezier(0.6, 0.04, 0.98, 0.335);
 /// 超过范围的三次方缓动 `(s+1)t³-st²`。
 $ease-in-back: cubic-bezier(0.6, -0.28, 0.735, 0.045);
 /// ### 最大缓入
+/// 将锚点拉到头的缓动 `3t^⅔-2t`。
 $ease-in-max: cubic-bezier(1, 0, 1, 1);
 /// ### 平滑缓入
 $ease-in-smooth: null; // 待补充。
@@ -72,6 +74,7 @@ $ease-out-circ: cubic-bezier(0.075, 0.82, 0.165, 1);
 /// 超过范围的三次方缓动 `(s+1)t³-st²`。
 $ease-out-back: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 /// ### 最大缓出
+/// 将锚点拉到头的缓动 `3t^⅔-2t`。
 $ease-out-max: cubic-bezier(0, 0, 0, 1);
 /// ### 平滑缓出
 $ease-out-smooth: cubic-bezier(0.1, 0.9, 0.2, 1);
@@ -106,6 +109,7 @@ $ease-in-out-circ: cubic-bezier(0.785, 0.135, 0.15, 0.86);
 /// 超过范围的三次方缓动 `(s+1)t³-st²`。
 $ease-in-out-back: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 /// ### 最大缓入缓出
+/// 将锚点拉到头的缓动 `3t^⅔-2t`。
 $ease-in-out-max: cubic-bezier(1, 0, 0, 1);
 /// ### 平滑缓入缓出
 $ease-in-out-smooth: cubic-bezier(0.75, 0, 0, 1);

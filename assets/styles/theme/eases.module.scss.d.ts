@@ -1,11 +1,12 @@
 export type Styles = {
 	/**
 	 * ### 线性
-	 * 以相同速度开始至结束的过渡效果。
+	 * 以相同速度开始至结束的过渡效果 `t`。
 	 */
 	linear: string;
 	/**
-	 * ### 助跑线性（？）
+	 * ### 助跑线性
+	 * 与线性效果几乎相同 `1t`。
 	 */
 	linearApproach: string;
 	/**
@@ -60,6 +61,7 @@ export type Styles = {
 	easeInBack: string;
 	/**
 	 * ### 最大缓入
+	 * 将锚点拉到头的缓动 `3t^⅔-2t`。
 	 */
 	easeInMax: string;
 	/**
@@ -113,6 +115,7 @@ export type Styles = {
 	easeOutBack: string;
 	/**
 	 * ### 最大缓出
+	 * 将锚点拉到头的缓动 `3t^⅔-2t`。
 	 */
 	easeOutMax: string;
 	/**
@@ -166,6 +169,7 @@ export type Styles = {
 	easeInOutBack: string;
 	/**
 	 * ### 最大缓入缓出
+	 * 将锚点拉到头的缓动 `3t^⅔-2t`。
 	 */
 	easeInOutMax: string;
 	/**
