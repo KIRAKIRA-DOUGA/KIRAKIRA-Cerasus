@@ -147,4 +147,8 @@
 			// TODO: 接下来请你编写 hover、pressed 样式。
 		}
 	}
+
+	.disabled {
+		cursor: default;
+	}
 </style>
