@@ -115,19 +115,19 @@
 				--i: 0;
 				height: $size;
 				font-size: $size;
-				animation: scale-in $animation-options;
+				animation: intro $animation-options;
 			}
 
 			h2 {
 				--i: 0;
 				margin: 0;
-				animation: move-left $animation-options;
+				animation: float-left $animation-options;
 			}
 
 			.content {
 				--i: 1;
 				margin-top: calc($padding / 2);
-				animation: move-left $animation-options;
+				animation: float-left $animation-options;
 			}
 
 			.content-part::after {
@@ -142,31 +142,31 @@
 
 			.right {
 				--i: 2;
-				animation: move-left $animation-options;
+				animation: float-left $animation-options;
 			}
 
 			.left {
 				--i: 2;
-				animation: move-right $animation-options;
+				animation: float-right $animation-options;
 			}
 		}
 	}
 
-	@keyframes scale-in {
+	@keyframes intro {
 		from {
 			scale: 0.5;
 			opacity: 0;
 		}
 	}
 
-	@keyframes move-left {
+	@keyframes float-left {
 		from {
 			translate: 3rem;
 			opacity: 0;
 		}
 	}
 
-	@keyframes move-right {
+	@keyframes float-right {
 		from {
 			translate: -3rem;
 			opacity: 0;

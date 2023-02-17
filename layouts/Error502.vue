@@ -48,13 +48,13 @@
 				font-size: 6rem;
 				font-family: $english-logo-fonts;
 				line-height: 1;
-				animation: move-down $title-animation-options;
+				animation: float-down $title-animation-options;
 			}
 
 			h2 {
 				--i: 0;
 				margin: 0.5rem;
-				animation: move-down $title-animation-options;
+				animation: float-down $title-animation-options;
 			}
 		}
 
@@ -65,7 +65,7 @@
 		}
 	}
 
-	@keyframes move-down {
+	@keyframes float-down {
 		from {
 			opacity: 0;
 			translate: 0 -50px;

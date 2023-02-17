@@ -72,7 +72,7 @@
 		animation: intro 600ms $ease-out-smooth;
 
 		> * {
-			animation: move-up 500ms calc(var(--i) * 100ms) $ease-out-expo backwards;
+			animation: float-up 500ms calc(var(--i) * 100ms) $ease-out-expo backwards;
 		}
 
 		.card-bottom {
@@ -155,7 +155,7 @@
 		}
 	}
 
-	@keyframes move-up {
+	@keyframes float-up {
 		from {
 			opacity: 0;
 			translate: 0 50px;

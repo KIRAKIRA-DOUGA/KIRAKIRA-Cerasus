@@ -126,7 +126,7 @@
 		}
 
 		:slotted(.menu-item) {
-			animation: move-right 500ms calc(var(--i) * 40ms) $ease-out-smooth backwards;
+			animation: float-right 500ms calc(var(--i) * 40ms) $ease-out-smooth backwards;
 		}
 
 		&.menu-leave-to {
@@ -134,7 +134,7 @@
 		}
 	}
 
-	@keyframes move-right {
+	@keyframes float-right {
 		from {
 			translate: -15px;
 			opacity: 0;

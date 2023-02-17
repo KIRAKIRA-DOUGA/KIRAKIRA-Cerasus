@@ -99,7 +99,7 @@
 			font-size: 6rem;
 			font-family: $english-logo-fonts;
 			line-height: 1;
-			animation: move-down $title-animation-options;
+			animation: float-down $title-animation-options;
 		}
 
 		p {
@@ -109,7 +109,7 @@
 			font-weight: 300;
 			font-size: 1.25rem;
 			line-height: 1.25;
-			animation: move-down $title-animation-options;
+			animation: float-down $title-animation-options;
 		}
 	}
 
@@ -123,7 +123,7 @@
 		background: none;
 		background-color: #ffffff4d;
 		backdrop-filter: blur(10px);
-		animation: move-down $title-animation-options;
+		animation: float-down $title-animation-options;
 
 		:root.dark & {
 			background-color: #1414144d;
@@ -240,7 +240,7 @@
 		}
 	}
 
-	@keyframes move-down {
+	@keyframes float-down {
 		from {
 			opacity: 0;
 			translate: 0 -50px;
