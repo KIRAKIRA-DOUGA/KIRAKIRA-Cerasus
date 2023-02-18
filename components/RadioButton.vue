@@ -192,16 +192,12 @@
 	.disabled {
 		cursor: default;
 
-		.radio-focus {
-			filter: grayscale(0.8);
-		}
-
 		.radio-shadow {
 			box-shadow: none !important;
 		}
 
 		.radio {
-			opacity: 0.5;
+			opacity: 0.4;
 		}
 	}
 
