@@ -1,7 +1,5 @@
 <script setup lang="ts">
 	import { httpResponseStatusCodes } from "helpers/http-status";
-	import siliceous from "assets/videos/groove_battle.mp4";
-
 	const props = defineProps<{
 		statusCode: number | string;
 		message: string;
@@ -9,32 +7,12 @@
 	}>();
 
 	const title = computed(() => httpResponseStatusCodes[props.statusCode]);
-	const video = ref<HTMLVideoElement>();
-	const isPlaying = ref(false);
 	const is500 = computed(() => +props.statusCode === 500);
-
-	onMounted(() => {
-		const playVideo = () => {
-			if (!video.value) return;
-			window.removeEventListener("click", playVideo);
-			video.value.play();
-		};
-		window.addEventListener("click", playVideo);
-	});
-
-	/**
-	 * 播放电摇嘲讽视频。
-	 */
-	function playVideo() {
-		if (!video.value || isPlaying.value) return;
-		isPlaying.value = true;
-		video.value.play();
-	}
 </script>
 
 <template>
 	<div class="container">
-		<div class="card" @click="playVideo">
+		<div class="card">
 			<div class="stack">
 				<h2>{{ message }}</h2>
 				<!-- eslint-disable-next-line vue/no-v-html -->
@@ -42,14 +20,16 @@
 			</div>
 			<div class="card-bottom">
 				<div class="bottom-left">
-					<LogoLuXun v-show="!isPlaying" class="qrcode" />
-					<video v-show="isPlaying" ref="video" :src="siliceous" class="siliceous" @pause="isPlaying = false"></video>
+					<LogoLuXun class="qrcode" />
 					<div class="title">
 						<h1>{{ statusCode }}</h1>
 						<p>{{ title }}</p>
 					</div>
 				</div>
-				<div v-if="is500" class="fix-bug">又有bug了，赶紧给老娘修！</div>
+				<div class="bottom-right">
+					<LogoText form="full" class="logo" />
+					<div v-if="is500" class="fix-bug">又有bug了，快修哇！(っ °Д °;)っ</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -59,6 +39,7 @@
 	.container {
 		height: var(--inner-height);
 		padding: 3.5rem 2.5rem;
+		background-color: c(inner-color);
 	}
 
 	.card {
@@ -83,16 +64,36 @@
 			align-items: flex-end;
 			justify-content: space-between;
 			padding: 50px 60px;
+			background-color: c(main-bg, 50%);
 
 			.bottom-left {
 				display: flex;
 				gap: 35px;
 			}
 
+			.bottom-right {
+				@include flex-block;
+				align-items: flex-end;
+				justify-content: space-between;
+				height: 100%;
+
+				.fix-bug {
+					flex-shrink: 100;
+					margin-bottom: 6px;
+					font-weight: 300;
+					font-size: 32px;
+				}
+
+				.logo {
+					margin-top: 8px;
+				}
+			}
+
 			.title {
 				display: flex;
 				flex-direction: column;
 				justify-content: space-evenly;
+				color: c(accent);
 
 				* {
 					margin: 0;
@@ -100,17 +101,15 @@
 				}
 
 				h1 {
-					font-size: 80px;
+					font-size: 112px;
+					line-height: 1em;
 				}
 
 				p {
+					font-weight: bold;
 					font-size: 20px;
+					line-height: 1.5em;
 				}
-			}
-
-			.fix-bug {
-				flex-shrink: 100;
-				font-size: 32px;
 			}
 
 			.qrcode,
