@@ -18,6 +18,11 @@
 		padding-left: $sidebar-width;
 	}
 
+	.page {
+		max-width: 1920px;
+		margin: 0 auto;
+	}
+
 	.sidebar {
 		position: fixed;
 		top: 0;
