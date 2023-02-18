@@ -5,7 +5,7 @@
 	}>();
 
 	const mouse = useMouse();
-	const gsensor = useDeviceOrientation(); // TODO: 加速度传感器（重力感应）在我的手机上目前测试有问题，问题未知。
+	const gsensor = useDeviceOrientation(); // TODO: 加速度传感器（重力感应）在最新iOS Safari上无效。
 	const parallax = computed(() => {
 		const dimen = (x: number, y: number) => ({ x, y });
 		if (process.server) return dimen(0, 0);
@@ -41,6 +41,10 @@
 			{ rotate: deg + "deg", opacity: 1 },
 		], { duration: 500, easing: eases.easeOutMax });
 	});
+
+	const backHome = () => {
+		useRouter().push("/");
+	};
 </script>
 
 <template>
@@ -61,7 +65,7 @@
 			<!-- <div>test pointer: {{ parallax.x }}, {{ parallax.y }}</div>
 			<div>test gsensor: {{ gsensor.alpha }}, {{ gsensor.beta }}, {{ gsensor.gamma }}</div>
 			<div>{{ rotationDeg }}</div> -->
-			<NuxtLink to="/" class="home-link">返回首页</NuxtLink>
+			<Button @click="backHome">返回首页</Button>
 		</div>
 	</main>
 </template>
@@ -75,6 +79,7 @@
 		bottom: -30vh;
 		left: 0;
 		z-index: 10;
+		display: none;
 		width: 100%;
 		height: 40vh;
 		background: linear-gradient(45deg, #00dc82 0%, #36e4da 50%, #0047e1 100%);
@@ -95,6 +100,7 @@
 			--i: 2;
 			margin: 0;
 			margin-bottom: 2rem;
+			color: c(accent);
 			font-weight: bold;
 			font-size: 6rem;
 			font-family: $english-logo-fonts;
@@ -111,6 +117,10 @@
 			line-height: 1.25;
 			animation: float-down $title-animation-options;
 		}
+	}
+
+	.home-link-button {
+		background: none;
 	}
 
 	.home-link {

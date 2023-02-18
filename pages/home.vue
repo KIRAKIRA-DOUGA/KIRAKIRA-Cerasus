@@ -93,6 +93,8 @@
 			<RadioButton disabled>{{ t.custom }}</RadioButton>
 			<RadioButton on disabled>{{ t.onDisabled }}</RadioButton>
 			<hr />
+			<Checkbox checkState="checked">勾选框</Checkbox>
+			<hr />
 			<TextBox v-model="inputValue" illegal placeholder="正常错误的" />
 			<TextBox v-model="inputValue" size="small" placeholder="小小的软软的香香的" />
 			<TextBox v-model="inputValue" size="large" icon="lock" type="password" placeholder="密码" />
@@ -254,6 +256,12 @@
 <style scoped lang="scss">
 	.container {
 		padding: 26px 100px;
+	}
+
+	@media (max-width: 800px) {
+		.container {
+			padding: 26px 40px;
+		}
 	}
 
 	.component-test {
