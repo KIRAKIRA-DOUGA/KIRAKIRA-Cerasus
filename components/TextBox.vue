@@ -39,7 +39,7 @@
 
 <template>
 	<kira-component
-		class="text-field"
+		class="text-box"
 		:class="{
 			small: size === 'small',
 			large: size === 'large',
@@ -72,7 +72,7 @@
 	$large-height: 44px;
 	$front-indent: 12px;
 
-	.text-field {
+	.text-box {
 		@include radius-small;
 		@include control-inner-shadow;
 		height: $default-height;

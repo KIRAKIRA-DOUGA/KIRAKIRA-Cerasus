@@ -95,9 +95,9 @@
 			<hr />
 			<Checkbox checkState="checked">勾选框</Checkbox>
 			<hr />
-			<TextField v-model="inputValue" illegal placeholder="正常错误的" />
-			<TextField v-model="inputValue" size="small" placeholder="小小的软软的香香的" />
-			<TextField v-model="inputValue" size="large" icon="lock" type="password" placeholder="密码" />
+			<TextBox v-model="inputValue" illegal placeholder="正常错误的" />
+			<TextBox v-model="inputValue" size="small" placeholder="小小的软软的香香的" />
+			<TextBox v-model="inputValue" size="large" icon="lock" type="password" placeholder="密码" />
 			<em>所有输入框的内容同时输入属正常现象，因为懒得做三个变量。</em>
 			<hr />
 			<NuxtLink v-for="locale in availableLocales" :key="locale.code" :to="switchLocalePath(locale.code)">
