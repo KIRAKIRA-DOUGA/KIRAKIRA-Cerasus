@@ -18,11 +18,11 @@
 
 	const errorInfo = `取值范围应在 [${props.min}, ${props.max}] 其中，当前值为 ${props.modelValue}。`;
 	if (props.min > props.max)
-		throw new RangeError(`SlideBar 的最小值比最大值要大？最小值为 ${props.min}，最大值为 ${props.max}。`);
+		throw new RangeError(`Slider 的最小值比最大值要大？最小值为 ${props.min}，最大值为 ${props.max}。`);
 	if (props.modelValue < props.min)
-		throw new RangeError("SlideBar 的值比最小值要小。" + errorInfo);
+		throw new RangeError("Slider 的值比最小值要小。" + errorInfo);
 	if (props.modelValue > props.max)
-		throw new RangeError("SlideBar 的值比最大值要大。" + errorInfo);
+		throw new RangeError("Slider 的值比最大值要大。" + errorInfo);
 
 	const value = computed(() => map(props.modelValue, props.min, props.max, 0, 1));
 
@@ -65,7 +65,7 @@
 </script>
 
 <template>
-	<kira-component class="slide-bar" tabindex="0" :style="{ '--value': value }">
+	<kira-component class="slider" tabindex="0" :style="{ '--value': value }">
 		<div class="track" @pointerdown="onTrackDown"></div>
 		<div class="passed"></div>
 		<div class="thumb" @pointerdown="onThumbDown"></div>
@@ -78,7 +78,7 @@
 	$track-thickness: 6px;
 	$value: calc(var(--value) * (100% - $thumb-size));
 
-	.slide-bar {
+	.slider {
 		--value: 0;
 		position: relative;
 	}
@@ -137,7 +137,7 @@
 			scale: 0.4;
 		}
 
-		slide-bar:focus & {
+		.slider:focus & {
 			@include large-shadow-focus;
 		}
 	}

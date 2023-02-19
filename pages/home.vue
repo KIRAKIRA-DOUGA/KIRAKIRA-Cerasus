@@ -109,8 +109,8 @@
 			<br />
 			<Tag v-model="isTagChecked">{{ t.tag }}</Tag>
 			<br />
-			音量<SlideBar v-model="volume" @changed="onSlided" />
-			音调<SlideBar v-model="pitch" :min="-24" :max="24" @changed="onSlided" />
+			音量<Slider v-model="volume" @changed="onSlided" />
+			音调<Slider v-model="pitch" :min="-24" :max="24" @changed="onSlided" />
 			<audio ref="beep" :src="beepSrc"></audio>
 			<TabBar v-model="selectedTab">
 				<TabItem id="all">{{ t.all }}</TabItem>

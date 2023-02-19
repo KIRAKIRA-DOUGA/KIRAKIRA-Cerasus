@@ -73,8 +73,8 @@
 <template>
 	<kira-component class="player-video-controller">
 		<PlayerButton :icon="playing ? 'pause' : 'play'" @click="emits('update:playing', !playing)" />
-		<div class="slidebar">
-			<SlideBar v-model="currentPercent" :min="0" :max="1" />
+		<div class="slider">
+			<Slider v-model="currentPercent" :min="0" :max="1" />
 		</div>
 		<span>{{ convertTime(currentTime) }} / {{ convertTime(duration) }}</span>
 		<PlayerButton :text="playbackRateText" @click="switchSpeed" />
@@ -97,7 +97,7 @@
 		}
 	}
 
-	.slidebar {
+	.slider {
 		flex-shrink: 1;
 		width: 100%;
 	}
