@@ -99,7 +99,9 @@
 
 		@media (min-width: $max-width) {
 			@include radius-large;
-			margin-top: 24px;
+			$margin-top: 24px;
+			max-height: calc(var(--inner-height) - $margin-top * 2);
+			margin-top: $margin-top;
 		}
 
 		.body {

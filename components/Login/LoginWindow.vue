@@ -29,7 +29,7 @@
 	<Mask v-model="open" position="center" :zIndex="40">
 		<Transition name="dialog">
 			<kira-component v-if="open" class="login-window" :class="[currentPage, { 'move-left': coverMoveLeft }] ">
-				<div class="main left-wrapper">
+				<div class="main left">
 					<div class="login">
 						<div class="title">
 							<TitleMain>登录</TitleMain>
@@ -46,9 +46,9 @@
 						</div>
 					</div>
 				</div>
-				<div class="main right-wrapper">
+				<div class="main right">
 					<div class="register">
-						<div class="title">
+						<div class="title collapse">
 							<TitleMain>注册</TitleMain>
 							<TitleSmall>Register</TitleSmall>
 						</div>
@@ -63,7 +63,7 @@
 						</div>
 					</div>
 					<div class="register2">
-						<div class="title">
+						<div class="title collapse">
 							<TitleMain>注册</TitleMain>
 							<TitleSmall>Register</TitleSmall>
 						</div>
@@ -104,6 +104,12 @@
 						<div class="action margin-left-inset">
 							<div></div>
 							<Button icon="check" class="button" @click="open = false">完成</Button>
+						</div>
+					</div>
+					<div class="register-title">
+						<div class="title">
+							<TitleMain>注册</TitleMain>
+							<TitleSmall>Register</TitleSmall>
 						</div>
 					</div>
 				</div>
@@ -169,7 +175,7 @@
 		}
 	}
 
-	.login-window:not(.move-left) .main > *:nth-child(1) {
+	.login-window:not(.move-left) .main > * {
 		translate: 0 !important;
 	}
 
@@ -195,10 +201,11 @@
 				@include page("!.forget", ".forget", right);
 				@include page("!.reset", ".reset", right);
 				@include page(".register2", ".register", left);
+				@include page("!.register, .register2", ".register-title", right);
 			}
 		}
 
-		&.left-wrapper {
+		&.left {
 			width: 50%;
 
 			.move-left & {
@@ -213,7 +220,7 @@
 			}
 		}
 
-		&.right-wrapper {
+		&.right {
 			width: 0;
 
 			> * {
@@ -290,13 +297,21 @@
 		}
 
 		.dialog-enter-active & {
-			transition: all $ease-out-max $enter-duration;
+			transition: all $ease-out-max 700ms;
 		}
 
 		.dialog-enter-from &,
 		.dialog-leave-to & {
 			translate: 6rem 0;
 		}
+	}
+
+	.collapse {
+		visibility: collapse !important;
+	}
+
+	.register-title {
+		pointer-events: none;
 	}
 
 	.title *,
