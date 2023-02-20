@@ -1,9 +1,9 @@
 <script setup lang="ts">
 	import animationCheck from "lotties/checkbox-check.json";
 	const props = withDefaults(defineProps<{
-		/** # 禁用 */
+		/** 禁用。 */
 		disabled?: boolean;
-		/** # 复选状态 */
+		/** 复选状态。 */
 		checkState?: "unchecked" | "indeterminate" | "checked";
 	}>(), {
 		checkState: "unchecked",
@@ -23,7 +23,7 @@
 		<div class="box-focus">
 			<div class="box-shadow">
 				<div class="box">
-					<!-- Lottie Here -->
+					<AnimatedIcon :animationData="animationCheck" :width="18" :height="18" />
 				</div>
 			</div>
 		</div>

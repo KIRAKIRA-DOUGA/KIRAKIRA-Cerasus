@@ -93,7 +93,7 @@
 			<RadioButton disabled>{{ t.custom }}</RadioButton>
 			<RadioButton on disabled>{{ t.onDisabled }}</RadioButton>
 			<hr />
-			<Checkbox checkState="checked">勾选框</Checkbox>
+			<Checkbox checkState="checked">复选框</Checkbox>
 			<hr />
 			<TextBox v-model="inputValue" illegal placeholder="正常错误的" />
 			<TextBox v-model="inputValue" size="small" placeholder="小小的软软的香香的" />
