@@ -28,7 +28,7 @@
 <template>
 	<Mask v-model="open" position="center" :zIndex="40">
 		<Transition name="dialog">
-			<kira-component v-if="open" class="login-window" :class="[currentPage, { 'move-left': coverMoveLeft }] ">
+			<kira-component v-if="open" class="login-window" :class="[currentPage, { 'move-left': coverMoveLeft }]">
 				<div class="main left">
 					<div class="login">
 						<div class="title">
@@ -113,7 +113,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="cover-wrapper" :class="{ 'move-left': coverMoveLeft }">
+				<div class="cover-wrapper">
 					<LogoCover :welcome="isWelcome" />
 				</div>
 			</kira-component>
@@ -292,7 +292,7 @@
 		position: absolute;
 		left: calc($width / 2);
 
-		&.move-left {
+		.move-left & {
 			left: 0;
 		}
 
