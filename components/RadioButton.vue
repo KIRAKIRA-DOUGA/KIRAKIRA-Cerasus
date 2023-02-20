@@ -55,7 +55,7 @@
 </script>
 
 <template>
-	<kira-component :tabindex="isChecked ? 0 : -1" class="radio-button" :class="{ disabled }" @click="onChange" @keydown="onKeydown">
+	<kira-component :tabindex="isChecked && !disabled ? 0 : -1" class="radio-button" :class="{ disabled }" @click="onChange" @keydown="onKeydown">
 		<input ref="radio" type="radio" :checked="isChecked" :value="props.value" :disabled="disabled" />
 		<div class="radio-focus">
 			<div class="radio-shadow">
@@ -191,6 +191,7 @@
 
 	.disabled {
 		cursor: default;
+		pointer-events: none;
 
 		.radio-shadow {
 			box-shadow: none !important;
@@ -200,8 +201,6 @@
 			opacity: 0.4;
 		}
 	}
-
-	// TODO: 接下来请你编写 disabled 样式和 unchecked 的 hover、pressed、disabled 样式。
 
 	@each $key in "", "-back" { // 故意把动画写两遍，让 CSS 以为是两个动画。
 		@keyframes outer-border-change#{$key} {

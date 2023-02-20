@@ -150,5 +150,6 @@
 
 	.disabled {
 		cursor: default;
+		pointer-events: none;
 	}
 </style>
