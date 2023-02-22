@@ -163,16 +163,4 @@
 	video {
 		width: 100%;
 	}
-
-	.media-info {
-		@include radius-large;
-		position: absolute;
-		z-index: 2;
-		width: 800px;
-		padding: 1rem;
-		color: white;
-		font-weight: 800;
-		background-color: #5c5858;
-		opacity: 0.5;
-	}
 </style>
