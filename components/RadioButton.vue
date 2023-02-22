@@ -190,7 +190,6 @@
 	}
 
 	.disabled {
-		cursor: default;
 		pointer-events: none;
 
 		.radio-shadow {
