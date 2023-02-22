@@ -76,7 +76,7 @@
 			<Button @click="showConfetti">{{ t.confetti }}</Button>
 			<Button icon="send">{{ t.send }}</Button>
 			<Button @click="showDialog = true">显示对话框</Button>
-			<Dialog v-model="showDialog" />
+			<Dialog v-model="showDialog" static />
 			<ToggleSwitch v-model="toggle">{{ t.toggleSwitch }} {{ toggle ? t.on : t.off }}</ToggleSwitch>
 			<ToggleSwitch disabled>{{ t.offDisabled }} </ToggleSwitch>
 			<ToggleSwitch on disabled>{{ t.onDisabled }}</ToggleSwitch>

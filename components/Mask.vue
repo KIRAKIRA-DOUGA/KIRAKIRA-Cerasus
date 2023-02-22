@@ -4,11 +4,18 @@
 
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
+		/** 是否显示。 */
 		modelValue?: boolean;
+		/** 是否显示，兼容使用。 */
 		shown?: boolean;
+		/** CSS 中的 Z 轴高度。 */
 		zIndex?: number;
+		/** 是否是静态的，即没有外观，形式上的遮罩。 */
 		static?: boolean;
+		/** 指定内容的位置。 */
 		position?: MaskSlotPosition;
+		/** 是否**不要**单击空白处关闭。由于 Vue 的设计，只能设为否定形式的属性。 */
+		doNotCloseWhenClicked?: boolean;
 	}>(), {
 		zIndex: 50,
 		position: "center",
@@ -27,7 +34,10 @@
 	 */
 	function close(e: MouseEvent) {
 		if (e.target === mask.value) // 单击的最终元素必须是遮罩本身，不能是其内容。
-			emits("update:modelValue", false);
+			if (props.doNotCloseWhenClicked)
+				replayAnimation(mask.value, "focusing");
+			else
+				emits("update:modelValue", false);
 	}
 </script>
 
@@ -69,6 +79,10 @@
 			// z-index: v-bind(zIndex); // TODO: v-bind 在 Teleport 内部不可用。请时刻关注 Vue 的更新：https://github.com/vuejs/core/issues/4605
 		}
 
+		&.focusing #{$slot} {
+			animation: shake 1s $ease-out-smooth;
+		}
+
 		#{$slot} {
 			position: fixed;
 			margin: auto;
@@ -100,6 +114,29 @@
 				top: 0;
 				bottom: 0;
 			}
+		}
+	}
+
+	@keyframes shake {
+		10% {
+			transform: rotate(10deg);
+		}
+
+		20% {
+			transform: rotate(-5deg);
+		}
+
+		30% {
+			transform: rotate(2.5deg);
+		}
+
+		40% {
+			transform: rotate(-2.5deg);
+		}
+
+		50%,
+		100% {
+			transform: rotate(0deg);
 		}
 	}
 </style>

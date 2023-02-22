@@ -3,6 +3,7 @@
 		modelValue?: boolean;
 		open?: boolean;
 		title?: string;
+		static?: boolean;
 	}>();
 
 	const emits = defineEmits<{
@@ -24,7 +25,7 @@
 </script>
 
 <template>
-	<Mask v-model="open" position="center top">
+	<Mask v-model="open" position="center top" :doNotCloseWhenClicked="static">
 		<Transition name="dialog">
 			<div v-if="open" ref="dialog" class="dialog">
 				<div class="body">
