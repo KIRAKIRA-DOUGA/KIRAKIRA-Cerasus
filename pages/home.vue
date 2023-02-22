@@ -256,10 +256,8 @@
 <style scoped lang="scss">
 	.container {
 		padding: 26px 100px;
-	}
 
-	@media (max-width: 800px) {
-		.container {
+		@media (max-width: 800px) {
 			padding: 26px 40px;
 		}
 	}
