@@ -44,8 +44,6 @@ export async function replayAnimation(element: Element, ...className: string[]) 
  * 当高度值设为 auto 时的动画高度。
  * @param element - HTML DOM 元素。
  * @param changeFunc - 使高度将会改变的回调函数。
- * @param startHeight - 指定初始高度（可选）。
- * @param duration - 动画时间。
  * @returns 动画异步承诺。
  */
 export function animateHeight(
@@ -56,12 +54,19 @@ export function animateHeight(
 		endHeight,
 		duration = 250,
 		getSize,
-	}: {
-		startHeight?: number;
-		endHeight?: number;
-		duration?: number;
-		getSize?: (result: [number, number]) => void;
-	},
+	}: Partial<{
+		/** 显式指定初始高度（可选）。 */
+		startHeight: number;
+		/** 显式指定结束高度（可选）。 */
+		endHeight: number;
+		/** 动画时间。 */
+		duration: number;
+		/**
+		 * 获取最终的元素尺寸。
+		 * @param result - 最终的元素尺寸。
+		 */
+		getSize: (result: [number, number]) => void;
+	}>,
 ) {
 	startHeight ??= element.clientHeight;
 	changeFunc?.();

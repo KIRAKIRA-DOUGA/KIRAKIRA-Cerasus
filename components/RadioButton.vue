@@ -9,10 +9,10 @@
 		/** 打开，兼容使用。 */
 		on?: boolean;
 	}>(), {
-		disabled: false,
 		value: undefined,
 		modelValue: undefined,
 	});
+	// TODO: 随着 volar 的更新，似乎泛型功能被弄坏了。
 
 	type Movement = "previous" | "next";
 

@@ -17,5 +17,5 @@ export function entries<K extends string | number | symbol, V>(obj: { [s in K]?:
  * @returns 重复指定次数对象的数组。
  */
 export function forMap<T>(length: number, callback: (index: number) => T) {
-	return Array(length).fill(undefined).map((_, index) => callback(index + 1));
+	return Array<void>(length).fill(undefined).map((_, index) => callback(index + 1));
 }

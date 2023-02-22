@@ -5,7 +5,7 @@
 	}>();
 
 	const mouse = useMouse();
-	const gsensor = useDeviceOrientation(); // TODO: 加速度传感器（重力感应）在最新iOS Safari上无效。
+	const gsensor = useDeviceOrientation(); // Safari 不支持加速度传感器（重力感应），散了吧。
 	const parallax = computed(() => {
 		const dimen = (x: number, y: number) => ({ x, y });
 		if (process.server) return dimen(0, 0);
@@ -32,6 +32,8 @@
 	const inited = ref(false);
 
 	onMounted(() => {
+		if ("requestPermission" in DeviceMotionEvent && typeof DeviceMotionEvent.requestPermission === "function")
+			DeviceMotionEvent.requestPermission(); // Safari 最后的挣扎。
 		inited.value = true;
 		if (!dayNight.value) return;
 		const deg = rotationDeg.value;

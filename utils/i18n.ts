@@ -7,7 +7,7 @@ const handler = {
 	},
 };
 /** 获取本地化字符串对象。 */
-export const t = new Proxy({}, handler) as Record<string, string>;
+export const t = new Proxy({}, handler) as Readonly<Record<string, string>>;
 Object.freeze(t);
 
 /**

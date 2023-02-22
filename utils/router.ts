@@ -3,15 +3,15 @@ import { RouteLocationNormalized, RouteLocationNormalizedLoaded } from "vue-rout
 
 /**
  * 获取系统当前的路由。
- * @param route - 路由对象。
- * @param removeI18nPrefix - 是否移除语言名称前缀。
  * @returns 系统路由。
  */
 export function getRoutePath({
 	route = useRouter().currentRoute.value,
 	removeI18nPrefix = true,
 }: Partial<{
+	/** 路由对象。留空时将会自动获取。 */
 	route: RouteLocationNormalized | RouteLocationNormalizedLoaded;
+	/** 是否移除语言名称前缀。默认为是。 */
 	removeI18nPrefix: boolean;
 }> = {}): string {
 	let path = route.path;

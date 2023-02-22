@@ -6,7 +6,7 @@
 	}>();
 
 	const dom = ref<HTMLDivElement>();
-	const parent = getParent(TabBar)!;
+	const parent = useParent(TabBar)!;
 	const active = computed(() => parent.props.modelValue === props.id);
 
 	/**

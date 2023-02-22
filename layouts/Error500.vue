@@ -112,18 +112,8 @@
 				}
 			}
 
-			.qrcode,
-			.siliceous {
+			.qrcode {
 				@include square(156px);
-			}
-
-			.siliceous {
-				// mix-blend-mode: multiply; // TODO: 疑似在开启 mix-blend-mode 后显卡裁切区域会出现异常。
-
-				.dark & {
-					filter: invert(1);
-					// mix-blend-mode: lighten;
-				}
 			}
 		}
 

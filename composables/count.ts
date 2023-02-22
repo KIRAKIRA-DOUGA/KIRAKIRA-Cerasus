@@ -13,7 +13,7 @@ interface Result {
 	reset: () => void;
 }
 
-export default function useCount(initialVal: number, range?: Range): Result {
+export function useCount(initialVal: number, range?: Range): Result {
 	const current = ref(initialVal);
 	const inc = (delta?: number): void => {
 		if (typeof delta === "number")

@@ -11,7 +11,7 @@
 		(event: "click", e: MouseEvent): void;
 	}>();
 
-	const parent = getParent(Menu)!;
+	const parent = useParent(Menu)!;
 	const menuItem = ref<HTMLDivElement>();
 	const vIndex = ref(0);
 
