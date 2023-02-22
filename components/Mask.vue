@@ -80,7 +80,7 @@
 		}
 
 		&.focusing #{$slot} {
-			animation: shake 1s $ease-out-smooth;
+			animation: swing 500ms $ease-out-smooth;
 		}
 
 		#{$slot} {
@@ -117,26 +117,12 @@
 		}
 	}
 
-	@keyframes shake {
-		10% {
-			transform: rotate(10deg);
-		}
-
-		20% {
-			transform: rotate(-5deg);
-		}
-
-		30% {
-			transform: rotate(2.5deg);
-		}
-
-		40% {
-			transform: rotate(-2.5deg);
-		}
-
-		50%,
-		100% {
-			transform: rotate(0deg);
-		}
+	@keyframes swing {
+		0% { transform: rotate(-5deg); }
+		20% { transform: rotate(4deg); }
+		40% { transform: rotate(-3deg); }
+		60% { transform: rotate(2deg); }
+		80% { transform: rotate(-1deg); }
+		100% { transform: rotate(0); }
 	}
 </style>
