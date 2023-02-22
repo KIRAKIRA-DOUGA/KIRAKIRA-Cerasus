@@ -257,7 +257,7 @@
 	.container {
 		padding: 26px 100px;
 
-		@media (max-width: 800px) {
+		@media #{$tablet} {
 			padding: 26px 40px;
 		}
 	}

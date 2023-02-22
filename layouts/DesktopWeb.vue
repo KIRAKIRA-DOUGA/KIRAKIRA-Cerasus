@@ -7,9 +7,9 @@
 	<SideBar class="sidebar" />
 	<div class="container">
 		<Banner :collapsed="!showBanner" />
-		<div class="page">
+		<main>
 			<slot></slot>
-		</div>
+		</main>
 	</div>
 </template>
 
@@ -18,7 +18,7 @@
 		padding-left: $sidebar-width;
 	}
 
-	.page {
+	main {
 		max-width: 1920px;
 		margin: 0 auto;
 	}

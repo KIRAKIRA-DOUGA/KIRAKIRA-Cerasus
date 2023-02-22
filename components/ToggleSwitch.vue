@@ -144,7 +144,7 @@
 				transform: scale(calc(19 / 20));
 			}
 
-			// TODO: 接下来请你编写 hover、pressed 样式。
+			// TODO: 接下来请你编写 hover 样式。
 		}
 	}
 

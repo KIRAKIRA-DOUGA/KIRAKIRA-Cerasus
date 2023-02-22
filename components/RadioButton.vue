@@ -72,6 +72,7 @@
 	$dot-size: 10px;
 	$border-size: 2px;
 	$duration-half: 200ms;
+	$duration: $duration-half * 2;
 	$component-class: ".radio-button";
 
 	#{$component-class} {
@@ -97,7 +98,7 @@
 		margin: 0;
 		overflow: hidden;
 		box-shadow: inset 0 0 0 $border-size c(icon-color);
-		transition: $fallback-transitions, all $ease-in-out-max calc($duration-half * 2), background-color $ease-out-max 200ms;
+		transition: $fallback-transitions, all $ease-in-out-max $duration, background-color $ease-out-max 200ms;
 		animation: outer-border-change-back $duration-half $duration-half $ease-in-max reverse;
 		appearance: none;
 
@@ -112,7 +113,7 @@
 			display: block;
 			background-color: c(icon-color);
 			opacity: 0;
-			transition: $fallback-transitions, all $ease-in-out-max calc($duration-half * 2);
+			transition: $fallback-transitions, all $ease-in-out-max $duration;
 			animation:
 				inner-resize-back $duration-half $ease-out-max reverse,
 				cut-out $duration-half step-start;
@@ -120,6 +121,7 @@
 			scale: 0.5;
 		}
 	}
+	// TODO: 切换主题颜色时，出现内部圆形先变化，外部环后变化的问题。反正我感觉这 radio button 得重写一下，现在已经乱成一锅粥了。
 
 	input:checked + .radio-focus {
 		animation: pressing $duration-half $ease-in alternate 2;

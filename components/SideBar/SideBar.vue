@@ -23,7 +23,7 @@
 </script>
 
 <template>
-	<div class="sidebar" :class="{ ready }">
+	<aside :class="{ ready }">
 		<div class="top icons">
 			<SideBarButton v-i="0" title="主页" icon="home" to="/" />
 			<SideBarButton v-i="1" title="搜索" icon="search" to="/search" />
@@ -49,13 +49,13 @@
 		</div>
 
 		<LoginWindow v-model="showLogin" />
-	</div>
+	</aside>
 </template>
 
 <style scoped lang="scss">
 	$icons-gap: 8px;
 
-	.sidebar {
+	aside {
 		@include sidebar-shadow;
 		@include flex-center;
 		z-index: 30;

@@ -124,7 +124,7 @@
 <style scoped lang="scss">
 	$width: 800px;
 	$height: 400px;
-	$enter-duration: 1s;
+	$enter-duration: 700ms;
 	$transition-ease: $ease-out-smooth;
 
 	.login-window {
