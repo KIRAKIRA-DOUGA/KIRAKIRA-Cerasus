@@ -24,7 +24,7 @@
 	const logoTextForm = ref<LogoTextFormType>("full");
 	const showDialog = ref(false);
 	const inputValue = ref("");
-	const menu = ref<ReturnType<typeof Menu>>();
+	const menu = ref<InstanceType<typeof Menu>>();
 	const showMenu = () => menu.value?.show();
 	const beep = ref<HTMLAudioElement>();
 
