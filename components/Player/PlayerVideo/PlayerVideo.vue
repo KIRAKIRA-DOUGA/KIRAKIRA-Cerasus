@@ -25,6 +25,14 @@
 	};
 
 	/**
+	 * 显示视频详细信息。
+	 */
+	async function showInfo() {
+		if (!mediaInfos.value) await getInfo(props.src);
+		if (mediaInfos.value) showMediaInfo.value = true;
+	}
+
+	/**
 	 * 获取视频详细信息，使用库 `mediainfo.js`。
 	 * @param videoPath - 视频地址。
 	 */
@@ -32,24 +40,25 @@
 		const blob = await fetch(videoPath).then(response => response.blob());
 		const fileName = basename(videoPath);
 		const file = new File([blob], fileName, { type: "video/mp4" });
-		const getSize = () => file.size;
-		const readChunk = (chunkSize: number, offset: number) => new Promise<Uint8Array>(resolve => {
-			const reader = new FileReader();
-			reader.onload = event =>
-				resolve(new Uint8Array(((event.target as FileReader).result as ArrayBuffer)));
-			reader.readAsArrayBuffer(file.slice(offset, offset + chunkSize));
-		});
 		const mediaInfo = await mediainfo();
-		const _result = await mediaInfo.analyzeData(getSize, readChunk);
-		const result = _result as Exclude<typeof _result, string>;
+		const result = await mediaInfo.analyzeData(() => file.size,
+			(chunkSize, offset) => new Promise<Uint8Array>((resolve, reject) => {
+				const reader = new FileReader();
+				reader.onload = () => resolve(new Uint8Array(reader.result as ArrayBuffer));
+				reader.onerror = reject;
+				reader.readAsArrayBuffer(file.slice(offset, offset + chunkSize));
+			}));
+		if (typeof result === "string") return; // 仅在会报错时 result 取值为空字符串，如报错在此之前已会报错，忽略之。
 		const tracks = result.media.track;
 		mediaInfos.value = {};
 		for (const track of tracks) {
 			const { "@type": type, ...info } = track;
 			mediaInfos.value[type] = info;
 		}
-		showMediaInfo.value = !showMediaInfo.value;
+		showMediaInfo.value = true;
 	}
+
+	watch(() => props.src, () => (mediaInfos.value = undefined));
 
 	watch(playing, playing => {
 		if (!video.value) return;
@@ -140,7 +149,7 @@
 			:toggleFullScreen="toggle"
 		/>
 		<Menu ref="menu">
-			<MenuItem @click="getInfo(src)">查看视频详细信息</MenuItem>
+			<MenuItem @click="showInfo">查看视频详细信息</MenuItem>
 		</Menu>
 	</kira-component>
 </template>
