@@ -80,7 +80,7 @@
 		}
 
 		&.focusing #{$slot} {
-			animation: swing 500ms $ease-out-smooth;
+			animation: swing 500ms $ease-out-sine;
 		}
 
 		#{$slot} {
@@ -118,11 +118,11 @@
 	}
 
 	@keyframes swing {
-		0% { transform: rotate(-5deg); }
-		20% { transform: rotate(4deg); }
-		40% { transform: rotate(-3deg); }
-		60% { transform: rotate(2deg); }
-		80% { transform: rotate(-1deg); }
-		100% { transform: rotate(0); }
+		0% { rotate: -5deg; }
+		20% { rotate: 4deg; }
+		40% { rotate: -3deg; }
+		60% { rotate: 2deg; }
+		80% { rotate: -1deg; }
+		100% { rotate: 0; }
 	}
 </style>
