@@ -255,6 +255,7 @@ module.exports = {
 			"order": ["docs", ["script:not([setup])", "script[setup]"], "template", "i18n", "style[scoped]", "style[module]", "style:not([scoped]):not([module])"],
 		}],
 		"vue/no-multiple-template-root": "off",
+		"vue/multiline-html-element-content-newline": "off",
 		"no-restricted-properties": ["error", {
 			object: "arguments",
 			property: "callee",

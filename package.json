@@ -53,6 +53,7 @@
 		"@vueuse/components": "^9.12.0",
 		"@vueuse/head": "^1.0.0-rc.14",
 		"@vueuse/nuxt": "^9.12.0",
+		"css-doodle": "^0.34.3",
 		"js-confetti": "^0.11.0",
 		"lottie-web": "^5.10.0",
 		"mediainfo.js": "^0.1.9",

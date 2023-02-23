@@ -104,6 +104,7 @@
 		@include dropdown-flyouts;
 		top: 0;
 		left: 0;
+		z-index: 60;
 		width: fit-content;
 		margin: 0;
 		padding: $menu-padding 0;
