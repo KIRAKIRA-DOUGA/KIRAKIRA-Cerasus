@@ -26,7 +26,7 @@
 	<aside :class="{ ready }">
 		<div class="top icons">
 			<SideBarButton v-i="0" title="主页" icon="home" to="/" />
-			<SideBarButton v-i="1" title="搜索" icon="search" to="/search" />
+			<SideBarButton v-i="1" title="搜索" icon="search" to="search" />
 			<SideBarButton v-i="2" title="历史" icon="history" />
 			<SideBarButton v-i="3" title="收藏" icon="star" />
 			<SideBarButton v-i="4" title="关注" icon="feed" />
@@ -45,7 +45,7 @@
 		<div class="bottom icons">
 			<SideBarButton v-i="7" title="我的" icon="person" @click="showLogin = true" />
 			<SideBarButton v-i="8" title="消息" icon="email" />
-			<SideBarButton v-i="9" title="设置" icon="settings" to="/settings" />
+			<SideBarButton v-i="9" title="设置" icon="settings" to="components" />
 		</div>
 
 		<LoginWindow v-model="showLogin" />

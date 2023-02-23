@@ -3,9 +3,11 @@
 		modelValue: number;
 		min?: number;
 		max?: number;
+		defaultValue?: number;
 	}>(), {
 		min: 0,
 		max: 100,
+		defaultValue: undefined,
 	});
 
 	const emits = defineEmits<{
@@ -25,12 +27,32 @@
 		throw new RangeError("Slider 的值比最大值要大。" + errorInfo);
 
 	const value = computed(() => map(props.modelValue, props.min, props.max, 0, 1));
+	const moveTransition = ref(false);
+
+	/**
+	 * 在短暂的一瞬间恢复动画。
+	 */
+	function quickMoveTransition() {
+		moveTransition.value = true;
+		setTimeout(() => moveTransition.value = false, 250);
+	}
+
+	/**
+	 * 重置默认值。
+	 */
+	function resetDefault() {
+		quickMoveTransition();
+		if (props.defaultValue !== undefined && Number.isFinite(props.defaultValue))
+			for (const event of ["update:modelValue", "changing", "changed"] as const)
+				emits(event as "update:modelValue", props.defaultValue);
+	}
 
 	/**
 	 * 拖拽滑块逻辑处理。
 	 * @param e - 指针事件（包括鼠标和触摸）。
 	 */
 	function onThumbDown(e: PointerEvent) {
+		if (e.button === 1) { resetDefault(); return; }
 		const thumb = (e.target as HTMLDivElement).parentElement!.querySelector(".thumb") as HTMLDivElement;
 		const track = thumb.parentElement!.querySelector(".track")!;
 		const { left, width: max } = track.getClientRects()[0];
@@ -55,6 +77,7 @@
 	 * @param e - 指针事件（包括鼠标和触摸）。
 	 */
 	async function onTrackDown(e: PointerEvent) {
+		if (e.button === 1) { resetDefault(); return; }
 		const track = e.target as HTMLDivElement;
 		const { width } = track.getClientRects()[0];
 		const value = map(e.offsetX, 0, width, props.min, props.max);
@@ -65,7 +88,7 @@
 </script>
 
 <template>
-	<kira-component class="slider" tabindex="0" :style="{ '--value': value }">
+	<kira-component class="slider" :class="{ 'move-transition': moveTransition }" tabindex="0" :style="{ '--value': value }">
 		<div class="track" @pointerdown="onTrackDown"></div>
 		<div class="passed"></div>
 		<div class="thumb" @pointerdown="onThumbDown"></div>
@@ -102,8 +125,11 @@
 		margin-top: 0;
 		background-color: c(accent);
 		opacity: map(var(--value), 0, 1, 0.4, 1, true);
-		transition: none; // 关掉，关掉动画，一定要关掉。否则动画会卡到你怀疑人生。
 		pointer-events: none;
+
+		.slider:not(.move-transition) & {
+			transition: none; // 关掉，关掉动画，一定要关掉。否则动画会卡到你怀疑人生。
+		}
 	}
 
 	.thumb {
@@ -116,7 +142,10 @@
 		left: $value;
 		background-color: c(main-bg);
 		cursor: pointer;
-		transition: $fallback-transitions, left 0ms;
+
+		.slider:not(.move-transition) & {
+			transition: $fallback-transitions, left 0ms;
+		}
 
 		&::after {
 			@include square(100%);
