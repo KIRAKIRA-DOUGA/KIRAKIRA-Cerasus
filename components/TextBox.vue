@@ -227,18 +227,19 @@
 
 	.after-icon-wrapper {
 		@include flex-center;
-		@include square($default-height);
+		@include square(var(--size));
 		@include circle;
-		min-width: $default-height;
+		--size: #{$default-height};
+		min-width: var(--size);
+		scale: 0.875;
+		transform-origin: right center;
 
 		.large & {
-			@include square($large-height);
-			min-width: $large-height;
+			--size: #{$large-height};
 		}
 
 		.small & {
-			@include square($small-height);
-			min-width: $small-height;
+			--size: #{$small-height};
 		}
 
 		&:nth-last-child {
