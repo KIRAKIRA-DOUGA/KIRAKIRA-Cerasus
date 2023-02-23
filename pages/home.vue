@@ -1,4 +1,7 @@
 <script setup lang="ts">
+	import testVideo from "assets/images/av820864307.jpg";
+	import testAudio from "assets/images/av893640047.jpg";
+
 	const selectedTab = ref("home");
 
 	useHead({ title: "首页" });
@@ -52,6 +55,10 @@
 			<TabItem id="otomad">{{ t.otomad }}</TabItem>
 		</TabBar>
 		<Subheader icon="apps" :badge="233">搞笑</Subheader>
+		<div class="videos">
+			<ThumbVideo link="video" :image="testVideo" :date="new Date()" :watchedCount="233_0000">测试视频</ThumbVideo>
+			<ThumbVideo link="audio" :image="testAudio" :date="new Date()" :watchedCount="233_0000">测试音频</ThumbVideo>
+		</div>
 		<Subheader icon="home" :badge="233">网站地图</Subheader>
 		<div class="pages">
 			<LocaleLink v-for="page in pages" :key="page.name" class="link lite" :to="page.link">{{ page.name }}</LocaleLink>
@@ -99,10 +106,14 @@
 		}
 	}
 
-	.pages {
+	%tabulation {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 10px;
+	}
+
+	.pages {
+		@extend %tabulation;
 
 		.link {
 			@include radius-small;
@@ -112,6 +123,15 @@
 			&:hover {
 				opacity: 0.75;
 			}
+
+			&:focus {
+				@include button-shadow-focus;
+			}
 		}
+	}
+
+	.videos {
+		@extend %tabulation;
+		gap: 14px;
 	}
 </style>

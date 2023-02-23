@@ -320,8 +320,8 @@
 		}
 
 		&:active {
+			@include button-scale-active;
 			background: c(accent);
-			transform: scale(calc(35 / 36));
 		}
 
 		&:has(:focus) {

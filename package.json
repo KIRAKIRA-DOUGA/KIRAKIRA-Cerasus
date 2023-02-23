@@ -57,6 +57,7 @@
 		"lottie-web": "^5.10.0",
 		"mediainfo.js": "^0.1.9",
 		"nuxt-icons": "^3.1.0",
-		"path-browserify": "^1.0.1"
+		"path-browserify": "^1.0.1",
+		"vue-audio-visual": "^3.0.3"
 	}
 }

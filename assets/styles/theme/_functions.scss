@@ -1,4 +1,5 @@
 @use "sass:color";
+@use "sass:list";
 
 /// 将指定颜色反转亮度。
 /// @param {Color} $color - 颜色值。
@@ -61,4 +62,18 @@
 	} @else {
 		@return calc((($b - $a) * ($x - $min) / ($max - $min)) + $a);
 	}
+}
+
+/// 将列表中的每一项取相反数。
+/// @example scss
+/// 	margin: list-negative(1rem 2rem);
+/// 	// result
+/// 	margin: -1rem -2rem;
+/// @param {List} $list - 列表。
+/// @return {List} 取负数后的列表。
+@function list-negative($list) {
+	@for $i from 1 through list.length($list) {
+		$list: list.set-nth($list, $i, -(list.nth($list, $i)));
+	}
+	@return $list;
 }

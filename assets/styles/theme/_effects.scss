@@ -74,6 +74,11 @@
 	box-shadow: 0 0 0 3px c(accent-focus, 50%);
 }
 
+@mixin button-scale-active {
+	scale: calc(35 / 36);
+	box-shadow: none !important;
+}
+
 @mixin sidebar-shadow {
 	box-shadow: 0 0 24px c(accent, 30%);
 }

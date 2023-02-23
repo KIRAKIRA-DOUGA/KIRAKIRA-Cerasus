@@ -37,7 +37,8 @@
 	 * @param videoPath - 视频地址。
 	 */
 	async function getInfo(videoPath: string) {
-		const blob = await fetch(videoPath).then(response => response.blob());
+		const response = await fetch(videoPath);
+		const blob = await response.blob();
 		const fileName = basename(videoPath);
 		const file = new File([blob], fileName, { type: "video/mp4" });
 		const mediaInfo = await mediainfo();

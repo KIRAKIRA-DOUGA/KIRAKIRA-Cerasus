@@ -61,9 +61,8 @@
 		}
 
 		&:active {
+			@include button-scale-active;
 			background: c(accent);
-			box-shadow: none !important;
-			scale: calc(35 / 36);
 		}
 
 		&[disabled] {
