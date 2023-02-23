@@ -9,15 +9,15 @@
 </script>
 
 <template>
-	<section class="subheader">
+	<h3 class="subheader">
 		<NuxtIcon :name="icon" class="icon" />
 		<div class="title">
 			<slot></slot>
 		</div>
-		<Badge v-if="badge || badge === 0">
+		<Badge v-if="badge || badge === 0" class="badge">
 			{{ badge }}
 		</Badge>
-	</section>
+	</h3>
 </template>
 
 <style scoped lang="scss">
@@ -36,5 +36,10 @@
 	.icon {
 		color: c(accent);
 		font-size: 20px;
+	}
+
+	.badge {
+		font-weight: normal;
+		font-size: 14px;
 	}
 </style>
