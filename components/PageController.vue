@@ -194,7 +194,7 @@
 		nextItems = nextItems.filter(item => !prevItems.includes(item));
 		if (nextItems.length === 0) return false;
 		const result = {} as PositionPageItemPair;
-		prevItems.forEach((item, i) => (result[i] = item));
+		prevItems.forEach((item, i) => result[i] = item);
 		const moveToLeft = nextItems[0] < prevItems[0],
 			prevLength = prevItems.length,
 			nextLength = nextItems.length;

@@ -60,7 +60,7 @@ function createJsDoc(doc: string, indent: number = 0) {
 	if (doc === "") return "";
 	const indentTab = "\t".repeat(indent);
 	const lines = doc.split("\n");
-	lines.forEach((line, i, lines) => (lines[i] = indentTab + " * " + line));
+	lines.forEach((line, i, lines) => lines[i] = indentTab + " * " + line);
 	let result = indentTab + "/**\n";
 	result += lines.join("\n");
 	result += "\n" + indentTab + " */";

@@ -82,8 +82,8 @@
 			moveDirection = itemLr.left >= prevItemLr.left ? MoveDirection.RIGHT : MoveDirection.LEFT;
 		} else
 			prevItemLr = getIndicatorLeftRight(item, 0);
-		const setLeft = () => (style.left = itemLr.left);
-		const setRight = () => (style.right = itemLr.right);
+		const setLeft = () => style.left = itemLr.left;
+		const setRight = () => style.right = itemLr.right;
 		const delayTime = () => delay(100);
 		switch (moveDirection) {
 			case MoveDirection.RIGHT:

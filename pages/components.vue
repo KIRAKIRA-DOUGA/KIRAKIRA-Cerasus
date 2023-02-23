@@ -33,7 +33,7 @@
 	async function onClickButton() {
 		clearTimeout(timeoutId.value);
 		isClicked.value = true;
-		await new Promise(resolve => (timeoutId.value = setTimeout(resolve, 2000)));
+		await new Promise(resolve => timeoutId.value = setTimeout(resolve, 2000));
 		isClicked.value = false;
 	}
 

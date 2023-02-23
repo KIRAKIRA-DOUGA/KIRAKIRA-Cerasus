@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	const showBanner = ref(false);
-	watchRoute(() => (showBanner.value = getRoutePath() === ""), true);
+	watchRoute(() => showBanner.value = getRoutePath() === "", true);
 </script>
 
 <template>

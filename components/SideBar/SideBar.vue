@@ -18,7 +18,7 @@
 		window.addEventListener("resize", onResize);
 		onResize();
 		ready.value = true;
-		setTimeout(() => (ready.value = false), 2000); // 定时移除开场动画。
+		setTimeout(() => ready.value = false, 2000); // 定时移除开场动画。
 	});
 </script>
 

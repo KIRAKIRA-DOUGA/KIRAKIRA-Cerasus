@@ -58,7 +58,7 @@
 		showMediaInfo.value = true;
 	}
 
-	watch(() => props.src, () => (mediaInfos.value = undefined));
+	watch(() => props.src, () => mediaInfos.value = undefined);
 
 	watch(playing, playing => {
 		if (!video.value) return;
@@ -132,7 +132,7 @@
 			:src="src"
 			@play="playing = true"
 			@pause="playing = false"
-			@ratechange="e => (playbackRate = (e.target as HTMLVideoElement).playbackRate)"
+			@ratechange="e => playbackRate = (e.target as HTMLVideoElement).playbackRate"
 			@timeupdate="onTimeUpdate"
 			@canplay="onCanPlay"
 			@click="playing = !playing"
