@@ -61,8 +61,6 @@
 			<LocaleLink to="video">{{ t.video }}</LocaleLink>
 			<LocaleLink to="/hello">{{ t.content }}</LocaleLink>
 			<LocaleLink to="/search">{{ t.search }}</LocaleLink>
-			<a href="404">404</a>
-			<a href="500">500</a>
 		</div>
 		<div class="component-test">
 			<PageController v-model="page" :pages="pages" :displayPageCount="displayPageCount" enableArrowKeyMove />

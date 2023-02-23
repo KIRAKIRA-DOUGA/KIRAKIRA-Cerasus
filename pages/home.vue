@@ -3,14 +3,43 @@
 
 	useHead({ title: "首页" });
 
+	const pages = getPages(
+		["组件测试页", "components"],
+		["搜索", "search"],
+		["内容", "/hello"],
+		["下一页", "/next"],
+	);
+
+	const httpCodes = getPages(
+		233,
+		404,
+		500,
+		502,
+		601,
+	);
+
+	type Page = { name: string; link: string };
+
 	/**
 	 * 获取页面列表。
 	 * @param pages - 页面数组。
 	 * @returns 页面对象。
 	 */
-	function getPages(pages: [string, string][]) {
-		const result = {} as Record<string, string>;
-		return pages.forEach(page => result[page[0]] = page[1]);
+	function getPages(...pages: [string, string][]): Page[];
+	/**
+	 * 获取页面列表。
+	 * @param httpCodes - HTTP 代码数组。
+	 * @returns 页面对象。
+	 */
+	function getPages(...httpCodes: number[]): Page[];
+	/**
+	 * 获取页面列表。
+	 * @param pages - 页面数组。
+	 * @returns 页面对象。
+	 */
+	function getPages(...pages: ([string, string] | number)[]): Page[] {
+		return pages.map(page => (typeof page === "number" ? { name: String(page), link: String(page) } :
+			{ name: page[0], link: page[1] }) as Page);
 	}
 </script>
 
@@ -25,12 +54,12 @@
 		<Subheader icon="apps" :badge="233">搞笑</Subheader>
 		<Subheader icon="home" :badge="233">网站地图</Subheader>
 		<div class="pages">
-			<LocaleLink class="link lite" to="components">组件测试页</LocaleLink>
-			<LocaleLink class="link lite" to="search">搜索</LocaleLink>
-			<LocaleLink class="link lite" to="/hello">内容</LocaleLink>
-			<LocaleLink class="link lite" to="/next">下一页</LocaleLink>
+			<LocaleLink v-for="page in pages" :key="page.name" class="link lite" :to="page.link">{{ page.name }}</LocaleLink>
 		</div>
 		<Subheader icon="error" :badge="233">错误页</Subheader>
+		<div class="pages">
+			<a v-for="page in httpCodes" :key="page.name" class="link lite" :href="page.link">{{ page.name }}</a>
+		</div>
 	</div>
 </template>
 

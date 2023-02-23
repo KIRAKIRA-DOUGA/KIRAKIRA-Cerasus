@@ -1,4 +1,3 @@
-import { WatchCallback } from "nuxt/dist/app/compat/capi";
 import { RouteLocationNormalized, RouteLocationNormalizedLoaded } from "vue-router";
 
 /**
@@ -30,8 +29,8 @@ export function watchRoute(callback: (newValue: string, oldValue: string) => voi
 	const router = useRouter();
 	watch(
 		() => router.currentRoute.value.path,
-		callback as unknown as WatchCallback<object, object | undefined>,
-		{ immediate },
+		callback,
+		{ immediate: immediate as false },
 	);
 }
 
