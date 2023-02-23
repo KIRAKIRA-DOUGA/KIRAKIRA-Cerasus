@@ -124,6 +124,7 @@ module.exports = {
 			"requireReturnType": false,
 		}],
 		"no-unmodified-loop-condition": "off",
+		"no-return-assign": "off",
 		"import/order": "off", // 与 VSCode 内置导入排序特性打架。
 		"import/first": "off", // 与 Vue 特性冲突。
 		"import/named": "off", // 与 TypeScript 特性冲突。

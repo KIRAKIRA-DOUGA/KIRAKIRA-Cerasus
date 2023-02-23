@@ -2,6 +2,11 @@
 
 a {
 	color: c(accent);
+	text-decoration: none;
+}
+
+a:not(.lite) {
+	color: c(accent);
 	text-decoration: underline;
 
 	&:hover,

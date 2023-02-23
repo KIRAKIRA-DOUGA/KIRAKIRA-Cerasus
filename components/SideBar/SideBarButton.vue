@@ -12,7 +12,7 @@
 		:is="to ? LocaleLink : 'div'"
 		v-ripple
 		:to="to"
-		class="button-wrapper"
+		class="button-wrapper lite"
 		draggable="false"
 		:tabindex="0"
 	>
@@ -29,7 +29,6 @@
 		@include flex-center;
 		@include circle;
 		width: $icon-size;
-		background: none;
 		cursor: pointer;
 
 		&:focus-visible {

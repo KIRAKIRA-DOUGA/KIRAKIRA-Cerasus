@@ -34,3 +34,11 @@ export function watchRoute(callback: (newValue: string, oldValue: string) => voi
 		{ immediate },
 	);
 }
+
+/**
+ * 导航到页面。
+ * @param path - 路由地址。
+ */
+export function navigate(path: string) {
+	useRouter().push(useLocalePath()(path));
+}

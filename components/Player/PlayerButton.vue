@@ -30,7 +30,7 @@
 		color: c(icon-color);
 		font-weight: 600;
 		font-size: 14px;
-		background: none;
+		background-color: none;
 		border: none;
 		cursor: pointer;
 		appearance: none;
