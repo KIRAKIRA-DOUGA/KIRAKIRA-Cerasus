@@ -1,12 +1,25 @@
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
-		width?: number;
-		height?: number;
+		width?: string | number;
+		height?: string | number;
 		welcome?: boolean;
+		fullLogo?: boolean;
 	}>(), {
 		width: 400,
 		height: 400,
 	});
+
+	const width = computed(() => getCssValue(props.width));
+	const height = computed(() => getCssValue(props.height));
+
+	/**
+	 * 获取 prop 的值，是数字像素或者其它单位的给出字符串。
+	 * @param value - prop 的值，可以是数字或字符串。
+	 * @returns 如果是字符串则原样返回，如果是数字则返回其值的像素值。
+	 */
+	function getCssValue(value: number | string) {
+		return typeof value === "string" ? value : `${value}px`;
+	}
 </script>
 
 <template>
@@ -29,7 +42,7 @@
 		<div class="triangle triangle-2"></div>
 		<div class="titles" :class="{ welcome }">
 			<div class="title welcome">Welcome</div>
-			<LogoText form="half" class="title kirakira" />
+			<LogoText :form="fullLogo ? 'full' : 'half'" class="title kirakira" />
 		</div>
 		<div class="circle circle-1"></div>
 		<div class="circle circle-2">
@@ -67,8 +80,8 @@
 
 	.cover {
 		@include flex-center;
-		--cover-width: calc(v-bind(width) * 1px); // v-bind 基于运行时，因此没办法赋值给 scss 变量。
-		--cover-height: calc(v-bind(height) * 1px);
+		--cover-width: v-bind(width); // v-bind 基于运行时，因此没办法赋值给 scss 变量。
+		--cover-height: v-bind(height);
 		position: relative;
 		width: var(--cover-width);
 		height: var(--cover-height);

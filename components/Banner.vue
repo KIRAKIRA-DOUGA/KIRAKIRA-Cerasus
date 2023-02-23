@@ -7,7 +7,7 @@
 <template>
 	<Transition name="banner">
 		<div v-if="!collapsed" class="banner opened">
-			<LogoText form="full" class="title" />
+			<LogoCover width="100vw" :height="280" fullLogo />
 			<div class="shadow"></div>
 		</div>
 	</Transition>
@@ -47,10 +47,6 @@
 		&,
 		& * {
 			transition: all $ease-out-expo 600ms;
-		}
-
-		.title {
-			zoom: 2.5;
 		}
 	}
 </style>
