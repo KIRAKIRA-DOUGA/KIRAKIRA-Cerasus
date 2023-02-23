@@ -1,17 +1,35 @@
 <script setup lang="ts">
 	const props = defineProps<{
+		/** 图标，可选。 */
 		icon?: string;
+		/** 图标是否放在文本后面。 */
 		iconBehind?: boolean;
+		/** 是否为次要/无背景按钮。 */
 		secondary?: boolean;
+		/**
+		 * 点击按钮是否切换导航？
+		 * #### 注意
+		 * 点击按钮将会立刻切换导航，使单击事件失去作用，不推荐使用该功能。
+		 */
+		href?: string;
 	}>();
 
 	const emits = defineEmits<{
-		(event: "click"): void;
+		(event: "click", arg: MouseEvent): void;
 	}>();
+
+	/**
+	 * 单击鼠标事件。
+	 * @param e - 鼠标事件。
+	 */
+	function onClick(e: MouseEvent) {
+		emits("click", e);
+		if (props.href) navigate("/");
+	}
 </script>
 
 <template>
-	<button v-ripple type="button" :class="{ secondary }" @click="emits('click')">
+	<button v-ripple type="button" :class="{ secondary }" @click="onClick">
 		<NuxtIcon v-if="icon && !iconBehind" :name="icon" class="icon front" />
 		<slot></slot>
 		<NuxtIcon v-if="icon && iconBehind" :name="icon" class="icon behind" />

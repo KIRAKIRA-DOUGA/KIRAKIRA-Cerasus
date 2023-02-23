@@ -43,10 +43,6 @@
 			{ rotate: deg + "deg", opacity: 1 },
 		], { duration: 500, easing: eases.easeOutMax });
 	});
-
-	const backHome = () => {
-		useRouter().push("/");
-	};
 </script>
 
 <template>
@@ -67,7 +63,7 @@
 			<!-- <div>test pointer: {{ parallax.x }}, {{ parallax.y }}</div>
 			<div>test gsensor: {{ gsensor.alpha }}, {{ gsensor.beta }}, {{ gsensor.gamma }}</div>
 			<div>{{ rotationDeg }}</div> -->
-			<Button @click="backHome">返回首页</Button>
+			<Button href="/">返回首页</Button>
 		</div>
 	</main>
 </template>
