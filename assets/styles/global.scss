@@ -62,6 +62,16 @@ kira-component {
 	display: block;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+	margin: 0;
+}
+
 // #region 页面过渡
 .page-enter-active {
 	transition: all $ease-out-smooth 600ms;
