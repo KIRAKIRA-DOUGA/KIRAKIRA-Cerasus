@@ -1,10 +1,8 @@
-<!-- <docs>
-	点击icon然后播放一段动画的组件
+<docs>
+	点击 icon 然后播放一段动画的组件。
 
-	适合收藏、点赞等小功能
-
-	什么垃圾东西，写了还会报错？
-</docs> -->
+	适合收藏、点赞等小功能。
+</docs>
 
 <script setup lang="ts">
 	import { AnimationItem } from "lottie-web";

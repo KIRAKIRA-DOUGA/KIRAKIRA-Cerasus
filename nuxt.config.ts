@@ -2,18 +2,21 @@
 
 import { resolve } from "path";
 import styleResources from "./helpers/style-resources";
+import cssDoodleLoader from "./plugins/vite/css-doodle";
+import docsLoader from "./plugins/vite/docs";
 /* import CopyPlugin from "copy-webpack-plugin";
 const wasmFile = resolve("node_modules/mediainfo.js/dist/MediaInfoModule.wasm"); */
-type _NuxtConfig = Parameters<typeof defineNuxtConfig>[0] & Record<string, object | string>; // 还敢报错吗？
+type OriginalNuxtConfig = Parameters<typeof defineNuxtConfig>[0];
+type BroadNuxtConfig = OriginalNuxtConfig & Record<Exclude<string, keyof OriginalNuxtConfig>, object | string>; // 还敢报错吗？
 // TODO: 水合异常，这是 nuxt 那边的问题，详情请关注：https://github.com/nuxt/nuxt/issues/18635
 const res = (...path: string[]) => resolve(__dirname, ...path);
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; // 支持 HTTPS。
 
 export default defineNuxtConfig({
 	plugins: [
-		"plugins/ripple.ts",
-		"plugins/css-var-i.ts",
-		"plugins/innerheight.ts",
+		"plugins/vue/ripple.ts",
+		"plugins/vue/css-var-i.ts",
+		"plugins/nuxt/innerheight.ts",
 	],
 	modules: [
 		"@nuxtjs/i18n",
@@ -46,6 +49,10 @@ export default defineNuxtConfig({
 		"styles/global-colors.scss",
 	],
 	vite: {
+		plugins: [
+			docsLoader(),
+			cssDoodleLoader(),
+		],
 		css: {
 			preprocessorOptions: styleResources({
 				scss: {
@@ -124,4 +131,4 @@ export default defineNuxtConfig({
 			siteUrl: "https://localhost:3000",
 		},
 	},
-} as _NuxtConfig);
+} as BroadNuxtConfig);

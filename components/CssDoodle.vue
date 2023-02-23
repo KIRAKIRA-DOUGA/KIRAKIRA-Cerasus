@@ -1,20 +1,21 @@
 <script setup lang="ts">
-	import "assets/styles/css-doodles/background.css";
-
 	const props = defineProps<{
 		rule?: string;
 		fullscreen?: boolean;
 		styles?: string;
+		use?: string;
 	}>();
+
+	const use = computed(() => props.use ? `var(--${props.use})` : "");
 </script>
 
 <template>
 	<kira-component class="wrapper">
-		<component :is="'style'" v-if="styles">
+		<component :is="'style'" v-if="styles" scoped>
 			{{ styles }}
 		</component>
-		<css-doodle use="var(--rule)" :class="[rule, { fullscreen }]">
-			<slot></slot>
+		<css-doodle :use="use" :class="{ fullscreen }">
+			{{ rule }}
 		</css-doodle>
 	</kira-component>
 </template>
@@ -26,6 +27,7 @@
 <style scoped lang="scss">
 	css-doodle {
 		contain: none;
+		color: transparent;
 
 		&.fullscreen {
 			@include full-screen;

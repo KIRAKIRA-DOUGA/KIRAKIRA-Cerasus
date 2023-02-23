@@ -284,3 +284,13 @@ declare module "*?inline" {
 	const src: string;
 	export default src;
 }
+
+// extension format, read as raw text
+declare module "*.docs" {
+	const raw: string;
+	export default raw;
+}
+declare module "*.css-doodle" {
+	const raw: string;
+	export default raw;
+}

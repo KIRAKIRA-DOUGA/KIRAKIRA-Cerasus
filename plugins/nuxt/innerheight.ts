@@ -1,4 +1,4 @@
-import delay from "../utils/delay";
+import delay from "../../utils/delay";
 
 export default defineNuxtPlugin(nuxt => {
 	nuxt.hook("app:beforeMount", () => {
