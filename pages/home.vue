@@ -12,7 +12,6 @@
 	const isClicked = ref(false);
 	const theme = Theme.theme;
 	const palette = Theme.palette;
-	const router = useRouter();
 	const { locale: currentLocale, locales } = useI18n();
 	const switchLocalePath = useSwitchLocalePath();
 	const availableLocales = computed(() => (locales.value as LocaleObject[]).filter(i => i.code !== currentLocale.value));
