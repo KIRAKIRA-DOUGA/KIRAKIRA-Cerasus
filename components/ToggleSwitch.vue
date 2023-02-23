@@ -145,7 +145,13 @@
 				transform: scale(calc(19 / 20));
 			}
 
-			// TODO: 接下来请你编写 hover 样式。
+			#{$component-class}.on:hover:not(:focus) & {
+				@include control-ball-shadow-hover;
+			}
+
+			#{$component-class}:hover:not(:focus) & {
+				@include control-ball-shadow-off-hover;
+			}
 		}
 	}
 

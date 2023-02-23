@@ -26,6 +26,10 @@
 	box-shadow: 0 1px 6px c(black, 10%);
 }
 
+@mixin control-ball-shadow-off-hover {
+	box-shadow: 0 1px 10px 2px c(black, 20%);
+}
+
 @mixin page-normal {
 	box-shadow: 0 2px 4px c(black, 10%);
 }
@@ -94,6 +98,10 @@
 
 @mixin control-ball-shadow-disabled {
 	box-shadow: 0 1px 6px c(accent-disabled, 80%);
+}
+
+@mixin control-ball-shadow-hover {
+	box-shadow: 0 1px 10px 2px c(accent-hover);
 }
 
 @mixin page-active {
