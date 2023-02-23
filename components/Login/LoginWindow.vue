@@ -135,7 +135,7 @@
 		width: $width;
 		height: $height;
 		overflow: hidden;
-		background-color: c(inner-color-85, 75%);
+		background-color: c(inner-color, 75%);
 		transition: all $transition-ease $enter-duration;
 
 		& * {

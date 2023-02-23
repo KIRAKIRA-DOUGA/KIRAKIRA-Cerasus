@@ -2,12 +2,15 @@
 	import background from "assets/styles/css-doodles/background.css-doodle";
 
 	const showBanner = ref(false);
+	const showCssDoodle = useState("css-doodle", () => true);
 
 	watchRoute(() => showBanner.value = getRoutePath() === "", true);
 </script>
 
 <template>
-	<CssDoodle :rule="background" class="background" />
+	<Transition name="background">
+		<CssDoodle v-show="showCssDoodle" :rule="background" class="background" />
+	</Transition>
 	<SideBar class="sidebar" />
 	<div class="container">
 		<Banner :collapsed="!showBanner" />
@@ -39,5 +42,10 @@
 
 	.background {
 		opacity: 0.3;
+
+		&.background-enter-from,
+		&.background-leave-to {
+			opacity: 0;
+		}
 	}
 </style>

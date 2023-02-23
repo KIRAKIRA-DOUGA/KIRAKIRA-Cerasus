@@ -127,6 +127,10 @@
 			&:focus {
 				@include button-shadow-focus;
 			}
+
+			.dark & {
+				color: c(icon-color);
+			}
 		}
 	}
 

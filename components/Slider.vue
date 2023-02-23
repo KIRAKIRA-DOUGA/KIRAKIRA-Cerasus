@@ -39,8 +39,10 @@
 
 	/**
 	 * 重置默认值。
+	 * @param e - 指针事件（包括鼠标和触摸）。
 	 */
-	function resetDefault() {
+	function resetDefault(e: PointerEvent | MouseEvent) {
+		e.preventDefault();
 		quickMoveTransition();
 		if (props.defaultValue !== undefined && Number.isFinite(props.defaultValue))
 			for (const event of ["update:modelValue", "changing", "changed"] as const)
@@ -52,7 +54,7 @@
 	 * @param e - 指针事件（包括鼠标和触摸）。
 	 */
 	function onThumbDown(e: PointerEvent) {
-		if (e.button === 1) { resetDefault(); return; }
+		if (e.button === 1) { resetDefault(e); return; }
 		const thumb = (e.target as HTMLDivElement).parentElement!.querySelector(".thumb") as HTMLDivElement;
 		const track = thumb.parentElement!.querySelector(".track")!;
 		const { left, width: max } = track.getClientRects()[0];
@@ -77,7 +79,7 @@
 	 * @param e - 指针事件（包括鼠标和触摸）。
 	 */
 	async function onTrackDown(e: PointerEvent) {
-		if (e.button === 1) { resetDefault(); return; }
+		if (e.button === 1) { resetDefault(e); return; }
 		const track = e.target as HTMLDivElement;
 		const { width } = track.getClientRects()[0];
 		const value = map(e.offsetX, 0, width, props.min, props.max);

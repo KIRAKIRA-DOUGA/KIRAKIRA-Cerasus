@@ -26,6 +26,7 @@
 	const menu = ref<InstanceType<typeof Menu>>();
 	const showMenu = () => menu.value?.show();
 	const beep = ref<HTMLAudioElement>();
+	const showCssDoodle = useState("css-doodle", () => true);
 
 	/**
 	 * 单击按钮事件。
@@ -73,6 +74,7 @@
 			<ToggleSwitch v-model="toggle">{{ t.toggleSwitch }} {{ toggle ? t.on : t.off }}</ToggleSwitch>
 			<ToggleSwitch disabled>{{ t.offDisabled }} </ToggleSwitch>
 			<ToggleSwitch on disabled>{{ t.onDisabled }}</ToggleSwitch>
+			<ToggleSwitch v-model="showCssDoodle">动态背景</ToggleSwitch>
 			<RadioButton v-model="theme" value="light">{{ t.lightTheme }}</RadioButton>
 			<RadioButton v-model="theme" value="dark">{{ t.darkTheme }}</RadioButton>
 			<RadioButton v-model="theme" value="system">{{ t.systemTheme }}</RadioButton>
@@ -104,6 +106,7 @@
 			<br />
 			音量<Slider v-model="volume" :defaultValue="100" @changed="onSlided" />
 			音调<Slider v-model="pitch" :min="-24" :max="24" :defaultValue="0" @changed="onSlided" />
+			<em>单击鼠标中键还原默认值。</em>
 			<audio ref="beep" :src="beepSrc"></audio>
 			<TabBar v-model="selectedTab">
 				<TabItem id="all">{{ t.all }}</TabItem>
