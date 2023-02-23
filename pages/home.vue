@@ -52,10 +52,6 @@
 		b.playbackRate = 2 ** (pitch.value / 12);
 	}
 
-	const goToVideo = () => {
-		router.push("/video");
-	};
-
 	useHead({ title: "首页" });
 </script>
 

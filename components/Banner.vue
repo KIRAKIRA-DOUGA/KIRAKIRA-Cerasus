@@ -2,17 +2,11 @@
 	const props = defineProps<{
 		collapsed?: boolean;
 	}>();
-
-	watchRoute((nowRoute, oldRoute) => console.log("route watch: ", nowRoute, oldRoute));
-
-	function getRoute() {
-		console.log("getRouter: ", getRoutePath());
-	}
 </script>
 
 <template>
 	<Transition name="banner">
-		<div v-if="!collapsed" class="banner opened" @click="getRoute">
+		<div v-if="!collapsed" class="banner opened">
 			<LogoText form="full" class="title" />
 			<div class="shadow"></div>
 		</div>

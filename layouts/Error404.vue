@@ -81,10 +81,10 @@
 		bottom: -30vh;
 		left: 0;
 		z-index: 10;
-		display: none;
 		width: 100%;
 		height: 40vh;
-		background: linear-gradient(45deg, #00dc82 0%, #36e4da 50%, #0047e1 100%);
+		// background: linear-gradient(45deg, #00dc82 0%, #36e4da 50%, #0047e1 100%);
+		background: linear-gradient(45deg, c(accent-10) 0%, c(accent-80) 50%, c(accent-50) 100%);
 		filter: blur(20vh);
 		pointer-events: none;
 	}
