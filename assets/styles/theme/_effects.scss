@@ -22,7 +22,7 @@
 	box-shadow: 0 1px 6px c(accent-shadow, 50%);
 }
 
-@mixin control-ball-shadow-disabled {
+@mixin control-ball-shadow-off-disabled {
 	box-shadow: 0 1px 6px c(black, 10%);
 }
 
@@ -90,6 +90,10 @@
 /// 控制球阴影
 @mixin control-ball-shadow {
 	box-shadow: 0 1px 6px c(accent, 80%);
+}
+
+@mixin control-ball-shadow-disabled {
+	box-shadow: 0 1px 6px c(accent-disabled, 80%);
 }
 
 @mixin page-active {

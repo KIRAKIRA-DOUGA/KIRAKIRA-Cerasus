@@ -97,11 +97,11 @@
 			}
 
 			.disabled & {
-				background-color: c(gray);
+				background-color: c(gray-2, 40%);
 			}
 
 			.on.disabled & {
-				background-color: c(icon-color, 40%);
+				background-color: c(accent-disabled, 40%);
 			}
 		}
 
@@ -124,12 +124,13 @@
 			}
 
 			.disabled & {
-				@include control-ball-shadow-disabled;
-				background-color: c(gray);
+				@include control-ball-shadow-off-disabled;
+				background-color: c(inner-color-85);
 			}
 
 			.on.disabled & {
-				background-color: c(gray-2);
+				@include control-ball-shadow-disabled;
+				background-color: c(accent-disabled);
 			}
 
 			#{$component-class}:focus & {
