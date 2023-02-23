@@ -11,11 +11,11 @@
 		/** CSS 中的 Z 轴高度。 */
 		zIndex?: number;
 		/** 是否是静态的，即没有外观，形式上的遮罩。 */
-		static?: boolean;
+		effectless?: boolean;
 		/** 指定内容的位置。 */
 		position?: MaskSlotPosition;
-		/** 是否**不要**单击空白处关闭。由于 Vue 的设计，只能设为否定形式的属性。 */
-		doNotCloseWhenClicked?: boolean;
+		/** 聚焦内容。是否**不要**单击空白处关闭。 */
+		focusing?: boolean;
 	}>(), {
 		zIndex: 50,
 		position: "center",
@@ -34,7 +34,7 @@
 	 */
 	function close(e: MouseEvent) {
 		if (e.target === mask.value) // 单击的最终元素必须是遮罩本身，不能是其内容。
-			if (props.doNotCloseWhenClicked)
+			if (props.focusing)
 				replayAnimation(mask.value, "focusing");
 			else
 				emits("update:modelValue", false);
@@ -49,7 +49,7 @@
 					v-if="shown"
 					ref="mask"
 					class="mask"
-					:class="[position, { static }]"
+					:class="[position, { effectless }]"
 					@click="close"
 				></div>
 			</Transition>
@@ -63,7 +63,7 @@
 		@include full-screen(fixed);
 		$slot: "+ :slotted(*)";
 
-		&:not(.static) {
+		&:not(.effectless) {
 			background-color: c(main-bg, 40%);
 			backdrop-filter: grayscale(0.4);
 

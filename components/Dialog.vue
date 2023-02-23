@@ -25,7 +25,7 @@
 </script>
 
 <template>
-	<Mask v-model="open" position="center top" :doNotCloseWhenClicked="static">
+	<Mask v-model="open" position="center top" :focusing="static">
 		<Transition name="dialog">
 			<div v-if="open" ref="dialog" class="dialog">
 				<div class="body">
