@@ -48,6 +48,10 @@
 	box-shadow: 0 1px 6px c(accent-shadow, 30%), 0 0 0 10px c(gray-2, 50%);
 }
 
+@mixin button-shadow-unchecked-focus-only {
+	box-shadow: 0 0 0 3px c(gray-2, 50%);
+}
+
 @mixin button-shadow-unchecked-hover {
 	box-shadow: 0 4px 4px c(accent-shadow, 30%);
 }

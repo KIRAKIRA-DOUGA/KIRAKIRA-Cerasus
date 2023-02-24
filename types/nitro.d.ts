@@ -26,3 +26,9 @@ export interface NitroApp extends Omit<OriginalNitroApp, "hooks"> {
 declare global { // Doesn't work.
 	export declare const defineNitroPlugin: DefineNitroPlugin;
 }
+
+declare module "node_modules/nitropack/dist/runtime/app" {
+	export declare interface NitroApp {
+		hooks: NitroHooks;
+	}
+}

@@ -29,10 +29,9 @@
 </script>
 
 <template>
-	<button v-ripple type="button" :class="{ secondary }" @click="onClick">
-		<NuxtIcon v-if="icon && !iconBehind" :name="icon" class="icon front" />
+	<button v-ripple type="button" :class="{ secondary, 'icon-behind': iconBehind }" @click="onClick">
+		<NuxtIcon v-if="icon" :name="icon" />
 		<slot></slot>
-		<NuxtIcon v-if="icon && iconBehind" :name="icon" class="icon behind" />
 	</button>
 </template>
 
@@ -54,6 +53,10 @@
 		cursor: pointer;
 		transition: $fallback-transitions, all $ease-out-back 250ms !important;
 		appearance: none;
+
+		&.icon-behind {
+			flex-direction: row-reverse;
+		}
 
 		&:hover {
 			@include button-shadow-hover;
@@ -106,16 +109,19 @@
 		}
 	}
 
-	.icon {
+	.nuxt-icon {
 		$padding-inset: 2px;
+		$size: 18px;
+		min-width: $size;
+		min-height: $size;
 		color: white;
-		font-size: 18px;
+		font-size: $size;
 
-		&.front {
+		button:not(.icon-behind) > & {
 			margin-left: -$padding-inset;
 		}
 
-		&.behind {
+		button.icon-behind > & {
 			margin-right: -$padding-inset;
 		}
 	}

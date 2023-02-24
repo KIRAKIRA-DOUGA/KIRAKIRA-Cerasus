@@ -27,6 +27,7 @@
 	const showMenu = () => menu.value?.show();
 	const beep = ref<HTMLAudioElement>();
 	const showCssDoodle = useState("css-doodle", () => true);
+	const showAccordion = reactive([false, false, false]);
 
 	/**
 	 * 单击按钮事件。
@@ -130,6 +131,20 @@
 			<RadioButton v-model="logoTextForm" value="half">{{ t.logoHalf }}</RadioButton>
 			<RadioButton v-model="logoTextForm" value="full">{{ t.logoShow }}</RadioButton>
 			<LogoText :form="logoTextForm" />
+			<Accordion>
+				<AccordionItem v-model="showAccordion[0]" title="第1个">
+					<h4>标题</h4>
+					内容
+				</AccordionItem>
+				<AccordionItem v-model="showAccordion[1]" title="第2个">
+					<h4>标题</h4>
+					内容
+				</AccordionItem>
+				<AccordionItem v-model="showAccordion[2]" title="第3个">
+					<h4>标题</h4>
+					内容
+				</AccordionItem>
+			</Accordion>
 			<hr />
 			<details>
 				<summary>点击此处辣眼睛</summary>

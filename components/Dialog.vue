@@ -29,7 +29,7 @@
 		<Transition name="dialog">
 			<div v-if="open" ref="dialog" class="dialog">
 				<div class="body">
-					<NuxtIcon name="info" class="icon" />
+					<NuxtIcon name="info" />
 					<div class="content-part">
 						<h2>{{ title ?? "KIRAKIRA 提示您" }}</h2>
 						<div class="content">
@@ -113,7 +113,7 @@
 			overflow: hidden auto;
 			background-color: c(main-bg, 75%);
 
-			.icon {
+			.nuxt-icon {
 				@include flex-block;
 				$size: 48px;
 				--i: 0;
@@ -134,8 +134,12 @@
 				animation: float-left $animation-options;
 			}
 
-			.content-part::after {
-				@include fix-page-end-padding;
+			.content-part {
+				width: 100%;
+
+				&::after {
+					@include fix-page-end-padding;
+				}
 			}
 		}
 

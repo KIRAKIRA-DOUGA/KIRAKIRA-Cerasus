@@ -36,7 +36,7 @@
 		<div class="bottom">
 			<div>{{ date }}</div>
 			<div class="item">
-				<NuxtIcon name="play" class="icon" />
+				<NuxtIcon name="play" />
 				<p>{{ watchedCount }}</p>
 			</div>
 		</div>
@@ -99,7 +99,7 @@
 			@include flex-center;
 			gap: 2px;
 
-			.icon {
+			.nuxt-icon {
 				font-size: 18px;
 			}
 		}

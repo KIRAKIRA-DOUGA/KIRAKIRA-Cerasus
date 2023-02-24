@@ -40,6 +40,9 @@ export async function replayAnimation(element: Element, ...className: string[]) 
 	element.classList.add(...className);
 }
 
+type StyleProperties = string & keyof FilterValueType<CSSStyleDeclaration, string>;
+type Keyframes = Record<Exclude<StyleProperties, "offset">, string | number>[];
+
 /**
  * 当高度值设为 auto 时的动画高度。
  * @param element - HTML DOM 元素。
@@ -72,10 +75,22 @@ export function animateHeight(
 	changeFunc?.();
 	endHeight ??= element.clientHeight;
 	getSize?.([element.clientWidth, element.clientHeight]);
-	return element.animate([
+	if (startHeight === endHeight) return; // 不用动了。
+	const keyframes = [
 		{ height: startHeight + "px" },
 		{ height: endHeight + "px" },
-	], {
+	] as Keyframes;
+	let setPaddingIndex: number | undefined;
+	if (startHeight === 0) setPaddingIndex = 0;
+	if (endHeight === 0) setPaddingIndex = 1;
+	if (setPaddingIndex !== undefined) {
+		const setPaddingKeyframe = keyframes[setPaddingIndex];
+		setPaddingKeyframe.paddingTop = 0;
+		setPaddingKeyframe.paddingBottom = 0;
+		setPaddingKeyframe.marginTop = 0;
+		setPaddingKeyframe.marginBottom = 0;
+	}
+	return element.animate(keyframes, {
 		duration,
 		easing: eases.easeOutSmooth,
 	}).finished;

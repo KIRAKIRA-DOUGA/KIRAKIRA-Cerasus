@@ -1,0 +1,34 @@
+@use "../theme/functions" as *;
+@use "../theme/effects" as *;
+
+table:not(.lite) {
+	@include radius-large;
+	@include chip-shadow;
+	$border-bottom: c(gray-2) 1px solid;
+	overflow: hidden;
+	text-align: left;
+	border-bottom: $border-bottom;
+	border-spacing: 0;
+
+	&:not(.narrow) {
+		width: 100%;
+	}
+
+	th,
+	td {
+		padding: 0.5rem 0.75rem;
+		border-bottom: $border-bottom;
+	}
+
+	tr:last-of-type > td {
+		border-bottom: none;
+	}
+
+	tr:nth-of-type(odd) > td {
+		background-color: c(gray);
+	}
+
+	tr:hover > td {
+		background-color: c(gray-2);
+	}
+}

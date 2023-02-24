@@ -116,17 +116,22 @@
 <template>
 	<kira-component ref="videoPlayer" class="player-video">
 		<Dialog v-model="showMediaInfo" title="视频详细信息">
-			<details v-for="(info, type) in mediaInfos" :key="type">
-				<summary>{{ type }}</summary>
-				<table>
-					<tbody>
-						<tr v-for="(value, property) in info" :key="property">
-							<td>{{ property }}</td>
-							<td>{{ value }}</td>
-						</tr>
-					</tbody>
-				</table>
-			</details>
+			<Accordion>
+				<AccordionItem v-for="(info, type) in mediaInfos" :key="type" :title="type">
+					<table>
+						<thead>
+							<th>项目</th>
+							<th>值</th>
+						</thead>
+						<tbody>
+							<tr v-for="(value, property) in info" :key="property">
+								<td>{{ property }}</td>
+								<td>{{ value }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</AccordionItem>
+			</Accordion>
 		</Dialog>
 		<video
 			ref="video"

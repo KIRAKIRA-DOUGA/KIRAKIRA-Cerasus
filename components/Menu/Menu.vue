@@ -83,7 +83,7 @@
 
 <template>
 	<component :is="isContextMenu ? ClientOnlyTeleport : Fragment" to="body">
-		<Transition name="menu" @enter="onMenuEnter" @leave="onMenuLeave">
+		<Transition :css="false" @enter="onMenuEnter" @leave="onMenuLeave">
 			<menu
 				v-if="shown"
 				ref="menu"
@@ -128,10 +128,6 @@
 
 		:slotted(.menu-item) {
 			animation: float-right 500ms calc(var(--i) * 40ms) $ease-out-smooth backwards;
-		}
-
-		&.menu-leave-to {
-			@include no-vertical-spacing;
 		}
 	}
 

@@ -35,7 +35,7 @@
 
 <template>
 	<div ref="menuItem" v-ripple v-i="vIndex" class="menu-item" @click="onClick">
-		<NuxtIcon v-if="icon" :name="icon" class="icon" />
+		<NuxtIcon v-if="icon" :name="icon" />
 		<div v-else class="icon-placeholder"></div>
 		<slot></slot>
 	</div>
@@ -56,12 +56,12 @@
 		padding-left: 14px;
 		cursor: pointer;
 
-		.icon {
+		.nuxt-icon {
 			color: c(icon-color);
 			font-size: $icon-size;
 		}
 
-		.icon,
+		.nuxt-icon,
 		.icon-placeholder {
 			@include square($icon-size);
 		}

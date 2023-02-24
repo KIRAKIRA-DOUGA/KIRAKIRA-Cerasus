@@ -10,7 +10,7 @@
 
 <template>
 	<h3 class="subheader">
-		<NuxtIcon :name="icon" class="icon" />
+		<NuxtIcon :name="icon" />
 		<div class="title">
 			<slot></slot>
 		</div>
@@ -33,7 +33,7 @@
 		font-size: 16px;
 	}
 
-	.icon {
+	.nuxt-icon {
 		color: c(accent);
 		font-size: 20px;
 	}
