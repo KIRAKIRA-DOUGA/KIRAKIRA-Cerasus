@@ -158,7 +158,7 @@
 
 	input {
 		display: block;
-		width: 100%;
+		flex-grow: 1;
 		height: 100%;
 		margin: 0;
 		padding: 0;
@@ -228,10 +228,7 @@
 	.after-icon-wrapper {
 		@include flex-center;
 		@include square(var(--size));
-		@include circle;
 		--size: #{$default-height};
-		min-width: var(--size);
-		scale: 0.875;
 		transform-origin: right center;
 
 		.large & {
