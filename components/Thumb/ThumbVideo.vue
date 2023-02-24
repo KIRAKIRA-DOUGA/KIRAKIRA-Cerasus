@@ -57,7 +57,7 @@
 		color: c(text-color);
 
 		&:hover:not(:active) {
-			@include button-shadow-hover;
+			@include system-card;
 			z-index: 1;
 			background-color: c(main-bg, 90%);
 			translate: 0 -6px;

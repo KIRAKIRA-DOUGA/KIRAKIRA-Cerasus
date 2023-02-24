@@ -126,6 +126,8 @@ module.exports = {
 		"no-unmodified-loop-condition": "off",
 		"no-return-assign": "off",
 		"no-redeclare": "off",
+		"no-mixed-operators": "off",
+		"no-extra-parens": "off",
 		"import/order": "off", // 与 VSCode 内置导入排序特性打架。
 		"import/first": "off", // 与 Vue 特性冲突。
 		"import/named": "off", // 与 TypeScript 特性冲突。
@@ -163,6 +165,7 @@ module.exports = {
 		}],
 		"@typescript-eslint/no-empty-function": "off",
 		"@typescript-eslint/no-redeclare": "warn",
+		"@typescript-eslint/no-extra-parens": ["off", "all", { "ignoreJSX": "multi-line" }],
 		// "@typescript-eslint/no-confusing-void-expression": "error",
 		// "@typescript-eslint/no-floating-promises": "error",
 		// 嗯对这几个不晓得怎么用不了。

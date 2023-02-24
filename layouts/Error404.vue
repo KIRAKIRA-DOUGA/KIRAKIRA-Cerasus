@@ -4,13 +4,15 @@
 		message: string;
 	}>();
 
+	const isMouseMoved = ref(false);
 	const mouse = useMouse();
 	const gsensor = useDeviceOrientation(); // Safari 不支持加速度传感器（重力感应），散了吧。
 	const parallax = computed(() => {
 		const dimen = (x: number, y: number) => ({ x, y });
-		if (process.server) return dimen(0, 0);
+		if (process.server || !mouse.x.value && !mouse.y.value && !isMouseMoved.value) return dimen(0, 0);
+		isMouseMoved.value = true;
 		if (gsensor.beta.value === null) return dimen(
-			(mouse.x.value / window.innerWidth) * 2 - 1,
+			mouse.x.value / window.innerWidth * 2 - 1,
 			mouse.y.value / window.innerHeight,
 		);
 		return dimen(

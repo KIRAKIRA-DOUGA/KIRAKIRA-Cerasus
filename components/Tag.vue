@@ -6,6 +6,8 @@
 		checked?: boolean;
 		/** 禁用。 */
 		disabled?: boolean;
+		/** 链接。 */
+		link?: string;
 	}>();
 
 	const emits = defineEmits<{
@@ -16,7 +18,15 @@
 </script>
 
 <template>
-	<kira-component v-ripple class="tag" :class="{ checked: isChecked }" @click="emits('update:modelValue', !modelValue)">
+	<LocaleLink
+		v-ripple
+		class="tag lite"
+		:class="{ checked: isChecked }"
+		:to="link || '#'"
+		draggable="false"
+		tabindex="0"
+		@click="emits('update:modelValue', !modelValue)"
+	>
 		<div class="circle"></div>
 		<div class="content">
 			<Transition name="check">
@@ -26,7 +36,7 @@
 			</Transition>
 			<slot></slot>
 		</div>
-	</kira-component>
+	</LocaleLink>
 </template>
 
 <style scoped lang="scss">
@@ -39,14 +49,39 @@
 		display: inline-flex;
 		padding: 6px 12px;
 		overflow: hidden;
+		color: inherit;
 		font-size: inherit;
 		background-color: c(text-color, 5%);
 		cursor: pointer;
+
+		&:hover {
+			@include button-shadow-unchecked-hover;
+		}
+
+		&:focus {
+			@include button-shadow-unchecked-focus;
+		}
+
+		&:hover:focus {
+			@include button-shadow-unchecked-hover-focus;
+		}
 
 		&.checked {
 			padding: 6px 16px 6px 12px;
 			color: white;
 			background-color: c(accent);
+
+			&:hover {
+				@include button-shadow-hover;
+			}
+
+			&:focus {
+				@include button-shadow-focus;
+			}
+
+			&:hover:focus {
+				@include button-shadow-hover-focus;
+			}
 
 			&,
 			& * {
