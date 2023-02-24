@@ -2,6 +2,10 @@
 	"初始化模板": {
 		"prefix": ["vue", "init"],
 		"body": [
+			"<docs>",
+			"\t",
+			"</docs>",
+			"",
 			"<script setup lang=\"ts\">",
 			"\t$0",
 			"</script>",

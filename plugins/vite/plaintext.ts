@@ -11,7 +11,7 @@ export default function plaintextLoaderPluginGenerator(pluginName: string, fileR
 		transform(src: string, id: string) {
 			if (fileRegex.test(id))
 				return {
-					code: `export default \`${src}\`;`,
+					code: `export default ${JSON.stringify(src)};`,
 					map: null, // provide source map if available
 				};
 		},
