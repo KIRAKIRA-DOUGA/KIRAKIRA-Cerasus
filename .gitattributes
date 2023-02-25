@@ -26,6 +26,7 @@
 *.stylus text eol=lf
 *.pcss text eol=lf
 *.sss text eol=lf
+*.css-doodle text eol=lf linguist-language=CSS-Doodle
 *.js text eol=lf linguist-vendored
 *.cjs text eol=lf linguist-vendored
 *.mjs text eol=lf linguist-vendored
@@ -90,6 +91,7 @@ Procfile text eol=lf
 
 # Documentation
 *.md text eol=lf
+*.docs text eol=lf linguist-language=Markdown
 LICENSE text eol=lf
 AUTHORS text eol=lf
 
