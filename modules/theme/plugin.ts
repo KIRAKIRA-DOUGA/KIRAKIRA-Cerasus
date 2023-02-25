@@ -3,6 +3,7 @@ import script from "./script";
 import { NuxtColorMode } from "./types";
 
 const systemDark = () => window.matchMedia("(prefers-color-scheme: dark)");
+const setMetaThemeColor = () => Theme.meta.value = useCssVar("--accent").value;
 
 /**
  * 监测主题色变化而更新。
@@ -13,7 +14,7 @@ function update() {
 	if (theme === "system") actualTheme = systemDark().matches ? "dark" : "light";
 	document.documentElement.className = palette;
 	if (actualTheme === "dark") document.documentElement.classList.add(actualTheme);
-	Theme.meta.value = useCssVar("--accent").value;
+	setMetaThemeColor();
 	const colorMode: NuxtColorMode = { theme, palette };
 	window.localStorage.setItem("nuxt-color-mode", JSON.stringify(colorMode));
 }
@@ -26,5 +27,6 @@ export default defineNuxtPlugin(nuxt => {
 
 		watch([Theme.theme, Theme.palette], update);
 		systemDark().addEventListener("change", update);
+		setMetaThemeColor();
 	});
 });

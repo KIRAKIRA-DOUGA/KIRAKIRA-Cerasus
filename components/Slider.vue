@@ -84,16 +84,26 @@
 		const { width } = track.getClientRects()[0];
 		const value = map(e.offsetX, 0, width, props.min, props.max);
 		emits("update:modelValue", value);
+		emits("changing", value);
 		await nextTick();
 		onThumbDown(e); // 再去调用拖拽滑块的事件。
+	}
+
+	/**
+	 * 当手机端长按时（相当于电脑右键菜单），恢复默认值。
+	 * @param e - 鼠标事件。
+	 */
+	function onLongPress(e: MouseEvent) {
+		if (!isMobile()) return; // 电脑端则忽略。
+		resetDefault(e);
 	}
 </script>
 
 <template>
 	<kira-component class="slider" :class="{ 'move-transition': moveTransition }" tabindex="0" :style="{ '--value': value }">
-		<div class="track" @pointerdown="onTrackDown"></div>
+		<div class="track" @pointerdown="onTrackDown" @contextmenu="onLongPress"></div>
 		<div class="passed"></div>
-		<div class="thumb" @pointerdown="onThumbDown"></div>
+		<div class="thumb" @pointerdown="onThumbDown" @contextmenu="onLongPress"></div>
 	</kira-component>
 </template>
 

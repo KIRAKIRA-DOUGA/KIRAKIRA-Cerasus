@@ -113,7 +113,7 @@
 			<br />
 			音量<Slider v-model="volume" :defaultValue="100" @changed="onSlided" />
 			音调<Slider v-model="pitch" :min="-24" :max="24" :defaultValue="0" @changed="onSlided" />
-			<em>单击鼠标中键还原默认值。</em>
+			<em>单击鼠标中键或触摸屏长按组件以还原默认值。</em>
 			<audio ref="beep" :src="beepSrc"></audio>
 			<TabBar v-model="selectedTab">
 				<TabItem id="all">{{ t.all }}</TabItem>
@@ -273,14 +273,6 @@
 </i18n>
 
 <style scoped lang="scss">
-	.container {
-		padding: 26px 100px;
-
-		@media #{$tablet} {
-			padding: 26px 40px;
-		}
-	}
-
 	.component-test {
 		> * {
 			margin: 0.8rem 0.5rem;
