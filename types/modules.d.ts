@@ -285,7 +285,7 @@ declare module "*?inline" {
 	export default src;
 }
 
-// extension format, read as raw text
+// extended formats, read as raw text
 declare module "*.docs" {
 	const raw: string;
 	export default raw;

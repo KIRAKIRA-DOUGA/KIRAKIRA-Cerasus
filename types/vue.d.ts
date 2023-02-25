@@ -1,5 +1,5 @@
-import * as components from "#components";
-import { Directive } from "vue";
+// import { Directive } from "vue";
+import CSSDoodle from "./css-doodle";
 
 declare module "vue" {
 	/**
@@ -10,17 +10,18 @@ declare module "vue" {
 		 * KIRAKIRA 组件，KIRA 人自己的组件。
 		 */
 		"kira-component": typeof HTMLElement;
-		"css-doodle": typeof HTMLElement;
+		"css-doodle": CSSDoodle;
 	}
 
 	/**
 	 * 在此处声明自定义 HTML 属性。
 	 */
 	export interface HTMLAttributes {
-		// "ripple": boolean;
+		"v-ripple"?: boolean;
+		"v-i"?: number;
 	}
 }
 
-declare global { // Doesn't work.
-	// const vRipple: Directive<HTMLElement>;
+declare global {
+	export * from "#components"; // Is it worked?
 }
