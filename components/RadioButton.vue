@@ -3,9 +3,9 @@
 		/** 禁用。 */
 		disabled?: boolean;
 		/** 值。 */
-		value?: T;
+		value?: string; // 稍后改为泛型 T。
 		/** 当前绑定值。 */
-		modelValue?: T;
+		modelValue?: string; // 稍后改为泛型 T。
 		/** 打开，兼容使用。 */
 		on?: boolean;
 	}>(), {
@@ -27,6 +27,8 @@
 			return props.modelValue === props.value;
 		else return !!props.on;
 	});
+	const isAnimating = ref(false);
+
 	/**
 	 * 数据改变事件。
 	 */
@@ -40,6 +42,12 @@
 		if (radio.value && isChecked.value !== radio.value.checked)
 			radio.value.checked = isChecked.value;
 	}, { immediate: true });
+
+	watch(isChecked, async isChecked => {
+		isAnimating.value = true;
+		await delay(400); // $duration-half 记得及时如果更新。
+		isAnimating.value = false;
+	});
 
 	/**
 	 * 键盘按下方向键时移动到前一个或后一个单选框事件。
@@ -59,7 +67,7 @@
 		<input ref="radio" type="radio" :checked="isChecked" :value="props.value" :disabled="disabled" />
 		<div class="radio-focus">
 			<div class="radio-shadow">
-				<div class="radio"></div>
+				<div class="radio" :class="{ 'is-animating': isAnimating }"></div>
 			</div>
 		</div>
 		<slot></slot>
@@ -94,13 +102,18 @@
 	.radio {
 		@include square($size);
 		@include circle;
+		$transition: $fallback-transitions, all $ease-in-out-max $duration, background-color $ease-out-max 200ms;
 		position: relative;
 		margin: 0;
 		overflow: hidden;
 		box-shadow: inset 0 0 0 $border-size c(icon-color);
-		transition: $fallback-transitions, all $ease-in-out-max $duration, background-color $ease-out-max 200ms;
+		transition: $transition, box-shadow $ease-out-max 200ms;
 		animation: outer-border-change-back $duration-half $duration-half $ease-in-max reverse;
 		appearance: none;
+
+		&.is-animating {
+			transition: $transition;
+		}
 
 		#{$component-class}:is(:hover, :active) & {
 			background-color: c(gray, 50%);
@@ -118,10 +131,8 @@
 				inner-resize-back $duration-half $ease-out-max reverse,
 				cut-out $duration-half step-start;
 			content: "";
-			scale: 0.5;
 		}
 	}
-	// TODO: 切换主题颜色时，出现内部圆形先变化，外部环后变化的问题。反正我感觉这 radio button 得重写一下，现在已经乱成一锅粥了。
 
 	input:checked + .radio-focus {
 		animation: pressing $duration-half $ease-in alternate 2;
@@ -145,18 +156,20 @@
 
 			&::before {
 				@include short-transition;
+				--scale: 0.5;
 				background-color: c(accent);
 				opacity: 1;
+				scale: var(--scale);
 				animation:
 					inner-resize $duration-half $duration-half $ease-out-max,
 					cut-in $duration-half step-start;
 
 				#{$component-class}:hover & {
-					scale: 0.6;
+					--scale: 0.6;
 				}
 
 				#{$component-class}:active & {
-					scale: 0.4;
+					--scale: 0.4;
 				}
 			}
 		}
@@ -219,8 +232,10 @@
 				scale: 1;
 			}
 
-			to {
-				scale: 0.5;
+			@if $key != "" {
+				to {
+					scale: 0.5;
+				}
 			}
 		}
 

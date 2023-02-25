@@ -157,5 +157,13 @@
 
 	.disabled {
 		pointer-events: none;
+
+		.dark & .switch {
+			opacity: 0.7;
+		}
+
+		.dark &.on .switch {
+			opacity: 0.4; // 深色主题下颜色太鲜艳了，不容易分清是否被禁用。
+		}
 	}
 </style>
