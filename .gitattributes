@@ -26,7 +26,7 @@
 *.stylus text eol=lf
 *.pcss text eol=lf
 *.sss text eol=lf
-*.css-doodle text eol=lf linguist-language=CSS-Doodle
+*.css-doodle text eol=lf linguist-language=CSS
 *.js text eol=lf linguist-vendored
 *.cjs text eol=lf linguist-vendored
 *.mjs text eol=lf linguist-vendored
