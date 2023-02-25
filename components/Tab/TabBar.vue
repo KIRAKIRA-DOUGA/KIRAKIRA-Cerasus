@@ -139,6 +139,7 @@
 		align-items: flex-end;
 
 		> :slotted(*) {
+			flex-shrink: 0;
 			cursor: pointer;
 		}
 	}
