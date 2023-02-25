@@ -69,6 +69,10 @@
 		font-weight: 500;
 		background-color: c(accent-10);
 
+		.dark & {
+			color: c(icon-color);
+		}
+
 		.nuxt-icon {
 			font-size: 16px;
 		}
@@ -84,9 +88,5 @@
 			scale: 0.8;
 			opacity: 0;
 		}
-	}
-
-	.lovin-wrapper {
-		min-width: 100px; // 预先占位防抖。
 	}
 </style>
