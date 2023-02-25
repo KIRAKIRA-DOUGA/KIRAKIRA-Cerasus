@@ -11,6 +11,7 @@
 		z-index: 2;
 		display: block;
 		background-color: c(black, 20%);
+		pointer-events: none;
 
 		:global(:root.dark) & {
 			background-color: c(white, 20%);

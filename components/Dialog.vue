@@ -20,7 +20,7 @@
 		await nextTick();
 		if (!dialog.value) return;
 		if (open)
-			animateHeight(dialog.value, null, { startHeight: 0, duration: 500 });
+			animateSize(dialog.value, null, { startHeight: 0, duration: 500 });
 	}, { immediate: true });
 </script>
 
@@ -117,6 +117,7 @@
 				@include flex-block;
 				$size: 48px;
 				--i: 0;
+				flex-shrink: 0;
 				height: $size;
 				font-size: $size;
 				animation: intro $animation-options;

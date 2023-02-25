@@ -1,3 +1,4 @@
+@import "global-colors";
 @import "elements";
 
 *,
@@ -70,6 +71,11 @@ h5,
 h6,
 p {
 	margin: 0;
+}
+
+::selection {
+	color: white;
+	background-color: c(accent);
 }
 
 // #region 页面过渡

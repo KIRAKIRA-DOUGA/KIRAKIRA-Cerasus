@@ -39,7 +39,7 @@
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
 	async function onContentEnter(el: HTMLElement, done: () => void) {
-		await animateHeight(el, null, { startHeight: 0, duration: 300 });
+		await animateSize(el, null, { startHeight: 0, duration: 300 });
 		done();
 	}
 
@@ -50,7 +50,7 @@
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
 	async function onContentLeave(el: HTMLElement, done: () => void) {
-		await animateHeight(el, null, { endHeight: 0, duration: 300 });
+		await animateSize(el, null, { endHeight: 0, duration: 300 });
 		done();
 	}
 </script>
@@ -79,12 +79,12 @@
 		}
 
 		&:first-child > .header {
-			border-radius: 6px 6px 0 0;
+			@include radius-large(top);
 		}
 
 		&:last-child > *:last-child {
+			@include radius-large(bottom);
 			border-bottom: none;
-			border-radius: 0 0 6px 6px;
 		}
 	}
 

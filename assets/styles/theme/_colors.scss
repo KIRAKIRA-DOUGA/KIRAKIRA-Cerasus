@@ -74,7 +74,7 @@ $primary-colors: (
 		accent-40: (#64cd4a, #4a9f35),
 		accent-30: (#91e57c, #4a893b),
 		accent-20: (#c5fab8, #37652c),
-		accent-10: (#7c9f74, #294d20),
+		accent-10: (#7c9f74, #294d20), // FIXME: 你有没有发现浅色模式下绿色的 10 号颜色有点不太对劲？
 		neutral-10: #99b191,
 	),
 	orange: (

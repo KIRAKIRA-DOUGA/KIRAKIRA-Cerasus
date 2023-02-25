@@ -1,13 +1,10 @@
 <script lang="ts">
-	export const typeError = new TypeError("TabBar 的插槽中只能包含 TabItem 组件。");
 	export type TabBarChildren = Record<string, {
 		dom: HTMLElement;
 	}>;
 </script>
 
 <script setup lang="ts">
-	import TabItem from "./TabItem.vue";
-
 	const props = defineProps<{
 		clipped?: boolean;
 		vertical?: boolean;
@@ -19,10 +16,6 @@
 	}>();
 
 	const slots = useSlots().default?.();
-	if (slots)
-		for (const comp of slots)
-			if (comp.type !== TabItem)
-				throw typeError;
 
 	const children = reactive({} as TabBarChildren);
 	const tabBar = ref<HTMLElement>();

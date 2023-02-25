@@ -47,7 +47,7 @@
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
 	async function onMenuEnter(el: HTMLElement, done: () => void) {
-		await animateHeight(el, null, { startHeight: 0, duration: 500, getSize: r => size.value = r });
+		await animateSize(el, null, { startHeight: 0, duration: 500, getSize: size.value, withoutAdjustPadding: "both" });
 		done();
 	}
 
@@ -58,7 +58,7 @@
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
 	async function onMenuLeave(el: HTMLElement, done: () => void) {
-		await animateHeight(el, null, { endHeight: 0, duration: 300 });
+		await animateSize(el, null, { endHeight: 0, duration: 300 });
 		done();
 	}
 

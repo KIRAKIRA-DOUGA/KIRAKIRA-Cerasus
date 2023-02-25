@@ -92,7 +92,7 @@ dTs += `};
 
 export type ClassNames = keyof Styles;
 
-declare const styles: Styles;
+declare const styles: Readonly<Styles>;
 
 export default styles;
 `;

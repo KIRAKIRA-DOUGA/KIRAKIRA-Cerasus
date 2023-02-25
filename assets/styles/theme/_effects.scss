@@ -1,18 +1,21 @@
 @use "functions" as *;
+@use "private" as *;
 
 // #region 圆角
 /// 大卡片/缩略图。
 /// 使用 6px 大小的圆角。
+/// @param {String} $position [full] - 圆角的位置。
 /// @output border-radius
-@mixin radius-large {
-	border-radius: 6px;
+@mixin radius-large($position: full) {
+	@include set-border-radius(6px, $position);
 }
 
 /// 按钮/控制组件。
 /// 使用 4px 大小的圆角。
+/// @param {String} $position [full] - 圆角的位置。
 /// @output border-radius
-@mixin radius-small {
-	border-radius: 4px;
+@mixin radius-small($position: full) {
+	@include set-border-radius(4px, $position);
 }
 // #endregion
 

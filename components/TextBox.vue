@@ -73,7 +73,7 @@
 	$front-indent: 12px;
 
 	.text-box {
-		@include radius-small;
+		@include radius-large;
 		@include control-inner-shadow;
 		height: $default-height;
 		overflow: hidden;
@@ -157,6 +157,7 @@
 	}
 
 	input {
+		@include radius-large;
 		display: block;
 		flex-grow: 1;
 		height: 100%;
@@ -167,7 +168,6 @@
 		text-indent: $front-indent;
 		background: transparent;
 		border: 0;
-		border-radius: 4px 0 0 4px;
 		appearance: none;
 
 		&::placeholder {
@@ -201,6 +201,10 @@
 				color: transparent;
 			}
 		}
+
+		.illegal &::selection {
+			background-color: c(red);
+		}
 	}
 
 	.before-icon {
@@ -228,6 +232,7 @@
 	.after-icon-wrapper {
 		@include flex-center;
 		@include square(var(--size));
+		@include radius-large(left); // TODO: 我还是感觉输入框右边的按钮在按下时有点格格不入。
 		--size: #{$default-height};
 		transform-origin: right center;
 

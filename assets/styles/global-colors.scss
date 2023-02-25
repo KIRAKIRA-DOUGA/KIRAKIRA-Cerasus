@@ -1,53 +1,7 @@
-@import "theme/colors";
+@use "theme/colors" as *;
+@use "theme/private" as *;
 
 // 下面的内容是根据 Sass 映射自动转换为 CSS 属性的逻辑代码，不用动。
-
-/// 给定一个颜色值，可以是单个浅色主题颜色（深色主题颜色自动反转颜色获得），也可以是由浅色主题颜色和深色主题颜色组成的列表。
-/// 根据当前的主题返回所需的颜色值。
-/// @access private
-/// @param {Color | List} $color - 颜色值。
-/// @param {Bool} $is-light - 当前是否是浅色主题？
-/// @return {Color} 返回所需的主题颜色。
-@function themed-color($color, $is-light) {
-	$light-color: null;
-	$dark-color: null;
-
-	@if type-of($value: $color) == "list" {
-		$light-color: list.nth($color, 1);
-		$dark-color: list.nth($color, 2);
-	} @else {
-		$light-color: $color;
-		$dark-color: invert-lightness($color);
-	}
-	@return if($is-light, $light-color, $dark-color);
-}
-
-/// 生成十六进制表示的本色，和 RGB 三色的列表。
-/// @access private
-/// @param {String} $name - 颜色名称（Sass 映射键名）。
-/// @param {Color} $color - 浅色主题的颜色，或是由浅色主题颜色和深色主题颜色组成的列表。
-/// @param {Bool} $is-light - 当前是否是浅色主题？
-/// @output $property, $property-rgb
-@mixin hex-and-rgb-color($name, $color, $is-light) {
-	$property: key-to-css-var($name);
-	$result-color: themed-color($color, $is-light);
-
-	#{$property}: $result-color;
-	#{$property}-rgb: color-to-rgb-list($result-color);
-}
-
-/// 根据指定的键名确定是否生成波浪下划线链接背景。
-/// @access private
-/// @param {String} $key - 当前颜色键名。
-/// @param {String} $color - 当前颜色值。
-/// @param {Bool} $is-light - 当前是否是浅色主题？
-/// @output --accent-hover-wave-link-background
-@mixin wave-link($key, $color, $is-light) {
-	@if map.get($map: $state-colors, $key: accent-hover) == $key {
-		$svg-color: color-to-svg-color(themed-color($color, $is-light));
-		--accent-hover-wave-link-background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 4'%3E%3Cpath fill='none' stroke='#{$svg-color}' d='M0 3.5c5 0 5-3 10-3s5 3 10 3 5-3 10-3 5 3 10 3'/%3E%3C/svg%3E");
-	}
-}
 
 @for $i from 1 through 2 {
 	$is-light: $i == 1;
