@@ -25,6 +25,14 @@
 		position: relative;
 		z-index: 1;
 		padding-left: $sidebar-width;
+
+		:slotted(.container) {
+			padding: 26px 100px;
+
+			@media #{$tablet} {
+				padding: 26px 40px;
+			}
+		}
 	}
 
 	main {
@@ -36,7 +44,7 @@
 		position: fixed;
 		top: 0;
 		left: 0;
-		height: 100vh;
+		height: var(--inner-height);
 		transition: background-color $ease-out-max 250ms;
 	}
 

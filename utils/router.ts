@@ -41,3 +41,16 @@ export function watchRoute(callback: (newValue: string, oldValue: string) => voi
 export function navigate(path: string) {
 	useRouter().push(useLocalePath()(path));
 }
+
+/**
+ * 切换语言。
+ * @param lang - 语言代码。
+ */
+export function switchLanguage(lang: string) {
+	const switchLocalePath = useSwitchLocalePath();
+	switchLocalePath(lang);
+	// useRouter().push(switchLocalePath(value)); // 旧方法，不推荐使用。
+	if (lang === "zh") lang = "/";
+	else lang = `/${lang}/`;
+	useRouter().push(lang + getRoutePath());
+}

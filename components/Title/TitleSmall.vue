@@ -1,9 +1,11 @@
 <script setup lang="ts">
-
+	const props = defineProps<{
+		solid?: boolean;
+	}>();
 </script>
 
 <template>
-	<div class="sub">
+	<div class="sub" :class="{ stroked: !solid }">
 		<slot></slot>
 	</div>
 </template>
@@ -17,9 +19,12 @@
 		font-family: $english-logo-fonts;
 		font-style: italic;
 		text-transform: uppercase;
-		background-clip: text;
-		opacity: 0.4;
-		-webkit-text-stroke-width: 1px;
-		-webkit-text-fill-color: transparent;
+
+		&.stroked {
+			background-clip: text;
+			opacity: 0.4;
+			-webkit-text-stroke-width: 1px;
+			-webkit-text-fill-color: transparent;
+		}
 	}
 </style>

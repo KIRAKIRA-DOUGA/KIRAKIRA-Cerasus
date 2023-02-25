@@ -4,6 +4,7 @@
 	"scripts": {
 		"build": "nuxt build",
 		"dev": "nuxt dev --https --ssl-cert server/server.cer --ssl-key server/server.key",
+		"dev-http": "nuxt dev",
 		"generate": "nuxt generate",
 		"preview": "nuxt preview",
 		"postinstall": "nuxt prepare",

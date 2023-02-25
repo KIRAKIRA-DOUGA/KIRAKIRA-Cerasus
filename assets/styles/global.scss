@@ -8,11 +8,14 @@
 	font-family: $chinese-fonts;
 	transition: $fallback-transitions;
 	user-select: none;
-	-webkit-tap-highlight-color: c(accent, 30%);
+	// -webkit-tap-highlight-color: c(accent, 30%); // 我还是觉得这个触摸样式很丑。
+	-webkit-tap-highlight-color: transparent;
+}
 
-	html:lang(ja) & {
-		font-family: $japanese-fonts;
-	}
+*:lang(ja),
+*:lang(ja)::before,
+*:lang(ja)::after {
+	font-family: $japanese-fonts;
 }
 
 *:focus,

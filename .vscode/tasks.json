@@ -7,7 +7,15 @@
 			"group": "build",
 			"problemMatcher": [],
 			"label": "npm: dev",
-			"detail": "nuxt dev"
+			"detail": "nuxt dev https"
+		},
+		{
+			"type": "npm",
+			"script": "dev-http",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: dev http",
+			"detail": "nuxt dev http"
 		},
 		{
 			"type": "npm",

@@ -27,7 +27,5 @@
 </i18n>
 
 <style scoped lang="scss">
-	.container {
-		padding: 26px 100px;
-	}
+
 </style>

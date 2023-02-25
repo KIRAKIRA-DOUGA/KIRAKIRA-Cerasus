@@ -96,11 +96,7 @@
 
 <style scoped lang="scss">
 	.container {
-		padding: 0 100px;
-
-		@media #{$tablet} {
-			padding: 0 40px;
-		}
+		padding-top: 0 !important;
 
 		> * {
 			margin: 26px 0;

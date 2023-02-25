@@ -41,10 +41,6 @@
 </template>
 
 <style scoped lang="scss">
-	.container {
-		padding: 26px 100px;
-	}
-
 	h2 {
 		margin-bottom: 1.5rem;
 	}

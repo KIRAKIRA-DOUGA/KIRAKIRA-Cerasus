@@ -13,6 +13,7 @@ function update() {
 	if (theme === "system") actualTheme = systemDark().matches ? "dark" : "light";
 	document.documentElement.className = palette;
 	if (actualTheme === "dark") document.documentElement.classList.add(actualTheme);
+	Theme.meta.value = useCssVar("--accent").value;
 	const colorMode: NuxtColorMode = { theme, palette };
 	window.localStorage.setItem("nuxt-color-mode", JSON.stringify(colorMode));
 }

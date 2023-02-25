@@ -18,7 +18,7 @@
 			{ "http-equiv": "content-type", content: "text/html;charset=UTF-8" },
 			{ "http-equiv": "x-ua-compatible", content: "IE=Edge,chrome=1" },
 			{ name: "renderer", content: "webkit" },
-			{ name: "theme-color", content: "#f06e8e" },
+			{ name: "theme-color", content: Theme.meta },
 			{ name: "description", content: "一个可爱的视频网站，献给可爱的你～" },
 			{ name: "keywords", content: "视频,弹幕,字幕,音频,歌词,相簿,相册,照片,视频网站,弹幕视频,二次元,动漫,动画,音乐,动漫音乐,音MAD,AMV,MAD,ANIME,ACG,NOVA" },
 		],
