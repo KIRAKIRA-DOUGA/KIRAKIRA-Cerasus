@@ -113,6 +113,10 @@
 			color: c(accent);
 			background-color: c(accent-10);
 
+			.dark & {
+				color: c(icon-color);
+			}
+
 			.nuxt-icon {
 				rotate: -180deg;
 			}

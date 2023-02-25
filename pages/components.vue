@@ -111,8 +111,8 @@
 			<br />
 			<Tag v-model="isTagChecked">{{ t.tag }}</Tag>
 			<br />
-			音量<Slider v-model="volume" :defaultValue="100" @changed="onSlided" />
-			音调<Slider v-model="pitch" :min="-24" :max="24" :defaultValue="0" @changed="onSlided" />
+			<p>音量</p><Slider v-model="volume" :defaultValue="100" @changed="onSlided" />
+			<p>音调</p><Slider v-model="pitch" :min="-24" :max="24" :defaultValue="0" @changed="onSlided" />
 			<em>单击鼠标中键或触摸屏长按组件以还原默认值。</em>
 			<audio ref="beep" :src="beepSrc"></audio>
 			<TabBar v-model="selectedTab">
@@ -302,5 +302,9 @@
 		> :not(.marquee) {
 			font-family: "Comic Sans MS", "华文彩云", fantasy;
 		}
+	}
+
+	em {
+		display: block;
 	}
 </style>

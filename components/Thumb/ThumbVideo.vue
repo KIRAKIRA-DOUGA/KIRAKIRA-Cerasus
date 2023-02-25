@@ -32,7 +32,7 @@
 		<div class="cover-wrapper">
 			<img :src="image" alt="cover" class="cover" />
 		</div>
-		<slot>视频标题</slot>
+		<div><slot>视频标题</slot></div>
 		<div class="bottom">
 			<div>{{ date }}</div>
 			<div class="item">

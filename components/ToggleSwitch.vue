@@ -33,7 +33,7 @@
 		const pointerMove = (e: PointerEvent) => {
 			thumb.style.left = `${clamp(e.pageX - left - x, 0, max)}px`;
 		};
-		const pointerUp = (e: PointerEvent) => { // BUG: 触摸屏抬起事件有点问题。
+		const pointerUp = (e: PointerEvent) => {
 			document.removeEventListener("pointermove", pointerMove);
 			document.removeEventListener("pointerup", pointerUp);
 			const isOn = e.pageX - x > left + max / 2;
@@ -83,6 +83,7 @@
 		position: relative;
 		width: $width;
 		height: $thumb-size;
+		touch-action: none;
 
 		.base {
 			@include oval;
@@ -163,7 +164,7 @@
 		}
 
 		.dark &.on .switch {
-			opacity: 0.4; // 深色主题下颜色太鲜艳了，不容易分清是否被禁用。
+			opacity: 0.5; // 深色主题下颜色太鲜艳了，不容易分清是否被禁用。
 		}
 	}
 </style>

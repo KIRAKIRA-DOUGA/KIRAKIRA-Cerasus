@@ -65,7 +65,7 @@
 			emits("update:modelValue", value);
 			emits("changing", value);
 		};
-		const pointerUp = () => { // BUG: 触摸屏抬起事件有点问题。
+		const pointerUp = () => {
 			document.removeEventListener("pointermove", pointerMove);
 			document.removeEventListener("pointerup", pointerUp);
 			emits("changed", props.modelValue);
@@ -116,6 +116,7 @@
 	.slider {
 		--value: 0;
 		position: relative;
+		touch-action: none;
 	}
 
 	.track,
