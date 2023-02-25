@@ -156,20 +156,19 @@
 
 			&::before {
 				@include short-transition;
-				--scale: 0.5;
 				background-color: c(accent);
 				opacity: 1;
-				scale: var(--scale);
+				scale: 0.5;
 				animation:
 					inner-resize $duration-half $duration-half $ease-out-max,
 					cut-in $duration-half step-start;
 
 				#{$component-class}:hover & {
-					--scale: 0.6;
+					scale: 0.6;
 				}
 
 				#{$component-class}:active & {
-					--scale: 0.4;
+					scale: 0.4;
 				}
 			}
 		}
