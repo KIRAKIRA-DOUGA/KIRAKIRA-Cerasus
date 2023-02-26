@@ -29,9 +29,11 @@ npm install
 
 **只准用 NPM（你怕吗）！！！**
 
+<!-- 有空来研究一下能不能用 PNPM 也是好的。 -->
+
 ### 开发服务器
 
-从此链接启动开发服务器：http://localhost:3000
+从此链接启动开发服务器：https://localhost:3000
 
 ```bash
 npm run dev
