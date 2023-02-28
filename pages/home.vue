@@ -134,5 +134,6 @@
 	.videos {
 		@extend %tabulation;
 		gap: 14px;
+		margin: 0 -8px;
 	}
 </style>

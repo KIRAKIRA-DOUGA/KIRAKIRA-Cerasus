@@ -52,7 +52,7 @@
 		$padding: 8px 9px;
 		position: relative;
 		display: inline-block;
-		margin: list-negative($padding);
+		// margin: list-negative($padding);
 		padding: $padding;
 		color: c(text-color);
 
@@ -69,10 +69,6 @@
 
 		&:active {
 			@include button-scale-active;
-
-			img.cover {
-				filter: invert(1);
-			}
 		}
 	}
 
