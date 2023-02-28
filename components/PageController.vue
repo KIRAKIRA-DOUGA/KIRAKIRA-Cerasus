@@ -320,7 +320,7 @@
 		}
 
 		&:active {
-			@include button-scale-active;
+			@include button-scale-pressed;
 			background: c(accent);
 		}
 
