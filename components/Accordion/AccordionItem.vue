@@ -39,7 +39,7 @@
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
 	async function onContentEnter(el: HTMLElement, done: () => void) {
-		await animateSize(el, null, { startHeight: 0 });
+		await animateSize(el, null, { startHeight: 0, duration: 500 });
 		done();
 	}
 
@@ -50,7 +50,7 @@
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
 	async function onContentLeave(el: HTMLElement, done: () => void) {
-		await animateSize(el, null, { endHeight: 0 });
+		await animateSize(el, null, { endHeight: 0, duration: 300 });
 		done();
 	}
 </script>
@@ -73,9 +73,18 @@
 	.accordion-item {
 		@include radius-large;
 
+		h3 {
+			font-size: 14px;
+		}
+
 		> * {
 			padding: 0.75rem 1rem;
 			border-bottom: c(gray) 1px solid;
+			transition: $fallback-transitions, padding $ease-out-smooth 500ms;
+		}
+
+		> *:not(:hover) {
+			transition-duration: 1s;
 		}
 
 		&:first-child > .header {
@@ -96,11 +105,13 @@
 		cursor: pointer;
 
 		.nuxt-icon {
+			color: c(icon-color);
 			font-size: 20px;
+			transition: $fallback-transitions, all $ease-out-smooth 500ms;
 		}
 
 		&:focus {
-			@include button-shadow-unchecked-focus-only;
+			@include button-shadow-unchecked-focus-only; // TODO: [艾拉] 这里直接用button的focus我感觉有点丑...得改。或者只在TAB过来的时候显示？
 			z-index: 1;
 		}
 
@@ -118,7 +129,8 @@
 			}
 
 			.nuxt-icon {
-				rotate: -180deg;
+				color: c(accent);
+				rotate: 180deg;
 			}
 
 			&:focus {
