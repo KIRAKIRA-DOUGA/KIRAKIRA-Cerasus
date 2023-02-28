@@ -76,7 +76,7 @@
 		&,
 		& #{$slot} {
 			z-index: var(--z-index);
-			// z-index: v-bind(zIndex); // TODO: v-bind 在 Teleport 内部不可用。请时刻关注 Vue 的更新：https://github.com/vuejs/core/issues/4605
+			// z-index: v-bind(zIndex); // TODO: [兰音] v-bind 在 Teleport 内部不可用。请时刻关注 Vue 的更新：https://github.com/vuejs/core/issues/4605
 		}
 
 		&.focusing #{$slot} {

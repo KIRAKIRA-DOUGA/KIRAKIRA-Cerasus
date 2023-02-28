@@ -131,7 +131,7 @@
 		top: 0;
 		left: 0;
 		z-index: 1;
-		display: none; // TODO: 圆圈动画效果待做。
+		display: none; // TODO: [兰音] 圆圈动画效果待做。
 		background-color: c(accent);
 	}
 </style>

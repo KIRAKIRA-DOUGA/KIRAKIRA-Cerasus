@@ -232,7 +232,7 @@
 	.after-icon-wrapper {
 		@include flex-center;
 		@include square(var(--size));
-		@include radius-large(left); // TODO: 我还是感觉输入框右边的按钮在按下时有点格格不入。
+		@include radius-large(left); // TODO: [兰音] 我还是感觉输入框右边的按钮在按下时有点格格不入。
 		--size: #{$default-height};
 		transform-origin: right center;
 
