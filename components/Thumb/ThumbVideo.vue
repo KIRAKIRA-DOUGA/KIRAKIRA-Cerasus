@@ -13,8 +13,8 @@
 	});
 
 	const date = computed(() => props.date ?
-		formatDate(props.date, "yyyy/MM/dd") :
-		"----/--/--"); // 我突然想到要是日期分隔符为横杠的话，那这个占位符就是一排横杠了。
+		formatDate(props.date, "yy-MM-dd") :
+		"--/--/--"); // 我突然想到要是日期分隔符为横杠的话，那这个占位符就是一排横杠了。 // 最终显示出来还是横杠比较好，不然不好看
 
 	const watchedCount = computed(() => {
 		let count = props.watchedCount | 0;
@@ -32,12 +32,27 @@
 		<div class="cover-wrapper">
 			<img :src="image" alt="cover" class="cover" />
 		</div>
-		<div><slot>视频标题</slot></div>
-		<div class="bottom">
-			<div>{{ date }}</div>
-			<div class="item">
-				<NuxtIcon name="play" />
-				<p>{{ watchedCount }}</p>
+		<div class="title"><slot>视频标题</slot></div>
+		<div class="info">
+			<div class="line">
+				<div class="item">
+					<NuxtIcon name="play" />
+					<p>{{ watchedCount }}</p>
+				</div>
+				<div class="item">
+					<NuxtIcon name="time" />
+					<p>2:33</p>
+				</div>
+			</div>
+			<div class="line">
+				<div class="item">
+					<NuxtIcon name="person" />
+					<div>这是一个UP主</div>
+				</div>
+				<div class="item">
+					<NuxtIcon name="calendar" />
+					<div>{{ date }}</div>
+				</div>
 			</div>
 		</div>
 	</LocaleLink>
@@ -85,18 +100,30 @@
 		}
 	}
 
-	.bottom {
-		@include flex-center;
+	.title {
+		font-weight: 500;
+	}
+
+	.info {
+		@include flex-block;
+		gap: 4px;
 		justify-content: space-between;
-		margin-top: 3px;
+		margin: 6px 0 0 -2px;
 		color: c(icon-color);
+		font-size: 12px;
+
+		.line {
+			display: flex;
+			gap: 8px;
+			justify-content: space-between;
+		}
 
 		.item {
 			@include flex-center;
 			gap: 2px;
 
 			.nuxt-icon {
-				font-size: 18px;
+				font-size: 16px;
 			}
 		}
 	}
