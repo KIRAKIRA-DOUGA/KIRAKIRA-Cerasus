@@ -2,7 +2,7 @@
 	import background from "assets/styles/css-doodles/background.css-doodle";
 
 	const showBanner = ref(false);
-	const showCssDoodle = useState("css-doodle", () => true);
+	const showCssDoodle = useState("css-doodle", () => false);
 
 	watchRoute(() => showBanner.value = getRoutePath() === "", true);
 </script>

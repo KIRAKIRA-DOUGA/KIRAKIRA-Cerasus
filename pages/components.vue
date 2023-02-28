@@ -32,7 +32,7 @@
 	const menu = ref<InstanceType<typeof Menu>>();
 	const showMenu = () => menu.value?.show();
 	const beep = ref<HTMLAudioElement>();
-	const showCssDoodle = useState("css-doodle", () => true);
+	const showCssDoodle = useState("css-doodle", () => false);
 	const showAccordion = reactive([false, false, false]);
 	const isUploaderLovinIt = ref(true);
 
