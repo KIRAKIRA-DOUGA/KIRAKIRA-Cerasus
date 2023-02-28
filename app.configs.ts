@@ -1,5 +1,3 @@
 export default defineAppConfig({
-	theme: {
-		primaryColor: "#ababab",
-	},
+	showCssDoodle: false,
 });
