@@ -17,6 +17,7 @@
 
 	const isDraging = ref(false);
 	const on = computed(() => props.modelValue ?? props.on);
+	const toggleSwitch = ref<HTMLElement>();
 
 	/**
 	 * 拖拽滑块逻辑处理。
@@ -53,10 +54,16 @@
 		if (!isDraging.value) emits("update:modelValue", !props.modelValue);
 		isDraging.value = false;
 	}
+
+	// 如果切换开关开启情况与 prop 不同，就强制使其相同。
+	watch(() => toggleSwitch.value?.classList.contains("on"), () => {
+		if (toggleSwitch.value && on.value !== toggleSwitch.value.classList.contains("on"))
+			on.value ? toggleSwitch.value.classList.add("on") : toggleSwitch.value.classList.remove("on");
+	}, { immediate: true });
 </script>
 
 <template>
-	<kira-component class="toggle-switch" :class="{ on, disabled }" :tabindex="disabled ? -1 : 0" @click="onClick">
+	<kira-component ref="toggleSwitch" class="toggle-switch" :class="{ on, disabled }" :tabindex="disabled ? -1 : 0" @click="onClick">
 		<slot></slot>
 		<div class="switch">
 			<div class="base"></div>

@@ -2,15 +2,16 @@
 	import background from "assets/styles/css-doodles/background.css-doodle";
 
 	const showBanner = ref(false);
-	const showCssDoodle = useState("css-doodle", () => false);
 
 	watchRoute(() => showBanner.value = getRoutePath() === "", true);
 </script>
 
 <template>
-	<Transition name="background">
-		<CssDoodle v-show="showCssDoodle" :rule="background" class="background" />
-	</Transition>
+	<ClientOnly>
+		<Transition name="background">
+			<CssDoodle v-show="appConfig.showCssDoodle" :rule="background" class="background" />
+		</Transition>
+	</ClientOnly>
 	<SideBar class="sidebar" />
 	<div class="container">
 		<Banner :collapsed="!showBanner" />

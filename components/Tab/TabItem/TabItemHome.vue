@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
-		id: string;
+		id?: string;
 	}>(), {
 		id: "home",
 	});
