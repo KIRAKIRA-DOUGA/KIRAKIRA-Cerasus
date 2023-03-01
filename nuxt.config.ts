@@ -52,6 +52,11 @@ export default defineNuxtConfig({
 			docsLoader(),
 			cssDoodleLoader(),
 		],
+		optimizeDeps: {
+			needsInterop: [
+				"mediainfo.js",
+			],
+		},
 		css: {
 			preprocessorOptions: styleResources({
 				scss: {
