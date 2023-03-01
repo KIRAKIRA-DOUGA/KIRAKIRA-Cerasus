@@ -2,7 +2,7 @@
 	import testBackground from "assets/images/test-background.png";
 
 	const props = withDefaults(defineProps<{
-		/** 最终视频链接。目前仅在开发环境中使用，生产环境应该换成 cav 编号。 */
+		/** 最终视频链接。目前仅在开发环境中使用，生产环境应该换成 kv 编号。 */
 		link: string;
 		/** 图片链接。 */
 		image?: string;
