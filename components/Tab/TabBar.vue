@@ -148,6 +148,7 @@
 		position: absolute;
 		flex-shrink: 0;
 		height: $thickness;
+		margin-top: 8px;
 		background-color: c(accent);
 	}
 </style>
