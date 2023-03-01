@@ -1,9 +1,6 @@
 <script lang="tsx">
 	// 写个屁的 script，你写了它也不会跑的。
 
-	import { NuxtIcon } from "#components";
-	import LogoDisableJavascript from "components/Logo/DisableJavascript.vue";
-
 	export default defineComponent({
 		render() {
 			const styles = useCssModule();

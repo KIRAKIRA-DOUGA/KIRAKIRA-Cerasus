@@ -2,7 +2,6 @@
 	import { LocaleObject } from "@nuxtjs/i18n/dist/runtime/composables";
 	import animationData from "lotties/spinner-dev1.json";
 	import { LogoTextFormType } from "components/Logo/LogoText.vue";
-	import Menu from "components/Menu/Menu.vue";
 	import beepSrc from "assets/audios/NOVA 2022.1 Alert Quick.ogg";
 
 	const page = ref(1);

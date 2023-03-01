@@ -1,6 +1,5 @@
 <script setup lang="ts">
 	import testBackground from "assets/images/test-background.png";
-	import { Duration } from "classes/Duration";
 
 	const props = withDefaults(defineProps<{
 		/** 最终视频链接。目前仅在开发环境中使用，生产环境应该换成 cav 编号。 */
