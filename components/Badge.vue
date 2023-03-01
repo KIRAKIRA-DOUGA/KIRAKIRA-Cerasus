@@ -13,6 +13,7 @@
 		@include radius-small;
 		padding: 0 8px;
 		color: white;
+		text-align: center;
 		background-color: c(accent);
 	}
 </style>

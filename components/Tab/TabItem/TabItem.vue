@@ -1,8 +1,9 @@
 <script setup lang="ts">
-	import TabBar, { TabBarChildren } from "./TabBar.vue";
+	import TabBar, { TabBarChildren } from "../TabBar.vue";
 
 	const props = defineProps<{
 		id: string;
+		vertical?: boolean;
 	}>();
 
 	const dom = ref<HTMLDivElement>();
@@ -25,7 +26,7 @@
 </script>
 
 <template>
-	<div ref="dom" :class="{ active }" @click="onClick">
+	<div ref="dom" :class="{ active, vertical }" @click="onClick">
 		<slot></slot>
 	</div>
 </template>
@@ -34,5 +35,11 @@
 	.active {
 		color: c(accent);
 		font-weight: bold;
+	}
+
+	.vertical {
+		@include flex-center;
+		flex-direction: column;
+		gap: 2px;
 	}
 </style>

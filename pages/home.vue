@@ -50,10 +50,10 @@
 <template>
 	<div class="container">
 		<TabBar v-model="selectedTab" class="tabbar">
-			<TabItem id="home">{{ t.home }}</TabItem>
-			<TabItem id="anime">{{ t.anime }}</TabItem>
-			<TabItem id="music">{{ t.music }}</TabItem>
-			<TabItem id="otomad">{{ t.otomad }}</TabItem>
+			<TabItemHome />
+			<TabItemBadge id="anime" :badge="233">{{ t.anime }}</TabItemBadge>
+			<TabItemBadge id="music" :badge="233">{{ t.music }}</TabItemBadge>
+			<TabItemBadge id="otomad" :badge="233">{{ t.otomad }}</TabItemBadge>
 		</TabBar>
 		<Subheader icon="category" :badge="233">分区</Subheader>
 		<div class="videos">
