@@ -1,5 +1,5 @@
 <docs>
-	Build vertically collapsing accordions in combination with our Collapse JavaScript plugin.
+	垂直折叠手风琴。
 </docs>
 
 <script setup lang="ts">
@@ -111,7 +111,9 @@
 		}
 
 		&:focus {
-			@include button-shadow-unchecked-focus-only; // TODO: [艾拉] 这里直接用button的focus我感觉有点丑...得改。或者只在TAB过来的时候显示？
+			@include button-shadow-unchecked-focus-only;
+			// TODO: [艾拉] 这里直接用button的focus我感觉有点丑...得改。或者只在TAB过来的时候显示？
+			// [兰音] 不是，我这是从 Bootstrap 那里抄过来的，它那里就是这么做的。
 			z-index: 1;
 		}
 
