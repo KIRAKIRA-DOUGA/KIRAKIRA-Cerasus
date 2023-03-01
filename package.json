@@ -3,8 +3,8 @@
 	"type": "module",
 	"scripts": {
 		"build": "nuxt build",
-		"dev": "nuxt dev --https --ssl-cert server/server.cer --ssl-key server/server.key",
-		"dev-http": "nuxt dev",
+		"dev": "cross-env HOST=0.0.0.0 nuxt dev --https --ssl-cert server/server.cer --ssl-key server/server.key",
+		"dev-http": "cross-env HOST=0.0.0.0 nuxt dev",
 		"generate": "nuxt generate",
 		"preview": "nuxt preview",
 		"postinstall": "nuxt prepare",
@@ -25,6 +25,7 @@
 		"@nuxtjs/i18n": "^8.0.0-beta.7",
 		"@types/path-browserify": "^1.0.0",
 		"copy-webpack-plugin": "^11.0.0",
+		"cross-env": "^7.0.3",
 		"eslint": "^8.27.0",
 		"eslint-plugin-nuxt": "^4.0.0",
 		"eslint-plugin-vue": "^9.7.0",
