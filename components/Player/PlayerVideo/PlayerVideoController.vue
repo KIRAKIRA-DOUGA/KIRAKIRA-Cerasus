@@ -72,22 +72,31 @@
 
 <template>
 	<kira-component class="player-video-controller">
-		<PlayerButton :icon="playing ? 'pause' : 'play'" @click="emits('update:playing', !playing)" />
+		<div class="left">
+			<PlayerButton class="play" :icon="playing ? 'pause' : 'play'" @click="emits('update:playing', !playing)" />
+		</div>
 		<div class="slider">
 			<Slider v-model="currentPercent" :min="0" :max="1" />
 		</div>
-		<span>{{ convertTime(currentTime) }} / {{ convertTime(duration) }}</span>
-		<PlayerButton :text="playbackRateText" @click="switchSpeed" />
-		<PlayerButton icon="fullscreen" @click="() => toggleFullScreen?.()" />
+		<div class="right">
+			<div class="time">
+				<span class="current">{{ convertTime(currentTime) }} </span>
+				<span class="divide">/</span>
+				<span class="duration">{{ convertTime(duration) }}</span>
+			</div>
+			<PlayerButton :text="playbackRateText" @click="switchSpeed" />
+			<PlayerButton icon="fullscreen" @click="() => toggleFullScreen?.()" />
+		</div>
 	</kira-component>
 </template>
 
 <style scoped lang="scss">
+	$thickness: 36px;
+
 	.player-video-controller {
 		display: flex;
-		gap: 4px;
 		align-items: center;
-		height: 36px;
+		height: $thickness;
 		color: c(icon-color);
 		font-weight: 600;
 		font-size: 14px;
@@ -97,7 +106,52 @@
 		}
 	}
 
+	.left {
+		@include flex-center;
+		justify-content: flex-start;
+		height: inherit;
+
+		.play {
+			width: $thickness + 10px;
+
+			.icon {
+				@include icon-size(28px);
+			}
+		}
+	}
+
+	.right {
+		@include flex-center;
+		justify-content: flex-end;
+		height: inherit;
+
+		button {
+			@include square($thickness);
+		}
+	}
+
+	.time {
+		@include flex-center;
+		min-width: 90px;
+		margin: 0 4px;
+
+		> * {
+			@include flex-center;
+			text-align: center;
+		}
+
+		.current,
+		.duration {
+			flex-grow: 1;
+		}
+
+		.divide {
+			padding: 0 2px;
+		}
+	}
+
 	.slider {
+		flex-grow: 1;
 		flex-shrink: 1;
 		width: 100%;
 	}

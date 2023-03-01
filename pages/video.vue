@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import videoPath from "assets/videos/test.mp4";
+	import videoPath from "assets/videos/shibamata.mp4";
 
 	useHead({ title: "测试视频" });
 </script>
