@@ -3,6 +3,7 @@
 	import animationData from "lotties/spinner-dev1.json";
 	import { LogoTextFormType } from "components/Logo/LogoText.vue";
 	import beepSrc from "assets/audios/NOVA 2022.1 Alert Quick.ogg";
+	import Menu from "components/Menu/Menu.vue";
 
 	const page = ref(1);
 	const pages = ref(99);

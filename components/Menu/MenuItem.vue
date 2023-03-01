@@ -1,4 +1,6 @@
 <script setup lang="ts">
+	import Menu from "./Menu.vue";
+
 	const props = withDefaults(defineProps<{
 		icon?: string;
 	}>(), {
