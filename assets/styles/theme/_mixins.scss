@@ -98,3 +98,14 @@
 	left: 0;
 	margin: auto;
 }
+
+/// 设置 Nuxt 图标的大小。
+/// 解决在未加载前并未提前占位的问题。
+/// 但凡使用 NuxtIcon 图标组件都一定要使用此混合来指定尺寸，以免出现动画闪烁等隐含问题。
+/// @param {Number} $size - 图标尺寸。
+/// @output width, height, font-size;
+/// @requires {mixin} square
+@mixin icon-size($size) {
+	@include square($size);
+	font-size: $size;
+}

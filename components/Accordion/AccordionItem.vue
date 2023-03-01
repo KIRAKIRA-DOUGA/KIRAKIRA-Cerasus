@@ -79,7 +79,7 @@
 
 		> * {
 			padding: 0.75rem 1rem;
-			border-bottom: c(gray) 1px solid;
+			// border-bottom: c(gray) 1px solid; // 有一说一，边框线确实丑。
 			transition: $fallback-transitions, padding $ease-out-smooth 500ms;
 		}
 
@@ -105,8 +105,8 @@
 		cursor: pointer;
 
 		.nuxt-icon {
+			@include icon-size(20px);
 			color: c(icon-color);
-			font-size: 20px;
 			transition: $fallback-transitions, all $ease-out-smooth 500ms;
 		}
 

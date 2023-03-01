@@ -49,6 +49,5 @@ export function addEventListeners<K extends keyof DocumentEventMap>(element: Doc
  * @param types - 监听事件数组。
  */
 export function addEventListeners<K extends keyof HTMLElementEventMap, E extends HTMLElement>(element: E, listener: (this: E, ev: HTMLElementEventMap[K]) => void, ...types: K[]): void {
-	// @ts-ignore
-	types.forEach(type => element.addEventListener(type, listener));
+	types.forEach(type => element.addEventListener(type, listener as never));
 }
