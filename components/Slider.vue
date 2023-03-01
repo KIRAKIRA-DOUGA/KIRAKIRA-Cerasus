@@ -116,7 +116,7 @@
 	.slider {
 		--value: 0;
 		position: relative;
-		touch-action: none;
+		touch-action: pan-y pinch-zoom;
 	}
 
 	.track,

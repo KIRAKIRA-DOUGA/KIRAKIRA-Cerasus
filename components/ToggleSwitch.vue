@@ -83,7 +83,7 @@
 		position: relative;
 		width: $width;
 		height: $thumb-size;
-		touch-action: none;
+		touch-action: pan-y pinch-zoom;
 
 		.base {
 			@include oval;
