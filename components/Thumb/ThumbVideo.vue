@@ -1,20 +1,33 @@
 <script setup lang="ts">
 	import testBackground from "assets/images/test-background.png";
+	import { Duration } from "classes/Duration";
 
 	const props = withDefaults(defineProps<{
+		/** 最终视频链接。目前仅在开发环境中使用，生产环境应该换成 cav 编号。 */
 		link: string;
+		/** 图片链接。 */
 		image?: string;
+		/** 视频上传日期。 */
 		date?: Date;
+		/** 视频播放量。 */
 		watchedCount?: number;
+		/** UP 主名称。 */
+		uploader: string;
+		/** 视频时长。 */
+		duration?: Duration;
 	}>(), {
 		image: testBackground,
 		date: undefined,
 		watchedCount: 0,
+		duration: undefined,
 	});
 
 	const date = computed(() => props.date ?
-		formatDate(props.date, "yy-MM-dd") :
-		"--/--/--"); // 我突然想到要是日期分隔符为横杠的话，那这个占位符就是一排横杠了。 // 最终显示出来还是横杠比较好，不然不好看
+		formatDate(props.date, "yyyy-MM-dd") :
+		"----/--/--");
+	// 我突然想到要是日期分隔符为横杠的话，那这个占位符就是一排横杠了。
+	// 最终显示出来还是横杠比较好，不然不好看。// 啊这，不统一吧？
+	// 有一说一，可能我觉得两位数表示年份看起来不好看吧。
 
 	const watchedCount = computed(() => {
 		let count = props.watchedCount | 0;
@@ -25,6 +38,8 @@
 			count_str = count + "亿";
 		return count_str;
 	});
+
+	const duration = computed(() => props.duration ?? "--:--");
 </script>
 
 <template>
@@ -41,14 +56,14 @@
 				</div>
 				<div class="item">
 					<NuxtIcon name="time" />
-					<p>2:33</p>
+					<p>{{ duration }}</p>
 				</div>
 			</div>
 			<div class="line">
-				<div class="item">
+				<LocaleLink class="item uploader" to="components">
 					<NuxtIcon name="person" />
-					<div>这是一个UP主</div>
-				</div>
+					<div>{{ uploader }}</div>
+				</LocaleLink>
 				<div class="item">
 					<NuxtIcon name="calendar" />
 					<div>{{ date }}</div>
@@ -125,6 +140,11 @@
 			.nuxt-icon {
 				font-size: 16px;
 			}
+		}
+
+		.uploader {
+			color: inherit;
+			text-decoration: none;
 		}
 	}
 </style>

@@ -1,6 +1,6 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 
-import { resolve } from "path";
+import defineAlias from "./helpers/alias";
 import styleResources from "./helpers/style-resources";
 import cssDoodleLoader from "./plugins/vite/css-doodle";
 import docsLoader from "./plugins/vite/docs";
@@ -8,9 +8,8 @@ import docsLoader from "./plugins/vite/docs";
 const wasmFile = resolve("node_modules/mediainfo.js/dist/MediaInfoModule.wasm"); */
 type OriginalNuxtConfig = Parameters<typeof defineNuxtConfig>[0];
 type BroadNuxtConfig = OriginalNuxtConfig & Record<Exclude<string, keyof OriginalNuxtConfig>, object | string>; // 还敢报错吗？
-// TODO: 水合异常，这是 nuxt 那边的问题，详情请关注：https://github.com/nuxt/nuxt/issues/18635
-const res = (...path: string[]) => resolve(__dirname, ...path);
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; // 支持 HTTPS。
+// TODO: 水合异常，这是 nuxt 那边的问题，详情请关注：https://github.com/nuxt/nuxt/issues/18635
 
 export default defineNuxtConfig({
 	plugins: [
@@ -29,21 +28,22 @@ export default defineNuxtConfig({
 		"nuxt-simple-sitemap",
 		// "@nuxtjs/color-mode", // 这个已经重写了，不用开启。
 	],
-	alias: {
-		styles: res("assets/styles"),
-		components: res("components"),
-		composables: res("composables"),
-		layouts: res("layouts"),
-		pages: res("pages"),
-		plugins: res("plugins"),
-		static: res("public/static"),
-		lotties: res("assets/lotties"),
-		modules: res("modules"),
-		content: res("content"),
-		middleware: res("middleware"),
-		server: res("server"),
-		helpers: res("helpers"),
-	},
+	alias: defineAlias(__dirname,
+		"assets/styles",
+		"components",
+		"composables",
+		"layouts",
+		"pages",
+		"plugins",
+		"public/static",
+		"assets/lotties",
+		"modules",
+		"content",
+		"middleware",
+		"server",
+		"helpers",
+		"classes",
+	),
 	css: [
 		"styles/global.scss",
 	],
@@ -129,6 +129,11 @@ export default defineNuxtConfig({
 				sepia: "monokai",
 			},
 		},
+	},
+	imports: {
+		dirs: [
+			"classes",
+		],
 	},
 	runtimeConfig: {
 		public: {

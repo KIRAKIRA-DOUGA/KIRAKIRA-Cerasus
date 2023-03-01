@@ -57,8 +57,22 @@
 		</TabBar>
 		<Subheader icon="category" :badge="233">分区</Subheader>
 		<div class="videos">
-			<ThumbVideo link="video" :image="testVideo" :date="new Date()" :watchedCount="233_0000">测试视频</ThumbVideo>
-			<ThumbVideo link="audio" :image="testAudio" :date="new Date()" :watchedCount="233_0000">测试音频</ThumbVideo>
+			<ThumbVideo
+				link="video"
+				uploader="艾了个拉"
+				:image="testVideo"
+				:date="new Date()"
+				:watchedCount="233_0000"
+				:duration="new Duration(2, 33)"
+			>测试视频</ThumbVideo>
+			<ThumbVideo
+				link="audio"
+				uploader="艾了个拉"
+				:image="testAudio"
+				:date="new Date()"
+				:watchedCount="233_0000"
+				:duration="new Duration(2, 33)"
+			>测试音频</ThumbVideo>
 		</div>
 		<Subheader icon="home" :badge="233">网站地图</Subheader>
 		<div class="pages">
