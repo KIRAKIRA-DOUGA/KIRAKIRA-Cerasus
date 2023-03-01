@@ -1,4 +1,4 @@
-import fs from "fs";
+import { readFile, writeFile } from "fs/promises";
 import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
 import { kebabToCamelCase } from "../utils/string";
@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const stylesPath = resolve(__dirname, "../assets/styles/theme");
 
-const scss = await fs.promises.readFile(resolve(stylesPath, "_eases.scss"), "utf-8");
+const scss = await readFile(resolve(stylesPath, "_eases.scss"), "utf-8");
 const variables = scss.match(/(?<=\$).*(?=:)/g);
 if (!variables) throw new TypeError("No variable found!");
 
@@ -97,5 +97,5 @@ declare const styles: Readonly<Styles>;
 export default styles;
 `;
 
-fs.promises.writeFile(resolve(stylesPath, "eases.module.scss"), scssModule);
-fs.promises.writeFile(resolve(stylesPath, "eases.module.scss.d.ts"), dTs);
+writeFile(resolve(stylesPath, "eases.module.scss"), scssModule);
+writeFile(resolve(stylesPath, "eases.module.scss.d.ts"), dTs);

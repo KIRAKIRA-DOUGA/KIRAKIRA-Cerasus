@@ -24,6 +24,7 @@ export default defineNuxtConfig({
 		"@vueuse/nuxt",
 		"modules/theme/module.ts",
 		"modules/noscript/module.ts",
+		"modules/components-globalized/module.ts",
 		"@nuxtjs/robots",
 		"nuxt-simple-sitemap",
 		// "@nuxtjs/color-mode", // 这个已经重写了，不用开启。
