@@ -37,12 +37,14 @@
 
 	/**
 	 * 单击按钮事件。
+	 * @param e - 鼠标事件。
 	 */
-	async function onClickButton() {
+	async function onClickButton(e: MouseEvent) {
 		clearTimeout(timeoutId.value);
-		isClicked.value = true;
+		const button = e.target as HTMLButtonElement;
+		await animateSize(button, () => isClicked.value = true);
 		await new Promise(resolve => timeoutId.value = setTimeout(resolve, 2000));
-		isClicked.value = false;
+		await animateSize(button, () => isClicked.value = false);
 	}
 
 	/**

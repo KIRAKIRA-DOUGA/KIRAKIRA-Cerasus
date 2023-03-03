@@ -115,9 +115,9 @@
 
 			.nuxt-icon {
 				@include flex-block;
-				@include icon-size(48px);
 				--i: 0;
 				flex-shrink: 0;
+				font-size: 48px;
 				animation: intro $animation-options;
 			}
 

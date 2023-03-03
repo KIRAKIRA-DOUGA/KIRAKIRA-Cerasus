@@ -105,8 +105,8 @@
 		cursor: pointer;
 
 		.nuxt-icon {
-			@include icon-size(20px);
 			color: c(icon-color);
+			font-size: 20px;
 			transition: $fallback-transitions, all $ease-out-smooth 500ms;
 		}
 

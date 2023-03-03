@@ -49,6 +49,7 @@
 		color: white;
 		font-size: inherit;
 		letter-spacing: 0.05em;
+		white-space: nowrap;
 		vertical-align: middle;
 		background: c(accent);
 		border: none;

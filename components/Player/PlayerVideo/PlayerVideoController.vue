@@ -115,7 +115,7 @@
 			width: $thickness + 10px;
 
 			.icon {
-				@include icon-size(28px);
+				font-size: 28px;
 			}
 		}
 	}

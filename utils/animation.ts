@@ -43,6 +43,7 @@ export async function replayAnimation(element: Element, ...className: string[]) 
 type StyleProperties = string & keyof FilterValueType<CSSStyleDeclaration, string>;
 type Keyframes = Partial<Record<Exclude<StyleProperties, "offset">, string | number>>[];
 type DimensionAxis = "height" | "width" | "both";
+type MaybePromise<T> = T | Promise<T>;
 
 /**
  * 当宽/高度值设为 auto 时的动画宽/高度。
@@ -52,7 +53,7 @@ type DimensionAxis = "height" | "width" | "both";
  */
 export async function animateSize(
 	element: Element,
-	changeFunc: (() => void | Promise<void>) | undefined | null,
+	changeFunc: (() => MaybePromise<void | unknown>) | undefined | null,
 	{
 		startHeight,
 		endHeight,
@@ -62,6 +63,7 @@ export async function animateSize(
 		easing = eases.easeOutSmooth,
 		specified = "both",
 		withoutAdjustPadding,
+		nextTick: awaitNextTick = true,
 		getSize,
 	}: Partial<{
 		/** 显式指定初始高度（可选）。 */
@@ -80,13 +82,16 @@ export async function animateSize(
 		specified: DimensionAxis;
 		/** 指定**不**需要动画调整哪个方向的内/外边距值。 */
 		withoutAdjustPadding: DimensionAxis;
+		/** 在改变回调函数后自动增加等待下一帧。 */
+		nextTick: boolean;
 		/** 获取最终的元素尺寸。 */
 		getSize: [number, number];
-	}>,
+	}> = {},
 ): Promise<Animation | void> {
 	startHeight ??= element.clientHeight;
 	startWidth ??= element.clientWidth;
 	await changeFunc?.();
+	if (changeFunc && awaitNextTick) await nextTick();
 	endHeight ??= element.clientHeight;
 	endWidth ??= element.clientWidth;
 	if (getSize)

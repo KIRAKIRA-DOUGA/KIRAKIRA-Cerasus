@@ -48,6 +48,7 @@ a {
 }
 
 .nuxt-icon {
+	@include square(1em);
 	display: inline-flex;
 	align-items: center;
 
