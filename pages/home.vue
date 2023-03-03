@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import testVideo from "assets/images/av820864307.jpg";
+	import testVideo from "assets/images/cav5-cover.png";
 	import testAudio from "assets/images/av893640047.jpg";
 
 	const selectedTab = ref("home");

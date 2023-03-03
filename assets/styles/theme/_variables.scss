@@ -13,11 +13,12 @@ $fallback-transitions: all $ease-out-expo 250ms, color $ease-out-expo 100ms, fil
 // #endregion
 
 // #region 字体
-$fallback-fonts: Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", system-ui, sans-serif;
-$before-fonts: -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI";
-$chinese-fonts: $before-fonts, "HarmonyOS Sans SC", "MiSans", "PingFang SC", "Noto Sans CJK SC", "Noto Sans SC", "Microsoft YaHei", $fallback-fonts;
-$japanese-fonts: $before-fonts, "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ Pro W3", "Yu Gothic UI", "メイリオ", "Noto Sans CJK JP", "Noto Sans JP", $fallback-fonts;
-$english-logo-fonts: Montserrat, $before-fonts, $fallback-fonts;
+$th-tshyn: TH-Times, "TH-Tshyn-P0", "TH-Tshyn-P1", "TH-Tshyn-P2", "TH-Tshyn-P16";
+$fallback-fonts: "Microsoft YaHei", "Microsoft JhengHei", Tahoma, Geneva, Verdana, "Helvetica Neue", Helvetica, Arial, SimHei, $th-tshyn, system-ui, sans-serif;
+$system-fonts: "Segoe UI Variable Display", "Segoe UI", "San Francisco Pro", "San Francisco", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans";
+$chinese-fonts: $system-fonts, "HarmonyOS Sans SC", "MiSans", "PingFang SC", "Noto Sans CJK SC", "Noto Sans SC", "Microsoft YaHei", $fallback-fonts;
+$japanese-fonts: $system-fonts, "Yu Gothic UI", "Hiragino Kaku Gothic ProN", "Hiragino Kaku Gothic Pro W3", "Meiryo UI", "Noto Sans CJK JP", "Noto Sans JP", $fallback-fonts;
+$english-logo-fonts: Montserrat, $system-fonts, $fallback-fonts;
 $monospace-fonts: "Cascadia Code", "JetBrains Mono", Consolas, "SF Mono", monospace;
 // #endregion
 
