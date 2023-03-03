@@ -59,10 +59,12 @@
 				</div>
 			</div>
 			<div class="line">
-				<LocaleLink class="item uploader" to="components">
-					<NuxtIcon name="person" />
-					<div>{{ uploader }}</div>
-				</LocaleLink>
+				<object>
+					<LocaleLink class="item uploader" to="components">
+						<NuxtIcon name="person" />
+						<div>{{ uploader }}</div>
+					</LocaleLink>
+				</object>
 				<div class="item">
 					<NuxtIcon name="calendar" />
 					<div>{{ date }}</div>

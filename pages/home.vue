@@ -74,11 +74,6 @@
 				:duration="new Duration(2, 33)"
 			>测试音频</ThumbVideo>
 		</div>
-		<!--
-			BUG: [兰音] 网页启动/刷新时，布局会错乱。
-			原因是在服务器渲染时 <a> 标签居然不能嵌套（乐）。
-			请时刻关注 Nuxt 的议题：https://github.com/nuxt/nuxt/issues/19413
-		-->
 		<Subheader icon="home" :badge="233">网站地图</Subheader>
 		<div class="pages">
 			<LocaleLink v-for="page in pages" :key="page.name" class="link lite" :to="page.link">{{ page.name }}</LocaleLink>
