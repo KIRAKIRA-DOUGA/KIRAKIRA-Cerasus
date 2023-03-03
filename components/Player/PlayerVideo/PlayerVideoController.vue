@@ -38,15 +38,7 @@
 	 * @returns （时）分秒字符串。
 	 */
 	function convertTime(time: number): string {
-		if (!Number.isFinite(time)) return "--:--"; // 当没有时间数据时显示占位符字符串。
-		const padStart = (s: string | number) => String(s).padStart(2, "0");
-		time |= 0; // 去掉小数（毫秒值等）。
-		const seconds = time % 60;
-		const minutes = time / 60 % 60 | 0;
-		let hms = `${padStart(minutes)}:${padStart(seconds)}`;
-		const hours = time / 60 / 60 % 60 | 0;
-		if (hours !== 0) hms = `${padStart(hours)}:` + hms;
-		return hms;
+		return new Duration(time).toString();
 	}
 
 	/**

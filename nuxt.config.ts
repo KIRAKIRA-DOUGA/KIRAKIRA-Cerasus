@@ -18,6 +18,7 @@ export default defineNuxtConfig({
 		"plugins/nuxt/innerheight.ts",
 	],
 	modules: [
+		"@nuxt/devtools",
 		"@nuxtjs/i18n",
 		"@nuxt/content",
 		"nuxt-icons",

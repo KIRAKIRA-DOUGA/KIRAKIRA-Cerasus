@@ -11,9 +11,9 @@ export class Duration {
 
 	/**
 	 * 通过秒构造时长对象。
-	 * @param seconds - 秒数。
+	 * @param seconds - 秒数。如为空表示占位符。
 	 */
-	constructor(seconds: number);
+	constructor(seconds?: number);
 	/**
 	 * 通过分、秒构造时长对象。
 	 * @param minutes - 分钟数。
@@ -27,7 +27,11 @@ export class Duration {
 	 * @param seconds - 秒数。
 	 */
 	constructor(hours: number, minutes: number, seconds: number);
-	constructor(v1: number, v2?: number, v3?: number) {
+	constructor(v1?: number, v2?: number, v3?: number) {
+		if (v1 === undefined) {
+			this.seconds = NaN;
+			return;
+		}
 		this.seconds = v1;
 		if (v2 !== undefined)
 			this.seconds = this.seconds * 60 + v2;
@@ -40,6 +44,8 @@ export class Duration {
 	 * @returns 对象的字符串表示形式。
 	 */
 	toString() {
+		if (!Number.isFinite(this.seconds))
+			return "--:--"; // 当没有时间数据时显示占位符字符串。
 		const seconds = this.seconds % 60 | 0;
 		const minutes = this.seconds / 60 % 60 | 0;
 		const hours = this.seconds / 60 / 60 % 60 | 0;

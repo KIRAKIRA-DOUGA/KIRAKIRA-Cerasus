@@ -20,6 +20,7 @@
 	},
 	"devDependencies": {
 		"@nuxt/content": "^2.4.3",
+		"@nuxt/devtools": "^0.2.5",
 		"@nuxtjs/eslint-config": "^11.0.0",
 		"@nuxtjs/eslint-config-typescript": "^11.0.0",
 		"@nuxtjs/i18n": "^8.0.0-beta.7",
