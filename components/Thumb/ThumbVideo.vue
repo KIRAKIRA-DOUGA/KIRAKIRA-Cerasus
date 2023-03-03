@@ -80,11 +80,9 @@
 
 	.thumb-video {
 		@include radius-large;
-		$padding: 8px 9px;
 		position: relative;
 		display: inline-block;
-		// margin: list-negative($padding);
-		padding: $padding;
+		padding: 8px 9px;
 		color: c(text-color);
 
 		&:hover:not(:active) {

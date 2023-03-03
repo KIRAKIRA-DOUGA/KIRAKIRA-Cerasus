@@ -1,9 +1,15 @@
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
+		/** 封面宽度。可以是数字（像素）或其它单位值的字符串。 */
 		width?: string | number;
+		/** 封面高度。可以是数字（像素）或其它单位值的字符串。 */
 		height?: string | number;
+		/** 如是则将 LOGO 切换为 Welcome 字样。 */
 		welcome?: boolean;
+		/** 如是则使用完全形式的 LOGO。 */
 		fullLogo?: boolean;
+		/** 是否**禁用**动画以节省性能？ */
+		noAnimation?: boolean;
 	}>(), {
 		width: 400,
 		height: 400,
@@ -23,7 +29,7 @@
 </script>
 
 <template>
-	<div class="cover">
+	<div class="cover" :class="{ animation: !noAnimation }">
 		<div class="lines">
 			<div v-for="i in 5" :key="i"></div>
 		</div>
@@ -57,7 +63,10 @@
 		width: 100%;
 		height: 70px;
 		overflow: hidden;
-		animation: blinking 2s infinite ease-in alternate;
+
+		.cover.animation & {
+			animation: blinking 2s infinite ease-in alternate;
+		}
 	}
 
 	.title {
@@ -112,7 +121,10 @@
 			width: calc(var(--height) * 15);
 			height: var(--height);
 			background-color: c(accent-20);
-			animation: movement 4s infinite linear;
+
+			.cover.animation & {
+				animation: movement 4s infinite linear;
+			}
 		}
 
 		:nth-child(1) {
@@ -160,7 +172,10 @@
 		span {
 			display: inline-block;
 			margin: 0 1rem;
-			animation: plus-rotation 4s ease-in-out calc(var(--i) * 0.25s) infinite;
+
+			.cover.animation & {
+				animation: plus-rotation 4s ease-in-out calc(var(--i) * 0.25s) infinite;
+			}
 		}
 	}
 
@@ -169,8 +184,11 @@
 		width: calc(var(--length) / 2 * 1.732);
 		height: var(--length);
 		background-color: c(accent);
-		animation: triangle-movement 4s cubic-bezier(0, 0.5, 1, 0.5) infinite, triangle-blinking 2s cubic-bezier(0, 0, 0, 1) infinite alternate;
 		clip-path: polygon(0 0, 100% 50%, 0 100%);
+
+		.cover.animation & {
+			animation: triangle-movement 4s cubic-bezier(0, 0.5, 1, 0.5) infinite, triangle-blinking 2s cubic-bezier(0, 0, 0, 1) infinite alternate;
+		}
 	}
 
 	.triangle-1 {
@@ -203,20 +221,29 @@
 		top: 15%;
 		right: -3rem;
 		border: c(accent) 2px solid;
-		animation: circle-scaling 4s cubic-bezier(0, 0, 0, 1) infinite alternate;
+
+		.cover.animation & {
+			animation: circle-scaling 4s cubic-bezier(0, 0, 0, 1) infinite alternate;
+		}
 	}
 
 	.circle-2 {
 		--cover-size: 12rem;
 		right: calc(var(--cover-size) + 5rem);
 		bottom: -3rem;
-		animation: rotation 16s linear infinite;
+
+		.cover.animation & {
+			animation: rotation 16s linear infinite;
+		}
 
 		> * {
 			width: 100%;
 			height: 1rem;
 			background-color: c(accent);
-			animation: shades 2s ease-in-out infinite alternate;
+
+			.cover.animation & {
+				animation: shades 2s ease-in-out infinite alternate;
+			}
 		}
 	}
 

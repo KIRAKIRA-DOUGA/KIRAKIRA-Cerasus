@@ -7,7 +7,7 @@
 <template>
 	<Transition name="banner">
 		<div v-if="!collapsed" class="banner opened">
-			<LogoCover width="100vw" :height="280" fullLogo />
+			<LogoCover width="100vw" :height="280" fullLogo noAnimation />
 			<div class="shadow"></div>
 		</div>
 	</Transition>
