@@ -14,6 +14,7 @@
 		:to="to"
 		class="button-wrapper lite"
 		draggable="false"
+		activable
 		:tabindex="0"
 	>
 		<div class="button">

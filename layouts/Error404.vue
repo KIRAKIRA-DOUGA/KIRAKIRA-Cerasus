@@ -117,6 +117,11 @@
 			line-height: 1.25;
 			animation: float-down $title-animation-options;
 		}
+
+		button {
+			--i: 0;
+			animation: float-down $title-animation-options;
+		}
 	}
 
 	.home-link-button {
