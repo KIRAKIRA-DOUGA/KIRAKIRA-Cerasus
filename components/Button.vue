@@ -26,19 +26,28 @@
 	 */
 	function onClick(e: MouseEvent) {
 		emits("click", e);
-		if (props.href) navigate("/");
+		// if (props.href) navigate("/");
 	}
 </script>
 
 <template>
-	<button v-ripple type="button" :class="{ secondary, 'icon-behind': iconBehind }" @click="onClick">
+	<component
+		:is="href ? 'a' : 'button'"
+		v-ripple
+		type="button"
+		class="button"
+		:class="{ secondary, 'icon-behind': iconBehind, lite: href }"
+		:href="href && useLocalePath()(href)"
+		draggable="false"
+		@click="onClick"
+	>
 		<NuxtIcon v-if="icon" :name="icon" />
 		<slot></slot>
-	</button>
+	</component>
 </template>
 
 <style scoped lang="scss">
-	button {
+	.button {
 		@include flex-center;
 		@include button-shadow;
 		@include radius-small;
