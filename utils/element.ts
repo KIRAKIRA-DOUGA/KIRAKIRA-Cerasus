@@ -30,6 +30,7 @@ export function isInPath(target: TargetType, element: Element): boolean {
 
 /**
  * 能同时监听多个事件，相当于多次重复调用 `addEventListener` 使用相同的回调函数但不同的事件类型。
+ * @template K - 窗体事件枚举类型。
  * @param element - 窗体对象。
  * @param listener - 监听事件回调函数。
  * @param types - 监听事件数组。
@@ -37,6 +38,7 @@ export function isInPath(target: TargetType, element: Element): boolean {
 export function addEventListeners<K extends keyof WindowEventMap>(element: Window, listener: (this: Window, ev: WindowEventMap[K]) => void, ...types: K[]): void;
 /**
  * 能同时监听多个事件，相当于多次重复调用 `addEventListener` 使用相同的回调函数但不同的事件类型。
+ * @template K - 文档事件枚举类型。
  * @param element - 文档对象。
  * @param listener - 监听事件回调函数。
  * @param types - 监听事件数组。
@@ -44,6 +46,17 @@ export function addEventListeners<K extends keyof WindowEventMap>(element: Windo
 export function addEventListeners<K extends keyof DocumentEventMap>(element: Document, listener: (this: Document, ev: DocumentEventMap[K]) => void, ...types: K[]): void;
 /**
  * 能同时监听多个事件，相当于多次重复调用 `addEventListener` 使用相同的回调函数但不同的事件类型。
+ * @template K - HTML DOM 元素事件枚举类型。
+ * @template E - HTML DOM 元素类型。
+ * @param element - HTML DOM 元素。
+ * @param listener - 监听事件回调函数。
+ * @param types - 监听事件数组。
+ */
+export function addEventListeners<K extends keyof HTMLElementEventMap, E extends HTMLElement>(element: E, listener: (this: E, ev: HTMLElementEventMap[K]) => void, ...types: K[]): void;
+/**
+ * 能同时监听多个事件，相当于多次重复调用 `addEventListener` 使用相同的回调函数但不同的事件类型。
+ * @template K - HTML DOM 元素事件枚举类型。
+ * @template E - HTML DOM 元素类型。
  * @param element - HTML DOM 元素。
  * @param listener - 监听事件回调函数。
  * @param types - 监听事件数组。

@@ -10,13 +10,6 @@ export default function useRender(render: () => VNode): void {
 	vm.render = render;
 }
 
-export type VueJsx<Props, Emits, Slots = { default: VNode }> = (props: Props, context: {
-	attrs: object;
-	slots: Slots;
-	emit: Emits;
-	expose: Function;
-}) => JSX.Element;
-
 /**
  * 获取父组件。
  * @param type - 父组件的类型筛选。

@@ -1,4 +1,5 @@
 // import { Directive } from "vue";
+import { Slot } from "vue";
 import CSSDoodle from "./css-doodle";
 
 declare module "vue" {
@@ -23,5 +24,29 @@ declare module "vue" {
 }
 
 declare global {
-	export * from "#components"; // Is it worked?
+	/**
+	 * Vue JSX 组件。
+	 * @template Props - 声明组件属性。
+	 * @template Emits - 声明组件事件。
+	 * @template Slots - 声明组件插槽。
+	 */
+	export type VueJsx<
+		Props = {},
+		Emits = {},
+		Slots extends Partial<Record<string, Slot>> = { default: Slot },
+	> = (
+		/** 组件属性。 */
+		props: Props,
+		/** 组件上下文信息。 */
+		context: {
+			/** 组件特性。 */
+			attrs: Record<string, string>;
+			/** 组件插槽。 */
+			slots: Slots;
+			/** 组件事件。 */
+			emit: Emits;
+			/** 组件暴露对象。 */
+			expose: (exposed?: Record<string, unknown>) => void;
+		}
+	) => JSX.Element;
 }
