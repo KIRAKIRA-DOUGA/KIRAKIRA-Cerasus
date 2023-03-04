@@ -32,14 +32,8 @@
 		},
 	});
 
-	/**
-	 * 将秒数转换为（时）分秒字符串。其中小时数如为 0 时省略。
-	 * @param time - 秒数。
-	 * @returns （时）分秒字符串。
-	 */
-	function convertTime(time: number): string {
-		return new Duration(time).toString();
-	}
+	const currentTime = computed(() => new Duration(props.currentTime).toString());
+	const duration = computed(() => new Duration(props.duration).toString());
 
 	/**
 	 * 常用速度列表。
@@ -72,9 +66,9 @@
 		</div>
 		<div class="right">
 			<div class="time">
-				<span class="current">{{ convertTime(currentTime) }} </span>
+				<span class="current">{{ currentTime }} </span>
 				<span class="divide">/</span>
-				<span class="duration">{{ convertTime(duration) }}</span>
+				<span class="duration">{{ duration }}</span>
 			</div>
 			<PlayerButton :text="playbackRateText" @click="switchSpeed" />
 			<PlayerButton icon="fullscreen" @click="() => toggleFullScreen?.()" />

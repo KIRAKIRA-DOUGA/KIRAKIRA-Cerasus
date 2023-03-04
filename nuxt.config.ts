@@ -9,7 +9,6 @@ const wasmFile = resolve("node_modules/mediainfo.js/dist/MediaInfoModule.wasm");
 type OriginalNuxtConfig = Parameters<typeof defineNuxtConfig>[0];
 type BroadNuxtConfig = OriginalNuxtConfig & Record<Exclude<string, keyof OriginalNuxtConfig>, object | string>; // 还敢报错吗？
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; // 支持 HTTPS。
-// TODO: 水合异常，这是 nuxt 那边的问题，详情请关注：https://github.com/nuxt/nuxt/issues/18635
 
 export default defineNuxtConfig({
 	plugins: [
