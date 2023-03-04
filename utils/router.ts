@@ -23,6 +23,18 @@ export function getRoutePath({
 /**
  * 传入路由发生变化后的回调函数。
  * @param callback - 回调函数，其参数依次为新值、旧值。
+ * @param immediate - 首次启动不会被调用。
+ */
+export function watchRoute(callback: (newValue: string, oldValue: string) => void, immediate?: false): void;
+/**
+ * 传入路由发生变化后的回调函数。
+ * @param callback - 回调函数，其参数依次为新值、旧值（首次启动时为 undefined）。
+ * @param immediate - 立即调用一次。
+ */
+export function watchRoute(callback: (newValue: string, oldValue: string | undefined) => void, immediate: true): void;
+/**
+ * 传入路由发生变化后的回调函数。
+ * @param callback - 回调函数，其参数依次为新值、旧值。
  * @param immediate - 是否立即调用一次。
  */
 export function watchRoute(callback: (newValue: string, oldValue: string) => void, immediate = false): void {
@@ -53,4 +65,15 @@ export function switchLanguage(lang: string) {
 	if (lang === "zh") lang = "/";
 	else lang = `/${lang}/`;
 	useRouter().push(lang + getRoutePath());
+}
+
+/**
+ * 移除路由的语言前缀。
+ * @param route - 路由地址。
+ * @returns - 移除了语言前缀的路由。
+ */
+export function removeI18nPrefix(route: string) {
+	let result = route.replace(/^\/(zh|en|ja)(?=\/|$)/, "");
+	if (result === "") result = "/";
+	return result;
 }

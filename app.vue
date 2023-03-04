@@ -46,12 +46,21 @@
 				throw new Error("serviceWorker is not supported in current browser!");
 			navigator.serviceWorker.register("/sw.js");
 		});
+
+	const pageTransition = ref<"page-forward" | "page-backward" | "page-jump">("page-forward");
+
+	watchRoute((route, prevRoute) => {
+		[route, prevRoute] = [removeI18nPrefix(route), removeI18nPrefix(prevRoute)];
+		pageTransition.value = "page-jump";
+		if (prevRoute.includes(route)) pageTransition.value = "page-backward";
+		if (route.includes(prevRoute)) pageTransition.value = "page-forward";
+	});
 </script>
 
 <template>
 	<NuxtLayout :name="layout">
 		<RouterView v-slot="{ Component }">
-			<Transition name="page" mode="out-in">
+			<Transition :name="pageTransition" mode="out-in">
 				<component :is="Component" />
 			</Transition>
 		</RouterView>

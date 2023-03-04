@@ -3,7 +3,10 @@
 
 	const showBanner = ref(false);
 
-	watchRoute(() => showBanner.value = getRoutePath() === "", true);
+	watchRoute(() => {
+		const localedRoute = getRoutePath();
+		showBanner.value = localedRoute === "";
+	}, true);
 </script>
 
 <template>
