@@ -30,7 +30,7 @@
 }
 
 @mixin control-ball-shadow-off-hover {
-	box-shadow: 0 1px 10px 2px c(text-color, 30%);
+	box-shadow: 0 1px 10px 2px c(text-color, 20%);
 }
 
 @mixin page-normal {
