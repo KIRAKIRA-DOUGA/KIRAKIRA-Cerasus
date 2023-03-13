@@ -133,27 +133,32 @@
 				</AccordionItem>
 			</Accordion>
 		</Dialog>
-		<video
-			ref="video"
-			:src="src"
-			@play="playing = true"
-			@pause="playing = false"
-			@ratechange="e => playbackRate = (e.target as HTMLVideoElement).playbackRate"
-			@timeupdate="onTimeUpdate"
-			@canplay="onCanPlay"
-			@click="playing = !playing"
-			@dblclick="toggle"
-			@contextmenu.prevent="showMenu"
-		>
-		</video>
-		<PlayerVideoController
-			v-model:currentTime="currentTime"
-			v-model:playing="playing"
-			v-model:fullScreen="fullScreen"
-			v-model:playbackRate="playbackRate"
-			:duration="duration"
-			:toggleFullScreen="toggle"
-		/>
+
+		<kira-component class="player-video-main">
+			<video
+				ref="video"
+				:src="src"
+				@play="playing = true"
+				@pause="playing = false"
+				@ratechange="e => playbackRate = (e.target as HTMLVideoElement).playbackRate"
+				@timeupdate="onTimeUpdate"
+				@canplay="onCanPlay"
+				@click="playing = !playing"
+				@dblclick="toggle"
+				@contextmenu.prevent="showMenu"
+			>
+			</video>
+			<PlayerVideoController
+				v-model:currentTime="currentTime"
+				v-model:playing="playing"
+				v-model:fullScreen="fullScreen"
+				v-model:playbackRate="playbackRate"
+				:duration="duration"
+				:toggleFullScreen="toggle"
+			/>
+		</kira-component>
+
+		<PlayerVideoPanel />
 		<Menu ref="menu">
 			<MenuItem @click="showInfo">查看视频详细信息</MenuItem>
 		</Menu>
@@ -163,6 +168,11 @@
 <style scoped lang="scss">
 	.player-video {
 		@include player-shadow;
+		display: flex;
+		flex-direction: row;
+	}
+
+	.player-video-main {
 		@include flex-block;
 	}
 

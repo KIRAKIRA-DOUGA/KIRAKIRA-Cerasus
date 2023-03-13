@@ -29,6 +29,9 @@ declare global {
 	export const PlayerButton: typeof import("../components/Player/PlayerButton.vue")["default"];
 	export const PlayerVideo: typeof import("../components/Player/PlayerVideo/PlayerVideo.vue")["default"];
 	export const PlayerVideoController: typeof import("../components/Player/PlayerVideo/PlayerVideoController.vue")["default"];
+	export const PlayerVideoDanmakuList: typeof import("../components/Player/PlayerVideo/PlayerVideoPanel/PlayerVideoDanmakuList.vue")["default"];
+	export const PlayerVideoDanmakuSend: typeof import("../components/Player/PlayerVideo/PlayerVideoPanel/PlayerVideoDanmakuSend.vue")["default"];
+	export const PlayerVideoPanel: typeof import("../components/Player/PlayerVideo/PlayerVideoPanel/PlayerVideoPanel.vue")["default"];
 	export const ProgressRing: typeof import("../components/ProgressRing.vue")["default"];
 	export const RadioButton: typeof import("../components/RadioButton.vue")["default"];
 	export const SideBar: typeof import("../components/SideBar/SideBar.vue")["default"];
