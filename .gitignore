@@ -38,3 +38,6 @@ desktop.ini
 # build
 .output
 dist
+
+# real-time generated files
+types/components-globalized.d.ts
