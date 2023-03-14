@@ -49,7 +49,7 @@
 
 <template>
 	<div class="container">
-		<TabBar v-model="selectedTab" class="tabbar">
+		<TabBar v-model="selectedTab" big class="category-tab">
 			<TabItemHome />
 			<TabItemBadge id="anime" :badge="233">{{ t.anime }}</TabItemBadge>
 			<TabItemBadge id="music" :badge="233">{{ t.music }}</TabItemBadge>
@@ -114,6 +114,16 @@
 
 		> * {
 			margin: 26px 0;
+		}
+	}
+
+	.category-tab {
+		.items {
+			gap: 2rem;
+
+			> * {
+				font-weight: 500;
+			}
 		}
 	}
 
