@@ -43,31 +43,33 @@
 
 <template>
 	<LocaleLink class="thumb-video lite" :to="link">
-		<div class="cover-wrapper">
-			<img :src="image" alt="cover" class="cover" />
-		</div>
-		<div class="title"><slot>视频标题</slot></div>
-		<div class="info">
-			<div class="line">
-				<div class="item">
-					<NuxtIcon name="play" />
-					<p>{{ watchedCount }}</p>
-				</div>
-				<div class="item">
-					<NuxtIcon name="time" />
-					<p>{{ duration }}</p>
-				</div>
+		<div class="card">
+			<div class="cover-wrapper">
+				<img :src="image" alt="cover" class="cover" />
 			</div>
-			<div class="line">
-				<object>
-					<LocaleLink class="item uploader" to="components">
-						<NuxtIcon name="person" />
-						<div>{{ uploader }}</div>
-					</LocaleLink>
-				</object>
-				<div class="item">
-					<NuxtIcon name="calendar" />
-					<div>{{ date }}</div>
+			<div class="title"><slot>视频标题</slot></div>
+			<div class="info">
+				<div class="line">
+					<div class="item">
+						<NuxtIcon name="play" />
+						<p>{{ watchedCount }}</p>
+					</div>
+					<div class="item">
+						<NuxtIcon name="time" />
+						<p>{{ duration }}</p>
+					</div>
+				</div>
+				<div class="line">
+					<object>
+						<LocaleLink class="item uploader" to="components">
+							<NuxtIcon name="person" />
+							<div>{{ uploader }}</div>
+						</LocaleLink>
+					</object>
+					<div class="item">
+						<NuxtIcon name="calendar" />
+						<div>{{ date }}</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -82,14 +84,16 @@
 		@include radius-large;
 		position: relative;
 		display: inline-block;
-		padding: 8px 9px;
 		color: c(text-color);
 
 		&:hover:not(:active) {
-			@include system-card;
 			z-index: 1;
-			background-color: c(main-bg, 90%);
-			translate: 0 -6px;
+
+			.card {
+				@include system-card;
+				translate: 0 -6px;
+				background-color: c(main-bg, 90%);
+			}
 		}
 
 		&:focus-visible {
@@ -99,6 +103,11 @@
 		&:active {
 			@include button-scale-pressed;
 		}
+	}
+
+	.card {
+		@include radius-large;
+		padding: 8px 9px;
 	}
 
 	.cover-wrapper {
