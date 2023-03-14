@@ -14,8 +14,8 @@
 				</div>
 			</kira-component>
 		</kira-component>
-		<PlayerVideoDanmakuList />
-		<PlayerVideoDanmakuSend />
+		<PlayerVideoPanelDanmakuList />
+		<PlayerVideoPanelDanmakuSend />
 	</kira-component>
 </template>
 
