@@ -78,12 +78,12 @@
 			<Button disabled>{{ t.buttonDisabled }}</Button>
 			<Button @click="showConfetti">{{ t.confetti }}</Button>
 			<Button icon="send">{{ t.send }}</Button>
-			<Button @click="showDialog = true">显示对话框</Button>
+			<Button @click="showDialog = true">{{ t.showDialog }}</Button>
 			<Dialog v-model="showDialog" static />
 			<ToggleSwitch v-model="toggle">{{ t.toggleSwitch }} {{ toggle ? t.on : t.off }}</ToggleSwitch>
 			<ToggleSwitch disabled>{{ t.offDisabled }} </ToggleSwitch>
 			<ToggleSwitch on disabled>{{ t.onDisabled }}</ToggleSwitch>
-			<ToggleSwitch v-model="appConfig.showCssDoodle">动态背景</ToggleSwitch>
+			<ToggleSwitch v-model="appConfig.showCssDoodle">{{ t.animatedBackground }}</ToggleSwitch>
 			<RadioButton v-model="theme" value="light">{{ t.lightTheme }}</RadioButton>
 			<RadioButton v-model="theme" value="dark">{{ t.darkTheme }}</RadioButton>
 			<RadioButton v-model="theme" value="system">{{ t.systemTheme }}</RadioButton>
@@ -97,7 +97,7 @@
 			<RadioButton disabled>{{ t.custom }}</RadioButton>
 			<RadioButton on disabled>{{ t.onDisabled }}</RadioButton>
 			<hr />
-			<Checkbox checkState="checked">复选框</Checkbox>
+			<Checkbox checkState="checked">{{ t.checkbox }}</Checkbox>
 			<hr />
 			<TextBox v-model="inputValue" illegal placeholder="正常错误的" />
 			<TextBox v-model="inputValue" size="small" placeholder="小小的软软的香香的" />
@@ -181,11 +181,13 @@
 		buttonClicked: "我被单击了 呜呜呜~",
 		confetti: "五彩纸屑",
 		send: "发送",
+		showDialog: "显示对话框",
 		toggleSwitch: "切换开关",
 		on: "开",
 		off: "关",
 		onDisabled: "禁用 开",
 		offDisabled: "禁用 关",
+		animatedBackground: "动态背景",
 		lightTheme: "浅色主题",
 		darkTheme: "深色主题",
 		systemTheme: "跟随系统",
@@ -196,6 +198,7 @@
 		orange: "心爱橙",
 		purple: "理世紫",
 		custom: "自定义",
+		checkbox: "复选框",
 		tag: "标签",
 		all: "全部",
 		video: "视频",
@@ -214,11 +217,13 @@
 		buttonClicked: "I was clicked~",
 		confetti: "Confetti",
 		send: "Send",
+		showDialog: "Show Dialog",
 		toggleSwitch: "Toggle Switch",
 		on: "On",
 		off: "Off",
 		onDisabled: "Disabled on",
 		offDisabled: "Disabled off",
+		animatedBackground: "Animated Background",
 		lightTheme: "Light theme",
 		darkTheme: "Dark theme",
 		systemTheme: "Follow system theme",
@@ -229,6 +234,7 @@
 		orange: "Cocoa Orange",
 		purple: "Rize Purple",
 		custom: "Custom",
+		checkbox: "Checkbox",
 		tag: "Tag",
 		all: "All",
 		video: "Videos",
@@ -247,9 +253,11 @@
 		buttonClicked: "私はクリックされました ううっ~",
 		confetti: "紙吹雪",
 		send: "送信",
+		showDialog: "ダイアログを表示",
 		toggleSwitch: "スイッチ",
 		onDisabled: "無効化されたスイッチ オン",
 		offDisabled: "無効化されたスイッチ オフ",
+		animatedBackground: "アニメーションの背景",
 		on: "オン",
 		off: "オフ",
 		lightTheme: "ライトテーマ",
@@ -262,6 +270,7 @@
 		orange: "ココア オレンジ",
 		purple: "リゼ 紫",
 		custom: "カスタム",
+		checkbox: "チェックボックス",
 		tag: "タグ",
 		all: "すべて",
 		video: "動画",
