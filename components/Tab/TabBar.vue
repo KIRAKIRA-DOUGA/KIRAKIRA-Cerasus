@@ -8,6 +8,7 @@
 	const props = defineProps<{
 		clipped?: boolean;
 		vertical?: boolean;
+		big?: boolean;
 		modelValue: string;
 	}>();
 
@@ -117,7 +118,7 @@
 <template>
 	<kira-component>
 		<div ref="tabBar" class="tab-bar">
-			<div class="items" :class="{ vertical }">
+			<div class="items" :class="{ vertical, big }">
 				<slot></slot>
 			</div>
 			<div ref="indicator" class="indicator"></div>
@@ -134,6 +135,10 @@
 		> :slotted(*) {
 			flex-shrink: 0;
 			cursor: pointer;
+		}
+
+		&.big {
+			gap: 2em;
 		}
 	}
 
