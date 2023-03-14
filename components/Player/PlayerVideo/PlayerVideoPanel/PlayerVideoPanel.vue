@@ -3,8 +3,8 @@
 
 <template>
 	<kira-component class="player-video-panel">
-		<kira-component class="player-video-panel-top">
-			<kira-component class="player-video-info">
+		<div class="player-video-panel-top">
+			<div class="player-video-info">
 				<div class="basic-info">
 
 				</div>
@@ -12,8 +12,8 @@
 					<span class="watching-number">10</span>
 					<span class="watching-description">人正在看</span>
 				</div>
-			</kira-component>
-		</kira-component>
+			</div>
+		</div>
 		<PlayerVideoPanelDanmakuList />
 		<PlayerVideoPanelDanmakuSend />
 	</kira-component>

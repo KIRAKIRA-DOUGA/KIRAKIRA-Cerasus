@@ -134,7 +134,7 @@
 			</Accordion>
 		</Dialog>
 
-		<kira-component class="player-video-main">
+		<div class="player-video-main">
 			<video
 				ref="video"
 				:src="src"
@@ -156,7 +156,7 @@
 				:duration="duration"
 				:toggleFullScreen="toggle"
 			/>
-		</kira-component>
+		</div>
 
 		<PlayerVideoPanel />
 		<Menu ref="menu">
