@@ -6,7 +6,7 @@
 	const props = withDefaults(defineProps<{
 		/** 是否显示。 */
 		modelValue?: boolean;
-		/** 是否显示，兼容使用。 */
+		/** 是否显示，单向绑定使用。 */
 		shown?: boolean;
 		/** CSS 中的 Z 轴高度。 */
 		zIndex?: number;

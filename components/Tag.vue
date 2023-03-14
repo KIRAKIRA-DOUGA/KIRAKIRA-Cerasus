@@ -2,7 +2,7 @@
 	const props = defineProps<{
 		/** 勾选。 */
 		modelValue?: boolean;
-		/** 勾选，兼容使用。 */
+		/** 勾选，单向绑定使用。 */
 		checked?: boolean;
 		/** 禁用。 */
 		disabled?: boolean;

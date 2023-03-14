@@ -1,4 +1,6 @@
 <script setup lang="ts" generic="T">
+	import { Movement } from "./Checkbox.vue";
+
 	const props = withDefaults(defineProps<{
 		/** 禁用。 */
 		disabled?: boolean;
@@ -6,18 +8,17 @@
 		value?: string; // 稍后改为泛型 T。
 		/** 当前绑定值。 */
 		modelValue?: string; // 稍后改为泛型 T。
-		/** 打开，兼容使用。 */
-		on?: boolean;
+		/** 已勾选，单向绑定使用。 */
+		checked?: boolean;
 	}>(), {
 		value: undefined,
 		modelValue: undefined,
 	});
 	// TODO: [兰音] 随着 volar 的更新，似乎泛型功能被弄坏了。
 
-	type Movement = "previous" | "next";
-
 	const emits = defineEmits<{
-		(event: "update:modelValue", value: T): void;
+		(event: "update:modelValue", value: string): void; // 稍后改为泛型 T。
+		(event: "change", arg: { value: string; checked: boolean }): void;
 		(event: "move", value: Movement): void;
 	}>();
 
@@ -25,7 +26,7 @@
 	const isChecked = computed(() => {
 		if (props.modelValue && props.value)
 			return props.modelValue === props.value;
-		else return !!props.on;
+		else return !!props.checked;
 	});
 	const isAnimating = ref(false);
 
@@ -34,16 +35,18 @@
 	 */
 	const onChange = () => {
 		if (!radio.value) return;
-		emits("update:modelValue", radio.value.value as T);
+		emits("update:modelValue", radio.value.value);
+		emits("change", { value: radio.value.value, checked: true });
 	};
 
 	// 如果单选框勾选情况与 prop 不同，就强制使其相同。
 	watch(() => radio.value?.checked, () => {
-		if (radio.value && isChecked.value !== radio.value.checked)
+		if (!radio.value) return;
+		if (isChecked.value !== radio.value.checked)
 			radio.value.checked = isChecked.value;
 	}, { immediate: true });
 
-	watch(isChecked, async isChecked => {
+	watch(isChecked, async () => {
 		isAnimating.value = true;
 		await delay(400); // $duration-half 记得及时如果更新。
 		isAnimating.value = false;
@@ -63,8 +66,19 @@
 </script>
 
 <template>
-	<kira-component :tabindex="isChecked && !disabled ? 0 : -1" class="radio-button" :class="{ disabled }" @click="onChange" @keydown="onKeydown">
-		<input ref="radio" type="radio" :checked="isChecked" :value="props.value" :disabled="disabled" />
+	<kira-component
+		:tabindex="isChecked && !disabled ? 0 : -1"
+		class="radio-button"
+		@click="onChange"
+		@keydown="onKeydown"
+	>
+		<input
+			ref="radio"
+			type="radio"
+			:value="props.value"
+			:checked="isChecked"
+			:disabled="disabled"
+		/>
 		<div class="radio-focus">
 			<div class="radio-shadow">
 				<div class="radio" :class="{ 'is-animating': isAnimating }"></div>
@@ -102,14 +116,12 @@
 	.radio {
 		@include square($size);
 		@include circle;
-		$transition: $fallback-transitions, all $ease-in-out-max $duration, background-color $ease-out-max 200ms;
+		$transition: $fallback-transitions, all $ease-in-out-max $duration, background-color $ease-out-max $duration-half;
 		position: relative;
-		margin: 0;
 		overflow: hidden;
 		box-shadow: inset 0 0 0 $border-size c(icon-color);
-		transition: $transition, box-shadow $ease-out-max 200ms;
+		transition: $transition, box-shadow $ease-out-max $duration-half;
 		animation: outer-border-change-back $duration-half $duration-half $ease-in-max reverse;
-		appearance: none;
 
 		&.is-animating {
 			transition: $transition;
@@ -151,7 +163,7 @@
 		}
 
 		.radio {
-			box-shadow: inset 0 0 0 2px c(accent);
+			box-shadow: inset 0 0 0 $border-size c(accent);
 			animation: outer-border-change $duration-half $ease-in-max;
 
 			&::before {
@@ -203,7 +215,7 @@
 		}
 	}
 
-	.disabled {
+	#{$component-class}:has(> input[disabled]) {
 		pointer-events: none;
 
 		.radio-shadow {

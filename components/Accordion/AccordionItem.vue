@@ -8,7 +8,7 @@
 		title: string | number;
 		/** 是否展示而非折叠？ */
 		modelValue?: boolean;
-		/** 是否展示而非折叠？兼容使用。 */
+		/** 是否展示而非折叠？单向绑定使用。 */
 		shown?: boolean;
 	}>(), {
 		modelValue: undefined,

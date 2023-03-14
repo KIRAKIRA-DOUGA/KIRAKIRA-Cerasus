@@ -4,7 +4,7 @@
 		pages: number;
 		/** 当前页码。 */
 		modelValue?: number;
-		/** 当前页码，兼容使用。 */
+		/** 当前页码，单向绑定使用。 */
 		current?: number;
 		/** 显示在组件上的最多页码数目。 */
 		displayPageCount?: number;

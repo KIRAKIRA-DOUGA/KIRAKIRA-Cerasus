@@ -4,6 +4,7 @@
 	import { LogoTextFormType } from "components/Logo/LogoText.vue";
 	import beepSrc from "assets/audios/NOVA 2022.1 Alert Quick.ogg";
 	import Menu from "components/Menu/Menu.vue";
+	import { CheckState } from "components/Checkbox.vue";
 
 	const page = ref(1);
 	const pages = ref(99);
@@ -34,6 +35,12 @@
 	const beep = ref<HTMLAudioElement>();
 	const showAccordion = reactive([false, false, false]);
 	const isUploaderLovinIt = ref(true);
+	const kiraGoods = reactive(["kawaii", "nijigen"]);
+	const isSelectAll = computed<CheckState>(() => kiraGoods.length >= 3 ? "checked" : kiraGoods.length === 0 ? "unchecked" : "indeterminate");
+	const onSelectAllChange = (e: { value: string; checkState: CheckState; checked: boolean }) => {
+		arrayClearAll(kiraGoods);
+		if (e.checked) kiraGoods.push("kawaii", "nijigen", "nice");
+	};
 
 	/**
 	 * 单击按钮事件。
@@ -95,9 +102,15 @@
 			<RadioButton v-model="palette" value="purple">{{ t.purple }}</RadioButton>
 			<RadioButton v-model="palette" value="green">{{ t.green }}</RadioButton>
 			<RadioButton disabled>{{ t.custom }}</RadioButton>
-			<RadioButton on disabled>{{ t.onDisabled }}</RadioButton>
+			<RadioButton checked disabled>{{ t.onDisabled }}</RadioButton>
 			<hr />
-			<Checkbox checkState="checked">{{ t.checkbox }}</Checkbox>
+			<p>请问您喜欢KIRAKIRA的地方有：</p>
+			<Checkbox :checkState="isSelectAll" @change="onSelectAllChange">全选</Checkbox>
+			<Checkbox v-model="kiraGoods" value="kawaii">可爱</Checkbox>
+			<Checkbox v-model="kiraGoods" value="nijigen">二次元</Checkbox>
+			<Checkbox v-model="kiraGoods" value="nice">好康</Checkbox>
+			<Checkbox disabled checkState="unchecked">鼠鼠我呀最讨厌了</Checkbox>
+			<Checkbox disabled checkState="checked">欢迎白嫖</Checkbox>
 			<hr />
 			<TextBox v-model="inputValue" illegal placeholder="正常错误的" />
 			<TextBox v-model="inputValue" size="small" placeholder="小小的软软的香香的" />

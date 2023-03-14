@@ -2,7 +2,7 @@
 	const props = withDefaults(defineProps<{
 		/** 打开。 */
 		modelValue?: boolean;
-		/** 打开，兼容使用。 */
+		/** 打开，单向绑定使用。 */
 		on?: boolean;
 		/** 禁用。 */
 		disabled?: boolean;
@@ -57,8 +57,9 @@
 
 	// 如果切换开关开启情况与 prop 不同，就强制使其相同。
 	watch(() => toggleSwitch.value?.classList.contains("on"), () => {
-		if (toggleSwitch.value && on.value !== toggleSwitch.value.classList.contains("on"))
-			on.value ? toggleSwitch.value.classList.add("on") : toggleSwitch.value.classList.remove("on");
+		if (!toggleSwitch.value) return;
+		if (on.value !== toggleSwitch.value.classList.contains("on"))
+			toggleSwitch.value.classList[on.value ? "add" : "remove"]("on");
 	}, { immediate: true });
 </script>
 
