@@ -23,10 +23,7 @@
 
 	const date = computed(() => props.date ?
 		formatDate(props.date, "yyyy-MM-dd") :
-		"----/--/--");
-	// 我突然想到要是日期分隔符为横杠的话，那这个占位符就是一排横杠了。
-	// 最终显示出来还是横杠比较好，不然不好看。// 啊这，不统一吧？
-	// 有一说一，可能我觉得两位数表示年份看起来不好看吧。
+		"----------");
 
 	const watchedCount = computed(() => {
 		let count = props.watchedCount | 0;
@@ -93,6 +90,7 @@
 				@include system-card;
 				translate: 0 -6px;
 				background-color: c(main-bg, 90%);
+				backdrop-filter: none !important; // Chromium 111 开始的 bug。
 			}
 		}
 

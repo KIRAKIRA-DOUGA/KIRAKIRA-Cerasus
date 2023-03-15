@@ -61,10 +61,38 @@
 		if (on.value !== toggleSwitch.value.classList.contains("on"))
 			toggleSwitch.value.classList[on.value ? "add" : "remove"]("on");
 	}, { immediate: true });
+
+	/**
+	 * 当键盘松开空格键时相当于点击复选框。
+	 * @param e - 键盘事件。
+	 */
+	function onKeyUp(e: KeyboardEvent) {
+		if (e.code === "Space") {
+			e.preventDefault();
+			onClick();
+		}
+	}
+
+	/**
+	 * 当键盘按下空格键时不要下滑页面。
+	 * @param e - 键盘事件。
+	 */
+	function onKeyDown(e: KeyboardEvent) {
+		if (e.code === "Space")
+			e.preventDefault();
+	}
 </script>
 
 <template>
-	<kira-component ref="toggleSwitch" class="toggle-switch" :class="{ on, disabled }" :tabindex="disabled ? -1 : 0" @click="onClick">
+	<kira-component
+		ref="toggleSwitch"
+		class="toggle-switch"
+		:class="{ on, disabled }"
+		:tabindex="disabled ? -1 : 0"
+		@click="onClick"
+		@keydown="onKeyDown"
+		@keyup="onKeyUp"
+	>
 		<slot></slot>
 		<div class="switch">
 			<div class="base"></div>

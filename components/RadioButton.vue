@@ -33,11 +33,11 @@
 	/**
 	 * 数据改变事件。
 	 */
-	const onChange = () => {
+	function onChange() {
 		if (!radio.value) return;
 		emits("update:modelValue", radio.value.value);
 		emits("change", { value: radio.value.value, checked: true });
-	};
+	}
 
 	// 如果单选框勾选情况与 prop 不同，就强制使其相同。
 	watch(() => radio.value?.checked, () => {
@@ -53,15 +53,47 @@
 	});
 
 	/**
-	 * 键盘按下方向键时移动到前一个或后一个单选框事件。
+	 * 当键盘松开空格键时相当于点击复选框。
+	 * @param e - 键盘事件。
+	 */
+	function onKeyUp(e: KeyboardEvent) {
+		if (e.code === "Space") {
+			e.preventDefault();
+			onChange();
+		}
+	}
+
+	/**
+	 * 当键盘按下方向键时移动到前一个或后一个单选框事件。
+	 * 当键盘按下空格键时不要下滑页面。
 	 * @param e - 键盘事件。
 	 */
 	function onKeydown(e: KeyboardEvent) {
-		const movePrev = e.key === "ArrowUp" || e.key === "ArrowLeft";
-		const moveNext = e.key === "ArrowDown" || e.key === "ArrowRight";
+		if (e.code === "Space") {
+			e.preventDefault();
+			return;
+		}
+		const movePrev = e.code === "ArrowUp" || e.code === "ArrowLeft";
+		const moveNext = e.code === "ArrowDown" || e.code === "ArrowRight";
 		if (!movePrev && !moveNext) return;
 		e.preventDefault();
 		emits("move", moveNext ? "next" : "previous");
+		let thisComponent = e.target as HTMLElement;
+		let thatComponent: HTMLElement, radio: HTMLInputElement;
+		while (true) {
+			const _thatComponent = thisComponent[movePrev ? "previousElementSibling" : "nextElementSibling"];
+			if (!(_thatComponent instanceof HTMLElement)) return;
+			const _radio = _thatComponent.querySelector<HTMLInputElement>(":scope > input[type=radio]");
+			if (!(_thatComponent.classList.contains("radio-button") && _radio)) return;
+			thisComponent = _thatComponent;
+			if (_radio.disabled) continue;
+			thatComponent = _thatComponent;
+			radio = _radio;
+			break;
+		}
+		thatComponent.focus();
+		emits("update:modelValue", radio.value);
+		emits("change", { value: radio.value, checked: true });
 	}
 </script>
 
@@ -71,6 +103,7 @@
 		class="radio-button"
 		@click="onChange"
 		@keydown="onKeydown"
+		@keyup="onKeyUp"
 	>
 		<input
 			ref="radio"

@@ -22,7 +22,6 @@
 	const emits = defineEmits<{
 		(event: "update:modelValue", value: string[]): void; // 稍后改为泛型 T[]。
 		(event: "change", arg: { value: string; checkState: CheckState; checked: boolean }): void;
-		(event: "move", value: Movement): void;
 	}>();
 
 	const checkbox = ref<HTMLInputElement>();
@@ -37,7 +36,7 @@
 	/**
 	 * 数据改变事件。
 	 */
-	const onChange = () => {
+	function onChange() {
 		if (!checkbox.value) return;
 		const nextChecked = !isChecked.value;
 		const nextState: CheckState = nextChecked ? "checked" : "unchecked";
@@ -47,7 +46,7 @@
 			else arrayRemoveItem(modelValue, props.value);
 		emits("update:modelValue", modelValue); // 稍后改为泛型 T。
 		emits("change", { value: checkbox.value.value, checkState: nextState, checked: nextChecked });
-	};
+	}
 
 	// 如果复选框勾选情况与 prop 不同，就强制使其相同。
 	watch([() => checkbox.value?.checked, () => checkbox.value?.indeterminate], () => {
@@ -57,21 +56,62 @@
 		if (isIndeterminate.value !== checkbox.value.indeterminate)
 			checkbox.value.indeterminate = isIndeterminate.value;
 	}, { immediate: true });
+
+	/**
+	 * 当键盘松开空格键时相当于点击复选框。
+	 * @param e - 键盘事件。
+	 */
+	function onKeyUp(e: KeyboardEvent) {
+		if (e.code === "Space") {
+			e.preventDefault();
+			onChange();
+		}
+	}
+
+	/**
+	 * 当键盘按下空格键时不要下滑页面。
+	 * @param e - 键盘事件。
+	 */
+	function onKeyDown(e: KeyboardEvent) {
+		if (e.code === "Space") {
+			e.preventDefault();
+			return;
+		}
+		const movePrev = e.code === "ArrowUp" || e.code === "ArrowLeft";
+		const moveNext = e.code === "ArrowDown" || e.code === "ArrowRight";
+		if (!movePrev && !moveNext) return;
+		e.preventDefault();
+		let thisComponent = e.target as HTMLElement;
+		let thatComponent: HTMLElement;
+		while (true) {
+			const _thatComponent = thisComponent[movePrev ? "previousElementSibling" : "nextElementSibling"];
+			if (!(_thatComponent instanceof HTMLElement)) return;
+			const _checkbox = _thatComponent.querySelector<HTMLInputElement>(":scope > input[type=checkbox]");
+			if (!(_thatComponent.classList.contains("checkbox") && _checkbox)) return;
+			thisComponent = _thatComponent;
+			if (_checkbox.disabled) continue;
+			thatComponent = _thatComponent;
+			break;
+		}
+		thatComponent.focus();
+	}
 </script>
 
 <template>
 	<kira-component
-		:tabindex="isChecked && !disabled ? 0 : -1"
+		:tabindex="!disabled ? 0 : -1"
 		class="checkbox"
 		@click="onChange"
+		@keydown="onKeyDown"
+		@keyup="onKeyUp"
 	>
 		<input
 			ref="checkbox"
 			type="checkbox"
-			:value="props.value"
+			:value="value"
 			:checked="isChecked"
 			:disabled="disabled"
-			:indeterminate="checkState === 'indeterminate'"
+			:indeterminate="isIndeterminate"
 		/>
 		<div class="check-focus">
 			<div class="check-shadow">
@@ -178,26 +218,27 @@
 		animation: indeterminate-symbol-resize-back $duration-half $ease-out-max reverse backwards;
 	}
 
-	.check-shadow {
+	.check-focus > .check-shadow {
 		@include square($size);
 		border-radius: $roundness;
 
-		#{$component-class}.checked & {
+		input:is(:checked, :indeterminate) + & {
 			@include button-shadow;
-		}
 
-		#{$component-class}.checked:hover & {
-			@include button-shadow-hover;
-		}
+			#{$component-class}:hover & {
+				@include button-shadow-hover;
+			}
 
-		#{$component-class}.checked:active & {
-			box-shadow: none !important;
+			#{$component-class}:active & {
+				box-shadow: none !important;
+			}
 		}
 	}
 
 	.check-focus {
 		@include square($size);
-		border-radius: $roundness;
+		@include circle;
+		// border-radius: $roundness;
 		animation: pressing-back $duration-half $ease-in alternate 2;
 
 		#{$component-class}:focus & {
