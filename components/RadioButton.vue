@@ -64,7 +64,7 @@
 	}
 
 	/**
-	 * 当键盘按下方向键时移动到前一个或后一个单选框事件。
+	 * 当键盘按下方向键时移动到前一个或后一个单选框聚焦并选中。
 	 * 当键盘按下空格键时不要下滑页面。
 	 * @param e - 键盘事件。
 	 */
@@ -86,7 +86,7 @@
 			const _radio = _thatComponent.querySelector<HTMLInputElement>(":scope > input[type=radio]");
 			if (!(_thatComponent.classList.contains("radio-button") && _radio)) return;
 			thisComponent = _thatComponent;
-			if (_radio.disabled) continue;
+			if (_radio.disabled || !_radio.dataset.value) continue;
 			thatComponent = _thatComponent;
 			radio = _radio;
 			break;
@@ -108,6 +108,7 @@
 		<input
 			ref="radio"
 			type="radio"
+			:data-value="props.value"
 			:value="props.value"
 			:checked="isChecked"
 			:disabled="disabled"
