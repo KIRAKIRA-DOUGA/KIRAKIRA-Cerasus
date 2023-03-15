@@ -9,7 +9,7 @@
 <template>
 	<TabItem :id="id" vertical>
 		<div class="home-icon">
-			<NuxtIcon name="home" :style="{ fontSize: '22px', color: 'var(--accent)' }" class="icon" />
+			<NuxtIcon name="home" />
 		</div>
 		<slot>{{ t.home }}</slot>
 	</TabItem>
@@ -33,8 +33,10 @@
 	.home-icon {
 		height: 18px;
 
-		.icon {
+		.nuxt-icon {
 			margin-top: -2px;
+			color: c(accent);
+			font-size: 22px;
 		}
 	}
 </style>
