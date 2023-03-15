@@ -39,7 +39,7 @@
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
 	async function onContentEnter(el: HTMLElement, done: () => void) {
-		await animateSize(el, null, { startHeight: 0, duration: 500 });
+		await animateSize(el, null, { startHeight: 0, duration: 500, specified: "height" });
 		done();
 	}
 
@@ -50,7 +50,7 @@
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
 	async function onContentLeave(el: HTMLElement, done: () => void) {
-		await animateSize(el, null, { endHeight: 0, duration: 300 });
+		await animateSize(el, null, { endHeight: 0, duration: 300, specified: "height" });
 		done();
 	}
 </script>
