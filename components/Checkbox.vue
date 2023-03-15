@@ -180,8 +180,8 @@
 
 	input:checked:not(:indeterminate) + .check-focus {
 		.check-symbol {
-			width: 11px;
-			height: 5px;
+			width: 12px;
+			height: 6px;
 			opacity: 1;
 			animation:
 				check-symbol-resize $duration-half $duration-half $ease-out-max backwards,
@@ -192,7 +192,7 @@
 
 	input:indeterminate + .check-focus {
 		.indeterminate-symbol {
-			width: 8px;
+			width: 10px;
 			opacity: 1;
 			animation:
 				indeterminate-symbol-resize $duration-half $duration-half $ease-out-max backwards,
@@ -203,20 +203,43 @@
 	.symbol {
 		@include square(0);
 		@include absolute-center-widthful;
-		border: 0 solid white;
 		opacity: 0;
 	}
 
 	.check-symbol {
-		border-width: 0 0 $symbol-line-thickness $symbol-line-thickness;
 		animation: check-symbol-resize-back $duration-half $ease-out-max reverse backwards;
 		rotate: -45deg;
+
+		&::before,
+		&::after {
+			@extend %round-linecap;
+			position: absolute;
+			display: block;
+			content: "";
+		}
+
+		&::before {
+			left: 0;
+			width: $symbol-line-thickness;
+			height: 100%;
+		}
+
+		&::after {
+			bottom: 0;
+			width: 100%;
+			height: $symbol-line-thickness;
+		}
 	}
 
 	.indeterminate-symbol {
-		height: 0;
-		border-width: $symbol-line-thickness-half 0;
+		@extend %round-linecap;
+		height: $symbol-line-thickness;
 		animation: indeterminate-symbol-resize-back $duration-half $ease-out-max reverse backwards;
+	}
+
+	%round-linecap {
+		background-color: white;
+		border-radius: 1px;
 	}
 
 	.check-focus > .check-shadow {
@@ -239,7 +262,6 @@
 	.check-focus {
 		@include square($size);
 		@include circle;
-		// border-radius: $roundness;
 		animation: pressing-back $duration-half $ease-in alternate 2;
 
 		#{$component-class}:focus & {
@@ -282,8 +304,8 @@
 			}
 
 			to {
-				width: 11px;
-				height: 5px;
+				width: 12px;
+				height: 6px;
 				translate: 0 -1px;
 				opacity: 1;
 			}
@@ -296,7 +318,7 @@
 			}
 
 			to {
-				width: 8px;
+				width: 10px;
 				opacity: 1;
 			}
 		}
