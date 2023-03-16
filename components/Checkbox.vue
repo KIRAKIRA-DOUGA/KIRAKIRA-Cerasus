@@ -132,7 +132,7 @@
 	$border-size: 2px;
 	$checked-border-size: 10px;
 	$symbol-line-thickness: 2px;
-	$duration-half: 200ms;
+	$duration-half: 180ms;
 	$component-class: ".checkbox";
 
 	#{$component-class} {
@@ -161,7 +161,7 @@
 		overflow: hidden;
 		border-radius: $roundness;
 		box-shadow: inset 0 0 0 $border-size c(icon-color);
-		animation: outer-border-change-back $duration-half $duration-half $ease-in-max reverse backwards;
+		animation: outer-border-change-back $duration-half $duration-half $ease-in-expo reverse backwards;
 
 		#{$component-class}:is(:hover, :active) & {
 			background-color: c(gray, 50%);
@@ -173,7 +173,7 @@
 
 		.check {
 			box-shadow: inset 0 0 0 $checked-border-size c(color);
-			animation: outer-border-change $duration-half $ease-in-max backwards;
+			animation: outer-border-change $duration-half $ease-in-expo backwards;
 		}
 	}
 
