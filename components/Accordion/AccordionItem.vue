@@ -129,7 +129,7 @@
 			}
 
 			.nuxt-icon {
-				color: c(accent);
+				color: inherit;
 				rotate: 180deg;
 			}
 

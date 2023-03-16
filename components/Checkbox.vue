@@ -132,7 +132,6 @@
 	$border-size: 2px;
 	$checked-border-size: 10px;
 	$symbol-line-thickness: 2px;
-	$symbol-line-thickness-half: calc($symbol-line-thickness / 2);
 	$duration-half: 200ms;
 	$component-class: ".checkbox";
 
@@ -239,7 +238,7 @@
 
 	%round-linecap {
 		background-color: white;
-		border-radius: 1px;
+		border-radius: calc($symbol-line-thickness / 2);
 	}
 
 	.check-focus > .check-shadow {
