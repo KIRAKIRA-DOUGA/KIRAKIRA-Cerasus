@@ -110,7 +110,7 @@
 			transition: $fallback-transitions, all $ease-out-smooth 500ms;
 		}
 
-		&:focus {
+		&:focus-visible {
 			@include button-shadow-unchecked-focus-only;
 			z-index: 1;
 		}
@@ -133,7 +133,7 @@
 				rotate: 180deg;
 			}
 
-			&:focus {
+			&:focus-visible {
 				@include button-shadow-focus-only;
 			}
 
