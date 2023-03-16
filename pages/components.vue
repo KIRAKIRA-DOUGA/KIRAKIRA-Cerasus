@@ -33,7 +33,6 @@
 	const menu = ref<InstanceType<typeof Menu>>();
 	const showMenu = () => menu.value?.show();
 	const beep = ref<HTMLAudioElement>();
-	const showAccordion = reactive([false, false, false]);
 	const isUploaderLovinIt = ref(true);
 	const kiraGoods = reactive(["kawaii", "nijigen"]);
 	const isSelectAll = computed<CheckState>(() => kiraGoods.length >= 3 ? "checked" : kiraGoods.length === 0 ? "unchecked" : "indeterminate");
@@ -152,32 +151,32 @@
 			<RadioButton v-model="logoTextForm" value="full">{{ t.logoShow }}</RadioButton>
 			<LogoText :form="logoTextForm" />
 			<Accordion>
-				<AccordionItem v-model="showAccordion[0]" title="第1个">
+				<AccordionItem title="第1个">
 					<h4>标题</h4>
 					内容
 				</AccordionItem>
-				<AccordionItem v-model="showAccordion[1]" title="第2个">
+				<AccordionItem title="第2个">
 					<h4>标题</h4>
 					内容
 				</AccordionItem>
-				<AccordionItem v-model="showAccordion[2]" title="第3个">
+				<AccordionItem title="第3个">
 					<h4>标题</h4>
 					内容
+				</AccordionItem>
+				<AccordionItem title="➕❤️">
+					<ToggleSwitch v-model="isUploaderLovinIt" :style="{ marginBottom: '0.75rem' }">➕❤️</ToggleSwitch>
+					<UploaderAira :hidden="!isUploaderLovinIt" />
+				</AccordionItem>
+				<AccordionItem title="点击此处辣眼睛">
+					<section class="marquee-section">
+						<marquee>KiRAKiRA☆DOUGA</marquee>
+						<marquee direction="up">让你的前端设计师气到脑中风</marquee>
+						<marquee direction="down" width="250" height="200" behavior="alternate" class="marquee">
+							<marquee behavior="alternate">DVD</marquee>
+						</marquee>
+					</section>
 				</AccordionItem>
 			</Accordion>
-			<ToggleSwitch v-model="isUploaderLovinIt">➕❤️</ToggleSwitch>
-			<UploaderAira :hidden="!isUploaderLovinIt" />
-			<hr />
-			<details>
-				<summary>点击此处辣眼睛</summary>
-				<section class="marquee-section">
-					<marquee>KiRAKiRA☆DOUGA</marquee>
-					<marquee direction="up">让你的前端设计师气到脑中风</marquee>
-					<marquee direction="down" width="250" height="200" behavior="alternate" class="marquee">
-						<marquee behavior="alternate">DVD</marquee>
-					</marquee>
-				</section>
-			</details>
 		</div>
 	</div>
 </template>
