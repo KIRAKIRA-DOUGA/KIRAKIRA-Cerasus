@@ -90,7 +90,7 @@
 				@include system-card;
 				translate: 0 -6px;
 				background-color: c(main-bg, 90%);
-				backdrop-filter: none !important; // BUG: [艾拉] Chromium 111 开始的 bug。
+				backdrop-filter: none !important; // BUG: [艾拉] Chromium 111 开始的 bug。https://bugs.chromium.org/p/chromium/issues/detail?id=1422867
 			}
 		}
 
