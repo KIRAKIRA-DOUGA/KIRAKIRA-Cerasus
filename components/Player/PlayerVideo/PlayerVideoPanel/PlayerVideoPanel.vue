@@ -24,11 +24,14 @@
 </template>
 
 <style scoped lang="scss">
+	$panel-width: 392px;
+	$info-height: 80px;
+	$controls-height: 48px;
+
 	.player-video-panel {
 		@include flex-block;
-		width: 392px;
-		min-width: 392px;
-		max-width: 392px;
+		flex-shrink: 0;
+		width: $panel-width;
 		height: inherit;
 		overflow: hidden;
 	}
@@ -40,7 +43,7 @@
 
 	.info {
 		display: flex;
-		height: 80px;
+		height: $info-height;
 		color: c(icon-color);
 
 		.watching {
@@ -56,6 +59,6 @@
 	}
 
 	.controls {
-		height: 48px;
+		height: $controls-height;
 	}
 </style>
