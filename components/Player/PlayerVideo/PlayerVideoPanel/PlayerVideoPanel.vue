@@ -34,6 +34,10 @@
 		width: $panel-width;
 		height: inherit;
 		overflow: hidden;
+
+		@media #{$tablet} {
+			display: none;
+		}
 	}
 
 	.top {
