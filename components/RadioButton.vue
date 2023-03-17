@@ -86,7 +86,7 @@
 			const _radio = _thatComponent.querySelector<HTMLInputElement>(":scope > input[type=radio]");
 			if (!(_thatComponent.classList.contains("radio-button") && _radio)) return;
 			thisComponent = _thatComponent;
-			if (_radio.disabled || !_radio.dataset.value) continue;
+			if (_radio.disabled || !_radio.getAttribute("value")) continue;
 			thatComponent = _thatComponent;
 			radio = _radio;
 			break;
@@ -108,7 +108,6 @@
 		<input
 			ref="radio"
 			type="radio"
-			:data-value="props.value"
 			:value="props.value"
 			:checked="isChecked"
 			:disabled="disabled"
