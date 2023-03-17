@@ -1,11 +1,11 @@
 <script setup lang="ts">
-
+	const onClickStar = () => useEvent("user:requestLogin");
 </script>
 
 <template>
 	<kira-component class="player-video-panel">
-		<div class="player-video-panel-top">
-			<div class="player-video-info">
+		<div class="top">
+			<div class="info">
 				<div class="basic-info">
 
 				</div>
@@ -13,6 +13,9 @@
 					<span class="watching-number">10</span>
 					<span class="watching-description">人正在看</span>
 				</div>
+			</div>
+			<div class="controls">
+				<PlayerButton icon="star" @click="onClickStar" />
 			</div>
 		</div>
 		<PlayerVideoPanelDanmakuList />
@@ -30,13 +33,12 @@
 		overflow: hidden;
 	}
 
-	.player-video-panel-top {
+	.top {
 		@include card-in-card-shadow;
 		width: inherit;
-		height: 128px;
 	}
 
-	.player-video-info {
+	.info {
 		display: flex;
 		height: 80px;
 		color: c(icon-color);
@@ -51,5 +53,9 @@
 				font-size: 24px;
 			}
 		}
+	}
+
+	.controls {
+		height: 48px;
 	}
 </style>
