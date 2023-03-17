@@ -100,7 +100,7 @@
 			<RadioButton v-model="palette" value="orange">{{ t.orange }}</RadioButton>
 			<RadioButton v-model="palette" value="purple">{{ t.purple }}</RadioButton>
 			<RadioButton v-model="palette" value="green">{{ t.green }}</RadioButton>
-			<RadioButton disabled>{{ t.custom }}</RadioButton>
+			<RadioButton v-model="palette" value="custom" disabled>{{ t.custom }}</RadioButton>
 			<RadioButton checked disabled>{{ t.onDisabled }}</RadioButton>
 			<hr />
 			<p>请问您喜欢KIRAKIRA的地方有：</p>
