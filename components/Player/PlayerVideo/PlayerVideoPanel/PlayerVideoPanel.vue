@@ -15,7 +15,12 @@
 				</div>
 			</div>
 			<div class="controls">
-				<PlayerButton icon="star" @click="onClickStar" />
+				<PlayerVideoPanelButton icon="thumb_up" class="button-like" />
+				<PlayerVideoPanelButton icon="thumb_down" class="button-dislike" />
+				<PlayerVideoPanelButton icon="star" class="button-star" @click="onClickStar" />
+				<PlayerVideoPanelButton icon="share" class="button-share" />
+				<PlayerVideoPanelButton icon="history" class="button-history" />
+				<PlayerVideoPanelButton icon="settings" class="button-settings" />
 			</div>
 		</div>
 		<PlayerVideoPanelDanmakuList />
@@ -53,6 +58,7 @@
 		.watching {
 			@include flex-center;
 			flex-direction: column;
+			width: 128px;
 			height: inherit;
 
 			.watching-number {
@@ -63,6 +69,16 @@
 	}
 
 	.controls {
+		@include flex-center;
+		gap: 24px;
 		height: $controls-height;
+
+		> * {
+			font-size: 24px;
+		}
+	}
+
+	.button-star {
+		font-size: 28px;
 	}
 </style>
