@@ -291,6 +291,7 @@
 		@include card-in-card-shadow;
 		position: absolute;
 		left: calc($width / 2);
+		background-color: c(inner-color, 50%);
 
 		.move-left & {
 			left: 0;
