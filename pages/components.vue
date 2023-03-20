@@ -30,6 +30,7 @@
 	const logoTextForm = ref<LogoTextFormType>("full");
 	const showDialog = ref(false);
 	const inputValue = ref("");
+	const isInvalid = computed(() => !inputValue.value.match(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/));
 	const menu = ref<InstanceType<typeof Menu>>();
 	const showMenu = () => menu.value?.show();
 	const beep = ref<HTMLAudioElement>();
@@ -111,7 +112,7 @@
 			<Checkbox disabled checkState="unchecked">鼠鼠我呀最讨厌了</Checkbox>
 			<Checkbox disabled checkState="checked">欢迎白嫖</Checkbox>
 			<hr />
-			<TextBox v-model="inputValue" illegal placeholder="正常错误的" />
+			<TextBox v-model="inputValue" :invalid="isInvalid" placeholder="请输入正确的邮箱" />
 			<TextBox v-model="inputValue" size="small" placeholder="小小的软软的香香的" />
 			<TextBox v-model="inputValue" size="large" icon="lock" type="password" placeholder="密码" />
 			<em>所有输入框的内容同时输入属正常现象，因为懒得做三个变量。</em>

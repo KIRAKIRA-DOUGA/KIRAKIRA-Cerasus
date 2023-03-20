@@ -41,7 +41,8 @@ export async function replayAnimation(element: Element, ...className: string[]) 
 }
 
 type StyleProperties = string & keyof FilterValueType<CSSStyleDeclaration, string>;
-type Keyframes = Partial<Record<Exclude<StyleProperties, "offset">, string | number>>[];
+type Keyframe = Partial<Record<Exclude<StyleProperties, "offset">, string | number> & { offset: number }>;
+type Keyframes = Keyframe[];
 type DimensionAxis = "height" | "width" | "both";
 type MaybePromise<T> = T | Promise<T>;
 
@@ -65,6 +66,8 @@ export async function animateSize(
 		withoutAdjustPadding,
 		nextTick: awaitNextTick = true,
 		getSize,
+		startStyle = {},
+		endStyle = {},
 	}: Partial<{
 		/** 显式指定初始高度（可选）。 */
 		startHeight: number;
@@ -86,6 +89,10 @@ export async function animateSize(
 		nextTick: boolean;
 		/** 获取最终的元素尺寸。 */
 		getSize: [number, number];
+		/** 显式指定初始样式（可选）。 */
+		startStyle: Keyframe;
+		/** 显式指定结束样式（可选）。 */
+		endStyle: Keyframe;
 	}> = {},
 ): Promise<Animation | void> {
 	startHeight ??= element.clientHeight;
@@ -115,5 +122,7 @@ export async function animateSize(
 		Object.assign(keyframes[setYPaddingIndex], { paddingTop: 0, paddingBottom: 0, marginTop: 0, marginBottom: 0 });
 	if (setYPadding && isWidthChanged && setXPaddingIndex !== undefined)
 		Object.assign(keyframes[setXPaddingIndex], { paddingLeft: 0, paddingRight: 0, marginLeft: 0, marginRight: 0 });
+	Object.assign(keyframes[0], startStyle);
+	Object.assign(keyframes[1], endStyle);
 	return element.animate(keyframes, { duration, easing }).finished;
 }

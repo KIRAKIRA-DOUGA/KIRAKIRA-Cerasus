@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
-		/** 当前输入是否不合法。 */
-		illegal?: boolean;
+		/** 当前输入是否非法。 */
+		invalid?: boolean;
 		/** 内容占位符。 */
 		placeholder?: string;
 		/** 图标名称。 */
@@ -12,6 +12,8 @@
 		type?: string;
 		/** 值。 */
 		modelValue: string;
+		/** 始终不显示清空按钮。 */
+		hideClearAll?: boolean;
 	}>(), {
 		icon: undefined,
 		size: "normal",
@@ -35,6 +37,38 @@
 		if (props.type !== "password") return props.type;
 		return showPassword.value ? "text" : "password";
 	});
+	const input = ref<HTMLInputElement>();
+	const showClearAll = computed(() => !props.hideClearAll && value.value !== "");
+
+	/**
+	 * 清空文本。
+	 */
+	function clearAll() {
+		value.value = "";
+		input.value?.focus();
+	}
+
+	/**
+	 * 在元素被插入到 DOM 之后的下一帧被调用。
+	 * 用这个来开始进入动画。
+	 * @param el - HTML DOM 元素。
+	 * @param done - 调用回调函数 done 表示过渡结束。
+	 */
+	async function onAfterIconEnter(el: HTMLElement, done: () => void) {
+		await animateSize(el, null, { startWidth: 0, duration: 300, startStyle: { scale: 0 }, specified: "width" });
+		done();
+	}
+
+	/**
+	 * 在离开过渡开始时调用。
+	 * 用这个来开始离开动画。
+	 * @param el - HTML DOM 元素。
+	 * @param done - 调用回调函数 done 表示过渡结束。
+	 */
+	async function onAfterIconLeave(el: HTMLElement, done: () => void) {
+		await animateSize(el, null, { endWidth: 0, duration: 300, endStyle: { scale: 0 }, specified: "width" });
+		done();
+	}
 </script>
 
 <template>
@@ -43,22 +77,29 @@
 		:class="{
 			small: size === 'small',
 			large: size === 'large',
-			illegal,
+			invalid,
 			'icon-enabled': icon,
 		}"
 	>
 		<div class="wrapper">
 			<NuxtIcon v-if="icon" :name="icon" class="before-icon" />
-			<input v-model="value" :type="type" :placeholder="placeholder" :class="{ typed }" />
+			<input ref="input" v-model="value" :type="type" :placeholder="placeholder" :class="{ typed }" />
 			<label v-if="size === 'large'">{{ placeholder }}</label>
-			<div v-if="props.type === 'password'" v-ripple class="after-icon-wrapper password-button" @click="showPassword = !showPassword">
-				<NuxtIcon :name="showPassword ? 'visibility' : 'visibility_off'" class="after-icon" />
-			</div>
-			<Transition name="scale">
-				<div v-if="illegal" class="after-icon-wrapper">
-					<NuxtIcon name="error" class="after-icon illegal-icon" />
+			<Fragment class="after-icons">
+				<Transition :css="false" @enter="onAfterIconEnter" @leave="onAfterIconLeave">
+					<div v-if="showClearAll" v-ripple class="clear-button" @click="clearAll">
+						<NuxtIcon name="close" />
+					</div>
+				</Transition>
+				<div v-if="props.type === 'password'" v-ripple class="password-button" @click="showPassword = !showPassword">
+					<NuxtIcon :name="showPassword ? 'visibility' : 'visibility_off'" />
 				</div>
-			</Transition>
+				<Transition :css="false" @enter="onAfterIconEnter" @leave="onAfterIconLeave">
+					<div v-if="invalid">
+						<NuxtIcon name="error" class="invalid-icon" />
+					</div>
+				</Transition>
+			</Fragment>
 		</div>
 		<div v-if="size === 'large'" class="large-stripe"></div>
 		<div class="focus-stripe"></div>
@@ -88,7 +129,7 @@
 			height: $large-height;
 		}
 
-		&.illegal {
+		&.invalid {
 			.focus-stripe {
 				background-color: c(red) !important;
 				scale: 1;
@@ -202,7 +243,7 @@
 			}
 		}
 
-		.illegal &::selection {
+		.invalid &::selection {
 			background-color: c(red);
 		}
 	}
@@ -220,21 +261,20 @@
 		}
 	}
 
-	.after-icon {
-		color: c(icon-color);
-		font-size: 24px;
-	}
-
-	.illegal-icon {
+	.invalid-icon {
 		color: c(red);
 	}
 
-	.after-icon-wrapper {
+	.after-icons > * {
 		@include flex-center;
 		@include square(var(--size));
 		@include radius-large(left); // TODO: [兰音] 我还是感觉输入框右边的按钮在按下时有点格格不入，有什么更好的想法吗？尤其是和下方横线重合的地方。
 		--size: #{$default-height};
-		transform-origin: right center;
+
+		> .nuxt-icon {
+			color: c(icon-color);
+			font-size: 24px;
+		}
 
 		.large & {
 			--size: #{$large-height};
@@ -251,23 +291,5 @@
 
 	.password-button {
 		cursor: pointer;
-	}
-
-	.scale-enter-active {
-		transition: scale 300ms $ease-out-max;
-	}
-
-	.scale-leave-active {
-		transform: scale 300ms $ease-in-max;
-	}
-
-	.scale-enter-to,
-	.scale-leave-from {
-		scale: 1;
-	}
-
-	.scale-enter-from,
-	.scale-leave-to {
-		scale: 0;
 	}
 </style>
