@@ -68,5 +68,10 @@
 		&:not(:hover) {
 			transition-duration: 1s;
 		}
+
+		menu:not(:hover) & {
+			opacity: 0.8;
+			transition-duration: 1s;
+		}
 	}
 </style>

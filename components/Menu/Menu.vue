@@ -122,7 +122,8 @@
 		}
 
 		&:not(:hover) {
-			opacity: 0.8;
+			@include dropdown-flyouts-not-hover;
+			background-color: c(main-bg, 40%);
 			transition-duration: 1s;
 		}
 
