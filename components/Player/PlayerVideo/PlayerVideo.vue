@@ -176,6 +176,7 @@
 		@include flex-block;
 	}
 
+	.player-video-main,
 	video {
 		width: 100%;
 	}

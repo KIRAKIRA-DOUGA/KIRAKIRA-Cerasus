@@ -1,5 +1,20 @@
 <script setup lang="ts">
+	const props = defineProps<{
+		autoCollapse?: boolean;
+	}>();
 
+	const slots = useSlots().default?.();
+
+	/**
+	 * 关闭所有手风琴项目。
+	 */
+	function collaspeAll() {
+		console.log(slots); // TODO
+	}
+
+	defineExpose({
+		collaspeAll,
+	});
 </script>
 
 <template>

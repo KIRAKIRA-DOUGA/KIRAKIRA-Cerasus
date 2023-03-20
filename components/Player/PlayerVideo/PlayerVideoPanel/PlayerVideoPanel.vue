@@ -15,8 +15,8 @@
 				</div>
 			</div>
 			<div class="buttons">
-				<PlayerVideoPanelButton icon="thumb_up" class="button-like" />
-				<PlayerVideoPanelButton icon="thumb_down" class="button-dislike" />
+				<PlayerVideoPanelButton icon="thumb_up" class="button-like" @click="onClickStar" />
+				<PlayerVideoPanelButton icon="thumb_down" class="button-dislike" @click="onClickStar" />
 				<PlayerVideoPanelButton icon="star" class="button-star" @click="onClickStar" />
 				<PlayerVideoPanelButton icon="share" class="button-share" />
 				<PlayerVideoPanelButton icon="history" class="button-history" />

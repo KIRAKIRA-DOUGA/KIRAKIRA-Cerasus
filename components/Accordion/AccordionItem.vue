@@ -3,6 +3,8 @@
 </docs>
 
 <script setup lang="ts">
+	import Accordion from "./Accordion.vue";
+
 	const props = withDefaults(defineProps<{
 		/** 标题。 */
 		title: string | number;
@@ -18,6 +20,7 @@
 		(event: "update:modelValue", shown: boolean): void;
 	}>();
 
+	const parent = useParent(Accordion);
 	const staticShown = ref(props.shown);
 
 	const shown = computed({
@@ -29,6 +32,7 @@
 	 * 切换展示与折叠状态。
 	 */
 	function toggle() {
+		parent?.exposed?.collaspeAll();
 		shown.value = !shown.value;
 	}
 
@@ -53,6 +57,11 @@
 		await animateSize(el, null, { endHeight: 0, duration: 300, specified: "height" });
 		done();
 	}
+
+	defineExpose({
+		shown,
+		toggle,
+	});
 </script>
 
 <template>

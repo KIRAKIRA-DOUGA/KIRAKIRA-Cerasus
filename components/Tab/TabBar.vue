@@ -16,8 +16,6 @@
 		(event: "update:modelValue", arg: string): void;
 	}>();
 
-	const slots = useSlots().default?.();
-
 	const children = reactive({} as TabBarChildren);
 	const tabBar = ref<HTMLElement>();
 	const indicator = ref<HTMLDivElement>();
