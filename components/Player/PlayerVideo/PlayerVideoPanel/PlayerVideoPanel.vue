@@ -6,13 +6,33 @@
 	<kira-component class="player-video-panel">
 		<div class="top">
 			<div class="info">
-				<div class="basic-info">
+				<div class="counts">
+					<div>
+						<div class="count-play">
+							<NuxtIcon name="play" />
+							<span>播放 100</span>
+						</div>
+						<div class="count-rating">
+							<NuxtIcon name="thumb_up" /> <!-- TODO: [艾拉] 如果评分是负数的话这里变成一个踩的icon。 -->
+							<span>评分 100</span>
+						</div>
+					</div>
+					<div>
+						<div class="count-star">
+							<NuxtIcon name="star" />
+							<span>收藏 100</span>
+						</div>
+						<div class="count-danmaku">
+							<NuxtIcon name="play" />
+							<span>弹幕 100</span>
+						</div>
+					</div>
+					<div class="watching">
+						<span class="watching-number">10</span>
+						<span class="watching-description">人正在看</span>
+					</div>
+				</div>
 
-				</div>
-				<div class="watching">
-					<span class="watching-number">10</span>
-					<span class="watching-description">人正在看</span>
-				</div>
 			</div>
 			<div class="buttons">
 				<PlayerVideoPanelButton icon="thumb_up" class="button-like" @click="onClickStar" />
@@ -29,10 +49,9 @@
 </template>
 
 <style scoped lang="scss">
-	$panel-width: 392px;
+	$panel-width: 350px;
 	$info-height: 80px;
 	$buttons-height: 48px;
-	$watching-width: 128px;
 
 	.player-video-panel {
 		@include flex-block;
@@ -48,7 +67,6 @@
 
 	.top {
 		@include card-in-card-shadow;
-		width: inherit;
 	}
 
 	.info {
@@ -56,10 +74,33 @@
 		height: $info-height;
 		color: c(icon-color);
 
+		.counts {
+			@include flex-block;
+			flex-direction: row;
+			flex-grow: 1;
+			justify-content: space-between;
+
+			> div {
+				@include flex-block;
+				width: 100%;
+				height: 100%;
+			}
+
+			> * > div {
+				@include flex-center;
+				flex-grow: 1;
+				gap: 4px;
+				height: 100%;
+
+				.nuxt-icon {
+					font-size: 20px;
+				}
+			}
+		}
+
 		.watching {
 			@include flex-center;
 			flex-direction: column;
-			width: $watching-width;
 			height: inherit;
 
 			.watching-number {
@@ -76,10 +117,6 @@
 
 		> * {
 			font-size: 24px;
-		}
-
-		> .button-star {
-			font-size: 28px;
 		}
 	}
 </style>

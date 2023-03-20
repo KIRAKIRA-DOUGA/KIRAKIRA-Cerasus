@@ -16,7 +16,6 @@
 	.player-video-danmaku-list {
 		@include flex-block;
 		flex-grow: 1;
-		width: inherit;
 		color: c(icon-color);
 	}
 
