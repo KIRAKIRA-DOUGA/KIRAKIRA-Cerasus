@@ -14,7 +14,7 @@
 					<span class="watching-description">人正在看</span>
 				</div>
 			</div>
-			<div class="controls">
+			<div class="buttons">
 				<PlayerVideoPanelButton icon="thumb_up" class="button-like" />
 				<PlayerVideoPanelButton icon="thumb_down" class="button-dislike" />
 				<PlayerVideoPanelButton icon="star" class="button-star" @click="onClickStar" />
@@ -31,7 +31,8 @@
 <style scoped lang="scss">
 	$panel-width: 392px;
 	$info-height: 80px;
-	$controls-height: 48px;
+	$buttons-height: 48px;
+	$watching-width: 128px;
 
 	.player-video-panel {
 		@include flex-block;
@@ -58,7 +59,7 @@
 		.watching {
 			@include flex-center;
 			flex-direction: column;
-			width: 128px;
+			width: $watching-width;
 			height: inherit;
 
 			.watching-number {
@@ -68,17 +69,17 @@
 		}
 	}
 
-	.controls {
+	.buttons {
 		@include flex-center;
-		gap: 24px;
-		height: $controls-height;
+		justify-content: space-evenly;
+		height: $buttons-height;
 
 		> * {
 			font-size: 24px;
 		}
-	}
 
-	.button-star {
-		font-size: 28px;
+		> .button-star {
+			font-size: 28px;
+		}
 	}
 </style>
