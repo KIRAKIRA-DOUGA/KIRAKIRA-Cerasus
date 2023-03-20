@@ -66,6 +66,7 @@
 		&:not(.effectless) {
 			background-color: c(main-bg, 40%);
 			backdrop-filter: grayscale(0.4);
+			transition: 300ms;
 
 			&.mask-enter-from,
 			&.mask-leave-to {

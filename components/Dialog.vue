@@ -59,6 +59,7 @@
 
 	.dialog {
 		transform-origin: center top;
+		transition-timing-function: $ease-out-max;
 		transition-duration: 500ms;
 
 		&.dialog-leave-active {
