@@ -4,7 +4,7 @@
 
 <template>
 	<kira-component class="player-video-danmaku-list">
-		<header class="danmaku-list-header">
+		<header class="header">
 			<textarea readonly>时间</textarea>
 			<textarea readonly>内容</textarea>
 			<textarea readonly>发送时间</textarea>
@@ -19,7 +19,7 @@
 		color: c(icon-color);
 	}
 
-	.danmaku-list-header {
+	.header {
 		$height: 36px;
 		display: flex;
 		height: $height;
@@ -27,6 +27,7 @@
 		> * {
 			@include flex-center;
 			flex-direction: row;
+			flex-shrink: 0;
 			height: inherit;
 			padding: 0 12px;
 			overflow: hidden;
@@ -34,6 +35,7 @@
 			background-color: transparent;
 			border: none;
 			border-right: 1px solid transparent;
+			transition: none;
 			resize: horizontal;
 
 			&:hover {

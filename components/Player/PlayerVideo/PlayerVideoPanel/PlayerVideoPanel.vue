@@ -1,44 +1,61 @@
 <script setup lang="ts">
-	const onClickStar = () => useEvent("user:requestLogin");
+	const counts = reactive({
+		play: 100,
+		rating: 5,
+		star: 100,
+		danmaku: 100,
+		watching: 10,
+	});
+
+	/**
+	 * 收藏视频。
+	 */
+	function favorite() {
+		useEvent("user:requestLogin");
+	}
+
+	/**
+	 * 分享视频。
+	 */
+	function share() {
+		navigator.share({
+			title: document.title,
+			text: "绮良动画",
+			url: location.href,
+		});
+	}
 </script>
 
 <template>
 	<kira-component class="player-video-panel">
 		<div class="top">
 			<div class="info">
-				<div class="counts">
-					<div>
-						<div class="count-play">
-							<NuxtIcon name="play" />
-							<span>播放 100</span>
-						</div>
-						<div class="count-rating">
-							<NuxtIcon name="thumb_up" /> <!-- TODO: [艾拉] 如果评分是负数的话这里变成一个踩的icon。 -->
-							<span>评分 100</span>
-						</div>
-					</div>
-					<div>
-						<div class="count-star">
-							<NuxtIcon name="star" />
-							<span>收藏 100</span>
-						</div>
-						<div class="count-danmaku">
-							<NuxtIcon name="play" />
-							<span>弹幕 100</span>
-						</div>
-					</div>
-					<div class="watching">
-						<span class="watching-number">10</span>
-						<span class="watching-description">人正在看</span>
-					</div>
+				<div class="count-play">
+					<NuxtIcon name="play" />
+					<span>播放 {{ counts.play }}</span>
 				</div>
-
+				<div class="count-rating">
+					<NuxtIcon :name="counts.rating >= 0 ? 'thumb_up' : 'thumb_down'" />
+					<span>评分 {{ counts.rating }}</span><!-- TODO: [兰音] 应该看得出来数值变化时的抖动。 -->
+				</div>
+				<div class="count-star">
+					<NuxtIcon name="star" />
+					<span>收藏 {{ counts.star }}</span>
+				</div>
+				<div class="count-danmaku">
+					<NuxtIcon name="play" />
+					<span>弹幕 {{ counts.danmaku }}</span>
+				</div>
+				<div class="watching">
+					<span class="watching-number">10</span>
+					<span class="watching-description">人正在看</span>
+				</div>
 			</div>
 			<div class="buttons">
-				<PlayerVideoPanelButton icon="thumb_up" class="button-like" @click="onClickStar" />
-				<PlayerVideoPanelButton icon="thumb_down" class="button-dislike" @click="onClickStar" />
-				<PlayerVideoPanelButton icon="star" class="button-star" @click="onClickStar" />
-				<PlayerVideoPanelButton icon="share" class="button-share" />
+				<PlayerVideoPanelButton icon="thumb_up" class="button-like" @click="counts.rating++" />
+				<PlayerVideoPanelButton icon="thumb_down" class="button-dislike" @click="counts.rating--" />
+				<PlayerVideoPanelButton icon="star" class="button-star" @click="favorite" />
+				<PlayerVideoPanelButton icon="share" class="button-share" @click="share" />
 				<PlayerVideoPanelButton icon="history" class="button-history" />
 				<PlayerVideoPanelButton icon="settings" class="button-settings" />
 			</div>
@@ -70,38 +87,26 @@
 	}
 
 	.info {
-		display: flex;
+		display: grid;
+		grid-auto-flow: column;
+		grid-template-rows: repeat(2, 1fr);
+		width: 100%;
 		height: $info-height;
 		color: c(icon-color);
 
-		.counts {
-			@include flex-block;
-			flex-direction: row;
-			flex-grow: 1;
-			justify-content: space-between;
+		> * {
+			@include flex-center;
+			gap: 4px;
+			height: 100%;
 
-			> div {
-				@include flex-block;
-				width: 100%;
-				height: 100%;
-			}
-
-			> * > div {
-				@include flex-center;
-				flex-grow: 1;
-				gap: 4px;
-				height: 100%;
-
-				.nuxt-icon {
-					font-size: 20px;
-				}
+			.nuxt-icon {
+				font-size: 20px;
 			}
 		}
 
-		.watching {
-			@include flex-center;
+		> .watching {
 			flex-direction: column;
-			height: inherit;
+			grid-row: 1 / -1;
 
 			.watching-number {
 				font-weight: 500;
@@ -114,9 +119,6 @@
 		@include flex-center;
 		justify-content: space-evenly;
 		height: $buttons-height;
-
-		> * {
-			font-size: 24px;
-		}
+		overflow: hidden;
 	}
 </style>
