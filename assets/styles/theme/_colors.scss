@@ -4,7 +4,7 @@ $neutral-colors: (
 	main-bg: (white, #171414),
 	main-bg-inverted: (black, white),
 	inner-color-85: (#f8f8f8, #4e4e4e), // TODO: [艾拉] 规范gray颜色。
-	inset-bg: (#00000005, #ffffff40), // BUG: [艾拉] 带有alpha的颜色，转换为RGB出来没有alpha。
+	inset-bg: (#00000005, #ffffff0f), // BUG: [艾拉] 带有alpha的颜色，转换为RGB出来没有alpha。我建议最好让这里能写rgba，改起来方便，出来的百分比也精准。然后前端的var就rgba就行。
 	acrylic-bg: (#fafafa,#222),
 	gray: (#e9e9e9, #4e4e4e),
 	gray-2: (#ccc, #555),
