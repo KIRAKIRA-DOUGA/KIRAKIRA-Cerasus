@@ -125,6 +125,8 @@
 			<br />
 			<Tag v-model="isTagChecked">{{ t.tag }}</Tag>
 			<br />
+			<BlockText>你知道的<ruby>太<rt>tài</rt>多<rt>duō</rt></ruby>了。</BlockText>
+			<BlockText color="var(--accent)">你知道的<ruby>太<rt>tài</rt>多<rt>duō</rt></ruby>了。</BlockText>
 			<p>音量</p><Slider v-model="volume" :defaultValue="100" @changed="onSlided" />
 			<p>音调</p><Slider v-model="pitch" :min="-24" :max="24" :defaultValue="0" @changed="onSlided" />
 			<em>单击鼠标中键或触摸屏长按组件以还原默认值。</em>
