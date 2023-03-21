@@ -59,6 +59,7 @@
 
 	.dialog {
 		transform-origin: center top;
+		transition-timing-function: $ease-out-max;
 		transition-duration: 500ms;
 
 		&.dialog-leave-active {
@@ -68,7 +69,7 @@
 		&.dialog-enter-from,
 		&.dialog-leave-to {
 			opacity: 0;
-			scale: 1.1;
+			scale: 1.05;
 
 			.body {
 				translate: 0 #{-$padding};
@@ -110,7 +111,7 @@
 			display: flex;
 			gap: 1rem;
 			padding: $padding;
-			overflow: hidden auto;
+			overflow: hidden overlay;
 			background-color: c(main-bg, 75%);
 
 			.nuxt-icon {

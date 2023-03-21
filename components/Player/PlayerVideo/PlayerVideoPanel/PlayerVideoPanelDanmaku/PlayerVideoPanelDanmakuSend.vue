@@ -10,7 +10,6 @@
 	.player-video-danmaku-send {
 		@include control-inner-shadow;
 		display: flex;
-		width: inherit;
 		height: 36px;
 		background-color: c(inner-color);
 	}
