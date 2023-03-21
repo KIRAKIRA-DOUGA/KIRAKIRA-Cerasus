@@ -118,7 +118,7 @@
 		@include control-inner-shadow;
 		height: $default-height;
 		overflow: hidden;
-		background-color: c(inner-color);
+		background-color: c(inset-bg);
 		border: 0;
 
 		&.small {

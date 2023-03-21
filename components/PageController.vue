@@ -285,7 +285,7 @@
 		display: flex;
 		width: fit-content;
 		overflow: hidden;
-		background-color: c(inner-color);
+		background-color: c(inset-bg);
 	}
 
 	.page {

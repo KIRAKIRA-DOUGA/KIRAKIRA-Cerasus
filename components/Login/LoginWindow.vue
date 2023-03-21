@@ -135,7 +135,7 @@
 		width: $width;
 		height: $height;
 		overflow: hidden;
-		background-color: c(inner-color, 75%);
+		background-color: c(acrylic-color, 75%);
 		transition: all $transition-ease $enter-duration;
 
 		& * {
@@ -291,7 +291,7 @@
 		@include card-in-card-shadow;
 		position: absolute;
 		left: calc($width / 2);
-		background-color: c(inner-color, 50%);
+		background-color: c(acrylic-color, 50%);
 
 		.move-left & {
 			left: 0;

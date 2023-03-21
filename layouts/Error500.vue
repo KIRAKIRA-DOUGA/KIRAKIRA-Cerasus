@@ -39,7 +39,7 @@
 	.container {
 		height: var(--inner-height);
 		padding: 3.5rem 2.5rem;
-		background-color: c(inner-color);
+		background-color: c(inset-bg);
 	}
 
 	.card {

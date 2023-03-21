@@ -11,6 +11,6 @@
 		@include control-inner-shadow;
 		display: flex;
 		height: 36px;
-		background-color: c(inner-color);
+		background-color: c(inset-bg);
 	}
 </style>
