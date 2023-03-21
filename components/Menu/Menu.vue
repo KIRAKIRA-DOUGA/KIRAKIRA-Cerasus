@@ -121,8 +121,8 @@
 			border-top: c(divider, 10%) 1px solid;
 		}
 
-		&:not(:hover) {
-			@include dropdown-flyouts-not-hover;
+		&:not(:hover, :active) {
+			@include dropdown-flyouts-unhover;
 			background-color: c(main-bg, 40%);
 			transition-duration: 1s;
 		}

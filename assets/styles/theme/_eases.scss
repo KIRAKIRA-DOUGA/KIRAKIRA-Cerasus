@@ -42,7 +42,7 @@ $ease-in-back: cubic-bezier(0.6, -0.28, 0.735, 0.045);
 /// 将锚点拉到头的缓动 `3t^⅔-2t`。
 $ease-in-max: cubic-bezier(1, 0, 1, 1);
 /// ### 平滑缓入
-$ease-in-smooth: null; // 待补充。
+$ease-in-smooth: cubic-bezier(0.8, 0, 0.9, 0.1);
 // #endregion
 
 // #region 缓出

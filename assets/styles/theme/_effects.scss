@@ -138,7 +138,7 @@
 	backdrop-filter: blur(16px);
 }
 
-@mixin dropdown-flyouts-not-hover {
+@mixin dropdown-flyouts-unhover {
 	box-shadow: 0 8px 16px c(accent-shadow, 30%);
 }
 

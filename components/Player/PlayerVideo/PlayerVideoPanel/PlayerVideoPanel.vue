@@ -97,7 +97,6 @@
 		> * {
 			@include flex-center;
 			gap: 4px;
-			height: 100%;
 
 			.nuxt-icon {
 				font-size: 20px;
