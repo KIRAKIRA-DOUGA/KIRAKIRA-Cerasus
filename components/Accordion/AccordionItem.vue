@@ -139,7 +139,7 @@
 
 			.nuxt-icon {
 				color: inherit;
-				rotate: 180deg;
+				rotate: 0.5turn;
 			}
 
 			&:focus-visible {

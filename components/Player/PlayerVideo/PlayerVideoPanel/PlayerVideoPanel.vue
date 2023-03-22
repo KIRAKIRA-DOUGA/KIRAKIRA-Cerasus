@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 	const counts = reactive({
 		play: 100,
 		rating: 5,
@@ -24,28 +24,32 @@
 			url: location.href,
 		});
 	}
+
+	const CountItem = (() => {
+		interface Props {
+			value: number | string;
+			icon: string;
+		}
+		return ((props, { slots }) => (
+			<div>
+				<NuxtIcon name={props.icon} />
+				<span>
+					{slots.default()}
+					<span class="value">{props.value}</span>
+				</span>
+			</div>
+		)) as VueJsx<Props>;
+	})();
 </script>
 
 <template>
 	<kira-component class="player-video-panel">
 		<div class="top">
 			<div class="info">
-				<div class="count-play">
-					<NuxtIcon name="play" />
-					<span>播放 {{ counts.play }}</span>
-				</div>
-				<div class="count-rating">
-					<NuxtIcon :name="counts.rating >= 0 ? 'thumb_up' : 'thumb_down'" />
-					<span>评分 {{ counts.rating }}</span><!-- FIXME: [兰音] 应该看得出来数值变化时的抖动。 -->
-				</div>
-				<div class="count-star">
-					<NuxtIcon name="star" />
-					<span>收藏 {{ counts.star }}</span>
-				</div>
-				<div class="count-danmaku">
-					<NuxtIcon name="play" />
-					<span>弹幕 {{ counts.danmaku }}</span>
-				</div>
+				<CountItem icon="play" :value="counts.play">播放</CountItem>
+				<CountItem icon="thumb_up" :value="counts.rating" :class="{ dislike: counts.rating < 0 }">评分</CountItem>
+				<CountItem icon="star" :value="counts.star">收藏</CountItem>
+				<CountItem icon="play" :value="counts.danmaku">弹幕</CountItem>
 				<div class="watching">
 					<span class="watching-number">10</span>
 					<span class="watching-description">人正在看</span>
@@ -94,12 +98,23 @@
 		height: $info-height;
 		color: c(icon-color);
 
-		> * {
+		> :deep(*) {
 			@include flex-center;
 			gap: 4px;
 
 			.nuxt-icon {
 				font-size: 20px;
+			}
+
+			.value {
+				display: inline-block;
+				min-width: 3ch;
+				margin-left: 0.2em;
+				text-align: center;
+			}
+
+			&.dislike .nuxt-icon {
+				rotate: 0.5turn;
 			}
 		}
 

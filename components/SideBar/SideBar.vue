@@ -90,7 +90,7 @@
 		.center {
 			@include flex-center;
 			width: max-content;
-			rotate: -90deg;
+			rotate: -100grad;
 
 			.stripes {
 				display: flex; // 结论：池沼 block 布局会恶意在元素之间加空隙还找不出原因。

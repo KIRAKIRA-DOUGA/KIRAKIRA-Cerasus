@@ -35,7 +35,7 @@
 
 	@keyframes spinner {
 		to {
-			rotate: 360deg;
+			rotate: 1turn;
 		}
 	}
 
@@ -52,7 +52,7 @@
 
 		@for $i from 1 through 8 {
 			#{calc(100% / $length) * $i} {
-				rotate: calc(1080deg / $length) * $i;
+				rotate: calc(3turn / $length) * $i;
 			}
 		}
 	}

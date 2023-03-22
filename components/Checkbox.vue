@@ -207,7 +207,7 @@
 
 	.check-symbol {
 		animation: check-symbol-resize-back $duration-half $ease-out-max reverse backwards;
-		rotate: -45deg;
+		rotate: -50grad;
 
 		&::before,
 		&::after {

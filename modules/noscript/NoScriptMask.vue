@@ -151,7 +151,7 @@
 			$progress: calc($i / $length);
 
 			#{$progress * 100%} {
-				rotate: $progress * 360deg;
+				rotate: $progress * 1turn;
 			}
 		}
 	}

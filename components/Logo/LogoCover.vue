@@ -269,7 +269,7 @@
 
 	@keyframes plus-rotation {
 		0% {
-			transform: rotateY(-360deg);
+			transform: rotateY(-1turn);
 		}
 
 		50%,
@@ -316,7 +316,7 @@
 		}
 
 		to {
-			transform: rotate(360deg);
+			transform: rotate(1turn);
 		}
 	}
 

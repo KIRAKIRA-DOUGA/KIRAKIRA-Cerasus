@@ -1,23 +1,28 @@
 :doodle {
 	@grid: 30x1 / 18vmin;
-	--deg: @p(-180deg, 180deg);
+	--deg: @p(-0.5turn, 0.5turn);
 }
 
---color: @p(#51eaea, #fffde1, #ff9d76, #FB3569);
+--color: @p(#51eaea, #fffde1, #ff9d76, #fb3569);
 
 :container {
 	perspective: 30vmin;
 }
 
-:after, :before {
-	content: '';
+::after,
+::before {
 	background: var(--color);
+	content: "";
+
 	@place-cell: @r(100%) @r(100%);
+
 	@size: @r(6px);
+
 	@shape: heart;
 }
 
 @place-cell: center;
+
 @size: 100%;
 
 box-shadow: @m2(0 0 50px var(--color));
@@ -28,7 +33,9 @@ animation: scale-up 12s linear infinite;
 animation-delay: calc(-12s / @size() * @i());
 
 @keyframes scale-up {
-	0%, 95.01%, 100% {
+	0%,
+	95.01%,
+	100% {
 		transform: translateZ(0) rotate(0);
 		opacity: 0;
 	}
