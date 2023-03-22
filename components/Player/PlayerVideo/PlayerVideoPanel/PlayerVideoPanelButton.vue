@@ -28,6 +28,7 @@
 		@include flex-center;
 		@include square(36px);
 		@include circle;
+		@include ripple-clickable-only-inside;
 
 		button {
 			@include flex-center;
@@ -45,10 +46,6 @@
 			&:focus-visible {
 				@include button-shadow-focus;
 				@include square(40px);
-			}
-
-			&:hover {
-				z-index: 1;
 			}
 		}
 	}

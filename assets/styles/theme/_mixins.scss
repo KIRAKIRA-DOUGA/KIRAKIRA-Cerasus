@@ -98,3 +98,17 @@
 	left: 0;
 	margin: auto;
 }
+
+@mixin ripple-clickable-only-inside {
+	> * {
+		pointer-events: none;
+	}
+
+	&:is(:hover, :focus) {
+		z-index: 1;
+
+		> * {
+			pointer-events: auto;
+		}
+	}
+}

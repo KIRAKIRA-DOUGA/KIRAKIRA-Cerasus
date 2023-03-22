@@ -35,3 +35,9 @@
 	<NuxtLayout v-else-if="isStatusCode(502)" name="error502" :statusCode="error.statusCode" :message="error.message" />
 	<NuxtLayout v-else name="error500" :statusCode="error.statusCode" :message="error.message" :stack="error.stack ?? ''" />
 </template>
+
+<style lang="scss">
+	body {
+		overflow: hidden;
+	}
+</style>

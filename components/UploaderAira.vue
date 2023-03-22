@@ -15,7 +15,7 @@
 	 * @param el - HTML DOM 元素。
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
-	async function onContentEnter(el: HTMLElement, done: () => void) {
+	async function onContentEnter(el: Element, done: () => void) {
 		await animateSize(el, null, { startWidth: 0 });
 		done();
 	}
@@ -26,7 +26,7 @@
 	 * @param el - HTML DOM 元素。
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
-	async function onContentLeave(el: HTMLElement, done: () => void) {
+	async function onContentLeave(el: Element, done: () => void) {
 		await animateSize(el, null, { endWidth: 0 });
 		done();
 	}

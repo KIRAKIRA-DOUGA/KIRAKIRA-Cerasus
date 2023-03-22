@@ -225,20 +225,22 @@
 		window.getSelection()?.removeAllRanges();
 	}
 
-	const styles = useCssModule("unselectedItem");
-	/**
-	 * @param props - 属性。
-	 * @param props.page - 显示的页码值。
-	 * @returns 未选中项目组件。
-	 */
-	const UnselectedItem = (props: { page: number }) => (
-		<div class={styles.unselectedItem}>
-			<div class={[styles.background, styles.hover]}></div>
-			<div class={[styles.background, styles.pressed]}></div>
-			{/* 按下状态统一叫 pressed 不叫 active 是为了与活跃状态区分开。 */}
-			<span>{props.page}</span>
-		</div>
-	);
+	const UnselectedItem = (() => {
+		const styles = useCssModule("unselectedItem");
+		/**
+		 * @param props - 属性。
+		 * @param props.page - 显示的页码值。
+		 * @returns 未选中项目组件。
+		 */
+		return (props: { page: number }) => (
+			<div class={styles.unselectedItem}>
+				<div class={[styles.background, styles.hover]}></div>
+				<div class={[styles.background, styles.pressed]}></div>
+				{/* 按下状态统一叫 pressed 不叫 active 是为了与活跃状态区分开。 */}
+				<span>{props.page}</span>
+			</div>
+		);
+	})();
 </script>
 
 <template>

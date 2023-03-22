@@ -1,4 +1,7 @@
-<script setup lang="ts">
+<script setup lang="tsx">
+	import { Transition } from "vue";
+	import { NuxtIcon } from "#components";
+
 	const props = withDefaults(defineProps<{
 		/** 当前输入是否非法。 */
 		invalid?: boolean;
@@ -54,7 +57,7 @@
 	 * @param el - HTML DOM 元素。
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
-	async function onAfterIconEnter(el: HTMLElement, done: () => void) {
+	async function onAfterIconEnter(el: Element, done: () => void) {
 		await animateSize(el, null, { startWidth: 0, duration: 300, startStyle: { scale: 0 }, specified: "width" });
 		done();
 	}
@@ -65,10 +68,32 @@
 	 * @param el - HTML DOM 元素。
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
-	async function onAfterIconLeave(el: HTMLElement, done: () => void) {
+	async function onAfterIconLeave(el: Element, done: () => void) {
 		await animateSize(el, null, { endWidth: 0, duration: 300, endStyle: { scale: 0 }, specified: "width" });
 		done();
 	}
+
+	const AfterIcon = (() => {
+		const styles = useCssModule("afterIcon");
+		interface Props {
+			shown?: boolean;
+			onClick?: (payload: MouseEvent) => void;
+			icon: string;
+		}
+		return (props: Props) => (
+			<Transition css={false} onEnter={onAfterIconEnter} onLeave={onAfterIconLeave}>
+				{
+					props.shown && (
+						<div class={[styles.wrapper, { [styles.clickable]: !!props.onClick }]} onClick={props.onClick}>
+							<div v-ripple>
+								<NuxtIcon name={props.icon} />
+							</div>
+						</div>
+					)
+				}
+			</Transition>
+		);
+	})();
 </script>
 
 <template>
@@ -86,23 +111,13 @@
 			<input ref="input" v-model="value" :type="type" :placeholder="placeholder" :class="{ typed }" />
 			<label v-if="size === 'large'">{{ placeholder }}</label>
 			<Fragment class="after-icons">
-				<Transition :css="false" @enter="onAfterIconEnter" @leave="onAfterIconLeave">
-					<div v-if="showClearAll" v-ripple class="clear-button" @click="clearAll">
-						<NuxtIcon name="close" />
-					</div>
-				</Transition>
-				<div v-if="props.type === 'password'" v-ripple class="password-button" @click="showPassword = !showPassword">
-					<NuxtIcon :name="showPassword ? 'visibility' : 'visibility_off'" />
-				</div>
-				<Transition :css="false" @enter="onAfterIconEnter" @leave="onAfterIconLeave">
-					<div v-if="invalid">
-						<NuxtIcon name="error" class="invalid-icon" />
-					</div>
-				</Transition>
+				<AfterIcon :shown="showClearAll" icon="close" @click="clearAll" />
+				<AfterIcon :shown="props.type === 'password'" :icon="showPassword ? 'visibility' : 'visibility_off'" @click="showPassword = !showPassword" />
+				<AfterIcon :shown="invalid" icon="error" />
 			</Fragment>
 		</div>
-		<div v-if="size === 'large'" class="large-stripe"></div>
-		<div class="focus-stripe"></div>
+		<div v-if="size === 'large'" class="stripe large-stripe"></div>
+		<div class="stripe focus-stripe"></div>
 	</kira-component>
 </template>
 
@@ -116,6 +131,7 @@
 	.text-box {
 		@include radius-large;
 		@include control-inner-shadow;
+		position: relative;
 		height: $default-height;
 		overflow: hidden;
 		background-color: c(inset-bg);
@@ -158,21 +174,22 @@
 		}
 	}
 
-	.large-stripe {
+	.stripe {
+		position: absolute;
+		z-index: 2;
 		width: 100%;
 		height: $focus-stripe-height;
 		margin-top: -$focus-stripe-height;
-		background-color: c(icon-color-400);
 		pointer-events: none;
 	}
 
+	.large-stripe {
+		background-color: c(icon-color-400);
+	}
+
 	.focus-stripe {
-		width: 100%;
-		height: $focus-stripe-height;
-		margin-top: -$focus-stripe-height;
 		background-color: c(accent);
 		scale: 0 1;
-		pointer-events: none;
 	}
 
 	.wrapper {
@@ -244,7 +261,7 @@
 		}
 
 		.invalid &::selection {
-			background-color: c(red);
+			background-color: c(red); // BUG: Chromium 111 开始设置任何反选文本的颜色都会变成透明色。包括 GitHub 和 Edge 的开发工具在内都有这种显示问题。
 		}
 	}
 
@@ -261,20 +278,9 @@
 		}
 	}
 
-	.invalid-icon {
-		color: c(red);
-	}
-
-	.after-icons > * {
+	.after-icons {
 		@include flex-center;
-		@include square(var(--size));
-		@include radius-large(left); // XXX: [兰音] 我还是感觉输入框右边的按钮在按下时有点格格不入，有什么更好的想法吗？尤其是和下方横线重合的地方。
 		--size: #{$default-height};
-
-		> .nuxt-icon {
-			color: c(icon-color);
-			font-size: 24px;
-		}
 
 		.large & {
 			--size: #{$large-height};
@@ -284,12 +290,40 @@
 			--size: #{$small-height};
 		}
 
+		.invalid & :deep(.nuxt-icon) {
+			color: c(red) !important;
+		}
+	}
+</style>
+
+<style module="afterIcon" lang="scss">
+	.wrapper {
+		@include flex-center;
+		@include square(var(--size));
+		@include ripple-clickable-only-inside;
+
+		> * {
+			@include flex-center;
+			@include square(calc(var(--size) * 1.5));
+			@include circle;
+			flex-shrink: 0;
+
+			> :global(.nuxt-icon) {
+				color: c(icon-color);
+				font-size: 24px;
+			}
+		}
+
+		&.clickable {
+			cursor: pointer;
+		}
+
+		&:not(.clickable) {
+			pointer-events: none !important;
+		}
+
 		&:nth-last-child {
 			margin-right: 4px;
 		}
-	}
-
-	.password-button {
-		cursor: pointer;
 	}
 </style>

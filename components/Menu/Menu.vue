@@ -46,7 +46,7 @@
 	 * @param el - HTML DOM 元素。
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
-	async function onMenuEnter(el: HTMLElement, done: () => void) {
+	async function onMenuEnter(el: Element, done: () => void) {
 		await animateSize(el, null, { startHeight: 0, duration: 500, getSize: size.value, withoutAdjustPadding: "both" });
 		done();
 	}
@@ -57,7 +57,7 @@
 	 * @param el - HTML DOM 元素。
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
-	async function onMenuLeave(el: HTMLElement, done: () => void) {
+	async function onMenuLeave(el: Element, done: () => void) {
 		await animateSize(el, null, { endHeight: 0, duration: 300 });
 		done();
 	}
