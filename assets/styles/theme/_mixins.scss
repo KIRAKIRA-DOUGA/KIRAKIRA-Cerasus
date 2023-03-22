@@ -33,7 +33,7 @@
 /// 将元素占满整个屏幕。
 /// 将长宽均设为 100% 视窗宽高度值。
 ///
-/// **注意：100vh 将不会包含手机浏览器的地址栏和工具栏的高度。**
+/// NOTE: 100vh 将不会包含手机浏览器的地址栏和工具栏的高度。
 /// @param {String} $position [fixed] - 指定元素的 position 属性。
 /// @output width, height
 @mixin full-screen($position: fixed) {
@@ -87,7 +87,7 @@
 }
 
 /// 已知宽/高度的绝对定位的居中。
-/// 注意：使用此混合必须指定宽高度。
+/// NOTE: 使用此混合必须指定宽高度。
 /// @param {String} $position [fixed] - 指定元素的 position 属性。
 /// @output - position, top, right, bottom, left, margin
 @mixin absolute-center-widthful($position: absolute) {

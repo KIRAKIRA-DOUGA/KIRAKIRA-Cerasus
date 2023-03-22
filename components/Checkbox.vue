@@ -26,7 +26,7 @@
 
 	const checkbox = ref<HTMLInputElement>();
 	const isChecked = computed(() => {
-		// 注意：由于期望在点击半选状态后应该切换到选中状态，因此在二元的定义下半选应该归纳于未选中状态下。
+		// NOTE: 由于期望在点击半选状态后应该切换到选中状态，因此在二元的定义下半选应该归纳于未选中状态下。
 		if (props.modelValue && props.value)
 			return props.modelValue.includes(props.value);
 		else return props.checkState === "checked";

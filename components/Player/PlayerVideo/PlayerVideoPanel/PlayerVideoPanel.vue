@@ -36,7 +36,7 @@
 				</div>
 				<div class="count-rating">
 					<NuxtIcon :name="counts.rating >= 0 ? 'thumb_up' : 'thumb_down'" />
-					<span>评分 {{ counts.rating }}</span><!-- TODO: [兰音] 应该看得出来数值变化时的抖动。 -->
+					<span>评分 {{ counts.rating }}</span><!-- FIXME: [兰音] 应该看得出来数值变化时的抖动。 -->
 				</div>
 				<div class="count-star">
 					<NuxtIcon name="star" />

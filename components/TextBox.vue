@@ -268,7 +268,7 @@
 	.after-icons > * {
 		@include flex-center;
 		@include square(var(--size));
-		@include radius-large(left); // TODO: [兰音] 我还是感觉输入框右边的按钮在按下时有点格格不入，有什么更好的想法吗？尤其是和下方横线重合的地方。
+		@include radius-large(left); // XXX: [兰音] 我还是感觉输入框右边的按钮在按下时有点格格不入，有什么更好的想法吗？尤其是和下方横线重合的地方。
 		--size: #{$default-height};
 
 		> .nuxt-icon {
