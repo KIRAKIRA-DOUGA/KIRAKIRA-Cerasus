@@ -26,6 +26,16 @@
 		@include flex-block;
 		flex-grow: 1;
 		color: c(icon-color);
+
+		table {
+			@include flex-block;
+			height: 100%;
+			contain: strict;
+
+			tbody {
+				overflow: auto;
+			}
+		}
 	}
 
 	.header {
@@ -48,7 +58,7 @@
 			resize: horizontal;
 
 			&:hover {
-				border-right-color: c(gray-40);
+				border-right-color: c(gray-2);
 			}
 
 			&:active {
