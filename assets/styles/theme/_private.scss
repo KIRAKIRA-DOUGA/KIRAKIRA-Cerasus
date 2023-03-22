@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "sass:map";
 @use "sass:list";
 @use "colors" as *;
@@ -35,7 +36,10 @@
 	$result-color: themed-color($color, $is-light);
 
 	#{$property}: $result-color;
-	#{$property}-rgb: color-to-rgb-list($result-color);
+
+	@if color.alpha($result-color) == 1 { // 如果颜色固定为半透明色，则不要再生成 RGB 三色的列表了。
+		#{$property}-rgb: color-to-rgb-list($result-color);
+	}
 }
 
 /// 根据指定的键名确定是否生成波浪下划线链接背景。
