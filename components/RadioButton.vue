@@ -161,7 +161,7 @@
 		}
 
 		#{$component-class}:is(:hover, :active) & {
-			background-color: c(gray, 50%);
+			background-color: c(gray-30, 60%);
 		}
 
 		&::before {

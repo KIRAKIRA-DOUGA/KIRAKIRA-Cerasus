@@ -48,7 +48,7 @@
 			resize: horizontal;
 
 			&:hover {
-				border-right-color: c(gray-2);
+				border-right-color: c(gray-40);
 			}
 
 			&:active {

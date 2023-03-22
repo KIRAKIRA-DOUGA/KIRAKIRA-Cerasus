@@ -43,16 +43,16 @@
 
 @mixin button-shadow-unchecked-focus {
 	// box-shadow: 0 4px 4px c(unchecked, 30%), 0 0 0 3px c(unchecked-focus, 50%);
-	box-shadow: 0 4px 4px c(accent-shadow, 30%), 0 0 0 3px c(gray-2, 50%);
+	box-shadow: 0 4px 4px c(accent-shadow, 30%), 0 0 0 3px c(gray-40, 50%);
 }
 
 @mixin large-shadow-unchecked-focus {
 	// box-shadow: 0 4px 4px c(unchecked, 30%), 0 0 0 10px c(unchecked-focus, 50%);
-	box-shadow: 0 1px 6px c(accent-shadow, 30%), 0 0 0 10px c(gray-2, 50%);
+	box-shadow: 0 1px 6px c(accent-shadow, 30%), 0 0 0 10px c(gray-40, 50%);
 }
 
 @mixin button-shadow-unchecked-focus-only {
-	box-shadow: 0 0 0 3px c(gray-2, 50%);
+	box-shadow: 0 0 0 3px c(gray-40, 50%);
 }
 
 @mixin button-shadow-unchecked-hover {
@@ -60,7 +60,7 @@
 }
 
 @mixin button-shadow-unchecked-hover-focus {
-	box-shadow: 0 9px 9px c(accent-shadow, 30%), 0 0 0 3px c(gray-2, 50%);
+	box-shadow: 0 9px 9px c(accent-shadow, 30%), 0 0 0 3px c(gray-40, 50%);
 }
 // #endregion
 

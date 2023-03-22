@@ -127,14 +127,14 @@
 			top: calc(($thumb-size - $base-height) / 2);
 			width: $width;
 			height: $base-height;
-			background-color: c(gray-2);
+			background-color: c(gray-40);
 
 			.on & {
 				background-color: c(accent, 40%);
 			}
 
 			.disabled & {
-				background-color: c(gray-2, 40%);
+				background-color: c(gray-40, 40%);
 			}
 
 			.on.disabled & {
@@ -162,7 +162,7 @@
 
 			.disabled & {
 				@include control-ball-shadow-off-disabled;
-				background-color: c(inner-color-85);
+				background-color: c(gray-30);
 			}
 
 			.on.disabled & {

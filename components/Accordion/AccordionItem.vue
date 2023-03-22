@@ -88,7 +88,7 @@
 
 		> * {
 			padding: 0.75rem 1rem;
-			// border-bottom: c(gray) 1px solid; // 有一说一，边框线确实丑。
+			// border-bottom: c(gray-30) 1px solid; // 有一说一，边框线确实丑。
 			transition: $fallback-transitions, padding $ease-out-smooth 500ms;
 		}
 
@@ -126,7 +126,7 @@
 
 		&:hover {
 			padding-left: 1.25rem;
-			background-color: c(gray, 30%);
+			background-color: c(gray-30, 20%);
 		}
 
 		&.shown {

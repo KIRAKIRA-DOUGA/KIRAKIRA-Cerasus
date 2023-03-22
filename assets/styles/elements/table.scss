@@ -4,7 +4,7 @@
 table:not(.lite) {
 	@include radius-large;
 	@include chip-shadow;
-	$border-bottom: c(gray-2) 1px solid;
+	$border-bottom: c(gray-40) 1px solid;
 	overflow: hidden;
 	text-align: left;
 	border-bottom: $border-bottom;
@@ -25,10 +25,10 @@ table:not(.lite) {
 	}
 
 	tr:nth-of-type(odd) > td {
-		background-color: c(gray);
+		background-color: c(gray-30);
 	}
 
 	tr:hover > td {
-		background-color: c(gray-2);
+		background-color: c(gray-40);
 	}
 }

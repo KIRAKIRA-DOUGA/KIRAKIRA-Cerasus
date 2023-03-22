@@ -184,7 +184,7 @@
 	}
 
 	.large-stripe {
-		background-color: c(icon-color-400);
+		background-color: c(icon-color, 50%);
 	}
 
 	.focus-stripe {

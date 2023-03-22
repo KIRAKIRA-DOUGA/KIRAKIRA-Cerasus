@@ -97,7 +97,7 @@
 		max-height: var(--inner-height);
 		margin: 0 auto;
 		overflow: hidden;
-		background-color: c(inner-color-85, 50%);
+		background-color: c(gray-30, 50%);
 
 		@media (min-width: $max-width) {
 			@include radius-large;

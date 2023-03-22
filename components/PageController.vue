@@ -417,11 +417,11 @@
 			pointer-events: none;
 
 			&.hover {
-				background: radial-gradient(50% 250% at 50% 50%, c(gray) 33.33%, c(gray, 0) 100%);
+				background: radial-gradient(50% 250% at 50% 50%, c(gray-30) 33.33%, c(gray-30, 0) 100%);
 			}
 
 			&.pressed {
-				background: radial-gradient(50% 250% at 50% 50%, c(gray-2) 33.33%, c(gray-2, 0) 100%);
+				background: radial-gradient(50% 250% at 50% 50%, c(gray-40) 33.33%, c(gray-40, 0) 100%);
 			}
 		}
 
