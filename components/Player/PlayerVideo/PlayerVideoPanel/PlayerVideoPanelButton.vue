@@ -46,6 +46,10 @@
 				@include button-shadow-focus;
 				@include square(40px);
 			}
+
+			&:hover {
+				z-index: 1;
+			}
 		}
 	}
 </style>
