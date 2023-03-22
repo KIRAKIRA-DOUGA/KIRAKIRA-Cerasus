@@ -50,7 +50,7 @@ module.exports = {
 		"no-empty": ["error", { "allowEmptyCatch": true }],
 		"no-constant-condition": ["error", { "checkLoops": false }],
 		"eqeqeq": "error",
-		"prefer-const": "error",
+		"prefer-const": ["error", { "destructuring": "all" }],
 		"for-direction": "error",
 		"getter-return": "error",
 		"no-compare-neg-zero": "error",
@@ -123,11 +123,13 @@ module.exports = {
 			"requireParamType": false, // TypeScript 不需要 JSDoc 的 type。
 			"requireReturnType": false,
 		}],
+		"no-inner-declarations": "warn",
 		"no-unmodified-loop-condition": "off",
 		"no-return-assign": "off",
 		"no-redeclare": "off",
 		"no-mixed-operators": "off",
 		"no-extra-parens": "off",
+		"no-void": ["error", { "allowAsStatement": true }],
 		"import/order": "off", // 与 VSCode 内置导入排序特性打架。
 		"import/first": "off", // 与 Vue 特性冲突。
 		"import/named": "off", // 与 TypeScript 特性冲突。

@@ -4,11 +4,20 @@
 
 <template>
 	<kira-component class="player-video-danmaku-list">
-		<header class="header">
-			<textarea readonly>时间</textarea>
-			<textarea readonly>内容</textarea>
-			<textarea readonly>发送时间</textarea>
-		</header>
+		<table class="lite">
+			<thead>
+				<th>时间</th>
+				<th>内容</th>
+				<th>发送时间</th>
+			</thead>
+			<tbody>
+				<tr v-for="i in 100" :key="i">
+					<td>{{ new Duration(i - 1) }}</td>
+					<td>第{{ digitCase(i) }}，火前留名！</td>
+					<td>{{ formatDate(new Date(), "yyyy-MM-dd") }}</td>
+				</tr>
+			</tbody>
+		</table>
 	</kira-component>
 </template>
 
