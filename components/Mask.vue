@@ -42,7 +42,7 @@
 </script>
 
 <template>
-	<ClientOnlyTeleport to="body">
+	<ClientOnlyTeleport to="#popovers">
 		<Fragment :style="{ '--z-index': zIndex }">
 			<Transition name="mask">
 				<div

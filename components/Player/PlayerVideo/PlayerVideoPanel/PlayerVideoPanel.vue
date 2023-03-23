@@ -11,7 +11,7 @@
 	 * 收藏视频。
 	 */
 	function favorite() {
-		useEvent("user:requestLogin");
+		useEvent("app:requestLogin");
 	}
 
 	/**

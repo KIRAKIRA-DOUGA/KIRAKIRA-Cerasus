@@ -38,6 +38,10 @@ body {
 	font-size: 14px;
 	background-color: c(main-bg);
 	transition: background-color $ease-out-max 250ms;
+
+	&.no-scroll {
+		overflow: hidden;
+	}
 }
 
 a {
@@ -82,6 +86,17 @@ p {
 ::selection {
 	color: white;
 	background-color: c(accent);
+}
+
+#popovers {
+	display: contents;
+
+	> * {
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 31;
+	}
 }
 
 // #region 页面过渡

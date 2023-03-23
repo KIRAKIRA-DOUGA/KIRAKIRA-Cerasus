@@ -21,7 +21,7 @@
 		setTimeout(() => ready.value = false, 2000); // 定时移除开场动画。
 	});
 
-	useListen("user:requestLogin", () => showLogin.value = true);
+	useListen("app:requestLogin", () => showLogin.value = true);
 </script>
 
 <template>

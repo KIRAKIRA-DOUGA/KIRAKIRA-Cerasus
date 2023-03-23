@@ -41,6 +41,7 @@
 		arrayClearAll(kiraGoods);
 		if (e.checked) kiraGoods.push("kawaii", "nijigen", "nice");
 	};
+	const toastMessage = ref("");
 
 	/**
 	 * 单击按钮事件。
@@ -148,6 +149,10 @@
 					<hr />
 					<MenuItem icon="delete">删除</MenuItem>
 				</Menu>
+			</div>
+			<div class="toast-test">
+				<TextBox v-model="toastMessage" placeholder="发送消息到消息框" />
+				<Button icon="send" @click="useToast(toastMessage)">发送到消息框</Button>
 			</div>
 			<RadioButton v-model="logoTextForm" value="hidden">{{ t.logoHidden }}</RadioButton>
 			<RadioButton v-model="logoTextForm" value="half">{{ t.logoHalf }}</RadioButton>
@@ -331,5 +336,18 @@
 
 	em {
 		display: block;
+	}
+
+	.toast-test {
+		@include flex-center;
+		gap: 10px;
+
+		> button {
+			flex-shrink: 0;
+		}
+
+		> .text-box {
+			width: 100%;
+		}
 	}
 </style>

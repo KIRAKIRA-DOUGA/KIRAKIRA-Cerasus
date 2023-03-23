@@ -65,4 +65,5 @@
 			</Transition>
 		</RouterView>
 	</NuxtLayout>
+	<Toasts />
 </template>

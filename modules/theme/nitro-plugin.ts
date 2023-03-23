@@ -7,5 +7,7 @@ export default defineNitroPlugin(nitro => {
 		// 不要用 <script type="module">，否则会有延迟。
 		const scriptPath = "/_nuxt/.nuxt/theme.script.js";
 		html.head.push(`<script src="${scriptPath}"></script>`);
+		// 接下来在此处定义与本模块无关的其它需要直接修改 HTML 模板的部分。
+		html.bodyAppend.push('<div id="popovers"></div>');
 	});
 });

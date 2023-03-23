@@ -1,8 +1,10 @@
 import mitt from "mitt";
+import { ToastEvent } from "./toast";
 
 type ApplicationEvents = {
 	// 在此处定义需要全局使用的事件。
-	"user:requestLogin": void;
+	"app:requestLogin": void;
+	"app:toast": ToastEvent;
 };
 
 const emitter = mitt<ApplicationEvents>();

@@ -64,7 +64,7 @@
 }
 // #endregion
 
-// #region 主题色
+// #region 主要主题色
 @mixin button-shadow {
 	box-shadow: 0 4px 4px c(accent, 30%);
 }
@@ -148,5 +148,11 @@
 
 @mixin card-in-card-shadow {
 	box-shadow: 0 2px 8px c(accent-shadow, 8%);
+}
+// #endregion
+
+// #region 次要主题色
+@mixin toast-shadow-successful {
+	box-shadow: 0 2px 10px c(green, 30%);
 }
 // #endregion

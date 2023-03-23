@@ -2,6 +2,7 @@
 	// 把该文件移动到根目录即可自定义错误（如 404、500）页面样式。
 
 	import { NuxtError } from "nuxt/dist/app/composables/error";
+	import { httpResponseStatusCodes } from "helpers/http-status";
 
 	const props = withDefaults(defineProps<{
 		error: NuxtError;
@@ -28,6 +29,8 @@
 	}
 
 	onMounted(() => console.log(props.error));
+
+	useHead({ title: httpResponseStatusCodes[props.error.statusCode], bodyAttrs: { class: "no-scroll" } });
 </script>
 
 <template>
@@ -35,9 +38,3 @@
 	<NuxtLayout v-else-if="isStatusCode(502)" name="error502" :statusCode="error.statusCode" :message="error.message" />
 	<NuxtLayout v-else name="error500" :statusCode="error.statusCode" :message="error.message" :stack="error.stack ?? ''" />
 </template>
-
-<style lang="scss">
-	body {
-		overflow: hidden;
-	}
-</style>

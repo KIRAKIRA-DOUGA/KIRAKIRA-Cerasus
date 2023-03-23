@@ -1,5 +1,9 @@
-// export default defineAppConfig({
-// });
+/* export default defineAppConfig({
+	theme: {
+		primaryColor: "#ababab",
+	},
+	showCssDoodle: false,
+}); */
 // 不知道咋用，反正原版的这个就是用不了。
 
 export const defaults = {

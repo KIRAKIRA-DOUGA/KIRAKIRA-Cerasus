@@ -1,15 +1,17 @@
 <script setup lang="ts">
 	const danmakuItemMenu = ref<InstanceType<typeof Menu>>();
+	const currentDanmakuIndex = ref(0);
+	const { copy } = useClipboard();
 
 	/**
 	 * 获取弹幕。
-	 * @param i - 弹幕序号。
+	 * @param index - 弹幕序号。
 	 * @returns - 弹幕信息。
 	 */
-	function getDanmaku(i: index) {
+	function getDanmaku(index: number) {
 		return {
-			videoTime: new Duration(i - 1),
-			content: `第${digitCase(i)}，火前留名！`,
+			videoTime: new Duration(index - 1),
+			content: `第${digitCase(index)}，火前留名！`,
 			sendTime: formatDate(new Date(), "yyyy-MM-dd"),
 		};
 	}
@@ -24,15 +26,13 @@
 				<th>发送时间</th>
 			</thead>
 			<tbody>
-				<tr v-for="i in 100" :key="i" @contextmenu.prevent="e => danmakuItemMenu?.show(e)">
-					<td>{{ new Duration(i - 1) }}</td>
-					<td>第{{ digitCase(i) }}，火前留名！</td>
-					<td>{{ formatDate(new Date(), "yyyy-MM-dd") }}</td>
+				<tr v-for="i in 100" :key="i" @contextmenu.prevent="e => { currentDanmakuIndex = i; danmakuItemMenu?.show(e); }">
+					<td v-for="(value, key) in getDanmaku(i)" :key="key">{{ value }}</td>
 				</tr>
 			</tbody>
 		</table>
 		<Menu ref="danmakuItemMenu">
-			<MenuItem icon="copy">复制</MenuItem>
+			<MenuItem icon="copy" @click="() => { copy(getDanmaku(currentDanmakuIndex).content); useToast('已复制'); }">复制</MenuItem>
 			<MenuItem>举报</MenuItem>
 		</Menu>
 	</kira-component>
