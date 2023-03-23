@@ -38,5 +38,9 @@
 		&:focus-visible {
 			@include button-shadow-focus;
 		}
+
+		&:is(:hover, :active) {
+			background-color: c(hover-color);
+		}
 	}
 </style>
