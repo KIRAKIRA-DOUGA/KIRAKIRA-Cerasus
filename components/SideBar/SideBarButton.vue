@@ -10,13 +10,14 @@
 <template>
 	<component
 		:is="to ? LocaleLink : 'div'"
+		v-ripple
 		:to="to"
 		class="button-wrapper lite"
 		draggable="false"
 		activable
 		:tabindex="0"
 	>
-		<div v-ripple class="button">
+		<div class="button">
 			<NuxtIcon :name="icon" class="icon" :tabindex="-1" />
 		</div>
 	</component>
@@ -27,9 +28,8 @@
 
 	.button-wrapper {
 		@include flex-center;
-		@include square($icon-size);
 		@include circle;
-		@include ripple-clickable-only-inside;
+		width: $icon-size;
 		cursor: pointer;
 
 		&:focus-visible {
@@ -39,9 +39,8 @@
 
 	.button {
 		@include flex-center;
-		@include square(64px);
+		@include square($icon-size);
 		@include circle;
-		flex-shrink: 0;
 		color: c(icon-color);
 		font-size: 24px;
 
