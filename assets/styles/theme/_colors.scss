@@ -30,20 +30,6 @@ $neutral-colors: (
 // 如果定义为单个颜色，则自动识别为浅色主题颜色，深色主题颜色通过反转亮度自动计算得出。
 // 如果不想让它反转亮度，请定义为列表，并将列表两项设为相同的颜色。
 
-// 次要主题色
-// 此处的颜色各主题色均保持固定不变。
-// 我打算以后改成自动根据获取主要主题色的 accent-50 色号自动获取。
-$secondary-colors: (
-	pink: #f06e8e,
-	sky: #45b3e1,
-	blue: #4581e1,
-	green: #4bb530,
-	orange: #f9a400,
-	purple: #bb35ea,
-	red: #dd1818,
-	yellow: #ffca2c,
-);
-
 // 主要主题色
 // 此处的颜色根据主题色自动变换。
 $primary-colors: (
@@ -114,6 +100,17 @@ $primary-colors: (
 		neutral-10: #a989b6,
 	),
 );
+
+// 次要主题色
+// 此处的颜色各主题色均保持固定不变。
+$secondary-colors: (
+	red: #dd1818,
+	yellow: #ffca2c,
+);
+
+@each $palette, $accents in $primary-colors {
+	$secondary-colors: map.set($secondary-colors, $palette, map.get($accents, accent-50));
+}
 
 // 各状态所用颜色值
 $state-colors: (

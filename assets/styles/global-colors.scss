@@ -10,26 +10,40 @@
 	#{$selector} {
 		color-scheme: if($is-light, light, dark);
 
-		@each $colors in $neutral-colors, $secondary-colors, $grayscale-colors {
-			@each $key, $color in $colors {
-				@include hex-and-rgb-color($key, $color, $is-light);
+		@for $j from 1 through 2 {
+			$is-rgb-list: $j == 2;
+
+			@each $colors in $neutral-colors, $secondary-colors, $grayscale-colors {
+				@each $key, $color in $colors {
+					@include hex-or-rgb-color($key, $color, $is-light, $is-rgb-list);
+				}
+			}
+
+			@if $is-light {
+				@each $state, $color in $state-colors {
+					@if not $is-rgb-list {
+						--#{$state}: var(--#{$color});
+					} @else {
+						--#{$state}-rgb: var(--#{$color}-rgb);
+					}
+				}
 			}
 		}
 
 		@each $palette, $accents in $primary-colors {
 			&.#{"" + $palette} {
-				@each $key, $color in $accents {
-					@include hex-and-rgb-color($key, $color, $is-light);
-					@include wave-link($key, $color, $is-light);
+				@for $j from 1 through 2 {
+					$is-rgb-list: $j == 2;
+
+					@each $key, $color in $accents {
+						@include hex-or-rgb-color($key, $color, $is-light, $is-rgb-list);
+
+						@if $is-rgb-list {
+							@include wave-link($key, $color, $is-light);
+						}
+					}
 				}
 			}
 		}
-	}
-}
-
-:root {
-	@each $state, $color in $state-colors {
-		--#{$state}: var(--#{$color});
-		--#{$state}-rgb: var(--#{$color}-rgb);
 	}
 }
