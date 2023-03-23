@@ -3,7 +3,7 @@
  * @param num - 数字。
  * @returns 标准化的数字。
  */
-export function normalizeNumber(num: number | string) {
+export function normalizeNumber(num: number | bigint | string) {
 	let s = String(num);
 	const regexp = (num: string) => num.trim().toLowerCase().replace(/\+/g, "").replace(/(?<=e|-|^)0*|(?<=\.[^e]*)0*(?=e|$)/g, "").replace(/(?<=-|^)\./, "0.").replace(/\.(?=e|$)/g, "");
 	s = regexp(s);
@@ -36,13 +36,13 @@ export function normalizeNumber(num: number | string) {
  * @param amountMode - 是否以金额模式输出。
  * @returns 中文数字。
  */
-export function digitCase(n: number, upperCase: boolean = false, amountMode: boolean = false) {
+export function digitCase(n: number | bigint, upperCase: boolean = false, amountMode: boolean = false) {
 	let s = normalizeNumber(n);
 	const fraction = ["角", "分", "厘", "毫", "丝", "忽", "微", "纤", "沙", "尘", "埃", "渺", "漠", "模糊", "逡巡", "须臾", "瞬息", "弹指", "刹那", "六德"];
 	const arabic = "0123456789";
 	const lower = "〇一二三四五六七八九元十百千万亿";
 	const upper = "零壹贰叁肆伍陆柒捌玖圆拾佰仟萬億";
-	const unit = [amountMode ? "元" : "", "万", "亿", "兆", "京", "垓", "秭", "壤", "沟", "涧", "正", "载", "极", "恒河沙", "阿僧祇", "那由他", "不可思议", "净", "清", "空", "虚"];
+	const unit = ["元", "万", "亿", "兆", "京", "垓", "秭", "壤", "沟", "涧", "正", "载", "极", "恒河沙", "阿僧祇", "那由他", "不可思议", "净", "清", "空", "虚"];
 	const digit = ["", "十", "百", "千"];
 	let sign = "";
 	if (s[0] === "-") { sign = amountMode ? "欠" : "负"; s = s.slice(1); }
@@ -70,6 +70,8 @@ export function digitCase(n: number, upperCase: boolean = false, amountMode: boo
 	if (int === "元") int = "〇元";
 	int = int.replace(/^一十/g, "十");
 	let result = sign + int + dec;
+	if (!amountMode)
+		result = result.replaceAll("元", "").replaceAll("〇", "零");
 	if (upperCase)
 		for (let i = 0; i < upper.length; i++)
 			result = result.replaceAll(lower[i], upper[i]);
