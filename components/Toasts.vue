@@ -87,7 +87,7 @@
 			margin-top: 12px;
 			overflow: hidden;
 			color: c(green);
-			background-color: c(main-bg);
+			background-color: c(acrylic-bg, 75%);
 
 			.content {
 				@include flex-center;
