@@ -304,7 +304,7 @@
 
 		> * {
 			@include flex-center;
-			@include square(calc(var(--size) * 1.5));
+			@include square(calc(var(--size) * 1.3));
 			@include circle;
 			flex-shrink: 0;
 

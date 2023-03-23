@@ -64,7 +64,7 @@
 			}
 
 			tr:hover {
-				background-color: c(gray-40);
+				background-color: c(hover-color);
 			}
 		}
 	}

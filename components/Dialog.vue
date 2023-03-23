@@ -97,7 +97,7 @@
 		max-height: var(--inner-height);
 		margin: 0 auto;
 		overflow: hidden;
-		background-color: c(gray-30, 50%);
+		background-color: c(acrylic-bg, 75%);
 
 		@media (min-width: $max-width) {
 			@include radius-large;
@@ -112,7 +112,7 @@
 			gap: 1rem;
 			padding: $padding;
 			overflow: hidden overlay;
-			background-color: c(main-bg, 75%);
+			background-color: c(main-bg, 45%);
 
 			.nuxt-icon {
 				@include flex-block;

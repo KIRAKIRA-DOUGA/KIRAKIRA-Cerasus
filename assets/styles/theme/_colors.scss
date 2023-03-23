@@ -20,10 +20,11 @@ $neutral-colors: (
 	main-bg: (white, #171414),
 	main-fg: (black, white),
 	inset-bg: (c(black, 2%), c(white, 6%)),
-	acrylic-bg: (#fafafa, #222),
+	acrylic-bg: map.get($grayscale-colors, gray-20),
 	icon-color: (#797173, #e5e4e4),
 	divider: #505050,
 	text-color: map.get($grayscale-colors, gray-80),
+	hover-color: (c(black, 5%), c(white, 10%)),
 );
 
 // 如果定义为列表，则第一项为浅色主题颜色，第二项为深色主题颜色。

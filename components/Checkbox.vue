@@ -164,7 +164,7 @@
 		animation: outer-border-change-back $duration-half $duration-half $ease-in-expo reverse backwards;
 
 		#{$component-class}:is(:hover, :active) & {
-			background-color: c(gray-30, 60%);
+			background-color: c(hover-color);
 		}
 	}
 

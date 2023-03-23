@@ -62,7 +62,7 @@
 		&:hover {
 			padding-right: 13px;
 			padding-left: 17px;
-			background-color: c(text-color, 5%);
+			background-color: c(hover-color);
 		}
 
 		&:not(:hover) {
