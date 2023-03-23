@@ -4,12 +4,14 @@
 	}>();
 
 	const slots = useSlots().default?.();
+	const instance = getCurrentInstance();
 
 	/**
 	 * 关闭所有手风琴项目。
 	 */
 	function collaspeAll() {
 		console.log(slots); // TODO: [兰音] 等待冰淤提供更好的方案。
+		console.log(instance);
 	}
 
 	defineExpose({

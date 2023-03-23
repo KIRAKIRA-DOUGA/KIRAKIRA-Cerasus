@@ -42,7 +42,7 @@
 </script>
 
 <template>
-	<Teleport to="#popovers">
+	<ClientOnlyTeleport to="#popovers">
 		<kira-component class="toasts">
 			<TransitionGroup :css="false" appear @enter="onToastEnter" @leave="onToastLeave">
 				<div v-for="toast in toastList" :key="toast.timestamp" class="toast" :class="[toast.severity]" :style="{ '--duration': toast.duration }">
@@ -54,7 +54,7 @@
 				</div>
 			</TransitionGroup>
 		</kira-component>
-	</Teleport>
+	</ClientOnlyTeleport>
 </template>
 
 <i18n lang="json5">

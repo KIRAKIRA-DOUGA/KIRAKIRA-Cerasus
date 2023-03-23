@@ -21,9 +21,7 @@
 		duration: undefined,
 	});
 
-	const date = computed(() => props.date ?
-		formatDate(props.date, "yyyy-MM-dd") :
-		"----------");
+	const date = computed(() => props.date ? formatDate(props.date, "yyyy-MM-dd") : "----------");
 
 	const watchedCount = computed(() => {
 		let count = props.watchedCount | 0;
@@ -57,12 +55,10 @@
 					</div>
 				</div>
 				<div class="line">
-					<object>
-						<LocaleLink class="item uploader" to="components">
-							<NuxtIcon name="person" />
-							<div>{{ uploader }}</div>
-						</LocaleLink>
-					</object>
+					<LocaleLink class="item uploader" to="components" linkInLink>
+						<NuxtIcon name="person" />
+						<div>{{ uploader }}</div>
+					</LocaleLink>
 					<div class="item">
 						<NuxtIcon name="calendar" />
 						<div>{{ date }}</div>
