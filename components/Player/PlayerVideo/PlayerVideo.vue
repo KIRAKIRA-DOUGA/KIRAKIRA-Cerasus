@@ -109,8 +109,6 @@
 		await nextTick();
 		isTimeUpdating.value = false;
 	}
-
-	const showMenu = (e: MouseEvent) => menu.value?.show(e);
 </script>
 
 <template>
@@ -145,7 +143,7 @@
 				@canplay="onCanPlay"
 				@click="playing = !playing"
 				@dblclick="toggle"
-				@contextmenu.prevent="showMenu"
+				@contextmenu.prevent="e => menu?.show(e)"
 			>
 			</video>
 			<PlayerVideoController
