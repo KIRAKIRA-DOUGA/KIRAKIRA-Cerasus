@@ -26,7 +26,7 @@ export function useParent<T extends ComponentInternalInstance>(type?: ConcreteCo
  * 获取父组件的作用域样式 ID。
  * @returns 父组件的作用域样式 ID。
  */
-export function useParentScopeId() { // TODO: [兰音] 某些时候可能计算不准确，由于目前仅在一个使用地方测试，不能保证所有情况都能正常工作。
+export function useParentScopeId() { // TODO: [兰音] 某些时候可能计算不准确，由于目前仅在一个使用地方测试，不能保证所有情况都能正常工作。需要增加更多测试场景。
 	let parent = getCurrentInstance()?.parent;
 	while (parent) {
 		if ("__scopeId" in parent.type && typeof parent.type.__scopeId === "string")

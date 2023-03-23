@@ -9,7 +9,7 @@
 		color?: string;
 		tooltip?: string;
 	}>(), {
-		color: "black",
+		color: "var(--text-color)",
 		tooltip: "",
 	});
 </script>
@@ -39,7 +39,7 @@
 <style scoped lang="scss">
 	.block-text {
 		@include radius-small;
-		color: white;
+		color: c(main-bg);
 		background-color: v-bind(color);
 
 		.text:not(:hover) {

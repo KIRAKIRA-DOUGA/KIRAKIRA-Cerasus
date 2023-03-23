@@ -9,10 +9,10 @@
 	const parentScopeId = useParentScopeId();
 
 	const attr = computed(() => {
-		const attr = { abcdefg: "1234567" } as Record<string, string>;
+		const attr = { ...useAttrs() };
 		if (props.activable) Object.assign(attr, { activeClass: " ", exactActiveClass: " " }); // enableActiveClass
 		if (props.linkInLink && parentScopeId) attr[parentScopeId] = "";
-		if (props.linkInLink) console.log(attr);
+		return attr;
 	});
 </script>
 

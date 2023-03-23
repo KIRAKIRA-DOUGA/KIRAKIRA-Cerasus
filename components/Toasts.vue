@@ -12,7 +12,7 @@
 	useListen("app:toast", e => {
 		const toast = e as ToastEventWithTimestamp;
 		toast.severity ??= "success";
-		toast.duration ??= 1000;
+		toast.duration ??= 2000;
 		toast.timestamp = new Date().valueOf();
 		toastList.push(toast);
 		setTimeout(() => arrayRemoveItem(toastList, e), e.duration);
@@ -82,7 +82,7 @@
 		.toast {
 			@include radius-small;
 			@include toast-shadow-successful;
-			--duration: 1000;
+			--duration: 2000;
 			position: relative;
 			margin-top: 12px;
 			overflow: hidden;
