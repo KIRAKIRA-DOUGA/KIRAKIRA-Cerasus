@@ -32,7 +32,7 @@
 
 		button {
 			@include flex-center;
-			@include square(64px);
+			@include square(40px);
 			@include circle;
 			flex-shrink: 0;
 			color: c(icon-color);
@@ -45,7 +45,14 @@
 
 			&:focus-visible {
 				@include button-shadow-focus;
-				@include square(40px);
+			}
+
+			&:is(:hover, :active, :has(* + *)):not(:focus-visible) {
+				@include square(64px);
+			}
+
+			&:is(:hover, :active) {
+				background-color: c(gray-30);
 			}
 		}
 	}

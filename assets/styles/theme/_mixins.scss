@@ -106,11 +106,15 @@
 		pointer-events: none;
 	}
 
-	&:is(:hover, :focus-visible) {
+	&:is(:hover, :active, :focus-visible) {
 		z-index: 1;
 
 		> * {
 			pointer-events: auto;
 		}
+	}
+
+	&:active {
+		z-index: 2;
 	}
 }

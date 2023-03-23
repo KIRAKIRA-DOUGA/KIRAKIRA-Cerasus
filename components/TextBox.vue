@@ -304,13 +304,25 @@
 
 		> * {
 			@include flex-center;
-			@include square(calc(var(--size) * 1.3));
+			@include square(var(--size));
 			@include circle;
 			flex-shrink: 0;
 
 			> :global(.nuxt-icon) {
 				color: c(icon-color);
 				font-size: 24px;
+			}
+
+			&:focus-visible {
+				@include button-shadow-focus;
+			}
+
+			&:is(:hover, :active, :has(* + *)):not(:focus-visible) {
+				@include square(calc(var(--size) * 1.3));
+			}
+
+			&:is(:hover, :active) {
+				background-color: c(gray-30);
 			}
 		}
 
