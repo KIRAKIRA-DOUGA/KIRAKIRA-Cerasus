@@ -322,7 +322,7 @@
 			}
 
 			&:is(:hover, :active) {
-				background-color: c(gray-30);
+				background-color: c(hover-color);
 			}
 		}
 
