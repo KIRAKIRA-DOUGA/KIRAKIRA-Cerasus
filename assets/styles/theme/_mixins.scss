@@ -99,12 +99,14 @@
 	margin: auto;
 }
 
+/// 应用 Material Design 大水波纹按钮时，不要让大水波纹扩大了按钮的点击面积。
+/// @output - pointer-events, z-index
 @mixin ripple-clickable-only-inside {
 	> * {
 		pointer-events: none;
 	}
 
-	&:is(:hover, :focus) {
+	&:is(:hover, :focus-visible) {
 		z-index: 1;
 
 		> * {

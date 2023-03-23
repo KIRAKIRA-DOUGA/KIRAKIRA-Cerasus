@@ -11,20 +11,15 @@
 
 ::after,
 ::before {
-	background: var(--color);
 	content: "";
-
+	background: var(--color);
 	@place-cell: @r(100%) @r(100%);
-
 	@size: @r(6px);
-
 	@shape: heart;
 }
 
 @place-cell: center;
-
 @size: 100%;
-
 box-shadow: @m2(0 0 50px var(--color));
 background: @m100(radial-gradient(var(--color) 50%, transparent 0) @r(-20%, 120%) @r(-20%, 100%) / 1px 1px no-repeat);
 

@@ -10,12 +10,10 @@
 	#{$selector} {
 		color-scheme: if($is-light, light, dark);
 
-		@each $key, $color in $neutral-colors {
-			@include hex-and-rgb-color($key, $color, $is-light);
-		}
-
-		@each $key, $color in $secondary-colors {
-			@include hex-and-rgb-color($key, $color, $is-light);
+		@each $colors in $neutral-colors, $secondary-colors, $grayscale-colors {
+			@each $key, $color in $colors {
+				@include hex-and-rgb-color($key, $color, $is-light);
+			}
 		}
 
 		@each $palette, $accents in $primary-colors {

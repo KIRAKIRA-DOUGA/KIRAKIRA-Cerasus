@@ -1,4 +1,18 @@
 @use "functions" as *;
+@use "sass:map";
+
+// 灰阶类颜色
+$grayscale-colors: (
+	gray-90: (#000, #fff),
+	gray-80: (#212121, #fafafa),
+	gray-70: (#333, #e9e9e9),
+	gray-60: (#4d4d4d, #ccc),
+	gray-50: (#808080, #909090),
+	gray-40: (#ccc, #4d4d4d),
+	gray-30: (#e9e9e9, #333),
+	gray-20: (#fafafa, #212121),
+	gray-10: (#fff, #000),
+);
 
 // 中性色
 // 此处的颜色各主题色均通用。
@@ -6,19 +20,10 @@ $neutral-colors: (
 	main-bg: (white, #171414),
 	main-bg-inverted: (black, white),
 	inset-bg: (c(black, 2%), c(white, 6%)),
-	acrylic-bg: (#fafafa,#222),
+	acrylic-bg: (#fafafa, #222),
 	icon-color: (#797173, #e5e4e4),
 	divider: #505050,
-	text-color: #212121,
-	gray-90: (#000,#fff),
-	gray-80: (#212121,#fafafa),
-	gray-70: (#333,#e9e9e9),
-	gray-60: (#4d4d4d,#ccc),
-	gray-50: (#808080,#909090),
-	gray-40: (#ccc,#4d4d4d),
-	gray-30: (#e9e9e9,#333),
-	gray-20: (#fafafa,#212121),
-	gray-10: (#fff,#000),
+	text-color: map.get($grayscale-colors, gray-80),
 );
 
 // 如果定义为列表，则第一项为浅色主题颜色，第二项为深色主题颜色。
