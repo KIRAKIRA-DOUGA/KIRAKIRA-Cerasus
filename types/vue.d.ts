@@ -1,5 +1,3 @@
-// import { Directive } from "vue";
-import { Slot } from "vue";
 import CSSDoodle from "./css-doodle";
 
 declare module "vue" {
@@ -49,4 +47,6 @@ declare global {
 			expose: (exposed?: Record<string, unknown>) => void;
 		}
 	) => JSX.Element;
+
+	export { ComponentInternalInstance, ConcreteComponent, Directive, Ref, RendererElement, Slot, VNode, WritableComputedRef } from "vue";
 }

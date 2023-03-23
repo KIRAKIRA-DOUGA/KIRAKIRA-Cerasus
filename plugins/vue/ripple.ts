@@ -1,5 +1,3 @@
-import { Directive } from "vue";
-
 /**
  * 使用 `v-ripple`，为元素创建类 Material Design 的水波纹效果。
  */

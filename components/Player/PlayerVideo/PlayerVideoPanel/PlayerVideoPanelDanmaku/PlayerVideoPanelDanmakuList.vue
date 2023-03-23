@@ -2,6 +2,8 @@
 	const danmakuItemMenu = ref<InstanceType<typeof Menu>>();
 	const currentDanmakuIndex = ref(0);
 	const { copy } = useClipboard();
+	const headers = ["时间", "内容", "发送时间"];
+	const colWidths = reactive([60, 150, 100]);
 
 	/**
 	 * 获取弹幕。
@@ -15,19 +17,47 @@
 			sendTime: formatDate(new Date(), "yyyy-MM-dd"),
 		};
 	}
+
+	/**
+	 * 拖拽抓柄逻辑处理。
+	 * @param e - 指针事件（包括鼠标和触摸）。
+	 */
+	function onGripDown(e: PointerEvent) {
+		const grip = e.target as HTMLDivElement;
+		const index = +grip.dataset.index!;
+		const th = grip.parentElement as HTMLTableCellElement;
+		const gripWidth = grip.getClientRects()[0].width;
+		const thRect = th.getClientRects()[0];
+		const left = thRect.left;
+		const x = e.pageX - left - grip.offsetLeft;
+		const pointerMove = (e: PointerEvent) => {
+			colWidths[index] = Math.max(e.pageX - left - x + gripWidth, 60);
+		};
+		const pointerUp = (_e: PointerEvent) => {
+			document.removeEventListener("pointermove", pointerMove);
+			document.removeEventListener("pointerup", pointerUp);
+		};
+		document.addEventListener("pointermove", pointerMove);
+		document.addEventListener("pointerup", pointerUp);
+	}
 </script>
 
 <template>
 	<kira-component class="player-video-danmaku-list">
 		<table class="lite">
 			<thead>
-				<th>时间</th>
-				<th>内容</th>
-				<th>发送时间</th>
+				<th v-for="(header, j) in headers" :key="header" :width="colWidths[j]">
+					{{ header }}
+				</th>
+				<div class="shadow">
+					<th v-for="(header, j) in headers" :key="header" :width="colWidths[j]">
+						<div class="grip" :data-index="j" @pointerdown="onGripDown"></div>
+					</th>
+				</div>
 			</thead>
 			<tbody>
 				<tr v-for="i in 100" :key="i" @contextmenu.prevent="e => { currentDanmakuIndex = i; danmakuItemMenu?.show(e); }">
-					<td v-for="(value, key) in getDanmaku(i)" :key="key">{{ value }}</td>
+					<td v-for="(value, key, j) in getDanmaku(i)" :key="key" :width="colWidths[j]">{{ value }}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -47,54 +77,101 @@
 		table {
 			@include flex-block;
 			@include square(100%);
-			contain: strict;
+			position: relative;
+			display: block;
+			overflow: auto;
+			table-layout: fixed;
+			background-color: c(main-bg);
 			border-spacing: 0;
+			contain: strict;
 
+			thead,
 			tbody {
-				overflow: auto;
+				display: block;
+				width: 100%;
+			}
+
+			thead {
+				position: sticky;
+				top: 0;
+				z-index: 1;
+
+				.shadow {
+					position: absolute;
+					left: 0;
+					height: 100%;
+
+					> th {
+						overflow: visible;
+						background-color: transparent;
+					}
+				}
 			}
 
 			th,
 			td {
+				position: relative;
+				display: block;
+				flex-shrink: 0;
+				min-width: 60px;
 				padding: 0.25rem 0.75rem;
+				overflow: hidden;
+				white-space: nowrap;
+				text-align: left;
+				text-overflow: ellipsis;
+				transition: $fallback-transitions, width 0s;
 			}
 
-			tr {
-				width: 100%; // TODO: 现在好了，改了 `contain: strict;` 之后，不能占据全宽度了。
+			thead,
+			th {
+				background-color: c(main-bg);
+			}
+
+			thead,
+			tr,
+			thead > .shadow {
+				display: flex;
+				width: 100%;
+				min-width: fit-content;
 			}
 
 			tr:hover {
 				background-color: c(hover-color);
 			}
+
+			th .grip {
+				@include flex-center;
+				$click-width: 7px;
+				position: absolute;
+				top: 0;
+				right: 0;
+				z-index: 10;
+				width: $click-width;
+				height: 100%;
+				opacity: 0;
+				touch-action: pan-y pinch-zoom;
+				translate: calc(($click-width - 1px) / 2);
+
+				&::after {
+					display: block;
+					width: 1px;
+					height: 100%;
+					background-color: c(divider);
+					content: "";
+				}
+
+				&:hover {
+					cursor: w-resize;
+				}
+
+				&:active {
+					cursor: col-resize;
+				}
+			}
+
+			thead:is(:hover, :active) th .grip {
+				opacity: 1;
+			}
 		}
 	}
-
-	/* .header { // DELETE: 即将删除。
-		$height: 36px;
-		display: flex;
-		height: $height;
-
-		> * {
-			@include flex-center;
-			flex-direction: row;
-			flex-shrink: 0;
-			height: inherit;
-			padding: 0 12px;
-			overflow: hidden;
-			line-height: $height;
-			background-color: transparent;
-			border: none;
-			border-right: 1px solid transparent;
-			transition: none;
-			resize: horizontal;
-
-			&:hover {
-				border-right-color: c(gray-2);
-			}
-
-			&:active {
-				border-right-color: c(accent-pressed);
-			}
-		}
-	} */
 </style>

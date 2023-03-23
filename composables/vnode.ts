@@ -1,5 +1,3 @@
-import { ComponentInternalInstance, ConcreteComponent, VNode } from "vue";
-
 /**
  * 在组合式 API 定义 render 函数，比如返回特定的 JSX。
  * @param render - 指定渲染函数，比如 JSX。

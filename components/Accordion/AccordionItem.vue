@@ -5,7 +5,7 @@
 <script setup lang="ts">
 	import Accordion from "./Accordion.vue";
 
-	const props = withDefaults(defineProps<{
+	const props = withDefaults(defineProps<{ // TODO: [兰音] 本组件设计模型有问题，待重做。
 		/** 标题。 */
 		title: string | number;
 		/** 是否展示而非折叠？ */

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-	import { RendererElement } from "vue";
 	const props = defineProps<{
 		to?: string | RendererElement | null | undefined;
 	}>();
