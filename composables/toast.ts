@@ -5,7 +5,7 @@ export interface ToastEvent {
 	/** 消息文本。 */
 	message: string;
 	/** 事件级别，即确定图标和颜色。 */
-	severity?: "success" | "warning" | "error";
+	severity: "success" | "warning" | "error" | "info";
 	/** 消息显示的时间。 */
 	duration?: number;
 }
@@ -16,6 +16,6 @@ export interface ToastEvent {
  * @param severity - 事件级别，即确定图标和颜色。
  * @param duration - 消息显示的时间。
  */
-export function useToast(message: string, severity: ToastEvent["severity"] = "success", duration: number = 1000) {
+export function useToast(message: string, severity: ToastEvent["severity"] = "success", duration?: number) {
 	useEvent("app:toast", { message, severity, duration });
 }

@@ -30,7 +30,11 @@
 
 	onMounted(() => console.log(props.error));
 
-	useHead({ title: httpResponseStatusCodes[props.error.statusCode], bodyAttrs: { class: "no-scroll" } });
+	useHead({
+		title: httpResponseStatusCodes[props.error.statusCode],
+		titleTemplate: "%s - KIRAKIRA☆DOUGA",
+		bodyAttrs: { class: "no-scroll" },
+	});
 </script>
 
 <template>

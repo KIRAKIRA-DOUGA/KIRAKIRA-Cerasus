@@ -152,8 +152,13 @@
 // #endregion
 
 // #region 次要主题色
-@mixin toast-shadow-successful {
-	box-shadow: 0 2px 10px c(green, 30%);
+@mixin toast-shadow($color) {
+	color: c($color);
+	box-shadow: 0 2px 10px c($color, 30%);
 	backdrop-filter: blur(16px);
+
+	.progress {
+		background-color: c($color);
+	}
 }
 // #endregion

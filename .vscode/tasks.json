@@ -30,7 +30,22 @@
 			"script": "update-eases",
 			"problemMatcher": [],
 			"label": "npm: update-eases",
-			"detail": "npx tsx scripts/update-eases.ts"
+			"detail": "npx tsx scripts/update-eases.ts",
+			"presentation": {
+				"reveal": "never",
+				"close": true,
+			}
+		},
+		{
+			"type": "npm",
+			"script": "compact-svg -- ${file}",
+			"problemMatcher": [],
+			"label": "Compact SVG",
+			"detail": "Remove excess parts from SVG",
+			"presentation": {
+				"reveal": "never",
+				"close": true,
+			}
 		}
 	]
 }

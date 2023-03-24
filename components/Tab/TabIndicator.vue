@@ -13,6 +13,9 @@
 
 	const indicator = ref<HTMLDivElement>();
 
+	/**
+	 * 重新播放指示器动画。
+	 */
 	function replayIndicatorAnimation() {
 		if (!indicator.value) return;
 		replayAnimation(indicator.value, "changing");

@@ -10,7 +10,8 @@
 		"postinstall": "nuxt prepare",
 		"lint:css": "stylelint **/*.{html,vue,css,sass,scss}",
 		"typed-scss-modules": "typed-scss-modules assets/styles/*.module.scss --exportType default",
-		"update-eases": "npx tsx scripts/update-eases.ts"
+		"update-eases": "npx tsx scripts/update-eases.ts",
+		"compact-svg": "npx tsx scripts/compact-svg.ts"
 	},
 	"lint-staged": {
 		"*.{html,vue,css,sass,scss}": [

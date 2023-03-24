@@ -40,6 +40,14 @@
 		document.addEventListener("pointermove", pointerMove);
 		document.addEventListener("pointerup", pointerUp);
 	}
+
+	/**
+	 * 复制弹幕。
+	 */
+	function copyDanmaku() {
+		copy(getDanmaku(currentDanmakuIndex.value).content);
+		useToast("已复制", "success");
+	}
 </script>
 
 <template>
@@ -62,7 +70,7 @@
 			</tbody>
 		</table>
 		<Menu ref="danmakuItemMenu">
-			<MenuItem icon="copy" @click="() => { copy(getDanmaku(currentDanmakuIndex).content); useToast('已复制'); }">复制</MenuItem>
+			<MenuItem icon="copy" @click="copyDanmaku">复制</MenuItem>
 			<MenuItem>举报</MenuItem>
 		</Menu>
 	</kira-component>

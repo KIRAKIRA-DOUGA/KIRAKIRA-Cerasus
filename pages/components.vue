@@ -5,6 +5,7 @@
 	import beepSrc from "assets/audios/NOVA 2022.1 Alert Quick.ogg";
 	import Menu from "components/Menu/Menu.vue";
 	import { CheckState } from "components/Checkbox.vue";
+	import { ToastEvent } from "composables/toast";
 
 	const page = ref(1);
 	const pages = ref(99);
@@ -42,6 +43,7 @@
 		if (e.checked) kiraGoods.push("kawaii", "nijigen", "nice");
 	};
 	const toastMessage = ref("");
+	const toastSeverity = ref<ToastEvent["severity"]>("success");
 
 	/**
 	 * 单击按钮事件。
@@ -151,8 +153,14 @@
 				</Menu>
 			</div>
 			<div class="toast-test">
-				<TextBox v-model="toastMessage" placeholder="发送消息到消息框" />
-				<Button icon="send" @click="useToast(toastMessage)">发送到消息框</Button>
+				<RadioButton v-model="toastSeverity" value="info">信息</RadioButton>
+				<RadioButton v-model="toastSeverity" value="success">成功</RadioButton>
+				<RadioButton v-model="toastSeverity" value="warning">警告</RadioButton>
+				<RadioButton v-model="toastSeverity" value="error">错误</RadioButton>
+				<section>
+					<TextBox v-model="toastMessage" placeholder="发送消息到消息框" />
+					<Button icon="send" @click="useToast(toastMessage, toastSeverity)">发送到消息框</Button>
+				</section>
 			</div>
 			<RadioButton v-model="logoTextForm" value="hidden">{{ t.logoHidden }}</RadioButton>
 			<RadioButton v-model="logoTextForm" value="half">{{ t.logoHalf }}</RadioButton>
@@ -339,15 +347,21 @@
 	}
 
 	.toast-test {
-		@include flex-center;
-		gap: 10px;
-
-		> button {
-			flex-shrink: 0;
+		> * {
+			margin: 0.8rem 0;
 		}
 
-		> .text-box {
-			width: 100%;
+		> section {
+			@include flex-center;
+			gap: 10px;
+
+			> button {
+				flex-shrink: 0;
+			}
+
+			> .text-box {
+				width: 100%;
+			}
 		}
 	}
 </style>

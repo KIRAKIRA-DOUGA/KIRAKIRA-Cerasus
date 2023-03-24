@@ -5,15 +5,25 @@
 <script setup lang="ts">
 	import { ToastEvent } from "composables/toast";
 
-	type ToastEventWithTimestamp = ToastEvent & { timestamp: number };
+	type ToastEventWithTimestamp = ToastEvent & {
+		timestamp: number;
+		icon: string;
+	};
 	const toastList = reactive<ToastEventWithTimestamp[]>([]);
-	const TRANSLATE_VALUE = 10;
+	const TRANSLATE_VALUE = 50;
+	const icons = new Map<ToastEvent["severity"] | undefined, string>([
+		["success", "check"],
+		["warning", "exclamation"],
+		["error", "close"],
+		["info", "info"],
+		[undefined, "info"],
+	]);
 
 	useListen("app:toast", e => {
 		const toast = e as ToastEventWithTimestamp;
-		toast.severity ??= "success";
 		toast.duration ??= 2000;
 		toast.timestamp = new Date().valueOf();
+		toast.icon = icons.get(toast.severity)!;
 		toastList.push(toast);
 		setTimeout(() => arrayRemoveItem(toastList, e), e.duration);
 	});
@@ -25,7 +35,7 @@
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
 	async function onToastEnter(el: Element, done: () => void) {
-		await animateSize(el, null, { startHeight: 0, startStyle: { translate: `0 -${TRANSLATE_VALUE}px` } });
+		await animateSize(el, null, { startHeight: 0, duration: 500, startStyle: { translate: `0 -${TRANSLATE_VALUE}px` } });
 		done();
 	}
 
@@ -36,7 +46,7 @@
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
 	async function onToastLeave(el: Element, done: () => void) {
-		await animateSize(el, null, { endHeight: 0, endStyle: { translate: `0 -${TRANSLATE_VALUE}px` }, easing: eases.easeInExpo });
+		await animateSize(el, null, { endHeight: 0, duration: 300, endStyle: { translate: `0 -${TRANSLATE_VALUE}px` }, easing: eases.easeInOutSmooth });
 		done();
 	}
 </script>
@@ -47,7 +57,7 @@
 			<TransitionGroup :css="false" appear @enter="onToastEnter" @leave="onToastLeave">
 				<div v-for="toast in toastList" :key="toast.timestamp" class="toast" :class="[toast.severity]" :style="{ '--duration': toast.duration }">
 					<div class="content">
-						<NuxtIcon name="check" />
+						<NuxtIcon :name="toast.icon" />
 						<span>{{ toast.message || t.finish }}</span>
 					</div>
 					<div class="progress"></div>
@@ -81,12 +91,11 @@
 
 		.toast {
 			@include radius-small;
-			@include toast-shadow-successful;
+			@include toast-shadow(accent);
 			--duration: 2000;
 			position: relative;
 			margin-top: 12px;
 			overflow: hidden;
-			color: c(green);
 			background-color: c(acrylic-bg, 75%);
 
 			.content {
@@ -105,9 +114,20 @@
 				bottom: 0;
 				left: 0;
 				height: 2px;
-				background-color: c(green);
 				border-radius: 1px;
 				animation: progressing calc(var(--duration) * 1ms) linear forwards;
+			}
+
+			&.success {
+				@include toast-shadow(green);
+			}
+
+			&.warning {
+				@include toast-shadow(yellow);
+			}
+
+			&.error {
+				@include toast-shadow(red);
 			}
 		}
 	}
