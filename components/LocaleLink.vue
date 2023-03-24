@@ -10,7 +10,7 @@
 
 	const attr = computed(() => {
 		const attr = { ...useAttrs() };
-		if (props.activable) Object.assign(attr, { activeClass: " ", exactActiveClass: " " }); // enableActiveClass
+		if (!props.activable) Object.assign(attr, { activeClass: " ", exactActiveClass: " " }); // enableActiveClass
 		if (props.linkInLink && parentScopeId) attr[parentScopeId] = "";
 		return attr;
 	});
