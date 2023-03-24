@@ -87,6 +87,7 @@
 		flex-direction: column;
 		width: 100%;
 		margin-top: 12px;
+		padding: 0 36px;
 		pointer-events: none;
 
 		.toast {
@@ -102,6 +103,7 @@
 				@include flex-center;
 				gap: 8px;
 				padding: 12px 16px;
+				text-align: justify;
 
 				.nuxt-icon {
 					margin-left: -2px;
