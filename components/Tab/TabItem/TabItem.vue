@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import TabBar, { TabBarChildren } from "../TabBar.vue";
+	import TabBar from "../TabBar.vue";
 
 	const props = defineProps<{
 		id: string;
@@ -9,6 +9,7 @@
 	const dom = ref<HTMLDivElement>();
 	const parent = useParent(TabBar)!;
 	const active = computed(() => parent.props.modelValue === props.id);
+	bindParent(props.id, TabBar);
 
 	/**
 	 * 单击切换选项卡事件。
@@ -17,12 +18,16 @@
 		parent.exposed?.changeTab(props.id);
 	}
 
-	onMounted(() => {
+	defineExpose({
+		dom,
+	});
+
+	/* onMounted(() => {
 		parent.exposed!.children[props.id] = dom.value;
 		if (!parent.exposed || !dom.value) return;
 		const children = parent.exposed.children as TabBarChildren;
 		children[props.id] = { dom: dom.value };
-	});
+	}); */
 </script>
 
 <template>

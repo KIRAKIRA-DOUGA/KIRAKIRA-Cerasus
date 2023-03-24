@@ -1,9 +1,3 @@
-<script lang="ts">
-	export type TabBarChildren = Record<string, {
-		dom: HTMLElement;
-	}>;
-</script>
-
 <script setup lang="ts">
 	const props = defineProps<{
 		clipped?: boolean;
@@ -16,7 +10,7 @@
 		(event: "update:modelValue", arg: string): void;
 	}>();
 
-	const children = reactive({} as TabBarChildren);
+	const children = useSlotChildren();
 	const tabBar = ref<HTMLElement>();
 	const indicator = ref<HTMLDivElement>();
 
@@ -59,7 +53,7 @@
 			set left(value: number) { indicatorStyle.left = value + "px"; },
 			set right(value: number) { indicatorStyle.right = value + "px"; },
 		};
-		const item = children[id].dom;
+		const item = children[id].exposed!.dom.value;
 		const itemLr = getIndicatorLeftRight(item, LENGTH);
 		let prevItemLr: ReturnType<typeof getIndicatorLeftRight>;
 		enum MoveDirection {
@@ -69,7 +63,7 @@
 		}
 		let moveDirection = MoveDirection.NONE;
 		if (prevId) {
-			const prevItem = children[prevId].dom;
+			const prevItem = children[prevId].exposed!.dom.value;
 			prevItemLr = getIndicatorLeftRight(prevItem, LENGTH);
 			moveDirection = itemLr.left >= prevItemLr.left ? MoveDirection.RIGHT : MoveDirection.LEFT;
 		} else

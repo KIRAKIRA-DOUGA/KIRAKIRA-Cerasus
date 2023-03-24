@@ -39,8 +39,9 @@ export function useParentScopeId() { // TODO: [兰音] 某些时候可能计算�
  * @returns - 插槽子组件。
  */
 export function useSlotChildren() {
-	const children = {} as { id: ComponentInternalInstance };
-	defineExpose({ children });
+	const children = {} as Record<string | number | symbol, ComponentInternalInstance>; // T: ComponentInternalInstance
+	// getCurrentInstance()!.exposed ??= {};
+	// getCurrentInstance()!.exposed!.children = children;
 	return children;
 }
 

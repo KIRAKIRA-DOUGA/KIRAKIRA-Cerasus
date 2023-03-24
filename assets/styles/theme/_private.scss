@@ -100,7 +100,7 @@
 		$cursor: $tag;
 	}
 
-	body[data-cursor="${tag}"] {
+	body[data-cursor="#{$tag}"] {
 		&,
 		* {
 			cursor: $cursor !important;
