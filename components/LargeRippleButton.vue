@@ -13,7 +13,7 @@
 	<div class="button-wrapper">
 		<button v-ripple type="button" @click="emits('click')">
 			<NuxtIcon v-if="icon" :name="icon" class="icon" />
-			<span v-if="text">{{ text }}</span>
+			<span v-if="text"><span>{{ text }}</span></span>
 		</button>
 	</div>
 </template>
@@ -23,7 +23,7 @@
 
 	.icon {
 		color: c(icon-color);
-		font-size: inherit;
+		font-size: 24px;
 	}
 
 	.button-wrapper {
@@ -40,7 +40,6 @@
 			flex-shrink: 0;
 			color: c(icon-color);
 			font-weight: 600;
-			font-size: 24px;
 			background: none;
 			border: none;
 			cursor: pointer;

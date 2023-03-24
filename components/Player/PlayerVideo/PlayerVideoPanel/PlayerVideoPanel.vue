@@ -56,12 +56,12 @@
 				</div>
 			</div>
 			<div class="buttons">
-				<PlayerVideoPanelButton icon="thumb_up" class="button-like" @click="counts.rating++" />
-				<PlayerVideoPanelButton icon="thumb_down" class="button-dislike" @click="counts.rating--" />
-				<PlayerVideoPanelButton icon="star" class="button-star" @click="favorite" />
-				<PlayerVideoPanelButton icon="share" class="button-share" @click="share" />
-				<PlayerVideoPanelButton icon="history" class="button-history" />
-				<PlayerVideoPanelButton icon="settings" class="button-settings" />
+				<LargeRippleButton icon="thumb_up" class="button-like" @click="counts.rating++" />
+				<LargeRippleButton icon="thumb_down" class="button-dislike" @click="counts.rating--" />
+				<LargeRippleButton icon="star" class="button-star" @click="favorite" />
+				<LargeRippleButton icon="share" class="button-share" @click="share" />
+				<LargeRippleButton icon="history" class="button-history" />
+				<LargeRippleButton icon="settings" class="button-settings" />
 			</div>
 		</div>
 		<PlayerVideoPanelDanmakuList />

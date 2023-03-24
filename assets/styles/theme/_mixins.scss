@@ -106,7 +106,7 @@
 	> * {
 		pointer-events: none;
 
-		::after {
+		::before {
 			@include square($button-size);
 			position: absolute;
 			display: block;

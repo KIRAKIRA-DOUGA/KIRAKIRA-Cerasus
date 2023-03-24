@@ -59,7 +59,7 @@
 <template>
 	<kira-component class="player-video-controller">
 		<div class="left">
-			<PlayerButton class="play" :icon="playing ? 'pause' : 'play'" @click="emits('update:playing', !playing)" />
+			<LargeRippleButton class="play" :icon="playing ? 'pause' : 'play'" @click="emits('update:playing', !playing)" />
 		</div>
 		<div class="slider">
 			<Slider v-model="currentPercent" :min="0" :max="1" />
@@ -70,8 +70,8 @@
 				<span class="divide">/</span>
 				<span class="duration">{{ duration }}</span>
 			</div>
-			<PlayerButton :text="playbackRateText" @click="switchSpeed" />
-			<PlayerButton icon="fullscreen" @click="() => toggleFullScreen?.()" />
+			<LargeRippleButton :text="playbackRateText" @click="switchSpeed" />
+			<LargeRippleButton icon="fullscreen" @click="() => toggleFullScreen?.()" />
 		</div>
 	</kira-component>
 </template>
@@ -83,11 +83,12 @@
 		display: flex;
 		align-items: center;
 		height: $thickness;
+		overflow: hidden;
 		color: c(icon-color);
 		font-weight: 600;
 		font-size: 14px;
 
-		:where(> *) {
+		:where(& > *) {
 			flex-shrink: 0;
 		}
 	}
