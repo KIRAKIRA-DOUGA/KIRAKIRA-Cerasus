@@ -1,17 +1,21 @@
 <script setup lang="ts">
+	import AccordionItem from "./AccordionItem.vue";
+
 	const props = defineProps<{
 		autoCollapse?: boolean;
 	}>();
 
-	const slots = useSlots().default?.();
-	const instance = getCurrentInstance();
+	const { Slot, children } = useFactory(AccordionItem);
 
 	/**
 	 * 关闭所有手风琴项目。
 	 */
 	function collaspeAll() {
-		console.log(slots); // TODO: [兰音] 等待冰淤提供更好的方案。
-		console.log(instance);
+		if (!props.autoCollapse || !children.value) return;
+		for (const child of children.value) {
+			if (!child.component?.exposed?.shown) return;
+			child.component.exposed.shown.value = false;
+		}
 	}
 
 	defineExpose({
@@ -21,7 +25,7 @@
 
 <template>
 	<kira-component class="accordion">
-		<slot></slot>
+		<Slot />
 	</kira-component>
 </template>
 

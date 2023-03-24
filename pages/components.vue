@@ -166,7 +166,7 @@
 			<RadioButton v-model="logoTextForm" value="half">{{ t.logoHalf }}</RadioButton>
 			<RadioButton v-model="logoTextForm" value="full">{{ t.logoShow }}</RadioButton>
 			<LogoText :form="logoTextForm" />
-			<Accordion>
+			<Accordion autoCollapse>
 				<AccordionItem title="第1个">
 					<h4>标题</h4>
 					内容

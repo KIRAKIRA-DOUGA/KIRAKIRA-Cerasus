@@ -36,6 +36,7 @@ export function useParentScopeId() { // TODO: [兰音] 某些时候可能计算�
 
 /**
  * 为父组件创建插槽子组件映射表。
+ * @deprecated
  * @returns - 插槽子组件。
  */
 export function useSlotChildren() {
@@ -47,6 +48,7 @@ export function useSlotChildren() {
 
 /**
  * 插槽内子组件绑定父组件。
+ * @deprecated
  * @param id - 子组件的唯一标识符。
  * @param type - 父组件的类型筛选。
  */

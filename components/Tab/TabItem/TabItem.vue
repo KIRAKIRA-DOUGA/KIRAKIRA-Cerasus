@@ -6,10 +6,8 @@
 		vertical?: boolean;
 	}>();
 
-	const dom = ref<HTMLDivElement>();
 	const parent = useParent(TabBar)!;
 	const active = computed(() => parent.props.modelValue === props.id);
-	bindParent(props.id, TabBar);
 
 	/**
 	 * 单击切换选项卡事件。
@@ -17,14 +15,10 @@
 	function onClick() {
 		parent.exposed?.changeTab(props.id);
 	}
-
-	defineExpose({
-		dom,
-	});
 </script>
 
 <template>
-	<div ref="dom" :class="{ active, vertical }" @click="onClick">
+	<div :class="{ active, vertical }" @click="onClick">
 		<slot></slot>
 	</div>
 </template>

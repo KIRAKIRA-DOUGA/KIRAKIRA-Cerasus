@@ -1,4 +1,6 @@
 <script setup lang="ts">
+	import TabItem from "./TabItem/TabItem.vue";
+
 	const props = defineProps<{
 		clipped?: boolean;
 		vertical?: boolean;
@@ -10,7 +12,7 @@
 		(event: "update:modelValue", arg: string): void;
 	}>();
 
-	const children = useSlotChildren();
+	const { Slot, vnodeEl } = useFactory(TabItem);
 	const tabBar = ref<HTMLElement>();
 	const indicator = ref<HTMLDivElement>();
 
@@ -40,6 +42,19 @@
 	}
 
 	/**
+	 * 获取子选项卡项目。
+	 * @param id - 选项卡标识符。
+	 * @returns 子选项卡项目。
+	 */
+	function getChild(id: string) {
+		if (!vnodeEl.value) return null;
+		for (const child of vnodeEl.value.vnode)
+			if (child.component?.props.id === id)
+				return child.el as HTMLElement;
+		return null;
+	}
+
+	/**
 	 * 更新选项卡指示器。
 	 * @param id - 当前选项卡标识符。
 	 * @param prevId - 先前选项卡标识符。
@@ -53,7 +68,8 @@
 			set left(value: number) { indicatorStyle.left = value + "px"; },
 			set right(value: number) { indicatorStyle.right = value + "px"; },
 		};
-		const item = children[id].exposed!.dom.value;
+		const item = getChild(id);
+		if (!item) return;
 		const itemLr = getIndicatorLeftRight(item, LENGTH);
 		let prevItemLr: ReturnType<typeof getIndicatorLeftRight>;
 		enum MoveDirection {
@@ -62,8 +78,9 @@
 			RIGHT,
 		}
 		let moveDirection = MoveDirection.NONE;
-		if (prevId) {
-			const prevItem = children[prevId].exposed!.dom.value;
+		let prevItem: HTMLElement | null = null;
+		if (prevId) prevItem = getChild(prevId);
+		if (prevId && prevItem) {
 			prevItemLr = getIndicatorLeftRight(prevItem, LENGTH);
 			moveDirection = itemLr.left >= prevItemLr.left ? MoveDirection.RIGHT : MoveDirection.LEFT;
 		} else
@@ -103,7 +120,6 @@
 
 	defineExpose({
 		changeTab,
-		children,
 	});
 </script>
 
@@ -111,7 +127,7 @@
 	<kira-component>
 		<div ref="tabBar" class="tab-bar">
 			<div class="items" :class="{ vertical, big }">
-				<slot></slot>
+				<Slot />
 			</div>
 			<div ref="indicator" class="indicator"></div>
 		</div>
@@ -124,7 +140,7 @@
 		gap: 1rem;
 		align-items: flex-end;
 
-		> :slotted(*) {
+		> :deep(*) {
 			flex-shrink: 0;
 			cursor: pointer;
 		}

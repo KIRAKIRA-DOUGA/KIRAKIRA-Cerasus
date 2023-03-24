@@ -5,35 +5,30 @@
 <script setup lang="ts">
 	import Accordion from "./Accordion.vue";
 
-	const props = withDefaults(defineProps<{ // TODO: [兰音] 本组件设计模型有问题，待重做。
+	const props = defineProps<{
 		/** 标题。 */
 		title: string | number;
-		/** 是否展示而非折叠？ */
-		modelValue?: boolean;
 		/** 是否展示而非折叠？单向绑定使用。 */
 		shown?: boolean;
-	}>(), {
-		modelValue: undefined,
-	});
+	}>();
 
 	const emits = defineEmits<{
 		(event: "update:modelValue", shown: boolean): void;
 	}>();
 
 	const parent = useParent(Accordion);
-	const staticShown = ref(props.shown);
+	const shown = ref(props.shown);
 
-	const shown = computed({
-		get: () => props.modelValue || staticShown.value,
-		set: value => props.modelValue !== undefined ? emits("update:modelValue", value) : staticShown.value = value,
-	});
+	watch(() => props.shown, requireShown => shown.value = requireShown, { immediate: true });
 
 	/**
 	 * 切换展示与折叠状态。
 	 */
-	function toggle() {
+	async function toggle() {
+		const prevShown = shown.value;
 		parent?.exposed?.collaspeAll();
-		shown.value = !shown.value;
+		await nextTick();
+		shown.value = !prevShown;
 	}
 
 	/**
