@@ -33,3 +33,33 @@ export function useParentScopeId() { // TODO: [兰音] 某些时候可能计算�
 	}
 	return null;
 }
+
+/**
+ * 为父组件创建插槽子组件映射表。
+ * @returns - 插槽子组件。
+ */
+export function useSlotChildren() {
+	const children = {} as { id: ComponentInternalInstance };
+	defineExpose({ children });
+	return children;
+}
+
+/**
+ * 插槽内子组件绑定父组件。
+ * @param id - 子组件的唯一标识符。
+ * @param type - 父组件的类型筛选。
+ */
+export function bindParent(id: string | number | symbol, type?: ConcreteComponent | unknown) {
+	const me = getCurrentInstance();
+	const parent = useParent(type);
+
+	onMounted(() => {
+		if (!me || !parent?.exposed?.children) return;
+		parent.exposed.children[id] = me;
+	});
+
+	onUnmounted(() => {
+		if (!me || !parent?.exposed?.children) return;
+		delete parent.exposed.children[id];
+	});
+}

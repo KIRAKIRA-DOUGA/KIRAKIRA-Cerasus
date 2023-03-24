@@ -90,3 +90,20 @@
 	);
 	border-radius: map.get($positions, $position);
 }
+
+/// 强行指定光标声明。
+/// @param {String} $tag - 光标的标识符名称。
+/// @param {String} $cursor [null] - 光标值，也可以是自定义的光标。留空表示与标识符名称一致。
+/// @output cursor
+@mixin force-cursor($tag, $cursor: null) {
+	@if not $cursor {
+		$cursor: $tag;
+	}
+
+	body[data-cursor="${tag}"] {
+		&,
+		* {
+			cursor: $cursor !important;
+		}
+	}
+}

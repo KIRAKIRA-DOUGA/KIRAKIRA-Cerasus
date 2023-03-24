@@ -30,12 +30,14 @@
 		const thRect = th.getClientRects()[0];
 		const left = thRect.left;
 		const x = e.pageX - left - grip.offsetLeft;
+		forceCursor("col-resize");
 		const pointerMove = (e: PointerEvent) => {
 			colWidths[index] = Math.max(e.pageX - left - x + gripWidth, 60);
 		};
 		const pointerUp = (_e: PointerEvent) => {
 			document.removeEventListener("pointermove", pointerMove);
 			document.removeEventListener("pointerup", pointerUp);
+			forceCursor(null);
 		};
 		document.addEventListener("pointermove", pointerMove);
 		document.addEventListener("pointerup", pointerUp);
@@ -52,23 +54,31 @@
 
 <template>
 	<kira-component class="player-video-danmaku-list">
-		<table class="lite">
-			<thead>
-				<th v-for="(header, j) in headers" :key="header" :width="colWidths[j]">
-					{{ header }}
-				</th>
-				<div class="shadow">
-					<th v-for="(header, j) in headers" :key="header" :width="colWidths[j]">
-						<div class="grip" :data-index="j" @pointerdown="onGripDown"></div>
+		<ClientOnly>
+			<table class="lite">
+				<thead>
+					<th v-for="(header, j) in headers" :key="header" v-ripple :width="colWidths[j]">
+						{{ header }}
 					</th>
+					<div class="shadow">
+						<th v-for="(header, j) in headers" :key="header" :width="colWidths[j]">
+							<div class="grip" :data-index="j" @pointerdown="onGripDown"></div>
+						</th>
+					</div>
+				</thead>
+				<tbody>
+					<tr v-for="i in 100" :key="i" @contextmenu.prevent="e => { currentDanmakuIndex = i; danmakuItemMenu?.show(e); }">
+						<td v-for="(value, key, j) in getDanmaku(i)" :key="key" :width="colWidths[j]">{{ value }}</td>
+					</tr>
+				</tbody>
+			</table>
+			<template #fallback>
+				<div class="danmaku-placeholder">
+					<ProgressRing />
+					<span>弹幕装填中……</span>
 				</div>
-			</thead>
-			<tbody>
-				<tr v-for="i in 100" :key="i" @contextmenu.prevent="e => { currentDanmakuIndex = i; danmakuItemMenu?.show(e); }">
-					<td v-for="(value, key, j) in getDanmaku(i)" :key="key" :width="colWidths[j]">{{ value }}</td>
-				</tr>
-			</tbody>
-		</table>
+			</template>
+		</ClientOnly>
 		<Menu ref="danmakuItemMenu">
 			<MenuItem icon="copy" @click="copyDanmaku">复制</MenuItem>
 			<MenuItem icon="flag">举报</MenuItem>
@@ -104,14 +114,24 @@
 				top: 0;
 				z-index: 1;
 
+				> th {
+					cursor: pointer;
+
+					&:is(:hover, :active) {
+						background-color: c(hover-color) !important;
+					}
+				}
+
 				.shadow {
 					position: absolute;
 					left: 0;
 					height: 100%;
+					pointer-events: none;
 
 					> th {
 						overflow: visible;
 						background-color: transparent;
+						pointer-events: none;
 					}
 				}
 			}
@@ -130,13 +150,17 @@
 				transition: $fallback-transitions, width 0s;
 			}
 
+			td {
+				padding-right: 0;
+			}
+
 			thead,
 			th {
 				background-color: c(main-bg);
 			}
 
 			thead,
-			tr,
+			:deep(tr),
 			thead > .shadow {
 				display: flex;
 				width: 100%;
@@ -158,6 +182,7 @@
 				height: 100%;
 				opacity: 0;
 				transition-duration: 1s;
+				pointer-events: auto;
 				touch-action: pan-y pinch-zoom;
 				translate: calc(($click-width - 1px) / 2);
 
@@ -178,14 +203,21 @@
 				}
 			}
 
-			thead:is(:hover, :active) th .grip {
-				opacity: 1;
-				transition-duration: 500ms;
-			}
-
-			thead:hover {
+			thead:is(:hover, :active) {
 				@include chip-shadow;
+
+				.grip {
+					opacity: 1;
+					transition-duration: 500ms;
+				}
 			}
+		}
+
+		.danmaku-placeholder {
+			@include flex-center;
+			flex-direction: column;
+			gap: 12px;
+			height: 100%;
 		}
 	}
 </style>

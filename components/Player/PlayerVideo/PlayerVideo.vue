@@ -158,7 +158,7 @@
 
 		<PlayerVideoPanel />
 		<Menu ref="menu">
-			<MenuItem @click="showInfo">查看视频详细信息</MenuItem>
+			<MenuItem icon="info" @click="showInfo">查看视频详细信息</MenuItem>
 		</Menu>
 	</kira-component>
 </template>
