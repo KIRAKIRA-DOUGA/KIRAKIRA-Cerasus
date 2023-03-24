@@ -36,11 +36,11 @@
 	const showMenu = () => menu.value?.show();
 	const beep = ref<HTMLAudioElement>();
 	const isUploaderLovinIt = ref(true);
-	const kiraGoods = reactive(["kawaii", "nijigen"]);
-	const isSelectAll = computed<CheckState>(() => kiraGoods.length >= 3 ? "checked" : kiraGoods.length === 0 ? "unchecked" : "indeterminate");
+	const kiraGoods = ref(["kawaii", "nijigen"]);
+	const isSelectAll = computed<CheckState>(() => kiraGoods.value.length >= 3 ? "checked" : kiraGoods.value.length === 0 ? "unchecked" : "indeterminate");
 	const onSelectAllChange = (e: { value: string; checkState: CheckState; checked: boolean }) => {
-		arrayClearAll(kiraGoods);
-		if (e.checked) kiraGoods.push("kawaii", "nijigen", "nice");
+		kiraGoods.value = [];
+		if (e.checked) kiraGoods.value.push("kawaii", "nijigen", "nice");
 	};
 	const toastMessage = ref("");
 	const toastSeverity = ref<ToastEvent["severity"]>("success");

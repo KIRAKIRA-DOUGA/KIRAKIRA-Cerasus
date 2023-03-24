@@ -71,7 +71,7 @@
 		</table>
 		<Menu ref="danmakuItemMenu">
 			<MenuItem icon="copy" @click="copyDanmaku">复制</MenuItem>
-			<MenuItem>举报</MenuItem>
+			<MenuItem icon="flag">举报</MenuItem>
 		</Menu>
 	</kira-component>
 </template>
