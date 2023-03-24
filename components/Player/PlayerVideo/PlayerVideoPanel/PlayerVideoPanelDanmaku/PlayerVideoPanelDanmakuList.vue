@@ -149,6 +149,7 @@
 				width: $click-width;
 				height: 100%;
 				opacity: 0;
+				transition-duration: 1s;
 				touch-action: pan-y pinch-zoom;
 				translate: calc(($click-width - 1px) / 2);
 
@@ -156,7 +157,7 @@
 					display: block;
 					width: 1px;
 					height: 100%;
-					background-color: c(divider);
+					background-color: c(divider, 10%);
 					content: "";
 				}
 
@@ -171,6 +172,11 @@
 
 			thead:is(:hover, :active) th .grip {
 				opacity: 1;
+				transition-duration: 500ms;
+			}
+
+			thead:hover {
+				@include chip-shadow;
 			}
 		}
 	}
