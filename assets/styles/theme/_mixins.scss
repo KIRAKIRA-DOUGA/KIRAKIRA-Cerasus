@@ -100,21 +100,18 @@
 }
 
 /// 应用 Material Design 大水波纹按钮时，不要让大水波纹扩大了按钮的点击面积。
+/// @param {Number} $button-size - 点击区域按钮大小。
 /// @output - pointer-events, z-index
-@mixin ripple-clickable-only-inside {
+@mixin ripple-clickable-only-inside($button-size) {
 	> * {
 		pointer-events: none;
-	}
 
-	&:is(:hover, :active, :focus-visible) {
-		z-index: 1;
-
-		> * {
+		::after {
+			@include square($button-size);
+			position: absolute;
+			display: block;
+			content: "";
 			pointer-events: auto;
 		}
-	}
-
-	&:active {
-		z-index: 2;
 	}
 }

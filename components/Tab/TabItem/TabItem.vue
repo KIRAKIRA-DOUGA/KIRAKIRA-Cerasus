@@ -21,13 +21,6 @@
 	defineExpose({
 		dom,
 	});
-
-	/* onMounted(() => {
-		parent.exposed!.children[props.id] = dom.value;
-		if (!parent.exposed || !dom.value) return;
-		const children = parent.exposed.children as TabBarChildren;
-		children[props.id] = { dom: dom.value };
-	}); */
 </script>
 
 <template>

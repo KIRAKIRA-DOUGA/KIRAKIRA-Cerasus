@@ -300,7 +300,7 @@
 	.wrapper {
 		@include flex-center;
 		@include square(var(--size));
-		@include ripple-clickable-only-inside;
+		@include ripple-clickable-only-inside(var(--size));
 
 		> * {
 			@include flex-center;
@@ -317,7 +317,7 @@
 				@include button-shadow-focus;
 			}
 
-			&:is(:hover, :active, :has(* + *)):not(:focus-visible) {
+			&:is(:hover, :active, :has(> * + *)):not(:focus-visible) {
 				@include square(calc(var(--size) * 1.3));
 			}
 

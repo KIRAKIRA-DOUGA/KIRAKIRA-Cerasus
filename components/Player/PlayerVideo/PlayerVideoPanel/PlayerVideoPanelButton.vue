@@ -19,6 +19,8 @@
 </template>
 
 <style scoped lang="scss">
+	$button-wrapper-size: 40px;
+
 	.icon {
 		color: c(icon-color);
 		font-size: inherit;
@@ -26,14 +28,15 @@
 
 	.button-wrapper {
 		@include flex-center;
-		@include square(36px);
+		@include square($button-wrapper-size);
 		@include circle;
-		@include ripple-clickable-only-inside;
+		@include ripple-clickable-only-inside($button-wrapper-size);
 
 		button {
 			@include flex-center;
 			@include square(40px);
 			@include circle;
+			position: relative;
 			flex-shrink: 0;
 			color: c(icon-color);
 			font-weight: 600;
@@ -47,7 +50,7 @@
 				@include button-shadow-focus;
 			}
 
-			&:is(:hover, :active, :has(* + *)):not(:focus-visible) {
+			&:is(:hover, :active, :has(> * + *)):not(:focus-visible) {
 				@include square(64px);
 			}
 
