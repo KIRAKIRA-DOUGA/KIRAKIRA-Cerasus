@@ -401,7 +401,7 @@
 			position: relative;
 		}
 
-		& > span {
+		> span {
 			position: relative;
 			z-index: 2;
 		}

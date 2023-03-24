@@ -45,7 +45,7 @@
 		}
 
 		&,
-		& * {
+		* {
 			transition: all $ease-out-expo 600ms;
 		}
 	}

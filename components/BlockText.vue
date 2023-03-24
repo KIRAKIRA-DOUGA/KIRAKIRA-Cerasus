@@ -49,7 +49,7 @@
 		.text > :deep(*) {
 			color: inherit;
 
-			& * {
+			* {
 				background-color: v-bind(color);
 			}
 		}

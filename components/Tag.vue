@@ -84,13 +84,13 @@
 			}
 
 			&,
-			& * {
+			* {
 				transition: $fallback-transitions, all $ease-out-back $duration, color 50ms;
 			}
 		}
 
 		&,
-		& * {
+		* {
 			transition: $fallback-transitions, all $ease-out-expo $duration;
 		}
 	}

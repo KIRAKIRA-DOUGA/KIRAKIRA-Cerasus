@@ -138,13 +138,13 @@
 		background-color: c(acrylic-bg, 75%);
 		transition: all $transition-ease $enter-duration;
 
-		& * {
+		* {
 			transition: all $transition-ease $enter-duration;
 		}
 
 		&.dialog-leave-active {
 			&,
-			& * {
+			* {
 				transition-duration: 250ms;
 			}
 		}

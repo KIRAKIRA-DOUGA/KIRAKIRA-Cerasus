@@ -87,7 +87,7 @@
 		font-weight: 600;
 		font-size: 14px;
 
-		:where(& > *) {
+		:where(> *) {
 			flex-shrink: 0;
 		}
 	}
