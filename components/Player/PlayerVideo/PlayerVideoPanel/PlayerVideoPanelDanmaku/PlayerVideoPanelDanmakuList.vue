@@ -58,7 +58,7 @@
 			<table class="lite">
 				<thead>
 					<th v-for="(header, j) in headers" :key="header" v-ripple :width="colWidths[j]">
-						{{ header }}
+						<span>{{ header }}</span>
 					</th>
 					<div class="shadow">
 						<th v-for="(header, j) in headers" :key="header" :width="colWidths[j]">

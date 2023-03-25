@@ -38,7 +38,7 @@
 	>
 		<LocaleLink v-if="href" draggable="false" :to="href" class="link lite" />
 		<NuxtIcon v-if="icon" :name="icon" />
-		<slot></slot>
+		<span><slot></slot></span>
 	</button>
 </template>
 
