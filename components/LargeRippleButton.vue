@@ -28,13 +28,11 @@
 
 	.button-wrapper {
 		@include flex-center;
-		@include square($button-wrapper-size);
 		@include circle;
 		@include ripple-clickable-only-inside($button-wrapper-size);
 
 		button {
 			@include flex-center;
-			@include square(40px);
 			@include circle;
 			position: relative;
 			flex-shrink: 0;
@@ -49,13 +47,21 @@
 				@include button-shadow-focus;
 			}
 
-			&:is(:hover, :active, :has(> * + *)):not(:focus-visible) {
-				@include square(64px);
-			}
-
 			&:is(:hover, :active) {
 				background-color: c(hover-color);
 			}
 		}
+	}
+
+	:where(.button-wrapper) {
+		@include square($button-wrapper-size);
+	}
+
+	:where(.button-wrapper button) {
+		@include square(40px);
+	}
+
+	:where(.button-wrapper button:is(:hover, :active, :has(> * + *)):not(:focus-visible)) {
+		@include square(64px);
 	}
 </style>

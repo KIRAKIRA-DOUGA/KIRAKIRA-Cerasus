@@ -58,6 +58,7 @@
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
 	async function onAfterIconEnter(el: Element, done: () => void) {
+		console.log(el);
 		await animateSize(el, null, { startWidth: 0, duration: 300, startStyle: { scale: 0 }, specified: "width" });
 		done();
 	}
@@ -297,17 +298,17 @@
 
 <style module="afterIcon" lang="scss">
 	.wrapper {
-		@include square(var(--size) !important);
+		@include square(var(--size));
 
 		> * {
-			@include square(var(--size) !important);
+			@include square(var(--size));
 
 			&:focus-visible {
 				@include button-shadow-focus;
 			}
 
 			&:is(:hover, :active, :has(> * + *)):not(:focus-visible) {
-				@include square(calc(var(--size) * 1.3) !important);
+				@include square(calc(var(--size) * 1.3));
 			}
 		}
 
