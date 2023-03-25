@@ -105,4 +105,4 @@ export const httpResponseStatusCodes = new Proxy(httpResponseStatusCodesTarget, 
 	get(target, name: string): string {
 		return name in target ? target[name as unknown as keyof typeof target] : "Error";
 	},
-}) as typeof httpResponseStatusCodesTarget & Record<string | number, "Error">;
+}) as typeof httpResponseStatusCodesTarget & Record<Numberish, "Error">;

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	const props = defineProps<{
 		id: string;
-		badge: string | number;
+		badge: Readable;
 	}>();
 </script>
 

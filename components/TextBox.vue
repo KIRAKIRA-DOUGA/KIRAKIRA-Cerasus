@@ -84,7 +84,7 @@
 			<Transition css={false} onEnter={onAfterIconEnter} onLeave={onAfterIconLeave}>
 				{
 					props.shown &&
-					<LargeRippleButton class={[styles.wrapper]} icon={props.icon} nonclickable={!props.onClick} onClick={props.onClick} />
+					<LargeRippleButton class={[styles.afterIcon]} icon={props.icon} nonclickable={!props.onClick} onClick={props.onClick} />
 				}
 			</Transition>
 		);
@@ -296,7 +296,7 @@
 </style>
 
 <style module="afterIcon" lang="scss">
-	.wrapper {
+	.after-icon {
 		@include square(var(--size));
 
 		> * {

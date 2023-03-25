@@ -41,7 +41,7 @@ export async function replayAnimation(element: Element, ...className: string[]) 
 }
 
 type StyleProperties = string & keyof FilterValueType<CSSStyleDeclaration, string>;
-type Keyframe = Partial<Record<Exclude<StyleProperties, "offset">, string | number> & { offset: number }>;
+type Keyframe = Partial<Record<Exclude<StyleProperties, "offset">, Numberish> & { offset: number }>;
 type Keyframes = Keyframe[];
 type DimensionAxis = "height" | "width" | "both";
 type MaybePromise<T> = T | Promise<T>;

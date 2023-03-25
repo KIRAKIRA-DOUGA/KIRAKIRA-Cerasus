@@ -3,7 +3,7 @@
 		/** 图标。 */
 		icon?: string;
 		/** 文本。 */
-		text?: string;
+		text?: Readable;
 		/** 是否仅显示图标不可点击。 */
 		nonclickable?: boolean;
 	}>();

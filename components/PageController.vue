@@ -258,7 +258,7 @@
 					/>
 				</div>
 			</div>
-			<UnselectedItem v-if="(pages >= 2 && showLast)" :page="pages" @click="changePage(pages)" />
+			<LargeRippleButton v-if="(pages >= 2 && showLast)" :text="pages" @click="changePage(pages)" />
 		</div>
 		<div v-ripple class="thumb">
 			<div class="focus-line"></div>

@@ -7,7 +7,7 @@
 
 	const props = defineProps<{
 		/** 标题。 */
-		title: string | number;
+		title: Readable;
 		/** 是否展示而非折叠？单向绑定使用。 */
 		shown?: boolean;
 	}>();

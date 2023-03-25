@@ -1,9 +1,9 @@
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
 		/** 封面宽度。可以是数字（像素）或其它单位值的字符串。 */
-		width?: string | number;
+		width?: Numberish;
 		/** 封面高度。可以是数字（像素）或其它单位值的字符串。 */
-		height?: string | number;
+		height?: Numberish;
 		/** 如是则将 LOGO 切换为 Welcome 字样。 */
 		welcome?: boolean;
 		/** 如是则使用完全形式的 LOGO。 */
