@@ -1,23 +1,23 @@
-// 参考：vue 中如何获取插槽的 dom 对象
+// 参考：Vue 中如何获取插槽的 DOM 对象
 // https://free_pan.gitee.io/freepan-blog/articles/05-vue3/vue3-杂项/vue中如何获取插槽的dom对象.html
 
-type VNodeEl = ComponentPublicInstance & { vnode: VNode[] };
-type CallFun = (vnodeEl: VNodeEl) => void;
+type SlotNode = ComponentPublicInstance & { vnode: VNode[] };
+type CallFun = (slotNode: SlotNode) => void;
 interface RenderCallbackObj {
 	/**
 	 * 自定义 mounted 回调。
 	 */
-	mountedCallFun?: CallFun;
+	mounted?: CallFun;
 	/**
 	 * 自定义 updated 回调。
 	 */
-	updatedCallFun?: CallFun;
+	updated?: CallFun;
 	/**
 	 * 自定义 unmounted 回调。
 	 */
-	unmountedCallFun?: CallFun;
+	unmounted?: CallFun;
 }
-export const useCustomFactory = ({ mountedCallFun, updatedCallFun, unmountedCallFun }: RenderCallbackObj) => {
+export const useCustomFactory = ({ mounted, updated, unmounted }: RenderCallbackObj) => {
 	return defineComponent({
 		props: {
 			vnode: {
@@ -26,16 +26,16 @@ export const useCustomFactory = ({ mountedCallFun, updatedCallFun, unmountedCall
 			},
 		},
 		mounted() {
-			// 这个 this.$el 就代表当前 vnode 的 dom 对象
-			mountedCallFun?.(this);
+			// 这个 this.$el 就代表当前 vnode 的 DOM 对象。
+			mounted?.(this);
 		},
 		updated() {
-			updatedCallFun?.(this);
+			updated?.(this);
 		},
 		unmounted() {
-			unmountedCallFun?.(this);
+			unmounted?.(this);
 		},
-		render(props: { vnode: VNode }) {
+		render(props: { vnode: VNode[] }) {
 			return props.vnode;
 		},
 	});
@@ -54,19 +54,19 @@ const findChildren = (vnodes: VNode[], type: unknown) => {
  * @returns 插槽组件，和子节点引用。
  */
 export const useFactory = (type: unknown = undefined, slotName: string = "default") => {
-	const vnodeEl = ref<Parameters<CallFun>[0]>();
+	const slotNode = ref<SlotNode>();
 	const children = ref<VNode[]>([]);
 	const RenderComp = useCustomFactory({
-		mountedCallFun: e => {
-			vnodeEl.value = e;
+		mounted: e => {
+			slotNode.value = e;
 			if (type) children.value = findChildren(e.vnode, type);
 		},
-		unmountedCallFun: _e => {
-			vnodeEl.value = undefined;
+		unmounted: _e => {
+			slotNode.value = undefined;
 			children.value = [];
 		},
 	});
 	const slot = useSlots()[slotName];
 	const Slot = slot ? h(RenderComp, { vnode: slot() }) as Object : undefined;
-	return { RenderComp, Slot, children, vnodeEl };
+	return { RenderComp, Slot, children, slotNode };
 };

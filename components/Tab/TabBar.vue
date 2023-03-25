@@ -1,6 +1,4 @@
 <script setup lang="ts">
-	import TabItem from "./TabItem/TabItem.vue";
-
 	const props = defineProps<{
 		clipped?: boolean;
 		vertical?: boolean;
@@ -12,7 +10,7 @@
 		(event: "update:modelValue", arg: string): void;
 	}>();
 
-	const { Slot, vnodeEl } = useFactory(TabItem);
+	const { Slot, slotNode } = useFactory();
 	const tabBar = ref<HTMLElement>();
 	const indicator = ref<HTMLDivElement>();
 
@@ -47,8 +45,8 @@
 	 * @returns 子选项卡项目。
 	 */
 	function getChild(id: string) {
-		if (!vnodeEl.value) return null;
-		for (const child of vnodeEl.value.vnode)
+		if (!slotNode.value) return null;
+		for (const child of slotNode.value.vnode)
 			if (child.component?.props.id === id)
 				return child.el as HTMLElement;
 		return null;
@@ -142,6 +140,10 @@
 
 		> :deep(*) {
 			flex-shrink: 0;
+			cursor: pointer;
+		}
+
+		> :slotted(*) {
 			cursor: pointer;
 		}
 

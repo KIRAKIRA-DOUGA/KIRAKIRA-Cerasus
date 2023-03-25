@@ -24,7 +24,7 @@ export function useParent<T extends ComponentInternalInstance>(type?: ConcreteCo
  * 获取父组件的作用域样式 ID。
  * @returns 父组件的作用域样式 ID。
  */
-export function useParentScopeId() { // TODO: [兰音] 某些时候可能计算不准确，由于目前仅在一个使用地方测试，不能保证所有情况都能正常工作。需要增加更多测试场景。
+export function useParentScopeId() { // 简单测试后发现使用起来似乎并没有问题，等出了问题的时候再说吧。
 	let parent = getCurrentInstance()?.parent;
 	while (parent) {
 		if ("__scopeId" in parent.type && typeof parent.type.__scopeId === "string")
@@ -35,34 +35,13 @@ export function useParentScopeId() { // TODO: [兰音] 某些时候可能计算�
 }
 
 /**
- * 为父组件创建插槽子组件映射表。
- * @deprecated
- * @returns - 插槽子组件。
+ * 获取当前组件的作用域样式 ID。
+ * @returns 当前组件的作用域样式 ID。
+ * 如果当前组件没有作用域样式 ID，返回 undefined；如果该函数不在 setup 时期调用，返回 null。
  */
-export function useSlotChildren() {
-	const children = {} as Record<string | number | symbol, ComponentInternalInstance>; // T: ComponentInternalInstance
-	// getCurrentInstance()!.exposed ??= {};
-	// getCurrentInstance()!.exposed!.children = children;
-	return children;
-}
-
-/**
- * 插槽内子组件绑定父组件。
- * @deprecated
- * @param id - 子组件的唯一标识符。
- * @param type - 父组件的类型筛选。
- */
-export function bindParent(id: string | number | symbol, type?: ConcreteComponent | unknown) {
-	const me = getCurrentInstance();
-	const parent = useParent(type);
-
-	onMounted(() => {
-		if (!me || !parent?.exposed?.children) return;
-		parent.exposed.children[id] = me;
-	});
-
-	onUnmounted(() => {
-		if (!me || !parent?.exposed?.children) return;
-		delete parent.exposed.children[id];
-	});
+export function useScopeId() {
+	const instance = getCurrentInstance();
+	if (!instance) return null;
+	if (!(instance.type instanceof Object && "__scopeId" in instance.type)) return undefined;
+	return instance.type.__scopeId as string;
 }
