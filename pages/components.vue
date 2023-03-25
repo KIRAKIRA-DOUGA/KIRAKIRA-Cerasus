@@ -115,8 +115,8 @@
 			<Checkbox disabled checkState="unchecked">鼠鼠我呀最讨厌了</Checkbox>
 			<Checkbox disabled checkState="checked">欢迎白嫖</Checkbox>
 			<hr />
-			<TextBox v-model="inputValue" :invalid="isInvalid" placeholder="请输入正确的邮箱" />
 			<TextBox v-model="inputValue" size="small" placeholder="小小的软软的香香的" />
+			<TextBox v-model="inputValue" :invalid="isInvalid" placeholder="请输入正确的邮箱" />
 			<TextBox v-model="inputValue" size="large" icon="lock" type="password" placeholder="密码" />
 			<em>所有输入框的内容同时输入属正常现象，因为懒得做三个变量。</em>
 			<hr />

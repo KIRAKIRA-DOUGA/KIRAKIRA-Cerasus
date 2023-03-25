@@ -1,7 +1,11 @@
 <script setup lang="ts">
 	const props = defineProps<{
+		/** 图标。 */
 		icon?: string;
+		/** 文本。 */
 		text?: string;
+		/** 是否仅显示图标不可点击。 */
+		nonclickable?: boolean;
 	}>();
 
 	const emits = defineEmits<{
@@ -11,7 +15,7 @@
 
 <template>
 	<div class="button-wrapper">
-		<button v-ripple type="button" @click="e => emits('click', e)">
+		<button v-ripple type="button" :tabindex="nonclickable ? -1 : ''" @click="e => emits('click', e)">
 			<NuxtIcon v-if="icon" :name="icon" class="icon" />
 			<span v-if="text"><span>{{ text }}</span></span>
 		</button>
@@ -44,7 +48,7 @@
 			appearance: none;
 
 			&:focus-visible {
-				@include button-shadow-focus;
+				@include button-shadow-focus; // TODO: [兰音] 在输入框后方按钮聚焦时太丑，需要单独设置样式。
 			}
 
 			&:is(:hover, :active) {
@@ -53,15 +57,17 @@
 		}
 	}
 
-	:where(.button-wrapper) {
-		@include square($button-wrapper-size);
-	}
+	@layer utilities {
+		.button-wrapper {
+			@include square($button-wrapper-size);
 
-	:where(.button-wrapper button) {
-		@include square(40px);
-	}
+			button {
+				@include square(40px);
 
-	:where(.button-wrapper button:is(:hover, :active, :has(> * + *)):not(:focus-visible)) {
-		@include square(64px);
+				&:is(:hover, :active, :has(> * + *)):not(:focus-visible) {
+					@include square(64px);
+				}
+			}
+		}
 	}
 </style>

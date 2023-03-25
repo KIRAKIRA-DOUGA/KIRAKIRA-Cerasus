@@ -58,7 +58,6 @@
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
 	async function onAfterIconEnter(el: Element, done: () => void) {
-		console.log(el);
 		await animateSize(el, null, { startWidth: 0, duration: 300, startStyle: { scale: 0 }, specified: "width" });
 		done();
 	}
@@ -85,7 +84,7 @@
 			<Transition css={false} onEnter={onAfterIconEnter} onLeave={onAfterIconLeave}>
 				{
 					props.shown &&
-					<LargeRippleButton class={[styles.wrapper, { [styles.clickable]: !!props.onClick }]} icon={props.icon} onClick={props.onClick} />
+					<LargeRippleButton class={[styles.wrapper]} icon={props.icon} nonclickable={!props.onClick} onClick={props.onClick} />
 				}
 			</Transition>
 		);
@@ -153,7 +152,7 @@
 			}
 		}
 
-		&:focus-within {
+		&:has(input:focus) {
 			.focus-stripe {
 				background-color: c(accent);
 				scale: 1;
@@ -238,7 +237,7 @@
 		}
 
 		&.typed ~ label,
-		&:focus-visible ~ label {
+		&:focus ~ label {
 			translate: 0 calc($large-height / -2 + 12px);
 			scale: 0.7;
 		}
@@ -310,10 +309,6 @@
 			&:is(:hover, :active, :has(> * + *)):not(:focus-visible) {
 				@include square(calc(var(--size) * 1.3));
 			}
-		}
-
-		&:not(.clickable) *::before {
-			pointer-events: none !important;
 		}
 	}
 </style>
