@@ -37,16 +37,18 @@
 
 	.icon {
 		color: c(icon-color);
-		font-size: $icon-size;
+		font-size: var(--icon-size);
 	}
 
 	.large-ripple-button {
 		@include flex-center;
+		@include square(var(--wrapper-size));
 		@include circle;
 		@include ripple-clickable-only-inside(var(--wrapper-size));
 
 		button {
 			@include flex-center;
+			@include square(var(--wrapper-size));
 			@include circle;
 			position: relative;
 			flex-shrink: 0;
@@ -58,29 +60,25 @@
 			cursor: pointer;
 			appearance: none;
 
-			&:focus-visible {
-				@include button-shadow-focus; // TODO: [兰音] 在输入框后方按钮聚焦时太丑，需要单独设置样式。
+			&:not([tabindex="-1"]):focus-visible {
+				@include button-shadow-focus; // TODO: [兰音] 在输入框后方按钮聚焦时太丑，需要额外单独设计样式。
 			}
 
 			&:is(:hover, :active) {
 				background-color: c(hover-color);
+			}
+
+			&:is(:hover, :active, :has(> * + *)):not(:focus-visible) {
+				@include square(var(--ripple-size));
 			}
 		}
 	}
 
 	@layer utilities {
 		.large-ripple-button {
-			@include square(var(--wrapper-size));
 			--wrapper-size: #{$wrapper-size};
 			--ripple-size: #{$ripple-size};
-
-			button {
-				@include square(var(--wrapper-size));
-
-				&:is(:hover, :active, :has(> * + *)):not(:focus-visible) {
-					@include square(var(--ripple-size));
-				}
-			}
+			--icon-size: #{$icon-size};
 		}
 	}
 </style>

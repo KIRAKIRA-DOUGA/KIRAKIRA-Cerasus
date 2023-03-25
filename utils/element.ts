@@ -64,3 +64,12 @@ export function addEventListeners<K extends keyof HTMLElementEventMap, E extends
 export function addEventListeners<K extends keyof HTMLElementEventMap, E extends HTMLElement>(element: E, listener: (this: E, ev: HTMLElementEventMap[K]) => void, ...types: K[]): void {
 	types.forEach(type => element.addEventListener(type, listener as never));
 }
+
+/**
+ * 同时阻止事件冒泡和默认方法。
+ * @param event - 事件。
+ */
+export function stopEvent(event: Event) {
+	event.preventDefault();
+	event.stopPropagation();
+}

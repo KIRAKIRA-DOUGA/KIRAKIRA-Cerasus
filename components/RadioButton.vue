@@ -70,13 +70,13 @@
 	 */
 	function onKeydown(e: KeyboardEvent) {
 		if (e.code === "Space") {
-			e.preventDefault();
+			stopEvent(e);
 			return;
 		}
 		const movePrev = e.code === "ArrowUp" || e.code === "ArrowLeft";
 		const moveNext = e.code === "ArrowDown" || e.code === "ArrowRight";
 		if (!movePrev && !moveNext) return;
-		e.preventDefault();
+		stopEvent(e);
 		emits("move", moveNext ? "next" : "previous");
 		let thisComponent = e.target as HTMLElement;
 		let thatComponent: HTMLElement, radio: HTMLInputElement;
