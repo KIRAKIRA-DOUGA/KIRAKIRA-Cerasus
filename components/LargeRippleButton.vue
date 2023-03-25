@@ -6,6 +6,8 @@
 		text?: Readable;
 		/** 是否仅显示图标不可点击。 */
 		nonclickable?: boolean;
+		/** 是否不可聚焦但仍可点击。 */
+		nonfocusable?: boolean;
 	}>();
 
 	const emits = defineEmits<{
@@ -14,8 +16,14 @@
 </script>
 
 <template>
-	<div class="button-wrapper">
-		<button v-ripple type="button" :tabindex="nonclickable ? -1 : ''" @click="e => emits('click', e)">
+	<div class="large-ripple-button">
+		<button
+			v-ripple
+			type="button"
+			:tabindex="nonclickable || nonfocusable ? -1 : ''"
+			:disabled="nonclickable"
+			@click="e => emits('click', e)"
+		>
 			<NuxtIcon v-if="icon" :name="icon" class="icon" />
 			<span v-if="text"><span>{{ text }}</span></span>
 		</button>
@@ -23,17 +31,19 @@
 </template>
 
 <style scoped lang="scss">
-	$button-wrapper-size: 40px;
+	$wrapper-size: 40px;
+	$ripple-size: 64px;
+	$icon-size: 24px;
 
 	.icon {
 		color: c(icon-color);
-		font-size: 24px;
+		font-size: $icon-size;
 	}
 
-	.button-wrapper {
+	.large-ripple-button {
 		@include flex-center;
 		@include circle;
-		@include ripple-clickable-only-inside($button-wrapper-size);
+		@include ripple-clickable-only-inside(var(--wrapper-size));
 
 		button {
 			@include flex-center;
@@ -42,6 +52,7 @@
 			flex-shrink: 0;
 			color: c(icon-color);
 			font-weight: 600;
+			font-size: inherit;
 			background: none;
 			border: none;
 			cursor: pointer;
@@ -58,14 +69,16 @@
 	}
 
 	@layer utilities {
-		.button-wrapper {
-			@include square($button-wrapper-size);
+		.large-ripple-button {
+			@include square(var(--wrapper-size));
+			--wrapper-size: #{$wrapper-size};
+			--ripple-size: #{$ripple-size};
 
 			button {
-				@include square(40px);
+				@include square(var(--wrapper-size));
 
 				&:is(:hover, :active, :has(> * + *)):not(:focus-visible) {
-					@include square(64px);
+					@include square(var(--ripple-size));
 				}
 			}
 		}

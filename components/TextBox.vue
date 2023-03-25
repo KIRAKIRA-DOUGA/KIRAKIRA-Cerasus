@@ -74,7 +74,6 @@
 	}
 
 	const AfterIcon = (() => {
-		const styles = useCssModule("afterIcon");
 		interface Props {
 			shown?: boolean;
 			onClick?: (payload: MouseEvent) => void;
@@ -84,7 +83,7 @@
 			<Transition css={false} onEnter={onAfterIconEnter} onLeave={onAfterIconLeave}>
 				{
 					props.shown &&
-					<LargeRippleButton class={[styles.afterIcon]} icon={props.icon} nonclickable={!props.onClick} onClick={props.onClick} />
+					<LargeRippleButton icon={props.icon} nonclickable={!props.onClick} onClick={props.onClick} />
 				}
 			</Transition>
 		);
@@ -292,23 +291,10 @@
 		.invalid & :deep(.nuxt-icon) {
 			color: c(red) !important;
 		}
-	}
-</style>
 
-<style module="afterIcon" lang="scss">
-	.after-icon {
-		@include square(var(--size));
-
-		> * {
-			@include square(var(--size));
-
-			&:focus-visible {
-				@include button-shadow-focus;
-			}
-
-			&:is(:hover, :active, :has(> * + *)):not(:focus-visible) {
-				@include square(calc(var(--size) * 1.3));
-			}
+		.large-ripple-button {
+			--wrapper-size: var(--size);
+			--ripple-size: calc(var(--size) * 1.3);
 		}
 	}
 </style>

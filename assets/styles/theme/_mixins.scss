@@ -106,7 +106,7 @@
 	> * {
 		pointer-events: none;
 
-		&:not([tabindex="-1"])::before {
+		&:not([disabled])::before {
 			@include square($button-size);
 			position: absolute;
 			display: block;

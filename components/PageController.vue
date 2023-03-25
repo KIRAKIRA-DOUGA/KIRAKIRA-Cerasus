@@ -224,41 +224,25 @@
 			currentEdited.value = String(currentPage.value);
 		window.getSelection()?.removeAllRanges();
 	}
-
-	const UnselectedItem = (() => {
-		const styles = useCssModule("unselectedItem");
-		/**
-		 * @param props - 属性。
-		 * @param props.page - 显示的页码值。
-		 * @returns 未选中项目组件。
-		 */
-		return (props: { page: number }) => (
-			<div class={styles.unselectedItem}>
-				<div class={[styles.background, styles.hover]}></div>
-				<div class={[styles.background, styles.pressed]}></div>
-				{/* 按下状态统一叫 pressed 不叫 active 是为了与活跃状态区分开。 */}
-				<span>{props.page}</span>
-			</div>
-		);
-	})();
 </script>
 
 <template>
 	<div class="page">
 		<div class="track">
-			<UnselectedItem v-if="showFirst" :page="1" @click="changePage(1)" />
+			<LargeRippleButton v-if="showFirst" :text="1" nonfocusable @click="changePage(1)" />
 			<div class="scroll-mask" :class="{ clip: isScrolling }">
 				<div v-if="(pages >= 3)" ref="scrollArea" class="scroll-area">
-					<UnselectedItem
+					<LargeRippleButton
 						v-for="(item, position) in scrolledPages"
 						:key="item"
-						:page="item"
+						:text="item"
+						nonfocusable
 						:style="{ '--position': position }"
 						@click="changePage(item)"
 					/>
 				</div>
 			</div>
-			<LargeRippleButton v-if="(pages >= 2 && showLast)" :text="pages" @click="changePage(pages)" />
+			<LargeRippleButton v-if="(pages >= 2 && showLast)" :text="pages" nonfocusable @click="changePage(pages)" />
 		</div>
 		<div v-ripple class="thumb">
 			<div class="focus-line"></div>
@@ -288,6 +272,12 @@
 		width: fit-content;
 		overflow: hidden;
 		background-color: c(inset-bg);
+
+		.large-ripple-button {
+			--wrapper-size: #{$size};
+			--ripple-size: 48px;
+			transition: $fallback-transitions, left 0s;
+		}
 	}
 
 	.page {
@@ -364,7 +354,7 @@
 	}
 
 	.scroll-mask.clip {
-		overflow: hidden;
+		overflow: hidden; // TODO: [兰音] 滚动时，第二个和倒数第二个水波纹的两侧被削去一半；如果去掉本行，则滚动时底下的字会看到。待更好的解决方法。
 	}
 
 	.scroll-area {
@@ -379,55 +369,6 @@
 		> * {
 			position: absolute;
 			left: calc(var(--position) * $size);
-		}
-	}
-</style>
-
-<style module="unselectedItem" lang="scss">
-	$size: 36px;
-
-	.unselected-item {
-		@include flex-center;
-		flex-shrink: 0;
-
-		width: $size;
-		height: $size;
-		color: c(icon-color);
-		cursor: pointer;
-		transition: none !important;
-		-webkit-tap-highlight-color: transparent;
-
-		:where(&) {
-			position: relative;
-		}
-
-		> span {
-			position: relative;
-			z-index: 2;
-		}
-
-		.background {
-			position: absolute;
-			z-index: 0 !important;
-			flex-shrink: 0;
-			width: 300%;
-			height: 100%;
-			color: gray;
-			opacity: 0;
-			pointer-events: none;
-
-			&.hover {
-				background: radial-gradient(50% 250% at 50% 50%, c(gray-30) 33.33%, c(gray-30, 0) 100%);
-			}
-
-			&.pressed {
-				background: radial-gradient(50% 250% at 50% 50%, c(gray-40) 33.33%, c(gray-40, 0) 100%);
-			}
-		}
-
-		&:hover:not(:active) .background.hover,
-		&:active .background.pressed {
-			opacity: 1;
 		}
 	}
 </style>
