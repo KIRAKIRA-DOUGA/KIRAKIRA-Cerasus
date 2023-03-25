@@ -14,7 +14,6 @@
 		modelValue: undefined,
 		current: 1,
 		displayPageCount: 7,
-		enableArrowKeyMove: false,
 	});
 
 	const emits = defineEmits<{
@@ -80,7 +79,7 @@
 			duration: 500,
 			easing: hasExistAnimations ? eases.easeOutMax : eases.easeInOutSmooth, // 连续快速滚动时切换成缓出插值。
 		});
-		/** `Uncaught (in promise) DOMException: The user aborted a request.` 给👴爬！ */
+		// `Uncaught (in promise) DOMException: The user aborted a request.` 给👴爬！
 		const IGNORE = () => { };
 		if (merged) {
 			scrolledPages.value = merged.items;
@@ -99,28 +98,31 @@
 		//#endregion
 		//#region 滑块动画
 		const pageLeft = page < prevPage;
-		const isUserInputPage = currentEdited.value === String(page);
-		if (!isUserInputPage && pageEdit.value && newPageNumber.value) {
+		const setCurrentPage = () => currentEdited.value = String(page);
+		if (pageEdit.value && newPageNumber.value) {
 			const thumb = pageEdit.value.parentElement!;
 			const hasExistAnimations = removeExistAnimations(pageEdit.value, newPageNumber.value);
-			if (hasExistAnimations) {
-				currentEdited.value = String(prevPage);
-				thumb.style.transitionTimingFunction = eases.easeOutMax;
-			}
-			newPageNumber.value.hidden = false;
-			pageEdit.value.animate([
-				{ left: 0 },
-				{ left: `${pageLeft ? 36 : -36}px` },
-			], animationOptions(hasExistAnimations));
-			newPageNumber.value.animate([
-				{ left: `${pageLeft ? -36 : 36}px` },
-				{ left: 0 },
-			], animationOptions(hasExistAnimations)).finished.then(() => {
-				currentEdited.value = String(page);
-				if (newPageNumber.value) newPageNumber.value.hidden = true;
-				thumb.style.removeProperty("transition-timing-function");
-			}).catch(IGNORE);
-		} else currentEdited.value = String(page);
+			const isUserInputPage = currentEdited.value === String(page) && !hasExistAnimations;
+			if (!isUserInputPage) {
+				if (hasExistAnimations) {
+					currentEdited.value = String(prevPage);
+					thumb.style.transitionTimingFunction = eases.easeOutMax;
+				}
+				newPageNumber.value.hidden = false;
+				pageEdit.value.animate([
+					{ left: 0 },
+					{ left: `${pageLeft ? 36 : -36}px` },
+				], animationOptions(hasExistAnimations));
+				newPageNumber.value.animate([
+					{ left: `${pageLeft ? -36 : 36}px` },
+					{ left: 0 },
+				], animationOptions(hasExistAnimations)).finished.then(() => {
+					setCurrentPage();
+					if (newPageNumber.value) newPageNumber.value.hidden = true;
+					thumb.style.removeProperty("transition-timing-function");
+				}).catch(IGNORE);
+			} else setCurrentPage();
+		} else setCurrentPage();
 		//#endregion
 	});
 
