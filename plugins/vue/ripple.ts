@@ -2,7 +2,7 @@
  * 使用 `v-ripple`，为元素创建类 Material Design 的水波纹效果。
  */
 
-import styles from "styles/elements/ripple.module.scss";
+import "styles/elements/ripple.scss";
 
 /**
  * 点类。
@@ -48,8 +48,8 @@ function getMaxRadius(rect: DOMRect, e: MouseEvent) {
 
 // 水波纹效果。
 export default defineNuxtPlugin(nuxt => {
-	const rippleClass = styles.rippleButton;
-	const circleClass = styles.rippleCircle;
+	const rippleClass = "ripple-button";
+	const circleClass = "ripple-circle";
 	let isInitedMouseUp = false;
 
 	nuxt.vueApp.directive("ripple", {

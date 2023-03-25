@@ -1,0 +1,21 @@
+.ripple-button {
+	position: relative;
+	overflow: hidden;
+
+	.ripple-circle {
+		@include square(1rem);
+		@include circle;
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 2;
+		display: block;
+		background-color: c(main-fg, 20%);
+		pointer-events: none;
+
+		~ :where(:not(.ripple-circle)) {
+			position: relative;
+			z-index: 3;
+		}
+	}
+}

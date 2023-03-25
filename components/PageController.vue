@@ -68,6 +68,7 @@
 		},
 	});
 	const isScrolling = ref(false);
+	const isForceSmallRipple = ref(false);
 	const newPageNumber = ref<HTMLDivElement>();
 
 	watch(() => currentPage.value, (page, prevPage) => {
@@ -112,6 +113,7 @@
 					thumb.style.transitionTimingFunction = eases.easeOutMax;
 				}
 				newPageNumber.value.hidden = false;
+				if (!merged) isForceSmallRipple.value = true;
 				pageEdit.value.animate([
 					{ left: 0 },
 					{ left: `${pageLeft ? 36 : -36}px` },
@@ -123,6 +125,7 @@
 					setCurrentPage();
 					if (newPageNumber.value) newPageNumber.value.hidden = true;
 					thumb.style.removeProperty("transition-timing-function");
+					isForceSmallRipple.value = false;
 				}).catch(IGNORE);
 			} else setCurrentPage();
 		} else setCurrentPage();
@@ -233,7 +236,7 @@
 
 <template>
 	<div class="page">
-		<div class="track">
+		<div class="track" :class="{ 'small-ripple': isForceSmallRipple }">
 			<LargeRippleButton v-if="showFirst" :text="1" nonfocusable @click="changePage(1)" />
 			<div v-if="(pages >= 3)" ref="scrollArea" class="scroll-area" :class="{ 'is-scrolling': isScrolling }">
 				<div class="ripples">
@@ -295,8 +298,10 @@
 			transition: $fallback-transitions, left 0s;
 		}
 
-		.is-scrolling .large-ripple-button {
-			--focus-size: #{$ripple-size};
+		&.small-ripple .large-ripple-button :deep(button) {
+			&:has(> .ripple-circle):not(:hover, :active) {
+				@include square(var(--wrapper-size) !important);
+			}
 		}
 
 		.texts {
@@ -306,6 +311,7 @@
 			> * > * {
 				@include square($size);
 				@include flex-center;
+				font-weight: 600;
 				transition: $fallback-transitions, left 0s;
 			}
 		}

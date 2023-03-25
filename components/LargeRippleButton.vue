@@ -8,6 +8,8 @@
 		nonclickable?: boolean;
 		/** 是否不可聚焦但仍可点击。 */
 		nonfocusable?: boolean;
+		/** 强制小按钮。 */
+		small?: boolean;
 	}>();
 
 	const emits = defineEmits<{
@@ -22,6 +24,7 @@
 			type="button"
 			:tabindex="nonclickable || nonfocusable ? -1 : ''"
 			:disabled="nonclickable"
+			:class="{ small }"
 			@click="e => emits('click', e)"
 		>
 			<NuxtIcon v-if="icon" :name="icon" class="icon" />
@@ -69,7 +72,7 @@
 				background-color: c(hover-color);
 			}
 
-			&:is(:hover, :active, :has(> * + *)):not(:focus-visible) {
+			&:is(:hover, :active, :has(> .ripple-circle)):not(:focus-visible, .small) {
 				@include square(var(--ripple-size));
 			}
 		}
