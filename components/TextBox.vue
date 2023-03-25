@@ -196,6 +196,10 @@
 		display: flex;
 		align-items: center;
 		height: 100%;
+
+		.large & {
+			clip-path: polygon(0% 0%, 100% 0%, 100% calc(100% - $focus-stripe-height), 0% calc(100% - $focus-stripe-height));
+		}
 	}
 
 	label {
