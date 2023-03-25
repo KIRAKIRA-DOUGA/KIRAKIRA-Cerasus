@@ -32,7 +32,7 @@
 		}
 		return ((props, { slots }) => (
 			<div>
-				<NuxtIcon name={props.icon} />
+				<NuxtSvgIcon name={props.icon} />
 				<span>
 					{slots.default()}
 					<span class="value">{props.value}</span>

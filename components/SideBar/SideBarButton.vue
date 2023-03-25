@@ -18,7 +18,7 @@
 		:tabindex="0"
 	>
 		<div class="button">
-			<NuxtIcon :name="icon" class="icon" :tabindex="-1" />
+			<NuxtSvgIcon :name="icon" class="icon" :tabindex="-1" />
 		</div>
 	</component>
 </template>

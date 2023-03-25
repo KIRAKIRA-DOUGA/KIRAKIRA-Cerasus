@@ -9,7 +9,7 @@
 <template>
 	<TabItem :id="id" vertical>
 		<div class="home-icon">
-			<NuxtIcon name="home" />
+			<NuxtSvgIcon name="home" />
 		</div>
 		<slot>{{ t.home }}</slot>
 	</TabItem>

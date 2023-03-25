@@ -10,7 +10,7 @@
 
 <template>
 	<h3 class="subheader">
-		<NuxtIcon :name="icon" />
+		<NuxtSvgIcon :name="icon" />
 		<div class="title">
 			<slot></slot>
 		</div>

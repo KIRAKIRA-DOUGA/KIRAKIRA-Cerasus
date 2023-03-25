@@ -11,7 +11,7 @@
 					<div class={styles.mask}>
 						<div class={styles.card}>
 							<div class={styles.cardBack}>
-								{forMap(2, i => <NuxtIcon name="settings" class={styles.settingsIcon} key={`settings-${i}`} />)}
+								{forMap(2, i => <NuxtSvgIcon name="settings" class={styles.settingsIcon} key={`settings-${i}`} />)}
 							</div>
 							<div class={styles.cardBody}>
 								<h1>警告，JavaScript被禁用</h1>

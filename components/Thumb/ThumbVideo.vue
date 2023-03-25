@@ -46,21 +46,21 @@
 			<div class="info">
 				<div class="line">
 					<div class="item">
-						<NuxtIcon name="play" />
+						<NuxtSvgIcon name="play" />
 						<p>{{ watchedCount }}</p>
 					</div>
 					<div class="item">
-						<NuxtIcon name="time" />
+						<NuxtSvgIcon name="time" />
 						<p>{{ duration }}</p>
 					</div>
 				</div>
 				<div class="line">
 					<LocaleLink class="item uploader" to="components" linkInLink>
-						<NuxtIcon name="person" />
+						<NuxtSvgIcon name="person" />
 						<div>{{ uploader }}</div>
 					</LocaleLink>
 					<div class="item">
-						<NuxtIcon name="calendar" />
+						<NuxtSvgIcon name="calendar" />
 						<div>{{ date }}</div>
 					</div>
 				</div>

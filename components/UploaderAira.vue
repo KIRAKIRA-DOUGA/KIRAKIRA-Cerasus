@@ -36,7 +36,7 @@
 	<Transition>
 		<kira-component v-if="!hidden" class="lovin" @mouseenter="hover = true" @mouseleave="hover = false">
 			<!-- 谨记：这里有个坑。要用 mouseenter 和 mouseleave，千万不要用 mouseover 和 mouseout。 -->
-			<NuxtIcon name="heart" />
+			<NuxtSvgIcon name="heart" />
 			<Transition :css="false" @enter="onContentEnter" @leave="onContentLeave">
 				<span v-show="hover" class="text">{{ t.uploader_lovin_it }}</span>
 			</Transition>

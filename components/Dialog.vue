@@ -29,7 +29,7 @@
 		<Transition name="dialog">
 			<div v-if="open" ref="dialog" class="dialog">
 				<div class="body">
-					<NuxtIcon name="info" />
+					<NuxtSvgIcon name="info" />
 					<div class="content-part">
 						<h2>{{ title ?? "KIRAKIRA 提示您" }}</h2>
 						<div class="content">

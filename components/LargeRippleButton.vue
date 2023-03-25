@@ -24,7 +24,7 @@
 			:disabled="nonclickable"
 			@click="e => emits('click', e)"
 		>
-			<NuxtIcon v-if="icon" :name="icon" class="icon" />
+			<NuxtSvgIcon v-if="icon" :name="icon" class="icon" />
 			<span v-if="text"><span>{{ text }}</span></span>
 		</button>
 	</div>

@@ -63,7 +63,7 @@
 	<kira-component class="accordion-item">
 		<h3 v-ripple class="header" :class="{ shown }" :tabindex="0" @click="toggle">
 			<div>{{ title }}</div>
-			<NuxtIcon name="chevron_down" />
+			<NuxtSvgIcon name="chevron_down" />
 		</h3>
 		<Transition :css="false" @enter="onContentEnter" @leave="onContentLeave">
 			<div v-if="shown" class="content">

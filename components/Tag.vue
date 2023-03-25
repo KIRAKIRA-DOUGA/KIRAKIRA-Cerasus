@@ -31,7 +31,7 @@
 		<div class="content">
 			<Transition name="check">
 				<div v-if="isChecked" class="check-wrapper">
-					<NuxtIcon name="check" class="check" />
+					<NuxtSvgIcon name="check" class="check" />
 				</div>
 			</Transition>
 			<slot></slot>
