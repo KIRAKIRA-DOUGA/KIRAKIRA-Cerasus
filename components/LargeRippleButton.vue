@@ -33,6 +33,7 @@
 <style scoped lang="scss">
 	$wrapper-size: 40px;
 	$ripple-size: 64px;
+	$focus-size: var(--wrapper-size);
 	$icon-size: 24px;
 
 	.icon {
@@ -48,7 +49,7 @@
 
 		button {
 			@include flex-center;
-			@include square(var(--wrapper-size));
+			@include square(var(--focus-size));
 			@include circle;
 			position: relative;
 			flex-shrink: 0;
@@ -78,6 +79,7 @@
 		.large-ripple-button {
 			--wrapper-size: #{$wrapper-size};
 			--ripple-size: #{$ripple-size};
+			--focus-size: #{$focus-size};
 			--icon-size: #{$icon-size};
 		}
 	}

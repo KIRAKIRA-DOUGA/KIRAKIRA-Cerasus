@@ -83,17 +83,20 @@
 		const IGNORE = () => { };
 		if (merged) {
 			scrolledPages.value = merged.items;
-			if (scrollArea.value) {
-				const hasExistAnimations = removeExistAnimations(scrollArea.value);
-				isScrolling.value = true;
-				scrollArea.value.animate([
-					{ right: 0 },
-					{ right: `${merged.finallyPosition * 36}px` },
-				], animationOptions(hasExistAnimations)).finished.then(() => {
-					scrolledPages.value = nextItems;
-					isScrolling.value = false;
-				}).catch(IGNORE);
-			}
+			if (scrollArea.value)
+				for (const _child of scrollArea.value.children) {
+					const child = _child.children[0];
+					if (!child) continue;
+					const hasExistAnimations = removeExistAnimations(child);
+					isScrolling.value = true;
+					child.animate([
+						{ right: 0 },
+						{ right: `${merged.finallyPosition * 36}px` },
+					], animationOptions(hasExistAnimations)).finished.then(() => {
+						scrolledPages.value = nextItems;
+						isScrolling.value = false;
+					}).catch(IGNORE);
+				}
 		}
 		//#endregion
 		//#region 滑块动画
@@ -232,16 +235,26 @@
 	<div class="page">
 		<div class="track">
 			<LargeRippleButton v-if="showFirst" :text="1" nonfocusable @click="changePage(1)" />
-			<div class="scroll-mask" :class="{ clip: isScrolling }">
-				<div v-if="(pages >= 3)" ref="scrollArea" class="scroll-area">
-					<LargeRippleButton
-						v-for="(item, position) in scrolledPages"
-						:key="item"
-						:text="item"
-						nonfocusable
-						:style="{ '--position': position }"
-						@click="changePage(item)"
-					/>
+			<div v-if="(pages >= 3)" ref="scrollArea" class="scroll-area" :class="{ 'is-scrolling': isScrolling }">
+				<div class="ripples">
+					<div>
+						<LargeRippleButton
+							v-for="(item, position) in scrolledPages"
+							:key="item"
+							nonfocusable
+							:style="{ '--position': position }"
+							@click="changePage(item)"
+						/>
+					</div>
+				</div>
+				<div class="texts">
+					<div>
+						<div
+							v-for="(item, position) in scrolledPages"
+							:key="item"
+							:style="{ '--position': position }"
+						>{{ item }}</div>
+					</div>
 				</div>
 			</div>
 			<LargeRippleButton v-if="(pages >= 2 && showLast)" :text="pages" nonfocusable @click="changePage(pages)" />
@@ -265,6 +278,7 @@
 
 <style scoped lang="scss">
 	$size: 36px;
+	$ripple-size: 48px;
 
 	.track {
 		@include control-inner-shadow;
@@ -277,8 +291,23 @@
 
 		.large-ripple-button {
 			--wrapper-size: #{$size};
-			--ripple-size: 48px;
+			--ripple-size: #{$ripple-size};
 			transition: $fallback-transitions, left 0s;
+		}
+
+		.is-scrolling .large-ripple-button {
+			--focus-size: #{$ripple-size};
+		}
+
+		.texts {
+			overflow: hidden;
+			pointer-events: none;
+
+			> * > * {
+				@include square($size);
+				@include flex-center;
+				transition: $fallback-transitions, left 0s;
+			}
 		}
 	}
 
@@ -355,22 +384,32 @@
 		}
 	}
 
-	.scroll-mask.clip {
-		overflow: hidden; // TODO: [兰音] 滚动时，第二个和倒数第二个水波纹的两侧被削去一半；如果去掉本行，则滚动时底下的字会看到。待更好的解决方法。
+	%scroll-area-size {
+		position: relative;
+		width: calc(v-bind(scrolledItemCount) * $size);
+		height: $size;
 	}
 
 	.scroll-area {
-		position: relative;
+		@extend %scroll-area-size;
 
-		&,
-		.scroll-mask {
-			width: calc(v-bind(scrolledItemCount) * $size);
-			height: $size;
+		&.is-scrolling :deep(*::before) {
+			pointer-events: none;
 		}
 
 		> * {
+			@include square(100%);
 			position: absolute;
-			left: calc(var(--position) * $size);
+			top: 0;
+
+			> * {
+				@extend %scroll-area-size;
+
+				> * {
+					position: absolute;
+					left: calc(var(--position) * $size);
+				}
+			}
 		}
 	}
 </style>
