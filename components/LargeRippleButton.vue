@@ -5,13 +5,13 @@
 	}>();
 
 	const emits = defineEmits<{
-		(event: "click"): void;
+		(event: "click", payload: MouseEvent): void;
 	}>();
 </script>
 
 <template>
 	<div class="button-wrapper">
-		<button v-ripple type="button" @click="emits('click')">
+		<button v-ripple type="button" @click="e => emits('click', e)">
 			<NuxtIcon v-if="icon" :name="icon" class="icon" />
 			<span v-if="text"><span>{{ text }}</span></span>
 		</button>

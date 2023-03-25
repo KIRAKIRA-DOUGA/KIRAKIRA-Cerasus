@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 	import { Transition } from "vue";
-	import { NuxtIcon } from "#components";
+	import { NuxtIcon, LargeRippleButton } from "#components";
 
 	const props = withDefaults(defineProps<{
 		/** 当前输入是否非法。 */
@@ -83,13 +83,8 @@
 		return (props: Props) => (
 			<Transition css={false} onEnter={onAfterIconEnter} onLeave={onAfterIconLeave}>
 				{
-					props.shown && (
-						<div class={[styles.wrapper, { [styles.clickable]: !!props.onClick }]} onClick={props.onClick}>
-							<div v-ripple>
-								<NuxtIcon name={props.icon} />
-							</div>
-						</div>
-					)
+					props.shown &&
+					<LargeRippleButton class={[styles.wrapper, { [styles.clickable]: !!props.onClick }]} icon={props.icon} onClick={props.onClick} />
 				}
 			</Transition>
 		);
@@ -302,44 +297,22 @@
 
 <style module="afterIcon" lang="scss">
 	.wrapper {
-		@include flex-center;
-		@include square(var(--size));
-		@include ripple-clickable-only-inside(var(--size));
+		@include square(var(--size) !important);
 
 		> * {
-			@include flex-center;
-			@include square(var(--size));
-			@include circle;
-			flex-shrink: 0;
-
-			> :global(.nuxt-icon) {
-				color: c(icon-color);
-				font-size: 24px;
-			}
+			@include square(var(--size) !important);
 
 			&:focus-visible {
 				@include button-shadow-focus;
 			}
 
 			&:is(:hover, :active, :has(> * + *)):not(:focus-visible) {
-				@include square(calc(var(--size) * 1.3));
-			}
-
-			&:is(:hover, :active) {
-				background-color: c(hover-color);
+				@include square(calc(var(--size) * 1.3) !important);
 			}
 		}
 
-		&.clickable {
-			cursor: pointer;
-		}
-
-		&:not(.clickable) {
+		&:not(.clickable) *::before {
 			pointer-events: none !important;
-		}
-
-		&:nth-last-child {
-			margin-right: 4px;
 		}
 	}
 </style>
