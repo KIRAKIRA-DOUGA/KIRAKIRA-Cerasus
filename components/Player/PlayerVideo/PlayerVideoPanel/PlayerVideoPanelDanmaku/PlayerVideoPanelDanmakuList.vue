@@ -67,7 +67,7 @@
 					</div>
 				</thead>
 				<tbody>
-					<tr v-for="i in 100" :key="i" @contextmenu.prevent="e => { currentDanmakuIndex = i; danmakuItemMenu?.show(e); }">
+					<tr v-for="i in 100" :key="i" v-ripple @contextmenu.prevent="e => { currentDanmakuIndex = i; danmakuItemMenu?.show(e); }">
 						<td v-for="(value, key, j) in getDanmaku(i)" :key="key" :width="colWidths[j]">{{ value }}</td>
 					</tr>
 				</tbody>
