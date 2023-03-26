@@ -311,6 +311,7 @@
 			> * > * {
 				@include square($size);
 				@include flex-center;
+				color: c(icon-color);
 				font-weight: 600;
 				transition: $fallback-transitions, left 0s;
 			}
