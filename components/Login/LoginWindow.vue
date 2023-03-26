@@ -436,7 +436,7 @@
 		@include absolute-center-widthful;
 		position: absolute;
 		overflow: hidden;
-		background-color: #ecb8c7;
+		background-color: c(accent-20);
 		scale: 0;
 
 		> img {
@@ -481,6 +481,7 @@
 			width: 872px;
 			height: 40px;
 			background-color: c(accent-20);
+			opacity: 0;
 			translate: 913px;
 
 			&:nth-child(1) {
@@ -508,6 +509,10 @@
 		.login-button {
 			animation: login-animation-button 600ms cubic-bezier(0.4, 0, 0, 1) forwards;
 			pointer-events: none;
+
+			@media #{$narrow-screen} {
+				animation-name: login-animation-button-narrow;
+			}
 
 			:deep(.ripple-circle) {
 				opacity: 0;
@@ -541,7 +546,7 @@
 		}
 
 		.stripes .line {
-			animation: stripes 400ms 980ms cubic-bezier(0.1, 0.5, 0, 1) forwards;
+			animation: stripes 400ms 980ms cubic-bezier(0.1, 0.5, 0, 1);
 		}
 	}
 
@@ -551,12 +556,25 @@
 		}
 
 		100% {
-			width: 800px;
-			height: 400px;
+			@include square(800px);
 			color: transparent;
 			border-radius: 50%;
-			translate: -45px -256px;
-			scale: 1.414;
+			translate: -40px -450px;
+			scale: 1.15;
+		}
+	}
+
+	@keyframes login-animation-button-narrow {
+		10% {
+			color: transparent;
+		}
+
+		100% {
+			@include square(400px);
+			color: transparent;
+			border-radius: 50%;
+			translate: -40px -260px;
+			scale: 1.5;
 		}
 	}
 
@@ -578,7 +596,7 @@
 		}
 
 		to {
-			scale: 200;
+			scale: 210;
 		}
 	}
 
@@ -638,10 +656,12 @@
 
 	@keyframes stripes {
 		from {
+			opacity: 1;
 			translate: 913px;
 		}
 
 		to {
+			opacity: 1;
 			translate: -670px;
 		}
 	}
