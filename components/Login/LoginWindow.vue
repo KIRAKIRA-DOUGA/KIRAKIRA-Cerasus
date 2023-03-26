@@ -126,6 +126,7 @@
 	$height: 400px;
 	$narrow-width: calc($width / 2);
 	$enter-duration: 700ms;
+	$leave-duration: 150ms;
 	$transition-ease: $ease-out-smooth;
 	$narrow-screen: "(max-width: #{$width - 1})";
 
@@ -146,6 +147,8 @@
 		}
 
 		&.dialog-leave-active {
+			transition: all $ease-in-smooth $leave-duration !important;
+
 			&,
 			* {
 				transition-duration: 250ms;
@@ -270,11 +273,11 @@
 		align-items: flex-end;
 
 		.big {
-			--i: 1.5;
+			--i: 2;
 		}
 
 		.sub {
-			--i: 2;
+			--i: 2.5;
 		}
 	}
 
@@ -299,7 +302,7 @@
 	.action {
 		@include flex-center;
 		$margin-inset: 16px;
-		--i: 2;
+		--i: 1.75;
 		justify-content: space-between;
 
 		&.margin-left-inset {
@@ -328,6 +331,10 @@
 
 		.dialog-enter-active & {
 			transition: all $ease-out-max 700ms;
+		}
+
+		.dialog-leave-active & {
+			transition: all $ease-in-smooth $leave-duration;
 		}
 
 		.dialog-enter-from &,

@@ -54,16 +54,18 @@
 
 <style scoped lang="scss">
 	$max-width: 800px;
-	$animation-options: 500ms calc(var(--i) * 100ms) $ease-out-max backwards;
+	$animation-options: 500ms calc(var(--i) * 70ms) $ease-out-max backwards;
 	$padding: 24px;
 
 	.dialog {
 		transform-origin: center top;
-		transition-timing-function: $ease-out-max;
-		transition-duration: 500ms;
+		transition: $fallback-transitions, all $ease-out-max 500ms;
 
 		&.dialog-leave-active {
-			transition-duration: 250ms;
+			&,
+			* {
+				transition: $fallback-transitions, all $ease-in-smooth 150ms;
+			}
 		}
 
 		&.dialog-enter-from,
@@ -123,13 +125,13 @@
 			}
 
 			h2 {
-				--i: 0;
+				--i: 1;
 				margin: 0;
 				animation: float-left $animation-options;
 			}
 
 			.content {
-				--i: 1;
+				--i: 2;
 				margin-top: calc($padding / 2);
 				animation: float-left $animation-options;
 			}
