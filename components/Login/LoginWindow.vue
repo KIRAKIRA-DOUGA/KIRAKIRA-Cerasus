@@ -8,13 +8,7 @@
 		(event: "update:modelValue", open: boolean): void;
 	}>();
 
-	const open = computed({
-		get: () => !!(props.modelValue ?? props.open),
-		set: value => emits("update:modelValue", value),
-	});
-
 	type PageType = "login" | "forget" | "reset" | "register" | "register2";
-
 	const currentPage = ref<PageType>("login");
 	const isWelcome = computed(() => ["register", "register2"].includes(currentPage.value));
 	const coverMoveLeft = computed(() => currentPage.value !== "login");
@@ -23,12 +17,43 @@
 	const confirmPassword = ref("");
 	const inviteCode = ref("");
 	const verificationCode = ref("");
+	const isLogining = ref(false);
+	const open = computed({
+		get: () => !!(props.modelValue ?? props.open),
+		set: value => { isLogining.value = false; emits("update:modelValue", value); },
+	});
+	const loginButton = ref<InstanceType<typeof Button>>();
+	const loginButtonDom = computed(() => loginButton.value?.$el as HTMLButtonElement | undefined);
+
+	watch(isLogining, isLogining => {
+		if (!loginButtonDom.value) return;
+		if (!isLogining) {
+			loginButtonDom.value.removeAttribute("style");
+			return;
+		}
+		loginButtonDom.value.animate([
+			{ color: "transparent" },
+		], { duration: 100, easing: eases.easeInOutSmooth, fill: "forwards" });
+		loginButtonDom.value.animate([
+			{ width: "800px", height: "400px", translate: "-45px -256px", scale: "1.41", borderRadius: "50%" },
+		], { duration: 600, easing: eases.easeInOutSmooth, fill: "forwards" });
+	});
 </script>
 
 <template>
 	<Mask v-model="open" position="center" :zIndex="40">
 		<Transition name="dialog">
-			<kira-component v-if="open" class="login-window" :class="[currentPage, { 'move-left': coverMoveLeft }]">
+			<kira-component
+				v-if="open"
+				class="login-window"
+				:class="[
+					currentPage,
+					{
+						'move-left': coverMoveLeft,
+						logining: isLogining,
+					},
+				]"
+			>
 				<div class="main left">
 					<div class="login">
 						<div class="title">
@@ -38,7 +63,9 @@
 						<div class="form">
 							<TextBox v-model="email" type="email" placeholder="邮箱" size="large" icon="email" />
 							<TextBox v-model="password" type="password" placeholder="密码" size="large" icon="lock" />
-							<Button class="button">Link Start!</Button>
+							<div class="button login-button-placeholder">
+								<Button ref="loginButton" class="button login-button" @click="isLogining = true">Link Start!</Button>
+							</div>
 						</div>
 						<div class="action margin-left-inset margin-right-inset">
 							<Button secondary @click="currentPage = 'forget'">忘记了密码</Button>
@@ -115,6 +142,9 @@
 				</div>
 				<div class="cover-wrapper">
 					<LogoCover :welcome="isWelcome" />
+				</div>
+				<div class="login-animation-part">
+
 				</div>
 			</kira-component>
 		</Transition>
@@ -193,6 +223,10 @@
 		position: relative;
 		height: 100%;
 		overflow: hidden;
+
+		.logining > & {
+			overflow: visible;
+		}
 
 		> * {
 			@include flex-block;
@@ -297,6 +331,16 @@
 			font-family: $english-logo-fonts;
 			text-transform: uppercase;
 		}
+
+		.button.login-button-placeholder {
+			position: relative;
+
+			.login-button {
+				@include square(100%);
+				--i: 0;
+				position: absolute;
+			}
+		}
 	}
 
 	.action {
@@ -355,6 +399,23 @@
 	.form *,
 	.action {
 		animation: float-left 500ms calc(var(--i) * 100ms) $ease-out-max backwards;
+	}
+
+	.login-animation-part {
+		@include square(100%);
+		position: absolute;
+		pointer-events: none;
+	}
+
+	.logining {
+		.main.left,
+		.login-button-placeholder {
+			z-index: 10;
+		}
+
+		.login-button {
+			pointer-events: none;
+		}
 	}
 
 	@keyframes float-left {
