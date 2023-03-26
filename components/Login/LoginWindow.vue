@@ -124,8 +124,10 @@
 <style scoped lang="scss">
 	$width: 800px;
 	$height: 400px;
+	$narrow-width: calc($width / 2);
 	$enter-duration: 700ms;
 	$transition-ease: $ease-out-smooth;
+	$narrow-screen: "(max-width: #{$width - 1})";
 
 	.login-window {
 		@include dropdown-flyouts;
@@ -133,6 +135,7 @@
 		display: flex;
 		justify-content: space-between;
 		width: $width;
+		max-width: 100vw;
 		height: $height;
 		overflow: hidden;
 		background-color: c(acrylic-bg, 75%);
@@ -153,6 +156,10 @@
 		&.dialog-leave-to {
 			opacity: 0;
 			translate: 0 6rem;
+		}
+
+		@media #{$narrow-screen} {
+			width: $narrow-width;
 		}
 	}
 
@@ -191,6 +198,7 @@
 			top: 0;
 			justify-content: space-between;
 			width: $width * 0.5;
+			max-width: 100vw;
 			height: 100%;
 			padding: 35px 45px;
 
@@ -208,6 +216,10 @@
 		&.left {
 			width: 50%;
 
+			@media #{$narrow-screen} {
+				width: 100%;
+			}
+
 			.move-left & {
 				width: 0;
 
@@ -216,6 +228,10 @@
 					opacity: 0;
 					pointer-events: none;
 					translate: $width * -0.25 0;
+
+					@media #{$narrow-screen} {
+						translate: $width * -0.5 0;
+					}
 				}
 			}
 		}
@@ -227,10 +243,18 @@
 				position: absolute;
 				right: 0;
 				transform: translateX($width * 0.25);
+
+				@media #{$narrow-screen} {
+					transform: translateX($width * 0.5);
+				}
 			}
 
 			.move-left & {
 				width: 50%;
+
+				@media #{$narrow-screen} {
+					width: 100%;
+				}
 
 				> * {
 					transform: translateX(0);
@@ -290,7 +314,13 @@
 	.cover-wrapper {
 		@include card-in-card-shadow;
 		position: absolute;
-		left: calc($width / 2);
+		left: $narrow-width;
+		width: 400px;
+		overflow: hidden;
+
+		@media #{$narrow-screen} {
+			width: 0;
+		}
 
 		.move-left & {
 			left: 0;

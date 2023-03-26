@@ -7,7 +7,7 @@
 <template>
 	<Transition name="banner">
 		<div v-if="!collapsed" class="banner opened">
-			<LogoCover width="100vw" :height="280" fullLogo noAnimation />
+			<LogoCover fullLogo noAnimation />
 			<div class="shadow"></div>
 		</div>
 	</Transition>
@@ -19,6 +19,11 @@
 		position: relative;
 		width: 100%;
 		overflow: hidden;
+
+		> .logo-cover {
+			--cover-width: 100vw;
+			--cover-height: 280px;
+		}
 
 		&.opened {
 			$banner-height: 10rem;

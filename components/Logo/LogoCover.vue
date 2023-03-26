@@ -1,22 +1,12 @@
 <script setup lang="ts">
-	const props = withDefaults(defineProps<{
-		/** 封面宽度。可以是数字（像素）或其它单位值的字符串。 */
-		width?: Numberish;
-		/** 封面高度。可以是数字（像素）或其它单位值的字符串。 */
-		height?: Numberish;
+	const props = defineProps<{
 		/** 如是则将 LOGO 切换为 Welcome 字样。 */
 		welcome?: boolean;
 		/** 如是则使用完全形式的 LOGO。 */
 		fullLogo?: boolean;
 		/** 是否**禁用**动画以节省性能？ */
 		noAnimation?: boolean;
-	}>(), {
-		width: 400,
-		height: 400,
-	});
-
-	const width = computed(() => getCssValue(props.width));
-	const height = computed(() => getCssValue(props.height));
+	}>();
 
 	/**
 	 * 获取 prop 的值，是数字像素或者其它单位的给出字符串。
@@ -29,7 +19,7 @@
 </script>
 
 <template>
-	<div class="cover" :class="{ animation: !noAnimation }">
+	<div class="logo-cover" :class="{ animation: !noAnimation }">
 		<div class="lines">
 			<div v-for="i in 5" :key="i"></div>
 		</div>
@@ -64,7 +54,7 @@
 		height: 70px;
 		overflow: hidden;
 
-		.cover.animation & {
+		.logo-cover.animation & {
 			animation: blinking 2s infinite ease-in alternate;
 		}
 	}
@@ -87,10 +77,15 @@
 		}
 	}
 
-	.cover {
+	@layer utilities {
+		.logo-cover {
+			--cover-width: 400px; // v-bind 基于运行时，因此没办法赋值给 scss 变量。
+			--cover-height: 400px;
+		}
+	}
+
+	.logo-cover {
 		@include flex-center;
-		--cover-width: v-bind(width); // v-bind 基于运行时，因此没办法赋值给 scss 变量。
-		--cover-height: v-bind(height);
 		position: relative;
 		width: var(--cover-width);
 		height: var(--cover-height);
@@ -122,7 +117,7 @@
 			height: var(--height);
 			background-color: c(accent-20);
 
-			.cover.animation & {
+			.logo-cover.animation & {
 				animation: movement 4s infinite linear;
 			}
 		}
@@ -169,11 +164,15 @@
 		font-weight: 300;
 		font-size: 2rem;
 
+		> * {
+			white-space: nowrap;
+		}
+
 		span {
 			display: inline-block;
 			margin: 0 1rem;
 
-			.cover.animation & {
+			.logo-cover.animation & {
 				animation: plus-rotation 4s ease-in-out calc(var(--i) * 0.25s) infinite;
 			}
 		}
@@ -186,7 +185,7 @@
 		background-color: c(accent);
 		clip-path: polygon(0 0, 100% 50%, 0 100%);
 
-		.cover.animation & {
+		.logo-cover.animation & {
 			animation: triangle-movement 4s cubic-bezier(0, 0.5, 1, 0.5) infinite, triangle-blinking 2s cubic-bezier(0, 0, 0, 1) infinite alternate;
 		}
 	}
@@ -222,7 +221,7 @@
 		right: -3rem;
 		border: c(accent) 2px solid;
 
-		.cover.animation & {
+		.logo-cover.animation & {
 			animation: circle-scaling 4s cubic-bezier(0, 0, 0, 1) infinite alternate;
 		}
 	}
@@ -232,7 +231,7 @@
 		right: calc(var(--cover-size) + 5rem);
 		bottom: -3rem;
 
-		.cover.animation & {
+		.logo-cover.animation & {
 			animation: rotation 16s linear infinite;
 		}
 
@@ -241,7 +240,7 @@
 			height: 1rem;
 			background-color: c(accent);
 
-			.cover.animation & {
+			.logo-cover.animation & {
 				animation: shades 2s ease-in-out infinite alternate;
 			}
 		}
