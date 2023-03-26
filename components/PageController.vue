@@ -263,7 +263,6 @@
 			<LargeRippleButton v-if="(pages >= 2 && showLast)" :text="pages" nonfocusable @click="changePage(pages)" />
 		</div>
 		<div v-ripple class="thumb">
-			<div class="focus-line"></div>
 			<div
 				ref="pageEdit"
 				class="page-edit"
@@ -275,6 +274,7 @@
 				{{ currentEdited }}
 			</div>
 			<div ref="newPageNumber" class="new-page-number">{{ currentPage }}</div>
+			<div class="focus-stripe"></div>
 		</div>
 	</div>
 </template>
@@ -282,6 +282,7 @@
 <style scoped lang="scss">
 	$size: 36px;
 	$ripple-size: 48px;
+	$focus-stripe-height: 2px;
 
 	.track {
 		@include control-inner-shadow;
@@ -338,7 +339,7 @@
 		text-align: center;
 		background: c(accent);
 		cursor: text;
-		transition: $fallback-transitions, all $ease-out-max 500ms, left $ease-in-out-smooth 500ms;
+		transition: $fallback-transitions, all $ease-out-back 500ms, left $ease-in-out-smooth 500ms;
 
 		&:hover {
 			@include button-shadow-hover;
@@ -357,15 +358,15 @@
 		&:has(:focus) {
 			@include button-shadow-focus;
 
-			> .focus-line {
+			> .focus-stripe {
 				top: 0;
 			}
 		}
 
-		> .focus-line {
-			$line-height: 2px;
-			top: $line-height;
-			border-bottom: c(accent-10) $line-height solid;
+		> .focus-stripe {
+			$focus-stripe-height: 2px;
+			top: $focus-stripe-height;
+			border-bottom: c(accent-10) $focus-stripe-height solid;
 			pointer-events: none;
 		}
 

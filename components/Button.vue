@@ -59,8 +59,12 @@
 		background: c(accent);
 		border: none;
 		cursor: pointer;
-		transition: $fallback-transitions, all $ease-out-back 250ms !important;
+		transition: $fallback-transitions, all $ease-out-back 500ms !important;
 		appearance: none;
+
+		> span {
+			font-family: inherit;
+		}
 
 		&.icon-behind {
 			flex-direction: row-reverse;
