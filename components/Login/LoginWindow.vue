@@ -19,11 +19,37 @@
 	const confirmPassword = ref("");
 	const inviteCode = ref("");
 	const verificationCode = ref("");
-	const isLogining = ref(false);
+	const _isLogining = ref(false);
+	const isLogining = computed({
+		get: () => _isLogining.value,
+		set: value => {
+			_isLogining.value = value;
+			if (value) closeLater();
+		},
+	});
 	const open = computed({
 		get: () => !!(props.modelValue ?? props.open),
-		set: value => { isLogining.value = false; emits("update:modelValue", value); },
+		set: value => {
+			clearCloseLater();
+			isLogining.value = false;
+			emits("update:modelValue", value);
+		},
 	});
+	const timeoutId = ref<NodeJS.Timeout>();
+
+	/**
+	 * 稍后关闭。
+	 */
+	function closeLater() {
+		clearCloseLater();
+		timeoutId.value = setTimeout(() => open.value = false, 3000);
+	}
+	/**
+	 * 清除稍后关闭。
+	 */
+	function clearCloseLater() {
+		clearTimeout(timeoutId.value);
+	}
 </script>
 
 <template>
@@ -158,10 +184,12 @@
 	$transition-ease: $ease-out-smooth;
 	$narrow-screen: "(max-width: #{$width - 1})";
 	$avatar-size: 128px;
+	$avatar-movement: 110px;
 
 	.login-window {
 		@include dropdown-flyouts;
 		@include radius-large;
+		--avatar-center: #{calc($width / 2) - $avatar-movement} 50%;
 		display: flex;
 		justify-content: space-between;
 		width: $width;
@@ -170,6 +198,7 @@
 		overflow: hidden;
 		background-color: c(acrylic-bg, 75%);
 		transition: all $transition-ease $enter-duration;
+		clip-path: circle(100% at var(--avatar-center));
 
 		* {
 			transition: all $transition-ease $enter-duration;
@@ -191,6 +220,7 @@
 		}
 
 		@media #{$narrow-screen} {
+			--avatar-center: #{calc($narrow-width / 2) - $avatar-movement} 50%;
 			width: $narrow-width;
 		}
 	}
@@ -548,6 +578,12 @@
 		.stripes .line {
 			animation: stripes 400ms 980ms cubic-bezier(0.1, 0.5, 0, 1);
 		}
+
+		&.login-window {
+			animation:
+				circle-mask-become-smaller 500ms 2s $ease-out-max forwards,
+				move-avatar-to-corner 500ms 2.5s $ease-out-max forwards;
+		}
 	}
 
 	@keyframes login-animation-button {
@@ -616,7 +652,7 @@
 		}
 
 		to {
-			translate: -110px;
+			translate: -$avatar-movement;
 		}
 	}
 
@@ -670,6 +706,19 @@
 		from {
 			translate: 3rem;
 			opacity: 0;
+		}
+	}
+
+	@keyframes circle-mask-become-smaller {
+		to {
+			clip-path: circle(calc($avatar-size / 2) at var(--avatar-center));
+		}
+	}
+
+	@keyframes move-avatar-to-corner {
+		to {
+			scale: calc(40px / $avatar-size);
+			translate: calc(66px - 50vw) calc(50vh - 40px * 3);
 		}
 	}
 </style>
