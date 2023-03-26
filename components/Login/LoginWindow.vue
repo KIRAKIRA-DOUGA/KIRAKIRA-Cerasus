@@ -31,8 +31,9 @@
 		get: () => !!(props.modelValue ?? props.open),
 		set: value => {
 			clearCloseLater();
-			isLogining.value = false;
 			emits("update:modelValue", value);
+			if (isLogining.value) useEvent("user:login", true);
+			isLogining.value = false;
 		},
 	});
 	const timeoutId = ref<NodeJS.Timeout>();
@@ -718,7 +719,7 @@
 	@keyframes move-avatar-to-corner {
 		to {
 			scale: calc(40px / $avatar-size);
-			translate: calc(66px - 50vw) calc(50vh - 40px * 3);
+			translate: calc(66px - 50vw) calc(50vh - 40px * 3 - 4px);
 		}
 	}
 </style>

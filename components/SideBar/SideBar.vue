@@ -1,10 +1,12 @@
 <script setup lang="ts">
 	import { LogoTextFormType } from "components/Logo/LogoText.vue";
+	import avatar from "assets/images/aira.jpg";
 
 	const logoTextForm = ref<LogoTextFormType>("hidden");
 	const showStripes = ref(false);
 	const ready = ref(false);
 	const showLogin = ref(false);
+	const isLogined = ref(false);
 
 	onMounted(() => {
 		/**
@@ -22,6 +24,7 @@
 	});
 
 	useListen("app:requestLogin", () => showLogin.value = true);
+	useListen("user:login", value => isLogined.value = value);
 </script>
 
 <template>
@@ -45,7 +48,24 @@
 		</Transition>
 
 		<div class="bottom icons">
-			<SideBarButton v-i="7" title="我的" icon="person" @click="showLogin = true" />
+			<SideBarButton
+				v-if="!isLogined"
+				v-i="7"
+				title="我的"
+				icon="person"
+				class="person"
+				@click="showLogin = true"
+			/>
+			<div
+				v-else
+				v-i="7"
+				v-ripple
+				title="艾草"
+				class="person"
+				@click="showLogin = true"
+			>
+				<img :src="avatar" alt="avatar" draggable="false" />
+			</div>
 			<SideBarButton v-i="8" title="消息" icon="email" />
 			<SideBarButton v-i="9" title="设置" icon="settings" to="components" />
 		</div>
@@ -117,6 +137,25 @@
 					opacity: 0;
 				}
 			}
+		}
+
+		.bottom ~ * {
+			display: none;
+		}
+	}
+
+	.person {
+		@include square(40px);
+		@include circle;
+		overflow: hidden;
+
+		&:has(svg) {
+			background: c(gray-30);
+		}
+
+		> img {
+			z-index: 1;
+			width: 100%;
 		}
 	}
 
