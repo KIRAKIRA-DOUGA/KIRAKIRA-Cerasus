@@ -1,4 +1,6 @@
 <script setup lang="ts">
+	import avatar from "assets/images/aira.jpg";
+
 	const props = defineProps<{
 		modelValue?: boolean;
 		open?: boolean;
@@ -21,22 +23,6 @@
 	const open = computed({
 		get: () => !!(props.modelValue ?? props.open),
 		set: value => { isLogining.value = false; emits("update:modelValue", value); },
-	});
-	const loginButton = ref<InstanceType<typeof Button>>();
-	const loginButtonDom = computed(() => loginButton.value?.$el as HTMLButtonElement | undefined);
-
-	watch(isLogining, isLogining => {
-		if (!loginButtonDom.value) return;
-		if (!isLogining) {
-			loginButtonDom.value.removeAttribute("style");
-			return;
-		}
-		loginButtonDom.value.animate([
-			{ color: "transparent" },
-		], { duration: 100, easing: eases.easeInOutSmooth, fill: "forwards" });
-		loginButtonDom.value.animate([
-			{ width: "800px", height: "400px", translate: "-45px -256px", scale: "1.41", borderRadius: "50%" },
-		], { duration: 600, easing: eases.easeInOutSmooth, fill: "forwards" });
 	});
 </script>
 
@@ -64,7 +50,7 @@
 							<TextBox v-model="email" type="email" placeholder="邮箱" size="large" icon="email" />
 							<TextBox v-model="password" type="password" placeholder="密码" size="large" icon="lock" />
 							<div class="button login-button-placeholder">
-								<Button ref="loginButton" class="button login-button" @click="isLogining = true">Link Start!</Button>
+								<Button class="button login-button" @click="isLogining = true">Link Start!</Button>
 							</div>
 						</div>
 						<div class="action margin-left-inset margin-right-inset">
@@ -143,8 +129,20 @@
 				<div class="cover-wrapper">
 					<LogoCover :welcome="isWelcome" />
 				</div>
-				<div class="login-animation-part">
-
+				<div class="login-animation">
+					<div class="add"></div>
+					<div class="avatar">
+						<img :src="avatar" alt="avatar" />
+					</div>
+					<div class="burst">
+						<div v-for="i in 6" :key="i" v-i="i - 1" class="line"></div>
+					</div>
+					<div class="stripes">
+						<div class="line"></div>
+						<div class="line"></div>
+					</div>
+					<div class="welcome">欢迎回来</div>
+					<div class="nickname">艾了个拉</div>
 				</div>
 			</kira-component>
 		</Transition>
@@ -159,6 +157,7 @@
 	$leave-duration: 150ms;
 	$transition-ease: $ease-out-smooth;
 	$narrow-screen: "(max-width: #{$width - 1})";
+	$avatar-size: 128px;
 
 	.login-window {
 		@include dropdown-flyouts;
@@ -307,11 +306,11 @@
 		align-items: flex-end;
 
 		.big {
-			--i: 2;
+			--i: 3;
 		}
 
 		.sub {
-			--i: 2.5;
+			--i: 3.5;
 		}
 	}
 
@@ -321,7 +320,7 @@
 
 		@for $i from 1 through 3 {
 			*:nth-child(#{$i}) {
-				--i: #{1 + ($i - 1) * 0.25};
+				--i: #{1 + ($i - 1) * 0.5};
 			}
 		}
 
@@ -346,7 +345,7 @@
 	.action {
 		@include flex-center;
 		$margin-inset: 16px;
-		--i: 1.75;
+		--i: 2.5;
 		justify-content: space-between;
 
 		&.margin-left-inset {
@@ -401,20 +400,249 @@
 		animation: float-left 500ms calc(var(--i) * 100ms) $ease-out-max backwards;
 	}
 
-	.login-animation-part {
+	.login-animation {
 		@include square(100%);
 		position: absolute;
+		z-index: 3;
 		pointer-events: none;
 	}
 
+	.add {
+		@include square(12px);
+		@include absolute-center-widthful;
+		$thickness: 1px; // 加号符号粗细的一半。
+		background-color: c(main-bg);
+		clip-path:
+			polygon(
+				calc(50% - $thickness) 0,
+				calc(50% - $thickness) calc(50% - $thickness),
+				0 calc(50% - $thickness),
+				0 calc(50% + $thickness),
+				calc(50% - $thickness) calc(50% + $thickness),
+				calc(50% - $thickness) 100%,
+				calc(50% + $thickness) 100%,
+				calc(50% + $thickness) calc(50% + $thickness),
+				100% calc(50% + $thickness),
+				100% calc(50% - $thickness),
+				calc(50% + $thickness) calc(50% - $thickness),
+				calc(50% + $thickness) 0
+			);
+		scale: 0;
+	}
+
+	.avatar {
+		@include square($avatar-size);
+		@include circle;
+		@include absolute-center-widthful;
+		position: absolute;
+		overflow: hidden;
+		background-color: #ecb8c7;
+		scale: 0;
+
+		> img {
+			width: 100%;
+		}
+	}
+
+	.welcome {
+		position: absolute;
+		top: 40%;
+		left: 48%;
+		display: none;
+		font-size: 24px;
+	}
+
+	.nickname {
+		position: absolute;
+		top: 50%;
+		left: 48%;
+		display: none;
+		font-weight: bold;
+		font-size: 38px;
+	}
+
+	.burst {
+		@include square(300px);
+		@include absolute-center-widthful;
+
+		.line {
+			@include absolute-center;
+			background-color: c(accent);
+		}
+	}
+
+	.stripes {
+		rotate: -33deg;
+		translate: 0 180px;
+
+		.line {
+			@include oval;
+			position: absolute;
+			width: 872px;
+			height: 40px;
+			background-color: c(accent-20);
+			translate: 913px;
+
+			&:nth-child(1) {
+				margin-top: -110px;
+				margin-left: -300px;
+			}
+
+			&:nth-child(2) {
+				margin-top: 150px;
+				margin-right: -300px;
+			}
+		}
+	}
+
 	.logining {
+		.login-animation {
+			pointer-events: auto;
+		}
+
 		.main.left,
 		.login-button-placeholder {
-			z-index: 10;
+			z-index: 2;
 		}
 
 		.login-button {
+			animation: login-animation-button 600ms cubic-bezier(0.4, 0, 0, 1) forwards;
 			pointer-events: none;
+
+			:deep(.ripple-circle) {
+				opacity: 0;
+			}
+		}
+
+		.add {
+			animation:
+				login-animation-add 400ms forwards cubic-bezier(0.1, 0, 0, 1) 200ms,
+				login-animation-add-scale 900ms forwards cubic-bezier(0.3, 0, 0, 1) 500ms;
+		}
+
+		.avatar {
+			animation:
+				login-animation-avator 600ms 540ms forwards cubic-bezier(0.3, 0, 0, 1),
+				login-animation-avator-mover 600ms 1s forwards cubic-bezier(0.3, 0, 0, 1);
+		}
+
+		.welcome {
+			display: block;
+			animation: name-move 700ms 1.05s both cubic-bezier(0.1, 0.5, 0, 1);
+		}
+
+		.nickname {
+			display: block;
+			animation: name-move 700ms 1.1s both cubic-bezier(0.1, 0.5, 0, 1);
+		}
+
+		.burst .line {
+			animation: burst 800ms 580ms cubic-bezier(0.1, 0, 0, 1) both;
+		}
+
+		.stripes .line {
+			animation: stripes 400ms 980ms cubic-bezier(0.1, 0.5, 0, 1) forwards;
+		}
+	}
+
+	@keyframes login-animation-button {
+		10% {
+			color: transparent;
+		}
+
+		100% {
+			width: 800px;
+			height: 400px;
+			color: transparent;
+			border-radius: 50%;
+			translate: -45px -256px;
+			scale: 1.414;
+		}
+	}
+
+	@keyframes login-animation-add {
+		from {
+			scale: 0;
+			rotate: 0.5turn;
+		}
+
+		to {
+			scale: 3;
+			rotate: 0turn;
+		}
+	}
+
+	@keyframes login-animation-add-scale {
+		from {
+			scale: 3;
+		}
+
+		to {
+			scale: 200;
+		}
+	}
+
+	@keyframes login-animation-avator {
+		from {
+			scale: 0;
+		}
+
+		to {
+			scale: 1;
+		}
+	}
+
+	@keyframes login-animation-avator-mover {
+		from {
+			translate: 0;
+		}
+
+		to {
+			translate: -110px;
+		}
+	}
+
+	@keyframes name-move {
+		0% {
+			opacity: 0;
+			translate: 200px;
+		}
+
+		1% {
+			opacity: 1;
+			translate: 200px;
+		}
+
+		100% {
+			opacity: 1;
+			translate: 0;
+		}
+	}
+
+	@keyframes burst {
+		0% {
+			transform: rotate(calc(var(--i) * 60deg)) translateY(0);
+		}
+
+		1% {
+			width: 4px;
+			height: 54px;
+		}
+
+		100% {
+			width: 4px;
+			height: 0;
+			transform: rotate(calc(var(--i) * 60deg)) translateY(-180px);
+		}
+	}
+
+	@keyframes stripes {
+		from {
+			translate: 913px;
+		}
+
+		to {
+			translate: -670px;
 		}
 	}
 
