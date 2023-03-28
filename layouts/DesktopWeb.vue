@@ -30,7 +30,7 @@
 		z-index: 1;
 		height: var(--inner-height);
 		padding-left: $sidebar-width;
-		overflow-y: scroll; // TODO: 等待自定义悬浮滚动条，目前为了避免 bug 无论如何始终显示滚动条，毕竟几乎没有不显示滚动条的地方。
+		overflow-y: overlay;
 		transition: $fallback-transitions, width 0s, height 0s;
 
 		:slotted(.container) {

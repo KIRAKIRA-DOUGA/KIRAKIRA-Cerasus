@@ -97,7 +97,7 @@
 			@include square(100%);
 			position: relative;
 			display: block;
-			overflow: auto;
+			overflow: overlay;
 			table-layout: fixed;
 			background-color: c(main-bg);
 			border-spacing: 0;
