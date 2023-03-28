@@ -719,7 +719,7 @@
 	@keyframes move-avatar-to-corner {
 		to {
 			scale: calc(40px / $avatar-size);
-			translate: calc(66px - 50vw) calc(50vh - 40px * 3 - 4px);
+			translate: calc(59px - 50vw) calc(50vh - 40px * 3 - 4px);
 		}
 	}
 </style>

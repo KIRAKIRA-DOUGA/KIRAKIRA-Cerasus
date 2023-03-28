@@ -1,3 +1,5 @@
+<!-- DELETE: 即将删除！ -->
+
 <script lang="ts">
 	export type IndicatorState = "hidden" | "normal" | "hover";
 </script>

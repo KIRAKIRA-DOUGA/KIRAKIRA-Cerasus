@@ -1,5 +1,6 @@
 <script setup lang="ts">
 	import "css-doodle";
+
 	const { locale } = useI18n();
 	const langTag = computed(() => {
 		const langs = {
