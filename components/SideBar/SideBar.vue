@@ -61,7 +61,7 @@
 				v-i="7"
 				v-ripple
 				title="艾草"
-				class="person"
+				class="person logined"
 				@click="showLogin = true"
 			>
 				<img :src="avatar" alt="avatar" draggable="false" />
@@ -85,7 +85,6 @@
 		justify-content: space-between;
 		width: $sidebar-width;
 		padding: $icons-gap 0;
-		overflow: hidden;
 		background-color: c(main-bg);
 
 		> * {
@@ -93,8 +92,12 @@
 			width: $sidebar-width;
 		}
 
-		&.ready [style*="--i"] {
-			animation: jump-in 300ms calc(var(--i) * 50ms) $ease-out-back both;
+		&.ready {
+			overflow: hidden;
+
+			[style*="--i"] {
+				animation: jump-in 300ms calc(var(--i) * 50ms) $ease-out-back both;
+			}
 		}
 
 		.icons {
@@ -156,6 +159,14 @@
 		> img {
 			z-index: 1;
 			width: 100%;
+		}
+
+		&.logined {
+			transform-origin: left center;
+
+			&:hover {
+				scale: 200%;
+			}
 		}
 	}
 

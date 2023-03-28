@@ -21,3 +21,11 @@ export const clamp = (val: number, min: number, max: number) => Math.min(Math.ma
 export function map(x: number, min: number, max: number, a: number, b: number) {
 	return ((b - a) * (x - min) / (max - min)) + a;
 }
+
+/**
+ * 生成给定两个数之间随机的整数。
+ * @param min - 最小值。
+ * @param max - 最大值。
+ * @returns 范围内的随机整数。
+ */
+export const randBetween = (min: number, max: number) => Math.floor(Math.random() * (max + 1 - min) + min);

@@ -158,15 +158,15 @@
 				</div>
 				<div class="login-animation">
 					<div class="add"></div>
-					<div class="avatar">
-						<img :src="avatar" alt="avatar" />
-					</div>
 					<div class="burst">
 						<div v-for="i in 6" :key="i" v-i="i - 1" class="line"></div>
 					</div>
 					<div class="stripes">
 						<div class="line"></div>
 						<div class="line"></div>
+					</div>
+					<div class="avatar">
+						<img :src="avatar" alt="avatar" />
 					</div>
 					<div class="welcome">欢迎回来</div>
 					<div class="nickname">艾了个拉</div>
@@ -535,7 +535,7 @@
 		}
 
 		.login-button {
-			animation: login-animation-button 600ms cubic-bezier(0.4, 0, 0, 1) forwards;
+			animation: login-animation-button 600ms cubic-bezier(0.4, 0, 0, 1) forwards; // TODO: 动画及以下动画中的缓动曲线都应该加到 _eases.scss 文件中，而不是一股脑扔个 cubic-bezier 在这。
 			pointer-events: none;
 
 			@media #{$narrow-screen} {
@@ -549,24 +549,24 @@
 
 		.add {
 			animation:
-				login-animation-add 400ms forwards cubic-bezier(0.1, 0, 0, 1) 200ms,
-				login-animation-add-scale 900ms forwards cubic-bezier(0.3, 0, 0, 1) 500ms;
+				login-animation-add 400ms 200ms cubic-bezier(0.1, 0, 0, 1) forwards,
+				login-animation-add-scale 900ms 500ms cubic-bezier(0.3, 0, 0, 1) forwards;
 		}
 
 		.avatar {
 			animation:
-				login-animation-avator 600ms 540ms forwards cubic-bezier(0.3, 0, 0, 1),
-				login-animation-avator-mover 600ms 1s forwards cubic-bezier(0.3, 0, 0, 1);
+				login-animation-avator 600ms 540ms $ease-out-back forwards,
+				login-animation-avator-mover 600ms 1s cubic-bezier(0.3, 0, 0, 1) forwards;
 		}
 
 		.welcome {
 			display: block;
-			animation: name-move 700ms 1.05s both cubic-bezier(0.1, 0.5, 0, 1);
+			animation: name-move 700ms 1.05s cubic-bezier(0.1, 0.5, 0, 1) both;
 		}
 
 		.nickname {
 			display: block;
-			animation: name-move 700ms 1.1s both cubic-bezier(0.1, 0.5, 0, 1);
+			animation: name-move 700ms 1.1s cubic-bezier(0.1, 0.5, 0, 1) both;
 		}
 
 		.burst .line {

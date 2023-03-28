@@ -29,3 +29,12 @@ export function arrayRemoveItem<T>(array: T[], item: T): boolean {
 export function arrayClearAll<T>(array: T[]): void {
 	array.splice(0, array.length);
 }
+
+/**
+ * 随机返回数组中的一个项目。
+ * @param array - 数组。
+ * @returns 数组其中的随机一个项目。
+ */
+export function randomOne<T>(array: T[]): T {
+	return array.length ? array[randBetween(0, array.length - 1)] : null as T;
+}
