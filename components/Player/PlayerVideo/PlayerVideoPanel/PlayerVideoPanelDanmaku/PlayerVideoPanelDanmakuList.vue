@@ -109,6 +109,10 @@
 				width: 100%;
 			}
 
+			tbody {
+				padding-bottom: 12px;
+			}
+
 			thead {
 				position: sticky;
 				top: 0;
