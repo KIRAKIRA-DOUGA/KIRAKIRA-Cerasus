@@ -89,7 +89,7 @@
 			<Button @click="showConfetti">{{ t.confetti }}</Button>
 			<Button icon="send">{{ t.send }}</Button>
 			<Button @click="showDialog = true">{{ t.showDialog }}</Button>
-			<Dialog v-model="showDialog" static />
+			<Alert v-model="showDialog" static />
 			<ToggleSwitch v-model="toggle">{{ t.toggleSwitch }} {{ toggle ? t.on : t.off }}</ToggleSwitch>
 			<ToggleSwitch disabled>{{ t.offDisabled }} </ToggleSwitch>
 			<ToggleSwitch on disabled>{{ t.onDisabled }}</ToggleSwitch>
@@ -245,7 +245,7 @@
 		buttonClicked: "I was clicked~",
 		confetti: "Confetti",
 		send: "Send",
-		showDialog: "Show Dialog",
+		showDialog: "Show Alert",
 		toggleSwitch: "Toggle Switch",
 		on: "On",
 		off: "Off",

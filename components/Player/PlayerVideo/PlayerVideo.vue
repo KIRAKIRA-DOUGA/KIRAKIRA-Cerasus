@@ -113,7 +113,7 @@
 
 <template>
 	<kira-component ref="videoPlayer" class="player-video">
-		<Dialog v-model="showMediaInfo" title="视频详细信息">
+		<Alert v-model="showMediaInfo" title="视频详细信息">
 			<Accordion>
 				<AccordionItem v-for="(info, type) in mediaInfos" :key="type" :title="type">
 					<table>
@@ -130,7 +130,7 @@
 					</table>
 				</AccordionItem>
 			</Accordion>
-		</Dialog>
+		</Alert>
 
 		<div class="player-video-main">
 			<video

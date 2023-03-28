@@ -1,3 +1,5 @@
+<!-- DELETE: 即将合并组件。 -->
+
 <script setup lang="ts">
 	import { LocaleLink } from "#components"; // 注意千万不要用 NuxtLink，要用 LocaleLink。
 

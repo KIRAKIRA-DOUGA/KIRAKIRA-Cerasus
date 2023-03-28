@@ -70,8 +70,8 @@
 				<div class="main left">
 					<div class="login">
 						<div class="title">
-							<TitleMain>登录</TitleMain>
-							<TitleSmall>Login</TitleSmall>
+							<Header>登录</Header>
+							<Header form="small">Login</Header>
 						</div>
 						<div class="form">
 							<TextBox v-model="email" type="email" placeholder="邮箱" size="large" icon="email" />
@@ -89,8 +89,8 @@
 				<div class="main right">
 					<div class="register">
 						<div class="title collapse">
-							<TitleMain>注册</TitleMain>
-							<TitleSmall>Register</TitleSmall>
+							<Header>注册</Header>
+							<Header form="small">Register</Header>
 						</div>
 						<div class="form">
 							<TextBox v-model="email" type="email" placeholder="邮箱" size="large" icon="email" />
@@ -104,8 +104,8 @@
 					</div>
 					<div class="register2">
 						<div class="title collapse">
-							<TitleMain>注册</TitleMain>
-							<TitleSmall>Register</TitleSmall>
+							<Header>注册</Header>
+							<Header form="small">Register</Header>
 						</div>
 						<div class="form">
 							<div>我们已向您的邮箱中发送了验证码，请在此输入验证码。<br />如未收到，您可以重新发送。</div>
@@ -119,8 +119,8 @@
 					</div>
 					<div class="forget">
 						<div class="title">
-							<TitleMain>忘记密码</TitleMain>
-							<TitleSmall>Forget</TitleSmall>
+							<Header>忘记密码</Header>
+							<Header form="small">Forget</Header>
 						</div>
 						<div class="form">
 							<div>请在此输入您的邮箱。<br />我们将会给您的邮箱发送一封邮件，请点击邮件中的链接重置密码。</div>
@@ -133,8 +133,8 @@
 					</div>
 					<div class="reset">
 						<div class="title">
-							<TitleMain>重置密码</TitleMain>
-							<TitleSmall>Reset</TitleSmall>
+							<Header>重置密码</Header>
+							<Header form="small">Reset</Header>
 						</div>
 						<div class="form">
 							<div>您已成功重置密码。(/≧▽≦)/<br />请务必牢记您的新密码。</div>
@@ -148,8 +148,8 @@
 					</div>
 					<div class="register-title">
 						<div class="title">
-							<TitleMain>注册</TitleMain>
-							<TitleSmall>Register</TitleSmall>
+							<Header>注册</Header>
+							<Header form="small">Register</Header>
 						</div>
 					</div>
 				</div>
@@ -331,14 +331,11 @@
 	}
 
 	.title {
+		--i: 3;
 		display: flex;
 		flex-direction: row;
 		gap: 1rem;
 		align-items: flex-end;
-
-		.big {
-			--i: 3;
-		}
 
 		.sub {
 			--i: 3.5;
