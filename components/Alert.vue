@@ -137,11 +137,8 @@
 			}
 
 			.content-part {
+				@include fix-page-end-padding;
 				width: 100%;
-
-				&::after {
-					@include fix-page-end-padding;
-				}
 			}
 		}
 

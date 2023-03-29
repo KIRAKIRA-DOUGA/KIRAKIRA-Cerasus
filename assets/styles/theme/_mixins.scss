@@ -64,16 +64,18 @@
 /// 修复在 flex 布局 overflow 开启滚动之后，页面末尾的边距消失了的问题。
 /// 在 flex 布局的 after 伪元素中使用。
 /// @example scss
-/// 	.flex::after {
+/// 	.flex {
 /// 		@include fix-page-end-padding;
 /// 	}
 /// @output display, clear, height, visibility, content
 @mixin fix-page-end-padding {
-	display: block;
-	clear: both;
-	height: 0;
-	visibility: hidden; // 占位但不可见。
-	content: "."; // 内容不能为空。
+	&::after {
+		display: block;
+		clear: both;
+		height: 0;
+		visibility: hidden; // 占位但不可见。
+		content: "."; // 内容不能为空。
+	}
 }
 
 /// 未知宽/高度的绝对定位的居中。
@@ -90,7 +92,7 @@
 /// NOTE: 使用此混合必须指定宽高度。
 /// @param {String} $position [fixed] - 指定元素的 position 属性。
 /// @output - position, top, right, bottom, left, margin
-@mixin absolute-center-widthful($position: absolute) {
+@mixin absolute-center-sized($position: absolute) {
 	position: $position;
 	top: 0;
 	right: 0;
