@@ -29,7 +29,7 @@
 	const pitch = ref(0);
 	const selectedTab = ref("all");
 	const logoTextForm = ref<LogoTextFormType>("full");
-	const showDialog = ref(false);
+	const showAlert = ref(false);
 	const inputValue = ref("");
 	const isInvalid = computed(() => !inputValue.value.match(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/));
 	const menu = ref<InstanceType<typeof Menu>>();
@@ -88,8 +88,8 @@
 			<Button disabled>{{ t.buttonDisabled }}</Button>
 			<Button @click="showConfetti">{{ t.confetti }}</Button>
 			<Button icon="send">{{ t.send }}</Button>
-			<Button @click="showDialog = true">{{ t.showDialog }}</Button>
-			<Alert v-model="showDialog" static />
+			<Button @click="showAlert = true">{{ t.showAlert }}</Button>
+			<Alert v-model="showAlert" static />
 			<ToggleSwitch v-model="toggle">{{ t.toggleSwitch }} {{ toggle ? t.on : t.off }}</ToggleSwitch>
 			<ToggleSwitch disabled>{{ t.offDisabled }} </ToggleSwitch>
 			<ToggleSwitch on disabled>{{ t.onDisabled }}</ToggleSwitch>
@@ -209,7 +209,7 @@
 		buttonClicked: "我被单击了 呜呜呜~",
 		confetti: "五彩纸屑",
 		send: "发送",
-		showDialog: "显示对话框",
+		showAlert: "显示警告框",
 		toggleSwitch: "切换开关",
 		on: "开",
 		off: "关",
@@ -245,7 +245,7 @@
 		buttonClicked: "I was clicked~",
 		confetti: "Confetti",
 		send: "Send",
-		showDialog: "Show Alert",
+		showAlert: "Show Alert",
 		toggleSwitch: "Toggle Switch",
 		on: "On",
 		off: "Off",
@@ -281,7 +281,7 @@
 		buttonClicked: "私はクリックされました ううっ~",
 		confetti: "紙吹雪",
 		send: "送信",
-		showDialog: "ダイアログを表示",
+		showAlert: "アラートを表示",
 		toggleSwitch: "スイッチ",
 		onDisabled: "無効化されたスイッチ オン",
 		offDisabled: "無効化されたスイッチ オフ",
