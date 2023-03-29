@@ -67,7 +67,7 @@
 			>
 				<img :src="avatar" alt="avatar" draggable="false" />
 			</div>
-			<SideBarButton v-i="8" title="消息" icon="email" to="testTextEditor" />
+			<SideBarButton v-i="8" title="消息" icon="email" to="testRichTextEditor.vue" />
 			<SideBarButton v-i="9" title="设置" icon="settings" to="components" />
 		</div>
 
