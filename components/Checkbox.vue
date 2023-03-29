@@ -201,7 +201,7 @@
 
 	.symbol {
 		@include square(0);
-		@include absolute-center-widthful;
+		@include absolute-center-sized;
 		opacity: 0;
 	}
 

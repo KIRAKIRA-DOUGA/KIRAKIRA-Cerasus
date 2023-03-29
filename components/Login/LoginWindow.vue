@@ -437,7 +437,7 @@
 
 	.add {
 		@include square(12px);
-		@include absolute-center-widthful;
+		@include absolute-center-sized;
 		$thickness: 1px; // 加号符号粗细的一半。
 		background-color: c(main-bg);
 		clip-path:
@@ -461,7 +461,7 @@
 	.avatar {
 		@include square($avatar-size);
 		@include circle;
-		@include absolute-center-widthful;
+		@include absolute-center-sized;
 		position: absolute;
 		overflow: hidden;
 		background-color: c(accent-20);
@@ -491,7 +491,7 @@
 
 	.burst {
 		@include square(300px);
-		@include absolute-center-widthful;
+		@include absolute-center-sized;
 
 		.line {
 			@include absolute-center;

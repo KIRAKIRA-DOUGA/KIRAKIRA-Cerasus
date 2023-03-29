@@ -40,7 +40,7 @@
 		@include flex-center;
 		gap: 8px;
 
-		.active {
+		&.active {
 			color: c(accent);
 			font-weight: bold;
 		}
