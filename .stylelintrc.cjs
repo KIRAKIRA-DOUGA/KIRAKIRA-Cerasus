@@ -42,7 +42,9 @@ module.exports = {
 		"function-no-unknown": null,
 		"declaration-empty-line-before": null,
 		"custom-property-empty-line-before": null,
-		"selector-pseudo-class-no-unknown": [true, { "ignorePseudoClasses": ["deep", "global", "export"] }],
+		"selector-pseudo-class-no-unknown": [true, {
+			"ignorePseudoClasses": ["deep", "global", "export", "vertical", "horizontal", "decrement", "increment"],
+		}],
 		"declaration-block-no-duplicate-properties": true,
 		"declaration-block-no-duplicate-custom-properties": true,
 		"font-family-no-duplicate-names": true,
