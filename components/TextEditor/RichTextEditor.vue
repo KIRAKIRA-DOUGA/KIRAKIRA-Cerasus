@@ -42,7 +42,7 @@
 		<h3>富文本示例</h3>
 
 		<div class="components-demo">
-			<p>这是一个正常的在 Vue 中使用的组件：</p>
+			<p>这是一个正常的视频卡片组件在 Nuxt3 中的渲染效果：</p>
 			<ThumbVideo
 				link="video"
 				uploader="艾了个拉"
