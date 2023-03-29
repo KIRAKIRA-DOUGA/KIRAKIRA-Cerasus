@@ -39,8 +39,10 @@
 	<div class="container">
 		<LocaleLink to="/">Home</LocaleLink>
 
+		<h3>富文本示例</h3>
+
 		<div class="components-demo">
-			<p>这是一个正常的在 Vue 中调用的组件的示例：</p>
+			<p>这是一个正常的在 Vue 中使用的组件：</p>
 			<ThumbVideo
 				link="video"
 				uploader="艾了个拉"
@@ -51,9 +53,9 @@
 		</div>
 		
 		<div class="introduce">
-			<p>基于 <a href="https://tiptap.dev/introduction">Tiptap</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;代码位置：components/TextEditor/*&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;下方灰色部分为富文本测试。比较粗糙，仅供演示...</p>
-			<p>目前实现的是：加粗/取消加粗选中文本，或者<a href="https://tiptap.dev/guide/node-views/vue">追加一个 Vue 组件</a>到富文本编辑器中，尝试一下？</p>
-			<p>比较遗憾的是, Tiptap 原生不支持 Markdown 格式的输入 / 输出，仅支持 Json 或者 HTML 字符串</p>
+			<p>基于 <a href="https://tiptap.dev/introduction">Tiptap</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;代码位置：components/TextEditor/*&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;下方灰色部分为富文本编辑器本体，比较粗糙，仅供演示...</p>
+			<p>目前实现的是：加粗或取消加粗选中的文本，或者在光标所在位置<a href="https://tiptap.dev/guide/node-views/vue">追加一个 Vue 组件</a>, 尝试一下？</p>
+			<p>比较遗憾的是, Tiptap 原生不支持 Markdown 格式的输入和输出，仅支持 Json 或者 HTML 字符串</p>
 		</div>
 		
 		<div class="element text-editor">
