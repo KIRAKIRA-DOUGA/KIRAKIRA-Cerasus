@@ -4,6 +4,6 @@
 
 <template>
 	<div class="container">
-		<TextEditor />
+		<TextEditorRichTextEditor />
 	</div>
 </template>

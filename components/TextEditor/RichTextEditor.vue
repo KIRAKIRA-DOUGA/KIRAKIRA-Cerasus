@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	import { useEditor, EditorContent } from "@tiptap/vue-3";
 	// eslint-disable-next-line import/no-named-as-default
-	import StarterKit from "@tiptap/starter-kit"; // > Here we got a eslint warning, So I use eslint ignore
+	import StarterKit from "@tiptap/starter-kit"; // ! Here we got a eslint warning, So I use eslint ignore
 	import VueComponent from "./Extension";
 
 	const editor = useEditor({
