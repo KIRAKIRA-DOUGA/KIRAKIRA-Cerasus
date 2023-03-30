@@ -311,9 +311,6 @@ module.exports = {
 			message: "Use the exponentiation operator (**) instead.",
 		}],
 		"no-restricted-globals": ["error", {
-			name: "parseFloat",
-			message: "Use + instead.",
-		}, {
 			name: "isFinite",
 			message: "Please use Number.isFinite instead.",
 		}, {
@@ -334,6 +331,9 @@ module.exports = {
 		}, {
 			name: "outerWidth",
 			message: "Please use window.outerWidth instead.",
-		}],
+		}, /* {
+			name: "parseFloat",
+			message: "Use + instead.",
+		} */],
 	},
 };

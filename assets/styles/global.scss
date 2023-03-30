@@ -92,8 +92,10 @@ p {
 
 #popovers {
 	display: contents;
+}
 
-	> * {
+@layer utilities {
+	#popovers > * {
 		position: fixed;
 		top: 0;
 		left: 0;

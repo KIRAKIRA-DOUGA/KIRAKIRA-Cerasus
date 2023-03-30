@@ -30,6 +30,7 @@
 	const selectedTab = ref("all");
 	const logoTextForm = ref<LogoTextFormType>("full");
 	const showAlert = ref(false);
+	const showModal = ref(false);
 	const inputValue = ref("");
 	const isInvalid = computed(() => !inputValue.value.match(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/));
 	const menu = ref<InstanceType<typeof Menu>>();
@@ -89,7 +90,16 @@
 			<Button @click="showConfetti">{{ t.confetti }}</Button>
 			<Button icon="send">{{ t.send }}</Button>
 			<Button @click="showAlert = true">{{ t.showAlert }}</Button>
+			<Button @click="showModal = true">显示模态框</Button>
 			<Alert v-model="showAlert" static />
+			<Modal v-model="showModal" title="Windows 标题栏">
+				<div class="model-content">
+					<p>视频标题</p>
+					<TextBox v-model="inputValue" placeholder="视频标题" />
+					<p>视频分P</p>
+					<TextBox v-model="inputValue" placeholder="视频分P" />
+				</div>
+			</Modal>
 			<ToggleSwitch v-model="toggle">{{ t.toggleSwitch }} {{ toggle ? t.on : t.off }}</ToggleSwitch>
 			<ToggleSwitch disabled>{{ t.offDisabled }} </ToggleSwitch>
 			<ToggleSwitch on disabled>{{ t.onDisabled }}</ToggleSwitch>
@@ -363,5 +373,11 @@
 				width: 100%;
 			}
 		}
+	}
+
+	.model-content {
+		@include flex-block;
+		gap: 8px;
+		min-width: 400px;
 	}
 </style>

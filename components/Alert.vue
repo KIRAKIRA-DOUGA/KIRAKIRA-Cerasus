@@ -1,8 +1,12 @@
 <script setup lang="ts">
 	const props = defineProps<{
+		/** 已打开。 */
 		modelValue?: boolean;
+		/** 已打开，单向绑定使用。 */
 		open?: boolean;
+		/** 标题。 */
 		title?: string;
+		/** 聚焦内容。是否**不要**单击空白处关闭。 */
 		static?: boolean;
 	}>();
 
@@ -14,20 +18,20 @@
 		get: () => !!(props.modelValue ?? props.open),
 		set: value => emits("update:modelValue", value),
 	});
-	const dialog = ref<HTMLDivElement>();
+	const alert = ref<HTMLDivElement>();
 
 	watch(open, async open => {
 		await nextTick();
-		if (!dialog.value) return;
+		if (!alert.value) return;
 		if (open)
-			animateSize(dialog.value, null, { startHeight: 0, duration: 500 });
+			animateSize(alert.value, null, { startHeight: 0, duration: 500 });
 	}, { immediate: true });
 </script>
 
 <template>
 	<Mask v-model="open" position="center top" :focusing="static">
-		<Transition name="dialog">
-			<div v-if="open" ref="dialog" class="dialog">
+		<Transition name="alert">
+			<div v-if="open" ref="alert" class="alert">
 				<div class="body">
 					<NuxtIcon name="info" />
 					<div class="content-part">
@@ -43,7 +47,7 @@
 					</div>
 					<div class="right">
 						<slot name="footer-right">
-							<Button @click="emits('update:modelValue', false)">了然</Button>
+							<Button @click="open = false">了然</Button>
 						</slot>
 					</div>
 				</div>
@@ -57,19 +61,19 @@
 	$animation-options: 500ms calc(var(--i) * 70ms) $ease-out-max backwards;
 	$padding: 24px;
 
-	.dialog {
+	.alert {
 		transform-origin: center top;
 		transition: $fallback-transitions, all $ease-out-max 500ms;
 
-		&.dialog-leave-active {
+		&.alert-leave-active {
 			&,
 			* {
 				transition: $fallback-transitions, all $ease-in-smooth 150ms;
 			}
 		}
 
-		&.dialog-enter-from,
-		&.dialog-leave-to {
+		&.alert-enter-from,
+		&.alert-leave-to {
 			opacity: 0;
 			scale: 1.05;
 
@@ -82,8 +86,8 @@
 			}
 		}
 
-		&.dialog-enter-active,
-		&.dialog-leave-active {
+		&.alert-enter-active,
+		&.alert-leave-active {
 			.body {
 				overflow: visible;
 			}
@@ -91,7 +95,7 @@
 	}
 
 	// stylelint-disable-next-line no-duplicate-selectors
-	.dialog {
+	.alert {
 		@include dropdown-flyouts;
 		@include flex-block;
 		width: 100vw;
