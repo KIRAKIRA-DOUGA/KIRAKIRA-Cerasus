@@ -259,7 +259,7 @@
 		}
 
 		.invalid &::selection {
-			background-color: c(red); // BUG: Chromium 111 开始设置任何反选文本的颜色都会变成透明色。包括 GitHub 和 Edge 的开发工具在内都有这种显示问题。
+			background-color: c(red); // BUG: Chromium 111 开始在 `::selection` 设定 `var()` 都会失效。包括 GitHub 和 Edge 的开发工具在内都有这种显示问题。
 		}
 	}
 

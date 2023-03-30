@@ -1,27 +1,19 @@
 import { mergeAttributes, Node } from "@tiptap/core";
 import { VueNodeViewRenderer } from "@tiptap/vue-3";
-
 import Component from "./TextEditorComponent.vue";
 
 export default Node.create({
-	name: "tiptapThumbVideo",
-
+	name: "thumbVideo",
 	group: "block",
-
 	atom: true,
-
 	parseHTML() {
-		return [
-			{
-				tag: "tiptap-thumb-video",
-			},
-		];
+		return [{
+			tag: "thumb-video",
+		}];
 	},
-
 	renderHTML({ HTMLAttributes }) {
-		return ["tiptap-thumb-video", mergeAttributes(HTMLAttributes)];
+		return ["thumb-video", mergeAttributes(HTMLAttributes)];
 	},
-
 	addNodeView() {
 		return VueNodeViewRenderer(Component);
 	},
@@ -29,11 +21,8 @@ export default Node.create({
 
 // export const tiptapThumbVideoComponents = Node.create({
 // 	name: "vueComponent",
-
 // 	group: "block",
-
 // 	atom: true,
-
 // 	parseHTML() {
 // 		return [
 // 			{
@@ -41,11 +30,9 @@ export default Node.create({
 // 			},
 // 		];
 // 	},
-
 // 	renderHTML({ HTMLAttributes }) {
 // 		return ["vue-component", mergeAttributes(HTMLAttributes)];
 // 	},
-
 // 	addNodeView() {
 // 		return VueNodeViewRenderer(Component);
 // 	},
