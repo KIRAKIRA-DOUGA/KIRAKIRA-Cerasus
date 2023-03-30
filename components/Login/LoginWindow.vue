@@ -422,8 +422,8 @@
 		pointer-events: none;
 	}
 
-	.title *,
-	.form *,
+	.title > *,
+	.form > *,
 	.action {
 		animation: float-left 500ms calc(var(--i) * 100ms) $ease-out-max backwards;
 	}
