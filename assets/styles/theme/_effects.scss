@@ -62,6 +62,10 @@
 @mixin button-shadow-unchecked-hover-focus {
 	box-shadow: 0 9px 9px c(accent-shadow, 30%), 0 0 0 3px c(gray-40, 50%);
 }
+
+@mixin textbox-aftericon-focus {
+	box-shadow: 0 0 0 3px c(gray-50, 30%) inset;
+}
 // #endregion
 
 // #region 主要主题色

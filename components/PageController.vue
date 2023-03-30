@@ -1,4 +1,4 @@
-<script setup lang="tsx">
+<script setup lang="ts">
 	const props = withDefaults(defineProps<{
 		/** 页码总数。 */
 		pages: number;

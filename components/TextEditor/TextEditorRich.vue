@@ -50,10 +50,10 @@
 <template>
 	<div class="text-editor">
 		<div class="menu">
-			<span class="menu-item" :class="{ active: editor?.isActive('bold') }" @click="toggleBold"><b>B</b></span>
-			<span class="menu-item" :class="{ active: editor?.isActive('italic') }" @click="toggleItalic"><i>I</i></span>
-			<span class="menu-item" :class="{ active: editor?.isActive('strike') }" @click="toggleStrike"><s>S</s></span>
-			<span class="menu-item" @click="addVueComponents">Add Vue Components</span>
+			<div :class="{ active: editor?.isActive('bold') }" @click="toggleBold"><b>B</b></div>
+			<div :class="{ active: editor?.isActive('italic') }" @click="toggleItalic"><i>I</i></div>
+			<div :class="{ active: editor?.isActive('strike') }" @click="toggleStrike"><s>S</s></div>
+			<div @click="addVueComponents">Add Vue Components</div>
 		</div>
 		<EditorContent :editor="editor" />
 	</div>
@@ -61,31 +61,34 @@
 
 <style scoped lang="scss">
 	.text-editor {
-		padding: 5px;
+		@include radius-large;
+		@include card-shadow;
 		background-color: c(main-bg);
-		border: 1px solid black;
-	}
 
-	.menu {
-		display: flex;
-		gap: 0.5rem;
-		margin-bottom: 10px;
-	}
-
-	.menu-item {
-		display: block;
-		padding: 0 0.5rem;
-		text-align: center;
-		background-color: c(accent);
-		cursor: pointer;
-
-		&:hover {
-			background-color: c(accent-hover);
+		> * {
+			padding: 12px;
 		}
 
-		&.active {
-			color: white;
-			background-color: #333;
+		.menu {
+			@include card-in-card-shadow;
+			display: flex;
+			gap: 0.5rem;
+
+			> * {
+				padding: 0 0.5rem;
+				text-align: center;
+				background-color: c(accent);
+				cursor: pointer;
+
+				&:hover {
+					background-color: c(accent-hover);
+				}
+
+				&.active {
+					color: white;
+					background-color: #333;
+				}
+			}
 		}
 	}
 </style>

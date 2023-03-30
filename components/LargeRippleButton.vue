@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	const props = defineProps<{
+	const props = withDefaults(defineProps<{
 		/** 图标。 */
 		icon?: string;
 		/** 文本。 */
@@ -8,15 +8,23 @@
 		nonclickable?: boolean;
 		/** 是否不可聚焦但仍可点击。 */
 		nonfocusable?: boolean;
-	}>();
+		/** 外观偏好。 */
+		appearance?: "default" | "textbox-aftericon";
+	}>(), {
+		icon: undefined,
+		text: undefined,
+		appearance: "default",
+	});
 
 	const emits = defineEmits<{
 		(event: "click", payload: MouseEvent): void;
 	}>();
+
+	const appearance = computed(() => props.appearance === "default" ? "" : props.appearance);
 </script>
 
 <template>
-	<div class="large-ripple-button">
+	<div class="large-ripple-button" :class="[appearance]">
 		<button
 			v-ripple
 			type="button"
@@ -62,7 +70,7 @@
 			appearance: none;
 
 			&:not([tabindex="-1"]):focus-visible {
-				@include button-shadow-focus; // TODO: [兰音] 在输入框后方按钮聚焦时太丑，需要额外单独设计样式。
+				@include button-shadow-focus;
 			}
 
 			&:is(:hover, :active) {
@@ -72,6 +80,11 @@
 			&:is(:hover, :active, :has(> .ripple-circle)):not(:focus-visible) {
 				@include square(var(--ripple-size));
 			}
+		}
+
+		&.textbox-aftericon button:not([tabindex="-1"]):focus-visible {
+			@include radius-large;
+			@include textbox-aftericon-focus;
 		}
 	}
 

@@ -83,7 +83,7 @@
 			<Transition css={false} onEnter={onAfterIconEnter} onLeave={onAfterIconLeave}>
 				{
 					props.shown &&
-					<LargeRippleButton icon={props.icon} nonclickable={!props.onClick} onClick={props.onClick} />
+					<LargeRippleButton icon={props.icon} nonclickable={!props.onClick} appearance="textbox-aftericon" onClick={props.onClick} />
 				}
 			</Transition>
 		);
