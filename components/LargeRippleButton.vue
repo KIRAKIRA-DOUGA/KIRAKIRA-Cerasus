@@ -63,11 +63,6 @@
 			flex-shrink: 0;
 			color: c(icon-color);
 			font-weight: 600;
-			font-size: inherit;
-			background: none;
-			border: none;
-			cursor: pointer;
-			appearance: none;
 
 			&:not([tabindex="-1"]):focus-visible {
 				@include button-shadow-focus;

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 	import { useEditor, EditorContent } from "@tiptap/vue-3";
 	import StarterKit from "@tiptap/starter-kit";
 	import VueComponent from "./Extension";
@@ -18,42 +18,39 @@
 		injectCSS: false,
 	});
 
-	/**
-	 * 切换文本加粗。
-	 */
-	function toggleBold() {
-		editor.value?.chain().focus().toggleBold().run();
-	}
+	/** 切换文本加粗。 */
+	const toggleBold = () => { editor.value?.chain().focus().toggleBold().run(); };
+	/** 切换文本倾斜。 */
+	const toggleItalic = () => { editor.value?.chain().focus().toggleItalic().run(); };
+	/** 切换文本下划线。 */
+	const toggleUnderline = () => { editor.value?.chain().focus().toggleUnderline().run(); };
+	/** 切换文本删除线。 */
+	const toggleStrike = () => { editor.value?.chain().focus().toggleStrike().run(); };
 
-	/**
-	 * 切换文本倾斜。
-	 */
-	function toggleItalic() {
-		editor.value?.chain().focus().toggleItalic().run();
-	}
+	/** 在富文本编辑器光标处追加一个 Vue 组件。 */
+	const addVueComponents = () => { editor.value?.commands.insertContent("<tiptap-thumb-video></tiptap-thumb-video>"); };
 
-	/**
-	 * 切换文本删除线。
-	 */
-	function toggleStrike() {
-		editor.value?.chain().focus().toggleStrike().run();
-	}
-
-	/**
-	 * 在富文本编辑器光标处追加一个 Vue 组件。
-	 */
-	function addVueComponents() {
-		editor.value?.commands.insertContent("<tiptap-thumb-video></tiptap-thumb-video>");
-	}
+	const ToolItem = (() => {
+		interface Props {
+			active: string;
+			onClick?: () => void;
+		}
+		return ((props, { slots }) => (
+			<button class={{ active: editor.value?.isActive(props.active) }} onClick={props.onClick}>
+				{slots.default()}
+			</button>
+		)) as VueJsx<Props>;
+	})();
 </script>
 
 <template>
 	<div class="text-editor">
-		<div class="menu">
-			<div :class="{ active: editor?.isActive('bold') }" @click="toggleBold"><b>B</b></div>
-			<div :class="{ active: editor?.isActive('italic') }" @click="toggleItalic"><i>I</i></div>
-			<div :class="{ active: editor?.isActive('strike') }" @click="toggleStrike"><s>S</s></div>
-			<div @click="addVueComponents">Add Vue Components</div>
+		<div class="toolbar">
+			<ToolItem active="bold" @click="toggleBold"><b>B</b></ToolItem>
+			<ToolItem active="italic" @click="toggleItalic"><i>I</i></ToolItem>
+			<ToolItem active="underline" @click="toggleUnderline"><u>U</u></ToolItem>
+			<ToolItem active="strike" @click="toggleStrike"><s>S</s></ToolItem>
+			<button @click="addVueComponents">Add Vue Components</button>
 		</div>
 		<EditorContent :editor="editor" />
 	</div>
@@ -69,24 +66,34 @@
 			padding: 12px;
 		}
 
-		.menu {
+		.toolbar {
 			@include card-in-card-shadow;
 			display: flex;
-			gap: 0.5rem;
+			gap: 3px;
 
 			> * {
-				padding: 0 0.5rem;
+				@include radius-small;
+				$size: 28px;
+				min-width: $size;
+				height: $size;
+				padding: 0 6px;
 				text-align: center;
-				background-color: c(accent);
-				cursor: pointer;
 
 				&:hover {
-					background-color: c(accent-hover);
+					background-color: c(hover-color);
 				}
 
 				&.active {
 					color: white;
-					background-color: #333;
+					background-color: c(accent);
+
+					&:focus {
+						@include button-shadow-focus;
+					}
+				}
+
+				&:focus {
+					@include button-shadow-unchecked-focus;
 				}
 			}
 		}

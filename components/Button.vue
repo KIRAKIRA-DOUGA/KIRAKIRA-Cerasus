@@ -52,15 +52,11 @@
 		min-height: 36px;
 		padding: 8px 16px;
 		color: white;
-		font-size: inherit;
 		letter-spacing: 0.05em;
 		white-space: nowrap;
 		vertical-align: middle;
 		background: c(accent);
-		border: none;
-		cursor: pointer;
 		transition: $fallback-transitions, all $ease-out-back 500ms !important;
-		appearance: none;
 
 		> span {
 			font-family: inherit;
