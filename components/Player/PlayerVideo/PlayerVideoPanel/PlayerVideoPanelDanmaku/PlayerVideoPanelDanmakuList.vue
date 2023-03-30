@@ -53,7 +53,7 @@
 </script>
 
 <template>
-	<kira-component class="player-video-danmaku-list">
+	<kira-component class="player-video-panel-danmaku-list">
 		<ClientOnly>
 			<table class="lite">
 				<thead>
@@ -87,7 +87,7 @@
 </template>
 
 <style scoped lang="scss">
-	.player-video-danmaku-list {
+	.player-video-panel-danmaku-list {
 		@include flex-block;
 		flex-grow: 1;
 		color: c(icon-color);

@@ -3,11 +3,11 @@
 </script>
 
 <template>
-	<kira-component class="player-video-danmaku-send" />
+	<kira-component class="player-video-panel-danmaku-send" />
 </template>
 
 <style scoped lang="scss">
-	.player-video-danmaku-send {
+	.player-video-panel-danmaku-send {
 		@include control-inner-shadow;
 		display: flex;
 		flex-shrink: 0;
