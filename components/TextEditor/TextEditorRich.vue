@@ -23,12 +23,12 @@
 	/** 切换文本倾斜。 */
 	const toggleItalic = () => { editor.value?.chain().focus().toggleItalic().run(); };
 	/** 切换文本下划线。 */
-	const toggleUnderline = () => { editor.value?.chain().focus().toggleUnderline().run(); };
+	const toggleUnderline = () => { editor.value?.chain().focus().toggleUnderline().run(); }; // FIXME Property 'toggleUnderline' does not exist on type 'ChainedCommands'  (wtf?)
 	/** 切换文本删除线。 */
 	const toggleStrike = () => { editor.value?.chain().focus().toggleStrike().run(); };
 
 	/** 在富文本编辑器光标处追加一个 Vue 组件。 */
-	const addVueComponents = () => { editor.value?.commands.insertContent("<tiptap-thumb-video></tiptap-thumb-video>"); };
+	const addVueComponents = () => { editor.value?.commands.insertContent("<thumb-video></thumb-video>"); };
 
 	const ToolItem = (() => {
 		interface Props {
