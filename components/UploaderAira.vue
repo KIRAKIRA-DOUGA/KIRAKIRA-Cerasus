@@ -34,13 +34,13 @@
 
 <template>
 	<Transition>
-		<kira-component v-if="!hidden" class="lovin" @mouseenter="hover = true" @mouseleave="hover = false">
+		<Comp v-if="!hidden" @mouseenter="hover = true" @mouseleave="hover = false">
 			<!-- 谨记：这里有个坑。要用 mouseenter 和 mouseleave，千万不要用 mouseover 和 mouseout。 -->
 			<NuxtIcon name="heart" />
 			<Transition :css="false" @enter="onContentEnter" @leave="onContentLeave">
 				<span v-show="hover" class="text">{{ t.uploader_lovin_it }}</span>
 			</Transition>
-		</kira-component>
+		</Comp>
 	</Transition>
 </template>
 
@@ -59,7 +59,7 @@
 </i18n>
 
 <style scoped lang="scss">
-	.lovin {
+	:comp {
 		@include radius-small;
 		display: inline-flex;
 		align-items: center;

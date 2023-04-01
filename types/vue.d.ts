@@ -8,7 +8,7 @@ declare module "vue" {
 		/**
 		 * KIRAKIRA 组件，KIRA 人自己的组件。
 		 */
-		"kira-component": Partial<HTMLElement>;
+		"kira-component": JSX.IntrinsicElements["section"];
 		"css-doodle": CSSDoodle;
 	}
 

@@ -1,7 +1,7 @@
 import { readFile, writeFile } from "fs/promises";
 import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
-import { kebabToCamelCase } from "../utils/string";
+import { VariableName } from "../classes/VariableName";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -45,7 +45,7 @@ const eases: EaseInfo[] = [];
 for (const variable of variables)
 	eases.push({
 		kebabName: variable,
-		camelName: kebabToCamelCase(variable),
+		camelName: new VariableName(variable).kebab,
 		doc: getSassDoc(scss, variable),
 	});
 

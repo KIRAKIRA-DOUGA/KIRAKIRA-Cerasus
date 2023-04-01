@@ -100,11 +100,11 @@
 </script>
 
 <template>
-	<kira-component class="slider" :class="{ 'move-transition': moveTransition }" tabindex="0" :style="{ '--value': value }">
+	<Comp :class="{ 'move-transition': moveTransition }" tabindex="0" :style="{ '--value': value }">
 		<div class="track" @pointerdown="onTrackDown" @contextmenu="onLongPress"></div>
 		<div class="passed"></div>
 		<div class="thumb" @pointerdown="onThumbDown" @contextmenu="onLongPress"></div>
-	</kira-component>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
@@ -113,7 +113,7 @@
 	$track-thickness: 6px;
 	$value: calc(var(--value) * (100% - $thumb-size));
 
-	.slider {
+	:comp {
 		--value: 0;
 		position: relative;
 		touch-action: pan-y pinch-zoom;
@@ -140,7 +140,7 @@
 		opacity: map(var(--value), 0, 1, 0.4, 1, true);
 		pointer-events: none;
 
-		.slider:not(.move-transition) & {
+		:comp:not(.move-transition) & {
 			transition: none; // 关掉，关掉动画，一定要关掉。否则动画会卡到你怀疑人生。
 		}
 	}
@@ -156,7 +156,7 @@
 		background-color: c(main-bg);
 		cursor: pointer;
 
-		.slider:not(.move-transition) & {
+		:comp:not(.move-transition) & {
 			transition: $fallback-transitions, left 0ms;
 		}
 
@@ -179,7 +179,7 @@
 			scale: 0.4;
 		}
 
-		.slider:focus & {
+		:comp:focus & {
 			@include large-shadow-focus;
 		}
 	}

@@ -10,19 +10,15 @@
 </script>
 
 <template>
-	<kira-component class="wrapper">
+	<Comp class="wrapper">
 		<component :is="'style'" v-if="styles" scoped>
 			{{ styles }}
 		</component>
 		<css-doodle :use="use" :class="{ fullscreen }">
 			{{ rule }}
 		</css-doodle>
-	</kira-component>
+	</Comp>
 </template>
-
-<i18n lang="json5">
-
-</i18n>
 
 <style scoped lang="scss">
 	css-doodle {
@@ -34,7 +30,7 @@
 		}
 	}
 
-	.wrapper {
+	:comp.wrapper {
 		@include full-screen;
 		@include flex-center;
 	}

@@ -136,6 +136,11 @@ export default defineNuxtConfig({
 			"classes",
 		],
 	},
+	postcss: {
+		plugins: {
+			"./plugins/postcss/component-root": true,
+		},
+	},
 	runtimeConfig: {
 		public: {
 			siteUrl: "https://localhost:3000",

@@ -43,7 +43,7 @@
 </script>
 
 <template>
-	<kira-component class="player-video-panel">
+	<Comp>
 		<div class="top">
 			<div class="info">
 				<CountItem icon="play" :value="counts.play">播放</CountItem>
@@ -66,7 +66,7 @@
 		</div>
 		<PlayerVideoPanelDanmakuList />
 		<PlayerVideoPanelDanmakuSend />
-	</kira-component>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
@@ -74,7 +74,7 @@
 	$info-height: 80px;
 	$buttons-height: 48px;
 
-	.player-video-panel {
+	:comp {
 		@include flex-block;
 		flex-shrink: 0;
 		width: $panel-width;

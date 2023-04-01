@@ -99,9 +99,8 @@
 </script>
 
 <template>
-	<kira-component
+	<Comp
 		:tabindex="!disabled ? 0 : -1"
-		class="checkbox"
 		@click="onChange"
 		@keydown="onKeyDown"
 		@keyup="onKeyUp"
@@ -123,7 +122,7 @@
 			</div>
 		</div>
 		<slot></slot>
-	</kira-component>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
@@ -133,9 +132,8 @@
 	$checked-border-size: 10px;
 	$symbol-line-thickness: 2px;
 	$duration-half: 180ms;
-	$component-class: ".checkbox";
 
-	#{$component-class} {
+	:comp {
 		--color: #{c(accent)};
 		display: flex;
 		gap: 0.5rem;
@@ -163,7 +161,7 @@
 		box-shadow: inset 0 0 0 $border-size c(icon-color);
 		animation: outer-border-change-back $duration-half $duration-half $ease-in-expo reverse backwards;
 
-		#{$component-class}:is(:hover, :active) & {
+		:comp:is(:hover, :active) & {
 			background-color: c(hover-color);
 		}
 	}
@@ -248,11 +246,11 @@
 		input:is(:checked, :indeterminate) + & {
 			@include button-shadow;
 
-			#{$component-class}:hover & {
+			:comp:hover & {
 				@include button-shadow-hover;
 			}
 
-			#{$component-class}:active & {
+			:comp:active & {
 				box-shadow: none !important;
 			}
 		}
@@ -263,16 +261,16 @@
 		@include circle;
 		animation: pressing-back $duration-half $ease-in alternate 2;
 
-		#{$component-class}:focus & {
+		:comp:focus & {
 			@include large-shadow-unchecked-focus;
 		}
 
-		#{$component-class}.checked:focus & {
+		:comp.checked:focus & {
 			@include large-shadow-focus;
 		}
 	}
 
-	#{$component-class}:has(> input[disabled]) {
+	:comp:has(> input[disabled]) {
 		pointer-events: none;
 
 		.check-shadow {

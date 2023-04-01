@@ -1,3 +1,5 @@
+// DELETE: 即将删除。新版移动到了 `classes/VariableName.ts`。
+
 /**
  * 将驼峰式字符串转换为连字符式字符串。
  * @param str - 驼峰式字符串。

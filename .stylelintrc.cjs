@@ -43,7 +43,7 @@ module.exports = {
 		"declaration-empty-line-before": null,
 		"custom-property-empty-line-before": null,
 		"selector-pseudo-class-no-unknown": [true, {
-			"ignorePseudoClasses": ["deep", "global", "export", "vertical", "horizontal", "decrement", "increment"],
+			"ignorePseudoClasses": ["deep", "global", "export", "vertical", "horizontal", "decrement", "increment", "component", "comp"],
 		}],
 		"declaration-block-no-duplicate-properties": true,
 		"declaration-block-no-duplicate-custom-properties": true,

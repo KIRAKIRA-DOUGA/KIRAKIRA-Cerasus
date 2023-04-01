@@ -56,7 +56,6 @@
 				class="person"
 				@click="showLogin = true"
 			/>
-			<!-- FIXME 呃呃 -->
 			<div
 				v-else
 				v-i="7"
@@ -67,7 +66,7 @@
 			>
 				<img :src="avatar" alt="avatar" draggable="false" />
 			</div>
-			<SideBarButton v-i="8" title="消息" icon="email" to="testRichTextEditor" />
+			<SideBarButton v-i="8" title="消息" icon="email" to="test-rich-text-editor" />
 			<SideBarButton v-i="9" title="设置" icon="settings" to="components" />
 		</div>
 

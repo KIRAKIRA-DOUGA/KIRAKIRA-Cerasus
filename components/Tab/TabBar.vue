@@ -122,14 +122,14 @@
 </script>
 
 <template>
-	<kira-component>
+	<Comp>
 		<div ref="tabBar" class="tab-bar">
 			<div class="items" :class="{ vertical, big }">
 				<Slot />
 			</div>
 			<div ref="indicator" class="indicator"></div>
 		</div>
-	</kira-component>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
@@ -152,7 +152,7 @@
 		}
 	}
 
-	.tab-bar {
+	div.tab-bar {
 		position: relative;
 		display: inline-block;
 	}

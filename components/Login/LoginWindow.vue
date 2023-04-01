@@ -58,9 +58,8 @@
 <template>
 	<Mask v-model="open" position="center" :zIndex="40">
 		<Transition name="dialog">
-			<kira-component
+			<Comp
 				v-if="open"
-				class="login-window"
 				:class="[
 					currentPage,
 					{
@@ -173,7 +172,7 @@
 					<div class="welcome">欢迎回来</div>
 					<div class="nickname">艾了个拉</div>
 				</div>
-			</kira-component>
+			</Comp>
 		</Transition>
 	</Mask>
 </template>
@@ -189,7 +188,7 @@
 	$avatar-size: 128px;
 	$avatar-movement: 110px;
 
-	.login-window {
+	:comp {
 		@include dropdown-flyouts;
 		@include radius-large;
 		--avatar-center: #{calc($width / 2) - $avatar-movement} 50%;
@@ -235,7 +234,7 @@
 			$current-page: string.slice($current-page, 2);
 		}
 
-		$parent-selector: ".login-window" + if($is-not, ":not(#{$current-page})", $current-page);
+		$parent-selector: ":comp" + if($is-not, ":not(#{$current-page})", $current-page);
 
 		#{$parent-selector} &#{$specified-page} {
 			$move-distance: $width * 0.5;
@@ -247,7 +246,7 @@
 		}
 	}
 
-	.login-window:not(.move-left) .main > * {
+	:comp:not(.move-left) .main > * {
 		translate: 0 !important;
 	}
 
@@ -579,7 +578,7 @@
 			animation: stripes 400ms 980ms cubic-bezier(0.1, 0.5, 0, 1);
 		}
 
-		&.login-window {
+		:comp:is(&) {
 			animation:
 				circle-mask-become-smaller 500ms 2s $ease-out-max forwards,
 				move-avatar-to-corner 500ms 2.5s $ease-out-max forwards;

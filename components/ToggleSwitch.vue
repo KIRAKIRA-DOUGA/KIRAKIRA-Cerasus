@@ -84,9 +84,8 @@
 </script>
 
 <template>
-	<kira-component
-		ref="toggleSwitch"
-		class="toggle-switch"
+	<Comp
+		:dom="toggleSwitch"
 		:class="{ on, disabled }"
 		:tabindex="disabled ? -1 : 0"
 		@click="onClick"
@@ -98,7 +97,7 @@
 			<div class="base"></div>
 			<div class="thumb" @pointerdown="onThumbDown"></div>
 		</div>
-	</kira-component>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
@@ -106,9 +105,8 @@
 	$base-height: 14px;
 	$thumb-size: 20px;
 	$focus-ring-thickness: 10px;
-	$component-class: ".toggle-switch";
 
-	#{$component-class} {
+	:comp {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -170,23 +168,23 @@
 				background-color: c(accent-disabled);
 			}
 
-			#{$component-class}:focus & {
+			:comp:focus & {
 				@include large-shadow-unchecked-focus;
 			}
 
-			#{$component-class}.on:not(.disabled):focus & {
+			:comp.on:not(.disabled):focus & {
 				@include large-shadow-focus;
 			}
 
-			#{$component-class}:active & {
+			:comp:active & {
 				transform: scale(calc(19 / 20));
 			}
 
-			#{$component-class}.on:hover:not(:focus) & {
+			:comp.on:hover:not(:focus) & {
 				@include control-ball-shadow-hover;
 			}
 
-			#{$component-class}:hover:not(:focus) & {
+			:comp:hover:not(:focus) & {
 				@include control-ball-shadow-off-hover;
 			}
 		}

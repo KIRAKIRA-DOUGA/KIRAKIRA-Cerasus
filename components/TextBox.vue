@@ -91,8 +91,7 @@
 </script>
 
 <template>
-	<kira-component
-		class="text-box"
+	<Comp
 		:class="{
 			small: size === 'small',
 			large: size === 'large',
@@ -112,7 +111,7 @@
 		</div>
 		<div v-if="size === 'large'" class="stripe large-stripe"></div>
 		<div class="stripe focus-stripe"></div>
-	</kira-component>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
@@ -122,7 +121,7 @@
 	$large-height: 44px;
 	$front-indent: 12px;
 
-	.text-box {
+	:comp {
 		@include radius-large;
 		@include control-inner-shadow;
 		position: relative;

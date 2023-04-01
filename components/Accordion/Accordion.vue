@@ -24,13 +24,13 @@
 </script>
 
 <template>
-	<kira-component class="accordion">
+	<Comp>
 		<Slot />
-	</kira-component>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
-	.accordion {
+	:comp {
 		@include radius-large;
 		@include chip-shadow;
 		background-color: c(main-bg, 50%);

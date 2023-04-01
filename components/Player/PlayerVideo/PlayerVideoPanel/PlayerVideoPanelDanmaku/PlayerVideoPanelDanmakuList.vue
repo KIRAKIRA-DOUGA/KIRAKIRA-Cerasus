@@ -53,7 +53,7 @@
 </script>
 
 <template>
-	<kira-component class="player-video-panel-danmaku-list">
+	<Comp>
 		<ClientOnly>
 			<table class="lite">
 				<thead>
@@ -83,11 +83,11 @@
 			<MenuItem icon="copy" @click="copyDanmaku">复制</MenuItem>
 			<MenuItem icon="flag">举报</MenuItem>
 		</Menu>
-	</kira-component>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
-	.player-video-panel-danmaku-list {
+	:comp {
 		@include flex-block;
 		flex-grow: 1;
 		color: c(icon-color);

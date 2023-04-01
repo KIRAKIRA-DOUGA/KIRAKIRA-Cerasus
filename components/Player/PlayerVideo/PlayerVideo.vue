@@ -16,7 +16,6 @@
 	const showMediaInfo = ref(false);
 	const mediaInfos = ref<MediaInfo>();
 	const video = ref<HTMLVideoElement>();
-	const videoPlayer = ref<HTMLElement>();
 	const { isFullscreen: fullScreen, toggle } = useFullscreen(video);
 	const menu = ref<InstanceType<typeof Menu>>();
 
@@ -112,7 +111,7 @@
 </script>
 
 <template>
-	<kira-component ref="videoPlayer" class="player-video">
+	<Comp>
 		<Alert v-model="showMediaInfo" title="视频详细信息">
 			<Accordion>
 				<AccordionItem v-for="(info, type) in mediaInfos" :key="type" :title="type">
@@ -132,7 +131,7 @@
 			</Accordion>
 		</Alert>
 
-		<div class="player-video-main">
+		<div class="main">
 			<video
 				ref="video"
 				:src="src"
@@ -160,21 +159,21 @@
 		<Menu ref="menu">
 			<MenuItem icon="info" @click="showInfo">查看视频详细信息</MenuItem>
 		</Menu>
-	</kira-component>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
-	.player-video {
+	:comp {
 		@include player-shadow;
 		display: flex;
 		flex-direction: row;
 	}
 
-	.player-video-main {
+	.main {
 		@include flex-block;
 	}
 
-	.player-video-main,
+	.main,
 	video {
 		width: 100%;
 	}

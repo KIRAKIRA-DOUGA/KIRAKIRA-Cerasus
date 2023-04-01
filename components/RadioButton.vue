@@ -98,9 +98,8 @@
 </script>
 
 <template>
-	<kira-component
+	<Comp
 		:tabindex="isChecked && !disabled ? 0 : -1"
-		class="radio-button"
 		@click="onChange"
 		@keydown="onKeydown"
 		@keyup="onKeyUp"
@@ -118,7 +117,7 @@
 			</div>
 		</div>
 		<slot></slot>
-	</kira-component>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
@@ -128,9 +127,8 @@
 	$border-size: 2px;
 	$duration-half: 200ms;
 	$duration: $duration-half * 2;
-	$component-class: ".radio-button";
 
-	#{$component-class} {
+	:comp {
 		display: flex;
 		gap: 0.5rem;
 		align-items: center;
@@ -160,7 +158,7 @@
 			transition: $transition;
 		}
 
-		#{$component-class}:is(:hover, :active) & {
+		:comp:is(:hover, :active) & {
 			background-color: c(hover-color);
 		}
 
@@ -186,11 +184,11 @@
 			@include button-shadow;
 			@include short-transition;
 
-			#{$component-class}:hover & {
+			:comp:hover & {
 				@include button-shadow-hover;
 			}
 
-			#{$component-class}:active & {
+			:comp:active & {
 				box-shadow: none !important;
 			}
 		}
@@ -208,11 +206,11 @@
 					inner-resize $duration-half $duration-half $ease-out-max,
 					cut-in $duration-half step-start;
 
-				#{$component-class}:hover & {
+				:comp:hover & {
 					scale: 0.6;
 				}
 
-				#{$component-class}:active & {
+				:comp:active & {
 					scale: 0.4;
 				}
 			}
@@ -224,11 +222,11 @@
 		@include circle;
 		animation: pressing-back $duration-half $ease-in alternate 2;
 
-		#{$component-class}:focus & {
+		:comp:focus & {
 			@include large-shadow-unchecked-focus;
 		}
 
-		#{$component-class}:focus input:checked + & {
+		:comp:focus input:checked + & {
 			@include large-shadow-focus;
 		}
 	}
@@ -248,7 +246,7 @@
 		}
 	}
 
-	#{$component-class}:has(> input[disabled]) {
+	:comp:has(> input[disabled]) {
 		pointer-events: none;
 
 		.radio-shadow {

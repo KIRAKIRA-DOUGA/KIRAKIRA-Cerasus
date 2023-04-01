@@ -3,13 +3,13 @@
 </script>
 
 <template>
-	<kira-component class="badge">
+	<Comp>
 		<slot></slot>
-	</kira-component>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
-	.badge {
+	:comp {
 		@include radius-small;
 		padding: 0 8px;
 		color: white;

@@ -57,7 +57,7 @@
 </script>
 
 <template>
-	<kira-component class="player-video-controller">
+	<Comp>
 		<div class="left">
 			<LargeRippleButton class="play" :icon="playing ? 'pause' : 'play'" @click="emits('update:playing', !playing)" />
 		</div>
@@ -73,13 +73,13 @@
 			<LargeRippleButton :text="playbackRateText" @click="switchSpeed" />
 			<LargeRippleButton icon="fullscreen" @click="() => toggleFullScreen?.()" />
 		</div>
-	</kira-component>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
 	$thickness: 36px;
 
-	.player-video-controller {
+	:comp {
 		display: flex;
 		align-items: center;
 		height: $thickness;

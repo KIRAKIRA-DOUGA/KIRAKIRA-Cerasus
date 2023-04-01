@@ -60,7 +60,7 @@
 </script>
 
 <template>
-	<kira-component class="accordion-item">
+	<Comp>
 		<h3 v-ripple class="header" :class="{ shown }" :tabindex="0" @click="toggle">
 			<div>{{ title }}</div>
 			<NuxtIcon name="chevron_down" />
@@ -70,11 +70,11 @@
 				<slot></slot>
 			</div>
 		</Transition>
-	</kira-component>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
-	.accordion-item {
+	:comp {
 		@include radius-large;
 
 		h3 {
