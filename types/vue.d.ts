@@ -48,5 +48,5 @@ declare global {
 		}
 	) => JSX.Element;
 
-	export { ComponentInternalInstance, ConcreteComponent, Directive, Ref, RendererElement, Slot, VNode, WritableComputedRef } from "vue";
+	export { ComponentInternalInstance, ConcreteComponent, Directive, MaybeRef, Ref, RendererElement, Slot, VNode, WritableComputedRef } from "vue";
 }
