@@ -12,8 +12,11 @@
 		title?: string;
 		/** 聚焦内容。是否**不要**单击空白处关闭。 */
 		static?: boolean;
+		/** 应用图标。 */
+		icon?: string;
 	}>(), {
 		title: "",
+		icon: "sakuranomiya",
 	});
 
 	const emits = defineEmits<{
@@ -72,10 +75,13 @@
 		<Transition name="modal">
 			<div v-if="open" ref="modal" class="modal">
 				<div class="title-bar">
-					<div class="title" @pointerdown="onTitleBarDown">{{ title }}</div>
-					<div class="close-button" @click="open = false">
-						<NuxtIcon name="close" />
+					<div class="title" @pointerdown="onTitleBarDown">
+						<NuxtIcon :name="icon" @dblclick="open = false" />
+						<span>{{ title }}</span>
 					</div>
+					<button class="close-button" @click="open = false">
+						<NuxtIcon name="close" />
+					</button>
 				</div>
 				<div class="content">
 					<slot><em>这是一个空的模态框。</em></slot>
@@ -86,8 +92,8 @@
 					</div>
 					<div class="right">
 						<slot name="footer-right">
+							<Button secondary @click="open = false">取消</Button>
 							<Button @click="open = false">确定</Button>
-							<Button @click="open = false">取消</Button>
 						</slot>
 					</div>
 				</div>
@@ -97,7 +103,7 @@
 </template>
 
 <style scoped lang="scss">
-	$padding: 12px;
+	$padding: 24px;
 
 	.modal {
 		@include absolute-center(fixed);
@@ -108,7 +114,7 @@
 		background-color: c(acrylic-bg, 75%);
 		transform: translate(-50%, -50%);
 		transform-origin: left top;
-		transition: $fallback-transitions, all $ease-out-max 500ms;
+		transition: $fallback-transitions, all $ease-out-max 500ms, translate 0s;
 		translate: none;
 
 		&.modal-leave-active {
@@ -124,15 +130,26 @@
 		.title-bar {
 			@include flex-center;
 			justify-content: space-between;
-			height: 32px;
+			height: 28px;
 
 			.title {
+				display: flex;
+				align-items: center;
 				width: 100%;
-				padding: 6px $padding;
+				padding: 6px 0;
+				font-size: 12px;
+
+				.nuxt-icon {
+					margin-right: 10px;
+					margin-left: 12px;
+					color: c(accent);
+					font-size: 16px;
+				}
 			}
 
 			.close-button {
 				@include flex-center;
+				position: relative;
 				width: 45px;
 				height: 100%;
 				font-size: 18px;
@@ -142,25 +159,39 @@
 					transition: $fallback-transitions, color 0s, fill 0s;
 				}
 
+				&::after {
+					@include square(22px);
+					@include radius-small;
+					@include absolute-center-sized;
+					background-color: c(hover-color);
+					opacity: 0;
+					content: "";
+				}
+
 				&:hover {
-					color: white;
-					background-color: c(red);
+					color: c(red);
+
+					&::after {
+						opacity: 1;
+					}
 				}
 
 				&:hover:active {
-					background-color: c(red, 70%);
+					opacity: 0.7;
 				}
 			}
 		}
 
 		.content {
-			padding: 6px $padding;
+			@include card-in-card-shadow;
+			padding: $padding $padding;
+			background-color: c(main-bg, 45%);
 		}
 
 		.footer {
 			@include flex-center;
 			justify-content: space-between;
-			padding: $padding;
+			padding: 12px $padding;
 
 			> * {
 				@include flex-center;
