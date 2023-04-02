@@ -74,7 +74,7 @@
 	<ClientOnlyTeleport to="#popovers">
 		<Transition name="modal">
 			<div v-if="open" ref="modal" class="modal">
-				<div class="title-bar">
+				<div class="titlebar">
 					<div class="title" @pointerdown="onTitleBarDown">
 						<NuxtIcon :name="icon" @dblclick="open = false" />
 						<span>{{ title }}</span>
@@ -127,7 +127,7 @@
 			scale: 1.1;
 		}
 
-		.title-bar {
+		.titlebar {
 			@include flex-center;
 			justify-content: space-between;
 			height: 28px;
