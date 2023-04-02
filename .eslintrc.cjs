@@ -135,6 +135,7 @@ module.exports = {
 		"import/first": "off", // 与 Vue 特性冲突。
 		"import/named": "off", // 与 TypeScript 特性冲突。
 		"import/no-named-as-default": "off", // 似乎与文件命名方式有点出入。
+		"import/no-named-as-default-member": "off", // 某些库在导出成员时用 TS 命名空间欺诈。
 		"n/no-callback-literal": "off", // 这是啥？
 		"@typescript-eslint/no-unused-vars": ["warn", { // 非要使用未使用变量，前面加下划线。
 			"argsIgnorePattern": "^_",

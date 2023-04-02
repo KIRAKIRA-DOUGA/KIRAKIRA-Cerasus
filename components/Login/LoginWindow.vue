@@ -583,7 +583,7 @@
 			animation: stripes 400ms 980ms $ease-text-move;
 		}
 
-		:comp:is(&) {
+		&:comp {
 			animation:
 				circle-mask-become-smaller 500ms 2s $ease-out-max forwards,
 				move-avatar-to-corner 500ms 2.5s $ease-out-max forwards;

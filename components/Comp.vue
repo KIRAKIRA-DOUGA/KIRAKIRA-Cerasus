@@ -1,5 +1,5 @@
 <script lang="tsx">
-	export default defineComponent({
+	const comp = defineComponent({
 		props: {
 			/**
 			 * 对根节点真实 DOM 的引用。
@@ -46,4 +46,5 @@
 			);
 		},
 	});
+	export default comp as typeof comp & JSX.IntrinsicElements["section"];
 </script>

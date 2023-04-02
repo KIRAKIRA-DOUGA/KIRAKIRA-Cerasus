@@ -2,11 +2,12 @@ import postcss from "postcss";
 import plugin from "./component-root";
 
 postcss().use(plugin()).process(`
-:component > .demo {
+foo .bar:component:hover > .demo,
+foo.bar:component:hover > .demo {
 	color: #fff;
 	font-size: 14px; /* this is a comment */
 }`, {
-	from: "css/test.css",
+	from: "style/TextBox.module.scss",
 }).then(result => {
 	console.log(result.css);
 });
