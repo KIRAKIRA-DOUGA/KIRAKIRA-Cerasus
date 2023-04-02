@@ -71,7 +71,7 @@
 	<ClientOnlyTeleport to="#popovers">
 		<Transition name="modal">
 			<div v-if="open" ref="modal" class="modal">
-				<div class="title-bar">
+				<div class="titlebar">
 					<div class="title" @pointerdown="onTitleBarDown">{{ title }}</div>
 					<div class="close-button" @click="open = false">
 						<NuxtIcon name="close" />
@@ -86,8 +86,8 @@
 					</div>
 					<div class="right">
 						<slot name="footer-right">
+							<Button secondary @click="open = false">取消</Button>
 							<Button @click="open = false">确定</Button>
-							<Button @click="open = false">取消</Button>
 						</slot>
 					</div>
 				</div>
@@ -97,7 +97,8 @@
 </template>
 
 <style scoped lang="scss">
-	$padding: 12px;
+	$padding: 16px;
+	$titlebar-thickness: 36px;
 
 	.modal {
 		@include absolute-center(fixed);
@@ -108,7 +109,7 @@
 		background-color: c(acrylic-bg, 75%);
 		transform: translate(-50%, -50%);
 		transform-origin: left top;
-		transition: $fallback-transitions, all $ease-out-max 500ms;
+		transition: $fallback-transitions, all $ease-out-max 500ms, translate 0ms;
 		translate: none;
 
 		&.modal-leave-active {
@@ -121,10 +122,10 @@
 			scale: 1.1;
 		}
 
-		.title-bar {
+		.titlebar {
 			@include flex-center;
 			justify-content: space-between;
-			height: 32px;
+			height: $titlebar-thickness;
 
 			.title {
 				width: 100%;
@@ -133,7 +134,7 @@
 
 			.close-button {
 				@include flex-center;
-				width: 45px;
+				width: $titlebar-thickness + 4px;
 				height: 100%;
 				font-size: 18px;
 
@@ -142,13 +143,20 @@
 					transition: $fallback-transitions, color 0s, fill 0s;
 				}
 
-				&:hover {
-					color: white;
-					background-color: c(red);
+				&::before {
+					@include square(24px);
+					@include radius-small;
+					position: absolute;
+					background-color: transparent;
+					content: "";
 				}
 
-				&:hover:active {
-					background-color: c(red, 70%);
+				&:hover {
+					color: c(red);
+
+					&::before {
+						background-color: c(hover-color);
+					}
 				}
 			}
 		}
