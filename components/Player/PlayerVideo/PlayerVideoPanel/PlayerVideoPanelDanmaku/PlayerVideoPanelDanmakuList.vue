@@ -200,10 +200,19 @@
 
 				&:hover {
 					cursor: w-resize;
+
+					&::after {
+						background-color: c(accent-hover);
+					}
 				}
 
 				&:active {
 					cursor: col-resize;
+
+					&::after {
+						width: 3px;
+						background-color: c(accent);
+					}
 				}
 			}
 

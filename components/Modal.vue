@@ -76,7 +76,7 @@
 			<div v-if="open" ref="modal" class="modal">
 				<div class="titlebar">
 					<div class="title" @pointerdown="onTitleBarDown">
-						<NuxtIcon :name="icon" @dblclick="open = false" />
+						<NuxtIcon :name="icon" filled @dblclick="open = false" />
 						<span>{{ title }}</span>
 					</div>
 					<button class="close-button" @click="open = false">
@@ -142,7 +142,6 @@
 				.nuxt-icon {
 					margin-right: 10px;
 					margin-left: 12px;
-					color: c(accent);
 					font-size: 16px;
 				}
 			}
