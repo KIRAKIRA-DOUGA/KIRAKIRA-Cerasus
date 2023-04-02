@@ -187,6 +187,10 @@
 	$narrow-screen: "(max-width: #{$width - 1})";
 	$avatar-size: 128px;
 	$avatar-movement: 110px;
+	$login-animation-ease-1: cubic-bezier(0.4, 0, 0, 1);
+	$login-animation-ease-2: cubic-bezier(0.1, 0, 0, 1);
+	$login-animation-ease-3: cubic-bezier(0.3, 0, 0, 1);
+	$login-animation-ease-4: cubic-bezier(0.1, 0.5, 0, 1);
 
 	:comp {
 		@include dropdown-flyouts;
@@ -536,7 +540,7 @@
 		}
 
 		.login-button {
-			animation: login-animation-button 600ms cubic-bezier(0.4, 0, 0, 1) forwards; // TODO: 动画及以下动画中的缓动曲线都应该加到 _eases.scss 文件中，而不是一股脑扔个 cubic-bezier 在这。
+			animation: login-animation-button 600ms $login-animation-ease-1 forwards;
 			pointer-events: none;
 
 			@media #{$narrow-screen} {
@@ -550,32 +554,32 @@
 
 		.add {
 			animation:
-				login-animation-add 400ms 200ms cubic-bezier(0.1, 0, 0, 1) forwards,
-				login-animation-add-scale 900ms 500ms cubic-bezier(0.3, 0, 0, 1) forwards;
+				login-animation-add 400ms 200ms $login-animation-ease-2 forwards,
+				login-animation-add-scale 900ms 500ms $login-animation-ease-3 forwards;
 		}
 
 		.avatar {
 			animation:
 				login-animation-avator 600ms 540ms $ease-out-back forwards,
-				login-animation-avator-mover 600ms 1s cubic-bezier(0.3, 0, 0, 1) forwards;
+				login-animation-avator-mover 600ms 1s $login-animation-ease-3 forwards;
 		}
 
 		.welcome {
 			display: block;
-			animation: name-move 700ms 1.05s cubic-bezier(0.1, 0.5, 0, 1) both;
+			animation: name-move 700ms 1.05s $login-animation-ease-4 both;
 		}
 
 		.nickname {
 			display: block;
-			animation: name-move 700ms 1.1s cubic-bezier(0.1, 0.5, 0, 1) both;
+			animation: name-move 700ms 1.1s $login-animation-ease-4 both;
 		}
 
 		.burst .line {
-			animation: burst 800ms 580ms cubic-bezier(0.1, 0, 0, 1) both;
+			animation: burst 800ms 580ms $login-animation-ease-2 both;
 		}
 
 		.stripes .line {
-			animation: stripes 400ms 980ms cubic-bezier(0.1, 0.5, 0, 1);
+			animation: stripes 400ms 980ms $login-animation-ease-4;
 		}
 
 		:comp:is(&) {
