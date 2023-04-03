@@ -15,7 +15,7 @@ a:not(.lite) {
 		color: c(accent-hover);
 		text-decoration: none;
 		background: var(--accent-hover-wave-link-background) repeat-x 0 100%;
-		background-size: 1.5rem auto;
+		background-size: 20px auto;
 		animation: wave-move 1s infinite linear;
 	}
 }
