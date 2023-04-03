@@ -24,23 +24,42 @@ export function useParent<T extends ComponentInternalInstance>(type?: ConcreteCo
  * 获取父组件的作用域样式 ID。
  * @returns 父组件的作用域样式 ID。
  */
-export function useParentScopeId() { // 简单测试后发现使用起来似乎并没有问题，等出了问题的时候再说吧。
-	let parent = getCurrentInstance()?.parent;
-	while (parent) {
-		if ("__scopeId" in parent.type && typeof parent.type.__scopeId === "string")
-			return parent.type.__scopeId;
-		parent = parent.parent;
-	}
-	return null;
+export function useParentScopeId() {
+	return getCurrentInstance()?.vnode.scopeId;
 }
 
 /**
  * 获取当前组件的作用域样式 ID。
+ * @remarks 疑似在发行版中不可使用。
  * @returns 当前组件的作用域样式 ID。
  * 如果当前组件没有作用域样式 ID，返回 undefined；如果该函数不在 setup 时期调用，返回 null。
  */
 export function useScopeId() {
+	return getScopeIdFromInstance(getCurrentInstance());
+}
+
+/**
+ * 通过 Scope ID 来获取父组件。
+ * @returns 父组件或 null（如果没有）。
+ */
+export function useParentByScopeId() {
 	const instance = getCurrentInstance();
+	if (!instance) return null;
+	const scopeId = instance.vnode.scopeId;
+	if (!scopeId) return null;
+	let parent = instance.parent;
+	while (!(!parent || getScopeIdFromInstance(parent) === scopeId))
+		parent = parent.parent;
+	return parent;
+}
+
+/**
+ * 从实例获取组件的 Scope ID。
+ * @remarks 疑似在发行版中不可使用。
+ * @param instance - 组件内部实例。
+ * @returns 组件的 Scope ID。
+ */
+function getScopeIdFromInstance(instance: ComponentInternalInstance | null) {
 	if (!instance) return null;
 	if (!(instance.type instanceof Object && "__scopeId" in instance.type)) return undefined;
 	return instance.type.__scopeId as string;

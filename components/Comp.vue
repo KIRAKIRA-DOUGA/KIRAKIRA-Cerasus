@@ -25,12 +25,8 @@
 			let className = "";
 			do {
 				if (!instance) break;
-				let componentPath: string | undefined;
-				if ("ctx" in instance.vnode) {
-					// WARN: 在发行版中，ctx 属性会被删除，因此该代码仅能在开发版中使用。
-					const ctx = instance.vnode.ctx as ComponentInternalInstance;
-					componentPath = ctx.type.__file;
-				} else componentPath = instance.parent?.type.__file;
+				const parent = useParentByScopeId();
+				const componentPath = parent?.type.__file;
 				if (!componentPath) break;
 				const componentName = filenameWithoutExtension(componentPath);
 				if (!componentName) break;
