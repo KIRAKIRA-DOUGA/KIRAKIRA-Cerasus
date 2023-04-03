@@ -46,5 +46,7 @@
 			);
 		},
 	});
-	export default comp as typeof comp & JSX.IntrinsicElements["section"];
+	type OnToAt<T> = T extends `on${infer U}` ? `@${Lowercase<U>}` : never;
+	type OnEvents = { [event in keyof Events as OnToAt<event>]?: (payload: Events[event]) => void; };
+	export default comp as typeof comp & JSX.IntrinsicElements["section"] & OnEvents;
 </script>
