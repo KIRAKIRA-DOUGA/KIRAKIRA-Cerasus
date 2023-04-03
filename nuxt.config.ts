@@ -22,6 +22,7 @@ export default defineNuxtConfig({
 		"@nuxt/content",
 		"nuxt-icons",
 		"@vueuse/nuxt",
+		"nuxt-lodash",
 		"modules/theme/module.ts",
 		"modules/noscript/module.ts",
 		"modules/components-globalized/module.ts",

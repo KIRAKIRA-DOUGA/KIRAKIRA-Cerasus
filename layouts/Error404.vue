@@ -7,18 +7,28 @@
 	const isMouseMoved = ref(false);
 	const mouse = useMouse();
 	const gsensor = useDeviceOrientation(); // Safari 不支持加速度传感器（重力感应），散了吧。
+	const inited = ref(false);
+	const SPEED = 0.1;
+	const prevParallax = ref(new Point(0, 0));
 	const parallax = computed(() => {
-		const dimen = (x: number, y: number) => ({ x, y });
-		if (process.server || !mouse.x.value && !mouse.y.value && !isMouseMoved.value) return dimen(0, 0);
-		isMouseMoved.value = true;
-		if (gsensor.beta.value === null) return dimen(
-			mouse.x.value / window.innerWidth * 2 - 1,
-			mouse.y.value / window.innerHeight,
-		);
-		return dimen(
-			(gsensor.gamma.value ?? 0) / 45,
-			1 - clamp(gsensor.beta.value ?? 90, 0, 90) / 90,
-		);
+		// 视差平滑移动，参考自：https://codepen.io/nanonansen/pen/oRWmaY
+		let current: Point;
+		if (process.server || !mouse.x.value && !mouse.y.value && !isMouseMoved.value) current = new Point(0, 0);
+		else {
+			isMouseMoved.value = true;
+			if (gsensor.beta.value === null) current = new Point(
+				mouse.x.value / window.innerWidth * 2 - 1,
+				mouse.y.value / window.innerHeight,
+			);
+			else current = new Point(
+				(gsensor.gamma.value ?? 0) / 45,
+				1 - clamp(gsensor.beta.value ?? 90, 0, 90) / 90,
+			);
+		}
+		const distX = prevParallax.value.distanceX(current), distY = prevParallax.value.distanceY(current);
+		prevParallax.value.x += distX * SPEED;
+		prevParallax.value.y += distY * SPEED;
+		return prevParallax.value;
 	});
 	const timestamp = useTimestamp({ interval: 1_000 });
 	const dayNight = ref<HTMLDivElement>();
@@ -31,9 +41,9 @@
 		deg = deg / 24 * 360; // deg
 		return deg;
 	});
-	const inited = ref(false);
 
 	onMounted(() => {
+		// 日月轮回
 		if ("requestPermission" in DeviceMotionEvent && typeof DeviceMotionEvent.requestPermission === "function")
 			DeviceMotionEvent.requestPermission(); // Safari 最后的挣扎。
 		inited.value = true;
