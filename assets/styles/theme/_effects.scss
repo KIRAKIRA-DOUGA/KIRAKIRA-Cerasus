@@ -146,6 +146,10 @@
 	box-shadow: 0 8px 16px c(accent-shadow, 30%);
 }
 
+@mixin dropdown-flyouts-unfocus {
+	box-shadow: 0 8px 12px c(accent-shadow, 30%);
+}
+
 @mixin chip-shadow {
 	box-shadow: 0 2px 4px c(accent-shadow, 30%);
 }

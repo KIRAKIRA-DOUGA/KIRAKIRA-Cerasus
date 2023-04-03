@@ -30,6 +30,12 @@
 
 	const modal = ref<HTMLDivElement>();
 
+	watch(open, async open => {
+		await nextTick();
+		if (open && modal.value)
+			modal.value.focus(); // 打开模态时自动聚焦。
+	}, { immediate: true });
+
 	/**
 	 * 拖拽模态逻辑处理。
 	 * @param e - 指针事件（包括鼠标和触摸）。
@@ -73,7 +79,7 @@
 <template>
 	<ClientOnlyTeleport to="#popovers">
 		<Transition name="modal">
-			<div v-if="open" ref="modal" class="modal">
+			<div v-if="open" ref="modal" class="modal" tabindex="0">
 				<div class="titlebar">
 					<div class="title" @pointerdown="onTitleBarDown">
 						<NuxtIcon :name="icon" filled @dblclick="open = false" />
@@ -114,7 +120,7 @@
 		background-color: c(acrylic-bg, 75%);
 		transform: translate(-50%, -50%);
 		transform-origin: left top;
-		transition: $fallback-transitions, all $ease-out-max 500ms, translate 0s;
+		transition: $fallback-transitions, all $ease-out-max 400ms, translate 0s;
 		translate: none;
 
 		&.modal-leave-active {
@@ -125,6 +131,18 @@
 		&.modal-leave-to {
 			opacity: 0;
 			scale: 1.1;
+		}
+
+		&:not(:focus, :focus-within) {
+			@include dropdown-flyouts-unfocus;
+			background-color: c(acrylic-bg, 60%);
+
+			.titlebar {
+				.title,
+				.close-button {
+					color: c(gray-50);
+				}
+			}
 		}
 
 		.titlebar {
