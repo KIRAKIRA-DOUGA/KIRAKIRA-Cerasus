@@ -36,9 +36,9 @@
 		:class="{ secondary, 'icon-behind': iconBehind }"
 		@click="onClick"
 	>
-		<LocaleLink v-if="href" draggable="false" :to="href" class="link lite" />
 		<NuxtIcon v-if="icon" :name="icon" />
 		<span><slot></slot></span>
+		<LocaleLink v-if="href" draggable="false" :to="href" class="link lite" />
 	</button>
 </template>
 
