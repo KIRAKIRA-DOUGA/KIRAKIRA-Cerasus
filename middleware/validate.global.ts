@@ -24,7 +24,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
 		});
 });
 
-export function slugValidate(validRoutes: string[]) {
+export const slugValidate = (validRoutes: string[]) => {
 	type Validate = Parameters<typeof definePageMeta>[0]["validate"];
 	const validate: Validate = route => {
 		const routePath = getRoutePath({ route });
@@ -38,4 +38,4 @@ export function slugValidate(validRoutes: string[]) {
 		return false;
 	};
 	return validate;
-}
+};

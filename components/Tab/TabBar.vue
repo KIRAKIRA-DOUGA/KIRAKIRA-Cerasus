@@ -138,8 +138,7 @@
 		gap: 1rem;
 		align-items: flex-end;
 
-		> :deep(*),
-		> :slotted(*) { // TODO
+		> :slotted(*) {
 			flex-shrink: 0;
 			cursor: pointer;
 		}

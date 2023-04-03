@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import postcss from "postcss";
 import plugin from "./component-root";
 

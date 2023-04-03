@@ -59,7 +59,7 @@ export function useParentByScopeId() {
  * @param instance - 组件内部实例。
  * @returns 组件的 Scope ID。
  */
-function getScopeIdFromInstance(instance: ComponentInternalInstance | null) {
+export function getScopeIdFromInstance(instance: ComponentInternalInstance | null) {
 	if (!instance) return null;
 	if (!(instance.type instanceof Object && "__scopeId" in instance.type)) return undefined;
 	return instance.type.__scopeId as string;

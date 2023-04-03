@@ -54,6 +54,8 @@ const findChildren = (vnodes: VNode[], type: unknown) => {
  * @returns 插槽组件，和子节点引用。
  */
 export const useFactory = (type: unknown = undefined, slotName: string = "default") => {
+	const instance = getCurrentInstance();
+	const scopeId = getScopeIdFromInstance(instance);
 	const slotNode = ref<SlotNode>();
 	const children = ref<VNode[]>([]);
 	const RenderComp = useCustomFactory({
@@ -67,6 +69,14 @@ export const useFactory = (type: unknown = undefined, slotName: string = "defaul
 		},
 	});
 	const slot = useSlots()[slotName];
-	const Slot = slot ? h(RenderComp, { vnode: slot() }) as Object : undefined;
+	const addSlotScopeId = (s: ReturnType<Exclude<typeof slot, undefined>>) => {
+		if (scopeId) // 无论父组件是否有 `:slotted`，都一律无脑加上？
+			s.forEach(i => {
+				i.props ??= {};
+				i.props[scopeId + "-s"] = "";
+			});
+		return s;
+	};
+	const Slot = slot ? h(RenderComp, { vnode: addSlotScopeId(slot()) }) as Object : undefined;
 	return { RenderComp, Slot, children, slotNode };
 };

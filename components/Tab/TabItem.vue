@@ -15,7 +15,7 @@
 
 	const parent = useParent(TabBar)!;
 	const active = computed(() => parent.props.modelValue === props.id);
-	const flexDirection = computed(() => props.direction.replace("horizontal", "row").replace("vertical", "column") as FlexDirectionProperty);
+	const flexDirection = computed(() => props.direction === "horizontal" ? undefined : props.direction.replace("horizontal", "row").replace("vertical", "column") as FlexDirectionProperty);
 
 	/**
 	 * 单击切换选项卡事件。
