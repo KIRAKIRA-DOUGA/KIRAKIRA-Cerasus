@@ -1,5 +1,5 @@
 {
-	"定义属性": {
+	"Define Props": {
 		"prefix": "props",
 		"body": [
 			"const props = withDefaults(defineProps<{",
@@ -10,7 +10,7 @@
 		],
 		"description": "定义Vue组件属性",
 	},
-	"定义事件": {
+	"Define Emits": {
 		"prefix": "emits",
 		"body": [
 			"const emits = defineEmits<{",
@@ -19,4 +19,13 @@
 		],
 		"description": "定义Vue组件事件",
 	},
+	"For Reversed Loop": {
+		"prefix": "forr",
+		"body": [
+			"for (let ${1:index} = ${2:array}.length - 1; ${1:index} >= 0; ${1:index}--) {",
+			"\tconst ${3:element} = ${2:array}[${1:index}];",
+			"\t$0",
+			"}",
+		],
+	}
 }

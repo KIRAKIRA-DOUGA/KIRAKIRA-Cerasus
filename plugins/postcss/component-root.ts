@@ -4,7 +4,6 @@ import parser from "postcss-selector-parser";
 import { VariableName } from "../../classes/VariableName";
 
 type PostCSSPlugin = { postcss: true } & ((opts?: Object) => AcceptedPlugin);
-const componentPseudo = /:comp(onent)?(?![A-Za-z0-9\-_])/g;
 
 const transformPseudo = (componentName: string) => (selectors => {
 	selectors.walk(selector => {
@@ -35,7 +34,7 @@ const componentRoot: PostCSSPlugin = (_opts = {}) => {
 	return {
 		postcssPlugin: "postcss-component-root",
 		Rule(rule, _helper) {
-			if (rule.selector.match(componentPseudo)) {
+			if (rule.selector.match(/:comp(onent)?(?![A-Za-z0-9\-_])/)) {
 				const filePath = rule.source?.input.file;
 				if (!filePath) return;
 				let fileName: string | undefined = path.parse(filePath).name;

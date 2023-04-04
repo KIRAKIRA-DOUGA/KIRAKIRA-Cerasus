@@ -1,5 +1,5 @@
 {
-	"初始化模板": {
+	"Init Vue Template": {
 		"prefix": ["vue", "init"],
 		"body": [
 			"<docs>",
@@ -23,6 +23,6 @@
 			"</style>",
 			"",
 		],
-		"description": "初始化Vue组件模板",
+		"description": "初始化 Vue 组件模板",
 	}
 }

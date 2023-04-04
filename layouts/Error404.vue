@@ -20,6 +20,7 @@
 		deg = deg / 24 * 360; // deg
 		return deg;
 	});
+	const parallaxAnimationId = ref<number>();
 
 	onMounted(() => {
 		// 视差平滑移动，参考自：https://codepen.io/nanonansen/pen/oRWmaY
@@ -39,20 +40,25 @@
 			const distX = parallax.value.distanceX(current), distY = parallax.value.distanceY(current);
 			parallax.value.x += distX * SPEED;
 			parallax.value.y += distY * SPEED;
-			requestAnimationFrame(parallaxAnimation);
+			parallaxAnimationId.value = requestAnimationFrame(parallaxAnimation);
 		};
 		parallaxAnimation();
 		// 日月轮回
 		if ("requestPermission" in DeviceMotionEvent && typeof DeviceMotionEvent.requestPermission === "function")
 			DeviceMotionEvent.requestPermission(); // Safari 最后的挣扎。
 		inited.value = true;
-		if (!dayNight.value) return;
-		const deg = rotationDeg.value;
-		const PRE_DEG = 10;
-		dayNight.value.animate([
-			{ rotate: deg - PRE_DEG + "deg", opacity: 0 },
-			{ rotate: deg + "deg", opacity: 1 },
-		], { duration: 500, easing: eases.easeOutMax });
+		if (dayNight.value) {
+			const deg = rotationDeg.value;
+			const PRE_DEG = 10;
+			dayNight.value.animate([
+				{ rotate: deg - PRE_DEG + "deg", opacity: 0 },
+				{ rotate: deg + "deg", opacity: 1 },
+			], { duration: 500, easing: eases.easeOutMax });
+		}
+	});
+
+	onUnmounted(() => {
+		parallaxAnimationId.value && cancelAnimationFrame(parallaxAnimationId.value);
 	});
 </script>
 
