@@ -9,6 +9,14 @@
 		<div>{{ t.videoPlaying }}</div>
 		<LocaleLink to="/">Home</LocaleLink>
 		<PlayerVideo :src="videoPath" />
+		<div class="under-player">
+			<div class="left">
+				<CreationDetail />
+			</div>
+			<div class="right">
+				<CreationUploader />
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -27,5 +35,17 @@
 </i18n>
 
 <style scoped lang="scss">
+	.under-player {
+		display: flex;
+		margin-top: 30px;
+	}
 
+	.left {
+		width: 100%;
+	}
+
+	.right {
+		flex-shrink: 0;
+		width: 350px;
+	}
 </style>
