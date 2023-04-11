@@ -85,10 +85,10 @@ p {
 	margin: 0;
 }
 
-/* ::selection {
+::selection {
 	color: white;
 	background-color: c(accent); // BUG: Chromium 111 开始在 `::selection` 设定 `var()` 都会失效。包括 GitHub 和 Edge 的开发工具在内都有这种显示问题。https://bugs.chromium.org/p/chromium/issues/detail?id=1429546
-} */
+}
 
 #popovers {
 	display: contents;
@@ -189,8 +189,9 @@ p {
 	}
 
 	@for $i from 1 through 2 {
-		$color-scheme: if($i == 1, "", ".dark");
-		$fill: if($i == 1, "black", "white");
+		$is-light: $i == 1;
+		$color-scheme: if($is-light, "", ".dark");
+		$fill: if($is-light, "black", "white");
 		$opacity: 0.4458;
 
 		html#{$color-scheme} & {
