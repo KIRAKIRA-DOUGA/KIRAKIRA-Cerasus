@@ -106,14 +106,15 @@
 
 	.cover-wrapper {
 		@include radius-large;
-		@include flex-center;
-		width: 208px;
+		width: $width;
 		height: $height;
 		margin-bottom: 8px;
 		overflow: hidden;
 
 		img.cover {
 			width: 100%;
+			aspect-ratio: 16 / 9;
+			object-fit: cover;
 		}
 	}
 

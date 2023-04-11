@@ -159,13 +159,15 @@
 		> img {
 			z-index: 1;
 			width: 100%;
-		}
-
-		&.logined {
-			transform-origin: left center;
+			aspect-ratio: 1 / 1;
+			object-fit: cover;
 
 			&:hover {
-				scale: 200%;
+				scale: 125%;
+			}
+
+			&:not(:hover) {
+				transition-duration: 1s;
 			}
 		}
 	}

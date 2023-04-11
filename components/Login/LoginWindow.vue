@@ -470,6 +470,8 @@
 
 		> img {
 			width: 100%;
+			aspect-ratio: 1 / 1;
+			object-fit: cover;
 		}
 	}
 
@@ -584,9 +586,15 @@
 		}
 
 		&:comp {
+			--corner-y: calc(50vh - #{40px * 3 + 4px});
+
 			animation:
 				circle-mask-become-smaller 500ms 2s $ease-out-max forwards,
 				move-avatar-to-corner 500ms 2.5s $ease-out-max forwards;
+
+			@media (max-height: 432px) {
+				--corner-y: calc(50vh - #{40px * 3 - 12px});
+			}
 		}
 	}
 
@@ -722,7 +730,7 @@
 	@keyframes move-avatar-to-corner {
 		to {
 			scale: calc(40px / $avatar-size);
-			translate: calc(59px - 50vw) calc(50vh - 40px * 3 - 4px);
+			translate: calc(59px - 50vw) var(--corner-y);
 		}
 	}
 </style>
