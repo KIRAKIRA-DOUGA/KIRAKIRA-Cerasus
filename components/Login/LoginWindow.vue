@@ -169,7 +169,7 @@
 					<div class="avatar">
 						<img :src="avatar" alt="avatar" />
 					</div>
-					<div class="welcome">欢迎回来</div>
+					<div class="welcome">欢迎回家</div>
 					<div class="nickname">艾了个拉</div>
 				</div>
 			</Comp>

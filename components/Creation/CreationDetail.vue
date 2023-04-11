@@ -1,19 +1,28 @@
 <script setup lang="ts">
+	const props = withDefaults(defineProps<{
+		date: Date;
+		category: string;
+		isOriginal: boolean;
+		title: string;
+		tags?: string[];
+	}>(), {
+		tags: () => [], // （？）奇怪的写法
+	});
 </script>
 
 <template>
 	<Comp>
 		<div class="info">
 			<div class="data">
-				<CreationData icon="calendar">2022-08-30 18:00:00</CreationData>
-				<CreationData icon="category">音MAD</CreationData>
-				<CreationData icon="fact_check">原创内容</CreationData>
-				<CreationData icon="photo">查看封面</CreationData>
-				<CreationData icon="flag">稿件投诉</CreationData>
+				<CreationData icon="calendar">{{ formatDate(date, "yyyy-MM-dd h:mm:ss") }}</CreationData>
+				<CreationData icon="category">{{ category }}</CreationData>
+				<CreationData v-if="isOriginal" icon="fact_check">原创内容</CreationData>
+				<CreationData v-else icon="copy">授权转载</CreationData>
+				<a><CreationData icon="photo">查看封面</CreationData></a>
+				<a><CreationData icon="flag">稿件投诉</CreationData></a>
 			</div>
-			<h1>这里是 233333 的一段长长长长长的标题哇【KIRAKIRA】</h1>
+			<h1>{{ title }}</h1>
 		</div>
-		<!-- TODO: [艾拉] 现在这是临时的，需要可编辑的Tag列表组件，在上传稿件的地方也会用到。 -->
 		<div class="tags">
 			<Tag>233</Tag>
 			<Tag>天下笨蛋是一家</Tag>

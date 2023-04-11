@@ -1,5 +1,6 @@
 <script setup lang="ts">
 	import videoPath from "assets/videos/shibamata.mp4";
+	import avatar from "assets/images/aira.jpg";
 
 	useHead({ title: "测试视频" });
 </script>
@@ -11,10 +12,21 @@
 		<PlayerVideo :src="videoPath" />
 		<div class="under-player">
 			<div class="left">
-				<CreationDetail />
+				<CreationDetail
+					:date="new Date()"
+					category="音MAD"
+					title="柴又"
+					isOriginal
+					:tags="['233', '天下笨蛋是一家']"
+				/>
 			</div>
 			<div class="right">
-				<CreationUploader />
+				<CreationUploader
+					:avatar="avatar"
+					username="艾了个拉"
+					:fans="233"
+					isFollowed
+				/>
 			</div>
 		</div>
 	</div>
@@ -47,5 +59,9 @@
 	.right {
 		flex-shrink: 0;
 		width: 350px;
+
+		@media #{$tablet} {
+			display: none;
+		}
 	}
 </style>
