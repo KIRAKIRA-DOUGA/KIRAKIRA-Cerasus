@@ -30,12 +30,12 @@
 <template>
 	<aside :class="{ ready }">
 		<div class="top icons">
-			<SideBarButton v-i="0" title="主页" icon="home" to="/" />
-			<SideBarButton v-i="1" title="搜索" icon="search" to="search" />
-			<SideBarButton v-i="2" title="历史" icon="history" />
-			<SideBarButton v-i="3" title="收藏" icon="star" />
-			<SideBarButton v-i="4" title="关注" icon="feed" />
-			<SideBarButton v-i="5" title="投稿" icon="upload" />
+			<LargeRippleButton v-i="0" title="主页" icon="home" href="/" />
+			<LargeRippleButton v-i="1" title="搜索" icon="search" href="search" />
+			<LargeRippleButton v-i="2" title="历史" icon="history" />
+			<LargeRippleButton v-i="3" title="收藏" icon="star" />
+			<LargeRippleButton v-i="4" title="关注" icon="feed" />
+			<LargeRippleButton v-i="5" title="投稿" icon="upload" />
 		</div>
 
 		<Transition name="stripes">
@@ -48,7 +48,7 @@
 		</Transition>
 
 		<div class="bottom icons">
-			<SideBarButton
+			<LargeRippleButton
 				v-if="!isLogined"
 				v-i="7"
 				title="我的"
@@ -66,8 +66,8 @@
 			>
 				<img :src="avatar" alt="avatar" draggable="false" />
 			</div>
-			<SideBarButton v-i="8" title="消息" icon="email" to="test-rich-text-editor" />
-			<SideBarButton v-i="9" title="设置" icon="settings" to="components" />
+			<LargeRippleButton v-i="8" title="消息" icon="email" href="test-rich-text-editor" />
+			<LargeRippleButton v-i="9" title="设置" icon="settings" href="components" />
 		</div>
 
 		<LoginWindow v-model="showLogin" />
@@ -85,6 +85,7 @@
 		justify-content: space-between;
 		width: $sidebar-width;
 		padding: $icons-gap 0;
+		overflow: hidden;
 		background-color: c(main-bg);
 
 		> * {
@@ -93,8 +94,6 @@
 		}
 
 		&.ready {
-			overflow: hidden;
-
 			[style*="--i"] {
 				animation: jump-in 300ms calc(var(--i) * 50ms) $ease-out-back both;
 			}
@@ -144,6 +143,10 @@
 
 		.bottom ~ * {
 			display: none;
+		}
+
+		.large-ripple-button {
+			--ripple-size: 40px;
 		}
 	}
 

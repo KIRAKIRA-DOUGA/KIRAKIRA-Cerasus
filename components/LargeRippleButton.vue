@@ -1,4 +1,6 @@
 <script setup lang="ts">
+	import { LocaleLink } from "#components";
+
 	const props = withDefaults(defineProps<{
 		/** 图标。 */
 		icon?: string;
@@ -10,10 +12,13 @@
 		nonfocusable?: boolean;
 		/** 外观偏好。 */
 		appearance?: "default" | "textbox-aftericon";
+		/** 指定点击后跳转的链接。 */
+		href?: string;
 	}>(), {
 		icon: undefined,
 		text: undefined,
 		appearance: "default",
+		href: undefined,
 	});
 
 	const emits = defineEmits<{
@@ -21,20 +26,32 @@
 	}>();
 
 	const appearance = computed(() => props.appearance === "default" ? "" : props.appearance);
+	/**
+	 * 当组件状态是按钮或链接时，各自多余的 Attr。
+	 */
+	const additionalAttrs = computed(() => !props.href ? {
+		type: "button",
+	} : {
+		class: "lite",
+		to: props.href,
+		draggable: false,
+		activable: true,
+	});
 </script>
 
 <template>
 	<div class="large-ripple-button" :class="[appearance]">
-		<button
+		<component
+			:is="href ? LocaleLink : 'button'"
 			v-ripple
-			type="button"
 			:tabindex="nonclickable || nonfocusable ? -1 : ''"
 			:disabled="nonclickable"
-			@click="e => emits('click', e)"
+			v-bind="additionalAttrs"
+			@click="(e: MouseEvent) => emits('click', e)"
 		>
 			<NuxtIcon v-if="icon" :name="icon" class="icon" />
 			<span v-if="text"><span>{{ text }}</span></span>
-		</button>
+		</component>
 	</div>
 </template>
 
@@ -55,7 +72,7 @@
 		@include circle;
 		@include ripple-clickable-only-inside(var(--wrapper-size));
 
-		button {
+		> * {
 			@include flex-center;
 			@include square(var(--focus-size));
 			@include circle;
@@ -75,11 +92,19 @@
 			&:is(:hover, :active, :has(> .ripple-circle)):not(:focus-visible) {
 				@include square(var(--ripple-size));
 			}
+
+			&.router-link-active > * {
+				color: c(accent);
+			}
 		}
 
-		&.textbox-aftericon button:not([tabindex="-1"]):focus-visible {
+		&.textbox-aftericon > *:not([tabindex="-1"]):focus-visible {
 			@include radius-large;
 			@include textbox-aftericon-focus;
+		}
+
+		> a {
+			pointer-events: auto; // 一个未知 bug，居然可能因 JS 导致伪元素消失。
 		}
 	}
 

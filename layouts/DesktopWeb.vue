@@ -30,6 +30,7 @@
 		z-index: 1;
 		height: var(--inner-height);
 		padding-left: $sidebar-width;
+		overflow-x: hidden;
 		overflow-y: overlay;
 		transition: $fallback-transitions, width 0s, height 0s;
 
