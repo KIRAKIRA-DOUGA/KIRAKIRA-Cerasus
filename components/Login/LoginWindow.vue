@@ -32,26 +32,24 @@
 	const open = computed({
 		get: () => !!(props.modelValue ?? props.open),
 		set: value => {
-			clearCloseLater();
 			emits("update:modelValue", value);
 			if (isLogining.value) useEvent("user:login", true);
 			isLogining.value = false;
 		},
 	});
-	const timeoutId = ref<NodeJS.Timeout>();
+	const loginWindow = refComp();
 
 	/**
 	 * 稍后关闭。
 	 */
-	function closeLater() {
-		clearCloseLater();
-		timeoutId.value = setTimeout(() => open.value = false, 3000);
-	}
-	/**
-	 * 清除稍后关闭。
-	 */
-	function clearCloseLater() {
-		clearTimeout(timeoutId.value);
+	async function closeLater() {
+		await nextTick();
+		if (!loginWindow.value) return;
+		const finishes = loginWindow.value.getAnimations().map(animation => animation.finished);
+		try {
+			await Promise.all(finishes);
+		} catch { return; }
+		open.value = false;
 	}
 </script>
 
@@ -60,6 +58,7 @@
 		<Transition name="dialog">
 			<Comp
 				v-if="open"
+				ref="loginWindow"
 				:class="[
 					currentPage,
 					{

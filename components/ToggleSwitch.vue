@@ -17,7 +17,7 @@
 
 	const isDraging = ref(false);
 	const on = computed(() => props.modelValue ?? props.on);
-	const toggleSwitch = ref<HTMLElement>();
+	const toggleSwitch = refComp();
 
 	/**
 	 * 拖拽滑块逻辑处理。
@@ -85,7 +85,7 @@
 
 <template>
 	<Comp
-		:dom="toggleSwitch"
+		ref="toggleSwitch"
 		:class="{ on, disabled }"
 		:tabindex="disabled ? -1 : 0"
 		@click="onClick"
