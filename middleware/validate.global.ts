@@ -1,7 +1,8 @@
 import { httpResponseStatusCodes } from "helpers/http-status";
 
 export default defineNuxtRouteMiddleware((to, from) => {
-	console.log("to", to, "\nfrom", from, "\nrouteBaseName", useNuxtApp().$getRouteBaseName());
+	if (process.client)
+		console.log("to", to, "\nfrom", from, "\nrouteBaseName", useNuxtApp().$getRouteBaseName());
 
 	const routePath = getRoutePath({ route: to });
 	const routeNumber = +routePath;

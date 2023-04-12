@@ -24,8 +24,7 @@
 			<h1>{{ title }}</h1>
 		</div>
 		<div class="tags">
-			<Tag>233</Tag>
-			<Tag>天下笨蛋是一家</Tag>
+			<Tag v-for="tag in tags" :key="tag">{{ tag }}</Tag>
 		</div>
 	</Comp>
 </template>
