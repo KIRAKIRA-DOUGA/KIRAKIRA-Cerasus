@@ -37,7 +37,7 @@
 		:slotted(.container) {
 			padding: 26px 100px;
 
-			@media #{$tablet} {
+			@include tablet {
 				padding: 26px 40px;
 			}
 		}

@@ -1,5 +1,6 @@
 @use "functions" as *;
 @use "private" as *;
+@use "variables" as *;
 
 // #region 圆角
 /// 大卡片/缩略图。
@@ -16,6 +17,35 @@
 /// @output border-radius
 @mixin radius-small($position: full) {
 	@include set-border-radius(4px, $position);
+}
+// #endregion
+
+// #region 响应式布局
+/// 手机端布局。
+/// @content
+/// @output @media screen
+@mixin mobile {
+	@media screen and (max-width: #{$mobile-max-width}) {
+		@content;
+	}
+}
+
+/// 平板端布局。
+/// @content
+/// @output @media screen
+@mixin tablet {
+	@media screen and (max-width: #{$tablet-max-width}) {
+		@content;
+	}
+}
+
+/// 电脑端布局。
+/// @content
+/// @output @media screen
+@mixin computer {
+	@media screen and (min-width: #{$tablet-max-width + 1px}) {
+		@content;
+	}
 }
 // #endregion
 

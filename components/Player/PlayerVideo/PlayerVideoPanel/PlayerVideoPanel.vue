@@ -81,7 +81,7 @@
 		height: inherit;
 		overflow: hidden;
 
-		@media #{$tablet} {
+		@include tablet {
 			display: none;
 		}
 	}

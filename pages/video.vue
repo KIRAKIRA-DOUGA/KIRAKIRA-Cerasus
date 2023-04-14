@@ -60,7 +60,7 @@
 		flex-shrink: 0;
 		width: 350px;
 
-		@media #{$tablet} {
+		@include tablet {
 			display: none;
 		}
 	}
