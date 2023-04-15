@@ -30,7 +30,6 @@ export function useParentScopeId() {
 
 /**
  * 获取当前组件的作用域样式 ID。
- * @remarks 疑似在发行版中不可使用。
  * @returns 当前组件的作用域样式 ID。
  * 如果当前组件没有作用域样式 ID，返回 undefined；如果该函数不在 setup 时期调用，返回 null。
  */
@@ -55,12 +54,10 @@ export function useParentByScopeId() {
 
 /**
  * 从实例获取组件的 Scope ID。
- * @remarks 疑似在发行版中不可使用。
  * @param instance - 组件内部实例。
  * @returns 组件的 Scope ID。
  */
 export function getScopeIdFromInstance(instance: ComponentInternalInstance | null) {
 	if (!instance) return null;
-	if (!(instance.type instanceof Object && "__scopeId" in instance.type)) return undefined;
-	return instance.type.__scopeId as string;
+	return instance.proxy?.$options.__scopeId;
 }
