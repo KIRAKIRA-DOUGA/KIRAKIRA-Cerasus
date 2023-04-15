@@ -131,7 +131,7 @@
 			<em>所有输入框的内容同时输入属正常现象，因为懒得做三个变量。</em>
 			<hr />
 			<RadioButton v-for="locale in localeList" :key="locale.code" v-model="localeModel" :value="locale.code" :lang="locale.code">{{ locale.name }}</RadioButton>
-			<HeaderComments :count="233" />
+			<!-- <HeaderComments :count="233" /> -->
 			<br />
 			<ProgressRing />
 			<!-- <Lottie loop autoplay :animationData="animationData" /> -->
