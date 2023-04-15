@@ -27,6 +27,14 @@
 		},
 		{
 			"type": "npm",
+			"script": "generate",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: generate",
+			"detail": "nuxt generate"
+		},
+		{
+			"type": "npm",
 			"script": "update-eases",
 			"problemMatcher": [],
 			"label": "npm: update-eases",

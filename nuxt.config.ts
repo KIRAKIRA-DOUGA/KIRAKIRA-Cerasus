@@ -9,6 +9,7 @@ const wasmFile = resolve("node_modules/mediainfo.js/dist/MediaInfoModule.wasm");
 type OriginalNuxtConfig = Parameters<typeof defineNuxtConfig>[0];
 type BroadNuxtConfig = OriginalNuxtConfig & Record<Exclude<string, keyof OriginalNuxtConfig>, object | string>; // 还敢报错吗？
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; // 支持 HTTPS。
+const dev = process.env.NODE_ENV !== "production";
 
 export default defineNuxtConfig({
 	plugins: [
@@ -25,7 +26,7 @@ export default defineNuxtConfig({
 		"nuxt-lodash",
 		"modules/theme/module.ts",
 		"modules/noscript/module.ts",
-		// "modules/components-globalized/module.ts",
+		dev && "modules/components-globalized/module.ts",
 		"@nuxtjs/robots",
 		"nuxt-simple-sitemap",
 		// "@nuxtjs/color-mode", // 这个已经重写了，不用开启。
