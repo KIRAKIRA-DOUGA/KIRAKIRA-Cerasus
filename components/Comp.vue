@@ -19,9 +19,12 @@
 			do {
 				if (!instance) break;
 				const parent = useParentByScopeId();
-				const componentPath = parent?.type.__file;
-				if (!componentPath) break;
-				const componentName = filenameWithoutExtension(componentPath);
+				let componentName = parent?.type.__name;
+				if (!componentName) {
+					const componentPath = parent?.type.__file;
+					if (!componentPath) break;
+					componentName = filenameWithoutExtension(componentPath);
+				}
 				if (!componentName) break;
 				className = new VariableName(componentName).kebab;
 			} while (false);
