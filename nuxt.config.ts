@@ -17,7 +17,7 @@ export default defineNuxtConfig({
 		"plugins/nuxt/innerheight.ts",
 	],
 	modules: [
-		"@nuxt/devtools",
+		// "@nuxt/devtools",
 		"@nuxtjs/i18n",
 		"@nuxt/content",
 		"nuxt-icons",
@@ -25,7 +25,7 @@ export default defineNuxtConfig({
 		"nuxt-lodash",
 		"modules/theme/module.ts",
 		"modules/noscript/module.ts",
-		"modules/components-globalized/module.ts",
+		// "modules/components-globalized/module.ts",
 		"@nuxtjs/robots",
 		"nuxt-simple-sitemap",
 		// "@nuxtjs/color-mode", // 这个已经重写了，不用开启。
