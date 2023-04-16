@@ -14,12 +14,12 @@
 	<Comp>
 		<div class="info">
 			<div class="data">
-				<CreationData icon="calendar">{{ formatDate(date, "yyyy-MM-dd h:mm:ss") }}</CreationData>
-				<CreationData icon="category">{{ category }}</CreationData>
-				<CreationData v-if="isOriginal" icon="fact_check">原创内容</CreationData>
-				<CreationData v-else icon="copy">授权转载</CreationData>
-				<a><CreationData icon="photo">查看封面</CreationData></a>
-				<a><CreationData icon="flag">稿件投诉</CreationData></a>
+				<CreationDetailItem icon="calendar">{{ formatDate(date, "yyyy-MM-dd h:mm:ss") }}</CreationDetailItem>
+				<CreationDetailItem icon="category">{{ category }}</CreationDetailItem>
+				<CreationDetailItem v-if="isOriginal" icon="fact_check">原创内容</CreationDetailItem>
+				<CreationDetailItem v-else icon="copy">授权转载</CreationDetailItem>
+				<a><CreationDetailItem icon="photo">查看封面</CreationDetailItem></a>
+				<a><CreationDetailItem icon="flag">稿件投诉</CreationDetailItem></a>
 			</div>
 			<h1>{{ title }}</h1>
 		</div>
