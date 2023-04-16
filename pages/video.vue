@@ -7,8 +7,6 @@
 
 <template>
 	<div class="container">
-		<div>{{ t.videoPlaying }}</div>
-		<LocaleLink to="/">Home</LocaleLink>
 		<PlayerVideo :src="videoPath" />
 		<div class="under-player">
 			<div class="left">
@@ -31,20 +29,6 @@
 		</div>
 	</div>
 </template>
-
-<i18n lang="json5">
-{
-	zh: {
-		videoPlaying: "视频播放中……",
-	},
-	en: {
-		videoPlaying: "Video Playing...",
-	},
-	ja: {
-		videoPlaying: "動画再生中……",
-	},
-}
-</i18n>
 
 <style scoped lang="scss">
 	.under-player {
