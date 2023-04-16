@@ -17,6 +17,9 @@
 					isOriginal
 					:tags="['233', '天下笨蛋是一家']"
 				/>
+				<CreationComments
+					count="233"
+				/>
 			</div>
 			<div class="right">
 				<CreationUploader
