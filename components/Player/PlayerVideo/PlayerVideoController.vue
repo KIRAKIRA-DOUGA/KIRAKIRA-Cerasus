@@ -70,6 +70,7 @@
 				<span class="divide">/</span>
 				<span class="duration">{{ duration }}</span>
 			</div>
+			<LargeRippleButton icon="volume_up" />
 			<LargeRippleButton :text="playbackRateText" @click="switchSpeed" />
 			<LargeRippleButton icon="fullscreen" @click="() => toggleFullScreen?.()" />
 		</div>
