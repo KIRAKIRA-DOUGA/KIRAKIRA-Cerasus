@@ -15,7 +15,7 @@
 					:date="new Date()"
 					category="音MAD"
 					title="柴又"
-					isOriginal
+					copyright="unauthorized-repost"
 					:tags="['233', '天下笨蛋是一家']"
 				/>
 				<CreationComments

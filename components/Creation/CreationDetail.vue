@@ -2,7 +2,7 @@
 	const props = withDefaults(defineProps<{
 		date: Date;
 		category: string;
-		isOriginal: boolean;
+		copyright: "original" | "authorized-repost" | "unauthorized-repost" ;
 		title: string;
 		tags?: string[];
 	}>(), {
@@ -16,8 +16,9 @@
 			<div class="data">
 				<CreationDetailItem icon="calendar">{{ formatDate(date, "yyyy-MM-dd h:mm:ss") }}</CreationDetailItem>
 				<CreationDetailItem icon="category">{{ category }}</CreationDetailItem>
-				<CreationDetailItem v-if="isOriginal" icon="fact_check">原创内容</CreationDetailItem>
-				<CreationDetailItem v-else icon="copy">授权转载</CreationDetailItem>
+				<CreationDetailItem v-if="copyright === 'original'" icon="fact_check">原创内容</CreationDetailItem>
+				<CreationDetailItem v-if="copyright === 'authorized-repost'" icon="local_shipping">授权转载</CreationDetailItem>
+				<CreationDetailItem v-if="copyright === 'unauthorized-repost'" icon="local_shipping">转载</CreationDetailItem>
 				<a><CreationDetailItem icon="photo">查看封面</CreationDetailItem></a>
 				<a><CreationDetailItem icon="flag">稿件投诉</CreationDetailItem></a>
 			</div>
