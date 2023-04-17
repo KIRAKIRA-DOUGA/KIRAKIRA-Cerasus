@@ -2,7 +2,6 @@
 	// import videoPath from "assets/videos/shibamata.mp4";
 	import avatar from "assets/images/aira.jpg";
 	const videoPath = "https://video_api.kms233.com/bili/av9912788";
-	fetch("https://video_api.kms233.com/bili/av9912788");
 
 	useHead({ title: "柴又" });
 </script>
