@@ -54,7 +54,7 @@
 			&.stroked {
 				background-clip: text;
 				opacity: 0.4;
-				-webkit-text-stroke-width: 1.5px;
+				-webkit-text-stroke-width: 1px;
 				-webkit-text-fill-color: transparent;
 			}
 		}
