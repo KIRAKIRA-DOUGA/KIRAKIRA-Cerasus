@@ -67,7 +67,7 @@
 				<img :src="avatar" alt="avatar" draggable="false" />
 			</div>
 			<LargeRippleButton v-i="8" title="消息" icon="email" href="test-rich-text-editor" />
-			<LargeRippleButton v-i="9" title="设置" icon="settings" href="components" />
+			<LargeRippleButton v-i="9" title="设置" icon="settings" href="settings" />
 		</div>
 
 		<LoginWindow v-model="showLogin" />
