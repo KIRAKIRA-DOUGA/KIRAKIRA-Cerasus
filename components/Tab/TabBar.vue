@@ -22,6 +22,7 @@
 		emits("update:modelValue", id);
 	}
 
+	// TODO: 竖向indicator
 	/**
 	 * 获取指示器的左边和右边值。
 	 * @param item - 选项卡项目。
@@ -145,6 +146,12 @@
 
 		&.big {
 			gap: 2em;
+		}
+
+		&.vertical {
+			@include flex-block;
+			gap: 2px;
+			align-items: flex-start;
 		}
 	}
 

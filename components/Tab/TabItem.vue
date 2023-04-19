@@ -55,11 +55,18 @@
 			}
 		}
 
-		&.vertical {
-			gap: 2px;
+		.vertical & {
+			@include radius-small;
+			justify-content: flex-start;
+			width: 100%;
+			padding: 8px;
 
 			.badge {
 				width: 100%;
+			}
+
+			&.active {
+				background-color: c(hover-color);
 			}
 		}
 	}
