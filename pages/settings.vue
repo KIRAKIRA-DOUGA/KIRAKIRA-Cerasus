@@ -106,17 +106,19 @@
 	.settings-page {
 		display: flex;
 		justify-content: center;
-		height: 100vh;
+		min-height: 100vh;
 		background-color: c(gray-20);
 	}
 
 	.menu {
 		@include flex-block;
+		position: sticky;
+		top: 0;
 		gap: 10px;
 		width: 245px;
+		height: 100%;
 		margin-right: $center-gap;
 		padding-top: $page-top-gap;
-		overflow: overlay;
 	}
 
 	.menu-content {
@@ -131,7 +133,6 @@
 		width: 100%;
 		max-width: 960px;
 		padding: $page-top-gap 48px;
-		overflow: overlay;
 		background-color: c(main-bg);
 	}
 
