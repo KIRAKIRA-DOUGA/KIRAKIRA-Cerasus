@@ -13,6 +13,7 @@
 	const { Slot, slotNode } = useFactory();
 	const tabBar = ref<HTMLElement>();
 	const indicator = ref<HTMLDivElement>();
+	const updateIndicatorWithoutAnimation = Symbol.for("updateIndicatorWithoutAnimation");
 
 	/**
 	 * 根据标识符切换选项卡。
@@ -58,7 +59,7 @@
 	 * @param id - 当前选项卡标识符。
 	 * @param prevId - 先前选项卡标识符。
 	 */
-	async function update(id?: string, prevId?: string) {
+	async function update(id?: string, prevId?: string | typeof updateIndicatorWithoutAnimation) {
 		const LENGTH = 16; // 指定选项卡指示器的最大长度。
 		id ??= props.modelValue;
 		if (!indicator.value) return;
@@ -75,15 +76,20 @@
 			LEFT = -1,
 			NONE,
 			RIGHT,
+			IGNORE,
 		}
 		let moveDirection = MoveDirection.NONE;
 		let prevItem: HTMLElement | null = null;
-		if (prevId) prevItem = getChild(prevId);
-		if (prevId && prevItem) {
-			prevItemLr = getIndicatorLeftRight(prevItem, LENGTH);
-			moveDirection = itemLr.left >= prevItemLr.left ? MoveDirection.RIGHT : MoveDirection.LEFT;
-		} else
-			prevItemLr = getIndicatorLeftRight(item, 0);
+		if (prevId === updateIndicatorWithoutAnimation)
+			moveDirection = MoveDirection.IGNORE;
+		else {
+			if (prevId) prevItem = getChild(prevId);
+			if (prevId && prevItem) {
+				prevItemLr = getIndicatorLeftRight(prevItem, LENGTH);
+				moveDirection = itemLr.left >= prevItemLr.left ? MoveDirection.RIGHT : MoveDirection.LEFT;
+			} else
+				prevItemLr = getIndicatorLeftRight(item, 0);
+		}
 		const setLeft = () => style.left = itemLr.left;
 		const setRight = () => style.right = itemLr.right;
 		const delayTime = () => delay(100);
@@ -98,14 +104,25 @@
 				await delayTime();
 				setRight();
 				break;
+			case MoveDirection.IGNORE:
+				setLeft();
+				setRight();
+				break;
 			default:
-				style.left = prevItemLr.left;
-				style.right = prevItemLr.right;
+				style.left = prevItemLr!.left;
+				style.right = prevItemLr!.right;
 				await nextAnimationTick();
 				setLeft();
 				setRight();
 				break;
 		}
+	}
+
+	/**
+	 * 当页面大小变化时更新选项卡指示器。
+	 */
+	function onResize() {
+		update(undefined, updateIndicatorWithoutAnimation);
 	}
 
 	watch(() => props.modelValue, (id, prevId) => {
@@ -114,7 +131,11 @@
 
 	onMounted(() => {
 		update();
-		window.addEventListener("resize", () => update());
+		window.addEventListener("resize", onResize);
+	});
+
+	onUnmounted(() => {
+		window.removeEventListener("resize", onResize);
 	});
 
 	defineExpose({
@@ -166,7 +187,7 @@
 		position: absolute;
 		flex-shrink: 0;
 		height: $thickness;
-		margin-top: 8px;
+		margin-top: 6px;
 		background-color: c(accent);
 	}
 </style>

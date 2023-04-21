@@ -38,7 +38,7 @@
 <style scoped lang="scss">
 	.tab-item {
 		@include flex-center;
-		gap: 8px;
+		gap: 4px;
 
 		&.active {
 			color: c(accent);
