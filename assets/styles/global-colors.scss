@@ -1,7 +1,9 @@
 @use "theme/colors" as *;
 @use "theme/private" as *;
+@use "sass:map";
 
 // 下面的内容是根据 Sass 映射自动转换为 CSS 属性的逻辑代码，不用动。
+// TODO: [兰音] 即将支持相对颜色（Relative colors / rgb(from ...)）来实现改变颜色透明度的功能，然而截至目前没有浏览器正式支持该功能。
 
 @for $i from 1 through 2 {
 	$is-light: $i == 1;
@@ -32,6 +34,8 @@
 
 		@each $palette, $accents in $primary-colors {
 			&.#{"" + $palette} {
+				accent-color: themed-color(map.get($secondary-colors, $palette), $is-light);
+
 				@for $j from 1 through 2 {
 					$is-rgb-list: $j == 2;
 

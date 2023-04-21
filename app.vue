@@ -56,13 +56,16 @@
 			navigator.serviceWorker.register("/sw.js");
 		});
 
-	const pageTransition = ref<"page-forward" | "page-backward" | "page-jump">("page-forward");
+	const pageTransition = ref("page-forward");
 
 	watchRoute((route, prevRoute) => {
 		[route, prevRoute] = [removeI18nPrefix(route), removeI18nPrefix(prevRoute)];
 		pageTransition.value = "page-jump";
 		if (prevRoute.includes(route)) pageTransition.value = "page-backward";
 		if (route.includes(prevRoute)) pageTransition.value = "page-forward";
+		const SETTINGS = "settings";
+		if (route.includes(SETTINGS) && !prevRoute.includes(SETTINGS)) pageTransition.value = "page-enter-settings";
+		if (!route.includes(SETTINGS) && prevRoute.includes(SETTINGS)) pageTransition.value = "page-leave-settings";
 	});
 </script>
 

@@ -12,42 +12,49 @@
 		code: locale.code,
 		name: locale.name || locale.code,
 	})));
+
+	const themeList = ["light", "dark", "system"] as const;
+	const paletteList = ["pink", "sky", "blue", "orange", "purple", "green"] as const;
+
 	useHead({ title: t.settings });
 </script>
 
 <template>
-	<div class="settings-page">
-		<div class="menu">
+	<div class="settings">
+		<nav>
 			<div class="title">
-				<Header>{{ t.settings }}</Header>
+				<h2>{{ t.settings }}</h2>
 			</div>
-			<div class="menu-content">
+			<div class="nav-items">
 				<TextBox v-model="search" placeholder="搜索设置" />
 				<Button href="/components">组件测试页</Button>
 			</div>
-		</div>
-		<div class="content">
-			<h2>外观</h2>
-			<h3>主题</h3>
-			<div class="chip-radio-group">
-				<RadioButton v-model="theme" value="light">{{ t.lightTheme }}</RadioButton>
-				<RadioButton v-model="theme" value="dark">{{ t.darkTheme }}</RadioButton>
-				<RadioButton v-model="theme" value="system">{{ t.systemTheme }}</RadioButton>
+		</nav>
+		<main>
+			<div class="card"></div>
+			<div class="content">
+				<h2>外观</h2>
+				<Subheader icon="brightness_medium">主题</Subheader>
+				<div class="chip radio-group">
+					<RadioButton v-for="item in themeList" :key="item" v-model="theme" v-ripple :value="item">{{ t[item] }}</RadioButton>
+				</div>
+				<Subheader icon="palette">个性色</Subheader>
+				<div class="chip radio-group">
+					<RadioButton v-for="item in paletteList" :key="item" v-model="palette" v-ripple :value="item">{{ t[item] }}</RadioButton>
+				</div>
+				<Subheader icon="translate">语言</Subheader>
+				<div class="chip radio-group">
+					<RadioButton
+						v-for="locale in localeList"
+						:key="locale.code"
+						v-model="localeModel"
+						v-ripple
+						:value="locale.code"
+						:lang="locale.code"
+					>{{ locale.name }}</RadioButton>
+				</div>
 			</div>
-			<h3>强调色</h3>
-			<div class="chip-radio-group">
-				<RadioButton v-model="palette" value="pink">{{ t.pink }}</RadioButton>
-				<RadioButton v-model="palette" value="sky">{{ t.sky }}</RadioButton>
-				<RadioButton v-model="palette" value="blue">{{ t.blue }}</RadioButton>
-				<RadioButton v-model="palette" value="orange">{{ t.orange }}</RadioButton>
-				<RadioButton v-model="palette" value="purple">{{ t.purple }}</RadioButton>
-				<RadioButton v-model="palette" value="green">{{ t.green }}</RadioButton>
-			</div>
-			<h2>语言</h2>
-			<div class="chip-radio-group">
-				<RadioButton v-for="locale in localeList" :key="locale.code" v-model="localeModel" :value="locale.code" :lang="locale.code">{{ locale.name }}</RadioButton>
-			</div>
-		</div>
+		</main>
 	</div>
 </template>
 
@@ -55,9 +62,9 @@
 {
 	zh: {
 		settings: "设置",
-		lightTheme: "浅色主题",
-		darkTheme: "深色主题",
-		systemTheme: "跟随系统",
+		light: "浅色主题",
+		dark: "深色主题",
+		system: "跟随系统",
 		pink: "萌妹粉",
 		sky: "天空蓝",
 		blue: "智乃蓝",
@@ -67,9 +74,9 @@
 	},
 	en: {
 		settings: "Settings",
-		lightTheme: "Light theme",
-		darkTheme: "Dark theme",
-		systemTheme: "Follow system theme",
+		light: "Light theme",
+		dark: "Dark theme",
+		system: "Follow system theme",
 		pink: "Kawaii Pink",
 		sky: "Sky Blue",
 		blue: "Chino Blue",
@@ -79,9 +86,9 @@
 	},
 	ja: {
 		settings: "設定",
-		lightTheme: "ライトテーマ",
-		darkTheme: "ダークテーマ",
-		systemTheme: "システムのテーマ設定を使用する",
+		light: "ライトテーマ",
+		dark: "ダークテーマ",
+		system: "システムのテーマ設定を使用する",
 		pink: "カワイイ ピンク",
 		sky: "空色",
 		blue: "チノ 青",
@@ -103,50 +110,80 @@
 		align-items: flex-end;
 	}
 
-	.settings-page {
+	.settings {
 		display: flex;
 		justify-content: center;
 		min-height: 100dvh;
 		background-color: c(gray-20);
 	}
 
-	.menu {
+	nav {
 		@include flex-block;
 		position: sticky;
 		top: 0;
+		flex-shrink: 0;
 		gap: 10px;
 		width: 245px;
 		height: 100%;
 		margin-right: $center-gap;
+		margin-left: $center-gap;
 		padding-top: $page-top-gap;
+
+		@include tablet {
+			display: none;
+		}
 	}
 
-	.menu-content {
+	.nav-items {
 		@include flex-block;
 		gap: 10px;
 	}
 
-	.content {
-		@include card-shadow;
-		@include flex-block;
-		gap: 1rem;
+	main {
+		position: relative;
 		width: 100%;
 		max-width: 960px;
-		padding: $page-top-gap 48px;
-		background-color: c(main-bg);
+
+		> .card {
+			@include card-shadow;
+			position: absolute;
+			width: 100dvw;
+			height: 100%;
+			background-color: c(main-bg);
+		}
+
+		> .content {
+			@include flex-block;
+			position: relative;
+			z-index: 1;
+			gap: 1rem;
+			padding: $page-top-gap 48px;
+		}
 	}
 
-	h2,
-	h3 {
+	h2 {
 		color: c(accent);
 	}
 
-	.chip-radio-group {
+	.chip {
 		@include chip-shadow;
 		@include radius-large;
+	}
+
+	.radio-group {
+		overflow: hidden;
 
 		.radio-button {
-			padding: 14px 20px;
+			$extra-padding: 16px;
+			padding: 10px 20px;
+
+			&:first-child {
+				padding-top: $extra-padding;
+			}
+
+			&:last-child {
+				padding-bottom: $extra-padding;
+			}
 		}
 	}
 </style>
