@@ -385,7 +385,7 @@
 	.model-content {
 		@include flex-block;
 		gap: 8px;
-		min-width: 400px;
+		width: 400px;
 	}
 
 	.test-button :deep(*) {

@@ -116,6 +116,7 @@
 		@include dropdown-flyouts;
 		@include flex-block;
 		@include radius-large;
+		max-width: 100dvw;
 		overflow: hidden;
 		background-color: c(acrylic-bg, 75%);
 		transform: translate(-50%, -50%);
@@ -202,6 +203,7 @@
 
 		.content {
 			@include card-in-card-shadow;
+			display: flex;
 			padding: $padding $padding;
 			background-color: c(main-bg, 45%);
 		}
