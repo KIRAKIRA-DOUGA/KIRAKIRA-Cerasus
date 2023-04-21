@@ -26,7 +26,7 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-		height: calc(100vh - 2 * $margin-y);
+		height: calc(100dvh - 2 * $margin-y);
 		margin: $margin-y 2.5rem 0;
 		overflow: hidden;
 		animation: intro 600ms $ease-out-smooth;

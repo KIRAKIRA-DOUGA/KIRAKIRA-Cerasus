@@ -37,7 +37,7 @@
 
 <style scoped lang="scss">
 	.container {
-		height: var(--inner-height);
+		height: 100dvh;
 		padding: 3.5rem 2.5rem;
 		background-color: c(inset-bg);
 	}

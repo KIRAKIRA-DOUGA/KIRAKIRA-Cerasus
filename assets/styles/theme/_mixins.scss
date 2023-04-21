@@ -32,16 +32,14 @@
 
 /// 将元素占满整个屏幕。
 /// 将长宽均设为 100% 视窗宽高度值。
-///
-/// NOTE: 100vh 将不会包含手机浏览器的地址栏和工具栏的高度。
 /// @param {String} $position [fixed] - 指定元素的 position 属性。
 /// @output width, height
 @mixin full-screen($position: fixed) {
 	position: $position;
 	top: 0;
 	left: 0;
-	width: 100vw;
-	height: 100vh;
+	width: 100dvw;
+	height: 100dvh;
 	transition: $fallback-transitions, width 0s, height 0s;
 }
 

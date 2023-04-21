@@ -91,14 +91,14 @@
 
 	.spotlight {
 		position: fixed;
-		bottom: -30vh;
+		bottom: -30dvh;
 		left: 0;
 		z-index: 10;
 		width: 100%;
-		height: 40vh;
+		height: 40dvh;
 		// background: linear-gradient(45deg, #00dc82 0%, #36e4da 50%, #0047e1 100%);
 		background: linear-gradient(45deg, c(accent-10) 0%, c(accent-80) 50%, c(accent-50) 100%);
-		filter: blur(20vh);
+		filter: blur(20dvh);
 		pointer-events: none;
 	}
 
@@ -190,17 +190,17 @@
 	}
 
 	main {
-		height: 100vh;
+		height: 100dvh;
 	}
 
 	.mountains {
 		@include square(100%);
-		$height: 80vh;
+		$height: 80dvh;
 		$sqrt3: math.sqrt(3);
 		--x: 0;
 		--y: 0;
 		position: fixed;
-		left: calc((100vw / 11 - $height * 2 / $sqrt3) / 2);
+		left: calc((100dvw / 11 - $height * 2 / $sqrt3) / 2);
 		display: flex;
 
 		> * {
@@ -235,11 +235,11 @@
 	}
 
 	.day-night {
-		@include square(1.5 * 100vh);
+		@include square(1.5 * 100dvh);
 		@include flex-block;
 		@include flex-center;
 		position: fixed;
-		top: 0.25 * 100vh;
+		top: 0.25 * 100dvh;
 		left: 50%;
 		translate: -50%;
 		justify-content: space-between;

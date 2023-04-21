@@ -15,7 +15,6 @@ export default defineNuxtConfig({
 	plugins: [
 		"plugins/vue/ripple.ts",
 		"plugins/vue/css-var-i.ts",
-		"plugins/nuxt/innerheight.ts",
 	],
 	modules: [
 		// "@nuxt/devtools",

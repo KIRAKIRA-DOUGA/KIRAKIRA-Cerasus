@@ -28,7 +28,7 @@
 	.container {
 		position: relative;
 		z-index: 1;
-		height: var(--inner-height);
+		height: 100dvh;
 		padding-left: $sidebar-width;
 		overflow-x: hidden;
 		overflow-y: overlay;
@@ -52,7 +52,7 @@
 		position: fixed;
 		top: 0;
 		left: 0;
-		height: var(--inner-height);
+		height: 100dvh;
 		transition: background-color $ease-out-max 250ms;
 	}
 

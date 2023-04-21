@@ -1,3 +1,5 @@
+// 已禁用，请使用 100dvh 代替之。
+
 import delay from "../../utils/delay";
 
 export default defineNuxtPlugin(nuxt => {

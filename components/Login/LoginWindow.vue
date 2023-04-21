@@ -194,7 +194,7 @@
 		display: flex;
 		justify-content: space-between;
 		width: $width;
-		max-width: 100vw;
+		max-width: 100dvw;
 		height: $height;
 		overflow: hidden;
 		background-color: c(acrylic-bg, 75%);
@@ -265,7 +265,7 @@
 			top: 0;
 			justify-content: space-between;
 			width: $width * 0.5;
-			max-width: 100vw;
+			max-width: 100dvw;
 			height: 100%;
 			padding: 35px 45px;
 
@@ -585,14 +585,14 @@
 		}
 
 		&:comp {
-			--corner-y: calc(50vh - #{40px * 3 + 4px});
+			--corner-y: calc(50dvh - #{40px * 3 + 4px});
 
 			animation:
 				circle-mask-become-smaller 500ms 2s $ease-out-max forwards,
 				move-avatar-to-corner 500ms 2.5s $ease-out-max forwards;
 
 			@media (max-height: 432px) {
-				--corner-y: calc(50vh - #{40px * 3 - 12px});
+				--corner-y: calc(50dvh - #{40px * 3 - 12px});
 			}
 		}
 	}
@@ -729,7 +729,7 @@
 	@keyframes move-avatar-to-corner {
 		to {
 			scale: calc(40px / $avatar-size);
-			translate: calc(59px - 50vw) var(--corner-y);
+			translate: calc(59px - 50dvw) var(--corner-y);
 		}
 	}
 </style>

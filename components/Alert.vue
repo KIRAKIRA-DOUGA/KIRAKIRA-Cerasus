@@ -100,7 +100,7 @@
 		@include flex-block;
 		width: 100vw;
 		max-width: $max-width;
-		max-height: var(--inner-height);
+		max-height: 100dvh;
 		margin: 0 auto;
 		overflow: hidden;
 		background-color: c(acrylic-bg, 75%);
@@ -108,7 +108,7 @@
 		@media (min-width: $max-width) {
 			@include radius-large;
 			$margin-top: 24px;
-			max-height: calc(var(--inner-height) - $margin-top * 2);
+			max-height: calc(100dvh - $margin-top * 2);
 			margin-top: $margin-top;
 		}
 

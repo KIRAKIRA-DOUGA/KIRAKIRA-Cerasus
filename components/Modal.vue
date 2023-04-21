@@ -156,6 +156,7 @@
 				width: 100%;
 				padding: 6px 0;
 				font-size: 12px;
+				touch-action: pinch-zoom;
 
 				.nuxt-icon {
 					margin-right: 10px;

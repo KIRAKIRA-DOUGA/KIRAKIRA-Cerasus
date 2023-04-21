@@ -85,7 +85,7 @@
 		</div>
 		<div class="component-test">
 			<PageController v-model="page" :pages="pages" :displayPageCount="displayPageCount" enableArrowKeyMove />
-			<Button @click="onClickButton">{{ isClicked ? t.buttonClicked : t.button }}</Button>
+			<Button class="test-button" @click="onClickButton">{{ isClicked ? t.buttonClicked : t.button }}</Button>
 			<Button disabled>{{ t.buttonDisabled }}</Button>
 			<Button @click="showConfetti">{{ t.confetti }}</Button>
 			<Button icon="send">{{ t.send }}</Button>
@@ -386,5 +386,9 @@
 		@include flex-block;
 		gap: 8px;
 		min-width: 400px;
+	}
+
+	.test-button :deep(*) {
+		text-align: left;
 	}
 </style>

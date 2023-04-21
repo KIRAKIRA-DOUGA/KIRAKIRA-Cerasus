@@ -106,7 +106,7 @@
 	.settings-page {
 		display: flex;
 		justify-content: center;
-		min-height: 100vh;
+		min-height: 100dvh;
 		background-color: c(gray-20);
 	}
 
