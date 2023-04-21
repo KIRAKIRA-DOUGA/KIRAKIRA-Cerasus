@@ -127,7 +127,7 @@
 			height: $base-height;
 			background-color: c(gray-40);
 
-			.on & {
+			:comp.on & {
 				background-color: c(accent, 40%);
 			}
 
@@ -135,7 +135,7 @@
 				background-color: c(gray-40, 40%);
 			}
 
-			.on.disabled & {
+			:comp.on.disabled & {
 				background-color: c(accent-disabled, 40%);
 			}
 		}
@@ -149,11 +149,11 @@
 			left: 0;
 			background-color: c(white);
 
-			.on & {
+			:comp.on & {
 				left: $width - $thumb-size;
 			}
 
-			.on:not(.disabled) & {
+			:comp.on:not(.disabled) & {
 				@include control-ball-shadow;
 				background-color: c(accent);
 			}

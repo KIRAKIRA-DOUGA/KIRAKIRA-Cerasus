@@ -85,8 +85,14 @@
 				@include button-shadow-focus;
 			}
 
-			&:is(:hover, :active) {
+			&:active {
 				background-color: c(hover-color);
+			}
+
+			@media (hover: hover) {
+				&:hover {
+					background-color: c(hover-color);
+				}
 			}
 
 			&:is(:hover, :active, :has(> .ripple-circle)):not(:focus-visible) {

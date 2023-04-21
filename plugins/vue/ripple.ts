@@ -28,12 +28,12 @@ function getMaxRadius(rect: DOMRect, e: MouseEvent) {
 export default defineNuxtPlugin(nuxt => {
 	const rippleClass = "ripple-button";
 	const circleClass = "ripple-circle";
-	let isInitedMouseUp = false;
+	let isInitedPointerUp = false;
 
 	nuxt.vueApp.directive("ripple", {
 		mounted(element) {
 			element.classList.add(rippleClass);
-			element.addEventListener("mousedown", e => {
+			element.addEventListener("pointerdown", e => {
 				const rect = element.getClientRects()[0];
 				if (!rect) return;
 				const circleRadius = getMaxRadius(rect, e) + 1; // + 1 用于边缘问题。
@@ -56,9 +56,9 @@ export default defineNuxtPlugin(nuxt => {
 					easing: eases.easeOutMax,
 				});
 			});
-			if (isInitedMouseUp) return;
-			isInitedMouseUp = true;
-			document.addEventListener("mouseup", () => {
+			if (isInitedPointerUp) return;
+			isInitedPointerUp = true;
+			addEventListeners(document, () => {
 				const FADE_TIME = 500;
 				const IS_FADING_CLASS = "is-fading";
 				for (const circle of document.getElementsByClassName(circleClass)) {
@@ -72,7 +72,7 @@ export default defineNuxtPlugin(nuxt => {
 						easing: eases.easeOutMax,
 					}).finished.then(() => circle.remove());
 				}
-			});
+			}, "pointerup", "pointercancel");
 		},
 		updated(element) {
 			element.classList.add(rippleClass);

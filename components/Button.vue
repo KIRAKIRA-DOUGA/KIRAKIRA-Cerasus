@@ -55,7 +55,7 @@
 		letter-spacing: 0.05em;
 		white-space: nowrap;
 		vertical-align: middle;
-		background: c(accent);
+		background-color: c(accent);
 		transition: $fallback-transitions, all $ease-out-back 500ms !important;
 
 		> span {
@@ -66,18 +66,13 @@
 			flex-direction: row-reverse;
 		}
 
-		&:hover {
-			@include button-shadow-hover;
-			background: c(accent-hover);
-		}
-
 		&:active {
 			@include button-scale-pressed;
-			background: c(accent);
+			background-color: c(accent);
 		}
 
 		&[disabled] {
-			background: c(accent-disabled);
+			background-color: c(accent-disabled);
 			box-shadow: none !important;
 			pointer-events: none;
 		}
@@ -86,21 +81,30 @@
 			@include button-shadow-focus;
 		}
 
-		&:hover:focus {
-			@include button-shadow-hover-focus;
+		@media (hover: hover) { // 在触摸屏上不要支持 hover 样式。
+			&:hover {
+				@include button-shadow-hover;
+				background-color: c(accent-hover);
+			}
+
+			&:hover:focus {
+				@include button-shadow-hover-focus;
+			}
 		}
 
 		&.secondary {
 			color: c(accent);
-			background: transparent;
+			background-color: transparent;
 			box-shadow: none;
 
-			&:hover {
-				background: c(accent-hover, 8%);
+			@media (hover: hover) {
+				&:hover {
+					background-color: c(accent-hover, 8%);
+				}
 			}
 
 			&:active {
-				background: c(accent-pressed, 8%);
+				background-color: c(accent-pressed, 8%);
 			}
 
 			&:focus {
