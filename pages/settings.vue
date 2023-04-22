@@ -31,6 +31,7 @@
 			<div class="nav-items">
 				<Button href="/components">组件测试页</Button>
 			</div>
+			<CornerIcon icon="settings" big bottom rotating />
 		</nav>
 		<main>
 			<div class="card"></div>
@@ -146,6 +147,7 @@
 
 	nav {
 		@include flex-block;
+		position: relative;
 		flex-shrink: 0;
 		gap: 10px;
 		width: 245px + 2 * $nav-padding-x;
