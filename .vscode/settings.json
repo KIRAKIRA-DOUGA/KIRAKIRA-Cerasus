@@ -4,10 +4,6 @@
 	"editor.detectIndentation": false,
 	"editor.formatOnPaste": true,
 	"editor.formatOnType": true,
-	"emmet.includeLanguages": {
-		"vue-html": "html",
-		"vue": "html"
-	},
 	"volar.format.initialIndent": {
 		"html": true,
 		"css": true,

@@ -34,15 +34,17 @@
 		overflow-y: overlay;
 		transition: $fallback-transitions, width 0s, height 0s;
 
-		> main > :slotted(*) {
-			transform-origin: center 50dvh;
-		}
+		> main {
+			> :slotted(*) {
+				transform-origin: center 50dvh;
+			}
 
-		:slotted(.container) {
-			padding: 26px 100px;
+			> :slotted(.container) {
+				padding: 26px 100px;
 
-			@include tablet {
-				padding: 26px 40px;
+				@include tablet {
+					padding: 26px 40px;
+				}
 			}
 		}
 	}

@@ -36,11 +36,23 @@
 				<h2>外观</h2>
 				<Subheader icon="brightness_medium">主题</Subheader>
 				<div class="chip radio-group">
-					<RadioButton v-for="item in themeList" :key="item" v-model="theme" v-ripple :value="item">{{ t[item] }}</RadioButton>
+					<RadioButton
+						v-for="item in themeList"
+						:key="item"
+						v-model="theme"
+						v-ripple
+						:value="item"
+					>{{ t[item] }}</RadioButton>
 				</div>
 				<Subheader icon="palette">个性色</Subheader>
 				<div class="chip radio-group">
-					<RadioButton v-for="item in paletteList" :key="item" v-model="palette" v-ripple :value="item">{{ t[item] }}</RadioButton>
+					<RadioButton
+						v-for="item in paletteList"
+						:key="item"
+						v-model="palette"
+						v-ripple
+						:value="item"
+					>{{ t[item] }}</RadioButton>
 				</div>
 				<Subheader icon="translate">语言</Subheader>
 				<div class="chip radio-group">
@@ -125,8 +137,7 @@
 		gap: 10px;
 		width: 245px;
 		height: 100%;
-		margin-right: $center-gap;
-		margin-left: $center-gap;
+		margin: 0 $center-gap;
 		padding-top: $page-top-gap;
 
 		@include tablet {
@@ -168,22 +179,19 @@
 	.chip {
 		@include chip-shadow;
 		@include radius-large;
+		overflow: hidden;
 	}
 
-	.radio-group {
-		overflow: hidden;
+	.radio-group .radio-button {
+		$extra-padding: 16px;
+		padding: 10px 20px;
 
-		.radio-button {
-			$extra-padding: 16px;
-			padding: 10px 20px;
+		&:first-child {
+			padding-top: $extra-padding;
+		}
 
-			&:first-child {
-				padding-top: $extra-padding;
-			}
-
-			&:last-child {
-				padding-bottom: $extra-padding;
-			}
+		&:last-child {
+			padding-bottom: $extra-padding;
 		}
 	}
 </style>
