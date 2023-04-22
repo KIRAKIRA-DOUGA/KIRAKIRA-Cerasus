@@ -21,7 +21,7 @@
 		overflow: hidden;
 
 		> .logo-cover {
-			--cover-width: 100vw;
+			--cover-width: 100dvw;
 			--cover-height: 280px;
 		}
 

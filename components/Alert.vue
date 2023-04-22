@@ -98,7 +98,7 @@
 	.alert {
 		@include dropdown-flyouts;
 		@include flex-block;
-		width: 100vw;
+		width: 100dvw;
 		max-width: $max-width;
 		max-height: 100dvh;
 		margin: 0 auto;

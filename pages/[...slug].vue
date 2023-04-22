@@ -30,7 +30,7 @@
 	.slug {
 		display: inline-block;
 		margin-top: 0;
-		font-size: calc(1.425rem + 2.1vw);
+		font-size: calc(1.425rem + 2.1dvw);
 		font-style: italic;
 		background: linear-gradient(315deg, #42d392 25%, #647eff);
 		background-clip: text;
