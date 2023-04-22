@@ -21,6 +21,7 @@
 				const parent = useParentByScopeId();
 				let componentName = parent?.type.__name;
 				if (!componentName) {
+					// 注意该块内容无法在生产环境下运行。暂时没有更好的解决方法，有待优化。
 					const componentPath = parent?.type.__file;
 					if (!componentPath) break;
 					componentName = filenameWithoutExtension(componentPath);

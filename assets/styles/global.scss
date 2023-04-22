@@ -8,6 +8,7 @@
 *::after {
 	box-sizing: border-box;
 	font-family: $chinese-fonts;
+	tab-size: 4;
 	transition: $fallback-transitions;
 	user-select: none;
 	// -webkit-tap-highlight-color: c(accent, 30%); // 我还是觉得这个触摸样式很丑。

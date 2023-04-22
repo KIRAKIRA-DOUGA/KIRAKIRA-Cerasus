@@ -31,7 +31,7 @@
 			<NuxtIcon :name="icon" />
 		</div>
 		<slot></slot>
-		<Badge v-if="badge !== undefined">{{ badge }}</Badge>
+		<Badge v-if="badge !== undefined" class="badge">{{ badge }}</Badge>
 	</div>
 </template>
 

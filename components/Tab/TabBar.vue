@@ -23,7 +23,7 @@
 		emits("update:modelValue", id);
 	}
 
-	// TODO: 竖向indicator
+	// TODO: [艾拉] 竖向 indicator。
 	/**
 	 * 获取指示器的左边和右边值。
 	 * @param item - 选项卡项目。

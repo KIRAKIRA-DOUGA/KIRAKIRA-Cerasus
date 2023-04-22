@@ -77,6 +77,7 @@ export const useFactory = (type: unknown = undefined, slotName: string = "defaul
 			});
 		return s;
 	};
-	const Slot = slot ? h(RenderComp, { vnode: addSlotScopeId(slot()) }) as Object : undefined;
+	const _Slot = slot ? h(RenderComp, { vnode: addSlotScopeId(slot()) }) : undefined;
+	const Slot = (_Slot as Partial<typeof _Slot>)!;
 	return { RenderComp, Slot, children, slotNode };
 };
