@@ -45,7 +45,7 @@ const eases: EaseInfo[] = [];
 for (const variable of variables)
 	eases.push({
 		kebabName: variable,
-		camelName: new VariableName(variable).kebab,
+		camelName: new VariableName(variable).camel,
 		doc: getSassDoc(scss, variable),
 	});
 

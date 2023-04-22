@@ -13,9 +13,9 @@
 		],
 		"description": "Folding Region End",
 	},
-	"Component Root": {
+	/* "Component Root": {
 		"prefix": ":comp",
 		"body": ":comp",
 		"description": "捕获组件的根节点。"
-	}
+	} */
 }

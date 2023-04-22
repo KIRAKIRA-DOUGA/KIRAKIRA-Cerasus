@@ -1,6 +1,52 @@
 {
+	"name": "KIRAKIRA-Cerasus",
+	"version": "0.0.0.0-alpha",
+	"description": "KIRAKIRA-Cerasus, The PC/PE Front-end Created by Nuxt3.",
 	"private": true,
 	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus.git"
+	},
+	"keywords": [
+		"kirakira",
+		"component",
+		"components",
+		"design",
+		"framework",
+		"frontend",
+		"vue",
+		"vue3",
+		"vue-component",
+		"ui",
+		"vercel",
+		"nuxt",
+		"nuxt3",
+		"video",
+		"danmaku",
+		"subtitle",
+		"audio",
+		"lyrics",
+		"gallery",
+		"photo",
+		"douga",
+		"anime",
+		"animation",
+		"otomad",
+		"ytpmv",
+		"amv",
+		"mad",
+		"acg",
+		"nova",
+		"dango",
+		"calibur"
+	],
+	"homepage": "https://kira.calibur.tv/",
+	"homepage2": "https://kirakira-cerasus.vercel.app/",
+	"github": "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus",
+	"bugs": "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus/issues",
+	"license": null,
+	"author": "KIRAKIRA Project Team",
 	"scripts": {
 		"build": "nuxt build",
 		"dev": "cross-env HOST=0.0.0.0 nuxt dev --https --ssl-cert server/server.cer --ssl-key server/server.key",
@@ -10,8 +56,8 @@
 		"postinstall": "nuxt prepare",
 		"lint:css": "stylelint **/*.{html,vue,css,sass,scss}",
 		"typed-scss-modules": "typed-scss-modules assets/styles/*.module.scss --exportType default",
-		"update-eases": "npx tsx scripts/update-eases.ts",
-		"compact-svg": "npx tsx scripts/compact-svg.ts"
+		"update-eases": "tsx scripts/update-eases.ts",
+		"compact-svg": "tsx scripts/compact-svg.ts"
 	},
 	"lint-staged": {
 		"*.{html,vue,css,sass,scss}": [
@@ -67,7 +113,7 @@
 		"lottie-web": "^5.10.0",
 		"mediainfo.js": "^0.1.9",
 		"mitt": "^3.0.0",
-		"nuxt-icons": "^3.1.0",
+		"nuxt-icons": "^3.2.1",
 		"path-browserify": "^1.0.1",
 		"vue-audio-visual": "^3.0.3"
 	}

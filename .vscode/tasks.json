@@ -38,10 +38,10 @@
 			"script": "update-eases",
 			"problemMatcher": [],
 			"label": "npm: update-eases",
-			"detail": "npx tsx scripts/update-eases.ts",
+			"detail": "tsx scripts/update-eases.ts",
 			"presentation": {
 				"reveal": "never",
-				"close": true,
+				"close": true
 			}
 		},
 		{
@@ -52,8 +52,8 @@
 			"detail": "Remove excess parts from SVG",
 			"presentation": {
 				"reveal": "never",
-				"close": true,
+				"close": true
 			}
-		}
+		},
 	]
 }

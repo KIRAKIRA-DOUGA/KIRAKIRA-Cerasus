@@ -4,23 +4,29 @@
 
 	const logoTextForm = ref<LogoTextFormType>("hidden");
 	const showStripes = ref(false);
-	const ready = ref(false);
+	// const ready = ref(false);
 	const showLogin = ref(false);
 	const isLogined = ref(false);
 
+	/**
+	 * 窗口大小改变时的回调函数。
+	 */
+	function onResize() {
+		const height = window.innerHeight;
+		logoTextForm.value = height < 678 ? "hidden" : height < 765 ? "half" : "full";
+		showStripes.value = height >= 540;
+	}
+
 	onMounted(() => {
-		/**
-		 * 窗口大小改变时的回调函数。
-		 */
-		function onResize() {
-			const height = window.innerHeight;
-			logoTextForm.value = height < 678 ? "hidden" : height < 765 ? "half" : "full";
-			showStripes.value = height >= 540;
-		}
-		window.addEventListener("resize", onResize);
 		onResize();
-		ready.value = true;
-		setTimeout(() => ready.value = false, 2000); // 定时移除开场动画。
+		window.addEventListener("resize", onResize);
+		// ready.value = true;
+		// setTimeout(() => ready.value = false, 2000); // 定时移除开场动画。
+		// 图标已经支持 SSR，不需要做动画了。
+	});
+
+	onUnmounted(() => {
+		window.removeEventListener("resize", onResize);
 	});
 
 	useListen("app:requestLogin", () => showLogin.value = true);
@@ -28,7 +34,7 @@
 </script>
 
 <template>
-	<aside :class="{ ready }">
+	<aside>
 		<div class="top icons">
 			<LargeRippleButton v-i="0" title="主页" icon="home" href="/" />
 			<LargeRippleButton v-i="1" title="搜索" icon="search" href="search" />
@@ -134,9 +140,10 @@
 
 			&.stripes-enter-from,
 			&.stripes-leave-to {
+				opacity: 0;
+
 				.stripes {
 					transform: none;
-					opacity: 0;
 				}
 			}
 		}
