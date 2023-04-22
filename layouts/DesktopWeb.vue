@@ -30,8 +30,7 @@
 		z-index: 1;
 		height: 100dvh;
 		padding-left: $sidebar-width;
-		overflow-x: hidden;
-		overflow-y: overlay;
+		overflow: hidden overlay;
 		transition: $fallback-transitions, width 0s, height 0s;
 
 		> main {

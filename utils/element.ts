@@ -35,7 +35,7 @@ export function isInPath(target: TargetType, element: Element): boolean {
  * @param listener - 监听事件回调函数。
  * @param types - 监听事件数组。
  */
-export function addEventListeners<K extends keyof WindowEventMap>(element: Window, listener: (this: Window, ev: WindowEventMap[K]) => void, ...types: K[]): void;
+export function addEventListeners<K extends keyof WindowEventMap>(...args: [element: Window, ...types: K[], listener: (this: Window, ev: WindowEventMap[K]) => void]): void;
 /**
  * 能同时监听多个事件，相当于多次重复调用 `addEventListener` 使用相同的回调函数但不同的事件类型。
  * @template K - 文档事件枚举类型。
@@ -43,7 +43,7 @@ export function addEventListeners<K extends keyof WindowEventMap>(element: Windo
  * @param listener - 监听事件回调函数。
  * @param types - 监听事件数组。
  */
-export function addEventListeners<K extends keyof DocumentEventMap>(element: Document, listener: (this: Document, ev: DocumentEventMap[K]) => void, ...types: K[]): void;
+export function addEventListeners<K extends keyof DocumentEventMap>(...args: [element: Document, ...types: K[], listener: (this: Document, ev: DocumentEventMap[K]) => void]): void;
 /**
  * 能同时监听多个事件，相当于多次重复调用 `addEventListener` 使用相同的回调函数但不同的事件类型。
  * @template K - HTML DOM 元素事件枚举类型。
@@ -52,7 +52,7 @@ export function addEventListeners<K extends keyof DocumentEventMap>(element: Doc
  * @param listener - 监听事件回调函数。
  * @param types - 监听事件数组。
  */
-export function addEventListeners<K extends keyof HTMLElementEventMap, E extends HTMLElement>(element: E, listener: (this: E, ev: HTMLElementEventMap[K]) => void, ...types: K[]): void;
+export function addEventListeners<K extends keyof HTMLElementEventMap, E extends HTMLElement>(...args: [element: E, ...types: K[], listener: (this: E, ev: HTMLElementEventMap[K]) => void]): void;
 /**
  * 能同时监听多个事件，相当于多次重复调用 `addEventListener` 使用相同的回调函数但不同的事件类型。
  * @template K - HTML DOM 元素事件枚举类型。
@@ -61,7 +61,10 @@ export function addEventListeners<K extends keyof HTMLElementEventMap, E extends
  * @param listener - 监听事件回调函数。
  * @param types - 监听事件数组。
  */
-export function addEventListeners<K extends keyof HTMLElementEventMap, E extends HTMLElement>(element: E, listener: (this: E, ev: HTMLElementEventMap[K]) => void, ...types: K[]): void {
+export function addEventListeners<K extends keyof HTMLElementEventMap, E extends HTMLElement>(...args: [element: E, ...types: K[], listener: (this: E, ev: HTMLElementEventMap[K]) => void]): void {
+	const element = args[0];
+	const listener = args.at(-1) as Parameters<typeof addEventListeners>[1];
+	const types = args.slice(1, -1) as K[];
 	types.forEach(type => element.addEventListener(type, listener as never));
 }
 

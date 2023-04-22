@@ -22,19 +22,24 @@
 <template>
 	<div class="settings">
 		<nav>
-			<div class="title">
+			<header class="title nav-header">
 				<h2>{{ t.settings }}</h2>
-			</div>
+				<TextBox v-model="search" :placeholder="t.searchSettings" />
+			</header>
+			<Subheader icon="person">用户设置</Subheader>
+			<Subheader icon="apps">应用设置</Subheader>
 			<div class="nav-items">
-				<TextBox v-model="search" placeholder="搜索设置" />
 				<Button href="/components">组件测试页</Button>
 			</div>
 		</nav>
 		<main>
 			<div class="card"></div>
 			<div class="content">
-				<h2>外观</h2>
-				<Subheader icon="brightness_medium">主题</Subheader>
+				<header class="title page-header">
+					<LargeRippleButton icon="dehaze" />
+					<h2>{{ t.appearance }}</h2>
+				</header>
+				<Subheader icon="brightness_medium">{{ t.theme }}</Subheader>
 				<div class="chip radio-group">
 					<RadioButton
 						v-for="item in themeList"
@@ -44,7 +49,7 @@
 						:value="item"
 					>{{ t[item] }}</RadioButton>
 				</div>
-				<Subheader icon="palette">个性色</Subheader>
+				<Subheader icon="palette">{{ t.palette }}</Subheader>
 				<div class="chip radio-group">
 					<RadioButton
 						v-for="item in paletteList"
@@ -54,7 +59,7 @@
 						:value="item"
 					>{{ t[item] }}</RadioButton>
 				</div>
-				<Subheader icon="translate">语言</Subheader>
+				<Subheader icon="translate">{{ t.language }}</Subheader>
 				<div class="chip radio-group">
 					<RadioButton
 						v-for="locale in localeList"
@@ -83,6 +88,11 @@
 		green: "千夜绿",
 		orange: "心爱橙",
 		purple: "理世紫",
+		searchSettings: "搜索设置",
+		appearance: "外观",
+		theme: "主题",
+		palette: "个性色",
+		language: "语言",
 	},
 	en: {
 		settings: "Settings",
@@ -95,6 +105,11 @@
 		green: "Chiya Green",
 		orange: "Cocoa Orange",
 		purple: "Rize Purple",
+		searchSettings: "Search settings",
+		appearance: "Appearance",
+		theme: "Theme",
+		palette: "Palette",
+		language: "Language",
 	},
 	ja: {
 		settings: "設定",
@@ -107,38 +122,34 @@
 		green: "千夜 緑",
 		orange: "ココア オレンジ",
 		purple: "リゼ 紫",
+		searchSettings: "検索設定",
+		appearance: "外観",
+		theme: "テーマ",
+		palette: "個性の色",
+		language: "言語",
 	},
 }
 </i18n>
 
 <style scoped lang="scss">
-	$page-top-gap: 26px;
-	$center-gap: 24px;
-
-	.title {
-		display: flex;
-		flex-direction: row;
-		gap: 1rem;
-		align-items: flex-end;
-	}
+	$title-padding-top: 26px;
+	$nav-padding-x: 24px;
+	$main-padding-x: 48px;
 
 	.settings {
 		display: flex;
 		justify-content: center;
-		min-height: 100dvh;
+		height: 100dvh;
+		overflow: hidden;
 		background-color: c(gray-20);
 	}
 
 	nav {
 		@include flex-block;
-		position: sticky;
-		top: 0;
 		flex-shrink: 0;
 		gap: 10px;
-		width: 245px;
-		height: 100%;
-		margin: 0 $center-gap;
-		padding-top: $page-top-gap;
+		width: 245px + 2 * $nav-padding-x;
+		padding: 0 $nav-padding-x;
 
 		@include tablet {
 			display: none;
@@ -148,6 +159,17 @@
 	.nav-items {
 		@include flex-block;
 		gap: 10px;
+	}
+
+	nav,
+	main .content {
+		@include fix-page-end-padding;
+		height: 100%;
+		overflow-y: auto;
+
+		> * {
+			flex-shrink: 0;
+		}
 	}
 
 	main {
@@ -168,12 +190,47 @@
 			position: relative;
 			z-index: 1;
 			gap: 1rem;
-			padding: $page-top-gap 48px;
+			padding: 0 $main-padding-x;
 		}
 	}
 
 	h2 {
 		color: c(accent);
+	}
+
+	.title {
+		position: sticky;
+		top: 0;
+		z-index: 2;
+		padding-top: $title-padding-top;
+	}
+
+	.nav-header {
+		margin-bottom: 10px;
+		background-color: c(gray-20);
+
+		h2 {
+			margin-bottom: 10px;
+		}
+	}
+
+	.page-header {
+		display: flex;
+		gap: 5px;
+		align-items: center;
+		margin: 0 #{-$main-padding-x};
+		padding-right: $main-padding-x;
+		padding-left: $main-padding-x;
+		background-color: c(main-bg, 80%);
+		backdrop-filter: blur(4px);
+
+		.large-ripple-button {
+			margin-left: -10px;
+
+			@include computer {
+				display: none;
+			}
+		}
 	}
 
 	.chip {

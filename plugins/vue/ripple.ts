@@ -60,7 +60,7 @@ export default defineNuxtPlugin(nuxt => {
 			});
 			if (isInitedPointerUp) return;
 			isInitedPointerUp = true;
-			addEventListeners(document, () => {
+			addEventListeners(document, "pointerup", "pointercancel", () => {
 				const FADE_TIME = 500;
 				const IS_FADING_CLASS = "is-fading";
 				for (const circle of document.getElementsByClassName(circleClass)) {
@@ -77,7 +77,7 @@ export default defineNuxtPlugin(nuxt => {
 						easing: eases.easeOutMax,
 					}).finished.then(() => circle.remove());
 				}
-			}, "pointerup", "pointercancel");
+			});
 		},
 		updated(element) {
 			element.classList.add(rippleClass);
