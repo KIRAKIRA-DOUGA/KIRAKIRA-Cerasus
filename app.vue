@@ -22,6 +22,7 @@
 			{ name: "theme-color", content: Theme.meta },
 			{ name: "description", content: "一个可爱的视频网站，献给可爱的你～" },
 			{ name: "keywords", content: "视频,弹幕,字幕,音频,歌词,相簿,相册,照片,视频网站,弹幕视频,二次元,动漫,动画,音乐,动漫音乐,音MAD,AMV,MAD,ANIME,ACG,NOVA" },
+			{ name: "referrer", content: "no-referrer" }, // 反防盗链
 			// 以下内容为苹果私有属性。
 			{ name: "apple-mobile-web-app-title", content: "KIRAKIRA☆DOUGA" }, // 添加到主屏后的标题 (iOS)
 			{ name: "apple-mobile-web-app-capable", content: "yes" }, // 启用 WebApp 全屏模式 (iOS)
