@@ -30,7 +30,7 @@
 			<nav v-show="showDrawer">
 				<div class="content">
 					<header class="title nav-header">
-						<h2>{{ t.settings }}</h2>
+						<h1>{{ t.settings }}</h1>
 						<TextBox v-model="search" :placeholder="t.searchSettings" />
 					</header>
 					<Subheader icon="person">用户设置</Subheader>
@@ -233,6 +233,7 @@
 		}
 	}
 
+	h1,
 	h2 {
 		color: c(accent);
 	}
@@ -253,7 +254,7 @@
 		padding-left: $nav-padding-x;
 		background-color: c(gray-20, 80%);
 
-		h2 {
+		h1 {
 			margin-bottom: 10px;
 		}
 	}
