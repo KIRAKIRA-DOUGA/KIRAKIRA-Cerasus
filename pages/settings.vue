@@ -31,7 +31,7 @@
 			<div class="nav-items">
 				<Button href="/components">组件测试页</Button>
 			</div>
-			<CornerIcon icon="settings" big bottom rotating />
+			<ShadingIcon icon="settings" large position="right bottom" rotating elastic />
 		</nav>
 		<main>
 			<div class="card"></div>
@@ -167,7 +167,7 @@
 	main .content {
 		@include fix-page-end-padding;
 		height: 100%;
-		overflow-y: auto;
+		overflow-y: overlay;
 
 		> * {
 			flex-shrink: 0;
@@ -178,6 +178,7 @@
 		position: relative;
 		width: 100%;
 		max-width: 960px;
+		// TODO: 滚动条的位置有点问题。
 
 		> .card {
 			@include card-shadow;
@@ -205,11 +206,16 @@
 		top: 0;
 		z-index: 2;
 		padding-top: $title-padding-top;
+		backdrop-filter: blur(4px);
 	}
 
 	.nav-header {
-		margin-bottom: 10px;
-		background-color: c(gray-20);
+		margin-right: #{-$nav-padding-x};
+		margin-left: #{-$nav-padding-x};
+		padding-right: $nav-padding-x;
+		padding-bottom: 10px;
+		padding-left: $nav-padding-x;
+		background-color: c(gray-20, 80%);
 
 		h2 {
 			margin-bottom: 10px;
@@ -220,11 +226,11 @@
 		display: flex;
 		gap: 5px;
 		align-items: center;
-		margin: 0 #{-$main-padding-x};
+		margin-right: #{-$main-padding-x};
+		margin-left: #{-$main-padding-x};
 		padding-right: $main-padding-x;
 		padding-left: $main-padding-x;
 		background-color: c(main-bg, 80%);
-		backdrop-filter: blur(4px);
 
 		.large-ripple-button {
 			margin-left: -10px;
