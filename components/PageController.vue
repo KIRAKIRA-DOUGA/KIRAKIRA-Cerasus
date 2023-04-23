@@ -341,7 +341,7 @@
 		cursor: text;
 		transition: $fallback-transitions, all $ease-out-back 500ms, left $ease-in-out-smooth 500ms;
 
-		@media (hover: hover) {
+		@media (any-hover: hover) {
 			&:hover {
 				@include button-shadow-hover;
 				background: c(accent-hover);

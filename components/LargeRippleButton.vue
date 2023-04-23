@@ -89,7 +89,7 @@
 				background-color: c(hover-color);
 			}
 
-			@media (hover: hover) {
+			@media (any-hover: hover) {
 				&:hover {
 					background-color: c(hover-color);
 				}

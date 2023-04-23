@@ -81,7 +81,7 @@
 			@include button-shadow-focus;
 		}
 
-		@media (hover: hover) { // 在触摸屏上不要支持 hover 样式。
+		@media (any-hover: hover) { // 在触摸屏上不要支持 hover 样式。
 			&:hover {
 				@include button-shadow-hover;
 				background-color: c(accent-hover);
@@ -97,7 +97,7 @@
 			background-color: transparent;
 			box-shadow: none;
 
-			@media (hover: hover) {
+			@media (any-hover: hover) {
 				&:hover {
 					background-color: c(accent-hover, 8%);
 				}

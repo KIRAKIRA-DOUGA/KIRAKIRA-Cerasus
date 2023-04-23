@@ -158,7 +158,13 @@
 			transition: $transition;
 		}
 
-		:comp:is(:hover, :active) & {
+		@media (any-hover: hover) {
+			:comp:hover & {
+				background-color: c(hover-color);
+			}
+		}
+
+		:comp:active & {
 			background-color: c(hover-color);
 		}
 
@@ -184,8 +190,10 @@
 			@include button-shadow;
 			@include short-transition;
 
-			:comp:hover & {
-				@include button-shadow-hover;
+			@media (any-hover: hover) {
+				:comp:hover & {
+					@include button-shadow-hover;
+				}
 			}
 
 			:comp:active & {
@@ -206,8 +214,10 @@
 					inner-resize $duration-half $duration-half $ease-out-max,
 					cut-in $duration-half step-start;
 
-				:comp:hover & {
-					scale: 0.6;
+				@media (any-hover: hover) {
+					:comp:hover & {
+						scale: 0.6;
+					}
 				}
 
 				:comp:active & {
