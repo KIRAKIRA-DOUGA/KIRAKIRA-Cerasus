@@ -118,25 +118,11 @@
 		}
 	}
 
-	/**
-	 * 当页面大小变化时更新选项卡指示器。
-	 */
-	function onResize() {
-		update(undefined, updateIndicatorWithoutAnimation);
-	}
-
 	watch(() => props.modelValue, (id, prevId) => {
 		update(id, prevId);
 	});
 
-	onMounted(() => {
-		update();
-		window.addEventListener("resize", onResize);
-	});
-
-	onUnmounted(() => {
-		window.removeEventListener("resize", onResize);
-	});
+	useEventListener("window", "resize", () => update(undefined, updateIndicatorWithoutAnimation), { immediate: true });
 
 	defineExpose({
 		changeTab,

@@ -164,7 +164,7 @@
 
 @mixin system-card {
 	box-shadow: 0 8px 16px c(accent-shadow, 30%);
-	backdrop-filter: blur(32px);
+	backdrop-filter: blur(8px);
 }
 
 @mixin dropdown-flyouts {

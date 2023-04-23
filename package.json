@@ -1,6 +1,6 @@
 {
-	"name": "KIRAKIRA-Cerasus",
-	"version": "0.0.0.0-alpha",
+	"name": "kirakira-cerasus",
+	"version": "0.0.0-alpha",
 	"description": "KIRAKIRA-Cerasus, The PC/PE Front-end Created by Nuxt3.",
 	"private": true,
 	"type": "module",

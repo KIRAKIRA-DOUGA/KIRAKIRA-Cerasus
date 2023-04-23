@@ -4,30 +4,14 @@
 
 	const logoTextForm = ref<LogoTextFormType>("hidden");
 	const showStripes = ref(false);
-	// const ready = ref(false);
 	const showLogin = ref(false);
 	const isLogined = ref(false);
 
-	/**
-	 * 窗口大小改变时的回调函数。
-	 */
-	function onResize() {
+	useEventListener("window", "resize", () => {
 		const height = window.innerHeight;
 		logoTextForm.value = height < 678 ? "hidden" : height < 765 ? "half" : "full";
 		showStripes.value = height >= 540;
-	}
-
-	onMounted(() => {
-		onResize();
-		window.addEventListener("resize", onResize);
-		// ready.value = true;
-		// setTimeout(() => ready.value = false, 2000); // 定时移除开场动画。
-		// 图标已经支持 SSR，不需要做动画了。
-	});
-
-	onUnmounted(() => {
-		window.removeEventListener("resize", onResize);
-	});
+	}, { immediate: true });
 
 	useListen("app:requestLogin", () => showLogin.value = true);
 	useListen("user:login", value => isLogined.value = value);

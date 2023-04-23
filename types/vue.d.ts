@@ -52,5 +52,14 @@ declare global {
 		}
 	) => JSX.Element;
 
-	export { ComponentInternalInstance, ConcreteComponent, Directive, Events, MaybeRef, Ref, RendererElement, Slot, VNode, WritableComputedRef } from "vue";
+	/**
+	 * Maybe it's a ref, or a plain value
+	 *
+	 * ```ts
+	 * type MaybeRef<T> = T | Ref<T>
+	 * ```
+	 */
+	export type MaybeRef<T> = T | Ref<T>;
+
+	export { ComponentInternalInstance, ConcreteComponent, Directive, Events, Ref, RendererElement, Slot, VNode, WritableComputedRef } from "vue";
 }

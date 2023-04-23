@@ -62,22 +62,10 @@
 		done();
 	}
 
-	/**
-	 * 点击空白处关闭菜单。
-	 * @param e - 鼠标事件。
-	 */
-	function clickOutsideToCloseMenu(e: MouseEvent) {
+	useEventListener("window", "pointerdown", e => {
 		if (!menu.value || !shown.value) return;
 		const clickOutside = !isInPath(e, menu.value);
 		if (clickOutside) hide();
-	}
-
-	onMounted(() => {
-		window.addEventListener("pointerdown", clickOutsideToCloseMenu);
-	});
-
-	onUnmounted(() => {
-		window.removeEventListener("pointerdown", clickOutsideToCloseMenu);
 	});
 </script>
 

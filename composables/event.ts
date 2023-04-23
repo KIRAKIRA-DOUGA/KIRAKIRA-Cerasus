@@ -1,14 +1,52 @@
-export function useEventListener<K extends keyof WindowEventMap>(target: Window, event: K, callback: (this: Window, ev: WindowEventMap[K]) => void): void;
-export function useEventListener<K extends keyof DocumentEventMap>(target: Document, event: K, callback: (this: Document, ev: DocumentEventMap[K]) => void): void;
+type Options = Partial<{
+	/** 是否立即调用？ */
+	immediate: boolean;
+}>;
+
+/**
+ * 我们可以将添加和清除 DOM 事件监听器的逻辑也封装进一个组合式函数中。
+ * @param target - 窗体对象，注意必须是字符串。
+ * @param event - 事件。
+ * @param callback - 回调函数。
+ * @param options - 其它选项。
+ */
+export function useEventListener<K extends keyof WindowEventMap>(target: "window", event: K, callback: (this: Window, ev: WindowEventMap[K]) => void, options?: Options): void;
+/**
+ * 我们可以将添加和清除 DOM 事件监听器的逻辑也封装进一个组合式函数中。
+ * @param target - 文档对象，注意必须是字符串。
+ * @param event - 事件。
+ * @param callback - 回调函数。
+ * @param options - 其它选项。
+ */
+export function useEventListener<K extends keyof DocumentEventMap>(target: "document", event: K, callback: (this: Document, ev: DocumentEventMap[K]) => void, options?: Options): void;
 /**
  * 我们可以将添加和清除 DOM 事件监听器的逻辑也封装进一个组合式函数中。
  * @param target - HTML DOM 元素。
  * @param event - 事件。
  * @param callback - 回调函数。
+ * @param options - 其它选项。
  */
-export function useEventListener<K extends keyof HTMLElementEventMap, E extends HTMLElement>(target: E, event: K, callback: (this: E, ev: HTMLElementEventMap[K]) => void): void {
-	// 如果你想的话，
-	// 也可以用字符串形式的 CSS 选择器来寻找目标 DOM 元素。
-	onMounted(() => target.addEventListener(event, callback as never));
-	onUnmounted(() => target.removeEventListener(event, callback as never));
+export function useEventListener<K extends keyof HTMLElementEventMap, E extends HTMLElement>(target: Ref<E>, event: K, callback: (this: E, ev: HTMLElementEventMap[K]) => void, options?: Options): void;
+/**
+ * 我们可以将添加和清除 DOM 事件监听器的逻辑也封装进一个组合式函数中。
+ * @param target - HTML DOM 元素。
+ * @param event - 事件。
+ * @param callback - 回调函数。
+ * @param options - 其它选项。
+ */
+export function useEventListener<K extends keyof HTMLElementEventMap, E extends HTMLElement>(target: MaybeRef<E> | "window" | "document", event: K, callback: (this: E, ev: HTMLElementEventMap[K]) => void, options: Options = {}): void {
+	// 如果你想的话，也可以用字符串形式的 CSS 选择器来寻找目标 DOM 元素。
+	const getTarget = () => {
+		if (target === "window") return globalThis.window;
+		else if (target === "document") return globalThis.document;
+		else if (target instanceof HTMLElement) return target;
+		else return target.value;
+	};
+	onMounted(() => {
+		if (options.immediate) (callback as () => void)();
+		getTarget().addEventListener(event, callback as never);
+	});
+	onUnmounted(() => {
+		getTarget().removeEventListener(event, callback as never);
+	});
 }

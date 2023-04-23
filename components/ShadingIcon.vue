@@ -32,8 +32,6 @@
 	:comp {
 		@include square($size);
 		position: absolute;
-		// top: 0;
-		// right: 0;
 		overflow: hidden;
 		color: c(accent, 15%);
 		font-size: $size;
