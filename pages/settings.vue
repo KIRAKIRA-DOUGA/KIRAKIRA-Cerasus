@@ -83,7 +83,7 @@
 			</div>
 		</main>
 		<Transition>
-			<div v-show="showDrawer" class="mask" @click="showDrawer = false"></div>
+			<div v-if="showDrawer" class="mask" @click="showDrawer = false"></div>
 		</Transition>
 	</div>
 </template>
@@ -220,6 +220,7 @@
 			width: 100dvw;
 			height: 100%;
 			background-color: c(main-bg);
+			transition: none;
 		}
 
 		> .content {
@@ -291,6 +292,10 @@
 
 		&.v-leave-active {
 			pointer-events: none;
+		}
+
+		@include computer {
+			display: none;
 		}
 	}
 
