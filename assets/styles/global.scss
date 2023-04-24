@@ -13,6 +13,10 @@
 	user-select: none;
 	// -webkit-tap-highlight-color: c(accent, 30%); // 我还是觉得这个触摸样式很丑。
 	-webkit-tap-highlight-color: transparent;
+	margin-block-start: 0;
+	margin-block-end: 0;
+	margin-inline-start: 0;
+	margin-inline-end: 0;
 }
 
 *:lang(ja) {

@@ -46,7 +46,9 @@
 			<div class="card"></div>
 			<div class="content">
 				<header class="title page-header">
-					<LargeRippleButton icon="dehaze" @click="showDrawer = true" />
+					<div class="show-drawer-wrapper">
+						<LargeRippleButton icon="dehaze" @click="showDrawer = true" />
+					</div>
 					<h2>{{ t.appearance }}</h2>
 				</header>
 				<Subheader icon="brightness_medium">{{ t.theme }}</Subheader>
@@ -236,6 +238,8 @@
 	h1,
 	h2 {
 		color: c(accent);
+		font-weight: bold;
+		font-size: calc(1.275rem + 0.3dvw);
 	}
 
 	.title {
@@ -261,7 +265,7 @@
 
 	.page-header {
 		display: flex;
-		gap: 5px;
+		gap: 0.75rem;
 		align-items: center;
 		margin-right: #{-$main-padding-x};
 		margin-bottom: -0.5rem;
@@ -271,8 +275,16 @@
 		padding-left: $main-padding-x;
 		background-color: c(main-bg, 80%);
 
-		.large-ripple-button {
-			margin-left: -10px;
+		.show-drawer-wrapper {
+			position: relative;
+			width: 20px;
+			height: 100%;
+
+			.large-ripple-button {
+				position: absolute;
+				top: calc((var(--wrapper-size) - 100%) / -2);
+				left: -10px;
+			}
 
 			@include computer {
 				display: none;
