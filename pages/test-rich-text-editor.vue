@@ -4,7 +4,7 @@
 
 <template>
 	<div class="container">
-		<LocaleLink to="/">Home</LocaleLink>
+		<ShadingIcon icon="email" position="right top" />
 
 		<Header>富文本示例</Header>
 
