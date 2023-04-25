@@ -160,6 +160,15 @@
 			transition: $fallback-transitions, left 0ms;
 		}
 
+		@include tablet { // 增加移动端大小以便拖拽。
+			&::before {
+				@include square(36px);
+				@include circle;
+				position: absolute;
+				content: "";
+			}
+		}
+
 		&::after {
 			@include square(100%);
 			@include circle;

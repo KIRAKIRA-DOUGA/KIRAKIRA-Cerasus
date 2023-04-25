@@ -143,11 +143,21 @@
 		.thumb {
 			@include square($thumb-size);
 			@include circle;
+			@include flex-center;
 			@include control-ball-shadow-off;
 			position: absolute;
 			top: 0;
 			left: 0;
 			background-color: c(white);
+
+			@include tablet { // 增加移动端大小以便拖拽。
+				&::before {
+					@include square(40px);
+					@include circle;
+					position: absolute;
+					content: "";
+				}
+			}
 
 			:comp.on & {
 				left: $width - $thumb-size;
