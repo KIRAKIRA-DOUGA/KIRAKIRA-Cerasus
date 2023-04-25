@@ -32,7 +32,6 @@
 	:comp {
 		@include square($size);
 		position: absolute;
-		overflow: hidden;
 		color: c(accent, 15%);
 		font-size: $size;
 		pointer-events: none;

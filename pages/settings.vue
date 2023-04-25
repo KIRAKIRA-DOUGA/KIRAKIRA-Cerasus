@@ -26,6 +26,8 @@
 
 <template>
 	<div class="settings">
+		<ShadingIcon icon="settings" position="right top" rotating elastic />
+
 		<Transition>
 			<nav v-show="showDrawer">
 				<div class="content">
@@ -39,11 +41,10 @@
 						<Button href="/components">组件测试页</Button>
 					</div>
 				</div>
-				<ShadingIcon icon="settings" large position="right bottom" rotating elastic />
 			</nav>
 		</Transition>
+
 		<main ref="main">
-			<div class="card"></div>
 			<div class="content">
 				<header class="title page-header">
 					<div class="show-drawer-wrapper">
@@ -84,6 +85,7 @@
 				</div>
 			</div>
 		</main>
+
 		<Transition>
 			<div v-if="showDrawer" class="mask" @click="showDrawer = false"></div>
 		</Transition>
@@ -216,21 +218,14 @@
 		width: 100%;
 		max-width: 960px;
 
-		> .card {
-			@include card-shadow;
-			position: fixed;
-			width: 100dvw;
-			height: 100%;
-			background-color: c(main-bg);
-			transition: none;
-		}
-
 		> .content {
 			@include flex-block;
+			@include card-shadow;
 			position: relative;
 			z-index: 1;
 			gap: 1rem;
 			padding: 0 $main-padding-x;
+			background-color: c(main-bg);
 			// TODO: 滚动条位置不对。
 		}
 	}
