@@ -74,15 +74,19 @@
 
 		&.alert-enter-from,
 		&.alert-leave-to {
+			$scale: 1.05;
+			$scale-reciprocal: calc(1 / $scale);
 			opacity: 0;
-			scale: 1.05;
+			scale: $scale;
 
 			.body {
 				translate: 0 #{-$padding};
+				scale: $scale-reciprocal;
 			}
 
 			.footer {
 				translate: 0 $padding;
+				scale: $scale-reciprocal;
 			}
 		}
 
