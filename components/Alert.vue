@@ -76,9 +76,7 @@
 		&.alert-leave-to {
 			opacity: 0;
 			scale: 1.05;
-		}
 
-		&.alert-enter-from {
 			.body {
 				translate: 0 #{-$padding};
 			}
