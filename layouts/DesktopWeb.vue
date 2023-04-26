@@ -51,6 +51,10 @@
 	main {
 		max-width: 1920px;
 		margin: 0 auto;
+
+		&:has(> .settings) {
+			max-width: unset;
+		}
 	}
 
 	.sidebar {

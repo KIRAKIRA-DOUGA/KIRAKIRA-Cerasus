@@ -25,27 +25,29 @@
 </script>
 
 <template>
-	<div class="settings">
+	<div v-bind="$attrs" class="settings">
 		<ShadingIcon icon="settings" position="right top" rotating elastic />
 
 		<Transition>
 			<nav v-show="showDrawer">
 				<div class="content">
-					<header class="title nav-header">
-						<h1>{{ t.settings }}</h1>
-						<TextBox v-model="search" :placeholder="t.searchSettings" />
+					<header class="title content padding-end">
+						<header class="title nav-header">
+							<h1>{{ t.settings }}</h1>
+							<TextBox v-model="search" :placeholder="t.searchSettings" />
+						</header>
+						<Subheader icon="person">用户设置</Subheader>
+						<Subheader icon="apps">应用设置</Subheader>
+						<div class="nav-items">
+							<Button href="/components">组件测试页</Button>
+						</div>
 					</header>
-					<Subheader icon="person">用户设置</Subheader>
-					<Subheader icon="apps">应用设置</Subheader>
-					<div class="nav-items">
-						<Button href="/components">组件测试页</Button>
-					</div>
 				</div>
 			</nav>
 		</Transition>
 
 		<main ref="main">
-			<div class="content">
+			<div class="content padding-end">
 				<header class="title page-header">
 					<div class="show-drawer-wrapper">
 						<LargeRippleButton icon="dehaze" @click="showDrawer = true" />
@@ -154,28 +156,27 @@
 	$main-padding-x: 48px;
 	$show-drawer-duration: 500ms;
 	$nav-width: 245px + 2 * $nav-padding-x;
+	$max-width: 960px;
 
 	.settings {
+		--side-width: calc(max((100% - #{$max-width + $nav-width}) / 2, 0px)); // 注意这里的 0px 一旦省略 px 就会报错，因此不能去掉单位。
 		position: relative;
-		display: flex;
-		justify-content: center;
-		height: 100dvh;
-		overflow: hidden;
+		min-height: 100dvh;
 		background-color: c(gray-20);
-		transition: $fallback-transitions, width 0s, height 0s;
 	}
 
 	nav {
-		position: relative;
-		flex-shrink: 0;
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 5;
 		width: $nav-width;
+		height: 100%;
+		margin-left: var(--side-width);
+		background-color: c(gray-20);
 
 		@include tablet {
 			@include system-card;
-			position: absolute;
-			left: 0;
-			z-index: 5;
-			height: 100%;
 			background-color: c(acrylic-bg, 75%);
 			transition-duration: $show-drawer-duration;
 
@@ -189,11 +190,16 @@
 			display: block !important;
 		}
 
-		> .content {
+		> .content > .title.content {
 			@include flex-block;
-			flex-shrink: 0;
 			gap: 10px;
+			max-height: 100dvh;
 			padding: 0 $nav-padding-x;
+			overflow-y: overlay;
+
+			> * {
+				flex-shrink: 0;
+			}
 		}
 	}
 
@@ -203,9 +209,7 @@
 	}
 
 	:is(nav, main) > .content {
-		@include fix-page-end-padding;
 		height: 100%;
-		overflow: hidden overlay;
 
 		> * {
 			flex-shrink: 0;
@@ -213,21 +217,36 @@
 	}
 
 	main {
+		--margin-left: calc(var(--side-width) + #{$nav-width});
 		position: relative;
 		z-index: 2;
 		width: 100%;
-		max-width: 960px;
+		min-height: 100dvh;
+		background-color: c(main-bg);
+		transition: $fallback-transitions, width 0s, height 0s;
 
 		> .content {
 			@include flex-block;
-			@include card-shadow;
 			position: relative;
 			z-index: 1;
 			gap: 1rem;
+			max-width: $max-width;
 			padding: 0 $main-padding-x;
-			background-color: c(main-bg);
-			// TODO: 滚动条位置不对。
 		}
+
+		@include computer {
+			margin-left: var(--margin-left);
+
+			> .content {
+				width: calc(100% - var(--margin-left));
+			}
+		}
+	}
+
+	.padding-end::after {
+		display: block;
+		opacity: 0;
+		content: ".";
 	}
 
 	h1,
@@ -247,6 +266,7 @@
 
 	.nav-header {
 		margin-right: #{-$nav-padding-x};
+		margin-bottom: -10px;
 		margin-left: #{-$nav-padding-x};
 		padding-right: $nav-padding-x;
 		padding-bottom: 10px;

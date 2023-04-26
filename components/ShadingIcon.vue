@@ -31,7 +31,8 @@
 
 	:comp {
 		@include square($size);
-		position: absolute;
+		position: fixed;
+		z-index: 10;
 		color: c(accent, 15%);
 		font-size: $size;
 		pointer-events: none;
