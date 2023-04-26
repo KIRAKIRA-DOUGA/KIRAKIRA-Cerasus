@@ -28,24 +28,23 @@
 	<div v-bind="$attrs" class="settings">
 		<ShadingIcon icon="settings" position="right top" rotating elastic />
 
-		<Transition>
-			<nav v-show="showDrawer">
-				<div class="content">
-					<header class="title content padding-end">
-						<header class="title nav-header">
-							<h1>{{ t.settings }}</h1>
-							<TextBox v-model="search" :placeholder="t.searchSettings" />
-						</header>
-						<Subheader icon="person">用户设置</Subheader>
-						<Subheader icon="apps">应用设置</Subheader>
-						<div class="nav-items">
-							<Button href="/components">组件测试页</Button>
-						</div>
+		<nav :class="{ show: showDrawer }">
+			<div class="content">
+				<header class="title content padding-end">
+					<header class="title nav-header">
+						<h1>{{ t.settings }}</h1>
+						<TextBox v-model="search" :placeholder="t.searchSettings" />
 					</header>
-				</div>
-			</nav>
-		</Transition>
+					<Subheader icon="person">用户设置</Subheader>
+					<Subheader icon="apps">应用设置</Subheader>
+					<div class="nav-items">
+						<Button href="/components">组件测试页</Button>
+					</div>
+				</header>
+			</div>
+		</nav>
 
+		<div class="card"></div>
 		<main ref="main">
 			<div class="content padding-end">
 				<header class="title page-header">
@@ -173,16 +172,14 @@
 		width: $nav-width;
 		height: 100%;
 		margin-left: var(--side-width);
-		background-color: c(gray-20);
 
 		@include tablet {
 			@include system-card;
 			background-color: c(acrylic-bg, 75%);
 			transition-duration: $show-drawer-duration;
 
-			&.v-enter-from,
-			&.v-leave-to {
-				left: -$nav-width - 16px;
+			&:not(.show) {
+				translate: -$nav-width - 16px;
 			}
 		}
 
@@ -216,8 +213,28 @@
 		}
 	}
 
+	.card {
+		@include card-shadow;
+		@include square(100%);
+		position: absolute;
+		z-index: 5;
+		pointer-events: none;
+	}
+
+	.card,
 	main {
 		--margin-left: calc(var(--side-width) + #{$nav-width});
+
+		@include computer {
+			margin-left: var(--margin-left);
+
+			> .content {
+				width: calc(100% - var(--margin-left));
+			}
+		}
+	}
+
+	main {
 		position: relative;
 		z-index: 2;
 		width: 100%;
@@ -232,14 +249,6 @@
 			gap: 1rem;
 			max-width: $max-width;
 			padding: 0 $main-padding-x;
-		}
-
-		@include computer {
-			margin-left: var(--margin-left);
-
-			> .content {
-				width: calc(100% - var(--margin-left));
-			}
 		}
 	}
 
