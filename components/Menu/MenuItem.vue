@@ -53,10 +53,10 @@
 		margin: 0 $menu-padding;
 		padding: 8px 16px;
 		padding-left: 14px;
+		color: c(icon-color);
 		cursor: pointer;
 
 		.nuxt-icon {
-			color: c(icon-color);
 			font-size: 20px;
 		}
 
@@ -70,9 +70,11 @@
 			transition-duration: 1s;
 		}
 
+		/*
 		menu:not(:hover) & {
 			opacity: 0.8;
 			transition-duration: 1s;
 		}
+		*/
 	}
 </style>

@@ -24,7 +24,7 @@ $neutral-colors: (
 	icon-color: (#797173, #e5e4e4),
 	divider: #505050,
 	text-color: map.get($grayscale-colors, gray-80),
-	hover-color: (c(black, 5%), c(white, 10%)),
+	hover-color: (c(black, 4%), c(white, 6%)),
 );
 
 // 如果定义为列表，则第一项为浅色主题颜色，第二项为深色主题颜色。

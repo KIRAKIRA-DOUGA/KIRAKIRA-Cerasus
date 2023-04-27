@@ -39,6 +39,7 @@
 	.tab-item {
 		@include flex-center;
 		gap: 4px;
+		color: c(icon-color);
 
 		&.active {
 			color: c(accent);
