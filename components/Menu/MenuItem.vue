@@ -49,6 +49,7 @@
 		gap: $menu-padding + 2px;
 		justify-content: flex-start;
 		width: max-content;
+		height: 36px; // TODO: [艾拉] 等修复图标高度计算问题之后移除这行。
 		margin: 0 $menu-padding;
 		padding: 8px 16px;
 		padding-left: 14px;
