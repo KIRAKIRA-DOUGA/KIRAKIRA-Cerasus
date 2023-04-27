@@ -48,7 +48,7 @@ export class VariableName {
 	}
 
 	/**
-	 * 转换为大驼峰式。
+	 * 转换为小驼峰式。
 	 */
 	get camel() {
 		return this.words.map((word, i) => i ? capitalize(word) : word.toLowerCase()).join("");
