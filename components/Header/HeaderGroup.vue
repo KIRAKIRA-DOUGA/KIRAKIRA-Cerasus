@@ -22,7 +22,7 @@
 		align-items: flex-end;
 		white-space: nowrap;
 
-		svg {
+		:slotted(svg) {
 			margin-right: -5px;
 			margin-bottom: 4px;
 			fill: c(accent);
