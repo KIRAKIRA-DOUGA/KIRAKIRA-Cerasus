@@ -35,6 +35,7 @@
 			transform: skewX(-10deg); // 不要使用 `font-style: italic;`，因为太斜了。
 			transform-origin: left bottom;
 			font-variant-caps: small-caps;
+			transition: none;
 
 			&:lang(en) {
 				font-family: $english-logo-fonts;
