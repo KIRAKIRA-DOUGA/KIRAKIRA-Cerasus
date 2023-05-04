@@ -271,7 +271,6 @@
 
 		.large & {
 			margin-left: 12px;
-			text-indent: $front-indent + 24px + 16px;
 		}
 	}
 

@@ -49,11 +49,10 @@
 		gap: $menu-padding + 2px;
 		justify-content: flex-start;
 		width: max-content;
-		height: 36px; // TODO: [艾拉] 等修复图标高度计算问题之后移除这行。
 		margin: 0 $menu-padding;
 		padding: 8px 16px;
 		padding-left: 14px;
-		color: c(icon-color);
+		color: c(gray-60);
 		cursor: pointer;
 
 		.icon {
@@ -71,11 +70,9 @@
 			transition-duration: 1s;
 		}
 
-		/*
-		menu:not(:hover) & {
+		/* menu:not(:hover) & {
 			opacity: 0.8;
 			transition-duration: 1s;
-		}
-		*/
+		} */
 	}
 </style>

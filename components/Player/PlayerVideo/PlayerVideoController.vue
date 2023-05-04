@@ -101,10 +101,6 @@
 
 		.play {
 			width: $thickness + 10px;
-
-			.icon {
-				font-size: 28px;
-			}
 		}
 	}
 
