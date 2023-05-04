@@ -57,7 +57,7 @@
 			<TransitionGroup :css="false" appear @enter="onToastEnter" @leave="onToastLeave">
 				<div v-for="toast in toastList" :key="toast.timestamp" class="toast" :class="[toast.severity]" :style="{ '--duration': toast.duration }">
 					<div class="content">
-						<NuxtIcon :name="toast.icon" />
+						<Icon :name="toast.icon" />
 						<span>{{ toast.message || t.finish }}</span>
 					</div>
 					<div class="progress"></div>
@@ -105,7 +105,7 @@
 				padding: 12px 16px;
 				text-align: justify;
 
-				.nuxt-icon {
+				.icon {
 					margin-left: -2px;
 					font-size: 24px;
 				}

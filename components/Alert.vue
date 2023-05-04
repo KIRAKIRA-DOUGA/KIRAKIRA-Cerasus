@@ -33,7 +33,7 @@
 		<Transition name="alert">
 			<div v-if="open" ref="alert" class="alert">
 				<div class="body">
-					<NuxtIcon name="info" />
+					<Icon name="info" />
 					<div class="content-part">
 						<h2>{{ title ?? "KIRAKIRA 提示您" }}</h2>
 						<div class="content">
@@ -124,7 +124,7 @@
 			overflow: hidden overlay;
 			background-color: c(main-bg, 45%);
 
-			.nuxt-icon {
+			.icon {
 				@include flex-block;
 				--i: 0;
 				flex-shrink: 0;

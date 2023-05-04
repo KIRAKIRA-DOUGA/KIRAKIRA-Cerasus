@@ -35,7 +35,7 @@
 
 <template>
 	<div ref="menuItem" v-ripple v-i="vIndex" class="menu-item" @click="onClick">
-		<NuxtIcon v-if="icon" :name="icon" />
+		<Icon v-if="icon" :name="icon" />
 		<div v-else class="nuxt-icon"></div>
 		<slot></slot>
 	</div>
@@ -56,7 +56,7 @@
 		color: c(icon-color);
 		cursor: pointer;
 
-		.nuxt-icon {
+		.icon {
 			font-size: 20px;
 		}
 

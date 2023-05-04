@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 	import { Transition } from "vue";
-	import { NuxtIcon, LargeRippleButton } from "#components";
+	import { Icon, LargeRippleButton } from "#components";
 
 	const props = withDefaults(defineProps<{
 		/** 当前输入是否非法。 */
@@ -100,7 +100,7 @@
 		}"
 	>
 		<div class="wrapper">
-			<NuxtIcon v-if="icon" :name="icon" class="before-icon" />
+			<Icon v-if="icon" :name="icon" class="before-icon" />
 			<input ref="input" v-model="value" :type="type" :placeholder="placeholder" :class="{ typed }" />
 			<label v-if="size === 'large'">{{ placeholder }}</label>
 			<Fragment class="after-icons">
@@ -287,7 +287,7 @@
 			--size: #{$small-height};
 		}
 
-		.invalid & :deep(.nuxt-icon) {
+		.invalid & :deep(.icon) {
 			color: c(red) !important;
 		}
 

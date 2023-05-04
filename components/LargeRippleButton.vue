@@ -49,7 +49,7 @@
 			v-bind="additionalAttrs"
 			@click="(e: MouseEvent) => emits('click', e)"
 		>
-			<NuxtIcon v-if="icon" :name="icon" class="icon" />
+			<Icon v-if="icon" :name="icon" />
 			<span v-if="text"><span>{{ text }}</span></span>
 		</component>
 	</div>

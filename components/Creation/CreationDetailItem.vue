@@ -7,7 +7,7 @@
 
 <template>
 	<Comp>
-		<NuxtIcon v-if="icon" :name="icon" />
+		<Icon v-if="icon" :name="icon" />
 		<p><slot></slot></p>
 	</Comp>
 </template>
@@ -21,7 +21,7 @@
 		color: c(icon-color);
 	}
 
-	.nuxt-icon {
+	.icon {
 		font-size: 20px;
 	}
 

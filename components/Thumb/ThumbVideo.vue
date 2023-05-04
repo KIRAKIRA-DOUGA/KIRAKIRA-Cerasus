@@ -46,21 +46,21 @@
 			<div class="info">
 				<div class="line">
 					<div class="item">
-						<NuxtIcon name="play" />
+						<Icon name="play" />
 						<p>{{ watchedCount }}</p>
 					</div>
 					<div class="item">
-						<NuxtIcon name="time" />
+						<Icon name="time" />
 						<p>{{ duration }}</p>
 					</div>
 				</div>
 				<div class="line">
 					<LocaleLink class="item uploader" to="components" linkInLink>
-						<NuxtIcon name="person" />
+						<Icon name="person" />
 						<div>{{ uploader }}</div>
 					</LocaleLink>
 					<div class="item">
-						<NuxtIcon name="calendar" />
+						<Icon name="calendar" />
 						<div>{{ date }}</div>
 					</div>
 				</div>
@@ -139,7 +139,7 @@
 			@include flex-center;
 			gap: 2px;
 
-			.nuxt-icon {
+			.icon {
 				font-size: 16px;
 			}
 		}

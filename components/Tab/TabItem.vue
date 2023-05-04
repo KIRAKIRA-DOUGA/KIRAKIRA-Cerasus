@@ -28,7 +28,7 @@
 <template>
 	<div class="tab-item" :class="{ active, vertical: direction.includes('vertical') }" :style="{ flexDirection }" @click="onClick">
 		<div v-if="icon" class="icon-wrapper">
-			<NuxtIcon :name="icon" />
+			<Icon :name="icon" />
 		</div>
 		<slot></slot>
 		<Badge v-if="badge !== undefined" class="badge">{{ badge }}</Badge>
@@ -49,7 +49,7 @@
 		.icon-wrapper {
 			height: 18px;
 
-			.nuxt-icon {
+			.icon {
 				margin-top: -2px;
 				color: c(accent);
 				font-size: 22px;

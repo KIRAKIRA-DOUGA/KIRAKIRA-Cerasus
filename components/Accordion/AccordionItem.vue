@@ -63,7 +63,7 @@
 	<Comp>
 		<h3 v-ripple class="header" :class="{ shown }" :tabindex="0" @click="toggle">
 			<div>{{ title }}</div>
-			<NuxtIcon name="chevron_down" />
+			<Icon name="chevron_down" />
 		</h3>
 		<Transition :css="false" @enter="onContentEnter" @leave="onContentLeave">
 			<div v-if="shown" class="content">
@@ -108,7 +108,7 @@
 		font-weight: normal;
 		cursor: pointer;
 
-		.nuxt-icon {
+		.icon {
 			color: c(icon-color);
 			font-size: 20px;
 			transition: $fallback-transitions, all $ease-out-smooth 500ms;
@@ -132,7 +132,7 @@
 				color: c(icon-color);
 			}
 
-			.nuxt-icon {
+			.icon {
 				color: inherit;
 				rotate: 0.5turn;
 			}

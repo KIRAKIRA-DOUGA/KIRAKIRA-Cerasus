@@ -36,7 +36,7 @@
 		:class="{ secondary, 'icon-behind': iconBehind }"
 		@click="onClick"
 	>
-		<NuxtIcon v-if="icon" :name="icon" />
+		<Icon v-if="icon" :name="icon" />
 		<span><slot></slot></span>
 		<LocaleLink v-if="href" draggable="false" :to="href" class="link lite" />
 	</button>
@@ -121,7 +121,7 @@
 		}
 	}
 
-	.nuxt-icon {
+	.icon {
 		$padding-inset: 2px;
 		$size: 18px;
 		min-width: $size;

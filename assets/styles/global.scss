@@ -55,7 +55,7 @@ a {
 	display: none !important;
 }
 
-.nuxt-icon {
+/* .nuxt-icon {
 	@include square(1em);
 	display: inline-flex;
 	align-items: center;
@@ -64,7 +64,7 @@ a {
 	svg {
 		margin-bottom: 0 !important;
 	}
-}
+} */
 
 iframe.noscript-mask {
 	@include full-screen;

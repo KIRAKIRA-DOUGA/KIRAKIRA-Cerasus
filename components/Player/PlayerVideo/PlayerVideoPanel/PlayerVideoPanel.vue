@@ -32,7 +32,7 @@
 		}
 		return ((props, { slots }) => (
 			<div>
-				<NuxtIcon name={props.icon} />
+				<Icon name={props.icon} />
 				<span>
 					{slots.default()}
 					<span class="value">{props.value}</span>
@@ -102,7 +102,7 @@
 			@include flex-center;
 			gap: 4px;
 
-			.nuxt-icon {
+			.icon {
 				font-size: 20px;
 			}
 
@@ -113,7 +113,7 @@
 				text-align: center;
 			}
 
-			&.dislike .nuxt-icon {
+			&.dislike .icon {
 				rotate: 0.5turn;
 			}
 		}

@@ -21,7 +21,7 @@
 
 <template>
 	<Comp :class="[position, { large }]">
-		<NuxtIcon :name="icon" :class="{ rotating, elastic }" />
+		<Icon :name="icon" :class="{ rotating, elastic }" />
 	</Comp>
 </template>
 
@@ -46,14 +46,14 @@
 			&.#{$direction} {
 				#{$direction}: 0;
 
-				> .nuxt-icon {
+				> .icon {
 					#{$direction}: -25%;
 				}
 			}
 		}
 	}
 
-	.nuxt-icon {
+	.icon {
 		position: absolute;
 
 		&.rotating {

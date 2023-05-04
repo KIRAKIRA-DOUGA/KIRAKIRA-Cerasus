@@ -36,7 +36,7 @@
 	<Transition>
 		<Comp v-if="!hidden" @mouseenter="hover = true" @mouseleave="hover = false">
 			<!-- 谨记：这里有个坑。要用 mouseenter 和 mouseleave，千万不要用 mouseover 和 mouseout。 -->
-			<NuxtIcon name="heart" />
+			<Icon name="heart" />
 			<Transition :css="false" @enter="onContentEnter" @leave="onContentLeave">
 				<span v-show="hover" class="text">{{ t.uploader_lovin_it }}</span>
 			</Transition>
@@ -73,7 +73,7 @@
 			color: c(icon-color);
 		}
 
-		.nuxt-icon {
+		.icon {
 			font-size: 16px;
 		}
 
