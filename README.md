@@ -2,7 +2,7 @@
 
 ![Cover](cover.svg)
 
-# 项目代号 ｢<ruby>Cerasus<rt>[第13都市](https://zh.moegirl.org.cn/zh-hans/DARLING_in_the_FRANXX#cite_ref-10:~:text=%E7%AC%AC13%E9%83%BD%E5%B8%82%EF%BC%88Plantation%EF%BC%89%5B9%5D%E2%80%9C%E6%A8%B1%EF%BC%88Cerasus%EF%BC%89%E2%80%9D)</rt></ruby>｣
+# 项目代号 ｢<ruby>Cerasus<rp>（</rp><rt>[第13都市](https://zh.moegirl.org.cn/zh-hans/DARLING_in_the_FRANXX#cite_ref-10:~:text=%E7%AC%AC13%E9%83%BD%E5%B8%82%EF%BC%88Plantation%EF%BC%89%5B9%5D%E2%80%9C%E6%A8%B1%EF%BC%88Cerasus%EF%BC%89%E2%80%9D)</rt><rp>）</rp></ruby>｣
 ![State](https://img.shields.io/badge/STATE-ALPHA-red?style=flat-square)
 ![Tag](https://img.shields.io/badge/TAG-0.0.0-orange?style=flat-square)
 ![License](https://img.shields.io/badge/LICENSE-MIT-green?style=flat-square)
@@ -27,7 +27,7 @@
 npm install
 ```
 
-**只准用 NPM（你怕吗）！！！**
+**只准用 <ruby>NPM<rp>（</rp><rt>你怕吗</rt><rp>）</rp></ruby>！！！**
 
 <!-- 有空来研究一下能不能用 PNPM 也是好的。 -->
 
