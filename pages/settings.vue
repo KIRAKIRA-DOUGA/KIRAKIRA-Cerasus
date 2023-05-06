@@ -74,7 +74,7 @@
 					>{{ t[item] }}</RadioButton>
 				</div>
 				<Subheader icon="translate">{{ t.language }}</Subheader>
-				<div class="chip radio-group">
+				<div class="chip radio-group" lang="">
 					<RadioButton
 						v-for="locale in localeList"
 						:key="locale.code"
@@ -252,10 +252,8 @@
 		}
 	}
 
-	.padding-end::after {
-		display: block;
-		opacity: 0;
-		content: ".";
+	.padding-end {
+		@include fix-page-end-padding(false);
 	}
 
 	h1,

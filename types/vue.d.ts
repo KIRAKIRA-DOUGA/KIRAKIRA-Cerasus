@@ -23,6 +23,12 @@ declare module "vue" {
 	export interface ComponentOptionsBase {
 		__scopeId?: string;
 	}
+
+	export interface AllowedComponentProps {
+		lang?: string;
+		title?: string;
+		tabindex?: Numberish;
+	}
 }
 
 declare global {

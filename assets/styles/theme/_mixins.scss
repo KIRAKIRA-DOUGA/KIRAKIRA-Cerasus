@@ -88,14 +88,19 @@
 /// 	.flex {
 /// 		@include fix-page-end-padding;
 /// 	}
+/// @param {Bool} $zero-height [true] - 设置零高度。在某些情况下关闭后也许可以解决界面错位问题。
+/// 但不能一概而论，因为如果一直关闭的话，另外一些界面又会错位，因此只能按需开启。这个东西反正就是很迷。
 /// @output display, clear, height, visibility, content
-@mixin fix-page-end-padding {
+@mixin fix-page-end-padding($zero-height: true) {
 	&::after {
 		display: block;
 		clear: both;
-		height: 0;
 		visibility: hidden; // 占位但不可见。
 		content: "."; // 内容不能为空。
+
+		@if $zero-height {
+			height: 0;
+		}
 	}
 }
 
