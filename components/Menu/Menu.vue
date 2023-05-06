@@ -86,6 +86,8 @@
 </template>
 
 <style scoped lang="scss">
+	$transition: $fallback-transitions, grid-template-rows $ease-out-smooth 500ms;
+
 	menu {
 		@include radius-large;
 		@include flex-block;
@@ -98,6 +100,7 @@
 		padding: $menu-padding 0;
 		overflow: hidden;
 		background-color: c(main-bg, 50%);
+		transition: $transition;
 
 		&.context {
 			position: fixed;
@@ -112,7 +115,7 @@
 		&:not(:hover, :active) {
 			@include dropdown-flyouts-unhover;
 			background-color: c(main-bg, 40%);
-			transition-duration: 1s;
+			transition: $transition, box-shadow 1s, opacity 1s;
 		}
 
 		:slotted(.menu-item) {

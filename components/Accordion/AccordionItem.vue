@@ -31,28 +31,6 @@
 		shown.value = !prevShown;
 	}
 
-	/**
-	 * 在元素被插入到 DOM 之后的下一帧被调用。
-	 * 用这个来开始进入动画。
-	 * @param el - HTML DOM 元素。
-	 * @param done - 调用回调函数 done 表示过渡结束。
-	 */
-	async function onContentEnter(el: Element, done: () => void) {
-		await animateSize(el, null, { startHeight: 0, duration: 500, specified: "height" });
-		done();
-	}
-
-	/**
-	 * 在离开过渡开始时调用。
-	 * 用这个来开始离开动画。
-	 * @param el - HTML DOM 元素。
-	 * @param done - 调用回调函数 done 表示过渡结束。
-	 */
-	async function onContentLeave(el: Element, done: () => void) {
-		await animateSize(el, null, { endHeight: 0, duration: 300, specified: "height" });
-		done();
-	}
-
 	defineExpose({
 		shown,
 		toggle,
@@ -65,9 +43,9 @@
 			<div>{{ title }}</div>
 			<Icon name="chevron_down" />
 		</h3>
-		<Transition :css="false" @enter="onContentEnter" @leave="onContentLeave">
+		<Transition>
 			<div v-if="shown" class="content">
-				<slot></slot>
+				<div><slot></slot></div>
 			</div>
 		</Transition>
 	</Comp>
@@ -79,16 +57,16 @@
 
 		h3 {
 			font-size: 14px;
+
+			&:not(:hover) {
+				transition-duration: 1s;
+			}
 		}
 
 		> * {
 			padding: 0.75rem 1rem;
 			// border-bottom: c(gray-30) 1px solid; // 有一说一，边框线确实丑。
 			transition: $fallback-transitions, padding $ease-out-smooth 500ms;
-		}
-
-		> *:not(:hover) {
-			transition-duration: 1s;
 		}
 
 		&:first-child > .header {
@@ -148,6 +126,7 @@
 	}
 
 	.content {
-		overflow: hidden;
+		@include animated-auto-size(height);
+		transition-duration: 500ms;
 	}
 </style>
