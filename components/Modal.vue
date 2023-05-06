@@ -78,7 +78,7 @@
 
 <template>
 	<ClientOnlyTeleport to="#popovers">
-		<Transition name="modal">
+		<Transition>
 			<div v-if="open" ref="modal" class="modal" tabindex="0">
 				<div class="titlebar">
 					<div class="title" @pointerdown="onTitleBarDown">
@@ -124,12 +124,12 @@
 		transition: $fallback-transitions, all $ease-out-max 400ms, translate 0s;
 		translate: none;
 
-		&.modal-leave-active {
+		&.v-leave-active {
 			transition: $fallback-transitions, all $ease-in-smooth 150ms;
 		}
 
-		&.modal-enter-from,
-		&.modal-leave-to {
+		&.v-enter-from,
+		&.v-leave-to {
 			opacity: 0;
 			scale: 1.1;
 		}

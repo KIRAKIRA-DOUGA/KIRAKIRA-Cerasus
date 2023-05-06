@@ -28,7 +28,7 @@
 			<LargeRippleButton v-i="5" title="投稿" icon="upload" />
 		</div>
 
-		<Transition name="stripes">
+		<Transition>
 			<div v-show="showStripes" v-i="6" class="center">
 				<div class="stripes">
 					<div v-for="i in 2" :key="i" class="stripe"></div>
@@ -122,8 +122,8 @@
 				}
 			}
 
-			&.stripes-enter-from,
-			&.stripes-leave-to {
+			&.v-enter-from,
+			&.v-leave-to {
 				opacity: 0;
 
 				.stripes {

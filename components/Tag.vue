@@ -29,7 +29,7 @@
 	>
 		<div class="circle"></div>
 		<div class="content">
-			<Transition name="check">
+			<Transition>
 				<div v-if="isChecked" class="check-wrapper">
 					<Icon name="check" class="check" />
 				</div>
@@ -101,8 +101,8 @@
 		height: $check-icon-size;
 		overflow: hidden;
 
-		&.check-enter-from,
-		&.check-leave-to {
+		&.v-enter-from,
+		&.v-leave-to {
 			width: 0;
 			scale: 0;
 		}

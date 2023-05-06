@@ -44,7 +44,7 @@
 <template>
 	<ClientOnlyTeleport to="#popovers">
 		<Fragment :style="{ '--z-index': zIndex }">
-			<Transition name="mask">
+			<Transition>
 				<div
 					v-if="shown"
 					ref="mask"
@@ -68,8 +68,8 @@
 			backdrop-filter: grayscale(0.4);
 			transition: 300ms;
 
-			&.mask-enter-from,
-			&.mask-leave-to {
+			&.v-enter-from,
+			&.v-leave-to {
 				opacity: 0;
 			}
 		}

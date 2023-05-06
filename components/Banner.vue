@@ -5,7 +5,7 @@
 </script>
 
 <template>
-	<Transition name="banner">
+	<Transition>
 		<div v-if="!collapsed" class="banner opened">
 			<LogoCover fullLogo noAnimation />
 			<div class="shadow"></div>
@@ -38,8 +38,8 @@
 				opacity: 0.1;
 			}
 
-			&.banner-enter-from,
-			&.banner-leave-to {
+			&.v-enter-from,
+			&.v-leave-to {
 				height: 0;
 
 				> .shadow {

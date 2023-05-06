@@ -55,7 +55,7 @@
 
 <template>
 	<Mask v-model="open" position="center" :zIndex="40">
-		<Transition name="dialog">
+		<Transition>
 			<Comp
 				v-if="open"
 				ref="loginWindow"
@@ -205,7 +205,7 @@
 			transition: all $transition-ease $enter-duration;
 		}
 
-		&.dialog-leave-active {
+		&.v-leave-active {
 			transition: all $ease-in-smooth $leave-duration !important;
 
 			&,
@@ -214,8 +214,8 @@
 			}
 		}
 
-		&.dialog-enter-from,
-		&.dialog-leave-to {
+		&.v-enter-from,
+		&.v-leave-to {
 			opacity: 0;
 			translate: 0 6rem;
 		}
@@ -400,16 +400,16 @@
 			left: 0;
 		}
 
-		.dialog-enter-active & {
+		.v-enter-active & {
 			transition: all $ease-out-max 700ms;
 		}
 
-		.dialog-leave-active & {
+		.v-leave-active & {
 			transition: all $ease-in-smooth $leave-duration;
 		}
 
-		.dialog-enter-from &,
-		.dialog-leave-to & {
+		.v-enter-from &,
+		.v-leave-to & {
 			translate: 6rem 0;
 		}
 	}

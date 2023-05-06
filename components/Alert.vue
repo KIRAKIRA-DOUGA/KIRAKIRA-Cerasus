@@ -30,7 +30,7 @@
 
 <template>
 	<Mask v-model="open" position="center top" :focusing="static">
-		<Transition name="alert">
+		<Transition>
 			<div v-if="open" ref="alert" class="alert">
 				<div class="body">
 					<Icon name="info" />
@@ -65,15 +65,15 @@
 		transform-origin: center top;
 		transition: $fallback-transitions, all $ease-out-max 500ms;
 
-		&.alert-leave-active {
+		&.v-leave-active {
 			&,
 			* {
 				transition: $fallback-transitions, all $ease-in-smooth 150ms;
 			}
 		}
 
-		&.alert-enter-from,
-		&.alert-leave-to {
+		&.v-enter-from,
+		&.v-leave-to {
 			$scale: 1.05;
 			$scale-reciprocal: calc(1 / $scale);
 			opacity: 0;
@@ -90,8 +90,8 @@
 			}
 		}
 
-		&.alert-enter-active,
-		&.alert-leave-active {
+		&.v-enter-active,
+		&.v-leave-active {
 			.body {
 				overflow: visible;
 			}

@@ -11,7 +11,7 @@
 
 <template>
 	<ClientOnly>
-		<Transition name="background">
+		<Transition>
 			<CssDoodle v-show="appConfig.showCssDoodle" :rule="background" class="background" />
 		</Transition>
 	</ClientOnly>
@@ -68,8 +68,8 @@
 	.background {
 		opacity: 0.3;
 
-		&.background-enter-from,
-		&.background-leave-to {
+		&.v-enter-from,
+		&.v-leave-to {
 			opacity: 0;
 		}
 	}
