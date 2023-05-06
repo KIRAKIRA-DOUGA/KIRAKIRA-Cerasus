@@ -24,7 +24,7 @@
 <style scoped lang="scss">
 	.icon {
 		@include square(1em);
-		display: inline-block;
+		display: inline-flex;
 
 		> .nuxt-icon {
 			@include square(1em);
