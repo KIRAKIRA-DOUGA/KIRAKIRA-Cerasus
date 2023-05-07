@@ -43,9 +43,7 @@
 
 	const layout = ref("desktop-web");
 	// const slotName = ref("desktop-web-slot");
-
 	// 下方为测试用，5秒延时后将具名layout和具名插槽的名字赋值为 PE 端
-
 	// setTimeout(() => {
 	// 	layout.value = "pocket-edition-web";
 	// 	slotName.value = "pocket-edition-web-slot";
@@ -69,6 +67,9 @@
 		if (route.includes(SETTINGS) && !prevRoute.includes(SETTINGS)) pageTransition.value = "page-enter-settings";
 		if (!route.includes(SETTINGS) && prevRoute.includes(SETTINGS)) pageTransition.value = "page-leave-settings";
 	});
+
+	// 彩蛋
+	loadEgg();
 </script>
 
 <template>

@@ -22,4 +22,12 @@ declare global {
 	 * 任何可作为 JavaScript 对象键名的类型，包括字符串、数字、符号。
 	 */
 	type ObjectKey = string | number | symbol;
+	/**
+	 * 你想绕过警告使用 any？
+	 */
+	type Any = Parameters<typeof alert>[0];
+	/**
+	 * 管它是啥反正是对象就是了。
+	 */
+	type AnyObject = Record<ObjectKey, Any>;
 }

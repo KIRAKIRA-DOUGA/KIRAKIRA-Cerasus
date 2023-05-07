@@ -74,7 +74,7 @@
 					>{{ t[item] }}</RadioButton>
 				</div>
 				<Subheader icon="translate">{{ t.language }}</Subheader>
-				<div class="chip radio-group" lang="">
+				<div class="chip radio-group">
 					<RadioButton
 						v-for="locale in localeList"
 						:key="locale.code"
