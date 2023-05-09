@@ -56,7 +56,7 @@
 		@include radius-large;
 
 		h3 {
-			font-size: 14px;
+			font-size: inherit;
 
 			&:not(:hover) {
 				transition-duration: 1s;

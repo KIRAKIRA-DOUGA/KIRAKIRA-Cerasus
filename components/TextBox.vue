@@ -206,6 +206,12 @@
 		transform-origin: left;
 		pointer-events: none;
 
+		@include tablet { // 增加移动端文字大小防止Safari放大。
+			& {
+				font-size: 16px;
+			}
+		}
+
 		.before-icon ~ & {
 			margin-left: $front-indent + 24px + 16px;
 		}
@@ -219,11 +225,17 @@
 		margin: 0;
 		padding: 0;
 		color: c(text-color);
-		font-size: inherit;
+		font-size: 14px;
 		text-indent: $front-indent;
 		background: transparent;
 		border: 0;
 		appearance: none;
+
+		@include tablet { // 增加移动端文字大小防止Safari放大。
+			& {
+				font-size: 16px;
+			}
+		}
 
 		&::placeholder {
 			color: c(icon-color);
