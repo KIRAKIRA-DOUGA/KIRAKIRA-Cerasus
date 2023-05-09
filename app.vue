@@ -18,6 +18,7 @@
 		meta: [
 			{ "http-equiv": "Content-Type", content: "text/html;charset=UTF-8" },
 			{ "http-equiv": "X-UA-Compatible", content: "IE=Edge,chrome=1" },
+			{ name: "viewport", content: "width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" },
 			{ name: "renderer", content: "webkit" },
 			{ name: "theme-color", content: Theme.meta },
 			{ name: "description", content: "一个可爱的视频网站，献给可爱的你～" },

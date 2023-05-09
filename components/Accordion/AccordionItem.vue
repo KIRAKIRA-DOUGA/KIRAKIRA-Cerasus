@@ -55,14 +55,6 @@
 	:comp {
 		@include radius-large;
 
-		h3 {
-			font-size: inherit;
-
-			&:not(:hover) {
-				transition-duration: 1s;
-			}
-		}
-
 		> * {
 			padding: 0.75rem 1rem;
 			// border-bottom: c(gray-30) 1px solid; // 有一说一，边框线确实丑。
@@ -84,6 +76,7 @@
 		position: relative;
 		justify-content: space-between;
 		font-weight: normal;
+		font-size: inherit;
 		cursor: pointer;
 
 		.icon {

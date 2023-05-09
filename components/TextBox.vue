@@ -206,11 +206,9 @@
 		transform-origin: left;
 		pointer-events: none;
 
-		@include tablet { // 增加移动端文字大小防止Safari放大。
-			& {
-				font-size: 16px;
-			}
-		}
+		/* @include tablet { // 增加移动端文字大小防止 Safari 放大。
+			font-size: 16px;
+		} */
 
 		.before-icon ~ & {
 			margin-left: $front-indent + 24px + 16px;
@@ -231,11 +229,9 @@
 		border: 0;
 		appearance: none;
 
-		@include tablet { // 增加移动端文字大小防止Safari放大。
-			& {
-				font-size: 16px;
-			}
-		}
+		/* @include tablet { // 增加移动端文字大小防止 Safari 放大。
+			font-size: 16px;
+		} */
 
 		&::placeholder {
 			color: c(icon-color);

@@ -10,6 +10,7 @@ export default function useRender(render: () => VNode): void {
 
 /**
  * 获取父组件。
+ * @remarks 如果使用该函数，在修改该组件触发热重载时，会出现组件突然消失的情况。目前支持通过刷新网页解决。
  * @param type - 父组件的类型筛选。
  * @returns 父组件或 null（如果没有）。
  */
@@ -30,7 +31,7 @@ export function useParentScopeId() {
 
 /**
  * 获取当前组件的作用域样式 ID。
- * @remarks 疑似在发行版中不可使用。
+ * @remarks 疑似在发行版中在某些极端情况下可能无法正常使用。
  * @returns 当前组件的作用域样式 ID。
  * 如果当前组件没有作用域样式 ID，返回 undefined；如果该函数不在 setup 时期调用，返回 null。
  */
@@ -57,7 +58,7 @@ export function useParentByScopeId() {
 
 /**
  * 从实例获取组件的 Scope ID。
- * @remarks 疑似在发行版中不可使用。
+ * @remarks 疑似在发行版中在某些极端情况下可能无法正常使用。
  * @param instance - 组件内部实例。
  * @returns 组件的 Scope ID。
  */
