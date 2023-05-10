@@ -29,31 +29,84 @@ npm install
 
 **只准用 <ruby>NPM<rp>（</rp><rt>你怕吗</rt><rp>）</rp></ruby>！！！**
 
-<!-- 有空来研究一下能不能用 PNPM 也是好的。 -->
-
 ### 开发服务器
 
-从此链接启动开发服务器：https://localhost:3000
+#### HTTPS（默认）
+
+按下键盘按键 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>，然后选择 `npm: dev`。
 
 ```bash
 npm run dev
 ```
 
+然后从此链接启动开发服务器：https://localhost:3000/
+
+以上链接会自动开启 HTTPS 支持，以便提供部分浏览器针对 HTTPS 独有支持的功能。
+
+首次进入网页时会弹出“不安全”的警告，此时只能选择“仍然访问”，暂时没用更好的解决方法。
+
+#### 移动端网页测试
+
+确保手机/平板与您的电脑位于同一个无线局域网下（如果条件不允许请开热点），然后使用移动端浏览器访问电脑所属 IP 地址。一般是：[https://192.168.\*.\*:3000/](https://192.168.*.*:3000/)
+
+**查询电脑 IP 的方法：**<wbr />按 <kbd>Win</kbd> + <kbd>R</kbd>，输入 `cmd` 打开命令提示符，输入 `ipconfig` 即可查询当前电脑的 IP 地址。
+
+#### HTTP
+
+如果你需要使用 HTTP 开发服务器，请按下键盘按键 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>，然后选择 `npm: dev http`。
+
+```bash
+npm run dev-http
+```
+
+然后从此链接启动开发服务器：http://localhost:3000/
+
 ### 生产
 
-为生产构建应用程序：
+#### 为生产生成应用程序（推荐）
+
+按下键盘按键 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>，然后选择 `npm: generate`。
+
+```bash
+npm run generate
+```
+
+#### 为生产构建应用程序
+
+按下键盘按键 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>，然后选择 `npm: build`。
 
 ```bash
 npm run build
 ```
 
-本地预览生产版本：
+#### 本地预览生产版本
 
 ```bash
 npm run preview
 ```
 
 有关详细信息，请查看[部署文档](https://v3.nuxtjs.org/guide/deploy/presets)。
+
+## 其它脚本功能
+
+依次选择菜单 *终端(<ins>T</ins>) > 运行任务...*，然后即可访问其它脚本功能。
+
+### 检查 StyleLint
+```bash
+npm: lint:css
+```
+
+### 更新缓动值样式 *(_eases.scss)* 声明文件
+这将会自动更新 `_eases.scss`、`eases.module.scss`、`eases.module.scss.d.ts` 三个文件。
+```bash
+npm: update-eases
+```
+
+### 压缩 SVG
+这将会压缩 SVG，删除 SVG 的多余部分，如裁切区域、填充颜色等。
+```bash
+Compact SVG
+```
 
 ## IDE
 
