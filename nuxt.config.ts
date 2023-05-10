@@ -111,10 +111,7 @@ export default defineNuxtConfig({
 			{ code: "ja", name: "日本語" },
 		],
 		defaultLocale: "zh",
-		vueI18n: {
-			legacy: false,
-			locale: "zh",
-		},
+		vueI18n: "./i18n.config.ts",
 	},
 	content: {
 		markdown: {
