@@ -43,7 +43,7 @@ npm run dev
 
 以上链接会自动开启 HTTPS 支持，以便提供部分浏览器针对 HTTPS 独有支持的功能。
 
-首次进入网页时会弹出“不安全”的警告，此时只能选择“仍然访问”，暂时没用更好的解决方法。
+首次进入网页时会弹出“不安全”的警告，此时只能选择“仍然访问”，暂时没有更好的解决方法。
 
 #### 移动端网页测试
 
@@ -53,7 +53,7 @@ npm run dev
 
 #### HTTP
 
-如果你需要使用 HTTP 开发服务器，请按下键盘按键 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>，然后选择 `npm: dev http`。
+如果你非要使用 HTTP 开发服务器，请按下键盘按键 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>，然后选择 `npm: dev http`。
 
 ```bash
 npm run dev-http
