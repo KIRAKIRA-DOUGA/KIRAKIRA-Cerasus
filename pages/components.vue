@@ -200,6 +200,11 @@
 					<ToggleSwitch v-model="isUploaderLovinIt" :style="{ marginBottom: '0.75rem' }">➕❤️</ToggleSwitch>
 					<UploaderAira :hidden="!isUploaderLovinIt" />
 				</AccordionItem>
+				<AccordionItem title="滚动条测试">
+					<div class="scroll-test">
+						<div class="scroll-test-item"></div>
+					</div>
+				</AccordionItem>
 				<AccordionItem title="点击此处辣眼睛">
 					<section class="marquee-section">
 						<marquee>KiRAKiRA☆DOUGA</marquee>
@@ -390,5 +395,15 @@
 
 	.test-button :deep(*) {
 		text-align: left;
+	}
+
+	.scroll-test {
+		width: 100%;
+		height: 500px;
+		overflow: overlay;
+
+		.scroll-test-item {
+			@include square(200%);
+		}
 	}
 </style>
