@@ -23,21 +23,34 @@
 		emits("update:modelValue", id);
 	}
 
-	// TODO: [艾拉] 竖向 indicator。
 	/**
-	 * 获取指示器的左边和右边值。
+	 * 获取指示器的四边位置。
 	 * @param item - 选项卡项目。
 	 * @param maxLength - 指示器的最大长度。
-	 * @returns 指示器的左边和右边值。
+	 * @returns 指示器的四边位置。
 	 */
-	function getIndicatorLeftRight(item: HTMLElement, maxLength: number) {
+	function getIndicatorPositions(item: HTMLElement, maxLength: number) {
 		if (!tabBar.value) throw new ReferenceError("DOM 未完全初始化。");
-		const { left: itemLeft, right: itemRight, width: itemWidth } = item.getClientRects()[0];
-		const { left: tabBarLeft, right: tabBarRight } = tabBar.value.getClientRects()[0];
-		const offset = (itemWidth - maxLength) / 2;
+		const {
+			left: itemLeft,
+			right: itemRight,
+			width: itemWidth,
+			top: itemTop,
+			bottom: itemBottom,
+			height: itemHeight,
+		} = item.getBoundingClientRect();
+		const {
+			left: tabBarLeft,
+			right: tabBarRight,
+			top: tabBarTop,
+			bottom: tabBottom,
+		} = tabBar.value.getBoundingClientRect();
+		const offset = props.vertical ? (itemHeight - maxLength) / 2 : (itemWidth - maxLength) / 2;
 		return {
 			left: (itemWidth <= maxLength ? itemLeft : itemLeft + offset) - tabBarLeft,
 			right: -(itemWidth <= maxLength ? itemRight : itemRight - offset) + tabBarRight,
+			top: (itemHeight <= maxLength ? itemTop : itemTop + offset) - tabBarTop,
+			bottom: -(itemHeight <= maxLength ? itemBottom : itemBottom - offset) + tabBottom,
 		};
 	}
 
@@ -64,56 +77,56 @@
 		id ??= props.modelValue;
 		if (!indicator.value) return;
 		const indicatorStyle = indicator.value.style;
+
+		const [pos1, pos2] = props.vertical ? ["top", "bottom"] as const : ["left", "right"] as const;
 		const style = {
-			set left(value: number) { indicatorStyle.left = value + "px"; },
-			set right(value: number) { indicatorStyle.right = value + "px"; },
+			set [pos1](value: number) { indicatorStyle[pos1] = value + "px"; },
+			set [pos2](value: number) { indicatorStyle[pos2] = value + "px"; },
 		};
 		const item = getChild(id);
 		if (!item) return;
-		const itemLr = getIndicatorLeftRight(item, LENGTH);
-		let prevItemLr: ReturnType<typeof getIndicatorLeftRight>;
+		const itemPosEntry = getIndicatorPositions(item, LENGTH);
+		let prevItemPosEntry: ReturnType<typeof getIndicatorPositions>;
 		enum MoveDirection {
-			LEFT = -1,
+			POS1 = -1,
 			NONE,
-			RIGHT,
+			POS2,
 			IGNORE,
 		}
 		let moveDirection = MoveDirection.NONE;
 		let prevItem: HTMLElement | null = null;
-		if (prevId === updateIndicatorWithoutAnimation)
-			moveDirection = MoveDirection.IGNORE;
+		if (prevId === updateIndicatorWithoutAnimation) moveDirection = MoveDirection.IGNORE;
 		else {
 			if (prevId) prevItem = getChild(prevId);
 			if (prevId && prevItem) {
-				prevItemLr = getIndicatorLeftRight(prevItem, LENGTH);
-				moveDirection = itemLr.left >= prevItemLr.left ? MoveDirection.RIGHT : MoveDirection.LEFT;
-			} else
-				prevItemLr = getIndicatorLeftRight(item, 0);
+				prevItemPosEntry = getIndicatorPositions(prevItem, LENGTH);
+				moveDirection = itemPosEntry[pos1] >= prevItemPosEntry[pos1] ? MoveDirection.POS2 : MoveDirection.POS1;
+			} else prevItemPosEntry = getIndicatorPositions(item, 0);
 		}
-		const setLeft = () => style.left = itemLr.left;
-		const setRight = () => style.right = itemLr.right;
+		const setPosition1 = () => style[pos1] = itemPosEntry[pos1];
+		const setPosition2 = () => style[pos2] = itemPosEntry[pos2];
 		const delayTime = () => delay(100);
 		switch (moveDirection) {
-			case MoveDirection.RIGHT:
-				setRight();
+			case MoveDirection.POS1:
+				setPosition1();
 				await delayTime();
-				setLeft();
+				setPosition2();
 				break;
-			case MoveDirection.LEFT:
-				setLeft();
+			case MoveDirection.POS2:
+				setPosition2();
 				await delayTime();
-				setRight();
+				setPosition1();
 				break;
 			case MoveDirection.IGNORE:
-				setLeft();
-				setRight();
+				setPosition1();
+				setPosition2();
 				break;
 			default:
-				style.left = prevItemLr!.left;
-				style.right = prevItemLr!.right;
+				style[pos1] = prevItemPosEntry![pos1];
+				style[pos2] = prevItemPosEntry![pos2];
 				await nextAnimationTick();
-				setLeft();
-				setRight();
+				setPosition1();
+				setPosition2();
 				break;
 		}
 	}
@@ -135,7 +148,7 @@
 			<div class="items" :class="{ vertical, big }">
 				<Slot />
 			</div>
-			<div ref="indicator" class="indicator"></div>
+			<div ref="indicator" class="indicator" :class="{ vertical }"></div>
 		</div>
 	</Comp>
 </template>
@@ -175,5 +188,11 @@
 		height: $thickness;
 		margin-top: 6px;
 		background-color: c(accent);
+
+		&.vertical {
+			width: $thickness;
+			height: unset;
+			margin-top: 2px;
+		}
 	}
 </style>
