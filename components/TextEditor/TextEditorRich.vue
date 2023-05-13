@@ -28,7 +28,7 @@
 	const toggleStrike = () => { editor.value?.chain().focus().toggleStrike().run(); };
 
 	/** 在富文本编辑器光标处追加一个 Vue 组件。 */
-	const addVueComponents = () => { editor.value?.commands.insertContent("<tiptap-thumb-video></tiptap-thumb-video>"); };
+	const addVueComponents = () => { editor.value?.commands.insertContent("<thumb-video></thumb-video>"); };
 
 	const ToolItem = (() => {
 		interface Props {
