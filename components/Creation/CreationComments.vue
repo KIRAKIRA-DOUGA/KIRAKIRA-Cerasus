@@ -11,6 +11,7 @@
 <template>
 	<Comp>
 		<HeaderComments :count="count" />
+		<TextEditorRich />
 	</Comp>
 </template>
 

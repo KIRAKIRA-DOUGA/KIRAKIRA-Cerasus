@@ -10,6 +10,8 @@
 		displayPageCount?: number;
 		/** 允许用户使用键盘上左右箭头键翻页。 */
 		enableArrowKeyMove?: boolean;
+		/** 显示数组。 */
+		array?:string[];
 	}>(), {
 		modelValue: undefined,
 		current: 1,
@@ -237,7 +239,8 @@
 <template>
 	<div class="page">
 		<div class="track" :class="{ 'small-ripple': isForceSmallRipple }">
-			<LargeRippleButton v-if="showFirst" :text="1" nonfocusable @click="changePage(1)" />
+			<LargeRippleButton v-if="(showFirst && array === undefined)" :text="1" nonfocusable @click="changePage(1)" />
+			<LargeRippleButton v-if="(showFirst && array)" :text="array[1]" nonfocusable @click="changePage(1)" />
 			<div v-if="(pages >= 3)" ref="scrollArea" class="scroll-area" :class="{ 'is-scrolling': isScrolling }">
 				<div class="ripples">
 					<div>
@@ -251,19 +254,28 @@
 					</div>
 				</div>
 				<div class="texts">
-					<div>
+					<div v-if="array === undefined">
 						<div
 							v-for="(item, position) in scrolledPages"
 							:key="item"
 							:style="{ '--position': position }"
 						>{{ item }}</div>
 					</div>
+					<div v-if="array">
+						<div
+							v-for="(item, position) in scrolledPages"
+							:key="item"
+							:style="{ '--position': position }"
+						>{{ array[item] }}</div>
+					</div>
 				</div>
 			</div>
-			<LargeRippleButton v-if="(pages >= 2 && showLast)" :text="pages" nonfocusable @click="changePage(pages)" />
+			<LargeRippleButton v-if="(pages >= 2 && showLast && array === undefined)" :text="pages" nonfocusable @click="changePage(pages)" />
+			<LargeRippleButton v-if="(pages >= 2 && showLast && array)" :text="array[pages]" nonfocusable @click="changePage(pages)" />
 		</div>
 		<div v-ripple class="thumb">
 			<div
+				v-if="array === undefined"
 				ref="pageEdit"
 				class="page-edit"
 				contenteditable="true"
@@ -272,6 +284,17 @@
 				@blur="onBlurEdited"
 			>
 				{{ currentEdited }}
+			</div>
+			<div
+				v-if="array"
+				ref="pageEdit"
+				class="page-edit"
+				contenteditable="true"
+				@input="e => currentEdited = (e.target as HTMLDivElement).innerText"
+				@keydown="onEnterEdited"
+				@blur="onBlurEdited"
+			>
+				{{ array[Number(currentEdited)] }}
 			</div>
 			<div ref="newPageNumber" class="new-page-number">{{ currentPage }}</div>
 			<div class="focus-stripe"></div>

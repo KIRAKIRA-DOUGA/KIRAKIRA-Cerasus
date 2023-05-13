@@ -30,6 +30,9 @@
 	/** 在富文本编辑器光标处追加一个 Vue 组件。 */
 	const addVueComponents = () => { editor.value?.commands.insertContent("<thumb-video></thumb-video>"); };
 
+	/** 打开表情页面。  */
+	const addEmojiList = () => { editor.value?.commands.insertContent("<EmojiList></EmojiList>"); };
+
 	const ToolItem = (() => {
 		interface Props {
 			active: string;
@@ -45,14 +48,15 @@
 
 <template>
 	<div class="text-editor">
+		<EditorContent :editor="editor" />
 		<div class="toolbar">
 			<ToolItem active="bold" @click="toggleBold"><b>B</b></ToolItem>
 			<ToolItem active="italic" @click="toggleItalic"><i>I</i></ToolItem>
 			<ToolItem active="underline" @click="toggleUnderline"><u>U</u></ToolItem>
 			<ToolItem active="strike" @click="toggleStrike"><s>S</s></ToolItem>
-			<button @click="addVueComponents">Add Vue Components</button>
+			<button @click="addEmojiList">我是一个颜文字</button>
 		</div>
-		<EditorContent :editor="editor" />
+
 	</div>
 </template>
 
