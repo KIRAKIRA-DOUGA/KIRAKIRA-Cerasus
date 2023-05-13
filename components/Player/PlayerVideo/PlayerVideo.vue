@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	import mediainfo from "mediainfo.js";
-	import { basename } from "path-browserify";
+	import { basename } from "path-browserify"; // FIXME // BUG
 	import { Menu } from "#components";
 
 	const props = defineProps<{
