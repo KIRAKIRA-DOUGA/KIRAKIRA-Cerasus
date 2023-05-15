@@ -24,7 +24,7 @@
 			{ name: "description", content: "一个可爱的视频网站，献给可爱的你～" },
 			{ name: "keywords", content: "视频,弹幕,字幕,音频,歌词,相簿,相册,照片,视频网站,弹幕视频,二次元,动漫,动画,音乐,动漫音乐,音MAD,AMV,MAD,ANIME,ACG,NOVA" },
 			// 以下内容为各种苹果私有属性。
-			{ name: "apple-mobile-web-app-title", content: "绮良动画" }, // 添加到主屏后的标题 (iOS)
+			{ name: "apple-mobile-web-app-title", content: "KIRAKIRA" }, // 添加到主屏后的标题 (iOS)
 			{ name: "apple-mobile-web-app-capable", content: "yes" }, // 启用 WebApp 全屏模式 (iOS)
 			{ name: "apple-touch-fullscreen", content: "yes" }, // 启用 WebApp 全屏模式 (iOS)
 			{ name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" }, // 设置状态栏的背景颜色 (iOS)
@@ -36,14 +36,14 @@
 			// 以下内容为开放图谱协议 (Open Graph Protocol) 属性。
 			{ property: "og:type", content: "website" },
 			{ property: "og:site_name", content: "KIRAKIRA☆DOUGA" },
-			{ property: "og:title", content: "绮良动画" },
+			{ property: "og:title", content: "KIRAKIRA☆DOUGA" }, // XXX: 这里得放页面的title。
 			{ property: "og:description", content: "一个可爱的视频网站，献给可爱的你～" },
 			{ property: "og:image", content: "https://kira.calibur.tv/static/thumbnail.png" },
 			{ property: "og:url", content: "https://kira.calibur.tv/" },
 			// 以下内容为推特私有内容属性。
 			{ name: "twitter:card", content: "summary" },
 			{ name: "twitter:site", content: "KIRAKIRA☆DOUGA" },
-			{ name: "twitter:title", content: "绮良动画" },
+			{ name: "twitter:title", content: "KIRAKIRA☆DOUGA" }, // XXX: 这里得放页面的title。
 			{ name: "twitter:description", content: "一个可爱的视频网站，献给可爱的你～" },
 			{ name: "twitter:image", content: "https://kira.calibur.tv/static/thumbnail.png" },
 			{ name: "twitter:url", content: "https://kira.calibur.tv/" },

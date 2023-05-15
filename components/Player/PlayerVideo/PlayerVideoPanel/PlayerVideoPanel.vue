@@ -22,7 +22,7 @@
 	function share() {
 		navigator.share({
 			title: document.title,
-			text: "绮良动画",
+			text: "KIRAKIRA☆DOUGA",
 			url: location.href,
 		});
 	}
