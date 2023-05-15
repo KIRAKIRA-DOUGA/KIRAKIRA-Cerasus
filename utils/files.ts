@@ -1,4 +1,4 @@
-import path from "path-browserify";
+import path from "helpers/path-browserify";
 
 /**
  * 将 URL 地址转换为 blob 对象。

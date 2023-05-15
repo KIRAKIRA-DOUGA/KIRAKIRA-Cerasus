@@ -23,7 +23,7 @@ declare global {
 	 */
 	type ObjectKey = string | number | symbol;
 	/**
-	 * 你想绕过警告使用 any？
+	 * 听说你想绕过警告使用 any？
 	 */
 	type Any = Parameters<typeof alert>[0];
 	/**

@@ -26,7 +26,7 @@ declare module "vue" {
 
 	export interface AllowedComponentProps {
 		lang?: string;
-		title?: string;
+		title?: Readable;
 		tabindex?: Numberish;
 	}
 }

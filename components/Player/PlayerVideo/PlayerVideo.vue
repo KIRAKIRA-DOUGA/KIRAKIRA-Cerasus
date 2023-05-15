@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	import mediainfo from "mediainfo.js";
-	import { basename } from "path-browserify"; // FIXME // BUG
+	import { basename } from "helpers/path-browserify";
 	import { Menu } from "#components";
 
 	const props = defineProps<{
@@ -62,7 +62,7 @@
 
 	watch(playing, playing => {
 		if (!video.value) return;
-		playing ? video.value.play() : video.value.pause();
+		video.value[playing ? "play" : "pause"]();
 	});
 
 	watch(currentTime, currentTime => {
@@ -143,8 +143,7 @@
 				@click="playing = !playing"
 				@dblclick="toggle"
 				@contextmenu.prevent="e => menu?.show(e)"
-			>
-			</video>
+			></video>
 			<PlayerVideoController
 				v-model:currentTime="currentTime"
 				v-model:playing="playing"
