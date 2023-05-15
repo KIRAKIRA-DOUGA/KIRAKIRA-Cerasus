@@ -1,7 +1,11 @@
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
-		/** 页码总数。 */
-		pages: number;
+		/**
+		 * 页码总数。
+		 *
+		 * 如果该参数是一个字符串数组，则会启用数组模式并显示字符串数组中的内容。
+		 */
+		pages: number | string[];
 		/** 当前页码。 */
 		modelValue?: number;
 		/** 当前页码，单向绑定使用。 */
@@ -10,8 +14,6 @@
 		displayPageCount?: number;
 		/** 允许用户使用键盘上左右箭头键翻页。 */
 		enableArrowKeyMove?: boolean;
-		/** 显示数组。 */
-		array?:string[];
 	}>(), {
 		modelValue: undefined,
 		current: 1,
@@ -23,11 +25,13 @@
 	}>();
 
 	const currentPage = computed(() => props.modelValue ?? props.current);
+	const array = computed(() => props.pages instanceof Array ? props.pages : null);
+	const pages = computed(() => !(props.pages instanceof Array) ? props.pages : props.pages.length);
 
-	if (props.pages < 1)
-		throw new RangeError(`PageController pages 参数错误。页码值不能小于 1，当前值为 ${props.pages}。`);
-	if (currentPage.value < 1 || currentPage.value > props.pages)
-		throw new RangeError(`PageController current 超出页码范围。当前页码值取值范围为 1 ~ ${props.pages}，当前设定值为 ${currentPage.value}。`);
+	if (pages.value < 1)
+		throw new RangeError(`PageController pages 参数错误。页码值不能小于 1，当前值为 ${pages.value}。`);
+	if (currentPage.value < 1 || currentPage.value > pages.value)
+		throw new RangeError(`PageController current 超出页码范围。当前页码值取值范围为 1 ~ ${pages.value}，当前设定值为 ${currentPage.value}。`);
 	if (props.displayPageCount < 3)
 		throw new RangeError(`PageController displayPageCount 参数错误。显示的最多页码数目不能小于 3，当前设定值为 ${props.displayPageCount}。`);
 
@@ -36,7 +40,7 @@
 
 	const showLast = computed(() => props.displayPageCount >= 5);
 	const showFirst = computed(() => props.displayPageCount >= 4);
-	const actualPages = computed(() => Math.min(props.pages, props.displayPageCount));
+	const actualPages = computed(() => Math.min(pages.value, props.displayPageCount));
 	const scrolledItemCount = computed(() => actualPages.value - (+showFirst.value + +showLast.value));
 	const scrolledPages = ref<PositionPageItemPair>(getScrolledItems(currentPage.value));
 	const scrollArea = ref<HTMLDivElement>();
@@ -44,7 +48,7 @@
 	const thumbPosition = computed(() => {
 		return (
 			currentPage.value < actualPages.value / 2 ? currentPage.value :
-			props.pages - currentPage.value < actualPages.value / 2 ? actualPages.value - (props.pages - currentPage.value) :
+			pages.value - currentPage.value < actualPages.value / 2 ? actualPages.value - (pages.value - currentPage.value) :
 			props.displayPageCount === 4 && currentPage.value !== 2 ? 3 :
 			Math.floor((actualPages.value + 1) / 2)
 		) - 1;
@@ -60,7 +64,7 @@
 			if (value_str !== "") {
 				let value = parseInt(value_str.replaceAll(/[^\d]/g, ""), 10);
 				if (value < 1) value = 1;
-				else if (value > props.pages) value = props.pages;
+				else if (value > pages.value) value = pages.value;
 				value_str = String(value);
 			}
 			const requireResetCaret = _currentEdited.value !== value_str;
@@ -147,8 +151,8 @@
 	 * @param page - 新页码值。
 	 */
 	function changePage(page: number) {
-		if (page < 1 || page > props.pages)
-			throw new RangeError(`超出页码范围。当前页码值取值范围为 1 ~ ${props.pages}，当前设定值为 ${page}。`);
+		if (page < 1 || page > pages.value)
+			throw new RangeError(`超出页码范围。当前页码值取值范围为 1 ~ ${pages.value}，当前设定值为 ${page}。`);
 		emits("update:modelValue", page);
 	}
 	/**
@@ -158,7 +162,7 @@
 	function movePage(movement: number) {
 		if (movement === 0) return;
 		const newPage = currentPage.value + movement;
-		if (newPage < 1 || newPage > props.pages) return;
+		if (newPage < 1 || newPage > pages.value) return;
 		changePage(newPage);
 	}
 	/**
@@ -183,8 +187,8 @@
 		let left = Math.floor(scrolledItemCount_1 / 2);
 		left = Math.max(current - left, 1 + +showFirst.value);
 		let right = left + scrolledItemCount_1;
-		if (right > props.pages - +showLast.value) {
-			right = props.pages - +showLast.value;
+		if (right > pages.value - +showLast.value) {
+			right = pages.value - +showLast.value;
 			left = Math.max(right - scrolledItemCount_1, 1 + +showFirst.value);
 		}
 		for (let i = left; i <= right; i++)
@@ -234,14 +238,34 @@
 			currentEdited.value = String(currentPage.value);
 		window.getSelection()?.removeAllRanges();
 	}
+
+	/**
+	 * 根据页码索引值获取页码索引值（大雾）。
+	 *
+	 * 其实是为了兼容数组模式。
+	 * @param index - 页码索引值。
+	 * @returns 页码索引值或数组中的内容。
+	 */
+	function getPageName(index: number | string) {
+		return !array.value ? index : array.value[+index - 1];
+	}
 </script>
 
 <template>
 	<div class="page">
 		<div class="track" :class="{ 'small-ripple': isForceSmallRipple }">
-			<LargeRippleButton v-if="(showFirst && array === undefined)" :text="1" nonfocusable @click="changePage(1)" />
-			<LargeRippleButton v-if="(showFirst && array)" :text="array[1]" nonfocusable @click="changePage(1)" />
-			<div v-if="(pages >= 3)" ref="scrollArea" class="scroll-area" :class="{ 'is-scrolling': isScrolling }">
+			<LargeRippleButton
+				v-if="showFirst"
+				nonfocusable
+				:text="getPageName(1)"
+				@click="changePage(1)"
+			/>
+			<div
+				v-if="(pages >= 3)"
+				ref="scrollArea"
+				class="scroll-area"
+				:class="{ 'is-scrolling': isScrolling }"
+			>
 				<div class="ripples">
 					<div>
 						<LargeRippleButton
@@ -254,49 +278,34 @@
 					</div>
 				</div>
 				<div class="texts">
-					<div v-if="array === undefined">
+					<div>
 						<div
 							v-for="(item, position) in scrolledPages"
 							:key="item"
 							:style="{ '--position': position }"
-						>{{ item }}</div>
-					</div>
-					<div v-if="array">
-						<div
-							v-for="(item, position) in scrolledPages"
-							:key="item"
-							:style="{ '--position': position }"
-						>{{ array[item] }}</div>
+						>{{ getPageName(item) }}</div>
 					</div>
 				</div>
 			</div>
-			<LargeRippleButton v-if="(pages >= 2 && showLast && array === undefined)" :text="pages" nonfocusable @click="changePage(pages)" />
-			<LargeRippleButton v-if="(pages >= 2 && showLast && array)" :text="array[pages]" nonfocusable @click="changePage(pages)" />
+			<LargeRippleButton
+				v-if="pages >= 2 && showLast"
+				nonfocusable
+				:text="getPageName(pages)"
+				@click="changePage(pages)"
+			/>
 		</div>
 		<div v-ripple class="thumb">
 			<div
-				v-if="array === undefined"
 				ref="pageEdit"
 				class="page-edit"
-				contenteditable="true"
+				:contenteditable="!array"
 				@input="e => currentEdited = (e.target as HTMLDivElement).innerText"
 				@keydown="onEnterEdited"
 				@blur="onBlurEdited"
 			>
-				{{ currentEdited }}
+				{{ getPageName(currentEdited) }}
 			</div>
-			<div
-				v-if="array"
-				ref="pageEdit"
-				class="page-edit"
-				contenteditable="true"
-				@input="e => currentEdited = (e.target as HTMLDivElement).innerText"
-				@keydown="onEnterEdited"
-				@blur="onBlurEdited"
-			>
-				{{ array[Number(currentEdited)] }}
-			</div>
-			<div ref="newPageNumber" class="new-page-number">{{ currentPage }}</div>
+			<div ref="newPageNumber" class="new-page-number">{{ getPageName(currentPage) }}</div>
 			<div class="focus-stripe"></div>
 		</div>
 	</div>
@@ -361,7 +370,6 @@
 		line-height: $size;
 		text-align: center;
 		background: c(accent);
-		cursor: text;
 		transition: $fallback-transitions, all $ease-out-back 500ms, left $ease-in-out-smooth 500ms;
 
 		@media (any-hover: hover) {
@@ -409,6 +417,10 @@
 		> .page-edit {
 			position: absolute;
 			top: 0;
+
+			&[contenteditable="true"] {
+				cursor: text;
+			}
 		}
 
 		::selection {

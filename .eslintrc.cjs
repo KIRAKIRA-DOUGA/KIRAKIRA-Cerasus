@@ -333,9 +333,12 @@ module.exports = {
 		}, {
 			name: "outerWidth",
 			message: "Please use window.outerWidth instead.",
-		}, /* {
-			name: "parseFloat",
+		}, {
+			name: "Number",
 			message: "Use + instead.",
-		} */],
+		}, {
+			name: "Boolean",
+			message: "Use !! instead.",
+		}],
 	},
 };

@@ -8,8 +8,9 @@
 	import { ToastEvent } from "composables/toast";
 
 	const page = ref(1);
-	const pages = ref(152);
-	const op = ref(["1", "你说的对,但是", "《", "原", "神", "》", "是", "由", "米", "哈", "游", "自", "主", "研", "发", "的", "一", "款", "全", "新", "开", "放", "世", "界", "冒", "险", "游", "戏", "。", "游", "戏", "发", "生", "在", "一", "个", "被", "称", "作", "「", "提", "瓦", "特", "」", "的", "幻", "想", "世", "界", "，", "在", "这", "里", "，", "被", "神", "选", "中", "的", "人", "将", "被", "授", "予", "「", "神", "之", "眼", "」", "，", "导", "引", "元", "素", "之", "力", "。", "你", "将", "扮", "演", "一", "位", "名", "为", "「", "旅", "行", "者", "」", "的", "神", "秘", "角", "色", "\n", "\n", "在", "自", "由", "的", "旅", "行", "中", "邂", "逅", "性", "格", "各", "异", "、", "能", "力", "独", "特", "的", "同", "伴", "们", "，", "和", "他", "们", "一", "起", "击", "败", "强", "敌", "，", "找", "回", "失", "散", "的", "亲", "人", "—", "—", "同", "时", "，", "逐", "步", "发", "掘", "「", "原", "神", "」", "的", "真", "相", "。"]);
+	const pages = ref(99);
+	const opPage = ref(1);
+	const op = ["你说的对,但是", ..."《原神》是由米哈游自主研发的一款全新开放世界冒险游戏。游戏发生在一个被称作「提瓦特」的幻想世界，在这里，被神选中的人将被授予「神之眼」，导引元素之力。你将扮演一位名为「旅行者」的神秘角色在自由的旅行中邂逅性格各异、能力独特的同伴们，和他们一起击败强敌，找回失散的亲人——同时，逐步发掘「原神」的真相。"];
 	const displayPageCount = ref(7);
 	const toggle = ref(false);
 	const isClicked = ref(false);
@@ -86,7 +87,7 @@
 		</div>
 		<div class="component-test">
 			<PageController v-model="page" :pages="pages" :displayPageCount="displayPageCount" enableArrowKeyMove />
-			<PageController v-model="page" :pages="pages" :displayPageCount="15" enableArrowKeyMove :array="op" />
+			<PageController v-model="opPage" :pages="op" :displayPageCount="15" enableArrowKeyMove />
 			<Button class="test-button" @click="onClickButton">{{ isClicked ? t.buttonClicked : t.button }}</Button>
 			<Button disabled>{{ t.buttonDisabled }}</Button>
 			<Button @click="showConfetti">{{ t.confetti }}</Button>
