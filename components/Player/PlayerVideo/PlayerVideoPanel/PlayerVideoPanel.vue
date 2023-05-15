@@ -1,4 +1,6 @@
 <script setup lang="tsx">
+	import { Icon } from "#components";
+
 	const counts = reactive({
 		play: 100,
 		rating: 5,

@@ -32,6 +32,8 @@ declare module "vue" {
 }
 
 declare global {
+	import { AllowedComponentProps } from "vue";
+
 	/**
 	 * Vue JSX 组件。
 	 * @template Props - 声明组件属性。
@@ -44,7 +46,7 @@ declare global {
 		Slots extends Partial<Record<string, Slot>> = { default: Slot },
 	> = (
 		/** 组件属性。 */
-		props: Props,
+		props: Props & AllowedComponentProps,
 		/** 组件上下文信息。 */
 		context: {
 			/** 组件特性。 */
