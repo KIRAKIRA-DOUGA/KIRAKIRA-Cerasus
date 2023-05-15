@@ -17,6 +17,10 @@
 
 <style scoped lang="scss">
 	:comp {
-		margin-top: 70px;
+		margin-top: 2.5rem;
+	}
+
+	.text-editor-rich {
+		margin-top: 1rem;
 	}
 </style>

@@ -24,14 +24,14 @@
 	const toggleItalic = () => { editor.value?.chain().focus().toggleItalic().run(); };
 	/** 切换文本下划线。 */
 	const toggleUnderline = () => { editor.value?.chain().focus().toggleUnderline().run(); };
+	// FIXME: 回去重装一下完整版的 Tiptap，这个精简版本少功能。
 	/** 切换文本删除线。 */
 	const toggleStrike = () => { editor.value?.chain().focus().toggleStrike().run(); };
 
 	/** 在富文本编辑器光标处追加一个 Vue 组件。 */
 	const addVueComponents = () => { editor.value?.commands.insertContent("<thumb-video></thumb-video>"); };
-
-	/** 打开表情页面。  */
-	const addEmojiList = () => { editor.value?.commands.insertContent("<EmojiList></EmojiList>"); };
+	/** 打开颜文字页面。 */
+	const addKaomojiList = () => { };
 
 	const ToolItem = (() => {
 		interface Props {
@@ -47,21 +47,21 @@
 </script>
 
 <template>
-	<div class="text-editor">
-		<EditorContent :editor="editor" />
+	<Comp>
 		<div class="toolbar">
 			<ToolItem active="bold" @click="toggleBold"><b>B</b></ToolItem>
 			<ToolItem active="italic" @click="toggleItalic"><i>I</i></ToolItem>
 			<ToolItem active="underline" @click="toggleUnderline"><u>U</u></ToolItem>
 			<ToolItem active="strike" @click="toggleStrike"><s>S</s></ToolItem>
-			<button @click="addEmojiList">我是一个颜文字</button>
+			<button v-ripple @click="addVueComponents"><Icon name="photo" /></button>
+			<button v-ripple @click="addKaomojiList">(·ω·)</button>
 		</div>
-
-	</div>
+		<EditorContent :editor="editor" />
+	</Comp>
 </template>
 
 <style scoped lang="scss">
-	.text-editor {
+	:comp {
 		@include radius-large;
 		@include card-shadow;
 		background-color: c(main-bg);
@@ -77,11 +77,11 @@
 
 			> * {
 				@include radius-small;
+				@include flex-center;
 				$size: 28px;
 				min-width: $size;
 				height: $size;
 				padding: 0 6px;
-				text-align: center;
 
 				&:hover {
 					background-color: c(hover-color);
