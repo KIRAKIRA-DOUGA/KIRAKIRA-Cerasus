@@ -67,6 +67,7 @@
 		const SETTINGS = "settings";
 		if (route.includes(SETTINGS) && !prevRoute.includes(SETTINGS)) pageTransition.value = "page-enter-settings";
 		if (!route.includes(SETTINGS) && prevRoute.includes(SETTINGS)) pageTransition.value = "page-leave-settings";
+		if (prevRoute === route) pageTransition.value = "";
 	});
 
 	// 彩蛋
