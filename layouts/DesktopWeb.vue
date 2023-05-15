@@ -10,11 +10,9 @@
 </script>
 
 <template>
-	<ClientOnly>
-		<Transition>
-			<CssDoodle v-show="appConfig.showCssDoodle" :rule="background" class="background" />
-		</Transition>
-	</ClientOnly>
+	<Transition>
+		<CssDoodle v-show="appConfig.showCssDoodle" :rule="background" class="background" />
+	</Transition>
 	<SideBar class="sidebar" />
 	<div class="container">
 		<Banner :collapsed="!showBanner" />
