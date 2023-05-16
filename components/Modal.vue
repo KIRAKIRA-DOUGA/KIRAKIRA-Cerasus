@@ -223,7 +223,7 @@
 		.footer {
 			@include flex-center;
 			justify-content: space-between;
-			padding: 12px $padding;
+			padding: 18px $padding;
 
 			> * {
 				@include flex-center;

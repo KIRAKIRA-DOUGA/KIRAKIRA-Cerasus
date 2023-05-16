@@ -153,7 +153,7 @@
 		.footer {
 			@include flex-center;
 			justify-content: space-between;
-			padding: 12px $padding;
+			padding: 18px $padding;
 
 			.right {
 				--i: 2;
