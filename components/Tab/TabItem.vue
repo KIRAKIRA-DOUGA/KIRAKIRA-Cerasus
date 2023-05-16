@@ -51,7 +51,6 @@
 
 			.icon {
 				margin-top: -2px;
-				color: c(accent);
 				font-size: 22px;
 			}
 		}
@@ -60,7 +59,11 @@
 			@include radius-small;
 			justify-content: flex-start;
 			width: 100%;
-			padding: 8px;
+			padding: 8px 8px 8px 12px;
+
+			.icon-wrapper {
+				margin-right: 8px;
+			}
 
 			.badge {
 				width: 100%;

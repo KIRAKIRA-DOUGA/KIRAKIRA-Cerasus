@@ -178,6 +178,7 @@
 	div.tab-bar {
 		position: relative;
 		display: inline-block;
+		width: 100%;
 	}
 
 	.indicator {
