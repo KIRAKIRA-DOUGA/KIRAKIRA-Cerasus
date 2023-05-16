@@ -95,12 +95,16 @@
 			<Button @click="showAlert = true">{{ t.showAlert }}</Button>
 			<Button @click="showModal = true">显示模态框</Button>
 			<Alert v-model="showAlert" static />
-			<Modal v-model="showModal" title="Windows 标题栏">
+			<Modal v-model="showModal" title="标题栏">
 				<div class="model-content">
-					<p>视频标题</p>
-					<TextBox v-model="inputValue" placeholder="视频标题" />
-					<p>视频分P</p>
-					<TextBox v-model="inputValue" placeholder="视频分P" />
+					<div>
+						<p>视频标题</p>
+						<TextBox v-model="inputValue" placeholder="视频标题" />
+					</div>
+					<div>
+						<p>视频分P</p>
+						<TextBox v-model="inputValue" placeholder="视频分P" />
+					</div>
 				</div>
 			</Modal>
 			<ToggleSwitch v-model="toggle">{{ t.toggleSwitch }} {{ toggle ? t.on : t.off }}</ToggleSwitch>
@@ -392,8 +396,13 @@
 
 	.model-content {
 		@include flex-block;
-		gap: 8px;
+		gap: 16px;
 		width: 400px;
+
+		> * {
+			@include flex-block;
+			gap: 8px;
+		}
 	}
 
 	.test-button :deep(*) {

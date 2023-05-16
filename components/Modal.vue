@@ -80,17 +80,19 @@
 	<ClientOnlyTeleport to="#popovers">
 		<Transition>
 			<div v-if="open" ref="modal" class="modal" tabindex="0">
-				<div class="titlebar">
-					<div class="title" @pointerdown="onTitleBarDown">
-						<Icon :name="icon" filled @dblclick="open = false" />
-						<span>{{ title }}</span>
+				<div class="body">
+					<div class="titlebar">
+						<div class="title" @pointerdown="onTitleBarDown">
+							<Icon :name="icon" filled @dblclick="open = false" />
+							<span>{{ title }}</span>
+						</div>
+						<button class="close-button" @click="open = false">
+							<Icon name="close" />
+						</button>
 					</div>
-					<button class="close-button" @click="open = false">
-						<Icon name="close" />
-					</button>
-				</div>
-				<div class="content">
-					<slot><em>这是一个空的模态框。</em></slot>
+					<div class="content">
+						<slot><em>这是一个空的模态框。</em></slot>
+					</div>
 				</div>
 				<div class="footer">
 					<div class="left">
@@ -110,6 +112,7 @@
 
 <style scoped lang="scss">
 	$padding: 24px;
+	$titlebar-thickness: 48px;
 
 	.modal {
 		@include absolute-center(fixed);
@@ -141,45 +144,52 @@
 			.titlebar {
 				.title,
 				.close-button {
-					color: c(gray-50);
+					opacity: 0.75;
 				}
 			}
+		}
+
+		.body {
+			@include card-in-card-shadow;
+			background-color: c(main-bg, 45%);
 		}
 
 		.titlebar {
 			@include flex-center;
 			justify-content: space-between;
-			height: 28px;
+			height: $titlebar-thickness;
 
 			.title {
 				display: flex;
 				align-items: center;
 				width: 100%;
-				padding: 6px 0;
-				font-size: 12px;
+				height: 100%;
+				padding-left: 14px;
+				color: c(icon-color);
+				font-weight: bold;
 				touch-action: pinch-zoom;
 
 				.icon {
 					margin-right: 10px;
-					margin-left: 12px;
-					font-size: 16px;
+					font-size: 20px;
 				}
 			}
 
 			.close-button {
 				@include flex-center;
+				@include square($titlebar-thickness);
 				position: relative;
-				width: 45px;
-				height: 100%;
-				font-size: 18px;
+				flex-shrink: 0;
+				color: c(icon-color);
+				font-size: 24px;
 
 				&,
 				* {
-					transition: $fallback-transitions, color 0s, fill 0s;
+					transition: $fallback-transitions, color 0s, fill 0s, rotate 0.7s $ease-out-smooth;
 				}
 
 				&::after {
-					@include square(22px);
+					@include square(32px);
 					@include radius-small;
 					@include absolute-center-sized;
 					background-color: c(hover-color);
@@ -193,6 +203,10 @@
 					&::after {
 						opacity: 1;
 					}
+
+					.icon {
+						rotate: 90deg;
+					}
 				}
 
 				&:hover:active {
@@ -202,10 +216,8 @@
 		}
 
 		.content {
-			@include card-in-card-shadow;
 			display: flex;
-			padding: $padding $padding;
-			background-color: c(main-bg, 45%);
+			padding: calc($padding / 3) $padding $padding;
 		}
 
 		.footer {
