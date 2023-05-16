@@ -127,7 +127,7 @@
 	}
 
 	.track {
-		background-color: c(accent-disabled);
+		background-color: c(gray-30);
 		cursor: pointer;
 	}
 
