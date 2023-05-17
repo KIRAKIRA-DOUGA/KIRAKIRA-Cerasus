@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	import { LocaleObject } from "@nuxtjs/i18n/dist/runtime/composables";
-	const selectedTab = ref("all");
+	const currentSetting = ref("appearance");
 	const search = ref("");
 	const theme = Theme.theme;
 	const palette = Theme.palette;
@@ -36,11 +36,11 @@
 						<h1>{{ t.settings }}</h1>
 						<TextBox v-model="search" :placeholder="t.searchSettings" />
 					</header>
-					<TabBar v-model="selectedTab" vertical>
+					<TabBar v-model="currentSetting" vertical>
 						<Subheader icon="person">用户设置</Subheader>
 						<TabItem id="my-account" icon="account_circle">我的账号</TabItem>
 						<TabItem id="personal-information" icon="badge">个人资料</TabItem>
-						<TabItem id="my-history" icon="history">我的记录</TabItem>
+						<TabItem id="my-log" icon="history">我的记录</TabItem>
 						<TabItem id="privacy" icon="shield">隐私和安全</TabItem>
 						<TabItem id="mail" icon="email">绑定邮箱</TabItem>
 						<TabItem id="change-password" icon="lock">修改密码</TabItem>
@@ -49,12 +49,14 @@
 						<Subheader icon="apps">应用设置</Subheader>
 						<TabItem id="appearance" icon="palette">外观</TabItem>
 						<TabItem id="player" icon="play">播放</TabItem>
-						<TabItem id="danmaku" icon="play">弹幕</TabItem>
-						<TabItem id="accessibility" icon="accessibility">无障碍</TabItem>
+						<TabItem id="danmaku" icon="clear_all">弹幕</TabItem>
+						<TabItem id="preference" icon="star">偏好</TabItem>
 						<TabItem id="language" icon="translate">语言</TabItem>
+						<TabItem id="accessibility" icon="accessibility">无障碍</TabItem>
 						<TabItem id="about" icon="info">关于</TabItem>
 					</TabBar>
-					<div class="nav-items">
+					<div class="nav-bottom-buttons">
+						<Button icon="logout">登出</Button>
 						<Button href="/components">组件测试页</Button>
 					</div>
 				</header>
@@ -210,6 +212,7 @@
 			max-height: 100dvh;
 			padding: 0 $nav-padding-x;
 			overflow-y: overlay;
+			transition: none;
 
 			> * {
 				flex-shrink: 0;
@@ -222,9 +225,10 @@
 		}
 	}
 
-	.nav-items {
+	.nav-bottom-buttons {
 		@include flex-block;
-		gap: 10px;
+		flex-direction: column;
+		gap: 8px;
 	}
 
 	:is(nav, main) > .content {
