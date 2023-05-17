@@ -146,10 +146,6 @@
 				.close-button {
 					opacity: 0.75;
 				}
-
-				.title {
-					color: c(icon-color);
-				}
 			}
 		}
 
@@ -169,7 +165,8 @@
 				width: 100%;
 				height: 100%;
 				padding-left: 14px;
-				color: c(text-color);
+				color: c(icon-color);
+				font-weight: bold;
 				touch-action: pinch-zoom;
 
 				.icon {
@@ -206,11 +203,14 @@
 					&::after {
 						opacity: 1;
 					}
+
+					.icon {
+						rotate: 90deg;
+					}
 				}
 
 				&:hover:active {
 					opacity: 0.7;
-					scale: 0.93;
 				}
 			}
 		}
