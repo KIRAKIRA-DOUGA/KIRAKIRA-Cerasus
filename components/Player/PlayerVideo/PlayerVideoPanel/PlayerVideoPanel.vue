@@ -22,7 +22,7 @@
 	function share() {
 		navigator.share({
 			title: document.title,
-			text: "KIRAKIRA☆DOUGA",
+			text: "KIRAKIRA☆DOUGA", // XXX: 这里得放页面的 title。
 			url: location.href,
 		});
 	}

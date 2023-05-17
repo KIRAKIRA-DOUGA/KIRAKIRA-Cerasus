@@ -36,14 +36,14 @@
 			// 以下内容为开放图谱协议 (Open Graph Protocol) 属性。
 			{ property: "og:type", content: "website" },
 			{ property: "og:site_name", content: "KIRAKIRA☆DOUGA" },
-			{ property: "og:title", content: "KIRAKIRA☆DOUGA" }, // XXX: 这里得放页面的title。
+			{ property: "og:title", content: "KIRAKIRA☆DOUGA" }, // XXX: 这里得放页面的 title。
 			{ property: "og:description", content: "一个可爱的视频网站，献给可爱的你～" },
 			{ property: "og:image", content: "https://kira.calibur.tv/static/thumbnail.png" },
 			{ property: "og:url", content: "https://kira.calibur.tv/" },
 			// 以下内容为推特私有内容属性。
 			{ name: "twitter:card", content: "summary" },
 			{ name: "twitter:site", content: "KIRAKIRA☆DOUGA" },
-			{ name: "twitter:title", content: "KIRAKIRA☆DOUGA" }, // XXX: 这里得放页面的title。
+			{ name: "twitter:title", content: "KIRAKIRA☆DOUGA" }, // XXX: 这里得放页面的 title。
 			{ name: "twitter:description", content: "一个可爱的视频网站，献给可爱的你～" },
 			{ name: "twitter:image", content: "https://kira.calibur.tv/static/thumbnail.png" },
 			{ name: "twitter:url", content: "https://kira.calibur.tv/" },

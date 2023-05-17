@@ -91,6 +91,7 @@
 			<Button class="test-button" @click="onClickButton">{{ isClicked ? t.buttonClicked : t.button }}</Button>
 			<Button disabled>{{ t.buttonDisabled }}</Button>
 			<Button @click="showConfetti">{{ t.confetti }}</Button>
+			<!-- BUG: 所有 composable 的自动导入炸了，跟踪链接：https://github.com/nuxt/nuxt/issues/20827 -->
 			<Button icon="send">{{ t.send }}</Button>
 			<Button @click="showAlert = true">{{ t.showAlert }}</Button>
 			<Button @click="showModal = true">显示模态框</Button>
