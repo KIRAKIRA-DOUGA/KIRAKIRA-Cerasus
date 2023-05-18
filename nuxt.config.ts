@@ -59,6 +59,12 @@ export default defineNuxtConfig({
 				"mediainfo.js",
 			],
 		},
+		vue: {
+			script: {
+				defineModel: true,
+				propsDestructure: true,
+			},
+		},
 		css: {
 			preprocessorOptions: styleResources({
 				scss: {
@@ -144,4 +150,10 @@ export default defineNuxtConfig({
 			siteUrl: "https://localhost:3000",
 		},
 	},
+	components: [
+		{
+			path: "components",
+			pathPrefix: false,
+		},
+	],
 } as BroadNuxtConfig);
