@@ -33,6 +33,7 @@
 	const logoTextForm = ref<LogoTextFormType>("full");
 	const showAlert = ref(false);
 	const showModal = ref(false);
+	const showProgress = ref(true);
 	const inputValue = ref("");
 	const isInvalid = computed(() => !inputValue.value.match(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/));
 	const menu = ref<InstanceType<typeof Menu>>();
@@ -141,8 +142,9 @@
 			<RadioButton v-for="locale in localeList" :key="locale.code" v-model="localeModel" :value="locale.code" :lang="locale.code">{{ locale.name }}</RadioButton>
 			<HeaderComments :count="233" />
 			<br />
-			<ProgressRing />
-			<ProgressBar />
+			<ToggleSwitch v-model="showProgress">开关</ToggleSwitch>
+			<ProgressRing :hidden="showProgress" />
+			<ProgressBar :hidden="showProgress" />
 			<!-- <Lottie loop autoplay :animationData="animationData" /> -->
 			<br />
 			<Tag v-model="isTagChecked">{{ t.tag }}</Tag>

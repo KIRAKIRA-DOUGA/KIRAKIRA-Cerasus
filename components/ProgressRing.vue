@@ -5,26 +5,30 @@
 
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
+		show?: boolean;
 		size?: number;
 	}>(), {
+		show: true,
 		size: 28,
 	});
 </script>
 
 <template>
-	<div class="spinner">
-		<div class="layer">
-			<div class="circle-clipper left">
-				<div class="circle"></div>
-			</div>
-			<div class="gap-patch">
-				<div class="circle"></div>
-			</div>
-			<div class="circle-clipper right">
-				<div class="circle"></div>
+	<Transition>
+		<div v-if="show" class="spinner">
+			<div class="layer">
+				<div class="circle-clipper left">
+					<div class="circle"></div>
+				</div>
+				<div class="gap-patch">
+					<div class="circle"></div>
+				</div>
+				<div class="circle-clipper right">
+					<div class="circle"></div>
+				</div>
 			</div>
 		</div>
-	</div>
+	</Transition>
 </template>
 
 <style scoped lang="scss">
@@ -33,9 +37,15 @@
 	.spinner {
 		@include square(var(--size));
 		--size: calc(v-bind(size) * 1px);
+		--border-size: 3px;
 		position: relative;
 		display: inline-block;
 		animation: spinner 1568ms linear infinite;
+
+		&.v-enter-from,
+		&.v-leave-to {
+			--border-size: 0;
+		}
 	}
 
 	@keyframes spinner {
@@ -150,10 +160,16 @@
 			box-sizing: border-box;
 			width: 200%;
 			height: 100%;
-			border: 3px solid;
 			border-color: inherit;
+			border-style: solid;
+			border-width: var(--border-size);
 			border-bottom-color: transparent !important;
 			animation: none;
+
+			&.v-enter-from,
+			&.v-leave-to {
+				border: 0 solid;
+			}
 		}
 
 		&.left {

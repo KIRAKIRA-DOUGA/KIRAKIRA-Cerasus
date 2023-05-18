@@ -4,17 +4,25 @@
 </docs>
 
 <script setup lang="ts">
-
+	const props = withDefaults(defineProps<{
+		show?: boolean;
+	}>(), {
+		show: true,
+	});
 </script>
 
 <template>
 	<Comp>
-		<div class="line-wrapper line-wrapper-1">
-			<div class="line line-1"></div>
-		</div>
-		<div class="line-wrapper line-wrapper-2">
-			<div class="line line-2"></div>
-		</div>
+		<Transition>
+			<div v-if="show" class="wrapper">
+				<div class="line-wrapper line-wrapper-1">
+					<div class="line line-1"></div>
+				</div>
+				<div class="line-wrapper line-wrapper-2">
+					<div class="line line-2"></div>
+				</div>
+			</div>
+		</Transition>
 	</Comp>
 </template>
 
@@ -25,8 +33,17 @@
 	width: 100%;
 	height: 4px;
 	overflow: hidden;
-	// background: c(gray-30);
-	transform: translateZ(0);
+}
+
+.wrapper {
+	height: 100%;
+	background-color: c(gray-30);
+	transition: transform 1s $ease-out-smooth;
+
+	&.v-enter-from,
+	&.v-leave-to {
+		transform: scaleY(0);
+	}
 }
 
 @keyframes indeterminate-move-1 {
@@ -116,6 +133,11 @@
 	width: 100%;
 	height: 100%;
 	transform-origin: top left;
+
+	&.v-enter-from,
+	&.v-leave-to {
+		transform: scaleY(0);
+	}
 }
 
 .line-wrapper-1 {
