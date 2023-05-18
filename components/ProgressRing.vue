@@ -1,3 +1,8 @@
+<docs>
+	进度环
+	目前只可用于不确定的进度 (indeterminate)
+</docs>
+
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
 		size?: number;

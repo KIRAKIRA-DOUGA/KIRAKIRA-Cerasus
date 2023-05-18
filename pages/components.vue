@@ -142,6 +142,7 @@
 			<HeaderComments :count="233" />
 			<br />
 			<ProgressRing />
+			<ProgressBar />
 			<!-- <Lottie loop autoplay :animationData="animationData" /> -->
 			<br />
 			<Tag v-model="isTagChecked">{{ t.tag }}</Tag>
