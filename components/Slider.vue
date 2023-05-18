@@ -49,6 +49,7 @@
 				emits(event as "update:modelValue", props.defaultValue);
 	}
 
+	// TODO: [兰音] 拖拽逻辑需要整改，改为识别按下轨道的位置，比识别按下滑块的位置更方便处理。
 	/**
 	 * 拖拽滑块逻辑处理。
 	 * @param e - 指针事件（包括鼠标和触摸）。

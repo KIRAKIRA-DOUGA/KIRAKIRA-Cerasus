@@ -1,21 +1,18 @@
 <docs>
-	进度环
-	目前只可用于不确定的进度 (indeterminate)
+	# 进度环
+	目前仅可用于不确定的进度 (indeterminate)。
 </docs>
 
 <script setup lang="ts">
-	const props = withDefaults(defineProps<{
-		show?: boolean;
-		size?: number;
-	}>(), {
-		show: true,
-		size: 28,
-	});
+	const props = defineProps<{
+		/** 加载完成并隐藏？ */
+		hidden?: boolean;
+	}>();
 </script>
 
 <template>
-	<Transition>
-		<div v-if="show" class="spinner">
+	<Transition :duration="250">
+		<div v-if="!hidden" class="spinner">
 			<div class="layer">
 				<div class="circle-clipper left">
 					<div class="circle"></div>
@@ -34,17 +31,28 @@
 <style scoped lang="scss">
 	$layer-animation-options: cubic-bezier(0.4, 0, 0.2, 1) infinite both;
 
+	@layer props {
+		.spinner {
+			/// 进度环尺寸大小。
+			--size: 28px;
+			/// 进度环边缘线条粗细。
+			--thickness: 3px;
+		}
+	}
+
 	.spinner {
 		@include square(var(--size));
-		--size: calc(v-bind(size) * 1px);
-		--border-size: 3px;
 		position: relative;
 		display: inline-block;
 		animation: spinner 1568ms linear infinite;
 
+		&.v-leave-active * {
+			transition-timing-function: $ease-in-cubic;
+		}
+
 		&.v-enter-from,
 		&.v-leave-to {
-			--border-size: 0;
+			--thickness: 0 !important;
 		}
 	}
 
@@ -162,7 +170,7 @@
 			height: 100%;
 			border-color: inherit;
 			border-style: solid;
-			border-width: var(--border-size);
+			border-width: var(--thickness);
 			border-bottom-color: transparent !important;
 			animation: none;
 

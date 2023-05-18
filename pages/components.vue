@@ -34,6 +34,9 @@
 	const showAlert = ref(false);
 	const showModal = ref(false);
 	const showProgress = ref(true);
+	const progressRingSize = ref(28);
+	const progressRingThickness = ref(3);
+	const progressBarHeight = ref(4);
 	const inputValue = ref("");
 	const isInvalid = computed(() => !inputValue.value.match(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/));
 	const menu = ref<InstanceType<typeof Menu>>();
@@ -141,12 +144,16 @@
 			<hr />
 			<RadioButton v-for="locale in localeList" :key="locale.code" v-model="localeModel" :value="locale.code" :lang="locale.code">{{ locale.name }}</RadioButton>
 			<HeaderComments :count="233" />
-			<br />
-			<ToggleSwitch v-model="showProgress">开关</ToggleSwitch>
-			<ProgressRing :hidden="showProgress" />
-			<ProgressBar :hidden="showProgress" />
+			<hr />
+			<Subheader>不确定加载条</Subheader>
+			<ToggleSwitch v-model="showProgress">开启加载</ToggleSwitch>
+			<p>大小</p><Slider v-model="progressRingSize" :min="1" :max="150" />
+			<p>粗细</p><Slider v-model="progressRingThickness" :min="1" :max="60" />
+			<p>高度</p><Slider v-model="progressBarHeight" :min="1" :max="100" />
+			<ProgressRing :hidden="!showProgress" :style="{ '--size': progressRingSize + 'px', '--thickness': progressRingThickness + 'px' }" />
+			<ProgressBar :hidden="!showProgress" :style="{ height: progressBarHeight + 'px' }" />
 			<!-- <Lottie loop autoplay :animationData="animationData" /> -->
-			<br />
+			<hr />
 			<Tag v-model="isTagChecked">{{ t.tag }}</Tag>
 			<br />
 			<BlockText>你知道的<ruby>太<rt>tài</rt>多<rt>duō</rt></ruby>了。</BlockText>

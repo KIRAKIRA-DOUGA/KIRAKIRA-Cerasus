@@ -77,9 +77,11 @@
 		}
 	}
 
-	@layer utilities {
+	@layer props {
 		.logo-cover {
+			/// 封面宽度。
 			--cover-width: 400px; // v-bind 基于运行时，因此没办法赋值给 scss 变量。
+			/// 封面高度。
 			--cover-height: 400px;
 		}
 	}

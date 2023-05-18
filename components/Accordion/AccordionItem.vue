@@ -82,6 +82,8 @@
 		.icon {
 			color: c(icon-color);
 			font-size: 20px;
+			backface-visibility: hidden;
+			perspective: 1000;
 			transition: $fallback-transitions, all $ease-out-smooth 500ms;
 		}
 

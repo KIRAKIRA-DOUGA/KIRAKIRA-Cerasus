@@ -131,7 +131,7 @@
 				background-color: c(accent, 40%);
 			}
 
-			.disabled & {
+			:comp.disabled & {
 				background-color: c(gray-40, 40%);
 			}
 
@@ -168,12 +168,12 @@
 				background-color: c(accent);
 			}
 
-			.disabled & {
+			:comp.disabled & {
 				@include control-ball-shadow-off-disabled;
 				background-color: c(gray-30);
 			}
 
-			.on.disabled & {
+			:comp.on.disabled & {
 				@include control-ball-shadow-disabled;
 				background-color: c(accent-disabled);
 			}

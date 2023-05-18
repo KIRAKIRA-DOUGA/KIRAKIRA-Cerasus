@@ -1,7 +1,7 @@
 @import "global-colors";
 @import "elements";
 
-@layer base, theme, layout, utilities, components, special;
+@layer base, theme, layout, props, utilities, components, special;
 
 *,
 *::before,
@@ -95,7 +95,7 @@ p {
 	display: contents;
 }
 
-@layer utilities {
+@layer base {
 	#popovers > * {
 		position: fixed;
 		top: 0;

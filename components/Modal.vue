@@ -14,6 +14,8 @@
 		static?: boolean;
 		/** 应用图标。 */
 		icon?: string;
+		/** 不显示标题部分。 */
+		hideTitle?: boolean;
 	}>(), {
 		title: "",
 		icon: "sakuranomiya",
@@ -82,7 +84,7 @@
 			<div v-if="open" ref="modal" class="modal" tabindex="0">
 				<div class="body">
 					<div class="titlebar">
-						<div class="title" @pointerdown="onTitleBarDown">
+						<div class="title" :class="{ hide: hideTitle }" @pointerdown="onTitleBarDown">
 							<Icon :name="icon" filled @dblclick="open = false" />
 							<span>{{ title }}</span>
 						</div>
@@ -146,6 +148,10 @@
 				.close-button {
 					opacity: 0.75;
 				}
+
+				.title {
+					color: c(icon-color);
+				}
 			}
 		}
 
@@ -165,9 +171,12 @@
 				width: 100%;
 				height: 100%;
 				padding-left: 14px;
-				color: c(icon-color);
-				font-weight: bold;
+				color: c(text-color);
 				touch-action: pinch-zoom;
+
+				&.hide {
+					opacity: 0;
+				}
 
 				.icon {
 					margin-right: 10px;
@@ -185,7 +194,12 @@
 
 				&,
 				* {
-					transition: $fallback-transitions, color 0s, fill 0s, rotate 0.7s $ease-out-smooth;
+					transition: $fallback-transitions, color 0s, fill 0s, rotate 350ms $ease-out-smooth;
+				}
+
+				.icon {
+					backface-visibility: hidden;
+					perspective: 1000;
 				}
 
 				&::after {

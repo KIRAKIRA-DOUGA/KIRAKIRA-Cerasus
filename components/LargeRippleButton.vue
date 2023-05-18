@@ -40,7 +40,7 @@
 </script>
 
 <template>
-	<div class="large-ripple-button" :class="[appearance]">
+	<Comp :class="[appearance]">
 		<component
 			:is="href ? LocaleLink : 'button'"
 			v-ripple
@@ -52,7 +52,7 @@
 			<Icon v-if="icon" :name="icon" />
 			<span v-if="text"><span>{{ text }}</span></span>
 		</component>
-	</div>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
@@ -61,12 +61,25 @@
 	$focus-size: var(--wrapper-size);
 	$icon-size: 24px;
 
+	@layer props {
+		:comp {
+			/// 容器大小，即可点击区域大小。
+			--wrapper-size: #{$wrapper-size};
+			/// 水波纹大小，如和容器大小一致则表示不会有鼠标悬浮的大小变化。
+			--ripple-size: #{$ripple-size};
+			/// 聚焦大小，当元素聚焦后的固定大小，这会取代容器和水波纹大小的值。
+			--focus-size: #{$focus-size};
+			/// 图标大小。
+			--icon-size: #{$icon-size};
+		}
+	}
+
 	.icon {
 		color: c(icon-color);
 		font-size: var(--icon-size);
 	}
 
-	.large-ripple-button {
+	:comp {
 		@include flex-center;
 		@include square(var(--wrapper-size));
 		@include circle;
@@ -111,15 +124,6 @@
 
 		> a {
 			pointer-events: auto; // 一个未知 bug，居然可能因 JS 导致伪元素消失。
-		}
-	}
-
-	@layer utilities {
-		.large-ripple-button {
-			--wrapper-size: #{$wrapper-size};
-			--ripple-size: #{$ripple-size};
-			--focus-size: #{$focus-size};
-			--icon-size: #{$icon-size};
 		}
 	}
 </style>
