@@ -3,6 +3,7 @@
 	"extends": "./.nuxt/tsconfig.json",
 	"compilerOptions": {
 		"jsx": "preserve",
+		"jsxImportSource": "vue",
 		"module": "ESNext",
 		"target": "ESNext",
 		"noImplicitAny": true,
@@ -30,8 +31,5 @@
 				},
 			},
 		],
-	},
-	"vueCompilerOptions": {
-		"experimentalRfc436": true,
 	},
 }

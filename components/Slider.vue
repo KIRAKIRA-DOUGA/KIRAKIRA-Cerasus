@@ -11,11 +11,11 @@
 	});
 
 	const emits = defineEmits<{
-		(event: "update:modelValue", value: number): void;
+		"update:modelValue": [value: number];
 		/** 当滑块拖动时即触发事件。 */
-		(event: "changing", value: number): void;
+		changing: [value: number];
 		/** 当滑块拖动完成抬起后才触发事件。 */
-		(event: "changed", value: number): void;
+		changed: [value: number];
 	}>();
 
 	const errorInfo = `取值范围应在 [${props.min}, ${props.max}] 其中，当前值为 ${props.modelValue}。`;
@@ -58,7 +58,7 @@
 		if (e.button === 1) { resetDefault(e); return; }
 		const thumb = (e.target as HTMLDivElement).parentElement!.querySelector(".thumb") as HTMLDivElement;
 		const track = thumb.parentElement!.querySelector(".track")!;
-		const { left, width: max } = track.getClientRects()[0];
+		const { left, width: max } = track.getBoundingClientRect();
 		const x = e.pageX - left - thumb.offsetLeft;
 		const pointerMove = (e: PointerEvent) => {
 			const position = clamp(e.pageX - left - x, 0, max);
@@ -82,7 +82,7 @@
 	async function onTrackDown(e: PointerEvent) {
 		if (e.button === 1) { resetDefault(e); return; }
 		const track = e.target as HTMLDivElement;
-		const { width } = track.getClientRects()[0];
+		const { width } = track.getBoundingClientRect();
 		const value = map(e.offsetX, 0, width, props.min, props.max);
 		emits("update:modelValue", value);
 		emits("changing", value);

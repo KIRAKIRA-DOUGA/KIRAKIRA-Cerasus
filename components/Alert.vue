@@ -11,7 +11,7 @@
 	}>();
 
 	const emits = defineEmits<{
-		(event: "update:modelValue", open: boolean): void;
+		"update:modelValue": [open: boolean];
 	}>();
 
 	const open = computed({

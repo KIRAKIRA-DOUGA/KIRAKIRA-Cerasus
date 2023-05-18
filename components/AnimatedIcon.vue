@@ -22,7 +22,7 @@
 	});
 
 	const emits = defineEmits<{
-		(event: "init", anim: AnimationItem): void;
+		init: [anim: AnimationItem];
 	}>();
 
 	const anim = ref<AnimationItem>();
@@ -50,12 +50,6 @@
 			else anim.value.stop();
 		}
 	};
-	// 获取anim对象
-	const handleAnimation = (animated: AnimationItem) => {
-		anim.value = animated;
-		onSpeedChange();
-		emits("init", animated);
-	};
 	// 停止动画
 	const stop = () => anim.value?.stop();
 	// 播放动画
@@ -64,6 +58,12 @@
 	const pause = () => anim.value?.pause();
 	// 控制播放速度
 	const onSpeedChange = () => anim.value?.setSpeed(animationSpeed.value);
+	// 获取anim对象
+	const handleAnimation = (animated: AnimationItem) => {
+		anim.value = animated;
+		onSpeedChange();
+		emits("init", animated);
+	};
 </script>
 
 <template>

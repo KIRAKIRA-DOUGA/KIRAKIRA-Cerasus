@@ -8,7 +8,7 @@ export function refComp(value?: CompInstance) {
 	return customRef((track, trigger) => ({
 		get() {
 			track();
-			return value?.dom;
+			return value?.$el;
 		},
 		set(newValue) {
 			value = newValue as unknown as CompInstance;

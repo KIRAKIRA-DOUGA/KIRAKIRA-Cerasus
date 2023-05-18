@@ -16,7 +16,6 @@
 		"json": true,
 		"jsonc": true,
 	},
-	"volar.completion.preferredAttrNameCase": "auto-camel",
 	"stylelint.snippet": [
 		"css",
 		"less",
@@ -39,6 +38,7 @@
 		"source.fixAll": true,
 		"source.sortImports": true,
 	},
+	"vue.complete.casing.props": "camel",
 	// "javascript.updateImportsOnFileMove.enabled": "never",
 	// "typescript.updateImportsOnFileMove.enabled": "never",
 	// "vue.features.updateImportsOnFileMove.enabled": false,

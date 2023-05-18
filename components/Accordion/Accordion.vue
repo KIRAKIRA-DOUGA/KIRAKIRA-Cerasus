@@ -5,6 +5,10 @@
 		autoCollapse?: boolean;
 	}>();
 
+	defineSlots<{
+		default?: typeof AccordionItem;
+	}>();
+
 	const { Slot, children } = useFactory(AccordionItem);
 
 	/**

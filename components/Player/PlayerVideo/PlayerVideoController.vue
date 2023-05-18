@@ -15,10 +15,10 @@
 	});
 
 	const emits = defineEmits<{
-		(event: "update:currentTime", currentTime: number): void;
-		(event: "update:playing", isPlaying: boolean): void;
-		(event: "update:fullScreen", isFullScreen: boolean): void;
-		(event: "update:playbackRate", playbackRate: number): void;
+		"update:currentTime": [currentTime: number];
+		"update:playing": [isPlaying: boolean];
+		"update:fullScreen": [isFullScreen: boolean];
+		"update:playbackRate": [playbackRate: number];
 	}>();
 
 	const currentPercent = computed({

@@ -3,14 +3,15 @@
 	export type CheckState = "unchecked" | "indeterminate" | "checked";
 </script>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends string">
+	// BUG: 泛型功能有问题，暂时禁用检查。
 	const props = withDefaults(defineProps<{
 		/** 禁用。 */
 		disabled?: boolean;
 		/** 值。 */
-		value?: string; // 稍后改为泛型 T。
+		value?: T;
 		/** 当前绑定值。 */
-		modelValue?: string[]; // 稍后改为泛型 T[]。
+		modelValue?: T[];
 		/** 复选状态，单向绑定使用。 */
 		checkState?: CheckState;
 	}>(), {
@@ -20,8 +21,8 @@
 	});
 
 	const emits = defineEmits<{
-		(event: "update:modelValue", value: string[]): void; // 稍后改为泛型 T[]。
-		(event: "change", arg: { value: string; checkState: CheckState; checked: boolean }): void;
+		"update:modelValue": [value: T[]];
+		change: [arg: { value: T; checkState: CheckState; checked: boolean }];
 	}>();
 
 	const checkbox = ref<HTMLInputElement>();
@@ -40,12 +41,12 @@
 		if (!checkbox.value) return;
 		const nextChecked = !isChecked.value;
 		const nextState: CheckState = nextChecked ? "checked" : "unchecked";
-		const modelValue = props.modelValue ?? [];
+		const modelValue = (props.modelValue ?? []) as T[];
 		if (props.value)
 			if (nextChecked) modelValue.push(props.value);
 			else arrayRemoveItem(modelValue, props.value);
-		emits("update:modelValue", modelValue); // 稍后改为泛型 T。
-		emits("change", { value: checkbox.value.value, checkState: nextState, checked: nextChecked });
+		emits("update:modelValue", modelValue);
+		emits("change", { value: checkbox.value.value as T, checkState: nextState, checked: nextChecked });
 	}
 
 	// 如果复选框勾选情况与 prop 不同，就强制使其相同。

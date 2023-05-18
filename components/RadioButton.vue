@@ -1,25 +1,24 @@
-<script setup lang="ts" generic="T">
+<script setup lang="ts" generic="T extends string">
 	import { Movement } from "./Checkbox.vue";
 
 	const props = withDefaults(defineProps<{
 		/** 禁用。 */
 		disabled?: boolean;
 		/** 值。 */
-		value?: string; // 稍后改为泛型 T。
+		value?: T;
 		/** 当前绑定值。 */
-		modelValue?: string; // 稍后改为泛型 T。
+		modelValue?: T;
 		/** 已勾选，单向绑定使用。 */
 		checked?: boolean;
 	}>(), {
 		value: undefined,
 		modelValue: undefined,
 	});
-	// TODO: [兰音] 随着 volar 的更新，似乎泛型功能被弄坏了。
 
 	const emits = defineEmits<{
-		(event: "update:modelValue", value: string): void; // 稍后改为泛型 T。
-		(event: "change", arg: { value: string; checked: boolean }): void;
-		(event: "move", value: Movement): void;
+		"update:modelValue": [value: T];
+		change: [arg: { value: T; checked: boolean }];
+		move: [value: Movement];
 	}>();
 
 	const radio = ref<HTMLInputElement>();
@@ -35,8 +34,8 @@
 	 */
 	function onChange() {
 		if (!radio.value) return;
-		emits("update:modelValue", radio.value.value);
-		emits("change", { value: radio.value.value, checked: true });
+		emits("update:modelValue", radio.value.value as T);
+		emits("change", { value: radio.value.value as T, checked: true });
 	}
 
 	// 如果单选框勾选情况与 prop 不同，就强制使其相同。
@@ -92,8 +91,8 @@
 			break;
 		}
 		thatComponent.focus();
-		emits("update:modelValue", radio.value);
-		emits("change", { value: radio.value, checked: true });
+		emits("update:modelValue", radio.value as T);
+		emits("change", { value: radio.value as T, checked: true });
 	}
 </script>
 
@@ -107,7 +106,7 @@
 		<input
 			ref="radio"
 			type="radio"
-			:value="props.value"
+			:value="value"
 			:checked="isChecked"
 			:disabled="disabled"
 		/>

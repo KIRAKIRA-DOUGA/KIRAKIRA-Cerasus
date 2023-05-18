@@ -13,7 +13,7 @@
 	});
 
 	const emits = defineEmits<{
-		(event: "animCreated", anim: AnimationItem): void;
+		animCreated: [anim: AnimationItem];
 	}>();
 
 	const style = computed(() => ({

@@ -7,11 +7,15 @@
 	}>();
 
 	const emits = defineEmits<{
-		(event: "update:modelValue", arg: string): void;
+		"update:modelValue": [arg: string];
+	}>();
+
+	defineSlots<{
+		default?: typeof TabItem;
 	}>();
 
 	const { Slot, slotNode } = useFactory();
-	const tabBar = ref<HTMLElement>();
+	const tabBar = refComp();
 	const indicator = ref<HTMLDivElement>();
 	const updateIndicatorWithoutAnimation = Symbol.for("updateIndicatorWithoutAnimation");
 
@@ -23,6 +27,7 @@
 		emits("update:modelValue", id);
 	}
 
+	// TODO: 当标签栏及其父系元素如果添加了变换样式（如缩放）会导致指示器的位置计算错误。在本例中进出设置页面时可以发现指示器的位置异常。
 	/**
 	 * 获取指示器的四边位置。
 	 * @param item - 选项卡项目。
@@ -45,7 +50,7 @@
 			top: tabBarTop,
 			bottom: tabBottom,
 		} = tabBar.value.getBoundingClientRect();
-		const offset = props.vertical ? (itemHeight - maxLength) / 2 : (itemWidth - maxLength) / 2;
+		const offset = ((props.vertical ? itemHeight : itemWidth) - maxLength) / 2;
 		return {
 			left: (itemWidth <= maxLength ? itemLeft : itemLeft + offset) - tabBarLeft,
 			right: -(itemWidth <= maxLength ? itemRight : itemRight - offset) + tabBarRight,
@@ -77,7 +82,6 @@
 		id ??= props.modelValue;
 		if (!indicator.value) return;
 		const indicatorStyle = indicator.value.style;
-
 		const [pos1, pos2] = props.vertical ? ["top", "bottom"] as const : ["left", "right"] as const;
 		const style = {
 			set [pos1](value: number) { indicatorStyle[pos1] = value + "px"; },
@@ -143,13 +147,11 @@
 </script>
 
 <template>
-	<Comp>
-		<div ref="tabBar" class="tab-bar">
-			<div class="items" :class="{ vertical, big }">
-				<Slot />
-			</div>
-			<div ref="indicator" class="indicator" :class="{ vertical }"></div>
+	<Comp ref="tabBar">
+		<div class="items" :class="{ vertical, big }">
+			<Slot />
 		</div>
+		<div ref="indicator" class="indicator" :class="{ vertical }"></div>
 	</Comp>
 </template>
 
@@ -175,7 +177,7 @@
 		}
 	}
 
-	div.tab-bar {
+	:comp {
 		position: relative;
 		display: inline-block;
 		width: 100%;

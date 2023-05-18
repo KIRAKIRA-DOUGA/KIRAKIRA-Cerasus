@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	import TabBar from "./TabBar.vue";
-	import { FlexDirectionProperty } from "csstype";
+	import { Property } from "csstype";
 
 	const props = withDefaults(defineProps<{
 		id: string;
@@ -15,7 +15,7 @@
 
 	const parent = useParent(TabBar)!;
 	const active = computed(() => parent.props.modelValue === props.id);
-	const flexDirection = computed(() => props.direction === "horizontal" ? undefined : props.direction.replace("horizontal", "row").replace("vertical", "column") as FlexDirectionProperty);
+	const flexDirection = computed(() => props.direction === "horizontal" ? undefined : props.direction.replace("horizontal", "row").replace("vertical", "column") as Property.FlexDirection);
 
 	/**
 	 * 单击切换选项卡事件。
@@ -26,17 +26,17 @@
 </script>
 
 <template>
-	<div class="tab-item" :class="{ active, vertical: direction.includes('vertical') }" :style="{ flexDirection }" @click="onClick">
+	<Comp :class="{ active, vertical: direction.includes('vertical') }" :style="{ flexDirection }" @click="onClick">
 		<div v-if="icon" class="icon-wrapper">
 			<Icon :name="icon" />
 		</div>
 		<slot></slot>
 		<Badge v-if="badge !== undefined" class="badge">{{ badge }}</Badge>
-	</div>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
-	.tab-item {
+	:comp {
 		@include flex-center;
 		gap: 4px;
 		color: c(icon-color);
@@ -55,7 +55,7 @@
 			}
 		}
 
-		.vertical & {
+		.vertical > & {
 			@include radius-small;
 			justify-content: flex-start;
 			width: 100%;
@@ -69,6 +69,7 @@
 				width: 100%;
 			}
 
+			&:hover,
 			&.active {
 				background-color: c(hover-color);
 			}

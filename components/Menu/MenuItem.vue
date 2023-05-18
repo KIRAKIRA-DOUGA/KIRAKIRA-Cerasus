@@ -8,7 +8,7 @@
 	});
 
 	const emits = defineEmits<{
-		(event: "click", e: MouseEvent): void;
+		click: [e: MouseEvent];
 	}>();
 
 	const parent = useParent(Menu)!;

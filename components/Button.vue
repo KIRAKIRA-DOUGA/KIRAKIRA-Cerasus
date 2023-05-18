@@ -17,7 +17,7 @@
 	}>();
 
 	const emits = defineEmits<{
-		(event: "click", payload: MouseEvent): void;
+		click: [payload: MouseEvent];
 	}>();
 
 	/**

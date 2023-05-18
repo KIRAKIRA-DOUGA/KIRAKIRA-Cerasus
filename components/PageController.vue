@@ -21,7 +21,7 @@
 	});
 
 	const emits = defineEmits<{
-		(event: "update:modelValue", page: number): void;
+		"update:modelValue": [page: number];
 	}>();
 
 	const currentPage = computed(() => props.modelValue ?? props.current);

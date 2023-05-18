@@ -13,7 +13,7 @@
 	}>();
 
 	const emits = defineEmits<{
-		(event: "update:modelValue", shown: boolean): void;
+		"update:modelValue": [shown: boolean];
 	}>();
 
 	const parent = useParent(Accordion);

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 	import { ClientOnlyTeleport, Fragment } from "#components";
 
+	defineSlots<{
+		default?: typeof MenuItem;
+	}>();
+
 	/** 是否显示菜单？ */
 	const shown = ref(false);
 	const menu = ref<HTMLMenuElement>();

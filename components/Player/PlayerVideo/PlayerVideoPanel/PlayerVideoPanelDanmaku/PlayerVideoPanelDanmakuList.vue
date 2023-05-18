@@ -26,8 +26,8 @@
 		const grip = e.target as HTMLDivElement;
 		const index = +grip.dataset.index!;
 		const th = grip.parentElement as HTMLTableCellElement;
-		const gripWidth = grip.getClientRects()[0].width;
-		const thRect = th.getClientRects()[0];
+		const gripWidth = grip.getBoundingClientRect().width;
+		const thRect = th.getBoundingClientRect();
 		const left = thRect.left;
 		const x = e.pageX - left - grip.offsetLeft;
 		forceCursor("col-resize");

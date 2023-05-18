@@ -53,7 +53,7 @@ const props = withDefaults(defineProps<{
 
 ```typescript
 const emits = defineEmits<{
-	(event: "update", arg: ): void;
+	update: [arg: ];
 }>();
 ```
 

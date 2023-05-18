@@ -14,7 +14,7 @@
 		"prefix": "emits",
 		"body": [
 			"const emits = defineEmits<{",
-			"\t(event: \"${1:update}\", arg: $2): void;$0",
+			"\t${1:\"update:modelValue\"}: [arg: $3];$0",
 			"}>();",
 		],
 		"description": "定义Vue组件事件",

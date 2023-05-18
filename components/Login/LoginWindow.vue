@@ -9,7 +9,7 @@
 	}>();
 
 	const emits = defineEmits<{
-		(event: "update:modelValue", open: boolean): void;
+		"update:modelValue": [open: boolean];
 	}>();
 
 	type PageType = "login" | "forget" | "reset" | "register" | "register2";

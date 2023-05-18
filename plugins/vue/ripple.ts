@@ -35,7 +35,7 @@ export default defineNuxtPlugin(nuxt => {
 		mounted(element) {
 			element.classList.add(rippleClass);
 			element.addEventListener("pointerdown", e => {
-				const rect = element.getClientRects()[0];
+				const rect = element.getBoundingClientRect();
 				if (!rect) return;
 				const circleRadius = getMaxRadius(rect, e) + 1; // + 1 用于边缘问题。
 				let pointerX = e.clientX - rect.x,

@@ -28,6 +28,7 @@ declare module "vue" {
 		lang?: string;
 		title?: Readable;
 		tabindex?: Numberish;
+		onClick?: (payload: MouseEvent) => void;
 	}
 }
 

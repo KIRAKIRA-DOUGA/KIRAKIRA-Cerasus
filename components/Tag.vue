@@ -11,7 +11,7 @@
 	}>();
 
 	const emits = defineEmits<{
-		(event: "update:modelValue", on: boolean): void;
+		"update:modelValue": [on: boolean];
 	}>();
 
 	const isChecked = computed(() => props.modelValue ?? props.checked);

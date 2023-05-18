@@ -12,7 +12,7 @@
 	});
 
 	const emits = defineEmits<{
-		(event: "update:modelValue", on: boolean): void;
+		"update:modelValue": [on: boolean];
 	}>();
 
 	const isDraging = ref(false);
@@ -26,8 +26,8 @@
 	function onThumbDown(e: PointerEvent) {
 		const thumb = e.target as HTMLDivElement;
 		const control = thumb.parentElement!;
-		const thumbWidth = thumb.getClientRects()[0].width;
-		const controlRect = control.getClientRects()[0];
+		const thumbWidth = thumb.getBoundingClientRect().width;
+		const controlRect = control.getBoundingClientRect();
 		const left = controlRect.left, max = controlRect.width - thumbWidth;
 		const x = e.pageX - left - thumb.offsetLeft;
 		const firstTime = new Date().getTime();

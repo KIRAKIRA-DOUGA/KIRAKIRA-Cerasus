@@ -25,7 +25,7 @@
 	});
 
 	const emits = defineEmits<{
-		(event: "update:modelValue", value: string): void;
+		"update:modelValue": [value: string];
 	}>();
 
 	/** 用户是否输入了值。 */
