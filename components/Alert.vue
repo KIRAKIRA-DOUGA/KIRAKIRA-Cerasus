@@ -1,7 +1,5 @@
 <script setup lang="ts">
 	const props = defineProps<{
-		/** 已打开。 */
-		modelValue?: boolean;
 		/** 已打开，单向绑定使用。 */
 		open?: boolean;
 		/** 标题。 */
@@ -10,21 +8,17 @@
 		static?: boolean;
 	}>();
 
-	const emits = defineEmits<{
-		"update:modelValue": [open: boolean];
-	}>();
-
+	const model = defineModel<boolean>();
 	const open = computed({
-		get: () => !!(props.modelValue ?? props.open),
-		set: value => emits("update:modelValue", value),
+		get: () => !!(model.value ?? props.open),
+		set: value => model.value = value,
 	});
 	const alert = ref<HTMLDivElement>();
 
 	watch(open, async open => {
 		await nextTick();
 		if (!alert.value) return;
-		if (open)
-			animateSize(alert.value, null, { startHeight: 0, duration: 500 });
+		if (open) animateSize(alert.value, null, { startHeight: 0, duration: 500 });
 	}, { immediate: true });
 </script>
 

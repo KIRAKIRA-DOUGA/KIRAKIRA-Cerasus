@@ -1,8 +1,10 @@
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
-		modelValue: number;
+		/** 滑块最小值。 */
 		min?: number;
+		/** 滑块最大值。 */
 		max?: number;
+		/** 滑块默认值。当单击鼠标中键或触摸屏长按组件时还原默认值。 */
 		defaultValue?: number;
 	}>(), {
 		min: 0,
@@ -11,22 +13,22 @@
 	});
 
 	const emits = defineEmits<{
-		"update:modelValue": [value: number];
 		/** 当滑块拖动时即触发事件。 */
 		changing: [value: number];
 		/** 当滑块拖动完成抬起后才触发事件。 */
 		changed: [value: number];
 	}>();
 
-	const errorInfo = `取值范围应在 [${props.min}, ${props.max}] 其中，当前值为 ${props.modelValue}。`;
+	const model = defineModel<number>({ required: true });
+	const errorInfo = `取值范围应在 [${props.min}, ${props.max}] 其中，当前值为 ${model.value}。`;
 	if (props.min > props.max)
 		throw new RangeError(`Slider 的最小值比最大值要大？最小值为 ${props.min}，最大值为 ${props.max}。`);
-	if (props.modelValue < props.min)
+	if (model.value < props.min)
 		throw new RangeError("Slider 的值比最小值要小。" + errorInfo);
-	if (props.modelValue > props.max)
+	if (model.value > props.max)
 		throw new RangeError("Slider 的值比最大值要大。" + errorInfo);
 
-	const value = computed(() => map(props.modelValue, props.min, props.max, 0, 1));
+	const value = computed(() => map(model.value, props.min, props.max, 0, 1));
 	const moveTransition = ref(false);
 
 	/**
@@ -46,7 +48,7 @@
 		quickMoveTransition();
 		if (props.defaultValue !== undefined && Number.isFinite(props.defaultValue))
 			for (const event of ["update:modelValue", "changing", "changed"] as const)
-				emits(event as "update:modelValue", props.defaultValue);
+				emits(event as "changing", props.defaultValue);
 	}
 
 	// TODO: [兰音] 拖拽逻辑需要整改，改为识别按下轨道的位置，比识别按下滑块的位置更方便处理。
@@ -63,13 +65,13 @@
 		const pointerMove = (e: PointerEvent) => {
 			const position = clamp(e.pageX - left - x, 0, max);
 			const value = map(position, 0, max, props.min, props.max);
-			emits("update:modelValue", value);
+			model.value = value;
 			emits("changing", value);
 		};
 		const pointerUp = () => {
 			document.removeEventListener("pointermove", pointerMove);
 			document.removeEventListener("pointerup", pointerUp);
-			emits("changed", props.modelValue);
+			emits("changed", model.value);
 		};
 		document.addEventListener("pointermove", pointerMove);
 		document.addEventListener("pointerup", pointerUp);
@@ -84,7 +86,7 @@
 		const track = e.target as HTMLDivElement;
 		const { width } = track.getBoundingClientRect();
 		const value = map(e.offsetX, 0, width, props.min, props.max);
-		emits("update:modelValue", value);
+		model.value = value;
 		emits("changing", value);
 		await nextTick();
 		onThumbDown(e); // 再去调用拖拽滑块的事件。

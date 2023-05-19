@@ -4,8 +4,6 @@
 
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
-		/** 已打开。 */
-		modelValue?: boolean;
 		/** 已打开，单向绑定使用。 */
 		open?: boolean;
 		/** 标题。 */
@@ -21,13 +19,10 @@
 		icon: "sakuranomiya",
 	});
 
-	const emits = defineEmits<{
-		"update:modelValue": [open: boolean];
-	}>();
-
+	const model = defineModel<boolean>();
 	const open = computed({
-		get: () => !!(props.modelValue ?? props.open),
-		set: value => emits("update:modelValue", value),
+		get: () => !!(model.value ?? props.open),
+		set: value => model.value = value,
 	});
 
 	const modal = ref<HTMLDivElement>();

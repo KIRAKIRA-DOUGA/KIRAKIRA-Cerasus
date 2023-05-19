@@ -114,7 +114,7 @@
 	<Comp>
 		<Alert v-model="showMediaInfo" title="视频详细信息">
 			<Accordion>
-				<AccordionItem v-for="(info, type) in mediaInfos" :key="type" :title="type">
+				<AccordionItem v-for="(info, type) in mediaInfos" :key="type" :title="type" noPadding>
 					<table>
 						<thead>
 							<th>项目</th>
@@ -175,5 +175,9 @@
 	.main,
 	video {
 		width: 100%;
+	}
+
+	table {
+		border-radius: 0;
 	}
 </style>

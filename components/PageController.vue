@@ -6,8 +6,6 @@
 		 * 如果该参数是一个字符串数组，则会启用数组模式并显示字符串数组中的内容。
 		 */
 		pages: number | string[];
-		/** 当前页码。 */
-		modelValue?: number;
 		/** 当前页码，单向绑定使用。 */
 		current?: number;
 		/** 显示在组件上的最多页码数目。 */
@@ -15,16 +13,12 @@
 		/** 允许用户使用键盘上左右箭头键翻页。 */
 		enableArrowKeyMove?: boolean;
 	}>(), {
-		modelValue: undefined,
 		current: 1,
 		displayPageCount: 7,
 	});
 
-	const emits = defineEmits<{
-		"update:modelValue": [page: number];
-	}>();
-
-	const currentPage = computed(() => props.modelValue ?? props.current);
+	const model = defineModel<number>();
+	const currentPage = computed(() => model.value ?? props.current);
 	const array = computed(() => props.pages instanceof Array ? props.pages : null);
 	const pages = computed(() => !(props.pages instanceof Array) ? props.pages : props.pages.length);
 
@@ -153,7 +147,7 @@
 	function changePage(page: number) {
 		if (page < 1 || page > pages.value)
 			throw new RangeError(`超出页码范围。当前页码值取值范围为 1 ~ ${pages.value}，当前设定值为 ${page}。`);
-		emits("update:modelValue", page);
+		model.value = page;
 	}
 	/**
 	 * 移动页码值。如 +1、-1。
@@ -261,7 +255,7 @@
 				@click="changePage(1)"
 			/>
 			<div
-				v-if="(pages >= 3)"
+				v-if="pages >= 3"
 				ref="scrollArea"
 				class="scroll-area"
 				:class="{ 'is-scrolling': isScrolling }"

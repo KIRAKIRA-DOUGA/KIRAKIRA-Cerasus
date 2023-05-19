@@ -1,19 +1,18 @@
 <script setup lang="ts">
 	const props = defineProps<{
+		/** 是否使用切边样式的指示器？ */
 		clipped?: boolean;
+		/** 是否使用纵向的 NavigationView 样式？ */
 		vertical?: boolean;
+		/** 是否使用较大间距？ */
 		big?: boolean;
-		modelValue: string;
-	}>();
-
-	const emits = defineEmits<{
-		"update:modelValue": [arg: string];
 	}>();
 
 	defineSlots<{
 		default?: typeof TabItem;
 	}>();
 
+	const model = defineModel<string>({ required: true });
 	const { Slot, slotNode } = useFactory();
 	const tabBar = refComp();
 	const indicator = ref<HTMLDivElement>();
@@ -24,7 +23,7 @@
 	 * @param id - 选项卡标识符。
 	 */
 	function changeTab(id: string) {
-		emits("update:modelValue", id);
+		model.value = id;
 	}
 
 	// TODO: 当标签栏及其父系元素如果添加了变换样式（如缩放）会导致指示器的位置计算错误。在本例中进出设置页面时可以发现指示器的位置异常。
@@ -79,7 +78,7 @@
 	 */
 	async function update(id?: string, prevId?: string | typeof updateIndicatorWithoutAnimation) {
 		const LENGTH = 16; // 指定选项卡指示器的最大长度。
-		id ??= props.modelValue;
+		id ??= model.value;
 		if (!indicator.value) return;
 		const indicatorStyle = indicator.value.style;
 		const [pos1, pos2] = props.vertical ? ["top", "bottom"] as const : ["left", "right"] as const;
@@ -135,9 +134,7 @@
 		}
 	}
 
-	watch(() => props.modelValue, (id, prevId) => {
-		update(id, prevId);
-	});
+	watch(model, (id, prevId) => update(id, prevId));
 
 	useEventListener("window", "resize", () => update(undefined, updateIndicatorWithoutAnimation), { immediate: true });
 

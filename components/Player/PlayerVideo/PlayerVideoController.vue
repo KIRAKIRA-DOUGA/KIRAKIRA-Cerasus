@@ -1,38 +1,30 @@
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
-		playing?: boolean;
-		playbackRate?: number;
 		preservesPitch?: boolean;
-		currentTime?: number;
 		duration?: number;
-		fullScreen?: boolean;
 		toggleFullScreen?: Function;
 	}>(), {
-		playbackRate: 1,
-		currentTime: NaN,
 		duration: NaN,
 		toggleFullScreen: undefined,
 	});
 
-	const emits = defineEmits<{
-		"update:currentTime": [currentTime: number];
-		"update:playing": [isPlaying: boolean];
-		"update:fullScreen": [isFullScreen: boolean];
-		"update:playbackRate": [playbackRate: number];
-	}>();
+	const playing = defineModel<boolean>("playing");
+	const playbackRate = defineModel<number>("playbackRate", { default: 1 });
+	const model = defineModel<number>("currentTime", { default: NaN });
+	const fullScreen = defineModel<boolean>("fullScreen");
 
 	const currentPercent = computed({
 		get() {
-			const result = props.currentTime / props.duration;
+			const result = model.value / props.duration;
 			return Number.isFinite(result) ? result : 0;
 		},
 		set(percent) {
 			const newTime = percent * props.duration;
-			emits("update:currentTime", newTime);
+			model.value = newTime;
 		},
 	});
 
-	const currentTime = computed(() => new Duration(props.currentTime).toString());
+	const currentTime = computed(() => new Duration(model.value).toString());
 	const duration = computed(() => new Duration(props.duration).toString());
 
 	/**
@@ -44,22 +36,22 @@
 	 * 点击速度按钮时，在速度中循环。
 	 */
 	function switchSpeed() {
-		let index = playbackRates.indexOf(props.playbackRate);
+		let index = playbackRates.indexOf(playbackRate.value);
 		if (index === -1) {
 			index = playbackRates.indexOf(1);
 			if (index === -1) throw new Error("在 playbackRates 速度列表中必须包含原速 1。");
 		} else index = (index + 1) % playbackRates.length;
 		const newRate = playbackRates[index];
-		emits("update:playbackRate", newRate);
+		playbackRate.value = newRate;
 	}
 
-	const playbackRateText = computed(() => props.playbackRate.toFixed(2).replace(/\.?0+$/, "") + "×");
+	const playbackRateText = computed(() => playbackRate.value.toFixed(2).replace(/\.?0+$/, "") + "×");
 </script>
 
 <template>
 	<Comp>
 		<div class="left">
-			<LargeRippleButton class="play" :icon="playing ? 'pause' : 'play'" @click="emits('update:playing', !playing)" />
+			<LargeRippleButton class="play" :icon="playing ? 'pause' : 'play'" @click="playing = !playing" />
 		</div>
 		<div class="slider">
 			<Slider v-model="currentPercent" :min="0" :max="1" />
@@ -72,7 +64,7 @@
 			</div>
 			<LargeRippleButton icon="volume_up" />
 			<LargeRippleButton :text="playbackRateText" @click="switchSpeed" />
-			<LargeRippleButton icon="fullscreen" @click="() => toggleFullScreen?.()" />
+			<LargeRippleButton :icon="fullScreen ? 'fullscreen' : 'fullscreen_exit'" @click="() => toggleFullScreen?.()" />
 		</div>
 	</Comp>
 </template>

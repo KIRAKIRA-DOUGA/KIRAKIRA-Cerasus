@@ -32,9 +32,10 @@ export default defineNuxtPlugin(nuxt => {
 	let isInitedPointerUp = false;
 
 	nuxt.vueApp.directive("ripple", {
-		mounted(element) {
+		mounted(element, binding) {
 			element.classList.add(rippleClass);
 			element.addEventListener("pointerdown", e => {
+				if (binding.value === false) return;
 				const rect = element.getBoundingClientRect();
 				if (!rect) return;
 				const circleRadius = getMaxRadius(rect, e) + 1; // + 1 用于边缘问题。

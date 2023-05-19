@@ -10,29 +10,26 @@
 		disabled?: boolean;
 		/** 值。 */
 		value?: T;
-		/** 当前绑定值。 */
-		modelValue?: T[];
 		/** 复选状态，单向绑定使用。 */
 		checkState?: CheckState;
 	}>(), {
 		checkState: "unchecked",
 		value: undefined,
-		modelValue: undefined,
 	});
 
 	const emits = defineEmits<{
-		"update:modelValue": [value: T[]];
 		change: [arg: { value: T; checkState: CheckState; checked: boolean }];
 	}>();
 
-	const checkbox = ref<HTMLInputElement>();
+	const model = defineModel<T[]>();
 	const isChecked = computed(() => {
 		// NOTE: 由于期望在点击半选状态后应该切换到选中状态，因此在二元的定义下半选应该归纳于未选中状态下。
-		if (props.modelValue && props.value)
-			return props.modelValue.includes(props.value);
+		if (model.value && props.value)
+			return model.value.includes(props.value);
 		else return props.checkState === "checked";
 	});
 	const isIndeterminate = computed(() => props.checkState === "indeterminate");
+	const checkbox = ref<HTMLInputElement>();
 
 	/**
 	 * 数据改变事件。
@@ -41,11 +38,11 @@
 		if (!checkbox.value) return;
 		const nextChecked = !isChecked.value;
 		const nextState: CheckState = nextChecked ? "checked" : "unchecked";
-		const modelValue = (props.modelValue ?? []) as T[];
+		const modelValue = model.value ?? [];
 		if (props.value)
 			if (nextChecked) modelValue.push(props.value);
 			else arrayRemoveItem(modelValue, props.value);
-		emits("update:modelValue", modelValue);
+		model.value = modelValue;
 		emits("change", { value: checkbox.value.value as T, checkState: nextState, checked: nextChecked });
 	}
 

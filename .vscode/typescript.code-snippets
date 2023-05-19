@@ -19,6 +19,13 @@
 		],
 		"description": "定义Vue组件事件",
 	},
+	"Define Model": {
+		"prefix": "model",
+		"body": [
+			"const model = defineModel<${1:boolean}>($2);$0",
+		],
+		"description": "定义Vue组件双向绑定模型",
+	},
 	"For Reversed Loop": {
 		"prefix": "forr",
 		"body": [

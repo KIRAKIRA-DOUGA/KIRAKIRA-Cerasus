@@ -16,6 +16,10 @@
 快速初始化 Vue 组件模板。
 
 ```html
+<docs>
+	
+</docs>
+
 <script setup lang="ts">
 	
 </script>
@@ -55,6 +59,14 @@ const props = withDefaults(defineProps<{
 const emits = defineEmits<{
 	update: [arg: ];
 }>();
+```
+
+#### `emits`
+
+快速定义 Vue 组件双向绑定模型。
+
+```typescript
+const model = defineModel<boolean>();
 ```
 
 ### 通用

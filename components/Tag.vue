@@ -1,7 +1,5 @@
 <script setup lang="ts">
 	const props = defineProps<{
-		/** 勾选。 */
-		modelValue?: boolean;
 		/** 勾选，单向绑定使用。 */
 		checked?: boolean;
 		/** 禁用。 */
@@ -10,11 +8,8 @@
 		link?: string;
 	}>();
 
-	const emits = defineEmits<{
-		"update:modelValue": [on: boolean];
-	}>();
-
-	const isChecked = computed(() => props.modelValue ?? props.checked);
+	const model = defineModel<boolean>();
+	const isChecked = computed(() => model.value ?? props.checked);
 </script>
 
 <template>
@@ -25,7 +20,7 @@
 		:to="link || '#'"
 		draggable="false"
 		tabindex="0"
-		@click="emits('update:modelValue', !modelValue)"
+		@click="model = !model"
 	>
 		<div class="circle"></div>
 		<div class="content">

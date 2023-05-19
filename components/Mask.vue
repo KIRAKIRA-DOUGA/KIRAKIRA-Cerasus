@@ -4,8 +4,6 @@
 
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
-		/** 是否显示。 */
-		modelValue?: boolean;
 		/** 是否显示，单向绑定使用。 */
 		shown?: boolean;
 		/** CSS 中的 Z 轴高度。 */
@@ -21,11 +19,8 @@
 		position: "center",
 	});
 
-	const emits = defineEmits<{
-		"update:modelValue": [open: boolean];
-	}>();
-
-	const shown = computed(() => props.modelValue ?? props.shown);
+	const model = defineModel<boolean>();
+	const shown = computed(() => model.value ?? props.shown);
 	const mask = ref<HTMLDivElement>();
 
 	/**
@@ -34,10 +29,8 @@
 	 */
 	function close(e: MouseEvent) {
 		if (e.target === mask.value) // 单击的最终元素必须是遮罩本身，不能是其内容。
-			if (props.focusing)
-				replayAnimation(mask.value, "focusing");
-			else
-				emits("update:modelValue", false);
+			if (props.focusing) replayAnimation(mask.value, "focusing");
+			else model.value = false;
 	}
 </script>
 

@@ -1,22 +1,16 @@
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
-		/** 打开。 */
-		modelValue?: boolean;
 		/** 打开，单向绑定使用。 */
 		on?: boolean;
 		/** 禁用。 */
 		disabled?: boolean;
 	}>(), {
-		modelValue: undefined,
 		disabled: false,
 	});
 
-	const emits = defineEmits<{
-		"update:modelValue": [on: boolean];
-	}>();
-
+	const model = defineModel<boolean>();
+	const on = computed(() => model.value ?? props.on);
 	const isDraging = ref(false);
-	const on = computed(() => props.modelValue ?? props.on);
 	const toggleSwitch = refComp();
 
 	/**
@@ -38,7 +32,7 @@
 			document.removeEventListener("pointermove", pointerMove);
 			document.removeEventListener("pointerup", pointerUp);
 			const isOn = e.pageX - x > left + max / 2;
-			emits("update:modelValue", isOn);
+			model.value = isOn;
 			thumb.style.removeProperty("left");
 			const lastTime = new Date().getTime();
 			isDraging.value = lastTime - firstTime > 200; // 定义识别为拖动而不是点击的时间差。
@@ -51,7 +45,7 @@
 	 * 点击事件。为了和拖拽事件让位。
 	 */
 	function onClick() {
-		if (!isDraging.value) emits("update:modelValue", !props.modelValue);
+		if (!isDraging.value) model.value = !model.value;
 		isDraging.value = false;
 	}
 

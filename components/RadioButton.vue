@@ -6,27 +6,24 @@
 		disabled?: boolean;
 		/** 值。 */
 		value?: T;
-		/** 当前绑定值。 */
-		modelValue?: T;
 		/** 已勾选，单向绑定使用。 */
 		checked?: boolean;
 	}>(), {
 		value: undefined,
-		modelValue: undefined,
 	});
 
 	const emits = defineEmits<{
-		"update:modelValue": [value: T];
 		change: [arg: { value: T; checked: boolean }];
 		move: [value: Movement];
 	}>();
 
-	const radio = ref<HTMLInputElement>();
+	const model = defineModel<T>();
 	const isChecked = computed(() => {
-		if (props.modelValue && props.value)
-			return props.modelValue === props.value;
+		if (model.value && props.value)
+			return model.value === props.value;
 		else return !!props.checked;
 	});
+	const radio = ref<HTMLInputElement>();
 	const isAnimating = ref(false);
 
 	/**
@@ -34,7 +31,7 @@
 	 */
 	function onChange() {
 		if (!radio.value) return;
-		emits("update:modelValue", radio.value.value as T);
+		model.value = radio.value.value as T;
 		emits("change", { value: radio.value.value as T, checked: true });
 	}
 
@@ -91,7 +88,7 @@
 			break;
 		}
 		thatComponent.focus();
-		emits("update:modelValue", radio.value as T);
+		model.value = radio.value as T;
 		emits("change", { value: radio.value as T, checked: true });
 	}
 </script>

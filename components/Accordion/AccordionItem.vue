@@ -10,10 +10,8 @@
 		title: Readable;
 		/** 是否展示而非折叠？单向绑定使用。 */
 		shown?: boolean;
-	}>();
-
-	const emits = defineEmits<{
-		"update:modelValue": [shown: boolean];
+		/** 是否**不**向手风琴内容部分加内边距？ */
+		noPadding?: boolean;
 	}>();
 
 	const parent = useParent(Accordion);
@@ -44,7 +42,7 @@
 			<Icon name="chevron_down" />
 		</h3>
 		<Transition>
-			<div v-if="shown" class="content">
+			<div v-if="shown" class="content" :class="{ 'no-padding': noPadding }">
 				<div><slot></slot></div>
 			</div>
 		</Transition>
@@ -52,11 +50,13 @@
 </template>
 
 <style scoped lang="scss">
+	$padding: 0.75rem 1rem;
+
 	:comp {
 		@include radius-large;
 
 		> * {
-			padding: 0.75rem 1rem;
+			padding: $padding;
 			// border-bottom: c(gray-30) 1px solid; // 有一说一，边框线确实丑。
 			transition: $fallback-transitions, padding $ease-out-smooth 500ms;
 		}
@@ -123,5 +123,9 @@
 	.content {
 		@include animated-auto-size(height);
 		transition-duration: 500ms;
+
+		&.no-padding {
+			padding: 0 !important;
+		}
 	}
 </style>

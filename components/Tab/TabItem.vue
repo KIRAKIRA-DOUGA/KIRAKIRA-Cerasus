@@ -16,6 +16,7 @@
 	const parent = useParent(TabBar)!;
 	const active = computed(() => parent.props.modelValue === props.id);
 	const flexDirection = computed(() => props.direction === "horizontal" ? undefined : props.direction.replace("horizontal", "row").replace("vertical", "column") as Property.FlexDirection);
+	const vertical = computed(() => !!parent?.props.vertical);
 
 	/**
 	 * 单击切换选项卡事件。
@@ -26,7 +27,7 @@
 </script>
 
 <template>
-	<Comp :class="{ active, vertical: direction.includes('vertical') }" :style="{ flexDirection }" @click="onClick">
+	<Comp v-ripple="vertical" :class="{ active, vertical: direction.includes('vertical') }" :style="{ flexDirection }" @click="onClick">
 		<div v-if="icon" class="icon-wrapper">
 			<Icon :name="icon" />
 		</div>
@@ -55,6 +56,11 @@
 			}
 		}
 
+		.badge {
+			font-weight: normal;
+		}
+		// TODO: 缺少横向 Tab 的 hover 和 pressed 样式，但不要用水波纹，你用了就知道有多丑了。
+
 		.vertical > & {
 			@include radius-small;
 			justify-content: flex-start;
@@ -63,10 +69,6 @@
 
 			.icon-wrapper {
 				margin-right: 8px;
-			}
-
-			.badge {
-				width: 100%;
 			}
 
 			&:hover,

@@ -13,8 +13,6 @@
 		size?: "small" | "normal" | "large";
 		/** 输入框类型。 */
 		type?: string;
-		/** 值。 */
-		modelValue: string;
 		/** 始终不显示清空按钮。 */
 		hideClearAll?: boolean;
 	}>(), {
@@ -24,16 +22,9 @@
 		placeholder: "",
 	});
 
-	const emits = defineEmits<{
-		"update:modelValue": [value: string];
-	}>();
-
+	const value = defineModel<string>({ required: true });
 	/** 用户是否输入了值。 */
-	const typed = computed(() => props.modelValue !== "");
-	const value = computed({
-		get: () => props.modelValue,
-		set: value => emits("update:modelValue", value),
-	});
+	const typed = computed(() => value.value !== "");
 	/** 是否显示密码。 */
 	const showPassword = ref(false);
 	const type = computed(() => {

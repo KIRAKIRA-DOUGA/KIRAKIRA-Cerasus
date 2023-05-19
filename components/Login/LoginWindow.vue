@@ -2,16 +2,11 @@
 	import avatar from "assets/images/aira.jpg";
 
 	const props = defineProps<{
-		/** 已打开。 */
-		modelValue?: boolean;
 		/** 已打开，单向绑定使用。 */
 		open?: boolean;
 	}>();
 
-	const emits = defineEmits<{
-		"update:modelValue": [open: boolean];
-	}>();
-
+	const model = defineModel<boolean>();
 	type PageType = "login" | "forget" | "reset" | "register" | "register2";
 	const currentPage = ref<PageType>("login");
 	const isWelcome = computed(() => ["register", "register2"].includes(currentPage.value));
@@ -30,9 +25,9 @@
 		},
 	});
 	const open = computed({
-		get: () => !!(props.modelValue ?? props.open),
+		get: () => !!(model.value ?? props.open),
 		set: value => {
-			emits("update:modelValue", value);
+			model.value = value;
 			if (isLogining.value) useEvent("user:login", true);
 			isLogining.value = false;
 		},
