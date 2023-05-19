@@ -45,6 +45,7 @@ export default defineNuxtConfig({
 		"server",
 		"helpers",
 		"classes",
+		"locales",
 	),
 	css: [
 		"styles/global.scss",

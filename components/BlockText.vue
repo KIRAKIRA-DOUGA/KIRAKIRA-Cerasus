@@ -22,20 +22,6 @@
 	</span>
 </template>
 
-<i18n lang="json5">
-{
-	zh: {
-		you_know_too_much: "你知道的太多了。",
-	},
-	en: {
-		you_know_too_much: "You know too much.",
-	},
-	ja: {
-		you_know_too_much: "あなたは知っていることが多すぎます。",
-	},
-}
-</i18n>
-
 <style scoped lang="scss">
 	.block-text {
 		@include radius-small;

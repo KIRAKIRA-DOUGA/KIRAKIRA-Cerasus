@@ -1,4 +1,4 @@
-import { ComputedRef } from "nuxt/dist/app/compat/capi";
+import { LocaleWithDefaultValue } from "locales/SChinese";
 
 const handler = {
 	get(_target: object, name: string) {
@@ -7,7 +7,7 @@ const handler = {
 	},
 };
 /** 获取本地化字符串对象。 */
-export const t = new Proxy({}, handler) as Readonly<Record<string, string>>;
+export const t = new Proxy({}, handler) as LocaleWithDefaultValue & Readonly<Record<string, string>>;
 Object.freeze(t);
 
 /**

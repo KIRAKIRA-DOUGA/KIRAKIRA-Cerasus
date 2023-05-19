@@ -67,20 +67,6 @@
 	</ClientOnlyTeleport>
 </template>
 
-<i18n lang="json5">
-{
-	zh: {
-		finish: "操作成功完成",
-	},
-	en: {
-		finish: "Operation successfully done",
-	},
-	ja: {
-		finish: "操作が正常に完了しました",
-	},
-}
-</i18n>
-
 <style scoped lang="scss">
 	:comp {
 		@include flex-center;

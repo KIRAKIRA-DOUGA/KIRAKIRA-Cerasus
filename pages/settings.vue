@@ -112,62 +112,6 @@
 	</div>
 </template>
 
-<i18n lang="json5">
-{
-	zh: {
-		settings: "设置",
-		light: "浅色主题",
-		dark: "深色主题",
-		system: "跟随系统",
-		pink: "萌妹粉",
-		sky: "天空蓝",
-		blue: "智乃蓝",
-		green: "千夜绿",
-		orange: "心爱橙",
-		purple: "理世紫",
-		searchSettings: "搜索设置",
-		appearance: "外观",
-		theme: "主题",
-		palette: "个性色",
-		language: "语言",
-	},
-	en: {
-		settings: "Settings",
-		light: "Light theme",
-		dark: "Dark theme",
-		system: "Follow system theme",
-		pink: "Kawaii Pink",
-		sky: "Sky Blue",
-		blue: "Chino Blue",
-		green: "Chiya Green",
-		orange: "Cocoa Orange",
-		purple: "Rize Purple",
-		searchSettings: "Search settings",
-		appearance: "Appearance",
-		theme: "Theme",
-		palette: "Palette",
-		language: "Language",
-	},
-	ja: {
-		settings: "設定",
-		light: "ライトテーマ",
-		dark: "ダークテーマ",
-		system: "システムのテーマ設定を使用する",
-		pink: "カワイイ ピンク",
-		sky: "空色",
-		blue: "チノ 青",
-		green: "千夜 緑",
-		orange: "ココア オレンジ",
-		purple: "リゼ 紫",
-		searchSettings: "検索設定",
-		appearance: "外観",
-		theme: "テーマ",
-		palette: "個性の色",
-		language: "言語",
-	},
-}
-</i18n>
-
 <style scoped lang="scss">
 	$title-padding-top: 26px;
 	$nav-padding-x: 24px;

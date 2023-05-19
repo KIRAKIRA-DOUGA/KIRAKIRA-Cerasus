@@ -28,14 +28,18 @@
 	
 </template>
 
-<i18n lang="json5">
-	
-</i18n>
-
 <style scoped lang="scss">
 	
 </style>
 ```
+
+注意：
+```html
+<i18n lang="json5">
+	
+</i18n>
+```
+`<i18n>` 代码块由于不方便字符串复用而暂停使用，改为在 locales 目录下单独文件存放语言。
 
 ### TypeScript
 

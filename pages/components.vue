@@ -116,9 +116,9 @@
 			<ToggleSwitch disabled>{{ t.offDisabled }} </ToggleSwitch>
 			<ToggleSwitch on disabled>{{ t.onDisabled }}</ToggleSwitch>
 			<ToggleSwitch v-model="appConfig.showCssDoodle">{{ t.animatedBackground }}</ToggleSwitch>
-			<RadioButton v-model="theme" value="light">{{ t.lightTheme }}</RadioButton>
-			<RadioButton v-model="theme" value="dark">{{ t.darkTheme }}</RadioButton>
-			<RadioButton v-model="theme" value="system">{{ t.systemTheme }}</RadioButton>
+			<RadioButton v-model="theme" value="light">{{ t.light }}</RadioButton>
+			<RadioButton v-model="theme" value="dark">{{ t.dark }}</RadioButton>
+			<RadioButton v-model="theme" value="system">{{ t.system }}</RadioButton>
 			<hr />
 			<RadioButton v-model="palette" value="pink">{{ t.pink }}</RadioButton>
 			<RadioButton v-model="palette" value="sky">{{ t.sky }}</RadioButton>
@@ -236,119 +236,6 @@
 		</div>
 	</div>
 </template>
-
-<i18n lang="json5">
-{
-	zh: {
-		home: "KIRAKIRA 首页",
-		video: "视频",
-		content: "内容",
-		search: "搜索",
-		button: "按钮",
-		buttonDisabled: "按钮被禁用",
-		buttonClicked: "我被单击了 呜呜呜~",
-		confetti: "五彩纸屑",
-		send: "发送",
-		showAlert: "显示警告框",
-		toggleSwitch: "切换开关",
-		on: "开",
-		off: "关",
-		onDisabled: "禁用 开",
-		offDisabled: "禁用 关",
-		animatedBackground: "动态背景",
-		lightTheme: "浅色主题",
-		darkTheme: "深色主题",
-		systemTheme: "跟随系统",
-		pink: "萌妹粉",
-		sky: "天空蓝",
-		blue: "智乃蓝",
-		green: "千夜绿",
-		orange: "心爱橙",
-		purple: "理世紫",
-		custom: "自定义",
-		checkbox: "复选框",
-		tag: "标签",
-		all: "全部",
-		video: "视频",
-		images: "图片",
-		logoHidden: "LOGO隐藏",
-		logoHalf: "LOGO半显示",
-		logoShow: "LOGO全显示",
-	},
-	en: {
-		home: "KIRAKIRA Home",
-		video: "Video",
-		content: "Content",
-		search: "Search",
-		button: "Button",
-		buttonDisabled: "Button disabled",
-		buttonClicked: "I was clicked~",
-		confetti: "Confetti",
-		send: "Send",
-		showAlert: "Show Alert",
-		toggleSwitch: "Toggle Switch",
-		on: "On",
-		off: "Off",
-		onDisabled: "Disabled on",
-		offDisabled: "Disabled off",
-		animatedBackground: "Animated Background",
-		lightTheme: "Light theme",
-		darkTheme: "Dark theme",
-		systemTheme: "Follow system theme",
-		pink: "Kawaii Pink",
-		sky: "Sky Blue",
-		blue: "Chino Blue",
-		green: "Chiya Green",
-		orange: "Cocoa Orange",
-		purple: "Rize Purple",
-		custom: "Custom",
-		checkbox: "Checkbox",
-		tag: "Tag",
-		all: "All",
-		video: "Videos",
-		images: "Images",
-		logoHidden: "Hidden LOGO",
-		logoHalf: "Half hidden LOGO",
-		logoShow: "Full LOGO",
-	},
-	ja: {
-		home: "KIRAKIRA ホーム",
-		video: "動画",
-		content: "コンテンツ",
-		search: "検索",
-		button: "ボタン",
-		buttonDisabled: "無効化されたボタン",
-		buttonClicked: "私はクリックされました ううっ~",
-		confetti: "紙吹雪",
-		send: "送信",
-		showAlert: "アラートを表示",
-		toggleSwitch: "スイッチ",
-		onDisabled: "無効化されたスイッチ オン",
-		offDisabled: "無効化されたスイッチ オフ",
-		animatedBackground: "アニメーションの背景",
-		on: "オン",
-		off: "オフ",
-		lightTheme: "ライトテーマ",
-		darkTheme: "ダークテーマ",
-		systemTheme: "システムのテーマ設定を使用する",
-		pink: "カワイイ ピンク",
-		sky: "空色",
-		blue: "チノ 青",
-		green: "千夜 緑",
-		orange: "ココア オレンジ",
-		purple: "リゼ 紫",
-		custom: "カスタム",
-		checkbox: "チェックボックス",
-		tag: "タグ",
-		all: "すべて",
-		video: "動画",
-		images: "画像",
-		logoHidden: "LOGO非表示",
-		logoHalf: "LOGO部分表示",
-		logoShow: "LOGO全表示",
-	},
-}
-</i18n>
 
 <style scoped lang="scss">
 	.component-test {

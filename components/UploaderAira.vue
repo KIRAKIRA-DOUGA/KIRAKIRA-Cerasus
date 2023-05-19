@@ -44,20 +44,6 @@
 	</Transition>
 </template>
 
-<i18n lang="json5">
-{
-	zh: {
-		uploader_lovin_it: "UP主爱啦",
-	},
-	en: {
-		uploader_lovin_it: "Uploader's lovin' it",
-	},
-	ja: {
-		uploader_lovin_it: "うP主はそれが好きです",
-	},
-}
-</i18n>
-
 <style scoped lang="scss">
 	:comp {
 		@include radius-small;

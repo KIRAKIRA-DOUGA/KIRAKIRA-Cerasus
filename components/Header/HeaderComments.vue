@@ -17,17 +17,3 @@
 		</template>
 	</HeaderGroup>
 </template>
-
-<i18n lang="json5">
-{
-	zh: {
-		comments: "评论",
-	},
-	en: {
-		comments: "Comments",
-	},
-	ja: {
-		comments: "コメント",
-	},
-}
-</i18n>

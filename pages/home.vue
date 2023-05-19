@@ -86,29 +86,6 @@
 	</div>
 </template>
 
-<i18n lang="json5">
-{
-	zh: {
-		home: "首页",
-		anime: "动画",
-		music: "音乐",
-		otomad: "音MAD",
-	},
-	en: {
-		home: "Home",
-		anime: "Anime",
-		music: "Music",
-		otomad: "Otomad",
-	},
-	ja: {
-		home: "ホーム",
-		anime: "アニメ",
-		music: "音楽",
-		otomad: "音MAD",
-	},
-}
-</i18n>
-
 <style scoped lang="scss">
 	.container {
 		padding-top: 0 !important;
