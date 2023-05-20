@@ -68,7 +68,7 @@ declare global {
 	 * type MaybeRef<T> = T | Ref<T>
 	 * ```
 	 */
-	export type MaybeRef<T> = T | Ref<T>;
+	// export type MaybeRef<T> = T | Ref<T>;
 
-	export { ComponentInternalInstance, ConcreteComponent, Directive, Events, Ref, RendererElement, Slot, VNode, WritableComputedRef } from "vue";
+	export { ComponentInternalInstance, ConcreteComponent, Directive, Events, MaybeRef, MaybeRefOrGetter, Ref, RendererElement, Slot, VNode, WritableComputedRef } from "vue";
 }

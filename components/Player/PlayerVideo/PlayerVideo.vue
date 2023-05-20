@@ -12,6 +12,7 @@
 	const preservesPitch = ref(false);
 	const currentTime = ref(NaN);
 	const duration = ref(NaN);
+	const buffered = ref(0);
 	const isTimeUpdating = ref(false);
 	const showMediaInfo = ref(false);
 	const mediaInfos = ref<MediaInfo>();
@@ -108,6 +109,18 @@
 		await nextTick();
 		isTimeUpdating.value = false;
 	}
+
+	/**
+	 * 视频加载缓冲事件。
+	 * @param e - 普通事件。
+	 */
+	function onProgress(e: Event) {
+		const video = e.target as HTMLVideoElement;
+		try {
+			buffered.value = video.buffered.end(0);
+			// TODO: 这个只能获取视频缓存的总长度值，当用户手动跳时间时，会导致显示不准确。待优化。
+		} catch { }
+	}
 </script>
 
 <template>
@@ -140,6 +153,7 @@
 				@ratechange="e => playbackRate = (e.target as HTMLVideoElement).playbackRate"
 				@timeupdate="onTimeUpdate"
 				@canplay="onCanPlay"
+				@progress="onProgress"
 				@click="playing = !playing"
 				@dblclick="toggle"
 				@contextmenu.prevent="e => menu?.show(e)"
@@ -151,6 +165,7 @@
 				v-model:playbackRate="playbackRate"
 				:duration="duration"
 				:toggleFullScreen="toggle"
+				:buffered="buffered"
 			/>
 		</div>
 

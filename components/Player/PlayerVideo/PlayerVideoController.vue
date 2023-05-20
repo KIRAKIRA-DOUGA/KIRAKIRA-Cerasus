@@ -1,10 +1,16 @@
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
+		/** 速度保持音高？ */
 		preservesPitch?: boolean;
+		/** 视频时长。 */
 		duration?: number;
+		/** 缓冲加载进度值。 */
+		buffered?: number;
+		/** 切换全屏函数。 */
 		toggleFullScreen?: Function;
 	}>(), {
 		duration: NaN,
+		buffered: 0,
 		toggleFullScreen: undefined,
 	});
 
@@ -26,6 +32,7 @@
 
 	const currentTime = computed(() => new Duration(model.value).toString());
 	const duration = computed(() => new Duration(props.duration).toString());
+	const buffered = computed(() => props.buffered / props.duration);
 
 	/**
 	 * 常用速度列表。
@@ -54,7 +61,7 @@
 			<LargeRippleButton class="play" :icon="playing ? 'pause' : 'play'" @click="playing = !playing" />
 		</div>
 		<div class="slider">
-			<Slider v-model="currentPercent" :min="0" :max="1" />
+			<Slider v-model="currentPercent" :min="0" :max="1" :buffered="buffered" />
 		</div>
 		<div class="right">
 			<div class="time">

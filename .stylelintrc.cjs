@@ -37,6 +37,7 @@ module.exports = {
 		"function-url-quotes": "always",
 		"string-quotes": "double",
 		"block-opening-brace-space-before": "always",
+		"block-closing-brace-empty-line-before": "never",
 		"import-notation": null,
 		"at-rule-no-unknown": null,
 		"function-no-unknown": null,

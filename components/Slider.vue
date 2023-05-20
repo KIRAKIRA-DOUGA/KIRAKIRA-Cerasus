@@ -1,15 +1,18 @@
 <script setup lang="ts">
-	const props = withDefaults(defineProps<{
+	const props = withDefaults(defineProps < {
 		/** 滑块最小值。 */
 		min?: number;
 		/** 滑块最大值。 */
 		max?: number;
 		/** 滑块默认值。当单击鼠标中键或触摸屏长按组件时还原默认值。 */
 		defaultValue?: number;
+		/** 媒体缓冲加载进度值。 */
+		buffered?: number;
 	}>(), {
 		min: 0,
 		max: 100,
 		defaultValue: undefined,
+		buffered: undefined,
 	});
 
 	const emits = defineEmits<{
@@ -28,16 +31,10 @@
 	if (model.value > props.max)
 		throw new RangeError("Slider 的值比最大值要大。" + errorInfo);
 
-	const value = computed(() => map(model.value, props.min, props.max, 0, 1));
-	const moveTransition = ref(false);
-
-	/**
-	 * 在短暂的一瞬间恢复动画。
-	 */
-	function quickMoveTransition() {
-		moveTransition.value = true;
-		setTimeout(() => moveTransition.value = false, 250);
-	}
+	const restrict = (n: number | undefined, nanValue: number) => Number.isFinite(n) ? clamp(map(n!, props.min, props.max, 0, 1), 0, 1) : nanValue;
+	const value = computed(() => restrict(model.value, 0));
+	const smoothValue = useSmoothValue(value, 0.5);
+	const buffered = computed(() => restrict(props.buffered, NaN));
 
 	/**
 	 * 重置默认值。
@@ -45,23 +42,22 @@
 	 */
 	function resetDefault(e: PointerEvent | MouseEvent) {
 		e.preventDefault();
-		quickMoveTransition();
 		if (props.defaultValue !== undefined && Number.isFinite(props.defaultValue))
 			for (const event of ["update:modelValue", "changing", "changed"] as const)
 				emits(event as "changing", props.defaultValue);
 	}
 
-	// TODO: [兰音] 拖拽逻辑需要整改，改为识别按下轨道的位置，比识别按下滑块的位置更方便处理。
 	/**
 	 * 拖拽滑块逻辑处理。
 	 * @param e - 指针事件（包括鼠标和触摸）。
+	 * @param triggerByTrack - 是否是由点击轨道而转移过来调用的。
 	 */
-	function onThumbDown(e: PointerEvent) {
+	function onThumbDown(e: PointerEvent, triggerByTrack: boolean = false) {
 		if (e.button === 1) { resetDefault(e); return; }
 		const thumb = (e.target as HTMLDivElement).parentElement!.querySelector(".thumb") as HTMLDivElement;
 		const track = thumb.parentElement!.querySelector(".track")!;
 		const { left, width: max } = track.getBoundingClientRect();
-		const x = e.pageX - left - thumb.offsetLeft;
+		const x = triggerByTrack ? 0 : e.pageX - left - thumb.offsetLeft;
 		const pointerMove = (e: PointerEvent) => {
 			const position = clamp(e.pageX - left - x, 0, max);
 			const value = map(position, 0, max, props.min, props.max);
@@ -89,7 +85,7 @@
 		model.value = value;
 		emits("changing", value);
 		await nextTick();
-		onThumbDown(e); // 再去调用拖拽滑块的事件。
+		onThumbDown(e, true); // 再去调用拖拽滑块的事件。
 	}
 
 	/**
@@ -103,8 +99,15 @@
 </script>
 
 <template>
-	<Comp :class="{ 'move-transition': moveTransition }" tabindex="0" :style="{ '--value': value }">
+	<Comp
+		tabindex="0"
+		:style="{
+			'--value': smoothValue,
+			'--buffered': buffered,
+		}"
+	>
 		<div class="track" @pointerdown="onTrackDown" @contextmenu="onLongPress"></div>
+		<div v-show="Number.isFinite(buffered)" class="buffered"></div>
 		<div class="passed"></div>
 		<div class="thumb" @pointerdown="onThumbDown" @contextmenu="onLongPress"></div>
 	</Comp>
@@ -115,15 +118,18 @@
 	$thumb-size-half: calc($thumb-size / 2);
 	$track-thickness: 6px;
 	$value: calc(var(--value) * (100% - $thumb-size));
+	$buffered: calc(var(--buffered) * (100% - $thumb-size));
 
 	:comp {
 		--value: 0;
+		--buffered: 0;
 		position: relative;
 		touch-action: pan-y pinch-zoom;
 	}
 
 	.track,
-	.passed {
+	.passed,
+	.buffered {
 		@include oval;
 		height: $track-thickness;
 		margin: $thumb-size-half;
@@ -134,18 +140,24 @@
 		cursor: pointer;
 	}
 
-	.passed {
+	.passed,
+	.buffered {
 		position: absolute;
 		top: 0;
-		width: $value;
 		margin-top: 0;
+		transition: none;
+		pointer-events: none;
+	}
+
+	.passed {
+		width: $value;
 		background-color: c(accent);
 		opacity: map(var(--value), 0, 1, 0.4, 1, true);
-		pointer-events: none;
+	}
 
-		:comp:not(.move-transition) & {
-			transition: none; // 关掉，关掉动画，一定要关掉。否则动画会卡到你怀疑人生。
-		}
+	.buffered {
+		width: $buffered;
+		background-color: c(accent-disabled);
 	}
 
 	.thumb {
@@ -158,10 +170,7 @@
 		left: $value;
 		background-color: c(main-bg);
 		cursor: pointer;
-
-		:comp:not(.move-transition) & {
-			transition: $fallback-transitions, left 0ms;
-		}
+		transition: $fallback-transitions, left 0ms;
 
 		@include tablet { // 增加移动端大小以便拖拽。
 			&::before {

@@ -47,6 +47,7 @@
 		@include flex-center;
 		@include button-shadow;
 		@include radius-small;
+		position: relative;
 		display: inline-flex;
 		gap: 8px;
 		min-height: 36px;
