@@ -93,7 +93,7 @@ export function withOneWayProp<T>(model: Ref<T | undefined>, oneWayProp: T): Wri
  */
 export function withOneWayProp<T>(model: Ref<T | undefined>, oneWayProp: T) {
 	const result = computed({
-		get: () => model.value ?? oneWayProp,
+		get: () => model.value !== undefined && model.value !== null && model.value !== false ? model.value : oneWayProp,
 		set: value => model.value = value as T,
 	});
 	return result;

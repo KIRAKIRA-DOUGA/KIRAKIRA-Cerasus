@@ -71,6 +71,7 @@ const emits = defineEmits<{
 
 ```typescript
 const model = defineModel<boolean>();
+const value = withOneWayProp(model, props.value);
 ```
 
 ### 通用

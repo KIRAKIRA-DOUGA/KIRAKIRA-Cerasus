@@ -33,7 +33,7 @@
 
 	const restrict = (n: number | undefined, nanValue: number) => Number.isFinite(n) ? clamp(map(n!, props.min, props.max, 0, 1), 0, 1) : nanValue;
 	const value = computed(() => restrict(model.value, 0));
-	const smoothValue = useSmoothValue(value, 0.5);
+	const smoothValue = useSmoothValue(value, 0.5); // 修改这个参数可以调整滑动条的平滑移动值。
 	const buffered = computed(() => restrict(props.buffered, NaN));
 
 	/**
