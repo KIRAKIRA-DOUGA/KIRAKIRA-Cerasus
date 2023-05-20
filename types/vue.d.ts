@@ -62,7 +62,7 @@ declare global {
 	) => JSX.Element;
 
 	/**
-	 * Maybe it's a ref, or a plain value
+	 * 也许是一个 ref，或者是一个普通的值。
 	 *
 	 * ```ts
 	 * type MaybeRef<T> = T | Ref<T>

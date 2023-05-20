@@ -69,3 +69,32 @@ export function getScopeIdFromInstance(instance: ComponentInternalInstance | nul
 	if (!(instance.type instanceof Object && "__scopeId" in instance.type)) return undefined;
 	return instance.type.__scopeId as string;
 }
+
+/**
+ * 在 defineModel 同时兼容绑定一个单向绑定的布尔属性。
+ * @param model - 双向绑定布尔模型。
+ * @param oneWayProp - 单向兼容绑定布尔属性。
+ * @returns 一个计算属性，修改时与直接用模型一致，读取时如果模型获取到 undefined，则会调用单向绑定属性的值。如果还是
+ * undefined 则会自动转换为 false。
+ */
+export function withOneWayProp(model: Ref<boolean | undefined>, oneWayProp: boolean | undefined): WritableComputedRef<boolean>;
+/**
+ * 在 defineModel 同时兼容绑定一个单向绑定的属性。
+ * @param model - 双向绑定模型。
+ * @param oneWayProp - 单向兼容绑定属性。
+ * @returns 一个计算属性，修改时与直接用模型一致，读取时如果模型获取到 undefined，则会调用单向绑定属性的值。
+ */
+export function withOneWayProp<T>(model: Ref<T | undefined>, oneWayProp: T): WritableComputedRef<T>;
+/**
+ * 在 defineModel 同时兼容绑定一个单向绑定的属性。
+ * @param model - 双向绑定模型。
+ * @param oneWayProp - 单向兼容绑定属性。
+ * @returns 一个计算属性，修改时与直接用模型一致，读取时如果模型获取到 undefined，则会调用单向绑定属性的值。
+ */
+export function withOneWayProp<T>(model: Ref<T | undefined>, oneWayProp: T) {
+	const result = computed({
+		get: () => model.value ?? oneWayProp,
+		set: value => model.value = value as T,
+	});
+	return result;
+}

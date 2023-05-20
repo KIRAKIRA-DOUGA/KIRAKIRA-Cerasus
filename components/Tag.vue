@@ -9,7 +9,7 @@
 	}>();
 
 	const model = defineModel<boolean>();
-	const isChecked = computed(() => model.value ?? props.checked);
+	const isChecked = withOneWayProp(model, props.checked);
 </script>
 
 <template>

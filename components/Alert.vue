@@ -9,10 +9,7 @@
 	}>();
 
 	const model = defineModel<boolean>();
-	const open = computed({
-		get: () => !!(model.value ?? props.open),
-		set: value => model.value = value,
-	});
+	const open = withOneWayProp(model, props.open);
 	const alert = ref<HTMLDivElement>();
 
 	watch(open, async open => {

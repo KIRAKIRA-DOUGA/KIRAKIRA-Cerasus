@@ -24,4 +24,10 @@ declare global {
 	 * @template T - 源对象。
 	 */
 	type DeepWriteable<T> = { -readonly [P in keyof T]: DeepWriteable<T[P]> };
+
+	/**
+	 * 类型去空。相当于 `!`。
+	 * @template T - 可能带空的类型。
+	 */
+	type NonNull<T> = Exclude<T, undefined | null>;
 }

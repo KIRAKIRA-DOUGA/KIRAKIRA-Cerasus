@@ -18,7 +18,7 @@
 	});
 
 	const model = defineModel<number>();
-	const currentPage = computed(() => model.value ?? props.current);
+	const currentPage = withOneWayProp(model, props.current);
 	const array = computed(() => props.pages instanceof Array ? props.pages : null);
 	const pages = computed(() => !(props.pages instanceof Array) ? props.pages : props.pages.length);
 
