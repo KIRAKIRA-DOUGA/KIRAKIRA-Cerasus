@@ -20,6 +20,7 @@ export default defineNuxtModule({
 		const { resolve } = createResolver(import.meta.url);
 		addPlugin(resolve(__dirname, "plugin"));
 		addImports({ name: "Theme", as: "Theme", from: resolve(__dirname, "composables").replaceAll("\\", "/") });
+		// TODO: 新修复解决方法参考自 https://github.com/nuxt/nuxt/discussions/17691 ，待会ㄦ做。
 		addTemplate({
 			filename: "theme.script.js",
 			write: true,
