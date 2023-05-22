@@ -1,5 +1,5 @@
 @use "theme/colors" as *;
-@use "theme/private" as *;
+@use "theme/internal" as *;
 @use "sass:map";
 
 // 下面的内容是根据 Sass 映射自动转换为 CSS 属性的逻辑代码，不用动。
