@@ -357,28 +357,37 @@ _下划线_
 
 因此建议直接废除这个对东亚语言不友好的特性。
 
-### 样式、类和标识符
+### 转义
+新增反斜杠表示的转义功能。
+* 在行尾放置一个反斜杠，此时将恢复成原版 Markdown 的换行机制，即插入一个空格而不换行。
+* `\/`，此时将插入一个 `<wbr />`，用以在某些可能会造成语法歧义处添加一个断句。
+* 在原版行内代码中，所有其它样式符号均已禁用，它们都会原样保留。现在在行内代码中依然允许使用其它样式符号。如果不想使用样式符号并希望保留纯文本，请使用三个及以上反单引号/抑音符 ```` ``` ````，并在结束处依旧使用相同个数的反单引号/抑音符，这将原样保留其中的纯文本，包括反斜杠和反单引号/抑音符。
+
+### 块级样式（类和标识符）
 在 Markdown 编辑器增加一个选项卡用来设置 CSS 样式。此时在 Markdown 界面可单独为段落指定类名。
 
 优先使用用户指定的类名，其次使用系统预设的类名。以下范例为系统预设类名。
 ```markdown
-# 居中标题 {.center}
-# 居右标题 {.right}
-两端对齐文本 {.justify}
+# {.center} 居中标题
+# {.right} 居右标题 
+{.justify} 两端对齐文本
 ```
 
 花括号内外的空格是无所谓的。
 
 也可以为段落指定标识符名，除了可以在 CSS 以 # 选择器匹配外，还可以充当锚点作用。例如：
 ```markdown
-欢迎回来！{#top}
+{#top} 欢迎回来！
 ```
-然后在其它地方使用链接，即可快速回到这一段落。
+然后在其它地方使用链接，即可快速回到这一段落。反单引号/抑音符
 ```markdown
 [返回顶部](#top)
 ```
 
 ### 类 MediaWiki 模板
+> 该部分内容由于实现起来过于困难，因此只得弃用。
+
+<s>
 引用类似 MediaWiki 的模板语法来表示开发人员内置的 Vue 组件。
 <table>
 <td>
@@ -407,6 +416,88 @@ _下划线_
 </td>
 </table>
 <!-- MediaWiki 异端滚粗 Markdown（ -->
+</s>
+
+### 键盘按键
+<table>
+<td>
+
+```
+`|Ctrl|`
+```
+
+</td>
+<td>
+
+```
+<kbd>Ctrl</kbd>
+```
+
+</td>
+<td>
+<kbd>Ctrl</kbd>
+</td>
+</table>
+
+### 黑幕
+参考自萌娘百科的黑幕 (block text) 和 Telegram 的防剧透 (spoiler)。
+
+<table>
+<td>
+
+```
+!!黑幕!!
+```
+
+</td>
+<td>
+
+```
+<kira-spoiler>黑幕</kira-spoiler>
+```
+
+</td>
+</table>
+
+### 颜色
+该语法参考自简书文本颜色语法。
+
+花括号内的空格是无所谓的，但外有所谓。
+
+```
+$color{red}红色文本$
+```
+
+```
+<span style="color: red;">红色文本</span>
+```
+
+<span style="color: red;">红色文本</span>
+
+同时支持修改文本背景颜色。
+
+```
+$color{red|lime}红色文本$
+```
+
+```
+<span style="color: red; background-color: lime;">文本</span>
+```
+
+<span style="color: red; background-color: lime;">文本</span>
+
+### 行内样式（类和标识符）
+为行内文本设置 CSS 样式。
+
+```
+$attr{#foo.bar.baz}文本$
+```
+
+```
+<span id="foo" class="bar baz">文本</span>
+```
+
+class 可以指定多个，但 id 只能指定一个。
 
 ### [通用指令语法](https://talk.commonmark.org/t/generic-directives-plugins-syntax/444)
 > [灵感来源](https://blog.kaciras.com/article/18/add-video-support-to-markdown)
@@ -446,23 +537,21 @@ _下划线_
 ### 卡片
 #### 链接卡片
 ```markdown
-[链接卡片文本](@link-card:链接地址)
+!linkcard[链接卡片文本](链接地址)
 ```
-
-通过在链接地址前添加 `@link-card:` 来识别为链接卡片。
 
 注意这将会将超链接从行内元素转换为块级元素。这会显示为一个长条形卡片。
 
 #### 视频卡片
 同链接卡片，这也是一个块级元素。这会显示为一个长条形卡片。
 ```markdown
-[视频卡片标题](@link-card:KV号)
+!linkcard[视频卡片标题](KV号)
 ```
 
 #### 视频磁贴
 与视频卡片类似，不过这将显示为一个网格磁贴，行内块级元素 (inline-block)。
 ```markdown
-[视频磁贴标题](@video-tile:KV号)
+!videotile[视频磁贴标题](KV号)
 ```
 
 ### 视频播放器
