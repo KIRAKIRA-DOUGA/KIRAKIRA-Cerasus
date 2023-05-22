@@ -5,6 +5,6 @@
 <template>
 	<div class="container">
 		<ShadingIcon icon="search" position="right top" />
-		<HeaderGroup name="搜索" englishName="Search" />
+		<HeadingGroup name="搜索" englishName="Search" />
 	</div>
 </template>

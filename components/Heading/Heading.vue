@@ -2,6 +2,9 @@
 	顶部的大标题。
 
 	~~不叫 Title 是因为和 HTML title 标签冲突了。~~
+	~~不叫 Head 是因为和 HTML head 标签冲突了。~~
+	~~不叫 Header 是因为和 HTML header 标签冲突了。~~
+	而 HTML h1~h6 标签的对应类名就是 HTML**Heading**Element。
 </docs>
 
 <script setup lang="ts">

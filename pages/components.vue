@@ -146,7 +146,7 @@
 			<em>所有输入框的内容同时输入属正常现象，因为懒得做三个变量。</em>
 			<hr />
 			<RadioButton v-for="locale in localeList" :key="locale.code" v-model="localeModel" :value="locale.code" :lang="locale.code">{{ locale.name }}</RadioButton>
-			<HeaderComments :count="233" />
+			<HeadingComments :count="233" />
 			<hr />
 			<Subheader>不确定加载条</Subheader>
 			<ToggleSwitch v-model="showProgress">开启加载</ToggleSwitch>

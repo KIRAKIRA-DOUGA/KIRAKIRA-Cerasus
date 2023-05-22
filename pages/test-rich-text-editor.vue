@@ -6,7 +6,7 @@
 	<div class="container">
 		<ShadingIcon icon="email" position="right top" />
 
-		<Header>富文本示例</Header>
+		<Heading>富文本示例</Heading>
 
 		<div class="introduce">
 			<p>基于 <a target="_blank" href="https://tiptap.dev/introduction">Tiptap</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;代码位置：components/TextEditor/*&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;下方部分为富文本编辑器本体，比较粗糙，仅供演示……</p>
