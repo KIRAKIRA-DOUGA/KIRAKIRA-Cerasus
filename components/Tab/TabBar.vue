@@ -1,3 +1,7 @@
+<script lang="ts">
+	const updateIndicatorWithoutAnimation = Symbol("updateIndicatorWithoutAnimation");
+</script>
+
 <script setup lang="ts">
 	const props = defineProps<{
 		/** 是否使用切边样式的指示器？ */
@@ -16,7 +20,7 @@
 	const { Slot, slotNode } = useFactory();
 	const tabBar = refComp();
 	const indicator = ref<HTMLDivElement>();
-	const updateIndicatorWithoutAnimation = Symbol.for("updateIndicatorWithoutAnimation");
+	const unmounted = ref(false);
 
 	/**
 	 * 根据标识符切换选项卡。
@@ -26,7 +30,6 @@
 		model.value = id;
 	}
 
-	// TODO: 当标签栏及其父系元素如果添加了变换样式（如缩放）会导致指示器的位置计算错误。在本例中进出设置页面时可以发现指示器的位置异常。
 	/**
 	 * 获取指示器的四边位置。
 	 * @param item - 选项卡项目。
@@ -134,9 +137,34 @@
 		}
 	}
 
+	/**
+	 * 检查选项卡栏及其祖先元素是否都没有变换样式设定。
+	 * @returns 是否没有变换。
+	 */
+	function isNoTransform() {
+		if (!tabBar.value) return false;
+		for (const element of getPath(tabBar.value)) {
+			const style = getComputedStyle(element);
+			for (const property of ["scale", "translate", "rotate", "transform"] as const)
+				if (style[property] !== "none")
+					return false;
+		}
+		return true;
+	}
+
 	watch(model, (id, prevId) => update(id, prevId));
 
-	useEventListener("window", "resize", () => update(undefined, updateIndicatorWithoutAnimation), { immediate: true });
+	useEventListener("window", "resize", () => update(undefined, updateIndicatorWithoutAnimation));
+
+	onMounted(async () => {
+		while (!isNoTransform() && !unmounted.value)
+			await delay(100);
+		update(undefined);
+	});
+
+	onUnmounted(() => {
+		unmounted.value = true;
+	});
 
 	defineExpose({
 		changeTab,

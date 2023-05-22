@@ -18,10 +18,10 @@ export function getPath(target: TargetType): Element[] {
 }
 
 /**
- * 根据鼠标事件的目标节点，查找要查询的元素是否是或是其父系节点。比如查找元素是否被点击等。
+ * 根据鼠标事件的目标节点，查找要查询的元素是否是或是其祖先节点。比如查找元素是否被点击等。
  * @param target - 点击事件中的目标 HTML DOM 节点。
  * @param element - 要查找的冒泡 HTML DOM 节点。
- * @returns 要查询的元素是或是其父系节点。
+ * @returns 要查询的元素是或是其祖先节点。
  */
 export function isInPath(target: TargetType, element: Element): boolean {
 	const path = getPath(target);
