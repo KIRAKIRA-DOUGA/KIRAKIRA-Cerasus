@@ -9,9 +9,9 @@
 <template>
 	<header>
 		<slot name="icon"></slot>
-		<Header>{{ name }}</Header>
-		<Header v-if="count !== undefined" form="small-solid">{{ count }}</Header>
-		<Header form="small" class="english-after">{{ englishName }}</Header>
+		<Heading>{{ name }}</Heading>
+		<Heading v-if="count !== undefined" form="small-solid">{{ count }}</Heading>
+		<Heading form="small" class="english-after">{{ englishName }}</Heading>
 	</header>
 </template>
 
