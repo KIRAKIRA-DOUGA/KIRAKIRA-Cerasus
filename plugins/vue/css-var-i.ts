@@ -4,10 +4,6 @@
 
 export default defineNuxtPlugin(nuxt => {
 	type D = Directive<HTMLElement, number>;
-	const updated: DirectiveEffectHook<D> = (element, binding) =>
-		element.style.setProperty("--i", String(binding.value));
-	nuxt.vueApp.directive("i", {
-		mounted: updated,
-		updated,
-	} as D);
+	nuxt.vueApp.directive("i", ((element, binding) =>
+		element.style.setProperty("--i", String(binding.value))) as D);
 });

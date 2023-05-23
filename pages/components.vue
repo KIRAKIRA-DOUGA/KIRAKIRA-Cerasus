@@ -51,6 +51,7 @@
 	};
 	const toastMessage = ref("");
 	const toastSeverity = ref<ToastEvent["severity"]>("success");
+	const longTextTest = "那只敏捷的棕毛狐狸跳过了一只懒惰的狗".repeat(20);
 
 	/**
 	 * 单击按钮事件。
@@ -226,6 +227,16 @@
 						<div class="scroll-test-item"></div>
 					</div>
 				</AccordionItem>
+				<AccordionItem title="工具提示测试">
+					<div class="tooltip-test">
+						<Button v-tooltip="{ title: '上方', placement: 'top' }">上方</Button>
+						<Button v-tooltip="{ title: '右方', placement: 'right' }">右方</Button>
+						<Button v-tooltip="{ title: '下方', placement: 'bottom' }">下方</Button>
+						<Button v-tooltip="{ title: '左方', placement: 'left' }">左方</Button>
+						<Button v-tooltip="'缺省设定位置则会自动寻找离页边最远的方向'">缺省</Button>
+						<Button v-tooltip="longTextTest">长文本</Button>
+					</div>
+				</AccordionItem>
 				<AccordionItem title="点击此处辣眼睛">
 					<section class="marquee-section">
 						<marquee>KiRAKiRA☆DOUGA</marquee>
@@ -318,5 +329,11 @@
 		.scroll-test-item {
 			@include square(200%);
 		}
+	}
+
+	.tooltip-test {
+		display: flex;
+		justify-content: space-evenly;
+		padding: 1rem 0;
 	}
 </style>

@@ -3,10 +3,6 @@
 	不要直接使用该组件，而是使用对应的 directive 来调用。
 </docs>
 
-<script lang="ts">
-	const keys = new Map<HTMLElement, symbol>();
-</script>
-
 <script setup lang="ts">
 	import { TooltipEvent } from "plugins/vue/tooltip";
 
@@ -16,32 +12,64 @@
 	};
 
 	const tooltipList = reactive<TooltipEventWithPosition[]>([]);
-	const getSymbol = (element: HTMLElement) => {
-		let symbol = keys.get(element);
-		if (!symbol)
-			keys.set(element, symbol = Symbol(element.id));
-		return symbol;
-	};
-	const getPosition = (e: TooltipEvent) => {
+	const tooltipDoms = ref<HTMLDivElement[]>();
+
+	/**
+	 * 根据给定的工具提示方向和偏移值，获取工具提示的定位值。
+	 * @param e - 工具提示事件。
+	 * @returns 表示工具提示位置的样式属性值。
+	 */
+	function getPosition(e: TooltipEvent) {
 		const bounding = e.element.getBoundingClientRect();
 		e.offset ??= 10;
-		e.placement ||= "right";
-		let style: StyleValue;
-		if (e.placement === "top") style = { bottom: bounding.top - e.offset, left: bounding.left + bounding.width / 2 };
-		else if (e.placement === "bottom") style = { top: bounding.bottom + e.offset, left: bounding.left + bounding.width / 2 };
-		else if (e.placement === "left") style = { top: bounding.top + bounding.height / 2, right: bounding.left - e.offset };
-		else style = { top: bounding.top + bounding.height / 2, left: bounding.right + e.offset };
-		for (const key in style)
-			if (Object.prototype.hasOwnProperty.call(style, key))
-				(style as AnyObject)[key] = (style as AnyObject)[key] + "px";
-		return style;
-	};
+		if (!e.placement) { // 如果缺省工具提示放置位置，则会寻找离页边最远的方向。
+			const toPageDistance = [bounding.top, window.innerHeight - bounding.bottom, window.innerWidth - bounding.right, bounding.left];
+			const placements = ["top", "bottom", "right", "left"] as const; // 优先顺序：上、下、右、左。
+			e.placement = placements[toPageDistance.indexOf(Math.max(...toPageDistance))];
+		}
+		let position: [number, number];
+		if (e.placement === "top")
+			position = [bounding.top - e.offset, bounding.left + bounding.width / 2];
+		else if (e.placement === "bottom")
+			position = [bounding.bottom + e.offset, bounding.left + bounding.width / 2];
+		else if (e.placement === "left")
+			position = [bounding.top + bounding.height / 2, bounding.left - e.offset];
+		else
+			position = [bounding.top + bounding.height / 2, bounding.right + e.offset];
+		return { top: position[0] + "px", left: position[1] + "px" } as StyleValue;
+	}
+
+	/**
+	 * 已渲染工具提示组件，但发现该组件超出了窗口边缘，则再对其进行位置调整。
+	 * @returns 调整后的新的工具提示位置的样式属性值。
+	 */
+	async function adjustPosition() {
+		await nextTick();
+		for (const tooltipWrapper of tooltipDoms.value ?? []) {
+			const tooltip = tooltipWrapper.querySelector<HTMLElement>(".tooltip");
+			if (!tooltip) continue;
+			const bounding = tooltip.getBoundingClientRect();
+			const adjustment: [number, number] = [0, 0];
+			if (bounding.right > window.innerWidth) adjustment[1] = window.innerWidth - bounding.right;
+			if (bounding.bottom > window.innerHeight) adjustment[0] = window.innerHeight - bounding.bottom;
+			if (bounding.left < 0) adjustment[1] = -bounding.left;
+			if (bounding.top < 0) adjustment[0] = -bounding.top;
+			if (adjustment[0] || adjustment[1]) {
+				let top = parseFloat(tooltipWrapper.style.top),
+					left = parseFloat(tooltipWrapper.style.left);
+				top += adjustment[0];
+				left += adjustment[1];
+				tooltipWrapper.style.top = top + "px";
+				tooltipWrapper.style.left = left + "px";
+			}
+		}
+	}
 
 	useListen("app:showTooltip", e => {
 		const tooltip = e as TooltipEventWithPosition;
 		tooltip.position = getPosition(e);
-		tooltip.symbol = getSymbol(tooltip.element);
 		tooltipList.push(tooltip);
+		adjustPosition();
 	});
 
 	useListen("app:hideTooltip", element => {
@@ -55,8 +83,10 @@
 			if (tooltipList[i].element === e.element) {
 				const tooltip = tooltipList[i];
 				const newValue = e as TooltipEventWithPosition;
+				tooltip.title = newValue.title;
 				tooltip.position = newValue.position = getPosition(e);
 			}
+		adjustPosition();
 	});
 </script>
 
@@ -67,10 +97,14 @@
 				<div
 					v-for="tooltip in tooltipList"
 					:key="tooltip.symbol"
-					class="tooltip"
+					ref="tooltipDoms"
+					class="tooltip-wrapper"
+					:class="[tooltip.placement]"
 					:style="tooltip.position"
 				>
-					{{ tooltip.title }}
+					<div class="tooltip">
+						{{ tooltip.title }}
+					</div>
 				</div>
 			</TransitionGroup>
 		</Comp>
@@ -80,22 +114,50 @@
 <style scoped lang="scss">
 	:comp {
 		display: contents;
+		pointer-events: none;
 	}
 
-	.tooltip {
-		@include radius-small;
-		@include dropdown-flyouts;
+	.tooltip-wrapper {
+		@include square(0);
 		position: fixed;
 		z-index: 80;
-		max-width: 50ic;
-		padding: 8px 10px;
-		color: c(text-color);
-		background-color: c(acrylic-bg, 75%);
-		pointer-events: none;
+		display: flex;
+
+		.tooltip {
+			@include radius-small;
+			@include dropdown-flyouts;
+			flex-shrink: 0;
+			max-width: 50dvw;
+			padding: 8px 10px;
+			color: c(text-color);
+			word-wrap: break-word; // 尽量保持单词完整，一行都展示不下这个单词就会换行。
+			overflow-wrap: break-word; // word-wrap 别名，CSS3 属性，都写上，万一以后 word-wrap 去掉了呢。
+			background-color: c(acrylic-bg, 75%);
+		}
 
 		&.v-enter-from,
 		&.v-leave-to {
 			opacity: 0;
+		}
+
+		&.top {
+			align-items: flex-end;
+			justify-content: center;
+		}
+
+		&.bottom {
+			align-items: flex-start;
+			justify-content: center;
+		}
+
+		&.right {
+			align-items: center;
+			justify-content: flex-start;
+		}
+
+		&.left {
+			align-items: center;
+			justify-content: flex-end;
 		}
 	}
 </style>

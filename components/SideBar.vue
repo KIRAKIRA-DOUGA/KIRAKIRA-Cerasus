@@ -6,6 +6,7 @@
 	const showStripes = ref(false);
 	const showLogin = ref(false);
 	const isLogined = ref(false);
+	const rightTooltip = (title: string) => ({ title, placement: "right" });
 
 	useEventListener("window", "resize", () => {
 		const height = window.innerHeight;
@@ -20,12 +21,12 @@
 <template>
 	<aside>
 		<div class="top icons">
-			<LargeRippleButton v-i="0" v-tooltip="'主页'" icon="home" href="/" />
-			<LargeRippleButton v-i="1" v-tooltip="'搜索'" icon="search" href="search" />
-			<LargeRippleButton v-i="2" v-tooltip="'历史'" icon="history" />
-			<LargeRippleButton v-i="3" v-tooltip="'收藏'" icon="star" />
-			<LargeRippleButton v-i="4" v-tooltip="'关注'" icon="feed" />
-			<LargeRippleButton v-i="5" v-tooltip="'投稿'" icon="upload" />
+			<LargeRippleButton v-i="0" v-tooltip="rightTooltip('主页')" icon="home" href="/" />
+			<LargeRippleButton v-i="1" v-tooltip="rightTooltip('搜索')" icon="search" href="search" />
+			<LargeRippleButton v-i="2" v-tooltip="rightTooltip('历史')" icon="history" />
+			<LargeRippleButton v-i="3" v-tooltip="rightTooltip('收藏')" icon="star" />
+			<LargeRippleButton v-i="4" v-tooltip="rightTooltip('关注')" icon="feed" />
+			<LargeRippleButton v-i="5" v-tooltip="rightTooltip('投稿')" icon="upload" />
 		</div>
 
 		<Transition>
@@ -41,7 +42,7 @@
 			<LargeRippleButton
 				v-if="!isLogined"
 				v-i="7"
-				v-tooltip="'我的'"
+				v-tooltip="rightTooltip('登录')"
 				icon="person"
 				class="person"
 				@click="showLogin = true"
@@ -50,14 +51,14 @@
 				v-else
 				v-i="7"
 				v-ripple
-				v-tooltip="'艾草'"
+				v-tooltip="rightTooltip('艾草')"
 				class="person logined"
 				@click="showLogin = true"
 			>
 				<img :src="avatar" alt="avatar" draggable="false" />
 			</div>
-			<LargeRippleButton v-i="8" v-tooltip="'消息'" icon="email" href="test-rich-text-editor" />
-			<LargeRippleButton v-i="9" v-tooltip="'设置'" icon="settings" href="settings" />
+			<LargeRippleButton v-i="8" v-tooltip="rightTooltip('消息')" icon="email" href="test-rich-text-editor" />
+			<LargeRippleButton v-i="9" v-tooltip="rightTooltip('设置')" icon="settings" href="settings" />
 		</div>
 
 		<LoginWindow v-model="showLogin" />
