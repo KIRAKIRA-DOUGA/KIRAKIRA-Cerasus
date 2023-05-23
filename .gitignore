@@ -1,33 +1,25 @@
-# Compiled class file
-*.class
+# Created by https://gitignore.io/
 
-# Log file
-*.log
+# Nuxt
+.nuxt
+.nuxt-*
 
-# BlueJ files
-*.ctxt
+# Build dirs
+dist
+.output
+.gen
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-replay_pid*
-
-# node_modules
+# Node dependencies
 node_modules
 
-# nuxt
-.nuxt
+# Log files
+logs
+*.log
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+lerna-debug.log
+.pnpm-debug.log
 
 # macOS
 .DS_Store
@@ -35,9 +27,5 @@ node_modules
 # Windows
 desktop.ini
 
-# build
-.output
-dist
-
-# real-time generated files
+# Real-time generated files
 types/components-globalized.d.ts
