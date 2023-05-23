@@ -101,4 +101,5 @@
 		</RouterView>
 	</NuxtLayout>
 	<Toasts />
+	<Tooltips />
 </template>

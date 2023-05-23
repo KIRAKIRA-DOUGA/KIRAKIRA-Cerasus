@@ -15,7 +15,7 @@
 </script>
 
 <template>
-	<span class="block-text" :title="tooltip || t.you_know_too_much">
+	<span v-tooltip="tooltip || t.you_know_too_much" class="block-text">
 		<span class="text">
 			<slot></slot>
 		</span>

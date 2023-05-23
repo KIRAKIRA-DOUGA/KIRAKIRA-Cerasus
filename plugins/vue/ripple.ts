@@ -1,4 +1,4 @@
-/**
+/*!
  * 使用 `v-ripple`，为元素创建类 Material Design 的水波纹效果。
  */
 
@@ -30,6 +30,7 @@ export default defineNuxtPlugin(nuxt => {
 	const circleClass = "ripple-circle";
 	const spreadRippleId = "spread-ripple";
 	let isInitedPointerUp = false;
+	type D = Directive<HTMLElement, boolean>;
 
 	nuxt.vueApp.directive("ripple", {
 		mounted(element, binding) {
@@ -83,5 +84,5 @@ export default defineNuxtPlugin(nuxt => {
 		updated(element) {
 			element.classList.add(rippleClass);
 		},
-	} as Directive<HTMLElement>);
+	} as D);
 });

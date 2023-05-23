@@ -1,14 +1,13 @@
-/**
+/*!
  * 使用 `v-i`，为元素样式添加 `--i` 自定义属性，用于添加延时出现的动画。
  */
 
-import { DirectiveBinding } from "nuxt/dist/app/compat/vue-demi";
-
-export default defineNuxtPlugin(nuxtApp => {
-	const updated = (element: HTMLElement, binding: DirectiveBinding<number>) =>
+export default defineNuxtPlugin(nuxt => {
+	type D = Directive<HTMLElement, number>;
+	const updated: DirectiveEffectHook<D> = (element, binding) =>
 		element.style.setProperty("--i", String(binding.value));
-	nuxtApp.vueApp.directive("i", {
+	nuxt.vueApp.directive("i", {
 		mounted: updated,
 		updated,
-	} as Directive<HTMLElement, number>);
+	} as D);
 });

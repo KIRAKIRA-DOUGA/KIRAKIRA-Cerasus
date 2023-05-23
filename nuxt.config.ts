@@ -15,6 +15,7 @@ export default defineNuxtConfig({
 	plugins: [
 		"plugins/vue/ripple.ts",
 		"plugins/vue/css-var-i.ts",
+		"plugins/vue/tooltip.ts",
 	],
 	modules: [
 		// "@nuxt/devtools",

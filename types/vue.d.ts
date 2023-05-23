@@ -1,3 +1,5 @@
+import { VTooltipBindingValue } from "plugins/vue/tooltip";
+import { AllowedComponentProps, DirectiveBinding } from "vue";
 import CSSDoodle from "./css-doodle";
 
 declare module "vue" {
@@ -18,6 +20,7 @@ declare module "vue" {
 	export interface HTMLAttributes {
 		"v-ripple"?: boolean;
 		"v-i"?: number;
+		"v-tooltip"?: VTooltipBindingValue;
 	}
 
 	export interface ComponentOptionsBase {
@@ -33,8 +36,6 @@ declare module "vue" {
 }
 
 declare global {
-	import { AllowedComponentProps } from "vue";
-
 	/**
 	 * Vue JSX 组件。
 	 * @template Props - 声明组件属性。
@@ -61,14 +62,9 @@ declare global {
 		}
 	) => JSX.Element;
 
-	/**
-	 * 也许是一个 ref，或者是一个普通的值。
-	 *
-	 * ```ts
-	 * type MaybeRef<T> = T | Ref<T>
-	 * ```
-	 */
-	// export type MaybeRef<T> = T | Ref<T>;
+	type DirectiveEffectHookInferElement<D extends Directive> = D extends Directive<infer T> ? T : HTMLElement;
+	type DirectiveEffectHookInferBinding<D extends Directive> = D extends Directive<Any, infer T> ? T : never;
+	export type DirectiveEffectHook<D extends Directive, T = void> = (element: DirectiveEffectHookInferElement<D>, binding: DirectiveBinding<DirectiveEffectHookInferBinding<D>>) => T;
 
-	export { ComponentInternalInstance, ConcreteComponent, Directive, Events, MaybeRef, MaybeRefOrGetter, Ref, RendererElement, Slot, VNode, WritableComputedRef } from "vue";
+	export { ComponentInternalInstance, ConcreteComponent, Directive, Events, MaybeRef, MaybeRefOrGetter, Ref, RendererElement, Slot, StyleValue, VNode, WritableComputedRef } from "vue";
 }
