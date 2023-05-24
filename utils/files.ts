@@ -25,3 +25,15 @@ export function urlToBlob_legacy(url: string, callback: (blob: Blob) => void) {
 export function filenameWithoutExtension(filePath: string) {
 	return path.parse(filePath).name;
 }
+
+/**
+ * 判断字符串或数字是 文件路径或文件名 还是 普通字符串
+ * @param item - 字符串
+ * @returns -是或不是
+ */
+export function isFilePath(item: string | number) {
+	if (isNumber(item))
+		return false;
+	if (isString(item))
+		return !!((path.parse(item).ext));
+}

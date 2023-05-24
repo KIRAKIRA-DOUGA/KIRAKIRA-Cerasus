@@ -14,11 +14,13 @@
 		appearance?: "default" | "textbox-aftericon";
 		/** 指定点击后跳转的链接。 */
 		href?: string;
+		emoji?: number | string;
 	}>(), {
 		icon: undefined,
 		text: undefined,
 		appearance: "default",
 		href: undefined,
+		emoji: undefined,
 	});
 
 	const emits = defineEmits<{
@@ -37,6 +39,8 @@
 		draggable: false,
 		activable: true,
 	});
+	const emoStr = String(props.emoji);
+	const emoispath = isFilePath(props.emoji!);
 </script>
 
 <template>
@@ -50,7 +54,8 @@
 			@click="(e: MouseEvent) => emits('click', e)"
 		>
 			<Icon v-if="icon" :name="icon" />
-			<span v-if="text"><span>{{ text }}</span></span>
+			<span v-if="text || (emoji && !emoispath)"><span>{{ text || emoji }}</span></span>
+			<Emoji v-if="emoji && emoispath" :name="emoStr" />
 		</component>
 	</Comp>
 </template>

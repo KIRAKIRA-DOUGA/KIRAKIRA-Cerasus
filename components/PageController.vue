@@ -12,6 +12,8 @@
 		displayPageCount?: number;
 		/** 允许用户使用键盘上左右箭头键翻页。 */
 		enableArrowKeyMove?: boolean;
+		/** 允许解析url */
+		enableParse?: boolean;
 	}>(), {
 		current: 1,
 		displayPageCount: 7,
@@ -21,7 +23,6 @@
 	const currentPage = withOneWayProp(model, props.current);
 	const array = computed(() => props.pages instanceof Array ? props.pages : null);
 	const pages = computed(() => !(props.pages instanceof Array) ? props.pages : props.pages.length);
-
 	if (pages.value < 1)
 		throw new RangeError(`PageController pages 参数错误。页码值不能小于 1，当前值为 ${pages.value}。`);
 	if (currentPage.value < 1 || currentPage.value > pages.value)
@@ -240,7 +241,7 @@
 	 * @param index - 页码索引值。
 	 * @returns 页码索引值或数组中的内容。
 	 */
-	function getPageName(index: number | string) {
+	function getPageName(index: number) {
 		return !array.value ? index : array.value[+index - 1];
 	}
 </script>
@@ -251,9 +252,10 @@
 			<LargeRippleButton
 				v-if="showFirst"
 				nonfocusable
-				:text="getPageName(1)"
+				:emoji="getPageName(1)"
 				@click="changePage(1)"
 			/>
+
 			<div
 				v-if="pages >= 3"
 				ref="scrollArea"
@@ -277,29 +279,38 @@
 							v-for="(item, position) in scrolledPages"
 							:key="item"
 							:style="{ '--position': position }"
-						>{{ getPageName(item) }}</div>
+						>
+							<div v-if="!enableParse">{{ getPageName(item) }}</div>
+							<Emoji v-if="enableParse" :name="String(getPageName(item))" />
+						</div>
 					</div>
+
 				</div>
 			</div>
 			<LargeRippleButton
 				v-if="pages >= 2 && showLast"
 				nonfocusable
-				:text="getPageName(pages)"
+				:emoji="getPageName(pages)"
 				@click="changePage(pages)"
 			/>
 		</div>
-		<div v-ripple class="thumb">
+
+		<div v-ripple class="thumb" :class="{ 'small-thumb': enableParse }">
 			<div
 				ref="pageEdit"
 				class="page-edit"
+
 				:contenteditable="!array"
-				@input="e => currentEdited = (e.target as HTMLDivElement).innerText"
 				@keydown="onEnterEdited"
 				@blur="onBlurEdited"
+				@input="e => currentEdited = (e.target as HTMLDivElement).innerText"
 			>
-				{{ getPageName(currentEdited) }}
+				<div v-if="!enableParse">{{ getPageName(+currentEdited) }}</div>
+
 			</div>
-			<div ref="newPageNumber" class="new-page-number">{{ getPageName(currentPage) }}</div>
+			<div ref="newPageNumber" class="new-page-number">
+				<div v-if="!enableParse">{{ getPageName(currentPage) }}</div>
+			</div>
 			<div class="focus-stripe"></div>
 		</div>
 	</div>
@@ -451,4 +462,11 @@
 			}
 		}
 	}
+
+	.small-thumb {
+		margin-top: 20px;
+		scale: 23%;
+		transform: rotate(45deg);
+	}
+	// TODO CSS rebuild required!!!!!!
 </style>
