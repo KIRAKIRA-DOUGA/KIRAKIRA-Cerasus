@@ -23,11 +23,11 @@
 	const pages = computed(() => !(props.pages instanceof Array) ? props.pages : props.pages.length);
 
 	if (pages.value < 1)
-		throw new RangeError(`PageController pages 参数错误。页码值不能小于 1，当前值为 ${pages.value}。`);
+		throw new RangeError(`Pagination pages 参数错误。页码值不能小于 1，当前值为 ${pages.value}。`);
 	if (currentPage.value < 1 || currentPage.value > pages.value)
-		throw new RangeError(`PageController current 超出页码范围。当前页码值取值范围为 1 ~ ${pages.value}，当前设定值为 ${currentPage.value}。`);
+		throw new RangeError(`Pagination current 超出页码范围。当前页码值取值范围为 1 ~ ${pages.value}，当前设定值为 ${currentPage.value}。`);
 	if (props.displayPageCount < 3)
-		throw new RangeError(`PageController displayPageCount 参数错误。显示的最多页码数目不能小于 3，当前设定值为 ${props.displayPageCount}。`);
+		throw new RangeError(`Pagination displayPageCount 参数错误。显示的最多页码数目不能小于 3，当前设定值为 ${props.displayPageCount}。`);
 
 	/** 页码项目坐标与页码值的键值对。 */
 	type PositionPageItemPair = Record<number, number>;
@@ -248,7 +248,7 @@
 <template>
 	<div class="page">
 		<div class="track" :class="{ 'small-ripple': isForceSmallRipple }">
-			<LargeRippleButton
+			<SoftKey
 				v-if="showFirst"
 				nonfocusable
 				:text="getPageName(1)"
@@ -262,7 +262,7 @@
 			>
 				<div class="ripples">
 					<div>
-						<LargeRippleButton
+						<SoftKey
 							v-for="(item, position) in scrolledPages"
 							:key="item"
 							nonfocusable
@@ -281,7 +281,7 @@
 					</div>
 				</div>
 			</div>
-			<LargeRippleButton
+			<SoftKey
 				v-if="pages >= 2 && showLast"
 				nonfocusable
 				:text="getPageName(pages)"
@@ -319,13 +319,13 @@
 		overflow: hidden;
 		background-color: c(inset-bg);
 
-		.large-ripple-button {
+		.soft-key {
 			--wrapper-size: #{$size};
 			--ripple-size: #{$ripple-size};
 			transition: $fallback-transitions, left 0s;
 		}
 
-		&.small-ripple .large-ripple-button :deep(button) {
+		&.small-ripple .soft-key :deep(button) {
 			&:has(> .ripple-circle):not(:hover, :active) {
 				@include square(var(--wrapper-size) !important);
 			}

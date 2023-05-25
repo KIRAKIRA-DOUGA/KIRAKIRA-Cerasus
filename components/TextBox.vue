@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 	import { Transition } from "vue";
-	import { Icon, LargeRippleButton } from "#components";
+	import { Icon, SoftKey } from "#components";
 
 	const props = withDefaults(defineProps<{
 		/** 当前输入是否非法。 */
@@ -74,7 +74,7 @@
 			<Transition css={false} onEnter={onAfterIconEnter} onLeave={onAfterIconLeave}>
 				{
 					props.shown &&
-					<LargeRippleButton icon={props.icon} nonclickable={!props.onClick} appearance="textbox-aftericon" onClick={props.onClick} />
+					<SoftKey icon={props.icon} nonclickable={!props.onClick} appearance="textbox-aftericon" onClick={props.onClick} />
 				}
 			</Transition>
 		);
@@ -289,7 +289,7 @@
 			color: c(red) !important;
 		}
 
-		.large-ripple-button {
+		.soft-key {
 			--wrapper-size: var(--size);
 			--ripple-size: calc(var(--size) * 1.3);
 		}

@@ -21,12 +21,12 @@
 <template>
 	<aside>
 		<div class="top icons">
-			<LargeRippleButton v-i="0" v-tooltip="rightTooltip('主页')" icon="home" href="/" />
-			<LargeRippleButton v-i="1" v-tooltip="rightTooltip('搜索')" icon="search" href="search" />
-			<LargeRippleButton v-i="2" v-tooltip="rightTooltip('历史')" icon="history" />
-			<LargeRippleButton v-i="3" v-tooltip="rightTooltip('收藏')" icon="star" />
-			<LargeRippleButton v-i="4" v-tooltip="rightTooltip('关注')" icon="feed" />
-			<LargeRippleButton v-i="5" v-tooltip="rightTooltip('投稿')" icon="upload" />
+			<SoftKey v-i="0" v-tooltip="rightTooltip('主页')" icon="home" href="/" />
+			<SoftKey v-i="1" v-tooltip="rightTooltip('搜索')" icon="search" href="search" />
+			<SoftKey v-i="2" v-tooltip="rightTooltip('历史')" icon="history" />
+			<SoftKey v-i="3" v-tooltip="rightTooltip('收藏')" icon="star" />
+			<SoftKey v-i="4" v-tooltip="rightTooltip('关注')" icon="feed" />
+			<SoftKey v-i="5" v-tooltip="rightTooltip('投稿')" icon="upload" />
 		</div>
 
 		<Transition>
@@ -39,7 +39,7 @@
 		</Transition>
 
 		<div class="bottom icons">
-			<LargeRippleButton
+			<SoftKey
 				v-if="!isLogined"
 				v-i="7"
 				v-tooltip="rightTooltip('登录')"
@@ -57,8 +57,8 @@
 			>
 				<img :src="avatar" alt="avatar" draggable="false" />
 			</div>
-			<LargeRippleButton v-i="8" v-tooltip="rightTooltip('消息')" icon="email" href="test-rich-text-editor" />
-			<LargeRippleButton v-i="9" v-tooltip="rightTooltip('设置')" icon="settings" href="settings" />
+			<SoftKey v-i="8" v-tooltip="rightTooltip('消息')" icon="email" href="test-rich-text-editor" />
+			<SoftKey v-i="9" v-tooltip="rightTooltip('设置')" icon="settings" href="settings" />
 		</div>
 
 		<LoginWindow v-model="showLogin" />
@@ -137,7 +137,7 @@
 			display: none;
 		}
 
-		.large-ripple-button {
+		.soft-key {
 			--ripple-size: 40px;
 		}
 	}

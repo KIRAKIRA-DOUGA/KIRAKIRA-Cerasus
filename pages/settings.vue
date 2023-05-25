@@ -68,7 +68,7 @@
 			<div class="content padding-end">
 				<header class="title page-header">
 					<div class="show-drawer-wrapper">
-						<LargeRippleButton icon="dehaze" @click="showDrawer = true" />
+						<SoftKey icon="dehaze" @click="showDrawer = true" />
 					</div>
 					<h2>{{ t.appearance }}</h2>
 				</header>
@@ -272,7 +272,7 @@
 			width: 20px;
 			height: 100%;
 
-			.large-ripple-button {
+			.soft-key {
 				position: absolute;
 				top: calc((var(--wrapper-size) - 100%) / -2);
 				left: -10px;

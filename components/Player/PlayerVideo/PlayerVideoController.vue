@@ -58,7 +58,7 @@
 <template>
 	<Comp>
 		<div class="left">
-			<LargeRippleButton class="play" :icon="playing ? 'pause' : 'play'" @click="playing = !playing" />
+			<SoftKey class="play" :icon="playing ? 'pause' : 'play'" @click="playing = !playing" />
 		</div>
 		<div class="slider">
 			<Slider v-model="currentPercent" :min="0" :max="1" :buffered="buffered" />
@@ -69,9 +69,9 @@
 				<span class="divide">/</span>
 				<span class="duration">{{ duration }}</span>
 			</div>
-			<LargeRippleButton icon="volume_up" />
-			<LargeRippleButton :text="playbackRateText" @click="switchSpeed" />
-			<LargeRippleButton :icon="fullScreen ? 'fullscreen' : 'fullscreen_exit'" @click="() => toggleFullScreen?.()" />
+			<SoftKey icon="volume_up" />
+			<SoftKey :text="playbackRateText" @click="switchSpeed" />
+			<SoftKey :icon="fullScreen ? 'fullscreen' : 'fullscreen_exit'" @click="() => toggleFullScreen?.()" />
 		</div>
 	</Comp>
 </template>

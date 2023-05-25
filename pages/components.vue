@@ -91,8 +91,8 @@
 			<LocaleLink to="/search">{{ t.search }}</LocaleLink>
 		</div>
 		<div class="component-test">
-			<PageController v-model="page" :pages="pages" :displayPageCount="displayPageCount" enableArrowKeyMove />
-			<PageController v-model="opPage" :pages="op" :displayPageCount="15" enableArrowKeyMove />
+			<Pagination v-model="page" :pages="pages" :displayPageCount="displayPageCount" enableArrowKeyMove />
+			<Pagination v-model="opPage" :pages="op" :displayPageCount="15" enableArrowKeyMove />
 			<Button class="test-button" @click="onClickButton">{{ isClicked ? t.buttonClicked : t.button }}</Button>
 			<Button disabled>{{ t.buttonDisabled }}</Button>
 			<Button @click="showConfetti">{{ t.confetti }}</Button>
@@ -160,8 +160,8 @@
 			<hr />
 			<Tag v-model="isTagChecked">{{ t.tag }}</Tag>
 			<br />
-			<BlockText>你知道的<ruby>太<rt>tài</rt>多<rt>duō</rt></ruby>了。</BlockText>
-			<BlockText color="var(--accent)">你知道的<ruby>太<rt>tài</rt>多<rt>duō</rt></ruby>了。</BlockText>
+			<Spoiler>你知道的<ruby>太<rt>tài</rt>多<rt>duō</rt></ruby>了。</Spoiler>
+			<Spoiler color="var(--accent)">你知道的<ruby>太<rt>tài</rt>多<rt>duō</rt></ruby>了。</Spoiler>
 			<p>音量</p><Slider v-model="volume" :defaultValue="100" @changed="onSlided" />
 			<p>音调</p><Slider v-model="pitch" :min="-24" :max="24" :defaultValue="0" @changed="onSlided" />
 			<em>单击鼠标中键或触摸屏长按组件以还原默认值。</em>
@@ -228,6 +228,7 @@
 					</div>
 				</AccordionItem>
 				<AccordionItem title="工具提示测试">
+					注意触摸屏设备不会触发。
 					<div class="tooltip-test">
 						<Button v-tooltip="{ title: '上方', placement: 'top' }">上方</Button>
 						<Button v-tooltip="{ title: '右方', placement: 'right' }">右方</Button>

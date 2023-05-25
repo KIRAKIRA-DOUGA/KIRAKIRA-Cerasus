@@ -66,6 +66,7 @@
 	}
 
 	useListen("app:showTooltip", e => {
+		if (isMobile()) return; // 触摸屏不要显示工具提示。
 		const tooltip = e as TooltipEventWithPosition;
 		tooltip.position = getPosition(e);
 		tooltipList.push(tooltip);
@@ -79,6 +80,7 @@
 	});
 
 	useListen("app:updateTooltip", e => {
+		if (isMobile()) return;
 		for (let i = tooltipList.length - 1; i >= 0; i--)
 			if (tooltipList[i].element === e.element) {
 				const tooltip = tooltipList[i];
