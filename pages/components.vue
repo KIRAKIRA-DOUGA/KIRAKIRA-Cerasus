@@ -238,7 +238,7 @@
 						<Button v-tooltip="longTextTest">长文本</Button>
 					</div>
 				</AccordionItem>
-				<AccordionItem title="点击此处辣眼睛">
+				<AccordionItem title="让你的前端设计师气到脑中风">
 					<section class="marquee-section">
 						<marquee>KiRAKiRA☆DOUGA</marquee>
 						<marquee direction="up">让你的前端设计师气到脑中风</marquee>
