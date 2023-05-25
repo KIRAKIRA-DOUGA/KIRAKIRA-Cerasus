@@ -23,7 +23,7 @@
 	/** 切换文本倾斜。 */
 	const toggleItalic = () => { editor.value?.chain().focus().toggleItalic().run(); };
 	/** 切换文本下划线。 */
-	const toggleUnderline = () => { editor.value?.chain().focus().toggleUnderline().run(); };
+	const toggleUnderline = () => { editor.value?.chain().focus().toggleUnderline().run(); }; // FIXME Property 'toggleUnderline' does not exist on type 'ChainedCommands' (wtf?)
 	// FIXME: 回去重装一下完整版的 Tiptap，这个精简版本少功能。
 	/** 切换文本删除线。 */
 	const toggleStrike = () => { editor.value?.chain().focus().toggleStrike().run(); };
