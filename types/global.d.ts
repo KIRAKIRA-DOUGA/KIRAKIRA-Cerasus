@@ -30,5 +30,4 @@ declare global {
 	 * 管它是啥反正是对象就是了。
 	 */
 	type AnyObject = Record<ObjectKey, Any>;
-
 }

@@ -11,9 +11,6 @@
 	const pages = ref(99);
 	const opPage = ref(1);
 	const op = ["你说得对,但是", ..."《原神》是由米哈游自主研发的一款全新开放世界冒险游戏。游戏发生在一个被称作「提瓦特」的幻想世界，在这里，被神选中的人将被授予「神之眼」，导引元素之力。你将扮演一位名为「旅行者」的神秘角色在自由的旅行中邂逅性格各异、能力独特的同伴们，和他们一起击败强敌，找回失散的亲人⸺同时，逐步发掘「原神」的真相。"];
-	const Kaomoji = ["home.svg", "check.svg", "badge.svg", "flag.svg", "history.svg", "/_nuxt/assets/images/aira.jpg", "copy.svg", "/_nuxt/assets/images/没有了.gif", "star.svg"];
-	// 你最好是个正方形
-	const kmjPage = ref(1);
 	const displayPageCount = ref(7);
 	const toggle = ref(false);
 	const isClicked = ref(false);
@@ -96,7 +93,6 @@
 		<div class="component-test">
 			<PageController v-model="page" :pages="pages" :displayPageCount="displayPageCount" enableArrowKeyMove />
 			<PageController v-model="opPage" :pages="op" :displayPageCount="15" enableArrowKeyMove />
-			<PageController v-model="kmjPage" :pages="Kaomoji" :displayPageCount="6" enableArrowKeyMove enableParse />
 			<Button class="test-button" @click="onClickButton">{{ isClicked ? t.buttonClicked : t.button }}</Button>
 			<Button disabled>{{ t.buttonDisabled }}</Button>
 			<Button @click="showConfetti">{{ t.confetti }}</Button>

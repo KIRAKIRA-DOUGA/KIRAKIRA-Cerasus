@@ -42,7 +42,6 @@
 			<button v-ripple class={{ active: editor.value?.isActive(props.active) }} onClick={props.onClick}>
 				{slots.default()}
 			</button>
-
 		)) as VueJsx<Props>;
 	})();
 </script>

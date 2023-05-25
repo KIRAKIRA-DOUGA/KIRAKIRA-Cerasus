@@ -12,8 +12,6 @@
 		displayPageCount?: number;
 		/** 允许用户使用键盘上左右箭头键翻页。 */
 		enableArrowKeyMove?: boolean;
-		/** 允许解析url */
-		enableParse?: boolean;
 	}>(), {
 		current: 1,
 		displayPageCount: 7,
@@ -23,6 +21,7 @@
 	const currentPage = withOneWayProp(model, props.current);
 	const array = computed(() => props.pages instanceof Array ? props.pages : null);
 	const pages = computed(() => !(props.pages instanceof Array) ? props.pages : props.pages.length);
+
 	if (pages.value < 1)
 		throw new RangeError(`PageController pages 参数错误。页码值不能小于 1，当前值为 ${pages.value}。`);
 	if (currentPage.value < 1 || currentPage.value > pages.value)
@@ -238,10 +237,10 @@
 	 * 根据页码索引值获取页码索引值（大雾）。
 	 *
 	 * 其实是为了兼容数组模式。
-	 * @param index - 页码索引值。
+	 * @param index - 页码索引值。其中唯一一次用到字符串参数类型是在用户输入文本跳页的时候。
 	 * @returns 页码索引值或数组中的内容。
 	 */
-	function getPageName(index: number) {
+	function getPageName(index: number | string) {
 		return !array.value ? index : array.value[+index - 1];
 	}
 </script>
@@ -252,10 +251,9 @@
 			<LargeRippleButton
 				v-if="showFirst"
 				nonfocusable
-				:emoji="getPageName(1)"
+				:text="getPageName(1)"
 				@click="changePage(1)"
 			/>
-
 			<div
 				v-if="pages >= 3"
 				ref="scrollArea"
@@ -279,38 +277,29 @@
 							v-for="(item, position) in scrolledPages"
 							:key="item"
 							:style="{ '--position': position }"
-						>
-							<div v-if="!enableParse">{{ getPageName(item) }}</div>
-							<Emoji v-if="enableParse" :name="String(getPageName(item))" />
-						</div>
+						>{{ getPageName(item) }}</div>
 					</div>
-
 				</div>
 			</div>
 			<LargeRippleButton
 				v-if="pages >= 2 && showLast"
 				nonfocusable
-				:emoji="getPageName(pages)"
+				:text="getPageName(pages)"
 				@click="changePage(pages)"
 			/>
 		</div>
-
-		<div v-ripple class="thumb" :class="{ 'small-thumb': enableParse }">
+		<div v-ripple class="thumb">
 			<div
 				ref="pageEdit"
 				class="page-edit"
-
 				:contenteditable="!array"
+				@input="e => currentEdited = (e.target as HTMLDivElement).innerText"
 				@keydown="onEnterEdited"
 				@blur="onBlurEdited"
-				@input="e => currentEdited = (e.target as HTMLDivElement).innerText"
 			>
-				<div v-if="!enableParse">{{ getPageName(+currentEdited) }}</div>
-
+				{{ getPageName(currentEdited) }}
 			</div>
-			<div ref="newPageNumber" class="new-page-number">
-				<div v-if="!enableParse">{{ getPageName(currentPage) }}</div>
-			</div>
+			<div ref="newPageNumber" class="new-page-number">{{ getPageName(currentPage) }}</div>
 			<div class="focus-stripe"></div>
 		</div>
 	</div>
@@ -462,11 +451,4 @@
 			}
 		}
 	}
-
-	.small-thumb {
-		margin-top: 20px;
-		scale: 23%;
-		transform: rotate(45deg);
-	}
-	// TODO CSS rebuild required!!!!!!
 </style>
