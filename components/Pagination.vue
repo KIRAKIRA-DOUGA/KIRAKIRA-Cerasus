@@ -363,7 +363,7 @@
 		font-weight: bold;
 		line-height: $size;
 		text-align: center;
-		background: c(accent);
+		background-color: c(accent);
 		transition: $fallback-transitions, all $ease-out-back 500ms, left $ease-in-out-smooth 500ms;
 
 		@media (any-hover: hover) {

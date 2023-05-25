@@ -52,6 +52,7 @@
 	const toastMessage = ref("");
 	const toastSeverity = ref<ToastEvent["severity"]>("success");
 	const longTextTest = "那只敏捷的棕毛狐狸跳过了一只懒惰的狗".repeat(20);
+	const selectedSegmented = ref("list");
 
 	/**
 	 * 单击按钮事件。
@@ -93,6 +94,11 @@
 		<div class="component-test">
 			<Pagination v-model="page" :pages="pages" :displayPageCount="displayPageCount" enableArrowKeyMove />
 			<Pagination v-model="opPage" :pages="op" :displayPageCount="15" enableArrowKeyMove />
+			<Segmented v-model="selectedSegmented">
+				<SegmentedItem id="list" icon="list">列表</SegmentedItem>
+				<SegmentedItem id="grid" icon="grid">网格</SegmentedItem>
+				<SegmentedItem id="tile" icon="tile">磁贴</SegmentedItem>
+			</Segmented>
 			<Button class="test-button" @click="onClickButton">{{ isClicked ? t.buttonClicked : t.button }}</Button>
 			<Button disabled>{{ t.buttonDisabled }}</Button>
 			<Button @click="showConfetti">{{ t.confetti }}</Button>
