@@ -3,6 +3,7 @@
 	const slots = useSlots(); /* defineSlots<{
 		default?: typeof SegmentedItem;
 	}>(); */
+	// type p = InstanceType<typeof SegmentedItem>["$props"]
 	const vdoms = slots.default?.();
 	const items = computed(() => vdoms?.map(item => {
 		const props = item.props as { id?: string; icon?: string } | undefined;
@@ -11,8 +12,43 @@
 		return { caption, id: props?.id ?? caption, icon: props?.icon };
 	}).filter(item => item) ?? []);
 	const count = computed(() => items.value.length);
-	const selectedIndex = computed(() => items.value.findIndex(item => item.id === selected.value && selected.value));
-	// TODO: 缺少拖拽滑块功能。
+	const displaySelectedIndex = ref<number>();
+	const selectedIndex = computed(() => displaySelectedIndex.value ?? items.value.findIndex(item => item.id === selected.value && selected.value));
+
+	/**
+	 * 拖拽滑块。
+	 * @param e - 指针事件。
+	 */
+	function onDrag(e: PointerEvent) {
+		let thumb = e.target as HTMLDivElement;
+		while (!thumb || !thumb.classList.contains("thumb"))
+			thumb = thumb.parentElement as HTMLDivElement;
+		if (!thumb) return;
+		const trackItems = thumb.parentElement?.querySelector(".track")?.children;
+		const _items = items.value;
+		if (!trackItems?.length || !_items.length) return;
+		forceCursor("grabbing");
+		const lefts = [...trackItems].map(item => item.getBoundingClientRect().left);
+		const pointerMove = (e: PointerEvent) => {
+			const x = e.pageX;
+			for (let i = lefts.length - 1; i >= 0; i--)
+				if (x >= lefts[i]) {
+					displaySelectedIndex.value = i;
+					return;
+				}
+			displaySelectedIndex.value = 0;
+		};
+		const pointerUp = () => {
+			document.removeEventListener("pointermove", pointerMove);
+			document.removeEventListener("pointerup", pointerUp);
+			forceCursor(null);
+			if (displaySelectedIndex.value !== undefined)
+				selected.value = _items[displaySelectedIndex.value].id;
+			displaySelectedIndex.value = undefined;
+		};
+		document.addEventListener("pointermove", pointerMove);
+		document.addEventListener("pointerup", pointerUp);
+	}
 </script>
 
 <template>
@@ -23,9 +59,9 @@
 				<span>{{ item.caption }}</span>
 			</div>
 		</div>
-		<div v-ripple class="thumb">
+		<div v-show="count > 0" v-ripple class="thumb" @pointerdown="onDrag">
 			<div>
-				<div v-for="(item, i) in items" :key="item.id" v-ripple v-i="i" class="item">
+				<div v-for="(item, i) in items" :key="item.id" :style="{ '--i': i }" class="item">
 					<Icon v-if="item.icon" :name="item.icon" />
 					<span>{{ item.caption }}</span>
 				</div>
@@ -91,7 +127,7 @@
 		font-weight: bold;
 		background-color: c(accent);
 		cursor: grab;
-		transition: $fallback-transitions, all $ease-out-back 500ms, left $ease-in-out-smooth 500ms;
+		transition: $fallback-transitions, all $ease-out-back 500ms, left $ease-out-smooth 500ms;
 
 		@media (any-hover: hover) {
 			&:hover {
@@ -114,12 +150,12 @@
 			position: relative;
 			height: 100%;
 			translate: calc(-100% * v-bind(selectedIndex));
-			transition: $fallback-transitions, all $ease-out-back 500ms, translate $ease-in-out-smooth 500ms;
+			transition: $fallback-transitions, all $ease-out-back 500ms, translate $ease-out-smooth 500ms;
 
 			> .item {
+				@include square(100%);
 				position: absolute;
 				left: calc(100% * var(--i));
-				height: 100%;
 				color: white;
 				white-space: nowrap;
 			}

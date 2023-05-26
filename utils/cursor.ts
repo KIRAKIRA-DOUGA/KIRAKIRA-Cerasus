@@ -1,4 +1,4 @@
-type CursorType = "col-resize" | null;
+type CursorType = "col-resize" | "grabbing" | null;
 
 /**
  * 强行指定鼠标光标样式。
