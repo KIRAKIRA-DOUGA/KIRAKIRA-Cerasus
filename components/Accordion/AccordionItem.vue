@@ -80,6 +80,7 @@
 		cursor: pointer;
 
 		.icon {
+			@include enable-hardware-3d;
 			color: c(icon-color);
 			font-size: 20px;
 			backface-visibility: hidden;

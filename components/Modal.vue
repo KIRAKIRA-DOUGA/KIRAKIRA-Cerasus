@@ -190,8 +190,7 @@
 				}
 
 				.icon {
-					backface-visibility: hidden;
-					perspective: 1000;
+					@include enable-hardware-3d;
 				}
 
 				&::after {

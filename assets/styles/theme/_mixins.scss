@@ -117,7 +117,7 @@
 /// 已知宽/高度的绝对定位的居中。
 /// NOTE: 使用此混合必须指定宽高度。
 /// @param {String} $position [absolute] - 指定元素的 position 属性。
-/// @output - position, top, right, bottom, left, margin
+/// @output position, top, right, bottom, left, margin
 @mixin absolute-center-sized($position: absolute) {
 	position: $position;
 	top: 0;
@@ -129,7 +129,7 @@
 
 /// 应用 Material Design 大水波纹按钮时，不要让大水波纹扩大了按钮的点击面积。
 /// @param {Number} $button-size - 点击区域按钮大小。
-/// @output - pointer-events
+/// @output pointer-events
 @mixin ripple-clickable-only-inside($button-size) {
 	> * {
 		pointer-events: none;
@@ -149,7 +149,7 @@
 /// `both`。如留空则不会自动添加动画效果支持。
 /// @param {Bool} $adjust-padding [true] - 是否在动画时自动调整内边距值？
 /// @param {String} $transition-name [v] - Vue Transition 的名称，默认为默认值 `v`。
-/// @output - display, grid-template-rows, overflow
+/// @output display, grid-template-rows, overflow
 @mixin animated-auto-size($specified: null, $adjust-padding: true, $transition-name: v) {
 	display: grid;
 	grid-template-rows: 1fr;
@@ -173,4 +173,10 @@
 			}
 		}
 	}
+}
+
+/// 开启硬件 3D。用以解决某些可能会导致变换时闪动的问题。
+/// @output transform
+@mixin enable-hardware-3d {
+	transform: translateZ(1px);
 }
