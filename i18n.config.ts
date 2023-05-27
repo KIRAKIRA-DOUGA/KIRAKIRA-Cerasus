@@ -6,12 +6,7 @@ export default defineI18nConfig(() => ({
 	legacy: false,
 	locale: "zh",
 	messages: {
-		zh: {
-			home: "首页",
-			anime: "动画",
-			music: "音乐",
-			otomad: "音MAD",
-		},
+		zh,
 		en,
 		ja,
 	},
