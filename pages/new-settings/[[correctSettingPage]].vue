@@ -10,7 +10,7 @@
 
 	useHead({ title: t.settings });
 
-	// FIXME 如果本次 useRoute().params.correctSettingPage 没有取到 correctSettingPage 的值，那么就会使用上一次获取到的值时的缓存
+	// FIXME 如果本次 useRoute().params.correctSettingPage 没有取到 correctSettingPage 的值，那么就会使用之前取到的值时的缓存，如果之前从未取到值，则为 undefined, 使用缺省值
 	const correctSettingRouteName = computed(() => useRoute().params.correctSettingPage as string || "testUserSetting"); // 这里获取路由值并且设置路由值为空时默认显示的组件
 
 	const settingPageComponentsMap = { // 这里配置路由值和显示的组件的对应列表
@@ -21,7 +21,7 @@
 	const correctSettingPage = shallowRef();
 
 	const getCorrectSettingPage = (routeName: string) => {
-		if (routeName === "testUserSetting" || routeName === "testVideoSetting") // WARN 这里必须和 settingPageComponentsMap 的 key 一致，但在 if 里穷举逻辑运算表达式一定不是最优雅的写法
+		if (routeName === "testUserSetting" || routeName === "testVideoSetting") // WARN 这里必须和 settingPageComponentsMap 的 key 一致，但在 if 里穷举逻辑运算表达式一定不是最优雅的写法（快用强大的 ts 想想办法！）
 			return settingPageComponentsMap[routeName];
 		else
 			return null;
@@ -45,12 +45,10 @@
 				<header class="title content padding-end">
 					<TabBar v-model="currentSetting" vertical>
 						<Subheader icon="person">用户设置</Subheader>
-
-						<!-- // FIXME 在 TabItem 外面直接套 NuxtLink 的话，样式直接炸啦！ 请 TabItem 组件暴露一个可选的路由跳转地址属性。 -->
 						<div>（Tab 的样式呢？）</div>
-
+						
 						<!-- // WARN 根据路由值动态切换活跃的 Tab 的功能还没做！ -->
-						<NuxtLink to="/new-settings/testUserSetting">
+						<NuxtLink to="/new-settings/testUserSetting"> <!-- // FIXME 在 TabItem 外面直接套 NuxtLink 的话，样式直接炸啦！ TabItem 组件需要暴露一个可选的属性作为路由跳转的目标地址。 -->
 							<TabItem id="my-account" icon="account_circle">aaaaaa用户设置</TabItem>
 						</NuxtLink>
 						<NuxtLink to="/new-settings/testVideoSetting">
@@ -66,7 +64,7 @@
 			Route: {{ correctSettingRouteName }}
 			<br />
 			Component: {{ correctSettingPage }}
-			<!-- // WARN 请修正动画效果 -->
+			<!-- // WARN 临时测试用，请选择合适的动画效果 -->
 			<Transition name="page-forward">
 				<component :is="correctSettingPage" />
 			</Transition>
