@@ -7,6 +7,8 @@ export default defineNuxtRouteMiddleware((to, from) => {
 	const routePath = getRoutePath({ route: to });
 	if (routePath === "settings")
 		return navigateTo("/settings/appearance");
+	if (routePath.startsWith("settings/"))
+		return;
 	const routeNumber = +routePath;
 	if (routePath === "") // 论空字符串被转换成 0 ……
 		return;
@@ -27,12 +29,14 @@ export default defineNuxtRouteMiddleware((to, from) => {
 		});
 });
 
-export const slugValidate = (validRoutes: string[]) => {
+const validRoutes = ["hello", "search", "next", "settings"];
+
+export const slugValidate = () => {
 	type Validate = Parameters<typeof definePageMeta>[0]["validate"];
 	const validate: Validate = route => {
 		const routePath = getRoutePath({ route });
 		const routeNumber = +routePath;
-		if (validRoutes.includes(routePath))
+		if (validRoutes.includes(routePath) || routePath.startsWith("settings/"))
 			return true;
 		if (routeNumber === 404)
 			return false;

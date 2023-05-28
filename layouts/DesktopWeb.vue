@@ -1,17 +1,25 @@
 <script setup lang="ts">
 	import background from "assets/styles/css-doodles/background.css-doodle";
-	import Settings from "./settings.vue";
-
-	const props = defineProps<{
-		isSettings?: boolean;
-	}>();
+	import Settings from "./Settings.vue";
 
 	const showBanner = ref(false);
+	const localedRoute = computed(() => getRoutePath());
+	const SETTINGS = "settings";
+	const pageTransition = ref("page-forward");
+	const isSettings = computed(() => getRoutePath().includes(SETTINGS));
 
 	watchRoute(() => {
-		const localedRoute = getRoutePath();
-		showBanner.value = localedRoute === "";
+		showBanner.value = localedRoute.value === "";
 	}, true);
+
+	watchRoute((route, prevRoute) => {
+		[route, prevRoute] = [removeI18nPrefix(route), removeI18nPrefix(prevRoute)];
+		pageTransition.value = "page-jump";
+		if (prevRoute.includes(route)) pageTransition.value = "page-backward";
+		if (route.includes(prevRoute)) pageTransition.value = "page-forward";
+		if (route.includes(SETTINGS) !== prevRoute.includes(SETTINGS)) pageTransition.value = "";
+		if (prevRoute === route) pageTransition.value = "page-backward";
+	});
 </script>
 
 <template>
@@ -23,12 +31,18 @@
 		<Transition name="settings" mode="out-in">
 			<main v-if="!isSettings" class="scroll">
 				<Banner :collapsed="!showBanner" />
-				<div>
-					<slot></slot>
-				</div>
+				<Transition :name="pageTransition" mode="out-in">
+					<div :key="localedRoute">
+						<slot></slot>
+					</div>
+				</Transition>
 			</main>
 			<Settings v-else>
-				<slot></slot>
+				<Transition name="page-jump" mode="out-in">
+					<div :key="localedRoute" class="router-view">
+						<slot></slot>
+					</div>
+				</Transition>
 			</Settings>
 		</Transition>
 	</div>
@@ -42,7 +56,7 @@
 		transition: $fallback-transitions, width 0s, height 0s;
 
 		> main > div {
-			> :slotted(.container) {
+			> :deep(.container) {
 				padding: 26px 100px;
 
 				@include tablet {

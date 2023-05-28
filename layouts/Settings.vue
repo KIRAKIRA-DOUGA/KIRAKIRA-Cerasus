@@ -189,6 +189,11 @@
 			gap: 1rem;
 			max-width: $max-width;
 			padding: 0 $main-padding-x;
+
+			> :deep(.router-view) {
+				@include flex-block;
+				gap: 1rem;
+			}
 		}
 	}
 

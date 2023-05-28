@@ -75,29 +75,14 @@
 			navigator.serviceWorker.register("/sw.js");
 		});
 
-	const SETTINGS = "settings";
-	const pageTransition = ref("page-forward");
-	const isSettings = computed(() => getRoutePath().includes(SETTINGS));
-
-	watchRoute((route, prevRoute) => {
-		[route, prevRoute] = [removeI18nPrefix(route), removeI18nPrefix(prevRoute)];
-		pageTransition.value = "page-jump";
-		if (prevRoute.includes(route)) pageTransition.value = "page-backward";
-		if (route.includes(prevRoute)) pageTransition.value = "page-forward";
-		if (route.includes(SETTINGS) !== prevRoute.includes(SETTINGS)) pageTransition.value = "";
-		if (prevRoute === route) pageTransition.value = "";
-	});
-
 	// 彩蛋
 	loadEgg();
 </script>
 
 <template>
-	<NuxtLayout :name="layout" :isSettings="isSettings">
+	<NuxtLayout :name="layout">
 		<RouterView v-slot="{ Component }">
-			<Transition :name="pageTransition" mode="out-in">
-				<component :is="Component" />
-			</Transition>
+			<component :is="Component" />
 		</RouterView>
 	</NuxtLayout>
 	<Toasts />
