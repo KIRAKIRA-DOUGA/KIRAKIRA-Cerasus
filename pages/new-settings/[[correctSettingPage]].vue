@@ -10,7 +10,8 @@
 
 	useHead({ title: t.settings });
 
-	const correctSettingRouteName = computed(() => useRoute().params.correctSettingPage as string || "testUserSetting"); // 这里设置路由值为空时默认显示的组件
+	// FIXME 如果本次 useRoute().params.correctSettingPage 没有取到 correctSettingPage 的值，那么就会使用上一次获取到的值时的缓存
+	const correctSettingRouteName = computed(() => useRoute().params.correctSettingPage as string || "testUserSetting"); // 这里获取路由值并且设置路由值为空时默认显示的组件
 
 	const settingPageComponentsMap = { // 这里配置路由值和显示的组件的对应列表
 		testUserSetting: TestUserSetting,
@@ -20,7 +21,7 @@
 	const correctSettingPage = shallowRef();
 
 	const getCorrectSettingPage = (routeName: string) => {
-		if (routeName === "testUserSetting" || routeName === "testVideoSetting")
+		if (routeName === "testUserSetting" || routeName === "testVideoSetting") // WARN 这里必须和 settingPageComponentsMap 的 key 一致，但在 if 里穷举逻辑运算表达式一定不是最优雅的写法
 			return settingPageComponentsMap[routeName];
 		else
 			return null;
@@ -28,7 +29,7 @@
 	onMounted(() => {
 		correctSettingPage.value = getCorrectSettingPage(correctSettingRouteName.value);
 	});
-	const watchRouteCallback = (newValue: string, oldValue: string) => {
+	const watchRouteCallback = () => {
 		correctSettingPage.value = getCorrectSettingPage(correctSettingRouteName.value);
 	};
 
@@ -46,13 +47,14 @@
 						<Subheader icon="person">用户设置</Subheader>
 
 						<!-- // FIXME 在 TabItem 外面直接套 NuxtLink 的话，样式直接炸啦！ 请 TabItem 组件暴露一个可选的路由跳转地址属性。 -->
+						<div>（Tab 的样式呢？）</div>
 
 						<!-- // WARN 根据路由值动态切换活跃的 Tab 的功能还没做！ -->
 						<NuxtLink to="/new-settings/testUserSetting">
 							<TabItem id="my-account" icon="account_circle">aaaaaa用户设置</TabItem>
 						</NuxtLink>
 						<NuxtLink to="/new-settings/testVideoSetting">
-							<TabItem id="personal-information" icon="badge">bbbbbb视频设置  （Tab 样式呢？）</TabItem>
+							<TabItem id="personal-information" icon="badge">bbbbbb视频设置</TabItem>
 						</NuxtLink>
 					</TabBar>
 					
@@ -64,7 +66,10 @@
 			Route: {{ correctSettingRouteName }}
 			<br />
 			Component: {{ correctSettingPage }}
-			<component :is="correctSettingPage" />
+			<!-- // WARN 请修正动画效果 -->
+			<Transition name="page-forward">
+				<component :is="correctSettingPage" />
+			</Transition>
 		</div>
 
 		<Transition>
