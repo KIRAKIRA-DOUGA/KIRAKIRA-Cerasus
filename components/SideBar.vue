@@ -58,7 +58,7 @@
 				<img :src="avatar" alt="avatar" draggable="false" />
 			</div>
 			<SoftKey v-i="8" v-tooltip="rightTooltip('消息')" icon="email" href="test-rich-text-editor" />
-			<SoftKey v-i="9" v-tooltip="rightTooltip('设置')" icon="settings" href="settings" />
+			<SoftKey v-i="9" v-tooltip="rightTooltip('设置')" icon="settings" href="/new-settings" /> <!-- // WARN 注意设置按钮的 href 参数配置，settings 是旧设置页，/new-settings 是新的可路由的设置页 -->
 		</div>
 
 		<LoginWindow v-model="showLogin" />
