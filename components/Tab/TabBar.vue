@@ -68,7 +68,14 @@
 	 */
 	function getChild(id: string) {
 		if (!slotNode.value) return null;
+		const nodes: VNode[] = [];
 		for (const child of slotNode.value.vnode)
+			if (typeof child.children === "string") continue;
+			else if (typeof child.type === "symbol") {
+				if (child.type.description === "v-fgt" && Array.isArray(child.children))
+					nodes.push(...child.children as VNode[]);
+			} else nodes.push(child);
+		for (const child of nodes)
 			if (child.component?.props.id === id)
 				return child.el as HTMLElement;
 		return null;

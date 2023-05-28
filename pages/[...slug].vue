@@ -2,9 +2,12 @@
 	import { slugValidate } from "middleware/validate.global";
 
 	definePageMeta({
-		validate: slugValidate(["hello", "search", "next"]),
+		validate: slugValidate(["hello", "search", "next", "settings"]),
 	});
 
+	/**
+	 * 重新载入。
+	 */
 	function reload() {
 		location.reload();
 	}

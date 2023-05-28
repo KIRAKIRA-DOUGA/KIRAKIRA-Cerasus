@@ -45,9 +45,9 @@ const English: LocaleIdentifiers = {
 	logoHalf: "Half hidden LOGO",
 	logoShow: "Full LOGO",
 	comments: "Comments",
-	uploader_lovin_it: "Uploader's lovin' it",
+	uploadersLovinIt: "Uploader's lovin' it",
 	finish: "Operation successfully done",
-	you_know_too_much: "You know too much.",
+	youKnowTooMuch: "You know too much.",
 };
 
 export default English;

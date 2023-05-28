@@ -108,16 +108,14 @@ p {
 .page-forward-enter-active,
 .page-backward-enter-active,
 .page-jump-enter-active,
-.page-enter-settings-enter-active,
-.page-leave-settings-enter-active {
+.settings-enter-active {
 	transition: all $ease-out-smooth 600ms !important;
 }
 
 .page-forward-leave-active,
 .page-backward-leave-active,
 .page-jump-leave-active,
-.page-enter-settings-leave-active,
-.page-leave-settings-leave-active {
+.settings-leave-active {
 	transition: all $ease-in-expo 100ms !important;
 }
 
@@ -143,16 +141,19 @@ p {
 	translate: 0 -2rem;
 }
 
-.page-enter-settings-enter-from,
-.page-leave-settings-leave-to {
+.settings-leave-to,
+.settings-enter-from {
 	opacity: 0;
-	scale: 1.1;
-}
 
-.page-enter-settings-leave-to,
-.page-leave-settings-enter-from {
-	opacity: 0;
-	scale: 0.9;
+	@at-root {
+		main#{&} {
+			scale: 0.9;
+		}
+	}
+
+	&.settings {
+		scale: 1.1;
+	}
 }
 // #endregion
 

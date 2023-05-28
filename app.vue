@@ -75,16 +75,16 @@
 			navigator.serviceWorker.register("/sw.js");
 		});
 
+	const SETTINGS = "settings";
 	const pageTransition = ref("page-forward");
+	const isSettings = computed(() => getRoutePath().includes(SETTINGS));
 
 	watchRoute((route, prevRoute) => {
 		[route, prevRoute] = [removeI18nPrefix(route), removeI18nPrefix(prevRoute)];
 		pageTransition.value = "page-jump";
 		if (prevRoute.includes(route)) pageTransition.value = "page-backward";
 		if (route.includes(prevRoute)) pageTransition.value = "page-forward";
-		const SETTINGS = "settings";
-		if (route.includes(SETTINGS) && !prevRoute.includes(SETTINGS)) pageTransition.value = "page-enter-settings";
-		if (!route.includes(SETTINGS) && prevRoute.includes(SETTINGS)) pageTransition.value = "page-leave-settings";
+		if (route.includes(SETTINGS) !== prevRoute.includes(SETTINGS)) pageTransition.value = "";
 		if (prevRoute === route) pageTransition.value = "";
 	});
 
@@ -93,7 +93,7 @@
 </script>
 
 <template>
-	<NuxtLayout :name="layout">
+	<NuxtLayout :name="layout" :isSettings="isSettings">
 		<RouterView v-slot="{ Component }">
 			<Transition :name="pageTransition" mode="out-in">
 				<component :is="Component" />

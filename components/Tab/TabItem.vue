@@ -41,6 +41,7 @@
 		@include flex-center;
 		gap: 4px;
 		color: c(icon-color);
+		cursor: pointer;
 
 		&.active {
 			color: c(accent);

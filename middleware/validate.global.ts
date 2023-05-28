@@ -5,6 +5,8 @@ export default defineNuxtRouteMiddleware((to, from) => {
 		console.log("to", to, "\nfrom", from, "\nrouteBaseName", useNuxtApp().$getRouteBaseName());
 
 	const routePath = getRoutePath({ route: to });
+	if (routePath === "settings")
+		return navigateTo("/settings/appearance");
 	const routeNumber = +routePath;
 	if (routePath === "") // 论空字符串被转换成 0 ……
 		return;

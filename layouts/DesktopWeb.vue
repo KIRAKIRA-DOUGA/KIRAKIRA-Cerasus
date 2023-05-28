@@ -1,5 +1,10 @@
 <script setup lang="ts">
 	import background from "assets/styles/css-doodles/background.css-doodle";
+	import Settings from "./settings.vue";
+
+	const props = defineProps<{
+		isSettings?: boolean;
+	}>();
 
 	const showBanner = ref(false);
 
@@ -14,11 +19,18 @@
 		<CssDoodle v-show="appConfig.showCssDoodle" :rule="background" class="background" />
 	</Transition>
 	<SideBar class="sidebar" />
-	<div class="container">
-		<Banner :collapsed="!showBanner" />
-		<main>
-			<slot></slot>
-		</main>
+	<div class="container" :class="{ scroll: isSettings }">
+		<Transition name="settings" mode="out-in">
+			<main v-if="!isSettings" class="scroll">
+				<Banner :collapsed="!showBanner" />
+				<div>
+					<slot></slot>
+				</div>
+			</main>
+			<Settings v-else>
+				<slot></slot>
+			</Settings>
+		</Transition>
 	</div>
 </template>
 
@@ -26,16 +38,10 @@
 	.container {
 		position: relative;
 		z-index: 1;
-		height: 100dvh;
 		padding-left: $sidebar-width;
-		overflow: hidden overlay;
 		transition: $fallback-transitions, width 0s, height 0s;
 
-		> main {
-			> :slotted(*) {
-				transform-origin: center 50dvh;
-			}
-
+		> main > div {
 			> :slotted(.container) {
 				padding: 26px 100px;
 
@@ -70,5 +76,10 @@
 		&.v-leave-to {
 			opacity: 0;
 		}
+	}
+
+	.scroll {
+		height: 100dvh;
+		overflow: hidden overlay;
 	}
 </style>

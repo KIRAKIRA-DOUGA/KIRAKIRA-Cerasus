@@ -45,9 +45,9 @@ const Japanese: LocaleIdentifiers = {
 	logoHalf: "LOGO部分表示",
 	logoShow: "LOGO全表示",
 	comments: "コメント",
-	uploader_lovin_it: "うP主はそれが好きです",
+	uploadersLovinIt: "うP主はそれが好きです",
 	finish: "操作が正常に完了しました",
-	you_know_too_much: "あなたは知っていることが多すぎます。",
+	youKnowTooMuch: "あなたは知っていることが多すぎます。",
 };
 
 export default Japanese;

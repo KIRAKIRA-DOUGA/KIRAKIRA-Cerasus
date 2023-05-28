@@ -7,9 +7,9 @@
 	useHead({ title: "首页" });
 
 	const pages = getPages(
-		["组件测试页", "components"],
-		["富文本测试页", "test-rich-text-editor"],
-		["搜索", "search"],
+		["组件测试页", "/components"],
+		["富文本测试页", "/test-rich-text-editor"],
+		["搜索", "/search"],
 		["内容", "/hello"],
 		["下一页", "/next"],
 	);

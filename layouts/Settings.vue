@@ -1,28 +1,41 @@
 <script setup lang="ts">
-	import { LocaleObject } from "@nuxtjs/i18n/dist/runtime/composables";
-	const currentSetting = ref("appearance");
-	const search = ref("");
-	const theme = Theme.theme;
-	const palette = Theme.palette;
-	const { locale: currentLocale, locales } = useI18n();
-	const localeModel = computed({
-		get: () => currentLocale.value,
-		set: value => switchLanguage(value),
+	const currentSetting = computed({
+		get: () => getRoutePath().match(/(?<=settings\/)[A-Za-z0-9-_]+/)?.[0] ?? "",
+		set: id => navigate(`/settings/${id}`),
 	});
-	const localeList = computed(() => (locales.value as LocaleObject[]).map(locale => ({
-		code: locale.code,
-		name: locale.name || locale.code,
-	})));
-	const themeList = ["light", "dark", "system"] as const;
-	const paletteList = ["pink", "sky", "blue", "orange", "purple", "green"] as const;
+	const search = ref("");
 	const main = ref<HTMLElement>();
 	const showDrawer = ref(false);
+	const ti = (id: string) => t[new VariableName(id).camel];
+	const title = computed(() => ti(currentSetting.value));
 
 	useEventListener("window", "resize", () => {
 		if (window.innerWidth > 991) showDrawer.value = false;
 	});
 
-	useHead({ title: t.settings });
+	const settings = {
+		personal: [
+			{ id: "my-account", icon: "account_circle" },
+			{ id: "information", icon: "badge" },
+			{ id: "my-log", icon: "history" },
+			{ id: "privacy", icon: "shield" },
+			{ id: "bind-email", icon: "email" },
+			{ id: "change-password", icon: "lock" },
+			{ id: "account-linking", icon: "groups" },
+			{ id: "blocklist", icon: "block" },
+		],
+		general: [
+			{ id: "appearance", icon: "palette" },
+			{ id: "player", icon: "play" },
+			{ id: "danmaku", icon: "clear_all" },
+			{ id: "preference", icon: "star" },
+			{ id: "language", icon: "translate" },
+			{ id: "accessibility", icon: "accessibility" },
+			{ id: "about", icon: "info" },
+		],
+	};
+
+	useHead({ title: title.value + " - " + t.settings });
 </script>
 
 <template>
@@ -38,22 +51,9 @@
 					</header>
 					<TabBar v-model="currentSetting" vertical>
 						<Subheader icon="person">用户设置</Subheader>
-						<TabItem id="my-account" icon="account_circle">我的账号</TabItem>
-						<TabItem id="personal-information" icon="badge">个人资料</TabItem>
-						<TabItem id="my-log" icon="history">我的记录</TabItem>
-						<TabItem id="privacy" icon="shield">隐私和安全</TabItem>
-						<TabItem id="mail" icon="email">绑定邮箱</TabItem>
-						<TabItem id="change-password" icon="lock">修改密码</TabItem>
-						<TabItem id="account-linking" icon="groups">关联社交平台</TabItem>
-						<TabItem id="blacklist" icon="block">黑名单</TabItem>
+						<TabItem v-for="setting in settings.personal" :id="setting.id" :key="setting.id" :icon="setting.icon">{{ ti(setting.id) }}</TabItem>
 						<Subheader icon="apps">应用设置</Subheader>
-						<TabItem id="appearance" icon="palette">外观</TabItem>
-						<TabItem id="player" icon="play">播放</TabItem>
-						<TabItem id="danmaku" icon="clear_all">弹幕</TabItem>
-						<TabItem id="preference" icon="star">偏好</TabItem>
-						<TabItem id="language" icon="translate">语言</TabItem>
-						<TabItem id="accessibility" icon="accessibility">无障碍</TabItem>
-						<TabItem id="about" icon="info">关于</TabItem>
+						<TabItem v-for="setting in settings.general" :id="setting.id" :key="setting.id" :icon="setting.icon">{{ ti(setting.id) }}</TabItem>
 					</TabBar>
 					<div class="nav-bottom-buttons">
 						<Button icon="logout">登出</Button>
@@ -70,39 +70,9 @@
 					<div class="show-drawer-wrapper">
 						<SoftKey icon="dehaze" @click="showDrawer = true" />
 					</div>
-					<h2>{{ t.appearance }}</h2>
+					<h2>{{ title }}</h2>
 				</header>
-				<Subheader icon="brightness_medium">{{ t.theme }}</Subheader>
-				<div class="chip radio-group">
-					<RadioButton
-						v-for="item in themeList"
-						:key="item"
-						v-model="theme"
-						v-ripple
-						:value="item"
-					>{{ t[item] }}</RadioButton>
-				</div>
-				<Subheader icon="palette">{{ t.palette }}</Subheader>
-				<div class="chip radio-group">
-					<RadioButton
-						v-for="item in paletteList"
-						:key="item"
-						v-model="palette"
-						v-ripple
-						:value="item"
-					>{{ t[item] }}</RadioButton>
-				</div>
-				<Subheader icon="translate">{{ t.language }}</Subheader>
-				<div class="chip radio-group">
-					<RadioButton
-						v-for="locale in localeList"
-						:key="locale.code"
-						v-model="localeModel"
-						v-ripple
-						:value="locale.code"
-						:lang="locale.code"
-					>{{ locale.name }}</RadioButton>
-				</div>
+				<slot></slot>
 			</div>
 		</main>
 
@@ -304,15 +274,20 @@
 		}
 	}
 
-	.chip {
+	:deep(.chip) {
 		@include chip-shadow;
 		@include radius-large;
 		overflow: hidden;
 	}
 
-	.radio-group .radio-button {
+	:deep(.radio-group .radio-button) {
 		$extra-padding: 16px;
 		padding: 10px 20px;
+		overflow: visible;
+
+		&:has(.ripple-circle) {
+			overflow: hidden;
+		}
 
 		&:first-child {
 			padding-top: $extra-padding;

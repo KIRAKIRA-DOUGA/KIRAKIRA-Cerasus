@@ -22,7 +22,7 @@
 	<aside>
 		<div class="top icons">
 			<SoftKey v-i="0" v-tooltip="rightTooltip('主页')" icon="home" href="/" />
-			<SoftKey v-i="1" v-tooltip="rightTooltip('搜索')" icon="search" href="search" />
+			<SoftKey v-i="1" v-tooltip="rightTooltip('搜索')" icon="search" href="/search" />
 			<SoftKey v-i="2" v-tooltip="rightTooltip('历史')" icon="history" />
 			<SoftKey v-i="3" v-tooltip="rightTooltip('收藏')" icon="star" />
 			<SoftKey v-i="4" v-tooltip="rightTooltip('关注')" icon="feed" />
@@ -57,8 +57,8 @@
 			>
 				<img :src="avatar" alt="avatar" draggable="false" />
 			</div>
-			<SoftKey v-i="8" v-tooltip="rightTooltip('消息')" icon="email" href="test-rich-text-editor" />
-			<SoftKey v-i="9" v-tooltip="rightTooltip('设置')" icon="settings" href="settings" />
+			<SoftKey v-i="8" v-tooltip="rightTooltip('消息')" icon="email" href="/test-rich-text-editor" />
+			<SoftKey v-i="9" v-tooltip="rightTooltip('设置')" icon="settings" href="/settings" />
 		</div>
 
 		<LoginWindow v-model="showLogin" />
