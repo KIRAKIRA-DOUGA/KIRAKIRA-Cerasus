@@ -51,9 +51,9 @@
 					</header>
 					<TabBar v-model="currentSetting" vertical>
 						<Subheader icon="person">用户设置</Subheader>
-						<TabItem v-for="setting in settings.personal" :id="setting.id" :key="setting.id" :icon="setting.icon">{{ ti(setting.id) }}</TabItem>
+						<TabItem v-for="setting in settings.personal" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
 						<Subheader icon="apps">应用设置</Subheader>
-						<TabItem v-for="setting in settings.general" :id="setting.id" :key="setting.id" :icon="setting.icon">{{ ti(setting.id) }}</TabItem>
+						<TabItem v-for="setting in settings.general" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
 					</TabBar>
 					<div class="nav-bottom-buttons">
 						<Button icon="logout">登出</Button>

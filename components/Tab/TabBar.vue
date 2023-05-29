@@ -179,11 +179,11 @@
 </script>
 
 <template>
-	<Comp ref="tabBar">
-		<div class="items" :class="{ vertical, big }">
+	<Comp ref="tabBar" :class="{ vertical, big }">
+		<div class="items">
 			<Slot />
 		</div>
-		<div ref="indicator" class="indicator" :class="{ vertical }"></div>
+		<div ref="indicator" class="indicator"></div>
 	</Comp>
 </template>
 
@@ -198,11 +198,11 @@
 			cursor: pointer;
 		}
 
-		&.big {
+		:comp.big > & {
 			gap: 2em;
 		}
 
-		&.vertical {
+		:comp.vertical > & {
 			@include flex-block;
 			gap: 2px;
 			align-items: flex-start;
@@ -212,7 +212,10 @@
 	:comp {
 		position: relative;
 		display: inline-block;
-		width: 100%;
+
+		&.vertical {
+			width: 100%;
+		}
 	}
 
 	.indicator {
@@ -224,7 +227,7 @@
 		margin-top: 6px;
 		background-color: c(accent);
 
-		&.vertical {
+		:comp.vertical > & {
 			width: $thickness;
 			height: unset;
 			margin-top: 2px;

@@ -22,7 +22,7 @@
 	});
 
 	const emits = defineEmits<{
-		click: [payload: MouseEvent];
+		click: [e: MouseEvent];
 	}>();
 
 	const appearance = computed(() => props.appearance === "default" ? "" : props.appearance);

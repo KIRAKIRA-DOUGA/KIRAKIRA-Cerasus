@@ -1,3 +1,5 @@
+// TODO: 这个中间件写得一团糟，需要狠狠地改一改。
+
 import { httpResponseStatusCodes } from "helpers/http-status";
 
 export default defineNuxtRouteMiddleware((to, from) => {

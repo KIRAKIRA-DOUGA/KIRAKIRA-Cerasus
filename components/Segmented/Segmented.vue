@@ -3,7 +3,6 @@
 	const slots = useSlots(); /* defineSlots<{
 		default?: typeof SegmentedItem;
 	}>(); */
-	// type p = InstanceType<typeof SegmentedItem>["$props"]
 	const vdoms = slots.default?.();
 	const items = computed(() => vdoms?.map(item => {
 		const props = item.props as { id?: string; icon?: string } | undefined;
@@ -151,6 +150,7 @@
 			height: 100%;
 			translate: calc(-100% * v-bind(selectedIndex));
 			transition: $fallback-transitions, all $ease-out-back 500ms, translate $ease-out-smooth 500ms;
+			// TODO: 在滑块移动动画时，滑块内部元素会抖动，暂不知如何解决。另外运动曲线也与页面切换器不相匹配，如强制使用则会使抖动更加明显。
 
 			> .item {
 				@include square(100%);

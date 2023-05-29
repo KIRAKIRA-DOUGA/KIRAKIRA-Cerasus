@@ -6,12 +6,3 @@
 		id: string;
 	}>();
 </script>
-
-<template>
-	<Comp>
-		<Icon v-if="icon" :name="icon" />
-		<span>
-			<slot></slot>
-		</span>
-	</Comp>
-</template>

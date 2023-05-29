@@ -3,7 +3,7 @@
 </docs>
 
 <script setup lang="ts">
-
+	// TODO: 该页面会和外面的 [...slug].vue 在 SSR 阶段冲突（完全加载后才会正常），需要一个更合理的方式解决。
 </script>
 
 <template>

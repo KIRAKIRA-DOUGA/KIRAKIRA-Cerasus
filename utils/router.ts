@@ -1,12 +1,14 @@
 import { RouteLocationNormalized, RouteLocationNormalizedLoaded } from "vue-router";
 
+const langs = ["zh", "en", "ja"];
+
 /**
  * 获取系统当前的路由。
  * @returns 系统路由。
  */
 export function getRoutePath({
 	route = useRouter().currentRoute.value,
-	removeI18nPrefix = true,
+	removeI18nPrefix: removeI18n = true, // removeI18nPrefix 和下面的函数重名因而会导致异常。
 }: Partial<{
 	/** 路由对象。留空时将会自动获取。 */
 	route: RouteLocationNormalized | RouteLocationNormalizedLoaded;
@@ -15,8 +17,8 @@ export function getRoutePath({
 }> = {}): string {
 	let path = route.path;
 	path = path.slice(1); // 移除根节点斜杠。
-	if (removeI18nPrefix)
-		path = path.replace(new RegExp(`^${getCurrentLocale()}\\/?`), ""); // 移除语言前缀。
+	if (removeI18n)
+		path = path.replace(new RegExp(`^(${langs.join("|")})\\/?`), ""); // 移除语言前缀。
 	return path;
 }
 
@@ -59,12 +61,18 @@ export function navigate(path: string) {
  * @param lang - 语言代码。
  */
 export function switchLanguage(lang: string) {
+	if (getCurrentLocale() === lang) return;
 	const switchLocalePath = useSwitchLocalePath();
 	switchLocalePath(lang);
 	// useRouter().push(switchLocalePath(value)); // 旧方法，不推荐使用。
 	if (lang === "zh") lang = "/";
 	else lang = `/${lang}/`;
 	useRouter().push(lang + getRoutePath());
+	if (process.client) // 切换语言动画。
+		document.body.animate([
+			{ filter: "blur(10px)" },
+			{ filter: "blur(0)" },
+		], { duration: 500, easing: eases.easeOutSmooth });
 }
 
 /**

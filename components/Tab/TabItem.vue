@@ -13,6 +13,10 @@
 		icon: undefined,
 	});
 
+	const emits = defineEmits<{
+		click: [e: MouseEvent, id: string];
+	}>();
+
 	const parent = useParent(TabBar)!;
 	const active = computed(() => parent.props.modelValue === props.id);
 	const flexDirection = computed(() => props.direction === "horizontal" ? undefined : props.direction.replace("horizontal", "row").replace("vertical", "column") as Property.FlexDirection);
@@ -20,9 +24,11 @@
 
 	/**
 	 * 单击切换选项卡事件。
+	 * @param e - 鼠标事件。
 	 */
-	function onClick() {
+	function onClick(e: MouseEvent) {
 		parent.exposed?.changeTab(props.id);
+		emits("click", e, props.id);
 	}
 </script>
 
@@ -62,7 +68,7 @@
 		}
 		// TODO: 缺少横向 Tab 的 hover 和 pressed 样式，但不要用水波纹，你用了就知道有多丑了。
 
-		.vertical > & {
+		.tab-bar.vertical > * > & {
 			@include radius-small;
 			justify-content: flex-start;
 			width: 100%;
