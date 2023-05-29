@@ -52,18 +52,17 @@
 
 <template>
 	<Comp>
-		<div class="track">
+		<div class="track items-wrapper">
 			<div v-for="item in items" :key="item.id" v-ripple class="item" @click="selected = item.id">
 				<Icon v-if="item.icon" :name="item.icon" />
 				<span>{{ item.caption }}</span>
 			</div>
 		</div>
-		<div v-show="count > 0" v-ripple class="thumb" @pointerdown="onDrag">
-			<div>
-				<div v-for="(item, i) in items" :key="item.id" :style="{ '--i': i }" class="item">
-					<Icon v-if="item.icon" :name="item.icon" />
-					<span>{{ item.caption }}</span>
-				</div>
+		<div v-show="count > 0" v-ripple class="thumb" @pointerdown="onDrag"></div>
+		<div class="content items-wrapper">
+			<div v-for="item in items" :key="item.id" class="item">
+				<Icon v-if="item.icon" :name="item.icon" />
+				<span>{{ item.caption }}</span>
 			</div>
 		</div>
 	</Comp>
@@ -81,15 +80,10 @@
 		@include control-inner-shadow;
 		@include radius-small;
 		position: relative;
-		display: grid;
-		grid-auto-columns: 1fr;
-		grid-auto-flow: column;
-		width: fit-content;
-		height: $height;
 		background-color: c(inset-bg);
 
 		> .item {
-			color: c(icon-color);
+			color: transparent;
 			cursor: pointer;
 		}
 	}
@@ -99,6 +93,7 @@
 		@include radius-small;
 		gap: 6px;
 		padding: 0 11px;
+		color: c(icon-color);
 
 		@media (any-hover: hover) {
 			&:hover {
@@ -112,9 +107,25 @@
 		}
 	}
 
+	.items-wrapper {
+		display: grid;
+		grid-auto-columns: 1fr;
+		grid-auto-flow: column;
+		width: fit-content;
+		height: $height;
+	}
+
+	.content {
+		position: absolute;
+		top: 0;
+		z-index: 4;
+		pointer-events: none;
+	}
+
 	.thumb {
 		@include page-active;
 		@include radius-small;
+		$transition: $fallback-transitions, all $ease-out-back 500ms;
 		--width: calc(100% / v-bind(count));
 		position: absolute;
 		top: 0;
@@ -126,7 +137,7 @@
 		font-weight: bold;
 		background-color: c(accent);
 		cursor: grab;
-		transition: $fallback-transitions, all $ease-out-back 500ms, left $ease-out-smooth 500ms;
+		transition: $transition, left $ease-in-out-smooth 500ms;
 
 		@media (any-hover: hover) {
 			&:hover {
@@ -143,22 +154,7 @@
 			@include button-scale-pressed;
 			background: c(accent);
 			cursor: grabbing;
-		}
-
-		> div {
-			position: relative;
-			height: 100%;
-			translate: calc(-100% * v-bind(selectedIndex));
-			transition: $fallback-transitions, all $ease-out-back 500ms, translate $ease-out-smooth 500ms;
-			// TODO: 在滑块移动动画时，滑块内部元素会抖动，暂不知如何解决。另外运动曲线也与页面切换器不相匹配，如强制使用则会使抖动更加明显。
-
-			> .item {
-				@include square(100%);
-				position: absolute;
-				left: calc(100% * var(--i));
-				color: white;
-				white-space: nowrap;
-			}
+			transition: $transition, left $ease-out-smooth 500ms;
 		}
 	}
 </style>
