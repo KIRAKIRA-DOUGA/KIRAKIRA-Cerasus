@@ -68,11 +68,13 @@ export function switchLanguage(lang: string) {
 	if (lang === "zh") lang = "/";
 	else lang = `/${lang}/`;
 	useRouter().push(lang + getRoutePath());
-	if (process.client) // 切换语言动画。
-		document.body.animate([
+	if (process.client) { // 切换语言动画。
+		const element = document.querySelector(".settings") ?? document.body;
+		element.animate([
 			{ filter: "blur(10px)" },
 			{ filter: "blur(0)" },
 		], { duration: 500, easing: eases.easeOutSmooth });
+	}
 }
 
 /**

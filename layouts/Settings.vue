@@ -301,5 +301,9 @@
 		&:last-child {
 			padding-bottom: $extra-padding;
 		}
+
+		&:hover {
+			background-color: c(hover-color);
+		}
 	}
 </style>
