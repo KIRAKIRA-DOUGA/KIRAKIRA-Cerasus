@@ -27,9 +27,6 @@
 		{ name: "Node.js", version: "20", ability: "服务端开发平台" },
 		{ name: "Koa", version: "3", ability: "下一代网络框架" },
 	];
-	onMounted(() => {
-		console.log(nuxt);
-	});
 </script>
 
 <template>

@@ -2,6 +2,7 @@
 	import background from "assets/styles/css-doodles/background.css-doodle";
 	import Settings from "./Settings.vue";
 
+	const container = ref<HTMLDivElement>();
 	const showBanner = ref(false);
 	const localedRoute = computed(() => getRoutePath());
 	const SETTINGS = "settings";
@@ -27,7 +28,7 @@
 		<CssDoodle v-show="appConfig.showCssDoodle" :rule="background" class="background" />
 	</Transition>
 	<SideBar class="sidebar" />
-	<div class="container" :class="{ scroll: isSettings }">
+	<div ref="container" class="container" :class="{ scroll: isSettings }">
 		<Transition name="settings" mode="out-in">
 			<main v-if="!isSettings" class="scroll">
 				<Banner :collapsed="!showBanner" />
@@ -38,7 +39,7 @@
 				</Transition>
 			</main>
 			<Settings v-else>
-				<Transition name="page-jump" mode="out-in">
+				<Transition name="page-jump" mode="out-in" @beforeEnter="container?.scrollTo(0, 0)">
 					<div :key="localedRoute" class="router-view">
 						<slot></slot>
 					</div>
