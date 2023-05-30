@@ -16,15 +16,6 @@
 	const isClicked = ref(false);
 	const theme = Theme.theme;
 	const palette = Theme.palette;
-	const { locale: currentLocale, locales } = useI18n();
-	const localeModel = computed({
-		get: () => currentLocale.value,
-		set: value => switchLanguage(value),
-	});
-	const localeList = computed(() => (locales.value as LocaleObject[]).map(locale => ({
-		code: locale.code,
-		name: locale.name || locale.code,
-	})));
 	const timeoutId = ref<NodeJS.Timeout>();
 	const isTagChecked = ref(false);
 	const volume = ref(100);
@@ -152,7 +143,6 @@
 			<TextBox v-model="inputValue" size="large" icon="lock" type="password" placeholder="密码" />
 			<em>所有输入框的内容同时输入属正常现象，因为懒得做三个变量。</em>
 			<hr />
-			<RadioButton v-for="locale in localeList" :key="locale.code" v-model="localeModel" :value="locale.code" :lang="locale.code">{{ locale.name }}</RadioButton>
 			<HeadingComments :count="233" />
 			<hr />
 			<Subheader>不确定加载条</Subheader>

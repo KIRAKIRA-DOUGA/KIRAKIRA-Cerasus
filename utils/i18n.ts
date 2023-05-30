@@ -1,9 +1,10 @@
 import { LocaleWithDefaultValue } from "locales/SChinese";
 
+// 如果需要 <i18n> 块内语言字符串：useI18n({ useScope: "local" })
 const handler = {
 	get(_target: object, name: string) {
 		if (name === "__v_isRef") return; // Vuex 干的好事。
-		return useI18n(/* { useScope: "local" } */).t(name);
+		return useI18n().t(name);
 	},
 };
 /** 获取本地化字符串对象。 */
