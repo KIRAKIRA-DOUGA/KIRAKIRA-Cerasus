@@ -122,6 +122,10 @@
 		transition: $fallback-transitions, clip-path $ease-in-out-smooth 500ms;
 		clip-path: inset(0% calc((1 - (v-bind(selectedIndex) + 1) / v-bind(count)) * 100%) 0% calc(v-bind(selectedIndex) / v-bind(count) * 100%) round 4px);
 		pointer-events: none;
+
+		.thumb:active + & {
+			transition: $fallback-transitions, clip-path $ease-out-smooth 500ms;
+		}
 	}
 
 	.thumb {
