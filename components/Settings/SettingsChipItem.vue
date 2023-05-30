@@ -8,6 +8,8 @@
 		details?: string;
 		/** 之后的操作图标。 */
 		afterIcon?: string;
+		/** 点击链接。在域名未完全确定前目前只能支持外链，如内链需要额外的自动检测。 */
+		href?: string;
 	}>();
 </script>
 
@@ -24,6 +26,7 @@
 			<div v-if="details" class="details">{{ details }}</div>
 		</div>
 		<Icon v-if="afterIcon" class="after-icon" :name="afterIcon" />
+		<a v-if="href" draggable="false" :href="href" target="_blank" class="link lite"></a>
 	</Comp>
 </template>
 
@@ -82,6 +85,12 @@
 		.after-icon {
 			color: c(icon-color);
 			font-size: 24px;
+		}
+
+		.link {
+			@include square(100%);
+			position: absolute;
+			left: 0;
 		}
 	}
 </style>
