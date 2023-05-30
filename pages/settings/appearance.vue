@@ -32,8 +32,10 @@
 <style scoped lang="scss">
 	.player-video-controller {
 		&,
-		* {
-			pointer-events: none;
+		*,
+		::before,
+		::after {
+			pointer-events: none !important;
 		}
 	}
 </style>

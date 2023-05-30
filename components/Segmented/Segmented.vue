@@ -13,6 +13,7 @@
 	const count = computed(() => items.value.length);
 	const displaySelectedIndex = ref<number>();
 	const selectedIndex = computed(() => displaySelectedIndex.value ?? items.value.findIndex(item => item.id === selected.value && selected.value));
+	const pressed = ref(false); // 为了兼容触摸屏，触摸屏在滑动时会撤销 active 伪类。
 
 	/**
 	 * 拖拽滑块。
@@ -26,6 +27,7 @@
 		const trackItems = thumb.parentElement?.querySelector(".track")?.children;
 		const _items = items.value;
 		if (!trackItems?.length || !_items.length) return;
+		pressed.value = true;
 		forceCursor("grabbing");
 		const lefts = [...trackItems].map(item => item.getBoundingClientRect().left);
 		const pointerMove = (e: PointerEvent) => {
@@ -40,6 +42,7 @@
 		const pointerUp = () => {
 			document.removeEventListener("pointermove", pointerMove);
 			document.removeEventListener("pointerup", pointerUp);
+			pressed.value = false;
 			forceCursor(null);
 			if (displaySelectedIndex.value !== undefined)
 				selected.value = _items[displaySelectedIndex.value].id;
@@ -58,7 +61,7 @@
 				<span>{{ item.caption }}</span>
 			</div>
 		</div>
-		<div v-show="count > 0" v-ripple class="thumb" @pointerdown="onDrag"></div>
+		<div v-show="count > 0" v-ripple class="thumb" :class="{ pressed }" @pointerdown="onDrag"></div>
 		<div class="content items-wrapper">
 			<div v-for="item in items" :key="item.id" class="item">
 				<Icon v-if="item.icon" :name="item.icon" />
@@ -123,7 +126,7 @@
 		clip-path: inset(0% calc((1 - (v-bind(selectedIndex) + 1) / v-bind(count)) * 100%) 0% calc(v-bind(selectedIndex) / v-bind(count) * 100%) round 4px);
 		pointer-events: none;
 
-		.thumb:active + & {
+		.thumb:is(.pressed, :active) + & {
 			transition: $fallback-transitions, clip-path $ease-out-smooth 500ms;
 		}
 	}
@@ -161,6 +164,9 @@
 			@include button-scale-pressed;
 			background: c(accent);
 			cursor: grabbing;
+		}
+
+		&:is(.pressed, :active) {
 			transition: $transition, left $ease-out-smooth 500ms;
 		}
 	}
