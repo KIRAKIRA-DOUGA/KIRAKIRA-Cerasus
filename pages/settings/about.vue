@@ -1,6 +1,5 @@
 <script setup lang="ts">
 	import aira from "assets/images/aira.jpg";
-	import placeholder from "assets/icons/placeholder.svg";
 	const nuxt = useNuxtApp();
 
 	const repositories: { name: string; codeName?: string; link: string; icon?: string }[] = [

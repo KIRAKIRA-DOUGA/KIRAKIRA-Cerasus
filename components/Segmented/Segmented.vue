@@ -83,7 +83,7 @@
 		background-color: c(inset-bg);
 
 		> .item {
-			color: transparent;
+			color: c(icon-color);
 			cursor: pointer;
 		}
 	}
@@ -93,7 +93,6 @@
 		@include radius-small;
 		gap: 6px;
 		padding: 0 11px;
-		color: c(icon-color);
 
 		@media (any-hover: hover) {
 			&:hover {
@@ -119,6 +118,9 @@
 		position: absolute;
 		top: 0;
 		z-index: 4;
+		color: white;
+		transition: $fallback-transitions, clip-path $ease-in-out-smooth 500ms;
+		clip-path: inset(0% calc((1 - (v-bind(selectedIndex) + 1) / v-bind(count)) * 100%) 0% calc(v-bind(selectedIndex) / v-bind(count) * 100%) round 4px);
 		pointer-events: none;
 	}
 
