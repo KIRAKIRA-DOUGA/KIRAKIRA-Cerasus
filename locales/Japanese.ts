@@ -49,7 +49,7 @@ const Japanese: LocaleIdentifiers = {
 	finish: "操作が正常に完了しました",
 	youKnowTooMuch: "あなたは知っていることが多すぎます。",
 	myAccount: "私のアカウント",
-	information: "個人情報",
+	myProfile: "個人情報",
 	myLog: "私の日誌",
 	privacy: "プライバシー",
 	bindEmail: "メールのバインド",

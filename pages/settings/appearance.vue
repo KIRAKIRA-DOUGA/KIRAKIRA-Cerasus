@@ -28,3 +28,12 @@
 		>{{ t[item] }}</RadioButton>
 	</div>
 </template>
+
+<style scoped lang="scss">
+	.player-video-controller {
+		&,
+		* {
+			pointer-events: none;
+		}
+	}
+</style>

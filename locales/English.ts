@@ -49,7 +49,7 @@ const English: LocaleIdentifiers = {
 	finish: "Operation successfully done",
 	youKnowTooMuch: "You know too much.",
 	myAccount: "My account",
-	information: "Information",
+	myProfile: "My profile",
 	myLog: "My log",
 	privacy: "Privacy",
 	bindEmail: "Bind email",

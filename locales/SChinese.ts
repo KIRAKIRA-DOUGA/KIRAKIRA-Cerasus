@@ -47,7 +47,7 @@ const SChinese = {
 	finish: "操作成功完成",
 	youKnowTooMuch: "你知道的太多了。",
 	myAccount: "我的账号",
-	information: "个人资料",
+	myProfile: "个人资料",
 	myLog: "我的记录",
 	privacy: "隐私和安全",
 	bindEmail: "绑定邮箱",

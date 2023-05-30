@@ -16,7 +16,7 @@
 	const settings = {
 		personal: [
 			{ id: "my-account", icon: "account_circle" },
-			{ id: "information", icon: "badge" },
+			{ id: "my-profile", icon: "badge" },
 			{ id: "my-log", icon: "history" },
 			{ id: "privacy", icon: "shield" },
 			{ id: "bind-email", icon: "email" },
