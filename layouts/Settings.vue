@@ -3,11 +3,13 @@
 		get: () => getRoutePath().match(/(?<=settings\/)[A-Za-z0-9-_]+/)?.[0] ?? "",
 		set: id => navigate(`/settings/${id}`),
 	});
+	const { t: tl } = useI18n();
 	const search = ref("");
 	const main = ref<HTMLElement>();
 	const showDrawer = ref(false);
-	const ti = (id: string) => t[new VariableName(id).camel];
+	const ti = (id: string) => tl(new VariableName(id).camel);
 	const title = computed(() => ti(currentSetting.value));
+	const htmlTitle = computed(() => title.value + " - " + tl("settings"));
 
 	useEventListener("window", "resize", () => {
 		if (window.innerWidth > 991) showDrawer.value = false;
@@ -35,7 +37,7 @@
 		],
 	};
 
-	useHead({ title: t.settings });
+	useHead({ title: htmlTitle });
 </script>
 
 <template>
@@ -211,7 +213,7 @@
 	.title {
 		position: sticky;
 		top: 0;
-		z-index: 2;
+		z-index: 4;
 		padding-top: $title-padding-top;
 
 		&.nav-header,
@@ -264,7 +266,7 @@
 	}
 
 	.mask {
-		@include full-screen(absolute);
+		@include full-screen(fixed);
 		z-index: 4;
 		background-color: c(main-bg, 50%);
 		transition-duration: $show-drawer-duration;
