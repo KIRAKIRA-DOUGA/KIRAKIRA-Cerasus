@@ -213,7 +213,11 @@
 		top: 0;
 		z-index: 2;
 		padding-top: $title-padding-top;
-		backdrop-filter: blur(4px);
+
+		&.nav-header,
+		&.page-header {
+			backdrop-filter: blur(4px);
+		}
 	}
 
 	.nav-header {
