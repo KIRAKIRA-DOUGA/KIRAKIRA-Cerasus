@@ -17,12 +17,12 @@
 
 	const settings = {
 		personal: [
-			{ id: "my-account", icon: "account_circle" },
-			{ id: "my-profile", icon: "badge" },
-			{ id: "my-log", icon: "history" },
+			{ id: "account", icon: "account_circle" },
+			{ id: "profile", icon: "badge" },
+			{ id: "traces", icon: "history" },
 			{ id: "privacy", icon: "shield" },
 			{ id: "bind-email", icon: "email" },
-			{ id: "change-password", icon: "lock" },
+			{ id: "password", icon: "lock" },
 			{ id: "account-linking", icon: "groups" },
 			{ id: "blocklist", icon: "block" },
 		],
