@@ -144,6 +144,7 @@
 		background-color: c(accent);
 		cursor: grab;
 		transition: $transition, left $ease-in-out-smooth 500ms;
+		touch-action: pan-y pinch-zoom;
 
 		@media (any-hover: hover) {
 			&:hover {
