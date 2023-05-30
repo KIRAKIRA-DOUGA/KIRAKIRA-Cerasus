@@ -7,7 +7,7 @@
 
 <template>
 	<Subheader icon="brightness_medium">{{ t.theme }}</Subheader>
-	<PlayerVideoController :currentTime="30" :duration="110" :buffered="60" class="video-controller" />
+	<PlayerVideoController :currentTime="30" :duration="110" :buffered="60" class="chip" />
 	<div class="chip radio-group">
 		<RadioButton
 			v-for="item in themeList"
@@ -28,10 +28,3 @@
 		>{{ t[item] }}</RadioButton>
 	</div>
 </template>
-
-<style scoped lang="scss">
-.video-controller {
-	@include radius-large;
-	@include player-shadow;
-}
-</style>
