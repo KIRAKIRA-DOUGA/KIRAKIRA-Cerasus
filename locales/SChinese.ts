@@ -59,6 +59,11 @@ const SChinese = {
 	preference: "偏好",
 	accessibility: "无障碍",
 	about: "关于",
+	technology: "科技",
+	game: "游戏",
+	synthetical: "综合",
+	userSettings: "用户设置",
+	appSettings: "应用设置",
 } as const;
 
 export default SChinese;

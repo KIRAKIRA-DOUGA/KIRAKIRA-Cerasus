@@ -52,9 +52,12 @@
 	<div class="container">
 		<TabBar v-model="selectedTab" big class="category-tab">
 			<TabItem id="home" direction="vertical" icon="home">{{ t.home }}</TabItem>
-			<TabItem id="anime" direction="vertical-reverse" :badge="233">{{ t.anime }}</TabItem>
 			<TabItem id="music" direction="vertical-reverse" :badge="233">{{ t.music }}</TabItem>
+			<TabItem id="anime" direction="vertical-reverse" :badge="233">{{ t.anime }}</TabItem>
 			<TabItem id="otomad" direction="vertical-reverse" :badge="233">{{ t.otomad }}</TabItem>
+			<TabItem id="tech" direction="vertical-reverse" :badge="233">{{ t.technology }}</TabItem>
+			<TabItem id="game" direction="vertical-reverse" :badge="233">{{ t.game }}</TabItem>
+			<TabItem id="synth" direction="vertical-reverse" :badge="233">{{ t.synthetical }}</TabItem>
 		</TabBar>
 		<Subheader icon="category" :badge="233">分区</Subheader>
 		<div class="videos">

@@ -35,7 +35,7 @@
 		],
 	};
 
-	useHead({ title: title.value + " - " + t.settings });
+	useHead({ title: t.settings });
 </script>
 
 <template>
@@ -50,9 +50,9 @@
 						<TextBox v-model="search" :placeholder="t.searchSettings" />
 					</header>
 					<TabBar v-model="currentSetting" vertical>
-						<Subheader icon="person">用户设置</Subheader>
+						<Subheader icon="person">{{ t.userSettings }}</Subheader>
 						<TabItem v-for="setting in settings.personal" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
-						<Subheader icon="apps">应用设置</Subheader>
+						<Subheader icon="apps">{{ t.appSettings }}</Subheader>
 						<TabItem v-for="setting in settings.general" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
 					</TabBar>
 					<div class="nav-bottom-buttons">
