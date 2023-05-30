@@ -49,7 +49,7 @@ const SChinese = {
 	account: "账号",
 	profile: "资料",
 	traces: "印迹",
-	privacy: "隐私和安全",
+	privacy: "隐私",
 	bindEmail: "绑定邮箱",
 	password: "密码",
 	accountLinking: "关联社交平台",
