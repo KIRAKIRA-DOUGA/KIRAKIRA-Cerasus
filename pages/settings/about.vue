@@ -37,7 +37,7 @@
 
 <template>
 	<LogoText form="full" />
-	<p class="slogan">一个可爱的视频网站，<b>献给可爱的你！</b></p>
+	<p class="slogan"><span>一个可爱的视频网站，</span><span><b>献给可爱的你！</b></span></p>
 	<Subheader icon="placeholder">项目地址</Subheader>
 	<div class="chip">
 		<SettingsChipItem
@@ -81,5 +81,9 @@
 	.slogan {
 		color: c(accent);
 		font-size: 20px;
+
+		span {
+			display: inline-block;
+		}
 	}
 </style>

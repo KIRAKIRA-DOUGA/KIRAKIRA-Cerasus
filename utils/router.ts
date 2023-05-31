@@ -87,3 +87,13 @@ export function removeI18nPrefix(route: string) {
 	if (result === "") result = "/";
 	return result;
 }
+
+/**
+ * 检查当前是否是设置页面。
+ * @param route - 路由地址，缺省则会自动获取。
+ * @returns 当前是否是设置页面。
+ */
+export function isCurrentSettingsPage(route?: string) {
+	route ||= getRoutePath();
+	return route.startsWith("settings/");
+}

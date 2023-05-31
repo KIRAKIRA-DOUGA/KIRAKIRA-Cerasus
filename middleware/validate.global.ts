@@ -9,7 +9,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
 	const routePath = getRoutePath({ route: to });
 	if (routePath === "settings")
 		return navigateTo(useLocalePath()("/settings/appearance"));
-	if (routePath.startsWith("settings/"))
+	if (isCurrentSettingsPage(routePath))
 		return;
 	const routeNumber = +routePath;
 	if (routePath === "") // 论空字符串被转换成 0 ……
@@ -38,7 +38,7 @@ export const slugValidate = () => {
 	const validate: Validate = route => {
 		const routePath = getRoutePath({ route });
 		const routeNumber = +routePath;
-		if (validRoutes.includes(routePath) || routePath.startsWith("settings/"))
+		if (validRoutes.includes(routePath) || isCurrentSettingsPage(routePath))
 			return true;
 		if (routeNumber === 404)
 			return false;

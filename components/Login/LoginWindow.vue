@@ -33,6 +33,7 @@
 		},
 	});
 	const loginWindow = refComp();
+	const isInvalidEmail = computed(() => !email.value.match(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/));
 
 	/**
 	 * 稍后关闭。
@@ -69,8 +70,21 @@
 							<Heading form="small">Login</Heading>
 						</div>
 						<div class="form">
-							<TextBox v-model="email" type="email" placeholder="邮箱" size="large" icon="email" />
-							<TextBox v-model="password" type="password" placeholder="密码" size="large" icon="lock" />
+							<TextBox
+								v-model="email"
+								type="email"
+								placeholder="邮箱"
+								size="large"
+								icon="email"
+								:invalid="isInvalidEmail"
+							/>
+							<TextBox
+								v-model="password"
+								type="password"
+								placeholder="密码"
+								size="large"
+								icon="lock"
+							/>
 							<div class="button login-button-placeholder">
 								<Button class="button login-button" @click="isLogining = true">Link Start!</Button>
 							</div>
@@ -88,9 +102,28 @@
 							<Heading form="small">Register</Heading>
 						</div>
 						<div class="form">
-							<TextBox v-model="email" type="email" placeholder="邮箱" size="large" icon="email" />
-							<TextBox v-model="password" type="password" placeholder="密码" size="large" icon="lock" />
-							<TextBox v-model="inviteCode" type="text" placeholder="邀请码" size="large" icon="link" />
+							<TextBox
+								v-model="email"
+								type="email"
+								placeholder="邮箱"
+								size="large"
+								icon="email"
+								:invalid="isInvalidEmail"
+							/>
+							<TextBox
+								v-model="password"
+								type="password"
+								placeholder="密码"
+								size="large"
+								icon="lock"
+							/>
+							<TextBox
+								v-model="inviteCode"
+								type="text"
+								placeholder="邀请码"
+								size="large"
+								icon="link"
+							/>
 						</div>
 						<div class="action margin-left-inset">
 							<Button secondary @click="currentPage = 'login'">已有账号？登录</Button>
@@ -104,8 +137,20 @@
 						</div>
 						<div class="form">
 							<div>我们已向您的邮箱中发送了验证码，请在此输入验证码。<br />如未收到，您可以重新发送。</div>
-							<TextBox v-model="verificationCode" type="text" placeholder="验证码" size="large" icon="verified" />
-							<TextBox v-model="confirmPassword" type="password" placeholder="确认密码" size="large" icon="lock" />
+							<TextBox
+								v-model="verificationCode"
+								type="text"
+								placeholder="验证码"
+								size="large"
+								icon="verified"
+							/>
+							<TextBox
+								v-model="confirmPassword"
+								type="password"
+								placeholder="确认密码"
+								size="large"
+								icon="lock"
+							/>
 						</div>
 						<div class="action">
 							<Button icon="arrow_left" class="button" @click="currentPage = 'register'">上一步</Button>
@@ -119,7 +164,14 @@
 						</div>
 						<div class="form">
 							<div>请在此输入您的邮箱。<br />我们将会给您的邮箱发送一封邮件，请点击邮件中的链接重置密码。</div>
-							<TextBox v-model="email" type="email" placeholder="邮箱" size="large" icon="email" />
+							<TextBox
+								v-model="email"
+								type="email"
+								placeholder="邮箱"
+								size="large"
+								icon="email"
+								:invalid="isInvalidEmail"
+							/>
 							<Button icon="send" class="button">发送</Button>
 						</div>
 						<div class="action margin-left-inset">

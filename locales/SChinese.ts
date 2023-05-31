@@ -69,7 +69,7 @@ const SChinese = {
 	psychologicalGender: "心理性别",
 	male: "男",
 	female: "女",
-	middle: "中",
+	transgender: "中",
 	birthday: "生日",
 	email: "电子邮件",
 	emailAddress: "电子邮箱",

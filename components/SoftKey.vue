@@ -1,4 +1,5 @@
 <script setup lang="ts">
+	// XXX: 感觉这个组件还得换一个更好听的名称。
 	import { LocaleLink } from "#components";
 
 	const props = withDefaults(defineProps<{
@@ -14,6 +15,8 @@
 		appearance?: "default" | "textbox-aftericon";
 		/** 指定点击后跳转的链接。 */
 		href?: string;
+		/** 是否**强制**高亮图标强调色？默认情况下会根据路由自动添加 router-link-active 类。 */
+		active?: boolean;
 	}>(), {
 		icon: undefined,
 		text: undefined,
@@ -47,6 +50,7 @@
 			:tabindex="nonclickable || nonfocusable ? -1 : ''"
 			:disabled="nonclickable"
 			v-bind="additionalAttrs"
+			:class="{ 'router-link-active': active }"
 			@click="(e: MouseEvent) => emits('click', e)"
 		>
 			<Icon v-if="icon" :name="icon" />

@@ -7,6 +7,7 @@
 	const showLogin = ref(false);
 	const isLogined = ref(false);
 	const rightTooltip = (title: string) => ({ title, placement: "right" });
+	const isCurrentSettings = computed(() => isCurrentSettingsPage());
 
 	useEventListener("window", "resize", () => {
 		const height = window.innerHeight;
@@ -58,7 +59,7 @@
 				<img :src="avatar" alt="avatar" draggable="false" />
 			</div>
 			<SoftKey v-i="8" v-tooltip="rightTooltip('消息')" icon="email" href="/test-rich-text-editor" />
-			<SoftKey v-i="9" v-tooltip="rightTooltip('设置')" icon="settings" href="/settings" />
+			<SoftKey v-i="9" v-tooltip="rightTooltip('设置')" icon="settings" href="/settings" :active="isCurrentSettings" />
 		</div>
 
 		<LoginWindow v-model="showLogin" />
