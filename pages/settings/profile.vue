@@ -5,7 +5,7 @@
 		set: async value => {
 			nickname.value = value;
 			await nextTick();
-			value = value.replaceAll(/[^A-Za-z0-9-_ぁ-ゖァ-ヺー〇一-鿿㐀-䶿\u20000-\u2f799\u30000-\u323af]/g, "");
+			value = value.replaceAll(/[^A-Za-z0-9-_ぁ-ゖァ-ヺー〇一-鿿㐀-䶿\u{20000}-\u{2f799}\u{30000}-\u{323af}]/gu, "");
 			nickname.value = value.slice(0, 20);
 		},
 	});
