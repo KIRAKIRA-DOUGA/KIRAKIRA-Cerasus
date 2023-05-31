@@ -25,6 +25,7 @@ $neutral-colors: (
 	divider: #505050,
 	text-color: map.get($grayscale-colors, gray-80),
 	hover-color: (c(black, 4%), c(white, 6%)),
+	surface-color: (c(white, 75%), c(white, 5%)),
 );
 
 // 如果定义为列表，则第一项为浅色主题颜色，第二项为深色主题颜色。
@@ -43,7 +44,7 @@ $primary-colors: (
 		accent-30: (#f8afc1, #b64561), // focus
 		accent-20: (#ffd3de, #802f45), // disabled
 		accent-10: (#ffedf2, #752b3f),
-		neutral-10: #c19fa8, // card-shadow
+		neutral-10: (#c19fa8, black),// card-shadow
 	),
 	sky: (
 		accent-80: (#3a82a1, #c4ebfc),
@@ -54,7 +55,7 @@ $primary-colors: (
 		accent-30: (#93dbfa, #4593b5),
 		accent-20: (#c4ebfc, #367894),
 		accent-10: (#e8f8ff, #2f6b85),
-		neutral-10: #9fb7c1,
+		neutral-10: (#9fb7c1, black),
 	),
 	blue: (
 		accent-80: (#2e599e, #c4dafc),
@@ -65,7 +66,7 @@ $primary-colors: (
 		accent-30: (#93bbfa, #3665b2),
 		accent-20: (#c4dafc, #2a518f),
 		accent-10: (#e8f1ff, #264a82),
-		neutral-10: #9fadc1,
+		neutral-10: (#9fadc1, black),
 	),
 	green: (
 		accent-80: (#427a34, #c5fab8),
@@ -76,7 +77,7 @@ $primary-colors: (
 		accent-30: (#91e57c, #4a893b),
 		accent-20: (#c5fab8, #37652c),
 		accent-10: (#ebffe6, #294d20),
-		neutral-10: #99b191,
+		neutral-10: (#99b191, black),
 	),
 	orange: (
 		accent-80: (#a67109, #ffe6b3),
@@ -87,7 +88,7 @@ $primary-colors: (
 		accent-30: (#f7c86a, #bf8105),
 		accent-20: (#ffe6b3, #986909),
 		accent-10: (#fff6e6, #6f4d07),
-		neutral-10: #b9ab90,
+		neutral-10: (#b9ab90, black),
 	),
 	purple: (
 		accent-80: (#7b3f91, #f3d3ff),
@@ -98,7 +99,7 @@ $primary-colors: (
 		accent-30: (#e2adf5, #9a46b9),
 		accent-20: (#f3d3ff, #572a68),
 		accent-10: (#faedff, #592e69),
-		neutral-10: #a989b6,
+		neutral-10: (#a989b6, black),
 	),
 );
 

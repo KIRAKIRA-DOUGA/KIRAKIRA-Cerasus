@@ -85,7 +85,7 @@
 			.card {
 				@include system-card;
 				translate: 0 -6px;
-				background-color: c(main-bg, 90%);
+				background-color: c(surface-color);
 			}
 		}
 

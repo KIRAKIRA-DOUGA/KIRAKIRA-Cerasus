@@ -288,6 +288,7 @@
 		@include chip-shadow;
 		@include radius-large;
 		overflow: hidden;
+		background-color: c(surface-color);
 	}
 
 	:deep(.radio-group .radio-button) {
