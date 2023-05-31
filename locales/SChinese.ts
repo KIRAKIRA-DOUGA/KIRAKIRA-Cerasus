@@ -64,6 +64,13 @@ const SChinese = {
 	synthetical: "综合",
 	userSettings: "用户设置",
 	appSettings: "应用设置",
+	nickname: "昵称",
+	psychologicalGender: "心理性别",
+	male: "男",
+	female: "女",
+	middle: "中",
+	birthday: "生日",
+	save: "保存",
 } as const;
 
 export default SChinese;
