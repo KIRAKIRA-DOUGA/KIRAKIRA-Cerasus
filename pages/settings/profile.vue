@@ -11,6 +11,8 @@
 		<span>{{ t.nicknameRequirements }}</span>
 	</div>
 
+	<TextBox v-model="birthday" :placeholder="t.birthday" size="large" icon="birthday" /> <!--  TODO: 日期选择组件 -->
+
 	<div class="gender">
 		<Icon name="gender" class="icon" />
 		<div class="gender-radio-group">
@@ -23,8 +25,6 @@
 			>{{ t[item] }}</RadioButton>
 		</div>
 	</div>
-
-	<TextBox v-model="birthday" :placeholder="t.birthday" size="large" icon="birthday" /> <!--  TODO: 日期选择组件 -->
 
 	<div class="submit">
 		<Button icon="check">{{ t.save }}</Button>

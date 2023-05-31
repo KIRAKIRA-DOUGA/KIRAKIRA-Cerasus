@@ -5,7 +5,7 @@
 </script>
 
 <template>
-	<span></span>
+	<!-- TODO: [艾拉] 设计弹出内容 -->
 	<div class="chip">
 		<SettingsChipItem
 			icon="email"
