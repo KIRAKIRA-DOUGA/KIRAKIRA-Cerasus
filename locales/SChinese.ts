@@ -65,6 +65,7 @@ const SChinese = {
 	userSettings: "用户设置",
 	appSettings: "应用设置",
 	nickname: "昵称",
+	nicknameRequirements: "1~20个字符，仅可包含大小写拉丁字母、数字、常用平/片假名、汉字、特殊符号 ｢-｣ ｢_｣",
 	psychologicalGender: "心理性别",
 	male: "男",
 	female: "女",

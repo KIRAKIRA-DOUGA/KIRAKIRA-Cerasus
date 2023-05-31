@@ -8,7 +8,7 @@
 <template>
 	<div class="nickname">
 		<TextBox v-model="nickname" :placeholder="t.nickname" size="large" icon="person" /> <!--  TODO: 判断昵称格式 -->
-		<span>1~20个字符，仅可包含大小写拉丁字母、数字、常用平/片假名、汉字、特殊符号 ｢-｣ ｢_｣</span>
+		<span>{{ t.nicknameRequirements }}</span>
 	</div>
 
 	<div class="gender">
@@ -26,7 +26,9 @@
 
 	<TextBox v-model="birthday" :placeholder="t.birthday" size="large" icon="birthday" /> <!--  TODO: 日期选择组件 -->
 
-	<Button>{{ t.save }}</Button>
+	<div class="submit">
+		<Button icon="check">{{ t.save }}</Button>
+	</div>
 </template>
 
 <style scoped lang="scss">
@@ -60,5 +62,10 @@
 				margin-left: 16px;
 			}
 		}
+	}
+
+	.submit {
+		display: flex;
+		justify-content: flex-end;
 	}
 </style>
