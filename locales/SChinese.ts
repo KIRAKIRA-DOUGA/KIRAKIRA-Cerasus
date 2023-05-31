@@ -51,7 +51,7 @@ const SChinese = {
 	traces: "印迹",
 	privacy: "隐私",
 	bindEmail: "绑定邮箱",
-	password: "密码",
+	loginOptions: "登录选项",
 	accountLinking: "关联社交平台",
 	blocklist: "黑名单",
 	player: "播放",
@@ -71,7 +71,16 @@ const SChinese = {
 	female: "女",
 	middle: "中",
 	birthday: "生日",
+	email: "电子邮件",
+	emailAddress: "电子邮箱",
+	emailAddressCurrent: "当前邮箱：",
+	password: "密码",
+	authenticator: "身份验证器",
+	changeDate: "修改日期：",
+	addDate: "添加日期：",
+	change: "修改",
 	save: "保存",
+	add: "添加",
 } as const;
 
 export default SChinese;
