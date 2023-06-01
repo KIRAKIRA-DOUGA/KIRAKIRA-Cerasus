@@ -8,7 +8,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
 	const routePath = getRoutePath({ route: to });
 	if (routePath === "settings")
-		return navigateTo(useLocalePath()("/settings/appearance"));
+		return navigateTo(useLocalePath()("/settings/home"));
 	if (isCurrentSettingsPage(routePath))
 		return;
 	const routeNumber = +routePath;
