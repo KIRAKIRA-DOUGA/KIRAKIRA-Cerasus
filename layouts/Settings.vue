@@ -71,7 +71,12 @@
 					<div class="show-drawer-wrapper">
 						<SoftKey icon="dehaze" @click="showDrawer = true" />
 					</div>
-					<h2>{{ title }}</h2>
+					<div class="page-title-wrapper">
+						<Transition>
+							<!-- name="page-jump" mode="out-in" -->
+							<h2 :key="currentSetting">{{ title }}</h2>
+						</Transition>
+					</div>
 				</header>
 				<slot></slot>
 			</div>
@@ -203,10 +208,36 @@
 	}
 
 	h1,
-	h2 {
+	h2,
+	.page-title-wrapper {
 		color: c(accent);
 		font-weight: bold;
 		font-size: calc(1.275rem + 0.3dvw);
+	}
+
+	.page-title-wrapper {
+		position: relative;
+		width: 100%;
+		height: 1.5em;
+		margin-bottom: -0.25em;
+		overflow-y: hidden;
+	}
+
+	h2 {
+		position: absolute;
+
+		&.v-enter-active,
+		&.v-leave-active {
+			transition: all $ease-out-smooth 700ms;
+		}
+
+		&.v-leave-to {
+			translate: 0 -100%;
+		}
+
+		&.v-enter-from {
+			translate: 0 100%;
+		}
 	}
 
 	.title {

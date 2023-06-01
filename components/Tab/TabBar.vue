@@ -212,6 +212,7 @@
 	:comp {
 		position: relative;
 		display: inline-block;
+		// TODO: 当页面宽度过窄时，横向 Tab 内容超出页面宽度范围会被截去内容，需要设计滑动或多层样式。
 
 		&.vertical {
 			width: 100%;

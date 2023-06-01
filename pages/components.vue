@@ -34,7 +34,7 @@
 	const showMenu = () => menu.value?.show();
 	const beep = ref<HTMLAudioElement>();
 	const isUploaderLovinIt = ref(true);
-	const kiraGoods = ref(["kawaii", "nijigen"]);
+	const kiraGoods = ref(["kawaii", "nice"]);
 	const isSelectAll = computed<CheckState>(() => kiraGoods.value.length >= 3 ? "checked" : kiraGoods.value.length === 0 ? "unchecked" : "indeterminate");
 	const onSelectAllChange = (e: { value: string; checkState: CheckState; checked: boolean }) => {
 		kiraGoods.value = [];
@@ -133,8 +133,8 @@
 			<p>请问您喜欢KIRAKIRA的地方有：</p>
 			<Checkbox :checkState="isSelectAll" @change="onSelectAllChange">全选</Checkbox>
 			<Checkbox v-model="kiraGoods" value="kawaii">可爱</Checkbox>
-			<Checkbox v-model="kiraGoods" value="nijigen">二次元</Checkbox>
 			<Checkbox v-model="kiraGoods" value="nice">好康</Checkbox>
+			<Checkbox v-model="kiraGoods" value="nijigen">二次元</Checkbox>
 			<Checkbox disabled checkState="unchecked">鼠鼠我呀最讨厌了</Checkbox>
 			<Checkbox disabled checkState="checked">欢迎白嫖</Checkbox>
 			<hr />
