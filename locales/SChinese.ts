@@ -50,6 +50,7 @@ const SChinese = {
 	uploaders_lovin_it: "UP主爱啦",
 	finish: "操作成功完成",
 	you_know_too_much: "你知道的太多了。",
+	dashboard: "数据",
 	account: "账号",
 	profile: "资料",
 	traces: "印迹",

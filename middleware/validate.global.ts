@@ -7,10 +7,14 @@ export default defineNuxtRouteMiddleware((to, from) => {
 		console.log("to", to, "\nfrom", from, "\nrouteBaseName", useNuxtApp().$getRouteBaseName());
 
 	const routePath = getRoutePath({ route: to });
+	const appSettingsStore = useAppSettingsStore();
+	const settingPageId = currentSettingsPage(routePath);
 	if (routePath === "settings")
-		return navigateTo(useLocalePath()("/settings/home"));
-	if (isCurrentSettingsPage(routePath))
+		return navigateTo(useLocalePath()("/settings/" + appSettingsStore.lastSettingPage));
+	if (settingPageId) {
+		appSettingsStore.lastSettingPage = settingPageId;
 		return;
+	}
 	const routeNumber = +routePath;
 	if (routePath === "") // 论空字符串被转换成 0 ……
 		return;
@@ -38,7 +42,7 @@ export const slugValidate = () => {
 	const validate: Validate = route => {
 		const routePath = getRoutePath({ route });
 		const routeNumber = +routePath;
-		if (validRoutes.includes(routePath) || isCurrentSettingsPage(routePath))
+		if (validRoutes.includes(routePath) || currentSettingsPage(routePath))
 			return true;
 		if (routeNumber === 404)
 			return false;

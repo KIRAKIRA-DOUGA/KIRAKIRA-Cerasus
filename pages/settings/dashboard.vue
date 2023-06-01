@@ -1,16 +1,13 @@
-<docs>
-
-</docs>
-
 <script setup lang="ts">
 	import avatar from "assets/images/aira.jpg";
 
 	const registerDate = ref(new Date());
 	const registerDateDisplay = computed(() => formatDate(registerDate.value, "yyyy-MM-dd"));
+	const uid = ref(2n);
 </script>
 
 <template>
-	<div class="user-profile">
+	<div class="user-profile" @click="navigate('/settings/profile')">
 		<div v-ripple class="avatar">
 			<img :src="avatar" alt="avatar" draggable="false" />
 		</div>
@@ -41,51 +38,54 @@
 
 	<div class="user-info chip">
 		<SettingsChipItem icon="birthday" :details="registerDateDisplay">生日</SettingsChipItem>
-		<SettingsChipItem icon="history" :details="registerDateDisplay">注册时间</SettingsChipItem>
-		<SettingsChipItem icon="fingerprint" :details="registerDateDisplay">UID</SettingsChipItem>
+		<SettingsChipItem icon="history" :details="registerDateDisplay">注册日期</SettingsChipItem>
+		<SettingsChipItem icon="fingerprint" :details="uid">UID</SettingsChipItem>
 	</div>
 </template>
 
 <style scoped lang="scss">
 	.user-profile {
 		display: flex;
-		gap: 10px;
-	}
+		gap: 15px;
+		cursor: pointer;
 
-	.avatar {
-		@include square(72px);
-		@include circle;
-		overflow: hidden;
-		background-color: c(gray-30);
-
-		> img {
-			z-index: 1;
-			width: 100%;
-			object-fit: cover;
-			aspect-ratio: 1 / 1;
-
-			&:hover {
+		@media (any-hover: hover) {
+			&:hover .avatar > img {
 				scale: 125%;
 			}
 
-			&:not(:hover) {
+			&:not(:hover) .avatar > img {
 				transition-duration: 1s;
 			}
 		}
-	}
 
-	.text {
-		@include flex-block;
-		gap: 6px;
-		justify-content: center;
+		.avatar {
+			@include square(64px);
+			@include circle;
+			overflow: hidden;
+			background-color: c(gray-30);
 
-		.username {
-			font-weight: bold;
-			font-size: 24px;
+			> img {
+				z-index: 1;
+				width: 100%;
+				object-fit: cover;
+				aspect-ratio: 1 / 1;
+			}
 		}
 
-		.bio {
-			color: c(icon-color);
+		.text {
+			@include flex-block;
+			gap: 6px;
+			justify-content: center;
+
+			.username {
+				font-weight: bold;
+				font-size: 24px;
+			}
+
+			.bio {
+				color: c(icon-color);
+			}
 		}
 	}
 

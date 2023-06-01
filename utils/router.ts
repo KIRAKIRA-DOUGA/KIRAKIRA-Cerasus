@@ -89,11 +89,11 @@ export function removeI18nPrefix(route: string) {
 }
 
 /**
- * 检查当前是否是设置页面。
+ * 检查当前是否是设置页面并获取当前设置页面的 ID 名称。
  * @param route - 路由地址，缺省则会自动获取。
- * @returns 当前是否是设置页面。
+ * @returns 如当前不是设置页面则返回空字符串，反之则获取当前设置页面的 ID 名称。
  */
-export function isCurrentSettingsPage(route?: string) {
+export function currentSettingsPage(route?: string) {
 	route ||= getRoutePath();
-	return route.startsWith("settings/");
+	return route.match(/(?<=settings\/)[A-Za-z0-9-_]+/)?.[0] ?? "";
 }

@@ -50,6 +50,7 @@ const English: LocaleIdentifiers = {
 	uploaders_lovin_it: "Uploader's lovin' it",
 	finish: "Operation successfully done",
 	you_know_too_much: "You know too much.",
+	dashboard: "Dashboard",
 	account: "Account",
 	profile: "Profile",
 	traces: "Traces",

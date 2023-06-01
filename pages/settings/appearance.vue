@@ -29,7 +29,7 @@
 	</div>
 	<Subheader icon="wallpaper">{{ t.background }}</Subheader>
 	<div class="chip radio-group">
-		<ToggleSwitch v-model="appConfig.showCssDoodle" v-ripple>{{ t.animated_background }}</ToggleSwitch>
+		<ToggleSwitch v-model="useAppSettingsStore().showCssDoodle" v-ripple>{{ t.animated_background }}</ToggleSwitch>
 	</div>
 </template>
 

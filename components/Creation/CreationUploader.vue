@@ -43,12 +43,14 @@
 				object-fit: cover;
 				aspect-ratio: 1 / 1;
 
-				&:hover {
-					scale: 125%;
-				}
+				@media (any-hover: hover) {
+					&:hover {
+						scale: 125%;
+					}
 
-				&:not(:hover) {
-					transition-duration: 1s;
+					&:not(:hover) {
+						transition-duration: 1s;
+					}
 				}
 			}
 		}

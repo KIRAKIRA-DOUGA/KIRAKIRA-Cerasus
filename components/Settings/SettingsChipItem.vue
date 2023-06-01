@@ -5,7 +5,7 @@
 		/** 图标。如果图片和图标同时指定，则图片会替换掉图标。 */
 		icon?: string;
 		/** 详细信息。 */
-		details?: string;
+		details?: Readable;
 		/** 之后的操作图标。 */
 		afterIcon?: string;
 		/** 点击链接。在域名未完全确定前目前只能支持外链，如内链需要额外的自动检测。 */

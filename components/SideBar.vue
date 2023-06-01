@@ -7,7 +7,7 @@
 	const showLogin = ref(false);
 	const isLogined = ref(false);
 	const rightTooltip = (title: string) => ({ title, placement: "right" });
-	const isCurrentSettings = computed(() => isCurrentSettingsPage());
+	const isCurrentSettings = computed(() => !!currentSettingsPage());
 
 	useEventListener("window", "resize", () => {
 		const height = window.innerHeight;
@@ -22,7 +22,7 @@
 <template>
 	<aside>
 		<div class="top icons">
-			<SoftKey v-i="0" v-tooltip="rightTooltip('主页')" icon="home" href="/" />
+			<SoftKey v-i="0" v-tooltip="rightTooltip(t.home)" icon="home" href="/" />
 			<SoftKey v-i="1" v-tooltip="rightTooltip('搜索')" icon="search" href="/search" />
 			<SoftKey v-i="2" v-tooltip="rightTooltip('历史')" icon="history" />
 			<SoftKey v-i="3" v-tooltip="rightTooltip('收藏')" icon="star" />

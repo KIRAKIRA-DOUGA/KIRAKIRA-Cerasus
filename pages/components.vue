@@ -1,5 +1,4 @@
 <script setup lang="ts">
-	import { LocaleObject } from "@nuxtjs/i18n/dist/runtime/composables";
 	import animationData from "lotties/spinner-dev1.json";
 	import { LogoTextFormType } from "components/Logo/LogoText.vue";
 	import beepSrc from "assets/audios/NOVA 2022.1 Alert Quick.ogg";
@@ -93,10 +92,6 @@
 			<Button class="test-button" @click="onClickButton">{{ isClicked ? t.button_clicked : t.button }}</Button>
 			<Button disabled>{{ t.button_disabled }}</Button>
 			<Button @click="showConfetti">{{ t.confetti }}</Button>
-			<!--
-				BUG: 所有 composable 的自动导入炸了，跟踪链接：https://github.com/nuxt/nuxt/issues/20827
-				已修复，更新至 Volar 1.7.6（测试版）即可解决，等待进入正式版。
-			-->
 			<Button icon="send">{{ t.send }}</Button>
 			<Button @click="showAlert = true">{{ t.show_alert }}</Button>
 			<Button @click="showModal = true">显示模态框</Button>
@@ -116,7 +111,7 @@
 			<ToggleSwitch v-model="toggle">{{ t.toggle_switch }} {{ toggle ? t.on : t.off }}</ToggleSwitch>
 			<ToggleSwitch disabled>{{ t.disabled }} {{ t.off }}</ToggleSwitch>
 			<ToggleSwitch on disabled>{{ t.disabled }} {{ t.on }}</ToggleSwitch>
-			<ToggleSwitch v-model="appConfig.showCssDoodle">{{ t.animated_background }}</ToggleSwitch>
+			<ToggleSwitch v-model="useAppSettingsStore().showCssDoodle">{{ t.animated_background }}</ToggleSwitch>
 			<RadioButton v-model="theme" value="light">{{ t.light }}</RadioButton>
 			<RadioButton v-model="theme" value="dark">{{ t.dark }}</RadioButton>
 			<RadioButton v-model="theme" value="system">{{ t.system }}</RadioButton>
@@ -128,7 +123,7 @@
 			<RadioButton v-model="palette" value="purple">{{ t.purple }}</RadioButton>
 			<RadioButton v-model="palette" value="green">{{ t.green }}</RadioButton>
 			<RadioButton v-model="palette" value="custom" disabled>{{ t.custom }}</RadioButton>
-			<RadioButton checked disabled>{{ t.onDisabled }}</RadioButton>
+			<RadioButton checked disabled>{{ t.disabled }} {{ t.on }}</RadioButton>
 			<hr />
 			<p>请问您喜欢KIRAKIRA的地方有：</p>
 			<Checkbox :checkState="isSelectAll" @change="onSelectAllChange">全选</Checkbox>

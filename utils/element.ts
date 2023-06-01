@@ -76,3 +76,16 @@ export function stopEvent(event: Event) {
 	event.preventDefault();
 	event.stopPropagation();
 }
+
+/**
+ * 控制元素的 display 是否为 none，来决定其是否可见。
+ *
+ * 该函数强制操作 DOM，不受 Vue 控制，用以解决某些 Vue 虚拟 DOM 和真实 DOM 数值不一致的问题。
+ * @param element - HTML DOM 元素。
+ * @param visible - 是否可见。
+ */
+export function setDisplayVisible(element: HTMLElement | undefined, visible: boolean) {
+	if (!element || typeof visible !== "boolean") return;
+	if (!visible) element.style.display = "none";
+	else element.style.removeProperty("display");
+}

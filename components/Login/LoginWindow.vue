@@ -33,7 +33,7 @@
 		},
 	});
 	const loginWindow = refComp();
-	const isInvalidEmail = computed(() => !email.value.match(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/));
+	const isInvalidEmail = computed(() => !!email.value && !email.value.match(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/));
 
 	/**
 	 * 稍后关闭。

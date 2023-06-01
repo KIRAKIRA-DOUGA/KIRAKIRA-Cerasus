@@ -24,6 +24,10 @@ export default defineNuxtConfig({
 		"nuxt-icons",
 		"@vueuse/nuxt",
 		"nuxt-lodash",
+		["@pinia/nuxt", {
+			autoImports: ["defineStore", "storeToRefs"],
+		}],
+		"@pinia-plugin-persistedstate/nuxt",
 		"modules/theme/module.ts",
 		"modules/noscript/module.ts",
 		dev && "modules/components-globalized/module.ts",
@@ -47,6 +51,7 @@ export default defineNuxtConfig({
 		"helpers",
 		"classes",
 		"locales",
+		"stores",
 	),
 	css: [
 		"styles/global.scss",
@@ -137,9 +142,16 @@ export default defineNuxtConfig({
 			},
 		},
 	},
+	piniaPersistedstate: {
+		cookieOptions: {
+			sameSite: "strict",
+		},
+		storage: "localStorage",
+	},
 	imports: {
 		dirs: [
 			"classes",
+			"stores",
 		],
 	},
 	postcss: {

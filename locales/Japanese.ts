@@ -52,6 +52,7 @@ const Japanese: LocaleIdentifiers = {
 	uploaders_lovin_it: "うP主はそれが好きです",
 	finish: "操作が正常に完了しました",
 	you_know_too_much: "あなたは知っていることが多すぎます。",
+	dashboard: "ダッシュボード",
 	account: "アカウント",
 	profile: "情報",
 	traces: "痕跡",

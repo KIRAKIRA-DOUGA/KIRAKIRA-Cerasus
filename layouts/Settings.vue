@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	const currentSetting = computed({
-		get: () => getRoutePath().match(/(?<=settings\/)[A-Za-z0-9-_]+/)?.[0] ?? "",
+		get: () => currentSettingsPage(),
 		set: id => navigate(`/settings/${id}`),
 	});
 	const search = ref("");
@@ -9,6 +9,7 @@
 	const ti = (id: string) => t[new VariableName(id).snake];
 	const title = computed(() => ti(currentSetting.value));
 	const htmlTitle = computed(() => title.value + " - " + t.settings);
+	const logout = () => useEvent("user:login", false);
 
 	useEventListener("window", "resize", () => {
 		if (window.innerWidth > 991) showDrawer.value = false;
@@ -16,7 +17,7 @@
 
 	const settings = {
 		personal: [
-			{ id: "home", icon: "home" },
+			{ id: "dashboard", icon: "placeholder" },
 			{ id: "profile", icon: "badge" },
 			{ id: "traces", icon: "history" },
 			{ id: "privacy", icon: "shield" },
@@ -56,7 +57,7 @@
 						<TabItem v-for="setting in settings.general" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
 					</TabBar>
 					<div class="nav-bottom-buttons">
-						<Button icon="logout">登出</Button>
+						<Button icon="logout" @click="logout">登出</Button>
 						<Button href="/components">组件测试页</Button>
 					</div>
 				</header>

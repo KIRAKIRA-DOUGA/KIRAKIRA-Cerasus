@@ -8,6 +8,8 @@
 	const SETTINGS = "settings";
 	const pageTransition = ref("page-forward");
 	const isSettings = computed(() => getRoutePath().includes(SETTINGS));
+	const cssDoodle = refComp();
+	const showCssDoodle = computed(() => useAppSettingsStore().showCssDoodle);
 
 	watchRoute(() => {
 		showBanner.value = localedRoute.value === "";
@@ -21,11 +23,15 @@
 		if (route.includes(SETTINGS) !== prevRoute.includes(SETTINGS)) pageTransition.value = "";
 		if (prevRoute === route) pageTransition.value = "page-backward";
 	});
+
+	onMounted(() => {
+		setDisplayVisible(cssDoodle.value, showCssDoodle.value);
+	});
 </script>
 
 <template>
 	<Transition>
-		<CssDoodle v-show="appConfig.showCssDoodle" :rule="background" class="background" />
+		<CssDoodle v-show="showCssDoodle" ref="cssDoodle" :rule="background" class="background" />
 	</Transition>
 	<SideBar class="sidebar" />
 	<div ref="container" class="container" :class="{ scroll: isSettings }">
