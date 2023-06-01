@@ -24,9 +24,13 @@
 	<!-- TODO: 日期选择组件 -->
 
 	<div class="gender">
-		<Icon name="gender" class="icon" />
-		<div class="gender-radio-group">
+		<div class="gender-subtitle">
+			<Icon name="gender" class="icon" />
 			<span class="text">{{ t.psychologicalGender }}</span>
+		</div>
+
+		<div class="gender-radio-group">
+
 			<RadioButton
 				v-for="item in genderList"
 				:key="item"
@@ -35,7 +39,6 @@
 			>{{ t[item] }}</RadioButton>
 		</div>
 	</div>
-	<!-- TODO: 手机访问时由于宽度过窄，导致性别一栏布局异常。 -->
 
 	<div class="submit">
 		<Button icon="check">{{ t.save }}</Button>
@@ -56,6 +59,8 @@
 
 	.gender {
 		display: flex;
+		flex-wrap: wrap;
+		row-gap: 1em;
 		align-items: center;
 		padding: 0 12px;
 		color: c(icon-color);
@@ -64,14 +69,20 @@
 			font-size: 24px;
 		}
 
+		.text {
+			flex-shrink: 0;
+			margin-right: 32px;
+			margin-left: 16px;
+		}
+
+		.gender-subtitle {
+			display: flex;
+			align-items: center;
+		}
+
 		.gender-radio-group {
 			display: flex;
 			gap: 32px;
-			align-items: center;
-
-			.text {
-				margin-left: 16px;
-			}
 		}
 	}
 
