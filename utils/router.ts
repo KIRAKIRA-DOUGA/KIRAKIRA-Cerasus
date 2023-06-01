@@ -1,6 +1,6 @@
 import { RouteLocationNormalized, RouteLocationNormalizedLoaded } from "vue-router";
 
-const langs = ["zh", "en", "ja"];
+const localeCodes = computed(() => useNuxtApp().$i18n.localeCodes.value);
 
 /**
  * 获取系统当前的路由。
@@ -18,7 +18,7 @@ export function getRoutePath({
 	let path = route.path;
 	path = path.slice(1); // 移除根节点斜杠。
 	if (removeI18n)
-		path = path.replace(new RegExp(`^(${langs.join("|")})\\/?`), ""); // 移除语言前缀。
+		path = path.replace(new RegExp(`^(${localeCodes.value.join("|")})\\/?`), ""); // 移除语言前缀。
 	return path;
 }
 

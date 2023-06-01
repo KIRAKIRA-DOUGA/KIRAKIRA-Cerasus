@@ -3,13 +3,12 @@
 		get: () => getRoutePath().match(/(?<=settings\/)[A-Za-z0-9-_]+/)?.[0] ?? "",
 		set: id => navigate(`/settings/${id}`),
 	});
-	const { t: tl } = useI18n();
 	const search = ref("");
 	const main = ref<HTMLElement>();
 	const showDrawer = ref(false);
-	const ti = (id: string) => tl(new VariableName(id).camel);
+	const ti = (id: string) => t[new VariableName(id).camel];
 	const title = computed(() => ti(currentSetting.value));
-	const htmlTitle = computed(() => title.value + " - " + tl("settings"));
+	const htmlTitle = computed(() => title.value + " - " + t.settings);
 
 	useEventListener("window", "resize", () => {
 		if (window.innerWidth > 991) showDrawer.value = false;
