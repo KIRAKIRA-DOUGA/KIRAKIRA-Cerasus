@@ -3,7 +3,7 @@
 
 	const registerDate = ref(new Date());
 	const registerDateDisplay = computed(() => formatDate(registerDate.value, "yyyy-MM-dd"));
-	const uid = ref(2n);
+	const uid = ref<bigint>(2n);
 </script>
 
 <template>

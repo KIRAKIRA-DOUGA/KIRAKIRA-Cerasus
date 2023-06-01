@@ -72,6 +72,9 @@ export default defineNuxtConfig({
 				propsDestructure: true,
 			},
 		},
+		build: {
+			target: "esnext",
+		},
 		css: {
 			preprocessorOptions: styleResources({
 				scss: {
