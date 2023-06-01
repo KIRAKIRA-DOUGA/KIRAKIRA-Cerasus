@@ -3,5 +3,16 @@
 </script>
 
 <template>
-	<p>这里放用户允许公开哪些自己的个人信息，以及是否公开自己的个人收藏、关注、粉丝。</p>
+	<Subheader icon="badge">{{ t.profile }}</Subheader>
+	<div class="chip radio-group">
+		<ToggleSwitch v-ripple>{{ t.birthday }}</ToggleSwitch>
+		<ToggleSwitch v-ripple>{{ t.gender }}</ToggleSwitch>
+		<ToggleSwitch v-ripple>注册时间</ToggleSwitch>
+	</div>
+	<Subheader icon="placeholder">Placeholder</Subheader>
+	<div class="chip radio-group">
+		<ToggleSwitch v-ripple>关注</ToggleSwitch>
+		<ToggleSwitch v-ripple>粉丝</ToggleSwitch>
+		<ToggleSwitch v-ripple>收藏</ToggleSwitch>
+	</div>
 </template>
