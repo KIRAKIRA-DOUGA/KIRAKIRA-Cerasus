@@ -81,6 +81,7 @@
 
 		.gender-radio-group {
 			display: flex;
+			flex-wrap: wrap;
 			gap: 32px;
 		}
 	}
