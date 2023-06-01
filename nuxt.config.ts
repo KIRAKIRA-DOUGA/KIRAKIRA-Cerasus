@@ -67,12 +67,6 @@ export default defineNuxtConfig({
 			],
 			esbuildOptions: {
 				target: "esnext",
-				define: {
-					global: "globalThis",
-				},
-				supported: {
-					bigint: true,
-				},
 			},
 		},
 		vue: {
