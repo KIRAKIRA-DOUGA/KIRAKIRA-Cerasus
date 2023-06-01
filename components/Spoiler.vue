@@ -16,7 +16,7 @@
 </script>
 
 <template>
-	<span v-tooltip="tooltip || t.youKnowTooMuch" class="spoiler">
+	<span v-tooltip="tooltip || t.you_know_too_much" class="spoiler">
 		<span class="text">
 			<slot></slot>
 		</span>

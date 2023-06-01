@@ -5,7 +5,7 @@
 		set: async value => {
 			nickname.value = value;
 			await nextTick();
-			value = value.replaceAll(/[^A-Za-z0-9-_ぁ-ゖァ-ヺー〇一-鿿㐀-䶿\u{20000}-\u{2f799}\u{30000}-\u{323af}]/gu, "");
+			value = value.replaceAll(/[^A-Za-z0-9-_ぁ-ゖァ-ヺー〇一-鿿㐀-䶿𠀀-𮹊𰀀-𲎯]/gu, "");
 			nickname.value = value.slice(0, 20);
 		},
 	});
@@ -17,7 +17,7 @@
 <template>
 	<div class="nickname">
 		<TextBox v-model="nicknameEdit" :placeholder="t.nickname" size="large" icon="person" />
-		<span>{{ t.nicknameRequirements }}</span>
+		<span>{{ t.nickname_requirements }}</span>
 	</div>
 
 	<TextBox v-model="birthday" :placeholder="t.birthday" size="large" icon="birthday" />
@@ -26,7 +26,7 @@
 	<div class="gender">
 		<Icon name="gender" class="icon" />
 		<div class="gender-radio-group">
-			<span class="text">{{ t.psychologicalGender }}</span>
+			<span class="text">{{ t.gender }}</span>
 			<RadioButton
 				v-for="item in genderList"
 				:key="item"
@@ -38,7 +38,7 @@
 	<!-- TODO: 手机访问时由于宽度过窄，导致性别一栏布局异常。 -->
 
 	<div class="submit">
-		<Button icon="check">{{ t.save }}</Button>
+		<Button icon="check" @click="useToast('修改失败', 'error');">{{ t.save }}</Button>
 	</div>
 </template>
 

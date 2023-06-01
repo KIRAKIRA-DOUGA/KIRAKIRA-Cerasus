@@ -6,7 +6,7 @@
 	const search = ref("");
 	const main = ref<HTMLElement>();
 	const showDrawer = ref(false);
-	const ti = (id: string) => t[new VariableName(id).camel];
+	const ti = (id: string) => t[new VariableName(id).snake];
 	const title = computed(() => ti(currentSetting.value));
 	const htmlTitle = computed(() => title.value + " - " + t.settings);
 
@@ -47,12 +47,12 @@
 				<header class="title content padding-end">
 					<header class="title nav-header">
 						<h1>{{ t.settings }}</h1>
-						<TextBox v-model="search" :placeholder="t.searchSettings" />
+						<TextBox v-model="search" :placeholder="t.search_settings" />
 					</header>
 					<TabBar v-model="currentSetting" vertical>
-						<Subheader icon="person">{{ t.userSettings }}</Subheader>
+						<Subheader icon="person">{{ t.user_settings }}</Subheader>
 						<TabItem v-for="setting in settings.personal" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
-						<Subheader icon="apps">{{ t.appSettings }}</Subheader>
+						<Subheader icon="apps">{{ t.app_settings }}</Subheader>
 						<TabItem v-for="setting in settings.general" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
 					</TabBar>
 					<div class="nav-bottom-buttons">
@@ -218,8 +218,14 @@
 		position: relative;
 		width: 100%;
 		height: 1.5em;
-		margin-bottom: -0.25em;
+		margin-top: -0.1em;
+		margin-bottom: -0.15em;
 		overflow-y: hidden;
+
+		@include computer {
+			margin-top: 0;
+			margin-bottom: -0.25em;
+		}
 	}
 
 	h2 {
@@ -321,7 +327,7 @@
 		background-color: c(surface-color);
 	}
 
-	:deep(.radio-group .radio-button) {
+	:deep(.radio-group :is(.radio-button, .checkbox, .toggle-switch)) {
 		$extra-padding: 16px;
 		padding: 10px 20px;
 		overflow: visible;

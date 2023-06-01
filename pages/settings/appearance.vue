@@ -27,6 +27,10 @@
 			:value="item"
 		>{{ t[item] }}</RadioButton>
 	</div>
+	<Subheader icon="placeholder">{{ t.background }}</Subheader>
+	<div class="chip radio-group">
+		<ToggleSwitch v-model="appConfig.showCssDoodle" v-ripple>{{ t.animated_background }}</ToggleSwitch>
+	</div>
 </template>
 
 <style scoped lang="scss">

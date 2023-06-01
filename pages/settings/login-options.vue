@@ -12,21 +12,21 @@
 		<SettingsChipItem
 			icon="email"
 			afterIcon="edit"
-			:details="t.emailAddressCurrent + email"
-		>{{ t.emailAddress }}</SettingsChipItem>
+			:details="t.current_email + t.colon + email"
+		>{{ t.email_address }}</SettingsChipItem>
 	</div>
 	<div class="chip">
 		<SettingsChipItem
 			icon="password"
 			afterIcon="edit"
-			:details="t.changeDate + passwordChangeDateDisplay"
+			:details="t.modification_date + t.colon + passwordChangeDateDisplay"
 		>{{ t.password }}</SettingsChipItem>
 	</div>
 	<div class="chip">
 		<SettingsChipItem
 			icon="qr_code_scanner"
 			afterIcon="edit"
-			:details="t.addDate + authenticatorAddDateDisplay"
+			:details="t.addition_date + t.colon + authenticatorAddDateDisplay"
 		>{{ t.authenticator }}</SettingsChipItem>
 	</div>
 </template>

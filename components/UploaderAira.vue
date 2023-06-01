@@ -38,7 +38,7 @@
 			<!-- 谨记：这里有个坑。要用 mouseenter 和 mouseleave，千万不要用 mouseover 和 mouseout。 -->
 			<Icon name="heart" />
 			<Transition :css="false" @enter="onContentEnter" @leave="onContentLeave">
-				<span v-show="hover" class="text">{{ t.uploadersLovinIt }}</span>
+				<span v-show="hover" class="text">{{ t.uploaders_lovin_it }}</span>
 			</Transition>
 		</Comp>
 	</Transition>

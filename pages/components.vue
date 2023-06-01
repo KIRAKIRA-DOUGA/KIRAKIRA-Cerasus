@@ -90,15 +90,15 @@
 				<SegmentedItem id="grid" icon="grid">网格</SegmentedItem>
 				<SegmentedItem id="tile" icon="tile">磁贴</SegmentedItem>
 			</Segmented>
-			<Button class="test-button" @click="onClickButton">{{ isClicked ? t.buttonClicked : t.button }}</Button>
-			<Button disabled>{{ t.buttonDisabled }}</Button>
+			<Button class="test-button" @click="onClickButton">{{ isClicked ? t.button_clicked : t.button }}</Button>
+			<Button disabled>{{ t.button_disabled }}</Button>
 			<Button @click="showConfetti">{{ t.confetti }}</Button>
 			<!--
 				BUG: 所有 composable 的自动导入炸了，跟踪链接：https://github.com/nuxt/nuxt/issues/20827
 				已修复，更新至 Volar 1.7.6（测试版）即可解决，等待进入正式版。
 			-->
 			<Button icon="send">{{ t.send }}</Button>
-			<Button @click="showAlert = true">{{ t.showAlert }}</Button>
+			<Button @click="showAlert = true">{{ t.show_alert }}</Button>
 			<Button @click="showModal = true">显示模态框</Button>
 			<Alert v-model="showAlert" static />
 			<Modal v-model="showModal" title="标题栏">
@@ -113,10 +113,10 @@
 					</div>
 				</div>
 			</Modal>
-			<ToggleSwitch v-model="toggle">{{ t.toggleSwitch }} {{ toggle ? t.on : t.off }}</ToggleSwitch>
-			<ToggleSwitch disabled>{{ t.offDisabled }} </ToggleSwitch>
-			<ToggleSwitch on disabled>{{ t.onDisabled }}</ToggleSwitch>
-			<ToggleSwitch v-model="appConfig.showCssDoodle">{{ t.animatedBackground }}</ToggleSwitch>
+			<ToggleSwitch v-model="toggle">{{ t.toggle_switch }} {{ toggle ? t.on : t.off }}</ToggleSwitch>
+			<ToggleSwitch disabled>{{ t.disabled }} {{ t.off }}</ToggleSwitch>
+			<ToggleSwitch on disabled>{{ t.disabled }} {{ t.on }}</ToggleSwitch>
+			<ToggleSwitch v-model="appConfig.showCssDoodle">{{ t.animated_background }}</ToggleSwitch>
 			<RadioButton v-model="theme" value="light">{{ t.light }}</RadioButton>
 			<RadioButton v-model="theme" value="dark">{{ t.dark }}</RadioButton>
 			<RadioButton v-model="theme" value="system">{{ t.system }}</RadioButton>
@@ -197,9 +197,9 @@
 					<Button icon="send" @click="useToast(toastMessage, toastSeverity)">发送到消息框</Button>
 				</section>
 			</div>
-			<RadioButton v-model="logoTextForm" value="hidden">{{ t.logoHidden }}</RadioButton>
-			<RadioButton v-model="logoTextForm" value="half">{{ t.logoHalf }}</RadioButton>
-			<RadioButton v-model="logoTextForm" value="full">{{ t.logoShow }}</RadioButton>
+			<RadioButton v-model="logoTextForm" value="hidden">{{ t.logo_hidden }}</RadioButton>
+			<RadioButton v-model="logoTextForm" value="half">{{ t.logo_half }}</RadioButton>
+			<RadioButton v-model="logoTextForm" value="full">{{ t.logo_show }}</RadioButton>
 			<LogoText :form="logoTextForm" />
 			<Accordion autoCollapse>
 				<AccordionItem title="第1个">
