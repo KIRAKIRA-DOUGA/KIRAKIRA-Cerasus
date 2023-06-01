@@ -65,6 +65,9 @@ export default defineNuxtConfig({
 			needsInterop: [
 				"mediainfo.js",
 			],
+			esbuildOptions: {
+				target: "esnext",
+			},
 		},
 		vue: {
 			script: {
