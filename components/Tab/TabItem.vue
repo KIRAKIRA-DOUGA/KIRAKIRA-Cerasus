@@ -78,7 +78,12 @@
 				margin-right: 8px;
 			}
 
-			&:hover,
+			@media (any-hover: hover) {
+				&:hover {
+					background-color: c(hover-color);
+				}
+			}
+
 			&.active {
 				background-color: c(hover-color);
 			}

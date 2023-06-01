@@ -38,8 +38,10 @@
 		padding: 14px 16px;
 		cursor: pointer;
 
-		&:hover {
-			background-color: c(hover-color);
+		@media (any-hover: hover) {
+			&:hover {
+				background-color: c(hover-color);
+			}
 		}
 
 		&.pictorial {
