@@ -66,7 +66,7 @@ export default defineNuxtConfig({
 				"mediainfo.js",
 			],
 			esbuildOptions: {
-				target: "esnext",
+				target: "es2020",
 			},
 		},
 		vue: {
@@ -76,7 +76,7 @@ export default defineNuxtConfig({
 			},
 		},
 		build: {
-			target: "esnext",
+			target: "es2020",
 		},
 		css: {
 			preprocessorOptions: styleResources({
