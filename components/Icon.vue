@@ -17,7 +17,7 @@
 
 <template>
 	<span class="icon">
-		<NuxtIcon :name="name" :filled="filled" />
+		<svg-icon :name="name" />
 	</span>
 </template>
 
@@ -26,7 +26,7 @@
 		@include square(1em);
 		display: inline-flex;
 
-		> .nuxt-icon {
+		> .sprite-icon {
 			@include square(1em);
 			display: inline-flex;
 			align-items: center;

@@ -71,6 +71,7 @@
 	"dependencies": {
 		"@nuxtjs/color-mode": "^3.2.0",
 		"@nuxtjs/robots": "^3.0.0",
+		"@nuxtjs/svg-sprite": "^1.0.2",
 		"@pinia/nuxt": "^0.4.11",
 		"@storyblok/vue": "^6.3.2",
 		"@tiptap/pm": "^2.0.3",
