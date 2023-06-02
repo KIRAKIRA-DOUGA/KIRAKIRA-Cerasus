@@ -163,9 +163,7 @@ export default defineNuxtConfig({
 		storage: "localStorage",
 	},
 	svgSprite: {
-		input: "./assets/svg/",
-		output: "./assets/sprite/",
-		elementClass: "sprite-icon",
+		input: "~/assets/icons",
 	},
 	imports: {
 		dirs: [
