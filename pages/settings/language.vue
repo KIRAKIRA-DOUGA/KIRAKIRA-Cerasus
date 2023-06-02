@@ -12,7 +12,7 @@
 </script>
 
 <template>
-	<div class="chip radio-group">
+	<div class="chip column">
 		<RadioButton
 			v-for="locale in localeList"
 			:key="locale.code"

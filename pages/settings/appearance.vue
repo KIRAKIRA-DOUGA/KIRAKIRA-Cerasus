@@ -8,7 +8,7 @@
 <template>
 	<Subheader icon="brightness_medium">{{ t.theme }}</Subheader>
 	<PlayerVideoController :currentTime="30" :duration="110" :buffered="60" class="chip" />
-	<div class="chip radio-group">
+	<div class="chip column">
 		<RadioButton
 			v-for="item in themeList"
 			:key="item"
@@ -18,7 +18,7 @@
 		>{{ t[item] }}</RadioButton>
 	</div>
 	<Subheader icon="palette">{{ t.palette }}</Subheader>
-	<div class="chip radio-group">
+	<div class="chip column">
 		<RadioButton
 			v-for="item in paletteList"
 			:key="item"
@@ -28,7 +28,7 @@
 		>{{ t[item] }}</RadioButton>
 	</div>
 	<Subheader icon="wallpaper">{{ t.background }}</Subheader>
-	<div class="chip radio-group">
+	<div class="chip column">
 		<ToggleSwitch v-model="useAppSettingsStore().showCssDoodle" v-ripple>{{ t.animated_background }}</ToggleSwitch>
 	</div>
 </template>

@@ -328,7 +328,7 @@
 		background-color: c(surface-color);
 	}
 
-	:deep(.radio-group :is(.radio-button, .checkbox, .toggle-switch)) {
+	:deep(.chip.column > *) {
 		$extra-padding: 16px;
 		padding: 10px 20px;
 		overflow: visible;
