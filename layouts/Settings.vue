@@ -17,7 +17,7 @@
 
 	const settings = {
 		personal: [
-			{ id: "dashboard", icon: "placeholder" },
+			{ id: "dashboard", icon: "dashboard" },
 			{ id: "profile", icon: "badge" },
 			{ id: "traces", icon: "history" },
 			{ id: "privacy", icon: "shield" },
