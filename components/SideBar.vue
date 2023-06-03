@@ -23,11 +23,11 @@
 	<aside>
 		<div class="top icons">
 			<SoftKey v-i="0" v-tooltip="rightTooltip(t.home)" icon="home" href="/" />
-			<SoftKey v-i="1" v-tooltip="rightTooltip('搜索')" icon="search" href="/search" />
-			<SoftKey v-i="2" v-tooltip="rightTooltip('历史')" icon="history" />
-			<SoftKey v-i="3" v-tooltip="rightTooltip('收藏')" icon="star" />
+			<SoftKey v-i="1" v-tooltip="rightTooltip(t.search)" icon="search" href="/search" />
+			<SoftKey v-i="2" v-tooltip="rightTooltip(t.history)" icon="history" />
+			<SoftKey v-i="3" v-tooltip="rightTooltip(t.favorite)" icon="star" />
 			<SoftKey v-i="4" v-tooltip="rightTooltip('关注')" icon="feed" />
-			<SoftKey v-i="5" v-tooltip="rightTooltip('投稿')" icon="upload" />
+			<SoftKey v-i="5" v-tooltip="rightTooltip(t.upload)" icon="upload" />
 		</div>
 
 		<Transition>
@@ -43,7 +43,7 @@
 			<SoftKey
 				v-if="!isLogined"
 				v-i="7"
-				v-tooltip="rightTooltip('登录')"
+				v-tooltip="rightTooltip(t.login)"
 				icon="person"
 				class="person"
 				@click="showLogin = true"
@@ -58,8 +58,8 @@
 			>
 				<img :src="avatar" alt="avatar" draggable="false" />
 			</div>
-			<SoftKey v-i="8" v-tooltip="rightTooltip('消息')" icon="email" href="/test-rich-text-editor" />
-			<SoftKey v-i="9" v-tooltip="rightTooltip('设置')" icon="settings" href="/settings" :active="isCurrentSettings" />
+			<SoftKey v-i="8" v-tooltip="rightTooltip(t.messages)" icon="email" href="/test-rich-text-editor" />
+			<SoftKey v-i="9" v-tooltip="rightTooltip(t.settings)" icon="settings" href="/settings" :active="isCurrentSettings" />
 		</div>
 
 		<LoginWindow v-model="showLogin" />

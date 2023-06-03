@@ -57,6 +57,7 @@ const Japanese: LocaleIdentifiers = {
 	profile: "情報",
 	traces: "痕跡",
 	privacy: "プライバシー",
+	security: "安全",
 	login_options: "ログイン オプション",
 	password: "パスワード",
 	account_linking: "アカウント リンク",
@@ -87,6 +88,14 @@ const Japanese: LocaleIdentifiers = {
 	modify: "変更",
 	save: "保存",
 	add: "追加",
+	apply: "適用",
+	reset: "リセット",
+	history: "歴史",
+	favorite: "お気に入り",
+	upload: "アップロード",
+	messages: "メッセージ",
+	login: "ログイン",
+	logout: "ログアウト",
 };
 
 export default Japanese;
