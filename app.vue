@@ -1,5 +1,6 @@
 <script setup lang="ts">
 	import "css-doodle";
+	import "virtual:svg-icons-register";
 
 	const { locale } = useI18n();
 	const langTag = computed(() => {

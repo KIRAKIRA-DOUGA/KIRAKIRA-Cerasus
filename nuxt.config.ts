@@ -1,5 +1,7 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 
+import { resolve } from "path";
+import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import defineAlias from "./helpers/alias";
 import styleResources from "./helpers/style-resources";
 import cssDoodleLoader from "./plugins/vite/css-doodle";
@@ -21,7 +23,7 @@ export default defineNuxtConfig({
 		// "@nuxt/devtools",
 		"@nuxtjs/i18n",
 		"@nuxt/content",
-		"nuxt-icons",
+		// "nuxt-icons",
 		"@vueuse/nuxt",
 		"nuxt-lodash",
 		["@pinia/nuxt", {
@@ -60,6 +62,10 @@ export default defineNuxtConfig({
 		plugins: [
 			docsLoader(),
 			cssDoodleLoader(),
+			createSvgIconsPlugin({
+				iconDirs: [resolve(process.cwd(), "assets/icons")],
+				symbolId: "icon-[dir]-[name]",
+			}),
 		],
 		optimizeDeps: {
 			needsInterop: [
