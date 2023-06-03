@@ -10,6 +10,7 @@
 	const isSettings = computed(() => getRoutePath().includes(SETTINGS));
 	const cssDoodle = refComp();
 	const showCssDoodle = computed(() => useAppSettingsStore().showCssDoodle);
+	const isToggleSettings = ref(false);
 
 	watchRoute(() => {
 		showBanner.value = localedRoute.value === "";
@@ -34,8 +35,8 @@
 		<CssDoodle v-show="showCssDoodle" ref="cssDoodle" :rule="background" class="background" />
 	</Transition>
 	<SideBar class="sidebar" />
-	<div ref="container" class="container" :class="{ scroll: isSettings }">
-		<Transition name="settings" mode="out-in">
+	<div ref="container" class="container" :class="{ scroll: isSettings, 'toggle-settings': isToggleSettings }">
+		<Transition name="settings" mode="out-in" @beforeLeave="isToggleSettings = true" @afterEnter="isToggleSettings = false">
 			<main v-if="!isSettings" class="scroll">
 				<Banner :collapsed="!showBanner" />
 				<Transition :name="pageTransition" mode="out-in">
@@ -102,5 +103,9 @@
 	.scroll {
 		height: 100dvh;
 		overflow: hidden overlay;
+
+		&.toggle-settings {
+			overflow: hidden;
+		}
 	}
 </style>
