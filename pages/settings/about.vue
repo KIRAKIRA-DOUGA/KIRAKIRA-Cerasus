@@ -25,12 +25,12 @@
 		// 打不出中文名和未知职位的先不打。
 	];
 
-	const technologies: { name: string; version: string; ability: string; icon?: string; link: string }[] = [
-		{ name: "Nuxt", version: nuxt.versions.nuxt || "3", ability: "服务端渲染框架", link: "https://nuxt.com/" },
-		{ name: "Vue", version: nuxt.versions.vue || "3", ability: "渐进式前端框架", link: "https://vuejs.org/" },
-		{ name: "TypeScript", version: "5", ability: "静态类型检查器", link: "https://www.typescriptlang.org/" },
-		{ name: "Node.js", version: "20", ability: "服务端开发平台", link: "https://nodejs.org/" },
-		{ name: "Koa", version: "3", ability: "下一代网络框架", link: "https://koajs.com/" },
+	const technologies: { name: string; version: string; ability: string; icon?: string; monochrome?: boolean; link: string }[] = [
+		{ name: "Nuxt", version: nuxt.versions.nuxt || "3", ability: "服务端渲染框架", icon: "nuxt", link: "https://nuxt.com/" },
+		{ name: "Vue", version: nuxt.versions.vue || "3", ability: "渐进式前端框架", icon: "vue", link: "https://vuejs.org/" },
+		{ name: "TypeScript", version: "5", ability: "静态类型检查器", icon: "typescript", link: "https://www.typescriptlang.org/" },
+		{ name: "Node.js", version: "20", ability: "服务端开发平台", icon: "nodejs", link: "https://nodejs.org/" },
+		{ name: "Koa", version: "3", ability: "下一代网络框架", icon: "koa", monochrome: true, link: "https://koajs.com/" },
 		// 基于前端运行时的版本号可以自动识别，后端和编译时的版本号只能委屈你自己手打了。
 	];
 </script>
@@ -43,7 +43,7 @@
 		<SettingsChipItem
 			v-for="repo in repositories"
 			:key="repo.name"
-			:icon="repo.icon || 'placeholder'"
+			:icon="repo.icon || 'github'"
 			:details="repo.codeName"
 			:href="repo.link"
 			afterIcon="open_in_new"
@@ -66,6 +66,7 @@
 			v-for="tech in technologies"
 			:key="tech.name"
 			:icon="tech.icon || 'placeholder'"
+			:filled="!tech.monochrome"
 			:details="`${tech.ability} - v${tech.version}`"
 			:href="tech.link"
 			afterIcon="open_in_new"

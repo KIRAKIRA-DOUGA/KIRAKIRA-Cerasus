@@ -4,6 +4,8 @@
 		image?: string;
 		/** 图标。如果图片和图标同时指定，则图片会替换掉图标。 */
 		icon?: string;
+		/** 是否保持图标本身的颜色。 */
+		filled?: boolean;
 		/** 详细信息。 */
 		details?: Readable;
 		/** 之后的操作图标。 */
@@ -18,7 +20,7 @@
 		<div v-if="image" class="image">
 			<img :src="image" alt="image" draggable="false" />
 		</div>
-		<Icon v-else-if="icon" :name="icon" />
+		<Icon v-else-if="icon" :name="icon" :filled="filled" />
 		<div class="text">
 			<div class="title">
 				<slot></slot>
