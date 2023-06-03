@@ -40,6 +40,7 @@
 	</div>
 
 	<div class="submit">
+		<Button icon="reset" secondary>{{ t.reset }}</Button>
 		<Button icon="check" @click="useToast('修改失败', 'error');">{{ t.save }}</Button>
 	</div>
 </template>
@@ -84,10 +85,5 @@
 			flex-wrap: wrap;
 			gap: 32px;
 		}
-	}
-
-	.submit {
-		display: flex;
-		justify-content: flex-end;
 	}
 </style>

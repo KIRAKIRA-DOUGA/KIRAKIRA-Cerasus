@@ -98,6 +98,14 @@
 			background-color: transparent;
 			box-shadow: none;
 
+			.icon {
+				color: c(accent);
+			}
+
+			:deep(.ripple-circle) {
+				background-color: c(accent-pressed, 15%);
+			}
+
 			@media (any-hover: hover) {
 				&:hover {
 					background-color: c(accent-hover, 8%);

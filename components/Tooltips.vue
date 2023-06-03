@@ -90,6 +90,13 @@
 			}
 		adjustPosition();
 	});
+
+	useListen("app:refreshTooltip", map => {
+		const symbols = [...map.values()].map(value => value.symbol);
+		for (let i = tooltipList.length - 1; i >= 0; i--)
+			if (!symbols.includes(tooltipList[i].symbol))
+				arrayRemoveAt(tooltipList, i);
+	});
 </script>
 
 <template>

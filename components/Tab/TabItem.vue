@@ -37,7 +37,7 @@
 		<div v-if="icon" class="icon-wrapper">
 			<Icon :name="icon" />
 		</div>
-		<slot></slot>
+		<span><slot></slot></span>
 		<Badge v-if="badge !== undefined" class="badge">{{ badge }}</Badge>
 	</Comp>
 </template>

@@ -55,6 +55,7 @@ const English: LocaleIdentifiers = {
 	profile: "Profile",
 	traces: "Traces",
 	privacy: "Privacy",
+	security: "Security",
 	login_options: "Login options",
 	password: "Password",
 	account_linking: "Account linking",
@@ -85,6 +86,14 @@ const English: LocaleIdentifiers = {
 	modify: "Modify",
 	save: "Save",
 	add: "Add",
+	apply: "Apply",
+	reset: "Reset",
+	history: "History",
+	favorite: "Favorite",
+	upload: "Upload",
+	messages: "Messages",
+	login: "Login",
+	logout: "Logout",
 };
 
 export default English;

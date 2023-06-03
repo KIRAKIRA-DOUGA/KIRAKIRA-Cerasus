@@ -21,7 +21,7 @@
 			{ id: "profile", icon: "badge" },
 			{ id: "traces", icon: "history" },
 			{ id: "privacy", icon: "shield" },
-			{ id: "login-options", icon: "lock" },
+			{ id: "security", icon: "lock" },
 			{ id: "account-linking", icon: "groups" },
 			{ id: "blocklist", icon: "block" },
 		],
@@ -57,7 +57,7 @@
 						<TabItem v-for="setting in settings.general" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
 					</TabBar>
 					<div class="nav-bottom-buttons">
-						<Button icon="logout" @click="logout">登出</Button>
+						<Button icon="logout" @click="logout">{{ t.logout }}</Button>
 						<Button href="/components">组件测试页</Button>
 					</div>
 				</header>
@@ -350,5 +350,11 @@
 				background-color: c(hover-color);
 			}
 		}
+	}
+
+	:deep(.submit) {
+		display: flex;
+		gap: 5px;
+		justify-content: flex-end;
 	}
 </style>

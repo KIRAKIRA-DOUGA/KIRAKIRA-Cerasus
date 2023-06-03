@@ -1,5 +1,5 @@
 import mitt from "mitt";
-import { TooltipEvent } from "plugins/vue/tooltip";
+import { TooltipEvent, VTooltipBindingValue } from "plugins/vue/tooltip";
 import { ToastEvent } from "./toast";
 
 type ApplicationEvents = {
@@ -9,6 +9,7 @@ type ApplicationEvents = {
 	"app:showTooltip": TooltipEvent;
 	"app:hideTooltip": HTMLElement;
 	"app:updateTooltip": TooltipEvent;
+	"app:refreshTooltip": Map<HTMLElement, { value: VTooltipBindingValue; symbol: symbol }>;
 	"user:login": boolean;
 };
 

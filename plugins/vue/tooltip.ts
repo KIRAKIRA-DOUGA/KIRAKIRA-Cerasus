@@ -50,6 +50,7 @@ export default defineNuxtPlugin(nuxt => {
 			setElementBinding(element, binding.value);
 			if (!binding.value || !elementBinding.has(element)) useEvent("app:hideTooltip", element);
 			else useEvent("app:updateTooltip", createEvent(element));
+			useEvent("app:refreshTooltip", elementBinding);
 		},
 	} as D);
 });

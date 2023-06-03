@@ -1,16 +1,25 @@
+<script lang="ts">
+	export type PrivacyType = "public" | "following" | "private";
+</script>
+
 <script setup lang="ts">
-	const option = ref("");
-	const optionList = ["public", "following", "private"] as const;
+	const props = defineProps<{
+		icon?: string;
+	}>();
+
+	const privacy = defineModel<PrivacyType>();
+	const privacies = ["public", "following", "private"] as PrivacyType[];
 </script>
 
 <template>
-	<Comp>
-		<slot></slot>
+	<Comp v-ripple>
+		<Icon v-if="icon" :name="icon" />
+		<span class="content"><slot></slot></span>
 		<div class="privacy-radio-group">
 			<RadioButton
-				v-for="item in optionList"
+				v-for="item in privacies"
 				:key="item"
-				v-model="option"
+				v-model="privacy"
 				:value="item"
 			/>
 		</div>
@@ -20,7 +29,17 @@
 <style scoped lang="scss">
 	:comp {
 		display: flex;
-		justify-content: space-between;
+		align-items: center;
+
+		> .icon {
+			margin-right: 8px;
+			color: c(icon-color);
+			font-size: 20px;
+		}
+
+		> .content {
+			width: 100%;
+		}
 	}
 
 	.privacy-radio-group {

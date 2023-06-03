@@ -55,6 +55,7 @@ const SChinese = {
 	profile: "资料",
 	traces: "印迹",
 	privacy: "隐私",
+	security: "安全",
 	login_options: "登录选项",
 	password: "密码",
 	account_linking: "关联社交平台",
@@ -85,6 +86,15 @@ const SChinese = {
 	modify: "修改",
 	save: "保存",
 	add: "添加",
+	apply: "应用",
+	reset: "重设",
+	history: "历史",
+	favorite: "收藏",
+	upload: "投稿",
+	messages: "消息",
+	login: "登入",
+	logout: "登出",
+
 } as const;
 
 export default SChinese;

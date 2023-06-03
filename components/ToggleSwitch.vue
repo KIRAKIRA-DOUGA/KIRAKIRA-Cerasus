@@ -4,8 +4,11 @@
 		on?: boolean;
 		/** 禁用。 */
 		disabled?: boolean;
+		/** 图标，可选。 */
+		icon?: string;
 	}>(), {
 		disabled: false,
+		icon: undefined,
 	});
 
 	const model = defineModel<boolean>();
@@ -86,7 +89,8 @@
 		@keydown="onKeyDown"
 		@keyup="onKeyUp"
 	>
-		<slot></slot>
+		<Icon v-if="icon" :name="icon" />
+		<span class="content"><slot></slot></span>
 		<div class="switch">
 			<div class="base"></div>
 			<div class="thumb" @pointerdown="onThumbDown"></div>
@@ -103,8 +107,17 @@
 	:comp {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
 		cursor: pointer;
+
+		> .icon {
+			margin-right: 8px;
+			color: c(icon-color);
+			font-size: 20px;
+		}
+
+		> .content {
+			width: 100%;
+		}
 	}
 
 	.switch {
