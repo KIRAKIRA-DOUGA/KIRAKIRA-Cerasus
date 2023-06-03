@@ -28,6 +28,11 @@
 	onMounted(() => {
 		setDisplayVisible(cssDoodle.value, showCssDoodle.value);
 	});
+
+	const toggle = (b: boolean) => {
+		console.log(b);
+		isToggleSettings.value = b;
+	};
 </script>
 
 <template>
@@ -46,7 +51,7 @@
 				</Transition>
 			</main>
 			<Settings v-else>
-				<Transition name="page-jump" mode="out-in" @beforeEnter="container?.scrollTo(0, 0)">
+				<Transition name="page-jump" mode="out-in" @beforeEnter="container?.scrollTo(0, 0)" @beforeLeave="isToggleSettings = true" @afterEnter="isToggleSettings = false">
 					<div :key="localedRoute" class="router-view">
 						<slot></slot>
 					</div>

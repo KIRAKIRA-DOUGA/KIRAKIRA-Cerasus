@@ -85,6 +85,8 @@
 			<component :is="Component" />
 		</RouterView>
 	</NuxtLayout>
-	<Toasts />
-	<Tooltips />
+	<Fragment id="teleports">
+		<Toasts />
+		<Tooltips />
+	</Fragment>
 </template>
