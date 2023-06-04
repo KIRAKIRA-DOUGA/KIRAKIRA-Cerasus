@@ -2,6 +2,7 @@
 	import AccordionItem from "./AccordionItem.vue";
 
 	const props = defineProps<{
+		/** 是否在打开其它手风琴项目时自动折叠已打开的手风琴项目？ */
 		autoCollapse?: boolean;
 	}>();
 

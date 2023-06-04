@@ -3,9 +3,13 @@
 	import { Property } from "csstype";
 
 	const props = withDefaults(defineProps<{
+		/** 选项卡唯一标识符。 */
 		id: string;
+		/** 内容排列方向。 */
 		direction?: "horizontal" | "horizontal-reverse" | "vertical" | "vertical-reverse";
+		/** 角标，可选。 */
 		badge?: Readable;
+		/** 图标，可选。 */
 		icon?: string;
 	}>(), {
 		direction: "horizontal",

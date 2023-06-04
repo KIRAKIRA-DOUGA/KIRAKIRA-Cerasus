@@ -50,7 +50,7 @@
 
 <template>
 	<div class="container">
-		<TabBar v-model="selectedTab" big class="category-tab">
+		<TabBar v-model="selectedTab" class="category-tab">
 			<TabItem id="home" direction="vertical" icon="home">{{ t.home }}</TabItem>
 			<TabItem id="music" direction="vertical-reverse" :badge="233">{{ t.music }}</TabItem>
 			<TabItem id="anime" direction="vertical-reverse" :badge="233">{{ t.anime }}</TabItem>
@@ -96,6 +96,10 @@
 		> * {
 			margin: 26px 0;
 		}
+	}
+
+	.tab-bar {
+		--loose: true;
 	}
 
 	.category-tab {

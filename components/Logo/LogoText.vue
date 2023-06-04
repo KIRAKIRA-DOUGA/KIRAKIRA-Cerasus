@@ -75,24 +75,20 @@
 		}
 
 		@container style(--form: full) {
-			& {
-				width: $full-width;
+			width: $full-width;
 
-				.right-half {
-					width: $right-half-width;
-				}
+			.right-half {
+				width: $right-half-width;
 			}
 		}
 
 		@container style(--form: hidden) {
-			& {
-				width: 0;
-				pointer-events: none;
+			width: 0;
+			pointer-events: none;
 
-				.hidden-wrapper {
-					opacity: 0;
-					scale: 0.8;
-				}
+			.hidden-wrapper {
+				opacity: 0;
+				scale: 0.8;
 			}
 		}
 	}

@@ -4,6 +4,7 @@
 
 <script setup lang="ts">
 	const props = defineProps<{
+		/** 是否不显示？ */
 		hidden?: boolean;
 	}>();
 
