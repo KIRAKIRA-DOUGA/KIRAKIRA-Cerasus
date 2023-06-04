@@ -1,7 +1,6 @@
 <script setup lang="ts">
 	import { PrivacyType } from "components/Settings/SettingsPrivacyItem.vue";
 
-	const topTooltip = (title: string) => ({ title, placement: "top" });
 	const visibilities = reactive<{ name: string; icon?: string; privacy: PrivacyType }[]>([
 		{ name: "生日", icon: "birthday", privacy: "public" },
 		{ name: "关注", privacy: "public" },
@@ -29,9 +28,9 @@
 	<div class="privacy-header">
 		<Subheader icon="visibility">个人内容可见性</Subheader>
 		<div class="options">
-			<SoftKey v-tooltip="topTooltip('公开')" icon="visibility" @click="setColonVisibility('public')" />
-			<SoftKey v-tooltip="topTooltip('仅你关注的人可见')" icon="person_add" @click="setColonVisibility('following')" />
-			<SoftKey v-tooltip="topTooltip('私密')" icon="visibility_off" @click="setColonVisibility('private')" />
+			<SoftKey v-tooltip:top="'公开'" icon="visibility" @click="setColonVisibility('public')" />
+			<SoftKey v-tooltip:top="'仅你关注的人可见'" icon="person_add" @click="setColonVisibility('following')" />
+			<SoftKey v-tooltip:top="'私密'" icon="visibility_off" @click="setColonVisibility('private')" />
 		</div>
 	</div>
 	<div class="chip column">

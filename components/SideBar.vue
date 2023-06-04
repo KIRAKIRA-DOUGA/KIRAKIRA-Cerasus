@@ -3,7 +3,6 @@
 
 	const showLogin = ref(false);
 	const isLogined = ref(false);
-	const rightTooltip = (title: string) => ({ title, placement: "right" });
 	const isCurrentSettings = computed(() => !!currentSettingsPage());
 
 	useListen("app:requestLogin", () => showLogin.value = true);
@@ -13,12 +12,12 @@
 <template>
 	<aside>
 		<div class="top icons">
-			<SoftKey v-i="0" v-tooltip="rightTooltip(t.home)" icon="home" href="/" />
-			<SoftKey v-i="1" v-tooltip="rightTooltip(t.search)" icon="search" href="/search" />
-			<SoftKey v-i="2" v-tooltip="rightTooltip(t.history)" icon="history" />
-			<SoftKey v-i="3" v-tooltip="rightTooltip(t.favorite)" icon="star" />
-			<SoftKey v-i="4" v-tooltip="rightTooltip('关注')" icon="feed" />
-			<SoftKey v-i="5" v-tooltip="rightTooltip(t.upload)" icon="upload" />
+			<SoftKey v-i="0" v-tooltip:right="t.home" icon="home" href="/" />
+			<SoftKey v-i="1" v-tooltip:right="t.search" icon="search" href="/search" />
+			<SoftKey v-i="2" v-tooltip:right="t.history" icon="history" />
+			<SoftKey v-i="3" v-tooltip:right="t.favorite" icon="star" />
+			<SoftKey v-i="4" v-tooltip:right="'关注'" icon="feed" />
+			<SoftKey v-i="5" v-tooltip:right="t.upload" icon="upload" />
 		</div>
 
 		<div v-i="6" class="center">
@@ -32,7 +31,7 @@
 			<SoftKey
 				v-if="!isLogined"
 				v-i="7"
-				v-tooltip="rightTooltip(t.login)"
+				v-tooltip:right="t.login"
 				icon="person"
 				class="person"
 				@click="showLogin = true"
@@ -41,14 +40,14 @@
 				v-else
 				v-i="7"
 				v-ripple
-				v-tooltip="rightTooltip('艾草')"
+				v-tooltip:right="'艾草'"
 				class="person logined"
 				@click="showLogin = true"
 			>
 				<img :src="avatar" alt="avatar" draggable="false" />
 			</div>
-			<SoftKey v-i="8" v-tooltip="rightTooltip(t.messages)" icon="email" href="/test-rich-text-editor" />
-			<SoftKey v-i="9" v-tooltip="rightTooltip(t.settings)" icon="settings" href="/settings" :active="isCurrentSettings" />
+			<SoftKey v-i="8" v-tooltip:right="t.messages" icon="email" href="/test-rich-text-editor" />
+			<SoftKey v-i="9" v-tooltip:right="t.settings" icon="settings" href="/settings" :active="isCurrentSettings" />
 		</div>
 
 		<LoginWindow v-model="showLogin" />

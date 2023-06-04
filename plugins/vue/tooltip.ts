@@ -2,9 +2,11 @@
  * 使用 `v-tooltip`，为元素添加自定义的工具提示。
  */
 
+type Placement = "top" | "right" | "bottom" | "left";
+
 export type VTooltipBindingValue = string | {
 	title: string;
-	placement?: "top" | "right" | "bottom" | "left";
+	placement?: Placement;
 	offset?: number;
 };
 
@@ -27,15 +29,18 @@ export default defineNuxtPlugin(nuxt => {
 			offset: usingDefault ? undefined : value.offset,
 		} as TooltipEvent;
 	};
-	const setElementBinding = (element: HTMLElement, value: VTooltipBindingValue) => {
+	const isPlacement = (arg?: string): arg is Placement => ["top", "right", "bottom", "left"].includes(arg!);
+	const setElementBinding = (element: HTMLElement, _value: VTooltipBindingValue, arg?: string) => {
 		const mapValue = elementBinding.get(element);
+		const value = typeof _value !== "string" ? _value : { title: _value };
+		if (isPlacement(arg)) value.placement ??= arg;
 		if (!mapValue) elementBinding.set(element, { value, symbol: Symbol(element.id) });
 		else mapValue.value = value;
 	};
 	const refresh = () => useEvent("app:refreshTooltip", elementBinding);
 	nuxt.vueApp.directive("tooltip", {
 		mounted(element, binding) {
-			setElementBinding(element, binding.value);
+			setElementBinding(element, binding.value, binding.arg);
 			addEventListeners(element, "mouseenter", "focusin", () => {
 				if (!binding.value || !elementBinding.has(element)) return;
 				useEvent("app:showTooltip", createEvent(element));
@@ -50,7 +55,7 @@ export default defineNuxtPlugin(nuxt => {
 			refresh();
 		},
 		updated(element, binding) {
-			setElementBinding(element, binding.value);
+			setElementBinding(element, binding.value, binding.arg);
 			if (!binding.value || !elementBinding.has(element)) useEvent("app:hideTooltip", element);
 			else useEvent("app:updateTooltip", createEvent(element));
 			refresh();
