@@ -23,8 +23,6 @@
 	});
 
 	const value = defineModel<string>({ required: true });
-	/** 用户是否输入了值。 */
-	const typed = computed(() => value.value !== "");
 	/** 是否显示密码。 */
 	const showPassword = ref(false);
 	const type = computed(() => {
@@ -92,7 +90,7 @@
 	>
 		<div class="wrapper">
 			<Icon v-if="icon" :name="icon" class="before-icon" />
-			<input ref="input" v-model="value" :type="type" :placeholder="placeholder" :class="{ typed }" />
+			<input ref="input" v-model="value" :type="type" :placeholder="placeholder" />
 			<label v-if="size === 'large'">{{ placeholder }}</label>
 			<Fragment class="after-icons">
 				<AfterIcon :shown="showClearAll" icon="close" @click="clearAll" />
@@ -234,7 +232,7 @@
 			display: none;
 		}
 
-		&.typed ~ label,
+		&:not(:placeholder-shown) ~ label,
 		&:focus ~ label {
 			translate: 0 calc($large-height / -2 + 12px);
 			scale: 0.7;
