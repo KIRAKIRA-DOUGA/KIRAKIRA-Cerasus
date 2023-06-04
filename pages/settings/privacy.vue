@@ -1,18 +1,22 @@
 <script setup lang="ts">
 	import { PrivacyType } from "components/Settings/SettingsPrivacyItem.vue";
 
-	const visibilities = reactive<{ name: string; icon?: string; privacy: PrivacyType }[]>([
+	const visibilities = reactive < { name: string; icon?: string; logo?: string; privacy: PrivacyType }[]>([
 		{ name: "生日", icon: "birthday", privacy: "public" },
-		{ name: "关注", privacy: "public" },
-		{ name: "粉丝", privacy: "public" },
+		{ name: "关注", icon: "person_add", privacy: "public" },
+		{ name: "粉丝", icon: "person_heart", privacy: "public" },
 		{ name: "收藏", icon: "star", privacy: "public" },
-		{ name: "Twitter", privacy: "public" },
-		{ name: "QQ", privacy: "public" },
-		{ name: "哔哩哔哩", privacy: "public" },
-		{ name: "ニコニコ", privacy: "public" },
-		{ name: "音MAD维基", privacy: "public" },
-		{ name: "微博", privacy: "public" },
-		{ name: "电话号码", privacy: "private" },
+		{ name: "Twitter", logo: "twitter", privacy: "public" },
+		{ name: "QQ", logo: "qq", privacy: "public" },
+		{ name: "哔哩哔哩", logo: "bilibili", privacy: "public" },
+		{ name: "ニコニコ", logo: "niconico", privacy: "public" },
+		{ name: "YouTube", logo: "youtube", privacy: "public" },
+		{ name: "音MAD维基", logo: "otomadwiki", privacy: "public" },
+		{ name: "微博", logo: "weibo", privacy: "public" },
+		{ name: "Discord", logo: "discord", privacy: "public" },
+		{ name: "Telegram", logo: "telegram", privacy: "public" },
+		{ name: "MidiShow", logo: "midi", privacy: "public" },
+		{ name: "电话号码", icon: "phone", privacy: "private" },
 	]);
 
 	/**
@@ -38,7 +42,7 @@
 			v-for="item in visibilities"
 			:key="item.name"
 			v-model="item.privacy"
-			:icon="item.icon || 'placeholder'"
+			:icon="item.logo ? 'mono-logo/' + item.logo : item.icon || 'placeholder'"
 		>{{ item.name }}</SettingsPrivacyItem>
 	</div>
 

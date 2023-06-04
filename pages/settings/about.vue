@@ -43,7 +43,7 @@
 		<SettingsChipItem
 			v-for="repo in repositories"
 			:key="repo.name"
-			:icon="repo.icon || 'github'"
+			:icon="repo.icon || 'colored-logo/github'"
 			:details="repo.codeName"
 			:href="repo.link"
 			afterIcon="open_in_new"
@@ -65,7 +65,7 @@
 		<SettingsChipItem
 			v-for="tech in technologies"
 			:key="tech.name"
-			:icon="tech.icon || 'placeholder'"
+			:icon="tech.icon ? 'colored-logo/' + tech.icon : 'placeholder'"
 			:filled="!tech.monochrome"
 			:details="`${tech.ability} - v${tech.version}`"
 			:href="tech.link"

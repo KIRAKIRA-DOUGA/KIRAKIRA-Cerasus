@@ -16,7 +16,7 @@
 		hideTitle?: boolean;
 	}>(), {
 		title: "",
-		icon: "sakuranomiya",
+		icon: "colored-logo/sakuranomiya",
 	});
 
 	const model = defineModel<boolean>();

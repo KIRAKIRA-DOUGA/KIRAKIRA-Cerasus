@@ -1,5 +1,6 @@
 <script setup lang="ts">
 	import avatar from "assets/images/aira.jpg";
+	import banner from "assets/images/banner-20220717.png";
 
 	const nickname = ref("艾了个拉");
 	const nicknameEdit = computed({
@@ -18,6 +19,11 @@
 </script>
 
 <template>
+	<div v-ripple class="banner">
+		<img :src="banner" alt="banner" draggable="false" />
+		<span>点击更换封面</span>
+	</div>
+
 	<div class="change-avatar">
 		<div v-ripple class="avatar">
 			<img :src="avatar" alt="avatar" draggable="false" />
@@ -30,7 +36,7 @@
 		<span>{{ t.nickname_requirements }}</span>
 	</div>
 
-	<TextBox v-model="signature" placeholder="个性签名" size="large" icon="placeholder" />
+	<TextBox v-model="signature" placeholder="个性签名" size="large" icon="edit" />
 
 	<TextBox v-model="birthday" :placeholder="t.birthday" size="large" icon="birthday" />
 	<!-- TODO: 日期选择组件 -->
@@ -60,17 +66,62 @@
 </template>
 
 <style scoped lang="scss">
+	.banner {
+		@include flex-block;
+		@include radius-large;
+		position: relative;
+		overflow: hidden;
+		background-color: c(gray-20);
+
+		> img {
+			z-index: 1;
+			width: 100%;
+			height: 150px;
+			object-fit: cover;
+			cursor: pointer;
+
+			@media (any-hover: hover) {
+				&:hover {
+					filter: brightness(0.75) blur(2px);
+					scale: 1.05;
+
+					& + span {
+						opacity: 1;
+					}
+				}
+
+				&:not(:hover) {
+					transition-duration: 1s;
+				}
+			}
+		}
+
+		span {
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			z-index: 5;
+			margin: 1rem;
+			color: white;
+			opacity: 0;
+		}
+	}
+
 	.change-avatar {
+		z-index: 5;
 		display: flex;
 		gap: 0.75rem;
-		align-items: center;
+		align-items: flex-end;
+		margin: -48px 0 12px 24px;
 		color: c(icon-color);
+		pointer-events: none;
 
 		.avatar {
 			@include square(64px);
 			@include circle;
 			overflow: hidden;
 			background-color: c(gray-30);
+			pointer-events: auto;
 
 			> img {
 				z-index: 1;
@@ -82,6 +133,7 @@
 				@media (any-hover: hover) {
 					&:hover {
 						scale: 125%;
+						filter: brightness(0.85);
 					}
 
 					&:not(:hover) {
@@ -89,6 +141,17 @@
 					}
 				}
 			}
+
+			@media (any-hover: hover) {
+				&:hover + span {
+					opacity: 1;
+				}
+			}
+		}
+
+		span {
+			margin-bottom: 0.5rem;
+			opacity: 0;
 		}
 	}
 
