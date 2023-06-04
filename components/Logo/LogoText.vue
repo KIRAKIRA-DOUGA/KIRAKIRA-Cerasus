@@ -2,10 +2,6 @@
 	export type LogoTextFormType = "hidden" | "half" | "full";
 </script>
 
-<script setup lang="ts">
-
-</script>
-
 <template>
 	<Comp>
 		<div>
