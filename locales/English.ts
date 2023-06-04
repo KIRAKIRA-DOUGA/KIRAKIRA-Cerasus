@@ -94,6 +94,7 @@ const English: LocaleIdentifiers = {
 	messages: "Messages",
 	login: "Login",
 	logout: "Logout",
+	signature: "Signature",
 };
 
 export default English;

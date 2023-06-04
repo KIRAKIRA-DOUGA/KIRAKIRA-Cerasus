@@ -96,6 +96,7 @@ const Japanese: LocaleIdentifiers = {
 	messages: "メッセージ",
 	login: "ログイン",
 	logout: "ログアウト",
+	signature: "署名",
 };
 
 export default Japanese;

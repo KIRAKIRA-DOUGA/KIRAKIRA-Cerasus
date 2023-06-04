@@ -58,6 +58,10 @@
 	.privacy-header {
 		display: flex;
 		justify-content: space-between;
+
+		.soft-key {
+			--ripple-size: 50px;
+		}
 	}
 
 	.options {

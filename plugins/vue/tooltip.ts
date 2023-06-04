@@ -32,25 +32,28 @@ export default defineNuxtPlugin(nuxt => {
 		if (!mapValue) elementBinding.set(element, { value, symbol: Symbol(element.id) });
 		else mapValue.value = value;
 	};
+	const refresh = () => useEvent("app:refreshTooltip", elementBinding);
 	nuxt.vueApp.directive("tooltip", {
 		mounted(element, binding) {
 			setElementBinding(element, binding.value);
-			element.addEventListener("mouseenter", () => {
+			addEventListeners(element, "mouseenter", "focusin", () => {
 				if (!binding.value || !elementBinding.has(element)) return;
 				useEvent("app:showTooltip", createEvent(element));
 			});
-			element.addEventListener("mouseleave", () => {
+			addEventListeners(element, "mouseleave", "focusout", () => {
 				useEvent("app:hideTooltip", element);
+				refresh();
 			});
 		},
 		unmounted(element) {
 			elementBinding.delete(element);
+			refresh();
 		},
 		updated(element, binding) {
 			setElementBinding(element, binding.value);
 			if (!binding.value || !elementBinding.has(element)) useEvent("app:hideTooltip", element);
 			else useEvent("app:updateTooltip", createEvent(element));
-			useEvent("app:refreshTooltip", elementBinding);
+			refresh();
 		},
 	} as D);
 });
