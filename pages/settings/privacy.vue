@@ -29,8 +29,13 @@
 </script>
 
 <template>
+	<Subheader icon="cookie">网络曲奇☆</Subheader>
+	<div class="chip column">
+		<ToggleSwitch v-ripple on icon="cookie">允许网站使用Cookie</ToggleSwitch>
+	</div>
+
 	<div class="privacy-header">
-		<Subheader icon="visibility">个人内容可见性</Subheader>
+		<Subheader icon="visibility">个人信息可见性</Subheader>
 		<div class="options">
 			<SoftKey v-tooltip:top="'公开'" icon="visibility" @click="setColonVisibility('public')" />
 			<SoftKey v-tooltip:top="'仅你关注的人可见'" icon="person_add" @click="setColonVisibility('following')" />
@@ -46,12 +51,7 @@
 		>{{ item.name }}</SettingsPrivacyItem>
 	</div>
 
-	<Subheader icon="cookie">网络曲奇☆</Subheader>
-	<div class="chip column">
-		<ToggleSwitch v-ripple on icon="cookie">允许网站使用Cookie</ToggleSwitch>
-	</div>
-
-	<div class="submit">
+	<div class="submit"><!-- TODO: 建议将按钮固定在底部更为合适。 -->
 		<Button icon="reset" secondary>{{ t.reset }}</Button>
 		<Button icon="check" @click="useToast('修改失败', 'error');">{{ t.apply }}</Button>
 	</div>
@@ -61,6 +61,7 @@
 	.privacy-header {
 		display: flex;
 		justify-content: space-between;
+		margin-bottom: -8px;
 
 		.soft-key {
 			--ripple-size: 50px;

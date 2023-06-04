@@ -32,6 +32,7 @@
 	<Subheader icon="wallpaper">{{ t.background }}</Subheader>
 	<div class="chip column">
 		<ToggleSwitch v-model="useAppSettingsStore().showCssDoodle" v-ripple icon="wallpaper">{{ t.animated_background }}</ToggleSwitch>
+		<SettingsChipItem icon="wallpaper" afterIcon="edit">自定义背景</SettingsChipItem>
 	</div>
 </template>
 
@@ -43,5 +44,9 @@
 		::after {
 			pointer-events: none !important;
 		}
+	}
+
+	.settings-chip-item {
+		--size: small;
 	}
 </style>

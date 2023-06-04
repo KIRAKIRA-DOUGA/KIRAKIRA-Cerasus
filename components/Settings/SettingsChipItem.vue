@@ -16,39 +16,43 @@
 </script>
 
 <template>
-	<Comp v-ripple :class="{ pictorial: image || icon }">
-		<div v-if="image" class="image">
-			<img :src="image" alt="image" draggable="false" />
-		</div>
-		<Icon v-else-if="icon" :name="icon" :filled="filled" />
-		<div class="text">
-			<div class="title">
-				<slot></slot>
+	<Comp v-ripple>
+		<div :class="{ pictorial: image || icon }">
+			<div v-if="image" class="image">
+				<img :src="image" alt="image" draggable="false" />
 			</div>
-			<div v-if="details" class="details">{{ details }}</div>
+			<Icon v-else-if="icon" :name="icon" :filled="filled" class="item-icon" />
+			<div class="text">
+				<div class="title">
+					<slot></slot>
+				</div>
+				<div v-if="details" class="details">{{ details }}</div>
+			</div>
+			<Icon v-if="afterIcon" class="after-icon" :name="afterIcon" />
+			<a v-if="href" draggable="false" :href="href" target="_blank" class="link lite"></a>
 		</div>
-		<Icon v-if="afterIcon" class="after-icon" :name="afterIcon" />
-		<a v-if="href" draggable="false" :href="href" target="_blank" class="link lite"></a>
 	</Comp>
 </template>
 
 <style scoped lang="scss">
-	:comp {
+	@layer props {
+		:comp {
+			/// 指定组件的尺寸，可选的值为：large | small。
+			--size: large;
+		}
+	}
+
+	@media (any-hover: hover) {
+		:comp:hover {
+			background-color: c(hover-color);
+		}
+	}
+
+	:comp > div {
 		display: flex;
 		gap: 16px;
 		align-items: center;
-		padding: 14px 16px;
 		cursor: pointer;
-
-		@media (any-hover: hover) {
-			&:hover {
-				background-color: c(hover-color);
-			}
-		}
-
-		&.pictorial {
-			padding: 14px 24px;
-		}
 
 		> :not(.text) {
 			flex-shrink: 0;
@@ -67,7 +71,7 @@
 			}
 		}
 
-		.icon {
+		.item-icon {
 			color: c(icon-color);
 			font-size: 42px;
 		}
@@ -95,6 +99,26 @@
 			@include square(100%);
 			position: absolute;
 			left: 0;
+		}
+
+		@container style(--size: large) {
+			padding: 14px 16px;
+
+			&.pictorial {
+				padding: 14px 24px;
+			}
+		}
+
+		@container style(--size: small) {
+			gap: 8px;
+
+			.icon {
+				font-size: 20px !important;
+			}
+
+			.image {
+				@include square(20px);
+			}
 		}
 	}
 </style>

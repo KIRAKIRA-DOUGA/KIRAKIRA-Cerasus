@@ -78,6 +78,10 @@
 	.logo-text {
 		--form: full;
 		zoom: 2;
+
+		@include mobile {
+			--form: half;
+		}
 	}
 
 	.slogan {

@@ -55,17 +55,6 @@ a {
 	display: none !important;
 }
 
-/* .nuxt-icon {
-	@include square(1em);
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-
-	svg {
-		margin-bottom: 0 !important;
-	}
-} */
-
 iframe.noscript-mask {
 	@include full-screen;
 	z-index: 100;

@@ -28,11 +28,6 @@
 	onMounted(() => {
 		setDisplayVisible(cssDoodle.value, showCssDoodle.value);
 	});
-
-	const toggle = (b: boolean) => {
-		console.log(b);
-		isToggleSettings.value = b;
-	};
 </script>
 
 <template>
