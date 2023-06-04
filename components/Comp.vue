@@ -1,6 +1,4 @@
 <script lang="tsx">
-	const dom = ref<HTMLElement>();
-
 	const comp = defineComponent({
 		props: {
 			/**
@@ -29,11 +27,11 @@
 				if (!componentName) break;
 				className = new VariableName(componentName).kebab;
 			} while (false);
-			return { className, dom };
+			return { className };
 		},
 		render() {
 			return (
-				<kira-component ref={dom} tabindex={this.$props.tabindex} class={this.className}>
+				<kira-component tabindex={this.tabindex} class={this.className}>
 					{this.$slots.default?.()}
 				</kira-component>
 			);

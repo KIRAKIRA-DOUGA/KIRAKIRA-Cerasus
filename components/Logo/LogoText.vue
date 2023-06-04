@@ -1,5 +1,6 @@
 <script lang="ts">
 	export type LogoTextFormType = "hidden" | "half" | "full";
+	export default defineComponent({});
 </script>
 
 <template>
