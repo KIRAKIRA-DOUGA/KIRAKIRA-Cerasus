@@ -1,19 +1,10 @@
 <script setup lang="ts">
-	import { LogoTextFormType } from "components/Logo/LogoText.vue";
 	import avatar from "assets/images/aira.jpg";
 
-	const logoTextForm = ref<LogoTextFormType>("hidden");
-	const showStripes = ref(false);
 	const showLogin = ref(false);
 	const isLogined = ref(false);
 	const rightTooltip = (title: string) => ({ title, placement: "right" });
 	const isCurrentSettings = computed(() => !!currentSettingsPage());
-
-	useEventListener("window", "resize", () => {
-		const height = window.innerHeight;
-		logoTextForm.value = height < 678 ? "hidden" : height < 765 ? "half" : "full";
-		showStripes.value = height >= 540;
-	}, { immediate: true });
 
 	useListen("app:requestLogin", () => showLogin.value = true);
 	useListen("user:login", value => isLogined.value = value);
@@ -30,14 +21,12 @@
 			<SoftKey v-i="5" v-tooltip="rightTooltip(t.upload)" icon="upload" />
 		</div>
 
-		<Transition>
-			<div v-show="showStripes" v-i="6" class="center">
-				<div class="stripes">
-					<div v-for="i in 2" :key="i" class="stripe"></div>
-				</div>
-				<LogoText :form="logoTextForm" />
+		<div v-i="6" class="center">
+			<div class="stripes">
+				<div v-for="i in 2" :key="i" class="stripe"></div>
 			</div>
-		</Transition>
+			<LogoText />
+		</div>
 
 		<div class="bottom icons">
 			<SoftKey
@@ -119,19 +108,40 @@
 					background-color: c(accent);
 				}
 
-				&:has(+ .hidden) {
+				@media (height < 678px) {
 					margin-right: 0;
+				}
+
+				@media (height < 540px) {
+					transform: none;
+					opacity: 0;
 				}
 			}
 
-			&.v-enter-from,
+			.logo-text {
+				--form: hidden;
+
+				@media (height >= 678px) {
+					--form: half;
+				}
+
+				@media (height >= 765px) {
+					--form: full;
+				}
+			}
+
+			@media (height < 540px) {
+				margin-top: -100%;
+			}
+
+			/* &.v-enter-from,
 			&.v-leave-to {
 				opacity: 0;
 
 				.stripes {
 					transform: none;
 				}
-			}
+			} */
 		}
 
 		.bottom ~ * {

@@ -4,6 +4,9 @@
 	"editor.detectIndentation": false,
 	"editor.formatOnPaste": true,
 	"editor.formatOnType": true,
+	"scss.lint.unknownAtRules": "ignore",
+	"less.lint.unknownAtRules": "ignore",
+	"css.lint.unknownAtRules": "ignore",
 	"volar.format.initialIndent": {
 		"html": true,
 		"css": true,
@@ -39,6 +42,7 @@
 		"source.sortImports": true,
 	},
 	"vue.complete.casing.props": "camel",
+	"vue.complete.casing.tags": "pascal",
 	// "javascript.updateImportsOnFileMove.enabled": "never",
 	// "typescript.updateImportsOnFileMove.enabled": "never",
 	// "vue.features.updateImportsOnFileMove.enabled": false,

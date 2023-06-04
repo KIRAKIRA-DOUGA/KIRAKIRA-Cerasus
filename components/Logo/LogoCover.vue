@@ -2,24 +2,13 @@
 	const props = defineProps<{
 		/** 如是则将 LOGO 切换为 Welcome 字样。 */
 		welcome?: boolean;
-		/** 如是则使用完全形式的 LOGO。 */
-		fullLogo?: boolean;
 		/** 是否**禁用**动画以节省性能？ */
 		noAnimation?: boolean;
 	}>();
-
-	/**
-	 * 获取 prop 的值，是数字像素或者其它单位的给出字符串。
-	 * @param value - prop 的值，可以是数字或字符串。
-	 * @returns 如果是字符串则原样返回，如果是数字则返回其值的像素值。
-	 */
-	function getCssValue(value: number | string) {
-		return typeof value === "string" ? value : `${value}px`;
-	}
 </script>
 
 <template>
-	<div class="logo-cover" :class="{ animation: !noAnimation }">
+	<Comp :class="{ animation: !noAnimation }">
 		<div class="lines">
 			<div v-for="i in 5" :key="i"></div>
 		</div>
@@ -38,23 +27,44 @@
 		<div class="triangle triangle-2"></div>
 		<div class="titles" :class="{ welcome }">
 			<div class="title welcome">Welcome</div>
-			<LogoText :form="fullLogo ? 'full' : 'half'" class="title kirakira" />
+			<LogoText class="title kirakira" />
 		</div>
 		<div class="circle circle-1"></div>
 		<div class="circle circle-2">
 			<div v-for="i in 13" :key="i"></div>
 		</div>
-	</div>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
+	@layer props {
+		:comp {
+			/// 封面宽度。
+			--width: 400px; // v-bind 基于运行时，因此没办法赋值给 scss 变量。
+			/// 封面高度。
+			--height: 400px;
+			/// 如是则使用完全形式的 LOGO。
+			--full-logo: false;
+		}
+	}
+
+	.logo-text {
+		--form: half;
+	}
+
+	@container style(--full-logo: true) {
+		.logo-text {
+			--form: full;
+		}
+	}
+
 	.titles {
 		position: relative;
 		width: 100%;
 		height: 70px;
 		overflow: hidden;
 
-		.logo-cover.animation & {
+		:comp.animation & {
 			animation: blinking 2s infinite ease-in alternate;
 		}
 	}
@@ -77,20 +87,11 @@
 		}
 	}
 
-	@layer props {
-		.logo-cover {
-			/// 封面宽度。
-			--cover-width: 400px; // v-bind 基于运行时，因此没办法赋值给 scss 变量。
-			/// 封面高度。
-			--cover-height: 400px;
-		}
-	}
-
-	.logo-cover {
+	:comp {
 		@include flex-center;
 		position: relative;
-		width: var(--cover-width);
-		height: var(--cover-height);
+		width: var(--width);
+		height: var(--height);
 		overflow: hidden;
 		color: c(accent);
 		user-select: none !important;
@@ -111,34 +112,34 @@
 
 		* {
 			@include oval;
-			--height: 1rem;
+			--line-height: 1rem;
 			--from: 100%;
 			--to: -100%;
 			position: absolute;
-			width: calc(var(--height) * 15);
-			height: var(--height);
+			width: calc(var(--line-height) * 15);
+			height: var(--line-height);
 			background-color: c(accent-20);
 
-			.logo-cover.animation & {
+			:comp.animation & {
 				animation: movement 4s infinite linear;
 			}
 		}
 
 		:nth-child(1) {
-			--height: 2rem;
+			--line-height: 2rem;
 			top: -2rem;
 			animation-duration: 8s;
 		}
 
 		:nth-child(2) {
-			--height: 1rem;
+			--line-height: 1rem;
 			--from: 300%;
 			top: 30%;
 			animation-duration: 16s;
 		}
 
 		:nth-child(3) {
-			--height: 0.5rem;
+			--line-height: 0.5rem;
 			--from: 550%;
 			--to: -200%;
 			top: 55%;
@@ -146,7 +147,7 @@
 		}
 
 		:nth-child(4) {
-			--height: 2rem;
+			--line-height: 2rem;
 			--from: 150%;
 			--to: -150%;
 			top: 58%;
@@ -154,7 +155,7 @@
 		}
 
 		:nth-child(5) {
-			--height: 4rem;
+			--line-height: 4rem;
 			bottom: 0;
 			animation-duration: 6s;
 		}
@@ -174,7 +175,7 @@
 			display: inline-block;
 			margin: 0 1rem;
 
-			.logo-cover.animation & {
+			:comp.animation & {
 				animation: plus-rotation 4s ease-in-out calc(var(--i) * 0.25s) infinite;
 			}
 		}
@@ -187,13 +188,13 @@
 		background-color: c(accent);
 		clip-path: polygon(0 0, 100% 50%, 0 100%);
 
-		.logo-cover.animation & {
+		:comp.animation & {
 			animation: triangle-movement 4s cubic-bezier(0, 0.5, 1, 0.5) infinite, triangle-blinking 2s cubic-bezier(0, 0, 0, 1) infinite alternate;
 		}
 	}
 
 	.triangle-1 {
-		right: calc(var(--cover-width) - 40%);
+		right: calc(var(--width) - 40%);
 		bottom: 2rem;
 		background-color: transparent;
 		animation-delay: -1s;
@@ -223,7 +224,7 @@
 		right: -3rem;
 		border: c(accent) 2px solid;
 
-		.logo-cover.animation & {
+		:comp.animation & {
 			animation: circle-scaling 4s cubic-bezier(0, 0, 0, 1) infinite alternate;
 		}
 	}
@@ -233,7 +234,7 @@
 		right: calc(var(--cover-size) + 5rem);
 		bottom: -3rem;
 
-		.logo-cover.animation & {
+		:comp.animation & {
 			animation: rotation 16s linear infinite;
 		}
 
@@ -242,7 +243,7 @@
 			height: 1rem;
 			background-color: c(accent);
 
-			.logo-cover.animation & {
+			:comp.animation & {
 				animation: shades 2s ease-in-out infinite alternate;
 			}
 		}

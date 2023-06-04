@@ -36,7 +36,7 @@
 </script>
 
 <template>
-	<LogoText form="full" />
+	<LogoText />
 	<p class="slogan"><span>一个可爱的视频网站，</span><span><b>献给可爱的你！</b></span></p>
 	<Subheader icon="placeholder">项目地址</Subheader>
 	<div class="chip">
@@ -76,6 +76,7 @@
 
 <style scoped lang="scss">
 	.logo-text {
+		--form: full;
 		zoom: 2;
 	}
 

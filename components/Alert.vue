@@ -100,7 +100,7 @@
 		overflow: hidden;
 		background-color: c(acrylic-bg, 75%);
 
-		@media (min-width: $max-width) {
+		@media (width >= $max-width) {
 			@include radius-large;
 			$margin-top: 24px;
 			max-height: calc(100dvh - $margin-top * 2);

@@ -237,7 +237,7 @@
 		}
 	}
 
-	@media (min-width: 640px) {
+	@media (width >= 640px) {
 		.content {
 			h1 {
 				font-size: 10rem;

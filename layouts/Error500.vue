@@ -27,7 +27,7 @@
 					</div>
 				</div>
 				<div class="bottom-right">
-					<LogoText form="full" class="logo" />
+					<LogoText />
 					<div v-if="is500" class="fix-bug">又有bug了，快修哇！(っ °Д °;)っ</div>
 				</div>
 			</div>
@@ -77,15 +77,16 @@
 				justify-content: space-between;
 				height: 100%;
 
+				.logo-text {
+					--form: full;
+					margin-top: 8px;
+				}
+
 				.fix-bug {
 					flex-shrink: 100;
 					margin-bottom: 6px;
 					font-weight: 200;
 					font-size: 32px;
-				}
-
-				.logo {
-					margin-top: 8px;
 				}
 			}
 

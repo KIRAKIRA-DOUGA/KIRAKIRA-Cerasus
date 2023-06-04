@@ -7,7 +7,7 @@
 <template>
 	<Transition>
 		<div v-if="!collapsed" class="banner opened">
-			<LogoCover fullLogo noAnimation />
+			<LogoCover noAnimation />
 			<div class="shadow"></div>
 		</div>
 	</Transition>
@@ -21,8 +21,13 @@
 		overflow: hidden;
 
 		> .logo-cover {
-			--cover-width: 100dvw;
-			--cover-height: 280px;
+			--width: 100dvw;
+			--height: 280px;
+			--full-logo: true;
+
+			@media (width < 625px) {
+				--full-logo: false;
+			}
 		}
 
 		&.opened {
