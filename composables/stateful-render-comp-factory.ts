@@ -1,6 +1,6 @@
-/*!
+/*
  * 参考：Vue 中如何获取插槽的 DOM 对象
- * https://free_pan.gitee.io/freepan-blog/articles/05-vue3/vue3-杂项/vue中如何获取插槽的dom对象.html
+ * @see https://free_pan.gitee.io/freepan-blog/articles/05-vue3/vue3-杂项/vue中如何获取插槽的dom对象.html
  */
 
 type SlotNode = ComponentPublicInstance & { vnode: VNode[] };

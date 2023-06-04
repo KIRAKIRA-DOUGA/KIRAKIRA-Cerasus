@@ -71,7 +71,7 @@
 			}
 		}
 
-		@container style(--form: full) {
+		@container style(--form: full) { // WARN: VSCode 对 @container 目前的支持不佳。
 			width: $full-width;
 
 			.right-half {

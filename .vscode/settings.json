@@ -43,6 +43,113 @@
 	},
 	"vue.complete.casing.props": "camel",
 	"vue.complete.casing.tags": "pascal",
+	"todo-tree.general.tags": [
+		"TODO",
+		"HACK",
+		"MEME",
+		"TEST",
+		"IDEA",
+		"REVIEW",
+		"NOTE",
+		"XXX",
+		"WARN",
+		"FIXME",
+		"DELETE",
+		"BUG",
+		"[ ]",
+		"[x]"
+	],
+	"todo-tree.highlights.customHighlight": {
+		"TODO": {
+			"background": "#008000",
+			"foreground": "#fff",
+			"iconColour": "#008000",
+		},
+		"HACK": {
+			"background": "#f5c018",
+			"foreground": "#000",
+			"iconColour": "#f5c018",
+			"icon": "tools"
+		},
+		"MEME": {
+			"background": "#5296e5",
+			"foreground": "#fff",
+			"iconColour": "#5296e5",
+			"icon": "smiley",
+			"hideFromTree": true,
+		},
+		"TEST": {
+			"background": "#bb35ea",
+			"foreground": "#fff",
+			"iconColour": "#bb35ea",
+			"icon": "beaker",
+		},
+		"IDEA": {
+			"background": "#0078D4",
+			"foreground": "#fff",
+			"iconColour": "#0078D4",
+			"icon": "light-bulb"
+		},
+		"REVIEW": {
+			"background": "#f06e8e",
+			"foreground": "#fff",
+			"iconColour": "#f06e8e",
+			"icon": "code-review",
+		},
+		"NOTE": {
+			"background": "#4bb530",
+			"foreground": "#fff",
+			"iconColour": "#fc0",
+			"icon": "light-bulb",
+			"hideFromTree": true,
+		},
+		"FIXME": {
+			"background": "#d9444a",
+			"foreground": "#fff",
+			"iconColour": "#d9444a",
+			"icon": "flame",
+			"type": "text-and-comment",
+		},
+		"XXX": {
+			"background": "#f9a400",
+			"foreground": "#000",
+			"iconColour": "#f9a400",
+			"icon": "x"
+		},
+		"WARN": {
+			"background": "#ffca2c",
+			"foreground": "#000",
+			"iconColour": "#ffca2c",
+			"icon": "alert",
+			"type": "text-and-comment",
+		},
+		"DELETE": {
+			"background": "#ec6969",
+			"foreground": "#000",
+			"iconColour": "#ec6969",
+			"icon": "archive",
+			"type": "text-and-comment",
+		},
+		"BUG": {
+			"background": "#dd1818",
+			"foreground": "#fff",
+			"iconColour": "#dd1818",
+			"icon": "bug",
+			"type": "text-and-comment",
+		},
+		"[ ]": {
+			"background": "#a0e3a0",
+			"foreground": "#000",
+			"iconColour": "#77cc77",
+			"icon": "issue-draft"
+		},
+		"[x]": {
+			"background": "#008000",
+			"foreground": "#fff",
+			"iconColour": "#008000",
+			"icon": "issue-closed"
+		}
+	},
 	// "javascript.updateImportsOnFileMove.enabled": "never",
 	// "typescript.updateImportsOnFileMove.enabled": "never",
 	// "vue.features.updateImportsOnFileMove.enabled": false,
