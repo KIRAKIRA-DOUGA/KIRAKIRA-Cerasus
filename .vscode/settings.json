@@ -69,7 +69,8 @@
 			"background": "#f5c018",
 			"foreground": "#000",
 			"iconColour": "#f5c018",
-			"icon": "tools"
+			"icon": "tools",
+			"hideFromTree": true,
 		},
 		"MEME": {
 			"background": "#5296e5",
