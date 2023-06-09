@@ -1,5 +1,6 @@
 @use "sass:color";
 @use "sass:list";
+@use "sass:math";
 
 /// 将指定颜色反转亮度。
 /// @param {Color} $color - 颜色值。
@@ -32,17 +33,22 @@
 
 /// 调用主题色。
 /// @param {String} $css-var-name - 颜色的 CSS 属性名称，不必加前面的“--”。也可以是 white 或 black。
-/// @param {Number | null} $alpha [null] - Alpha 值，如果留空表示不透明色。
+/// @param {Number | null} $alpha [null] - Alpha 值，可以是百分比值或零到一之间的小数，推荐用百分比值，如果留空表示不透明色。
 /// @return {Color} 返回由 var 调用的自定义属性纯色，或 rgba 封装的透明色。
 @function c($css-var-name, $alpha: null) {
+	$alpha-unit: if(not $alpha, null, math.unit($alpha));
+	$alpha-decimal: if(not $alpha or $alpha-unit == "", $alpha, calc($alpha / 100%));
+	$alpha-percent: if(not $alpha or $alpha-unit == "%", $alpha, math.percentage($alpha));
+
 	@if $css-var-name == white or $css-var-name == black {
-		@return if(not $alpha, $css-var-name, color.change($color: $css-var-name, $alpha: calc($alpha / 100%)));
+		@return if(not $alpha, $css-var-name, color.change($color: $css-var-name, $alpha: $alpha-decimal));
 	}
 
 	@if not $alpha {
 		@return var(--#{$css-var-name});
 	} @else {
-		@return rgba(var(--#{$css-var-name}-rgb), $alpha);
+		@return color-mix(in srgb, var(--#{$css-var-name}), transparent #{100% - $alpha-percent});
+		// rgba(var(--#{$css-var-name}-rgb), $alpha);
 	}
 }
 
