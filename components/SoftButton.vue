@@ -1,5 +1,4 @@
 <script setup lang="ts">
-	// XXX: 感觉这个组件还得换一个更好听的名称。
 	import { LocaleLink } from "#components";
 
 	const props = withDefaults(defineProps<{

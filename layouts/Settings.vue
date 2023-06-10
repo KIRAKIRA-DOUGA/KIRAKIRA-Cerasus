@@ -69,7 +69,7 @@
 			<div class="content padding-end">
 				<header class="title page-header">
 					<div class="show-drawer-wrapper">
-						<SoftKey icon="dehaze" @click="showDrawer = true" />
+						<SoftButton icon="dehaze" @click="showDrawer = true" />
 					</div>
 					<div class="page-title-wrapper">
 						<Transition>
@@ -293,7 +293,7 @@
 			width: 20px;
 			height: 100%;
 
-			.soft-key {
+			.soft-button {
 				position: absolute;
 				top: calc((var(--wrapper-size) - 100%) / -2);
 				left: -10px;

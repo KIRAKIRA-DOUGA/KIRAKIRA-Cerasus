@@ -248,7 +248,7 @@
 <template>
 	<div class="page">
 		<div class="track" :class="{ 'small-ripple': isForceSmallRipple }">
-			<SoftKey
+			<SoftButton
 				v-if="showFirst"
 				nonfocusable
 				:text="getPageName(1)"
@@ -262,7 +262,7 @@
 			>
 				<div class="ripples">
 					<div>
-						<SoftKey
+						<SoftButton
 							v-for="(item, position) in scrolledPages"
 							:key="item"
 							nonfocusable
@@ -281,7 +281,7 @@
 					</div>
 				</div>
 			</div>
-			<SoftKey
+			<SoftButton
 				v-if="pages >= 2 && showLast"
 				nonfocusable
 				:text="getPageName(pages)"
@@ -319,13 +319,13 @@
 		overflow: hidden;
 		background-color: c(inset-bg);
 
-		.soft-key {
+		.soft-button {
 			--wrapper-size: #{$size};
 			--ripple-size: #{$ripple-size};
 			transition: $fallback-transitions, left 0s;
 		}
 
-		&.small-ripple .soft-key :deep(button) {
+		&.small-ripple .soft-button :deep(button) {
 			&:has(> .ripple-circle):not(:hover, :active) {
 				@include square(var(--wrapper-size) !important);
 			}

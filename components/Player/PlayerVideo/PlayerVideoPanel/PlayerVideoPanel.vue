@@ -58,12 +58,12 @@
 				</div>
 			</div>
 			<div class="buttons">
-				<SoftKey icon="thumb_up" class="button-like" @click="counts.rating++" />
-				<SoftKey icon="thumb_down" class="button-dislike" @click="counts.rating--" />
-				<SoftKey icon="star" class="button-star" @click="favorite" />
-				<SoftKey icon="share" class="button-share" @click="share" />
-				<SoftKey icon="history" class="button-history" />
-				<SoftKey icon="settings" class="button-settings" />
+				<SoftButton icon="thumb_up" class="button-like" @click="counts.rating++" />
+				<SoftButton icon="thumb_down" class="button-dislike" @click="counts.rating--" />
+				<SoftButton icon="star" class="button-star" @click="favorite" />
+				<SoftButton icon="share" class="button-share" @click="share" />
+				<SoftButton icon="history" class="button-history" />
+				<SoftButton icon="settings" class="button-settings" />
 			</div>
 		</div>
 		<PlayerVideoPanelDanmakuList />

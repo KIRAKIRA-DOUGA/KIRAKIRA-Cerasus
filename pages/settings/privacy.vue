@@ -37,9 +37,9 @@
 	<div class="privacy-header">
 		<Subheader icon="visibility">个人信息可见性</Subheader>
 		<div class="options">
-			<SoftKey v-tooltip:top="'公开'" icon="visibility" @click="setColonVisibility('public')" />
-			<SoftKey v-tooltip:top="'仅你关注的人可见'" icon="person_add" @click="setColonVisibility('following')" />
-			<SoftKey v-tooltip:top="'私密'" icon="visibility_off" @click="setColonVisibility('private')" />
+			<SoftButton v-tooltip:top="'公开'" icon="visibility" @click="setColonVisibility('public')" />
+			<SoftButton v-tooltip:top="'仅你关注的人可见'" icon="person_add" @click="setColonVisibility('following')" />
+			<SoftButton v-tooltip:top="'私密'" icon="visibility_off" @click="setColonVisibility('private')" />
 		</div>
 	</div>
 	<div class="chip column">
@@ -63,7 +63,7 @@
 		justify-content: space-between;
 		margin-bottom: -8px;
 
-		.soft-key {
+		.soft-button {
 			--ripple-size: 50px;
 		}
 	}

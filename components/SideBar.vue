@@ -12,12 +12,12 @@
 <template>
 	<aside>
 		<div class="top icons">
-			<SoftKey v-i="0" v-tooltip:right="t.home" icon="home" href="/" />
-			<SoftKey v-i="1" v-tooltip:right="t.search" icon="search" href="/search" />
-			<SoftKey v-i="2" v-tooltip:right="t.history" icon="history" />
-			<SoftKey v-i="3" v-tooltip:right="t.favorite" icon="star" />
-			<SoftKey v-i="4" v-tooltip:right="'关注'" icon="feed" />
-			<SoftKey v-i="5" v-tooltip:right="t.upload" icon="upload" />
+			<SoftButton v-i="0" v-tooltip:right="t.home" icon="home" href="/" />
+			<SoftButton v-i="1" v-tooltip:right="t.search" icon="search" href="/search" />
+			<SoftButton v-i="2" v-tooltip:right="t.history" icon="history" />
+			<SoftButton v-i="3" v-tooltip:right="t.favorite" icon="star" />
+			<SoftButton v-i="4" v-tooltip:right="'关注'" icon="feed" />
+			<SoftButton v-i="5" v-tooltip:right="t.upload" icon="upload" />
 		</div>
 
 		<div v-i="6" class="center">
@@ -28,7 +28,7 @@
 		</div>
 
 		<div class="bottom icons">
-			<SoftKey
+			<SoftButton
 				v-if="!isLogined"
 				v-i="7"
 				v-tooltip:right="t.login"
@@ -46,8 +46,8 @@
 			>
 				<img :src="avatar" alt="avatar" draggable="false" />
 			</div>
-			<SoftKey v-i="8" v-tooltip:right="t.messages" icon="email" href="/test-rich-text-editor" />
-			<SoftKey v-i="9" v-tooltip:right="t.settings" icon="settings" href="/settings" :active="isCurrentSettings" />
+			<SoftButton v-i="8" v-tooltip:right="t.messages" icon="email" href="/test-rich-text-editor" />
+			<SoftButton v-i="9" v-tooltip:right="t.settings" icon="settings" href="/settings" :active="isCurrentSettings" />
 		</div>
 
 		<LoginWindow v-model="showLogin" />
@@ -147,7 +147,7 @@
 			display: none;
 		}
 
-		.soft-key {
+		.soft-button {
 			--ripple-size: 40px;
 		}
 	}
