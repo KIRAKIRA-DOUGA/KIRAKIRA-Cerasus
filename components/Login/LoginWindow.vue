@@ -316,7 +316,7 @@
 			height: 100%;
 			padding: 35px 45px;
 
-			@if true {
+			@if true { // HACK: 为了故意不应用排序规则而将下面这部分页面声明单独提炼在下方。
 				// @include page("!.login", ".login", left);
 				@include page("!.register", ".register", right);
 				@include page("!.register2", ".register2", right);
