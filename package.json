@@ -9,8 +9,12 @@
 		"type": "git",
 		"url": "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus.git"
 	},
-	"homepage": "https://kira.calibur.tv/",
-	"homepage2": "https://kirakira-cerasus.vercel.app/",
+	"homepage": "https://kirakira.moe/",
+	"homepageFallback": [
+		"https://cerasus.kirakira.moe/",
+		"https://kira.calibur.tv/",
+		"https://kirakira-cerasus.vercel.app/"
+	],
 	"github": "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus",
 	"bugs": "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus/issues",
 	"license": "",
