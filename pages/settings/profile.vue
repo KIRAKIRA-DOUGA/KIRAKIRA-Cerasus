@@ -67,7 +67,6 @@
 
 <style scoped lang="scss">
 	.banner {
-		@include flex-block;
 		@include radius-large;
 		position: relative;
 		overflow: hidden;
@@ -156,7 +155,8 @@
 	}
 
 	.nickname {
-		@include flex-block;
+		display: flex;
+		flex-direction: column;
 		gap: 8px;
 
 		span {

@@ -208,7 +208,8 @@
 		}
 
 		:comp.vertical > & {
-			@include flex-block;
+			display: flex;
+			flex-direction: column;
 			gap: 2px;
 			align-items: flex-start;
 		}
@@ -234,8 +235,7 @@
 		background-color: c(accent);
 
 		@container style(--clipped: true) {
-			border-bottom-right-radius: 0;
-			border-bottom-left-radius: 0;
+			@include oval(top);
 		}
 
 		:comp.vertical > & {

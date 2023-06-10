@@ -88,12 +88,10 @@
 
 <style scoped lang="scss">
 	:comp {
-		@include flex-block;
 		flex-grow: 1;
 		color: c(icon-color);
 
 		table {
-			@include flex-block;
 			@include square(100%);
 			position: relative;
 			display: block;

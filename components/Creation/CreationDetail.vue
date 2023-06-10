@@ -37,12 +37,14 @@
 
 <style scoped lang="scss">
 	:comp {
-		@include flex-block;
+		display: flex;
+		flex-direction: column;
 		gap: 16px;
 	}
 
 	.info {
-		@include flex-block;
+		display: flex;
+		flex-direction: column;
 		gap: 12px;
 	}
 

@@ -306,10 +306,11 @@
 		}
 
 		> * {
-			@include flex-block;
 			@include square(100%);
 			position: absolute;
 			top: 0;
+			display: flex;
+			flex-direction: column;
 			justify-content: space-between;
 			width: $width * 0.5;
 			max-width: 100dvw;
@@ -390,7 +391,8 @@
 	}
 
 	.form {
-		@include flex-block;
+		display: flex;
+		flex-direction: column;
 		gap: 24px;
 
 		@for $i from 1 through 3 {

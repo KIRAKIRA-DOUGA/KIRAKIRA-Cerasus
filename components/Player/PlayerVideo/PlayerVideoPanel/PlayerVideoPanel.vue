@@ -77,7 +77,8 @@
 	$buttons-height: 48px;
 
 	:comp {
-		@include flex-block;
+		display: flex;
+		flex-direction: column;
 		flex-shrink: 0;
 		width: $panel-width;
 		height: inherit;

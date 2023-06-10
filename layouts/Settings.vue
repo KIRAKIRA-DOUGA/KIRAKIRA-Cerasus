@@ -127,7 +127,8 @@
 		}
 
 		> .content > .title.content {
-			@include flex-block;
+			display: flex;
+			flex-direction: column;
 			gap: 10px;
 			max-height: 100dvh;
 			padding: 0 $nav-padding-x;
@@ -147,7 +148,7 @@
 	}
 
 	.nav-bottom-buttons {
-		@include flex-block;
+		display: flex;
 		flex-direction: column;
 		gap: 8px;
 	}
@@ -190,15 +191,17 @@
 		transition: $fallback-transitions, width 0s, height 0s;
 
 		> .content {
-			@include flex-block;
 			position: relative;
 			z-index: 1;
+			display: flex;
+			flex-direction: column;
 			gap: 1rem;
 			max-width: $max-width;
 			padding: 0 $main-padding-x;
 
 			> :deep(.router-view) {
-				@include flex-block;
+				display: flex;
+				flex-direction: column;
 				gap: 1rem;
 			}
 		}

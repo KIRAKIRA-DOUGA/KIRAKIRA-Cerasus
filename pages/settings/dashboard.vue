@@ -74,7 +74,8 @@
 		}
 
 		.text {
-			@include flex-block;
+			display: flex;
+			flex-direction: column;
 			gap: 6px;
 			justify-content: center;
 

@@ -94,7 +94,6 @@
 
 	menu {
 		@include radius-large;
-		@include flex-block;
 		@include dropdown-flyouts;
 		top: 0;
 		left: 0;

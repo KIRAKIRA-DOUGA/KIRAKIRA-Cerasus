@@ -72,7 +72,8 @@
 			}
 
 			.bottom-right {
-				@include flex-block;
+				display: flex;
+				flex-direction: column;
 				align-items: flex-end;
 				justify-content: space-between;
 				height: 100%;

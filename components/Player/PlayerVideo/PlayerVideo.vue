@@ -184,10 +184,6 @@
 		background-color: c(surface-color);
 	}
 
-	.main {
-		@include flex-block;
-	}
-
 	.main,
 	video {
 		width: 100%;

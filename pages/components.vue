@@ -97,7 +97,7 @@
 			<Button @click="showModal = true">显示模态框</Button>
 			<Alert v-model="showAlert" static />
 			<Modal v-model="showModal" title="标题栏">
-				<div class="model-content">
+				<div class="modal-content">
 					<div>
 						<p>视频标题</p>
 						<TextBox v-model="inputValue" placeholder="视频标题" />
@@ -298,13 +298,15 @@
 		}
 	}
 
-	.model-content {
-		@include flex-block;
+	.modal-content {
+		display: flex;
+		flex-direction: column;
 		gap: 16px;
 		width: 400px;
 
 		> * {
-			@include flex-block;
+			display: flex;
+			flex-direction: column;
 			gap: 8px;
 		}
 	}

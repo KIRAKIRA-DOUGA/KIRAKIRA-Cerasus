@@ -111,7 +111,6 @@
 	.modal {
 		@include absolute-center(fixed);
 		@include dropdown-flyouts;
-		@include flex-block;
 		@include radius-large;
 		max-width: 100dvw;
 		overflow: hidden;

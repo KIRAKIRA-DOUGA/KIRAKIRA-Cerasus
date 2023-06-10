@@ -92,7 +92,6 @@
 	// stylelint-disable-next-line no-duplicate-selectors
 	.alert {
 		@include dropdown-flyouts;
-		@include flex-block;
 		width: 100dvw;
 		max-width: $max-width;
 		max-height: 100dvh;
@@ -117,7 +116,6 @@
 			background-color: c(main-bg, 45%);
 
 			.icon {
-				@include flex-block;
 				--i: 0;
 				flex-shrink: 0;
 				font-size: 48px;
