@@ -95,6 +95,11 @@ const English: LocaleIdentifiers = {
 	login: "Login",
 	logout: "Logout",
 	signature: "Signature",
+	happy: "Happy",
+	hello: "Hello",
+	awa: "Im Cute",
+	sad: "Sad",
+	embarrassed: "Embarrassed",
 };
 
 export default English;

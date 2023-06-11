@@ -14,7 +14,7 @@
 		{ name: "派完", job: "全栈", uid: 8 },
 		{ name: "琪露诺瓦露", job: "前端", uid: 9 },
 		{ name: "兰音", job: "前端", uid: 6 },
-		{ name: "维他柠檬茶", job: "前端", uid: NaN },
+		{ name: "维他柠檬茶", job: "前端", uid: 5 },
 		{ name: "鸣", job: "前端", uid: NaN },
 		{ name: "纾浚", job: "前端", uid: NaN },
 		{ name: "冰鸠樱乃", job: "前端", uid: 7 },

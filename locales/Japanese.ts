@@ -97,6 +97,12 @@ const Japanese: LocaleIdentifiers = {
 	login: "ログイン",
 	logout: "ログアウト",
 	signature: "署名",
+	// 这几个全是机翻的
+	happy: "嬉しい",
+	hello: "挨拶する",
+	awa: "萌えを売る",
+	sad: "悲しみ",
+	embarrassed: "言葉",
 };
 
 export default Japanese;

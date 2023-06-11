@@ -95,6 +95,12 @@ const SChinese = {
 	login: "登入",
 	logout: "登出",
 	signature: "个性签名",
+	happy: "开心",
+	hello: "招呼",
+	awa: "卖萌",
+	sad: "悲伤",
+	embarrassed: "无语",
+
 } as const;
 
 export default SChinese;
