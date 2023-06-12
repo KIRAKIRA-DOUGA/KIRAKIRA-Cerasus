@@ -12,7 +12,7 @@
 </script>
 
 <template>
-	<section column>
+	<section list>
 		<RadioButton
 			v-for="locale in localeList"
 			:key="locale.code"

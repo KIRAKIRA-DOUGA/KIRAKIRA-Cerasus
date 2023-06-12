@@ -337,7 +337,7 @@
 		overflow: hidden;
 	}
 
-	:deep(section[column] > *) {
+	:deep(section[list] > *) {
 		$extra-padding: 16px;
 		padding: 10px 20px;
 		overflow: visible;

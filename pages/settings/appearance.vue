@@ -8,7 +8,7 @@
 <template>
 	<Subheader icon="brightness_medium">{{ t.theme }}</Subheader>
 	<PlayerVideoController :currentTime="30" :duration="110" :buffered="60" class="chip" />
-	<section column>
+	<section list>
 		<RadioButton
 			v-for="item in themeList"
 			:key="item"
@@ -19,7 +19,7 @@
 	</section>
 
 	<Subheader icon="palette">{{ t.palette }}</Subheader>
-	<section column>
+	<section list>
 		<RadioButton
 			v-for="item in paletteList"
 			:key="item"
@@ -30,7 +30,7 @@
 	</section>
 
 	<Subheader icon="wallpaper">{{ t.background }}</Subheader>
-	<section column>
+	<section list>
 		<ToggleSwitch v-model="useAppSettingsStore().showCssDoodle" v-ripple icon="wallpaper">{{ t.animated_background }}</ToggleSwitch>
 		<SettingsChipItem icon="wallpaper" afterIcon="edit">自定义背景</SettingsChipItem>
 	</section>

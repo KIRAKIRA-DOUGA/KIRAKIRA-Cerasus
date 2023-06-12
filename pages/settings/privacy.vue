@@ -30,7 +30,7 @@
 
 <template>
 	<Subheader icon="cookie">网络曲奇☆</Subheader>
-	<section column>
+	<section list>
 		<ToggleSwitch v-ripple on icon="cookie">允许网站使用Cookie</ToggleSwitch>
 	</section>
 
@@ -42,7 +42,7 @@
 			<SoftButton v-tooltip:top="'私密'" icon="visibility_off" @click="setColonVisibility('private')" />
 		</div>
 	</div>
-	<section column>
+	<section list>
 		<SettingsPrivacyItem
 			v-for="item in visibilities"
 			:key="item.name"
