@@ -70,7 +70,7 @@
 	const isScrolling = ref(false);
 	const isForceSmallRipple = ref(false);
 	const newPageNumber = ref<HTMLDivElement>();
-	// TODO: 稍后使用 createReusableTemplate
+	const [DefineUnselectedItem, UnselectedItem] = createReusableTemplate<{ page: number; position?: number }>();
 
 	watch(() => currentPage.value, (page, prevPage) => {
 		//#region 导轨动画
@@ -247,6 +247,18 @@
 </script>
 
 <template>
+	<DefineUnselectedItem v-slot="{ page, position }">
+		<SoftButton
+			nonfocusable
+			:style="{ '--position': position }"
+			:text="getPageName(page)"
+			:aria-label="t.switch_page_label(page)"
+			:aria-selected="currentPage === page"
+			:aria-current="currentPage === page && 'page'"
+			@click="changePage(page)"
+		/>
+	</DefineUnselectedItem>
+
 	<div
 		class="page"
 		aria-orientation="horizontal"
@@ -256,15 +268,7 @@
 		:aria-valuemax="pages"
 	>
 		<div class="track" :class="{ 'small-ripple': isForceSmallRipple }">
-			<SoftButton
-				v-if="showFirst"
-				nonfocusable
-				:text="getPageName(1)"
-				:aria-label="t.switch_page_label(1)"
-				:aria-selected="currentPage === 1"
-				:aria-current="currentPage === 1 && 'page'"
-				@click="changePage(1)"
-			/>
+			<UnselectedItem v-if="showFirst" :page="1" />
 			<div
 				v-if="pages >= 3"
 				ref="scrollArea"
@@ -273,16 +277,7 @@
 			>
 				<div class="ripples">
 					<div>
-						<SoftButton
-							v-for="(item, position) in scrolledPages"
-							:key="item"
-							nonfocusable
-							:style="{ '--position': position }"
-							:aria-label="t.switch_page_label(item)"
-							:aria-selected="currentPage === item"
-							:aria-current="currentPage === item && 'page'"
-							@click="changePage(item)"
-						/>
+						<UnselectedItem v-for="(item, position) in scrolledPages" :key="item" :position="position" :page="item" />
 					</div>
 				</div>
 				<div class="texts">
@@ -295,15 +290,7 @@
 					</div>
 				</div>
 			</div>
-			<SoftButton
-				v-if="pages >= 2 && showLast"
-				nonfocusable
-				:text="getPageName(pages)"
-				:aria-label="t.switch_page_label(pages)"
-				:aria-selected="currentPage === pages"
-				:aria-current="currentPage === pages && 'page'"
-				@click="changePage(pages)"
-			/>
+			<UnselectedItem v-if="pages >= 2 && showLast" :page="pages" />
 		</div>
 		<div v-ripple class="thumb">
 			<div
