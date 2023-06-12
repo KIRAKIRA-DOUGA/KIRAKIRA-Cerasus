@@ -96,6 +96,7 @@
 <template>
 	<Comp
 		:tabindex="isChecked && !disabled ? 0 : -1"
+		:aria-checked="isChecked"
 		@click="onChange"
 		@keydown="onKeydown"
 		@keyup="onKeyUp"

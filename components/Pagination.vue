@@ -246,12 +246,21 @@
 </script>
 
 <template>
-	<div class="page">
+	<div
+		class="page"
+		aria-orientation="horizontal"
+		:aria-label="'第1页，共7页'"
+		:aria-valuenow="currentPage"
+		:aria-valuemin="1"
+		:aria-valuemax="pages"
+	>
 		<div class="track" :class="{ 'small-ripple': isForceSmallRipple }">
 			<SoftButton
 				v-if="showFirst"
 				nonfocusable
 				:text="getPageName(1)"
+				:aria-selected="currentPage === 1"
+				:aria-current="currentPage === 1 && 'page'"
 				@click="changePage(1)"
 			/>
 			<div
@@ -267,6 +276,8 @@
 							:key="item"
 							nonfocusable
 							:style="{ '--position': position }"
+							:aria-selected="currentPage === item"
+							:aria-current="currentPage === item && 'page'"
 							@click="changePage(item)"
 						/>
 					</div>
@@ -285,6 +296,8 @@
 				v-if="pages >= 2 && showLast"
 				nonfocusable
 				:text="getPageName(pages)"
+				:aria-selected="currentPage === pages"
+				:aria-current="currentPage === pages && 'page'"
 				@click="changePage(pages)"
 			/>
 		</div>

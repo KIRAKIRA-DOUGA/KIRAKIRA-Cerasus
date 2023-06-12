@@ -325,14 +325,19 @@
 		}
 	}
 
+	%chip,
 	:deep(.chip) {
 		@include chip-shadow;
 		@include radius-large;
-		overflow: hidden;
 		background-color: c(surface-color);
 	}
+	
+	:deep(section) {
+		@extend %chip;
+		overflow: hidden;
+	}
 
-	:deep(.chip.column > *) {
+	:deep(section[column] > *) {
 		$extra-padding: 16px;
 		padding: 10px 20px;
 		overflow: visible;

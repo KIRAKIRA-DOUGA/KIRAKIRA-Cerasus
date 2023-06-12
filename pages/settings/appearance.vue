@@ -8,7 +8,7 @@
 <template>
 	<Subheader icon="brightness_medium">{{ t.theme }}</Subheader>
 	<PlayerVideoController :currentTime="30" :duration="110" :buffered="60" class="chip" />
-	<div class="chip column">
+	<section column>
 		<RadioButton
 			v-for="item in themeList"
 			:key="item"
@@ -16,10 +16,10 @@
 			v-ripple
 			:value="item"
 		>{{ t[item] }}</RadioButton>
-	</div>
+	</section>
 
 	<Subheader icon="palette">{{ t.palette }}</Subheader>
-	<div class="chip column">
+	<section column>
 		<RadioButton
 			v-for="item in paletteList"
 			:key="item"
@@ -27,13 +27,13 @@
 			v-ripple
 			:value="item"
 		>{{ t[item] }}</RadioButton>
-	</div>
+	</section>
 
 	<Subheader icon="wallpaper">{{ t.background }}</Subheader>
-	<div class="chip column">
+	<section column>
 		<ToggleSwitch v-model="useAppSettingsStore().showCssDoodle" v-ripple icon="wallpaper">{{ t.animated_background }}</ToggleSwitch>
 		<SettingsChipItem icon="wallpaper" afterIcon="edit">自定义背景</SettingsChipItem>
-	</div>
+	</section>
 </template>
 
 <style scoped lang="scss">

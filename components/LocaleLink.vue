@@ -20,7 +20,9 @@
 			const attrs = computed(() => {
 				const attrs = { ...useAttrs() }; // 注意：useAttrs 函数会引用自 attrs 的只读对象，因此必须创建一份对象拷贝。
 				if (!props.activable && !props.blank)
-					Object.assign(attrs, { activeClass: " ", exactActiveClass: " " }); // enableActiveClass
+					Object.assign(attrs, { activeClass: " ", exactActiveClass: " " }); // disableActiveClass
+				else
+					attrs.ariaCurrentValue = "page";
 				if (props.linkInLink && parentScopeId)
 					attrs[parentScopeId] = "";
 				return attrs;

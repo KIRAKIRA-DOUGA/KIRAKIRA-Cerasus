@@ -42,7 +42,7 @@
 </script>
 
 <template>
-	<Comp :class="[appearance]">
+	<Comp :class="[appearance]" :aria-label="icon">
 		<component
 			:is="href ? LocaleLink : 'button'"
 			v-ripple

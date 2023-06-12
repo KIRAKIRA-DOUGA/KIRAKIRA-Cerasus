@@ -27,11 +27,12 @@
 				if (!componentName) break;
 				className = new VariableName(componentName).kebab;
 			} while (false);
-			return { className };
+			const label = new VariableName(className).words;
+			return { className, label };
 		},
 		render() {
 			return (
-				<kira-component tabindex={this.tabindex} class={this.className}>
+				<kira-component tabindex={this.tabindex} class={this.className} aria-label={this.label}>
 					{this.$slots.default?.()}
 				</kira-component>
 			);

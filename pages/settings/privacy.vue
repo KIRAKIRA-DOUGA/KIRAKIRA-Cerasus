@@ -30,9 +30,9 @@
 
 <template>
 	<Subheader icon="cookie">网络曲奇☆</Subheader>
-	<div class="chip column">
+	<section column>
 		<ToggleSwitch v-ripple on icon="cookie">允许网站使用Cookie</ToggleSwitch>
-	</div>
+	</section>
 
 	<div class="privacy-header">
 		<Subheader icon="visibility">个人信息可见性</Subheader>
@@ -42,14 +42,14 @@
 			<SoftButton v-tooltip:top="'私密'" icon="visibility_off" @click="setColonVisibility('private')" />
 		</div>
 	</div>
-	<div class="chip column">
+	<section column>
 		<SettingsPrivacyItem
 			v-for="item in visibilities"
 			:key="item.name"
 			v-model="item.privacy"
 			:icon="item.logo ? 'mono-logo/' + item.logo : item.icon || 'placeholder'"
 		>{{ item.name }}</SettingsPrivacyItem>
-	</div>
+	</section>
 
 	<div class="submit"><!-- TODO: 建议将按钮固定在底部更为合适。 -->
 		<Button icon="reset" secondary>{{ t.reset }}</Button>

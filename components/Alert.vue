@@ -22,7 +22,13 @@
 <template>
 	<Mask v-model="open" position="center top" :focusing="static">
 		<Transition>
-			<div v-if="open" ref="alert" class="alert">
+			<div
+				v-if="open"
+				ref="alert"
+				class="alert"
+				aria-modal="true"
+				:aria-label="title"
+			>
 				<div class="body">
 					<Icon name="info" />
 					<div class="content-part">

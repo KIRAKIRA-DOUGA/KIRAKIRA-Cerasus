@@ -175,7 +175,7 @@
 </script>
 
 <template>
-	<Comp ref="tabBar" :class="{ vertical }">
+	<Comp ref="tabBar" :class="{ vertical }" :aria-valuetext="model" :aria-orientation="vertical ? 'vertical' : 'horizontal'">
 		<div class="items">
 			<Slot />
 		</div>

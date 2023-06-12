@@ -73,14 +73,21 @@
 <template>
 	<ClientOnlyTeleport to="#popovers">
 		<Transition>
-			<div v-if="open" ref="modal" class="modal" tabindex="0">
+			<div
+				v-if="open"
+				ref="modal"
+				class="modal"
+				tabindex="0"
+				aria-modal="true"
+				:aria-label="title"
+			>
 				<div class="body">
 					<div class="titlebar">
 						<div class="title" :class="{ hide: hideTitle }" @pointerdown="onTitleBarDown">
 							<Icon :name="icon" filled @dblclick="open = false" />
 							<span>{{ title }}</span>
 						</div>
-						<button class="close-button" @click="open = false">
+						<button class="close-button" :aria-label="t.close" @click="open = false">
 							<Icon name="close" />
 						</button>
 					</div>
@@ -208,9 +215,9 @@
 						opacity: 1;
 					}
 
-					.icon {
+					/* .icon { // 我真心觉得关闭图标旋转的动画很丑，关闭、清除等按钮应该表现为朴素而不显眼，不是让用户觉得“好玩”的地方。
 						rotate: 90deg;
-					}
+					} */
 				}
 
 				&:hover:active {

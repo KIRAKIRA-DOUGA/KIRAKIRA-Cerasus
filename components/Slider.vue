@@ -105,6 +105,10 @@
 			'--value': smoothValue,
 			'--buffered': buffered,
 		}"
+		:aria-valuenow="value"
+		:aria-valuemin="min"
+		:aria-valuemax="max"
+		aria-orientation="horizontal"
 	>
 		<div class="track" @pointerdown="onTrackDown" @contextmenu="onLongPress"></div>
 		<div v-show="Number.isFinite(buffered)" class="buffered"></div>

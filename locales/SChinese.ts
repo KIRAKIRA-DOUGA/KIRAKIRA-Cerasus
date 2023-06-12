@@ -95,6 +95,7 @@ const SChinese = {
 	login: "登入",
 	logout: "登出",
 	signature: "个性签名",
+	close: "关闭",
 } as const;
 
 export default SChinese;

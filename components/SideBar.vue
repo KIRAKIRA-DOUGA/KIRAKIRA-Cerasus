@@ -10,7 +10,7 @@
 </script>
 
 <template>
-	<aside>
+	<aside aria-orientation="vertical">
 		<div class="top icons">
 			<SoftButton v-i="0" v-tooltip:right="t.home" icon="home" href="/" />
 			<SoftButton v-i="1" v-tooltip:right="t.search" icon="search" href="/search" />

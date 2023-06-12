@@ -7,25 +7,25 @@
 </script>
 
 <template>
-	<div class="chip">
+	<section>
 		<SettingsChipItem
 			icon="email"
 			afterIcon="edit"
 			:details="t.current_email + t.colon + email"
 		>{{ t.email_address }}</SettingsChipItem>
-	</div>
-	<div class="chip">
+	</section>
+	<section>
 		<SettingsChipItem
 			icon="password"
 			afterIcon="edit"
 			:details="t.modification_date + t.colon + passwordChangeDateDisplay"
 		>{{ t.password }}</SettingsChipItem>
-	</div>
-	<div class="chip">
+	</section>
+	<section>
 		<SettingsChipItem
 			icon="qr_code_scanner"
 			afterIcon="edit"
 			:details="t.addition_date + t.colon + authenticatorAddDateDisplay"
 		>{{ t.authenticator }}</SettingsChipItem>
-	</div>
+	</section>
 </template>

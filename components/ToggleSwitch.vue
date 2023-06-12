@@ -85,6 +85,7 @@
 		ref="toggleSwitch"
 		:class="{ on, disabled }"
 		:tabindex="disabled ? -1 : 0"
+		:aria-checked="on"
 		@click="onClick"
 		@keydown="onKeyDown"
 		@keyup="onKeyUp"

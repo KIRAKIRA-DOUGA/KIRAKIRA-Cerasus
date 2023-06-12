@@ -27,11 +27,12 @@ declare module "vue" {
 		__scopeId?: string;
 	}
 
-	export interface AllowedComponentProps {
-		lang?: string;
-		title?: Readable;
-		tabindex?: Numberish;
-		onClick?: (payload: MouseEvent) => void;
+	export interface AllowedComponentProps extends HTMLAttributes {
+		// lang?: string;
+		// title?: Readable;
+		// tabindex?: Numberish;
+		// hidden?: Boolish;
+		// onClick?: (payload: MouseEvent) => void;
 	}
 }
 

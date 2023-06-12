@@ -62,6 +62,8 @@
 						logining: isLogining,
 					},
 				]"
+				aria-modal="true"
+				:aria-label="currentPage"
 			>
 				<div class="main left">
 					<div class="login">

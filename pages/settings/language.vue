@@ -12,7 +12,7 @@
 </script>
 
 <template>
-	<div class="chip column">
+	<section column>
 		<RadioButton
 			v-for="locale in localeList"
 			:key="locale.code"
@@ -21,5 +21,5 @@
 			:value="locale.code"
 			:lang="locale.code"
 		>{{ locale.name }}</RadioButton>
-	</div>
+	</section>
 </template>

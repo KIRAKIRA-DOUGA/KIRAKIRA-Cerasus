@@ -20,6 +20,7 @@
 		:to="link || '#'"
 		draggable="false"
 		tabindex="0"
+		:aria-checked="isChecked"
 		@click="model = !model"
 	>
 		<div class="circle"></div>

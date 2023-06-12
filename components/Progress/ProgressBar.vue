@@ -8,11 +8,13 @@
 		/** 加载完成并隐藏？ */
 		hidden?: boolean;
 	}>();
+
+	const shown = computed(() => !props.hidden);
 </script>
 
 <template>
 	<Transition :duration="250">
-		<Comp v-if="!hidden">
+		<Comp v-if="shown" :aria-busy="shown">
 			<div class="wrapper">
 				<div class="line-wrapper line-wrapper-1">
 					<div class="line line-1"></div>
