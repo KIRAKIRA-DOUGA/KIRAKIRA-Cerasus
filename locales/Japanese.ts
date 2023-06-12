@@ -97,6 +97,9 @@ const Japanese: LocaleIdentifiers = {
 	login: "ログイン",
 	logout: "ログアウト",
 	signature: "署名",
+	close: "关闭",
+	current_page_label: "第{0}ページ、計{1}ページ",
+	switch_page_label: "{0}ページに切り替え",
 };
 
 export default Japanese;

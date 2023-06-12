@@ -70,6 +70,7 @@
 	const isScrolling = ref(false);
 	const isForceSmallRipple = ref(false);
 	const newPageNumber = ref<HTMLDivElement>();
+	// TODO: 稍后使用 createReusableTemplate
 
 	watch(() => currentPage.value, (page, prevPage) => {
 		//#region 导轨动画
@@ -249,7 +250,7 @@
 	<div
 		class="page"
 		aria-orientation="horizontal"
-		:aria-label="'第1页，共7页'"
+		:aria-label="t.current_page_label(currentPage, pages)"
 		:aria-valuenow="currentPage"
 		:aria-valuemin="1"
 		:aria-valuemax="pages"
@@ -259,6 +260,7 @@
 				v-if="showFirst"
 				nonfocusable
 				:text="getPageName(1)"
+				:aria-label="t.switch_page_label(1)"
 				:aria-selected="currentPage === 1"
 				:aria-current="currentPage === 1 && 'page'"
 				@click="changePage(1)"
@@ -276,6 +278,7 @@
 							:key="item"
 							nonfocusable
 							:style="{ '--position': position }"
+							:aria-label="t.switch_page_label(item)"
 							:aria-selected="currentPage === item"
 							:aria-current="currentPage === item && 'page'"
 							@click="changePage(item)"
@@ -296,6 +299,7 @@
 				v-if="pages >= 2 && showLast"
 				nonfocusable
 				:text="getPageName(pages)"
+				:aria-label="t.switch_page_label(pages)"
 				:aria-selected="currentPage === pages"
 				:aria-current="currentPage === pages && 'page'"
 				@click="changePage(pages)"
