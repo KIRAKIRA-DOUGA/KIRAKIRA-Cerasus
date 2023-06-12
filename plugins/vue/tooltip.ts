@@ -10,29 +10,28 @@ export type VTooltipBindingValue = string | {
 	offset?: number;
 };
 
-export type TooltipEvent = Exclude<VTooltipBindingValue, string> & {
+type VTooltipBindingValueNoPlain = Exclude<VTooltipBindingValue, string>;
+
+export type TooltipEvent = VTooltipBindingValueNoPlain & {
 	element: HTMLElement;
 	symbol: symbol;
 };
 
 export default defineNuxtPlugin(nuxt => {
 	type D = Directive<HTMLElement, VTooltipBindingValue>;
-	const elementBinding = new Map<HTMLElement, { value: VTooltipBindingValue; symbol: symbol }>();
+	const elementBinding = new Map<HTMLElement, { value: VTooltipBindingValueNoPlain; symbol: symbol }>();
 	const createEvent = (element: HTMLElement) => {
 		const binding = elementBinding.get(element)!;
 		const value = binding.value;
-		const usingDefault = typeof value === "string";
 		return {
-			title: usingDefault ? value : value.title,
+			...value,
 			element,
-			placement: usingDefault ? undefined : value.placement,
-			offset: usingDefault ? undefined : value.offset,
 		} as TooltipEvent;
 	};
 	const isPlacement = (arg?: string): arg is Placement => ["top", "right", "bottom", "left"].includes(arg!);
 	const setElementBinding = (element: HTMLElement, _value: VTooltipBindingValue, arg?: string) => {
 		const mapValue = elementBinding.get(element);
-		const value = typeof _value !== "string" ? _value : { title: _value };
+		const value = typeof _value !== "string" && typeof _value !== "function" ? _value : { title: _value };
 		if (isPlacement(arg)) value.placement ??= arg;
 		if (!mapValue) elementBinding.set(element, { value, symbol: Symbol(element.id) });
 		else mapValue.value = value;

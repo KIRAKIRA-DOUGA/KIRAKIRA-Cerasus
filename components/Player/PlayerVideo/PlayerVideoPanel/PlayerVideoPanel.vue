@@ -58,12 +58,12 @@
 				</div>
 			</div>
 			<div class="buttons">
-				<SoftButton icon="thumb_up" class="button-like" @click="counts.rating++" />
-				<SoftButton icon="thumb_down" class="button-dislike" @click="counts.rating--" />
-				<SoftButton icon="star" class="button-star" @click="favorite" />
-				<SoftButton icon="share" class="button-share" @click="share" />
-				<SoftButton icon="history" class="button-history" />
-				<SoftButton icon="settings" class="button-settings" />
+				<SoftButton v-tooltip:bottom="'加分'" icon="thumb_up" class="button-like" @click="counts.rating++" />
+				<SoftButton v-tooltip:bottom="'减分'" icon="thumb_down" class="button-dislike" @click="counts.rating--" />
+				<SoftButton v-tooltip:bottom="'收藏'" icon="star" class="button-star" @click="favorite" />
+				<SoftButton v-tooltip:bottom="'分享'" icon="share" class="button-share" @click="share" />
+				<SoftButton v-tooltip:bottom="'弹幕历史'" icon="history" class="button-history" />
+				<SoftButton v-tooltip:bottom="'设置'" icon="settings" class="button-settings" />
 			</div>
 		</div>
 		<PlayerVideoPanelDanmakuList />

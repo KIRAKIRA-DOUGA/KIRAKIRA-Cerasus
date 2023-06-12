@@ -4,8 +4,9 @@ import { I18nArgsFunction, LocaleWithDefaultValue } from "locales/SChinese";
 const handler = {
 	get(_target: object, name: string) {
 		if (name === "__v_isRef") return; // Vuex 干的好事。
-		const value = useNuxtApp().$i18n.t(name);
-		const withArgs = (...args: Readable[]) => useNuxtApp().$i18n.t(name, args);
+		const i18n = useNuxtApp().$i18n;
+		const value = i18n.t(name);
+		const withArgs = (...args: Readable[]) => i18n.t(name, args);
 		withArgs.toString = () => value;
 		return withArgs;
 	},

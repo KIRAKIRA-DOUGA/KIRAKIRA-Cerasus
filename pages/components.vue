@@ -244,10 +244,8 @@
 </template>
 
 <style scoped lang="scss">
-	.component-test {
-		> * {
-			margin: 0.8rem 0.5rem;
-		}
+	.component-test > :deep(*) {
+		margin: 0.8rem 0.5rem;
 	}
 
 	.links {
