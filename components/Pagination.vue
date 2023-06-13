@@ -436,6 +436,10 @@
 	.scroll-area {
 		@extend %scroll-area-size;
 
+		.soft-button {
+			color: transparent;
+		}
+
 		&.is-scrolling :deep(*::before) {
 			pointer-events: none;
 		}

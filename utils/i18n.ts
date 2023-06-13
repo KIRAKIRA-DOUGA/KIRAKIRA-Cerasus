@@ -6,7 +6,8 @@ const handler = {
 		if (name === "__v_isRef") return; // Vuex 干的好事。
 		const i18n = useNuxtApp().$i18n;
 		const value = i18n.t(name);
-		const withArgs = (...args: Readable[]) => i18n.t(name, args);
+		const withArgs = (...args: Readable[]) =>
+			typeof args[0] === "object" ? i18n.t(name, args[0]) : i18n.t(name, args);
 		withArgs.toString = () => value;
 		return withArgs;
 	},

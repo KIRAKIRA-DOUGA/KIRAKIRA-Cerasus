@@ -31,7 +31,7 @@ export default defineNuxtPlugin(nuxt => {
 	const isPlacement = (arg?: string): arg is Placement => ["top", "right", "bottom", "left"].includes(arg!);
 	const setElementBinding = (element: HTMLElement, _value: VTooltipBindingValue, arg?: string) => {
 		const mapValue = elementBinding.get(element);
-		const value = typeof _value !== "string" && typeof _value !== "function" ? _value : { title: _value };
+		const value = typeof _value === "object" ? _value : { title: _value };
 		if (isPlacement(arg)) value.placement ??= arg;
 		if (!mapValue) elementBinding.set(element, { value, symbol: Symbol(element.id) });
 		else mapValue.value = value;
