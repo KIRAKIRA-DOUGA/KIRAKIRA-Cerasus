@@ -63,7 +63,9 @@ npm run dev-http
 
 ### 生产
 
-#### 为生产生成应用程序（推荐）
+#### 为生产生成应用程序
+
+这将会完整地生成每一个静态路由页面。
 
 按下键盘按键 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>，然后选择 `npm: generate`。
 
@@ -72,6 +74,8 @@ npm run generate
 ```
 
 #### 为生产构建应用程序
+
+这只会构建最小的根路由页面。
 
 按下键盘按键 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>，然后选择 `npm: build`。
 
@@ -92,21 +96,163 @@ npm run preview
 依次选择菜单 *终端(<ins>T</ins>) > 运行任务...*，然后即可访问其它脚本功能。
 
 ### 检查 StyleLint
+
 ```bash
 npm: lint:css
 ```
 
 ### 更新缓动值样式 *(_eases.scss)* 声明文件
-这将会自动更新 `_eases.scss`、`eases.module.scss`、`eases.module.scss.d.ts` 三个文件。
+
+这将会根据 `_eases.scss` 文件的更改自动更新 `eases.module.scss`、`eases.module.scss.d.ts` 额外两个文件。
+
 ```bash
 npm: update-eases
 ```
 
 ### 压缩 SVG
+
 这将会压缩 SVG，删除 SVG 的多余部分，如裁切区域、填充颜色等。
+
 ```bash
 Compact SVG
 ```
+
+## 自定义指令（语法糖）
+
+项目利用各种特性、冷知识、甚至修改底层代码等，添加了许多语法糖以方便开发人员使用。
+
+### 水波纹
+
+使用 `v-ripple` 自定义指令快速创建 Material 水波纹效果。其接受一个布尔类型的值，用于表示是否开启水波纹。如果留空则自动表示开启。
+
+```html
+<!-- 直接开启 -->
+<div v-ripple>
+<!-- 显式开启 -->
+<div v-ripple="true">
+<!-- 根据 foo 变量的值而开启 -->
+<div v-ripple="foo">
+```
+
+### 依次动画优先级
+
+如果你希望实现各条目依次出现的动画（具体动画仍需自行手动实现），请使用 `v-i` 自定义指令。其接受一个数字类型的值，用于表示其优先级。其以 0 起始或以 1 起始具体表现根据你的动画实现而决定。
+
+```html
+<div v-i="1">
+```
+
+这将会转变成如下效果：
+
+```html
+<!-- Vue 语法 -->
+<div :style="{ '--i': 1 }">
+<!-- HTML 语法 -->
+<div style="--i: 1;">
+```
+
+### 工具提示
+
+使用 `v-tooltip` 创建自定义的工具提示，旨在取代原生丑陋的 `title` 属性。
+
+```html
+<!-- 自动决定工具提示的位置方向 -->
+<div v-tooltip="'那只敏捷的棕毛狐狸跳过了一只懒惰的狗'">
+<!-- 显式指定工具提示的位置方向 -->
+<div v-tooltip:top="'那只敏捷的棕毛狐狸跳过了一只懒惰的狗'">
+<!-- 高级设定工具提示 -->
+<div v-tooltip="{
+	title: '那只敏捷的棕毛狐狸跳过了一只懒惰的狗', // 工具提示文本
+	placement: 'top', // 指定四个位置方向
+	offset: 10, // 工具提示与元素之间的距离
+}">
+```
+
+### 翻译
+
+项目强化了 Vue-i18n 的原生翻译函数，使其使用起来更方便。
+
+> **注意：**<wbr />翻译字典文件的每个标识符均应使用蛇形命名法（下划线命名法）；且多门语言若任意一门语言比其它语言多或少字符串声明，均会报错，这意味着必须为这些语言同时指定完整的字符串声明，以防遗漏。
+
+<table>
+<thead>
+<th>功能</th>
+<th>当前强化语法</th>
+<th>原版语法</th>
+</thead>
+<tbody>
+<tr>
+<td>直接声明</td>
+<td>
+
+```typescript
+t.welcome
+```
+
+</td>
+<td>
+
+```typescript
+$t("welcome")
+```
+
+</td>
+</tr>
+<tr>
+<td>变量声明</td>
+<td>
+
+```typescript
+t[variable]
+```
+
+</td>
+<td>
+
+```typescript
+$t(variable)
+```
+
+</td>
+</tr>
+<tr>
+<td>位置参数</td>
+<td>
+
+```typescript
+t.welcome("hello", "world")
+```
+
+</td>
+<td>
+
+```typescript
+$t("welcome", ["hello", "world"])
+```
+
+</td>
+</tr>
+<tr>
+<td>命名参数</td>
+<td>
+
+```typescript
+t.welcome({ foo: "hello", bar: "world" })
+```
+
+</td>
+<td>
+
+```typescript
+$t("welcome", { foo: "hello", bar: "world" })
+```
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### 
 
 ## IDE
 
