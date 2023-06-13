@@ -15,7 +15,7 @@
 	const signature = ref("");
 	const genderBasic = ref<"male" | "female" | "custom" | "">("");
 	const genderCustom = ref("");
-	const birthday = ref("");
+	const birthday = ref(formatDate(new Date(), "yyyy-MM-dd"));
 </script>
 
 <template>
@@ -32,13 +32,20 @@
 	</div>
 
 	<div class="nickname">
-		<TextBox v-model="nicknameEdit" :placeholder="t.nickname" size="large" icon="person" />
+		<TextBox
+			v-model="nicknameEdit"
+			:placeholder="t.nickname"
+			size="large"
+			icon="person"
+			required
+			:maxLength="20"
+		/>
 		<span>{{ t.nickname_requirements }}</span>
 	</div>
 
 	<TextBox v-model="signature" placeholder="个性签名" size="large" icon="edit" />
 
-	<TextBox v-model="birthday" :placeholder="t.birthday" size="large" icon="birthday" />
+	<TextBox v-model="birthday" type="date" :placeholder="t.birthday" size="large" icon="birthday" />
 	<!-- TODO: 日期选择组件 -->
 
 	<div class="gender">
