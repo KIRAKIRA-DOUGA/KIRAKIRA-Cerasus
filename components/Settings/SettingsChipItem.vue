@@ -16,7 +16,7 @@
 </script>
 
 <template>
-	<Comp v-ripple>
+	<Comp v-ripple role="listitem">
 		<div :class="{ pictorial: image || icon }">
 			<div v-if="image" class="image">
 				<img :src="image" alt="image" draggable="false" />

@@ -29,7 +29,7 @@
 </script>
 
 <template>
-	<Comp>
+	<Comp role="list">
 		<Slot />
 	</Comp>
 </template>

@@ -30,4 +30,8 @@ declare global {
 	 * 管它是啥反正是对象就是了。
 	 */
 	type AnyObject = Record<ObjectKey, Any>;
+	/**
+	 * 为什么 Record 还需要手动指定键的类型？多此一举。
+	 */
+	type RecordValue<T> = Record<ObjectKey, T>;
 }

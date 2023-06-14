@@ -38,8 +38,9 @@
 <template>
 	<LogoText />
 	<p class="slogan"><span>一个可爱的视频网站，</span><span><b>献给可爱的你！</b></span></p>
+	
 	<Subheader icon="placeholder">项目地址</Subheader>
-	<div class="chip">
+	<section>
 		<SettingsChipItem
 			v-for="repo in repositories"
 			:key="repo.name"
@@ -48,9 +49,10 @@
 			:href="repo.link"
 			afterIcon="open_in_new"
 		>{{ repo.name }}</SettingsChipItem>
-	</div>
+	</section>
+	
 	<Subheader icon="placeholder">创作团队</Subheader>
-	<div class="chip">
+	<section>
 		<SettingsChipItem
 			v-for="staff in team"
 			:key="staff.name"
@@ -59,9 +61,10 @@
 			:details="`${staff.job} - UID ${staff.uid}`"
 			afterIcon="open_in_new"
 		>{{ staff.name }}</SettingsChipItem>
-	</div>
+	</section>
+	
 	<Subheader icon="placeholder">使用技术</Subheader>
-	<div class="chip">
+	<section>
 		<SettingsChipItem
 			v-for="tech in technologies"
 			:key="tech.name"
@@ -71,7 +74,7 @@
 			:href="tech.link"
 			afterIcon="open_in_new"
 		>{{ tech.name }}</SettingsChipItem>
-	</div>
+	</section>
 </template>
 
 <style scoped lang="scss">

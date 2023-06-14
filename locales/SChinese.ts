@@ -95,14 +95,22 @@ const SChinese = {
 	login: "登入",
 	logout: "登出",
 	signature: "个性签名",
+	close: "关闭",
+	current_page_label: "第{0}页，共{1}页",
+	switch_page_label: "切换到第{0}页",
+	selected_item_label: "选中项为：",
 	happy: "开心",
 	hello: "招呼",
 	awa: "卖萌",
 	sad: "悲伤",
 	embarrassed: "无语",
-
 } as const;
 
 export default SChinese;
-export type LocaleWithDefaultValue = typeof SChinese;
+type $ = {
+	(...args: Readable[]): string;
+	(args: Readable[] | RecordValue<Readable>): string;
+};
+export type I18nArgsFunction = $;
+export type LocaleWithDefaultValue = { [key in keyof typeof SChinese]: typeof SChinese[key] & I18nArgsFunction };
 export type LocaleIdentifiers = Record<keyof typeof SChinese, string>;

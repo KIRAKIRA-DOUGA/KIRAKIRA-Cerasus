@@ -19,6 +19,7 @@
 		editable: true,
 		injectCSS: false,
 	});
+	const rtfEditor = refComp();
 	const showEmojiBar = ref(false);
 	const emojis = [..."ashgdamhs"];
 
@@ -34,23 +35,28 @@
 
 	/** 在富文本编辑器光标处追加一个 Vue 组件。 */
 	const addVueComponents = () => { editor.value?.commands.insertContent("<thumb-video></thumb-video>"); };
-	/** 在光标处新增颜文字页面。 */
+	/** 在光标处新增颜文字。 */
 	const addKaomojiList = () => { editor.value?.commands.insertContent("<emoji-bar></emoji-bar>"); };
-	/** 打开at页面。 */
+	/** 打开艾特页面。 */
 	const addAtList = () => { };
 
 	/**
- 	* 自定义快捷键侦听。
-	* @param e 键盘侦听事件。
-	* 目前已有的快捷键:
-	* Ctrl+m 打开颜文字快捷输入页面。
-	*/
+	 * 自定义快捷键侦听。
+	 *
+	 * 目前已有的快捷键：
+	 *
+	 * `Ctrl + M` - 打开颜文字快捷输入面板。
+	 * @param e - 键盘侦听事件。
+	 */
 	function shortCut(e: KeyboardEvent) {
-		if (e.ctrlKey && e.code === "KeyM")
+		if (e.ctrlKey && e.key === "m")
 			addKaomojiList();
 	}
-	if (process.client)
-		document.addEventListener("keyup", shortCut);
+
+	useEventListener("window", "keyup", e => {
+		if (rtfEditor.value && getPath(e.target).includes(rtfEditor.value))
+			shortCut(e);
+	});
 
 	const ToolItem = (() => {
 		interface Props {
@@ -66,7 +72,7 @@
 </script>
 
 <template>
-	<Comp>
+	<Comp ref="rtfEditor" role="application">
 		<EmojiBar v-if="showEmojiBar" :emoji="emojis" class="emoji-bar" />
 		<div class="toolbar">
 			<button v-ripple @click="showEmojiBar = !showEmojiBar"><Icon name="kaomoji" class="icon" style="scale: 2.5 ;" /></button>

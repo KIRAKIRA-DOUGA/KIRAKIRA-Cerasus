@@ -34,7 +34,14 @@
 </script>
 
 <template>
-	<div ref="menuItem" v-ripple v-i="vIndex" class="menu-item" @click="onClick">
+	<div
+		ref="menuItem"
+		v-ripple
+		v-i="vIndex"
+		class="menu-item"
+		role="menuitem"
+		@click="onClick"
+	>
 		<Icon v-if="icon" :name="icon" />
 		<div v-else class="nuxt-icon"></div>
 		<slot></slot>

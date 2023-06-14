@@ -8,7 +8,7 @@
 </script>
 
 <template>
-	<Comp :class="{ animation: !noAnimation }">
+	<Comp :class="{ animation: !noAnimation }" role="img">
 		<div class="lines">
 			<div v-for="i in 5" :key="i"></div>
 		</div>

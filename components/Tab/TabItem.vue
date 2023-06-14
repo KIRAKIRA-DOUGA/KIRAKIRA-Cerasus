@@ -37,7 +37,15 @@
 </script>
 
 <template>
-	<Comp v-ripple="vertical" :class="{ active, vertical: direction.includes('vertical') }" :style="{ flexDirection }" @click="onClick">
+	<Comp
+		v-ripple="vertical"
+		:class="{ active, vertical: direction.includes('vertical') }"
+		:style="{ flexDirection }"
+		role="tab"
+		:aria-selected="active"
+		:aria-current="active"
+		@click="onClick"
+	>
 		<div v-if="icon" class="icon-wrapper">
 			<Icon :name="icon" />
 		</div>

@@ -33,7 +33,7 @@
 		},
 	});
 	const loginWindow = refComp();
-	const isInvalidEmail = computed(() => !!email.value && !email.value.match(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/));
+	// const isInvalidEmail = computed(() => !!email.value && !email.value.match(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/));
 
 	/**
 	 * 稍后关闭。
@@ -62,6 +62,9 @@
 						logining: isLogining,
 					},
 				]"
+				role="dialog"
+				aria-modal="true"
+				:aria-label="currentPage"
 			>
 				<div class="main left">
 					<div class="login">
@@ -76,7 +79,6 @@
 								placeholder="邮箱"
 								size="large"
 								icon="email"
-								:invalid="isInvalidEmail"
 							/>
 							<TextBox
 								v-model="password"
@@ -108,7 +110,6 @@
 								placeholder="邮箱"
 								size="large"
 								icon="email"
-								:invalid="isInvalidEmail"
 							/>
 							<TextBox
 								v-model="password"
@@ -170,7 +171,6 @@
 								placeholder="邮箱"
 								size="large"
 								icon="email"
-								:invalid="isInvalidEmail"
 							/>
 							<Button icon="send" class="button">发送</Button>
 						</div>

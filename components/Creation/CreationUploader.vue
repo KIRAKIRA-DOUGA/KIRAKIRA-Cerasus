@@ -12,7 +12,7 @@
 </script>
 
 <template>
-	<Comp>
+	<Comp role="application">
 		<div v-ripple class="avatar">
 			<img :src="avatar" alt="avatar" draggable="false" />
 		</div>
