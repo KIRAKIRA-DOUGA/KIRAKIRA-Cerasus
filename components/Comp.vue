@@ -12,6 +12,9 @@
 				type: [Number, String] as PropType<Numberish>,
 				default: undefined,
 			},
+			/**
+			 * 使用 `role` 可以增强组件的可读性和语义化。值得注意的是这个属性是枚举而并非任意填写的。
+			 */
 			role: {
 				type: String as PropType<Role>,
 				default: undefined,

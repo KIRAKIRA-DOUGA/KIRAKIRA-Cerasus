@@ -191,7 +191,7 @@
 
 				&,
 				* {
-					transition: $fallback-transitions, color 0s, fill 0s, rotate 350ms $ease-out-smooth;
+					transition: $fallback-transitions, color 10ms, fill 10ms, rotate 350ms $ease-out-smooth;
 				}
 
 				.icon {

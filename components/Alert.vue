@@ -10,7 +10,7 @@
 
 	const model = defineModel<boolean>();
 	const open = withOneWayProp(model, props.open);
-	const alert = ref<HTMLDivElement>();
+	const alert = refComp();
 
 	watch(open, async open => {
 		await nextTick();
