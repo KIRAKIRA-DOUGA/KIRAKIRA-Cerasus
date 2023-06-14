@@ -101,7 +101,6 @@ const Japanese: LocaleIdentifiers = {
 	current_page_label: "第{0}ページ、計{1}ページ",
 	switch_page_label: "{0}ページに切り替え",
 	selected_item_label: "選択したアイテムは：",
-	// 这几个全是机翻的
 	happy: "嬉しい",
 	hello: "挨拶する",
 	awa: "萌えを売る",
