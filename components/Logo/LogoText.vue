@@ -7,7 +7,7 @@
 </script>
 
 <template>
-	<Comp>
+	<Comp role="text" aria-details="KiRAKiRA☆DOUGA">
 		<div>
 			<div class="hidden-wrapper">
 				<svg width="129" height="18" viewBox="0 0 129 18" xmlns="http://www.w3.org/2000/svg">

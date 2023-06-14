@@ -14,7 +14,7 @@
 
 <template>
 	<Transition :duration="250">
-		<Comp v-if="shown" :aria-busy="shown">
+		<Comp v-if="shown" role="progressbar" :aria-busy="shown">
 			<div class="layer">
 				<div class="circle-clipper left">
 					<div class="circle"></div>

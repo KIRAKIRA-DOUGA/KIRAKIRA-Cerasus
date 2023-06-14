@@ -16,7 +16,7 @@
 </script>
 
 <template>
-	<Comp>
+	<Comp role="contentinfo">
 		<div class="info">
 			<div class="data">
 				<CreationDetailItem icon="calendar">{{ formatDate(date, "yyyy-MM-dd h:mm:ss") }}</CreationDetailItem>

@@ -6,15 +6,15 @@
 
 <template>
 	<Transition>
-		<div v-if="!collapsed" class="banner opened">
+		<Comp v-if="!collapsed" class="opened" role="banner">
 			<LogoCover noAnimation />
 			<div class="shadow"></div>
-		</div>
+		</Comp>
 	</Transition>
 </template>
 
 <style scoped lang="scss">
-	.banner {
+	:comp {
 		@include flex-center;
 		position: relative;
 		width: 100%;

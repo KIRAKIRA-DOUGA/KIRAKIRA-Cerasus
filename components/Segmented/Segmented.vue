@@ -55,14 +55,15 @@
 </script>
 
 <template>
-	<Comp :aria-valuetext="selectedCaption" aria-orientation="horizontal">
+	<Comp role="radiogroup" :aria-details="t.selected_item_label + selectedCaption" aria-orientation="horizontal">
 		<div class="track items-wrapper">
 			<div
 				v-for="item in items"
 				:key="item.id"
 				v-ripple
 				class="item"
-				:aria-selected="selected === item.id"
+				role="radio"
+				:aria-checked="selected === item.id"
 				:aria-current="selected === item.id"
 				@click="selected = item.id"
 			>
@@ -75,7 +76,6 @@
 			v-ripple
 			class="thumb"
 			:class="{ pressed }"
-			:aria-valuetext="selectedCaption"
 			@pointerdown="onDrag"
 		></div>
 		<div class="content items-wrapper">
@@ -83,7 +83,8 @@
 				v-for="item in items"
 				:key="item.id"
 				class="item"
-				:aria-selected="selected === item.id"
+				role="radio"
+				:aria-checked="selected === item.id"
 				:aria-current="selected === item.id"
 			>
 				<Icon v-if="item.icon" :name="item.icon" />

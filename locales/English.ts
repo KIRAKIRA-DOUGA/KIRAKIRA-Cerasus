@@ -98,6 +98,7 @@ const English: LocaleIdentifiers = {
 	close: "关闭",
 	current_page_label: "Page {0} of {1}",
 	switch_page_label: "Switch to page {0}",
+	selected_item_label: "Selected item is: ",
 };
 
 export default English;

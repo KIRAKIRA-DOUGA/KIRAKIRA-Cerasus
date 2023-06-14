@@ -77,6 +77,7 @@
 				v-if="open"
 				ref="modal"
 				tabindex="0"
+				role="dialog"
 				aria-modal="true"
 				:aria-label="title"
 			>

@@ -62,6 +62,7 @@
 						logining: isLogining,
 					},
 				]"
+				role="dialog"
 				aria-modal="true"
 				:aria-label="currentPage"
 			>

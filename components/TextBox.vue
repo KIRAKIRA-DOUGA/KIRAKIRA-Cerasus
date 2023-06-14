@@ -149,6 +149,7 @@
 			large: size === 'large',
 			'icon-enabled': icon,
 		}"
+		role="textbox"
 	>
 		<div class="wrapper">
 			<Icon v-if="icon" :name="icon" class="before-icon" />
@@ -156,7 +157,7 @@
 				ref="input"
 				v-model="value"
 				:type="type"
-				:placeholder="placeholder"
+				:placeholder="placeholder.toString()"
 				:autocomplete="autoComplete"
 				:autofocus="autoFocus"
 				:disabled="disabled"

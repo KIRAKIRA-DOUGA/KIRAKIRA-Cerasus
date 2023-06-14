@@ -56,7 +56,7 @@
 </script>
 
 <template>
-	<Comp>
+	<Comp role="toolbar">
 		<div class="left">
 			<SoftButton class="play" :icon="playing ? 'pause' : 'play'" @click="playing = !playing" />
 		</div>

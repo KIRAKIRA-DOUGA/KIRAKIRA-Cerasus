@@ -96,6 +96,7 @@
 <template>
 	<Comp
 		:tabindex="isChecked && !disabled ? 0 : -1"
+		role="radio"
 		:aria-checked="isChecked"
 		@click="onChange"
 		@keydown="onKeydown"
@@ -113,7 +114,7 @@
 				<div class="radio" :class="{ 'is-animating': isAnimating }"></div>
 			</div>
 		</div>
-		<slot></slot>
+		<label><slot></slot></label>
 	</Comp>
 </template>
 

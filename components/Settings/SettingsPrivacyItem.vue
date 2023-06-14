@@ -12,7 +12,7 @@
 </script>
 
 <template>
-	<Comp v-ripple>
+	<Comp v-ripple role="listitem">
 		<Icon v-if="icon" :name="icon" />
 		<span class="content"><slot></slot></span>
 		<div class="privacy-radio-group">

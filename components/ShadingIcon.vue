@@ -20,7 +20,7 @@
 </script>
 
 <template>
-	<Comp :class="[position, { large }]">
+	<Comp :class="[position, { large }]" role="img">
 		<Icon :name="icon" :class="{ rotating, elastic }" />
 	</Comp>
 </template>

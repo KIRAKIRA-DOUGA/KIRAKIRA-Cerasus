@@ -25,6 +25,7 @@
 			<Comp
 				v-if="open"
 				ref="alert"
+				role="alertdialog"
 				aria-modal="true"
 				:aria-label="title"
 			>

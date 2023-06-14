@@ -124,7 +124,7 @@
 </script>
 
 <template>
-	<Comp>
+	<Comp role="application">
 		<Alert v-model="showMediaInfo" title="视频详细信息">
 			<Accordion>
 				<AccordionItem v-for="(info, type) in mediaInfos" :key="type" :title="type" noPadding>

@@ -48,7 +48,7 @@
 				<header class="title content padding-end">
 					<header class="title nav-header">
 						<h1>{{ t.settings }}</h1>
-						<TextBox v-model="search" :placeholder="t.search_settings" />
+						<TextBox v-model="search" type="search" :placeholder="t.search_settings" />
 					</header>
 					<TabBar v-model="currentSetting" vertical>
 						<Subheader icon="person">{{ t.user_settings }}</Subheader>
@@ -331,7 +331,7 @@
 		@include radius-large;
 		background-color: c(surface-color);
 	}
-	
+
 	:deep(section) {
 		@extend %chip;
 		overflow: hidden;

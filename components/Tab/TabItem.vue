@@ -41,6 +41,7 @@
 		v-ripple="vertical"
 		:class="{ active, vertical: direction.includes('vertical') }"
 		:style="{ flexDirection }"
+		role="tab"
 		:aria-selected="active"
 		:aria-current="active"
 		@click="onClick"

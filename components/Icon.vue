@@ -16,7 +16,7 @@
 </script>
 
 <template>
-	<span class="icon" :aria-label="new VariableName(name).words">
+	<span class="icon" role="img" :aria-label="new VariableName(name).words">
 		<NuxtIcon :name="name" :filled="filled" />
 	</span>
 </template>

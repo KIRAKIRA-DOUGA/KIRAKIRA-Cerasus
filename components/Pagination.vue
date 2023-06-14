@@ -260,6 +260,7 @@
 	</DefineUnselectedItem>
 
 	<Comp
+		role="application"
 		aria-orientation="horizontal"
 		:aria-label="t.current_page_label(currentPage, pages)"
 		:aria-valuenow="currentPage"

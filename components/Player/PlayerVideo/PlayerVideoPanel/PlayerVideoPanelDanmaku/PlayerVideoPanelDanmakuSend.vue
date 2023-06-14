@@ -3,7 +3,7 @@
 </script>
 
 <template>
-	<Comp />
+	<Comp role="textbox" />
 </template>
 
 <style scoped lang="scss">

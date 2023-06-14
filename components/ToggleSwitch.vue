@@ -85,13 +85,14 @@
 		ref="toggleSwitch"
 		:class="{ on, disabled }"
 		:tabindex="disabled ? -1 : 0"
+		role="switch"
 		:aria-checked="on"
 		@click="onClick"
 		@keydown="onKeyDown"
 		@keyup="onKeyUp"
 	>
 		<Icon v-if="icon" :name="icon" />
-		<span class="content"><slot></slot></span>
+		<label class="content"><slot></slot></label>
 		<div class="switch">
 			<div class="base"></div>
 			<div class="thumb" @pointerdown="onThumbDown"></div>

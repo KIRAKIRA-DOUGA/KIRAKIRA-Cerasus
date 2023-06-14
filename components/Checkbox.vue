@@ -99,6 +99,7 @@
 <template>
 	<Comp
 		:tabindex="!disabled ? 0 : -1"
+		role="checkbox"
 		:aria-checked="isChecked"
 		@click="onChange"
 		@keydown="onKeyDown"
@@ -120,7 +121,7 @@
 				</div>
 			</div>
 		</div>
-		<slot></slot>
+		<label><slot></slot></label>
 	</Comp>
 </template>
 

@@ -105,6 +105,7 @@
 			'--value': smoothValue,
 			'--buffered': buffered,
 		}"
+		role="slider"
 		:aria-valuenow="value"
 		:aria-valuemin="min"
 		:aria-valuemax="max"

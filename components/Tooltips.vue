@@ -101,7 +101,7 @@
 
 <template>
 	<ClientOnlyTeleport to="#popovers">
-		<Comp>
+		<Comp role="none">
 			<TransitionGroup appear>
 				<div
 					v-for="tooltip in tooltipList"
@@ -110,6 +110,8 @@
 					class="tooltip-wrapper"
 					:class="[tooltip.placement]"
 					:style="tooltip.position"
+					role="tooltip"
+					aria-label="tooltip"
 				>
 					<div class="tooltip">
 						{{ tooltip.title }}
