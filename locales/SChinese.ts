@@ -101,7 +101,10 @@ const SChinese = {
 } as const;
 
 export default SChinese;
-type $ = ((...args: Readable[]) => string) | ((args: Readable[] | RecordValue<Readable>) => string);
+type $ = {
+	(...args: Readable[]): string;
+	(args: Readable[] | RecordValue<Readable>): string;
+};
 export type I18nArgsFunction = $;
 export type LocaleWithDefaultValue = { [key in keyof typeof SChinese]: typeof SChinese[key] & I18nArgsFunction };
 export type LocaleIdentifiers = Record<keyof typeof SChinese, string>;

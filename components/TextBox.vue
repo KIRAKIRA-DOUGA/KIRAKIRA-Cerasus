@@ -38,13 +38,15 @@
 		/** 表单的控件名称，作为键值对的一部分与表单一同提交。 */
 		name?: string;
 		/** 为了使得 value 有效，必须符合的模式。 */
-		pattern?: string | Regexp;
+		pattern?: string | RegExp;
 		/** 是否只读？ */
 		readonly?: boolean;
 		/** 是否必填？ */
 		required?: boolean;
 		/** 有效的增量值。 */
 		step?: number;
+		/** 输入法模式。 */
+		inputMode?: "none" | "text" | "decimal" | "numeric" | "tel" | "search" | "email" | "url";
 	}>(), {
 		icon: undefined,
 		size: "normal",
@@ -60,6 +62,7 @@
 		name: undefined,
 		pattern: undefined,
 		step: undefined,
+		inputMode: undefined,
 	});
 
 	const value = defineModel<string>({ required: true });
@@ -151,6 +154,7 @@
 				:readonly="readonly"
 				:required="required"
 				:step="step"
+				:inputmode="inputMode"
 			/>
 			<label v-if="size === 'large'">{{ placeholder }}</label>
 			<Fragment class="after-icons">

@@ -73,10 +73,9 @@
 <template>
 	<ClientOnlyTeleport to="#popovers">
 		<Transition>
-			<div
+			<Comp
 				v-if="open"
 				ref="modal"
-				class="modal"
 				tabindex="0"
 				aria-modal="true"
 				:aria-label="title"
@@ -106,7 +105,7 @@
 						</slot>
 					</div>
 				</div>
-			</div>
+			</Comp>
 		</Transition>
 	</ClientOnlyTeleport>
 </template>
@@ -115,7 +114,7 @@
 	$padding: 24px;
 	$titlebar-thickness: 48px;
 
-	.modal {
+	:comp {
 		@include absolute-center(fixed);
 		@include dropdown-flyouts;
 		@include radius-large;

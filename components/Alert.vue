@@ -22,10 +22,9 @@
 <template>
 	<Mask v-model="open" position="center top" :focusing="static">
 		<Transition>
-			<div
+			<Comp
 				v-if="open"
 				ref="alert"
-				class="alert"
 				aria-modal="true"
 				:aria-label="title"
 			>
@@ -48,7 +47,7 @@
 						</slot>
 					</div>
 				</div>
-			</div>
+			</Comp>
 		</Transition>
 	</Mask>
 </template>
@@ -58,7 +57,7 @@
 	$animation-options: 500ms calc(var(--i) * 70ms) $ease-out-max backwards;
 	$padding: 24px;
 
-	.alert {
+	:comp {
 		transform-origin: center top;
 		transition: $fallback-transitions, all $ease-out-max 500ms;
 
@@ -96,7 +95,7 @@
 	}
 
 	// stylelint-disable-next-line no-duplicate-selectors
-	.alert {
+	:comp {
 		@include dropdown-flyouts;
 		width: 100dvw;
 		max-width: $max-width;

@@ -1,4 +1,6 @@
 <script lang="tsx">
+	type Role = "alert" | "alertdialog" | "application" | "article" | "banner" | "button" | "cell" | "checkbox" | "columnheader" | "combobox" | "complementary" | "contentinfo" | "definition" | "dialog" | "directory" | "document" | "feed" | "figure" | "form" | "grid" | "gridcell" | "group" | "heading" | "img" | "link" | "list" | "listbox" | "listitem" | "log" | "main" | "marquee" | "math" | "menu" | "menubar" | "menuitem" | "menuitemcheckbox" | "menuitemradio" | "navigation" | "none" | "note" | "option" | "presentation" | "progressbar" | "radio" | "radiogroup" | "region" | "row" | "rowgroup" | "rowheader" | "scrollbar" | "search" | "searchbox" | "separator" | "slider" | "spinbutton" | "status" | "switch" | "tab" | "table" | "tablist" | "tabpanel" | "term" | "textbox" | "timer" | "toolbar" | "tooltip" | "tree" | "treegrid" | "treeitem" | "meter" | "rating";
+
 	const comp = defineComponent({
 		props: {
 			/**
@@ -8,6 +10,10 @@
 			 */
 			tabindex: {
 				type: [Number, String] as PropType<Numberish>,
+				default: undefined,
+			},
+			role: {
+				type: String as PropType<Role>,
 				default: undefined,
 			},
 		},
@@ -32,7 +38,7 @@
 		},
 		render() {
 			return (
-				<kira-component tabindex={this.tabindex} class={this.className} aria-label={this.label}>
+				<kira-component tabindex={this.tabindex} class={this.className} role={this.role} aria-label={this.label}>
 					{this.$slots.default?.()}
 				</kira-component>
 			);

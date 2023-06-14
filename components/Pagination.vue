@@ -259,8 +259,7 @@
 		/>
 	</DefineUnselectedItem>
 
-	<div
-		class="page"
+	<Comp
 		aria-orientation="horizontal"
 		:aria-label="t.current_page_label(currentPage, pages)"
 		:aria-valuenow="currentPage"
@@ -297,6 +296,7 @@
 				ref="pageEdit"
 				class="page-edit"
 				:contenteditable="!array"
+				inputmode="numeric"
 				@input="e => currentEdited = (e.target as HTMLDivElement).innerText"
 				@keydown="onEnterEdited"
 				@blur="onBlurEdited"
@@ -306,7 +306,7 @@
 			<div ref="newPageNumber" class="new-page-number">{{ getPageName(currentPage) }}</div>
 			<div class="focus-stripe"></div>
 		</div>
-	</div>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
@@ -349,7 +349,7 @@
 		}
 	}
 
-	.page {
+	:comp {
 		position: relative;
 		user-select: none;
 	}
