@@ -22,7 +22,7 @@
 	const model = defineModel<boolean>();
 	const open = withOneWayProp(model, props.open);
 
-	const modal = ref<HTMLDivElement>();
+	const modal = refComp();
 
 	watch(open, async open => {
 		await nextTick();
