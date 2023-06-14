@@ -65,6 +65,10 @@
 		inputMode: undefined,
 	});
 
+	const emits = defineEmits<{
+		input: [e: Event];
+	}>();
+
 	const value = defineModel<string>({ required: true });
 	/** 是否显示密码。 */
 	const showPassword = ref(false);
@@ -74,8 +78,18 @@
 	});
 	const input = ref<HTMLInputElement>();
 	const showClearAll = computed(() => !props.hideClearAll && value.value !== "");
-	const invalid = computed(() => input.value && !input.value.validity.valid);
 	const patternString = computed(() => !props.pattern ? undefined : typeof props.pattern === "string" ? props.pattern : props.pattern.source);
+	const isInvalid = () => input.value?.validity.valid === false; // 注意不要写成 !valid，还需要排除 undefined 的情况。
+	const invalid = ref(false); // 如果使用 computed，则只会调用一次。并不能监测 isInvalid 的变化，所以 computed 功能只是个废物？
+
+	/**
+	 * 输入框文本输入和改变事件。
+	 * @param e - 未知事件。
+	 */
+	function onInput(e: Event) {
+		emits("input", e);
+		invalid.value = isInvalid();
+	}
 
 	/**
 	 * 清空文本。
@@ -106,6 +120,10 @@
 		await animateSize(el, null, { endWidth: 0, duration: 300, endStyle: { scale: 0 }, specified: "width" });
 		done();
 	}
+
+	onMounted(() => {
+		invalid.value = isInvalid();
+	});
 
 	const AfterIcon = (() => {
 		interface Props {
@@ -155,6 +173,7 @@
 				:required="required"
 				:step="step"
 				:inputmode="inputMode"
+				@input="onInput"
 			/>
 			<label v-if="size === 'large'">{{ placeholder }}</label>
 			<Fragment class="after-icons">
@@ -173,7 +192,7 @@
 	$default-height: 36px;
 	$small-height: 28px;
 	$large-height: 44px;
-	$front-indent: 12px;
+	$start-indent: 12px;
 
 	:comp {
 		@include radius-large;
@@ -253,7 +272,7 @@
 		position: absolute;
 		display: block;
 		width: 100%;
-		margin-left: $front-indent;
+		margin-left: $start-indent;
 		color: c(icon-color);
 		scale: 1;
 		translate: 0;
@@ -265,7 +284,7 @@
 		} */
 
 		.before-icon ~ & {
-			margin-left: $front-indent + 24px + 16px;
+			margin-left: $start-indent + 24px + 16px;
 		}
 	}
 
@@ -279,7 +298,7 @@
 		padding: 0;
 		color: c(text-color);
 		font-size: 14px;
-		text-indent: $front-indent;
+		text-indent: $start-indent;
 		background: transparent;
 		border: 0;
 		appearance: none;
@@ -304,11 +323,11 @@
 		}
 
 		.before-icon ~ & {
-			padding-left: $front-indent + 24px + 4px;
+			padding-left: $start-indent + 24px + 4px;
 			text-indent: 0;
 
 			.large & {
-				padding-left: $front-indent + 24px + 16px;
+				padding-left: $start-indent + 24px + 16px;
 			}
 		}
 

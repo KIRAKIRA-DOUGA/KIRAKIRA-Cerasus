@@ -5,8 +5,8 @@
 	"editor.detectIndentation": false,
 	"editor.formatOnPaste": true,
 	"editor.formatOnType": true,
-	"scss.lint.unknownAtRules": "ignore",
 	"less.lint.unknownAtRules": "ignore",
+	"scss.lint.unknownAtRules": "ignore",
 	"css.lint.unknownAtRules": "ignore",
 	"css.lint.propertyIgnoredDueToDisplay": "ignore",
 	"less.lint.propertyIgnoredDueToDisplay": "ignore",
@@ -155,6 +155,7 @@
 			"icon": "issue-closed"
 		}
 	},
+	"vue.codeActions.enabled": false, // 暂时禁用，因为保存时太卡。
 	// "javascript.updateImportsOnFileMove.enabled": "never",
 	// "typescript.updateImportsOnFileMove.enabled": "never",
 	// "vue.features.updateImportsOnFileMove.enabled": false,
