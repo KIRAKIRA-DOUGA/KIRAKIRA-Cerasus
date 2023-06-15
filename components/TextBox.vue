@@ -15,6 +15,8 @@
 		// 不可用："button" | "checkbox" | "radio" | "submit" | "reset" | "file" | "hidden" | "image" | "color" | "range"。
 		/** 始终不显示清空按钮。 */
 		hideClearAll?: boolean;
+		/** 当输入内容不合法时，直接阻止用户进行输入。 */
+		preventIfInvalid?: boolean;
 		/** 表单自动填充特性提示，以空格分隔字符串。注意不是布尔类型。 */
 		autoComplete?: string;
 		/** 是否页面加载后自动聚焦？ */
@@ -38,7 +40,7 @@
 		/** 表单的控件名称，作为键值对的一部分与表单一同提交。 */
 		name?: string;
 		/** 为了使得 value 有效，必须符合的模式。 */
-		pattern?: string | RegExp;
+		pattern?: RegExp;
 		/** 是否只读？ */
 		readonly?: boolean;
 		/** 是否必填？ */
@@ -66,7 +68,7 @@
 	});
 
 	const emits = defineEmits<{
-		input: [e: Event];
+		input: [e: InputEvent];
 	}>();
 
 	const value = defineModel<string>({ required: true });
@@ -78,17 +80,54 @@
 	});
 	const input = ref<HTMLInputElement>();
 	const showClearAll = computed(() => !props.hideClearAll && value.value !== "");
-	const patternString = computed(() => !props.pattern ? undefined : typeof props.pattern === "string" ? props.pattern : props.pattern.source);
 	const isInvalid = () => input.value?.validity.valid === false; // 注意不要写成 !valid，还需要排除 undefined 的情况。
 	const invalid = ref(false); // 如果使用 computed，则只会调用一次。并不能监测 isInvalid 的变化，所以 computed 功能只是个废物？
 
 	/**
 	 * 输入框文本输入和改变事件。
-	 * @param e - 未知事件。
+	 * @param _e - 输入事件。但是池沼 Vue 不会自动缩小类型，因此只能用普通事件代替。
 	 */
-	function onInput(e: Event) {
+	function onInput(_e: Event) {
+		const e = _e as InputEvent;
+		const input = e.target as HTMLInputElement;
+		const caret = Caret.get(input);
+		if (caret === null) return;
 		emits("input", e);
+		const undo = () => {
+			const length = input.value.length - value.value.length;
+			input.value = value.value;
+			if (length >= 0) Caret.set(input, caret - length);
+		};
+		if (props.preventIfInvalid) {
+			if (props.pattern) {
+				const pattern = new RegExp(`^${props.pattern.source.replace(/\*$/, "+")}$`, props.pattern.flags);
+				value.value = value.value.match(props.pattern)?.[0] ?? "";
+				if (e.data && !e.data.match(pattern)) undo();
+				else if (!input.value.match(pattern)) undo();
+			}
+			if (props.min !== undefined || props.max !== undefined || ["decimal", "numberic", "tel"].includes(props.inputMode!)) {
+				let validChar = "0-9";
+				if (props.min === undefined || props.min < 0) validChar += "-";
+				if (!Number.isInteger(props.step) || props.inputMode === "decimal") validChar += ".";
+				const pattern = new RegExp(`[^${validChar}]`, "g");
+				value.value = value.value.replace(pattern, "");
+				if (e.data && e.data.match(pattern)) undo();
+				else if (input.value.match(pattern)) undo();
+				const isEmpty = !input.value.trim().length;
+				let num = parseFloat(input.value);
+				if (!Number.isFinite(num)) undo();
+				if (isEmpty && props.required) num = 0;
+				if (props.min !== undefined && num < props.min) num = props.min;
+				if (props.max !== undefined && num > props.max) num = props.max;
+				if (props.min !== undefined && props.step !== undefined && !Number.isInteger((num - props.min) / props.step) && num !== props.max) num = Math.floor((num - props.min) / props.step) * props.step;
+				if (isEmpty && !props.required) input.value = "";
+				else if (input.value !== String(num)) input.value = String(num);
+			}
+		} else {
+			// TODO: 手动报错部分。使用 input.setCustomValidity("");
+		}
 		invalid.value = isInvalid();
+		value.value = input.value;
 	}
 
 	/**
@@ -155,7 +194,7 @@
 			<Icon v-if="icon" :name="icon" class="before-icon" />
 			<input
 				ref="input"
-				v-model="value"
+				:value="value"
 				:type="type"
 				:placeholder="placeholder.toString()"
 				:autocomplete="autoComplete"
@@ -169,7 +208,7 @@
 				:minlength="minLength"
 				:multiple="multiple"
 				:name="name"
-				:pattern="patternString"
+				:pattern="pattern?.source"
 				:readonly="readonly"
 				:required="required"
 				:step="step"

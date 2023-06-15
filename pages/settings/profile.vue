@@ -2,8 +2,9 @@
 	import avatar from "assets/images/aira.jpg";
 	import banner from "assets/images/banner-20220717.png";
 
+	const validChar = /[A-Za-z0-9\-_ぁ-ゖァ-ヺー〇一-鿿㐀-䶿𠀀-𮹊𰀀-𲎯]*/u;
 	const nickname = ref("艾了个拉");
-	const nicknameEdit = computed({
+	/* const nicknameEdit = computed({
 		get: () => nickname.value,
 		set: async value => {
 			nickname.value = value;
@@ -11,7 +12,8 @@
 			value = value.replaceAll(/[^A-Za-z0-9-_ぁ-ゖァ-ヺー〇一-鿿㐀-䶿𠀀-𮹊𰀀-𲎯]/gu, "");
 			nickname.value = value.slice(0, 20);
 		},
-	});
+	}); */
+	const test = ref("");
 	const signature = ref("");
 	const genderBasic = ref<"male" | "female" | "custom" | "">("");
 	const genderCustom = ref("");
@@ -33,15 +35,30 @@
 
 	<div class="nickname">
 		<TextBox
-			v-model="nicknameEdit"
+			v-model="nickname"
 			:placeholder="t.nickname"
 			size="large"
 			icon="person"
 			required
+			preventIfInvalid
+			:pattern="validChar"
 			:maxLength="20"
 		/>
 		<span>{{ t.nickname_requirements }}</span>
 	</div>
+
+	<TextBox
+		v-model="test"
+		inputMode="numeric"
+		placeholder="测试：只能输入0到99之间的整数"
+		size="large"
+		icon="placeholder"
+		required
+		preventIfInvalid
+		:min="0"
+		:max="99"
+		:step="1"
+	/>
 
 	<TextBox v-model="signature" placeholder="个性签名" size="large" icon="edit" />
 
