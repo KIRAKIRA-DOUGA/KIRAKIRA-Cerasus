@@ -146,7 +146,7 @@
 	 */
 	function isNoTransform() {
 		if (!tabBar.value) return false;
-		for (const element of getPath(tabBar.value)) {
+		for (const element of getPath(tabBar)) {
 			const style = getComputedStyle(element);
 			for (const property of ["scale", "translate", "rotate", "transform"] as const)
 				if (style[property] !== "none")

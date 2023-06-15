@@ -34,4 +34,8 @@ declare global {
 	 * 为什么 Record 还需要手动指定键的类型？多此一举。
 	 */
 	type RecordValue<T> = Record<ObjectKey, T>;
+	/**
+	 * 表示二维点的元组。
+	 */
+	type TwoD = [number, number];
 }
