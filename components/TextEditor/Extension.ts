@@ -1,22 +1,22 @@
 import { mergeAttributes, Node } from "@tiptap/core";
 import { VueNodeViewRenderer } from "@tiptap/vue-3";
 import Component from "./TextEditorComponent.vue";
-import EmojiBar from "./TextEditorEmojiBar.vue";
+import KaomojiBar from "./TextEditorSmallKaomojiBar.vue";
 
-const emoji = Node.create({
-	name: "emojiBar",
+const kaomoji = Node.create({
+	name: "smallKaomojiBar",
 	group: "block",
 	atom: true,
 	parseHTML() {
 		return [{
-			tag: "emoji-bar",
+			tag: "small-kaomoji-bar",
 		}];
 	},
 	renderHTML({ HTMLAttributes }) {
-		return ["emoji-bar", mergeAttributes(HTMLAttributes)];
+		return ["small-kaomoji-bar", mergeAttributes(HTMLAttributes)];
 	},
 	addNodeView() {
-		return VueNodeViewRenderer(EmojiBar);
+		return VueNodeViewRenderer(KaomojiBar);
 	},
 });
 const thumbVideo = Node.create({
@@ -37,7 +37,7 @@ const thumbVideo = Node.create({
 });
 export default {
 	thumbVideo,
-	emoji,
+	kaomoji,
 };
 
 // export const tiptapThumbVideoComponents = Node.create({

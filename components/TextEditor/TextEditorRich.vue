@@ -6,13 +6,13 @@
 	const editor = useEditor({
 		extensions: [
 			StarterKit,
-			VueComponent.emoji,
+			VueComponent.kaomoji,
 			VueComponent.thumbVideo,
 		],
 		content: `
 			<p>我正在用 Vue.js 运行 Tiptap。🎉</p>
 			<thumb-video></thumb-video>
-			<EmojiBar />
+			<small-kaomoji-bar />
 			<p>你看到了吗？这是 Vue 组件。我们真的生活在未来。</p>
 		`,
 		autofocus: false,
@@ -21,7 +21,7 @@
 	});
 	const rtfEditor = refComp();
 	const showEmojiBar = ref(false);
-	const emojis = [..."ashgdamhs"];
+	const inputKaomoji = "";
 
 	/** 切换文本加粗。 */
 	const toggleBold = () => { editor.value?.chain().focus().toggleBold().run(); };
@@ -35,8 +35,8 @@
 
 	/** 在富文本编辑器光标处追加一个 Vue 组件。 */
 	const addVueComponents = () => { editor.value?.commands.insertContent("<thumb-video></thumb-video>"); };
-	/** 在光标处新增颜文字。 */
-	const addKaomojiList = () => { editor.value?.commands.insertContent("<emoji-bar></emoji-bar>"); };
+	/** 在光标处打开迷你颜文字输入面板。 */
+	const addSmallKaomojiList = () => { editor.value?.commands.insertContent("<small-kaomoji-bar></small-kaomoji-bar>"); };
 	/** 打开艾特页面。 */
 	const addAtList = () => { };
 
@@ -49,8 +49,16 @@
 	 * @param e - 键盘侦听事件。
 	 */
 	function shortCut(e: KeyboardEvent) {
-		if (e.ctrlKey && e.key === "m")
-			addKaomojiList();
+		if (e.ctrlKey && e.code === "KeyM")
+			addSmallKaomojiList();
+	}
+
+	/**
+	 * 在光标处输入字符串。因为 click的回调不能直接用editor的方法。
+	 * @param str 输入的字符串
+	*/
+	function enter(str: string) {
+		editor.value?.commands.insertContent(str);
 	}
 
 	useEventListener("window", "keyup", e => {
@@ -73,7 +81,7 @@
 
 <template>
 	<Comp ref="rtfEditor" role="application">
-		<EmojiBar v-if="showEmojiBar" :emoji="emojis" class="emoji-bar" />
+		<KaomojiBar v-if="showEmojiBar" v-model="inputKaomoji" @click="enter(inputKaomoji)" />
 		<div class="toolbar">
 			<button v-ripple @click="showEmojiBar = !showEmojiBar"><Icon name="kaomoji" class="icon" style="scale: 2.5 ;" /></button>
 			<button v-ripple @click="addAtList"><Icon name="at" class="icon" /></button>
@@ -101,11 +109,6 @@
 		.icon {
 			color: #797173;
 			scale: 1.5;
-		}
-
-		.emoji-bar {
-			position: relative;
-			display: flex;
 		}
 
 		.toolbar {
