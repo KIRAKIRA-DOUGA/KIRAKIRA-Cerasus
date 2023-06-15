@@ -15,6 +15,7 @@ const English: LocaleIdentifiers = {
 	button_clicked: "I was clicked~",
 	confetti: "Confetti",
 	send: "Send",
+	query: "查询",
 	show_alert: "Show Alert",
 	toggle_switch: "Toggle Switch",
 	on: "On",
