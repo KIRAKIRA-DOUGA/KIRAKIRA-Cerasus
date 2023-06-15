@@ -45,7 +45,7 @@
 </script>
 
 <template>
-	<Comp role="application">
+	<Comp>
 		<div class="top">
 			<div class="info">
 				<CountItem icon="play" :value="counts.play">播放</CountItem>

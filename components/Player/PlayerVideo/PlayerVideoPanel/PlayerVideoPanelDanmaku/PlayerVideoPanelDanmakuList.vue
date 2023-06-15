@@ -53,7 +53,7 @@
 </script>
 
 <template>
-	<Comp role="application">
+	<Comp>
 		<ClientOnly>
 			<table class="lite">
 				<thead>

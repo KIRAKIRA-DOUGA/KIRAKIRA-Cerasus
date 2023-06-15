@@ -20,9 +20,7 @@
 	const { isFullscreen: fullScreen, toggle } = useFullscreen(video);
 	const menu = ref<InstanceType<typeof Menu>>();
 
-	type MediaInfo = {
-		[type: string]: Record<string, unknown>;
-	};
+	type MediaInfo = Record<string, Record<string, unknown>>;
 
 	/**
 	 * 显示视频详细信息。
@@ -124,7 +122,7 @@
 </script>
 
 <template>
-	<Comp role="application">
+	<Comp>
 		<Alert v-model="showMediaInfo" title="视频详细信息">
 			<Accordion>
 				<AccordionItem v-for="(info, type) in mediaInfos" :key="type" :title="type" noPadding>

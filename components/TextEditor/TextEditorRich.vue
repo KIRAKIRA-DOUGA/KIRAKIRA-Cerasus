@@ -47,7 +47,7 @@
 </script>
 
 <template>
-	<Comp role="application">
+	<Comp>
 		<div class="toolbar">
 			<ToolItem active="bold" @click="toggleBold"><b>B</b></ToolItem>
 			<ToolItem active="italic" @click="toggleItalic"><i>I</i></ToolItem>
