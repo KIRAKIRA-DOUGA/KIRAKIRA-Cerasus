@@ -17,6 +17,7 @@ const Japanese: LocaleIdentifiers = {
 	button_clicked: "私はクリックされました ううっ~",
 	confetti: "紙吹雪",
 	send: "送信",
+	query: "查询",
 	show_alert: "アラートを表示",
 	toggle_switch: "スイッチ",
 	on: "オン",

@@ -10,7 +10,7 @@
 </script>
 
 <template>
-	<Comp role="application">
+	<Comp>
 		<HeadingComments :count="count" />
 		<TextEditorRich />
 	</Comp>

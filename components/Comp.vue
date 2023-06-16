@@ -18,7 +18,7 @@
 			 */
 			role: {
 				type: String as PropType<Role>,
-				default: undefined,
+				default: "application",
 			},
 		},
 		setup() {

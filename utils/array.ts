@@ -29,14 +29,32 @@ export function arrayRemoveItem<T>(array: T[], item: T): boolean {
  * @param array - 数组。
  */
 export function arrayClearAll<T>(array: T[]): void {
-	array.splice(0, array.length);
+	array.splice(0, Infinity);
 }
 
 /**
  * 随机返回数组中的一个项目。
  * @param array - 数组。
+ * @param record - 随机记录。如果提供，则在所有项目被随机抽取完毕之前不会抽取相同的项目。
  * @returns 数组其中的随机一个项目。
  */
-export function randomOne<T>(array: T[]): T {
-	return array.length ? array[randBetween(0, array.length - 1)] : null as T;
+export function randomOne<T>(array: T[], record?: MaybeRef<number[]>): T {
+	if (!array.length) return null as T;
+	record = toValue(record);
+	let index = randBetween(0, array.length - 1);
+	if (record !== undefined) {
+		if (record.length !== array.length + 1 || record.every((n, i) => !i || n)) {
+			let last = +record[0];
+			if (!Number.isFinite(last)) last = -1;
+			arrayClearAll(record);
+			record.push(...Array(array.length + 1).fill(0));
+			record[0] = last;
+		}
+		while (record[index + 1] || index === record[0])
+			index = randBetween(0, array.length - 1);
+		record[index + 1] = 1;
+		record[0] = index;
+		console.log(index, record.map(i => +i).join(""));
+	}
+	return array[index];
 }

@@ -15,6 +15,7 @@ const SChinese = {
 	button_clicked: "我被单击了 呜呜呜~",
 	confetti: "五彩纸屑",
 	send: "发送",
+	query: "查询",
 	show_alert: "显示警告框",
 	toggle_switch: "切换开关",
 	on: "开",

@@ -51,7 +51,7 @@
 	const currentEdited = computed({
 		get: () => _currentEdited.value,
 		set: async value_str => {
-			const caret = getCaret();
+			const caret = Caret.get();
 			_currentEdited.value = value_str; // 需要设两次来强制刷新。
 			await nextTick();
 			value_str = value_str.replaceAll(/[^\d]/g, "");
@@ -64,7 +64,7 @@
 			const requireResetCaret = _currentEdited.value !== value_str;
 			_currentEdited.value = value_str;
 			await nextTick();
-			if (requireResetCaret && caret !== null && pageEdit.value) setCaret(pageEdit.value, caret);
+			if (requireResetCaret && caret !== null && pageEdit.value) Caret.set(pageEdit.value, caret);
 		},
 	});
 	const isScrolling = ref(false);
@@ -260,7 +260,6 @@
 	</DefineUnselectedItem>
 
 	<Comp
-		role="application"
 		aria-orientation="horizontal"
 		:aria-label="t.current_page_label(currentPage, pages)"
 		:aria-valuenow="currentPage"

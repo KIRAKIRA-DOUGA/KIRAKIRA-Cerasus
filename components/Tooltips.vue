@@ -48,20 +48,7 @@
 		for (const tooltipWrapper of tooltipDoms.value ?? []) {
 			const tooltip = tooltipWrapper.querySelector<HTMLElement>(".tooltip");
 			if (!tooltip) continue;
-			const bounding = tooltip.getBoundingClientRect();
-			const adjustment: [number, number] = [0, 0];
-			if (bounding.right > window.innerWidth) adjustment[1] = window.innerWidth - bounding.right;
-			if (bounding.bottom > window.innerHeight) adjustment[0] = window.innerHeight - bounding.bottom;
-			if (bounding.left < 0) adjustment[1] = -bounding.left;
-			if (bounding.top < 0) adjustment[0] = -bounding.top;
-			if (adjustment[0] || adjustment[1]) {
-				let top = parseFloat(tooltipWrapper.style.top),
-					left = parseFloat(tooltipWrapper.style.left);
-				top += adjustment[0];
-				left += adjustment[1];
-				tooltipWrapper.style.top = top + "px";
-				tooltipWrapper.style.left = left + "px";
-			}
+			Object.assign(tooltipWrapper.style, moveIntoPage(tooltip, tooltipWrapper));
 		}
 	}
 

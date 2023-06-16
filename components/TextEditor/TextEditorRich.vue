@@ -80,7 +80,7 @@
 </script>
 
 <template>
-	<Comp ref="rtfEditor" role="application">
+	<Comp>
 		<KaomojiBar v-if="showEmojiBar" v-model="inputKaomoji" @click="enter(inputKaomoji)" />
 		<div class="toolbar">
 			<button v-ripple @click="showEmojiBar = !showEmojiBar"><Icon name="kaomoji" class="icon" style="scale: 2.5 ;" /></button>
