@@ -65,7 +65,7 @@ const emits = defineEmits<{
 }>();
 ```
 
-#### `emits`
+#### `model`
 
 快速定义 Vue 组件双向绑定模型。
 
