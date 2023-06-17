@@ -127,6 +127,7 @@
 			margin: 1rem;
 			color: white;
 			opacity: 0;
+			pointer-events: none;
 		}
 	}
 
@@ -175,6 +176,7 @@
 		span {
 			margin-bottom: 0.5rem;
 			opacity: 0;
+			pointer-events: none;
 		}
 	}
 
