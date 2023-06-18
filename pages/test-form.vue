@@ -96,71 +96,79 @@
 <template>
 	<div class="container">
 		<h2>测试服务端渲染</h2>
-		<div style="margin-top: 10px;">在组件初始化时获取 u00001 用户设定档数据的结果：{{ userSettingsMount }}</div>
-		<div style="margin-top: 10px;">上方显示的数据是在前端的服务端中请求的（当前为 vercel.com），您无法在客户端浏览器控制台中找到</div>
+		<div>在组件初始化时获取 u00001 用户设定档数据的结果：<br />{{ userSettingsMount }}</div>
+		<div>上方显示的数据是在前端的服务端中请求的（当前为 vercel.com），您无法在客户端浏览器控制台中找到</div>
 
-		<h2 style="margin-top: 20px;">查询用户设定档</h2>
-		<div class="user-info-query-box">
-			<div style="width: 400px;">
-				<TextBox v-model="userIdInput" size="normal" placeholder="输入你想查询的用户名（输入 u00001 试试看？）" />
-			</div>
+		<h2>查询用户设定档</h2>
+		<div class="query">
+			<TextBox v-model="userIdInput" size="normal" placeholder="输入你想查询的用户名（输入 u00001 试试看？）" />
 			<Button icon="send" @click="handleSearchUserInfo">{{ t.query }}</Button>
 		</div>
-		<div style="margin-top: 10px;">查询结果：{{ userSettingsRef }}</div>
+		<div>查询结果：{{ userSettingsRef }}</div>
 
-		<h2 style="margin-top: 20px;">新建用户设定档</h2>
-		<div class="user-info-save-box">
-			<div class="user-info-save-input-box">
+		<h2>新建用户设定档</h2>
+		<div class="save">
+			<div>
 				<TextBox v-model="userSettingsInputUuid" size="normal" placeholder="输入用户名" />
 			</div>
-			<div class="user-info-save-input-box">
+			<div>
 				<TextBox v-model="userSettingsInputSystemStyle" size="normal" placeholder="系统样式" />
 			</div>
-			<div class="user-info-save-input-box">
+			<div>
 				<TextBox v-model="userSettingsInputSystemColor" size="normal" placeholder="背景色" />
 			</div>
-			<div class="user-info-save-input-box">
+			<div>
 				<ToggleSwitch v-model="userSettingsInputBackgroundAnimation">是否开启背景动画： {{ userSettingsInputBackgroundAnimation ? t.on : t.off }}</ToggleSwitch>
 			</div>
-			<div class="user-info-save-input-box">
+			<div>
 				<TextBox v-model="userSettingsInputSettingPageLastEnter" size="normal" placeholder="用户最后浏览的设置页" />
 			</div>
-			<Button style="margin-top: 10px;" @click="saveUserInfo">提交</Button>
+			<Button @click="saveUserInfo">提交</Button>
 		</div>
-		<div style="margin-top: 10px;">{{ userSettingsSaveResult }}</div>
+		<div>{{ userSettingsSaveResult }}</div>
 
 	</div>
 </template>
 
 <style scoped lang="scss">
-	.user-info-query-box {
+	.query {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
+		gap: 8px;
 		width: 500px;
-		margin-top: 10px;
+
+		.text-box {
+			width: 100%;
+		}
 	}
 
-	.user-info-save-box {
+	.save {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
 		justify-content: space-between;
 		width: 500px;
+		margin-top: 0;
+
+		> div {
+			width: 400px;
+			margin-top: 10px;
+		}
+		
+		> button {
+			margin-top: 10px;
+		}
+	}
+
+	.container > * {
 		margin-top: 10px;
 	}
 
-	.user-info-save-input-box {
-		width: 400px;
-		margin-top: 10px;
-	}
-
-	h1,
-	h2,
-	.page-title-wrapper {
+	h2 {
+		margin-top: 20px;
+		margin-bottom: 10px;
 		color: c(accent);
-		font-weight: bold;
-		font-size: calc(1.275rem + 0.3dvw);
 	}
 </style>
