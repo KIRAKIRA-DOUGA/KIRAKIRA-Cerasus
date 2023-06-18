@@ -25,7 +25,8 @@
 	/** 切换文本倾斜。 */
 	const toggleItalic = () => { editor.value?.chain().focus().toggleItalic().run(); };
 	/** 切换文本下划线。 */
-	const toggleUnderline = () => { editor.value?.chain().focus().toggleUnderline().run(); }; // WARN 不知道为什么 StarterKit 中没提供 toggleUnderline，所以只能额外安装 @tiptap/extension-underline
+	const toggleUnderline = () => { editor.value?.chain().focus().toggleUnderline().run(); };
+	// 不知道为什么 StarterKit 中没提供 toggleUnderline，所以只能额外安装 @tiptap/extension-underline。
 	/** 切换文本删除线。 */
 	const toggleStrike = () => { editor.value?.chain().focus().toggleStrike().run(); };
 
