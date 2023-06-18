@@ -78,20 +78,34 @@
 		}
 	};
 
+	const userSettingsMount = ref({} as queryResultType);
+	const getUserSettings = async () => {
+		const url = "https://rosales.kirakira.moe:4000/02/koa/user/settings/userSettings/get?uuid=u00001";
+		const { data: userSettingsMountResult } = await useFetch(url);
+		userSettingsMount.value = userSettingsMountResult.value as queryResultType;
+	};
+
+	getUserSettings();
+
 	useHead({ title: "API 测试页" });
 </script>
 
 <template>
 	<div class="container">
-		<h2>查询用户信息</h2>
+		<h2>测试服务端渲染</h2>
+		<div style="margin-top: 10px;">在组件初始化时获取 u00001 用户设定档数据的结果：{{ userSettingsMount }}</div>
+		<div style="margin-top: 10px;">上方显示的数据是在前端的服务端中请求的（当前为 vercel.com），您无法在客户端浏览器控制台中找到</div>
+
+		<h2 style="margin-top: 20px;">查询用户设定档</h2>
 		<div class="user-info-query-box">
 			<div style="width: 400px;">
 				<TextBox v-model="userIdInput" size="normal" placeholder="输入你想查询的用户名（输入 u00001 试试看？）" />
 			</div>
 			<Button icon="send" @click="handleSearchUserInfo">{{ t.query }}</Button>
 		</div>
-		<div style="margin-top: 10px;">{{ userSettingsRef }}</div>
-		<h2 style="margin-top: 20px;">新建用户设置档</h2>
+		<div style="margin-top: 10px;">查询结果：{{ userSettingsRef }}</div>
+
+		<h2 style="margin-top: 20px;">新建用户设定档</h2>
 		<div class="user-info-save-box">
 			<div class="user-info-save-input-box">
 				<TextBox v-model="userSettingsInputUuid" size="normal" placeholder="输入用户名" />
@@ -111,6 +125,7 @@
 			<Button style="margin-top: 10px;" @click="saveUserInfo">提交</Button>
 		</div>
 		<div style="margin-top: 10px;">{{ userSettingsSaveResult }}</div>
+
 	</div>
 </template>
 
