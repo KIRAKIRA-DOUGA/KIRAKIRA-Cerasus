@@ -100,6 +100,11 @@ const SChinese = {
 	current_page_label: "第{0}页，共{1}页",
 	switch_page_label: "切换到第{0}页",
 	selected_item_label: "选中项为：",
+	happy: "开心",
+	hello: "招呼",
+	awa: "卖萌",
+	sad: "悲伤",
+	embarrassed: "无语",
 } as const;
 
 export default SChinese;
