@@ -63,8 +63,9 @@
 	<TextBox v-model="signature" placeholder="个性签名" size="large" icon="edit" />
 
 	<TextBox v-model="birthday" type="date" :placeholder="t.birthday" size="large" icon="birthday" />
-	<!-- TODO: 日期选择组件 -->
-	<!-- FIXME: 日期选择点击X按钮，再次选择日期后按钮不会出现 -->
+	<!-- TODO: [艾拉] 日期选择组件 -->
+	<!-- [琪露诺] 日期选择点击X按钮，再次选择日期后按钮不会出现。 -->
+	<!-- [兰音] 由于日期组件尚未制作，目前仅是一个占位符，暂时不必在意其功能或外观等的问题。 -->
 
 	<div class="gender">
 		<div class="gender-subtitle">
