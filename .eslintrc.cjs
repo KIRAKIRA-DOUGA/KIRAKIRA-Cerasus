@@ -238,6 +238,7 @@ module.exports = {
 		"vue/singleline-html-element-content-newline": "off",
 		"vue/no-unused-vars": "warn",
 		"vue/no-v-model-argument": "off",
+		"vue/require-typed-ref": "error",
 		"vue/block-lang": ["error", {
 			"script": {
 				"lang": ["ts", "tsx"],
