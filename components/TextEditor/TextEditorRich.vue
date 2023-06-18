@@ -1,11 +1,13 @@
 <script setup lang="tsx">
 	import { useEditor, EditorContent } from "@tiptap/vue-3";
 	import StarterKit from "@tiptap/starter-kit";
+	import { Underline } from "@tiptap/extension-underline";
 	import VueComponent from "./Extension";
 
 	const editor = useEditor({
 		extensions: [
 			StarterKit,
+			Underline,
 			VueComponent,
 		],
 		content: `
@@ -23,8 +25,7 @@
 	/** 切换文本倾斜。 */
 	const toggleItalic = () => { editor.value?.chain().focus().toggleItalic().run(); };
 	/** 切换文本下划线。 */
-	const toggleUnderline = () => { editor.value?.chain().focus().toggleUnderline().run(); };
-	// FIXME: 类型“ChainedCommands”上不存在属性“toggleUnderline” (wtf?)。回去重装一下完整版的 Tiptap，这个精简版本少功能。
+	const toggleUnderline = () => { editor.value?.chain().focus().toggleUnderline().run(); }; // WARN 不知道为什么 StarterKit 中没提供 toggleUnderline，所以只能额外安装 @tiptap/extension-underline
 	/** 切换文本删除线。 */
 	const toggleStrike = () => { editor.value?.chain().focus().toggleStrike().run(); };
 

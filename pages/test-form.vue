@@ -15,7 +15,7 @@
 		queryStatusText: string;
 		results: userSettingsType;
 	}
-	useHead({ title: "API 测试页" });
+
 	const userIdInput = ref("");
 	const userSettingsRef = ref({} as queryResultType);
 	const handleSearchUserInfo = async () => {
@@ -77,6 +77,8 @@
 			});
 		}
 	};
+
+	useHead({ title: "API 测试页" });
 </script>
 
 <template>
