@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import aira from "assets/images/aira.jpg";
+	import aira from "assets/images/aira.webp";
 	const nuxt = useNuxtApp();
 
 	const repositories: { name: string; codeName?: string; link: string; icon?: string }[] = [
@@ -38,7 +38,7 @@
 <template>
 	<LogoText />
 	<p class="slogan"><span>一个可爱的视频网站，</span><span><b>献给可爱的你！</b></span></p>
-	
+
 	<Subheader icon="placeholder">项目地址</Subheader>
 	<section>
 		<SettingsChipItem
@@ -50,7 +50,7 @@
 			afterIcon="open_in_new"
 		>{{ repo.name }}</SettingsChipItem>
 	</section>
-	
+
 	<Subheader icon="placeholder">创作团队</Subheader>
 	<section>
 		<SettingsChipItem
@@ -62,7 +62,7 @@
 			afterIcon="open_in_new"
 		>{{ staff.name }}</SettingsChipItem>
 	</section>
-	
+
 	<Subheader icon="placeholder">使用技术</Subheader>
 	<section>
 		<SettingsChipItem
