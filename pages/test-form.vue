@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	import { postData } from "api";
 
-	interface userSettingsType {
+	interface UserSettingsType {
 		_id?: string;
 		uuid?: string;
 		systemStyle?: string;
@@ -10,14 +10,17 @@
 		settingPageLastEnter?: string;
 		__v?: number;
 	}
-	interface queryResultType {
+
+	interface QueryResultType {
 		queryStatus: boolean;
 		queryStatusText: string;
-		results: userSettingsType;
+		results: UserSettingsType;
 	}
 
+	// TODO: 将以上 interface 标注 JSDoc。
+
 	const userIdInput = ref("");
-	const userSettingsRef = ref({} as queryResultType);
+	const userSettingsRef = ref<Partial<QueryResultType>>({});
 	const handleSearchUserInfo = async () => {
 		try {
 			const userId = userIdInput.value;
@@ -25,7 +28,7 @@
 				// 一个可用的获取用户设置信息的 URL 看起来像：https://rosales.kirakira.moe:4000/02/koa/user/settings/userSettings/get?uuid=u00001
 				const userQueryUrl = `https://rosales.kirakira.moe:4000/02/koa/user/settings/userSettings/get?uuid=${userId}`;
 				const { data: userSettingsResultList } = await useFetch(userQueryUrl);
-				const fixedUserSettingsResultList = userSettingsResultList.value as userSettingsType[];
+				const fixedUserSettingsResultList = userSettingsResultList.value as UserSettingsType[];
 				if (fixedUserSettingsResultList) {
 					const userSettings = fixedUserSettingsResultList[0];
 					if (userSettings) {
@@ -62,7 +65,7 @@
 
 	const userSettingsSaveResult = ref();
 	const saveUserInfo = () => {
-		const userSettingsInput: userSettingsType = {
+		const userSettingsInput: UserSettingsType = {
 			uuid: userSettingsInputUuid.value,
 			systemStyle: userSettingsInputSystemStyle.value,
 			systemColor: userSettingsInputSystemColor.value,
@@ -78,11 +81,11 @@
 		}
 	};
 
-	const userSettingsMount = ref({} as queryResultType);
+	const userSettingsMount = ref<Partial<QueryResultType>>({});
 	const getUserSettings = async () => {
 		const url = "https://rosales.kirakira.moe:4000/02/koa/user/settings/userSettings/get?uuid=u00001";
 		const { data: userSettingsMountResult } = await useFetch(url);
-		userSettingsMount.value = userSettingsMountResult.value as queryResultType;
+		userSettingsMount.value = userSettingsMountResult.value as QueryResultType;
 	};
 
 	getUserSettings();
