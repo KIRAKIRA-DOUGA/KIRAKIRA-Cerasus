@@ -96,10 +96,15 @@ const English: LocaleIdentifiers = {
 	login: "Login",
 	logout: "Logout",
 	signature: "Signature",
-	close: "关闭",
+	close: "Close",
 	current_page_label: "Page {0} of {1}",
 	switch_page_label: "Switch to page {0}",
 	selected_item_label: "Selected item is: ",
+	happy: "Happy",
+	hello: "Hello",
+	awa: "Im Cute",
+	sad: "Sad",
+	embarrassed: "Embarrassed",
 };
 
 export default English;
