@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import avatar from "assets/images/aira.webp";
+	import avatar from "assets/images/aira.jpg";
 
 	const registerDate = ref(new Date());
 	const registerDateDisplay = computed(() => formatDate(registerDate.value, "yyyy-MM-dd"));

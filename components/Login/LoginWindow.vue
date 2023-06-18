@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import avatar from "assets/images/aira.webp";
+	import avatar from "assets/images/aira.jpg";
 
 	const props = defineProps<{
 		/** 已打开，单向绑定使用。 */
