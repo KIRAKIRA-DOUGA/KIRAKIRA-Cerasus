@@ -124,7 +124,7 @@
 		</div>
 		<div class="component-test">
 			<Pagination v-model="page" :pages="pages" :displayPageCount="displayPageCount" enableArrowKeyMove />
-			<Pagination v-model="opPage" :pages="op" :displayPageCount="9" enableArrowKeyMove />
+			<Pagination v-model="opPage" :pages="op" :displayPageCount="isMobile() ? 9 : 15" enableArrowKeyMove />
 			<Segmented v-model="selectedSegmented">
 				<SegmentedItem id="list" icon="list">列表</SegmentedItem>
 				<SegmentedItem id="grid" icon="grid">网格</SegmentedItem>
@@ -267,7 +267,9 @@
 						<Button v-tooltip="{ title: '右方', placement: 'right' }">右方</Button>
 						<Button v-tooltip="{ title: '下方', placement: 'bottom' }">下方</Button>
 						<Button v-tooltip="{ title: '左方', placement: 'left' }">左方</Button>
-						<Button v-tooltip="'缺省设定位置则会自动寻找离页边最远的方向'">缺省</Button>
+						<Button v-tooltip="{ title: '自动寻找离页边最远的垂直方向', placement: 'y' }">垂直方向缺省</Button>
+						<Button v-tooltip="{ title: '自动寻找离页边最远的水平方向', placement: 'x' }">水平方向缺省</Button>
+						<Button v-tooltip="'缺省设定位置则会自动寻找离页边最远的方向'">全方向缺省</Button>
 						<Button v-tooltip="longTextTest">长文本</Button>
 					</div>
 				</AccordionItem>
@@ -366,8 +368,9 @@
 	}
 
 	.tooltip-test {
-		display: flex;
-		justify-content: space-evenly;
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 10px;
 		padding: 1rem 0;
 	}
 </style>

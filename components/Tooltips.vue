@@ -19,11 +19,13 @@
 	 * @param e - 工具提示事件。
 	 * @returns 表示工具提示位置的样式属性值。
 	 */
-	function getPosition(e: TooltipEvent) {
+	function getPosition(e: TooltipEvent) { // TODO: 该函数稍后需要提炼到可复用文件。
 		const bounding = e.element.getBoundingClientRect();
 		e.offset ??= 10;
-		if (!e.placement) { // 如果缺省工具提示放置位置，则会寻找离页边最远的方向。
+		if (!e.placement || e.placement === "x" || e.placement === "y") { // 如果缺省工具提示放置位置，则会寻找离页边最远的方向。
 			const toPageDistance = [bounding.top, window.innerHeight - bounding.bottom, window.innerWidth - bounding.right, bounding.left];
+			if (e.placement === "x") toPageDistance[0] = toPageDistance[1] = -Infinity;
+			else if (e.placement === "y") toPageDistance[2] = toPageDistance[3] = -Infinity;
 			const placements = ["top", "bottom", "right", "left"] as const; // 优先顺序：上、下、右、左。
 			e.placement = placements[toPageDistance.indexOf(Math.max(...toPageDistance))];
 		}
@@ -55,6 +57,7 @@
 	useListen("app:showTooltip", e => {
 		if (isMobile()) return; // 触摸屏不要显示工具提示。
 		const tooltip = e as TooltipEventWithPosition;
+		if (!tooltip.title.toString().trim()) return; // toString() 以刻意识别 i18n 的函数字符串。
 		tooltip.position = getPosition(e);
 		tooltipList.push(tooltip);
 		adjustPosition();

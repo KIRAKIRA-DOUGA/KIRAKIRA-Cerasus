@@ -4,15 +4,6 @@
 
 	const validChar = /[A-Za-z0-9\-_ぁ-ゖァ-ヺー〇一-鿿㐀-䶿𠀀-𮹊𰀀-𲎯]*/u;
 	const nickname = ref("艾了个拉");
-	/* const nicknameEdit = computed({
-		get: () => nickname.value,
-		set: async value => {
-			nickname.value = value;
-			await nextTick();
-			value = value.replaceAll(/[^A-Za-z0-9-_ぁ-ゖァ-ヺー〇一-鿿㐀-䶿𠀀-𮹊𰀀-𲎯]/gu, "");
-			nickname.value = value.slice(0, 20);
-		},
-	}); */
 	const test = ref("");
 	const signature = ref("");
 	const genderBasic = ref<"male" | "female" | "custom" | "">("");
@@ -54,7 +45,6 @@
 		size="large"
 		icon="placeholder"
 		required
-		preventIfInvalid
 		:min="0"
 		:max="99"
 		:step="1"

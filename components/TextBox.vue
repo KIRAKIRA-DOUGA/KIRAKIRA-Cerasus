@@ -103,8 +103,8 @@
 			else if (input.value.match(pattern)) status = "invalid";
 			const isEmpty = !input.value.trim().length;
 			let num = parseFloat(input.value);
-			if (!Number.isFinite(num)) status = "invalid";
 			if (isEmpty && props.required) num = 0;
+			if (!Number.isFinite(num)) status = "invalid";
 			if (props.min !== undefined && num < props.min) { num = props.min; status = "toomin"; }
 			if (props.max !== undefined && num > props.max) { num = props.max; status = "toomax"; }
 			if (props.min !== undefined && props.step !== undefined && !Number.isInteger((num - props.min) / props.step) && num !== props.max) { num = Math.floor((num - props.min) / props.step) * props.step; status = "unstep"; }
@@ -122,12 +122,11 @@
 		const e = _e as InputEvent;
 		const input = e.target as HTMLInputElement;
 		const caret = Caret.get(input);
-		if (caret === null) return;
 		emits("input", e);
 		const undo = () => {
 			const length = input.value.length - value.value.length;
 			input.value = value.value;
-			if (length >= 0) Caret.set(input, caret - length);
+			if (length >= 0 && caret !== null) Caret.set(input, caret - length);
 		};
 		if (props.preventIfInvalid) {
 			if (props.pattern) {
@@ -144,8 +143,19 @@
 		} else {
 			void 0; // HACK: 禁止合并 else if，等留着以后添加其它情况。
 			if (isNumberMode.value) {
-				const { status } = examineNumber(e);
-				input.setCustomValidity(status === "valid" ? "" : status);
+				const { status } = examineNumber(e), value = input.value;
+				const validationMessage = (() => {
+					const input = document.createElement("input") as
+						Override<HTMLInputElement, Partial<Record<"min" | "max" | "step", string | number>>>;
+					input.type = "number";
+					input.min = props.min;
+					input.max = props.max;
+					input.step = props.step;
+					input.required = props.required;
+					input.value = value;
+					return input.validationMessage;
+				})();
+				input.setCustomValidity(status === "valid" ? "" : validationMessage || " ");
 			}
 		}
 		invalid.value = isInvalid();
@@ -157,6 +167,14 @@
 	 */
 	function clearAll() {
 		value.value = "";
+		input.value?.focus();
+	}
+
+	/**
+	 * 切换显示密码。
+	 */
+	function toggleShowPassword() {
+		showPassword.value = !showPassword.value;
 		input.value?.focus();
 	}
 
@@ -240,8 +258,8 @@
 			<label v-if="size === 'large'">{{ placeholder }}</label>
 			<Fragment class="after-icons">
 				<AfterIcon :shown="showClearAll" icon="close" @click="clearAll" />
-				<AfterIcon :shown="props.type === 'password'" :icon="showPassword ? 'visibility' : 'visibility_off'" @click="showPassword = !showPassword" />
-				<AfterIcon :shown="invalid" icon="error" />
+				<AfterIcon :shown="props.type === 'password'" :icon="showPassword ? 'visibility' : 'visibility_off'" @click="toggleShowPassword" />
+				<AfterIcon v-tooltip:y="input?.validationMessage || undefined" :shown="invalid" icon="error" />
 			</Fragment>
 		</div>
 		<div v-if="size === 'large'" class="stripe large-stripe"></div>
@@ -341,10 +359,6 @@
 		transform-origin: left;
 		pointer-events: none;
 
-		/* @include tablet { // 增加移动端文字大小防止 Safari 放大。
-			font-size: 16px;
-		} */
-
 		.before-icon ~ & {
 			margin-left: $start-indent + 24px + 16px;
 		}
@@ -364,10 +378,6 @@
 		background: transparent;
 		border: 0;
 		appearance: none;
-
-		/* @include tablet { // 增加移动端文字大小防止 Safari 放大。
-			font-size: 16px;
-		} */
 
 		&::placeholder {
 			color: c(icon-color);
