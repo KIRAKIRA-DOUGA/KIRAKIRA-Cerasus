@@ -82,6 +82,37 @@
 	const showClearAll = computed(() => !props.hideClearAll && value.value !== "");
 	const isInvalid = () => input.value?.validity.valid === false; // 注意不要写成 !valid，还需要排除 undefined 的情况。
 	const invalid = ref(false); // 如果使用 computed，则只会调用一次。并不能监测 isInvalid 的变化，所以 computed 功能只是个废物？
+	const isNumberMode = computed(() => props.min !== undefined || props.max !== undefined || ["decimal", "numberic", "tel"].includes(props.inputMode!));
+
+	/**
+	 * 手动在 `type="text"` 的情况下验证数字。
+	 * @param e - 输入事件。
+	 * @returns 验证结果。
+	 */
+	function examineNumber(e: InputEvent) {
+		const input = e.target as HTMLInputElement;
+		let result = input.value;
+		let status: "valid" | "invalid" | "toomax" | "toomin" | "unstep" = "valid";
+		if (isNumberMode.value) {
+			let validChar = "0-9";
+			if (props.min === undefined || props.min < 0) validChar += "-";
+			if (!Number.isInteger(props.step) || props.inputMode === "decimal") validChar += ".";
+			const pattern = new RegExp(`[^${validChar}]`, "g");
+			value.value = value.value.replace(pattern, "");
+			if (e.data && e.data.match(pattern)) status = "invalid";
+			else if (input.value.match(pattern)) status = "invalid";
+			const isEmpty = !input.value.trim().length;
+			let num = parseFloat(input.value);
+			if (!Number.isFinite(num)) status = "invalid";
+			if (isEmpty && props.required) num = 0;
+			if (props.min !== undefined && num < props.min) { num = props.min; status = "toomin"; }
+			if (props.max !== undefined && num > props.max) { num = props.max; status = "toomax"; }
+			if (props.min !== undefined && props.step !== undefined && !Number.isInteger((num - props.min) / props.step) && num !== props.max) { num = Math.floor((num - props.min) / props.step) * props.step; status = "unstep"; }
+			if (isEmpty && !props.required) result = "";
+			else result = String(num);
+		}
+		return { status, value: result };
+	}
 
 	/**
 	 * 输入框文本输入和改变事件。
@@ -105,26 +136,17 @@
 				if (e.data && !e.data.match(pattern)) undo();
 				else if (!input.value.match(pattern)) undo();
 			}
-			if (props.min !== undefined || props.max !== undefined || ["decimal", "numberic", "tel"].includes(props.inputMode!)) {
-				let validChar = "0-9";
-				if (props.min === undefined || props.min < 0) validChar += "-";
-				if (!Number.isInteger(props.step) || props.inputMode === "decimal") validChar += ".";
-				const pattern = new RegExp(`[^${validChar}]`, "g");
-				value.value = value.value.replace(pattern, "");
-				if (e.data && e.data.match(pattern)) undo();
-				else if (input.value.match(pattern)) undo();
-				const isEmpty = !input.value.trim().length;
-				let num = parseFloat(input.value);
-				if (!Number.isFinite(num)) undo();
-				if (isEmpty && props.required) num = 0;
-				if (props.min !== undefined && num < props.min) num = props.min;
-				if (props.max !== undefined && num > props.max) num = props.max;
-				if (props.min !== undefined && props.step !== undefined && !Number.isInteger((num - props.min) / props.step) && num !== props.max) num = Math.floor((num - props.min) / props.step) * props.step;
-				if (isEmpty && !props.required) input.value = "";
-				else if (input.value !== String(num)) input.value = String(num);
+			if (isNumberMode.value) {
+				const result = examineNumber(e);
+				if (result.status === "invalid") undo();
+				else if (input.value !== result.value) input.value = result.value;
 			}
 		} else {
-			// TODO: 手动报错部分。使用 input.setCustomValidity("");
+			void 0; // HACK: 禁止合并 else if，等留着以后添加其它情况。
+			if (isNumberMode.value) {
+				const { status } = examineNumber(e);
+				input.setCustomValidity(status === "valid" ? "" : status);
+			}
 		}
 		invalid.value = isInvalid();
 		value.value = input.value;
@@ -194,7 +216,7 @@
 			<Icon v-if="icon" :name="icon" class="before-icon" />
 			<input
 				ref="input"
-				:value="value"
+				:value="value ?? ''"
 				:type="type"
 				:placeholder="placeholder.toString()"
 				:autocomplete="autoComplete"

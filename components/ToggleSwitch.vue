@@ -12,7 +12,7 @@
 	});
 
 	const model = defineModel<boolean>();
-	const on = withOneWayProp(model, props.on);
+	const on = withOneWayProp(model, () => props.on);
 	const isDraging = ref(false);
 	const toggleSwitch = refComp();
 

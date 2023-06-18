@@ -9,7 +9,7 @@
 	}>();
 
 	const model = defineModel<boolean>();
-	const open = withOneWayProp(model, props.open);
+	const open = withOneWayProp(model, () => props.open);
 	const alert = refComp();
 
 	watch(open, async open => {

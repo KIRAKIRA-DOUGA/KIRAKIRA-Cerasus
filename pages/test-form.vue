@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { postData } from "~/api";
+	import { postData } from "api";
 
 	interface userSettingsType {
 		_id?: string;
@@ -21,7 +21,7 @@
 	const handleSearchUserInfo = async () => {
 		try {
 			const userId = userIdInput.value;
-			if (userId !== undefined && userId !== null && userId !== "") { // WARN 这里不直接用 if (userId) 是因为用户 ID 可能为数字 0
+			if (userId) { // 这里不直接用 if (userId) 是因为用户 ID 可能为数字 0 // 然而是字符串 "0" 没啥问题。
 				// 一个可用的获取用户设置信息的 URL 看起来像：https://rosales.kirakira.moe:4000/02/koa/user/settings/userSettings/get?uuid=u00001
 				const userQueryUrl = `https://rosales.kirakira.moe:4000/02/koa/user/settings/userSettings/get?uuid=${userId}`;
 				const { data: userSettingsResultList } = await useFetch(userQueryUrl);
@@ -131,25 +131,21 @@
 
 <style scoped lang="scss">
 	.user-info-query-box {
-		width: 500px;
-
-		margin-top: 10px;
-		
 		display: flex;
+		flex-direction: row;
+		align-items: center;
 		justify-content: space-between;
-    flex-direction: row;
-    align-items: center;
+		width: 500px;
+		margin-top: 10px;
 	}
 
 	.user-info-save-box {
-		width: 500px;
-
-		margin-top: 10px;
-		
 		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
 		justify-content: space-between;
-    flex-direction: column;
-    align-items: flex-start;
+		width: 500px;
+		margin-top: 10px;
 	}
 
 	.user-info-save-input-box {

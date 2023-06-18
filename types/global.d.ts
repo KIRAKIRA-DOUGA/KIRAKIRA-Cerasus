@@ -38,4 +38,8 @@ declare global {
 	 * 表示二维点的元组。
 	 */
 	type TwoD = [number, number];
+	/**
+	 * 指定类型或一个无参数函数返回为指定类型。
+	 */
+	type TypeOrReturnToType<T> = T | (() => T);
 }

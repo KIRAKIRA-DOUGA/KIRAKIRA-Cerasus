@@ -3,7 +3,7 @@ export const postData = async (url: string, data: object) => {
 		method: "POST", // 或者 'PUT'
 		headers: {
 			"Content-Type": "application/json",
-      // 'Content-Type': 'application/x-www-form-urlencoded',
+			// 'Content-Type': 'application/x-www-form-urlencoded',
 		},
 		body: JSON.stringify(data), // 将数据转换成字符串
 	});
