@@ -64,6 +64,7 @@
 
 	<TextBox v-model="birthday" type="date" :placeholder="t.birthday" size="large" icon="birthday" />
 	<!-- TODO: 日期选择组件 -->
+	<!-- FIXME: 日期选择点击X按钮，再次选择日期后按钮不会出现 -->
 
 	<div class="gender">
 		<div class="gender-subtitle">

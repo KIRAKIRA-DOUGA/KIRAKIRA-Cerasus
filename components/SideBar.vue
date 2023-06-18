@@ -16,7 +16,7 @@
 			<SoftButton v-i="1" v-tooltip:right="t.search" icon="search" href="/search" />
 			<SoftButton v-i="2" v-tooltip:right="t.history" icon="history" />
 			<SoftButton v-i="3" v-tooltip:right="t.favorite" icon="star" />
-			<SoftButton v-i="4" v-tooltip:right="'关注'" icon="feed" />
+			<SoftButton v-i="4" v-tooltip:right="t.follow" icon="feed" />
 			<SoftButton v-i="5" v-tooltip:right="t.upload" icon="upload" />
 		</div>
 
