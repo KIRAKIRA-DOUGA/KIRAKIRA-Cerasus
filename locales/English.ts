@@ -102,7 +102,7 @@ const English: LocaleIdentifiers = {
 	switch_page_label: "Switch to page {0}",
 	selected_item_label: "Selected item is: ",
 	happy: "Happy",
-	hello: "Hello",
+	greet: "Greet",
 	awa: "Moe",
 	sad: "Sad",
 	embarrassed: "Embarrassed",

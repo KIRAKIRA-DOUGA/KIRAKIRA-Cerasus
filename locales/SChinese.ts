@@ -102,7 +102,7 @@ const SChinese = {
 	switch_page_label: "切换到第{0}页",
 	selected_item_label: "选中项为：",
 	happy: "开心",
-	hello: "招呼",
+	greet: "招呼",
 	awa: "卖萌",
 	sad: "悲伤",
 	embarrassed: "无语",
