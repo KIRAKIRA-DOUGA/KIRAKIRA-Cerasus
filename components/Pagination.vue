@@ -18,7 +18,7 @@
 	});
 
 	const model = defineModel<number>();
-	const currentPage = withOneWayProp(model, props.current);
+	const currentPage = withOneWayProp(model, () => props.current);
 	const array = computed(() => props.pages instanceof Array ? props.pages : null);
 	const pages = computed(() => !(props.pages instanceof Array) ? props.pages : props.pages.length);
 
@@ -51,7 +51,7 @@
 	const currentEdited = computed({
 		get: () => _currentEdited.value,
 		set: async value_str => {
-			const caret = getCaret();
+			const caret = Caret.get();
 			_currentEdited.value = value_str; // 需要设两次来强制刷新。
 			await nextTick();
 			value_str = value_str.replaceAll(/[^\d]/g, "");
@@ -64,15 +64,16 @@
 			const requireResetCaret = _currentEdited.value !== value_str;
 			_currentEdited.value = value_str;
 			await nextTick();
-			if (requireResetCaret && caret !== null && pageEdit.value) setCaret(pageEdit.value, caret);
+			if (requireResetCaret && caret !== null && pageEdit.value) Caret.set(pageEdit.value, caret);
 		},
 	});
 	const isScrolling = ref(false);
 	const isForceSmallRipple = ref(false);
 	const newPageNumber = ref<HTMLDivElement>();
+	const [DefineUnselectedItem, UnselectedItem] = createReusableTemplate<{ page: number; position?: number }>();
 
 	watch(() => currentPage.value, (page, prevPage) => {
-		//#region 导轨动画
+		// #region 导轨动画
 		const prevItems = getScrolledItems(prevPage);
 		const nextItems = getScrolledItems(page);
 		const merged = mergePosition(prevItems, nextItems);
@@ -99,12 +100,12 @@
 					}).catch(IGNORE);
 				}
 		}
-		//#endregion
-		//#region 滑块动画
+		// #endregion
+		// #region 滑块动画
 		const pageLeft = page < prevPage;
 		const setCurrentPage = () => currentEdited.value = String(page);
 		if (pageEdit.value && newPageNumber.value) {
-			const thumb = pageEdit.value.parentElement!;
+			const thumb = pageEdit.value.parentElement!.parentElement!;
 			const hasExistAnimations = removeExistAnimations(pageEdit.value, newPageNumber.value);
 			const isUserInputPage = currentEdited.value === String(page) && !hasExistAnimations;
 			if (!isUserInputPage) {
@@ -129,7 +130,7 @@
 				}).catch(IGNORE);
 			} else setCurrentPage();
 		} else setCurrentPage();
-		//#endregion
+		// #endregion
 	});
 
 	onMounted(() => {
@@ -246,14 +247,28 @@
 </script>
 
 <template>
-	<div class="page">
+	<DefineUnselectedItem v-slot="{ page, position }">
+		<SoftButton
+			nonfocusable
+			:style="{ '--position': position }"
+			:text="getPageName(page)"
+			:aria-label="t.switch_page_label(page)"
+			:aria-selected="currentPage === page"
+			:aria-current="currentPage === page && 'page'"
+			@click="changePage(page)"
+		/>
+	</DefineUnselectedItem>
+
+	<Comp
+		role="slider"
+		aria-orientation="horizontal"
+		:aria-label="t.current_page_label(currentPage, pages)"
+		:aria-valuenow="currentPage"
+		:aria-valuemin="1"
+		:aria-valuemax="pages"
+	>
 		<div class="track" :class="{ 'small-ripple': isForceSmallRipple }">
-			<SoftKey
-				v-if="showFirst"
-				nonfocusable
-				:text="getPageName(1)"
-				@click="changePage(1)"
-			/>
+			<UnselectedItem v-if="showFirst" :page="1" />
 			<div
 				v-if="pages >= 3"
 				ref="scrollArea"
@@ -262,13 +277,7 @@
 			>
 				<div class="ripples">
 					<div>
-						<SoftKey
-							v-for="(item, position) in scrolledPages"
-							:key="item"
-							nonfocusable
-							:style="{ '--position': position }"
-							@click="changePage(item)"
-						/>
+						<UnselectedItem v-for="(item, position) in scrolledPages" :key="item" :position="position" :page="item" />
 					</div>
 				</div>
 				<div class="texts">
@@ -281,28 +290,26 @@
 					</div>
 				</div>
 			</div>
-			<SoftKey
-				v-if="pages >= 2 && showLast"
-				nonfocusable
-				:text="getPageName(pages)"
-				@click="changePage(pages)"
-			/>
+			<UnselectedItem v-if="pages >= 2 && showLast" :page="pages" />
 		</div>
 		<div v-ripple class="thumb">
-			<div
-				ref="pageEdit"
-				class="page-edit"
-				:contenteditable="!array"
-				@input="e => currentEdited = (e.target as HTMLDivElement).innerText"
-				@keydown="onEnterEdited"
-				@blur="onBlurEdited"
-			>
-				{{ getPageName(currentEdited) }}
-			</div>
+			<form>
+				<div
+					ref="pageEdit"
+					class="page-edit"
+					:contenteditable="!array"
+					inputmode="numeric"
+					@input="e => currentEdited = (e.target as HTMLDivElement).innerText"
+					@keydown="onEnterEdited"
+					@blur="onBlurEdited"
+				>
+					{{ getPageName(currentEdited) }}
+				</div>
+			</form>
 			<div ref="newPageNumber" class="new-page-number">{{ getPageName(currentPage) }}</div>
 			<div class="focus-stripe"></div>
 		</div>
-	</div>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
@@ -319,13 +326,13 @@
 		overflow: hidden;
 		background-color: c(inset-bg);
 
-		.soft-key {
+		.soft-button {
 			--wrapper-size: #{$size};
 			--ripple-size: #{$ripple-size};
 			transition: $fallback-transitions, left 0s;
 		}
 
-		&.small-ripple .soft-key :deep(button) {
+		&.small-ripple .soft-button :deep(button) {
 			&:has(> .ripple-circle):not(:hover, :active) {
 				@include square(var(--wrapper-size) !important);
 			}
@@ -345,7 +352,7 @@
 		}
 	}
 
-	.page {
+	:comp {
 		position: relative;
 		user-select: none;
 	}
@@ -390,25 +397,26 @@
 			}
 		}
 
-		> .focus-stripe {
+		.focus-stripe {
 			$focus-stripe-height: 2px;
 			top: $focus-stripe-height;
 			border-bottom: c(accent-10) $focus-stripe-height solid;
 			pointer-events: none;
 		}
 
-		> * {
+		> *,
+		.page-edit {
 			position: absolute;
 			width: 100%;
 			height: 100%;
 		}
 
-		> .new-page-number {
+		.new-page-number {
 			top: 0;
 			left: -$size;
 		}
 
-		> .page-edit {
+		.page-edit {
 			position: absolute;
 			top: 0;
 
@@ -431,6 +439,10 @@
 
 	.scroll-area {
 		@extend %scroll-area-size;
+
+		.soft-button {
+			color: transparent;
+		}
 
 		&.is-scrolling :deep(*::before) {
 			pointer-events: none;

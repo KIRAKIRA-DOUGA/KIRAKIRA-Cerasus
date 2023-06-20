@@ -36,7 +36,7 @@
 </script>
 
 <template>
-	<Comp>
+	<Comp role="listitem" :aria-label="(title as string)" :aria-expanded="shown">
 		<h3 v-ripple class="header" :class="{ shown }" :tabindex="0" @click="toggle">
 			<div>{{ title }}</div>
 			<Icon name="chevron_down" />

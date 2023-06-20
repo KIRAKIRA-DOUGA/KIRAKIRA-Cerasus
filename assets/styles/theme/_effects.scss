@@ -25,7 +25,7 @@
 /// @content
 /// @output @media screen
 @mixin mobile {
-	@media (max-width: #{$mobile-max-width}) {
+	@media (width <= #{$mobile-max-width}) {
 		@content;
 	}
 }
@@ -34,7 +34,7 @@
 /// @content
 /// @output @media screen
 @mixin tablet {
-	@media (max-width: #{$tablet-max-width}) {
+	@media (width <= #{$tablet-max-width}) {
 		@content;
 	}
 }
@@ -43,7 +43,7 @@
 /// @content
 /// @output @media screen
 @mixin computer {
-	@media (min-width: #{$tablet-max-width + 1px}) {
+	@media (width > #{$tablet-max-width}) {
 		@content;
 	}
 }

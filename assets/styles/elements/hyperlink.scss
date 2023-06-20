@@ -5,8 +5,11 @@ a {
 	text-decoration: none;
 }
 
+a:visited {
+	color: c(accent-focus);
+}
+
 a:not(.lite) {
-	color: c(accent);
 	text-decoration: underline;
 
 	&:hover,

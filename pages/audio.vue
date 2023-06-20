@@ -1,10 +1,6 @@
 <script setup lang="ts">
 	import { useAVBars } from "vue-audio-visual";
-	import audio0 from "assets/audios/test0.mp3";
-	import audio1 from "assets/audios/test1.mp3";
-	import audio2 from "assets/audios/test2.mp3";
-
-	const audioPath = randomOne([audio0, audio1, audio2]);
+	const audio = (await import(`assets/audios/test${randBetween(0, 2)}.mp3`) as typeof import("*.mp3")).default;
 	const player = ref<HTMLAudioElement>();
 	const canvas = ref<HTMLCanvasElement>();
 	const accent = useCssVar("--accent");
@@ -12,7 +8,7 @@
 	const pitch = ref(0);
 
 	useAVBars(player, canvas, {
-		src: audioPath,
+		src: audio,
 		canvHeight: 60,
 		canvWidth: 200,
 		barColor: [accent10.value, accent.value],
@@ -37,7 +33,7 @@
 <template>
 	<div class="container">
 		<h2>测试音频与频谱功能</h2>
-		<audio ref="player" :src="audioPath" controls />
+		<audio ref="player" :src="audio" controls />
 		<Slider v-model="pitch" :min="-24" :max="24" :defaultValue="0" @changing="onSliding" />
 		<canvas ref="canvas" />
 	</div>

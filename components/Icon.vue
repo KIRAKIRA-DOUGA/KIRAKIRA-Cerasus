@@ -16,7 +16,7 @@
 </script>
 
 <template>
-	<span class="icon" :class="{ filled }">
+	<span class="icon" :class="{ filled }" role="img" :aria-label="new VariableName(name).words">
 		<SvgIcon :name="name" />
 	</span>
 </template>

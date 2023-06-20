@@ -58,12 +58,12 @@
 				</div>
 			</div>
 			<div class="buttons">
-				<SoftKey icon="thumb_up" class="button-like" @click="counts.rating++" />
-				<SoftKey icon="thumb_down" class="button-dislike" @click="counts.rating--" />
-				<SoftKey icon="star" class="button-star" @click="favorite" />
-				<SoftKey icon="share" class="button-share" @click="share" />
-				<SoftKey icon="history" class="button-history" />
-				<SoftKey icon="settings" class="button-settings" />
+				<SoftButton v-tooltip:bottom="'加分'" icon="thumb_up" class="button-like" @click="counts.rating++" />
+				<SoftButton v-tooltip:bottom="'减分'" icon="thumb_down" class="button-dislike" @click="counts.rating--" />
+				<SoftButton v-tooltip:bottom="'收藏'" icon="star" class="button-star" @click="favorite" />
+				<SoftButton v-tooltip:bottom="'分享'" icon="share" class="button-share" @click="share" />
+				<SoftButton v-tooltip:bottom="'弹幕历史'" icon="history" class="button-history" />
+				<SoftButton v-tooltip:bottom="'设置'" icon="settings" class="button-settings" />
 			</div>
 		</div>
 		<PlayerVideoPanelDanmakuList />
@@ -77,7 +77,8 @@
 	$buttons-height: 48px;
 
 	:comp {
-		@include flex-block;
+		display: flex;
+		flex-direction: column;
 		flex-shrink: 0;
 		width: $panel-width;
 		height: inherit;

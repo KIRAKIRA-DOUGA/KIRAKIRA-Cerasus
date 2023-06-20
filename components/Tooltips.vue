@@ -19,11 +19,13 @@
 	 * @param e - 工具提示事件。
 	 * @returns 表示工具提示位置的样式属性值。
 	 */
-	function getPosition(e: TooltipEvent) {
+	function getPosition(e: TooltipEvent) { // TODO: 该函数稍后需要提炼到可复用文件。
 		const bounding = e.element.getBoundingClientRect();
 		e.offset ??= 10;
-		if (!e.placement) { // 如果缺省工具提示放置位置，则会寻找离页边最远的方向。
+		if (!e.placement || e.placement === "x" || e.placement === "y") { // 如果缺省工具提示放置位置，则会寻找离页边最远的方向。
 			const toPageDistance = [bounding.top, window.innerHeight - bounding.bottom, window.innerWidth - bounding.right, bounding.left];
+			if (e.placement === "x") toPageDistance[0] = toPageDistance[1] = -Infinity;
+			else if (e.placement === "y") toPageDistance[2] = toPageDistance[3] = -Infinity;
 			const placements = ["top", "bottom", "right", "left"] as const; // 优先顺序：上、下、右、左。
 			e.placement = placements[toPageDistance.indexOf(Math.max(...toPageDistance))];
 		}
@@ -48,26 +50,14 @@
 		for (const tooltipWrapper of tooltipDoms.value ?? []) {
 			const tooltip = tooltipWrapper.querySelector<HTMLElement>(".tooltip");
 			if (!tooltip) continue;
-			const bounding = tooltip.getBoundingClientRect();
-			const adjustment: [number, number] = [0, 0];
-			if (bounding.right > window.innerWidth) adjustment[1] = window.innerWidth - bounding.right;
-			if (bounding.bottom > window.innerHeight) adjustment[0] = window.innerHeight - bounding.bottom;
-			if (bounding.left < 0) adjustment[1] = -bounding.left;
-			if (bounding.top < 0) adjustment[0] = -bounding.top;
-			if (adjustment[0] || adjustment[1]) {
-				let top = parseFloat(tooltipWrapper.style.top),
-					left = parseFloat(tooltipWrapper.style.left);
-				top += adjustment[0];
-				left += adjustment[1];
-				tooltipWrapper.style.top = top + "px";
-				tooltipWrapper.style.left = left + "px";
-			}
+			Object.assign(tooltipWrapper.style, moveIntoPage(tooltip, tooltipWrapper));
 		}
 	}
 
 	useListen("app:showTooltip", e => {
 		if (isMobile()) return; // 触摸屏不要显示工具提示。
 		const tooltip = e as TooltipEventWithPosition;
+		if (!tooltip.title.toString().trim()) return; // toString() 以刻意识别 i18n 的函数字符串。
 		tooltip.position = getPosition(e);
 		tooltipList.push(tooltip);
 		adjustPosition();
@@ -101,7 +91,7 @@
 
 <template>
 	<ClientOnlyTeleport to="#popovers">
-		<Comp>
+		<Comp role="none">
 			<TransitionGroup appear>
 				<div
 					v-for="tooltip in tooltipList"
@@ -110,6 +100,8 @@
 					class="tooltip-wrapper"
 					:class="[tooltip.placement]"
 					:style="tooltip.position"
+					role="tooltip"
+					aria-label="tooltip"
 				>
 					<div class="tooltip">
 						{{ tooltip.title }}

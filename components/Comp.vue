@@ -1,5 +1,6 @@
 <script lang="tsx">
-	const dom = ref<HTMLElement>();
+	type Role = "alert" | "alertdialog" | "button" | "checkbox" | "dialog" | "gridcell" | "link" | "log" | "marquee" | "menuitem" | "menuitemcheckbox" | "menuitemradio" | "option" | "progressbar" | "radio" | "scrollbar" | "searchbox" | "slider" | "spinbutton" | "status" | "switch" | "tab" | "tabpanel" | "textbox" | "timer" | "tooltip" | "treeitem" | "combobox" | "grid" | "listbox" | "menu" | "menubar" | "radiogroup" | "tablist" | "tree" | "treegrid" | "application" | "article" | "cell" | "columnheader" | "definition" | "directory" | "document" | "feed" | "figure" | "group" | "heading" | "img" | "list" | "listitem" | "math" | "none" | "note" | "presentation" | "region" | "row" | "rowgroup" | "rowheader" | "separator" | "table" | "term" | "text" | "toolbar" | "banner" | "complementary" | "contentinfo" | "form" | "main" | "navigation" | "search" | "doc-abstract" | "doc-acknowledgments" | "doc-afterword" | "doc-appendix" | "doc-backlink" | "doc-biblioentry" | "doc-bibliography" | "doc-biblioref" | "doc-chapter" | "doc-colophon" | "doc-conclusion" | "doc-cover" | "doc-credit" | "doc-credits" | "doc-dedication" | "doc-endnote" | "doc-endnotes" | "doc-epigraph" | "doc-epilogue" | "doc-errata" | "doc-example" | "doc-footnote" | "doc-foreword" | "doc-glossary" | "doc-glossref" | "doc-index" | "doc-introduction" | "doc-noteref" | "doc-notice" | "doc-pagebreak" | "doc-pagelist" | "doc-part" | "doc-preface" | "doc-prologue" | "doc-pullquote" | "doc-qna" | "doc-subtitle" | "doc-tip" | "doc-toc";
+	// 不包含: "meter" | "rating"
 
 	const comp = defineComponent({
 		props: {
@@ -11,6 +12,13 @@
 			tabindex: {
 				type: [Number, String] as PropType<Numberish>,
 				default: undefined,
+			},
+			/**
+			 * 使用 `role` 可以增强组件的可读性和语义化。值得注意的是这个属性是枚举而并非任意填写的。
+			 */
+			role: {
+				type: String as PropType<Role>,
+				default: "application",
 			},
 		},
 		setup() {
@@ -29,11 +37,12 @@
 				if (!componentName) break;
 				className = new VariableName(componentName).kebab;
 			} while (false);
-			return { className, dom };
+			const label = new VariableName(className).words;
+			return { className, label };
 		},
 		render() {
 			return (
-				<kira-component ref={dom} tabindex={this.$props.tabindex} class={this.className}>
+				<kira-component tabindex={this.tabindex} class={this.className} role={this.role} aria-label={this.label}>
 					{this.$slots.default?.()}
 				</kira-component>
 			);

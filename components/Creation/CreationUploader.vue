@@ -1,8 +1,12 @@
 <script setup lang="ts">
 	const props = defineProps<{
+		/** 头像。 */
 		avatar: string;
+		/** 用户名。 */
 		username: string;
+		/** 粉丝数。 */
 		fans: number;
+		/** 是否已关注？ */
 		isFollowed?: boolean;
 	}>();
 </script>

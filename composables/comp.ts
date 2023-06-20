@@ -1,4 +1,5 @@
 type CompInstance = InstanceType<typeof Comp>;
+
 /**
  * 指向 Comp DOM 的引用。
  * @param value - 初始化传递过来的数据。

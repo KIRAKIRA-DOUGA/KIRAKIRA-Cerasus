@@ -20,9 +20,7 @@
 	const { isFullscreen: fullScreen, toggle } = useFullscreen(video);
 	const menu = ref<InstanceType<typeof Menu>>();
 
-	type MediaInfo = {
-		[type: string]: Record<string, unknown>;
-	};
+	type MediaInfo = Record<string, Record<string, unknown>>;
 
 	/**
 	 * 显示视频详细信息。
@@ -182,10 +180,6 @@
 		display: flex;
 		flex-direction: row;
 		background-color: c(surface-color);
-	}
-
-	.main {
-		@include flex-block;
 	}
 
 	.main,

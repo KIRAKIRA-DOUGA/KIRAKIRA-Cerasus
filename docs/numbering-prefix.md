@@ -2,11 +2,11 @@
 | 前缀标识符 | 含义 | 取自英文 |
 | --- | --- | --- |
 | kv | 视频 | Kira Video |
-| ka | 音频 | Kira Audio |
-| kb | 专辑 | Kira Album |
-| kg | 相簿 | Kira Gallery |
-| kl | 收藏夹 / MyList | Kira List |
-| ks | 合集 | Kira Series |
-| kt | 动态 | Kira Trends |
+| au | 音频 | Audio |
+| am | 专辑 | Album |
+| ab* | 相簿 | Album |
+| ml | 收藏夹 / MyList | My List |
+| sr* | 合集 | Series |
+| tr* | 动态 | Trends |
 
-- XXX: 我觉得有些前缀非常不行。
+* 带“*”号我觉得前缀不太行，有什么其它前缀想法吗？

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import avatar from "assets/images/aira.jpg";
+	import avatar from "assets/images/aira.webp";
 
 	const registerDate = ref(new Date());
 	const registerDateDisplay = computed(() => formatDate(registerDate.value, "yyyy-MM-dd"));
@@ -74,7 +74,8 @@
 		}
 
 		.text {
-			@include flex-block;
+			display: flex;
+			flex-direction: column;
 			gap: 6px;
 			justify-content: center;
 

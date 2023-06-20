@@ -7,7 +7,9 @@
 
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
+		/** 彩幕背景色，默认为黑幕。 */
 		color?: string;
+		/** 工具提示。 */
 		tooltip?: string;
 	}>(), {
 		color: "var(--text-color)",

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 	import "css-doodle";
+	import manifest from "public/manifest.json";
 
 	const { locale } = useI18n();
 	const langTag = computed(() => {
@@ -21,7 +22,7 @@
 			{ name: "viewport", content: "width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" },
 			{ name: "renderer", content: "webkit" },
 			{ name: "theme-color", content: Theme.meta },
-			{ name: "description", content: "一个可爱的视频网站，献给可爱的你！" },
+			{ name: "description", content: manifest.description },
 			{ name: "keywords", content: "视频,弹幕,字幕,音频,歌词,相簿,相册,照片,视频网站,弹幕视频,二次元,动漫,动画,音乐,动漫音乐,音MAD,AMV,MAD,ANIME,ACG,NOVA" },
 			// 以下内容为各种苹果私有属性。
 			{ name: "apple-mobile-web-app-title", content: "KIRAKIRA" }, // 添加到主屏后的标题 (iOS)
@@ -35,28 +36,28 @@
 			{ name: "referrer", content: "no-referrer" }, // 反防盗链
 			// 以下内容为开放图谱协议 (Open Graph Protocol) 属性。
 			{ property: "og:type", content: "website" },
-			{ property: "og:site_name", content: "KIRAKIRA☆DOUGA" },
-			{ property: "og:title", content: "KIRAKIRA☆DOUGA" }, // XXX: 这里得放页面的 title。
-			{ property: "og:description", content: "一个可爱的视频网站，献给可爱的你！" },
-			{ property: "og:image", content: "https://kira.calibur.tv/static/thumbnail.png" },
-			{ property: "og:url", content: "https://kira.calibur.tv/" },
+			{ property: "og:site_name", content: manifest.name },
+			{ property: "og:title", content: manifest.name }, // XXX: 这里得放页面的 title。
+			{ property: "og:description", content: manifest.description },
+			{ property: "og:image", content: "https://kirakira.moe/static/thumbnail.png" },
+			{ property: "og:url", content: "https://kirakira.moe/" },
 			// 以下内容为推特私有内容属性。
 			{ name: "twitter:card", content: "summary" },
-			{ name: "twitter:site", content: "KIRAKIRA☆DOUGA" },
-			{ name: "twitter:title", content: "KIRAKIRA☆DOUGA" }, // XXX: 这里得放页面的 title。
-			{ name: "twitter:description", content: "一个可爱的视频网站，献给可爱的你！" },
-			{ name: "twitter:image", content: "https://kira.calibur.tv/static/thumbnail.png" },
-			{ name: "twitter:url", content: "https://kira.calibur.tv/" },
+			{ name: "twitter:site", content: manifest.name },
+			{ name: "twitter:title", content: manifest.name }, // XXX: 这里得放页面的 title。
+			{ name: "twitter:description", content: manifest.description },
+			{ name: "twitter:image", content: "https://kirakira.moe/static/thumbnail.png" },
+			{ name: "twitter:url", content: "https://kirakira.moe/" },
 		],
 		link: [
 			{ rel: "icon", type: "image/vnd.microsoft.icon", href: "/favicon.ico" },
 			{ rel: "shortcut icon", type: "image/x-icon", href: "/favicon.ico" },
 			{ rel: "apple-touch-icon", href: "/public/static/touch/48.png" },
-			{ rel: "manifest", href: "/app.webmanifest" },
-			{ rel: "alternate", href: "https://kira.calibur.tv/", hreflang: "x-default" },
-			{ rel: "alternate", href: "https://kira.calibur.tv/", hreflang: "zh-CN" },
-			{ rel: "alternate", href: "https://kira.calibur.tv/en", hreflang: "en" },
-			{ rel: "alternate", href: "https://kira.calibur.tv/ja", hreflang: "ja" },
+			{ rel: "manifest", href: "/manifest.json" },
+			{ rel: "alternate", href: "https://kirakira.moe/", hreflang: "x-default" },
+			{ rel: "alternate", href: "https://kirakira.moe/", hreflang: "zh-CN" },
+			{ rel: "alternate", href: "https://kirakira.moe/en", hreflang: "en" },
+			{ rel: "alternate", href: "https://kirakira.moe/ja", hreflang: "ja" },
 		],
 	});
 
@@ -85,6 +86,8 @@
 			<component :is="Component" />
 		</RouterView>
 	</NuxtLayout>
-	<Toasts />
-	<Tooltips />
+	<Fragment id="teleports">
+		<Toasts />
+		<Tooltips />
+	</Fragment>
 </template>

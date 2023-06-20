@@ -21,6 +21,7 @@
 		height: 70dvh;
 		color: c(icon-color);
 		font-size: 32px;
+		transition: none;
 
 		.icon {
 			font-size: 128px;

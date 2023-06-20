@@ -3,7 +3,7 @@
 </script>
 
 <template>
-	<Comp>
+	<Comp role="contentinfo">
 		<slot></slot>
 	</Comp>
 </template>

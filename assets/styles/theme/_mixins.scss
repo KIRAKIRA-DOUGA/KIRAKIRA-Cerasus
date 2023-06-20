@@ -1,4 +1,5 @@
 @use "variables" as *;
+@use "internal" as *;
 
 /// 一键弹性布局加居中元素 (flex - center - center)。
 /// @output display, align-items, justify-content
@@ -6,13 +7,6 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-}
-
-/// 变成椭圆形。
-/// 将 border-radius 设为一个非常大的值。
-/// @output border-radius
-@mixin oval {
-	border-radius: 9999rem;
 }
 
 /// 变成正方形。长宽均相等。
@@ -23,11 +17,20 @@
 	height: $size;
 }
 
+/// 变成椭圆形。
+/// 将 border-radius 设为一个非常大的值。
+/// @param {String} $position [full] - 圆角的位置。
+/// @output border-radius
+@mixin oval($position: full) {
+	@include set-border-radius(9999rem, $position);
+}
+
 /// 变成圆形。
 /// 将 border-radius 设为 100%。
+/// @param {String} $position [full] - 圆角的位置。
 /// @output border-radius
-@mixin circle {
-	border-radius: 100%;
+@mixin circle($position: full) {
+	@include set-border-radius(100%, $position);
 }
 
 /// 将元素占满整个屏幕。
@@ -44,11 +47,12 @@
 }
 
 /// 池沼 block 布局会恶意在元素之间加空隙，使用 flex 得永恒。
+/// @deprecated 已经确定是图片、视频等 inline 元素干扰了，因此已通过正确的方式解决了问题，并且弃用该混合。
 /// @output display, flex-direction
-@mixin flex-block {
-	display: flex;
-	flex-direction: column;
-}
+// @mixin flex-block {
+// 	display: flex;
+// 	flex-direction: column;
+// }
 
 /// 去除垂直方向上的间距空隙，在高度变化动画中很有用。
 /// @param {Bool} $padding [true] - 调整内边距值。

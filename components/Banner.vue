@@ -6,23 +6,28 @@
 
 <template>
 	<Transition>
-		<div v-if="!collapsed" class="banner opened">
-			<LogoCover fullLogo noAnimation />
+		<Comp v-if="!collapsed" class="opened" role="banner">
+			<LogoCover noAnimation />
 			<div class="shadow"></div>
-		</div>
+		</Comp>
 	</Transition>
 </template>
 
 <style scoped lang="scss">
-	.banner {
+	:comp {
 		@include flex-center;
 		position: relative;
 		width: 100%;
 		overflow: hidden;
 
 		> .logo-cover {
-			--cover-width: 100dvw;
-			--cover-height: 280px;
+			--width: 100dvw;
+			--height: 280px;
+			--full-logo: true;
+
+			@media (width < 625px) {
+				--full-logo: false;
+			}
 		}
 
 		&.opened {

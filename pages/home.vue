@@ -9,6 +9,7 @@
 	const pages = getPages(
 		["组件测试页", "/components"],
 		["富文本测试页", "/test-rich-text-editor"],
+		["API 测试页", "/test-form"],
 		["搜索", "/search"],
 		["内容", "/hello"],
 		["下一页", "/next"],
@@ -50,7 +51,7 @@
 
 <template>
 	<div class="container">
-		<TabBar v-model="selectedTab" big class="category-tab">
+		<TabBar v-model="selectedTab" class="category-tab">
 			<TabItem id="home" direction="vertical" icon="home">{{ t.home }}</TabItem>
 			<TabItem id="music" direction="vertical-reverse" :badge="233">{{ t.music }}</TabItem>
 			<TabItem id="anime" direction="vertical-reverse" :badge="233">{{ t.anime }}</TabItem>
@@ -96,6 +97,10 @@
 		> * {
 			margin: 26px 0;
 		}
+	}
+
+	.tab-bar {
+		--loose: true;
 	}
 
 	.category-tab {

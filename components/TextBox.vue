@@ -1,10 +1,8 @@
 <script setup lang="tsx">
 	import { Transition } from "vue";
-	import { Icon, SoftKey } from "#components";
+	import { Icon, SoftButton } from "#components";
 
 	const props = withDefaults(defineProps<{
-		/** 当前输入是否非法。 */
-		invalid?: boolean;
 		/** 内容占位符。 */
 		placeholder?: string;
 		/** 图标名称。 */
@@ -12,19 +10,68 @@
 		/** 输入框尺寸。 */
 		size?: "small" | "normal" | "large";
 		/** 输入框类型。 */
-		type?: string;
+		type?: "date" | "datetime-local" | "email" | "month" | "number" | "password" | "search" | "tel" | "text" | "time" | "url" | "week";
+		// 已弃用："datetime"。
+		// 不可用："button" | "checkbox" | "radio" | "submit" | "reset" | "file" | "hidden" | "image" | "color" | "range"。
 		/** 始终不显示清空按钮。 */
 		hideClearAll?: boolean;
+		/** 当输入内容不合法时，直接阻止用户进行输入。 */
+		preventIfInvalid?: boolean;
+		/** 表单自动填充特性提示，以空格分隔字符串。注意不是布尔类型。 */
+		autoComplete?: string;
+		/** 是否页面加载后自动聚焦？ */
+		autoFocus?: boolean;
+		/** 表单控件是否禁用？ */
+		disabled?: boolean;
+		/** 将控件联系到表单元素中。 */
+		form?: string;
+		/** 自动完成选项的 `<datalist>` 的 id 属性的值。 */
+		list?: string;
+		/** 最大值。 */
+		max?: number;
+		/** 最大字符数。 */
+		maxLength?: number;
+		/** 最小值。 */
+		min?: number;
+		/** 最小字符数。 */
+		minLength?: number;
+		/** 是否允许多个值？ */
+		multiple?: boolean;
+		/** 表单的控件名称，作为键值对的一部分与表单一同提交。 */
+		name?: string;
+		/** 为了使得 value 有效，必须符合的模式。 */
+		pattern?: RegExp;
+		/** 是否只读？ */
+		readonly?: boolean;
+		/** 是否必填？ */
+		required?: boolean;
+		/** 有效的增量值。 */
+		step?: number;
+		/** 输入法模式。 */
+		inputMode?: "none" | "text" | "decimal" | "numeric" | "tel" | "search" | "email" | "url";
 	}>(), {
 		icon: undefined,
 		size: "normal",
 		type: "text",
 		placeholder: "",
+		autoComplete: undefined,
+		form: undefined,
+		list: undefined,
+		max: undefined,
+		maxLength: undefined,
+		min: undefined,
+		minLength: undefined,
+		name: undefined,
+		pattern: undefined,
+		step: undefined,
+		inputMode: undefined,
 	});
 
+	const emits = defineEmits<{
+		input: [e: InputEvent];
+	}>();
+
 	const value = defineModel<string>({ required: true });
-	/** 用户是否输入了值。 */
-	const typed = computed(() => value.value !== "");
 	/** 是否显示密码。 */
 	const showPassword = ref(false);
 	const type = computed(() => {
@@ -33,12 +80,101 @@
 	});
 	const input = ref<HTMLInputElement>();
 	const showClearAll = computed(() => !props.hideClearAll && value.value !== "");
+	const isInvalid = () => input.value?.validity.valid === false; // 注意不要写成 !valid，还需要排除 undefined 的情况。
+	const invalid = ref(false); // 如果使用 computed，则只会调用一次。并不能监测 isInvalid 的变化，所以 computed 功能只是个废物？
+	const isNumberMode = computed(() => props.min !== undefined || props.max !== undefined || ["decimal", "numberic", "tel"].includes(props.inputMode!));
+
+	/**
+	 * 手动在 `type="text"` 的情况下验证数字。
+	 * @param e - 输入事件。
+	 * @returns 验证结果。
+	 */
+	function examineNumber(e: InputEvent) {
+		const input = e.target as HTMLInputElement;
+		let result = input.value;
+		let status: "valid" | "invalid" | "toomax" | "toomin" | "unstep" = "valid";
+		if (isNumberMode.value) {
+			let validChar = "0-9";
+			if (props.min === undefined || props.min < 0) validChar += "-";
+			if (!Number.isInteger(props.step) || props.inputMode === "decimal") validChar += ".";
+			const pattern = new RegExp(`[^${validChar}]`, "g");
+			value.value = value.value.replace(pattern, "");
+			if (e.data && e.data.match(pattern)) status = "invalid";
+			else if (input.value.match(pattern)) status = "invalid";
+			const isEmpty = !input.value.trim().length;
+			let num = parseFloat(input.value);
+			if (isEmpty && props.required) num = 0;
+			if (!Number.isFinite(num)) status = "invalid";
+			if (props.min !== undefined && num < props.min) { num = props.min; status = "toomin"; }
+			if (props.max !== undefined && num > props.max) { num = props.max; status = "toomax"; }
+			if (props.min !== undefined && props.step !== undefined && !Number.isInteger((num - props.min) / props.step) && num !== props.max) { num = Math.floor((num - props.min) / props.step) * props.step; status = "unstep"; }
+			if (isEmpty && !props.required) result = "";
+			else result = String(num);
+		}
+		return { status, value: result };
+	}
+
+	/**
+	 * 输入框文本输入和改变事件。
+	 * @param _e - 输入事件。但是池沼 Vue 不会自动缩小类型，因此只能用普通事件代替。
+	 */
+	function onInput(_e: Event) {
+		const e = _e as InputEvent;
+		const input = e.target as HTMLInputElement;
+		const caret = Caret.get(input);
+		emits("input", e);
+		const undo = () => {
+			const length = input.value.length - value.value.length;
+			input.value = value.value;
+			if (length >= 0 && caret !== null) Caret.set(input, caret - length);
+		};
+		if (props.preventIfInvalid) {
+			if (props.pattern) {
+				const pattern = new RegExp(`^${props.pattern.source.replace(/\*$/, "+")}$`, props.pattern.flags);
+				value.value = value.value.match(props.pattern)?.[0] ?? "";
+				if (e.data && !e.data.match(pattern)) undo();
+				else if (!input.value.match(pattern)) undo();
+			}
+			if (isNumberMode.value) {
+				const result = examineNumber(e);
+				if (result.status === "invalid") undo();
+				else if (input.value !== result.value) input.value = result.value;
+			}
+		} else {
+			void 0; // HACK: 禁止合并 else if，等留着以后添加其它情况。
+			if (isNumberMode.value) {
+				const { status } = examineNumber(e), value = input.value;
+				const validationMessage = (() => {
+					const input = document.createElement("input") as
+						Override<HTMLInputElement, Partial<Record<"min" | "max" | "step", string | number>>>;
+					input.type = "number";
+					input.min = props.min;
+					input.max = props.max;
+					input.step = props.step;
+					input.required = props.required;
+					input.value = value;
+					return input.validationMessage;
+				})();
+				input.setCustomValidity(status === "valid" ? "" : validationMessage || " ");
+			}
+		}
+		invalid.value = isInvalid();
+		value.value = input.value;
+	}
 
 	/**
 	 * 清空文本。
 	 */
 	function clearAll() {
 		value.value = "";
+		input.value?.focus();
+	}
+
+	/**
+	 * 切换显示密码。
+	 */
+	function toggleShowPassword() {
+		showPassword.value = !showPassword.value;
 		input.value?.focus();
 	}
 
@@ -64,6 +200,10 @@
 		done();
 	}
 
+	onMounted(() => {
+		invalid.value = isInvalid();
+	});
+
 	const AfterIcon = (() => {
 		interface Props {
 			shown?: boolean;
@@ -74,7 +214,7 @@
 			<Transition css={false} onEnter={onAfterIconEnter} onLeave={onAfterIconLeave}>
 				{
 					props.shown &&
-					<SoftKey icon={props.icon} nonclickable={!props.onClick} appearance="textbox-aftericon" onClick={props.onClick} />
+					<SoftButton icon={props.icon} nonclickable={!props.onClick} appearance="textbox-aftericon" onClick={props.onClick} />
 				}
 			</Transition>
 		);
@@ -86,18 +226,40 @@
 		:class="{
 			small: size === 'small',
 			large: size === 'large',
-			invalid,
 			'icon-enabled': icon,
 		}"
+		role="textbox"
 	>
 		<div class="wrapper">
 			<Icon v-if="icon" :name="icon" class="before-icon" />
-			<input ref="input" v-model="value" :type="type" :placeholder="placeholder" :class="{ typed }" />
+			<input
+				ref="input"
+				:value="value ?? ''"
+				:type="type"
+				:placeholder="placeholder.toString()"
+				:autocomplete="autoComplete"
+				:autofocus="autoFocus"
+				:disabled="disabled"
+				:form="form"
+				:list="list"
+				:max="max"
+				:maxlength="maxLength"
+				:min="min"
+				:minlength="minLength"
+				:multiple="multiple"
+				:name="name"
+				:pattern="pattern?.source"
+				:readonly="readonly"
+				:required="required"
+				:step="step"
+				:inputmode="inputMode"
+				@input="onInput"
+			/>
 			<label v-if="size === 'large'">{{ placeholder }}</label>
 			<Fragment class="after-icons">
 				<AfterIcon :shown="showClearAll" icon="close" @click="clearAll" />
-				<AfterIcon :shown="props.type === 'password'" :icon="showPassword ? 'visibility' : 'visibility_off'" @click="showPassword = !showPassword" />
-				<AfterIcon :shown="invalid" icon="error" />
+				<AfterIcon :shown="props.type === 'password'" :icon="showPassword ? 'visibility' : 'visibility_off'" @click="toggleShowPassword" />
+				<AfterIcon v-tooltip:y="input?.validationMessage || undefined" :shown="invalid" icon="error" />
 			</Fragment>
 		</div>
 		<div v-if="size === 'large'" class="stripe large-stripe"></div>
@@ -110,7 +272,7 @@
 	$default-height: 36px;
 	$small-height: 28px;
 	$large-height: 44px;
-	$front-indent: 12px;
+	$start-indent: 12px;
 
 	:comp {
 		@include radius-large;
@@ -129,7 +291,7 @@
 			height: $large-height;
 		}
 
-		&.invalid {
+		&:has(input:invalid) {
 			.focus-stripe {
 				background-color: c(red) !important;
 				scale: 1;
@@ -190,19 +352,15 @@
 		position: absolute;
 		display: block;
 		width: 100%;
-		margin-left: $front-indent;
+		margin-left: $start-indent;
 		color: c(icon-color);
 		scale: 1;
 		translate: 0;
 		transform-origin: left;
 		pointer-events: none;
 
-		/* @include tablet { // 增加移动端文字大小防止 Safari 放大。
-			font-size: 16px;
-		} */
-
 		.before-icon ~ & {
-			margin-left: $front-indent + 24px + 16px;
+			margin-left: $start-indent + 24px + 16px;
 		}
 	}
 
@@ -216,14 +374,10 @@
 		padding: 0;
 		color: c(text-color);
 		font-size: 14px;
-		text-indent: $front-indent;
+		text-indent: $start-indent;
 		background: transparent;
 		border: 0;
 		appearance: none;
-
-		/* @include tablet { // 增加移动端文字大小防止 Safari 放大。
-			font-size: 16px;
-		} */
 
 		&::placeholder {
 			color: c(icon-color);
@@ -234,18 +388,18 @@
 			display: none;
 		}
 
-		&.typed ~ label,
+		&:not(:placeholder-shown) ~ label,
 		&:focus ~ label {
 			translate: 0 calc($large-height / -2 + 12px);
 			scale: 0.7;
 		}
 
 		.before-icon ~ & {
-			padding-left: $front-indent + 24px + 4px;
+			padding-left: $start-indent + 24px + 4px;
 			text-indent: 0;
 
 			.large & {
-				padding-left: $front-indent + 24px + 16px;
+				padding-left: $start-indent + 24px + 16px;
 			}
 		}
 
@@ -257,8 +411,8 @@
 			}
 		}
 
-		.invalid &::selection {
-			background-color: c(red); // BUG: Chromium 111 开始在 `::selection` 设定 `var()` 都会失效。包括 GitHub 和 Edge 的开发工具在内都有这种显示问题。https://bugs.chromium.org/p/chromium/issues/detail?id=1429546
+		&:invalid::selection {
+			background-color: c(red); // WARN: Chromium 111 开始在 `::selection` 设定 `var()` 都会失效。包括 GitHub 和 Edge 的开发工具在内都有这种显示问题。https://bugs.chromium.org/p/chromium/issues/detail?id=1429546
 		}
 	}
 
@@ -286,11 +440,11 @@
 			--size: #{$small-height};
 		}
 
-		.invalid & :deep(.icon) {
+		input:invalid ~ & :deep(.icon) {
 			color: c(red) !important;
 		}
 
-		.soft-key {
+		.soft-button {
 			--wrapper-size: var(--size);
 			--ripple-size: calc(var(--size) * 1.3);
 		}

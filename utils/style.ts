@@ -1,4 +1,66 @@
 /**
+ * 探测元素溢出。如果元素超出了页面范围，则将其移动到页面内。
+ * @private
+ * @param location - 元素的坐标（仅支持元组类型）。
+ * @param size - 元素的尺寸（仅支持元组类型）。
+ * @returns 返回移动入页面后的新坐标。
+ */
+function moveIntoPage_tuple(location: TwoD, size: TwoD) {
+	const result = [...location] as typeof location;
+	const windowSize = [window.innerWidth, window.innerHeight];
+	for (let i = 0; i < 2; i++)
+		if (result[i] + size[i] > windowSize[i])
+			result[i] = windowSize[i] - size[i];
+	return result;
+}
+
+/**
+ * 探测元素溢出。如果元素超出了页面范围，则将其移动到页面内。
+ * @param location - 元素的元组类型坐标。
+ * @param size - 元素的元组类型尺寸。
+ * @returns 返回移动入页面后的新坐标。
+ */
+export function moveIntoPage(location: MaybeRef<TwoD>, size: MaybeRef<TwoD>): TwoD;
+/**
+ * 探测元素溢出。如果元素超出了页面范围，则将其移动到页面内。
+ * @param element - HTML DOM 元素。
+ * @returns 返回移动入页面后的新坐标样式声明。
+ */
+export function moveIntoPage(element: MaybeRef<HTMLElement>): { top: string; left: string };
+/**
+ * 探测元素溢出。如果元素超出了页面范围，则将其移动到页面内。
+ * @param measureElement - 要测量的 HTML DOM 元素。
+ * @param adjustElement - 要调整位置的 HTML DOM 元素。
+ * @returns 返回移动入页面后的新坐标样式声明。
+ */
+export function moveIntoPage(measureElement: MaybeRef<HTMLElement>, adjustElement: MaybeRef<HTMLElement>): { top: string; left: string };
+/**
+ * 探测元素溢出。如果元素超出了页面范围，则将其移动到页面内。
+ * @param location - 元素的坐标。
+ * @param size - 元素的尺寸。
+ * @returns 返回移动入页面后的新坐标。
+ */
+export function moveIntoPage(location: MaybeRef<TwoD | HTMLElement>, size?: MaybeRef<TwoD | HTMLElement>) {
+	location = toValue(location);
+	size = toValue(size);
+	const adjustElementStyle = size instanceof Element && size.style;
+	let returnAsStyle = false;
+	if (location instanceof Element) {
+		returnAsStyle = true;
+		const rect = location.getBoundingClientRect();
+		location = [rect.x, rect.y];
+		size = [rect.width, rect.height];
+	}
+	const result = moveIntoPage_tuple(location, size as TwoD);
+	if (adjustElementStyle) {
+		const adjustment = (["left", "top"] as const).map(pos => parseFloat(adjustElementStyle[pos])) as TwoD;
+		location.forEach((original, i) => result[i] += adjustment[i] - original);
+	}
+	if (!returnAsStyle) return result;
+	return { left: result[0] + "px", top: result[1] + "px" };
+}
+
+/**
  * 取消元素的变换后获取元素的矩形边界值。
  *
  * 这一切的行为就像 `getBoundingClientRect()` 一样，但它会使所有转换无效，并将元素*恢复*到其原始位置。这甚至适用于复杂的平移和旋转。美妙之处在于它将矩阵逆应用到变换矩阵上，并在此过程中使 getBoundingClientRect 发生变化。
