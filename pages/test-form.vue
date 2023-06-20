@@ -81,23 +81,28 @@
 		}
 	};
 
-	const userSettingsMount = ref<Partial<QueryResultType>>({});
-	const getUserSettings = async () => {
-		const url = "https://rosales.kirakira.moe:4000/02/koa/user/settings/userSettings/get?uuid=u00001";
-		const { data: userSettingsMountResult } = await useFetch(url);
-		userSettingsMount.value = userSettingsMountResult.value as QueryResultType;
-	};
+	// const userSettingsMount = ref({} as queryResultType);
+	// const getUserSettings = async () => {
+	// 	const url = "https://rosales.kirakira.moe:4000/02/koa/user/settings/userSettings/get?uuid=u00001";
+	// 	const { data: userSettingsMountResult } = await useFetch(url);
+	// 	userSettingsMount.value = userSettingsMountResult.value as queryResultType;
+	// };
 
-	getUserSettings();
+	// await getUserSettings();
+
+	const url = "https://rosales.kirakira.moe:4000/02/koa/user/settings/userSettings/get?uuid=u00001";
+	// const url = "https://rosales.kirakira.moe:4001/02/koa/admin/sleep?sleep=5000"; // sleep API 模拟慢速网络请求
+	const { data: userSettingsMount } = await useFetch(url);
 
 	useHead({ title: "API 测试页" });
 </script>
 
 <template>
 	<div class="container">
-		<h2>测试服务端渲染</h2>
-		<div>在组件初始化时获取 u00001 用户设定档数据的结果：<br />{{ userSettingsMount }}</div>
-		<div>上方显示的数据是在前端的服务端中请求的（当前为 vercel.com），您无法在客户端浏览器控制台中找到</div>
+		<h2>测试首屏服务端渲染</h2>
+		<div>请求 u00001 用户设定档数据的结果：<br />{{ userSettingsMount }}</div>
+		<div>在本页面是首屏加载时，上方显示的数据是在运行 Nuxt 的服务端中请求的（当前为 vercel.com），您无法在客户端浏览器的控制台中找到请求用户设定档的网络请求，不妨刷新一下页面试试！</div>
+		<div>在本页面不是首屏加载时，上方显示的数据是在用户的客户端中请求的，您可以在客户端浏览器的控制台中找到请求用户设定档数据网络请求。</div>
 
 		<h2>查询用户设定档</h2>
 		<div class="query">
