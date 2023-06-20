@@ -64,7 +64,7 @@
 	}
 
 	useEventListener("window", "keyup", e => {
-		if (rtfEditor.value && getPath(e.target).includes(rtfEditor.value))
+		if (isInPath(e, rtfEditor))
 			shortCut(e);
 	});
 
