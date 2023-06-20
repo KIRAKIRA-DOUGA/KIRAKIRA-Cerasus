@@ -82,17 +82,16 @@
 </script>
 
 <template>
-	<Comp>
+	<Comp ref="rtfEditor">
 		<KaomojiBar v-if="showEmojiBar" v-model="inputKaomoji" @click="enter(inputKaomoji)" />
 		<div class="toolbar">
-			<button v-ripple @click="showEmojiBar = !showEmojiBar"><Icon name="kaomoji" class="icon" style="scale: 2.5 ;" /></button>
+			<button v-ripple @click="showEmojiBar = !showEmojiBar"><Icon name="kaomoji" class="icon" :style="{ scale: 2.5 }" /></button>
 			<button v-ripple @click="addAtList"><Icon name="at" class="icon" /></button>
 			<ToolItem active="bold" @click="toggleBold"><Icon name="bold" class="icon" /></ToolItem>
 			<ToolItem active="italic" @click="toggleItalic"><Icon name="italic" class="icon" /></ToolItem>
 			<!-- <ToolItem active="underline" @click="toggleUnderline"><u>U</u></ToolItem> -->
 			<ToolItem active="strike" @click="toggleStrike"><Icon name="strike" class="icon" /></ToolItem>
 			<button v-ripple @click="addVueComponents"><Icon name="photo" class="icon" /></button>
-
 		</div>
 		<EditorContent :editor="editor" />
 	</Comp>
