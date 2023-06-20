@@ -27,9 +27,12 @@ declare global {
 
 	/**
 	 * 类型去空。相当于 `!`。
+	 *
+	 * 功能实现与 `NonNullable` 不一致。
 	 * @template T - 可能带空的类型。
 	 */
 	type NonNull<T> = Exclude<T, undefined | null>;
+	
 	/**
 	 * 重写某个对象部分字段的类型。
 	 * @template T - 源对象。
