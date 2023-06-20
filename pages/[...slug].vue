@@ -7,7 +7,7 @@
 	});
 
 	const route = useRoute();
-	const isSettings = computed(() => route.params.slug[0] === "settings");
+	const isSettings = computed(() => route.params.slug?.[0] === "settings");
 
 	/**
 	 * 重新载入。

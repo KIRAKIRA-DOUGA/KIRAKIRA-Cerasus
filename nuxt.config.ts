@@ -18,11 +18,11 @@ export default defineNuxtConfig({
 		"plugins/vue/tooltip.ts",
 	],
 	modules: [
-		"@nuxtjs/svg-sprite",
 		// "@nuxt/devtools",
 		"@nuxtjs/i18n",
 		"@nuxt/content",
 		"nuxt-icons",
+		"@nuxtjs/svg-sprite",
 		"@vueuse/nuxt",
 		"nuxt-lodash",
 		["@pinia/nuxt", {
