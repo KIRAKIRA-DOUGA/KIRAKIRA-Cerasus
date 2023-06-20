@@ -23,7 +23,7 @@
 		"prefix": "model",
 		"body": [
 			"const model = defineModel<${1:boolean}>($3);$0",
-			"const ${2:value} = withOneWayProp(model, props.${2:value});",
+			"const ${2:value} = withOneWayProp(model, () => props.${2:value});",
 		],
 		"description": "定义Vue组件双向绑定模型",
 	},

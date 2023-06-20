@@ -1,49 +1,37 @@
 <script setup lang="ts">
-	import { LogoTextFormType } from "components/Logo/LogoText.vue";
-	import avatar from "assets/images/aira.jpg";
+	import avatar from "assets/images/aira.webp";
 
-	const logoTextForm = ref<LogoTextFormType>("hidden");
-	const showStripes = ref(false);
 	const showLogin = ref(false);
 	const isLogined = ref(false);
-	const rightTooltip = (title: string) => ({ title, placement: "right" });
 	const isCurrentSettings = computed(() => !!currentSettingsPage());
-
-	useEventListener("window", "resize", () => {
-		const height = window.innerHeight;
-		logoTextForm.value = height < 678 ? "hidden" : height < 765 ? "half" : "full";
-		showStripes.value = height >= 540;
-	}, { immediate: true });
 
 	useListen("app:requestLogin", () => showLogin.value = true);
 	useListen("user:login", value => isLogined.value = value);
 </script>
 
 <template>
-	<aside>
+	<aside role="toolbar" aria-label="side bar" aria-orientation="vertical">
 		<div class="top icons">
-			<SoftKey v-i="0" v-tooltip="rightTooltip(t.home)" icon="home" href="/" />
-			<SoftKey v-i="1" v-tooltip="rightTooltip(t.search)" icon="search" href="/search" />
-			<SoftKey v-i="2" v-tooltip="rightTooltip(t.history)" icon="history" />
-			<SoftKey v-i="3" v-tooltip="rightTooltip(t.favorite)" icon="star" />
-			<SoftKey v-i="4" v-tooltip="rightTooltip('关注')" icon="feed" />
-			<SoftKey v-i="5" v-tooltip="rightTooltip(t.upload)" icon="upload" />
+			<SoftButton v-i="0" v-tooltip:right="t.home" icon="home" href="/" />
+			<SoftButton v-i="1" v-tooltip:right="t.search" icon="search" href="/search" />
+			<SoftButton v-i="2" v-tooltip:right="t.history" icon="history" />
+			<SoftButton v-i="3" v-tooltip:right="t.favorite" icon="star" />
+			<SoftButton v-i="4" v-tooltip:right="t.follow" icon="feed" />
+			<SoftButton v-i="5" v-tooltip:right="t.upload" icon="upload" />
 		</div>
 
-		<Transition>
-			<div v-show="showStripes" v-i="6" class="center">
-				<div class="stripes">
-					<div v-for="i in 2" :key="i" class="stripe"></div>
-				</div>
-				<LogoText :form="logoTextForm" />
+		<div v-i="6" class="center">
+			<div class="stripes">
+				<div v-for="i in 2" :key="i" class="stripe"></div>
 			</div>
-		</Transition>
+			<LogoText />
+		</div>
 
 		<div class="bottom icons">
-			<SoftKey
+			<SoftButton
 				v-if="!isLogined"
 				v-i="7"
-				v-tooltip="rightTooltip(t.login)"
+				v-tooltip:right="t.login"
 				icon="person"
 				class="person"
 				@click="showLogin = true"
@@ -52,14 +40,14 @@
 				v-else
 				v-i="7"
 				v-ripple
-				v-tooltip="rightTooltip('艾草')"
+				v-tooltip:right="'艾草'"
 				class="person logined"
 				@click="showLogin = true"
 			>
 				<img :src="avatar" alt="avatar" draggable="false" />
 			</div>
-			<SoftKey v-i="8" v-tooltip="rightTooltip(t.messages)" icon="email" href="/test-rich-text-editor" />
-			<SoftKey v-i="9" v-tooltip="rightTooltip(t.settings)" icon="settings" href="/settings" :active="isCurrentSettings" />
+			<SoftButton v-i="8" v-tooltip:right="t.messages" icon="email" href="/test-rich-text-editor" />
+			<SoftButton v-i="9" v-tooltip:right="t.settings" icon="settings" href="/settings" :active="isCurrentSettings" />
 		</div>
 
 		<LoginWindow v-model="showLogin" />
@@ -119,26 +107,47 @@
 					background-color: c(accent);
 				}
 
-				&:has(+ .hidden) {
+				@media (height < 678px) {
 					margin-right: 0;
+				}
+
+				@media (height < 540px) {
+					transform: none;
+					opacity: 0;
 				}
 			}
 
-			&.v-enter-from,
+			.logo-text {
+				--form: hidden;
+
+				@media (height >= 678px) {
+					--form: half;
+				}
+
+				@media (height >= 765px) {
+					--form: full;
+				}
+			}
+
+			@media (height < 540px) {
+				margin-top: -100%;
+			}
+
+			/* &.v-enter-from,
 			&.v-leave-to {
 				opacity: 0;
 
 				.stripes {
 					transform: none;
 				}
-			}
+			} */
 		}
 
 		.bottom ~ * {
 			display: none;
 		}
 
-		.soft-key {
+		.soft-button {
 			--ripple-size: 40px;
 		}
 	}

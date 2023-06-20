@@ -4,7 +4,7 @@
 </script>
 
 <script setup lang="ts" generic="T extends string">
-	// BUG: 泛型功能有问题，暂时禁用检查。
+	// WARN: 泛型功能有问题，暂时禁用检查。
 	const props = withDefaults(defineProps<{
 		/** 禁用。 */
 		disabled?: boolean;
@@ -99,6 +99,8 @@
 <template>
 	<Comp
 		:tabindex="!disabled ? 0 : -1"
+		role="checkbox"
+		:aria-checked="isChecked"
 		@click="onChange"
 		@keydown="onKeyDown"
 		@keyup="onKeyUp"
@@ -119,7 +121,7 @@
 				</div>
 			</div>
 		</div>
-		<slot></slot>
+		<label><slot></slot></label>
 	</Comp>
 </template>
 

@@ -53,6 +53,7 @@ export default defineNuxtConfig({
 		"classes",
 		"locales",
 		"stores",
+		"api",
 	),
 	css: [
 		"styles/global.scss",

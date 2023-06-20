@@ -8,11 +8,13 @@
 		/** 加载完成并隐藏？ */
 		hidden?: boolean;
 	}>();
+
+	const shown = computed(() => !props.hidden);
 </script>
 
 <template>
 	<Transition :duration="250">
-		<div v-if="!hidden" class="spinner">
+		<Comp v-if="shown" role="progressbar" :aria-busy="shown">
 			<div class="layer">
 				<div class="circle-clipper left">
 					<div class="circle"></div>
@@ -24,7 +26,7 @@
 					<div class="circle"></div>
 				</div>
 			</div>
-		</div>
+		</Comp>
 	</Transition>
 </template>
 
@@ -32,7 +34,7 @@
 	$layer-animation-options: cubic-bezier(0.4, 0, 0.2, 1) infinite both;
 
 	@layer props {
-		.spinner {
+		:comp {
 			/// 进度环尺寸大小。
 			--size: 28px;
 			/// 进度环边缘线条粗细。
@@ -40,7 +42,7 @@
 		}
 	}
 
-	.spinner {
+	:comp {
 		@include square(var(--size));
 		position: relative;
 		display: inline-block;

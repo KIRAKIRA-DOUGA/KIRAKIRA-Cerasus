@@ -56,9 +56,9 @@
 </script>
 
 <template>
-	<Comp>
+	<Comp role="toolbar">
 		<div class="left">
-			<SoftKey class="play" :icon="playing ? 'pause' : 'play'" @click="playing = !playing" />
+			<SoftButton class="play" :icon="playing ? 'pause' : 'play'" @click="playing = !playing" />
 		</div>
 		<div class="slider">
 			<Slider v-model="currentPercent" :min="0" :max="1" :buffered="buffered" />
@@ -69,9 +69,9 @@
 				<span class="divide">/</span>
 				<span class="duration">{{ duration }}</span>
 			</div>
-			<SoftKey icon="volume_up" />
-			<SoftKey :text="playbackRateText" @click="switchSpeed" />
-			<SoftKey :icon="fullScreen ? 'fullscreen' : 'fullscreen_exit'" @click="() => toggleFullScreen?.()" />
+			<SoftButton icon="volume_up" />
+			<SoftButton :text="playbackRateText" @click="switchSpeed" />
+			<SoftButton :icon="fullScreen ? 'fullscreen' : 'fullscreen_exit'" @click="() => toggleFullScreen?.()" />
 		</div>
 	</Comp>
 </template>

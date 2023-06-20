@@ -1,6 +1,8 @@
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
+		/** 图标。 */
 		icon?: string;
+		/** 角标。 */
 		badge?: Readable;
 	}>(), {
 		icon: "apps",

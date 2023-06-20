@@ -63,7 +63,7 @@ module.exports = {
 		"at-rule-empty-line-before": ["always", {
 			"except": ["first-nested"],
 			"ignore": ["after-comment"],
-			"ignoreAtRules": ["import", "include", "else", "return", "forward", "use"],
+			"ignoreAtRules": ["import", "include", "else", "return", "forward", "use", "debug"],
 		}],
 		"unit-disallowed-list": [
 			"vw", "vh", "vmin", "vmax", // 请使用 dvw、dvh、dvmin、dvmax 代替之。

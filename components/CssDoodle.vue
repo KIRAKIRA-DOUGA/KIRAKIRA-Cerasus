@@ -10,7 +10,7 @@
 </script>
 
 <template>
-	<Comp class="wrapper">
+	<Comp class="wrapper" role="img">
 		<component :is="'style'" v-if="styles" scoped>
 			{{ styles }}
 		</component>

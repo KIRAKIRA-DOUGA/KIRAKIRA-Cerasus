@@ -1,4 +1,5 @@
-type TargetType = Node | Element | Event | EventTarget | null;
+type TargetType = Node | Element | Ref<Element | null | undefined> | Event | EventTarget | null | undefined;
+type DetectInPathType = Element | Ref<Element | null | undefined> | EventTarget | null | undefined;
 
 /**
  * 获取从指定元素节点，一直追溯到根元素的数组。
@@ -7,6 +8,7 @@ type TargetType = Node | Element | Event | EventTarget | null;
  * @returns 从指定元素节点，一直追溯到根元素的数组。
  */
 export function getPath(target: TargetType): Element[] {
+	if (isRef(target)) target = toValue(target);
 	if (target instanceof Event) target = target.target;
 	if (!(target instanceof Element)) return [];
 	const path: Element[] = [];
@@ -23,8 +25,10 @@ export function getPath(target: TargetType): Element[] {
  * @param element - 要查找的冒泡 HTML DOM 节点。
  * @returns 要查询的元素是或是其祖先节点。
  */
-export function isInPath(target: TargetType, element: Element): boolean {
+export function isInPath(target: TargetType, element: DetectInPathType): boolean {
 	const path = getPath(target);
+	if (isRef(element)) element = toValue(element);
+	if (!(element instanceof Element)) return false;
 	return path.includes(element);
 }
 

@@ -9,7 +9,7 @@
 	}>();
 
 	const model = defineModel<boolean>();
-	const isChecked = withOneWayProp(model, props.checked);
+	const isChecked = withOneWayProp(model, () => props.checked);
 </script>
 
 <template>
@@ -20,6 +20,9 @@
 		:to="link || '#'"
 		draggable="false"
 		tabindex="0"
+		role="checkbox"
+		:aria-checked="isChecked"
+		aria-label="tag"
 		@click="model = !model"
 	>
 		<div class="circle"></div>

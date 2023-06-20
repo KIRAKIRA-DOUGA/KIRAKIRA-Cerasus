@@ -4,6 +4,7 @@
 
 <script setup lang="ts">
 	const props = defineProps<{
+		/** 评论数目。 */
 		count: number | string;
 	}>();
 </script>

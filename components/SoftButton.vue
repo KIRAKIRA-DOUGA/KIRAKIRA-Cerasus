@@ -1,5 +1,4 @@
 <script setup lang="ts">
-	// XXX: 感觉这个组件还得换一个更好听的名称。
 	import { LocaleLink } from "#components";
 
 	const props = withDefaults(defineProps<{
@@ -43,7 +42,7 @@
 </script>
 
 <template>
-	<Comp :class="[appearance]">
+	<Comp :class="[appearance]" role="button" :aria-label="icon">
 		<component
 			:is="href ? LocaleLink : 'button'"
 			v-ripple
@@ -79,7 +78,6 @@
 	}
 
 	.icon {
-		color: c(icon-color);
 		font-size: var(--icon-size);
 	}
 
@@ -88,6 +86,7 @@
 		@include square(var(--wrapper-size));
 		@include circle;
 		@include ripple-clickable-only-inside(var(--wrapper-size));
+		color: c(icon-color);
 
 		> * {
 			@include flex-center;
@@ -95,7 +94,6 @@
 			@include circle;
 			position: relative;
 			flex-shrink: 0;
-			color: c(icon-color);
 			font-weight: 600;
 
 			&:not([tabindex="-1"]):focus-visible {
@@ -124,6 +122,10 @@
 		&.textbox-aftericon > *:not([tabindex="-1"]):focus-visible {
 			@include radius-large;
 			@include textbox-aftericon-focus;
+		}
+
+		* {
+			color: inherit;
 		}
 
 		> a {

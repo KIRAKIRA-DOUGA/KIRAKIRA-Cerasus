@@ -3,6 +3,7 @@
 	import Settings from "./Settings.vue";
 
 	const container = ref<HTMLDivElement>();
+	const containerMain = ref<HTMLElement>();
 	const showBanner = ref(false);
 	const localedRoute = computed(() => getRoutePath());
 	const SETTINGS = "settings";
@@ -10,6 +11,14 @@
 	const isSettings = computed(() => getRoutePath().includes(SETTINGS));
 	const cssDoodle = refComp();
 	const showCssDoodle = computed(() => useAppSettingsStore().showCssDoodle);
+	const isToggleSettings = ref(false);
+	const scrollToTop = () => [container, containerMain].forEach(c => c.value?.scrollTo(0, 0));
+	const transitionProps = (aboutSettings: boolean) => {
+		const attrs: AnyObject = { mode: "out-in", onBeforeEnter: scrollToTop };
+		if (aboutSettings)
+			Object.assign(attrs, { onBeforeLeave: () => isToggleSettings.value = true, onAfterEnter: () => isToggleSettings.value = false });
+		return attrs;
+	};
 
 	watchRoute(() => {
 		showBanner.value = localedRoute.value === "";
@@ -34,18 +43,18 @@
 		<CssDoodle v-show="showCssDoodle" ref="cssDoodle" :rule="background" class="background" />
 	</Transition>
 	<SideBar class="sidebar" />
-	<div ref="container" class="container" :class="{ scroll: isSettings }">
-		<Transition name="settings" mode="out-in">
-			<main v-if="!isSettings" class="scroll">
+	<div ref="container" class="container" :class="{ scroll: isSettings, 'toggle-settings': isToggleSettings }">
+		<Transition name="settings" v-bind="transitionProps(true)">
+			<main v-if="!isSettings" ref="containerMain" class="scroll">
 				<Banner :collapsed="!showBanner" />
-				<Transition :name="pageTransition" mode="out-in">
+				<Transition :name="pageTransition" v-bind="transitionProps(false)">
 					<div :key="localedRoute">
 						<slot></slot>
 					</div>
 				</Transition>
 			</main>
 			<Settings v-else>
-				<Transition name="page-jump" mode="out-in" @beforeEnter="container?.scrollTo(0, 0)">
+				<Transition name="page-jump" v-bind="transitionProps(true)">
 					<div :key="localedRoute" class="router-view">
 						<slot></slot>
 					</div>
@@ -102,5 +111,10 @@
 	.scroll {
 		height: 100dvh;
 		overflow: hidden overlay;
+		// scrollbar-gutter: stable; // WARN: Chromium 114 开始，overflow 的 overlay 成了 auto 的别名，因此只能提前占位显示来确保不晃动。目前甚至 Chromium 自己的设置页都在依赖于 overlay，太荒谬了。https://bugs.chromium.org/p/chromium/issues/detail?id=1450927
+
+		&.toggle-settings {
+			overflow: hidden;
+		}
 	}
 </style>

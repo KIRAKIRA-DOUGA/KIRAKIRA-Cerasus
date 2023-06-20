@@ -9,8 +9,8 @@
 	}>();
 
 	const model = defineModel<boolean>();
-	const open = withOneWayProp(model, props.open);
-	const alert = ref<HTMLDivElement>();
+	const open = withOneWayProp(model, () => props.open);
+	const alert = refComp();
 
 	watch(open, async open => {
 		await nextTick();
@@ -22,7 +22,13 @@
 <template>
 	<Mask v-model="open" position="center top" :focusing="static">
 		<Transition>
-			<div v-if="open" ref="alert" class="alert">
+			<Comp
+				v-if="open"
+				ref="alert"
+				role="alertdialog"
+				aria-modal="true"
+				:aria-label="title"
+			>
 				<div class="body">
 					<Icon name="info" />
 					<div class="content-part">
@@ -42,7 +48,7 @@
 						</slot>
 					</div>
 				</div>
-			</div>
+			</Comp>
 		</Transition>
 	</Mask>
 </template>
@@ -52,7 +58,7 @@
 	$animation-options: 500ms calc(var(--i) * 70ms) $ease-out-max backwards;
 	$padding: 24px;
 
-	.alert {
+	:comp {
 		transform-origin: center top;
 		transition: $fallback-transitions, all $ease-out-max 500ms;
 
@@ -90,9 +96,8 @@
 	}
 
 	// stylelint-disable-next-line no-duplicate-selectors
-	.alert {
+	:comp {
 		@include dropdown-flyouts;
-		@include flex-block;
 		width: 100dvw;
 		max-width: $max-width;
 		max-height: 100dvh;
@@ -100,7 +105,7 @@
 		overflow: hidden;
 		background-color: c(acrylic-bg, 75%);
 
-		@media (min-width: $max-width) {
+		@media (width >= $max-width) {
 			@include radius-large;
 			$margin-top: 24px;
 			max-height: calc(100dvh - $margin-top * 2);
@@ -114,9 +119,9 @@
 			padding: $padding;
 			overflow: hidden overlay;
 			background-color: c(main-bg, 45%);
+			// scrollbar-gutter: stable; // WARN: Chromium 114 开始，overflow 的 overlay 成了 auto 的别名，因此只能提前占位显示来确保不晃动。目前甚至 Chromium 自己的设置页都在依赖于 overlay，太荒谬了。https://bugs.chromium.org/p/chromium/issues/detail?id=1450927
 
 			.icon {
-				@include flex-block;
 				--i: 0;
 				flex-shrink: 0;
 				font-size: 48px;

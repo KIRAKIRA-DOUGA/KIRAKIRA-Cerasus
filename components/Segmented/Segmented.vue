@@ -13,6 +13,7 @@
 	const count = computed(() => items.value.length);
 	const displaySelectedIndex = ref<number>();
 	const selectedIndex = computed(() => displaySelectedIndex.value ?? items.value.findIndex(item => item.id === selected.value && selected.value));
+	const selectedCaption = computed(() => items.value.find(item => item.id === selected.value)?.caption);
 	const pressed = ref(false); // 为了兼容触摸屏，触摸屏在滑动时会撤销 active 伪类。
 
 	/**
@@ -54,16 +55,38 @@
 </script>
 
 <template>
-	<Comp>
+	<Comp role="radiogroup" :aria-details="t.selected_item_label + selectedCaption" aria-orientation="horizontal">
 		<div class="track items-wrapper">
-			<div v-for="item in items" :key="item.id" v-ripple class="item" @click="selected = item.id">
+			<div
+				v-for="item in items"
+				:key="item.id"
+				v-ripple
+				class="item"
+				role="radio"
+				:aria-checked="selected === item.id"
+				:aria-current="selected === item.id"
+				@click="selected = item.id"
+			>
 				<Icon v-if="item.icon" :name="item.icon" />
 				<span>{{ item.caption }}</span>
 			</div>
 		</div>
-		<div v-show="count > 0" v-ripple class="thumb" :class="{ pressed }" @pointerdown="onDrag"></div>
+		<div
+			v-show="count > 0"
+			v-ripple
+			class="thumb"
+			:class="{ pressed }"
+			@pointerdown="onDrag"
+		></div>
 		<div class="content items-wrapper">
-			<div v-for="item in items" :key="item.id" class="item">
+			<div
+				v-for="item in items"
+				:key="item.id"
+				class="item"
+				role="radio"
+				:aria-checked="selected === item.id"
+				:aria-current="selected === item.id"
+			>
 				<Icon v-if="item.icon" :name="item.icon" />
 				<span>{{ item.caption }}</span>
 			</div>

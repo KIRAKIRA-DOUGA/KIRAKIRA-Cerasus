@@ -34,10 +34,7 @@
 		else location.value = [e.clientX, e.clientY];
 		shown.value = true;
 		await nextTick();
-		const windowSize = [window.innerWidth, window.innerHeight];
-		for (let i = 0; i < 2; i++)
-			if (location.value[i] + size.value[i] > windowSize[i])
-				location.value[i] = windowSize[i] - size.value[i];
+		location.value = moveIntoPage(location, size);
 	}
 
 	defineExpose({
@@ -68,7 +65,7 @@
 
 	useEventListener("window", "pointerdown", e => {
 		if (!menu.value || !shown.value) return;
-		const clickOutside = !isInPath(e, menu.value);
+		const clickOutside = !isInPath(e, menu);
 		if (clickOutside) hide();
 	});
 </script>
@@ -94,7 +91,6 @@
 
 	menu {
 		@include radius-large;
-		@include flex-block;
 		@include dropdown-flyouts;
 		top: 0;
 		left: 0;

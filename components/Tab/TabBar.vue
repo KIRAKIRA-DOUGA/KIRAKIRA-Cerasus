@@ -4,12 +4,8 @@
 
 <script setup lang="ts">
 	const props = defineProps<{
-		/** 是否使用切边样式的指示器？ */
-		clipped?: boolean;
 		/** 是否使用纵向的 NavigationView 样式？ */
 		vertical?: boolean;
-		/** 是否使用较大间距？ */
-		big?: boolean;
 	}>();
 
 	defineSlots<{
@@ -150,7 +146,7 @@
 	 */
 	function isNoTransform() {
 		if (!tabBar.value) return false;
-		for (const element of getPath(tabBar.value)) {
+		for (const element of getPath(tabBar)) {
 			const style = getComputedStyle(element);
 			for (const property of ["scale", "translate", "rotate", "transform"] as const)
 				if (style[property] !== "none")
@@ -179,7 +175,7 @@
 </script>
 
 <template>
-	<Comp ref="tabBar" :class="{ vertical, big }">
+	<Comp ref="tabBar" :class="{ vertical }" role="tablist" :aria-details="model" :aria-orientation="vertical ? 'vertical' : 'horizontal'">
 		<div class="items">
 			<Slot />
 		</div>
@@ -188,6 +184,15 @@
 </template>
 
 <style scoped lang="scss">
+	@layer props {
+		:comp {
+			/// 是否使用切边样式的指示器？
+			--clipped: false;
+			/// 是否使用较大间距？
+			--loose: false;
+		}
+	}
+
 	.items {
 		display: flex;
 		gap: 1rem;
@@ -198,12 +203,13 @@
 			cursor: pointer;
 		}
 
-		:comp.big > & {
+		@container style(--loose: true) {
 			gap: 2em;
 		}
 
 		:comp.vertical > & {
-			@include flex-block;
+			display: flex;
+			flex-direction: column;
 			gap: 2px;
 			align-items: flex-start;
 		}
@@ -227,6 +233,10 @@
 		height: $thickness;
 		margin-top: 6px;
 		background-color: c(accent);
+
+		@container style(--clipped: true) {
+			@include oval(top);
+		}
 
 		:comp.vertical > & {
 			width: $thickness;

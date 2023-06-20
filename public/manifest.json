@@ -3,10 +3,11 @@
 	"short_name": "KIRAKIRA",
 	"start_url": "/?source=pwa",
 	"id": "/?source=pwa",
-	"display": "standalone",
 	"background_color": "#fff",
 	"theme_color": "#f06e8e",
 	"description": "一个可爱的视频网站，献给可爱的你！",
+	"display_override": ["window-controls-overlay"],
+	"display": "standalone",
 	"icons": [
 		{
 			"src": "/static/touch/windows/SmallTile.scale-100.png",

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import aira from "assets/images/aira.jpg";
+	import aira from "assets/images/aira.webp";
 	const nuxt = useNuxtApp();
 
 	const repositories: { name: string; codeName?: string; link: string; icon?: string }[] = [
@@ -25,32 +25,34 @@
 		// 打不出中文名和未知职位的先不打。
 	];
 
-	const technologies: { name: string; version: string; ability: string; icon?: string; link: string }[] = [
-		{ name: "Nuxt", version: nuxt.versions.nuxt || "3", ability: "服务端渲染框架", link: "https://nuxt.com/" },
-		{ name: "Vue", version: nuxt.versions.vue || "3", ability: "渐进式前端框架", link: "https://vuejs.org/" },
-		{ name: "TypeScript", version: "5", ability: "静态类型检查器", link: "https://www.typescriptlang.org/" },
-		{ name: "Node.js", version: "20", ability: "服务端开发平台", link: "https://nodejs.org/" },
-		{ name: "Koa", version: "3", ability: "下一代网络框架", link: "https://koajs.com/" },
+	const technologies: { name: string; version: string; ability: string; icon?: string; monochrome?: boolean; link: string }[] = [
+		{ name: "Nuxt", version: nuxt.versions.nuxt || "3", ability: "服务端渲染框架", icon: "nuxt", link: "https://nuxt.com/" },
+		{ name: "Vue", version: nuxt.versions.vue || "3", ability: "渐进式前端框架", icon: "vue", link: "https://vuejs.org/" },
+		{ name: "TypeScript", version: "5", ability: "静态类型检查器", icon: "typescript", link: "https://www.typescriptlang.org/" },
+		{ name: "Node.js", version: "20", ability: "服务端开发平台", icon: "nodejs", link: "https://nodejs.org/" },
+		{ name: "Koa", version: "3", ability: "下一代网络框架", icon: "koa", monochrome: true, link: "https://koajs.com/" },
 		// 基于前端运行时的版本号可以自动识别，后端和编译时的版本号只能委屈你自己手打了。
 	];
 </script>
 
 <template>
-	<LogoText form="full" />
+	<LogoText />
 	<p class="slogan"><span>一个可爱的视频网站，</span><span><b>献给可爱的你！</b></span></p>
+
 	<Subheader icon="placeholder">项目地址</Subheader>
-	<div class="chip">
+	<section>
 		<SettingsChipItem
 			v-for="repo in repositories"
 			:key="repo.name"
-			:icon="repo.icon || 'placeholder'"
+			:icon="repo.icon || 'colored-logo/github'"
 			:details="repo.codeName"
 			:href="repo.link"
 			afterIcon="open_in_new"
 		>{{ repo.name }}</SettingsChipItem>
-	</div>
+	</section>
+
 	<Subheader icon="placeholder">创作团队</Subheader>
-	<div class="chip">
+	<section>
 		<SettingsChipItem
 			v-for="staff in team"
 			:key="staff.name"
@@ -59,23 +61,30 @@
 			:details="`${staff.job} - UID ${staff.uid}`"
 			afterIcon="open_in_new"
 		>{{ staff.name }}</SettingsChipItem>
-	</div>
+	</section>
+
 	<Subheader icon="placeholder">使用技术</Subheader>
-	<div class="chip">
+	<section>
 		<SettingsChipItem
 			v-for="tech in technologies"
 			:key="tech.name"
-			:icon="tech.icon || 'placeholder'"
+			:icon="tech.icon ? 'colored-logo/' + tech.icon : 'placeholder'"
+			:filled="!tech.monochrome"
 			:details="`${tech.ability} - v${tech.version}`"
 			:href="tech.link"
 			afterIcon="open_in_new"
 		>{{ tech.name }}</SettingsChipItem>
-	</div>
+	</section>
 </template>
 
 <style scoped lang="scss">
 	.logo-text {
+		--form: full;
 		zoom: 2;
+
+		@include mobile {
+			--form: half;
+		}
 	}
 
 	.slogan {

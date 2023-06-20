@@ -122,7 +122,8 @@
 	}
 
 	.info {
-		@include flex-block;
+		display: flex;
+		flex-direction: column;
 		gap: 4px;
 		justify-content: space-between;
 		margin: 6px 0 0 -2px;

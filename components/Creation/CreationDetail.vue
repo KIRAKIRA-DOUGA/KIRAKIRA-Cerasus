@@ -1,9 +1,14 @@
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
+		/** 投稿日期？修改日期？ */ // TODO: 投稿日期？修改日期？两个日期我觉得应该都要显示。
 		date: Date;
+		/** 分区。 */
 		category: string;
-		copyright: "original" | "authorized-repost" | "unauthorized-repost" ;
+		/** 版权。 */
+		copyright: "original" | "authorized-repost" | "unauthorized-repost";
+		/** 标题。 */
 		title: string;
+		/** 标签们。 */
 		tags?: string[];
 	}>(), {
 		tags: () => [], // （？）奇怪的写法
@@ -11,7 +16,7 @@
 </script>
 
 <template>
-	<Comp>
+	<Comp role="contentinfo">
 		<div class="info">
 			<div class="data">
 				<CreationDetailItem icon="calendar">{{ formatDate(date, "yyyy-MM-dd h:mm:ss") }}</CreationDetailItem>
@@ -32,12 +37,14 @@
 
 <style scoped lang="scss">
 	:comp {
-		@include flex-block;
+		display: flex;
+		flex-direction: column;
 		gap: 16px;
 	}
 
 	.info {
-		@include flex-block;
+		display: flex;
+		flex-direction: column;
 		gap: 12px;
 	}
 

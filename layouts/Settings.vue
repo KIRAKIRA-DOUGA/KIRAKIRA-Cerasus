@@ -48,7 +48,7 @@
 				<header class="title content padding-end">
 					<header class="title nav-header">
 						<h1>{{ t.settings }}</h1>
-						<TextBox v-model="search" :placeholder="t.search_settings" />
+						<TextBox v-model="search" type="search" :placeholder="t.search_settings" />
 					</header>
 					<TabBar v-model="currentSetting" vertical>
 						<Subheader icon="person">{{ t.user_settings }}</Subheader>
@@ -69,7 +69,7 @@
 			<div class="content padding-end">
 				<header class="title page-header">
 					<div class="show-drawer-wrapper">
-						<SoftKey icon="dehaze" @click="showDrawer = true" />
+						<SoftButton icon="dehaze" @click="showDrawer = true" />
 					</div>
 					<div class="page-title-wrapper">
 						<Transition>
@@ -127,12 +127,14 @@
 		}
 
 		> .content > .title.content {
-			@include flex-block;
+			display: flex;
+			flex-direction: column;
 			gap: 10px;
 			max-height: 100dvh;
 			padding: 0 $nav-padding-x;
 			overflow-y: overlay;
 			transition: none;
+			// scrollbar-gutter: stable; // WARN: Chromium 114 开始，overflow 的 overlay 成了 auto 的别名，因此只能提前占位显示来确保不晃动。目前甚至 Chromium 自己的设置页都在依赖于 overlay，太荒谬了。https://bugs.chromium.org/p/chromium/issues/detail?id=1450927
 
 			> * {
 				flex-shrink: 0;
@@ -146,7 +148,7 @@
 	}
 
 	.nav-bottom-buttons {
-		@include flex-block;
+		display: flex;
 		flex-direction: column;
 		gap: 8px;
 	}
@@ -189,15 +191,17 @@
 		transition: $fallback-transitions, width 0s, height 0s;
 
 		> .content {
-			@include flex-block;
 			position: relative;
 			z-index: 1;
+			display: flex;
+			flex-direction: column;
 			gap: 1rem;
 			max-width: $max-width;
 			padding: 0 $main-padding-x;
 
 			> :deep(.router-view) {
-				@include flex-block;
+				display: flex;
+				flex-direction: column;
 				gap: 1rem;
 			}
 		}
@@ -289,7 +293,7 @@
 			width: 20px;
 			height: 100%;
 
-			.soft-key {
+			.soft-button {
 				position: absolute;
 				top: calc((var(--wrapper-size) - 100%) / -2);
 				left: -10px;
@@ -321,14 +325,19 @@
 		}
 	}
 
+	%chip,
 	:deep(.chip) {
 		@include chip-shadow;
 		@include radius-large;
-		overflow: hidden;
 		background-color: c(surface-color);
 	}
 
-	:deep(.chip.column > *) {
+	:deep(section) {
+		@extend %chip;
+		overflow: hidden;
+	}
+
+	:deep(section[list] > *) {
 		$extra-padding: 16px;
 		padding: 10px 20px;
 		overflow: visible;

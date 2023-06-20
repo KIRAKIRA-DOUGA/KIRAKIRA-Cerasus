@@ -222,14 +222,14 @@
 
 	.day-night {
 		@include square(1.5 * 100dvh);
-		@include flex-block;
 		@include flex-center;
 		position: fixed;
 		top: 0.25 * 100dvh;
 		left: 50%;
-		translate: -50%;
+		flex-direction: column;
 		justify-content: space-between;
 		transition: none;
+		translate: -50%;
 
 		> * {
 			@include square(calc(100vmin / 5));
@@ -237,7 +237,7 @@
 		}
 	}
 
-	@media (min-width: 640px) {
+	@media (width >= 640px) {
 		.content {
 			h1 {
 				font-size: 10rem;

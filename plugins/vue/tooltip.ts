@@ -1,56 +1,63 @@
-/*!
+/*
  * 使用 `v-tooltip`，为元素添加自定义的工具提示。
  */
 
+type Placement = "top" | "right" | "bottom" | "left" | "x" | "y";
+
 export type VTooltipBindingValue = string | {
 	title: string;
-	placement?: "top" | "right" | "bottom" | "left";
+	placement?: Placement;
 	offset?: number;
 };
 
-export type TooltipEvent = Exclude<VTooltipBindingValue, string> & {
+type VTooltipBindingValueNoPlain = Exclude<VTooltipBindingValue, string>;
+
+export type TooltipEvent = VTooltipBindingValueNoPlain & {
 	element: HTMLElement;
 	symbol: symbol;
 };
 
 export default defineNuxtPlugin(nuxt => {
 	type D = Directive<HTMLElement, VTooltipBindingValue>;
-	const elementBinding = new Map<HTMLElement, { value: VTooltipBindingValue; symbol: symbol }>();
+	const elementBinding = new Map<HTMLElement, { value: VTooltipBindingValueNoPlain; symbol: symbol }>();
 	const createEvent = (element: HTMLElement) => {
 		const binding = elementBinding.get(element)!;
 		const value = binding.value;
-		const usingDefault = typeof value === "string";
 		return {
-			title: usingDefault ? value : value.title,
+			...value,
 			element,
-			placement: usingDefault ? undefined : value.placement,
-			offset: usingDefault ? undefined : value.offset,
 		} as TooltipEvent;
 	};
-	const setElementBinding = (element: HTMLElement, value: VTooltipBindingValue) => {
+	const isPlacement = (arg?: string): arg is Placement => ["top", "right", "bottom", "left", "x", "y"].includes(arg!);
+	const setElementBinding = (element: HTMLElement, _value: VTooltipBindingValue, arg?: string) => {
 		const mapValue = elementBinding.get(element);
+		const value = typeof _value === "object" ? _value : { title: _value };
+		if (isPlacement(arg)) value.placement ??= arg;
 		if (!mapValue) elementBinding.set(element, { value, symbol: Symbol(element.id) });
 		else mapValue.value = value;
 	};
+	const refresh = () => useEvent("app:refreshTooltip", elementBinding);
 	nuxt.vueApp.directive("tooltip", {
 		mounted(element, binding) {
-			setElementBinding(element, binding.value);
-			element.addEventListener("mouseenter", () => {
+			setElementBinding(element, binding.value, binding.arg);
+			addEventListeners(element, "mouseenter", "focusin", () => {
 				if (!binding.value || !elementBinding.has(element)) return;
 				useEvent("app:showTooltip", createEvent(element));
 			});
-			element.addEventListener("mouseleave", () => {
+			addEventListeners(element, "mouseleave", "focusout", () => {
 				useEvent("app:hideTooltip", element);
+				refresh();
 			});
 		},
 		unmounted(element) {
 			elementBinding.delete(element);
+			refresh();
 		},
 		updated(element, binding) {
-			setElementBinding(element, binding.value);
+			setElementBinding(element, binding.value, binding.arg);
 			if (!binding.value || !elementBinding.has(element)) useEvent("app:hideTooltip", element);
 			else useEvent("app:updateTooltip", createEvent(element));
-			useEvent("app:refreshTooltip", elementBinding);
+			refresh();
 		},
 	} as D);
 });

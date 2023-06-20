@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import avatar from "assets/images/aira.jpg";
+	import avatar from "assets/images/aira.webp";
 
 	const props = defineProps<{
 		/** 已打开，单向绑定使用。 */
@@ -33,7 +33,7 @@
 		},
 	});
 	const loginWindow = refComp();
-	const isInvalidEmail = computed(() => !!email.value && !email.value.match(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/));
+	// const isInvalidEmail = computed(() => !!email.value && !email.value.match(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/));
 
 	/**
 	 * 稍后关闭。
@@ -62,6 +62,9 @@
 						logining: isLogining,
 					},
 				]"
+				role="dialog"
+				aria-modal="true"
+				:aria-label="currentPage"
 			>
 				<div class="main left">
 					<div class="login">
@@ -76,7 +79,6 @@
 								placeholder="邮箱"
 								size="large"
 								icon="email"
-								:invalid="isInvalidEmail"
 							/>
 							<TextBox
 								v-model="password"
@@ -108,7 +110,6 @@
 								placeholder="邮箱"
 								size="large"
 								icon="email"
-								:invalid="isInvalidEmail"
 							/>
 							<TextBox
 								v-model="password"
@@ -170,7 +171,6 @@
 								placeholder="邮箱"
 								size="large"
 								icon="email"
-								:invalid="isInvalidEmail"
 							/>
 							<Button icon="send" class="button">发送</Button>
 						</div>
@@ -306,17 +306,18 @@
 		}
 
 		> * {
-			@include flex-block;
 			@include square(100%);
 			position: absolute;
 			top: 0;
+			display: flex;
+			flex-direction: column;
 			justify-content: space-between;
 			width: $width * 0.5;
 			max-width: 100dvw;
 			height: 100%;
 			padding: 35px 45px;
 
-			@if true {
+			@if true { // HACK: 为了故意不应用排序规则而将下面这部分页面声明单独提炼在下方。
 				// @include page("!.login", ".login", left);
 				@include page("!.register", ".register", right);
 				@include page("!.register2", ".register2", right);
@@ -390,7 +391,8 @@
 	}
 
 	.form {
-		@include flex-block;
+		display: flex;
+		flex-direction: column;
 		gap: 24px;
 
 		@for $i from 1 through 3 {

@@ -1,3 +1,7 @@
+////
+/// 在此处重置一切 CSS 默认的垃圾设置。
+////
+
 @layer base {
 	button {
 		margin: 0;
@@ -7,5 +11,12 @@
 		border: none;
 		cursor: pointer;
 		appearance: none;
+	}
+
+	img,
+	video,
+	picture {
+		display: block;
+		vertical-align: bottom;
 	}
 }
