@@ -1,7 +1,9 @@
 <docs>
 	# 图标组件
 	封装的总图标组件。如果下次想更换图标模块可直接在此处统一更换。
-	目前的图标模块是 `@nuxtjs/svg-sprite`。
+	目前的图标模块：
+	在开发环境下是 `@nuxtjs/svg-sprite`；
+	在生产环境下是 `nuxt-icons`。
 </docs>
 
 <script setup lang="ts">
@@ -17,7 +19,8 @@
 
 <template>
 	<span class="icon" :class="{ filled }" role="img" :aria-label="new VariableName(name).words">
-		<SvgIcon :name="name" />
+		<SvgIcon v-if="environment.production" :name="name" />
+		<NuxtIcon v-else :name="name" :filled="filled" />
 	</span>
 </template>
 
@@ -26,8 +29,19 @@
 		@include square(1em);
 		display: inline-flex;
 
-		&:not(.filled) svg {
+		&:not(.filled) :deep(svg) {
 			fill: currentColor;
+		}
+		
+		> .nuxt-icon {
+			@include square(1em);
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+
+			> :deep(svg) {
+				margin-bottom: 0 !important;
+			}
 		}
 	}
 </style>

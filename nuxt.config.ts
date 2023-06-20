@@ -21,8 +21,8 @@ export default defineNuxtConfig({
 		// "@nuxt/devtools",
 		"@nuxtjs/i18n",
 		"@nuxt/content",
-		"nuxt-icons",
-		"@nuxtjs/svg-sprite",
+		dev && "nuxt-icons",
+		!dev && "@nuxtjs/svg-sprite",
 		"@vueuse/nuxt",
 		"nuxt-lodash",
 		["@pinia/nuxt", {
