@@ -37,7 +37,12 @@
 						<div :class="`line line-${i}`"></div>
 					</div>
 				</template>
-				<div v-else class="line" :class="{ 'to-determinate': toDeterminate }" :style="{ width: value / max * 100 + '%' }"></div>
+				<div
+					v-else
+					class="line"
+					:class="{ 'to-determinate': toDeterminate }"
+					:style="{ width: value / max * 100 + '%' }"
+				></div>
 			</div>
 		</Comp>
 	</Transition>

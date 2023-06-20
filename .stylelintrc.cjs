@@ -5,7 +5,7 @@ module.exports = {
 		"stylelint-config-standard-scss",
 		"stylelint-config-rational-order",
 	],
-	overrides: [ // 扫描.vue/html文件中的<style>标签内的样式
+	overrides: [ // 扫描 .vue/html 文件中的 <style> 标签内的样式
 		{
 			files: ["**/*.{vue,html}"],
 			customSyntax: "postcss-html"
@@ -55,6 +55,7 @@ module.exports = {
 		"font-family-no-missing-generic-family-keyword": true,
 		"font-family-name-quotes": "always-where-recommended",
 		"comment-empty-line-before": null,
+		"function-calc-no-unspaced-operator": null, // 暂时解决一打 calc() 还没打完内容右下角就开始疯狂报错的问题。
 		/* "comment-empty-line-before": ["always", {
 			"except": ["first-nested"],
 			"ignore": ["stylelint-commands"],

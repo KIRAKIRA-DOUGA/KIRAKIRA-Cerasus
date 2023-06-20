@@ -11,6 +11,9 @@
 	"css.lint.propertyIgnoredDueToDisplay": "ignore",
 	"less.lint.propertyIgnoredDueToDisplay": "ignore",
 	"scss.lint.propertyIgnoredDueToDisplay": "ignore",
+	"css.lint.unknownProperties": "ignore",
+	"less.lint.unknownProperties": "ignore",
+	"scss.lint.unknownProperties": "ignore",
 	"volar.format.initialIndent": {
 		"html": true,
 		"css": true,

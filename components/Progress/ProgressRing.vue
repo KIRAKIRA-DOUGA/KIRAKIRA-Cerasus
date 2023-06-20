@@ -30,28 +30,27 @@
 
 <template>
 	<Transition :duration="250">
-		<Comp v-if="shown" :class="{ animating: indeterminate }" role="progressbar" :aria-busy="shown">
-			<div v-if="indeterminate" class="layer">
-				<div class="circle-clipper left">
-					<div class="circle"></div>
-				</div>
-				<div class="gap-patch">
-					<div class="circle"></div>
-				</div>
-				<div class="circle-clipper right">
-					<div class="circle"></div>
+		<Comp v-if="shown" role="progressbar" :aria-busy="shown">
+			<div v-if="indeterminate" class="layer-wrapper">
+				<div class="layer">
+					<div class="circle-clipper left">
+						<div class="circle"></div>
+					</div>
+					<div class="gap-patch">
+						<div class="circle"></div>
+					</div>
+					<div class="circle-clipper right">
+						<div class="circle"></div>
+					</div>
 				</div>
 			</div>
-			<svg width="120" height="120">
-				<circle
-					class="ring"
-					stroke="red"
-					stroke-width="4"
-					fill="transparent"
-					r="52"
-					cx="60"
-					cy="60"
-				/>
+			<svg
+				v-else
+				class="ring"
+				:class="{ 'to-determinate': toDeterminate }"
+				:style="{ '--progress': value / max }"
+			>
+				<circle />
 			</svg>
 		</Comp>
 	</Transition>
@@ -73,10 +72,8 @@
 		@include square(var(--size));
 		position: relative;
 		display: inline-block;
-		
-		&.indeterminate {
-			animation: spinner 1568ms linear infinite;
-		}
+		line-height: 0;
+		contain: strict;
 
 		&.v-leave-active * {
 			transition-timing-function: $ease-in-cubic;
@@ -86,6 +83,11 @@
 		&.v-leave-to {
 			--thickness: 0 !important;
 		}
+	}
+	
+	.layer-wrapper {
+		@include square(100%);
+		animation: spinner 1568ms linear infinite;
 	}
 
 	.layer {
@@ -165,11 +167,31 @@
 			}
 		}
 	}
-	
+
 	.ring {
-		transform: rotate(-90deg);
-		transform-origin: 50% 50%;
-		transition: stroke-dashoffset 0.35s;
+		@include square(var(--size));
+		--progress: 0;
+		overflow: visible;
+		rotate: -100grad;
+
+		circle {
+			--center: calc(var(--size) / 2);
+			--radius: calc(var(--center) - var(--thickness) / 2);
+			--dash-array: calc(2 * #{math.$pi} * var(--radius));
+			cx: var(--center);
+			cy: var(--center);
+			r: var(--radius);
+			fill: transparent;
+			stroke: c(accent);
+			stroke-width: var(--thickness);
+			stroke-linecap: round;
+			stroke-dasharray: var(--dash-array);
+			stroke-dashoffset: calc(var(--dash-array) * (1 - var(--progress)));
+		}
+		
+		&.to-determinate circle {
+			animation: to-determinate-scale 250ms $ease-out-smooth;
+		}
 	}
 
 	@keyframes spinner {
@@ -260,6 +282,12 @@
 
 		50% {
 			rotate: 5deg;
+		}
+	}
+	
+	@keyframes to-determinate-scale {
+		from {
+			stroke-dashoffset: 0;
 		}
 	}
 </style>
