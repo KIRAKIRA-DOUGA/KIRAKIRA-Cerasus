@@ -20,7 +20,7 @@
 	});
 
 	const model = defineModel<boolean>();
-	const shown = withOneWayProp(model, props.shown);
+	const shown = withOneWayProp(model, () => props.shown);
 	const mask = ref<HTMLDivElement>();
 
 	/**

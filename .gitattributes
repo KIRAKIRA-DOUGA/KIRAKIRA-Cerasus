@@ -32,6 +32,7 @@
 *.mjs text eol=lf linguist-vendored
 *.coffee text eol=lf
 *.json text eol=lf linguist-vendored
+*.json5 text eol=lf linguist-vendored
 *.htm text eol=lf linguist-vendored
 *.html text eol=lf linguist-vendored
 *.xml text eol=lf linguist-vendored
@@ -79,7 +80,7 @@
 *.yaml text eol=lf
 *.yml text eol=lf
 .editorconfig text eol=lf
-.code-snippets text eol=lf
+*.code-snippets text eol=lf
 
 # build config
 *.npmignore text eol=lf
@@ -91,6 +92,7 @@ Procfile text eol=lf
 
 # Documentation
 *.md text eol=lf
+*.rst text eol=lf
 *.docs text eol=lf linguist-language=Markdown
 LICENSE text eol=lf
 AUTHORS text eol=lf
@@ -139,6 +141,7 @@ AUTHORS text eol=lf
 *.zip binary
 *.7z binary
 *.rar binary
+*.tar binary
 
 # fonts
 *.ttf binary

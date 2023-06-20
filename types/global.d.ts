@@ -32,10 +32,16 @@ declare global {
 	type AnyObject = Record<ObjectKey, Any>;
 	/**
 	 * 为什么 Record 还需要手动指定键的类型？多此一举。
+	 * @template T - 值的类型。
 	 */
 	type RecordValue<T> = Record<ObjectKey, T>;
 	/**
 	 * 表示二维点的元组。
 	 */
 	type TwoD = [number, number];
+	/**
+	 * 指定类型或一个无参数函数返回为指定类型。
+	 * @template T - 指定类型及无参数函数返回的这个类型。
+	 */
+	type TypeOrReturnToType<T> = T | (() => T);
 }

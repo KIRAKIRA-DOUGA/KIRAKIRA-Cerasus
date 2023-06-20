@@ -1,18 +1,9 @@
 <script setup lang="ts">
-	import avatar from "assets/images/aira.jpg";
+	import avatar from "assets/images/aira.webp";
 	import banner from "assets/images/banner-20220717.png";
 
 	const validChar = /[A-Za-z0-9\-_ぁ-ゖァ-ヺー〇一-鿿㐀-䶿𠀀-𮹊𰀀-𲎯]*/u;
 	const nickname = ref("艾了个拉");
-	/* const nicknameEdit = computed({
-		get: () => nickname.value,
-		set: async value => {
-			nickname.value = value;
-			await nextTick();
-			value = value.replaceAll(/[^A-Za-z0-9-_ぁ-ゖァ-ヺー〇一-鿿㐀-䶿𠀀-𮹊𰀀-𲎯]/gu, "");
-			nickname.value = value.slice(0, 20);
-		},
-	}); */
 	const test = ref("");
 	const signature = ref("");
 	const genderBasic = ref<"male" | "female" | "custom" | "">("");
@@ -54,7 +45,6 @@
 		size="large"
 		icon="placeholder"
 		required
-		preventIfInvalid
 		:min="0"
 		:max="99"
 		:step="1"
@@ -63,7 +53,9 @@
 	<TextBox v-model="signature" placeholder="个性签名" size="large" icon="edit" />
 
 	<TextBox v-model="birthday" type="date" :placeholder="t.birthday" size="large" icon="birthday" />
-	<!-- TODO: 日期选择组件 -->
+	<!-- TODO: [艾拉] 日期选择组件 -->
+	<!-- [琪露诺] 日期选择点击X按钮，再次选择日期后按钮不会出现。 -->
+	<!-- [兰音] 由于日期组件尚未制作，目前仅是一个占位符，暂时不必在意其功能或外观等的问题。 -->
 
 	<div class="gender">
 		<div class="gender-subtitle">
@@ -127,6 +119,7 @@
 			margin: 1rem;
 			color: white;
 			opacity: 0;
+			pointer-events: none;
 		}
 	}
 
@@ -175,6 +168,7 @@
 		span {
 			margin-bottom: 0.5rem;
 			opacity: 0;
+			pointer-events: none;
 		}
 	}
 

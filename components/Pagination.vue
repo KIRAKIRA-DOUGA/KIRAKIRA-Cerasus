@@ -18,7 +18,7 @@
 	});
 
 	const model = defineModel<number>();
-	const currentPage = withOneWayProp(model, props.current);
+	const currentPage = withOneWayProp(model, () => props.current);
 	const array = computed(() => props.pages instanceof Array ? props.pages : null);
 	const pages = computed(() => !(props.pages instanceof Array) ? props.pages : props.pages.length);
 
@@ -73,7 +73,7 @@
 	const [DefineUnselectedItem, UnselectedItem] = createReusableTemplate<{ page: number; position?: number }>();
 
 	watch(() => currentPage.value, (page, prevPage) => {
-		//#region 导轨动画
+		// #region 导轨动画
 		const prevItems = getScrolledItems(prevPage);
 		const nextItems = getScrolledItems(page);
 		const merged = mergePosition(prevItems, nextItems);
@@ -100,12 +100,12 @@
 					}).catch(IGNORE);
 				}
 		}
-		//#endregion
-		//#region 滑块动画
+		// #endregion
+		// #region 滑块动画
 		const pageLeft = page < prevPage;
 		const setCurrentPage = () => currentEdited.value = String(page);
 		if (pageEdit.value && newPageNumber.value) {
-			const thumb = pageEdit.value.parentElement!;
+			const thumb = pageEdit.value.parentElement!.parentElement!;
 			const hasExistAnimations = removeExistAnimations(pageEdit.value, newPageNumber.value);
 			const isUserInputPage = currentEdited.value === String(page) && !hasExistAnimations;
 			if (!isUserInputPage) {
@@ -130,7 +130,7 @@
 				}).catch(IGNORE);
 			} else setCurrentPage();
 		} else setCurrentPage();
-		//#endregion
+		// #endregion
 	});
 
 	onMounted(() => {
@@ -260,6 +260,7 @@
 	</DefineUnselectedItem>
 
 	<Comp
+		role="slider"
 		aria-orientation="horizontal"
 		:aria-label="t.current_page_label(currentPage, pages)"
 		:aria-valuenow="currentPage"
@@ -292,17 +293,19 @@
 			<UnselectedItem v-if="pages >= 2 && showLast" :page="pages" />
 		</div>
 		<div v-ripple class="thumb">
-			<div
-				ref="pageEdit"
-				class="page-edit"
-				:contenteditable="!array"
-				inputmode="numeric"
-				@input="e => currentEdited = (e.target as HTMLDivElement).innerText"
-				@keydown="onEnterEdited"
-				@blur="onBlurEdited"
-			>
-				{{ getPageName(currentEdited) }}
-			</div>
+			<form>
+				<div
+					ref="pageEdit"
+					class="page-edit"
+					:contenteditable="!array"
+					inputmode="numeric"
+					@input="e => currentEdited = (e.target as HTMLDivElement).innerText"
+					@keydown="onEnterEdited"
+					@blur="onBlurEdited"
+				>
+					{{ getPageName(currentEdited) }}
+				</div>
+			</form>
 			<div ref="newPageNumber" class="new-page-number">{{ getPageName(currentPage) }}</div>
 			<div class="focus-stripe"></div>
 		</div>
@@ -394,25 +397,26 @@
 			}
 		}
 
-		> .focus-stripe {
+		.focus-stripe {
 			$focus-stripe-height: 2px;
 			top: $focus-stripe-height;
 			border-bottom: c(accent-10) $focus-stripe-height solid;
 			pointer-events: none;
 		}
 
-		> * {
+		> *,
+		.page-edit {
 			position: absolute;
 			width: 100%;
 			height: 100%;
 		}
 
-		> .new-page-number {
+		.new-page-number {
 			top: 0;
 			left: -$size;
 		}
 
-		> .page-edit {
+		.page-edit {
 			position: absolute;
 			top: 0;
 

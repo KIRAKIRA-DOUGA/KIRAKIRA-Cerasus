@@ -65,13 +65,13 @@ const emits = defineEmits<{
 }>();
 ```
 
-#### `emits`
+#### `model`
 
 快速定义 Vue 组件双向绑定模型。
 
 ```typescript
 const model = defineModel<boolean>();
-const value = withOneWayProp(model, props.value);
+const value = withOneWayProp(model, () => props.value);
 ```
 
 ### 通用

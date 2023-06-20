@@ -54,7 +54,6 @@ export function randomOne<T>(array: T[], record?: MaybeRef<number[]>): T {
 			index = randBetween(0, array.length - 1);
 		record[index + 1] = 1;
 		record[0] = index;
-		console.log(index, record.map(i => +i).join(""));
 	}
 	return array[index];
 }

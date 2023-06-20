@@ -36,4 +36,12 @@ export class Point {
 	distanceY(point: Point): number {
 		return point.y - this.y;
 	}
+
+	/**
+	 * 返回对象的字符串表示形式。
+	 * @returns 对象的字符串表示形式。
+	 */
+	toString() {
+		return `(${this.x}, ${this.y})`;
+	}
 }
