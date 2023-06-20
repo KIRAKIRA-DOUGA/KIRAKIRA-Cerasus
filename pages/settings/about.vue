@@ -44,7 +44,7 @@
 		<SettingsChipItem
 			v-for="repo in repositories"
 			:key="repo.name"
-			:icon="repo.icon || 'colored-logo/github'"
+			:icon="repo.icon || 'mono-logo/github'"
 			:details="repo.codeName"
 			:href="repo.link"
 			afterIcon="open_in_new"

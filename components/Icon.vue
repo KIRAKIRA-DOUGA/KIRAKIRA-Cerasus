@@ -33,6 +33,10 @@
 			fill: currentColor;
 		}
 		
+		:deep(svg) {
+			@include square(1em);
+		}
+		
 		> .nuxt-icon {
 			@include square(1em);
 			display: inline-flex;
