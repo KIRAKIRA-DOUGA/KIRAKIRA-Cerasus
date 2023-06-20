@@ -27,6 +27,9 @@
 	const progressRingSize = ref(28);
 	const progressRingThickness = ref(3);
 	const progressBarHeight = ref(4);
+	const progressPercent = ref(30);
+	const progressIndeterminate = ref(true);
+	const progressValue = computed(() => progressIndeterminate.value ? NaN : progressPercent.value);
 	const inputValue = ref("");
 	const menu = ref<InstanceType<typeof Menu>>();
 	const showMenu = () => menu.value?.show();
@@ -186,8 +189,10 @@
 			<p>大小</p><Slider v-model="progressRingSize" :min="1" :max="150" />
 			<p>粗细</p><Slider v-model="progressRingThickness" :min="1" :max="60" />
 			<p>高度</p><Slider v-model="progressBarHeight" :min="1" :max="100" />
-			<ProgressRing :hidden="!showProgress" :style="{ '--size': progressRingSize + 'px', '--thickness': progressRingThickness + 'px' }" />
-			<ProgressBar :hidden="!showProgress" :style="{ height: progressBarHeight + 'px' }" />
+			<ToggleSwitch v-model="progressIndeterminate">不定状态</ToggleSwitch>
+			<p>进度</p><Slider v-model="progressPercent" />
+			<ProgressRing :hidden="!showProgress" :style="{ '--size': progressRingSize + 'px', '--thickness': progressRingThickness + 'px' }" :value="progressValue" />
+			<ProgressBar :hidden="!showProgress" :style="{ height: progressBarHeight + 'px' }" :value="progressValue" />
 			<!-- <Lottie loop autoplay :animationData="animationData" /> -->
 			<hr />
 			<Tag v-model="isTagChecked">{{ t.tag }}</Tag>

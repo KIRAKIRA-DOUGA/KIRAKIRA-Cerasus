@@ -76,7 +76,6 @@ const Japanese: LocaleIdentifiers = {
 	nickname: "ニックネーム",
 	nickname_requirements: "1-20文字、大小英数字、ひらがな/カタカナ、漢字、特殊記号の｢-｣と｢_｣のみ使用できます",
 	gender: "性別",
-
 	male: "男",
 	female: "女",
 	transgender: "Xジェンダー",

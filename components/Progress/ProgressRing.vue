@@ -1,21 +1,37 @@
 <docs>
 	# 进度环
-	目前仅可用于不确定的进度 (indeterminate)。
 </docs>
 
 <script setup lang="ts">
-	const props = defineProps<{
+	const props = withDefaults(defineProps<{
 		/** 加载完成并隐藏？ */
 		hidden?: boolean;
-	}>();
+		/** 指示进度条的最大值。 */
+		max?: number;
+		/** 进度值，留空表示不定状态。 */
+		value?: number | undefined;
+	}>(), {
+		max: 100,
+		value: NaN,
+	});
 
+	const indeterminate = computed(() => !Number.isFinite(props.value));
 	const shown = computed(() => !props.hidden);
+	const toDeterminate = ref(false);
+
+	watch(indeterminate, async (curInd, prevInd) => {
+		if (prevInd && !curInd) { // 当从不定状态到定值状态时增加一个动画，但反之则不会。
+			toDeterminate.value = true;
+			await delay(250);
+			toDeterminate.value = false;
+		}
+	});
 </script>
 
 <template>
 	<Transition :duration="250">
-		<Comp v-if="shown" role="progressbar" :aria-busy="shown">
-			<div class="layer">
+		<Comp v-if="shown" :class="{ animating: indeterminate }" role="progressbar" :aria-busy="shown">
+			<div v-if="indeterminate" class="layer">
 				<div class="circle-clipper left">
 					<div class="circle"></div>
 				</div>
@@ -26,6 +42,17 @@
 					<div class="circle"></div>
 				</div>
 			</div>
+			<svg width="120" height="120">
+				<circle
+					class="ring"
+					stroke="red"
+					stroke-width="4"
+					fill="transparent"
+					r="52"
+					cx="60"
+					cy="60"
+				/>
+			</svg>
 		</Comp>
 	</Transition>
 </template>
@@ -46,7 +73,10 @@
 		@include square(var(--size));
 		position: relative;
 		display: inline-block;
-		animation: spinner 1568ms linear infinite;
+		
+		&.indeterminate {
+			animation: spinner 1568ms linear infinite;
+		}
 
 		&.v-leave-active * {
 			transition-timing-function: $ease-in-cubic;
@@ -58,81 +88,12 @@
 		}
 	}
 
-	@keyframes spinner {
-		to {
-			rotate: 1turn;
-		}
-	}
-
 	.layer {
 		@include square(100%);
 		position: absolute;
 		border-color: c(accent);
 		opacity: 1;
 		animation: layer-fill-unfill-rotate 5332ms $layer-animation-options;
-	}
-
-	@keyframes layer-fill-unfill-rotate {
-		$length: 8;
-
-		@for $i from 1 through 8 {
-			#{calc(100% / $length) * $i} {
-				rotate: calc(3turn / $length) * $i;
-			}
-		}
-	}
-
-	@keyframes layer-1-fade-in-out {
-		0%,
-		25%,
-		90%,
-		100% {
-			opacity: 1;
-		}
-
-		26%,
-		89% {
-			opacity: 0;
-		}
-	}
-
-	@keyframes layer-2-fade-in-out {
-		0%,
-		15%,
-		51% {
-			opacity: 0;
-		}
-
-		25%,
-		50% {
-			opacity: 1;
-		}
-	}
-
-	@keyframes layer-3-fade-in-out {
-		0%,
-		40%,
-		76% {
-			opacity: 0;
-		}
-
-		50%,
-		75% {
-			opacity: 1;
-		}
-	}
-
-	@keyframes layer-4-fade-in-out {
-		0%,
-		65%,
-		100% {
-			opacity: 0;
-		}
-
-		75%,
-		90% {
-			opacity: 1;
-		}
 	}
 
 	.gap-patch {
@@ -202,6 +163,81 @@
 				rotate: -129deg;
 				animation: right-spin $circle-animation-options;
 			}
+		}
+	}
+	
+	.ring {
+		transform: rotate(-90deg);
+		transform-origin: 50% 50%;
+		transition: stroke-dashoffset 0.35s;
+	}
+
+	@keyframes spinner {
+		to {
+			rotate: 1turn;
+		}
+	}
+
+	@keyframes layer-fill-unfill-rotate {
+		$length: 8;
+
+		@for $i from 1 through 8 {
+			#{calc(100% / $length) * $i} {
+				rotate: calc(3turn / $length) * $i;
+			}
+		}
+	}
+
+	@keyframes layer-1-fade-in-out {
+		0%,
+		25%,
+		90%,
+		100% {
+			opacity: 1;
+		}
+
+		26%,
+		89% {
+			opacity: 0;
+		}
+	}
+
+	@keyframes layer-2-fade-in-out {
+		0%,
+		15%,
+		51% {
+			opacity: 0;
+		}
+
+		25%,
+		50% {
+			opacity: 1;
+		}
+	}
+
+	@keyframes layer-3-fade-in-out {
+		0%,
+		40%,
+		76% {
+			opacity: 0;
+		}
+
+		50%,
+		75% {
+			opacity: 1;
+		}
+	}
+
+	@keyframes layer-4-fade-in-out {
+		0%,
+		65%,
+		100% {
+			opacity: 0;
+		}
+
+		75%,
+		90% {
+			opacity: 1;
 		}
 	}
 
