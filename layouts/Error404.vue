@@ -19,7 +19,7 @@
 		return deg;
 	});
 	const parallaxRough = computed(() => {
-		if (process.server || !mouse.x.value && !mouse.y.value && gsensor.beta.value === null)
+		if (environment.server || !mouse.x.value && !mouse.y.value && gsensor.beta.value === null)
 			return new Point(0, 0);
 		else if (gsensor.beta.value === null) return new Point(
 			mouse.x.value / window.innerWidth * 2 - 1,
