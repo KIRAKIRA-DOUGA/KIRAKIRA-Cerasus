@@ -2,7 +2,7 @@
  * 使用 `v-tooltip`，为元素添加自定义的工具提示。
  */
 
-type Placement = "top" | "right" | "bottom" | "left" | "x" | "y";
+export type Placement = "top" | "right" | "bottom" | "left" | "x" | "y";
 
 export type VTooltipBindingValue = string | {
 	title: string;
@@ -23,10 +23,7 @@ export default defineNuxtPlugin(nuxt => {
 	const createEvent = (element: HTMLElement) => {
 		const binding = elementBinding.get(element)!;
 		const value = binding.value;
-		return {
-			...value,
-			element,
-		} as TooltipEvent;
+		return { ...value, element } as TooltipEvent;
 	};
 	const isPlacement = (arg?: string): arg is Placement => ["top", "right", "bottom", "left", "x", "y"].includes(arg!);
 	const setElementBinding = (element: HTMLElement, _value: VTooltipBindingValue, arg?: string) => {

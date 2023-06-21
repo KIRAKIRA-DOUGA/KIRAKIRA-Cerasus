@@ -9,12 +9,12 @@
 	const shown = ref(false);
 	const menu = ref<HTMLMenuElement>();
 	const isContextMenu = ref(false);
-	const location = ref<[number, number]>([0, 0]);
+	const location = ref<TwoD>([0, 0]);
 	const locationStyle = computed(() => {
 		const l = location.value;
 		return l[0] !== 0 && l[1] !== 0 ? { left: l[0] + "px", top: l[1] + "px" } : undefined;
 	});
-	const size = ref<[number, number]>([0, 0]);
+	const size = ref<TwoD>([0, 0]);
 
 	/**
 	 * 隐藏菜单。
@@ -71,7 +71,7 @@
 </script>
 
 <template>
-	<component :is="isContextMenu ? ClientOnlyTeleport : Fragment" to="body">
+	<component :is="isContextMenu ? ClientOnlyTeleport : Fragment" to="#popovers">
 		<Transition :css="false" @enter="onMenuEnter" @leave="onMenuLeave">
 			<menu
 				v-if="shown"

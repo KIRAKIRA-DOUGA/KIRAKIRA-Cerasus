@@ -67,5 +67,5 @@ declare global {
 	type DirectiveEffectHookInferBinding<D extends Directive> = D extends Directive<Any, infer T> ? T : never;
 	export type DirectiveEffectHook<D extends Directive, T = void> = (element: DirectiveEffectHookInferElement<D>, binding: DirectiveBinding<DirectiveEffectHookInferBinding<D>>) => T;
 
-	export { ComponentInternalInstance, ConcreteComponent, Directive, Events, MaybeRef, MaybeRefOrGetter, Ref, RendererElement, Slot, StyleValue, VNode, WritableComputedRef } from "vue";
+	export { ComponentInternalInstance, ConcreteComponent, Directive, Events, MaybeRef, MaybeRefOrGetter, Ref, RendererElement, Slot, StyleValue, CSSProperties, VNode, WritableComputedRef } from "vue";
 }

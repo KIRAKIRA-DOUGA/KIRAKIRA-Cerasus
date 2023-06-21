@@ -7,7 +7,7 @@
 	import { TooltipEvent } from "plugins/vue/tooltip";
 
 	type TooltipEventWithPosition = TooltipEvent & {
-		position: StyleValue;
+		position: CSSProperties;
 		symbol: symbol;
 	};
 
@@ -29,7 +29,7 @@
 			const placements = ["top", "bottom", "right", "left"] as const; // 优先顺序：上、下、右、左。
 			e.placement = placements[toPageDistance.indexOf(Math.max(...toPageDistance))];
 		}
-		let position: [number, number];
+		let position: TwoD;
 		if (e.placement === "top")
 			position = [bounding.top - e.offset, bounding.left + bounding.width / 2];
 		else if (e.placement === "bottom")
@@ -38,7 +38,7 @@
 			position = [bounding.top + bounding.height / 2, bounding.left - e.offset];
 		else
 			position = [bounding.top + bounding.height / 2, bounding.right + e.offset];
-		return { top: position[0] + "px", left: position[1] + "px" } as StyleValue;
+		return { top: position[0] + "px", left: position[1] + "px" } as CSSProperties;
 	}
 
 	/**

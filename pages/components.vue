@@ -45,6 +45,8 @@
 	const toastSeverity = ref<ToastEvent["severity"]>("success");
 	const longTextTest = "那只敏捷的棕毛狐狸跳过了一只懒惰的狗".repeat(20);
 	const selectedSegmented = ref("list");
+	const flyout = ref<InstanceType<typeof Flyout>>();
+	const showFlyout = (e: MouseEvent) => flyout.value?.show(e);
 
 	/**
 	 * 单击按钮事件。
@@ -139,6 +141,7 @@
 			<Button @click="reGacha">你说得不对</Button>
 			<Button @click="showAlert = true">{{ t.show_alert }}</Button>
 			<Button @click="showModal = true">显示模态框</Button>
+			<Button @click="showFlyout">显示浮窗</Button>
 			<Alert v-model="showAlert" static />
 			<Modal v-model="showModal" title="标题栏">
 				<div class="modal-content">
@@ -152,6 +155,18 @@
 					</div>
 				</div>
 			</Modal>
+			<Flyout ref="flyout">
+				<div class="modal-content">
+					<div>
+						<p>视频标题</p>
+						<TextBox v-model="inputValue" placeholder="视频标题" />
+					</div>
+					<div>
+						<p>视频分P</p>
+						<TextBox v-model="inputValue" placeholder="视频分P" />
+					</div>
+				</div>
+			</Flyout>
 			<ToggleSwitch v-model="toggle">{{ t.toggle_switch }} {{ toggle ? t.on : t.off }}</ToggleSwitch>
 			<ToggleSwitch disabled>{{ t.disabled }} {{ t.off }}</ToggleSwitch>
 			<ToggleSwitch on disabled>{{ t.disabled }} {{ t.on }}</ToggleSwitch>

@@ -640,7 +640,7 @@
 				circle-mask-become-smaller 500ms 2s $ease-out-max forwards,
 				move-avatar-to-corner 500ms 2.5s $ease-out-max forwards;
 
-			@media (max-height: 432px) {
+			@media (height <= 432px) {
 				--corner-y: calc(50dvh - #{40px * 3 - 12px});
 			}
 		}

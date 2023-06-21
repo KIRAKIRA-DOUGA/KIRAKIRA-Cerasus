@@ -88,7 +88,7 @@ export async function animateSize(
 		/** 在改变回调函数后自动增加等待下一帧。 */
 		nextTick: boolean;
 		/** 获取最终的元素尺寸。 */
-		getSize: [number, number];
+		getSize: TwoD;
 		/** 显式指定初始样式（可选）。 */
 		startStyle: Keyframe;
 		/** 显式指定结束样式（可选）。 */
