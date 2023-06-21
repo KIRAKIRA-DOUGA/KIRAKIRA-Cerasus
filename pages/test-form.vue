@@ -81,23 +81,28 @@
 		}
 	};
 
-	const userSettingsMount = ref<Partial<QueryResultType>>({});
-	const getUserSettings = async () => {
-		const url = "https://rosales.kirakira.moe:4000/02/koa/user/settings/userSettings/get?uuid=u00001";
-		const { data: userSettingsMountResult } = await useFetch(url);
-		userSettingsMount.value = userSettingsMountResult.value as QueryResultType;
-	};
+	// const userSettingsMount = ref({} as queryResultType);
+	// const getUserSettings = async () => {
+	// 	const url = "https://rosales.kirakira.moe:4000/02/koa/user/settings/userSettings/get?uuid=u00001";
+	// 	const { data: userSettingsMountResult } = await useFetch(url);
+	// 	userSettingsMount.value = userSettingsMountResult.value as queryResultType;
+	// };
 
-	getUserSettings();
+	// await getUserSettings();
+
+	const url = "https://rosales.kirakira.moe:4000/02/koa/user/settings/userSettings/get?uuid=u00001";
+	// const url = "https://rosales.kirakira.moe:4001/02/koa/admin/sleep?sleep=5000"; // sleep API 模拟慢速网络请求
+	const { data: userSettingsMount } = await useFetch(url);
 
 	useHead({ title: "API 测试页" });
 </script>
 
 <template>
 	<div class="container">
-		<h2>测试服务端渲染</h2>
-		<div>在组件初始化时获取 u00001 用户设定档数据的结果：<br />{{ userSettingsMount }}</div>
-		<div>上方显示的数据是在前端的服务端中请求的（当前为 vercel.com），您无法在客户端浏览器控制台中找到</div>
+		<h2>测试首屏服务端渲染</h2>
+		<div>请求 u00001 用户设定档数据的结果：<br />{{ userSettingsMount }}</div>
+		<div>本页是首屏加载时，useFetch 会在运行 Nuxt 的服务端中发起请求（比如说 vercel.com），您无法在客户端浏览器的控制台中找到这条 API 请求，不妨刷新一下页面试试！</div>
+		<div>本页不是首屏加载时（比如说你在主页点击了 "API 测试页" 按钮进入本页），useFetch 会在用户客户端中发起请求。这个行为与普通的 Vue3 axios 单页面应用一致，您可以在浏览器中找到 API 请求。</div>
 
 		<h2>查询用户设定档</h2>
 		<div class="query">
