@@ -35,9 +35,11 @@ const thumbVideo = Node.create({
 		return VueNodeViewRenderer(Component);
 	},
 });
+
 export default {
 	thumbVideo,
 	kaomoji,
+
 };
 
 // export const tiptapThumbVideoComponents = Node.create({

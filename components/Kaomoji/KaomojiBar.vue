@@ -20,7 +20,7 @@
 		<div class="tab">
 			<TabBar v-model="selectedTab">
 				<TabItem id="happy" @click="changePage(0)">{{ t.happy }}</TabItem>
-				<TabItem id="hello" @click="changePage(1)">{{ t.hello }}</TabItem>
+				<TabItem id="greet" @click="changePage(1)">{{ t.greet }}</TabItem>
 				<TabItem id="cute" @click="changePage(2)">{{ t.awa }}</TabItem>
 				<TabItem id="sad" @click="changePage(3)">{{ t.sad }}</TabItem>
 				<TabItem id="embarrassed" @click="changePage(4)">{{ t.embarrassed }}</TabItem>
@@ -61,6 +61,7 @@
 		height: 24px;
 		margin-right: 4px;
 		color: c(text-color);
+		font-size: 0.5em;
 		background-color: c(main-bg);
 	}
 
