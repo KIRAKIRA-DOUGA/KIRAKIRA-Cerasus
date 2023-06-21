@@ -100,7 +100,8 @@
 <template>
 	<div class="container">
 		<h2>测试首屏服务端渲染</h2>
-		<div>请求 u00001 用户设定档数据的结果：<br />{{ userSettingsMount }}</div>
+		<div>请求 u00001 用户设定档数据的结果：</div>
+		<pre><code>{{ userSettingsMount }}</code></pre>
 		<div>本页是首屏加载时，useFetch 会在运行 Nuxt 的服务端中发起请求（比如说 vercel.com），您无法在客户端浏览器的控制台中找到这条 API 请求，不妨刷新一下页面试试！</div>
 		<div>本页不是首屏加载时（比如说你在主页点击了 "API 测试页" 按钮进入本页），useFetch 会在用户客户端中发起请求。这个行为与普通的 Vue3 axios 单页面应用一致，您可以在浏览器中找到 API 请求。</div>
 
@@ -109,7 +110,8 @@
 			<TextBox v-model="userIdInput" size="normal" placeholder="输入你想查询的用户名（输入 u00001 试试看？）" />
 			<Button icon="send" @click="handleSearchUserInfo">{{ t.query }}</Button>
 		</div>
-		<div>查询结果：{{ userSettingsRef }}</div>
+		<div>查询结果：</div>
+		<pre><code>{{ userSettingsRef }}</code></pre>
 
 		<h2>新建用户设定档</h2>
 		<div class="save">
@@ -139,10 +141,9 @@
 	.query {
 		display: flex;
 		flex-direction: row;
+		gap: 8px;
 		align-items: center;
 		justify-content: space-between;
-		gap: 8px;
-		width: 500px;
 
 		.text-box {
 			width: 100%;
@@ -154,14 +155,13 @@
 		flex-direction: column;
 		align-items: flex-start;
 		justify-content: space-between;
-		width: 500px;
 		margin-top: 0;
 
 		> div {
-			width: 400px;
+			width: 100%;
 			margin-top: 10px;
 		}
-		
+
 		> button {
 			margin-top: 10px;
 		}
@@ -175,5 +175,16 @@
 		margin-top: 20px;
 		margin-bottom: 10px;
 		color: c(accent);
+	}
+
+	pre {
+		@include radius-large;
+		padding: 1rem;
+		background-color: c(gray-30);
+		
+		&,
+		* {
+			user-select: text;
+		}
 	}
 </style>
