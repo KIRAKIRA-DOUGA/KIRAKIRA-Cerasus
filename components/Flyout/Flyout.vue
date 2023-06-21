@@ -15,6 +15,7 @@
 	});
 	const flyoutRect = ref<DOMRect>(undefined!);
 	const placementForAnimation = ref<Placement>("bottom");
+	const scopeId = useParentScopeId() ?? "";
 
 	/**
 	 * 隐藏浮窗。
@@ -107,6 +108,7 @@
 			<Comp
 				v-if="shown"
 				ref="flyout"
+				:[scopeId]="true"
 				:class="{ padding: !noPadding }"
 				:style="locationStyle"
 			>

@@ -32,7 +32,7 @@
 	const progressIndeterminate = ref(true);
 	const progressValue = computed(() => progressIndeterminate.value ? NaN : progressPercent.value);
 	const inputValue = ref("");
-	const menu = ref<InstanceType<typeof Menu>>();
+	const menu = refMenu();
 	const showMenu = () => menu.value?.show();
 	const beep = ref<HTMLAudioElement>();
 	const isUploaderLovinIt = ref(true);
@@ -46,7 +46,8 @@
 	const toastSeverity = ref<ToastEvent["severity"]>("success");
 	const longTextTest = "那只敏捷的棕毛狐狸跳过了一只懒惰的狗".repeat(20);
 	const selectedSegmented = ref("list");
-	const flyout = ref<InstanceType<typeof Flyout>>();
+	const flyout = refFlyout();
+	const flyoutKaomoji = refFlyout();
 	const showFlyout = (e: MouseEvent, placement?: Placement) => flyout.value?.show(e, placement);
 	const [DefinePopoverSlot, PopoverSlot] = createReusableTemplate();
 
@@ -133,7 +134,7 @@
 			</div>
 		</div>
 	</DefinePopoverSlot>
-	
+
 	<div class="container">
 		<div class="links">
 			<LocaleLink to="/">{{ t.home }}</LocaleLink>
@@ -157,6 +158,7 @@
 			<Button @click="showAlert = true">{{ t.show_alert }}</Button>
 			<Button @click="showModal = true">显示模态框</Button>
 			<Button @click="showFlyout">显示浮窗</Button>
+			<Button @click="e => flyoutKaomoji?.show(e, 'y')">显示颜文字浮窗</Button>
 			<Alert v-model="showAlert" static />
 			<Modal v-model="showModal" title="标题栏">
 				<PopoverSlot />
@@ -164,6 +166,7 @@
 			<Flyout ref="flyout">
 				<PopoverSlot />
 			</Flyout>
+			<FlyoutKaomoji ref="flyoutKaomoji" />
 			<ToggleSwitch v-model="toggle">{{ t.toggle_switch }} {{ toggle ? t.on : t.off }}</ToggleSwitch>
 			<ToggleSwitch disabled>{{ t.disabled }} {{ t.off }}</ToggleSwitch>
 			<ToggleSwitch on disabled>{{ t.disabled }} {{ t.on }}</ToggleSwitch>
