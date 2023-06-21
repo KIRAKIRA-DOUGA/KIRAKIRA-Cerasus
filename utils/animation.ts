@@ -41,7 +41,7 @@ export async function replayAnimation(element: Element, ...className: string[]) 
 }
 
 type StyleProperties = string & keyof FilterValueType<CSSStyleDeclaration, string>;
-type Keyframe = Partial<Record<Exclude<StyleProperties, "offset">, Numberish> & { offset: number }>;
+type Keyframe = Partial<Override<Record<StyleProperties, Numberish>, { offset: number }>>;
 type Keyframes = Keyframe[];
 type DimensionAxis = "height" | "width" | "both";
 type MaybePromise<T> = T | Promise<T>;
@@ -66,8 +66,11 @@ export async function animateSize(
 		withoutAdjustPadding,
 		nextTick: awaitNextTick = true,
 		getSize,
+		getRect,
 		startStyle = {},
 		endStyle = {},
+		startReverseSlideIn,
+		endReverseSlideIn,
 	}: Partial<{
 		/** 显式指定初始高度（可选）。 */
 		startHeight: number;
@@ -89,10 +92,16 @@ export async function animateSize(
 		nextTick: boolean;
 		/** 获取最终的元素尺寸。 */
 		getSize: TwoD;
+		/** 获取最终的元素矩形。 */
+		getRect: Ref<DOMRect | undefined>;
 		/** 显式指定初始样式（可选）。 */
 		startStyle: Keyframe;
 		/** 显式指定结束样式（可选）。 */
 		endStyle: Keyframe;
+		/** 初始从反向滑入界面。 */
+		startReverseSlideIn: boolean;
+		/** 结束从反向滑入界面。 */
+		endReverseSlideIn: boolean;
 	}> = {},
 ): Promise<Animation | void> {
 	startHeight ??= element.clientHeight;
@@ -103,6 +112,8 @@ export async function animateSize(
 	endWidth ??= element.clientWidth;
 	if (getSize)
 		[getSize[0], getSize[1]] = [endWidth, endHeight];
+	if (getRect)
+		getRect.value = element.getBoundingClientRect();
 	let isHeightChanged = specified === "height" || specified === "both",
 		isWidthChanged = specified === "width" || specified === "both";
 	if (startHeight === endHeight) isHeightChanged = false; // 不用动了。
@@ -122,6 +133,11 @@ export async function animateSize(
 		Object.assign(keyframes[setYPaddingIndex], { paddingTop: 0, paddingBottom: 0, marginTop: 0, marginBottom: 0 });
 	if (setYPadding && isWidthChanged && setXPaddingIndex !== undefined)
 		Object.assign(keyframes[setXPaddingIndex], { paddingLeft: 0, paddingRight: 0, marginLeft: 0, marginRight: 0 });
+	const setTranslate = (pxes: number[]) => pxes.map(i => i + "px").join(" ");
+	if (startReverseSlideIn)
+		keyframes[0].translate = setTranslate([isWidthChanged ? endWidth : 0, isHeightChanged ? endHeight : 0]);
+	if (endReverseSlideIn)
+		keyframes[1].translate = setTranslate([isWidthChanged ? startWidth : 0, isHeightChanged ? startHeight : 0]);
 	Object.assign(keyframes[0], startStyle);
 	Object.assign(keyframes[1], endStyle);
 	return element.animate(keyframes, { duration, easing }).finished;

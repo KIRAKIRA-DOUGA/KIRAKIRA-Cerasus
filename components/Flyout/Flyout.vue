@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { Placement } from "plugins/vue/tooltip";
+	import { Placement, getPosition } from "plugins/vue/tooltip";
 
 	const props = defineProps<{
 		/** 是否**不**向加内边距？ */
@@ -7,13 +7,14 @@
 	}>();
 
 	const shown = ref(false);
-	const flyout = ref<HTMLMenuElement>();
+	const flyout = refComp();
 	const location = ref<TwoD>([0, 0]);
 	const locationStyle = computed(() => {
 		const l = location.value;
-		return l[0] !== 0 && l[1] !== 0 ? { left: l[0] + "px", top: l[1] + "px" } : undefined;
+		return l[0] !== 0 || l[1] !== 0 ? { left: l[0] + "px", top: l[1] + "px" } : undefined;
 	});
-	const size = ref<TwoD>([0, 0]);
+	const flyoutRect = ref<DOMRect>(undefined!);
+	const placementForAnimation = ref<Placement>("bottom");
 
 	/**
 	 * 隐藏浮窗。
@@ -29,20 +30,33 @@
 	 * @param offset - 与目标元素距离偏移。
 	 */
 	async function show(target: MouseEvent | MaybeRef<TwoD | HTMLElement | EventTarget>, placement?: Placement, offset?: number) {
+		target = toValue(target);
+		let targetRect: DOMRect | undefined;
 		const _location = ((): TwoD | null => {
-			target = toValue(target);
-			if (target instanceof Event) return [target.clientX, target.clientY];
-			else if (target instanceof Array) return target;
-			else if (target instanceof Element) {
-				const rect = target.getBoundingClientRect();
-				return [rect.left, rect.bottom];
-			} else return null;
+			if (target instanceof Array) return target;
+			if (target instanceof Event)
+				if (target.target instanceof Element) target = target.currentTarget!;
+				else return [target.clientX, target.clientY];
+			if (target instanceof Element) {
+				targetRect = target.getBoundingClientRect();
+				return [targetRect.left, targetRect.bottom];
+			}
+			return null;
 		})();
 		if (!_location) return;
 		else location.value = _location;
 		shown.value = true;
 		await nextTick();
-		location.value = moveIntoPage(location, size);
+		if (targetRect) {
+			shown.value = false;
+			const result = getPosition(targetRect, placement, offset, flyoutRect);
+			location.value = result.position;
+			placementForAnimation.value = result.placement;
+			await nextTick();
+			shown.value = true;
+			await nextTick();
+		}
+		location.value = moveIntoPage(location, flyoutRect);
 	}
 
 	defineExpose({
@@ -56,7 +70,12 @@
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
 	async function onFlyoutEnter(el: Element, done: () => void) {
-		await animateSize(el, null, { startHeight: 0, duration: 500, getSize: size.value, withoutAdjustPadding: "both" });
+		await animateSize(el, null, {
+			[["left", "right", "x"].includes(placementForAnimation.value) ? "startWidth" : "startHeight"]: 0,
+			startReverseSlideIn: ["left", "top"].includes(placementForAnimation.value),
+			duration: 500,
+			getRect: flyoutRect,
+		});
 		done();
 	}
 
@@ -67,7 +86,11 @@
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
 	async function onFlyoutLeave(el: Element, done: () => void) {
-		await animateSize(el, null, { endHeight: 0, duration: 300 });
+		await animateSize(el, null, {
+			[["left", "right", "x"].includes(placementForAnimation.value) ? "endWidth" : "endHeight"]: 0,
+			endReverseSlideIn: ["left", "top"].includes(placementForAnimation.value),
+			duration: 300,
+		});
 		done();
 	}
 
@@ -101,6 +124,7 @@
 		@include radius-large;
 		overflow: hidden;
 		background-color: c(acrylic-bg, 75%);
+		transition: $fallback-transitions, left 0s, top 0s;
 		
 		&.padding {
 			padding: $padding;

@@ -4,6 +4,7 @@
 	import beepSrc from "assets/audios/NOVA 2022.1 Alert Quick.ogg";
 	import { CheckState } from "components/Checkbox.vue";
 	import { ToastEvent } from "composables/toast";
+	import { Placement } from "plugins/vue/tooltip";
 
 	const page = ref(1);
 	const pages = ref(99);
@@ -46,7 +47,8 @@
 	const longTextTest = "那只敏捷的棕毛狐狸跳过了一只懒惰的狗".repeat(20);
 	const selectedSegmented = ref("list");
 	const flyout = ref<InstanceType<typeof Flyout>>();
-	const showFlyout = (e: MouseEvent) => flyout.value?.show(e);
+	const showFlyout = (e: MouseEvent, placement?: Placement) => flyout.value?.show(e, placement);
+	const [DefinePopoverSlot, PopoverSlot] = createReusableTemplate();
 
 	/**
 	 * 单击按钮事件。
@@ -119,6 +121,19 @@
 </script>
 
 <template>
+	<DefinePopoverSlot>
+		<div class="modal-content">
+			<div>
+				<p>视频标题</p>
+				<TextBox v-model="inputValue" placeholder="视频标题" />
+			</div>
+			<div>
+				<p>视频分P</p>
+				<TextBox v-model="inputValue" placeholder="视频分P" />
+			</div>
+		</div>
+	</DefinePopoverSlot>
+	
 	<div class="container">
 		<div class="links">
 			<LocaleLink to="/">{{ t.home }}</LocaleLink>
@@ -144,28 +159,10 @@
 			<Button @click="showFlyout">显示浮窗</Button>
 			<Alert v-model="showAlert" static />
 			<Modal v-model="showModal" title="标题栏">
-				<div class="modal-content">
-					<div>
-						<p>视频标题</p>
-						<TextBox v-model="inputValue" placeholder="视频标题" />
-					</div>
-					<div>
-						<p>视频分P</p>
-						<TextBox v-model="inputValue" placeholder="视频分P" />
-					</div>
-				</div>
+				<PopoverSlot />
 			</Modal>
 			<Flyout ref="flyout">
-				<div class="modal-content">
-					<div>
-						<p>视频标题</p>
-						<TextBox v-model="inputValue" placeholder="视频标题" />
-					</div>
-					<div>
-						<p>视频分P</p>
-						<TextBox v-model="inputValue" placeholder="视频分P" />
-					</div>
-				</div>
+				<PopoverSlot />
 			</Flyout>
 			<ToggleSwitch v-model="toggle">{{ t.toggle_switch }} {{ toggle ? t.on : t.off }}</ToggleSwitch>
 			<ToggleSwitch disabled>{{ t.disabled }} {{ t.off }}</ToggleSwitch>
@@ -290,6 +287,17 @@
 						<Button v-tooltip="{ title: '自动寻找离页边最远的水平方向', placement: 'x' }">水平方向缺省</Button>
 						<Button v-tooltip="'缺省设定位置则会自动寻找离页边最远的方向'">全方向缺省</Button>
 						<Button v-tooltip="longTextTest">长文本</Button>
+					</div>
+				</AccordionItem>
+				<AccordionItem title="浮窗测试">
+					<div class="tooltip-test">
+						<Button @click="e => showFlyout(e, 'top')">上方</Button>
+						<Button @click="e => showFlyout(e, 'right')">右方</Button>
+						<Button @click="e => showFlyout(e, 'bottom')">下方</Button>
+						<Button @click="e => showFlyout(e, 'left')">左方</Button>
+						<Button @click="e => showFlyout(e, 'y')">垂直方向缺省</Button>
+						<Button @click="e => showFlyout(e, 'x')">水平方向缺省</Button>
+						<Button @click="e => showFlyout(e)">全方向缺省</Button>
 					</div>
 				</AccordionItem>
 				<AccordionItem title="让你的前端设计师气到脑中风">

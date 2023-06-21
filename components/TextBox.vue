@@ -200,6 +200,11 @@
 		done();
 	}
 
+	watch(value, async () => {
+		await nextTick();
+		invalid.value = isInvalid();
+	});
+
 	onMounted(() => {
 		invalid.value = isInvalid();
 	});
