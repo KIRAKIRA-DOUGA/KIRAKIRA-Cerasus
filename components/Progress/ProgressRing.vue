@@ -81,7 +81,8 @@
 
 		&.v-enter-from,
 		&.v-leave-to {
-			--thickness: 0 !important;
+			// stylelint-disable-next-line length-zero-no-unit
+			--thickness: 0px !important; // 如果去掉 px 则会行为异常。
 		}
 	}
 	
