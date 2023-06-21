@@ -24,7 +24,7 @@
 			<TabBar v-model="selected">
 				<TabItem v-for="tab in tabs" :id="tab" :key="tab">{{ t[tab] }}</TabItem>
 			</TabBar>
-			<Transition :name="transitionName" mode="out-in" appear :duration="{ enter: 600, leave: 100 }">
+			<Transition :name="transitionName" mode="out-in" appear>
 				<div :key="selected" class="grid">
 					<Button v-for="i in kaomojis[selected]" :key="i" class="kaomoji" @click="inputKaomoji = i">{{ i }}</Button>
 				</div>
@@ -57,13 +57,13 @@
 		padding-top: 0.25rem;
 		overflow-y: auto;
 		
-		.right-enter-active,
-		.left-enter-active {
+		&.right-enter-active,
+		&.left-enter-active {
 			transition: all $ease-out-smooth 600ms !important;
 		}
 		
-		.right-leave-active,
-		.left-leave-active {
+		&.right-leave-active,
+		&.left-leave-active {
 			transition: all $ease-in-smooth 100ms !important;
 		}
 		
