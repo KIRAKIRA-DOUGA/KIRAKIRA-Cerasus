@@ -14,7 +14,7 @@ export default defineNuxtModule({
 					if (!components_string || components_string.trim() === "") continue;
 					break;
 				} catch { }
-			const components = [...components_string.matchAll(/export const (?<name>\w+): typeof import\("(?<path>.*)"\)\['(?<member>\w+)'\]/g)].map(item => item.groups as { name: string; path: string; member: string }).filter(item => !item.name.startsWith("Lazy"));
+			const components = Array.from(components_string.matchAll(/export const (?<name>\w+): typeof import\("(?<path>.*)"\)\['(?<member>\w+)'\]/g), item => item.groups as { name: string; path: string; member: string }).filter(item => !item.name.startsWith("Lazy"));
 			const D_TS_NAME = "components-globalized.d.ts";
 			const classes = await readdir(resolve("../classes"));
 			await writeFile(resolve("../types/", D_TS_NAME), (() => {
