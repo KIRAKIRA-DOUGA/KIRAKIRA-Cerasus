@@ -4,12 +4,13 @@ import defineAlias from "./helpers/alias";
 import styleResources from "./helpers/style-resources";
 import cssDoodleLoader from "./plugins/vite/css-doodle";
 import docsLoader from "./plugins/vite/docs";
+import { environment } from "./utils/environment";
 /* import CopyPlugin from "copy-webpack-plugin";
 const wasmFile = resolve("node_modules/mediainfo.js/dist/MediaInfoModule.wasm"); */
 type OriginalNuxtConfig = Parameters<typeof defineNuxtConfig>[0];
 type BroadNuxtConfig = OriginalNuxtConfig & Record<Exclude<string, keyof OriginalNuxtConfig>, object | string>; // 还敢报错吗？
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; // 支持 HTTPS。
-const dev = process.env.NODE_ENV !== "production";
+const dev = environment.development;
 
 export default defineNuxtConfig({
 	plugins: [
@@ -21,7 +22,8 @@ export default defineNuxtConfig({
 		// "@nuxt/devtools",
 		"@nuxtjs/i18n",
 		"@nuxt/content",
-		"nuxt-icons",
+		dev && "nuxt-icons",
+		!dev && "@nuxtjs/svg-sprite",
 		"@vueuse/nuxt",
 		"nuxt-lodash",
 		["@pinia/nuxt", {
@@ -125,8 +127,12 @@ export default defineNuxtConfig({
 		compilerOptions: {
 			isCustomElement(tag) {
 				return (
-					tag === "marquee" ||
-					tag.includes("-")
+					tag.includes("-") ||
+					[
+						"marquee",
+						dev && "SvgIcon", // 将非开发/生产环境的对应组件故意视为原生元素。
+						!dev && "NuxtIcon",
+					].includes(tag)
 				);
 			},
 		},
@@ -161,6 +167,9 @@ export default defineNuxtConfig({
 			sameSite: "strict",
 		},
 		storage: "localStorage",
+	},
+	svgSprite: {
+		input: "~/assets/icons",
 	},
 	imports: {
 		dirs: [

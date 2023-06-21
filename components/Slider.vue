@@ -175,7 +175,7 @@
 		left: $value;
 		background-color: c(main-bg);
 		cursor: pointer;
-		transition: $fallback-transitions, left 0ms;
+		transition: $fallback-transitions, left 0s;
 
 		@include tablet { // 增加移动端大小以便拖拽。
 			&::before {

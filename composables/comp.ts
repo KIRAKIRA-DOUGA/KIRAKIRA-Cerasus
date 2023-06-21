@@ -17,3 +17,33 @@ export function refComp(value?: CompInstance) {
 		},
 	}));
 }
+
+/**
+ * 指向 Flyout 组件的引用。
+ * @returns 指向 Flyout 组件的引用。
+ */
+export function refFlyout() {
+	return ref<InstanceType<typeof Flyout>>();
+}
+
+/**
+ * 指向 Menu 组件的引用。
+ * @returns 指向 Menu 组件的引用。
+ */
+export function refMenu() {
+	return ref<InstanceType<typeof Menu>>();
+}
+
+type UnknownFunctionType = (...args: Any[]) => Any;
+
+/**
+ * 获取基类组件的显示、隐藏函数。
+ * @param base - 基类组件。
+ * @returns 基类组件的显示、隐藏函数。
+ */
+export function useBaseComponentShowHide<T extends { show: UnknownFunctionType; hide: UnknownFunctionType }>(base: Ref<T | undefined>) {
+	return {
+		show: (...args: Parameters<T["show"]>): ReturnType<T["show"]> => base.value?.show(...args),
+		hide: (...args: Parameters<T["hide"]>): ReturnType<T["hide"]> => base.value?.hide(...args),
+	};
+}

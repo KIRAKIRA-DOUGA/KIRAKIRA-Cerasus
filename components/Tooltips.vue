@@ -4,42 +4,15 @@
 </docs>
 
 <script setup lang="ts">
-	import { TooltipEvent } from "plugins/vue/tooltip";
+	import { TooltipEvent, getPositionByEvent } from "plugins/vue/tooltip";
 
 	type TooltipEventWithPosition = TooltipEvent & {
-		position: StyleValue;
+		position: CSSProperties;
 		symbol: symbol;
 	};
 
 	const tooltipList = reactive<TooltipEventWithPosition[]>([]);
 	const tooltipDoms = ref<HTMLDivElement[]>();
-
-	/**
-	 * 根据给定的工具提示方向和偏移值，获取工具提示的定位值。
-	 * @param e - 工具提示事件。
-	 * @returns 表示工具提示位置的样式属性值。
-	 */
-	function getPosition(e: TooltipEvent) { // TODO: 该函数稍后需要提炼到可复用文件。
-		const bounding = e.element.getBoundingClientRect();
-		e.offset ??= 10;
-		if (!e.placement || e.placement === "x" || e.placement === "y") { // 如果缺省工具提示放置位置，则会寻找离页边最远的方向。
-			const toPageDistance = [bounding.top, window.innerHeight - bounding.bottom, window.innerWidth - bounding.right, bounding.left];
-			if (e.placement === "x") toPageDistance[0] = toPageDistance[1] = -Infinity;
-			else if (e.placement === "y") toPageDistance[2] = toPageDistance[3] = -Infinity;
-			const placements = ["top", "bottom", "right", "left"] as const; // 优先顺序：上、下、右、左。
-			e.placement = placements[toPageDistance.indexOf(Math.max(...toPageDistance))];
-		}
-		let position: [number, number];
-		if (e.placement === "top")
-			position = [bounding.top - e.offset, bounding.left + bounding.width / 2];
-		else if (e.placement === "bottom")
-			position = [bounding.bottom + e.offset, bounding.left + bounding.width / 2];
-		else if (e.placement === "left")
-			position = [bounding.top + bounding.height / 2, bounding.left - e.offset];
-		else
-			position = [bounding.top + bounding.height / 2, bounding.right + e.offset];
-		return { top: position[0] + "px", left: position[1] + "px" } as StyleValue;
-	}
 
 	/**
 	 * 已渲染工具提示组件，但发现该组件超出了窗口边缘，则再对其进行位置调整。
@@ -58,7 +31,7 @@
 		if (isMobile()) return; // 触摸屏不要显示工具提示。
 		const tooltip = e as TooltipEventWithPosition;
 		if (!tooltip.title.toString().trim()) return; // toString() 以刻意识别 i18n 的函数字符串。
-		tooltip.position = getPosition(e);
+		tooltip.position = getPositionByEvent(e);
 		tooltipList.push(tooltip);
 		adjustPosition();
 	});
@@ -76,13 +49,13 @@
 				const tooltip = tooltipList[i];
 				const newValue = e as TooltipEventWithPosition;
 				tooltip.title = newValue.title;
-				tooltip.position = newValue.position = getPosition(e);
+				tooltip.position = newValue.position = getPositionByEvent(e);
 			}
 		adjustPosition();
 	});
 
 	useListen("app:refreshTooltip", map => {
-		const symbols = [...map.values()].map(value => value.symbol);
+		const symbols = Array.from(map.values(), value => value.symbol);
 		for (let i = tooltipList.length - 1; i >= 0; i--)
 			if (!symbols.includes(tooltipList[i].symbol))
 				arrayRemoveAt(tooltipList, i);

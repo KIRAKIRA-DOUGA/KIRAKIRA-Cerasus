@@ -4,8 +4,8 @@
 @layer base, theme, layout, props, utilities, components, special;
 
 *,
-*::before,
-*::after {
+::before,
+::after {
 	box-sizing: border-box;
 	font-family: $chinese-fonts;
 	tab-size: 4;
@@ -19,7 +19,7 @@
 	margin-inline-end: 0;
 }
 
-*:lang(ja) {
+:lang(ja) {
 	&,
 	&::before,
 	&::after {
@@ -27,8 +27,15 @@
 	}
 }
 
-*:focus,
-*:focus-visible {
+code {
+	&,
+	* {
+		font-family: $monospace-fonts;
+	}
+}
+
+:focus,
+:focus-visible {
 	outline: none !important;
 }
 

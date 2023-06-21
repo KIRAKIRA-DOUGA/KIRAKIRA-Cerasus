@@ -2,9 +2,9 @@
 	import animationData from "lotties/spinner-dev1.json";
 	import { LogoTextFormType } from "components/Logo/LogoText.vue";
 	import beepSrc from "assets/audios/NOVA 2022.1 Alert Quick.ogg";
-	import Menu from "components/Menu/Menu.vue";
 	import { CheckState } from "components/Checkbox.vue";
 	import { ToastEvent } from "composables/toast";
+	import { Placement } from "plugins/vue/tooltip";
 
 	const page = ref(1);
 	const pages = ref(99);
@@ -28,8 +28,11 @@
 	const progressRingSize = ref(28);
 	const progressRingThickness = ref(3);
 	const progressBarHeight = ref(4);
+	const progressPercent = ref(30);
+	const progressIndeterminate = ref(true);
+	const progressValue = computed(() => progressIndeterminate.value ? NaN : progressPercent.value);
 	const inputValue = ref("");
-	const menu = ref<InstanceType<typeof Menu>>();
+	const menu = refMenu();
 	const showMenu = () => menu.value?.show();
 	const beep = ref<HTMLAudioElement>();
 	const isUploaderLovinIt = ref(true);
@@ -43,6 +46,10 @@
 	const toastSeverity = ref<ToastEvent["severity"]>("success");
 	const longTextTest = "那只敏捷的棕毛狐狸跳过了一只懒惰的狗".repeat(20);
 	const selectedSegmented = ref("list");
+	const flyout = refFlyout();
+	const flyoutKaomoji = refFlyout();
+	const showFlyout = (e: MouseEvent, placement?: Placement) => flyout.value?.show(e, placement);
+	const [DefinePopoverSlot, PopoverSlot] = createReusableTemplate();
 
 	/**
 	 * 单击按钮事件。
@@ -115,6 +122,19 @@
 </script>
 
 <template>
+	<DefinePopoverSlot>
+		<div class="modal-content">
+			<div>
+				<p>视频标题</p>
+				<TextBox v-model="inputValue" placeholder="视频标题" />
+			</div>
+			<div>
+				<p>视频分P</p>
+				<TextBox v-model="inputValue" placeholder="视频分P" />
+			</div>
+		</div>
+	</DefinePopoverSlot>
+
 	<div class="container">
 		<div class="links">
 			<LocaleLink to="/">{{ t.home }}</LocaleLink>
@@ -137,19 +157,16 @@
 			<Button @click="reGacha">你说得不对</Button>
 			<Button @click="showAlert = true">{{ t.show_alert }}</Button>
 			<Button @click="showModal = true">显示模态框</Button>
+			<Button @click="showFlyout">显示浮窗</Button>
+			<Button @click="e => flyoutKaomoji?.show(e, 'y')">显示颜文字浮窗</Button>
 			<Alert v-model="showAlert" static />
 			<Modal v-model="showModal" title="标题栏">
-				<div class="modal-content">
-					<div>
-						<p>视频标题</p>
-						<TextBox v-model="inputValue" placeholder="视频标题" />
-					</div>
-					<div>
-						<p>视频分P</p>
-						<TextBox v-model="inputValue" placeholder="视频分P" />
-					</div>
-				</div>
+				<PopoverSlot />
 			</Modal>
+			<Flyout ref="flyout">
+				<PopoverSlot />
+			</Flyout>
+			<FlyoutKaomoji ref="flyoutKaomoji" />
 			<ToggleSwitch v-model="toggle">{{ t.toggle_switch }} {{ toggle ? t.on : t.off }}</ToggleSwitch>
 			<ToggleSwitch disabled>{{ t.disabled }} {{ t.off }}</ToggleSwitch>
 			<ToggleSwitch on disabled>{{ t.disabled }} {{ t.on }}</ToggleSwitch>
@@ -187,8 +204,10 @@
 			<p>大小</p><Slider v-model="progressRingSize" :min="1" :max="150" />
 			<p>粗细</p><Slider v-model="progressRingThickness" :min="1" :max="60" />
 			<p>高度</p><Slider v-model="progressBarHeight" :min="1" :max="100" />
-			<ProgressRing :hidden="!showProgress" :style="{ '--size': progressRingSize + 'px', '--thickness': progressRingThickness + 'px' }" />
-			<ProgressBar :hidden="!showProgress" :style="{ height: progressBarHeight + 'px' }" />
+			<ToggleSwitch v-model="progressIndeterminate">不定状态</ToggleSwitch>
+			<p>进度</p><Slider v-model="progressPercent" />
+			<ProgressRing :hidden="!showProgress" :style="{ '--size': progressRingSize + 'px', '--thickness': progressRingThickness + 'px' }" :value="progressValue" />
+			<ProgressBar :hidden="!showProgress" :style="{ height: progressBarHeight + 'px' }" :value="progressValue" />
 			<!-- <Lottie loop autoplay :animationData="animationData" /> -->
 			<hr />
 			<Tag v-model="isTagChecked">{{ t.tag }}</Tag>
@@ -271,6 +290,17 @@
 						<Button v-tooltip="{ title: '自动寻找离页边最远的水平方向', placement: 'x' }">水平方向缺省</Button>
 						<Button v-tooltip="'缺省设定位置则会自动寻找离页边最远的方向'">全方向缺省</Button>
 						<Button v-tooltip="longTextTest">长文本</Button>
+					</div>
+				</AccordionItem>
+				<AccordionItem title="浮窗测试">
+					<div class="tooltip-test">
+						<Button @click="e => showFlyout(e, 'top')">上方</Button>
+						<Button @click="e => showFlyout(e, 'right')">右方</Button>
+						<Button @click="e => showFlyout(e, 'bottom')">下方</Button>
+						<Button @click="e => showFlyout(e, 'left')">左方</Button>
+						<Button @click="e => showFlyout(e, 'y')">垂直方向缺省</Button>
+						<Button @click="e => showFlyout(e, 'x')">水平方向缺省</Button>
+						<Button @click="e => showFlyout(e)">全方向缺省</Button>
 					</div>
 				</AccordionItem>
 				<AccordionItem title="让你的前端设计师气到脑中风">

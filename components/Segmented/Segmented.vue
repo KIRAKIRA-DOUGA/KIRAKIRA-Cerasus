@@ -30,7 +30,7 @@
 		if (!trackItems?.length || !_items.length) return;
 		pressed.value = true;
 		forceCursor("grabbing");
-		const lefts = [...trackItems].map(item => item.getBoundingClientRect().left);
+		const lefts = Array.from(trackItems, item => item.getBoundingClientRect().left);
 		const pointerMove = (e: PointerEvent) => {
 			const x = e.pageX;
 			for (let i = lefts.length - 1; i >= 0; i--)

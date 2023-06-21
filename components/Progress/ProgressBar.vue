@@ -1,27 +1,48 @@
 <docs>
 	# 横向进度条
-	目前仅可用于不确定的进度 (indeterminate)。
 </docs>
 
 <script setup lang="ts">
-	const props = defineProps<{
+	const props = withDefaults(defineProps<{
 		/** 加载完成并隐藏？ */
 		hidden?: boolean;
-	}>();
+		/** 指示进度条的最大值。 */
+		max?: number;
+		/** 进度值，留空表示不定状态。 */
+		value?: number | undefined;
+	}>(), {
+		max: 100,
+		value: NaN,
+	});
 
+	const indeterminate = computed(() => !Number.isFinite(props.value));
 	const shown = computed(() => !props.hidden);
+	const toDeterminate = ref(false);
+
+	watch(indeterminate, async (curInd, prevInd) => {
+		if (prevInd && !curInd) { // 当从不定状态到定值状态时增加一个动画，但反之则不会。
+			toDeterminate.value = true;
+			await delay(250);
+			toDeterminate.value = false;
+		}
+	});
 </script>
 
 <template>
 	<Transition :duration="250">
 		<Comp v-if="shown" role="progressbar" :aria-busy="shown">
 			<div class="wrapper">
-				<div class="line-wrapper line-wrapper-1">
-					<div class="line line-1"></div>
-				</div>
-				<div class="line-wrapper line-wrapper-2">
-					<div class="line line-2"></div>
-				</div>
+				<template v-if="indeterminate">
+					<div v-for="i in 2" :key="i" :class="`line-wrapper line-wrapper-${i}`">
+						<div :class="`line line-${i}`"></div>
+					</div>
+				</template>
+				<div
+					v-else
+					class="line"
+					:class="{ 'to-determinate': toDeterminate }"
+					:style="{ width: value / max * 100 + '%' }"
+				></div>
 			</div>
 		</Comp>
 	</Transition>
@@ -76,6 +97,10 @@
 
 			&.line-2 {
 				animation: indeterminate-scale-2 $animation-options;
+			}
+			
+			&.to-determinate {
+				animation: to-determinate-scale 250ms $ease-out-smooth;
 			}
 		}
 	}
@@ -156,6 +181,12 @@
 
 		100% {
 			scale: 0.08 1;
+		}
+	}
+	
+	@keyframes to-determinate-scale {
+		from {
+			width: 100%;
 		}
 	}
 </style>

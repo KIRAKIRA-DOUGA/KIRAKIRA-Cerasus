@@ -1,31 +1,57 @@
 <docs>
 	# 进度环
-	目前仅可用于不确定的进度 (indeterminate)。
 </docs>
 
 <script setup lang="ts">
-	const props = defineProps<{
+	const props = withDefaults(defineProps<{
 		/** 加载完成并隐藏？ */
 		hidden?: boolean;
-	}>();
+		/** 指示进度条的最大值。 */
+		max?: number;
+		/** 进度值，留空表示不定状态。 */
+		value?: number | undefined;
+	}>(), {
+		max: 100,
+		value: NaN,
+	});
 
+	const indeterminate = computed(() => !Number.isFinite(props.value));
 	const shown = computed(() => !props.hidden);
+	const toDeterminate = ref(false);
+
+	watch(indeterminate, async (curInd, prevInd) => {
+		if (prevInd && !curInd) { // 当从不定状态到定值状态时增加一个动画，但反之则不会。
+			toDeterminate.value = true;
+			await delay(250);
+			toDeterminate.value = false;
+		}
+	});
 </script>
 
 <template>
 	<Transition :duration="250">
 		<Comp v-if="shown" role="progressbar" :aria-busy="shown">
-			<div class="layer">
-				<div class="circle-clipper left">
-					<div class="circle"></div>
-				</div>
-				<div class="gap-patch">
-					<div class="circle"></div>
-				</div>
-				<div class="circle-clipper right">
-					<div class="circle"></div>
+			<div v-if="indeterminate" class="layer-wrapper">
+				<div class="layer">
+					<div class="circle-clipper left">
+						<div class="circle"></div>
+					</div>
+					<div class="gap-patch">
+						<div class="circle"></div>
+					</div>
+					<div class="circle-clipper right">
+						<div class="circle"></div>
+					</div>
 				</div>
 			</div>
+			<svg
+				v-else
+				class="ring"
+				:class="{ 'to-determinate': toDeterminate }"
+				:style="{ '--progress': value / max }"
+			>
+				<circle />
+			</svg>
 		</Comp>
 	</Transition>
 </template>
@@ -46,7 +72,8 @@
 		@include square(var(--size));
 		position: relative;
 		display: inline-block;
-		animation: spinner 1568ms linear infinite;
+		line-height: 0;
+		contain: strict;
 
 		&.v-leave-active * {
 			transition-timing-function: $ease-in-cubic;
@@ -54,14 +81,14 @@
 
 		&.v-enter-from,
 		&.v-leave-to {
-			--thickness: 0 !important;
+			// stylelint-disable-next-line length-zero-no-unit
+			--thickness: 0px !important; // 如果去掉 px 则会行为异常。
 		}
 	}
-
-	@keyframes spinner {
-		to {
-			rotate: 1turn;
-		}
+	
+	.layer-wrapper {
+		@include square(100%);
+		animation: spinner 1568ms linear infinite;
 	}
 
 	.layer {
@@ -70,69 +97,6 @@
 		border-color: c(accent);
 		opacity: 1;
 		animation: layer-fill-unfill-rotate 5332ms $layer-animation-options;
-	}
-
-	@keyframes layer-fill-unfill-rotate {
-		$length: 8;
-
-		@for $i from 1 through 8 {
-			#{calc(100% / $length) * $i} {
-				rotate: calc(3turn / $length) * $i;
-			}
-		}
-	}
-
-	@keyframes layer-1-fade-in-out {
-		0%,
-		25%,
-		90%,
-		100% {
-			opacity: 1;
-		}
-
-		26%,
-		89% {
-			opacity: 0;
-		}
-	}
-
-	@keyframes layer-2-fade-in-out {
-		0%,
-		15%,
-		51% {
-			opacity: 0;
-		}
-
-		25%,
-		50% {
-			opacity: 1;
-		}
-	}
-
-	@keyframes layer-3-fade-in-out {
-		0%,
-		40%,
-		76% {
-			opacity: 0;
-		}
-
-		50%,
-		75% {
-			opacity: 1;
-		}
-	}
-
-	@keyframes layer-4-fade-in-out {
-		0%,
-		65%,
-		100% {
-			opacity: 0;
-		}
-
-		75%,
-		90% {
-			opacity: 1;
-		}
 	}
 
 	.gap-patch {
@@ -205,6 +169,101 @@
 		}
 	}
 
+	.ring {
+		@include square(var(--size));
+		--progress: 0;
+		overflow: visible;
+		rotate: -100grad;
+
+		circle {
+			--center: calc(var(--size) / 2);
+			--radius: calc(var(--center) - var(--thickness) / 2);
+			--dash-array: calc(2 * #{math.$pi} * var(--radius));
+			cx: var(--center);
+			cy: var(--center);
+			r: var(--radius);
+			fill: transparent;
+			stroke: c(accent);
+			stroke-width: var(--thickness);
+			stroke-linecap: round;
+			stroke-dasharray: var(--dash-array);
+			stroke-dashoffset: calc(var(--dash-array) * (1 - var(--progress)));
+		}
+		
+		&.to-determinate circle {
+			animation: to-determinate-scale 250ms $ease-out-smooth;
+		}
+	}
+
+	@keyframes spinner {
+		to {
+			rotate: 1turn;
+		}
+	}
+
+	@keyframes layer-fill-unfill-rotate {
+		$length: 8;
+
+		@for $i from 1 through 8 {
+			#{calc(100% / $length) * $i} {
+				rotate: calc(3turn / $length) * $i;
+			}
+		}
+	}
+
+	@keyframes layer-1-fade-in-out {
+		0%,
+		25%,
+		90%,
+		100% {
+			opacity: 1;
+		}
+
+		26%,
+		89% {
+			opacity: 0;
+		}
+	}
+
+	@keyframes layer-2-fade-in-out {
+		0%,
+		15%,
+		51% {
+			opacity: 0;
+		}
+
+		25%,
+		50% {
+			opacity: 1;
+		}
+	}
+
+	@keyframes layer-3-fade-in-out {
+		0%,
+		40%,
+		76% {
+			opacity: 0;
+		}
+
+		50%,
+		75% {
+			opacity: 1;
+		}
+	}
+
+	@keyframes layer-4-fade-in-out {
+		0%,
+		65%,
+		100% {
+			opacity: 0;
+		}
+
+		75%,
+		90% {
+			opacity: 1;
+		}
+	}
+
 	@keyframes left-spin {
 		0%,
 		100% {
@@ -224,6 +283,12 @@
 
 		50% {
 			rotate: 5deg;
+		}
+	}
+	
+	@keyframes to-determinate-scale {
+		from {
+			stroke-dashoffset: 0;
 		}
 	}
 </style>

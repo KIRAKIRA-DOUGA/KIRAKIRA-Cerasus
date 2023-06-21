@@ -8,9 +8,12 @@
 function moveIntoPage_tuple(location: TwoD, size: TwoD) {
 	const result = [...location] as typeof location;
 	const windowSize = [window.innerWidth, window.innerHeight];
-	for (let i = 0; i < 2; i++)
+	for (let i = 0; i < 2; i++) {
 		if (result[i] + size[i] > windowSize[i])
 			result[i] = windowSize[i] - size[i];
+		if (result[i] < 0)
+			result[i] = 0;
+	}
 	return result;
 }
 
@@ -20,7 +23,7 @@ function moveIntoPage_tuple(location: TwoD, size: TwoD) {
  * @param size - 元素的元组类型尺寸。
  * @returns 返回移动入页面后的新坐标。
  */
-export function moveIntoPage(location: MaybeRef<TwoD>, size: MaybeRef<TwoD>): TwoD;
+export function moveIntoPage(location: MaybeRef<TwoD>, size: MaybeRef<TwoD | DOMRect>): TwoD;
 /**
  * 探测元素溢出。如果元素超出了页面范围，则将其移动到页面内。
  * @param element - HTML DOM 元素。
@@ -40,7 +43,7 @@ export function moveIntoPage(measureElement: MaybeRef<HTMLElement>, adjustElemen
  * @param size - 元素的尺寸。
  * @returns 返回移动入页面后的新坐标。
  */
-export function moveIntoPage(location: MaybeRef<TwoD | HTMLElement>, size?: MaybeRef<TwoD | HTMLElement>) {
+export function moveIntoPage(location: MaybeRef<TwoD | HTMLElement>, size?: MaybeRef<TwoD | DOMRect | HTMLElement>) {
 	location = toValue(location);
 	size = toValue(size);
 	const adjustElementStyle = size instanceof Element && size.style;
@@ -51,6 +54,8 @@ export function moveIntoPage(location: MaybeRef<TwoD | HTMLElement>, size?: Mayb
 		location = [rect.x, rect.y];
 		size = [rect.width, rect.height];
 	}
+	if (size instanceof DOMRect)
+		size = [size.width, size.height];
 	const result = moveIntoPage_tuple(location, size as TwoD);
 	if (adjustElementStyle) {
 		const adjustment = (["left", "top"] as const).map(pos => parseFloat(adjustElementStyle[pos])) as TwoD;

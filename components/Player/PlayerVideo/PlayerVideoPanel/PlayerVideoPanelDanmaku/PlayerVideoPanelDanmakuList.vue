@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	const danmakuItemMenu = ref<InstanceType<typeof Menu>>();
+	const danmakuItemMenu = refMenu();
 	const currentDanmakuIndex = ref(0);
 	const { copy } = useClipboard();
 	const headers = ["时间", "内容", "发送时间"];

@@ -10,7 +10,7 @@ const confettiColors = [
  * 显示五彩纸屑。
  */
 export function showConfetti() {
-	if (process.server) return;
+	if (environment.server) return;
 	if (!confetti) confetti = new JSConfetti();
 	confetti.addConfetti({
 		confettiColors,
