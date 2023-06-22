@@ -8,17 +8,23 @@
 		extensions: [
 			StarterKit,
 			Underline,
-			VueComponent,
+			VueComponent.kaomoji,
+			VueComponent.thumbVideo,
 		],
 		content: `
 			<p>我正在用 Vue.js 运行 Tiptap。🎉</p>
 			<thumb-video></thumb-video>
+			<small-kaomoji-bar />
 			<p>你看到了吗？这是 Vue 组件。我们真的生活在未来。</p>
 		`,
 		autofocus: false,
 		editable: true,
 		injectCSS: false,
 	});
+
+	const rtfEditor = refComp();
+	const flyoutKaomoji = refFlyout();
+	provide("edt", editor);
 
 	/** 切换文本加粗。 */
 	const toggleBold = () => { editor.value?.chain().focus().toggleBold().run(); };
@@ -32,8 +38,28 @@
 
 	/** 在富文本编辑器光标处追加一个 Vue 组件。 */
 	const addVueComponents = () => { editor.value?.commands.insertContent("<thumb-video></thumb-video>"); };
-	/** 打开颜文字页面。 */
-	const addKaomojiList = () => { };
+	/** 在光标处打开迷你颜文字输入面板。 */
+	const addSmallKaomojiList = () => { editor.value?.commands.insertContent("<small-kaomoji-bar></small-kaomoji-bar>"); };
+	/** 打开艾特页面。 */
+	const addAtList = () => { };
+
+	/**
+	 * 自定义快捷键侦听。
+	 *
+	 * 目前已有的快捷键：
+	 *
+	 * `Ctrl + M` - 打开颜文字快捷输入面板。
+	 * @param e - 键盘侦听事件。
+	 */
+	function shortCut(e: KeyboardEvent) {
+		if (e.ctrlKey && e.code === "KeyM")
+			addSmallKaomojiList();
+	}
+
+	useEventListener("window", "keyup", e => {
+		if (isInPath(e, rtfEditor))
+			shortCut(e);
+	});
 
 	const ToolItem = (() => {
 		interface Props {
@@ -49,14 +75,16 @@
 </script>
 
 <template>
-	<Comp>
+	<Comp ref="rtfEditor">
+		<FlyoutKaomoji ref="flyoutKaomoji" />
 		<div class="toolbar">
-			<ToolItem active="bold" @click="toggleBold"><b>B</b></ToolItem>
-			<ToolItem active="italic" @click="toggleItalic"><i>I</i></ToolItem>
-			<ToolItem active="underline" @click="toggleUnderline"><u>U</u></ToolItem>
-			<ToolItem active="strike" @click="toggleStrike"><s>S</s></ToolItem>
-			<button v-ripple @click="addVueComponents"><Icon name="photo" /></button>
-			<button v-ripple @click="addKaomojiList">(·ω·)</button>
+			<button v-ripple @click="e => flyoutKaomoji?.show(e, 'y')"><Icon name="kaomoji" class="icon" style="scale: 2.5 ;" /></button>
+			<button v-ripple @click="addAtList"><Icon name="at" class="icon" /></button>
+			<ToolItem active="bold" @click="toggleBold"><Icon name="bold" class="icon" /></ToolItem>
+			<ToolItem active="italic" @click="toggleItalic"><Icon name="italic" class="icon" /></ToolItem>
+			<!-- <ToolItem active="underline" @click="toggleUnderline"><u>U</u></ToolItem> -->
+			<ToolItem active="strike" @click="toggleStrike"><Icon name="strike" class="icon" /></ToolItem>
+			<button v-ripple @click="addVueComponents"><Icon name="photo" class="icon" /></button>
 		</div>
 		<EditorContent :editor="editor" />
 	</Comp>
@@ -70,6 +98,11 @@
 
 		> * {
 			padding: 12px;
+		}
+
+		.icon {
+			color: #797173;
+			scale: 1.5;
 		}
 
 		.toolbar {
