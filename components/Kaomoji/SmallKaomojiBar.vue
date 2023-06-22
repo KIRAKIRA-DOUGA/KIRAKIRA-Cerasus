@@ -24,7 +24,7 @@
 
 	/**
 	 * 输入函数。
-	 * @param index 索引。
+	 * @param index - 索引。
 	 */
 	function enter(index: number) {
 		selectedPosition.value = index - 1;

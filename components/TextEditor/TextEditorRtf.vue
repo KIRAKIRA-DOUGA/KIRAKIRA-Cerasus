@@ -46,20 +46,14 @@
 
 	/**
 	 * 自定义快捷键侦听。
-	 *
 	 * 目前已有的快捷键：
-	 *
 	 * `Ctrl + M` - 打开颜文字快捷输入面板。
-	 * @param e - 键盘侦听事件。
 	 */
-	function shortCut(e: KeyboardEvent) {
-		if (e.ctrlKey && e.code === "KeyM")
+	useEventListener(rtfEditor, "keyup", e => {
+		if (e.ctrlKey && e.code === "KeyM") {
 			addSmallKaomojiList();
-	}
-
-	useEventListener("window", "keyup", e => {
-		if (isInPath(e, rtfEditor))
-			shortCut(e);
+			stopEvent(e);
+		}
 	});
 </script>
 

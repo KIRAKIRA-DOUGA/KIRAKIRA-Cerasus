@@ -13,6 +13,7 @@
 	const count = computed(() => items.value.length);
 	const displaySelectedIndex = ref<number>();
 	const selectedIndex = computed(() => displaySelectedIndex.value ?? items.value.findIndex(item => item.id === selected.value && selected.value));
+	const selectedInvalid = computed(() => selectedIndex.value === -1);
 	const selectedCaption = computed(() => items.value.find(item => item.id === selected.value)?.caption);
 	const pressed = ref(false); // 为了兼容触摸屏，触摸屏在滑动时会撤销 active 伪类。
 
@@ -55,7 +56,12 @@
 </script>
 
 <template>
-	<Comp role="radiogroup" :aria-details="t.selected_item_label + selectedCaption" aria-orientation="horizontal">
+	<Comp
+		:class="{ invalid: selectedInvalid }"
+		role="radiogroup"
+		:aria-details="t.selected_item_label + selectedCaption"
+		aria-orientation="horizontal"
+	>
 		<div class="track items-wrapper">
 			<div
 				v-for="item in items"
@@ -96,6 +102,7 @@
 
 <style scoped lang="scss">
 	$height: 36px;
+	$duration: 500ms;
 
 	:comp {
 		position: relative;
@@ -145,19 +152,23 @@
 		top: 0;
 		z-index: 4;
 		color: white;
-		transition: $fallback-transitions, clip-path $ease-in-out-smooth 500ms;
+		transition: $fallback-transitions, clip-path $ease-in-out-smooth $duration;
 		clip-path: inset(0% calc((1 - (v-bind(selectedIndex) + 1) / v-bind(count)) * 100%) 0% calc(v-bind(selectedIndex) / v-bind(count) * 100%) round 4px);
 		pointer-events: none;
 
 		.thumb:is(.pressed, :active) + & {
-			transition: $fallback-transitions, clip-path $ease-out-smooth 500ms;
+			transition: $fallback-transitions, clip-path $ease-out-smooth $duration, opacity $ease-in-out-smooth $duration;
+		}
+		
+		:comp.invalid & {
+			opacity: 0;
 		}
 	}
 
 	.thumb {
 		@include page-active;
 		@include radius-small;
-		$transition: $fallback-transitions, all $ease-out-back 500ms;
+		$transition: $fallback-transitions, all $ease-out-back $duration;
 		--width: calc(100% / v-bind(count));
 		position: absolute;
 		top: 0;
@@ -169,7 +180,7 @@
 		font-weight: bold;
 		background-color: c(accent);
 		cursor: grab;
-		transition: $transition, left $ease-in-out-smooth 500ms;
+		transition: $transition, left $ease-in-out-smooth $duration, opacity $ease-in-out-smooth $duration;
 		touch-action: pan-y pinch-zoom;
 
 		@media (any-hover: hover) {
@@ -190,7 +201,12 @@
 		}
 
 		&:is(.pressed, :active) {
-			transition: $transition, left $ease-out-smooth 500ms;
+			transition: $transition, left $ease-out-smooth $duration;
+		}
+		
+		:comp.invalid & {
+			opacity: 0;
+			pointer-events: none;
 		}
 	}
 </style>
