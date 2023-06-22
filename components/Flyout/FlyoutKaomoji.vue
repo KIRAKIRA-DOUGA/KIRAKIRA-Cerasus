@@ -29,6 +29,7 @@
 		kaomojiList.join(str);
 		if (kaomojiList.data.length >= 5)
 			delete kaomojiList.data[4];
+		editor.commands.focus();
 		editor.commands.insertContent(str);
 	}
 </script>
