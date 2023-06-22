@@ -98,10 +98,23 @@ export function setDisplayVisible(element: HTMLElement | undefined, visible: boo
  * 手动销毁元素，和阴魂不散说拜拜。
  * @param element - 销毁的元素 ref。
  */
-export function kill(element: MaybeRef<HTMLElement | undefined | null>) {
+export function kill(element: MaybeRef<Element | undefined | null>) {
 	if (isRef(element)) {
 		element.value?.remove();
 		element.value = null;
 	} else
 		element?.remove();
+}
+
+/**
+ * 获取 HTML DOM 元素的序号。
+ * @param element - HTML DOM 元素。
+ * @returns - 元素的序号。
+ */
+export function elementIndex(element: MaybeRef<Element | undefined | null>) {
+	element = toValue(element);
+	if (!element) return -1;
+	if (!element.parentNode) return -1;
+	if (!element.parentElement) return 0;
+	return [...element.parentElement.children].indexOf(element);
 }

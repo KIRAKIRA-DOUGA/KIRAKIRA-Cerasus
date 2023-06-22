@@ -18,7 +18,10 @@ export default defineNuxtModule({
 			const D_TS_NAME = "components-globalized.d.ts";
 			const classes = await readdir(resolve("../classes"));
 			await writeFile(resolve("../types/", D_TS_NAME), (() => {
-				let result = "declare global {\n";
+				let result = "";
+				for (const klass of classes)
+					result += `import { ${parse(klass).name} } from "../classes/${klass}";\n`;
+				result += "\ndeclare global {\n";
 				result += "\t// components\n";
 				for (const component of components)
 					result += `\texport const ${component.name}: typeof import("${component.path}")["${component.member}"];\n`;

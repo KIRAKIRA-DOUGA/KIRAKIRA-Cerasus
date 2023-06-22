@@ -33,6 +33,16 @@ export function arrayClearAll<T>(array: T[]): void {
 }
 
 /**
+ * 将源数组清空后注入新的数据。
+ * @param array - 源数组。
+ * @param items - 新的数据。
+ */
+export function arrayInject<T>(array: T[], items: Iterable<T>): void {
+	arrayClearAll(array);
+	array.push(...items);
+}
+
+/**
  * 随机返回数组中的一个项目。
  * @param array - 数组。
  * @param record - 随机记录。如果提供，则在所有项目被随机抽取完毕之前不会抽取相同的项目。
@@ -46,8 +56,7 @@ export function randomOne<T>(array: T[], record?: MaybeRef<number[]>): T {
 		if (record.length !== array.length + 1 || record.every((n, i) => !i || n)) {
 			let last = +record[0];
 			if (!Number.isFinite(last)) last = -1;
-			arrayClearAll(record);
-			record.push(...Array(array.length + 1).fill(0));
+			arrayInject(record, Array(array.length + 1).fill(0));
 			record[0] = last;
 		}
 		while (record[index + 1] || index === record[0])

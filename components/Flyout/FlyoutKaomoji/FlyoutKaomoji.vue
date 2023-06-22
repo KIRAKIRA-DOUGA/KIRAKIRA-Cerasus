@@ -1,12 +1,15 @@
 <script setup lang="ts">
 	import kaomojis from "helpers/kaomojis";
 
+	const emits = defineEmits<{
+		insert: [text: string];
+	}>();
+
 	const { ref: flyout, show, hide } = useBaseComponentShowHide();
 	const selected = ref<keyof typeof kaomojis>("happy");
 	const tabs = computed(() => Object.keys(kaomojis));
 	const transitionName = ref<"left" | "right" | "">("right");
-	const input = inject<ShallowRef<Editor>>("editor");
-	const kaomojiList = new Queue(useHistoryKaomoji().kaomojis);
+	const recentKaomoji = useRecentKaomojiStore();
 
 	watch(selected, (curSelected, prevSelected) => {
 		const cur = tabs.value.indexOf(curSelected), prev = tabs.value.indexOf(prevSelected);
@@ -18,16 +21,12 @@
 	});
 
 	/**
-	 * 富文本编辑器输入函数。
-	 * @param str - 输入的字符串。
+	 * 插入颜文字回调函数。
+	 * @param kaomoji - 输入的颜文字。
 	 */
-	function enter(str: string) {
-		const editor = (input as ShallowRef<Editor>).value;
-		kaomojiList.join(str);
-		if (kaomojiList.data.length >= 5)
-			delete kaomojiList.data[4];
-		editor.commands.focus();
-		editor.commands.insertContent(str);
+	function input(kaomoji: string) {
+		emits("insert", kaomoji);
+		recentKaomoji.add(kaomoji);
 	}
 </script>
 
@@ -39,7 +38,7 @@
 			</TabBar>
 			<Transition :name="transitionName" mode="out-in" appear>
 				<div :key="selected" class="grid">
-					<Button v-for="i in kaomojis[selected]" :key="i" class="kaomoji" @click="enter(i)">{{ i }}</Button>
+					<FlyoutKaomojiButton v-for="i in kaomojis[selected]" :key="i" @click="input(i)">{{ i }}</FlyoutKaomojiButton>
 				</div>
 			</Transition>
 		</Comp>
@@ -90,35 +89,6 @@
 		&.left-enter-from {
 			translate: -2rem;
 			opacity: 0;
-		}
-	}
-
-	.kaomoji {
-		@include chip-shadow;
-		@include radius-small;
-		display: flex;
-		width: 100%;
-		height: 24px;
-		color: c(text-color);
-		background-color: c(main-bg);
-
-		@media (any-hover: hover) {
-			&:hover {
-				@include button-shadow-unchecked-hover;
-				background-color: c(gray-20);
-			}
-
-			&:hover:focus {
-				@include button-shadow-unchecked-hover-focus;
-			}
-		}
-
-		&:active {
-			background-color: c(gray-20);
-		}
-
-		&:focus {
-			@include button-shadow-unchecked-focus;
 		}
 	}
 </style>

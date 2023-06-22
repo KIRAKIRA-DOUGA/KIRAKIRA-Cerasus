@@ -29,3 +29,20 @@ export function map(x: number, min: number, max: number, a: number, b: number) {
  * @returns 范围内的随机整数。
  */
 export const randBetween = (min: number, max: number) => Math.floor(Math.random() * (max + 1 - min) + min);
+
+/**
+ * 主要针对负数的一个拟定的取模，使其更适合实际使用，返回一个非负数。
+ *
+ * 比如说。当随机给出一个角度，但实际上只有取其除以 360° 所得的余数才是我们需要的真正角度，关于转了几圈我们并不在乎。然而当被除数为负数的时候，直接使用 `%` 会发生一些变化。我们希望这样求出来的结果也是更符号实际使用的一个正数。
+ * @param a - 被除数。
+ * @param b - 除数。
+ * @returns 余数。
+ */
+export function PNMod(a: number, b: number) {
+	if (b === 0) return NaN;
+	b = Math.abs(b);
+	let i = 0;
+	while (a + b * i < 0)
+		i++;
+	return (a + b * i) % b;
+}

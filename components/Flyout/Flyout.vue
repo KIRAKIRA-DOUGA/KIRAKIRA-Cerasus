@@ -30,7 +30,7 @@
 	 * @param placement - 浮窗出现方向。
 	 * @param offset - 与目标元素距离偏移。
 	 */
-	async function show(target: MouseEvent | PointerEvent | MaybeRef<TwoD | HTMLElement | EventTarget>, placement?: Placement, offset?: number) {
+	async function show(target: MaybeRef<MouseEvent | PointerEvent | TwoD | HTMLElement | EventTarget | DOMRect | undefined | null>, placement?: Placement, offset?: number) {
 		target = toValue(target);
 		let targetRect: DOMRect | undefined;
 		const _location = ((): TwoD | null => {
@@ -38,8 +38,8 @@
 			if (target instanceof Event)
 				if (target.target instanceof Element) target = target.currentTarget!;
 				else return [target.clientX, target.clientY];
-			if (target instanceof Element) {
-				targetRect = target.getBoundingClientRect();
+			if (target instanceof Element || target instanceof DOMRect) {
+				targetRect = target instanceof Element ? target.getBoundingClientRect() : target;
 				return [targetRect.left, targetRect.bottom];
 			}
 			return null;

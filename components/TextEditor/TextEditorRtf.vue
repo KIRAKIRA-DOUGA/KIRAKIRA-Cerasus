@@ -2,19 +2,18 @@
 	import { useEditor, EditorContent } from "@tiptap/vue-3";
 	import StarterKit from "@tiptap/starter-kit";
 	import { Underline } from "@tiptap/extension-underline";
-	import VueComponent from "./Extension";
+	import VueComponent from "helpers/editor-extension";
 
 	const editor = useEditor({
 		extensions: [
 			StarterKit,
 			Underline,
-			VueComponent.kaomoji,
-			VueComponent.thumbVideo,
+			VueComponent.ThumbVideo,
+			VueComponent.CursorShadow,
 		],
 		content: `
 			<p>我正在用 Vue.js 运行 Tiptap。🎉</p>
 			<thumb-video></thumb-video>
-			<small-kaomoji-bar />
 			<p>你看到了吗？这是 Vue 组件。我们真的生活在未来。</p>
 		`,
 		autofocus: false,
@@ -24,6 +23,7 @@
 
 	const rtfEditor = refComp();
 	const flyoutKaomoji = refFlyout();
+	const flyoutKaomojiMini = refFlyout();
 	const [DefineToolItem, ToolItem] = createReusableTemplate<{ active?: string; icon?: string; onClick?: (e: MouseEvent) => void }>();
 	provide("editor", editor);
 
@@ -40,21 +40,37 @@
 	/** 在富文本编辑器光标处追加一个 Vue 组件。 */
 	const addVueComponents = () => { editor.value?.commands.insertContent("<thumb-video></thumb-video>"); };
 	/** 在光标处打开迷你颜文字输入面板。 */
-	const addSmallKaomojiList = () => { editor.value?.commands.insertContent("<small-kaomoji-bar></small-kaomoji-bar>"); };
-	/** 打开提及页面。 */
-	const addAtList = () => { };
+	const showRecentKaomojis = () => { flyoutKaomojiMini.value?.show(getCursorPixel(), "y"); };
+	/** 打开提及面板。 */
+	const showAtList = () => { };
 
 	/**
+	 * 插入颜文字。
+	 * @param kaomoji - 颜文字。
+	 */
+	function insertKaomoji(kaomoji?: string) {
+		editor.value?.commands.focus();
+		kaomoji && editor.value?.commands.insertContent(kaomoji);
+	}
+
+	/**
+	 * 获取文本光标位置。
+	 * @returns 文本光标位置。
+	 */
+	function getCursorPixel() {
+		const id = "cursor-" + crypto.randomUUID();
+		editor.value?.commands.insertContent(`<cursor id="${id}">1</cursor>`);
+		const shadow = rtfEditor.value?.querySelector(`[data-id="${id}"]`);
+		const rect = shadow?.getBoundingClientRect();
+		kill(shadow);
+		return rect;
+	}
+
+	/*
 	 * 自定义快捷键侦听。
 	 * 目前已有的快捷键：
 	 * `Ctrl + M` - 打开颜文字快捷输入面板。
 	 */
-	useEventListener(rtfEditor, "keyup", e => {
-		if (e.ctrlKey && e.code === "KeyM") {
-			addSmallKaomojiList();
-			stopEvent(e);
-		}
-	});
 </script>
 
 <template>
@@ -68,19 +84,23 @@
 			<component :is="$slots.default!" />
 		</button>
 	</DefineToolItem>
-	
-	<Comp ref="rtfEditor">
-		<FlyoutKaomoji ref="flyoutKaomoji" />
+
+	<FlyoutKaomoji ref="flyoutKaomoji" @insert="insertKaomoji" />
+	<FlyoutKaomojiMini ref="flyoutKaomojiMini" @insert="insertKaomoji" @escape="insertKaomoji" />
+
+	<Comp ref="rtfEditor" @keyup.stop.ctrl.m="showRecentKaomojis">
 		<div class="toolbar">
 			<ToolItem icon="bold" active="bold" @click="toggleBold" />
 			<ToolItem icon="italic" active="italic" @click="toggleItalic" />
 			<ToolItem icon="underline" active="underline" @click="toggleUnderline" />
 			<ToolItem icon="strikethrough" active="strike" @click="toggleStrike" />
-			<ToolItem icon="at" @click="addAtList" />
+			<ToolItem icon="at" @click="showAtList" />
 			<ToolItem icon="kaomoji" @click="e => flyoutKaomoji?.show(e, 'y')" />
 			<ToolItem icon="photo" @click="addVueComponents" />
 		</div>
-		<EditorContent :editor="editor" />
+		<ClientOnly>
+			<EditorContent :editor="editor" />
+		</ClientOnly>
 	</Comp>
 </template>
 
@@ -90,7 +110,7 @@
 		@include card-shadow;
 		background-color: c(main-bg);
 
-		> * {
+		> :not(:empty) {
 			padding: 12px;
 		}
 
@@ -107,7 +127,7 @@
 				height: $size;
 				padding: 0 6px;
 				color: c(icon-color);
-				
+
 				.icon {
 					font-size: 20px;
 				}
@@ -132,3 +152,4 @@
 		}
 	}
 </style>
+../../helpers/Extension

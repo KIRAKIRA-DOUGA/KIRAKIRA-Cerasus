@@ -1,3 +1,5 @@
+<!-- DELETE: 即将删除！ -->
+
 <script setup lang="ts">
 	import { nodeViewProps, NodeViewWrapper } from "@tiptap/vue-3";
 	defineProps(nodeViewProps);
