@@ -93,3 +93,15 @@ export function setDisplayVisible(element: HTMLElement | undefined, visible: boo
 	if (!visible) element.style.display = "none";
 	else element.style.removeProperty("display");
 }
+
+/**
+ * 手动销毁元素，和阴魂不散说拜拜。
+ * @param element - 销毁的元素 ref。
+ */
+export function kill(element: MaybeRef<HTMLElement | undefined | null>) {
+	if (isRef(element)) {
+		element.value?.remove();
+		element.value = null;
+	} else
+		element?.remove();
+}

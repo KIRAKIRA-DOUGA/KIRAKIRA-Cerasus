@@ -38,12 +38,14 @@ type UnknownFunctionType = (...args: Any[]) => Any;
 
 /**
  * 获取基类组件的显示、隐藏函数。
- * @param base - 基类组件。
- * @returns 基类组件的显示、隐藏函数。
+ * @param base - 基类组件。如果未提供，则会创建一个新的空引用。
+ * @returns 基类组件及其显示、隐藏函数。
  */
-export function useBaseComponentShowHide<T extends { show: UnknownFunctionType; hide: UnknownFunctionType }>(base: Ref<T | undefined>) {
+export function useBaseComponentShowHide<T extends { show: UnknownFunctionType; hide: UnknownFunctionType }>(base?: Ref<T | undefined>) {
+	if (!base) base = ref<T>();
 	return {
-		show: (...args: Parameters<T["show"]>): ReturnType<T["show"]> => base.value?.show(...args),
-		hide: (...args: Parameters<T["hide"]>): ReturnType<T["hide"]> => base.value?.hide(...args),
+		ref: base,
+		show: (...args: Parameters<T["show"]>): ReturnType<T["show"]> => base!.value?.show(...args),
+		hide: (...args: Parameters<T["hide"]>): ReturnType<T["hide"]> => base!.value?.hide(...args),
 	};
 }

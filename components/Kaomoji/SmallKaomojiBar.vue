@@ -1,36 +1,33 @@
 <script setup lang="ts">
-	import { useHistoryKaomoji } from "~/stores/history-kaomojis";
-	import { ShallowRef } from "nuxt/dist/app/compat/capi";
-	import { Editor } from "@tiptap/vue-3";
-	import kill from "~/utils/kill";
 	const kaomojis = useHistoryKaomoji().kaomojis;
-	const selPos = ref(0);
+	const selectedPosition = ref(0);
 	const smallKaomojiBar = ref<HTMLElement>();
-	const editor = inject("edt");
-	const input = (editor as ShallowRef<Editor>).value;
+	const editor = inject<ShallowRef<Editor>>("editor")!;
+	const input = editor.value;
 
 	useEventListener("window", "keydown", e => {
 		if (e.code === "ArrowRight")
-			selPos.value++;
+			selectedPosition.value++;
 		if (e.code === "ArrowLeft")
-			selPos.value--;
+			selectedPosition.value--;
 		if (e.code === "Enter")
-			enter(selPos.value + 1);
+			enter(selectedPosition.value + 1);
 		if (e.code === "Escape") {
 			input.commands.focus();
 			kill(smallKaomojiBar);
 		}
-		if (selPos.value > 3)
-			selPos.value = 0;
-		if (selPos.value < 0)
-			selPos.value = 3;
+		if (selectedPosition.value > 3)
+			selectedPosition.value = 0;
+		if (selectedPosition.value < 0)
+			selectedPosition.value = 3;
 	});
+
 	/**
 	 * 输入函数。
 	 * @param index 索引。
-	*/
+	 */
 	function enter(index: number) {
-		selPos.value = index - 1;
+		selectedPosition.value = index - 1;
 		input.commands.insertContent(kaomojis[index - 1]);
 		kill(smallKaomojiBar);
 		input.commands.focus();
@@ -43,7 +40,7 @@
 
 <template>
 	<div ref="smallKaomojiBar" class="small-kaomoji-bar" autofocus>
-		<div class="pointer" :style="{ 'margin-left': (-272 + 181.5 * selPos) + 'px' }" />
+		<div class="pointer" :style="{ 'margin-left': (-272 + 181.5 * selectedPosition) + 'px' }" />
 		<Button v-for="n in 4" :key="n" class="kaomoji" @click="enter(n)">{{ kaomojis[n - 1] }}</Button>
 	</div>
 </template>

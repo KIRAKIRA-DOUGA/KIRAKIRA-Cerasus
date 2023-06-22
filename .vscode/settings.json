@@ -158,7 +158,7 @@
 			"icon": "issue-closed"
 		}
 	},
-	"vue.codeActions.enabled": false, // 暂时禁用，因为保存时太卡。
+	// "vue.codeActions.enabled": false, // 暂时禁用，因为保存时太卡。
 	// "javascript.updateImportsOnFileMove.enabled": "never",
 	// "typescript.updateImportsOnFileMove.enabled": "never",
 	// "vue.features.updateImportsOnFileMove.enabled": false,

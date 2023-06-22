@@ -66,6 +66,8 @@ declare global {
 	type DirectiveEffectHookInferElement<D extends Directive> = D extends Directive<infer T> ? T : HTMLElement;
 	type DirectiveEffectHookInferBinding<D extends Directive> = D extends Directive<Any, infer T> ? T : never;
 	export type DirectiveEffectHook<D extends Directive, T = void> = (element: DirectiveEffectHookInferElement<D>, binding: DirectiveBinding<DirectiveEffectHookInferBinding<D>>) => T;
+	
+	export { Editor } from "@tiptap/vue-3";
 
-	export { ComponentInternalInstance, ConcreteComponent, Directive, Events, MaybeRef, MaybeRefOrGetter, Ref, RendererElement, Slot, StyleValue, CSSProperties, VNode, WritableComputedRef } from "vue";
+	export { ComponentInternalInstance, ConcreteComponent, Directive, Events, MaybeRef, MaybeRefOrGetter, Ref, RendererElement, Slot, StyleValue, CSSProperties, VNode, WritableComputedRef, ShallowRef } from "vue";
 }

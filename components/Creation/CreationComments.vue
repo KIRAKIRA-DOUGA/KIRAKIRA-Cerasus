@@ -12,7 +12,7 @@
 <template>
 	<Comp>
 		<HeadingComments :count="count" />
-		<TextEditorRich />
+		<TextEditorRtf />
 	</Comp>
 </template>
 

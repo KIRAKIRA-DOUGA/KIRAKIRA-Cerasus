@@ -1,17 +1,12 @@
 <script setup lang="ts">
 	import kaomojis from "helpers/kaomojis";
-	import { ShallowRef } from "nuxt/dist/app/compat/capi";
-	import { Editor } from "@tiptap/vue-3";
-	import Queue from "~/utils/queue";
 
-	const flyout = refFlyout();
-	const { show, hide } = useBaseComponentShowHide(flyout);
+	const { ref: flyout, show, hide } = useBaseComponentShowHide();
 	const selected = ref<keyof typeof kaomojis>("happy");
 	const tabs = computed(() => Object.keys(kaomojis));
 	const transitionName = ref<"left" | "right" | "">("right");
-	const input = inject("edt");
-	const kaomojiList = new Queue();
-	kaomojiList.data = useHistoryKaomoji().kaomojis;
+	const input = inject<ShallowRef<Editor>>("editor");
+	const kaomojiList = new Queue(useHistoryKaomoji().kaomojis);
 
 	watch(selected, (curSelected, prevSelected) => {
 		const cur = tabs.value.indexOf(curSelected), prev = tabs.value.indexOf(prevSelected);
@@ -23,8 +18,8 @@
 	});
 
 	/**
-	 * 富文本编辑器输入函数
-	 * @param str 输入的字符串
+	 * 富文本编辑器输入函数。
+	 * @param str - 输入的字符串。
 	 */
 	function enter(str: string) {
 		const editor = (input as ShallowRef<Editor>).value;

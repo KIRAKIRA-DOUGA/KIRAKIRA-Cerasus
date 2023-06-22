@@ -3,3 +3,4 @@
  */
 
 export { createReusableTemplate } from "@vueuse/core";
+export { Editor } from "@tiptap/vue-3";

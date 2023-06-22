@@ -1,4 +1,4 @@
-<script setup lang="tsx">
+<script setup lang="ts">
 	import { useEditor, EditorContent } from "@tiptap/vue-3";
 	import StarterKit from "@tiptap/starter-kit";
 	import { Underline } from "@tiptap/extension-underline";
@@ -24,7 +24,8 @@
 
 	const rtfEditor = refComp();
 	const flyoutKaomoji = refFlyout();
-	provide("edt", editor);
+	const [DefineToolItem, ToolItem] = createReusableTemplate<{ active?: string; icon?: string; onClick?: (e: MouseEvent) => void }>();
+	provide("editor", editor);
 
 	/** 切换文本加粗。 */
 	const toggleBold = () => { editor.value?.chain().focus().toggleBold().run(); };
@@ -40,7 +41,7 @@
 	const addVueComponents = () => { editor.value?.commands.insertContent("<thumb-video></thumb-video>"); };
 	/** 在光标处打开迷你颜文字输入面板。 */
 	const addSmallKaomojiList = () => { editor.value?.commands.insertContent("<small-kaomoji-bar></small-kaomoji-bar>"); };
-	/** 打开艾特页面。 */
+	/** 打开提及页面。 */
 	const addAtList = () => { };
 
 	/**
@@ -60,31 +61,30 @@
 		if (isInPath(e, rtfEditor))
 			shortCut(e);
 	});
-
-	const ToolItem = (() => {
-		interface Props {
-			active: string;
-			onClick?: () => void;
-		}
-		return ((props, { slots }) => (
-			<button v-ripple class={{ active: editor.value?.isActive(props.active) }} onClick={props.onClick}>
-				{slots.default()}
-			</button>
-		)) as VueJsx<Props>;
-	})();
 </script>
 
 <template>
+	<DefineToolItem v-slot="{ active, icon, onClick, $slots }">
+		<button
+			v-ripple
+			:class="{ active: active && editor?.isActive(active) }"
+			@click="onClick"
+		>
+			<Icon v-if="icon" :name="icon" />
+			<component :is="$slots.default!" />
+		</button>
+	</DefineToolItem>
+	
 	<Comp ref="rtfEditor">
 		<FlyoutKaomoji ref="flyoutKaomoji" />
 		<div class="toolbar">
-			<button v-ripple @click="e => flyoutKaomoji?.show(e, 'y')"><Icon name="kaomoji" class="icon" style="scale: 2.5 ;" /></button>
-			<button v-ripple @click="addAtList"><Icon name="at" class="icon" /></button>
-			<ToolItem active="bold" @click="toggleBold"><Icon name="bold" class="icon" /></ToolItem>
-			<ToolItem active="italic" @click="toggleItalic"><Icon name="italic" class="icon" /></ToolItem>
-			<!-- <ToolItem active="underline" @click="toggleUnderline"><u>U</u></ToolItem> -->
-			<ToolItem active="strike" @click="toggleStrike"><Icon name="strike" class="icon" /></ToolItem>
-			<button v-ripple @click="addVueComponents"><Icon name="photo" class="icon" /></button>
+			<ToolItem icon="bold" active="bold" @click="toggleBold" />
+			<ToolItem icon="italic" active="italic" @click="toggleItalic" />
+			<ToolItem icon="underline" active="underline" @click="toggleUnderline" />
+			<ToolItem icon="strikethrough" active="strike" @click="toggleStrike" />
+			<ToolItem icon="at" @click="addAtList" />
+			<ToolItem icon="kaomoji" @click="e => flyoutKaomoji?.show(e, 'y')" />
+			<ToolItem icon="photo" @click="addVueComponents" />
 		</div>
 		<EditorContent :editor="editor" />
 	</Comp>
@@ -100,23 +100,23 @@
 			padding: 12px;
 		}
 
-		.icon {
-			color: #797173;
-			scale: 1.5;
-		}
-
 		.toolbar {
 			@include card-in-card-shadow;
 			display: flex;
 			gap: 3px;
 
-			> * {
+			> button {
 				@include radius-small;
 				@include flex-center;
 				$size: 28px;
 				min-width: $size;
 				height: $size;
 				padding: 0 6px;
+				color: c(icon-color);
+				
+				.icon {
+					font-size: 20px;
+				}
 
 				&:hover {
 					background-color: c(hover-color);

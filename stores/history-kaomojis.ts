@@ -1,6 +1,5 @@
-export const useHistoryKaomoji = defineStore("historyKaomji", {
+export const useHistoryKaomoji = defineStore("historyKaomoji", {
 	state: () => ({
-		showCssDoodle: false,
 		kaomojis: ["(╯￣Д￣)╯╘═╛ ", " (ノ=Д=)ノ┻━┻ ", "（╯#-皿-)╯~~╧═╧", "(╯’ – ‘)╯︵ ┻━┻"],
 	}),
 	persist: true,
