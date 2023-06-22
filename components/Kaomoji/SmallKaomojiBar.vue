@@ -2,6 +2,7 @@
 	import { useHistoryKaomoji } from "~/stores/history-kaomojis";
 	import { ShallowRef } from "nuxt/dist/app/compat/capi";
 	import { Editor } from "@tiptap/vue-3";
+	import kill from "~/utils/kill";
 	const kaomojis = useHistoryKaomoji().kaomojis;
 	const selPos = ref(0);
 	const smallKaomojiBar = ref<HTMLElement>();
@@ -17,9 +18,8 @@
 			enter(selPos.value + 1);
 		if (e.code === "Escape") {
 			input.commands.focus();
-			smallKaomojiBar.value?.remove();
+			kill(smallKaomojiBar);
 		}
-
 		if (selPos.value > 3)
 			selPos.value = 0;
 		if (selPos.value < 0)
@@ -32,7 +32,7 @@
 	function enter(index: number) {
 		selPos.value = index - 1;
 		input.commands.insertContent(kaomojis[index - 1]);
-		smallKaomojiBar.value?.remove();
+		kill(smallKaomojiBar);
 		input.commands.focus();
 	}
 

@@ -9,7 +9,7 @@
 	const selected = ref<keyof typeof kaomojis>("happy");
 	const tabs = computed(() => Object.keys(kaomojis));
 	const transitionName = ref<"left" | "right" | "">("right");
-	const editor = (inject("edt") as ShallowRef<Editor>).value;
+	const input = inject("edt");
 	const kaomojiList = new Queue();
 	kaomojiList.data = useHistoryKaomoji().kaomojis;
 
@@ -21,11 +21,13 @@
 	defineExpose({
 		show, hide,
 	});
+
 	/**
 	 * 富文本编辑器输入函数
 	 * @param str 输入的字符串
-	*/
-	function enter(str:string) {
+	 */
+	function enter(str: string) {
+		const editor = (input as ShallowRef<Editor>).value;
 		kaomojiList.join(str);
 		if (kaomojiList.data.length >= 5)
 			delete kaomojiList.data[4];
