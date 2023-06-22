@@ -15,6 +15,11 @@
 			selPos.value--;
 		if (e.code === "Enter")
 			enter(selPos.value + 1);
+		if (e.code === "Escape") {
+			input.commands.focus();
+			smallKaomojiBar.value?.remove();
+		}
+
 		if (selPos.value > 3)
 			selPos.value = 0;
 		if (selPos.value < 0)
@@ -26,8 +31,8 @@
 	*/
 	function enter(index: number) {
 		selPos.value = index - 1;
-		input.commands.deleteCurrentNode();
 		input.commands.insertContent(kaomojis[index - 1]);
+		smallKaomojiBar.value?.remove();
 		input.commands.focus();
 	}
 

@@ -2,9 +2,7 @@
 	import { useEditor, EditorContent } from "@tiptap/vue-3";
 	import StarterKit from "@tiptap/starter-kit";
 	import { Underline } from "@tiptap/extension-underline";
-	import { useHistoryKaomoji } from "~/stores/history-kaomojis";
 	import VueComponent from "./Extension";
-	import Queue from "~/utils/queue";
 
 	const editor = useEditor({
 		extensions: [
@@ -25,10 +23,7 @@
 	});
 
 	const rtfEditor = refComp();
-	const showKaomojiBar = ref(false);
-	const inputKaomoji = "";
-	const kaomojiList = new Queue();
-	kaomojiList.data = useHistoryKaomoji().kaomojis;
+	const flyoutKaomoji = refFlyout();
 	provide("edt", editor);
 
 	/** 切换文本加粗。 */
@@ -61,17 +56,6 @@
 			addSmallKaomojiList();
 	}
 
-	/**
-	 * 在光标处输入字符串。因为 click的回调不能直接用editor的方法。
-	 * @param str 输入的字符串
-	*/
-	function enter(str: string) {
-		kaomojiList.join(str);
-		if (kaomojiList.data.length >= 5)
-			delete kaomojiList.data[4];
-		editor.value?.commands.insertContent(str);
-	}
-
 	useEventListener("window", "keyup", e => {
 		if (isInPath(e, rtfEditor))
 			shortCut(e);
@@ -92,9 +76,9 @@
 
 <template>
 	<Comp ref="rtfEditor">
-		<KaomojiBar v-if="showKaomojiBar" v-model="inputKaomoji" @click="enter(inputKaomoji)" />
+		<FlyoutKaomoji ref="flyoutKaomoji" />
 		<div class="toolbar">
-			<button v-ripple @click="showKaomojiBar = !showKaomojiBar"><Icon name="kaomoji" class="icon" style="scale: 2.5 ;" /></button>
+			<button v-ripple @click="e => flyoutKaomoji?.show(e, 'y')"><Icon name="kaomoji" class="icon" style="scale: 2.5 ;" /></button>
 			<button v-ripple @click="addAtList"><Icon name="at" class="icon" /></button>
 			<ToolItem active="bold" @click="toggleBold"><Icon name="bold" class="icon" /></ToolItem>
 			<ToolItem active="italic" @click="toggleItalic"><Icon name="italic" class="icon" /></ToolItem>
