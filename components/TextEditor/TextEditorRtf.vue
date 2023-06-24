@@ -21,11 +21,12 @@
 		injectCSS: false,
 	});
 
+	type ActiveType = string | boolean;
 	const rtfEditor = refComp();
 	const flyoutKaomoji = ref<FlyoutModel>();
 	const flyoutKaomojiMini = ref<FlyoutModel>();
-	const [DefineToolItem, ToolItem] = createReusableTemplate<{ active?: string; icon?: string; onClick?: (e: MouseEvent) => void }>();
-
+	const [DefineToolItem, ToolItem] = createReusableTemplate<{ active?: ActiveType; icon?: string; onClick?: (e: MouseEvent) => void }>();
+	
 	/** 切换文本加粗。 */
 	const toggleBold = () => { editor.value?.chain().focus().toggleBold().run(); };
 	/** 切换文本倾斜。 */
@@ -65,6 +66,15 @@
 		return rect;
 	}
 
+	/**
+	 * 是否是激活状态？
+	 * @param active - 要验证的选项，如为字符串则会在编辑器中寻找对应格式，如为布尔型则直接返回之。
+	 * @returns 激活状态。
+	 */
+	function isActive(active?: ActiveType) {
+		return typeof active === "boolean" ? active : active && editor.value?.isActive(active);
+	}
+
 	/*
 	 * 自定义快捷键侦听。
 	 * 目前已有的快捷键：
@@ -76,7 +86,7 @@
 	<DefineToolItem v-slot="{ active, icon, onClick, $slots }">
 		<button
 			v-ripple
-			:class="{ active: active && editor?.isActive(active) }"
+			:class="{ active: isActive(active) }"
 			@click="onClick"
 		>
 			<Icon v-if="icon" :name="icon" />
@@ -94,7 +104,7 @@
 			<ToolItem icon="underline" active="underline" @click="toggleUnderline" />
 			<ToolItem icon="strikethrough" active="strike" @click="toggleStrike" />
 			<ToolItem icon="at" @click="showAtList" />
-			<ToolItem icon="kaomoji" @click="e => flyoutKaomoji = [e, 'y']" />
+			<ToolItem icon="kaomoji" :active="!!flyoutKaomoji" @click="e => flyoutKaomoji = [e, 'y']" />
 			<ToolItem icon="photo" @click="addVueComponents" />
 		</div>
 		<ClientOnly>

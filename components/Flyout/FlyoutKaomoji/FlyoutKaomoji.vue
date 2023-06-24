@@ -35,7 +35,7 @@
 				<TabItem :id="RECENT_ID" icon="time" />
 				<TabItem v-for="tab in tabs" :id="tab" :key="tab">{{ t[tab] }}</TabItem>
 			</TabBar>
-			<Transition :name="transitionName" mode="out-in" appear>
+			<Transition :name="transitionName" mode="out-in">
 				<div :key="selected" class="grid">
 					<FlyoutKaomojiButton v-for="i in kaomojiList" :key="i" @click="input(i)">{{ i }}</FlyoutKaomojiButton>
 				</div>

@@ -9,7 +9,7 @@
 	const kaomoji = useSlots().default?.()[0]?.children?.toString();
 
 	onMounted(async () => {
-		await delay(700); // 等待过渡动画时间，使之计算更准确。
+		await delay(100); // 等待过渡动画时间，使之计算更准确。
 		const buttonEl = button.value?.$el as HTMLButtonElement | undefined;
 		if (buttonEl && buttonEl.children[0])
 			requireShowTooltip.value = buttonEl.children[0].clientWidth > buttonEl.clientWidth;
@@ -51,7 +51,7 @@
 		}
 
 		&:active {
-			background-color: c(gray-20);
+			background-color: c(main-bg);
 		}
 
 		&:focus {

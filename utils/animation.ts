@@ -71,6 +71,7 @@ export async function animateSize(
 		endStyle = {},
 		startReverseSlideIn,
 		endReverseSlideIn,
+		attachAnimations,
 	}: Partial<{
 		/** 显式指定初始高度（可选）。 */
 		startHeight: number;
@@ -102,6 +103,8 @@ export async function animateSize(
 		startReverseSlideIn: boolean;
 		/** 结束从反向滑入界面。 */
 		endReverseSlideIn: boolean;
+		/** 动画播放的同时附加其它动画，并使用与之相同的时长与缓动值。 */
+		attachAnimations: [Element, Keyframes][] | false;
 	}> = {},
 ): Promise<Animation | void> {
 	startHeight ??= element.clientHeight;
@@ -140,5 +143,6 @@ export async function animateSize(
 		keyframes[1].translate = setTranslate([isWidthChanged ? startWidth : 0, isHeightChanged ? startHeight : 0]);
 	Object.assign(keyframes[0], startStyle);
 	Object.assign(keyframes[1], endStyle);
+	if (attachAnimations) attachAnimations.forEach(group => group[0]?.animate(group[1], { duration, easing }));
 	return element.animate(keyframes, { duration, easing }).finished;
 }

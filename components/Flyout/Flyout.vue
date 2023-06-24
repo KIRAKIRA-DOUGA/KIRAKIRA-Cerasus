@@ -23,14 +23,22 @@
 	const flyoutRect = ref<DOMRect>(undefined!);
 	const placementForAnimation = ref<Placement>("bottom");
 	const scopeId = useParentScopeId() ?? "";
+	const isWidthAnimation = computed(() => ["left", "right", "x"].includes(placementForAnimation.value));
+	const isReverseSlide = computed(() => ["left", "top"].includes(placementForAnimation.value));
+	/** 定义在关闭浮窗后的至少多少毫秒内不得再次打开浮窗，以免用户连续点击时浮窗有快速闪烁的动画。 */
+	const QUICK_CLICK_DURATION = 200;
+	const suppressShowing = ref(false);
 
 	/**
 	 * 隐藏浮窗。
 	 */
-	function hide() {
+	async function hide() {
 		shown.value = false;
 		model.value = undefined;
+		suppressShowing.value = true;
+		await delay(QUICK_CLICK_DURATION);
 		emits("hide");
+		suppressShowing.value = false;
 	}
 
 	/**
@@ -40,6 +48,7 @@
 	 * @param offset - 与目标元素距离偏移。
 	 */
 	async function show(target: FlyoutModelNS.Target, placement?: Placement, offset?: number) {
+		if (suppressShowing.value) return;
 		target = toValue(target);
 		let targetRect: DOMRect | undefined;
 		const _location = ((): TwoD | null => {
@@ -71,6 +80,10 @@
 	}
 
 	watch(model, e => {
+		if (suppressShowing.value) {
+			model.value = undefined;
+			return;
+		}
 		if (e === undefined) return hide();
 		if (e instanceof Array) {
 			const [target, placement, offset] = e;
@@ -91,10 +104,13 @@
 	 */
 	async function onFlyoutEnter(el: Element, done: () => void) {
 		await animateSize(el, null, {
-			[["left", "right", "x"].includes(placementForAnimation.value) ? "startWidth" : "startHeight"]: 0,
-			startReverseSlideIn: ["left", "top"].includes(placementForAnimation.value),
+			[isWidthAnimation.value ? "startWidth" : "startHeight"]: 0,
+			startReverseSlideIn: isReverseSlide.value,
 			duration: 500,
 			getRect: flyoutRect,
+			attachAnimations: !isReverseSlide.value && [[el.children[0], [{
+				translate: placementForAnimation.value === "bottom" ? "0 -100%" : "-100% 0",
+			}, {}]]],
 		});
 		done();
 	}
@@ -107,9 +123,12 @@
 	 */
 	async function onFlyoutLeave(el: Element, done: () => void) {
 		await animateSize(el, null, {
-			[["left", "right", "x"].includes(placementForAnimation.value) ? "endWidth" : "endHeight"]: 0,
-			endReverseSlideIn: ["left", "top"].includes(placementForAnimation.value),
+			[isWidthAnimation.value ? "endWidth" : "endHeight"]: 0,
+			endReverseSlideIn: isReverseSlide.value,
 			duration: 300,
+			attachAnimations: !isReverseSlide.value && [[el.children[0], [{}, {
+				translate: placementForAnimation.value === "bottom" ? "0 -100%" : "-100% 0",
+			}]]],
 		});
 		done();
 	}
