@@ -58,10 +58,13 @@
 	 * @returns 文本光标位置。
 	 */
 	function getCursorPixel() {
+		if (!editor.value) return;
 		const id = "cursor-" + crypto.randomUUID();
-		editor.value?.commands.insertContent(`<cursor id="${id}">1</cursor>`);
+		const selection = editor.value.state.selection;
+		editor.value.commands.insertContentAt(selection.$anchor.pos, `<cursor id="${id}">1</cursor>`);
 		const shadow = rtfEditor.value?.querySelector(`[data-id="${id}"]`);
 		const rect = shadow?.getBoundingClientRect();
+		editor.value.commands.setTextSelection({ from: selection.from, to: selection.to + 1 });
 		kill(shadow);
 		return rect;
 	}
