@@ -35,9 +35,7 @@
 		},
 		render() {
 			const slot = this.$slots.default?.();
-			let link = this.blank ?
-				<a href={this.href} target="_blank" {...this.attrs}>{slot}</a> :
-				<NuxtLink to={this.href} {...this.attrs}>{slot}</NuxtLink>;
+			let link = <NuxtLink to={this.href} target={this.blank ? "_blank" : undefined} {...this.attrs}>{slot}</NuxtLink>;
 			if (this.linkInLink)
 				link = <object>{link}</object>;
 			return link;

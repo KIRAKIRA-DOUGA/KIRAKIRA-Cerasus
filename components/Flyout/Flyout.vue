@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { Placement, getPosition } from "plugins/vue/tooltip";
+	import { getPosition } from "plugins/vue/tooltip";
 
 	const props = defineProps<{
 		/** 是否**不**向加内边距？ */
