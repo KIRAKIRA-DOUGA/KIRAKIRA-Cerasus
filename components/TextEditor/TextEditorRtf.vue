@@ -22,8 +22,8 @@
 	});
 
 	const rtfEditor = refComp();
-	const flyoutKaomoji = refFlyout();
-	const flyoutKaomojiMini = refFlyout();
+	const flyoutKaomoji = ref<FlyoutModel>();
+	const flyoutKaomojiMini = ref<FlyoutModel>();
 	const [DefineToolItem, ToolItem] = createReusableTemplate<{ active?: string; icon?: string; onClick?: (e: MouseEvent) => void }>();
 
 	/** 切换文本加粗。 */
@@ -39,7 +39,7 @@
 	/** 在富文本编辑器光标处追加一个 Vue 组件。 */
 	const addVueComponents = () => { editor.value?.commands.insertContent("<thumb-video></thumb-video>"); };
 	/** 在光标处打开迷你颜文字输入面板。 */
-	const showRecentKaomojis = () => { flyoutKaomojiMini.value?.show(getCursorPixel(), "y"); };
+	const showRecentKaomojis = () => { flyoutKaomojiMini.value = [getCursorPixel(), "y"]; };
 	/** 打开提及面板。 */
 	const showAtList = () => { };
 
@@ -84,8 +84,8 @@
 		</button>
 	</DefineToolItem>
 
-	<FlyoutKaomoji ref="flyoutKaomoji" @insert="insertKaomoji" />
-	<FlyoutKaomojiMini ref="flyoutKaomojiMini" @insert="insertKaomoji" @escape="insertKaomoji" />
+	<FlyoutKaomoji v-model="flyoutKaomoji" @insert="insertKaomoji" />
+	<FlyoutKaomojiMini v-model="flyoutKaomojiMini" @insert="insertKaomoji" @escape="insertKaomoji" />
 
 	<Comp ref="rtfEditor" @keyup.stop.ctrl.m="showRecentKaomojis">
 		<div class="toolbar">
@@ -94,7 +94,7 @@
 			<ToolItem icon="underline" active="underline" @click="toggleUnderline" />
 			<ToolItem icon="strikethrough" active="strike" @click="toggleStrike" />
 			<ToolItem icon="at" @click="showAtList" />
-			<ToolItem icon="kaomoji" @click="e => flyoutKaomoji?.show(e, 'y')" />
+			<ToolItem icon="kaomoji" @click="e => flyoutKaomoji = [e, 'y']" />
 			<ToolItem icon="photo" @click="addVueComponents" />
 		</div>
 		<ClientOnly>

@@ -129,7 +129,7 @@ module.exports = {
 		"no-redeclare": "off",
 		"no-mixed-operators": "off",
 		"no-extra-parens": "off",
-		"no-void": ["error", { "allowAsStatement": true }],
+		"no-void": ["off", { "allowAsStatement": true }], // 我就是要使用 void。
 		"no-labels": "off",
 		"import/order": "off", // 与 VSCode 内置导入排序特性打架。
 		"import/first": "off", // 与 Vue 特性冲突。

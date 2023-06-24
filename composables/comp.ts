@@ -20,6 +20,7 @@ export function refComp(value?: CompInstance) {
 
 /**
  * 指向 Flyout 组件的引用。
+ * @deprecated 想不到吧，该函数没写多久就标记为弃用了，请使用更强大的 v-model 来实现传参。
  * @returns 指向 Flyout 组件的引用。
  */
 export function refFlyout() {
@@ -28,6 +29,7 @@ export function refFlyout() {
 
 /**
  * 指向 Menu 组件的引用。
+ * @deprecated 想不到吧，该函数没写多久就标记为弃用了，请使用更强大的 v-model 来实现传参。
  * @returns 指向 Menu 组件的引用。
  */
 export function refMenu() {
@@ -38,6 +40,7 @@ type UnknownFunctionType = (...args: Any[]) => Any;
 
 /**
  * 获取基类组件的显示、隐藏函数。
+ * @deprecated 想不到吧，该函数没写多久就标记为弃用了，请使用更强大的 v-model 来实现传参。
  * @param base - 基类组件。如果未提供，则会创建一个新的空引用。
  * @returns 基类组件及其显示、隐藏函数。
  */

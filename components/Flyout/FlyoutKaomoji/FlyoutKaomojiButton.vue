@@ -3,10 +3,26 @@
 		/** 使用更强烈的色调表示选中聚焦项。 */
 		highlighted?: boolean;
 	}>();
+
+	const button = ref<InstanceType<typeof Button>>();
+	const requireShowTooltip = ref(false);
+	const kaomoji = useSlots().default?.()[0]?.children?.toString();
+
+	onMounted(async () => {
+		await delay(700); // 等待过渡动画时间，使之计算更准确。
+		const buttonEl = button.value?.$el as HTMLButtonElement | undefined;
+		if (buttonEl && buttonEl.children[0])
+			requireShowTooltip.value = buttonEl.children[0].clientWidth > buttonEl.clientWidth;
+	});
 </script>
 
 <template>
-	<Button class="flyout-kaomoji-button" :class="{ highlighted }"><slot></slot></Button>
+	<Button
+		ref="button"
+		v-tooltip:top="requireShowTooltip ? kaomoji : undefined"
+		class="flyout-kaomoji-button"
+		:class="{ highlighted }"
+	><slot></slot></Button>
 </template>
 
 <style scoped lang="scss">

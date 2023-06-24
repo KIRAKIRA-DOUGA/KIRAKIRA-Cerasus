@@ -1,10 +1,16 @@
 <script setup lang="ts">
 	import { ClientOnlyTeleport, Fragment } from "#components";
 
+	const emits = defineEmits<{
+		show: [];
+		hide: [];
+	}>();
+
 	defineSlots<{
 		default?: typeof MenuItem;
 	}>();
 
+	const model = defineModel<MenuModel>();
 	/** 是否显示菜单？ */
 	const shown = ref(false);
 	const menu = ref<HTMLMenuElement>();
@@ -21,13 +27,15 @@
 	 */
 	function hide() {
 		shown.value = false;
+		model.value = undefined;
+		emits("hide");
 	}
 
 	/**
 	 * 显示菜单。
 	 * @param e - 如有鼠标事件则为上下文菜单，否则为弹出式菜单。
 	 */
-	async function show(e?: MouseEvent) {
+	async function show(e?: MenuModel) {
 		const context = isContextMenu.value = !!e;
 		await nextTick();
 		if (!context) location.value = [0, 0];
@@ -35,7 +43,13 @@
 		shown.value = true;
 		await nextTick();
 		location.value = moveIntoPage(location, size);
+		emits("show");
 	}
+
+	watch(model, e => {
+		if (e === undefined) hide(); // undefined 表示隐藏，null 表示占位菜单而非上下文菜单。
+		else show(e);
+	}, { immediate: true });
 
 	defineExpose({
 		hide, show,

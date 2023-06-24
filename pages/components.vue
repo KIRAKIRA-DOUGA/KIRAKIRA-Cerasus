@@ -2,7 +2,6 @@
 	import animationData from "lotties/spinner-dev1.json";
 	import beepSrc from "assets/audios/NOVA 2022.1 Alert Quick.ogg";
 	import { ToastEvent } from "composables/toast";
-	import { Placement } from "plugins/vue/tooltip";
 
 	const page = ref(1);
 	const pages = ref(99);
@@ -30,8 +29,7 @@
 	const progressIndeterminate = ref(true);
 	const progressValue = computed(() => progressIndeterminate.value ? NaN : progressPercent.value);
 	const inputValue = ref("");
-	const menu = refMenu();
-	const showMenu = () => menu.value?.show();
+	const menu = ref<MenuModel>();
 	const beep = ref<HTMLAudioElement>();
 	const isUploaderLovinIt = ref(true);
 	const kiraGoods = ref(["kawaii", "nice"]);
@@ -44,9 +42,9 @@
 	const toastSeverity = ref<ToastEvent["severity"]>("success");
 	const longTextTest = "那只敏捷的棕毛狐狸跳过了一只懒惰的狗".repeat(20);
 	const selectedSegmented = ref("list");
-	const flyout = refFlyout();
-	const flyoutKaomoji = refFlyout();
-	const showFlyout = (e: MouseEvent, placement?: Placement) => flyout.value?.show(e, placement);
+	const flyout = ref<FlyoutModel>();
+	const flyoutKaomoji = ref<FlyoutModel>();
+	const showFlyout = (e: MouseEvent, placement?: Placement) => flyout.value = [e, placement];
 	const [DefinePopoverSlot, PopoverSlot] = createReusableTemplate();
 
 	/**
@@ -156,15 +154,15 @@
 			<Button @click="showAlert = true">{{ t.show_alert }}</Button>
 			<Button @click="showModal = true">显示模态框</Button>
 			<Button @click="showFlyout">显示浮窗</Button>
-			<Button @click="e => flyoutKaomoji?.show(e, 'y')">显示颜文字浮窗</Button>
+			<Button @click="e => flyoutKaomoji = [e, 'y']">显示颜文字浮窗</Button>
 			<Alert v-model="showAlert" static />
 			<Modal v-model="showModal" title="标题栏">
 				<PopoverSlot />
 			</Modal>
-			<Flyout ref="flyout">
+			<Flyout v-model="flyout">
 				<PopoverSlot />
 			</Flyout>
-			<FlyoutKaomoji ref="flyoutKaomoji" />
+			<FlyoutKaomoji v-model="flyoutKaomoji" />
 			<ToggleSwitch v-model="toggle">{{ t.toggle_switch }} {{ toggle ? t.on : t.off }}</ToggleSwitch>
 			<ToggleSwitch disabled>{{ t.disabled }} {{ t.off }}</ToggleSwitch>
 			<ToggleSwitch on disabled>{{ t.disabled }} {{ t.on }}</ToggleSwitch>
@@ -232,8 +230,8 @@
 			</TabBar>
 			<hr />
 			<div>
-				<Button :style="{ marginBottom: '1rem' }" @click="showMenu">显示菜单</Button>
-				<Menu ref="menu">
+				<Button :style="{ marginBottom: '1rem' }" @click="menu = null">显示菜单</Button>
+				<Menu v-model="menu">
 					<MenuItem icon="copy">复制</MenuItem>
 					<MenuItem icon="cut">剪切</MenuItem>
 					<MenuItem icon="paste">粘贴</MenuItem>

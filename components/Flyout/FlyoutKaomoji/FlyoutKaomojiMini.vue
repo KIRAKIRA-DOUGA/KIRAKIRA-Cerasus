@@ -8,18 +8,18 @@
 		escape: [];
 	}>();
 
+	const model = defineModel<FlyoutModel>();
 	const grid = ref<HTMLDivElement>();
-	const { ref: flyout, show: baseShow, hide } = useBaseComponentShowHide();
-	const show = async (...args: unknown[]) => {
-		await baseShow(...args);
-		(grid.value?.children[0] as HTMLElement)?.focus();
-	};
+	const hide = () => model.value = undefined;
 	const recentKaomoji = useRecentKaomojiStore();
 	const selectedItem = () => grid.value?.querySelector(":focus"); // 使用 computed 时结果会出错，为什么？
 
-	defineExpose({
-		show, hide,
-	});
+	/**
+	 * 当浮窗显示时的事件。
+	 */
+	function onShowFlyout() {
+		(grid.value?.children[0] as HTMLElement)?.focus();
+	}
 
 	/**
 	 * 移动选中位置。
@@ -72,7 +72,7 @@
 </script>
 
 <template>
-	<Flyout ref="flyout">
+	<Flyout v-model="model" @show="onShowFlyout">
 		<Comp>
 			<div ref="grid" class="grid" @keydown="onKeydown">
 				<FlyoutKaomojiButton

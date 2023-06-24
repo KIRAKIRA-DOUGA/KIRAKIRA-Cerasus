@@ -1,7 +1,6 @@
 <script setup lang="ts">
 	import mediainfo from "mediainfo.js";
 	import { basename } from "helpers/path-browserify";
-	import { Menu } from "#components";
 
 	const props = defineProps<{
 		src: string;
@@ -18,7 +17,7 @@
 	const mediaInfos = ref<MediaInfo>();
 	const video = ref<HTMLVideoElement>();
 	const { isFullscreen: fullScreen, toggle } = useFullscreen(video);
-	const menu = refMenu();
+	const menu = ref<MenuModel>();
 
 	type MediaInfo = Record<string, Record<string, unknown>>;
 
@@ -154,7 +153,7 @@
 				@progress="onProgress"
 				@click="playing = !playing"
 				@dblclick="toggle"
-				@contextmenu.prevent="e => menu?.show(e)"
+				@contextmenu.prevent="e => menu = e"
 			></video>
 			<PlayerVideoController
 				v-model:currentTime="currentTime"
@@ -168,7 +167,7 @@
 		</div>
 
 		<PlayerVideoPanel />
-		<Menu ref="menu">
+		<Menu v-model="menu">
 			<MenuItem icon="info" @click="showInfo">查看视频详细信息</MenuItem>
 		</Menu>
 	</Comp>

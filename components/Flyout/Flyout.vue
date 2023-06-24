@@ -1,11 +1,18 @@
 <script setup lang="ts">
 	import { getPosition } from "plugins/vue/tooltip";
+	import { FlyoutModelNS } from "types/arguments";
 
 	const props = defineProps<{
 		/** 是否**不**向加内边距？ */
 		noPadding?: boolean;
 	}>();
 
+	const emits = defineEmits<{
+		show: [];
+		hide: [];
+	}>();
+
+	const model = defineModel<FlyoutModel>();
 	const shown = ref(false);
 	const flyout = refComp();
 	const location = ref<TwoD>([0, 0]);
@@ -22,6 +29,8 @@
 	 */
 	function hide() {
 		shown.value = false;
+		model.value = undefined;
+		emits("hide");
 	}
 
 	/**
@@ -30,7 +39,7 @@
 	 * @param placement - 浮窗出现方向。
 	 * @param offset - 与目标元素距离偏移。
 	 */
-	async function show(target: MaybeRef<MouseEvent | PointerEvent | TwoD | HTMLElement | EventTarget | DOMRect | undefined | null>, placement?: Placement, offset?: number) {
+	async function show(target: FlyoutModelNS.Target, placement?: Placement, offset?: number) {
 		target = toValue(target);
 		let targetRect: DOMRect | undefined;
 		const _location = ((): TwoD | null => {
@@ -58,7 +67,17 @@
 			await nextTick();
 		}
 		location.value = moveIntoPage(location, flyoutRect);
+		emits("show");
 	}
+
+	watch(model, e => {
+		if (e === undefined) return hide();
+		if (e instanceof Array) {
+			const [target, placement, offset] = e;
+			e = { target, placement, offset };
+		}
+		show(e.target, e.placement, e.offset);
+	}, { immediate: true, deep: true });
 
 	defineExpose({
 		hide, show,
@@ -127,7 +146,7 @@
 		overflow: hidden;
 		background-color: c(acrylic-bg, 75%);
 		transition: $fallback-transitions, left 0s, top 0s;
-		
+
 		&.padding {
 			padding: $padding;
 		}

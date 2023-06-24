@@ -5,7 +5,7 @@
 		insert: [text: string];
 	}>();
 
-	const { ref: flyout, show, hide } = useBaseComponentShowHide();
+	const model = defineModel<FlyoutModel>();
 	const RECENT_ID = "recent";
 	const selected = ref<keyof typeof kaomojis | typeof RECENT_ID>("happy");
 	const tabs = computed(() => Object.keys(kaomojis));
@@ -16,10 +16,6 @@
 	watch(selected, (curSelected, prevSelected) => {
 		const cur = tabs.value.indexOf(curSelected), prev = tabs.value.indexOf(prevSelected);
 		transitionName.value = cur > prev ? "right" : cur < prev ? "left" : "";
-	});
-
-	defineExpose({
-		show, hide,
 	});
 
 	/**
@@ -33,7 +29,7 @@
 </script>
 
 <template>
-	<Flyout ref="flyout" noPadding>
+	<Flyout v-model="model" noPadding>
 		<Comp>
 			<TabBar v-model="selected">
 				<TabItem :id="RECENT_ID" icon="time" />

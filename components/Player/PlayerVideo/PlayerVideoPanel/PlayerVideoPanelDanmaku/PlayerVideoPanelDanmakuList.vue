@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	const danmakuItemMenu = refMenu();
+	const danmakuItemMenu = ref<MenuModel>();
 	const currentDanmakuIndex = ref(0);
 	const { copy } = useClipboard();
 	const headers = ["时间", "内容", "发送时间"];
@@ -67,7 +67,7 @@
 					</div>
 				</thead>
 				<tbody>
-					<tr v-for="i in 100" :key="i" v-ripple @contextmenu.prevent="e => { currentDanmakuIndex = i; danmakuItemMenu?.show(e); }">
+					<tr v-for="i in 100" :key="i" v-ripple @contextmenu.prevent="e => { currentDanmakuIndex = i; danmakuItemMenu = e; }">
 						<td v-for="(value, key, j) in getDanmaku(i)" :key="key" :width="colWidths[j]">{{ value }}</td>
 					</tr>
 				</tbody>
@@ -79,7 +79,7 @@
 				</div>
 			</template>
 		</ClientOnly>
-		<Menu ref="danmakuItemMenu">
+		<Menu v-model="danmakuItemMenu">
 			<MenuItem icon="copy" @click="copyDanmaku">复制</MenuItem>
 			<MenuItem icon="flag">举报</MenuItem>
 		</Menu>

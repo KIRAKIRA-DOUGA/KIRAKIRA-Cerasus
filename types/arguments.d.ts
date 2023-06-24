@@ -1,4 +1,8 @@
-import { Placement } from "plugins/vue/tooltip";
+export namespace FlyoutModelNS {
+	export type Target = MaybeRef<MouseEvent | PointerEvent | TwoD | HTMLElement | EventTarget | DOMRect | undefined | null>;
+	export type Tuple = [target: Target, placement?: Placement, offset?: number];
+	export type Object = { target: Target; placement?: Placement; offset?: number };
+}
 
 /**
  * 在此处声明各组件或函数等希望全局使用的类型名称，其名称应尽可能复杂以规避重名。有必要时可使用命名空间。
@@ -14,17 +18,12 @@ declare global {
 	type LogoTextFormType = "hidden" | "half" | "full";
 	/** 隐私公开性。 */
 	type PrivacyType = "public" | "following" | "private";
-	
-	namespace FlyoutArguments {
-		type Target = MaybeRef<MouseEvent | PointerEvent | TwoD | HTMLElement | EventTarget | DOMRect | undefined | null>;
-		type Tuple = [target: Target, placement?: Placement, offset?: number];
-		type Object = { target: Target; placement?: Placement; offset?: number };
-	}
-	type FlyoutArguments = FlyoutArguments.Tuple | FlyoutArguments.Object;
-	export { Placement } from "plugins/vue/tooltip";
-	
-	type a = FlyoutArguments.Target;
-	
+	/** 工具提示、浮窗等的放置位置方向。 */
+	type Placement = "top" | "right" | "bottom" | "left" | "x" | "y";
+
+	type FlyoutModel = FlyoutModelNS.Tuple | FlyoutModelNS.Object;
+	type MenuModel = MouseEvent | PointerEvent | null;
+
 	/**
 	 * 使用 `role` 可以增强组件的可读性和语义化。值得注意的是这个属性是枚举而并非任意填写的。
 	 * @remarks 不包含: "meter" | "rating"

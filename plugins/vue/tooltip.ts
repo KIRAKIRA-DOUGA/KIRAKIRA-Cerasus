@@ -2,15 +2,13 @@
  * 使用 `v-tooltip`，为元素添加自定义的工具提示。
  */
 
-export type Placement = "top" | "right" | "bottom" | "left" | "x" | "y";
-
-export type VTooltipBindingValue = string | {
-	title: string;
+type VTooltipBindingValueNoPlain = {
+	title?: string;
 	placement?: Placement;
 	offset?: number;
 };
 
-type VTooltipBindingValueNoPlain = Exclude<VTooltipBindingValue, string>;
+export type VTooltipBindingValue = VTooltipBindingValueNoPlain | string | undefined;
 
 export type TooltipEvent = VTooltipBindingValueNoPlain & {
 	element: HTMLElement;
@@ -38,7 +36,7 @@ export default defineNuxtPlugin(nuxt => {
 		mounted(element, binding) {
 			setElementBinding(element, binding.value, binding.arg);
 			addEventListeners(element, "mouseenter", "focusin", () => {
-				if (!binding.value || !elementBinding.has(element)) return;
+				if (!elementBinding.has(element)) return;
 				useEvent("app:showTooltip", createEvent(element));
 			});
 			addEventListeners(element, "mouseleave", "focusout", () => {
