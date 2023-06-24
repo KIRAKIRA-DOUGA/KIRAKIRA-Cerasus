@@ -2,6 +2,7 @@
 	const selected = defineModel<string>({ required: true });
 	const slots = useSlots();
 
+	const menu = ref<HTMLDivElement>();
 	const vdoms = slots.default?.();
 	const items = computed(() => vdoms?.map(item => {
 		const props = item.props as { id?: string } | undefined;
@@ -22,46 +23,119 @@
 		selected.value = item;
 		showMenu.value = false;
 	};
+	const getMenuCssVars = (el: Element) => {
+		const { height, menuPadding } = arrayMapObject(["height", "menuPadding"],
+			i => parseFloat(useCssVar(new VariableName(i).cssVar, el as HTMLElement).value));
+		const top = height / 2;
+		const translateY = menuPadding - height * (selectedIndexStatic.value + 1);
+		return { height, menuPadding, top, translateY };
+	};
+
+	/**
+	 * 在元素被插入到 DOM 之后的下一帧被调用。
+	 * 用这个来开始进入动画。
+	 * @param el - HTML DOM 元素。
+	 * @param done - 调用回调函数 done 表示过渡结束。
+	 */
+	async function onMenuEnter(el: Element, done: () => void) {
+		const { top, translateY } = getMenuCssVars(el);
+		await animateSize(el, null, {
+			startHeight: 0,
+			duration: 250,
+			easing: eases.easeOutMax,
+			startChildTranslate: `0 ${translateY}px`,
+			startStyle: { top: `${top}px` },
+		});
+		done();
+	}
+
+	/**
+	 * 在离开过渡开始时调用。
+	 * 用这个来开始离开动画。
+	 * @param el - HTML DOM 元素。
+	 * @param done - 调用回调函数 done 表示过渡结束。
+	 */
+	async function onMenuLeave(el: Element, done: () => void) {
+		const { top, translateY } = getMenuCssVars(el);
+		await animateSize(el, null, {
+			endHeight: 0,
+			duration: 100,
+			easing: eases.easeOutMax,
+			endChildTranslate: `0 ${translateY}px`,
+			endStyle: { top: `${top}px` },
+		});
+		done();
+	}
+
+	useEventListener("window", "pointerdown", e => {
+		if (!menu.value || !showMenu.value) return;
+		const clickOutside = !isInPath(e, menu);
+		if (clickOutside) showMenu.value = false;
+	});
 </script>
 
 <template>
-	<Comp role="combobox">
-		<div v-ripple class="wrapper" @click="show">
-			<span>{{ selectedContent }}</span>
-			<Icon name="chevron_down" />
-		</div>
-		<Transition>
-			<div v-if="showMenu" class="menu">
-				<div v-for="item in items" :key="item.id" v-ripple class="item" @click="setItem(item.id)">
-					<span>{{ item.content }}</span>
-				</div>
+	<Comp role="combobox" :aria-expanded="showMenu">
+		<div>
+			<div v-ripple class="wrapper" @click="show">
+				<span>{{ selectedContent }}</span>
+				<Icon name="chevron_down" />
 			</div>
-		</Transition>
+			<Transition :css="false" @enter="onMenuEnter" @leave="onMenuLeave">
+				<div v-if="showMenu" ref="menu" class="menu">
+					<div>
+						<div v-for="item in items" :key="item.id" v-ripple class="item" @click="setItem(item.id)">
+							<span>{{ item.content }}</span>
+						</div>
+					</div>
+				</div>
+			</Transition>
+		</div>
 	</Comp>
 </template>
 
 <style scoped lang="scss">
-	$default-height: 36px;
+	$normal-height: 36px;
 	$small-height: 28px;
 	$large-height: 44px;
 	$start-indent: 12px;
+	
+	@layer props {
+		:comp {
+			/// 组合框尺寸，可选的值为：small | normal | large。
+			--size: normal;
+		}
+	}
 
 	:comp {
 		position: relative;
+		
+		> div {
+			--height: #{$normal-height};
+			--menu-padding: #{$menu-padding};
+			
+			@container style(--size: small) {
+				--height: #{$small-height};
+			}
+		
+			@container style(--size: large) {
+				--height: #{$large-height};
+			}
+		}
 	}
-	
+
 	.wrapper {
 		@include radius-large;
 		@include chip-shadow;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		height: $default-height;
+		height: var(--height);
 		padding: 0 $start-indent;
 		color: c(text-color);
 		background-color: c(main-bg);
 		cursor: pointer;
-		
+
 		.icon {
 			margin-right: -6px;
 			color: c(icon-color);
@@ -71,7 +145,7 @@
 		&:active {
 			background-color: c(main-bg);
 			box-shadow: none !important;
-			
+
 			.icon {
 				translate: 0 2px;
 			}
@@ -80,7 +154,7 @@
 		&:focus {
 			@include button-shadow-unchecked-focus;
 		}
-		
+
 		@media (any-hover: hover) {
 			&:hover {
 				@include button-shadow-unchecked-hover;
@@ -92,43 +166,42 @@
 			}
 		}
 	}
-	
+
 	.menu {
 		@include dropdown-flyouts;
 		@include radius-large;
-		--top: calc(#{$menu-padding - $default-height / 2} + v-bind(selectedIndexStatic) * #{$default-height});
+		@include enable-hardware-3d;
 		position: absolute;
-		top: calc(0px - $menu-padding - v-bind(selectedIndexStatic) * $default-height);
+		top: calc(0px - $menu-padding - v-bind(selectedIndexStatic) * var(--height));
 		z-index: 70;
 		width: 100%;
 		padding: $menu-padding 0;
+		overflow: hidden;
 		color: c(text-color);
 		background-color: c(main-bg);
-		// clip-path: inset(0);
-		
+
 		.item {
 			@include radius-small;
 			display: flex;
 			align-items: center;
-			height: $default-height;
+			height: var(--height);
 			margin: 0 $menu-padding;
 			padding: 0 calc($start-indent - $menu-padding);
 			cursor: pointer;
-			
+
 			&:hover {
 				background-color: c(hover-color);
 			}
 		}
-		
+
 		&:not(:hover, :active) {
 			@include dropdown-flyouts-unhover;
 			transition: $fallback-transitions, box-shadow 1s, opacity 1s;
 		}
-		
+
 		&.v-enter-from,
 		&.v-leave-to {
 			opacity: 0;
-			// clip-path: inset(var(--top) 0 calc(100% - var(--top))); // TODO: 劈裂动画。
 		}
 	}
 </style>

@@ -195,7 +195,17 @@
 			<em>所有输入框的内容同时输入属正常现象，因为懒得做三个变量。</em>
 			<hr />
 			<p>他有没有可能是演的，他是不是演的呢？</p>
+			<ComboBox v-model="comboBoxValue" :style="{ '--size': 'small' }">
+				<ComboBoxItem id="not">不是</ComboBoxItem>
+				<ComboBoxItem id="maybe not">有可能不是</ComboBoxItem>
+				<ComboBoxItem id="obtuse angle">钝角</ComboBoxItem>
+			</ComboBox>
 			<ComboBox v-model="comboBoxValue">
+				<ComboBoxItem id="not">不是</ComboBoxItem>
+				<ComboBoxItem id="maybe not">有可能不是</ComboBoxItem>
+				<ComboBoxItem id="obtuse angle">钝角</ComboBoxItem>
+			</ComboBox>
+			<ComboBox v-model="comboBoxValue" :style="{ '--size': 'large' }">
 				<ComboBoxItem id="not">不是</ComboBoxItem>
 				<ComboBoxItem id="maybe not">有可能不是</ComboBoxItem>
 				<ComboBoxItem id="obtuse angle">钝角</ComboBoxItem>

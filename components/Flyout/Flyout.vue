@@ -108,9 +108,7 @@
 			startReverseSlideIn: isReverseSlide.value,
 			duration: 500,
 			getRect: flyoutRect,
-			attachAnimations: !isReverseSlide.value && [[el.children[0], [{
-				translate: placementForAnimation.value === "bottom" ? "0 -100%" : "-100% 0",
-			}, {}]]],
+			startChildTranslate: isReverseSlide.value ? undefined : placementForAnimation.value === "bottom" ? "0 -100%" : "-100% 0",
 		});
 		done();
 	}
@@ -126,9 +124,7 @@
 			[isWidthAnimation.value ? "endWidth" : "endHeight"]: 0,
 			endReverseSlideIn: isReverseSlide.value,
 			duration: 300,
-			attachAnimations: !isReverseSlide.value && [[el.children[0], [{}, {
-				translate: placementForAnimation.value === "bottom" ? "0 -100%" : "-100% 0",
-			}]]],
+			endChildTranslate: isReverseSlide.value ? undefined : placementForAnimation.value === "bottom" ? "0 -100%" : "-100% 0",
 		});
 		done();
 	}

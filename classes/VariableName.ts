@@ -95,6 +95,13 @@ export class VariableName {
 	get title() {
 		return this.#words.map(word => capitalize(word)).join(" ");
 	}
+	
+	/**
+	 * 转换为 CSS 自定义属性格式。
+	 */
+	get cssVar() {
+		return "--" + this.kebab;
+	}
 }
 
 /**

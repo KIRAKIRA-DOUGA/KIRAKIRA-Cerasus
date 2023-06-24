@@ -71,6 +71,8 @@ export async function animateSize(
 		endStyle = {},
 		startReverseSlideIn,
 		endReverseSlideIn,
+		startChildTranslate,
+		endChildTranslate,
 		attachAnimations,
 	}: Partial<{
 		/** 显式指定初始高度（可选）。 */
@@ -103,6 +105,10 @@ export async function animateSize(
 		startReverseSlideIn: boolean;
 		/** 结束从反向滑入界面。 */
 		endReverseSlideIn: boolean;
+		/** 元素的**唯一**子元素初始位移。 */
+		startChildTranslate: Numberish;
+		/** 元素的**唯一**子元素结束位移。 */
+		endChildTranslate: Numberish;
 		/** 动画播放的同时附加其它动画，并使用与之相同的时长与缓动值。 */
 		attachAnimations: [Element, Keyframes][] | false;
 	}> = {},
@@ -143,6 +149,12 @@ export async function animateSize(
 		keyframes[1].translate = setTranslate([isWidthChanged ? startWidth : 0, isHeightChanged ? startHeight : 0]);
 	Object.assign(keyframes[0], startStyle);
 	Object.assign(keyframes[1], endStyle);
-	if (attachAnimations) attachAnimations.forEach(group => group[0]?.animate(group[1], { duration, easing }));
-	return element.animate(keyframes, { duration, easing }).finished;
+	const animationOptions = { duration, easing };
+	const onlyChild = element.children[0]; // 只取唯一一个子元素。
+	if (onlyChild && (startChildTranslate || endChildTranslate)) onlyChild.animate([
+		startChildTranslate ? { translate: startChildTranslate } : {},
+		endChildTranslate ? { translate: endChildTranslate } : {},
+	], animationOptions);
+	if (attachAnimations) attachAnimations.forEach(group => group[0]?.animate(group[1], animationOptions));
+	return element.animate(keyframes, animationOptions).finished;
 }

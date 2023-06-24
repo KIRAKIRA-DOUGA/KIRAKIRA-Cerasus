@@ -274,7 +274,7 @@
 
 <style scoped lang="scss">
 	$focus-stripe-height: 2px;
-	$default-height: 36px;
+	$normal-height: 36px;
 	$small-height: 28px;
 	$large-height: 44px;
 	$start-indent: 12px;
@@ -283,7 +283,7 @@
 		@include radius-large;
 		@include control-inner-shadow;
 		position: relative;
-		height: $default-height;
+		height: $normal-height;
 		overflow: hidden;
 		background-color: c(inset-bg);
 		border: 0;
@@ -435,7 +435,7 @@
 
 	.after-icons {
 		@include flex-center;
-		--size: #{$default-height};
+		--size: #{$normal-height};
 
 		.large & {
 			--size: #{$large-height};
