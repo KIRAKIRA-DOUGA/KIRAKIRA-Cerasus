@@ -42,16 +42,6 @@
 		}
 	}
 
-	:comp {
-		&:first-child {
-			@include radius-large(top);
-		}
-
-		&:last-child {
-			@include radius-large(bottom);
-		}
-	}
-
 	@media (any-hover: hover) {
 		:comp:hover {
 			background-color: c(hover-color);
