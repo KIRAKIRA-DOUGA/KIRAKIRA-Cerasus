@@ -1,7 +1,3 @@
-<script lang="ts">
-	export type MaskSlotPosition = "left top" | "center top" | "right top" | "left center" | "center" | "right center" | "left bottom" | "center bottom" | "right bottom";
-</script>
-
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
 		/** 是否显示，单向绑定使用。 */

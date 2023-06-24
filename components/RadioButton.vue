@@ -1,6 +1,4 @@
 <script setup lang="ts" generic="T extends string">
-	import { Movement } from "./Checkbox.vue";
-
 	const props = withDefaults(defineProps<{
 		/** 禁用。 */
 		disabled?: boolean;

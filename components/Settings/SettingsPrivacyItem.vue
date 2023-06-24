@@ -1,7 +1,3 @@
-<script lang="ts">
-	export type PrivacyType = "public" | "following" | "private";
-</script>
-
 <script setup lang="ts">
 	const props = defineProps<{
 		icon?: string;

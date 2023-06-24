@@ -1,6 +1,4 @@
 <script setup lang="ts">
-	import { PrivacyType } from "components/Settings/SettingsPrivacyItem.vue";
-
 	const visibilities = reactive < { name: string; icon?: string; logo?: string; privacy: PrivacyType }[]>([
 		{ name: "生日", icon: "birthday", privacy: "public" },
 		{ name: "关注", icon: "person_add", privacy: "public" },

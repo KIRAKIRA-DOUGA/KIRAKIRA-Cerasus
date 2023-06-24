@@ -1,8 +1,3 @@
-<script lang="ts">
-	export type Movement = "previous" | "next";
-	export type CheckState = "unchecked" | "indeterminate" | "checked";
-</script>
-
 <script setup lang="ts" generic="T extends string">
 	// WARN: 泛型功能有问题，暂时禁用检查。
 	const props = withDefaults(defineProps<{

@@ -1,8 +1,6 @@
 <script setup lang="ts">
 	import animationData from "lotties/spinner-dev1.json";
-	import { LogoTextFormType } from "components/Logo/LogoText.vue";
 	import beepSrc from "assets/audios/NOVA 2022.1 Alert Quick.ogg";
-	import { CheckState } from "components/Checkbox.vue";
 	import { ToastEvent } from "composables/toast";
 	import { Placement } from "plugins/vue/tooltip";
 
@@ -199,7 +197,7 @@
 			<hr />
 			<HeadingComments :count="233" />
 			<hr />
-			<Subheader>不确定加载条</Subheader>
+			<Subheader>加载条</Subheader>
 			<ToggleSwitch v-model="showProgress">开启加载</ToggleSwitch>
 			<p>大小</p><Slider v-model="progressRingSize" :min="1" :max="150" />
 			<p>粗细</p><Slider v-model="progressRingThickness" :min="1" :max="60" />
