@@ -145,7 +145,7 @@
 
 		<h2>查询用户设定档</h2>
 		<div class="query">
-			<TextBox v-model="userIdInput" size="normal" placeholder="输入你想查询的使用者 ID（输入 u00001 试试看？）" />
+			<TextBox v-model="userIdInput" placeholder="输入你想查询的使用者 ID（输入 u00001 试试看？）" />
 			<Button icon="send" @click="handleSearchUserInfo">{{ t.query }}</Button>
 		</div>
 		<div>查询结果：</div>
@@ -154,19 +154,19 @@
 		<h2>创建新的使用者设定档</h2>
 		<div class="save">
 			<div>
-				<TextBox v-model="userSettingsInputUuidInsert" size="normal" placeholder="使用者 ID" />
+				<TextBox v-model="userSettingsInputUuidInsert" placeholder="使用者 ID" />
 			</div>
 			<div>
-				<TextBox v-model="userSettingsInputSystemStyleInsert" size="normal" placeholder="系统样式" />
+				<TextBox v-model="userSettingsInputSystemStyleInsert" placeholder="系统样式" />
 			</div>
 			<div>
-				<TextBox v-model="userSettingsInputSystemColorInsert" size="normal" placeholder="背景色" />
+				<TextBox v-model="userSettingsInputSystemColorInsert" placeholder="背景色" />
 			</div>
 			<div>
 				<ToggleSwitch v-model="userSettingsInputBackgroundAnimationInsert">是否开启背景动画： {{ userSettingsInputBackgroundAnimationInsert ? t.on : t.off }}</ToggleSwitch>
 			</div>
 			<div>
-				<TextBox v-model="userSettingsInputSettingPageLastEnterInsert" size="normal" placeholder="使用者最后浏览的设定页" />
+				<TextBox v-model="userSettingsInputSettingPageLastEnterInsert" placeholder="使用者最后浏览的设定页" />
 			</div>
 			<Button @click="insertUserInfo">提交</Button>
 		</div>
@@ -175,13 +175,13 @@
 		<h2>更新使用者设定档</h2>
 		<div class="update">
 			<div>
-				<TextBox v-model="userSettingsInputUuidUpdate" size="normal" placeholder="输入一个已经存在使用者 ID" />
+				<TextBox v-model="userSettingsInputUuidUpdate" placeholder="输入一个已经存在使用者 ID" />
 			</div>
 			<div>
-				<TextBox v-model="userSettingsInputSystemStyleUpdate" size="normal" placeholder="系统样式" />
+				<TextBox v-model="userSettingsInputSystemStyleUpdate" placeholder="系统样式" />
 			</div>
 			<div>
-				<TextBox v-model="userSettingsInputSystemColorUpdate" size="normal" placeholder="背景色" />
+				<TextBox v-model="userSettingsInputSystemColorUpdate" placeholder="背景色" />
 			</div>
 			选择是否启用背景动画
 			<Segmented v-model="userSettingsInputBackgroundAnimationUpdate">
@@ -190,7 +190,7 @@
 				<SegmentedItem id="-1">不启用</SegmentedItem>
 			</Segmented>
 			<div>
-				<TextBox v-model="userSettingsInputSettingPageLastEnterUpdate" size="normal" placeholder="使用者最后浏览的设定页" />
+				<TextBox v-model="userSettingsInputSettingPageLastEnterUpdate" placeholder="使用者最后浏览的设定页" />
 			</div>
 			<Button @click="updateUserInfo">更新</Button>
 		</div>

@@ -24,53 +24,54 @@
 		<span>点击更换头像</span>
 	</div>
 
-	<div class="nickname">
-		<TextBox
-			v-model="nickname"
-			:placeholder="t.nickname"
-			size="large"
-			icon="person"
-			required
-			preventIfInvalid
-			:pattern="validChar"
-			:maxLength="20"
-		/>
-		<span>{{ t.nickname_requirements }}</span>
-	</div>
-
-	<TextBox
-		v-model="test"
-		inputMode="numeric"
-		placeholder="测试：只能输入0到99之间的整数"
-		size="large"
-		icon="placeholder"
-		required
-		:min="0"
-		:max="99"
-		:step="1"
-	/>
-
-	<TextBox v-model="signature" placeholder="个性签名" size="large" icon="edit" />
-
-	<TextBox v-model="birthday" type="date" :placeholder="t.birthday" size="large" icon="birthday" />
-	<!-- TODO: [艾拉] 日期选择组件 -->
-	<!-- [琪露诺] 日期选择点击X按钮，再次选择日期后按钮不会出现。 -->
-	<!-- [兰音] 由于日期组件尚未制作，目前仅是一个占位符，暂时不必在意其功能或外观等的问题。 -->
-
-	<div class="gender">
-		<div class="gender-subtitle">
-			<Icon name="gender" class="icon" />
-			<span class="text">{{ t.gender }}</span>
+	<div class="items">
+		<div class="nickname">
+			<TextBox
+				v-model="nickname"
+				:placeholder="t.nickname"
+				size="large"
+				icon="person"
+				required
+				preventIfInvalid
+				:pattern="validChar"
+				:maxLength="20"
+			/>
+			<span>{{ t.nickname_requirements }}</span>
 		</div>
 
-		<div class="gender-radio-group">
-			<RadioButton v-model="genderBasic" value="male">{{ t.male }}</RadioButton>
-			<RadioButton v-model="genderBasic" value="female">{{ t.female }}</RadioButton>
-			<div class="gender-custom">
-				<RadioButton v-model="genderBasic" value="custom">{{ t.custom }}</RadioButton>
-				<Transition>
-					<TextBox v-show="genderBasic === 'custom'" v-model="genderCustom" />
-				</Transition>
+		<TextBox
+			v-model="test"
+			inputMode="numeric"
+			placeholder="测试：只能输入0到99之间的整数"
+			icon="placeholder"
+			required
+			:min="0"
+			:max="99"
+			:step="1"
+		/>
+
+		<TextBox v-model="signature" placeholder="个性签名" icon="edit" />
+
+		<TextBox v-model="birthday" type="date" :placeholder="t.birthday" icon="birthday" />
+		<!-- TODO: [艾拉] 日期选择组件 -->
+		<!-- [琪露诺] 日期选择点击X按钮，再次选择日期后按钮不会出现。 -->
+		<!-- [兰音] 由于日期组件尚未制作，目前仅是一个占位符，暂时不必在意其功能或外观等的问题。 -->
+
+		<div class="gender">
+			<div class="gender-subtitle">
+				<Icon name="gender" class="icon" />
+				<span class="text">{{ t.gender }}</span>
+			</div>
+
+			<div class="gender-radio-group">
+				<RadioButton v-model="genderBasic" value="male">{{ t.male }}</RadioButton>
+				<RadioButton v-model="genderBasic" value="female">{{ t.female }}</RadioButton>
+				<div class="gender-custom">
+					<RadioButton v-model="genderBasic" value="custom">{{ t.custom }}</RadioButton>
+					<Transition>
+						<TextBox v-show="genderBasic === 'custom'" v-model="genderCustom" />
+					</Transition>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -169,6 +170,16 @@
 			margin-bottom: 0.5rem;
 			opacity: 0;
 			pointer-events: none;
+		}
+	}
+
+	.items {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+
+		> .text-box {
+			--size: large;
 		}
 	}
 

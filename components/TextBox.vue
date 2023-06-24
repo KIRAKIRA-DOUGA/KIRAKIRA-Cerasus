@@ -7,8 +7,6 @@
 		placeholder?: string;
 		/** 图标名称。 */
 		icon?: string;
-		/** 输入框尺寸。 */
-		size?: "small" | "normal" | "large";
 		/** 输入框类型。 */
 		type?: "date" | "datetime-local" | "email" | "month" | "number" | "password" | "search" | "tel" | "text" | "time" | "url" | "week";
 		// 已弃用："datetime"。
@@ -227,48 +225,43 @@
 </script>
 
 <template>
-	<Comp
-		:class="{
-			small: size === 'small',
-			large: size === 'large',
-			'icon-enabled': icon,
-		}"
-		role="textbox"
-	>
-		<div class="wrapper">
-			<Icon v-if="icon" :name="icon" class="before-icon" />
-			<input
-				ref="input"
-				:value="value ?? ''"
-				:type="type"
-				:placeholder="placeholder.toString()"
-				:autocomplete="autoComplete"
-				:autofocus="autoFocus"
-				:disabled="disabled"
-				:form="form"
-				:list="list"
-				:max="max"
-				:maxlength="maxLength"
-				:min="min"
-				:minlength="minLength"
-				:multiple="multiple"
-				:name="name"
-				:pattern="pattern?.source"
-				:readonly="readonly"
-				:required="required"
-				:step="step"
-				:inputmode="inputMode"
-				@input="onInput"
-			/>
-			<label v-if="size === 'large'">{{ placeholder }}</label>
-			<Fragment class="after-icons">
-				<AfterIcon :shown="showClearAll" icon="close" @click="clearAll" />
-				<AfterIcon :shown="props.type === 'password'" :icon="showPassword ? 'visibility' : 'visibility_off'" @click="toggleShowPassword" />
-				<AfterIcon v-tooltip:y="input?.validationMessage || undefined" :shown="invalid" icon="error" />
-			</Fragment>
+	<Comp role="textbox">
+		<div>
+			<div class="wrapper">
+				<Icon v-if="icon" :name="icon" class="before-icon" />
+				<input
+					ref="input"
+					:value="value ?? ''"
+					:type="type"
+					:placeholder="placeholder.toString()"
+					:autocomplete="autoComplete"
+					:autofocus="autoFocus"
+					:disabled="disabled"
+					:form="form"
+					:list="list"
+					:max="max"
+					:maxlength="maxLength"
+					:min="min"
+					:minlength="minLength"
+					:multiple="multiple"
+					:name="name"
+					:pattern="pattern?.source"
+					:readonly="readonly"
+					:required="required"
+					:step="step"
+					:inputmode="inputMode"
+					@input="onInput"
+				/>
+				<label>{{ placeholder }}</label>
+				<Fragment class="after-icons">
+					<AfterIcon :shown="showClearAll" icon="close" @click="clearAll" />
+					<AfterIcon :shown="props.type === 'password'" :icon="showPassword ? 'visibility' : 'visibility_off'" @click="toggleShowPassword" />
+					<AfterIcon v-tooltip:y="input?.validationMessage || undefined" :shown="invalid" icon="error" />
+				</Fragment>
+			</div>
+			<div class="stripe large-stripe"></div>
+			<div class="stripe focus-stripe"></div>
 		</div>
-		<div v-if="size === 'large'" class="stripe large-stripe"></div>
-		<div class="stripe focus-stripe"></div>
 	</Comp>
 </template>
 
@@ -278,21 +271,37 @@
 	$small-height: 28px;
 	$large-height: 44px;
 	$start-indent: 12px;
+	
+	@layer props {
+		:comp {
+			/// 输入框尺寸，可选的值为：small | normal | large。
+			--size: normal;
+		}
+	}
+	
+	@mixin is-large-size {
+		@container style(--size: large) {
+			@content;
+		}
+	}
 
-	:comp {
+	:comp > div {
 		@include radius-large;
 		@include control-inner-shadow;
+		--height: #{$normal-height};
 		position: relative;
 		height: $normal-height;
 		overflow: hidden;
 		background-color: c(inset-bg);
 		border: 0;
 
-		&.small {
+		@container style(--size: small) {
+			--height: #{$small-height};
 			height: $small-height;
 		}
 
-		&.large {
+		@container style(--size: large) {
+			--height: #{$large-height};
 			height: $large-height;
 		}
 
@@ -335,7 +344,12 @@
 	}
 
 	.large-stripe {
+		display: none;
 		background-color: c(icon-color, 50%);
+		
+		@include is-large-size {
+			display: block;
+		}
 	}
 
 	.focus-stripe {
@@ -348,14 +362,14 @@
 		align-items: center;
 		height: 100%;
 
-		.large & {
-			clip-path: polygon(0% 0%, 100% 0%, 100% calc(100% - $focus-stripe-height), 0% calc(100% - $focus-stripe-height));
+		@include is-large-size {
+			clip-path: inset(0 0 $focus-stripe-height)
 		}
 	}
 
 	label {
 		position: absolute;
-		display: block;
+		display: none;
 		width: 100%;
 		margin-left: $start-indent;
 		color: c(icon-color);
@@ -363,6 +377,10 @@
 		translate: 0;
 		transform-origin: left;
 		pointer-events: none;
+		
+		@include is-large-size {
+			display: block;
+		}
 
 		.before-icon ~ & {
 			margin-left: $start-indent + 24px + 16px;
@@ -403,12 +421,12 @@
 			padding-left: $start-indent + 24px + 4px;
 			text-indent: 0;
 
-			.large & {
+			@include is-large-size {
 				padding-left: $start-indent + 24px + 16px;
 			}
 		}
 
-		.large & {
+		@include is-large-size {
 			padding-top: calc($large-height / 2 - 11px);
 
 			&::placeholder {
@@ -428,30 +446,21 @@
 		font-size: 24px;
 		pointer-events: none;
 
-		.large & {
+		@include is-large-size {
 			margin-left: 12px;
 		}
 	}
 
 	.after-icons {
 		@include flex-center;
-		--size: #{$normal-height};
-
-		.large & {
-			--size: #{$large-height};
-		}
-
-		.small & {
-			--size: #{$small-height};
-		}
 
 		input:invalid ~ & :deep(.icon) {
 			color: c(red) !important;
 		}
 
 		.soft-button {
-			--wrapper-size: var(--size);
-			--ripple-size: calc(var(--size) * 1.3);
+			--wrapper-size: var(--height);
+			--ripple-size: calc(var(--height) * 1.3);
 		}
 	}
 </style>

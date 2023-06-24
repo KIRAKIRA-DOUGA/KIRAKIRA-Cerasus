@@ -77,14 +77,12 @@
 								v-model="email"
 								type="email"
 								placeholder="邮箱"
-								size="large"
 								icon="email"
 							/>
 							<TextBox
 								v-model="password"
 								type="password"
 								placeholder="密码"
-								size="large"
 								icon="lock"
 							/>
 							<div class="button login-button-placeholder">
@@ -108,21 +106,18 @@
 								v-model="email"
 								type="email"
 								placeholder="邮箱"
-								size="large"
 								icon="email"
 							/>
 							<TextBox
 								v-model="password"
 								type="password"
 								placeholder="密码"
-								size="large"
 								icon="lock"
 							/>
 							<TextBox
 								v-model="inviteCode"
 								type="text"
 								placeholder="邀请码"
-								size="large"
 								icon="link"
 							/>
 						</div>
@@ -142,14 +137,12 @@
 								v-model="verificationCode"
 								type="text"
 								placeholder="验证码"
-								size="large"
 								icon="verified"
 							/>
 							<TextBox
 								v-model="confirmPassword"
 								type="password"
 								placeholder="确认密码"
-								size="large"
 								icon="lock"
 							/>
 						</div>
@@ -169,7 +162,6 @@
 								v-model="email"
 								type="email"
 								placeholder="邮箱"
-								size="large"
 								icon="email"
 							/>
 							<Button icon="send" class="button">发送</Button>
@@ -185,8 +177,18 @@
 						</div>
 						<div class="form">
 							<div>您已成功重置密码。(/≧▽≦)/<br />请务必牢记您的新密码。</div>
-							<TextBox v-model="password" type="password" placeholder="新密码" size="large" icon="lock" />
-							<TextBox v-model="confirmPassword" type="password" placeholder="确认新密码" size="large" icon="lock" />
+							<TextBox
+								v-model="password"
+								type="password"
+								placeholder="新密码"
+								icon="lock"
+							/>
+							<TextBox
+								v-model="confirmPassword"
+								type="password"
+								placeholder="确认新密码"
+								icon="lock"
+							/>
 						</div>
 						<div class="action margin-left-inset">
 							<div></div>
@@ -294,6 +296,10 @@
 
 	:comp:not(.move-left) .main > * {
 		translate: 0 !important;
+	}
+	
+	.text-box {
+		--size: large;
 	}
 
 	.main {
