@@ -68,6 +68,7 @@
 
 		.icon-wrapper {
 			height: 18px;
+			overflow: visible;
 
 			.icon {
 				margin-top: -2px;

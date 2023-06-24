@@ -315,6 +315,9 @@
 						<Button @click="e => showFlyout(e, 'y')">垂直方向缺省</Button>
 						<Button @click="e => showFlyout(e, 'x')">水平方向缺省</Button>
 						<Button @click="e => showFlyout(e)">全方向缺省</Button>
+						<br />
+						<Button @click="e => flyoutKaomoji = [e, 'top']">向上展开颜文字</Button>
+						<Button @click="e => flyoutKaomoji = [e, 'bottom']">向下颜文字浮窗</Button>
 					</div>
 				</AccordionItem>
 				<AccordionItem title="让你的前端设计师气到脑中风">

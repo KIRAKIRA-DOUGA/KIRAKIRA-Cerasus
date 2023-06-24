@@ -10,6 +10,7 @@
 	const emits = defineEmits<{
 		show: [];
 		hide: [];
+		beforeShow: [placement: Placement];
 	}>();
 
 	const model = defineModel<FlyoutModel>();
@@ -71,6 +72,7 @@
 			const result = getPosition(targetRect, placement, offset, flyoutRect);
 			location.value = result.position;
 			placementForAnimation.value = result.placement;
+			emits("beforeShow", result.placement);
 			await nextTick();
 			shown.value = true;
 			await nextTick();
