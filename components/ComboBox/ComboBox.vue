@@ -26,8 +26,8 @@
 	const getMenuCssVars = (el: Element) => {
 		const { height, menuPadding } = arrayMapObject(["height", "menuPadding"],
 			i => parseFloat(useCssVar(new VariableName(i).cssVar, el as HTMLElement).value));
-		const top = height / 2;
-		const translateY = menuPadding - height * (selectedIndexStatic.value + 1);
+		const top = 0;
+		const translateY = -menuPadding - height * selectedIndexStatic.value;
 		return { height, menuPadding, top, translateY };
 	};
 
@@ -38,9 +38,9 @@
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
 	async function onMenuEnter(el: Element, done: () => void) {
-		const { top, translateY } = getMenuCssVars(el);
+		const { height, top, translateY } = getMenuCssVars(el);
 		await animateSize(el, null, {
-			startHeight: 0,
+			startHeight: height,
 			duration: 250,
 			easing: eases.easeOutMax,
 			startChildTranslate: `0 ${translateY}px`,
@@ -56,9 +56,9 @@
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
 	async function onMenuLeave(el: Element, done: () => void) {
-		const { top, translateY } = getMenuCssVars(el);
+		const { height, top, translateY } = getMenuCssVars(el);
 		await animateSize(el, null, {
-			endHeight: 0,
+			endHeight: height,
 			duration: 100,
 			easing: eases.easeOutMax,
 			endChildTranslate: `0 ${translateY}px`,
@@ -66,7 +66,6 @@
 		});
 		done();
 	}
-	// FIXME: 现在的下拉菜单展开动画跟鬼畜一样的，需要修改。
 
 	useEventListener("window", "pointerdown", e => {
 		if (!menu.value || !showMenu.value) return;
@@ -85,7 +84,14 @@
 			<Transition :css="false" @enter="onMenuEnter" @leave="onMenuLeave">
 				<div v-if="showMenu" ref="menu" class="menu">
 					<div>
-						<div v-for="item in items" :key="item.id" v-ripple class="item" @click="setItem(item.id)">
+						<div
+							v-for="item in items"
+							:key="item.id"
+							v-ripple
+							class="item"
+							:class="{ active: item.id === selected }"
+							@click="setItem(item.id)"
+						>
 							<span>{{ item.content }}</span>
 						</div>
 					</div>
@@ -183,6 +189,7 @@
 
 		.item {
 			@include radius-small;
+			position: relative;
 			display: flex;
 			align-items: center;
 			height: var(--height);
@@ -192,6 +199,20 @@
 
 			&:hover {
 				background-color: c(hover-color);
+			}
+			
+			&.active {
+				background-color: c(hover-color);
+				
+				&::before {
+					@include oval;
+					position: absolute;
+					left: 0;
+					width: 3px;
+					height: 16px;
+					background-color: c(accent);
+					content: "";
+				}
 			}
 		}
 
