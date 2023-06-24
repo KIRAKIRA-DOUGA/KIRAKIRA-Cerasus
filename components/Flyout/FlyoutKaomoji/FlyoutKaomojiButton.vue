@@ -34,22 +34,6 @@
 		color: c(text-color);
 		background-color: c(main-bg);
 
-		@media (any-hover: hover) {
-			&:hover {
-				@include button-shadow-unchecked-hover;
-				background-color: c(gray-20);
-			}
-
-			&:hover:focus {
-				@include button-shadow-unchecked-hover-focus;
-			}
-			
-			&.highlighted:hover:focus {
-				@include button-shadow-hover-focus;
-				background-color: c(accent-hover);
-			}
-		}
-
 		&:active {
 			background-color: c(main-bg);
 		}
@@ -66,6 +50,22 @@
 
 		&.highlighted:active:focus {
 			background-color: c(accent);
+		}
+
+		@media (any-hover: hover) {
+			&:hover {
+				@include button-shadow-unchecked-hover;
+				background-color: c(gray-20);
+			}
+
+			&:hover:focus {
+				@include button-shadow-unchecked-hover-focus;
+			}
+			
+			&.highlighted:hover:focus {
+				@include button-shadow-hover-focus;
+				background-color: c(accent-hover);
+			}
 		}
 	}
 	

@@ -46,6 +46,7 @@
 	const flyoutKaomoji = ref<FlyoutModel>();
 	const showFlyout = (e: MouseEvent, placement?: Placement) => flyout.value = [e, placement];
 	const [DefinePopoverSlot, PopoverSlot] = createReusableTemplate();
+	const comboBoxValue = ref("not");
 
 	/**
 	 * 单击按钮事件。
@@ -192,6 +193,13 @@
 			<TextBox v-model="inputValue" type="email" required placeholder="请输入正确的邮箱" />
 			<TextBox v-model="inputValue" size="large" icon="lock" type="password" placeholder="密码" />
 			<em>所有输入框的内容同时输入属正常现象，因为懒得做三个变量。</em>
+			<hr />
+			<p>他有没有可能是演的，他是不是演的呢？</p>
+			<ComboBox v-model="comboBoxValue">
+				<ComboBoxItem id="not">不是</ComboBoxItem>
+				<ComboBoxItem id="maybe not">有可能不是</ComboBoxItem>
+				<ComboBoxItem id="obtuse angle">钝角</ComboBoxItem>
+			</ComboBox>
 			<hr />
 			<HeadingComments :count="233" />
 			<hr />
