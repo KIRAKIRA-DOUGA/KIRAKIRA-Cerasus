@@ -25,7 +25,6 @@
 	const flyoutKaomoji = refFlyout();
 	const flyoutKaomojiMini = refFlyout();
 	const [DefineToolItem, ToolItem] = createReusableTemplate<{ active?: string; icon?: string; onClick?: (e: MouseEvent) => void }>();
-	provide("editor", editor);
 
 	/** 切换文本加粗。 */
 	const toggleBold = () => { editor.value?.chain().focus().toggleBold().run(); };
