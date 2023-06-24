@@ -73,6 +73,10 @@
 				margin-top: -2px;
 				font-size: 22px;
 			}
+			
+			+ span:empty {
+				display: none;
+			}
 		}
 
 		.badge {
