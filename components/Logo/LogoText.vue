@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+	const _ = ref(); // HACK: 让 Vue 识别这个组件为组合式 API，以免产生无默认导出的 bug。
 </script>
 
 <template>
