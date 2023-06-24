@@ -66,6 +66,7 @@
 		});
 		done();
 	}
+	// FIXME: 现在的下拉菜单展开动画跟鬼畜一样的，需要修改。
 
 	useEventListener("window", "pointerdown", e => {
 		if (!menu.value || !showMenu.value) return;
