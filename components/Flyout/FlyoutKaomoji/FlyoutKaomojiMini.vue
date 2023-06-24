@@ -75,7 +75,13 @@
 	<Flyout ref="flyout">
 		<Comp>
 			<div ref="grid" class="grid" @keydown="onKeydown">
-				<FlyoutKaomojiButton v-for="i in recentKaomoji.kaomojis" :key="i" highlighted @click="input(i)">{{ i }}</FlyoutKaomojiButton>
+				<FlyoutKaomojiButton
+					v-for="(kaomoji, index) in recentKaomoji.kaomojis"
+					:key="kaomoji"
+					v-i="index"
+					highlighted
+					@click="input(kaomoji)"
+				>{{ kaomoji }}</FlyoutKaomojiButton>
 			</div>
 		</Comp>
 	</Flyout>
@@ -91,5 +97,13 @@
 
 	.flyout-kaomoji-button {
 		width: $button-width;
+		animation: float-left 500ms calc(var(--i) * 100ms) $ease-out-max backwards;
+	}
+	
+	@keyframes float-left {
+		from {
+			translate: 40px;
+			opacity: 0;
+		}
 	}
 </style>
