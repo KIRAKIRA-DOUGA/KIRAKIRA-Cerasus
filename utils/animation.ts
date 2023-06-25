@@ -73,6 +73,7 @@ export async function animateSize(
 		endReverseSlideIn,
 		startChildTranslate,
 		endChildTranslate,
+		removeChildGlitchFrame,
 		attachAnimations,
 	}: Partial<{
 		/** 显式指定初始高度（可选）。 */
@@ -109,6 +110,8 @@ export async function animateSize(
 		startChildTranslate: Numberish;
 		/** 元素的**唯一**子元素结束位移。 */
 		endChildTranslate: Numberish;
+		/** 对唯一子元素抽掉动画的故障第一帧。 */
+		removeChildGlitchFrame: boolean;
 		/** 动画播放的同时附加其它动画，并使用与之相同的时长与缓动值。 */
 		attachAnimations: [Element, Keyframes][] | false;
 	}> = {},
@@ -150,11 +153,19 @@ export async function animateSize(
 	Object.assign(keyframes[0], startStyle);
 	Object.assign(keyframes[1], endStyle);
 	const animationOptions = { duration, easing };
-	const onlyChild = element.children[0]; // 只取唯一一个子元素。
-	if (onlyChild && (startChildTranslate || endChildTranslate)) onlyChild.animate([
-		startChildTranslate ? { translate: startChildTranslate } : {},
-		endChildTranslate ? { translate: endChildTranslate } : {},
-	], animationOptions);
-	if (attachAnimations) attachAnimations.forEach(group => group[0]?.animate(group[1], animationOptions));
-	return element.animate(keyframes, animationOptions).finished;
+	const result = element.animate(keyframes, animationOptions).finished;
+	if (startChildTranslate || endChildTranslate || attachAnimations) {
+		const onlyChild = element.children[0]; // 只取唯一一个子元素。
+		if (onlyChild && element instanceof HTMLElement && removeChildGlitchFrame) {
+			element.hidden = true;
+			await nextAnimationTick();
+			element.hidden = false;
+		}
+		if (onlyChild && (startChildTranslate || endChildTranslate)) onlyChild.animate([
+			startChildTranslate ? { translate: startChildTranslate } : {},
+			endChildTranslate ? { translate: endChildTranslate } : {},
+		], animationOptions);
+		if (attachAnimations) attachAnimations.forEach(group => group[0]?.animate(group[1], animationOptions));
+	}
+	return result;
 }

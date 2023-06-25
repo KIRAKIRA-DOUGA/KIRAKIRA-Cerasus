@@ -66,20 +66,17 @@
 			font-size: 20px;
 		}
 
-		&:hover {
-			padding-right: 13px;
-			padding-left: 17px;
-			color: c(text-color);
-			background-color: c(hover-color);
-		}
+		@media (any-hover: hover) {
+			&:hover {
+				padding-right: 13px;
+				padding-left: 17px;
+				color: c(text-color);
+				background-color: c(hover-color);
+			}
 
-		&:not(:hover) {
-			transition-duration: 1s;
+			&:not(:hover) {
+				transition-duration: 1s;
+			}
 		}
-
-		/* menu:not(:hover) & {
-			opacity: 0.8;
-			transition-duration: 1s;
-		} */
 	}
 </style>

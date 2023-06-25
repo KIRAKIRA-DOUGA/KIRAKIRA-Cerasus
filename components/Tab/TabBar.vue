@@ -227,8 +227,12 @@
 
 	.indicator {
 		@include oval;
+		@include enable-hardware-3d;
 		$thickness: 3px;
+		$pressed-scale: calc(10px / 16px);
+		$active-item-pressed: ".items:has(.tab-item.active:active:hover)";
 		position: absolute;
+		z-index: 3;
 		flex-shrink: 0;
 		height: $thickness;
 		margin-top: 6px;
@@ -236,6 +240,14 @@
 
 		@container style(--clipped: true) {
 			@include oval(top);
+		}
+
+		#{$active-item-pressed} ~ & {
+			scale: $pressed-scale 1;
+		}
+
+		:comp.vertical > #{$active-item-pressed} ~ & {
+			scale: 1 $pressed-scale;
 		}
 
 		:comp.vertical > & {

@@ -16,19 +16,21 @@
 
 	const showMenu = ref(false);
 	const show = () => {
-		showMenu.value = true;
 		selectedIndexStatic.value = selectedIndex.value;
+		showMenu.value = true;
 	};
-	const setItem = (item: string) => {
+	const setItem = async (item: string) => {
 		selected.value = item;
+		await nextTick();
 		showMenu.value = false;
 	};
 	const getMenuCssVars = (el: Element) => {
 		const { height, menuPadding } = arrayMapObject(["height", "menuPadding"],
 			i => parseFloat(useCssVar(new VariableName(i).cssVar, el as HTMLElement).value));
 		const top = 0;
-		const translateY = -menuPadding - height * selectedIndexStatic.value;
-		return { height, menuPadding, top, translateY };
+		const translateY = -height * selectedIndexStatic.value;
+		const finalHeight = height + 2 * menuPadding;
+		return { height, menuPadding, top, translateY, finalHeight };
 	};
 
 	/**
@@ -38,11 +40,13 @@
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
 	async function onMenuEnter(el: Element, done: () => void) {
-		const { height, top, translateY } = getMenuCssVars(el);
+		const { top, translateY, finalHeight } = getMenuCssVars(el);
 		await animateSize(el, null, {
-			startHeight: height,
+			startHeight: finalHeight,
 			duration: 250,
+			removeChildGlitchFrame: true,
 			easing: eases.easeOutMax,
+			withoutAdjustPadding: "both",
 			startChildTranslate: `0 ${translateY}px`,
 			startStyle: { top: `${top}px` },
 		});
@@ -56,11 +60,12 @@
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
 	async function onMenuLeave(el: Element, done: () => void) {
-		const { height, top, translateY } = getMenuCssVars(el);
+		const { top, translateY, finalHeight } = getMenuCssVars(el);
 		await animateSize(el, null, {
-			endHeight: height,
+			endHeight: finalHeight,
 			duration: 100,
-			easing: eases.easeOutMax,
+			easing: eases.linear,
+			withoutAdjustPadding: "both",
 			endChildTranslate: `0 ${translateY}px`,
 			endStyle: { top: `${top}px` },
 		});
@@ -77,7 +82,7 @@
 <template>
 	<Comp role="combobox" :aria-expanded="showMenu">
 		<div>
-			<div v-ripple class="wrapper" @click="show">
+			<div v-ripple class="wrapper" :tabindex="0" @click="show">
 				<span>{{ selectedContent }}</span>
 				<Icon name="chevron_down" />
 			</div>
@@ -117,7 +122,7 @@
 	:comp {
 		position: relative;
 		
-		> div {
+		> * {
 			--height: #{$normal-height};
 			--menu-padding: #{$menu-padding};
 			
@@ -177,15 +182,19 @@
 	.menu {
 		@include dropdown-flyouts;
 		@include radius-large;
-		@include enable-hardware-3d;
 		position: absolute;
-		top: calc(0px - $menu-padding - v-bind(selectedIndexStatic) * var(--height));
+		top: calc(0px - v-bind(selectedIndexStatic) * var(--height));
 		z-index: 70;
-		width: 100%;
+		width: calc(100% + 2 * $menu-padding);
+		margin: (-$menu-padding) (-$menu-padding);
 		padding: $menu-padding 0;
 		overflow: hidden;
 		color: c(text-color);
 		background-color: c(main-bg);
+			
+		> * {
+			position: relative;
+		}
 
 		.item {
 			@include radius-small;
@@ -194,7 +203,7 @@
 			align-items: center;
 			height: var(--height);
 			margin: 0 $menu-padding;
-			padding: 0 calc($start-indent - $menu-padding);
+			padding: 0 $start-indent;
 			cursor: pointer;
 
 			&:hover {
@@ -208,10 +217,16 @@
 					@include oval;
 					position: absolute;
 					left: 0;
+					z-index: 3;
 					width: 3px;
 					height: 16px;
 					background-color: c(accent);
+					animation: show-indicator 250ms $ease-out-max;
 					content: "";
+				}
+				
+				&:active:hover::before {
+					height: 10px;
 				}
 			}
 		}
@@ -220,10 +235,11 @@
 			@include dropdown-flyouts-unhover;
 			transition: $fallback-transitions, box-shadow 1s, opacity 1s;
 		}
-
-		&.v-enter-from,
-		&.v-leave-to {
-			opacity: 0;
+	}
+	
+	@keyframes show-indicator {
+		from {
+			height: 0;
 		}
 	}
 </style>
