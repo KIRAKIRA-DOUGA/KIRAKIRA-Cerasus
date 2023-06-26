@@ -5,8 +5,6 @@
 </docs>
 
 <script setup lang="ts">
-	import { AnimationItem } from "lottie-web";
-
 	const props = withDefaults(defineProps<{
 		width?: number;
 		height?: number;
@@ -67,7 +65,7 @@
 </script>
 
 <template>
-	<div class="clickIcon">
+	<Comp>
 		<div class="icon-box" :style="{ width: `${width}px`, height: `${height}px` }">
 			<slot name="svg" :data="{ toggle, flag, iconWidth, iconHeight }"></slot>
 			<Lottie
@@ -83,7 +81,7 @@
 				@animCreated="handleAnimation"
 			/>
 		</div>
-	</div>
+	</Comp>
 </template>
 
 <style scoped lang="scss">

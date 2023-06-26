@@ -1,6 +1,7 @@
 import { VTooltipBindingValue } from "plugins/vue/tooltip";
 import { AllowedComponentProps, DirectiveBinding } from "vue";
 import CSSDoodle from "./css-doodle";
+import { AnimationItem } from "lottie-web";
 
 declare module "vue" {
 	/**
@@ -68,6 +69,6 @@ declare global {
 	export type DirectiveEffectHook<D extends Directive, T = void> = (element: DirectiveEffectHookInferElement<D>, binding: DirectiveBinding<DirectiveEffectHookInferBinding<D>>) => T;
 	
 	export { Editor } from "@tiptap/vue-3";
-
+	export { AnimationItem } from "lottie-web";
 	export { ComponentInternalInstance, ConcreteComponent, Directive, Events, MaybeRef, MaybeRefOrGetter, Ref, RendererElement, Slot, StyleValue, CSSProperties, VNode, WritableComputedRef, ShallowRef } from "vue";
 }
