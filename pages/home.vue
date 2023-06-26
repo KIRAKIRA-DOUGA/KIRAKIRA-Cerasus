@@ -10,7 +10,7 @@
 	const pages = getPages(
 		["组件测试页", "/components"],
 		["富文本测试页", "/test-rich-text-editor"],
-		["API 测试页", "/test-form"],
+		["API 测试页", "/test-api"],
 		["动态图标测试页", "/test-lottie"],
 		["搜索", "/search"],
 		["内容", "/hello"],

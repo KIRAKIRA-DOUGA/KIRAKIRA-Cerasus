@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { postData } from "api";
+	import { postData, putData } from "api";
 
 	/**
 	 * 使用者设定档
@@ -125,7 +125,7 @@
 				...(userSettingsInputSettingPageLastEnterUpdate.value ? { settingPageLastEnter: userSettingsInputSettingPageLastEnterUpdate.value } : null),
 			};
 			const saveUserSettingsUrl = "https://rosales.kirakira.moe:4000/02/koa/user/settings/userSettings/update";
-			postData(saveUserSettingsUrl, userSettingsInput).then(result => {
+			putData(saveUserSettingsUrl, userSettingsInput).then(result => {
 				userSettingsUpdateResult.value = result;
 			});
 		} else
@@ -140,7 +140,7 @@
 		<h2>测试首屏服务端渲染</h2>
 		<div>请求 u00001 使用者设定档数据的结果：</div>
 		<pre><code>{{ userSettingsMount }}</code></pre>
-		<div>本页是首屏加载时，useFetch 会在运行 Nuxt 的服务端中发起请求（比如说 vercel.com），您无法在客户端浏览器的控制台中找到这条 API 请求，不妨刷新一下页面试试！</div>
+		<div>本页是首屏加载时，useFetch 会在运行 Nuxt 的服务端中发起请求（比如说 vercel.com），您无法在客户端浏览器的控制台中找到这条 API 请求，不妨现在刷新一下页面试试！</div>
 		<div>本页不是首屏加载时（比如说你在主页点击了 "API 测试页" 按钮进入本页），useFetch 会在用户的客户端中发起请求。这个行为与普通的 Vue3 axios 单页面应用一致，您可以在浏览器中找到 API 请求。</div>
 
 		<h2>查询用户设定档</h2>
