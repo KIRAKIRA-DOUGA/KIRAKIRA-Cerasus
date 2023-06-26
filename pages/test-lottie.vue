@@ -4,7 +4,7 @@
 
 <template>
 	<div class="container">
-		<AnimatedIcon :animationData="visibility" />
+		<AnimatedIcon :animationData="visibility" autoplay loop />
 	</div>
 </template>
 
