@@ -11,6 +11,7 @@
 		["组件测试页", "/components"],
 		["富文本测试页", "/test-rich-text-editor"],
 		["API 测试页", "/test-form"],
+		["动态图标测试页", "/test-lottie"],
 		["搜索", "/search"],
 		["内容", "/hello"],
 		["下一页", "/next"],
