@@ -83,7 +83,7 @@
 	const userSettingsInputBackgroundAnimationInsert = ref(false);
 	const userSettingsInputSettingPageLastEnterInsert = ref("");
 
-	const userSettingsInsertResult = ref();
+	const userSettingsInsertResult = ref({});
 	const insertUserInfo = () => {
 		if (userSettingsInputUuidInsert.value && userSettingsInputSystemStyleInsert.value && userSettingsInputSystemColorInsert.value && userSettingsInputBackgroundAnimationInsert.value && userSettingsInputSettingPageLastEnterInsert.value) {
 			const userSettingsInput: UserSettingsType = {
@@ -108,7 +108,7 @@
 	const userSettingsInputBackgroundAnimationUpdate = ref("0");
 	const userSettingsInputSettingPageLastEnterUpdate = ref("");
 
-	const userSettingsUpdateResult = ref();
+	const userSettingsUpdateResult = ref({});
 	const updateUserInfo = () => {
 		if (userSettingsInputUuidUpdate.value && (userSettingsInputSystemStyleUpdate.value || userSettingsInputSystemColorUpdate.value || (userSettingsInputBackgroundAnimationUpdate.value && userSettingsInputBackgroundAnimationUpdate.value !== "0") || userSettingsInputSettingPageLastEnterUpdate.value)) {
 			let fixedUserSettingsInputBackgroundAnimationUpdate: boolean | undefined;
@@ -170,7 +170,8 @@
 			</div>
 			<Button @click="insertUserInfo">提交</Button>
 		</div>
-		<div>{{ userSettingsInsertResult }}</div>
+		<div>创建结果：</div>
+		<pre><code>{{ userSettingsInsertResult }}</code></pre>
 
 		<h2>更新使用者设定档</h2>
 		<div class="update">
@@ -194,7 +195,8 @@
 			</div>
 			<Button @click="updateUserInfo">更新</Button>
 		</div>
-		<div>{{ userSettingsUpdateResult }}</div>
+		<div>更新结果：</div>
+		<pre><code>{{ userSettingsUpdateResult }}</code></pre>
 
 	</div>
 </template>
