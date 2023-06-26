@@ -25,6 +25,8 @@
 					attrs.ariaCurrentValue = "page";
 				if (props.linkInLink && parentScopeId)
 					attrs[parentScopeId] = "";
+				if (props.blank)
+					attrs.target = "_blank";
 				return attrs;
 			});
 			const href = computed(() => localePath(props.to));
@@ -35,7 +37,7 @@
 		},
 		render() {
 			const slot = this.$slots.default?.();
-			let link = <NuxtLink to={this.href} target={this.blank ? "_blank" : undefined} {...this.attrs}>{slot}</NuxtLink>;
+			let link = <NuxtLink to={this.href} {...this.attrs}>{slot}</NuxtLink>;
 			if (this.linkInLink)
 				link = <object>{link}</object>;
 			return link;

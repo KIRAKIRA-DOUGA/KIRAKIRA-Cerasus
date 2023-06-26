@@ -144,7 +144,7 @@
 			<Comp
 				v-if="shown"
 				ref="flyout"
-				:[scopeId]="true"
+				:[scopeId]="''"
 				:class="{ padding: !noPadding }"
 				:style="locationStyle"
 			>
@@ -160,12 +160,17 @@
 	:comp {
 		@include dropdown-flyouts;
 		@include radius-large;
+		max-width: 100dvw;
 		overflow: hidden;
 		background-color: c(acrylic-bg, 75%);
 		transition: $fallback-transitions, left 0s, top 0s;
 
 		&.padding {
 			padding: $padding;
+		}
+		
+		> :deep(*) {
+			max-width: calc(100dvw - list.nth($padding, 2) * 2);
 		}
 	}
 </style>

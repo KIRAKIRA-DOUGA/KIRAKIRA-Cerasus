@@ -14,6 +14,8 @@
 		uploader: string;
 		/** 视频时长。 */
 		duration?: Duration;
+		/** 在新窗口打开视频？ */
+		blank?: boolean;
 	}>(), {
 		image: testBackground,
 		date: undefined,
@@ -37,7 +39,7 @@
 </script>
 
 <template>
-	<LocaleLink class="thumb-video lite" :to="link">
+	<LocaleLink class="thumb-video lite" :to="link" :blank="blank">
 		<div class="card">
 			<div class="cover-wrapper">
 				<img :src="image" alt="cover" class="cover" />
@@ -55,7 +57,7 @@
 					</div>
 				</div>
 				<div class="line">
-					<LocaleLink class="item uploader" to="components" linkInLink>
+					<LocaleLink class="item uploader" to="components" linkInLink :blank="blank">
 						<Icon name="person" />
 						<div>{{ uploader }}</div>
 					</LocaleLink>

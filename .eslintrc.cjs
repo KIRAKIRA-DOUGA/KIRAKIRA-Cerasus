@@ -138,6 +138,7 @@ module.exports = {
 		"import/no-named-as-default-member": "off", // 某些库在导出成员时用 TS 命名空间欺诈。
 		"n/no-callback-literal": "off", // 这是啥？
 		"unicorn/escape-case": "off", // 暂时禁用，待修复。
+		"unicorn/number-literal-case": "off", // 同上，你真的觉得大写很好看吗？
 		"@typescript-eslint/no-unused-vars": ["warn", { // 非要使用未使用变量，前面加下划线。
 			"argsIgnorePattern": "^_",
 			"varsIgnorePattern": "^_|^props$|^emits$",

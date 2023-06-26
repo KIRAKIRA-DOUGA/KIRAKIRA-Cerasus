@@ -41,10 +41,11 @@
 	 */
 	async function onMenuEnter(el: Element, done: () => void) {
 		const { top, translateY, finalHeight } = getMenuCssVars(el);
+		// TODO: 目前展开动画还是有一点点问题，比如电脑端正常，手机端仍然异常。
 		await animateSize(el, null, {
 			startHeight: finalHeight,
 			duration: 250,
-			removeChildGlitchFrame: true,
+			removeGlitchFrame: true,
 			easing: eases.easeOutMax,
 			withoutAdjustPadding: "both",
 			startChildTranslate: `0 ${translateY}px`,
@@ -111,7 +112,7 @@
 	$small-height: 28px;
 	$large-height: 44px;
 	$start-indent: 12px;
-	
+
 	@layer props {
 		:comp {
 			/// 组合框尺寸，可选的值为：small | normal | large。
@@ -121,15 +122,15 @@
 
 	:comp {
 		position: relative;
-		
+
 		> * {
 			--height: #{$normal-height};
 			--menu-padding: #{$menu-padding};
-			
+
 			@container style(--size: small) {
 				--height: #{$small-height};
 			}
-		
+
 			@container style(--size: large) {
 				--height: #{$large-height};
 			}
@@ -191,7 +192,7 @@
 		overflow: hidden;
 		color: c(text-color);
 		background-color: c(main-bg);
-			
+
 		> * {
 			position: relative;
 		}
@@ -209,10 +210,10 @@
 			&:hover {
 				background-color: c(hover-color);
 			}
-			
+
 			&.active {
 				background-color: c(hover-color);
-				
+
 				&::before {
 					@include oval;
 					position: absolute;
@@ -224,7 +225,7 @@
 					animation: show-indicator 250ms $ease-out-max;
 					content: "";
 				}
-				
+
 				&:active:hover::before {
 					height: 10px;
 				}
@@ -236,7 +237,7 @@
 			transition: $fallback-transitions, box-shadow 1s, opacity 1s;
 		}
 	}
-	
+
 	@keyframes show-indicator {
 		from {
 			height: 0;
