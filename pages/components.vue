@@ -46,7 +46,7 @@
 	const flyoutKaomoji = ref<FlyoutModel>();
 	const showFlyout = (e: MouseEvent, placement?: Placement) => flyout.value = [e, placement];
 	const [DefinePopoverSlot, PopoverSlot] = createReusableTemplate();
-	const comboBoxValue = ref("not");
+	const comboBoxValue = ref("obtuse angle");
 
 	/**
 	 * 单击按钮事件。
@@ -197,20 +197,22 @@
 			<em>所有输入框的内容同时输入属正常现象，因为懒得做三个变量。</em>
 			<hr />
 			<p>他有没有可能是演的，他是不是演的呢？</p>
-			<ComboBox v-model="comboBoxValue" :style="{ '--size': 'small' }">
+			<ComboBox v-for="size in ['small', 'normal', 'large']" :key="size" v-model="comboBoxValue" :style="{ '--size': size }">
 				<ComboBoxItem id="not">不是</ComboBoxItem>
 				<ComboBoxItem id="maybe not">有可能不是</ComboBoxItem>
 				<ComboBoxItem id="obtuse angle">钝角</ComboBoxItem>
-			</ComboBox>
-			<ComboBox v-model="comboBoxValue">
-				<ComboBoxItem id="not">不是</ComboBoxItem>
-				<ComboBoxItem id="maybe not">有可能不是</ComboBoxItem>
-				<ComboBoxItem id="obtuse angle">钝角</ComboBoxItem>
-			</ComboBox>
-			<ComboBox v-model="comboBoxValue" :style="{ '--size': 'large' }">
-				<ComboBoxItem id="not">不是</ComboBoxItem>
-				<ComboBoxItem id="maybe not">有可能不是</ComboBoxItem>
-				<ComboBoxItem id="obtuse angle">钝角</ComboBoxItem>
+				<ComboBoxItem id="sa">สา</ComboBoxItem>
+				<ComboBoxItem id="archosyrinx">肛瘘</ComboBoxItem>
+				<ComboBoxItem id="voice lost">襳襺覛覝襻襼襾謕覧誖誗</ComboBoxItem>
+				<ComboBoxItem id="who ask you">谁问你了</ComboBoxItem>
+				<ComboBoxItem id="select a">选A</ComboBoxItem>
+				<ComboBoxItem id="option 75">选项75</ComboBoxItem>
+				<ComboBoxItem id="blmfy">blmfy</ComboBoxItem>
+				<ComboBoxItem id="A.UV">༼</ComboBoxItem>
+				<ComboBoxItem id="long worm">缠腰龙</ComboBoxItem>
+				<ComboBoxItem id="OV">⤳</ComboBoxItem>
+				<ComboBoxItem id="snap">咔哄呃昵吖</ComboBoxItem>
+				<ComboBoxItem id="eyelid scrub">轮刮眼眶</ComboBoxItem>
 			</ComboBox>
 			<hr />
 			<HeadingComments :count="233" />

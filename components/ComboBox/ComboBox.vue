@@ -10,6 +10,7 @@
 		if (typeof content !== "string") return undefined!;
 		return { content, id: props?.id ?? content };
 	}).filter(item => item) ?? []);
+	const itemsLength = computed(() => items.value.length);
 	const selectedIndex = computed(() => items.value.findIndex(item => item.id === selected.value && selected.value));
 	const selectedContent = computed(() => items.value.find(item => item.id === selected.value)?.content);
 	const selectedIndexStatic = ref(0);
@@ -30,8 +31,15 @@
 		const top = 0;
 		const translateY = -height * selectedIndexStatic.value;
 		const finalHeight = height + 2 * menuPadding;
-		return { height, menuPadding, top, translateY, finalHeight };
+		const clipPathTop = selectedIndexStatic.value;
+		const clipPathBottom = itemsLength.value - 1 - selectedIndexStatic.value;
+		const itemPercent = itemsLength.value ? 100 / itemsLength.value : 0;
+		const clipPathValue = `inset(${itemPercent * clipPathTop}% 0 ${itemPercent * clipPathBottom}%)`;
+		return { height, menuPadding, top, translateY, finalHeight, clipPath: clipPathValue };
 	};
+	const getMenuCard = (el: Element) => el.querySelector<HTMLDivElement>(".menu")!;
+	const getMenuItems = (el: Element) => el.querySelector<HTMLDivElement>(".items")!;
+	const clipPathUnset = { clipPath: "inset(0)" } as const;
 
 	/**
 	 * 在元素被插入到 DOM 之后的下一帧被调用。
@@ -40,16 +48,14 @@
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
 	async function onMenuEnter(el: Element, done: () => void) {
-		const { top, translateY, finalHeight } = getMenuCssVars(el);
-		// TODO: 目前展开动画还是有一点点问题，比如电脑端正常，手机端仍然异常。
-		await animateSize(el, null, {
+		const { top, finalHeight, clipPath } = getMenuCssVars(el);
+		await animateSize(getMenuCard(el), null, {
 			startHeight: finalHeight,
 			duration: 250,
-			removeGlitchFrame: true,
 			easing: eases.easeOutMax,
 			withoutAdjustPadding: "both",
-			startChildTranslate: `0 ${translateY}px`,
 			startStyle: { top: `${top}px` },
+			attachAnimations: [[getMenuItems(el), [{ clipPath }, clipPathUnset]]],
 		});
 		done();
 	}
@@ -61,14 +67,14 @@
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
 	async function onMenuLeave(el: Element, done: () => void) {
-		const { top, translateY, finalHeight } = getMenuCssVars(el);
-		await animateSize(el, null, {
+		const { top, finalHeight, clipPath } = getMenuCssVars(el);
+		await animateSize(getMenuCard(el), null, {
 			endHeight: finalHeight,
 			duration: 100,
 			easing: eases.linear,
 			withoutAdjustPadding: "both",
-			endChildTranslate: `0 ${translateY}px`,
 			endStyle: { top: `${top}px` },
+			attachAnimations: [[getMenuItems(el), [clipPathUnset, { clipPath }]]],
 		});
 		done();
 	}
@@ -83,13 +89,17 @@
 <template>
 	<Comp role="combobox" :aria-expanded="showMenu">
 		<div>
+			<!-- TODO: 缺少字段图标与标签以与输入框样式匹配。注意是整个字段的图标，不是每个项目的图标。 -->
 			<div v-ripple class="wrapper" :tabindex="0" @click="show">
 				<span>{{ selectedContent }}</span>
 				<Icon name="chevron_down" />
 			</div>
 			<Transition :css="false" @enter="onMenuEnter" @leave="onMenuLeave">
-				<div v-if="showMenu" ref="menu" class="menu">
-					<div>
+				<div v-if="showMenu" ref="menu">
+					<div class="menu">
+						<div v-for="item in items" :key="item.id" class="item-shadow"></div>
+					</div>
+					<div class="items">
 						<div
 							v-for="item in items"
 							:key="item.id"
@@ -180,11 +190,15 @@
 		}
 	}
 
+	.menu,
+	.items {
+		top: calc(0px - v-bind(selectedIndexStatic) * var(--height));
+	}
+
 	.menu {
 		@include dropdown-flyouts;
 		@include radius-large;
 		position: absolute;
-		top: calc(0px - v-bind(selectedIndexStatic) * var(--height));
 		z-index: 70;
 		width: calc(100% + 2 * $menu-padding);
 		margin: (-$menu-padding) (-$menu-padding);
@@ -193,9 +207,20 @@
 		color: c(text-color);
 		background-color: c(main-bg);
 
-		> * {
-			position: relative;
+		.item-shadow {
+			height: var(--height);
 		}
+
+		&:not(:hover, :active) {
+			@include dropdown-flyouts-unhover;
+			transition: $fallback-transitions, box-shadow 1s, opacity 1s;
+		}
+	}
+
+	.items {
+		position: absolute;
+		z-index: 71;
+		width: 100%;
 
 		.item {
 			@include radius-small;
@@ -203,7 +228,6 @@
 			display: flex;
 			align-items: center;
 			height: var(--height);
-			margin: 0 $menu-padding;
 			padding: 0 $start-indent;
 			cursor: pointer;
 
@@ -230,11 +254,6 @@
 					height: 10px;
 				}
 			}
-		}
-
-		&:not(:hover, :active) {
-			@include dropdown-flyouts-unhover;
-			transition: $fallback-transitions, box-shadow 1s, opacity 1s;
 		}
 	}
 
