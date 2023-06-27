@@ -20,8 +20,8 @@ export default defineNuxtPlugin(nuxt => {
 	const elementBinding = new Map<HTMLElement, { value: VTooltipBindingValueNoPlain; symbol: symbol }>();
 	const createEvent = (element: HTMLElement) => {
 		const binding = elementBinding.get(element)!;
-		const value = binding.value;
-		return { ...value, element } as TooltipEvent;
+		const { value, symbol } = binding;
+		return { ...value, element, symbol } as TooltipEvent;
 	};
 	const isPlacement = (arg?: string): arg is Placement => ["top", "right", "bottom", "left", "x", "y"].includes(arg!);
 	const setElementBinding = (element: HTMLElement, _value: VTooltipBindingValue, arg?: string) => {
