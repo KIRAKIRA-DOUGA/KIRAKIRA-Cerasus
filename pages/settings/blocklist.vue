@@ -8,13 +8,44 @@
 	<section>
 		<SettingsChipItem icon="placeholder" details="添加日期：XXXX-XX-XX">被屏蔽的人</SettingsChipItem>
 	</section>
+
 	<Subheader icon="palette">隐藏</Subheader>
 	<span>不想看到的人，他将会从你的视角消失（除非你进入他的个人空间）</span>
 	<section>
-		<SettingsChipItem icon="placeholder" details="添加日期：XXXX-XX-XX">被屏蔽的人</SettingsChipItem>
+		<SettingsChipItem icon="placeholder" details="添加日期：XXXX-XX-XX">被隐藏的人</SettingsChipItem>
 	</section>
 	<div class="add">
 		<TextBox v-model="add" icon="person" />
+		<Button icon="add">添加</Button>
+	</div>
+
+	<Subheader icon="palette">标签</Subheader>
+	<span>不想看到的稿件标签匹配</span>
+	<section>
+		<SettingsChipItem icon="placeholder" details="添加日期：XXXX-XX-XX">被隐藏的标签</SettingsChipItem>
+	</section>
+	<div class="add">
+		<TextBox v-model="add" icon="placeholder" />
+		<Button icon="add">添加</Button>
+	</div>
+
+	<Subheader icon="palette">关键词</Subheader>
+	<span>不想看到的稿件关键词匹配</span>
+	<section>
+		<SettingsChipItem icon="placeholder" details="添加日期：XXXX-XX-XX">被隐藏的关键词</SettingsChipItem>
+	</section>
+	<div class="add">
+		<TextBox v-model="add" icon="placeholder" />
+		<Button icon="add">添加</Button>
+	</div>
+
+	<Subheader icon="palette">正则表达式</Subheader>
+	<span>不想看到的稿件关键词正则表达式匹配</span>
+	<section>
+		<SettingsChipItem icon="placeholder" details="添加日期：XXXX-XX-XX">被隐藏的正则表达式</SettingsChipItem>
+	</section>
+	<div class="add">
+		<TextBox v-model="add" icon="placeholder" />
 		<Button icon="add">添加</Button>
 	</div>
 </template>
@@ -29,7 +60,7 @@
 		gap: 8px;
 
 		.text-box {
-			width: 200px;
+			width: 100%;
 		}
 	}
 </style>

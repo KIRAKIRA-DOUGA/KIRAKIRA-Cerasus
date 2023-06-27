@@ -83,12 +83,14 @@
 	}
 
 	main {
-		max-width: 1920px;
-		margin: 0 auto;
+		transition: none;
+		
+		// max-width: 1920px;
+		// margin: 0 auto;
 
-		&:has(> .settings) {
-			max-width: unset;
-		}
+		// &:has(> .settings) {
+		// 	max-width: unset;
+		// }
 	}
 
 	.sidebar {

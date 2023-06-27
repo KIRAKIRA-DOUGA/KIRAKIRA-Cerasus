@@ -101,6 +101,7 @@
 		position: relative;
 		min-height: 100dvh;
 		background-color: c(gray-20);
+		transition: none;
 	}
 
 	nav {
@@ -188,7 +189,7 @@
 		width: 100%;
 		min-height: 100dvh;
 		background-color: c(main-bg);
-		transition: $fallback-transitions, width 0s, height 0s;
+		transition: $fallback-transitions, width 0s, height 0s, min-height 0s;
 
 		> .content {
 			position: relative;
