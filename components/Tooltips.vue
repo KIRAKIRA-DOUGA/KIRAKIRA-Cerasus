@@ -107,6 +107,10 @@
 			overflow-wrap: break-word; // word-wrap 别名，CSS3 属性，都写上，万一以后 word-wrap 去掉了呢。
 			background-color: c(acrylic-bg, 75%);
 		}
+		
+		&.v-enter-active {
+			transition-duration: 0s; // 开始显示工具提示时不要过渡动画，否则可以看到明显的背景高斯模糊突然发生变化。
+		}
 
 		&.v-enter-from,
 		&.v-leave-to {

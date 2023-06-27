@@ -239,14 +239,14 @@
 			<TabBar v-model="selectedTab">
 				<TabItem id="all">{{ t.all }}</TabItem>
 				<TabItem id="video">{{ t.video }}</TabItem>
-				<TabItem id="images">{{ t.images }}</TabItem>
+				<TabItem id="images">{{ t.image }}</TabItem>
 				<TabItem id="long" badge="角标">测试很长很长很长</TabItem>
 				<TabItem id="short">短</TabItem>
 			</TabBar>
 			<TabBar v-model="selectedTab" vertical>
 				<TabItem id="all">{{ t.all }}</TabItem>
 				<TabItem id="video">{{ t.video }}</TabItem>
-				<TabItem id="images">{{ t.images }}</TabItem>
+				<TabItem id="images">{{ t.image }}</TabItem>
 				<TabItem id="long" badge="角标">测试很长很长很长</TabItem>
 				<TabItem id="short">短</TabItem>
 			</TabBar>

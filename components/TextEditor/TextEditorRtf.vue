@@ -25,7 +25,12 @@
 	const rtfEditor = refComp();
 	const flyoutKaomoji = ref<FlyoutModel>();
 	const flyoutKaomojiMini = ref<FlyoutModel>();
-	const [DefineToolItem, ToolItem] = createReusableTemplate<{ active?: ActiveType; icon?: string; onClick?: (e: MouseEvent) => void }>();
+	const [DefineToolItem, ToolItem] = createReusableTemplate<{
+		tooltip?: string;
+		active?: ActiveType;
+		icon?: string;
+		onClick?: (e: MouseEvent) => void;
+	}>();
 
 	/** 切换文本加粗。 */
 	const toggleBold = () => { editor.value?.chain().focus().toggleBold().run(); };
@@ -86,9 +91,10 @@
 </script>
 
 <template>
-	<DefineToolItem v-slot="{ active, icon, onClick, $slots }">
+	<DefineToolItem v-slot="{ tooltip, active, icon, onClick, $slots }">
 		<button
 			v-ripple
+			v-tooltip:top="tooltip"
 			:class="{ active: isActive(active) }"
 			@click="onClick"
 		>
@@ -102,13 +108,13 @@
 
 	<Comp ref="rtfEditor" @keyup.stop.ctrl.m="showRecentKaomojis">
 		<div class="toolbar">
-			<ToolItem icon="bold" active="bold" @click="toggleBold" />
-			<ToolItem icon="italic" active="italic" @click="toggleItalic" />
-			<ToolItem icon="underline" active="underline" @click="toggleUnderline" />
-			<ToolItem icon="strikethrough" active="strike" @click="toggleStrike" />
-			<ToolItem icon="at" @click="showAtList" />
-			<ToolItem icon="kaomoji" :active="!!flyoutKaomoji" @click="e => flyoutKaomoji = [e, 'y']" />
-			<ToolItem icon="photo" @click="addVueComponents" />
+			<ToolItem :tooltip="t.bold" icon="bold" active="bold" @click="toggleBold" />
+			<ToolItem :tooltip="t.italic" icon="italic" active="italic" @click="toggleItalic" />
+			<ToolItem :tooltip="t.underline" icon="underline" active="underline" @click="toggleUnderline" />
+			<ToolItem :tooltip="t.strikethrough" icon="strikethrough" active="strike" @click="toggleStrike" />
+			<ToolItem :tooltip="t.at_person" icon="at" @click="showAtList" />
+			<ToolItem :tooltip="t.kaomoji" icon="kaomoji" :active="!!flyoutKaomoji" @click="e => flyoutKaomoji = [e, 'y']" />
+			<ToolItem :tooltip="t.image" icon="photo" @click="addVueComponents" />
 		</div>
 		<ClientOnly>
 			<EditorContent :editor="editor" />

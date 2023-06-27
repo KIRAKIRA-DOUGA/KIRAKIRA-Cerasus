@@ -48,22 +48,22 @@
 	<Comp>
 		<div class="top">
 			<div class="info">
-				<CountItem icon="play" :value="counts.play">播放</CountItem>
-				<CountItem icon="thumb_up" :value="counts.rating" :class="{ dislike: counts.rating < 0 }">评分</CountItem>
-				<CountItem icon="star" :value="counts.star">收藏</CountItem>
-				<CountItem icon="play" :value="counts.danmaku">弹幕</CountItem>
+				<CountItem icon="play" :value="counts.play">{{ t.play }}</CountItem>
+				<CountItem icon="thumb_up" :value="counts.rating" :class="{ dislike: counts.rating < 0 }">{{ t.rating }}</CountItem>
+				<CountItem icon="star" :value="counts.star">{{ t.favorite_verb }}</CountItem>
+				<CountItem icon="play" :value="counts.danmaku">{{ t.danmaku }}</CountItem>
 				<div class="watching">
 					<span class="watching-number">10</span>
 					<span class="watching-description">人正在看</span>
 				</div>
 			</div>
 			<div class="buttons">
-				<SoftButton v-tooltip:bottom="'加分'" icon="thumb_up" class="button-like" @click="counts.rating++" />
-				<SoftButton v-tooltip:bottom="'减分'" icon="thumb_down" class="button-dislike" @click="counts.rating--" />
-				<SoftButton v-tooltip:bottom="'收藏'" icon="star" class="button-star" @click="favorite" />
-				<SoftButton v-tooltip:bottom="'分享'" icon="share" class="button-share" @click="share" />
-				<SoftButton v-tooltip:bottom="'弹幕历史'" icon="history" class="button-history" />
-				<SoftButton v-tooltip:bottom="'设置'" icon="settings" class="button-settings" />
+				<SoftButton v-tooltip:bottom="t.bonus_point" icon="thumb_up" class="button-like" @click="counts.rating++" />
+				<SoftButton v-tooltip:bottom="t.minus_point" icon="thumb_down" class="button-dislike" @click="counts.rating--" />
+				<SoftButton v-tooltip:bottom="t.favorite_verb" icon="star" class="button-star" @click="favorite" />
+				<SoftButton v-tooltip:bottom="t.share" icon="share" class="button-share" @click="share" />
+				<SoftButton v-tooltip:bottom="t.danmaku_history" icon="history" class="button-history" />
+				<SoftButton v-tooltip:bottom="t.settings" icon="settings" class="button-settings" />
 			</div>
 		</div>
 		<PlayerVideoPanelDanmakuList />
