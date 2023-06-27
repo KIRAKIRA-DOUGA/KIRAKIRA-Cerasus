@@ -20,6 +20,10 @@
 </template>
 
 <style scoped lang="scss">
+	span {
+		color: c(icon-color);
+	}
+
 	.add {
 		display: flex;
 		gap: 8px;

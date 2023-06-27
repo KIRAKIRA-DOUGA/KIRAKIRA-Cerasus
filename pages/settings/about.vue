@@ -39,7 +39,7 @@
 	<LogoText />
 	<p class="slogan"><span>一个可爱的视频网站，</span><span><b>献给可爱的你！</b></span></p>
 
-	<Subheader icon="placeholder">项目地址</Subheader>
+	<Subheader icon="link">项目地址</Subheader>
 	<section>
 		<SettingsChipItem
 			v-for="repo in repositories"
@@ -51,7 +51,7 @@
 		>{{ repo.name }}</SettingsChipItem>
 	</section>
 
-	<Subheader icon="placeholder">创作团队</Subheader>
+	<Subheader icon="people">创作团队</Subheader>
 	<section>
 		<SettingsChipItem
 			v-for="staff in team"
@@ -63,7 +63,7 @@
 		>{{ staff.name }}</SettingsChipItem>
 	</section>
 
-	<Subheader icon="placeholder">使用技术</Subheader>
+	<Subheader icon="build">使用技术</Subheader>
 	<section>
 		<SettingsChipItem
 			v-for="tech in technologies"
