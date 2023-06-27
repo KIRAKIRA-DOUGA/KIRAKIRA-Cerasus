@@ -34,12 +34,12 @@
 		const clipPathTop = selectedIndexStatic.value;
 		const clipPathBottom = itemsLength.value - 1 - selectedIndexStatic.value;
 		const itemPercent = itemsLength.value ? 100 / itemsLength.value : 0;
-		const clipPathValue = `inset(${itemPercent * clipPathTop}% 0 ${itemPercent * clipPathBottom}%)`;
+		const clipPathValue = `inset(${itemPercent * clipPathTop}% 0 ${itemPercent * clipPathBottom}% round 4px)`;
 		return { height, menuPadding, top, translateY, finalHeight, clipPath: clipPathValue };
 	};
 	const getMenuCard = (el: Element) => el.querySelector<HTMLDivElement>(".menu")!;
 	const getMenuItems = (el: Element) => el.querySelector<HTMLDivElement>(".items")!;
-	const clipPathUnset = { clipPath: "inset(0)" } as const;
+	const clipPathUnset = { clipPath: "inset(0 round 4px)" } as const;
 
 	/**
 	 * 在元素被插入到 DOM 之后的下一帧被调用。
