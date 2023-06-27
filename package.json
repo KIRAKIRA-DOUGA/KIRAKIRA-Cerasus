@@ -95,7 +95,8 @@
 		"mitt": "^3.0.0",
 		"nuxt-icons": "^3.2.1",
 		"pinia": "^2.1.3",
-		"vue-audio-visual": "^3.0.3"
+		"vue-audio-visual": "^3.0.3",
+		"vue-virtual-scroll-list": "^2.3.5"
 	},
 	"keywords": [
 		"kirakira",
