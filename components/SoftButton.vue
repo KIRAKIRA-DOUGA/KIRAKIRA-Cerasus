@@ -4,6 +4,10 @@
 	const props = withDefaults(defineProps<{
 		/** 图标。 */
 		icon?: string;
+		/** 动态图标。 */
+		animatedIcon?: string;
+		/** 动态图标当前状态。 */
+		animatedState?: string;
 		/** 文本。 */
 		text?: Readable;
 		/** 是否仅显示图标不可点击。 */
@@ -18,6 +22,8 @@
 		active?: boolean;
 	}>(), {
 		icon: undefined,
+		animatedIcon: undefined,
+		animatedState: undefined,
 		text: undefined,
 		appearance: "default",
 		href: undefined,
@@ -28,6 +34,13 @@
 	}>();
 
 	const appearance = computed(() => props.appearance === "default" ? "" : props.appearance);
+	const state = ref<AnimatedIconState>([props.animatedState, false, 0]);
+	const changeState = (e: "pressed" | "lifted") => state.value = [[props.animatedState, e].filter(i => i).join(" ")];
+	const wrapper = ref<HTMLButtonElement/*  | InstanceType<typeof LocaleLink> */>();
+
+	usePressed(wrapper, () => changeState("pressed"), () => changeState("lifted"));
+	watch(() => props.animatedState, animatedState => state.value = [animatedState]);
+
 	/**
 	 * 当组件状态是按钮或链接时，各自多余的 Attr。
 	 */
@@ -45,6 +58,7 @@
 	<Comp :class="[appearance]" role="button" :aria-label="icon">
 		<component
 			:is="href ? LocaleLink : 'button'"
+			ref="wrapper"
 			v-ripple
 			:tabindex="nonclickable || nonfocusable ? -1 : ''"
 			:disabled="nonclickable"
@@ -53,6 +67,7 @@
 			@click="(e: MouseEvent) => emits('click', e)"
 		>
 			<Icon v-if="icon" :name="icon" />
+			<AnimatedIcon v-if="animatedIcon" :name="animatedIcon" :state="state" />
 			<span v-if="text"><span>{{ text }}</span></span>
 		</component>
 	</Comp>
@@ -77,7 +92,8 @@
 		}
 	}
 
-	.icon {
+	.icon,
+	.animated-icon {
 		font-size: var(--icon-size);
 	}
 

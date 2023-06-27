@@ -9,6 +9,9 @@ dist
 .output
 .gen
 
+# After Effects
+Adobe After Effects 自动保存
+
 # Node dependencies
 node_modules
 

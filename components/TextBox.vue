@@ -211,13 +211,22 @@
 		interface Props {
 			shown?: boolean;
 			onClick?: (payload: MouseEvent) => void;
-			icon: string;
+			icon?: string;
+			animatedIcon?: string;
+			animatedState?: string;
 		}
 		return (props: Props) => (
 			<Transition css={false} onEnter={onAfterIconEnter} onLeave={onAfterIconLeave}>
 				{
 					props.shown &&
-					<SoftButton icon={props.icon} nonclickable={!props.onClick} appearance="textbox-aftericon" onClick={props.onClick} />
+					<SoftButton
+						icon={props.icon}
+						animatedIcon={props.animatedIcon}
+						animatedState={props.animatedState}
+						nonclickable={!props.onClick}
+						appearance="textbox-aftericon"
+						onClick={props.onClick}
+					/>
 				}
 			</Transition>
 		);
@@ -254,9 +263,22 @@
 				/>
 				<label>{{ placeholder }}</label>
 				<Fragment class="after-icons">
-					<AfterIcon :shown="showClearAll" icon="close" @click="clearAll" />
-					<AfterIcon :shown="props.type === 'password'" :icon="showPassword ? 'visibility' : 'visibility_off'" @click="toggleShowPassword" />
-					<AfterIcon v-tooltip:y="input?.validationMessage || undefined" :shown="invalid" icon="error" />
+					<AfterIcon
+						:shown="showClearAll"
+						icon="close"
+						@click="clearAll"
+					/>
+					<AfterIcon
+						:shown="props.type === 'password'"
+						animatedIcon="visibility"
+						:animatedState="showPassword ? 'visible' : 'invisible'"
+						@click="toggleShowPassword"
+					/>
+					<AfterIcon
+						v-tooltip:y="input?.validationMessage || undefined"
+						:shown="invalid"
+						icon="error"
+					/>
 				</Fragment>
 			</div>
 			<div class="stripe large-stripe"></div>

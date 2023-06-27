@@ -1,6 +1,4 @@
 <script setup lang="ts">
-	import visibility from "assets/lotties/visibility.json";
-
 	const visible = ref(false);
 	const visibleText = computed(() => visible.value ? "visible" : "invisible");
 	const state = ref<AnimatedIconState>([visibleText.value, false, 0]);
@@ -16,7 +14,7 @@
 <template>
 	<div class="container">
 		<AnimatedIcon
-			:animationData="visibility"
+			name="visibility"
 			:state="state"
 			@press="state = [`${visibleText} pressed`]"
 			@lift="state = [`${visibleText} lifted`]"
@@ -27,6 +25,7 @@
 
 <style scoped lang="scss">
 	.animated-icon {
+		color: c(accent);
 		font-size: 300px;
 	}
 </style>

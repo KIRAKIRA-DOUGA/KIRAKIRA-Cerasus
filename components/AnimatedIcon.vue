@@ -10,8 +10,8 @@
 		loop?: boolean;
 		/** 自动播放？ */
 		autoplay?: boolean;
-		/** 动画数据 JSON。 */
-		animationData: object;
+		/** 动画数据 JSON 或其文件名。 */
+		name: object | string;
 		/** 隐藏？ */
 		hidden?: boolean;
 		/** 播放速度。 */
@@ -32,20 +32,39 @@
 		lift: [anim?: AnimationItem];
 	}>();
 
+	const animationData = ref<object>();
 	const anim = ref<AnimationItem>();
 	const iconBox = ref<HTMLDivElement>();
-	const isPointerDown = ref(false);
-	const isPointerEnter = ref(false);
 
 	watch(() => props.speed, () => onSpeedChange());
 	watch(() => props.state, () => onStateChange());
 
 	/**
+	 * 获取以文件名形式的图标。
+	 */
+	async function getIcon() {
+		if (typeof props.name !== "string") {
+			animationData.value = props.name;
+			return;
+		}
+		try {
+			const iconsImport = import.meta.glob<string>("assets/lotties/**/**.json", {
+				as: "raw",
+				eager: false,
+			});
+			const rawIcon = await iconsImport[`/assets/lotties/${props.name}.json`]();
+			animationData.value = JSON.parse(rawIcon);
+		} catch (e) {
+			// eslint-disable-next-line no-console
+			console.error(`Lottie file '${props.name}' doesn't exist in 'assets/lotties'`, e);
+		}
+	}
+	
+	/**
 	 * 点击图标交互事件。
 	 */
 	function onClick() {
 		if (!anim.value) return;
-		isPointerDown.value = false;
 		emits("click", anim.value);
 	}
 	
@@ -117,58 +136,14 @@
 		emits("init", animated);
 	}
 
-	useEventListener(iconBox, "animationstart", e => {
-		if (!anim.value/*  || isInitInsteadOfLift.value */) return;
-		if (e.animationName.startsWith("press")) emits("press", anim.value);
-		else if (e.animationName.startsWith("lift")) emits("lift", anim.value);
-	});
-
-	/**
-	 * 指针按下事件。
-	 * @param e - 指针事件。
-	 */
-	function onPointerDown(e: PointerEvent) {
-		const div = e.currentTarget as HTMLDivElement;
-		emits("press", anim.value);
-		isPointerDown.value = true;
-		isPointerEnter.value = true;
-		window.addEventListener("pointerup", onPointerUp);
-		div.addEventListener("pointerleave", onPointerLeave);
-	}
-
-	/**
-	 * 指针进入事件。
-	 * @param e - 指针事件。
-	 */
-	function onPointerEnter(e: PointerEvent) {
-		if (isPointerDown.value)
-			onPointerDown(e);
-	}
-
-	/**
-	 * 指针松开事件。
-	 * @param e - 指针事件。
-	 */
-	function onPointerUp(e: PointerEvent) {
-		isPointerDown.value = false;
-		onPointerLeave(e);
-		window.removeEventListener("pointerup", onPointerUp);
-	}
-
-	/**
-	 * 指针离开事件。
-	 * @param _e - 指针事件。
-	 */
-	function onPointerLeave(_e: PointerEvent) {
-		if (isPointerEnter.value)
-			emits("lift", anim.value);
-		isPointerEnter.value = false;
-		iconBox.value?.removeEventListener("pointerleave", onPointerLeave);
-	}
+	usePressed(iconBox, () => emits("press", anim.value), () => emits("lift", anim.value));
 
 	defineExpose({
 		play, pause, stop,
 	});
+
+	await getIcon();
+	watchEffect(getIcon);
 </script>
 
 <template>
@@ -177,14 +152,12 @@
 			ref="iconBox"
 			class="icon-box"
 			@click="onClick"
-			@pointerdown="onPointerDown"
-			@pointerenter="onPointerEnter"
 		>
 			<Lottie
 				:class="{ filled }"
 				:loop="loop"
 				:autoplay="autoplay"
-				:animationData="animationData"
+				:animationData="animationData!"
 				:hidden="hidden"
 				@animCreated="onAnimationCreated"
 			/>
@@ -208,7 +181,7 @@
 			cursor: pointer;
 			
 			&:not(.filled) :deep(*) {
-				fill: c(accent);
+				fill: currentColor;
 			}
 		}
 	}

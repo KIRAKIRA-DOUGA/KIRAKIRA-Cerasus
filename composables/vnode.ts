@@ -100,3 +100,13 @@ export function withOneWayProp<T>(model: Ref<T | undefined>, oneWayProp: TypeOrR
 	});
 	return result;
 }
+
+/**
+ * 从可能是 Vue 组件中获取真实 DOM。
+ * @param el - 组件或元素的引用。
+ * @returns 真实 DOM。
+ */
+export function getElFromComponentInstance(el: MaybeRef<HTMLElement | ComponentPublicInstance | undefined>) {
+	el = toValue(el);
+	return !el ? undefined : "$el" in el ? el.$el as HTMLElement : el;
+}
