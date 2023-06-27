@@ -39,7 +39,7 @@
 				bottom: 0;
 				width: 100%;
 				height: 100%;
-				background: linear-gradient(transparent 0%, transparent 95%, c(black, 33%) 100%);
+				background: linear-gradient(transparent 0%, transparent 95%, c(black, 25%) 100%);
 				opacity: 0.1;
 			}
 
@@ -48,7 +48,7 @@
 				height: 0;
 
 				> .shadow {
-					background: linear-gradient(c(black, 33%) 80%, c(black, 80%));
+					background: linear-gradient(transparent 0%, transparent 30%, c(black, 5%) 100%);
 					opacity: 1;
 				}
 			}
