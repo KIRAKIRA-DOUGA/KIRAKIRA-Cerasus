@@ -4,6 +4,11 @@ export namespace FlyoutModelNS {
 	export type Object = { target: Target; placement?: Placement; offset?: number };
 }
 
+namespace AnimatedIconStateNS {
+	export type Tuple = [marker?: string, loop?: boolean, speed?: number];
+	export type Object = { marker?: string; loop?: boolean; speed?: number };
+}
+
 /**
  * 在此处声明各组件或函数等希望全局使用的类型名称，其名称应尽可能复杂以规避重名。有必要时可使用命名空间。
  */
@@ -23,6 +28,7 @@ declare global {
 
 	type FlyoutModel = FlyoutModelNS.Tuple | FlyoutModelNS.Object;
 	type MenuModel = MouseEvent | PointerEvent | null;
+	type AnimatedIconState = AnimatedIconStateNS.Tuple | AnimatedIconStateNS.Object;
 
 	/**
 	 * 使用 `role` 可以增强组件的可读性和语义化。值得注意的是这个属性是枚举而并非任意填写的。

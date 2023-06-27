@@ -1,25 +1,15 @@
 <script setup lang="ts">
 	import lottie, { AnimationItem } from "lottie-web";
 
-	const props = withDefaults(defineProps<{
+	const props = defineProps<{
 		loop?: boolean;
 		autoplay?: boolean;
 		animationData: object;
-		height?: number;
-		width?: number;
-	}>(), {
-		height: 100,
-		width: 100,
-	});
+	}>();
 
 	const emits = defineEmits<{
 		animCreated: [anim: AnimationItem];
 	}>();
-
-	const style = computed(() => ({
-		width: props.width ? `${props.width}px` : "100%",
-		height: props.height ? `${props.height}px` : "100%",
-	}));
 
 	const anim = ref<AnimationItem>();
 	const lavContainer = ref<HTMLDivElement>();
@@ -42,12 +32,14 @@
 </script>
 
 <template>
-	<div ref="lavContainer" class="lav-container" :style="style"></div>
+	<div ref="lavContainer" class="lav-container lottie"></div>
 </template>
 
 <style scoped lang="scss">
-	.lav-container,
-	.lav-container :deep(*) {
-		transition: none;
+	.lav-container {
+		&,
+		:deep(*) {
+			transition: none;
+		}
 	}
 </style>
