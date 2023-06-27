@@ -4,7 +4,7 @@
 	const visible = ref(false);
 	const visibleText = computed(() => visible.value ? "visible" : "invisible");
 	const state = ref<AnimatedIconState>([visibleText.value, false, 0]);
-	// ['visible pressed', 'visible unpressed', 'invisible', 'invisible pressed', 'invisible unpressed', 'visible']
+	// ['visible pressed', 'visible lifted', 'invisible', 'invisible pressed', 'invisible lifted', 'visible']
 	const onClick = () => {
 		visible.value = !visible.value;
 		state.value = [visibleText.value];
@@ -19,7 +19,7 @@
 			:animationData="visibility"
 			:state="state"
 			@press="state = [`${visibleText} pressed`]"
-			@lift="state = [`${visibleText} unpressed`]"
+			@lift="state = [`${visibleText} lifted`]"
 			@click="onClick"
 		/>
 	</div>

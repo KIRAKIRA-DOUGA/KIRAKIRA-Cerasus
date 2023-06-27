@@ -18,6 +18,8 @@
 		speed?: number;
 		/** 状态信息。参数依次为：标记、循环、速度。 */
 		state?: AnimatedIconState;
+		/** 是否保持图标本身的颜色。 */
+		filled?: boolean;
 	}>(), {
 		speed: 1,
 		state: () => [],
@@ -179,6 +181,7 @@
 			@pointerenter="onPointerEnter"
 		>
 			<Lottie
+				:class="{ filled }"
 				:loop="loop"
 				:autoplay="autoplay"
 				:animationData="animationData"
@@ -204,7 +207,7 @@
 			@include square(1em);
 			cursor: pointer;
 			
-			:deep(*) {
+			&:not(.filled) :deep(*) {
 				fill: c(accent);
 			}
 		}
