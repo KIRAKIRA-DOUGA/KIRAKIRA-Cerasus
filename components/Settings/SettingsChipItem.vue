@@ -10,6 +10,8 @@
 		details?: Readable;
 		/** 尾随操作图标。 */
 		trailingIcon?: string;
+		/** 尾随操作图标单击事件。 */
+		onTrailingIconClick?: () => void;
 		/** 点击链接。在域名未完全确定前目前只能支持外链，如内链需要额外的自动检测。 */
 		href?: string;
 	}>();
@@ -28,7 +30,10 @@
 				</div>
 				<div v-if="details" class="details">{{ details }}</div>
 			</div>
-			<Icon v-if="trailingIcon" class="trailing-icon" :name="trailingIcon" />
+			<template v-if="trailingIcon">
+				<Icon v-if="!onTrailingIconClick" class="trailing-icon" :name="trailingIcon" />
+				<SoftButton v-else :icon="trailingIcon" class="trailing-icon" @click.stop="onTrailingIconClick" />
+			</template>
 			<a v-if="href" draggable="false" :href="href" target="_blank" class="link lite"></a>
 		</div>
 	</Comp>
@@ -93,6 +98,10 @@
 		.trailing-icon {
 			color: c(icon-color);
 			font-size: 24px;
+			
+			&.soft-button {
+				margin-right: -8px;
+			}
 		}
 
 		.link {

@@ -101,7 +101,7 @@
 		position: relative;
 		min-height: 100dvh;
 		background-color: c(gray-20);
-		transition: none;
+		transition: $fallback-transitions, width 0s, height 0s, min-height 0s;
 	}
 
 	nav {
