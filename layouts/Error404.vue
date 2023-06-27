@@ -148,10 +148,7 @@
 		&::before {
 			@include round-large;
 			position: absolute;
-			top: 0;
-			right: 0;
-			bottom: 0;
-			left: 0;
+			inset: 0;
 			width: 100%;
 			padding: 2px;
 			background: linear-gradient(90deg, #e2e2e2 0%, #e2e2e2 25%, #00dc82 50%, #36e4da 75%, #0047e1 100%);
