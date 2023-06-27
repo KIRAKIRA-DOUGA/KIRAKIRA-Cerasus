@@ -26,7 +26,8 @@
 		emits("animCreated", anim.value);
 	});
 
-	onUnmounted(() => {
+	onUnmounted(async () => {
+		await delay(1000); // 等待界面过渡动画时间。
 		anim.value && anim.value.destroy();
 	});
 </script>
