@@ -17,7 +17,7 @@ export type TooltipEvent = VTooltipBindingValueNoPlain & {
 
 export default defineNuxtPlugin(nuxt => {
 	type D = Directive<HTMLElement, VTooltipBindingValue>;
-	const elementBinding = new Map<HTMLElement, { value: VTooltipBindingValueNoPlain; symbol: symbol }>();
+	const elementBinding = new WeakMap<HTMLElement, { value: VTooltipBindingValueNoPlain; symbol: symbol }>();
 	const createEvent = (element: HTMLElement) => {
 		const binding = elementBinding.get(element)!;
 		const { value, symbol } = binding;

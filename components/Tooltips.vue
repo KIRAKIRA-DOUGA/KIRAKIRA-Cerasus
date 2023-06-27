@@ -55,9 +55,8 @@
 	});
 
 	useListen("app:refreshTooltip", map => {
-		const symbols = Array.from(map.values(), value => value.symbol);
 		for (let i = tooltipList.length - 1; i >= 0; i--)
-			if (!symbols.includes(tooltipList[i].symbol))
+			if (!map.has(tooltipList[i].element))
 				arrayRemoveAt(tooltipList, i);
 	});
 </script>

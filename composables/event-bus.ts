@@ -9,7 +9,7 @@ type ApplicationEvents = {
 	"app:showTooltip": TooltipEvent;
 	"app:hideTooltip": HTMLElement;
 	"app:updateTooltip": TooltipEvent;
-	"app:refreshTooltip": Map<HTMLElement, { value: VTooltipBindingValue; symbol: symbol }>;
+	"app:refreshTooltip": WeakMap<HTMLElement, { value: VTooltipBindingValue; symbol: symbol }>;
 	"user:login": boolean;
 };
 
