@@ -83,7 +83,7 @@
 	const userSettingsInputBackgroundAnimationInsert = ref(false);
 	const userSettingsInputSettingPageLastEnterInsert = ref("");
 
-	const userSettingsInsertResult = ref({});
+	const userSettingsInsertResult = ref<object>({});
 	const insertUserInfo = () => {
 		if (userSettingsInputUuidInsert.value && userSettingsInputSystemStyleInsert.value && userSettingsInputSystemColorInsert.value && userSettingsInputBackgroundAnimationInsert.value && userSettingsInputSettingPageLastEnterInsert.value) {
 			const userSettingsInput: UserSettingsType = {
@@ -108,7 +108,7 @@
 	const userSettingsInputBackgroundAnimationUpdate = ref("0");
 	const userSettingsInputSettingPageLastEnterUpdate = ref("");
 
-	const userSettingsUpdateResult = ref({});
+	const userSettingsUpdateResult = ref<object>({});
 	const updateUserInfo = () => {
 		if (userSettingsInputUuidUpdate.value && (userSettingsInputSystemStyleUpdate.value || userSettingsInputSystemColorUpdate.value || (userSettingsInputBackgroundAnimationUpdate.value && userSettingsInputBackgroundAnimationUpdate.value !== "0") || userSettingsInputSettingPageLastEnterUpdate.value)) {
 			let fixedUserSettingsInputBackgroundAnimationUpdate: boolean | undefined;
