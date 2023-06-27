@@ -1,4 +1,11 @@
 <script setup lang="ts">
+	const props = withDefaults(defineProps<{
+		/** 内容占位符，当选中的一项不是任何一项有效的标识符时显示。 */
+		placeholder?: string;
+	}>(), {
+		placeholder: "请选择一项",
+	});
+
 	const selected = defineModel<string>({ required: true });
 	const slots = useSlots();
 
@@ -14,10 +21,11 @@
 	const selectedIndex = computed(() => items.value.findIndex(item => item.id === selected.value && selected.value));
 	const selectedContent = computed(() => items.value.find(item => item.id === selected.value)?.content);
 	const selectedIndexStatic = ref(0);
+	const isSelectionValid = computed(() => selectedIndex.value !== -1);
 
 	const showMenu = ref(false);
 	const show = () => {
-		selectedIndexStatic.value = selectedIndex.value;
+		selectedIndexStatic.value = isSelectionValid.value ? selectedIndex.value : 0;
 		showMenu.value = true;
 	};
 	const setItem = async (item: string) => {
@@ -91,7 +99,8 @@
 		<div>
 			<!-- TODO: 缺少字段图标与标签以与输入框样式匹配。注意是整个字段的图标，不是每个项目的图标。 -->
 			<div v-ripple class="wrapper" :tabindex="0" @click="show">
-				<span>{{ selectedContent }}</span>
+				<span v-if="isSelectionValid">{{ selectedContent }}</span>
+				<span v-else class="placeholder">{{ placeholder }}</span>
 				<Icon name="chevron_down" />
 			</div>
 			<Transition :css="false" @enter="onMenuEnter" @leave="onMenuLeave">
@@ -158,6 +167,10 @@
 		color: c(text-color);
 		background-color: c(main-bg);
 		cursor: pointer;
+		
+		.placeholder {
+			color: c(icon-color);
+		}
 
 		.icon {
 			margin-right: -6px;
