@@ -1,9 +1,9 @@
 <script setup lang="ts">
 	import visibility from "assets/lotties/visibility.json";
 
-	const visible = ref(true);
+	const visible = ref(false);
 	const visibleText = computed(() => visible.value ? "visible" : "invisible");
-	const state = ref<AnimatedIconState>();
+	const state = ref<AnimatedIconState>([visibleText.value, false, 0]);
 	// ['visible pressed', 'visible unpressed', 'invisible', 'invisible pressed', 'invisible unpressed', 'visible']
 	const onClick = () => {
 		visible.value = !visible.value;

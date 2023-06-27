@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import lottie, { AnimationItem } from "lottie-web";
+	import lottie from "lottie-web";
 
 	const props = defineProps<{
 		loop?: boolean;
@@ -22,7 +22,7 @@
 			loop: props.loop,
 			autoplay: props.autoplay,
 			animationData: props.animationData,
-		});
+		}) as AnimationItem;
 		emits("animCreated", anim.value);
 	});
 

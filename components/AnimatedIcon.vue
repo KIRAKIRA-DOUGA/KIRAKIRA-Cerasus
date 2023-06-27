@@ -87,13 +87,20 @@
 		else
 			({ marker, loop, speed } = props.state);
 		if (loop !== undefined) ani.loop = loop;
-		if (speed) ani.playSpeed = speed; // 在不为 0 时有效。
+		if (speed) { // 在不为 0 时有效。
+			ani.playSpeed = Math.abs(speed);
+			ani.playDirection = Math.sign(speed);
+		}
 		if (!marker) {
 			if (speed === 0) ani.pause();
 			else ani.play();
 		} else {
-			if (speed === 0) ani.goToAndStop(marker, true);
-			else ani.goToAndPlay(marker, true);
+			const markerItem = ani.markers.find(m => m.payload.name === marker);
+			if (markerItem) {
+				if (Object.is(speed, -0)) ani.goToAndStop(marker, true);
+				else if (Object.is(speed, 0)) ani.goToAndStop(markerItem.time + markerItem.duration - 1, true);
+				else ani.goToAndPlay(marker, true);
+			}
 		}
 	}
 	
