@@ -271,14 +271,14 @@
 	$small-height: 28px;
 	$large-height: 44px;
 	$start-indent: 12px;
-	
+
 	@layer props {
 		:comp {
 			/// 输入框尺寸，可选的值为：small | normal | large。
 			--size: normal;
 		}
 	}
-	
+
 	@mixin is-large-size {
 		@container style(--size: large) {
 			@content;
@@ -286,7 +286,7 @@
 	}
 
 	:comp > div {
-		@include radius-large;
+		@include round-large;
 		@include control-inner-shadow;
 		--height: #{$normal-height};
 		position: relative;
@@ -346,7 +346,7 @@
 	.large-stripe {
 		display: none;
 		background-color: c(icon-color, 50%);
-		
+
 		@include is-large-size {
 			display: block;
 		}
@@ -377,7 +377,7 @@
 		translate: 0;
 		transform-origin: left;
 		pointer-events: none;
-		
+
 		@include is-large-size {
 			display: block;
 		}
@@ -388,7 +388,7 @@
 	}
 
 	input {
-		@include radius-large;
+		@include round-large;
 		display: block;
 		flex-grow: 1;
 		width: 0;

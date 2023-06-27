@@ -319,7 +319,7 @@
 
 	.track {
 		@include control-inner-shadow;
-		@include radius-small;
+		@include round-small;
 		position: relative;
 		display: flex;
 		width: fit-content;
@@ -360,7 +360,7 @@
 	.thumb {
 		@include page-active;
 		@include square($size);
-		@include radius-small;
+		@include round-small;
 		position: absolute;
 		top: 0;
 		left: calc(v-bind(thumbPosition) * $size);

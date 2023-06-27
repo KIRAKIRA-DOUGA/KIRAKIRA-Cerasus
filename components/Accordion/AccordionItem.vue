@@ -53,7 +53,7 @@
 	$padding: 0.75rem 1rem;
 
 	:comp {
-		@include radius-large;
+		@include round-large;
 
 		> * {
 			padding: $padding;
@@ -62,11 +62,11 @@
 		}
 
 		&:first-child > .header {
-			@include radius-large(top);
+			@include round-large(top);
 		}
 
 		&:last-child > *:last-child {
-			@include radius-large(bottom);
+			@include round-large(bottom);
 			border-bottom: none;
 		}
 	}

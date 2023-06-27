@@ -50,7 +50,7 @@
 
 <style scoped lang="scss">
 	.menu-item {
-		@include radius-small;
+		@include round-small;
 		@include flex-center;
 		flex-shrink: 0;
 		gap: $menu-padding + 2px;

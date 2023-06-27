@@ -328,7 +328,7 @@
 	%chip,
 	:deep(.chip) {
 		@include chip-shadow;
-		@include radius-large;
+		@include round-large;
 		overflow: hidden;
 		background-color: c(surface-color);
 	}

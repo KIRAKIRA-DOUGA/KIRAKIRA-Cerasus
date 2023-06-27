@@ -52,7 +52,7 @@
 
 	.card {
 		@include square(100%);
-		@include radius-large;
+		@include round-large;
 		@include card-shadow;
 		position: relative;
 		width: 1024px;

@@ -134,7 +134,7 @@
 		@extend %tabulation;
 
 		.link {
-			@include radius-small;
+			@include round-small;
 			padding: 7px 16px;
 			background-color: c(accent-10);
 

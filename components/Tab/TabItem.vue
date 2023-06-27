@@ -74,7 +74,7 @@
 				margin-top: -2px;
 				font-size: 22px;
 			}
-			
+
 			+ span:empty {
 				display: none;
 			}
@@ -86,7 +86,7 @@
 		// TODO: 缺少横向 Tab 的 hover 和 pressed 样式，但不要用水波纹，你用了就知道有多丑了。
 
 		.tab-bar.vertical > * > & {
-			@include radius-small;
+			@include round-small;
 			justify-content: flex-start;
 			width: 100%;
 			padding: 8px 8px 8px 12px;

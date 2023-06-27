@@ -98,7 +98,7 @@
 		display: flex;
 
 		.tooltip {
-			@include radius-small;
+			@include round-small;
 			@include dropdown-flyouts;
 			flex-shrink: 0;
 			max-width: 50dvw;

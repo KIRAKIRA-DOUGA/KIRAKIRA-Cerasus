@@ -43,7 +43,7 @@
 	}
 
 	.card {
-		@include radius-large;
+		@include round-large;
 		@include card-shadow;
 		display: flex;
 		flex-direction: column;
@@ -57,7 +57,7 @@
 		}
 
 		.card-bottom {
-			@include radius-large;
+			@include round-large;
 			@include card-shadow;
 			--i: 2;
 			display: flex;

@@ -47,7 +47,7 @@
 
 <style scoped lang="scss">
 	:comp {
-		@include radius-small;
+		@include round-small;
 		display: inline-flex;
 		align-items: center;
 		height: 24px;

@@ -27,7 +27,7 @@
 
 <style scoped lang="scss">
 	span:comp {
-		@include radius-small;
+		@include round-small;
 		color: c(main-bg);
 		background-color: v-bind(color);
 

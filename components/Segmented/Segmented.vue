@@ -111,7 +111,7 @@
 
 	.track {
 		@include control-inner-shadow;
-		@include radius-small;
+		@include round-small;
 		position: relative;
 		background-color: c(inset-bg);
 
@@ -123,7 +123,7 @@
 
 	.item {
 		@include flex-center;
-		@include radius-small;
+		@include round-small;
 		gap: 6px;
 		padding: 0 11px;
 
@@ -159,7 +159,7 @@
 		.thumb:is(.pressed, :active) + & {
 			transition: $fallback-transitions, clip-path $ease-out-smooth $duration, opacity $ease-in-out-smooth $duration;
 		}
-		
+
 		:comp.invalid & {
 			opacity: 0;
 		}
@@ -167,7 +167,7 @@
 
 	.thumb {
 		@include page-active;
-		@include radius-small;
+		@include round-small;
 		$transition: $fallback-transitions, all $ease-out-back $duration;
 		--width: calc(100% / v-bind(count));
 		position: absolute;
@@ -203,7 +203,7 @@
 		&:is(.pressed, :active) {
 			transition: $transition, left $ease-out-smooth $duration;
 		}
-		
+
 		:comp.invalid & {
 			opacity: 0;
 			pointer-events: none;

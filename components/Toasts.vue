@@ -85,7 +85,7 @@
 		pointer-events: none;
 
 		.toast {
-			@include radius-small;
+			@include round-small;
 			@include toast-shadow(accent);
 			--duration: 2000;
 			position: relative;

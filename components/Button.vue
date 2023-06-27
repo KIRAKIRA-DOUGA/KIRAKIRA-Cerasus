@@ -46,7 +46,7 @@
 	button {
 		@include flex-center;
 		@include button-shadow;
-		@include radius-small;
+		@include round-small;
 		position: relative;
 		display: inline-flex;
 		gap: 8px;

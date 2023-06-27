@@ -26,7 +26,7 @@
 	const flyoutKaomoji = ref<FlyoutModel>();
 	const flyoutKaomojiMini = ref<FlyoutModel>();
 	const [DefineToolItem, ToolItem] = createReusableTemplate<{ active?: ActiveType; icon?: string; onClick?: (e: MouseEvent) => void }>();
-	
+
 	/** 切换文本加粗。 */
 	const toggleBold = () => { editor.value?.chain().focus().toggleBold().run(); };
 	/** 切换文本倾斜。 */
@@ -118,7 +118,7 @@
 
 <style scoped lang="scss">
 	:comp {
-		@include radius-large;
+		@include round-large;
 		@include card-shadow;
 		background-color: c(main-bg);
 
@@ -132,7 +132,7 @@
 			gap: 3px;
 
 			> button {
-				@include radius-small;
+				@include round-small;
 				@include flex-center;
 				$size: 28px;
 				min-width: $size;

@@ -28,7 +28,7 @@
 <style scoped lang="scss">
 	button:comp {
 		@include chip-shadow;
-		@include radius-small;
+		@include round-small;
 		display: flex;
 		height: 24px;
 		color: c(text-color);
@@ -61,14 +61,14 @@
 			&:hover:focus {
 				@include button-shadow-unchecked-hover-focus;
 			}
-			
+
 			&.highlighted:hover:focus {
 				@include button-shadow-hover-focus;
 				background-color: c(accent-hover);
 			}
 		}
 	}
-	
+
 	:where(button:comp) {
 		width: 100%;
 	}

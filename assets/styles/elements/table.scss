@@ -2,7 +2,7 @@
 @use "../theme/effects" as *;
 
 table:not(.lite) {
-	@include radius-large;
+	@include round-large;
 	@include chip-shadow;
 	$border-bottom: c(gray-40) 1px solid;
 	overflow: hidden;

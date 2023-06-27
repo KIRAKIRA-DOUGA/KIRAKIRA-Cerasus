@@ -76,7 +76,7 @@
 	$height: calc($width / 16 * 9);
 
 	.thumb-video {
-		@include radius-large;
+		@include round-large;
 		position: relative;
 		display: inline-block;
 		color: c(text-color);
@@ -101,12 +101,12 @@
 	}
 
 	.card {
-		@include radius-large;
+		@include round-large;
 		padding: 8px 9px;
 	}
 
 	.cover-wrapper {
-		@include radius-large;
+		@include round-large;
 		width: $width;
 		height: $height;
 		margin-bottom: 8px;

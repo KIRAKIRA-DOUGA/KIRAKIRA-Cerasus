@@ -93,7 +93,7 @@
 				backgroundAnimation: userSettingsInputBackgroundAnimationInsert.value,
 				settingPageLastEnter: userSettingsInputSettingPageLastEnterInsert.value,
 			};
-	
+
 			const saveUserSettingsUrl = "https://rosales.kirakira.moe:4000/02/koa/user/settings/userSettings/save";
 			postData(saveUserSettingsUrl, userSettingsInput).then(result => {
 				userSettingsInsertResult.value = result;
@@ -116,7 +116,7 @@
 				fixedUserSettingsInputBackgroundAnimationUpdate = false;
 			else if (userSettingsInputBackgroundAnimationUpdate.value === "1")
 				fixedUserSettingsInputBackgroundAnimationUpdate = true;
-			
+
 			const userSettingsInput: UserSettingsUpdateType = {
 				...(userSettingsInputUuidUpdate.value ? { uuid: userSettingsInputUuidUpdate.value } : null),
 				...(userSettingsInputSystemStyleUpdate.value ? { systemStyle: userSettingsInputSystemStyleUpdate.value } : null),
@@ -242,10 +242,10 @@
 	}
 
 	pre {
-		@include radius-large;
+		@include round-large;
 		padding: 1rem;
 		background-color: c(gray-30);
-		
+
 		&,
 		* {
 			user-select: text;

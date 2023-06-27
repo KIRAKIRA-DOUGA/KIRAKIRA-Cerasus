@@ -159,7 +159,7 @@
 
 	:comp {
 		@include dropdown-flyouts;
-		@include radius-large;
+		@include round-large;
 		max-width: 100dvw;
 		overflow: hidden;
 		background-color: c(acrylic-bg, 75%);
@@ -168,7 +168,7 @@
 		&.padding {
 			padding: $padding;
 		}
-		
+
 		> :deep(*) {
 			max-width: calc(100dvw - list.nth($padding, 2) * 2);
 		}

@@ -7,7 +7,7 @@
 /// 使用 6px 大小的圆角。
 /// @param {String} $position [full] - 圆角的位置。
 /// @output border-radius
-@mixin radius-large($position: full) {
+@mixin round-large($position: full) {
 	@include set-border-radius(6px, $position);
 }
 
@@ -15,7 +15,7 @@
 /// 使用 4px 大小的圆角。
 /// @param {String} $position [full] - 圆角的位置。
 /// @output border-radius
-@mixin radius-small($position: full) {
+@mixin round-small($position: full) {
 	@include set-border-radius(4px, $position);
 }
 // #endregion

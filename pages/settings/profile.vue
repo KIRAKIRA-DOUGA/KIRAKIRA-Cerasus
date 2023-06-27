@@ -84,7 +84,7 @@
 
 <style scoped lang="scss">
 	.banner {
-		@include radius-large;
+		@include round-large;
 		position: relative;
 		overflow: hidden;
 		background-color: c(gray-20);

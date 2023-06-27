@@ -19,7 +19,7 @@
 	$title-animation-options: $ease-out-expo 600ms backwards calc(100ms * var(--i));
 
 	.card {
-		@include radius-large;
+		@include round-large;
 		@include card-shadow;
 		$margin-y: 3.5rem;
 		position: relative;

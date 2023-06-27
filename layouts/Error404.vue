@@ -130,7 +130,7 @@
 	}
 
 	.home-link {
-		@include radius-large;
+		@include round-large;
 		--i: 0;
 		position: relative;
 		padding: 0.75rem 1.5rem;
@@ -146,7 +146,7 @@
 		}
 
 		&::before {
-			@include radius-large;
+			@include round-large;
 			position: absolute;
 			top: 0;
 			right: 0;

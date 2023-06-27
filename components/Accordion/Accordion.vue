@@ -36,7 +36,7 @@
 
 <style scoped lang="scss">
 	:comp {
-		@include radius-large;
+		@include round-large;
 		@include chip-shadow;
 		background-color: c(main-bg, 50%);
 	}

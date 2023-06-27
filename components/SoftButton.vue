@@ -120,7 +120,7 @@
 		}
 
 		&.textbox-aftericon > *:not([tabindex="-1"]):focus-visible {
-			@include radius-large;
+			@include round-large;
 			@include textbox-aftericon-focus;
 		}
 

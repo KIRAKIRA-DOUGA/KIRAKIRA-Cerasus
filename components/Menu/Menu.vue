@@ -104,7 +104,7 @@
 	$transition: $fallback-transitions, grid-template-rows $ease-out-smooth 500ms;
 
 	menu {
-		@include radius-large;
+		@include round-large;
 		@include dropdown-flyouts;
 		top: 0;
 		left: 0;

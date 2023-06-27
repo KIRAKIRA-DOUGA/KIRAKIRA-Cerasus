@@ -20,7 +20,7 @@
 
 <style scoped lang="scss">
 	.introduce {
-		@include radius-large;
+		@include round-large;
 		margin: 1rem 0;
 		padding: 1rem;
 		background-color: c(gray-30);

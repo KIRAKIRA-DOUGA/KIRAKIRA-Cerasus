@@ -238,7 +238,7 @@
 
 	:comp {
 		@include dropdown-flyouts;
-		@include radius-large;
+		@include round-large;
 		--avatar-center: #{calc($width / 2) - $avatar-movement} 50%;
 		display: flex;
 		justify-content: space-between;
@@ -297,7 +297,7 @@
 	:comp:not(.move-left) .main > * {
 		translate: 0 !important;
 	}
-	
+
 	.text-box {
 		--size: large;
 	}

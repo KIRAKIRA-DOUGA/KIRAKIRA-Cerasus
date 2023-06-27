@@ -118,7 +118,7 @@
 	:comp {
 		@include absolute-center(fixed);
 		@include dropdown-flyouts;
-		@include radius-large;
+		@include round-large;
 		max-width: 100dvw;
 		overflow: hidden;
 		background-color: c(acrylic-bg, 75%);
@@ -201,7 +201,7 @@
 
 				&::after {
 					@include square(32px);
-					@include radius-small;
+					@include round-small;
 					@include absolute-center-sized;
 					background-color: c(hover-color);
 					opacity: 0;

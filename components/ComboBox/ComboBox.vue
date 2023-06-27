@@ -148,7 +148,7 @@
 	}
 
 	.wrapper {
-		@include radius-large;
+		@include round-large;
 		@include chip-shadow;
 		display: flex;
 		align-items: center;
@@ -197,7 +197,7 @@
 
 	.menu {
 		@include dropdown-flyouts;
-		@include radius-large;
+		@include round-large;
 		position: absolute;
 		z-index: 70;
 		width: calc(100% + 2 * $menu-padding);
@@ -223,7 +223,7 @@
 		width: 100%;
 
 		.item {
-			@include radius-small;
+			@include round-small;
 			position: relative;
 			display: flex;
 			align-items: center;

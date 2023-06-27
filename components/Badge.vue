@@ -10,7 +10,7 @@
 
 <style scoped lang="scss">
 	:comp {
-		@include radius-small;
+		@include round-small;
 		padding: 0 8px;
 		color: white;
 		text-align: center;

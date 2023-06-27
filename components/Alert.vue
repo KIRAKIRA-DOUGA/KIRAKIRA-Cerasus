@@ -106,7 +106,7 @@
 		background-color: c(acrylic-bg, 75%);
 
 		@media (width >= $max-width) {
-			@include radius-large;
+			@include round-large;
 			$margin-top: 24px;
 			max-height: calc(100dvh - $margin-top * 2);
 			margin-top: $margin-top;
