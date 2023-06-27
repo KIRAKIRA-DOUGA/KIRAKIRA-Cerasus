@@ -15,7 +15,7 @@
 		/** 是否不可聚焦但仍可点击。 */
 		nonfocusable?: boolean;
 		/** 外观偏好。 */
-		appearance?: "default" | "textbox-aftericon";
+		appearance?: "default" | "textbox-trailingicon";
 		/** 指定点击后跳转的链接。 */
 		href?: string;
 		/** 是否**强制**高亮图标强调色？默认情况下会根据路由自动添加 router-link-active 类。 */
@@ -135,9 +135,9 @@
 			}
 		}
 
-		&.textbox-aftericon > *:not([tabindex="-1"]):focus-visible {
+		&.textbox-trailingicon > *:not([tabindex="-1"]):focus-visible {
 			@include round-large;
-			@include textbox-aftericon-focus;
+			@include textbox-trailingicon-focus;
 		}
 
 		* {

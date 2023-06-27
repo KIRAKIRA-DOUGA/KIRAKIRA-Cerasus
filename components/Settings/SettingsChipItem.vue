@@ -8,8 +8,8 @@
 		filled?: boolean;
 		/** 详细信息。 */
 		details?: Readable;
-		/** 之后的操作图标。 */
-		afterIcon?: string;
+		/** 尾随操作图标。 */
+		trailingIcon?: string;
 		/** 点击链接。在域名未完全确定前目前只能支持外链，如内链需要额外的自动检测。 */
 		href?: string;
 	}>();
@@ -28,7 +28,7 @@
 				</div>
 				<div v-if="details" class="details">{{ details }}</div>
 			</div>
-			<Icon v-if="afterIcon" class="after-icon" :name="afterIcon" />
+			<Icon v-if="trailingIcon" class="trailing-icon" :name="trailingIcon" />
 			<a v-if="href" draggable="false" :href="href" target="_blank" class="link lite"></a>
 		</div>
 	</Comp>
@@ -90,7 +90,7 @@
 			}
 		}
 
-		.after-icon {
+		.trailing-icon {
 			color: c(icon-color);
 			font-size: 24px;
 		}

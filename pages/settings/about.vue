@@ -47,7 +47,7 @@
 			:icon="repo.icon || 'mono-logo/github'"
 			:details="repo.codeName"
 			:href="repo.link"
-			afterIcon="open_in_new"
+			trailingIcon="open_in_new"
 		>{{ repo.name }}</SettingsChipItem>
 	</section>
 
@@ -59,7 +59,7 @@
 			:image="staff.avatar"
 			icon="placeholder"
 			:details="`${staff.job} - UID ${staff.uid}`"
-			afterIcon="open_in_new"
+			trailingIcon="open_in_new"
 		>{{ staff.name }}</SettingsChipItem>
 	</section>
 
@@ -72,7 +72,7 @@
 			:filled="!tech.monochrome"
 			:details="`${tech.ability} - v${tech.version}`"
 			:href="tech.link"
-			afterIcon="open_in_new"
+			trailingIcon="open_in_new"
 		>{{ tech.name }}</SettingsChipItem>
 	</section>
 </template>

@@ -10,21 +10,21 @@
 	<section>
 		<SettingsChipItem
 			icon="email"
-			afterIcon="edit"
+			trailingIcon="edit"
 			:details="t.current_email + t.colon + email"
 		>{{ t.email_address }}</SettingsChipItem>
 	</section>
 	<section>
 		<SettingsChipItem
 			icon="password"
-			afterIcon="edit"
+			trailingIcon="edit"
 			:details="t.modification_date + t.colon + passwordChangeDateDisplay"
 		>{{ t.password }}</SettingsChipItem>
 	</section>
 	<section>
 		<SettingsChipItem
 			icon="qr_code_scanner"
-			afterIcon="edit"
+			trailingIcon="edit"
 			:details="t.addition_date + t.colon + authenticatorAddDateDisplay"
 		>{{ t.authenticator }}</SettingsChipItem>
 	</section>

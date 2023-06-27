@@ -182,7 +182,7 @@
 	 * @param el - HTML DOM 元素。
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
-	async function onAfterIconEnter(el: Element, done: () => void) {
+	async function onTrailingIconEnter(el: Element, done: () => void) {
 		await animateSize(el, null, { startWidth: 0, duration: 300, startStyle: { scale: 0 }, specified: "width" });
 		done();
 	}
@@ -193,7 +193,7 @@
 	 * @param el - HTML DOM 元素。
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
-	async function onAfterIconLeave(el: Element, done: () => void) {
+	async function onTrailingIconLeave(el: Element, done: () => void) {
 		await animateSize(el, null, { endWidth: 0, duration: 300, endStyle: { scale: 0 }, specified: "width" });
 		done();
 	}
@@ -207,7 +207,7 @@
 		invalid.value = isInvalid();
 	});
 
-	const AfterIcon = (() => {
+	const TrailingIcon = (() => {
 		interface Props {
 			shown?: boolean;
 			onClick?: (payload: MouseEvent) => void;
@@ -216,7 +216,7 @@
 			animatedState?: string;
 		}
 		return (props: Props) => (
-			<Transition css={false} onEnter={onAfterIconEnter} onLeave={onAfterIconLeave}>
+			<Transition css={false} onEnter={onTrailingIconEnter} onLeave={onTrailingIconLeave}>
 				{
 					props.shown &&
 					<SoftButton
@@ -224,7 +224,7 @@
 						animatedIcon={props.animatedIcon}
 						animatedState={props.animatedState}
 						nonclickable={!props.onClick}
-						appearance="textbox-aftericon"
+						appearance="textbox-trailingicon"
 						onClick={props.onClick}
 					/>
 				}
@@ -237,7 +237,7 @@
 	<Comp role="textbox">
 		<div>
 			<div class="wrapper">
-				<Icon v-if="icon" :name="icon" class="before-icon" />
+				<Icon v-if="icon" :name="icon" class="leading-icon" />
 				<input
 					ref="input"
 					:value="value ?? ''"
@@ -262,19 +262,19 @@
 					@input="onInput"
 				/>
 				<label>{{ placeholder }}</label>
-				<Fragment class="after-icons">
-					<AfterIcon
+				<Fragment class="trailing-icons">
+					<TrailingIcon
 						:shown="showClearAll"
 						icon="close"
 						@click="clearAll"
 					/>
-					<AfterIcon
+					<TrailingIcon
 						:shown="props.type === 'password'"
 						animatedIcon="visibility"
 						:animatedState="showPassword ? 'visible' : 'invisible'"
 						@click="toggleShowPassword"
 					/>
-					<AfterIcon
+					<TrailingIcon
 						v-tooltip:y="input?.validationMessage || undefined"
 						:shown="invalid"
 						icon="error"
@@ -333,7 +333,7 @@
 				scale: 1;
 			}
 
-			.before-icon,
+			.leading-icon,
 			label {
 				color: c(red) !important;
 			}
@@ -350,7 +350,7 @@
 				scale: 0.7;
 			}
 
-			.before-icon {
+			.leading-icon {
 				color: c(accent);
 			}
 		}
@@ -404,7 +404,7 @@
 			display: block;
 		}
 
-		.before-icon ~ & {
+		.leading-icon ~ & {
 			margin-left: $start-indent + 24px + 16px;
 		}
 	}
@@ -439,7 +439,7 @@
 			scale: 0.7;
 		}
 
-		.before-icon ~ & {
+		.leading-icon ~ & {
 			padding-left: $start-indent + 24px + 4px;
 			text-indent: 0;
 
@@ -461,7 +461,7 @@
 		}
 	}
 
-	.before-icon {
+	.leading-icon {
 		position: absolute;
 		margin-left: 8px;
 		color: c(icon-color);
@@ -473,7 +473,7 @@
 		}
 	}
 
-	.after-icons {
+	.trailing-icons {
 		@include flex-center;
 
 		input:invalid ~ & :deep(.icon) {
