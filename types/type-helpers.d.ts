@@ -2,7 +2,7 @@ export { };
 
 declare global {
 	/**
-	 * 从一个接口中筛选值为指定类型的真子集接口。
+	 * 从一个接口中筛选值为指定类型的子集接口。
 	 * @template Source - 源接口。
 	 * @template Condition - 筛选值的类型。
 	 */
@@ -32,7 +32,7 @@ declare global {
 	 * @template T - 可能带空的类型。
 	 */
 	type NonNull<T> = Exclude<T, undefined | null>;
-	
+
 	/**
 	 * 重写某个对象部分字段的类型。
 	 * @template T - 源对象。

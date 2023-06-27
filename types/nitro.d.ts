@@ -20,10 +20,9 @@ export type NitroHooks = Hookable<{
 
 export interface NitroApp extends Omit<OriginalNitroApp, "hooks"> {
 	hooks: NitroHooks;
-	// hooks: Hookable<Record<string, HookCallback>, string>;
 }
 
-declare global { // Doesn't work.
+declare global {
 	export declare const defineNitroPlugin: DefineNitroPlugin;
 }
 

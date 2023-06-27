@@ -1,0 +1,18 @@
+diff --git a/node_modules/lottie-web/index.d.ts b/node_modules/lottie-web/index.d.ts
+index a018fbc..d8d72ba 100644
+--- a/node_modules/lottie-web/index.d.ts
++++ b/node_modules/lottie-web/index.d.ts
+@@ -72,6 +72,13 @@ export type AnimationItem = {
+     segmentPos: number;
+     isSubframeEnabled: boolean;
+     segments: AnimationSegment | AnimationSegment[];
++    markers: {
++        time: number;
++        duration: number;
++        payload: {
++            name: string;
++        };
++    }[];
+     play(name?: string): void;
+     stop(name?: string): void;
+     togglePause(name?: string): void;

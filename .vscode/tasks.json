@@ -43,14 +43,6 @@
 		},
 		{
 			"type": "npm",
-			"script": "postinstall",
-			"group": "build",
-			"problemMatcher": [],
-			"label": "npm: postinstall",
-			"detail": "nuxt prepare"
-		},
-		{
-			"type": "npm",
 			"script": "update-eases",
 			"problemMatcher": [],
 			"label": "npm: update-eases",

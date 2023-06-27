@@ -54,9 +54,10 @@
 		let targetRect: DOMRect | undefined;
 		const _location = ((): TwoD | null => {
 			if (target instanceof Array) return target;
-			if (target instanceof Event)
+			if (target instanceof Event) {
 				if (target.target instanceof Element) target = target.currentTarget!;
 				else return [target.clientX, target.clientY];
+			}
 			if (target instanceof Element || target instanceof DOMRect) {
 				targetRect = target instanceof Element ? target.getBoundingClientRect() : target;
 				return [targetRect.left, targetRect.bottom];
