@@ -287,6 +287,32 @@
 	</Comp>
 </template>
 
+<!-- <component name="TrailingIcon" lang="vue">
+	<script setup>
+		const props = defineProps<{
+			shown?: boolean;
+			icon?: string;
+			onClick?: (payload: MouseEvent) => void;
+			animatedIcon?: string;
+			animatedState?: string;
+		}>();
+	</script>
+	
+	<template>
+		<Transition :css="false" :onEnter="onTrailingIconEnter" :onLeave="onTrailingIconLeave">
+			<SoftButton
+				v-if="shown"
+				:icon="icon"
+				:animatedIcon="animatedIcon"
+				:animatedState="animatedState"
+				:nonclickable="!onClick"
+				appearance="textbox-trailingicon"
+				@click="onClick"
+			/>
+		</Transition>
+	</template>
+</component> -->
+
 <style scoped lang="scss">
 	$focus-stripe-height: 2px;
 	$normal-height: 36px;

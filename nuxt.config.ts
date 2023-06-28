@@ -5,6 +5,7 @@ import styleResources from "./helpers/style-resources";
 import cssDoodleLoader from "./plugins/vite/css-doodle";
 import docsLoader from "./plugins/vite/docs";
 import { environment } from "./utils/environment";
+import vueNestedSFC from "vite-plugin-vue-nested-sfc";
 /* import CopyPlugin from "copy-webpack-plugin";
 const wasmFile = resolve("node_modules/mediainfo.js/dist/MediaInfoModule.wasm"); */
 type OriginalNuxtConfig = Parameters<typeof defineNuxtConfig>[0];
@@ -63,6 +64,7 @@ export default defineNuxtConfig({
 		plugins: [
 			docsLoader(),
 			cssDoodleLoader(),
+			vueNestedSFC(),
 		],
 		optimizeDeps: {
 			needsInterop: [

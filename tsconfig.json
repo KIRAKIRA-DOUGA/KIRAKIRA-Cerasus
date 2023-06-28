@@ -32,9 +32,12 @@
 			},
 		],
 	},
-	/* "vueCompilerOptions": {
-		"experimentalAdditionalLanguageModules": [
-			"./plugins/nuxt/nuxt-virtual-files.cjs",
+	"vueCompilerOptions": {
+		"plugins": [
+			"vite-plugin-vue-nested-sfc/tooling"
 		],
-	}, */
+		// "experimentalAdditionalLanguageModules": [
+		// 	"./plugins/nuxt/nuxt-virtual-files.cjs",
+		// ],
+	},
 }
