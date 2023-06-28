@@ -60,7 +60,7 @@ module.exports = {
 		"no-unreachable": "error",
 		"use-isnan": "error",
 		"valid-typeof": "error",
-		"curly": ["error", "multi-or-nest"],
+		"curly": ["error", "multi"],
 		"no-lonely-if": "off",
 		"dot-notation": ["error"],
 		"guard-for-in": "error",

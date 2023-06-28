@@ -17,7 +17,7 @@
 					category="音MAD"
 					title="柴又"
 					copyright="unauthorized-repost"
-					:tags="['233', '天下笨蛋是一家']"
+					:tags="['233', '天下笨蛋是一家', '艾拉原创出品']"
 				/>
 				<CreationComments
 					count="233"

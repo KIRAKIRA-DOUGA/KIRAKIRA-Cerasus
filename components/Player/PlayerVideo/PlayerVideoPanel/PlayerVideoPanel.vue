@@ -5,7 +5,7 @@
 		play: 100,
 		rating: 5,
 		star: 100,
-		danmaku: 100,
+		danmaku: 10000,
 		watching: 10,
 	});
 
@@ -48,10 +48,10 @@
 	<Comp>
 		<div class="top">
 			<div class="info">
-				<CountItem icon="play" :value="counts.play">{{ t.play }}</CountItem>
-				<CountItem icon="thumb_up" :value="counts.rating" :class="{ dislike: counts.rating < 0 }">{{ t.rating }}</CountItem>
-				<CountItem icon="star" :value="counts.star">{{ t.favorite_verb }}</CountItem>
-				<CountItem icon="play" :value="counts.danmaku">{{ t.danmaku }}</CountItem>
+				<CountItem icon="play" :value="getWatchCount(counts.play)">{{ t.play }}</CountItem>
+				<CountItem icon="thumb_up" :value="getWatchCount(counts.rating)" :class="{ dislike: counts.rating < 0 }">{{ t.rating }}</CountItem>
+				<CountItem icon="star" :value="getWatchCount(counts.star)">{{ t.favorite_verb }}</CountItem>
+				<CountItem icon="play" :value="getWatchCount(counts.danmaku)">{{ t.danmaku }}</CountItem>
 				<div class="watching">
 					<span class="watching-number">10</span>
 					<span class="watching-description">人正在看</span>

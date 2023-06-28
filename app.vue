@@ -1,5 +1,6 @@
 <script setup lang="ts">
 	import "css-doodle";
+	import "vue-virtual-scroller/dist/vue-virtual-scroller.css";
 	import manifest from "public/manifest.json";
 
 	const { locale } = useI18n();
@@ -69,12 +70,13 @@
 	// 	slotName.value = "pocket-edition-web-slot";
 	// }, 5000);
 
-	if (environment.client)
+	if (environment.client) {
 		window.addEventListener("load", () => {
 			if (!("serviceWorker" in navigator))
 				throw new Error("serviceWorker is not supported in current browser!");
 			navigator.serviceWorker.register("/sw.js");
 		});
+	}
 
 	// 彩蛋
 	loadEgg();

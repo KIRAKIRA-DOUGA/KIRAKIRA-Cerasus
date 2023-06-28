@@ -77,3 +77,18 @@ export function digitCase(n: number | bigint, upperCase: boolean = false, amount
 			result = result.replaceAll(lower[i], upper[i]);
 	return result;
 }
+
+/**
+ * 获取类似于播放量的通用数字加数级的写法。
+ * @param value - 数字。
+ * @returns 通用数字加数级。
+ */
+export function getWatchCount(value: number) {
+	let count = value | 0;
+	let count_str = count + "";
+	if ((count = count / 10000 | 0) !== 0)
+		count_str = count + "万";
+	if ((count = count / 10000 | 0) !== 0)
+		count_str = count + "亿";
+	return count_str;
+}

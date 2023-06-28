@@ -1,9 +1,12 @@
 <script setup lang="ts">
+	import { RecycleScroller } from "vue-virtual-scroller";
+
 	const danmakuItemMenu = ref<MenuModel>();
-	const currentDanmakuIndex = ref(0);
+	const currentDanmaku = ref<ReturnType<typeof getDanmaku>>();
 	const { copy } = useClipboard();
 	const headers = ["时间", "内容", "发送时间"];
 	const colWidths = reactive([60, 150, 100]);
+	const danmakuList = reactive(forMap(10000, i => getDanmaku(i))); // 让你逝世一万条弹幕会不会把设备弄炸！
 
 	/**
 	 * 获取弹幕。
@@ -47,7 +50,8 @@
 	 * 复制弹幕。
 	 */
 	function copyDanmaku() {
-		copy(getDanmaku(currentDanmakuIndex.value).content);
+		if (!currentDanmaku.value) return;
+		copy(currentDanmaku.value.content);
 		useToast("已复制", "success");
 	}
 </script>
@@ -67,9 +71,11 @@
 					</div>
 				</thead>
 				<tbody>
-					<tr v-for="i in 100" :key="i" v-ripple @contextmenu.prevent="e => { currentDanmakuIndex = i; danmakuItemMenu = e; }">
-						<td v-for="(value, key, j) in getDanmaku(i)" :key="key" :width="colWidths[j]">{{ value }}</td>
-					</tr>
+					<RecycleScroller v-slot="{ item }" :itemSize="28" keyField="content" :items="danmakuList">
+						<tr v-ripple @contextmenu.prevent="e => { currentDanmaku = item; danmakuItemMenu = e; }">
+							<td v-for="(value, key, j) in item" :key="key" :width="colWidths[j]">{{ value }}</td>
+						</tr>
+					</RecycleScroller>
 				</tbody>
 			</table>
 			<template #fallback>
@@ -87,6 +93,8 @@
 </template>
 
 <style scoped lang="scss">
+	$item-height: 28px;
+
 	:comp {
 		flex-grow: 1;
 		color: c(icon-color);
@@ -95,20 +103,24 @@
 			@include square(100%);
 			position: relative;
 			display: block;
-			overflow: overlay;
+			overflow-x: overlay;
 			table-layout: fixed;
 			background-color: c(main-bg);
 			border-spacing: 0;
-			contain: strict;
+			
+			tbody {
+				position: absolute;
+				height: calc(100% - $item-height);
+			}
+			
+			.vue-recycle-scroller {
+				height: 100%;
+			}
 
 			thead,
 			tbody {
 				display: block;
 				width: 100%;
-			}
-
-			tbody {
-				padding-bottom: 12px;
 			}
 
 			thead {
@@ -144,6 +156,7 @@
 				display: block;
 				flex-shrink: 0;
 				min-width: 60px;
+				height: $item-height;
 				padding: 0.25rem 0.75rem;
 				overflow: hidden;
 				white-space: nowrap;

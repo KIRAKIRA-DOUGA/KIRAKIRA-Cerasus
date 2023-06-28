@@ -24,17 +24,7 @@
 	});
 
 	const date = computed(() => props.date ? formatDate(props.date, "yyyy-MM-dd") : "----------");
-
-	const watchedCount = computed(() => {
-		let count = props.watchedCount | 0;
-		let count_str = count + "";
-		if ((count = count / 10000 | 0) !== 0)
-			count_str = count + "万";
-		if ((count = count / 10000 | 0) !== 0)
-			count_str = count + "亿";
-		return count_str;
-	});
-
+	const watchedCount = computed(() => getWatchCount(props.watchedCount));
 	const duration = computed(() => props.duration ?? "--:--");
 </script>
 

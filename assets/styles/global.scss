@@ -91,6 +91,11 @@ p {
 	display: contents;
 }
 
+// stylelint-disable-next-line selector-class-pattern
+.vue-recycle-scroller__item-view {
+	transition: none;
+}
+
 @layer base {
 	#popovers > * {
 		position: fixed;
