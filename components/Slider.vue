@@ -129,7 +129,7 @@
 		--value: 0;
 		--buffered: 0;
 		position: relative;
-		touch-action: pan-y pinch-zoom;
+		touch-action: none;
 	}
 
 	.track,

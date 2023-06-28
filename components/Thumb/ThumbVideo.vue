@@ -70,14 +70,16 @@
 		position: relative;
 		display: inline-block;
 		color: c(text-color);
+		
+		@media (any-hover: hover) {
+			&:hover:not(:active) {
+				z-index: 1;
 
-		&:hover:not(:active) {
-			z-index: 1;
-
-			.card {
-				@include system-card;
-				translate: 0 -6px;
-				background-color: c(surface-color);
+				.card {
+					@include system-card;
+					translate: 0 -6px;
+					background-color: c(surface-color);
+				}
 			}
 		}
 

@@ -103,6 +103,7 @@
 		@include circle;
 		@include ripple-clickable-only-inside(var(--wrapper-size));
 		color: c(icon-color);
+		touch-action: manipulation;
 
 		> * {
 			@include flex-center;

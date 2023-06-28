@@ -58,6 +58,7 @@
 		vertical-align: middle;
 		background-color: c(accent);
 		transition: $fallback-transitions, all $ease-out-back 500ms !important;
+		touch-action: manipulation;
 
 		> span {
 			font-family: inherit;
