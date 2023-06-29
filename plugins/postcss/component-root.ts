@@ -3,8 +3,6 @@ import { AcceptedPlugin } from "postcss";
 import parser from "postcss-selector-parser";
 import { VariableName } from "../../classes/VariableName";
 
-type PostCSSPlugin = { postcss: true } & ((opts?: Object) => AcceptedPlugin);
-
 const transformPseudo = (componentName: string) => (selectors => {
 	selectors.walk(selector => {
 		if (selector.type === "pseudo" && selector.value.match(/:comp(onent)?$/)) {

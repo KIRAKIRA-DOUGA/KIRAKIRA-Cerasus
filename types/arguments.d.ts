@@ -1,3 +1,5 @@
+import { AcceptedPlugin } from "postcss";
+
 export namespace FlyoutModelNS {
 	export type Target = MaybeRef<MouseEvent | PointerEvent | TwoD | HTMLElement | EventTarget | DOMRect | undefined | null>;
 	export type Tuple = [target: Target, placement?: Placement, offset?: number];
@@ -29,6 +31,9 @@ declare global {
 	type FlyoutModel = FlyoutModelNS.Tuple | FlyoutModelNS.Object;
 	type MenuModel = MouseEvent | PointerEvent | null;
 	type AnimatedIconState = AnimatedIconStateNS.Tuple | AnimatedIconStateNS.Object;
+
+	/** PostCSS 插件。 */
+	type PostCSSPlugin = { postcss: true } & ((opts?: AnyObject) => AcceptedPlugin);
 
 	/**
 	 * 使用 `role` 可以增强组件的可读性和语义化。值得注意的是这个属性是枚举而并非任意填写的。
