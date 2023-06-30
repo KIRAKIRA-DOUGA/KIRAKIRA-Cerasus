@@ -1,5 +1,3 @@
-## Oh my god, for god's sake, don't start it with yarn, or the whole program will become as bad as Aunt Jenny's apple pie. Damn it.
-
 ![Cover](cover.svg)
 
 # Project Code Name ｢<ruby>Cerasus<rp>（</rp><rt>[Plantation](https://zh.moegirl.org.cn/zh-hans/DARLING_in_the_FRANXX#cite_ref-10:~:text=%E7%AC%AC13%E9%83%BD%E5%B8%82%EF%BC%88Plantation%EF%BC%89%5B9%5D%E2%80%9C%E6%A8%B1%EF%BC%88Cerasus%EF%BC%89%E2%80%9D)</rt><rp>）</rp></ruby>｣
