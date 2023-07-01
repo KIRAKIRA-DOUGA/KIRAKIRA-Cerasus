@@ -121,10 +121,8 @@
 				background-color: c(hover-color);
 			}
 
-			@media (any-hover: hover) {
-				&:hover {
-					background-color: c(hover-color);
-				}
+			&:any-hover {
+				background-color: c(hover-color);
 			}
 
 			&:is(:hover, :active, :has(> .ripple-circle)):not(:focus-visible) {

@@ -52,20 +52,18 @@
 			background-color: c(accent);
 		}
 
-		@media (any-hover: hover) {
-			&:hover {
-				@include button-shadow-unchecked-hover;
-				background-color: c(gray-20);
-			}
+		&:any-hover {
+			@include button-shadow-unchecked-hover;
+			background-color: c(gray-20);
+		}
 
-			&:hover:focus {
-				@include button-shadow-unchecked-hover-focus;
-			}
+		&:any-hover:focus {
+			@include button-shadow-unchecked-hover-focus;
+		}
 
-			&.highlighted:hover:focus {
-				@include button-shadow-hover-focus;
-				background-color: c(accent-hover);
-			}
+		&.highlighted:any-hover:focus {
+			@include button-shadow-hover-focus;
+			background-color: c(accent-hover);
 		}
 	}
 

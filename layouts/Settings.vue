@@ -356,10 +356,8 @@
 			padding-bottom: $extra-padding;
 		}
 
-		@media (any-hover: hover) {
-			&:hover {
-				background-color: c(hover-color);
-			}
+		&:any-hover {
+			background-color: c(hover-color);
 		}
 	}
 

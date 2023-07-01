@@ -66,17 +66,15 @@
 			font-size: 20px;
 		}
 
-		@media (any-hover: hover) {
-			&:hover {
-				padding-right: 13px;
-				padding-left: 17px;
-				color: c(text-color);
-				background-color: c(hover-color);
-			}
+		&:any-hover {
+			padding-right: 13px;
+			padding-left: 17px;
+			color: c(text-color);
+			background-color: c(hover-color);
+		}
 
-			&:not(:hover) {
-				transition-duration: 1s;
-			}
+		&:not(:any-hover) {
+			transition-duration: 1s;
 		}
 	}
 </style>

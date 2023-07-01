@@ -69,7 +69,7 @@
 				<div class="gender-custom">
 					<RadioButton v-model="genderBasic" value="custom">{{ t.custom }}</RadioButton>
 					<Transition>
-						<TextBox v-show="genderBasic === 'custom'" v-model="genderCustom" />
+						<TextBox v-show="genderBasic === 'custom'" v-model="genderCustom" class="normal" />
 					</Transition>
 				</div>
 			</div>
@@ -96,19 +96,17 @@
 			object-fit: cover;
 			cursor: pointer;
 
-			@media (any-hover: hover) {
-				&:hover {
-					filter: brightness(0.75) blur(2px);
-					scale: 1.05;
+			&:any-hover {
+				filter: brightness(0.75) blur(2px);
+				scale: 1.05;
 
-					& + span {
-						opacity: 1;
-					}
+				& + span {
+					opacity: 1;
 				}
+			}
 
-				&:not(:hover) {
-					transition-duration: 1s;
-				}
+			&:not(:any-hover) {
+				transition-duration: 1s;
 			}
 		}
 
@@ -147,22 +145,18 @@
 				cursor: pointer;
 				aspect-ratio: 1 / 1;
 
-				@media (any-hover: hover) {
-					&:hover {
-						scale: 125%;
-						filter: brightness(0.85);
-					}
+				&:any-hover {
+					scale: 125%;
+					filter: brightness(0.85);
+				}
 
-					&:not(:hover) {
-						transition-duration: 1s;
-					}
+				&:not(:any-hover) {
+					transition-duration: 1s;
 				}
 			}
 
-			@media (any-hover: hover) {
-				&:hover + span {
-					opacity: 1;
-				}
+			&:any-hover + span {
+				opacity: 1;
 			}
 		}
 
@@ -178,7 +172,7 @@
 		flex-direction: column;
 		gap: 1rem;
 
-		> .text-box {
+		.text-box:not(.normal) {
 			--size: large;
 		}
 	}

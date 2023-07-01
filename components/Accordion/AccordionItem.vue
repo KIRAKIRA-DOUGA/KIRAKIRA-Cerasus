@@ -93,11 +93,9 @@
 			z-index: 1;
 		}
 		
-		@media (any-hover: hover) {
-			&:hover {
-				padding-left: 1.25rem;
-				background-color: c(gray-30, 20%);
-			}
+		&:any-hover {
+			padding-left: 1.25rem;
+			background-color: c(gray-30, 20%);
 		}
 
 		&.shown {
@@ -117,10 +115,8 @@
 				@include button-shadow-focus-only;
 			}
 			
-			@media (any-hover: hover) {
-				&:hover {
-					background-color: c(accent-10, 50%);
-				}
+			&:any-hover {
+				background-color: c(accent-10, 50%);
 			}
 		}
 	}

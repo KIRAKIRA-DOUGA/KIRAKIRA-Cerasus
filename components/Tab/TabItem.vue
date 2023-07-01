@@ -95,10 +95,8 @@
 				margin-right: 8px;
 			}
 
-			@media (any-hover: hover) {
-				&:hover {
-					background-color: c(hover-color);
-				}
+			&:any-hover {
+				background-color: c(hover-color);
 			}
 
 			&.active {

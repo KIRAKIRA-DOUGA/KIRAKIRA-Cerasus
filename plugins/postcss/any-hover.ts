@@ -2,7 +2,7 @@
  * 该 PostCSS 插件代码参考自：https://github.com/saulhardman/postcss-hover-media-feature
  */
 
-import { Rule, Helpers, AtRule } from "postcss";
+import { AtRule, Helpers, Rule } from "postcss";
 
 const ANY_HOVER_REGEXP = /:any-hover(?![-_\w])/g;
 
@@ -26,7 +26,7 @@ const anyHover: PostCSSPlugin = () => {
 		}
 		return false;
 	};
-	
+
 	const restoreAnyHoverPseudo = (selector: string) => selector.replaceAll(ANY_HOVER_REGEXP, ":hover");
 
 	return {
@@ -34,14 +34,14 @@ const anyHover: PostCSSPlugin = () => {
 
 		Rule(rule, { AtRule }) {
 			if (!rule.selector.match(ANY_HOVER_REGEXP)) return;
-			
+
 			if (isAlreadyNested(rule)) {
 				rule.selector = restoreAnyHoverPseudo(rule.selector);
 				return;
 			}
 
 			const hoverSelectors: string[] = [], nonHoverSelectors: string[] = [];
-			
+
 			rule.selectors.forEach(selector => {
 				if (selector.match(ANY_HOVER_REGEXP))
 					hoverSelectors.push(restoreAnyHoverPseudo(selector));
@@ -50,15 +50,15 @@ const anyHover: PostCSSPlugin = () => {
 			});
 
 			if (hoverSelectors.length === 0) return;
-			
+
 			const clonedRule = (selectors: string[] = hoverSelectors) => rule.clone({ selectors });
-			
+
 			let existAnyHoverAtRule: AtRule | undefined;
 			rule.root().walkAtRules("media", atRule => {
 				if (atRule.params.includes("any-hover: hover") && !existAnyHoverAtRule)
 					existAnyHoverAtRule = atRule;
 			});
-			
+
 			if (!existAnyHoverAtRule) {
 				const mediaQuery = createMediaQuery(clonedRule(), { AtRule });
 				rule.after(mediaQuery);

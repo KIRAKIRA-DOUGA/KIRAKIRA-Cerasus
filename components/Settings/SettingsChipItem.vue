@@ -47,10 +47,8 @@
 		}
 	}
 
-	@media (any-hover: hover) {
-		:comp:hover {
-			background-color: c(hover-color);
-		}
+	:comp:any-hover {
+		background-color: c(hover-color);
 	}
 
 	:comp > div {

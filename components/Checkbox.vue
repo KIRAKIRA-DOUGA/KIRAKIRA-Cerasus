@@ -135,10 +135,8 @@
 		align-items: center;
 		cursor: pointer;
 
-		@media (any-hover: hover) {
-			&:hover {
-				--color: #{c(accent-hover)};
-			}
+		&:any-hover {
+			--color: #{c(accent-hover)};
 		}
 
 		&:active {
@@ -158,10 +156,8 @@
 		box-shadow: inset 0 0 0 $border-size c(icon-color);
 		animation: outer-border-change-back $duration-half $duration-half $ease-in-expo reverse backwards;
 
-		@media (any-hover: hover) {
-			:comp:hover & {
-				background-color: c(hover-color);
-			}
+		:comp:any-hover & {
+			background-color: c(hover-color);
 		}
 
 		:comp:active & {
@@ -249,10 +245,8 @@
 		input:is(:checked, :indeterminate) + & {
 			@include button-shadow;
 
-			@media (any-hover: hover) {
-				:comp:hover & {
-					@include button-shadow-hover;
-				}
+			:comp:any-hover & {
+				@include button-shadow-hover;
 			}
 
 			:comp:active & {

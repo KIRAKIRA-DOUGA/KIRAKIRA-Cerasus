@@ -127,10 +127,8 @@
 		gap: 6px;
 		padding: 0 11px;
 
-		@media (any-hover: hover) {
-			&:hover {
-				background: c(hover-color);
-			}
+		&:any-hover {
+			background: c(hover-color);
 		}
 
 		.icon {
@@ -183,14 +181,12 @@
 		transition: $transition, left $ease-in-out-smooth $duration, opacity $ease-in-out-smooth $duration;
 		touch-action: pan-y pinch-zoom;
 
-		@media (any-hover: hover) {
-			&:hover {
-				@include button-shadow-hover;
-				background: c(accent-hover);
+		&:any-hover {
+			@include button-shadow-hover;
+			background: c(accent-hover);
 
-				&:has(:focus) {
-					@include button-shadow-hover-focus;
-				}
+			&:has(:focus) {
+				@include button-shadow-hover-focus;
 			}
 		}
 

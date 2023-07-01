@@ -1,5 +1,4 @@
 import path from "path";
-import { AcceptedPlugin } from "postcss";
 import parser from "postcss-selector-parser";
 import { VariableName } from "../../classes/VariableName";
 
@@ -14,7 +13,7 @@ const transformPseudo = (componentName: string) => (selectors => {
 					const node = nodes[i];
 					if (node === selector) isMatchPseudo = true;
 					else if (isMatchPseudo && node.type === "combinator") break;
-					else if (node.type === "tag") containsTag = true;
+					else if (node.type === "tag") containsTag = true; // TODO: 类似 `:comp > div` 会被误判。
 					if (isMatchPseudo) oneElementNodes.unshift(node);
 				}
 				const firstNode = oneElementNodes[0];

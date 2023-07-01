@@ -83,15 +83,13 @@
 			@include button-shadow-focus;
 		}
 
-		@media (any-hover: hover) { // 在触摸屏上不要支持 hover 样式。
-			&:hover {
-				@include button-shadow-hover;
-				background-color: c(accent-hover);
-			}
+		&:any-hover { // 在触摸屏上不要支持 hover 样式。
+			@include button-shadow-hover;
+			background-color: c(accent-hover);
+		}
 
-			&:hover:focus {
-				@include button-shadow-hover-focus;
-			}
+		&:any-hover:focus {
+			@include button-shadow-hover-focus;
 		}
 
 		&.secondary {
@@ -107,10 +105,8 @@
 				background-color: c(accent-pressed, 15%);
 			}
 
-			@media (any-hover: hover) {
-				&:hover {
-					background-color: c(accent-hover, 8%);
-				}
+			&:any-hover {
+				background-color: c(accent-hover, 8%);
 			}
 
 			&:active {

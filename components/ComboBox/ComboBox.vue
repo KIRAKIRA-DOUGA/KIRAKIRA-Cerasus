@@ -191,15 +191,13 @@
 			@include button-shadow-unchecked-focus;
 		}
 
-		@media (any-hover: hover) {
-			&:hover {
-				@include button-shadow-unchecked-hover;
-				background-color: c(gray-20);
-			}
+		&:any-hover {
+			@include button-shadow-unchecked-hover;
+			background-color: c(gray-20);
+		}
 
-			&:hover:focus {
-				@include button-shadow-unchecked-hover-focus;
-			}
+		&:any-hover:focus {
+			@include button-shadow-unchecked-hover-focus;
 		}
 	}
 

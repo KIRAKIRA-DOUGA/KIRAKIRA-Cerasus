@@ -373,14 +373,12 @@
 		background-color: c(accent);
 		transition: $fallback-transitions, all $ease-out-back 500ms, left $ease-in-out-smooth 500ms;
 
-		@media (any-hover: hover) {
-			&:hover {
-				@include button-shadow-hover;
-				background: c(accent-hover);
+		&:any-hover {
+			@include button-shadow-hover;
+			background: c(accent-hover);
 
-				&:has(:focus) {
-					@include button-shadow-hover-focus;
-				}
+			&:has(:focus) {
+				@include button-shadow-hover-focus;
 			}
 		}
 
