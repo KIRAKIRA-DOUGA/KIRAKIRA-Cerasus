@@ -146,12 +146,18 @@ Compact SVG
 
 这将会转变成如下效果：
 
-```html
-<!-- Vue 语法 -->
-<div :style="{ '--i': 1 }">
-<!-- HTML 语法 -->
-<div style="--i: 1;">
-```
+* Vue SFC 语法
+  ```vue
+  <div :style="{ '--i': 1 }">
+  ```
+* JSX 语法
+  ```jsx
+  <div style={{ '--i': 1 }}>
+  ```
+* HTML 语法
+  ```html
+  <div style="--i: 1;">
+  ```
 
 ### 工具提示
 
@@ -164,9 +170,9 @@ Compact SVG
 <div v-tooltip:top="'那只敏捷的棕毛狐狸跳过了一只懒惰的狗'">
 <!-- 高级设定工具提示 -->
 <div v-tooltip="{
-	title: '那只敏捷的棕毛狐狸跳过了一只懒惰的狗', // 工具提示文本
-	placement: 'top', // 指定四个位置方向
-	offset: 10, // 工具提示与元素之间的距离
+    title: '那只敏捷的棕毛狐狸跳过了一只懒惰的狗', // 工具提示文本
+    placement: 'top', // 指定四个位置方向
+    offset: 10, // 工具提示与元素之间的距离
 }">
 ```
 
@@ -253,6 +259,112 @@ $t("welcome", { foo: "hello", bar: "world" })
 </tr>
 </tbody>
 </table>
+
+### 组件根节点
+
+为使各组件的元素界限更清晰明显，且避免样式泄露等麻烦问题。请在项目中使用 `<Comp>` 作为组件的根节点。
+
+假设组件名为 `TextBox.vue`：
+
+```html
+<Comp />
+```
+
+这将会自动编译为：
+
+```html
+<kira-component class="text-box"></kira-component>
+```
+
+同时，在样式表中，可以使用 `:comp` 来更方便地指代组件的根节点。
+
+```css
+:comp {
+
+}
+```
+
+这将会自动编译为：
+
+```css
+kira-component.text-box {
+
+}
+```
+
+此外，在其它地方调用该组件时，亦可根据组件的名称而为该组件设定样式，而不必再额外添加多余的类名。
+
+### 触摸屏禁用 `:hover` 伪类
+
+众所周知鼠标才有悬停功能，将鼠标指针悬浮在按钮上，按钮就会响应为 `:hover` 伪类所表示的样式。然而触摸屏通过手指操作，并不存在“悬停”功能，而浏览器为了实现所谓的“悬停”功能，当触摸按钮时，浏览器会将一个无形的指针放置在该按钮上，以呈现“悬停”样式状态。当手指离开屏幕时，指针并不会消失，按钮仍然呈现为悬停样式。这会使用户觉得奇怪，用户必须点击其它空白处才能使该按钮的悬停样式消失。这并不是我们所期望的。
+
+请在项目中使用 `:any-hover` 伪类替换掉原本的 `:hover` 伪类，这将会使用户通过鼠标指针进行操作时才会出现悬停样式，而触摸屏则不会触发悬停样式。此外由于触摸屏没有 `:hover` 样式，请务必设定 `:active` 样式以为触摸屏用户带来更好的体验。
+
+```css
+button:any-hover {
+
+}
+```
+
+这将会自动编译为：
+
+```css
+@media (any-hover: hover) {
+    button:hover {
+
+    }
+}
+```
+
+> 除了 `@media (any-hover: hover)` 规则之外，还有一个 `@media (hover: hover)` 规则。它们的区别是：`hover` 只检测主要输入设备是否支持悬停功能，而 `any-hover` 检测是否至少一个输入设备支持悬停功能。
+
+### 菜单、浮窗等的双向绑定模型参数
+
+* 通过向菜单组件的 `v-model` 传递鼠标/指针事件 `MouseEvent` / `PointerEvent` 来在对应位置显示菜单，传递 `null` 则表示显示占位菜单而非上下文菜单，传递 `undefined` 表示隐藏菜单。
+
+* 通过向浮窗组件的 `v-model` 传递一个元组（推荐）或对象均可表示显示浮窗，传递 `undefined` 表示隐藏浮窗。
+  * 对象写法：
+    ```typescript
+    {
+        target: MouseEvent | PointerEvent; // 鼠标/指针事件
+        placement?: "top" | "bottom" | ...; // 指定四个位置方向
+        offset?: number; // 工具提示与元素之间的距离
+    }
+    ```
+  * 元组写法
+    ```typescript
+    [target, placement?, offset?]
+    ```
+
+### 与样式相关的组件 Prop
+
+以 `<SoftButton>` 组件为例，你可能会很好奇，该组件在 Prop 里居然不能自定义按钮大小，难道按钮的大小只能是固定的吗？
+
+并不是，`<LogoCover>` 组件也是一样的，不能在 Prop 中设定封面的大小。
+
+正确方法是在样式表中，使用以下方式（自定义属性）进行设置：
+
+```scss
+.soft-button {
+    --wrapper-size: 40px;
+}
+```
+
+这样就能完美应用样式了。
+
+除此之外，它也可以支持布尔或枚举类型。
+
+```scss
+.logo-text {
+    --form: full;
+}
+
+.tab-bar {
+    --clipped: true;
+}
+```
+
+毕竟设定样式，在 CSS/SCSS 中批量设定不比在 HTML/template 中单独设定要更好么？
 
 ## IDE
 

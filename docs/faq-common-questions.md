@@ -81,10 +81,22 @@
 
 ```scss
 .soft-button {
-	--wrapper-size: 40px;
+    --wrapper-size: 40px;
 }
 ```
 
 这样就能完美应用样式了。
 
-毕竟设定样式，在 CSS/SCSS 中设定不比在 HTML/template 中设定更好么？
+除此之外，它也可以支持布尔或枚举类型。
+
+```scss
+.logo-text {
+    --form: full;
+}
+
+.tab-bar {
+    --clipped: true;
+}
+```
+
+毕竟设定样式，在 CSS/SCSS 中批量设定不比在 HTML/template 中单独设定要更好么？
