@@ -64,7 +64,6 @@ export default defineNuxtConfig({
 		plugins: [
 			docsLoader(),
 			cssDoodleLoader(),
-			// vueNestedSFC(),
 		],
 		optimizeDeps: {
 			needsInterop: [
