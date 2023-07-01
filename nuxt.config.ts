@@ -181,6 +181,8 @@ export default defineNuxtConfig({
 	postcss: {
 		plugins: {
 			"./plugins/postcss/component-root": true,
+			"./plugins/postcss/any-hover": true,
+			"postcss-combine-media-query": true,
 		},
 	},
 	runtimeConfig: {

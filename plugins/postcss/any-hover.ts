@@ -1,27 +1,10 @@
-import selectorParser from "postcss-selector-parser";
+/*
+ * 该 PostCSS 插件代码参考自：https://github.com/saulhardman/postcss-hover-media-feature
+ */
+
 import { Rule, Helpers, AtRule } from "postcss";
 
-const selectorProcessor = selectorParser(selectors => {
-	const hoverSelectors: string[] = [];
-
-	selectors.walk(selector => {
-		if (
-			selector.type === "pseudo" &&
-			selector.toString() === ":any-hover" &&
-			selector.parent!.value !== ":not" &&
-			selector.parent!.toString() !== ":any-hover"
-		)
-			hoverSelectors.push(selector.parent!.toString());
-	});
-
-	const nonHoverSelectors = selectors.reduce((acc, selector) => {
-		if (hoverSelectors.includes(selector.toString()))
-			return acc;
-		return [...acc, selector.toString()];
-	}, [] as string[]);
-
-	return { hoverSelectors, nonHoverSelectors };
-});
+const ANY_HOVER_REGEXP = /:any-hover(?![-_\w])/g;
 
 const anyHover: PostCSSPlugin = () => {
 	const createMediaQuery = (rule: Rule, { AtRule }: Pick<Helpers, "AtRule">) => {
@@ -33,50 +16,57 @@ const anyHover: PostCSSPlugin = () => {
 
 	const isAlreadyNested = (rule: Rule) => {
 		let container = rule.parent!;
-
 		while (container !== null && container.type !== "root") {
 			if (container.type === "atrule") {
 				const atRule = container as AtRule;
 				if (atRule.params.includes("hover: hover") || atRule.params.includes("any-hover: hover"))
 					return true;
 			}
-
 			container = container.parent as typeof container;
 		}
-
 		return false;
 	};
+	
+	const restoreAnyHoverPseudo = (selector: string) => selector.replaceAll(ANY_HOVER_REGEXP, ":hover");
 
 	return {
 		postcssPlugin: "postcss-any-hover",
 
 		Rule(rule, { AtRule }) {
-			if (
-				!rule.selector.includes(":any-hover") ||
-				isAlreadyNested(rule)
-			)
-				return;
-
-			const {
-				hoverSelectors = [],
-				nonHoverSelectors = [],
-			} = selectorProcessor.transformSync(rule.selector, { lossless: false });
-
-			if (hoverSelectors.length === 0)
-				return;
+			if (!rule.selector.match(ANY_HOVER_REGEXP)) return;
 			
-			for (let i = 0; i < hoverSelectors.length; i++)
-				hoverSelectors[i] = hoverSelectors[i].replaceAll(":any-hover", ":hover");
-			
-			const mediaQuery = createMediaQuery(
-				rule.clone({ selectors: hoverSelectors }),
-				{ AtRule },
-			);
+			if (isAlreadyNested(rule)) {
+				rule.selector = restoreAnyHoverPseudo(rule.selector);
+				return;
+			}
 
-			rule.after(mediaQuery);
+			const hoverSelectors: string[] = [], nonHoverSelectors: string[] = [];
+			
+			rule.selectors.forEach(selector => {
+				if (selector.match(ANY_HOVER_REGEXP))
+					hoverSelectors.push(restoreAnyHoverPseudo(selector));
+				else
+					nonHoverSelectors.push(selector);
+			});
+
+			if (hoverSelectors.length === 0) return;
+			
+			const clonedRule = (selectors: string[] = hoverSelectors) => rule.clone({ selectors });
+			
+			let existAnyHoverAtRule: AtRule | undefined;
+			rule.root().walkAtRules("media", atRule => {
+				if (atRule.params.includes("any-hover: hover") && !existAnyHoverAtRule)
+					existAnyHoverAtRule = atRule;
+			});
+			
+			if (!existAnyHoverAtRule) {
+				const mediaQuery = createMediaQuery(clonedRule(), { AtRule });
+				rule.after(mediaQuery);
+			} else
+				existAnyHoverAtRule.append(clonedRule());
 
 			if (nonHoverSelectors.length > 0) {
-				rule.replaceWith(rule.clone({ selectors: nonHoverSelectors }));
+				rule.replaceWith(clonedRule(nonHoverSelectors));
 				return;
 			}
 

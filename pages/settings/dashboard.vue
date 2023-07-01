@@ -49,14 +49,12 @@
 		gap: 15px;
 		cursor: pointer;
 
-		@media (any-hover: hover) {
-			&:hover .avatar > img {
-				scale: 125%;
-			}
-
-			&:not(:hover) .avatar > img {
-				transition-duration: 1s;
-			}
+		&:any-hover .avatar > img {
+			scale: 125%;
+		}
+		
+		&:not(:any-hover) .avatar > img {
+			transition-duration: 1s;
 		}
 
 		.avatar {

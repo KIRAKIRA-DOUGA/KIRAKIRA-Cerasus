@@ -82,7 +82,7 @@ log("works with multiple selectors",
 	await run(`
 		.this-is-a-class:any-hover,
 		.banana {
-
+			text-decoration: underline;
 		}
 	`),
 	/* expect:
@@ -99,7 +99,7 @@ log("works with multiple selectors",
 	await run(`
 		.this-is-a-class:any-hover,
 		.banana:any-hover {
-
+			text-decoration: underline;
 		}
 	`),
 	/* expect:
@@ -113,7 +113,7 @@ log("works with multiple selectors",
 	await run(`
 		.this-is-a-class:any-hover,
 		.banana:hover {
-
+			text-decoration: underline;
 		}
 	`),
 );
@@ -179,4 +179,24 @@ log("ignores :hover pseudo-class selectors within :not pseudo-class selector lis
 			visibility: hidden;
 		}
 	*/
+);
+
+log("merge multiple any-hover media into one",
+	await run(`
+		.foo {
+			color: red;
+		}
+		.foo:any-hover {
+			color: green;
+		}
+		.foo:not(:any-hover) {
+			color: blue;
+		}
+		.bar {
+			color: yellow;
+		}
+		.bar:any-hover {
+			color: cyan;
+		}
+	`),
 );
