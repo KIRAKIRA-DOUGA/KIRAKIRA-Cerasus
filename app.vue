@@ -3,6 +3,7 @@
 	import "vue-virtual-scroller/dist/vue-virtual-scroller.css";
 	import manifest from "public/manifest.json";
 
+	const homepage = "https://cerasus.kirakira.moe/";
 	const { locale } = useI18n();
 	const langTag = computed(() => {
 		const langs = {
@@ -40,25 +41,25 @@
 			{ property: "og:site_name", content: manifest.name },
 			{ property: "og:title", content: manifest.name }, // XXX: 这里得放页面的 title。
 			{ property: "og:description", content: manifest.description },
-			{ property: "og:image", content: "https://kirakira.moe/static/thumbnail.png" },
-			{ property: "og:url", content: "https://kirakira.moe/" },
+			{ property: "og:image", content: `${homepage}static/thumbnail.png` },
+			{ property: "og:url", content: homepage },
 			// 以下内容为推特私有内容属性。
 			{ name: "twitter:card", content: "summary" },
 			{ name: "twitter:site", content: manifest.name },
 			{ name: "twitter:title", content: manifest.name }, // XXX: 这里得放页面的 title。
 			{ name: "twitter:description", content: manifest.description },
-			{ name: "twitter:image", content: "https://kirakira.moe/static/thumbnail.png" },
-			{ name: "twitter:url", content: "https://kirakira.moe/" },
+			{ name: "twitter:image", content: `${homepage}static/thumbnail.png` },
+			{ name: "twitter:url", content: homepage },
 		],
 		link: [
 			{ rel: "icon", type: "image/vnd.microsoft.icon", href: "/favicon.ico" },
 			{ rel: "shortcut icon", type: "image/x-icon", href: "/favicon.ico" },
 			{ rel: "apple-touch-icon", href: "/public/static/touch/48.png" },
 			{ rel: "manifest", href: "/manifest.json" },
-			{ rel: "alternate", href: "https://kirakira.moe/", hreflang: "x-default" },
-			{ rel: "alternate", href: "https://kirakira.moe/", hreflang: "zh-CN" },
-			{ rel: "alternate", href: "https://kirakira.moe/en", hreflang: "en" },
-			{ rel: "alternate", href: "https://kirakira.moe/ja", hreflang: "ja" },
+			{ rel: "alternate", href: homepage, hreflang: "x-default" },
+			{ rel: "alternate", href: homepage, hreflang: "zh-CN" },
+			{ rel: "alternate", href: `${homepage}en`, hreflang: "en" },
+			{ rel: "alternate", href: `${homepage}ja`, hreflang: "ja" },
 		],
 	});
 
@@ -70,13 +71,12 @@
 	// 	slotName.value = "pocket-edition-web-slot";
 	// }, 5000);
 
-	if (environment.client) {
+	if (environment.client)
 		window.addEventListener("load", () => {
 			if (!("serviceWorker" in navigator))
 				throw new Error("serviceWorker is not supported in current browser!");
 			navigator.serviceWorker.register("/sw.js");
 		});
-	}
 
 	// 彩蛋
 	loadEgg();
