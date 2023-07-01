@@ -1,20 +1,26 @@
 import path from "path";
 import parser from "postcss-selector-parser";
 import { VariableName } from "../../classes/VariableName";
+import { arrayClearAll } from "../../utils/array";
 
 const transformPseudo = (componentName: string) => (selectors => {
 	selectors.walk(selector => {
 		if (selector.type === "pseudo" && selector.value.match(/:comp(onent)?$/)) {
 			if (selector.parent) {
-				const oneElementNodes = [] as parser.Node[];
+				const oneElementNodes: parser.Node[] = [];
 				const { nodes } = selector.parent;
 				let isMatchPseudo = false, containsTag = false;
-				for (let i = nodes.length - 1; i >= 0; i--) {
-					const node = nodes[i];
+				for (const node of nodes) {
+					if (node.type === "combinator")
+						if (isMatchPseudo) break;
+						else {
+							arrayClearAll(oneElementNodes);
+							containsTag = false;
+							continue;
+						}
+					oneElementNodes.push(node);
 					if (node === selector) isMatchPseudo = true;
-					else if (isMatchPseudo && node.type === "combinator") break;
-					else if (node.type === "tag") containsTag = true; // TODO: 类似 `:comp > div` 会被误判。
-					if (isMatchPseudo) oneElementNodes.unshift(node);
+					if (node.type === "tag") containsTag = true;
 				}
 				const firstNode = oneElementNodes[0];
 				if (!containsTag && firstNode) {
