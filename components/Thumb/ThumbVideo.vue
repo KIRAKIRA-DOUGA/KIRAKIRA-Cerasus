@@ -70,7 +70,7 @@
 		position: relative;
 		display: inline-block;
 		color: c(text-color);
-		
+
 		&:any-hover:not(:active) {
 			z-index: 1;
 
@@ -111,6 +111,8 @@
 
 	.title {
 		font-weight: 500;
+		width: $width;
+		text-overflow: ellipsis;
 	}
 
 	.info {
