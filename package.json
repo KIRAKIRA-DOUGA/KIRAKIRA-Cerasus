@@ -21,7 +21,7 @@
 	"author": "KIRAKIRA Project Team",
 	"scripts": {
 		"build": "nuxt build",
-		"dev": "cross-env HOST=0.0.0.0 nuxt dev --https --ssl-cert server/server.cer --ssl-key server/server.key",
+		"dev": "cross-env HOST=0.0.0.0 nuxt dev",
 		"dev-http": "cross-env HOST=0.0.0.0 nuxt dev",
 		"generate": "nuxt generate",
 		"preview": "nuxt preview",
@@ -75,6 +75,7 @@
 		"unist-util-visit": "^4.1.1"
 	},
 	"dependencies": {
+		"kirakirabackend": "file:api",
 		"@nuxtjs/color-mode": "^3.2.0",
 		"@nuxtjs/robots": "^3.0.0",
 		"@nuxtjs/svg-sprite": "^1.0.2",
@@ -88,6 +89,7 @@
 		"@vueuse/core": "^10.1.2",
 		"@vueuse/head": "^1.0.0-rc.14",
 		"@vueuse/nuxt": "^9.13.0",
+		"axios": "^0.27.2",
 		"css-doodle": "^0.34.3",
 		"gsap": "^3.11.4",
 		"js-confetti": "^0.11.0",
