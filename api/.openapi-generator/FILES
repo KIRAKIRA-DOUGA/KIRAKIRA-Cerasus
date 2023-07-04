@@ -13,7 +13,6 @@ index.ts
 middleware.ts
 models/ObjectSerializer.ts
 models/VideoDetail200Response.ts
-models/VideoDetail200ResponseDetails.ts
 models/Videos200Response.ts
 models/Videos200ResponsePaginationData.ts
 models/Videos200ResponseVideosInner.ts

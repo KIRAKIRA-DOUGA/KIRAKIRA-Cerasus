@@ -2,7 +2,6 @@ import { ResponseContext, RequestContext, HttpFile } from '../http/http';
 import { Configuration} from '../configuration'
 
 import { VideoDetail200Response } from '../models/VideoDetail200Response';
-import { VideoDetail200ResponseDetails } from '../models/VideoDetail200ResponseDetails';
 import { Videos200Response } from '../models/Videos200Response';
 import { Videos200ResponsePaginationData } from '../models/Videos200ResponsePaginationData';
 import { Videos200ResponseVideosInner } from '../models/Videos200ResponseVideosInner';
