@@ -10,7 +10,7 @@
 	const router = useRouter();
 	const id = router.currentRoute.value.path.split("/")[2];
 	const videoDetails = ref<VideoDetail200Response>();
-	const videoLoc = ref("");
+	const videoLoc = ref(undefined);
 
 	// fetch the videos according to the query
 	watch(() => id, () => {
@@ -18,7 +18,8 @@
 		api.videoDetail(id)
 			.then(x => {
 				videoDetails.value = x;
-				videoLoc.value = videoDetails.value?.details?.mPDLoc?.split(".mpd")[0] ?? "";
+				videoLoc.value = x.details?.mPDLoc;
+				console.log(videoLoc.value);
 			})
 			.catch((error: any) => console.error(error));
 	}, { immediate: true });
@@ -28,13 +29,13 @@
 
 <template>
 	<div class="container">
-		<PlayerVideo :src="videoLoc" />
+		<PlayerVideo v-if="videoLoc !== undefined" :src="videoLoc" />
 		<div class="under-player">
 			<div class="left">
 				<CreationDetail
 					:date="videoDetails?.details?.uploadDate ?? new Date()"
 					category="音MAD"
-					:title="videoDetails?.details?.title"
+					:title="videoDetails?.details?.title ?? ''"
 					copyright="unauthorized-repost"
 					:tags="videoDetails?.tags"
 				/>
@@ -45,7 +46,7 @@
 			<div class="right">
 				<CreationUploader
 					:avatar="avatar"
-					:username="videoDetails?.details?.username"
+					:username="videoDetails?.details?.username ?? ''"
 					:fans="233"
 					isFollowed
 				/>
