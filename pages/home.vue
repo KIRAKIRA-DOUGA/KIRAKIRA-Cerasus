@@ -9,14 +9,15 @@
 	useHead({ title: "首页" });
 
 	const videos = ref<Videos200Response>();
-	const search = ref(null);
+	const search = ref(undefined);
 	const sortCategory = ref("upload_date");
 	const sortDirection = ref("desc");
 
 	// fetch the videos according to the query
 	watch([() => search.value, () => sortCategory.value, () => sortDirection.value], async ([newSearch, newSortCategory, newSortDirection]) => {
 		const api : DefaultApi = API();
-		videos.value = await api.videos(newSearch, newSortCategory, newSortDirection, "true");
+		api.videos(newSearch, newSortCategory, newSortDirection, "true").then(x => videos.value = x)
+			.catch((error: any) => console.error(error));
 	}, { immediate: true });
 
 	const pages = getPages(
