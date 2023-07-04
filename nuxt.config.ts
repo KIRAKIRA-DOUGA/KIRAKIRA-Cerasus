@@ -187,7 +187,7 @@ export default defineNuxtConfig({
 	},
 	runtimeConfig: {
 		public: {
-			siteUrl: "https://localhost:3000",
+			siteUrl: "http://localhost:3000",
 		},
 	},
 	components: [

@@ -1,23 +1,12 @@
-export const postData = async (url: string, data: object) => {
-	const response = await fetch(url, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify(data), // 将对象序列化为字符串
-	});
+export * from "./http/http";
+export * from "./auth/auth";
+export * from "./models/all";
+export { createConfiguration } from "./configuration"
+export { Configuration } from "./configuration"
+export * from "./apis/exception";
+export * from "./servers";
+export { RequiredError } from "./apis/baseapi";
 
-	return response.json(); // 解析为 JSON 格式
-};
+export { PromiseMiddleware as Middleware } from './middleware';
+export { PromiseDefaultApi as DefaultApi } from './types/PromiseAPI';
 
-export const putData = async (url: string, data: object) => {
-	const response = await fetch(url, {
-		method: "PUT",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify(data), // 将对象序列化为字符串
-	});
-
-	return response.json(); // 解析为 JSON 格式
-};
