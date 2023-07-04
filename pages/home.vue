@@ -2,10 +2,22 @@
 	import testVideo from "assets/images/cav5-cover.png";
 	import testVideo2 from "assets/images/av820864307.jpg";
 	import testAudio from "assets/images/av893640047.jpg";
+	import { DefaultApi, Videos200Response } from "api";
 
 	const selectedTab = ref("home");
 
 	useHead({ title: "首页" });
+
+	const videos = ref<Videos200Response>();
+	const search = ref("");
+	const sortCategory = ref("");
+	const sortDirection = ref("");
+
+	// fetch the videos according to the query
+	watch([() => search.value, () => sortCategory.value, () => sortDirection.value], async ([newSearch, newSortCategory, newSortDirection]) => {
+		const api : DefaultApi = API();
+		videos.value = await api.videos(newSearch, newSortCategory, newSortDirection, "true");
+	});
 
 	const pages = getPages(
 		["组件测试页", "/components"],
@@ -64,32 +76,19 @@
 			<TabItem id="synth" direction="vertical-reverse" :badge="233">{{ t.synthetical }}</TabItem>
 		</TabBar>
 		<Subheader icon="category" :badge="233">分区</Subheader>
-		<div class="videos">
+		<div
+			v-for="video in videos?.videos"
+			:key="video.videoID"
+			class="videos"
+		>
 			<ThumbVideo
-				link="video"
-				uploader="艾了个拉"
-				:image="testVideo"
+				:link="video.videoID?.toString() ?? ''"
+				:uploader="video.authorName ?? ''"
+				:image="video.thumbnailLoc"
 				:date="new Date()"
-				:watchedCount="233_0000"
+				:watchedCount="video.views"
 				:duration="new Duration(2, 33)"
-			>测试视频</ThumbVideo>
-			<ThumbVideo
-				blank
-				link="video"
-				uploader="艾了个拉"
-				:image="testVideo2"
-				:date="new Date()"
-				:watchedCount="233_0000"
-				:duration="new Duration(2, 33)"
-			>在新窗口打开视频</ThumbVideo>
-			<ThumbVideo
-				link="audio"
-				uploader="艾了个拉"
-				:image="testAudio"
-				:date="new Date()"
-				:watchedCount="233_0000"
-				:duration="new Duration(2, 33)"
-			>测试音频</ThumbVideo>
+			>{{ video.title }}</ThumbVideo>
 		</div>
 		<Subheader icon="home" :badge="233">网站地图</Subheader>
 		<div class="pages">
