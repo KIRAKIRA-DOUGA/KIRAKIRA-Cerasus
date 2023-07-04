@@ -16,7 +16,6 @@ export function getRoutePath({
 	removeI18nPrefix: boolean;
 }> = {}): string {
 	let path = route.path;
-	path = path.slice(1); // 移除根节点斜杠。
 	if (removeI18n)
 		path = path.replace(new RegExp(`^(${localeCodes.value.join("|")})\\/?`), ""); // 移除语言前缀。
 	return path;
@@ -96,4 +95,9 @@ export function removeI18nPrefix(route: string) {
 export function currentSettingsPage(route?: string) {
 	route ||= getRoutePath();
 	return route.match(/(?<=settings\/)[A-Za-z0-9-_]+/)?.[0] ?? "";
+}
+
+export function videos(route?: string) {
+	route ||= getRoutePath();
+	return route.match(/(?<=videos\/)[0-9-]+/)?.[0] ?? "";
 }
