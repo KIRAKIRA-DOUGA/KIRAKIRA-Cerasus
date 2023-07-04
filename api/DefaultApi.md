@@ -1,6 +1,6 @@
 # .DefaultApi
 
-All URIs are relative to *http://localhost:3000*
+All URIs are relative to *http://localhost:3000/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
