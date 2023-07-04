@@ -39,7 +39,7 @@
 			@include square(58px);
 			@include circle;
 			overflow: hidden;
-			background-color: c(gray-30);
+			background-color: c(gray-20);
 
 			> img {
 				z-index: 1;

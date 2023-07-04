@@ -65,7 +65,7 @@
 
 	.wrapper {
 		height: 100%;
-		background-color: c(gray-30);
+		background-color: c(gray-20);
 		transition: transform 1s $ease-out-smooth;
 
 		.line-wrapper {
@@ -98,7 +98,7 @@
 			&.line-2 {
 				animation: indeterminate-scale-2 $animation-options;
 			}
-			
+
 			&.to-determinate {
 				animation: to-determinate-scale 250ms $ease-out-smooth;
 			}
@@ -183,7 +183,7 @@
 			scale: 0.08 1;
 		}
 	}
-	
+
 	@keyframes to-determinate-scale {
 		from {
 			width: 100%;

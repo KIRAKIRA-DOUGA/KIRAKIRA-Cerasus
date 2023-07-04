@@ -23,6 +23,6 @@
 		@include round-large;
 		margin: 1rem 0;
 		padding: 1rem;
-		background-color: c(gray-30);
+		background-color: c(gray-20);
 	}
 </style>

@@ -54,7 +54,7 @@
 
 		&:any-hover {
 			@include button-shadow-unchecked-hover;
-			background-color: c(gray-20);
+			background-color: c(gray-5);
 		}
 
 		&:any-hover:focus {

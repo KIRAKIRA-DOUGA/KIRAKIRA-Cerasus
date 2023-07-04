@@ -92,10 +92,10 @@
 			@include button-shadow-unchecked-focus-only;
 			z-index: 1;
 		}
-		
+
 		&:any-hover {
 			padding-left: 1.25rem;
-			background-color: c(gray-30, 20%);
+			background-color: c(hover-color);
 		}
 
 		&.shown {
@@ -114,7 +114,7 @@
 			&:focus-visible {
 				@include button-shadow-focus-only;
 			}
-			
+
 			&:any-hover {
 				background-color: c(accent-10, 50%);
 			}

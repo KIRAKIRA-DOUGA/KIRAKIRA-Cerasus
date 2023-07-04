@@ -100,7 +100,7 @@
 		--side-width: calc(max((100% - #{$max-width + $nav-width}) / 2, 0px)); // 注意这里的 0px 一旦省略 px 就会报错，因此不能去掉单位。
 		position: relative;
 		min-height: 100dvh;
-		background-color: c(gray-20);
+		background-color: c(gray-5);
 		transition: $fallback-transitions, width 0s, height 0s, min-height 0s;
 	}
 
@@ -270,7 +270,7 @@
 		padding-right: $nav-padding-x;
 		padding-bottom: 10px;
 		padding-left: $nav-padding-x;
-		background-color: c(gray-20, 80%);
+		background-color: c(gray-5, 80%);
 
 		h1 {
 			margin-bottom: 10px;

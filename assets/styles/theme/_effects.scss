@@ -52,7 +52,7 @@
 // #region 中性色
 /// 控制球阴影 关闭
 @mixin control-ball-shadow-off {
-	box-shadow: 0 1px 6px c(accent-shadow, 50%);
+	box-shadow: 0 1px 6px c(accent-shadow, 70%);
 }
 
 @mixin control-ball-shadow-off-disabled {

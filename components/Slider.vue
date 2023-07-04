@@ -141,7 +141,7 @@
 	}
 
 	.track {
-		background-color: c(gray-30);
+		background-color: c(gray-20);
 		cursor: pointer;
 	}
 

@@ -87,7 +87,7 @@
 		@include round-large;
 		position: relative;
 		overflow: hidden;
-		background-color: c(gray-20);
+		background-color: c(gray-5);
 
 		> img {
 			z-index: 1;
@@ -135,7 +135,7 @@
 			@include square(64px);
 			@include circle;
 			overflow: hidden;
-			background-color: c(gray-30);
+			background-color: c(gray-20);
 			pointer-events: auto;
 
 			> img {

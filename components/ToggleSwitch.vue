@@ -141,7 +141,7 @@
 			}
 
 			:comp.disabled & {
-				background-color: c(gray-40, 40%);
+				background-color: c(gray-30, 40%);
 			}
 
 			:comp.on.disabled & {

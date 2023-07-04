@@ -167,7 +167,7 @@
 		color: c(text-color);
 		background-color: c(main-bg);
 		cursor: pointer;
-		
+
 		.placeholder {
 			color: c(icon-color);
 		}
@@ -193,7 +193,7 @@
 
 		&:any-hover {
 			@include button-shadow-unchecked-hover;
-			background-color: c(gray-20);
+			background-color: c(gray-5);
 		}
 
 		&:any-hover:focus {

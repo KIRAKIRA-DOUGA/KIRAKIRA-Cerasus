@@ -158,7 +158,7 @@
 		overflow: hidden;
 
 		&:has(svg) {
-			background: c(gray-30);
+			background: c(gray-20);
 		}
 
 		> img {

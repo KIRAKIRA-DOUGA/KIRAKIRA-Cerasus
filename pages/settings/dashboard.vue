@@ -52,7 +52,7 @@
 		&:any-hover .avatar > img {
 			scale: 125%;
 		}
-		
+
 		&:not(:any-hover) .avatar > img {
 			transition-duration: 1s;
 		}
@@ -61,7 +61,7 @@
 			@include square(64px);
 			@include circle;
 			overflow: hidden;
-			background-color: c(gray-30);
+			background-color: c(gray-20);
 
 			> img {
 				z-index: 1;
