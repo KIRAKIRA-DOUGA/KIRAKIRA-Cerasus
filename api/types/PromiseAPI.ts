@@ -1,6 +1,8 @@
 import { ResponseContext, RequestContext, HttpFile } from '../http/http';
 import { Configuration} from '../configuration'
 
+import { VideoDetail200Response } from '../models/VideoDetail200Response';
+import { VideoDetail200ResponseDetails } from '../models/VideoDetail200ResponseDetails';
 import { Videos200Response } from '../models/Videos200Response';
 import { Videos200ResponsePaginationData } from '../models/Videos200ResponsePaginationData';
 import { Videos200ResponseVideosInner } from '../models/Videos200ResponseVideosInner';
@@ -38,7 +40,7 @@ export class PromiseDefaultApi {
 
     /**
      * Register user
-     * @param username search string
+     * @param username username to register
      * @param password sort category
      * @param email sort category
      */
@@ -56,6 +58,15 @@ export class PromiseDefaultApi {
      */
     public upload(tags: Array<string>, title: string, description: string, filename?: Array<HttpFile>, _options?: Configuration): Promise<void> {
         const result = this.api.upload(tags, title, description, filename, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * Get list of videos
+     * @param id video ID
+     */
+    public videoDetail(id: number, _options?: Configuration): Promise<VideoDetail200Response> {
+        const result = this.api.videoDetail(id, _options);
         return result.toPromise();
     }
 
