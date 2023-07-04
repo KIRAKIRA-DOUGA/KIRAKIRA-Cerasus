@@ -9,15 +9,15 @@
 	useHead({ title: "首页" });
 
 	const videos = ref<Videos200Response>();
-	const search = ref("");
-	const sortCategory = ref("");
-	const sortDirection = ref("");
+	const search = ref(null);
+	const sortCategory = ref("upload_date");
+	const sortDirection = ref("desc");
 
 	// fetch the videos according to the query
 	watch([() => search.value, () => sortCategory.value, () => sortDirection.value], async ([newSearch, newSortCategory, newSortDirection]) => {
 		const api : DefaultApi = API();
 		videos.value = await api.videos(newSearch, newSortCategory, newSortDirection, "true");
-	});
+	}, { immediate: true });
 
 	const pages = getPages(
 		["组件测试页", "/components"],
@@ -76,11 +76,11 @@
 		</TabBar>
 		<Subheader icon="category" :badge="233">分区</Subheader>
 		<div
-			v-for="video in videos?.videos"
-			:key="video.videoID"
 			class="videos"
 		>
 			<ThumbVideo
+				v-for="video in videos?.videos"
+				:key="video.videoID"
 				:link="video.videoID?.toString() ?? ''"
 				:uploader="video.authorName ?? ''"
 				:image="video.thumbnailLoc"
