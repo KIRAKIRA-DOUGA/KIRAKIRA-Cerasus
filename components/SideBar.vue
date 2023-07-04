@@ -17,7 +17,7 @@
 			<SoftButton v-i="2" v-tooltip:right="t.history" icon="history" />
 			<SoftButton v-i="3" v-tooltip:right="t.favorite" icon="star" />
 			<SoftButton v-i="4" v-tooltip:right="t.follow" icon="feed" />
-			<SoftButton v-i="5" v-tooltip:right="t.upload" icon="upload" />
+			<SoftButton v-i="5" v-tooltip:right="t.upload" icon="upload" href="/upload" />
 		</div>
 
 		<div v-i="6" class="center">

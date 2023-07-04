@@ -133,7 +133,7 @@
 
 		.icon {
 			margin-left: -2px;
-			font-size: 24px;
+			font-size: 18px;
 		}
 	}
 
