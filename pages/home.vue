@@ -82,7 +82,7 @@
 			<ThumbVideo
 				v-for="video in videos?.videos"
 				:key="video.videoID"
-				:link="video.videoID?.toString() ?? ''"
+				:link="'videos' + video.videoID ?? ''"
 				:uploader="video.authorName ?? ''"
 				:image="video.thumbnailLoc"
 				:date="new Date()"
