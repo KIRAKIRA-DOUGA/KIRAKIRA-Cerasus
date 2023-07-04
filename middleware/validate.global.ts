@@ -42,7 +42,7 @@ export const slugValidate = () => {
 	const validate: Validate = route => {
 		const routePath = getRoutePath({ route });
 		const routeNumber = +routePath;
-		if (validRoutes.includes(routePath) || currentSettingsPage(routePath))
+		if (validRoutes.includes(routePath) || currentSettingsPage(routePath) || videos(routePath))
 			return true;
 		if (routeNumber === 404)
 			return false;
