@@ -18,8 +18,7 @@
 		api.videoDetail(id)
 			.then(x => {
 				videoDetails.value = x;
-				videoLoc.value = x.details?.mPDLoc;
-				console.log(videoLoc.value);
+				videoLoc.value = x.mPDLoc.split(".mpd")[0];
 			})
 			.catch((error: any) => console.error(error));
 	}, { immediate: true });
@@ -33,11 +32,11 @@
 		<div class="under-player">
 			<div class="left">
 				<CreationDetail
-					:date="videoDetails?.details?.uploadDate ?? new Date()"
+					:date="new Date()"
 					category="音MAD"
-					:title="videoDetails?.details?.title ?? ''"
+					:title="videoDetails?.title ?? ''"
 					copyright="unauthorized-repost"
-					:tags="videoDetails?.tags"
+					:tags="videoDetails?.tags ?? []"
 				/>
 				<CreationComments
 					count="233"
@@ -46,7 +45,7 @@
 			<div class="right">
 				<CreationUploader
 					:avatar="avatar"
-					:username="videoDetails?.details?.username ?? ''"
+					:username="videoDetails?.username ?? ''"
 					:fans="233"
 					isFollowed
 				/>
