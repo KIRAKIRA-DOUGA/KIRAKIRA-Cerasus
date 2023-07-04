@@ -1,6 +1,8 @@
 import { ResponseContext, RequestContext, HttpFile } from '../http/http';
 import { Configuration} from '../configuration'
 
+import { VideoDetail200Response } from '../models/VideoDetail200Response';
+import { VideoDetail200ResponseDetails } from '../models/VideoDetail200ResponseDetails';
 import { Videos200Response } from '../models/Videos200Response';
 import { Videos200ResponsePaginationData } from '../models/Videos200ResponsePaginationData';
 import { Videos200ResponseVideosInner } from '../models/Videos200ResponseVideosInner';
@@ -28,7 +30,7 @@ export interface DefaultApiLogoutRequest {
 
 export interface DefaultApiRegisterRequest {
     /**
-     * search string
+     * username to register
      * @type string
      * @memberof DefaultApiregister
      */
@@ -72,6 +74,15 @@ export interface DefaultApiUploadRequest {
      * @memberof DefaultApiupload
      */
     filename?: Array<HttpFile>
+}
+
+export interface DefaultApiVideoDetailRequest {
+    /**
+     * video ID
+     * @type number
+     * @memberof DefaultApivideoDetail
+     */
+    id: number
 }
 
 export interface DefaultApiVideosRequest {
@@ -138,6 +149,14 @@ export class ObjectDefaultApi {
      */
     public upload(param: DefaultApiUploadRequest, options?: Configuration): Promise<void> {
         return this.api.upload(param.tags, param.title, param.description, param.filename,  options).toPromise();
+    }
+
+    /**
+     * Get list of videos
+     * @param param the request object
+     */
+    public videoDetail(param: DefaultApiVideoDetailRequest, options?: Configuration): Promise<VideoDetail200Response> {
+        return this.api.videoDetail(param.id,  options).toPromise();
     }
 
     /**

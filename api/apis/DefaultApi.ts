@@ -8,6 +8,7 @@ import {canConsumeForm, isCodeInRange} from '../util';
 import {SecurityAuthentication} from '../auth/auth';
 
 
+import { VideoDetail200Response } from '../models/VideoDetail200Response';
 import { Videos200Response } from '../models/Videos200Response';
 
 /**
@@ -83,7 +84,7 @@ export class DefaultApiRequestFactory extends BaseAPIRequestFactory {
 
     /**
      * Register user
-     * @param username search string
+     * @param username username to register
      * @param password sort category
      * @param email sort category
      */
@@ -204,6 +205,37 @@ export class DefaultApiRequestFactory extends BaseAPIRequestFactory {
             ]);
             requestContext.setHeaderParam("Content-Type", contentType);
         }
+
+        
+        const defaultAuth: SecurityAuthentication | undefined = _options?.authMethods?.default || this.configuration?.authMethods?.default
+        if (defaultAuth?.applySecurityAuthentication) {
+            await defaultAuth?.applySecurityAuthentication(requestContext);
+        }
+
+        return requestContext;
+    }
+
+    /**
+     * Get list of videos
+     * @param id video ID
+     */
+    public async videoDetail(id: number, _options?: Configuration): Promise<RequestContext> {
+        let _config = _options || this.configuration;
+
+        // verify required parameter 'id' is not null or undefined
+        if (id === null || id === undefined) {
+            throw new RequiredError("DefaultApi", "videoDetail", "id");
+        }
+
+
+        // Path Params
+        const localVarPath = '/videos/{id}'
+            .replace('{' + 'id' + '}', encodeURIComponent(String(id)));
+
+        // Make Request Context
+        const requestContext = _config.baseServer.makeRequestContext(localVarPath, HttpMethod.GET);
+        requestContext.setHeaderParam("Accept", "application/json, */*;q=0.8")
+
 
         
         const defaultAuth: SecurityAuthentication | undefined = _options?.authMethods?.default || this.configuration?.authMethods?.default
@@ -367,6 +399,38 @@ export class DefaultApiResponseProcessor {
                 ObjectSerializer.parse(await response.body.text(), contentType),
                 "void", ""
             ) as void;
+            return body;
+        }
+
+        throw new ApiException<string | Blob | undefined>(response.httpStatusCode, "Unknown API Status Code!", await response.getBodyAsAny(), response.headers);
+    }
+
+    /**
+     * Unwraps the actual response sent by the server from the response context and deserializes the response content
+     * to the expected objects
+     *
+     * @params response Response returned by the server for a request to videoDetail
+     * @throws ApiException if the response code was not in [200, 299]
+     */
+     public async videoDetail(response: ResponseContext): Promise<VideoDetail200Response > {
+        const contentType = ObjectSerializer.normalizeMediaType(response.headers["content-type"]);
+        if (isCodeInRange("200", response.httpStatusCode)) {
+            const body: VideoDetail200Response = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "VideoDetail200Response", ""
+            ) as VideoDetail200Response;
+            return body;
+        }
+        if (isCodeInRange("0", response.httpStatusCode)) {
+            throw new ApiException<undefined>(response.httpStatusCode, "Unexpected error", undefined, response.headers);
+        }
+
+        // Work around for missing responses in specification, e.g. for petstore.yaml
+        if (response.httpStatusCode >= 200 && response.httpStatusCode <= 299) {
+            const body: VideoDetail200Response = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "VideoDetail200Response", ""
+            ) as VideoDetail200Response;
             return body;
         }
 

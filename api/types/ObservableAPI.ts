@@ -2,6 +2,8 @@ import { ResponseContext, RequestContext, HttpFile } from '../http/http';
 import { Configuration} from '../configuration'
 import { Observable, of, from } from '../rxjsStub';
 import {mergeMap, map} from  '../rxjsStub';
+import { VideoDetail200Response } from '../models/VideoDetail200Response';
+import { VideoDetail200ResponseDetails } from '../models/VideoDetail200ResponseDetails';
 import { Videos200Response } from '../models/Videos200Response';
 import { Videos200ResponsePaginationData } from '../models/Videos200ResponsePaginationData';
 import { Videos200ResponseVideosInner } from '../models/Videos200ResponseVideosInner';
@@ -70,7 +72,7 @@ export class ObservableDefaultApi {
 
     /**
      * Register user
-     * @param username search string
+     * @param username username to register
      * @param password sort category
      * @param email sort category
      */
@@ -116,6 +118,29 @@ export class ObservableDefaultApi {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.upload(rsp)));
+            }));
+    }
+
+    /**
+     * Get list of videos
+     * @param id video ID
+     */
+    public videoDetail(id: number, _options?: Configuration): Observable<VideoDetail200Response> {
+        const requestContextPromise = this.requestFactory.videoDetail(id, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.videoDetail(rsp)));
             }));
     }
 
