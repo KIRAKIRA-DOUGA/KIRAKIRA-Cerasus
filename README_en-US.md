@@ -390,7 +390,7 @@ It is recommended to use any of the following platforms for development:
 * Word
 </details>
 
-## Use Technology
+## Technologies used
 The technology stacks used in front-end development include:
 
 [![Nuxt](https://img.shields.io/badge/-Nuxt%203-00DC82?style=for-the-badge&logo=nuxt.js&logoColor=white)](https://nuxt.com/)
