@@ -13,6 +13,7 @@
 		["API 测试页", "/test-api"],
 		["动态图标测试页", "/test-lottie"],
 		["搜索", "/search"],
+		["投稿", "/upload"],
 		["内容", "/hello"],
 		["下一页", "/next"],
 	);

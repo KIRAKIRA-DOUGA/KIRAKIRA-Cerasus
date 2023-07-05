@@ -5,7 +5,7 @@
 		/** 分区。 */
 		category: string;
 		/** 版权。 */
-		copyright: "original" | "authorized-repost" | "repost";
+		copyright: Copyright;
 		/** 标题。 */
 		title: string;
 		/** 标签们。 */

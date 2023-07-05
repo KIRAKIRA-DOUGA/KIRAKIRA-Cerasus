@@ -27,6 +27,8 @@ declare global {
 	type PrivacyType = "public" | "following" | "private";
 	/** 工具提示、浮窗等的放置位置方向。 */
 	type Placement = "top" | "right" | "bottom" | "left" | "x" | "y";
+	/** 版权。 */
+	type Copyright = "original" | "authorized-repost" | "repost";
 
 	type FlyoutModel = FlyoutModelNS.Tuple | FlyoutModelNS.Object;
 	type MenuModel = MouseEvent | PointerEvent | null;

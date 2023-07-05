@@ -103,10 +103,15 @@
 <style scoped lang="scss">
 	$height: 36px;
 	$duration: 500ms;
+	
+	@layer props {
+		:comp {
+			width: fit-content;
+		}
+	}
 
 	:comp {
 		position: relative;
-		width: fit-content;
 	}
 
 	.track {
@@ -141,7 +146,7 @@
 		display: grid;
 		grid-auto-columns: 1fr;
 		grid-auto-flow: column;
-		width: fit-content;
+		width: inherit;
 		height: $height;
 	}
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	useHead({ title: t.upload });
-	const contentVisibility = ref("public");
-	const contentCopyright = ref("original");
+	const contentVisibility = ref<PrivacyType>("public");
+	const contentCopyright = ref<Copyright>("original");
 	const contentTitle = ref("");
 	const contentOriginalCreator = ref("");
 	const contentOriginalLink = ref("");
@@ -36,9 +36,8 @@
 		<HeadingGroup :name="t.upload" englishName="Upload" />
 
 		<div class="card-container">
-
 			<div class="card left">
-				<div class="cover">
+				<div v-ripple class="cover">
 					<!-- 选择封面，裁剪器可以先不做 -->
 				</div>
 
@@ -56,42 +55,41 @@
 
 				<Transition :css="false" @enter="onContentEnter" @leave="onContentLeave">
 					<div v-if="contentCopyright === 'repost'" class="repost-options">
-						<div class="form-item">
+						<section>
 							<Subheader icon="person">Original Creator</Subheader>
 							<TextBox v-model="contentOriginalCreator" required />
-						</div>
+						</section>
 
-						<div class="form-item">
+						<section>
 							<Subheader icon="link">Original Link</Subheader>
 							<TextBox v-model="contentOriginalLink" required />
-						</div>
+						</section>
 					</div>
 				</Transition>
 			</div>
 
 			<div class="right">
-
 				<div class="card">
 					<!-- 在这里上传和管理分P -->
 				</div>
 
 				<div class="card">
-					<div class="form-item">
+					<section>
 						<Subheader icon="placeholder">Title</Subheader>
 						<TextBox v-model="contentTitle" required />
-					</div>
+					</section>
 
-					<div class="form-item">
-						<Subheader icon="placeholder">Tag</Subheader>
+					<section>
+						<Subheader icon="placeholder">Tags</Subheader>
 						<!-- 这里放TAG -->
-					</div>
+					</section>
 
-					<div class="form-item">
+					<section>
 						<Subheader icon="placeholder">Description</Subheader>
 						<!-- 这里放简介，需要富文本编辑器 -->
-					</div>
+					</section>
 
-					<ToggleSwitch v-model="contentFeedPush" class="push-to-feed">
+					<ToggleSwitch v-model="contentFeedPush">
 						<icon name="feed" />
 						Push to Feed
 					</ToggleSwitch>
@@ -100,11 +98,8 @@
 						<Button icon="check">Upload!</Button>
 					</div>
 				</div>
-
 			</div>
-
 		</div>
-
 	</div>
 </template>
 
@@ -112,18 +107,36 @@
 	.card-container {
 		display: flex;
 		gap: 1.5rem;
+		margin-top: 1rem;
+		
+		@include tablet {
+			flex-direction: column;
+		}
+	}
+	
+	%card {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
 	}
 
 	.card {
 		@include round-large;
 		@include card-shadow;
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
+		@extend %card;
 		padding: 1rem;
 	}
+	
+	.left {
+		align-items: center;
+	}
 
-	.form-item {
+	.right {
+		@extend %card;
+		flex-grow: 1;
+	}
+
+	section {
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
@@ -140,8 +153,10 @@
 	.cover {
 		@include round-small;
 		width: 100%;
-		aspect-ratio: 16/9;
+		aspect-ratio: 16 / 9;
+		max-width: 300px;
 		background-color: c(gray-20);
+		cursor: pointer;
 	}
 
 	.repost-options {
@@ -150,17 +165,15 @@
 		gap: 1rem;
 		overflow: hidden;
 	}
-
-	.right {
-		display: flex;
-		flex-direction: column;
-		flex-grow: 1;
-		gap: 1rem;
+	
+	.left > * {
+		width: 100%;
 	}
 
-	.push-to-feed {
+	.toggle-switch {
 		display: flex;
 		height: 36px;
+		margin-right: 2px;
 		color: c(icon-color);
 
 		:deep(.content) {
