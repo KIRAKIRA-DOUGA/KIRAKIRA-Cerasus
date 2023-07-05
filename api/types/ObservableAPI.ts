@@ -2,6 +2,7 @@ import { ResponseContext, RequestContext, HttpFile } from '../http/http';
 import { Configuration} from '../configuration'
 import { Observable, of, from } from '../rxjsStub';
 import {mergeMap, map} from  '../rxjsStub';
+import { Comments200ResponseInner } from '../models/Comments200ResponseInner';
 import { VideoDetail200Response } from '../models/VideoDetail200Response';
 import { Videos200Response } from '../models/Videos200Response';
 import { Videos200ResponsePaginationData } from '../models/Videos200ResponsePaginationData';
@@ -21,6 +22,54 @@ export class ObservableDefaultApi {
         this.configuration = configuration;
         this.requestFactory = requestFactory || new DefaultApiRequestFactory(configuration);
         this.responseProcessor = responseProcessor || new DefaultApiResponseProcessor();
+    }
+
+    /**
+     * Comment on a video
+     * @param parent parent comment ID
+     * @param content comment message
+     * @param videoID comment\&#39;s video ID
+     */
+    public comment(parent: number, content: string, videoID: number, _options?: Configuration): Observable<void> {
+        const requestContextPromise = this.requestFactory.comment(parent, content, videoID, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.comment(rsp)));
+            }));
+    }
+
+    /**
+     * Get comments for video ID
+     * @param id video ID
+     */
+    public comments(id: number, _options?: Configuration): Observable<Array<Comments200ResponseInner>> {
+        const requestContextPromise = this.requestFactory.comments(id, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.comments(rsp)));
+            }));
     }
 
     /**

@@ -1,6 +1,7 @@
 import { ResponseContext, RequestContext, HttpFile } from '../http/http';
 import { Configuration} from '../configuration'
 
+import { Comments200ResponseInner } from '../models/Comments200ResponseInner';
 import { VideoDetail200Response } from '../models/VideoDetail200Response';
 import { Videos200Response } from '../models/Videos200Response';
 import { Videos200ResponsePaginationData } from '../models/Videos200ResponsePaginationData';
@@ -17,6 +18,26 @@ export class PromiseDefaultApi {
         responseProcessor?: DefaultApiResponseProcessor
     ) {
         this.api = new ObservableDefaultApi(configuration, requestFactory, responseProcessor);
+    }
+
+    /**
+     * Comment on a video
+     * @param parent parent comment ID
+     * @param content comment message
+     * @param videoID comment\&#39;s video ID
+     */
+    public comment(parent: number, content: string, videoID: number, _options?: Configuration): Promise<void> {
+        const result = this.api.comment(parent, content, videoID, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * Get comments for video ID
+     * @param id video ID
+     */
+    public comments(id: number, _options?: Configuration): Promise<Array<Comments200ResponseInner>> {
+        const result = this.api.comments(id, _options);
+        return result.toPromise();
     }
 
     /**
