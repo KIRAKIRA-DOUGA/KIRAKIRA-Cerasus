@@ -106,6 +106,9 @@
 	
 	@layer props {
 		:comp {
+			/// 图标尺寸，建议的值为：18px | 24px。
+			--icon-size: 18px;
+			/// 组件宽度，建议的值为：fit-content | 100%。
 			width: fit-content;
 		}
 	}
@@ -138,7 +141,7 @@
 
 		.icon {
 			margin-left: -2px;
-			font-size: 18px;
+			font-size: var(--icon-size);
 		}
 	}
 
