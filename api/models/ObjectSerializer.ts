@@ -1,8 +1,10 @@
+export * from '../models/Comments200ResponseInner';
 export * from '../models/VideoDetail200Response';
 export * from '../models/Videos200Response';
 export * from '../models/Videos200ResponsePaginationData';
 export * from '../models/Videos200ResponseVideosInner';
 
+import { Comments200ResponseInner } from '../models/Comments200ResponseInner';
 import { VideoDetail200Response } from '../models/VideoDetail200Response';
 import { Videos200Response } from '../models/Videos200Response';
 import { Videos200ResponsePaginationData } from '../models/Videos200ResponsePaginationData';
@@ -31,6 +33,7 @@ let enumsMap: Set<string> = new Set<string>([
 ]);
 
 let typeMap: {[index: string]: any} = {
+    "Comments200ResponseInner": Comments200ResponseInner,
     "VideoDetail200Response": VideoDetail200Response,
     "Videos200Response": Videos200Response,
     "Videos200ResponsePaginationData": Videos200ResponsePaginationData,
