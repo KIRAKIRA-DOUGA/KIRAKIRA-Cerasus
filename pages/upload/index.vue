@@ -2,8 +2,16 @@
 	useHead({ title: t.upload });
 	const file = ref<HTMLInputElement>();
 	const dragover = ref(false);
-	const uploaded = (files: File[]) => navigate("/upload/edit");
-	const invalidUploaded = () => useEvent("app:toast", { message: "不支持上传所选文件！", severity: "error" });
+	const successfulUploaded = ref(false);
+	const uploaded = async (files: File[]) => {
+		successfulUploaded.value = true;
+		await delay(1500);
+		navigate("/upload/edit");
+	};
+	const invalidUploaded = () => {
+		successfulUploaded.value = false;
+		useEvent("app:toast", { message: "不支持上传所选文件！", severity: "error" });
+	};
 
 	/**
 	 * 获取合法的文件列表。
@@ -60,11 +68,11 @@
 			accept="video/*"
 			@change="onChangeFile"
 		/>
-		
+
 		<div class="upload-wrapper">
 			<div
 				class="upload"
-				:class="{ dragover }"
+				:class="{ dragover, successful: successfulUploaded }"
 				@dragover.stop.prevent="dragover = true"
 				@dragenter.stop.prevent="dragover = true"
 				@dragleave.stop.prevent="dragover = false"
@@ -76,12 +84,17 @@
 					<h3>拖到此处上传</h3>
 					<p>支持MP4、WMV、WEBM等主流格式</p>
 				</div>
+				<Icon name="upload" class="upload-icon" />
+				<div class="outline normal"></div>
+				<div class="outline successful"></div>
 			</div>
 		</div>
 	</div>
 </template>
 
 <style scoped lang="scss">
+	$box-height: 350px;
+
 	.container {
 		display: flex;
 		flex-direction: column;
@@ -89,35 +102,79 @@
 		overflow: hidden;
 	}
 
+	@property --rotation {
+		syntax: "<angle>";
+		inherits: false;
+		initial-value: 0turn;
+	}
+
 	.upload-wrapper {
 		@include flex-center;
 		flex-direction: column;
 		height: 100%;
 		margin-top: 1rem;
-		
+
 		.upload {
 			@include flex-center;
 			@include round-large;
 			$color: c(gray-60);
+			position: relative;
 			width: 100%;
-			height: 350px;
+			height: $box-height;
 			max-height: 100%;
+			overflow: hidden;
 			color: $color;
 			text-align: center;
-			border: 2px dashed $color;
 			cursor: pointer;
-			
+
 			&.dragover {
 				animation: shake 1s infinite;
 			}
-			
+
 			h3 {
 				margin-bottom: 8px;
 				font-size: 36px;
 			}
+
+			.outline {
+				@include square(100%);
+				@include round-large;
+				position: absolute;
+				pointer-events: none;
+
+				&.normal {
+					border: 2px dashed $color;
+				}
+
+				&.successful {
+					border: 4px solid c(accent);
+					mask-image: conic-gradient(black var(--rotation), transparent var(--rotation));
+				}
+			}
+			
+			.icon.upload-icon {
+				position: absolute;
+				color: c(accent);
+				font-size: 108px;
+				scale: 0;
+			}
+			
+			&.successful {
+				.outline.successful {
+					animation: clock $ease-in-out-smooth 1.5s forwards;
+				}
+				
+				.content {
+					animation: scale-out $ease-in-expo 500ms forwards;
+				}
+				
+				.icon.upload-icon {
+					animation: uploading $ease-out-smooth 1s 500ms forwards;
+				}
+			}
 		}
 	}
-	
+
 	@keyframes shake {
 		0% {
 			transform: translate(1px, 1px) rotate(0);
@@ -161,6 +218,42 @@
 
 		100% {
 			transform: translate(1px, -2px) rotate(-1deg);
+		}
+	}
+
+	@keyframes clock {
+		from {
+			--rotation: 0turn;
+		}
+
+		to {
+			--rotation: 1turn;
+		}
+	}
+	
+	@keyframes scale-out {
+		from {
+			scale: 1;
+		}
+		
+		to {
+			scale: 0;
+		}
+	}
+	
+	@keyframes uploading {
+		0% {
+			scale: 0;
+		}
+		
+		50% {
+			scale: 1;
+			translate: 0;
+		}
+		
+		100% {
+			scale: 1;
+			translate: 0 calc((-100% - $box-height) / 2);
 		}
 	}
 </style>
