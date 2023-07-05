@@ -32,7 +32,7 @@ let body:.DefaultApiCommentRequest = {
   // number | parent comment ID
   parent: 1,
   // string | comment message
-  content: "content_example",
+  content: 'YQ==',
   // number | comment\'s video ID
   videoID: 1,
 };

@@ -55,10 +55,10 @@ export class DefaultApiRequestFactory extends BaseAPIRequestFactory {
         requestContext.setHeaderParam("parent", ObjectSerializer.serialize(parent, "number", ""));
 
         // Header Params
-        requestContext.setHeaderParam("content", ObjectSerializer.serialize(content, "string", ""));
+        requestContext.setHeaderParam("content", ObjectSerializer.serialize(content, "string", "byte"));
 
         // Header Params
-        requestContext.setHeaderParam("video ID", ObjectSerializer.serialize(videoID, "number", ""));
+        requestContext.setHeaderParam("videoID", ObjectSerializer.serialize(videoID, "number", ""));
 
 
         
