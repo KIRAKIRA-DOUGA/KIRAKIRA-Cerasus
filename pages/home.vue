@@ -3,20 +3,29 @@
 	import testVideo2 from "assets/images/av820864307.jpg";
 	import testAudio from "assets/images/av893640047.jpg";
 	import { DefaultApi, Videos200Response } from "api";
+	import { Router, routerKey } from "../.nuxt/vue-router";
 
 	const selectedTab = ref("home");
 
 	useHead({ title: "首页" });
 
 	const videos = ref<Videos200Response>();
-	const search = ref(null);
-	const sortCategory = ref("upload_date");
-	const sortDirection = ref("desc");
+
+	const router: Router = useRouter();
+	const queryVals = router.currentRoute.value.query;
+
+	const search = ref(queryVals.search?.toString());
+	const sortCategory = ref(queryVals.sortCategory?.toString());
+	const sortDirection = ref(queryVals.sortDirection?.toString());
 
 	// fetch the videos according to the query
 	watch([() => search.value, () => sortCategory.value, () => sortDirection.value], async ([newSearch, newSortCategory, newSortDirection]) => {
 		const api : DefaultApi = API();
-		videos.value = await api.videos(newSearch, newSortCategory, newSortDirection, "true");
+		// const utf8Encode = new TextEncoder();
+		// const encodedSeach = utf8Encode.encode(newSearch);
+
+		api.videos(newSearch, newSortCategory, newSortDirection, "true").then(x => videos.value = x)
+			.catch((error: any) => console.error(error));
 	}, { immediate: true });
 
 	const pages = getPages(
