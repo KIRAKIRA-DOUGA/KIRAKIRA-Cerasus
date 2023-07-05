@@ -17,9 +17,12 @@
 	}>();
 
 	const model = defineModel<T[]>();
+	const single = defineModel<boolean>("single");
 	const isChecked = computed(() => {
 		// NOTE: 由于期望在点击半选状态后应该切换到选中状态，因此在二元的定义下半选应该归纳于未选中状态下。
-		if (model.value && props.value)
+		if (single.value !== undefined)
+			return single.value;
+		else if (model.value && props.value)
 			return model.value.includes(props.value);
 		else return props.checkState === "checked";
 	});
@@ -38,6 +41,7 @@
 			if (nextChecked) modelValue.push(props.value);
 			else arrayRemoveItem(modelValue, props.value);
 		model.value = modelValue;
+		single.value = nextChecked;
 		emits("change", { value: checkbox.value.value as T, checkState: nextState, checked: nextChecked });
 	}
 

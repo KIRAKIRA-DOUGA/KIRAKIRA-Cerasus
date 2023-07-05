@@ -153,7 +153,10 @@ export async function animateSize(
 	Object.assign(keyframes[0], startStyle);
 	Object.assign(keyframes[1], endStyle);
 	const animationOptions = { duration, easing };
-	const result = element.animate(keyframes, animationOptions).finished;
+	const htmlElement = element as HTMLElement;
+	htmlElement.style.overflow = "hidden";
+	const result = element.animate(keyframes, animationOptions);
+	result.addEventListener("finish", () => htmlElement.style.removeProperty("overflow"));
 	if (startChildTranslate || endChildTranslate || attachAnimations) {
 		const onlyChild = element.children[0]; // 只取唯一一个子元素。
 		if (onlyChild && element instanceof HTMLElement && removeGlitchFrame) {
@@ -167,5 +170,5 @@ export async function animateSize(
 		], animationOptions);
 		if (attachAnimations) attachAnimations.forEach(group => group[0]?.animate(group[1], animationOptions));
 	}
-	return result;
+	return result.finished;
 }

@@ -122,6 +122,7 @@ const Japanese: LocaleIdentifiers = {
 	strikethrough: "取り消し線",
 	at_person: "アット",
 	kaomoji: "顔文字",
+	associate_existing: "既存の関連付け",
 };
 
 export default Japanese;

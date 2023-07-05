@@ -6,6 +6,7 @@
 	const contentOriginalCreator = ref("");
 	const contentOriginalLink = ref("");
 	const contentFeedPush = ref(true);
+	const ensureOriginal = ref(false);
 
 	/**
 	 * 在元素被插入到 DOM 之后的下一帧被调用。
@@ -39,9 +40,12 @@
 			<div class="card left">
 				<div v-ripple class="cover">
 					<!-- 选择封面，裁剪器可以先不做 -->
+					<div class="mask">
+						Set thumbnail
+					</div>
 				</div>
 
-				<Button icon="attachment">关联现有内容</Button>
+				<Button icon="attachment">{{ t.associate_existing }}</Button>
 
 				<Segmented v-model="contentVisibility">
 					<SegmentedItem id="public" icon="visibility">Public</SegmentedItem>
@@ -53,19 +57,26 @@
 					<SegmentedItem id="repost" icon="local_shipping">Repost</SegmentedItem>
 				</Segmented>
 
-				<Transition :css="false" @enter="onContentEnter" @leave="onContentLeave">
-					<div v-if="contentCopyright === 'repost'" class="repost-options">
-						<section>
-							<Subheader icon="person">Original Creator</Subheader>
-							<TextBox v-model="contentOriginalCreator" required />
-						</section>
-
-						<section>
-							<Subheader icon="link">Original Link</Subheader>
-							<TextBox v-model="contentOriginalLink" required />
-						</section>
-					</div>
-				</Transition>
+				<Fragment class="repost-options">
+					<Transition mode="out-in" @enter="onContentEnter" @leave="onContentLeave">
+						<div v-if="contentCopyright === 'original'">
+							<section>
+								<Checkbox v-model:single="ensureOriginal">我声明此作品为原创</Checkbox>
+							</section>
+						</div>
+						<div v-else-if="contentCopyright === 'repost'">
+							<section>
+								<Subheader icon="person">Original Creator</Subheader>
+								<TextBox v-model="contentOriginalCreator" required />
+							</section>
+	
+							<section>
+								<Subheader icon="link">Original Link</Subheader>
+								<TextBox v-model="contentOriginalLink" required />
+							</section>
+						</div>
+					</Transition>
+				</Fragment>
 			</div>
 
 			<div class="right">
@@ -81,7 +92,9 @@
 
 					<section>
 						<Subheader icon="placeholder">Tags</Subheader>
-						<!-- 这里放TAG -->
+						<div class="tags">
+							<Tag>Click here to add</Tag>
+						</div>
 					</section>
 
 					<section>
@@ -107,13 +120,15 @@
 	.card-container {
 		display: flex;
 		gap: 1.5rem;
+		align-items: flex-start;
 		margin-top: 1rem;
-		
+
 		@include tablet {
 			flex-direction: column;
+			align-items: unset;
 		}
 	}
-	
+
 	%card {
 		display: flex;
 		flex-direction: column;
@@ -126,7 +141,7 @@
 		@extend %card;
 		padding: 1rem;
 	}
-	
+
 	.left {
 		align-items: center;
 	}
@@ -157,15 +172,33 @@
 		max-width: 300px;
 		background-color: c(gray-20);
 		cursor: pointer;
+		
+		.mask {
+			@include square(100%);
+			@include flex-center;
+			color: white;
+			background-color: c(black, 30%);
+			opacity: 0;
+			pointer-events: none;
+		}
+		
+		&:hover .mask {
+			opacity: 1;
+		}
 	}
 
-	.repost-options {
+	.repost-options > * {
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
-		overflow: hidden;
+		width: 100%;
+		
+		&.v-enter-active,
+		&.v-leave-active {
+			overflow: hidden;
+		}
 	}
-	
+
 	.left > * {
 		width: 100%;
 	}

@@ -120,6 +120,7 @@ const SChinese = {
 	strikethrough: "删除线",
 	at_person: "提及",
 	kaomoji: "颜文字",
+	associate_existing: "关联现有内容",
 } as const;
 
 export default SChinese;

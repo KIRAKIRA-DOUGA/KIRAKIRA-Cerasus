@@ -120,6 +120,7 @@ const English: LocaleIdentifiers = {
 	strikethrough: "Strikethrough",
 	at_person: "At",
 	kaomoji: "Kaomoji",
+	associate_existing: "Associate existing",
 };
 
 export default English;
