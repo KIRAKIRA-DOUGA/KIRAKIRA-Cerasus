@@ -5,7 +5,7 @@
 		/** 分区。 */
 		category: string;
 		/** 版权。 */
-		copyright: "original" | "authorized-repost" | "unauthorized-repost";
+		copyright: "original" | "authorized-repost" | "repost";
 		/** 标题。 */
 		title: string;
 		/** 标签们。 */
@@ -23,7 +23,7 @@
 				<CreationDetailItem icon="category">{{ category }}</CreationDetailItem>
 				<CreationDetailItem v-if="copyright === 'original'" icon="fact_check">原创内容</CreationDetailItem>
 				<CreationDetailItem v-if="copyright === 'authorized-repost'" icon="local_shipping">授权转载</CreationDetailItem>
-				<CreationDetailItem v-if="copyright === 'unauthorized-repost'" icon="local_shipping">转载</CreationDetailItem>
+				<CreationDetailItem v-if="copyright === 'repost'" icon="local_shipping">转载</CreationDetailItem>
 				<a><CreationDetailItem icon="photo">查看封面</CreationDetailItem></a>
 				<a><CreationDetailItem icon="flag">稿件投诉</CreationDetailItem></a>
 			</div>
