@@ -1,4 +1,4 @@
-import { RequestContext, HttpMethod } from "./http/http";
+import { HttpMethod, RequestContext } from "./http/http";
 
 export interface BaseServerConfiguration {
     makeRequestContext(endpoint: string, httpMethod: HttpMethod): RequestContext;
@@ -11,31 +11,31 @@ export interface BaseServerConfiguration {
  *
  */
 export class ServerConfiguration<T extends { [key: string]: string }> implements BaseServerConfiguration {
-    public constructor(private url: string, private variableConfiguration: T) {}
+	public constructor(private url: string, private variableConfiguration: T) {}
 
     /**
-     * Sets the value of the variables of this server. Variables are included in 
+     * Sets the value of the variables of this server. Variables are included in
      * the `url` of this ServerConfiguration in the form `{variableName}`
      *
-     * @param variableConfiguration a partial variable configuration for the 
+     * @param variableConfiguration a partial variable configuration for the
      * variables contained in the url
      */
-    public setVariables(variableConfiguration: Partial<T>) {
-        Object.assign(this.variableConfiguration, variableConfiguration);
-    }
+	public setVariables(variableConfiguration: Partial<T>) {
+		Object.assign(this.variableConfiguration, variableConfiguration);
+	}
 
-    public getConfiguration(): T {
-        return this.variableConfiguration
-    }
+	public getConfiguration(): T {
+		return this.variableConfiguration;
+	}
 
-    private getUrl() {
-        let replacedUrl = this.url;
-        for (const key in this.variableConfiguration) {
-            var re = new RegExp("{" + key + "}","g");
-            replacedUrl = replacedUrl.replace(re, this.variableConfiguration[key]);
-        }
-        return replacedUrl
-    }
+	private getUrl() {
+		let replacedUrl = this.url;
+		for (const key in this.variableConfiguration) {
+			const re = new RegExp("{" + key + "}", "g");
+			replacedUrl = replacedUrl.replace(re, this.variableConfiguration[key]);
+		}
+		return replacedUrl;
+	}
 
     /**
      * Creates a new request context for this server using the url with variables
@@ -45,11 +45,11 @@ export class ServerConfiguration<T extends { [key: string]: string }> implements
      * @param httpMethod httpMethod to be used
      *
      */
-    public makeRequestContext(endpoint: string, httpMethod: HttpMethod): RequestContext {
-        return new RequestContext(this.getUrl() + endpoint, httpMethod);
-    }
+	public makeRequestContext(endpoint: string, httpMethod: HttpMethod): RequestContext {
+		return new RequestContext(this.getUrl() + endpoint, httpMethod);
+	}
 }
 
-export const server1 = new ServerConfiguration<{  }>("http://localhost", {  })
+export const server1 = new ServerConfiguration<{ }>("http://localhost:3000", { });
 
 export const servers = [server1];
