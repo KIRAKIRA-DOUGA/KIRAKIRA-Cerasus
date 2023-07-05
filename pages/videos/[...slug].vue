@@ -2,6 +2,7 @@
 	import videoPath from "assets/videos/shibamata.mp4";
 	import avatar from "assets/images/aira.webp";
 	import { DefaultApi, VideoDetail200Response } from "api";
+	import { Comments200ResponseInner } from "kirakirabackend";
 	// const videoPath = "https://video_api.kms233.com/bili/av9912788";
 	// 暂时不要用在线视频链接，虽然可以用，但是每次查看视频详细信息我都要等好久。
 
@@ -11,8 +12,9 @@
 	const id = router.currentRoute.value.path.split("/")[2];
 	const videoDetails = ref<VideoDetail200Response>();
 	const videoLoc = ref(undefined);
+	const comments: Array<Comments200ResponseInner> = ref(Array<Comments200ResponseInner>());
 
-	// fetch the videos according to the query
+	// Fetch video details
 	watch(() => id, () => {
 		const api: DefaultApi = API();
 		api.videoDetail(id)
@@ -23,6 +25,18 @@
 			.catch((error: any) => console.error(error));
 	}, { immediate: true });
 
+	// Fetch comments
+	watch(() => id, () => {
+		const api: DefaultApi = API();
+		api.comments(id)
+			.then(x => {
+				for (const comment of x) {
+					console.log(comment);
+					comments.value.push(comment);
+				}
+			})
+			.catch((error: any) => console.error(error));
+	}, { immediate: true });
 	useHead({ title: "柴又" });
 </script>
 
@@ -34,13 +48,26 @@
 				<CreationDetail
 					:date="new Date()"
 					category="音MAD"
+
 					:title="videoDetails?.title ?? ''"
 					copyright="unauthorized-repost"
 					:tags="videoDetails?.tags ?? []"
 				/>
+
 				<CreationComments
-					count="233"
+					:videoID="id"
+					:count="comments.length"
 				/>
+				<!-- TODO: using v-html, likely unsafe -->
+				<!-- TODO: seems to be an issue with default comment newlining (no tags)... maybe a result of using getHTML? -->
+				<div
+					v-for="comment in comments"
+					:key="comment.id"
+					type="text"
+					readonly
+					v-html="comment.content"
+				>
+				</div>
 			</div>
 			<div class="right">
 				<CreationUploader
@@ -55,6 +82,15 @@
 </template>
 
 <style scoped lang="scss">
+	.container {
+		padding-top: 0 !important;
+		overflow: scroll;
+
+		> * {
+			margin: 26px 0;
+		}
+	}
+
 	.under-player {
 		display: flex;
 		margin-top: 30px;
