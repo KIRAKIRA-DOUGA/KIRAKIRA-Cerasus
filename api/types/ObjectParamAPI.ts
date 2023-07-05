@@ -1,6 +1,7 @@
 import { ResponseContext, RequestContext, HttpFile } from '../http/http';
 import { Configuration} from '../configuration'
 
+import { Comments200ResponseInner } from '../models/Comments200ResponseInner';
 import { VideoDetail200Response } from '../models/VideoDetail200Response';
 import { Videos200Response } from '../models/Videos200Response';
 import { Videos200ResponsePaginationData } from '../models/Videos200ResponsePaginationData';
@@ -8,6 +9,36 @@ import { Videos200ResponseVideosInner } from '../models/Videos200ResponseVideosI
 
 import { ObservableDefaultApi } from "./ObservableAPI";
 import { DefaultApiRequestFactory, DefaultApiResponseProcessor} from "../apis/DefaultApi";
+
+export interface DefaultApiCommentRequest {
+    /**
+     * parent comment ID
+     * @type number
+     * @memberof DefaultApicomment
+     */
+    parent: number
+    /**
+     * comment message
+     * @type string
+     * @memberof DefaultApicomment
+     */
+    content: string
+    /**
+     * comment\&#39;s video ID
+     * @type number
+     * @memberof DefaultApicomment
+     */
+    videoID: number
+}
+
+export interface DefaultApiCommentsRequest {
+    /**
+     * video ID
+     * @type number
+     * @memberof DefaultApicomments
+     */
+    id: number
+}
 
 export interface DefaultApiLoginRequest {
     /**
@@ -116,6 +147,22 @@ export class ObjectDefaultApi {
 
     public constructor(configuration: Configuration, requestFactory?: DefaultApiRequestFactory, responseProcessor?: DefaultApiResponseProcessor) {
         this.api = new ObservableDefaultApi(configuration, requestFactory, responseProcessor);
+    }
+
+    /**
+     * Comment on a video
+     * @param param the request object
+     */
+    public comment(param: DefaultApiCommentRequest, options?: Configuration): Promise<void> {
+        return this.api.comment(param.parent, param.content, param.videoID,  options).toPromise();
+    }
+
+    /**
+     * Get comments for video ID
+     * @param param the request object
+     */
+    public comments(param: DefaultApiCommentsRequest, options?: Configuration): Promise<Array<Comments200ResponseInner>> {
+        return this.api.comments(param.id,  options).toPromise();
     }
 
     /**

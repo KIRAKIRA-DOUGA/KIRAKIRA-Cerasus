@@ -11,6 +11,7 @@ http/http.ts
 http/isomorphic-fetch.ts
 index.ts
 middleware.ts
+models/Comments200ResponseInner.ts
 models/ObjectSerializer.ts
 models/VideoDetail200Response.ts
 models/Videos200Response.ts
