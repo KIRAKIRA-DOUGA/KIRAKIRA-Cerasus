@@ -57,17 +57,11 @@
 				<CreationComments
 					:videoID="id"
 					:count="comments.length"
+					:comments="comments"
 				/>
 				<!-- TODO: using v-html, likely unsafe -->
 				<!-- TODO: seems to be an issue with default comment newlining (no tags)... maybe a result of using getHTML? -->
-				<div
-					v-for="comment in comments"
-					:key="comment.id"
-					type="text"
-					readonly
-					v-html="comment.content"
-				>
-				</div>
+
 			</div>
 			<div class="right">
 				<CreationUploader

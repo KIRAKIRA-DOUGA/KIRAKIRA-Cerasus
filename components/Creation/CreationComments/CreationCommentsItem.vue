@@ -8,6 +8,8 @@
 		index?: number; // 我不赞成在序号前导 0，因为你怎敢假定评论数在绝大多数情况下小于或等于两位数？
 		/** 评论发布日期。 */
 		date?: Date;
+
+		message: string;
 	}>(), {
 		avatar: undefined,
 		username: "匿名",
@@ -53,7 +55,12 @@
 				<span class="username">{{ username }}</span>
 			</div>
 			<div class="comments">
-				<slot></slot>
+				<!-- TODO: v-html -->
+				<div
+					type="text"
+					readonly
+					v-html="message"
+				></div>
 			</div>
 			<div class="footer">
 				<div class="left">
@@ -94,7 +101,7 @@
 
 		.content {
 			width: 100%;
-			
+
 			> :not(:last-child) {
 				margin-bottom: 8px;
 			}
@@ -127,12 +134,12 @@
 		justify-content: space-between;
 		color: c(icon-color);
 		font-size: 13px;
-		
+
 		> * {
 			display: flex;
 			gap: 20px;
 		}
-		
+
 		.likes-wrapper {
 			display: flex;
 			gap: 14px;
@@ -143,7 +150,7 @@
 			gap: 11px;
 			align-items: center;
 			cursor: pointer;
-			
+
 			&.active .soft-button {
 				color: c(accent);
 			}
