@@ -30,7 +30,12 @@
 			<h1>{{ title }}</h1>
 		</div>
 		<div class="tags">
-			<Tag v-for="tag in tags" :key="tag">{{ tag }}</Tag>
+			<Tag
+				v-for="tag in tags"
+				:key="tag"
+				link="/"
+				:query="'?search=' + tag"
+			>{{ tag }}</Tag>
 		</div>
 	</Comp>
 </template>
