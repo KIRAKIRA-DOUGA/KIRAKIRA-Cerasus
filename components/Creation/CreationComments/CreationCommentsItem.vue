@@ -19,9 +19,28 @@
 
 	/** 为该评论加分的值。 */
 	const like = defineModel("like", { default: 0 });
+	/** 是否已点击加分？ */
+	const likeClicked = defineModel("likeClicked", { default: false });
 	/** 为该评论减分的值。 */
 	const dislike = defineModel("dislike", { default: 0 });
+	/** 是否已点击减分？ */
+	const dislikeClicked = defineModel("dislikeClicked", { default: false });
 	const date = computed(() => formatDate(props.date, "yyyy-MM-dd hh:mm:ss"));
+	const menu = ref<MenuModel>();
+
+	/**
+	 * 点击加分、减分按钮事件。
+	 * @param button - 点击的按钮是加分还是减分。
+	 * @param [noNestingDolls=false] - 禁止套娃，防止递归调用。
+	 */
+	function onClickLikes(button: "like" | "dislike", noNestingDolls: boolean = false) {
+		const states = { like, likeClicked, dislike, dislikeClicked };
+		const value = states[button], clicked = states[`${button}Clicked`]; // 面向字符串编程。
+		const another = button === "like" ? "dislike" : "like";
+		const isActive = clicked.value = !clicked.value, gain = isActive ? 1 : -1;
+		value.value += gain;
+		if (isActive && states[`${another}Clicked`].value && !noNestingDolls) onClickLikes(another, true);
+	}
 
 	// TODO: 转发、置顶等在右边的更多菜单还没做。另外仔细注意的话加减分逻辑是有问题的，难道可以不取消点击反而可以反复刷加分减分？
 </script>
@@ -38,15 +57,29 @@
 				<slot></slot>
 			</div>
 			<div class="footer">
-				<div v-if="index !== undefined">#{{ index }}</div>
-				<div>{{ date }}</div>
-				<div class="likes" @click="like++">
-					<Icon name="thumb_up" />
-					<span v-if="like">{{ like }}</span>
+				<div class="left">
+					<div v-if="index !== undefined">#{{ index }}</div>
+					<div>{{ date }}</div>
+					<div class="likes-wrapper">
+						<div class="likes" :class="{ active: likeClicked }">
+							<SoftButton icon="thumb_up" @click="onClickLikes('like')" />
+							<span v-if="like">{{ like }}</span>
+						</div>
+						<div class="likes" :class="{ active: dislikeClicked }">
+							<SoftButton icon="thumb_down" @click="onClickLikes('dislike')" />
+							<span v-if="dislike">{{ dislike }}</span>
+						</div>
+					</div>
 				</div>
-				<div class="likes" @click="dislike++">
-					<Icon name="thumb_down" />
-					<span v-if="dislike">{{ dislike }}</span>
+				<div class="right">
+					<SoftButton icon="reply" />
+					<SoftButton icon="more_vert" @click="e => menu = e" />
+					<Menu v-model="menu">
+						<MenuItem icon="delete">删除</MenuItem>
+						<MenuItem icon="pin">置顶</MenuItem>
+						<hr />
+						<MenuItem icon="flag">举报</MenuItem>
+					</Menu>
 				</div>
 			</div>
 		</div>
@@ -60,8 +93,12 @@
 		margin: 20px 0;
 		color: c(text-color);
 
-		.content > :not(:last-child) {
-			margin-bottom: 8px;
+		.content {
+			width: 100%;
+			
+			> :not(:last-child) {
+				margin-bottom: 8px;
+			}
 		}
 	}
 
@@ -88,28 +125,35 @@
 
 	.footer {
 		display: flex;
-		gap: 20px;
+		justify-content: space-between;
 		color: c(icon-color);
 		font-size: 13px;
+		
+		> * {
+			display: flex;
+			gap: 20px;
+		}
+		
+		.likes-wrapper {
+			display: flex;
+			gap: 14px;
+		}
 
 		.likes {
 			display: flex;
 			gap: 11px;
 			align-items: center;
 			cursor: pointer;
-
-			.icon {
-				font-size: 18px;
-			}
-
-			&:any-hover .icon,
-			&:active .icon {
+			
+			&.active .soft-button {
 				color: c(accent);
 			}
+		}
 
-			&:active .icon {
-				scale: 0.9;
-			}
+		.soft-button {
+			--wrapper-size: 20px;
+			--ripple-size: 40px;
+			--icon-size: 18px;
 		}
 	}
 </style>

@@ -8,8 +8,7 @@
 		count: number | string;
 	}>();
 
-	const like = ref(0);
-	const dislike = ref(0);
+	const like = ref(0), dislike = ref(0), likeClicked = ref(false), dislikeClicked = ref(false);
 </script>
 
 <template>
@@ -17,11 +16,18 @@
 		<HeadingComments :count="count" />
 		<TextEditorRtf />
 		<div class="items">
-			<CreationCommentsItem v-model:like="like" v-model:dislike="dislike" :index="1">
+			<CreationCommentsItem
+				v-model:like="like"
+				v-model:dislike="dislike"
+				v-model:likeClicked="likeClicked"
+				v-model:dislikeClicked="dislikeClicked"
+				:index="1"
+			>
 				ふたりの時間、選びとる未来。<br />
 				ふたりの時間、選びとる未来。艾拉是整个 KIRAKIRA 开发组最笨的笨蛋です。
 			</CreationCommentsItem>
 		</div>
+		<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 	</Comp>
 </template>
 

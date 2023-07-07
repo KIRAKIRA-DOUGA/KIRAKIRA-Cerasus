@@ -27,6 +27,7 @@
 	:comp {
 		@include circle;
 		@include flex-center;
+		flex-shrink: 0;
 		overflow: hidden;
 		color: c(icon-color);
 		background-color: c(gray-20);
