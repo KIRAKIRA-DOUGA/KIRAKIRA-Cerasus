@@ -26,7 +26,7 @@
 	/** 是否已点击减分？ */
 	const dislikeClicked = defineModel("dislikeClicked", { default: false });
 	const date = computed(() => formatDate(props.date, "yyyy-MM-dd hh:mm:ss"));
-	const menu = ref<MenuModel>();
+	const menu = ref<MenuModel>(); // TODO: 菜单需要新增功能，使其像浮窗一样可以贴附某个元素展开。
 
 	/**
 	 * 点击加分、减分按钮事件。
@@ -41,8 +41,6 @@
 		value.value += gain;
 		if (isActive && states[`${another}Clicked`].value && !noNestingDolls) onClickLikes(another, true);
 	}
-
-	// TODO: 转发、置顶等在右边的更多菜单还没做。另外仔细注意的话加减分逻辑是有问题的，难道可以不取消点击反而可以反复刷加分减分？
 </script>
 
 <template>

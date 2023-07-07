@@ -27,14 +27,13 @@
 				ふたりの時間、選びとる未来。艾拉是整个 KIRAKIRA 开发组最笨的笨蛋です。
 			</CreationCommentsItem>
 		</div>
-		<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 	</Comp>
 </template>
 
 <style scoped lang="scss">
 	:comp {
 		margin-top: 2.5rem;
-		
+
 		header {
 			margin-bottom: 1rem;
 		}
