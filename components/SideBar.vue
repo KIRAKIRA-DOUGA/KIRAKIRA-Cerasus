@@ -28,24 +28,12 @@
 		</div>
 
 		<div class="bottom icons">
-			<SoftButton
-				v-if="!isLogined"
+			<UserAvatar
 				v-i="7"
-				v-tooltip:right="t.login"
-				icon="person"
-				class="person"
+				v-tooltip:right="isLogined ? '艾草' : t.login"
+				:avatar="isLogined ? avatar : undefined"
 				@click="showLogin = true"
 			/>
-			<div
-				v-else
-				v-i="7"
-				v-ripple
-				v-tooltip:right="'艾草'"
-				class="person logined"
-				@click="showLogin = true"
-			>
-				<img :src="avatar" alt="avatar" draggable="false" />
-			</div>
 			<SoftButton v-i="8" v-tooltip:right="t.messages" icon="email" href="/test-rich-text-editor" />
 			<SoftButton v-i="9" v-tooltip:right="t.settings" icon="settings" href="/settings" :active="isCurrentSettings" />
 		</div>
@@ -84,7 +72,7 @@
 			flex-direction: column;
 			gap: $icons-gap;
 
-			@media (max-height: 432px) {
+			@media (height <= 432px) {
 				gap: 0;
 			}
 		}
@@ -152,29 +140,8 @@
 		}
 	}
 
-	.person {
-		@include square(40px);
-		@include circle;
-		overflow: hidden;
-
-		&:has(svg) {
-			background: c(gray-20);
-		}
-
-		> img {
-			z-index: 1;
-			width: 100%;
-			aspect-ratio: 1 / 1;
-			object-fit: cover;
-
-			&:hover {
-				scale: 125%;
-			}
-
-			&:not(:hover) {
-				transition-duration: 1s;
-			}
-		}
+	.user-avatar {
+		--size: 40px;
 	}
 
 	@keyframes jump-in {

@@ -18,9 +18,7 @@
 	</div>
 
 	<div class="change-avatar">
-		<div v-ripple class="avatar">
-			<img :src="avatar" alt="avatar" draggable="false" />
-		</div>
+		<UserAvatar :avatar="avatar" />
 		<span>点击更换头像</span>
 	</div>
 
@@ -130,31 +128,11 @@
 		margin: -48px 0 12px 24px;
 		color: c(icon-color);
 		pointer-events: none;
-
-		.avatar {
-			@include square(64px);
-			@include circle;
-			overflow: hidden;
-			background-color: c(gray-20);
+		
+		.user-avatar {
+			--size: 64px;
 			pointer-events: auto;
-
-			> img {
-				z-index: 1;
-				width: 100%;
-				object-fit: cover;
-				cursor: pointer;
-				aspect-ratio: 1 / 1;
-
-				&:any-hover {
-					scale: 125%;
-					filter: brightness(0.85);
-				}
-
-				&:not(:any-hover) {
-					transition-duration: 1s;
-				}
-			}
-
+			
 			&:any-hover + span {
 				opacity: 1;
 			}

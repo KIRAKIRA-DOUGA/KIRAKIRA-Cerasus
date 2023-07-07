@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	const props = defineProps<{
-		/** 头像。 */
+		/** 头像网址。 */
 		avatar: string;
 		/** 用户名。 */
 		username: string;
@@ -13,9 +13,7 @@
 
 <template>
 	<Comp>
-		<div v-ripple class="avatar">
-			<img :src="avatar" alt="avatar" draggable="false" />
-		</div>
+		<UserAvatar :avatar="avatar" />
 		<div class="text">
 			<div class="username">{{ username }}</div>
 			<div class="fans">{{ fans }} 粉丝</div>
@@ -33,28 +31,6 @@
 
 		> :not(.text) {
 			flex-shrink: 0;
-		}
-
-		.avatar {
-			@include square(58px);
-			@include circle;
-			overflow: hidden;
-			background-color: c(gray-20);
-
-			> img {
-				z-index: 1;
-				width: 100%;
-				object-fit: cover;
-				aspect-ratio: 1 / 1;
-
-				&:any-hover {
-					scale: 125%;
-				}
-
-				&:not(:any-hover) {
-					transition-duration: 1s;
-				}
-			}
 		}
 
 		.text {
