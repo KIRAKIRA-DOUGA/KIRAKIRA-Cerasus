@@ -62,6 +62,7 @@
 
 	.tags {
 		display: flex;
+		flex-wrap: wrap;
 		gap: 8px;
 	}
 </style>
