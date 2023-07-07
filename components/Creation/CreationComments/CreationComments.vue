@@ -8,7 +8,7 @@
 		count: number | string;
 	}>();
 
-	const like = ref(0), dislike = ref(0), likeClicked = ref(false), dislikeClicked = ref(false);
+	const like = ref(0), dislike = ref(0), likeClicked = ref(false), dislikeClicked = ref(false), pinned = ref(false);
 </script>
 
 <template>
@@ -21,6 +21,7 @@
 				v-model:dislike="dislike"
 				v-model:likeClicked="likeClicked"
 				v-model:dislikeClicked="dislikeClicked"
+				v-model:pinned="pinned"
 				:index="1"
 			>
 				ふたりの時間、選びとる未来。<br />

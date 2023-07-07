@@ -4,8 +4,6 @@
 		avatar?: string;
 		/** 评论发布者昵称。 */
 		username?: string;
-		/** 是否已置顶？ */
-		pinned?: boolean;
 		/** 评论序号。 */
 		index?: number; // 我不赞成在序号前导 0，因为你怎敢假定评论数在绝大多数情况下小于或等于两位数？
 		/** 评论发布日期。 */
@@ -27,6 +25,9 @@
 	const dislikeClicked = defineModel("dislikeClicked", { default: false });
 	const date = computed(() => formatDate(props.date, "yyyy-MM-dd hh:mm:ss"));
 	const menu = ref<MenuModel>(); // TODO: 菜单需要新增功能，使其像浮窗一样可以贴附某个元素展开。
+	/** 是否已置顶？ */
+	const pinned = defineModel("pinned", { default: false });
+	const unpinnedCaption = computed(() => pinned.value ? "unpin" : "pin");
 
 	/**
 	 * 点击加分、减分按钮事件。
@@ -60,23 +61,23 @@
 					<div>{{ date }}</div>
 					<div class="likes-wrapper">
 						<div class="likes" :class="{ active: likeClicked }">
-							<SoftButton icon="thumb_up" @click="onClickLikes('like')" />
+							<SoftButton v-tooltip:bottom="t.bonus_point" icon="thumb_up" @click="onClickLikes('like')" />
 							<span v-if="like">{{ like }}</span>
 						</div>
 						<div class="likes" :class="{ active: dislikeClicked }">
-							<SoftButton icon="thumb_down" @click="onClickLikes('dislike')" />
+							<SoftButton v-tooltip:bottom="t.minus_point" icon="thumb_down" @click="onClickLikes('dislike')" />
 							<span v-if="dislike">{{ dislike }}</span>
 						</div>
 					</div>
 				</div>
 				<div class="right">
-					<SoftButton icon="reply" />
-					<SoftButton icon="more_vert" @click="e => menu = e" />
+					<SoftButton v-tooltip:bottom="t.reply" icon="reply" />
+					<SoftButton v-tooltip:bottom="t.more" icon="more_vert" @click="e => menu = e" />
 					<Menu v-model="menu">
-						<MenuItem icon="delete">删除</MenuItem>
-						<MenuItem icon="pin">置顶</MenuItem>
+						<MenuItem icon="delete">{{ t.delete }}</MenuItem>
+						<MenuItem :icon="unpinnedCaption" @click="pinned = !pinned">{{ t[unpinnedCaption] }}</MenuItem>
 						<hr />
-						<MenuItem icon="flag">举报</MenuItem>
+						<MenuItem icon="flag">{{ t.complain }}</MenuItem>
 					</Menu>
 				</div>
 			</div>
@@ -107,7 +108,7 @@
 
 		.icon.pin {
 			color: c(icon-color);
-			font-size: 24px;
+			font-size: 20px;
 		}
 
 		.username {

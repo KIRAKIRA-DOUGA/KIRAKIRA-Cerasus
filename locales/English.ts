@@ -121,6 +121,12 @@ const English: LocaleIdentifiers = {
 	at_person: "At",
 	kaomoji: "Kaomoji",
 	associate_existing: "Associate existing",
+	reply: "Reply",
+	more: "More",
+	delete: "Delete",
+	pin: "Pin",
+	unpin: "Unpin",
+	complain: "Complain",
 };
 
 export default English;

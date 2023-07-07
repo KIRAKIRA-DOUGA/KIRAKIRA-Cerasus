@@ -121,6 +121,12 @@ const SChinese = {
 	at_person: "提及",
 	kaomoji: "颜文字",
 	associate_existing: "关联现有内容",
+	reply: "回复",
+	more: "更多",
+	delete: "删除",
+	pin: "置顶",
+	unpin: "取消置顶",
+	complain: "举报",
 } as const;
 
 export default SChinese;

@@ -123,6 +123,12 @@ const Japanese: LocaleIdentifiers = {
 	at_person: "アット",
 	kaomoji: "顔文字",
 	associate_existing: "既存の関連付け",
+	reply: "返信",
+	more: "詳細",
+	delete: "削除",
+	pin: "固定",
+	unpin: "固定を解除",
+	complain: "通報",
 };
 
 export default Japanese;
