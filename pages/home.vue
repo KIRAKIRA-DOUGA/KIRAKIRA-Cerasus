@@ -14,17 +14,16 @@
 	const router: Router = useRouter();
 	const queryVals = router.currentRoute.value.query;
 
-	const search = ref(queryVals.search?.toString());
+	const search = ref(queryVals.search?.toString() ?? "none");
 	const sortCategory = ref(queryVals.sortCategory?.toString());
 	const sortDirection = ref(queryVals.sortDirection?.toString());
 
 	// fetch the videos according to the query
 	watch([() => search.value, () => sortCategory.value, () => sortDirection.value], async ([newSearch, newSortCategory, newSortDirection]) => {
 		const api : DefaultApi = API();
-		// const utf8Encode = new TextEncoder();
-		// const encodedSeach = utf8Encode.encode(newSearch);
-
-		api.videos(newSearch, newSortCategory, newSortDirection, "true").then(x => videos.value = x)
+		const utf8Encode = new TextEncoder();
+		const encodedContent = utf8Encode.encode(newSearch);
+		api.videos(encodedContent, newSortCategory, newSortDirection, "true").then(x => videos.value = x)
 			.catch((error: any) => console.error(error));
 	}, { immediate: true });
 

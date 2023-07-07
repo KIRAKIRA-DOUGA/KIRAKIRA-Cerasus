@@ -430,7 +430,7 @@ const apiInstance = new .DefaultApi(configuration);
 
 let body:.DefaultApiVideosRequest = {
   // string | search string (optional)
-  search: "search_example",
+  search: 'YQ==',
   // string | sort category (optional)
   category: "category_example",
   // string | sort category (optional)
