@@ -29,10 +29,15 @@ declare global {
 	type Placement = "top" | "right" | "bottom" | "left" | "x" | "y";
 	/** 版权。 */
 	type Copyright = "original" | "authorized-repost" | "repost";
+	/** 视图。 */
+	type ViewType = "list" | "grid" | "tile";
+	/** 排序顺序，升序或降序。 */
+	type SortOrder = "ascending" | "descending";
 
 	type FlyoutModel = FlyoutModelNS.Tuple | FlyoutModelNS.Object;
 	type MenuModel = MouseEvent | PointerEvent | null;
 	type AnimatedIconState = AnimatedIconStateNS.Tuple | AnimatedIconStateNS.Object;
+	type SortModel = [id: string, order: SortOrder];
 
 	/** PostCSS 插件。 */
 	type PostCSSPlugin = { postcss: true } & ((opts?: AnyObject) => AcceptedPlugin);

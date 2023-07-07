@@ -1,0 +1,11 @@
+@use "../theme/effects" as *;
+
+.toolbox-card {
+	@include round-large;
+	@include card-shadow;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	padding: 16px;
+	background-color: c(main-bg);
+}

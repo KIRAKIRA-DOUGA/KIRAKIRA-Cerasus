@@ -110,3 +110,12 @@ export function getElFromComponentInstance(el: MaybeRef<HTMLElement | ComponentP
 	el = toValue(el);
 	return !el ? undefined : "$el" in el ? el.$el as HTMLElement : el;
 }
+
+/**
+ * 获取插槽中的子节点内容。
+ * @param item - 插槽中的某一个项目。
+ * @returns 插槽中的子节点内容。
+ */
+export function getSlotVNodeNormalizedChildren(item: VNode) {
+	return (item.children as Slots).default?.()?.[0]?.children;
+}

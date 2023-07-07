@@ -12,8 +12,8 @@
 	const menu = ref<HTMLDivElement>();
 	const vdoms = slots.default?.();
 	const items = computed(() => vdoms?.map(item => {
-		const props = item.props as { id?: string } | undefined;
-		const content = (item.children as typeof slots).default?.()?.[0]?.children;
+		const props = item.props as ComponentProps<typeof ComboBoxItem> | undefined;
+		const content = getSlotVNodeNormalizedChildren(item);
 		if (typeof content !== "string") return undefined!;
 		return { content, id: props?.id ?? content };
 	}).filter(item => item) ?? []);

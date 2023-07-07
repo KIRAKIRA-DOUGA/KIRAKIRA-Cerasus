@@ -39,4 +39,16 @@ declare global {
 	 * @template U - 重写后的字段及其类型。
 	 */
 	type Override<T, U> = Omit<T, keyof U> & U;
+	
+	/**
+	 * 获取组件的 Props。
+	 * @template T - Vue 组件。
+	 */
+	type ComponentProps<T> = InstanceType<T>["$props"];
+	
+	/**
+	 * 去除 Ref 的类型。
+	 * @template R - 可能为 Ref 的类型。
+	 */
+	type Unref<R> = R extends MaybeRefOrGetter<infer U> ? U : T;
 }

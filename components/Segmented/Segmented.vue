@@ -5,8 +5,8 @@
 	}>(); */
 	const vdoms = slots.default?.();
 	const items = computed(() => vdoms?.map(item => {
-		const props = item.props as { id?: string; icon?: string } | undefined;
-		const caption = (item.children as typeof slots).default?.()?.[0]?.children;
+		const props = item.props as ComponentProps<typeof SegmentedItem> | undefined;
+		const caption = getSlotVNodeNormalizedChildren(item);
 		if (typeof caption !== "string") return undefined!;
 		return { caption, id: props?.id ?? caption, icon: props?.icon };
 	}).filter(item => item) ?? []);
