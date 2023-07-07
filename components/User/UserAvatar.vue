@@ -20,7 +20,7 @@
 	@layer utilities {
 		:comp {
 			@include square(58px, true);
-			font-size: 24px;
+			font-size: calc(var(--size) * 0.6);
 		}
 	}
 
@@ -30,6 +30,7 @@
 		overflow: hidden;
 		color: c(icon-color);
 		background-color: c(gray-20);
+		cursor: pointer;
 
 		> img {
 			z-index: 1;
