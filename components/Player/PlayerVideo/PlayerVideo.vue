@@ -37,7 +37,7 @@
 		const response = await fetch(videoPath);
 		const blob = await response.blob();
 		const fileName = basename(videoPath);
-		const file = new File([blob], fileName, { type: "video/mp4" });
+		const file = new File([blob], fileName);
 		const mediaInfo = await mediainfo();
 		const result = await mediaInfo.analyzeData(() => file.size,
 			(chunkSize, offset) => new Promise<Uint8Array>((resolve, reject) => {
@@ -144,7 +144,6 @@
 		<div class="main">
 			<video
 				ref="video"
-				:src="src"
 				@play="playing = true"
 				@pause="playing = false"
 				@ratechange="e => playbackRate = (e.target as HTMLVideoElement).playbackRate"
@@ -154,7 +153,10 @@
 				@click="playing = !playing"
 				@dblclick="toggle"
 				@contextmenu.prevent="e => menu = e"
-			></video>
+			>
+				<source :src="src" type="video/webm" />
+				<source :src="src" type="video/mp4" />
+			</video>
 			<PlayerVideoController
 				v-model:currentTime="currentTime"
 				v-model:playing="playing"
