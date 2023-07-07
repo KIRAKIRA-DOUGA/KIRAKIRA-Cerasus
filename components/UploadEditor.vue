@@ -1,12 +1,71 @@
 <script setup lang="ts">
+	import { DefaultApi, HttpFile } from "kirakirabackend";
+	import { DefaultApiRequestFactory } from "kirakirabackend/apis/DefaultApi";
+	import { toRaw } from "vue";
+	import axios from "axios";
 	useHead({ title: t.upload });
 	const contentVisibility = ref<PrivacyType>("public");
 	const contentCopyright = ref<Copyright>("original");
-	const contentTitle = ref("");
 	const contentOriginalCreator = ref("");
 	const contentOriginalLink = ref("");
 	const contentFeedPush = ref(true);
 	const ensureOriginal = ref(false);
+	const file = ref<HTMLInputElement>();
+
+	const tags = ref("");
+	const title = ref("");
+	const description = ref("");
+
+	/** validates mime type */
+	function getValidFiles(fileList?: FileList | null) {
+		if (!fileList || !fileList.length) return [];
+		const files: Any[] = [];
+		for (const file of fileList)
+			if (file.type.startsWith("image"))
+				files.push(file);
+		return files;
+	}
+
+	const props = defineProps<{
+		files;
+	}>();
+
+	/** called on uploading a thumbnail */
+	function onChangeThumb(e: Event) {
+		const input = e.target as HTMLInputElement;
+		const filesInp = getValidFiles(input.files);
+		if (filesInp.length)
+			props.files.push(filesInp[0]);
+		else if (input.files?.length)
+			invalidUploaded();
+	}
+	const uploaded = async (files: Array<File>) => {
+		const tagsArr = tags.value.split(",");
+
+		// severe bug in openapi around multiple file uploads using form-data
+
+		const formData = new FormData();
+		files.forEach((file, idx) => {
+			formData.append(`filename[${idx}]`, file);
+		});
+
+		axios({
+			method: "POST",
+			// TODO
+			url: "http://localhost:3000/api/upload",
+			data: formData,
+			headers: {
+				"Content-Type": "multipart/form-data",
+				title: title.value,
+				tags: tagsArr.toString(),
+				description: description.value,
+			},
+		});
+	};
+
+	const invalidUploaded = () => {
+		useEvent("app:toast", { message: "不支持上传所选文件！", severity: "error" });
+	};
 
 	/**
 	 * 在元素被插入到 DOM 之后的下一帧被调用。
@@ -37,9 +96,18 @@
 		<HeadingGroup :name="t.upload" englishName="Upload" />
 
 		<div class="card-container">
+			<input
+				ref="file"
+				hidden
+				type="file"
+				multiple
+				accept="image/*"
+				@change="onChangeThumb"
+			/>
 			<div class="card left">
-				<div v-ripple class="cover">
+				<div v-ripple class="cover" @click="file?.click()">
 					<!-- 选择封面，裁剪器可以先不做 -->
+
 					<div class="mask">
 						Set thumbnail
 					</div>
@@ -69,7 +137,7 @@
 								<Subheader icon="person">Original Creator</Subheader>
 								<TextBox v-model="contentOriginalCreator" required />
 							</section>
-	
+
 							<section>
 								<Subheader icon="link">Original Link</Subheader>
 								<TextBox v-model="contentOriginalLink" required />
@@ -87,18 +155,18 @@
 				<div class="card">
 					<section>
 						<Subheader icon="placeholder">Title</Subheader>
-						<TextBox v-model="contentTitle" required />
+						<TextBox v-model="title" required />
 					</section>
 
 					<section>
-						<Subheader icon="placeholder">Tags</Subheader>
-						<div class="tags">
-							<Tag>Click here to add</Tag>
-						</div>
+						<Subheader icon="placeholder">Tags (comma separated, no spaces)</Subheader>
+						<TextBox v-model="tags" required />
+
 					</section>
 
 					<section>
 						<Subheader icon="placeholder">Description</Subheader>
+						<TextBox v-model="description" required />
 						<!-- 这里放简介，需要富文本编辑器 -->
 					</section>
 
@@ -108,7 +176,7 @@
 					</ToggleSwitch>
 
 					<div class="submit">
-						<Button icon="check">Upload!</Button>
+						<Button icon="check" @click="uploaded(files)">Upload!</Button>
 					</div>
 				</div>
 			</div>
@@ -172,7 +240,7 @@
 		max-width: 300px;
 		background-color: c(gray-20);
 		cursor: pointer;
-		
+
 		.mask {
 			@include square(100%);
 			@include flex-center;
@@ -181,25 +249,25 @@
 			opacity: 0;
 			pointer-events: none;
 		}
-		
+
 		&:hover .mask {
 			opacity: 1;
 		}
 	}
 
-	.repost-options > * {
+	.repost-options>* {
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
 		width: 100%;
-		
+
 		&.v-enter-active,
 		&.v-leave-active {
 			overflow: hidden;
 		}
 	}
 
-	.left > * {
+	.left>* {
 		width: 100%;
 	}
 
