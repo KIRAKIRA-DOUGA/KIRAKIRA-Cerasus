@@ -353,7 +353,7 @@ export class DefaultApiRequestFactory extends BaseAPIRequestFactory {
         requestContext.setHeaderParam("Accept", "application/json, */*;q=0.8")
 
         // Header Params
-        requestContext.setHeaderParam("search", ObjectSerializer.serialize(search, "string", ""));
+        requestContext.setHeaderParam("search", ObjectSerializer.serialize(search, "string", "byte"));
 
         // Header Params
         requestContext.setHeaderParam("category", ObjectSerializer.serialize(category, "string", ""));
