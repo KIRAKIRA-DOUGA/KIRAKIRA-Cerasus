@@ -127,6 +127,19 @@ const SChinese = {
 	pin: "置顶",
 	unpin: "取消置顶",
 	complain: "举报",
+	original: "原创",
+	repost: "转载",
+	authorized_repost: "授权转载",
+	ensure_original: "我声明此作品为原创",
+	original_author: "原作者",
+	original_link: "原链接",
+	title: "标题",
+	tags: "标签",
+	press_enter_to_add: "按回车键添加",
+	description_of_creation: "简介",
+	push_to_feed: "推送到动态",
+	upload_with_exclamation: "投稿！",
+	select_cover: "选择封面",
 } as const;
 
 export default SChinese;

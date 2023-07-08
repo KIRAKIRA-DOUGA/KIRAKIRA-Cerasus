@@ -1,11 +1,10 @@
 <script setup lang="ts">
 	useHead({ title: t.upload });
-	const contentVisibility = ref<PrivacyType>("public");
-	const contentCopyright = ref<Copyright>("original");
-	const contentTitle = ref("");
-	const contentOriginalCreator = ref("");
-	const contentOriginalLink = ref("");
-	const contentFeedPush = ref(true);
+	const copyright = ref<Copyright>("original");
+	const title = ref("");
+	const originalAuthor = ref("");
+	const originalLink = ref("");
+	const pushToFeed = ref(true);
 	const ensureOriginal = ref(false);
 
 	/**
@@ -40,39 +39,32 @@
 			<div class="card left">
 				<div v-ripple class="cover">
 					<!-- 选择封面，裁剪器可以先不做 -->
-					<div class="mask">
-						Set thumbnail
-					</div>
+					<div class="mask">{{ t.select_cover }}</div>
 				</div>
 
 				<Button icon="attachment">{{ t.associate_existing }}</Button>
 
-				<Segmented v-model="contentVisibility">
-					<SegmentedItem id="public" icon="visibility">Public</SegmentedItem>
-					<SegmentedItem id="private" icon="visibility_off">Private</SegmentedItem>
-				</Segmented>
-
-				<Segmented v-model="contentCopyright">
-					<SegmentedItem id="original" icon="fact_check">Original</SegmentedItem>
-					<SegmentedItem id="repost" icon="local_shipping">Repost</SegmentedItem>
+				<Segmented v-model="copyright">
+					<SegmentedItem id="original" icon="fact_check">{{ t.original }}</SegmentedItem>
+					<SegmentedItem id="repost" icon="local_shipping">{{ t.repost }}</SegmentedItem>
 				</Segmented>
 
 				<Fragment class="repost-options">
 					<Transition mode="out-in" @enter="onContentEnter" @leave="onContentLeave">
-						<div v-if="contentCopyright === 'original'">
+						<div v-if="copyright === 'original'">
 							<section>
-								<Checkbox v-model:single="ensureOriginal">我声明此作品为原创</Checkbox>
+								<Checkbox v-model:single="ensureOriginal">{{ t.ensure_original }}</Checkbox>
 							</section>
 						</div>
-						<div v-else-if="contentCopyright === 'repost'">
+						<div v-else-if="copyright === 'repost'">
 							<section>
-								<Subheader icon="person">Original Creator</Subheader>
-								<TextBox v-model="contentOriginalCreator" required />
+								<Subheader icon="person">{{ t.original_author }}</Subheader>
+								<TextBox v-model="originalAuthor" required />
 							</section>
 	
 							<section>
-								<Subheader icon="link">Original Link</Subheader>
-								<TextBox v-model="contentOriginalLink" required />
+								<Subheader icon="link">{{ t.original_link }}</Subheader>
+								<TextBox v-model="originalLink" required />
 							</section>
 						</div>
 					</Transition>
@@ -86,29 +78,26 @@
 
 				<div class="card">
 					<section>
-						<Subheader icon="placeholder">Title</Subheader>
-						<TextBox v-model="contentTitle" required />
+						<Subheader icon="placeholder">{{ t.title }}</Subheader>
+						<TextBox v-model="title" required />
 					</section>
 
 					<section>
-						<Subheader icon="placeholder">Tags</Subheader>
+						<Subheader icon="placeholder">{{ t.tags }}</Subheader>
 						<div class="tags">
-							<Tag>Click here to add</Tag>
+							<Tag>{{ t.press_enter_to_add }}</Tag>
 						</div>
 					</section>
 
 					<section>
-						<Subheader icon="placeholder">Description</Subheader>
+						<Subheader icon="placeholder">{{ t.description_of_creation }}</Subheader>
 						<!-- 这里放简介，需要富文本编辑器 -->
 					</section>
 
-					<ToggleSwitch v-model="contentFeedPush">
-						<icon name="feed" />
-						Push to Feed
-					</ToggleSwitch>
+					<ToggleSwitch v-model="pushToFeed" icon="feed">{{ t.push_to_feed }}</ToggleSwitch>
 
 					<div class="submit">
-						<Button icon="check">Upload!</Button>
+						<Button icon="check">{{ t.upload_with_exclamation }}</Button>
 					</div>
 				</div>
 			</div>
@@ -144,6 +133,7 @@
 
 	.left {
 		align-items: center;
+		min-width: 250px;
 	}
 
 	.right {

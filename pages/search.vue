@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	useHead({ title: "搜索" });
+	useHead({ title: t.search });
 
 	const view = ref<ViewType>("grid");
 	const page = ref(1);
@@ -11,7 +11,7 @@
 <template>
 	<div class="container">
 		<ShadingIcon icon="search" position="right top" />
-		<HeadingGroup name="搜索" englishName="Search" />
+		<HeadingGroup :name="t.search" englishName="Search" />
 		<div class="toolbox-card">
 			<ToolboxView v-model="view" />
 			<Subheader icon="sort">排序</Subheader>
