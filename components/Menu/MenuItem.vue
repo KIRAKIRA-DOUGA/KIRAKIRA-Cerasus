@@ -55,7 +55,7 @@
 		flex-shrink: 0;
 		gap: $menu-padding + 2px;
 		justify-content: flex-start;
-		width: max-content;
+		width: calc(100% - 2 * $menu-padding);
 		margin: 0 $menu-padding;
 		padding: 8px 16px;
 		padding-left: 14px;
