@@ -42,7 +42,7 @@
 					<div class="mask">{{ t.select_cover }}</div>
 				</div>
 
-				<Button icon="attachment">{{ t.associate_existing }}</Button>
+				<Button icon="disambig">{{ t.associate_existing }}</Button>
 
 				<Segmented v-model="copyright">
 					<SegmentedItem id="original" icon="fact_check">{{ t.original }}</SegmentedItem>
@@ -78,19 +78,19 @@
 
 				<div class="card">
 					<section>
-						<Subheader icon="placeholder">{{ t.title }}</Subheader>
+						<Subheader icon="header">{{ t.title }}</Subheader>
 						<TextBox v-model="title" required />
 					</section>
 
 					<section>
-						<Subheader icon="placeholder">{{ t.tags }}</Subheader>
+						<Subheader icon="tag">{{ t.tags }}</Subheader>
 						<div class="tags">
 							<Tag>{{ t.press_enter_to_add }}</Tag>
 						</div>
 					</section>
 
 					<section>
-						<Subheader icon="placeholder">{{ t.description_of_creation }}</Subheader>
+						<Subheader icon="details">{{ t.description_of_creation }}</Subheader>
 						<!-- 这里放简介，需要富文本编辑器 -->
 					</section>
 
