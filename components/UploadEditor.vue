@@ -3,7 +3,6 @@
 	import { DefaultApiRequestFactory } from "kirakirabackend/apis/DefaultApi";
 	import { toRaw } from "vue";
 	import axios from "axios";
-	useHead({ title: t.upload });
 	const contentVisibility = ref<PrivacyType>("public");
 	const contentCopyright = ref<Copyright>("original");
 	const contentOriginalCreator = ref("");
@@ -18,7 +17,6 @@
 	const file = ref<HTMLInputElement>();
 
 	const tags = ref("");
-	const title = ref("");
 	const description = ref("");
 
 	/** validates mime type */
