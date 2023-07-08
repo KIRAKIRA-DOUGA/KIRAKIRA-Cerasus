@@ -7,6 +7,14 @@
 
 	useListen("app:requestLogin", () => showLogin.value = true);
 	useListen("user:login", value => isLogined.value = value);
+
+	/**
+	 * 点击用户头像事件。未登录时提示登录，已登录时导航到个人中心。
+	 */
+	function onClickUser() {
+		if (!isLogined.value) showLogin.value = true;
+		else navigate("/user");
+	}
 </script>
 
 <template>
@@ -32,7 +40,7 @@
 				v-i="7"
 				v-tooltip:right="isLogined ? '艾草' : t.login"
 				:avatar="isLogined ? avatar : undefined"
-				@click="showLogin = true"
+				@click="onClickUser"
 			/>
 			<SoftButton v-i="8" v-tooltip:right="t.messages" icon="email" href="/test-rich-text-editor" />
 			<SoftButton v-i="9" v-tooltip:right="t.settings" icon="settings" href="/settings" :active="isCurrentSettings" />
