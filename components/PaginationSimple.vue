@@ -20,8 +20,8 @@
 		onPageChange: undefined,
 	});
 
-	const pages = [...Array(Math.min(props.displayPageCount, props.pages) + 1).keys()].slice(1);
-	console.log(pages);
+	// lmao FIXME
+	const pages = [...Array(Math.min(props.displayPageCount, props.pages) + 2).keys()].slice(1);
 </script>
 
 <template>

@@ -27,7 +27,7 @@
 		const encodedContent = utf8Encode.encode(newSearch);
 		api.videos(encodedContent, newSortCategory, newSortDirection, "true", newPageValue).then(x => {
 			videos.value = x;
-			numberOfPages.value = Math.ceil(x.paginationData.numberOfItems / 50);
+			numberOfPages.value = Math.ceil(x.paginationData.numberOfItems / 50.0);
 		})
 			.catch((error: any) => console.error(error));
 	}, { immediate: true });
@@ -109,7 +109,7 @@
 				:duration="new Duration(2, 33)"
 			>{{ video.title }}</ThumbVideo>
 		</div>
-		<PaginationSimple :pages="numberOfPages + 1" :displayPageCount="numberOfPages + 1" enableArrowKeyMove :current="page" :onPageChange="changePage" />
+		<PaginationSimple :pages="numberOfPages" :displayPageCount="12" enableArrowKeyMove :current="page" :onPageChange="changePage" />
 
 		<Subheader icon="home" :badge="233">网站地图</Subheader>
 		<div class="pages">
