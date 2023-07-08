@@ -118,7 +118,7 @@
 		}
 	}
 
-	%card {
+	%card-content {
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
@@ -127,7 +127,7 @@
 	.card {
 		@include round-large;
 		@include card-shadow;
-		@extend %card;
+		@extend %card-content;
 		padding: 1rem;
 	}
 
@@ -137,7 +137,7 @@
 	}
 
 	.right {
-		@extend %card;
+		@extend %card-content;
 		flex-grow: 1;
 	}
 
