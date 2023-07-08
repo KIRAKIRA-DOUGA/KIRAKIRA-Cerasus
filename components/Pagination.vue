@@ -12,9 +12,12 @@
 		displayPageCount?: number;
 		/** 允许用户使用键盘上左右箭头键翻页。 */
 		enableArrowKeyMove?: boolean;
+
+		onPageChange: Function;
 	}>(), {
 		current: 1,
 		displayPageCount: 7,
+		onPageChange: undefined,
 	});
 
 	const model = defineModel<number>();
@@ -26,8 +29,6 @@
 		throw new RangeError(`Pagination pages 参数错误。页码值不能小于 1，当前值为 ${pages.value}。`);
 	if (currentPage.value < 1 || currentPage.value > pages.value)
 		throw new RangeError(`Pagination current 超出页码范围。当前页码值取值范围为 1 ~ ${pages.value}，当前设定值为 ${currentPage.value}。`);
-	if (props.displayPageCount < 3)
-		throw new RangeError(`Pagination displayPageCount 参数错误。显示的最多页码数目不能小于 3，当前设定值为 ${props.displayPageCount}。`);
 
 	/** 页码项目坐标与页码值的键值对。 */
 	type PositionPageItemPair = Record<number, number>;
@@ -121,7 +122,8 @@
 				], animationOptions(hasExistAnimations));
 				newPageNumber.value.animate([
 					{ left: `${pageLeft ? -36 : 36}px` },
-					{ left: 0 },
+					{ left: 0 }, console.log(numberOfPages.value);
+
 				], animationOptions(hasExistAnimations)).finished.then(() => {
 					setCurrentPage();
 					if (newPageNumber.value) newPageNumber.value.hidden = true;
@@ -148,6 +150,7 @@
 	function changePage(page: number) {
 		if (page < 1 || page > pages.value)
 			throw new RangeError(`超出页码范围。当前页码值取值范围为 1 ~ ${pages.value}，当前设定值为 ${page}。`);
+		props.onPageChange(page);
 		model.value = page;
 	}
 	/**
