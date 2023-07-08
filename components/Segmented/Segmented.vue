@@ -8,7 +8,7 @@
 		const props = item.props as ComponentProps<typeof SegmentedItem> | undefined;
 		const caption = getSlotVNodeNormalizedChildren(item);
 		if (typeof caption !== "string") return undefined!;
-		return { caption, id: props?.id ?? caption, icon: props?.icon };
+		return { caption, id: props?.id ?? caption, icon: props?.icon } as const;
 	}).filter(item => item) ?? []);
 	const count = computed(() => items.value.length);
 	const displaySelectedIndex = ref<number>();
