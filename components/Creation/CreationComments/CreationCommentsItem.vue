@@ -112,7 +112,7 @@
 		}
 
 		.username {
-			font-weight: 700;
+			font-weight: bold;
 			font-size: 16px;
 		}
 	}
