@@ -13,23 +13,16 @@
 import { HttpFile } from '../http/http';
 
 export class Videos200ResponsePaginationData {
-    'pathsAndQueryStrings'?: Array<string>;
-    'pages'?: Array<number>;
+    'numberOfItems'?: number;
     'currentPage'?: number;
 
     static readonly discriminator: string | undefined = undefined;
 
     static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
         {
-            "name": "pathsAndQueryStrings",
-            "baseName": "PathsAndQueryStrings",
-            "type": "Array<string>",
-            "format": ""
-        },
-        {
-            "name": "pages",
-            "baseName": "Pages",
-            "type": "Array<number>",
+            "name": "numberOfItems",
+            "baseName": "NumberOfItems",
+            "type": "number",
             "format": ""
         },
         {

@@ -9,7 +9,7 @@
 
 	useHead({ title: "首页" });
 
-	const videos = ref<Videos200Response>();
+	const videos = ref<Videos200Response>(undefined);
 
 	const router: Router = useRouter();
 	const queryVals = router.currentRoute.value.query;
@@ -17,13 +17,18 @@
 	const search = ref(queryVals.search?.toString() ?? "none");
 	const sortCategory = ref(queryVals.sortCategory?.toString());
 	const sortDirection = ref(queryVals.sortDirection?.toString());
+	const page = ref(parseInt(queryVals.page?.toString() ?? "1"));
+	const numberOfPages = ref(1);
 
 	// fetch the videos according to the query
-	watch([() => search.value, () => sortCategory.value, () => sortDirection.value], async ([newSearch, newSortCategory, newSortDirection]) => {
+	watch([() => search.value, () => sortCategory.value, () => sortDirection.value, () => page.value], async ([newSearch, newSortCategory, newSortDirection, newPageValue]) => {
 		const api : DefaultApi = API();
 		const utf8Encode = new TextEncoder();
 		const encodedContent = utf8Encode.encode(newSearch);
-		api.videos(encodedContent, newSortCategory, newSortDirection, "true").then(x => videos.value = x)
+		api.videos(encodedContent, newSortCategory, newSortDirection, "true", newPageValue).then(x => {
+			videos.value = x;
+			numberOfPages.value = Math.ceil(x.paginationData.numberOfItems / 50);
+		})
 			.catch((error: any) => console.error(error));
 	}, { immediate: true });
 
@@ -72,6 +77,10 @@
 		return pages.map(page => (typeof page === "number" ? { name: String(page), link: String(page) } :
 			{ name: page[0], link: page[1] }) as Page);
 	}
+
+	function changePage(x) {
+		page.value = x;
+	}
 </script>
 
 <template>
@@ -100,6 +109,8 @@
 				:duration="new Duration(2, 33)"
 			>{{ video.title }}</ThumbVideo>
 		</div>
+		<PaginationSimple :pages="numberOfPages + 1" :displayPageCount="numberOfPages + 1" enableArrowKeyMove :current="page" :onPageChange="changePage" />
+
 		<Subheader icon="home" :badge="233">网站地图</Subheader>
 		<div class="pages">
 			<LocaleLink v-for="page in pages" :key="page.name" class="link lite" :to="page.link">{{ page.name }}</LocaleLink>
