@@ -96,9 +96,10 @@ export class PromiseDefaultApi {
      * @param category sort category
      * @param order sort category
      * @param unapproved sort category
+     * @param pageNumber page number
      */
-    public videos(search?: string, category?: string, order?: string, unapproved?: string, _options?: Configuration): Promise<Videos200Response> {
-        const result = this.api.videos(search, category, order, unapproved, _options);
+    public videos(search?: string, category?: string, order?: string, unapproved?: string, pageNumber?: number, _options?: Configuration): Promise<Videos200Response> {
+        const result = this.api.videos(search, category, order, unapproved, pageNumber, _options);
         return result.toPromise();
     }
 

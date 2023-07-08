@@ -198,9 +198,10 @@ export class ObservableDefaultApi {
      * @param category sort category
      * @param order sort category
      * @param unapproved sort category
+     * @param pageNumber page number
      */
-    public videos(search?: string, category?: string, order?: string, unapproved?: string, _options?: Configuration): Observable<Videos200Response> {
-        const requestContextPromise = this.requestFactory.videos(search, category, order, unapproved, _options);
+    public videos(search?: string, category?: string, order?: string, unapproved?: string, pageNumber?: number, _options?: Configuration): Observable<Videos200Response> {
+        const requestContextPromise = this.requestFactory.videos(search, category, order, unapproved, pageNumber, _options);
 
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
