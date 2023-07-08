@@ -105,6 +105,14 @@
 	$base-height: 14px;
 	$thumb-size: 20px;
 	$focus-ring-thickness: 10px;
+	$icon-size: 20px;
+	
+	@layer props {
+		:comp {
+			/// 图标大小。
+			--icon-size: #{$icon-size};
+		}
+	}
 
 	:comp {
 		display: flex;
@@ -114,7 +122,7 @@
 		> .icon {
 			margin-right: 8px;
 			color: c(icon-color);
-			font-size: 20px;
+			font-size: var(--icon-size);
 		}
 
 		> .content {
