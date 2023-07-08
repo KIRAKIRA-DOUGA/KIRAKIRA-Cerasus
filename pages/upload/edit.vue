@@ -194,18 +194,8 @@
 	}
 
 	.toggle-switch {
-		display: flex;
-		height: 36px;
 		margin-right: 2px;
 		color: c(icon-color);
-
-		:deep(.content) {
-			gap: 0.5rem;
-
-			.icon {
-				font-size: 24px;
-			}
-		}
 	}
 
 	.submit {
