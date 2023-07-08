@@ -14,7 +14,8 @@
 		<HeadingGroup name="搜索" englishName="Search" />
 		<div class="toolbox-card">
 			<ToolboxView v-model="view" />
-			<Sort v-model="sort" :style="{ gridTemplateColumns: '1fr 1fr' }">
+			<Subheader icon="sort">排序</Subheader>
+			<Sort v-model="sort">
 				<SortItem id="date" preferOrder="descending">投稿日期</SortItem>
 				<SortItem id="play" preferOrder="descending">播放数</SortItem>
 				<SortItem id="danmaku" preferOrder="descending">弹幕数</SortItem>
@@ -26,3 +27,9 @@
 		</div>
 	</div>
 </template>
+
+<style scoped lang="scss">
+	.sort {
+		grid-template-columns: repeat(2, 1fr);
+	}
+</style>
