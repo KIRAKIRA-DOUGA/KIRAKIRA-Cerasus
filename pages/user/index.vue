@@ -103,7 +103,6 @@
 		position: sticky;
 		top: 0;
 		z-index: 4;
-		height: $header-height;
 		padding: 0 $padding-x;
 		background-color: c(main-bg);
 	}
@@ -171,6 +170,7 @@
 			display: flex;
 			gap: 16px;
 			justify-content: flex-end;
+			margin-left: auto;
 		}
 	}
 
