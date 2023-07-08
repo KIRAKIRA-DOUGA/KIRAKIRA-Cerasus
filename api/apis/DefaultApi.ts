@@ -337,9 +337,11 @@ export class DefaultApiRequestFactory extends BaseAPIRequestFactory {
      * @param category sort category
      * @param order sort category
      * @param unapproved sort category
+     * @param pageNumber page number
      */
-    public async videos(search?: string, category?: string, order?: string, unapproved?: string, _options?: Configuration): Promise<RequestContext> {
+    public async videos(search?: string, category?: string, order?: string, unapproved?: string, pageNumber?: number, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
+
 
 
 
@@ -363,6 +365,9 @@ export class DefaultApiRequestFactory extends BaseAPIRequestFactory {
 
         // Header Params
         requestContext.setHeaderParam("unapproved", ObjectSerializer.serialize(unapproved, "string", ""));
+
+        // Header Params
+        requestContext.setHeaderParam("pageNumber", ObjectSerializer.serialize(pageNumber, "number", ""));
 
 
         

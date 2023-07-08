@@ -140,6 +140,12 @@ export interface DefaultApiVideosRequest {
      * @memberof DefaultApivideos
      */
     unapproved?: string
+    /**
+     * page number
+     * @type number
+     * @memberof DefaultApivideos
+     */
+    pageNumber?: number
 }
 
 export class ObjectDefaultApi {
@@ -210,7 +216,7 @@ export class ObjectDefaultApi {
      * @param param the request object
      */
     public videos(param: DefaultApiVideosRequest = {}, options?: Configuration): Promise<Videos200Response> {
-        return this.api.videos(param.search, param.category, param.order, param.unapproved,  options).toPromise();
+        return this.api.videos(param.search, param.category, param.order, param.unapproved, param.pageNumber,  options).toPromise();
     }
 
 }

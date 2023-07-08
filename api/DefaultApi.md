@@ -437,6 +437,8 @@ let body:.DefaultApiVideosRequest = {
   order: "order_example",
   // string | sort category (optional)
   unapproved: "unapproved_example",
+  // number | page number (optional)
+  pageNumber: 1,
 };
 
 apiInstance.videos(body).then((data:any) => {
@@ -453,6 +455,7 @@ Name | Type | Description  | Notes
  **category** | [**string**] | sort category | (optional) defaults to undefined
  **order** | [**string**] | sort category | (optional) defaults to undefined
  **unapproved** | [**string**] | sort category | (optional) defaults to undefined
+ **pageNumber** | [**number**] | page number | (optional) defaults to undefined
 
 
 ### Return type
