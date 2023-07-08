@@ -3,6 +3,8 @@
 	const memo = ref("艾拉");
 	const signature = ref("Kind and Kawaii, Forever!~");
 	const gender = ref<"male" | "female" | (string & {})>("female");
+	const isFollowed = ref(true);
+	const actionMenu = ref<MenuModel>();
 	
 	const fullwidthRegexp = /[⺀-ㄯ㆐-ㇿ㈠-㉇㊀-㊰㋀-㋋㋐-㍰㍻-㍿㏠-㏾㐀-䶿一-鿿豈-龎︐-︙︰-﹫！-｠￠-￦𚿰-𛅧𠀀-𲎯]/u;
 	const nbsp = "\xa0"; // Vue 太蠢，不会自动转换空格。
@@ -33,7 +35,14 @@
 				</div>
 			</div>
 			<div class="actions">
-
+				<SoftButton v-tooltip:top="'私信'" icon="email" />
+				<SoftButton v-tooltip:top="'老铁们，给我举报他！'" icon="more_vert" @click="e => actionMenu = e" />
+				<Menu v-model="actionMenu">
+					<MenuItem icon="flag">举报</MenuItem>
+					<MenuItem icon="block">加入黑名单</MenuItem>
+				</Menu>
+				<Button v-if="!isFollowed">关注</Button>
+				<Button v-else disabled>已关注</Button>
 			</div>
 		</div>
 		<TabBar v-model="tab">
@@ -105,6 +114,12 @@
 				margin-top: 6px;
 				color: c(icon-color);
 			}
+		}
+		
+		.actions {
+			display: flex;
+			gap: 16px;
+			justify-content: flex-end;
 		}
 	}
 

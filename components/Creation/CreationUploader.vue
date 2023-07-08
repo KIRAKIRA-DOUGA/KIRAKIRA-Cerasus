@@ -13,7 +13,7 @@
 
 <template>
 	<Comp>
-		<UserAvatar :avatar="avatar" />
+		<UserAvatar :avatar="avatar" link="/user" />
 		<div class="text">
 			<div class="username">{{ username }}</div>
 			<div class="fans">{{ fans }} 粉丝</div>
