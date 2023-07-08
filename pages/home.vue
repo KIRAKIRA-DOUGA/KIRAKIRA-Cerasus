@@ -26,8 +26,8 @@
 		const utf8Encode = new TextEncoder();
 		const encodedContent = utf8Encode.encode(newSearch);
 		api.videos(encodedContent, newSortCategory, newSortDirection, "true", newPageValue).then(x => {
-			videos.value = x;
 			numberOfPages.value = Math.ceil(x.paginationData.numberOfItems / 50.0);
+			videos.value = x;
 		})
 			.catch((error: any) => console.error(error));
 	}, { immediate: true });
@@ -109,16 +109,15 @@
 				:duration="new Duration(2, 33)"
 			>{{ video.title }}</ThumbVideo>
 		</div>
-		<PaginationSimple :pages="numberOfPages" :displayPageCount="12" enableArrowKeyMove :current="page" :onPageChange="changePage" />
-
-		<Subheader icon="home" :badge="233">网站地图</Subheader>
-		<div class="pages">
-			<LocaleLink v-for="page in pages" :key="page.name" class="link lite" :to="page.link">{{ page.name }}</LocaleLink>
-		</div>
-		<Subheader icon="error" :badge="233">错误页</Subheader>
-		<div class="pages">
-			<a v-for="page in httpCodes" :key="page.name" class="link lite" :href="page.link">{{ page.name }}</a>
-		</div>
+		<!-- TODO: the key stuff is a hack -->
+		<PaginationSimple
+			:key="numberOfPages"
+			:pages="numberOfPages"
+			:displayPageCount="12"
+			enableArrowKeyMove
+			:current="page"
+			:onPageChange="changePage"
+		/>
 	</div>
 </template>
 

@@ -20,25 +20,28 @@
 		onPageChange: undefined,
 	});
 
-	// lmao FIXME
-	const pages = [...Array(Math.min(props.displayPageCount, props.pages) + 2).keys()].slice(1);
+	const pageArr = [...Array(Math.min(props.displayPageCount, props.pages) + 1).keys()].slice(1);
 </script>
 
 <template>
-	<span>
+	<div class="pageRow">
 		<span
-			v-for="page in pages"
+			v-for="page of pageArr"
 			:key="page"
 			:class="{ pageNumber: true, currentPage: props.current === page }"
 			@click="props.onPageChange(page)"
 		>
 			{{ page }}
-
 		</span>
-	</span>
+	</div>
 </template>
 
 <style scoped lang="scss">
+	.pageRow {
+		display: relative;
+		margin-top: 10px;
+	}
+
 	.pageNumber {
 		margin: 1px;
 		padding: 14px;
@@ -52,4 +55,3 @@
 		background-color: #f06e8e;
 	}
 </style>
-			console.log(numberOfPages.value);
