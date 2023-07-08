@@ -95,6 +95,7 @@
 
 <style scoped lang="scss">
 	$padding-x: 100px;
+	$padding-x-narrow: 40px;
 	$header-height: 134px;
 	$main-margin-top: 32px;
 
@@ -184,7 +185,7 @@
 		display: flex;
 		gap: 20px;
 		align-items: flex-start;
-		margin: $main-margin-top $padding-x;
+		padding: $main-margin-top $padding-x;
 		
 		@include tablet {
 			flex-direction: column-reverse;
@@ -216,6 +217,14 @@
 			// grid-gap: 1rem;
 			// grid-template-columns: repeat(auto-fill, 226px);
 			// justify-content: space-between;
+		}
+	}
+	
+	@include tablet {
+		header,
+		main {
+			padding-right: $padding-x-narrow;
+			padding-left: $padding-x-narrow;
 		}
 	}
 </style>

@@ -47,7 +47,7 @@
 					</div>
 				</div>
 				<div class="line">
-					<LocaleLink class="item uploader" to="components" linkInLink :blank="blank">
+					<LocaleLink class="item uploader" to="/user" linkInLink :blank="blank">
 						<Icon name="person" />
 						<div>{{ uploader }}</div>
 					</LocaleLink>
