@@ -7,7 +7,7 @@
 		const props = item.props as ComponentProps<typeof SortItem> | undefined;
 		const caption = getSlotVNodeNormalizedChildren(item);
 		if (typeof caption !== "string") return undefined!;
-		return { caption, id: props?.id ?? caption, preferOrder: props?.preferOrder ?? "ascending" };
+		return { caption, id: props?.id ?? caption, preferOrder: props?.preferOrder ?? "ascending" } as const;
 	}).filter(item => item) ?? []);
 
 	/**
@@ -93,17 +93,21 @@
 	}
 
 	.icon.arrow {
-		@include square(18px);
-		display: block;
-		scale: 1 0;
+		$transition: $fallback-transitions, rotate $ease-out-smooth 500ms; // 在箭头消失时不应减速动画以免影响效果。
 		color: c(accent);
+		font-size: 18px;
+		rotate: x 100grad;
+		transform-style: preserve-3d;
+		perspective: 250px;
 
 		&.ascending {
-			scale: 1;
+			rotate: x 0grad;
+			transition: $transition;
 		}
 
 		&.descending {
-			scale: 1 -1;
+			rotate: x 200grad;
+			transition: $transition;
 		}
 	}
 </style>

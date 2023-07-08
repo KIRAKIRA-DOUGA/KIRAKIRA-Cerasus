@@ -119,7 +119,7 @@
 		}
 
 		.username {
-			font-weight: 700;
+			font-weight: bold;
 			font-size: 16px;
 		}
 	}
@@ -131,13 +131,21 @@
 
 	.footer {
 		display: flex;
+		flex-wrap: wrap;
+		gap: 5px;
 		justify-content: space-between;
 		color: c(icon-color);
 		font-size: 13px;
 
 		> * {
 			display: flex;
+			flex-shrink: 0;
+			flex-wrap: wrap;
 			gap: 20px;
+		}
+
+		.right {
+			margin-left: auto;
 		}
 
 		.likes-wrapper {

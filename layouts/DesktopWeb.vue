@@ -21,7 +21,7 @@
 	};
 
 	watchRoute(() => {
-		showBanner.value = localedRoute.value === "";
+		showBanner.value = localedRoute.value === "" || localedRoute.value.startsWith("user");
 	}, true);
 
 	watchRoute((route, prevRoute) => {

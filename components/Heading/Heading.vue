@@ -49,7 +49,7 @@
 
 		&.sub {
 			margin-bottom: 1px;
-			font-weight: 700;
+			font-weight: bold;
 			font-size: 30px;
 			font-family: $english-logo-fonts;
 			font-style: italic;

@@ -6,6 +6,8 @@
 	const props = defineProps<{
 		/** 头像网址。 */
 		avatar?: string;
+		/** 点击后跳转到链接。 */
+		link?: string;
 	}>();
 </script>
 
@@ -13,6 +15,7 @@
 	<Comp v-ripple>
 		<img v-if="avatar" :src="avatar" alt="avatar" draggable="false" />
 		<Icon v-else name="person" />
+		<LocaleLink v-if="link" :to="link" :draggable="false" />
 	</Comp>
 </template>
 
@@ -27,6 +30,7 @@
 	:comp {
 		@include circle;
 		@include flex-center;
+		position: relative;
 		flex-shrink: 0;
 		overflow: hidden;
 		color: c(icon-color);
@@ -39,18 +43,25 @@
 			object-fit: cover;
 			aspect-ratio: 1 / 1;
 
-			&:any-hover {
+			&:any-hover,
+			&:has(~ a:any-hover) {
 				scale: 125%;
 				filter: brightness(0.85);
 			}
 
-			&:not(:any-hover) {
+			&:not(:any-hover):has(~ a:not(:any-hover)) {
 				transition-duration: 1s;
 			}
 		}
 		
 		&:any-hover {
 			background-color: c(gray-30);
+		}
+		
+		a {
+			@include square(100%);
+			position: absolute;
+			z-index: 3;
 		}
 	}
 </style>

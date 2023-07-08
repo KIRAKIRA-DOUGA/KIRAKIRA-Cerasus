@@ -1,4 +1,5 @@
 @use "../theme/effects" as *;
+@use "../theme/functions" as *;
 
 .toolbox-card {
 	@include round-large;
@@ -6,6 +7,8 @@
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
+	width: 250px;
 	padding: 16px;
+	overflow: hidden;
 	background-color: c(main-bg);
 }

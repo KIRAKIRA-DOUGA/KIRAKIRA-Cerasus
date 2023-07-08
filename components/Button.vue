@@ -38,7 +38,7 @@
 	>
 		<Icon v-if="icon" :name="icon" />
 		<span><slot></slot></span>
-		<LocaleLink v-if="href" draggable="false" :to="href" class="link lite" />
+		<LocaleLink v-if="href" :draggable="false" :to="href" class="link lite" />
 	</button>
 </template>
 

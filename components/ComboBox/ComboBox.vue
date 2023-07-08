@@ -15,7 +15,7 @@
 		const props = item.props as ComponentProps<typeof ComboBoxItem> | undefined;
 		const content = getSlotVNodeNormalizedChildren(item);
 		if (typeof content !== "string") return undefined!;
-		return { content, id: props?.id ?? content };
+		return { content, id: props?.id ?? content } as const;
 	}).filter(item => item) ?? []);
 	const itemsLength = computed(() => items.value.length);
 	const selectedIndex = computed(() => items.value.findIndex(item => item.id === selected.value && selected.value));
