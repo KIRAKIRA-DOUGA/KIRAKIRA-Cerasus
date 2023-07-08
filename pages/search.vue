@@ -5,7 +5,7 @@
 	const page = ref(1);
 	const pages = ref(99);
 	const displayPageCount = ref(6);
-	const sort = ref<SortModel>(["date", "ascending"]);
+	const sort = ref<SortModel>(["date", "descending"]);
 </script>
 
 <template>
