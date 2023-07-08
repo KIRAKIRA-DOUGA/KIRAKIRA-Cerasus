@@ -127,6 +127,19 @@ const English: LocaleIdentifiers = {
 	pin: "Pin",
 	unpin: "Unpin",
 	complain: "Complain",
+	original: "Original",
+	repost: "Repost",
+	authorized_repost: "Authorized repost",
+	ensure_original: "I declare that this creation is original",
+	original_author: "Original author",
+	original_link: "Original link",
+	title: "Title",
+	tags: "Tags",
+	press_enter_to_add: "Press enter to add",
+	description_of_creation: "Description",
+	push_to_feed: "Push to feed",
+	upload_with_exclamation: "Upload!",
+	select_cover: "Select cover",
 };
 
 export default English;
