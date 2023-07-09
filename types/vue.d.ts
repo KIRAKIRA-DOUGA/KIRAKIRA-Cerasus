@@ -70,5 +70,5 @@ declare global {
 
 	export { Editor } from "@tiptap/vue-3";
 	export { AnimationItem } from "lottie-web";
-	export { CSSProperties, ComponentInternalInstance, ConcreteComponent, Directive, Events, MaybeRef, MaybeRefOrGetter, Ref, RendererElement, ShallowRef, Slot, Slots, StyleValue, VNode, WritableComputedRef } from "vue";
+	export { CSSProperties, ComponentInternalInstance, ConcreteComponent, Directive, Events, MaybeRef, MaybeRefOrGetter, Ref, RendererElement, RendererNode, ShallowRef, Slot, Slots, StyleValue, VNode, VNodeProps, WritableComputedRef } from "vue";
 }

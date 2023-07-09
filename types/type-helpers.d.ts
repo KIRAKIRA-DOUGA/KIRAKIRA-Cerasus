@@ -44,11 +44,23 @@ declare global {
 	 * 获取组件的 Props。
 	 * @template T - Vue 组件。
 	 */
-	type ComponentProps<T> = InstanceType<T>["$props"];
+	type ComponentProps<T> = Omit<InstanceType<T>["$props"], keyof VNodeProps>;
 	
 	/**
 	 * 去除 Ref 的类型。
 	 * @template R - 可能为 Ref 的类型。
 	 */
 	type Unref<R> = R extends MaybeRefOrGetter<infer U> ? U : T;
+	
+	/**
+	 * 删除 T 的索引签名，只使用已知的属性键名。例如从枚举类型中删除 `[x: string]`。
+	 * @template T - 源对象。
+	 */
+	type KnownKeys<T> = keyof {
+		[K in keyof T]:
+			string extends K ? never :
+			number extends K ? never :
+			symbol extends K ? never :
+			K
+	};
 }
