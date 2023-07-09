@@ -1,96 +1,12 @@
 <script setup lang="ts">
-	import { DefaultApi, HttpFile } from "kirakirabackend";
-	import { DefaultApiRequestFactory } from "kirakirabackend/apis/DefaultApi";
-	import { toRaw } from "vue";
-	import axios from "axios";
-	const contentVisibility = ref<PrivacyType>("public");
-	const contentCopyright = ref<Copyright>("original");
-	const contentOriginalCreator = ref("");
-	const contentOriginalLink = ref("");
-	const contentFeedPush = ref(true);
+	useHead({ title: t.upload });
 	const copyright = ref<Copyright>("original");
 	const title = ref("");
 	const originalAuthor = ref("");
 	const originalLink = ref("");
 	const pushToFeed = ref(true);
 	const ensureOriginal = ref(false);
-	const file = ref<HTMLInputElement>();
-
-	const tags = ref("");
-	const description = ref("");
-
-	/** validates mime type */
-	function getValidFiles(fileList?: FileList | null) {
-		if (!fileList || !fileList.length) return [];
-		const files: Any[] = [];
-		for (const file of fileList)
-			if (file.type.startsWith("image"))
-				files.push(file);
-		return files;
-	}
-
-	const props = defineProps<{
-		files;
-	}>();
-
-	/** called on uploading a thumbnail */
-	function onChangeThumb(e: Event) {
-		const input = e.target as HTMLInputElement;
-		const filesInp = getValidFiles(input.files);
-		if (filesInp.length)
-			props.files.push(filesInp[0]);
-		else if (input.files?.length)
-			invalidUploaded();
-	}
-	const uploaded = async (files: Array<File>) => {
-		const tagsArr = tags.value.split(",");
-
-		// severe bug in openapi around multiple file uploads using form-data
-
-		const formData = new FormData();
-		files.forEach((file, idx) => {
-			formData.append(`filename[${idx}]`, file);
-		});
-
-		axios({
-			method: "POST",
-			// TODO
-			url: "http://localhost:3000/api/upload",
-			data: formData,
-			headers: {
-				"Content-Type": "multipart/form-data",
-				title: title.value,
-				tags: tagsArr.toString(),
-				description: description.value,
-			},
-		});
-	};
-
-	const invalidUploaded = () => {
-		useEvent("app:toast", { message: "不支持上传所选文件！", severity: "error" });
-	};
-
-	/**
-	 * 在元素被插入到 DOM 之后的下一帧被调用。
-	 * 用这个来开始进入动画。
-	 * @param el - HTML DOM 元素。
-	 * @param done - 调用回调函数 done 表示过渡结束。
-	 */
-	async function onContentEnter(el: Element, done: () => void) {
-		await animateSize(el, null, { startHeight: 0, duration: 500, easing: eases.easeInOutSmooth });
-		done();
-	}
-
-	/**
-	 * 在离开过渡开始时调用。
-	 * 用这个来开始离开动画。
-	 * @param el - HTML DOM 元素。
-	 * @param done - 调用回调函数 done 表示过渡结束。
-	 */
-	async function onContentLeave(el: Element, done: () => void) {
-		await animateSize(el, null, { endHeight: 0, duration: 500, easing: eases.easeInOutSmooth });
-		done();
-	}
+	const [onContentEnter, onContentLeave] = simpleAnimateSize("height", 500, eases.easeInOutSmooth);
 </script>
 
 <template>
@@ -99,16 +15,8 @@
 		<HeadingGroup :name="t.upload" englishName="Upload" />
 
 		<div class="card-container">
-			<input
-				ref="file"
-				hidden
-				type="file"
-				multiple
-				accept="image/*"
-				@change="onChangeThumb"
-			/>
 			<div class="card left">
-				<div v-ripple class="cover" @click="file?.click()">
+				<div v-ripple class="cover">
 					<!-- 选择封面，裁剪器可以先不做 -->
 					<div class="mask">{{ t.select_cover }}</div>
 				</div>
@@ -132,7 +40,7 @@
 								<Subheader icon="person">{{ t.original_author }}</Subheader>
 								<TextBox v-model="originalAuthor" required />
 							</section>
-
+	
 							<section>
 								<Subheader icon="link">{{ t.original_link }}</Subheader>
 								<TextBox v-model="originalLink" required />
@@ -154,21 +62,21 @@
 					</section>
 
 					<section>
-						<Subheader icon="placeholder">Tags (comma separated, no spaces)</Subheader>
-						<TextBox v-model="tags" required />
-
+						<Subheader icon="tag">{{ t.tags }}</Subheader>
+						<div class="tags">
+							<Tag>{{ t.press_enter_to_add }}</Tag>
+						</div>
 					</section>
 
 					<section>
-						<Subheader icon="placeholder">Description</Subheader>
-						<TextBox v-model="description" required />
+						<Subheader icon="details">{{ t.description_of_creation }}</Subheader>
 						<!-- 这里放简介，需要富文本编辑器 -->
 					</section>
 
 					<ToggleSwitch v-model="pushToFeed" icon="feed">{{ t.push_to_feed }}</ToggleSwitch>
 
 					<div class="submit">
-						<Button icon="check" @click="uploaded(files)">Upload!</Button>
+						<Button icon="check">{{ t.upload_with_exclamation }}</Button>
 					</div>
 				</div>
 			</div>
@@ -233,7 +141,7 @@
 		max-width: 300px;
 		background-color: c(gray-20);
 		cursor: pointer;
-
+		
 		.mask {
 			@include square(100%);
 			@include flex-center;
@@ -242,25 +150,25 @@
 			opacity: 0;
 			pointer-events: none;
 		}
-
+		
 		&:hover .mask {
 			opacity: 1;
 		}
 	}
 
-	.repost-options>* {
+	.repost-options > * {
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
 		width: 100%;
-
+		
 		&.v-enter-active,
 		&.v-leave-active {
 			overflow: hidden;
 		}
 	}
 
-	.left>* {
+	.left > * {
 		width: 100%;
 	}
 

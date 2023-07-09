@@ -1,6 +1,7 @@
 <script setup lang="ts">
 	import background from "assets/styles/css-doodles/background.css-doodle";
 	import Settings from "./Settings.vue";
+	import UserCenter from "./UserCenter.vue";
 
 	const container = ref<HTMLDivElement>();
 	const containerMain = ref<HTMLElement>();
@@ -8,7 +9,8 @@
 	const localedRoute = computed(() => getRoutePath());
 	const SETTINGS = "settings";
 	const pageTransition = ref("page-forward");
-	const isSettings = computed(() => getRoutePath().includes(SETTINGS));
+	const isSettings = computed(() => getLocaleRouteSlug()[0] === SETTINGS);
+	const isUserCenter = computed(() => getLocaleRouteSlug()[0] === "user");
 	const cssDoodle = refComp();
 	const showCssDoodle = computed(() => useAppSettingsStore().showCssDoodle);
 	const isToggleSettings = ref(false);
@@ -19,6 +21,7 @@
 			Object.assign(attrs, { onBeforeLeave: () => isToggleSettings.value = true, onAfterEnter: () => isToggleSettings.value = false });
 		return attrs;
 	};
+	const [onContentEnter, onContentLeave] = simpleAnimateSize("height", 700, eases.easeInOutSmooth);
 
 	watchRoute(() => {
 		showBanner.value = localedRoute.value === "" || localedRoute.value.startsWith("user");
@@ -45,21 +48,24 @@
 	<SideBar class="sidebar" />
 	<div ref="container" class="container" :class="{ scroll: isSettings, 'toggle-settings': isToggleSettings }">
 		<Transition name="settings" v-bind="transitionProps(true)">
-			<main v-if="!isSettings" ref="containerMain" class="scroll">
-				<Banner :collapsed="!showBanner" />
-				<Transition :name="pageTransition" v-bind="transitionProps(false)">
-					<div :key="localedRoute">
-						<slot></slot>
-					</div>
-				</Transition>
-			</main>
-			<Settings v-else>
+			<Settings v-if="isSettings">
 				<Transition name="page-jump" v-bind="transitionProps(true)">
 					<div :key="localedRoute" class="router-view">
 						<slot></slot>
 					</div>
 				</Transition>
 			</Settings>
+			<main v-else ref="containerMain" class="scroll">
+				<Banner :collapsed="!showBanner" />
+				<Transition :css="false" @enter="onContentEnter" @leave="onContentLeave">
+					<UserCenter v-if="isUserCenter" />
+				</Transition>
+				<Transition :name="pageTransition" v-bind="transitionProps(false)">
+					<div :key="localedRoute" :class="{ 'user-center-slot': isUserCenter }">
+						<slot></slot>
+					</div>
+				</Transition>
+			</main>
 		</Transition>
 	</div>
 </template>

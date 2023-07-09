@@ -90,7 +90,7 @@ const English: LocaleIdentifiers = {
 	apply: "Apply",
 	reset: "Reset",
 	history: "History",
-	favorite: "Favorite",
+	favorites: "Favorite",
 	follow: "Following",
 	upload: "Upload",
 	messages: "Messages",
@@ -140,6 +140,10 @@ const English: LocaleIdentifiers = {
 	push_to_feed: "Push to feed",
 	upload_with_exclamation: "Upload!",
 	select_cover: "Select cover",
+	series: "Series",
+	audio: "Audio",
+	photo: "Photo",
+	album: "Album",
 };
 
 export default English;

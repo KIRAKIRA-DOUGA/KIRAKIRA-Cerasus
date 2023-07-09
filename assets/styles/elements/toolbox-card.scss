@@ -12,3 +12,11 @@
 	overflow: hidden;
 	background-color: c(main-bg);
 }
+
+.videos-grid {
+	display: grid;
+	grid-gap: 0;
+	grid-template-columns: repeat(auto-fill, minmax(226px, auto));
+	align-items: start;
+	justify-content: space-between;
+}
