@@ -57,6 +57,7 @@
 <style scoped lang="scss">
 	:comp {
 		@include flex-center;
+		flex-shrink: 0;
 		gap: 4px;
 		color: c(icon-color);
 		cursor: pointer;
