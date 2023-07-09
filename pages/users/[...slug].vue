@@ -84,7 +84,7 @@
 
 	<main>
 		<div class="toolbox-card center">
-			<div class="videos">
+			<div class="videos-grid">
 			<ThumbVideo
 					v-for="video in videos?.videos"
 					:key="video.videoID"
