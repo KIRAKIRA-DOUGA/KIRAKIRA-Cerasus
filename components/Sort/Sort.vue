@@ -3,12 +3,7 @@
 	const selectedId = computed(() => selected.value[0]), selectedOrder = computed(() => selected.value[1]);
 	const slots = useSlots();
 	const vdoms = slots.default?.();
-	const items = computed(() => vdoms?.map(item => {
-		const props = item.props as ComponentProps<typeof SortItem> | undefined;
-		const caption = getSlotVNodeNormalizedChildren(item);
-		if (typeof caption !== "string") return undefined!;
-		return { caption, id: props?.id ?? caption, preferOrder: props?.preferOrder ?? "ascending" } as const;
-	}).filter(item => item) ?? []);
+	const items = computed(() => getSlotItems<typeof SortItem>(vdoms)({ preferOrder: "ascending" }));
 
 	/**
 	 * 颠倒排序顺序。
@@ -41,7 +36,7 @@
 			:class="{ active: item.id === selectedId }"
 			@click="onClickItem(item)"
 		>
-			<span class="caption">{{ item.caption }}</span>
+			<span class="caption">{{ item.content }}</span>
 			<Icon name="arrow_up" class="arrow" :class="{ [selectedOrder]: item.id === selectedId }" />
 		</div>
 	</Comp>

@@ -76,11 +76,7 @@ module.exports = {
 		"quote-props": ["error", "as-needed"],
 		"semi-spacing": "error",
 		"semi-style": ["error", "last"],
-		"space-before-function-paren": ["error", {
-			"anonymous": "always",
-			"named": "never",
-			"asyncArrow": "always",
-		}],
+		"space-before-function-paren": "off", // 使用 ts 版的代替。
 		"space-infix-ops": "error",
 		"space-in-parens": ["error", "never"],
 		"space-unary-ops": "error",
@@ -174,6 +170,11 @@ module.exports = {
 		"@typescript-eslint/no-empty-function": "off",
 		"@typescript-eslint/no-redeclare": "warn",
 		"@typescript-eslint/no-extra-parens": ["off", "all", { "ignoreJSX": "multi-line" }],
+		"@typescript-eslint/space-before-function-paren": ["error", {
+			"anonymous": "always",
+			"named": "never",
+			"asyncArrow": "always",
+		}],
 		// "@typescript-eslint/no-confusing-void-expression": "error",
 		// "@typescript-eslint/no-floating-promises": "error",
 		// 嗯对这几个不晓得怎么用不了。
