@@ -67,7 +67,7 @@
 		position: relative;
 		display: inline-block;
 		color: c(text-color);
-		
+
 		&:any-hover:not(:active) {
 			z-index: 1;
 
@@ -107,8 +107,12 @@
 	.title {
 		overflow: hidden;
 		font-weight: 500;
+<<<<<<< HEAD
+		width: $width;
+=======
 		white-space: nowrap;
 		text-align: justify;
+>>>>>>> develop
 		text-overflow: ellipsis;
 	}
 
