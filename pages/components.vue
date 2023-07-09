@@ -100,7 +100,7 @@
 			"おっしゃるとおりですが、『原神』はオープンワールドのアドベンチャーRPG。「テイワット」と呼ばれる幻想世界を横断する旅に出よう。この広大な世界で、あなたは7つの国を巡り、ユニークな個性と能力を備えた多様なキャラクターと出会い、彼らと共に強敵と戦いながら、生き別れた兄妹との再会を目指す。",
 		];
 		let content = index !== undefined ? ops[index] : randomOne(ops, opRecord);
-		content = fullWidth(content);
+		content = fullwidth(content);
 		let contentArray: string[];
 		if (content.startsWith(EMOJI_START)) {
 			content = content.slice(1);

@@ -9,10 +9,9 @@
 	const actionMenu = ref<MenuModel>();
 	
 	const fullwidthRegexp = /[⺀-ㄯ㆐-ㇿ㈠-㉇㊀-㊰㋀-㋋㋐-㍰㍻-㍿㏠-㏾㐀-䶿一-鿿豈-龎︐-︙︰-﹫！-｠￠-￦𚿰-𛅧𠀀-𲎯]/u;
-	const nbsp = "\xa0"; // Vue 太蠢，不会自动转换空格。
 	// 验证是否是加上全宽括弧而不是半宽括弧，条件是包含至少一个非谚文的全宽字符。
-	const memoWithParen = computed(() =>
-		!memo.value ? "" : fullwidthRegexp.exec(memo.value) ? `（${memo.value}）` : `${nbsp}(${memo.value})${nbsp}`);
+	const memoParen = computed(() => !memo.value.trim() ? "" :
+		fullwidthRegexp.exec(memo.value) ? "fullwidth" : "halfwidth");
 	const tab = ref("home");
 
 	const page = ref(1);
@@ -31,7 +30,7 @@
 				<div class="texts">
 					<div class="names">
 						<span class="username">{{ username }}</span>
-						<span v-if="memo" class="memo">{{ memoWithParen }}</span>
+						<span v-if="memoParen" class="memo" :class="[memoParen]">{{ memo }}</span>
 						<span class="icons">
 							<Icon v-if="gender === 'male'" name="male" class="male" />
 							<Icon v-else-if="gender === 'female'" name="female" class="female" />
@@ -127,6 +126,7 @@
 				
 				> * {
 					flex-shrink: 0;
+					user-select: text;
 				}
 
 				.username {
@@ -140,6 +140,26 @@
 
 				.memo {
 					color: c(icon-color);
+					
+					&.fullwidth {
+						&::before {
+							content: "（";
+						}
+						
+						&::after {
+							content: "）";
+						}
+					}
+					
+					&.halfwidth {
+						&::before {
+							content: "\a0(";
+						}
+						
+						&::after {
+							content: ")\a0";
+						}
+					}
 				}
 				
 				.icons {
@@ -164,6 +184,7 @@
 			.signature {
 				margin-top: 6px;
 				color: c(icon-color);
+				user-select: text;
 			}
 		}
 		
