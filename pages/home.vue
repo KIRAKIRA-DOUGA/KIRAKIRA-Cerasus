@@ -18,6 +18,7 @@
 	const sortCategory = ref(queryVals.sortCategory?.toString());
 	const sortDirection = ref(queryVals.sortDirection?.toString());
 	const page = ref(parseInt(queryVals.page?.toString() ?? "1"));
+	const numberOfItems = ref(0);
 	const numberOfPages = ref(1);
 
 	// fetch the videos according to the query
@@ -27,6 +28,7 @@
 		const encodedContent = utf8Encode.encode(newSearch);
 		api.videos(encodedContent, newSortCategory, newSortDirection, "true", newPageValue).then(x => {
 			numberOfPages.value = Math.ceil(x.paginationData.numberOfItems / 50.0);
+			numberOfItems.value = x.paginationData.numberOfItems;
 			videos.value = x;
 		})
 			.catch((error: any) => console.error(error));
@@ -94,7 +96,7 @@
 			<TabItem id="game" direction="vertical-reverse" :badge="233">{{ t.game }}</TabItem>
 			<TabItem id="synth" direction="vertical-reverse" :badge="233">{{ t.synthetical }}</TabItem>
 		</TabBar>
-		<Subheader icon="category" :badge="233">分区</Subheader>
+		<Subheader icon="category" :badge="numberOfItems">分区</Subheader>
 		<div
 			class="videos"
 		>

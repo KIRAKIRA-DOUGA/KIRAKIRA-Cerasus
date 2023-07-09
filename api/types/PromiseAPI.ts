@@ -82,6 +82,15 @@ export class PromiseDefaultApi {
     }
 
     /**
+     * Get user video data
+     * @param id user ID
+     */
+    public users(id: number, _options?: Configuration): Promise<Videos200Response> {
+        const result = this.api.users(id, _options);
+        return result.toPromise();
+    }
+
+    /**
      * Get list of videos
      * @param id video ID
      */
