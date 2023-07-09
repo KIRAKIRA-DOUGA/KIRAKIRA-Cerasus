@@ -4,7 +4,7 @@ import zh from "locales/SChinese";
 
 export default defineI18nConfig(() => ({
 	legacy: false,
-	locale: "zh",
+	locale: "en",
 	messages: {
 		zh,
 		en,

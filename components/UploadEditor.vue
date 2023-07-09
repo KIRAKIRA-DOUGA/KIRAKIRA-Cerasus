@@ -14,7 +14,6 @@
 	const originalLink = ref("");
 	const pushToFeed = ref(true);
 	const ensureOriginal = ref(false);
-<<<<<<< HEAD:components/UploadEditor.vue
 	const file = ref<HTMLInputElement>();
 
 	const tags = ref("");
@@ -56,7 +55,7 @@
 		axios({
 			method: "POST",
 			// TODO
-			url: "http://localhost:3000/api/upload",
+			url: "https://kirakira.dev/api/upload",
 			data: formData,
 			headers: {
 				"Content-Type": "multipart/form-data",
@@ -71,30 +70,7 @@
 		useEvent("app:toast", { message: "不支持上传所选文件！", severity: "error" });
 	};
 
-	/**
-	 * 在元素被插入到 DOM 之后的下一帧被调用。
-	 * 用这个来开始进入动画。
-	 * @param el - HTML DOM 元素。
-	 * @param done - 调用回调函数 done 表示过渡结束。
-	 */
-	async function onContentEnter(el: Element, done: () => void) {
-		await animateSize(el, null, { startHeight: 0, duration: 500, easing: eases.easeInOutSmooth });
-		done();
-	}
-
-	/**
-	 * 在离开过渡开始时调用。
-	 * 用这个来开始离开动画。
-	 * @param el - HTML DOM 元素。
-	 * @param done - 调用回调函数 done 表示过渡结束。
-	 */
-	async function onContentLeave(el: Element, done: () => void) {
-		await animateSize(el, null, { endHeight: 0, duration: 500, easing: eases.easeInOutSmooth });
-		done();
-	}
-=======
 	const [onContentEnter, onContentLeave] = simpleAnimateSize("height", 500, eases.easeInOutSmooth);
->>>>>>> develop:pages/upload/edit.vue
 </script>
 
 <template>

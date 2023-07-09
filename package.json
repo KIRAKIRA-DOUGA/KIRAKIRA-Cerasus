@@ -20,7 +20,7 @@
 	"license": "",
 	"author": "KIRAKIRA Project Team",
 	"scripts": {
-		"build": "nuxt build",
+		"build": "nuxt build && nuxt start",
 		"dev": "cross-env HOST=0.0.0.0 nuxt dev",
 		"dev-http": "cross-env HOST=0.0.0.0 nuxt dev",
 		"generate": "nuxt generate",
