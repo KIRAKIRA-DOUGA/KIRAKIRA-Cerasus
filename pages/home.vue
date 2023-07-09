@@ -97,9 +97,7 @@
 			<TabItem id="synth" direction="vertical-reverse" :badge="233">{{ t.synthetical }}</TabItem>
 		</TabBar>
 		<Subheader icon="category" :badge="numberOfItems">分区</Subheader>
-		<div
-			class="videos"
-		>
+		<div class="videos-grid">
 			<ThumbVideo
 				v-for="video in videos?.videos"
 				:key="video.videoID"

@@ -119,3 +119,41 @@ export function getElFromComponentInstance(el: MaybeRef<HTMLElement | ComponentP
 export function getSlotVNodeNormalizedChildren(item: VNode) {
 	return (item.children as Slots).default?.()?.[0]?.children;
 }
+
+/**
+ * 获取有关虚拟插槽内容的对象数组。
+ * @see https://stackoverflow.com/questions/55754822 本函数受限于 TypeScript 功能的妥协，在短期内暂时无法更改为更优雅的写法。
+ * @param vdoms - 插槽内容。
+ * @returns 注意必须调用两次函数的括号，才能获取有关插槽内容的对象数组。
+ */
+export function getSlotItems<
+	C,
+>(
+	vdoms: VNode<RendererNode, RendererElement, AnyObject>[] | undefined,
+) {
+	/**
+	 * @param def - 指定 Props 默认值。
+	 * @returns 有关插槽内容的对象数组。
+	 */
+	return <
+		D extends Partial<Record<keyof ComponentProps<C>, unknown>> = {},
+	>(
+		def = {} as D,
+	) => vdoms?.map(item => {
+		const props = { ...item.props };
+		const content = getSlotVNodeNormalizedChildren(item);
+		if (typeof content !== "string") return undefined!;
+		for (const [key, value] of entries(def))
+			props[key] ??= value;
+		props.content ??= content;
+		props.id ??= content;
+		type OriginalProps = ComponentProps<C> & { content: string };
+		type OverrideProps = Override<OriginalProps, {
+			[key in keyof D]:
+				key extends keyof OriginalProps ?
+				D[key] extends undefined | null ? OriginalProps[key] : NonNull<OriginalProps[key]> :
+				D[key];
+		}>;
+		return props as Readonly<OverrideProps>;
+	}).filter(item => item) ?? [];
+}

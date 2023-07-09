@@ -146,6 +146,9 @@ export default defineNuxtConfig({
 		],
 		defaultLocale: "zh",
 		vueI18n: "./i18n.config.ts",
+		detectBrowserLanguage: {
+			useCookie: true,
+		},
 	},
 	content: {
 		markdown: {
@@ -196,7 +199,4 @@ export default defineNuxtConfig({
 			pathPrefix: false,
 		},
 	],
-	experimental: {
-		inlineSSRStyles: false, // WARN: Nuxt 3.6 引入的样式丢失 bug，使用本行代码暂时解决，该 bug 将在 Nuxt 3.7 修复，届时请务必移除该行。跟踪链接：https://github.com/nuxt/nuxt/issues/21840
-	},
 } as BroadNuxtConfig);

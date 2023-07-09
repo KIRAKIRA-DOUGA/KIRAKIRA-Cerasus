@@ -14,6 +14,7 @@
 	const originalLink = ref("");
 	const pushToFeed = ref(true);
 	const ensureOriginal = ref(false);
+<<<<<<< HEAD:components/UploadEditor.vue
 	const file = ref<HTMLInputElement>();
 
 	const tags = ref("");
@@ -91,6 +92,9 @@
 		await animateSize(el, null, { endHeight: 0, duration: 500, easing: eases.easeInOutSmooth });
 		done();
 	}
+=======
+	const [onContentEnter, onContentLeave] = simpleAnimateSize("height", 500, eases.easeInOutSmooth);
+>>>>>>> develop:pages/upload/edit.vue
 </script>
 
 <template>

@@ -106,8 +106,8 @@
 		let prevItem: HTMLElement | null = null;
 		if (prevId === updateIndicatorWithoutAnimation) moveDirection = MoveDirection.IGNORE;
 		else {
-			if (prevId) prevItem = getChild(prevId);
-			if (prevId && prevItem) {
+			if (prevId !== undefined) prevItem = getChild(prevId);
+			if (prevId !== undefined && prevItem) {
 				prevItemPosEntry = getIndicatorPositions(prevItem, LENGTH);
 				moveDirection = itemPosEntry[pos1] >= prevItemPosEntry[pos1] ? MoveDirection.POS2 : MoveDirection.POS1;
 			} else prevItemPosEntry = getIndicatorPositions(item, 0);
@@ -197,6 +197,7 @@
 		display: flex;
 		gap: 1rem;
 		align-items: flex-end;
+		padding-bottom: 9px;
 
 		> :slotted(*) {
 			flex-shrink: 0;
@@ -205,6 +206,7 @@
 
 		@container style(--loose: true) {
 			gap: 2em;
+			padding-bottom: 15px;
 		}
 
 		:comp.vertical > & {
@@ -235,7 +237,7 @@
 		z-index: 3;
 		flex-shrink: 0;
 		height: $thickness;
-		margin-top: 6px;
+		margin-top: -$thickness;
 		background-color: c(accent);
 
 		@container style(--clipped: true) {

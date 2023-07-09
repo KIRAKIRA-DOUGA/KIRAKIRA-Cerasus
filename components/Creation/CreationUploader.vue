@@ -18,10 +18,10 @@
 		<UserAvatar :avatar="avatar" :link="'/user/' + ID" />
 		<div class="text">
 			<div class="username">{{ username }}</div>
-			<div class="fans">{{ fans }} 粉丝</div>
+			<div class="fans">{{ fans }} {{ t.fans }}</div>
 		</div>
-		<Button v-if="!isFollowed">关注</Button>
-		<Button v-else disabled>已关注</Button>
+		<Button v-if="!isFollowed">{{ t.follow }}</Button>
+		<Button v-else disabled>{{ t.following }}</Button>
 	</Comp>
 </template>
 

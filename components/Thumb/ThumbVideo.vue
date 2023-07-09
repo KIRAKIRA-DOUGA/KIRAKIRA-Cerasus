@@ -62,9 +62,6 @@
 </template>
 
 <style scoped lang="scss">
-	$width: 208px;
-	$height: calc($width / 16 * 9);
-
 	.thumb-video {
 		@include round-large;
 		position: relative;
@@ -97,8 +94,6 @@
 
 	.cover-wrapper {
 		@include round-large;
-		width: $width;
-		height: $height;
 		margin-bottom: 8px;
 		overflow: hidden;
 
@@ -110,8 +105,14 @@
 	}
 
 	.title {
+		overflow: hidden;
 		font-weight: 500;
+<<<<<<< HEAD
 		width: $width;
+=======
+		white-space: nowrap;
+		text-align: justify;
+>>>>>>> develop
 		text-overflow: ellipsis;
 	}
 
@@ -132,6 +133,7 @@
 
 		.item {
 			@include flex-center;
+			flex-shrink: 0;
 			gap: 2px;
 
 			.icon {
@@ -140,8 +142,15 @@
 		}
 
 		.uploader {
+			justify-content: flex-start;
 			color: inherit;
 			text-decoration: none;
+			
+			> div {
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
 		}
 	}
 </style>

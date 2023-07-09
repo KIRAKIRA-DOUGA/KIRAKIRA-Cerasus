@@ -4,17 +4,12 @@
 		default?: typeof SegmentedItem;
 	}>(); */
 	const vdoms = slots.default?.();
-	const items = computed(() => vdoms?.map(item => {
-		const props = item.props as ComponentProps<typeof SegmentedItem> | undefined;
-		const caption = getSlotVNodeNormalizedChildren(item);
-		if (typeof caption !== "string") return undefined!;
-		return { caption, id: props?.id ?? caption, icon: props?.icon } as const;
-	}).filter(item => item) ?? []);
+	const items = computed(() => getSlotItems<typeof SegmentedItem>(vdoms)());
 	const count = computed(() => items.value.length);
 	const displaySelectedIndex = ref<number>();
 	const selectedIndex = computed(() => displaySelectedIndex.value ?? items.value.findIndex(item => item.id === selected.value && selected.value));
 	const selectedInvalid = computed(() => selectedIndex.value === -1);
-	const selectedCaption = computed(() => items.value.find(item => item.id === selected.value)?.caption);
+	const selectedCaption = computed(() => items.value.find(item => item.id === selected.value)?.content);
 	const pressed = ref(false); // 为了兼容触摸屏，触摸屏在滑动时会撤销 active 伪类。
 
 	/**
@@ -74,7 +69,7 @@
 				@click="selected = item.id"
 			>
 				<Icon v-if="item.icon" :name="item.icon" />
-				<span>{{ item.caption }}</span>
+				<span>{{ item.content }}</span>
 			</div>
 		</div>
 		<div
@@ -94,7 +89,7 @@
 				:aria-current="selected === item.id"
 			>
 				<Icon v-if="item.icon" :name="item.icon" />
-				<span>{{ item.caption }}</span>
+				<span>{{ item.content }}</span>
 			</div>
 		</div>
 	</Comp>

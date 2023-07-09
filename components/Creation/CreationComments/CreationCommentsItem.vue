@@ -84,7 +84,7 @@
 						<MenuItem icon="delete">{{ t.delete }}</MenuItem>
 						<MenuItem :icon="unpinnedCaption" @click="pinned = !pinned">{{ t[unpinnedCaption] }}</MenuItem>
 						<hr />
-						<MenuItem icon="flag">{{ t.complain }}</MenuItem>
+						<MenuItem icon="flag">{{ t.report }}</MenuItem>
 					</Menu>
 				</div>
 			</div>
