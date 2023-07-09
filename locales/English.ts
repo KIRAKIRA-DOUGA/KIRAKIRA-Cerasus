@@ -91,7 +91,7 @@ const English: LocaleIdentifiers = {
 	reset: "Reset",
 	history: "History",
 	favorites: "Favorite",
-	follow: "Following",
+	feed: "Feed",
 	upload: "Upload",
 	messages: "Messages",
 	login: "Login",
@@ -144,6 +144,11 @@ const English: LocaleIdentifiers = {
 	audio: "Audio",
 	photo: "Photo",
 	album: "Album",
+	follow: "Follow",
+	following: "Following",
+	fans: "Fans",
+	views: "Views",
+	report: "Report",
 };
 
 export default English;
