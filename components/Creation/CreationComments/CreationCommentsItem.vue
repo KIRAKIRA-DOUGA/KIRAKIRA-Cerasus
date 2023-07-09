@@ -77,7 +77,7 @@
 						<MenuItem icon="delete">{{ t.delete }}</MenuItem>
 						<MenuItem :icon="unpinnedCaption" @click="pinned = !pinned">{{ t[unpinnedCaption] }}</MenuItem>
 						<hr />
-						<MenuItem icon="flag">{{ t.complain }}</MenuItem>
+						<MenuItem icon="flag">{{ t.report }}</MenuItem>
 					</Menu>
 				</div>
 			</div>
@@ -94,7 +94,7 @@
 
 		.content {
 			width: 100%;
-			
+
 			> :not(:last-child) {
 				margin-bottom: 8px;
 			}
@@ -129,18 +129,18 @@
 		justify-content: space-between;
 		color: c(icon-color);
 		font-size: 13px;
-		
+
 		> * {
 			display: flex;
 			flex-shrink: 0;
 			flex-wrap: wrap;
 			gap: 20px;
 		}
-		
+
 		.right {
 			margin-left: auto;
 		}
-		
+
 		.likes-wrapper {
 			display: flex;
 			gap: 14px;
@@ -151,7 +151,7 @@
 			gap: 11px;
 			align-items: center;
 			cursor: pointer;
-			
+
 			&.active .soft-button {
 				color: c(accent);
 			}
