@@ -81,6 +81,12 @@
 			}
 		}
 
+		span {
+			@container style(--loose: true) {
+				font-size: 16px;
+			}
+		}
+
 		.badge {
 			font-weight: normal;
 		}

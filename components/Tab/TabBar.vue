@@ -197,6 +197,7 @@
 		display: flex;
 		gap: 1rem;
 		align-items: flex-end;
+		padding-bottom: 9px;
 
 		> :slotted(*) {
 			flex-shrink: 0;
@@ -205,6 +206,7 @@
 
 		@container style(--loose: true) {
 			gap: 2em;
+			padding-bottom: 15px;
 		}
 
 		:comp.vertical > & {
@@ -235,7 +237,7 @@
 		z-index: 3;
 		flex-shrink: 0;
 		height: $thickness;
-		margin-top: 6px;
+		margin-top: -$thickness;
 		background-color: c(accent);
 
 		@container style(--clipped: true) {
