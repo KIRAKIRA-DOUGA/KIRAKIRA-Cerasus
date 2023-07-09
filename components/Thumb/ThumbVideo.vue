@@ -107,12 +107,8 @@
 	.title {
 		overflow: hidden;
 		font-weight: 500;
-<<<<<<< HEAD
-		width: $width;
-=======
 		white-space: nowrap;
 		text-align: justify;
->>>>>>> develop
 		text-overflow: ellipsis;
 	}
 
@@ -145,7 +141,7 @@
 			justify-content: flex-start;
 			color: inherit;
 			text-decoration: none;
-			
+
 			> div {
 				overflow: hidden;
 				white-space: nowrap;
