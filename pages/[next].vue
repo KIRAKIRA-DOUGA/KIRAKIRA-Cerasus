@@ -1,13 +1,12 @@
 <script setup lang="ts">
-	import { slugValidate } from "middleware/validate.global";
-	import SettingsSlug from "./settings/[...slug].vue";
-
 	definePageMeta({
-		validate: slugValidate(),
+		validate: route => {
+			const validRoutes = ["hello", "next", "settings", "user"];
+			if (validRoutes.includes(route.params.next as string))
+				return true;
+			return false;
+		},
 	});
-
-	const route = useRoute();
-	const isSettings = computed(() => route.params.slug?.[0] === "settings");
 
 	/**
 	 * 重新载入。
@@ -18,9 +17,8 @@
 </script>
 
 <template>
-	<SettingsSlug v-if="isSettings" />
-	<main v-else class="main">
-		<h1 class="slug">{{ $route.params.slug }}</h1>
+	<main class="main">
+		<h1 class="slug">{{ $route.fullPath }}</h1>
 		<ContentDoc>
 			<template #not-found>
 				<p>你似乎来到了一个很新的页面。</p>

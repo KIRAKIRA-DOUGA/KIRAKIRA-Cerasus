@@ -146,6 +146,9 @@ export default defineNuxtConfig({
 		],
 		defaultLocale: "zh",
 		vueI18n: "./i18n.config.ts",
+		detectBrowserLanguage: {
+			useCookie: true,
+		},
 	},
 	content: {
 		markdown: {

@@ -1,6 +1,7 @@
 import { RouteLocationNormalized, RouteLocationNormalizedLoaded } from "vue-router";
 
 const localeCodes = computed(() => useNuxtApp().$i18n.localeCodes.value);
+type Route = RouteLocationNormalized | RouteLocationNormalizedLoaded;
 
 /**
  * 获取系统当前的路由。
@@ -11,7 +12,7 @@ export function getRoutePath({
 	removeI18nPrefix: removeI18n = true, // removeI18nPrefix 和下面的函数重名因而会导致异常。
 }: Partial<{
 	/** 路由对象。留空时将会自动获取。 */
-	route: RouteLocationNormalized | RouteLocationNormalizedLoaded;
+	route: Route;
 	/** 是否移除语言名称前缀。默认为是。 */
 	removeI18nPrefix: boolean;
 }> = {}): string {
@@ -19,6 +20,15 @@ export function getRoutePath({
 	if (removeI18n)
 		path = path.replace(new RegExp(`^(${localeCodes.value.join("|")})\\/?`), ""); // 移除语言前缀。
 	return path;
+}
+
+/**
+ * 获取去除语言名称前缀的路由数组。
+ * @param route - 路由对象。留空时将会自动获取。
+ * @returns 路由数组。
+ */
+export function getLocaleRouteSlug(route?: Route) {
+	return getRoutePath({ route }).split("/").filter(i => i);
 }
 
 /**
@@ -89,12 +99,12 @@ export function removeI18nPrefix(route: string) {
 
 /**
  * 检查当前是否是设置页面并获取当前设置页面的 ID 名称。
- * @param route - 路由地址，缺省则会自动获取。
+ * @param routeSlug - 路由地址数组，缺省则会自动获取。
  * @returns 如当前不是设置页面则返回空字符串，反之则获取当前设置页面的 ID 名称。
  */
-export function currentSettingsPage(route?: string) {
-	route ||= getRoutePath();
-	return route.match(/(?<=settings\/)[A-Za-z0-9-_]+/)?.[0] ?? "";
+export function currentSettingsPage(routeSlug?: string[]) {
+	routeSlug = routeSlug && routeSlug.length ? routeSlug : getLocaleRouteSlug();
+	return routeSlug[0] === "settings" ? routeSlug[1] ?? "" : "";
 }
 
 export function videos(route?: string) {
