@@ -99,7 +99,7 @@
 		</div>
 		<Subheader icon="error" :badge="233">错误页</Subheader>
 		<div class="pages">
-			<a v-for="page in httpCodes" :key="page.name" class="link lite" :href="page.link">{{ page.name }}</a>
+			<a v-for="page in httpCodes" :key="page.name" class="link lite" :href="'/error/' + page.link">{{ page.name }}</a>
 		</div>
 	</div>
 </template>

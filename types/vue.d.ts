@@ -37,6 +37,16 @@ declare module "vue" {
 	}
 }
 
+declare module "#app" {
+	interface PageMeta {
+		slug?: string[];
+		next?: string;
+		setting?: string;
+		error?: string;
+		uid?: number;
+	}
+}
+
 declare global {
 	/**
 	 * Vue JSX 组件。
