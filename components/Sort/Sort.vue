@@ -76,13 +76,17 @@
 				color: c(accent);
 				font-weight: bold;
 			}
-			
+
 			&::before {
 				scale: 1;
 			}
-			
+
 			&:active::before {
 				height: 10px;
+			}
+
+			:deep(.ripple-circle) {
+				background-color: c(accent-pressed, 15%);
 			}
 		}
 	}
