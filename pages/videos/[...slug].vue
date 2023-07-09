@@ -30,10 +30,8 @@
 		const api: DefaultApi = API();
 		api.comments(id)
 			.then(x => {
-				for (const comment of x) {
-					console.log(comment);
+				for (const comment of x)
 					comments.value.push(comment);
-				}
 			})
 			.catch((error: any) => console.error(error));
 	}, { immediate: true });
@@ -68,6 +66,7 @@
 					:avatar="avatar"
 					:username="videoDetails?.username ?? ''"
 					:fans="233"
+					:ID="videoDetails?.authorID ?? 0"
 					isFollowed
 				/>
 			</div>

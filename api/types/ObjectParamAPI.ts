@@ -106,6 +106,15 @@ export interface DefaultApiUploadRequest {
     filename?: Array<HttpFile>
 }
 
+export interface DefaultApiUsersRequest {
+    /**
+     * user ID
+     * @type number
+     * @memberof DefaultApiusers
+     */
+    id: number
+}
+
 export interface DefaultApiVideoDetailRequest {
     /**
      * video ID
@@ -201,6 +210,14 @@ export class ObjectDefaultApi {
      */
     public upload(param: DefaultApiUploadRequest, options?: Configuration): Promise<void> {
         return this.api.upload(param.tags, param.title, param.description, param.filename,  options).toPromise();
+    }
+
+    /**
+     * Get user video data
+     * @param param the request object
+     */
+    public users(param: DefaultApiUsersRequest, options?: Configuration): Promise<Videos200Response> {
+        return this.api.users(param.id,  options).toPromise();
     }
 
     /**
