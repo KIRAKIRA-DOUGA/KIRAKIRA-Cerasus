@@ -8,7 +8,10 @@
 <template>
 	<div class="container">
 		<div class="toolbox-card left">
-
+			<Accordion>
+				<AccordionItem title="我的收藏夹" />
+				<AccordionItem title="关注收藏夹" />
+			</Accordion>
 		</div>
 
 		<div class="toolbox-card center">
@@ -16,7 +19,7 @@
 				<div class="left">
 					<Button secondary icon="info">修改信息</Button>
 					<Button secondary icon="clear_all">清理已失效视频</Button>
-					<Button secondary icon="placeholder">收藏这个收藏夹</Button>
+					<Button secondary icon="placeholder">关注收藏夹</Button>
 					<Button secondary icon="play">播放全部</Button>
 				</div>
 				<div class="right">
@@ -60,6 +63,10 @@
 		> .right {
 			justify-content: flex-end;
 		}
+	}
+
+	.container > .left {
+		padding: 0;
 	}
 
 	.container > .center {
