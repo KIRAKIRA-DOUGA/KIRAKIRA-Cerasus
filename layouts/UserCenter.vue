@@ -50,13 +50,15 @@
 				</div>
 				<div class="actions">
 					<SoftButton v-tooltip:top="'私信'" icon="email" />
-					<SoftButton v-tooltip:top="'老铁们，给我举报他！'" icon="more_vert" @click="e => actionMenu = e" />
+					<SoftButton v-tooltip:top="'更多操作'" icon="more_vert" @click="e => actionMenu = e" />
 					<Menu v-model="actionMenu">
+						<MenuItem icon="badge">修改备注</MenuItem>
+						<hr />
 						<MenuItem icon="flag">举报</MenuItem>
 						<MenuItem icon="block">加入黑名单</MenuItem>
 					</Menu>
-					<Button v-if="!user.isFollowed">关注</Button>
-					<Button v-else disabled>已关注</Button>
+					<Button v-if="!user.isFollowed">{{ t.follow }}</Button>
+					<Button v-else disabled>{{ t.following }}</Button>
 				</div>
 			</div>
 			<TabBar v-model="currentTab">
@@ -97,7 +99,7 @@
 			.names {
 				display: flex;
 				font-size: 24px;
-				
+
 				> * {
 					flex-shrink: 0;
 					user-select: text;
@@ -106,7 +108,7 @@
 				.username {
 					color: c(text-color);
 					font-weight: bold;
-					
+
 					+ .icons {
 						margin-left: 10px;
 					}
@@ -114,39 +116,39 @@
 
 				.memo {
 					color: c(icon-color);
-					
+
 					&.fullwidth {
 						&::before {
 							content: "（";
 						}
-						
+
 						&::after {
 							content: "）";
 						}
 					}
-					
+
 					&.halfwidth {
 						&::before {
 							content: "\a0(";
 						}
-						
+
 						&::after {
 							content: ")\a0";
 						}
 					}
 				}
-				
+
 				.icons {
 					@include flex-center;
-					
+
 					.male {
 						color: c(blue);
 					}
-					
+
 					.female {
 						color: c(pink);
 					}
-					
+
 					.other-gender {
 						background: linear-gradient(90deg, #58c8f2, #eda4b2);
 						background-clip: text;
@@ -161,7 +163,7 @@
 				user-select: text;
 			}
 		}
-		
+
 		.actions {
 			display: flex;
 			gap: 16px;
@@ -173,41 +175,41 @@
 	.tab-bar {
 		--clipped: true;
 		--loose: true;
-		padding-bottom: 9px;
+		--size: big;
 	}
-	
+
 	header:deep ~ .user-center-slot > .container {
 		display: flex;
 		gap: 20px;
 		align-items: flex-start;
 		padding: $main-margin-top $padding-x;
-		
+
 		@include tablet {
 			flex-direction: column-reverse;
-			
+
 			.toolbox-card {
 				width: 100%;
 			}
 		}
-		
+
 		> :not(.center) {
 			flex-shrink: 0;
-			
+
 			@include computer {
 				position: sticky;
 				top: $header-height + $main-margin-top;
 			}
 		}
-		
+
 		> .center {
 			width: 100%;
 		}
-		
+
 		.sort {
 			grid-template-columns: repeat(2, 1fr);
 		}
 	}
-	
+
 	@include tablet {
 		header,
 		main {

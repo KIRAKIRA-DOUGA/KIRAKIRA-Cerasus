@@ -91,7 +91,7 @@ const SChinese = {
 	reset: "重设",
 	history: "历史",
 	favorites: "收藏",
-	follow: "关注",
+	feed: "关注动态",
 	upload: "投稿",
 	messages: "消息",
 	login: "登入",
@@ -144,6 +144,11 @@ const SChinese = {
 	audio: "音频",
 	photo: "相册",
 	album: "专辑",
+	follow: "关注",
+	following: "已关注",
+	fans: "粉丝",
+	views: "观看",
+	report: "举报",
 } as const;
 
 export default SChinese;
