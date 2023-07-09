@@ -93,7 +93,7 @@ const Japanese: LocaleIdentifiers = {
 	reset: "リセット",
 	history: "履歴",
 	favorites: "お気に入り",
-	follow: "フォロー中",
+	feed: "Feed",
 	upload: "投稿",
 	messages: "メッセージ",
 	login: "ログイン",
@@ -128,7 +128,7 @@ const Japanese: LocaleIdentifiers = {
 	delete: "削除",
 	pin: "固定",
 	unpin: "固定を解除",
-	complain: "通報",
+	report: "通報",
 	original: "原创",
 	repost: "转载",
 	authorized_repost: "授权转载",
@@ -146,6 +146,10 @@ const Japanese: LocaleIdentifiers = {
 	audio: "音频",
 	photo: "相册",
 	album: "专辑",
+	follow: "Follow",
+	following: "Following",
+	fans: "Fans",
+	views: "Views",
 };
 
 export default Japanese;

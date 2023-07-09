@@ -126,7 +126,7 @@ const SChinese = {
 	delete: "删除",
 	pin: "置顶",
 	unpin: "取消置顶",
-	complain: "举报",
+	report: "举报",
 	original: "原创",
 	repost: "转载",
 	authorized_repost: "授权转载",
@@ -148,7 +148,6 @@ const SChinese = {
 	following: "已关注",
 	fans: "粉丝",
 	views: "观看",
-	report: "举报",
 } as const;
 
 export default SChinese;

@@ -54,7 +54,7 @@
 					<Menu v-model="actionMenu">
 						<MenuItem icon="badge">修改备注</MenuItem>
 						<hr />
-						<MenuItem icon="flag">举报</MenuItem>
+						<MenuItem icon="flag">{{ t.report }}</MenuItem>
 						<MenuItem icon="block">加入黑名单</MenuItem>
 					</Menu>
 					<Button v-if="!user.isFollowed">{{ t.follow }}</Button>

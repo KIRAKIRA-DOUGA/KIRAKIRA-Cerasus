@@ -41,7 +41,7 @@
 
 						<div class="join-time">
 							<Icon name="history" />
-							<span>Register Time</span>
+							<span>Join Time</span>
 						</div>
 
 						<div class="uid">

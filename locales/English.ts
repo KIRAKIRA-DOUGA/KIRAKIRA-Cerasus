@@ -126,7 +126,7 @@ const English: LocaleIdentifiers = {
 	delete: "Delete",
 	pin: "Pin",
 	unpin: "Unpin",
-	complain: "Complain",
+	report: "Report",
 	original: "Original",
 	repost: "Repost",
 	authorized_repost: "Authorized repost",
@@ -148,7 +148,6 @@ const English: LocaleIdentifiers = {
 	following: "Following",
 	fans: "Fans",
 	views: "Views",
-	report: "Report",
 };
 
 export default English;
