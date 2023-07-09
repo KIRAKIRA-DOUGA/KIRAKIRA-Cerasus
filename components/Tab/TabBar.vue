@@ -106,8 +106,8 @@
 		let prevItem: HTMLElement | null = null;
 		if (prevId === updateIndicatorWithoutAnimation) moveDirection = MoveDirection.IGNORE;
 		else {
-			if (prevId) prevItem = getChild(prevId);
-			if (prevId && prevItem) {
+			if (prevId !== undefined) prevItem = getChild(prevId);
+			if (prevId !== undefined && prevItem) {
 				prevItemPosEntry = getIndicatorPositions(prevItem, LENGTH);
 				moveDirection = itemPosEntry[pos1] >= prevItemPosEntry[pos1] ? MoveDirection.POS2 : MoveDirection.POS1;
 			} else prevItemPosEntry = getIndicatorPositions(item, 0);

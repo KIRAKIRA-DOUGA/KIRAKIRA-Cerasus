@@ -6,28 +6,7 @@
 	const originalLink = ref("");
 	const pushToFeed = ref(true);
 	const ensureOriginal = ref(false);
-
-	/**
-	 * 在元素被插入到 DOM 之后的下一帧被调用。
-	 * 用这个来开始进入动画。
-	 * @param el - HTML DOM 元素。
-	 * @param done - 调用回调函数 done 表示过渡结束。
-	 */
-	async function onContentEnter(el: Element, done: () => void) {
-		await animateSize(el, null, { startHeight: 0, duration: 500, easing: eases.easeInOutSmooth });
-		done();
-	}
-
-	/**
-	 * 在离开过渡开始时调用。
-	 * 用这个来开始离开动画。
-	 * @param el - HTML DOM 元素。
-	 * @param done - 调用回调函数 done 表示过渡结束。
-	 */
-	async function onContentLeave(el: Element, done: () => void) {
-		await animateSize(el, null, { endHeight: 0, duration: 500, easing: eases.easeInOutSmooth });
-		done();
-	}
+	const [onContentEnter, onContentLeave] = simpleAnimateSize("height", 500, eases.easeInOutSmooth);
 </script>
 
 <template>

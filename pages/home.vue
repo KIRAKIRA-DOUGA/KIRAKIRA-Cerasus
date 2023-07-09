@@ -66,7 +66,7 @@
 			<TabItem id="synth" direction="vertical-reverse" :badge="233">{{ t.synthetical }}</TabItem>
 		</TabBar>
 		<Subheader icon="category" :badge="233">分区</Subheader>
-		<div class="videos">
+		<div class="videos-grid">
 			<ThumbVideo
 				link="video"
 				uploader="艾了个拉"

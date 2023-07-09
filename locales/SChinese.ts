@@ -90,7 +90,7 @@ const SChinese = {
 	apply: "应用",
 	reset: "重设",
 	history: "历史",
-	favorite: "收藏",
+	favorites: "收藏",
 	follow: "关注",
 	upload: "投稿",
 	messages: "消息",
@@ -140,6 +140,10 @@ const SChinese = {
 	push_to_feed: "推送到动态",
 	upload_with_exclamation: "投稿！",
 	select_cover: "选择封面",
+	series: "合集",
+	audio: "音频",
+	photo: "相册",
+	album: "专辑",
 } as const;
 
 export default SChinese;

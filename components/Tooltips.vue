@@ -31,6 +31,10 @@
 		if (isMobile()) return; // 触摸屏不要显示工具提示。
 		const tooltip = e as TooltipEventWithPosition;
 		if (!tooltip.title?.toString().trim()) return; // toString() 以刻意识别 i18n 的函数字符串。
+		if (tooltipList.find(i => i.element === e.element)) {
+			useEvent("app:updateTooltip", e);
+			return;
+		}
 		tooltip.position = getPositionByEvent(e);
 		tooltipList.push(tooltip);
 		adjustPosition();

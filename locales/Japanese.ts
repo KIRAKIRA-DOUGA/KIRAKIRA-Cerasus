@@ -92,7 +92,7 @@ const Japanese: LocaleIdentifiers = {
 	apply: "適用",
 	reset: "リセット",
 	history: "履歴",
-	favorite: "お気に入り",
+	favorites: "お気に入り",
 	follow: "フォロー中",
 	upload: "投稿",
 	messages: "メッセージ",
@@ -142,6 +142,10 @@ const Japanese: LocaleIdentifiers = {
 	push_to_feed: "推送到动态",
 	upload_with_exclamation: "投稿！",
 	select_cover: "选择封面",
+	series: "合集",
+	audio: "音频",
+	photo: "相册",
+	album: "专辑",
 };
 
 export default Japanese;
