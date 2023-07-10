@@ -2,13 +2,14 @@
 	import background from "assets/styles/css-doodles/background.css-doodle";
 	import Settings from "./Settings.vue";
 	import UserCenter from "./UserCenter.vue";
+	import usePageTransition from "helpers/page-transition";
 
 	const container = ref<HTMLDivElement>();
 	const containerMain = ref<HTMLElement>();
 	const showBanner = ref(false);
 	const localedRoute = computed(() => getRoutePath());
 	const SETTINGS = "settings";
-	const pageTransition = ref("page-forward");
+	const pageTransition = usePageTransition();
 	const isSettings = computed(() => getLocaleRouteSlug()[0] === SETTINGS);
 	const isUserCenter = computed(() => getLocaleRouteSlug()[0] === "user");
 	const cssDoodle = refComp();
@@ -26,15 +27,6 @@
 	watchRoute(() => {
 		showBanner.value = localedRoute.value === "" || localedRoute.value.startsWith("user");
 	}, true);
-
-	watchRoute((route, prevRoute) => {
-		[route, prevRoute] = [removeI18nPrefix(route), removeI18nPrefix(prevRoute)];
-		pageTransition.value = "page-jump";
-		if (prevRoute.includes(route)) pageTransition.value = "page-backward";
-		if (route.includes(prevRoute)) pageTransition.value = "page-forward";
-		if (route.includes(SETTINGS) !== prevRoute.includes(SETTINGS)) pageTransition.value = "";
-		if (prevRoute === route) pageTransition.value = "page-backward";
-	});
 
 	onMounted(() => {
 		setDisplayVisible(cssDoodle.value, showCssDoodle.value);

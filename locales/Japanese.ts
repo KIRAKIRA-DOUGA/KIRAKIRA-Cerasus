@@ -149,7 +149,9 @@ const Japanese: LocaleIdentifiers = {
 	follow: "フォロー",
 	following: "フォロワー",
 	fans: "ファン",
-	views: "再生数",
+	watches: "再生数",
+	join_time: "加入时间",
+	user_info: "个人信息",
 };
 
 export default Japanese;

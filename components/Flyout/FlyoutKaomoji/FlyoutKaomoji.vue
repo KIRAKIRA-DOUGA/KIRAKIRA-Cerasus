@@ -71,28 +71,6 @@
 		padding: $padding;
 		padding-top: 0.25rem;
 		overflow-y: auto;
-
-		&.right-enter-active,
-		&.left-enter-active {
-			transition: all $ease-out-smooth 600ms !important;
-		}
-
-		&.right-leave-active,
-		&.left-leave-active {
-			transition: all $ease-in-smooth 100ms !important;
-		}
-
-		&.right-enter-from,
-		&.left-leave-to {
-			translate: 2rem;
-			opacity: 0;
-		}
-
-		&.right-leave-to,
-		&.left-enter-from {
-			translate: -2rem;
-			opacity: 0;
-		}
 	}
 	
 	@for $j from 1 through 2 {
