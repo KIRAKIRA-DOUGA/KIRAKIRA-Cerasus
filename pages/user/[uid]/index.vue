@@ -33,7 +33,7 @@
 				</div>
 			</div>
 
-			<div class="toolbox-card">
+			<div class="toolbox-card user-info-container">
 				<div class="user-info">
 					<h3>{{ t.user_info }}</h3>
 					<div class="items">
@@ -51,6 +51,12 @@
 							<Icon name="fingerprint" />
 							<span>{{ user.uid }}</span>
 						</div>
+					</div>
+					<div class="shading shading-title">
+						Info
+					</div>
+					<div class="shading shading-icon">
+						<Icon name="person" />
 					</div>
 				</div>
 			</div>
@@ -89,6 +95,31 @@
 			p {
 				color: c(icon-color);
 				font-size: 13px;
+			}
+		}
+	}
+	
+	.user-info-container {
+		position: relative;
+		
+		.shading {
+			position: absolute;
+			right: 16px;
+			color: c(gray-80, 5%);
+			
+			&.shading-title {
+				top: 10px;
+				font-weight: 600;
+				font-size: 32px;
+				font-family: $english-logo-fonts;
+				font-style: italic;
+				text-align: center;
+				text-transform: capitalize;
+			}
+			
+			&.shading-icon {
+				bottom: 0;
+				font-size: 48px;
 			}
 		}
 	}
