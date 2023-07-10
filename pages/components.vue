@@ -324,6 +324,15 @@
 						<Button @click="e => flyoutKaomoji = [e, 'bottom']">向下颜文字浮窗</Button>
 					</div>
 				</AccordionItem>
+				<AccordionItem title="分页器测试">
+					<div class="pagination-test">
+						<Pagination :current="1" :pages="1" :displayPageCount="7" />
+						<Pagination :current="1" :pages="2" :displayPageCount="7" />
+						<Pagination :current="1" :pages="3" :displayPageCount="7" />
+						<Pagination :current="1" :pages="6" :displayPageCount="7" />
+						<Pagination :current="1" :pages="10" :displayPageCount="7" />
+					</div>
+				</AccordionItem>
 				<AccordionItem title="让你的前端设计师气到脑中风">
 					<section class="marquee-section">
 						<marquee>KiRAKiRA☆DOUGA</marquee>
@@ -423,5 +432,11 @@
 		grid-template-columns: repeat(4, 1fr);
 		gap: 10px;
 		padding: 1rem 0;
+	}
+	
+	.pagination-test {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
 	}
 </style>
