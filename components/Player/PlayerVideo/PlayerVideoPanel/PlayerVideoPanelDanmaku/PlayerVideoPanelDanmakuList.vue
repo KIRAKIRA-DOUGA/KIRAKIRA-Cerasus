@@ -107,12 +107,12 @@
 			table-layout: fixed;
 			background-color: c(main-bg);
 			border-spacing: 0;
-			
+
 			tbody {
 				position: absolute;
 				height: calc(100% - $item-height);
 			}
-			
+
 			.vue-recycle-scroller {
 				height: 100%;
 			}

@@ -70,6 +70,11 @@
 			background-color: c(accent);
 			content: "";
 		}
+		
+		&:any-hover,
+		&:active {
+			background-color: c(hover-film);
+		}
 
 		&.active {
 			.caption {
@@ -87,6 +92,11 @@
 
 			:deep(.ripple-circle) {
 				background-color: c(accent-ripple);
+			}
+			
+			&:any-hover,
+			&:active {
+				background-color: c(accent-hover-film);
 			}
 		}
 	}

@@ -96,7 +96,7 @@
 		.trailing-icon {
 			color: c(icon-color);
 			font-size: 24px;
-			
+
 			&.soft-button {
 				margin-right: -8px;
 			}
