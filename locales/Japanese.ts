@@ -93,7 +93,7 @@ const Japanese: LocaleIdentifiers = {
 	reset: "リセット",
 	history: "履歴",
 	favorites: "お気に入り",
-	feed: "タイムライン",
+	feed: "フィード",
 	upload: "投稿",
 	messages: "メッセージ",
 	login: "ログイン",
@@ -150,8 +150,8 @@ const Japanese: LocaleIdentifiers = {
 	following: "フォロワー",
 	fans: "ファン",
 	watches: "再生数",
-	join_time: "加入时间",
-	user_info: "个人信息",
+	join_time: "アカウントの登録日",
+	user_info: "ユーザー情報",
 };
 
 export default Japanese;
