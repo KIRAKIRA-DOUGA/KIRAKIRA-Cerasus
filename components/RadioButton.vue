@@ -155,11 +155,11 @@
 		}
 
 		:comp:any-hover & {
-			background-color: c(hover-color);
+			background-color: c(hover-film);
 		}
 
 		:comp:active & {
-			background-color: c(hover-color);
+			background-color: c(hover-film);
 		}
 
 		&::before {

@@ -2,10 +2,6 @@
 	const props = defineProps<{
 		/** 图标，可选。 */
 		icon?: string;
-		/** 图标是否放在文本后面。 */
-		iconBehind?: boolean;
-		/** 是否为次要/无背景按钮。 */
-		secondary?: boolean;
 		/**
 		 * 点击按钮是否切换导航？
 		 * #### NOTE
@@ -31,25 +27,38 @@
 
 <template>
 	<button
-		v-ripple
 		type="button"
-		:class="{ secondary, 'icon-behind': iconBehind }"
 		@click="onClick"
 	>
-		<Icon v-if="icon" :name="icon" />
-		<span><slot></slot></span>
-		<LocaleLink v-if="href" :draggable="false" :to="href" class="link lite" />
+		<div v-ripple class="button-content">
+			<Icon v-if="icon" :name="icon" />
+			<span class="caption"><span><slot></slot></span></span>
+			<LocaleLink v-if="href" :draggable="false" :to="href" class="link lite" />
+		</div>
 	</button>
 </template>
 
 <style scoped lang="scss">
-	button {
+	@layer props {
+		button {
+			/// 外观偏好，可选的值为：primary | secondary。
+			/// primary: 强调色按钮。
+			/// secondary: 次要/无背景按钮。
+			--appearance: primary;
+			/// 是否隐藏标签文本？
+			--hide-caption: false;
+			/// 图标是否放在文本后面。
+			--icon-behind: false;
+		}
+	}
+
+	.button-content {
 		@include flex-center;
 		@include button-shadow;
 		@include round-small;
+		@include square(inherit);
 		position: relative;
 		display: inline-flex;
-		gap: 8px;
 		min-height: 36px;
 		padding: 8px 16px;
 		color: white;
@@ -63,68 +72,70 @@
 		> span {
 			font-family: inherit;
 		}
-
-		&.icon-behind {
+		
+		@container style(--icon-behind: true) {
 			flex-direction: row-reverse;
 		}
 
-		&:active {
+		button:active > & {
 			@include button-scale-pressed;
 			background-color: c(accent);
 		}
 
-		&[disabled] {
+		button[disabled] > & {
 			background-color: c(accent-disabled);
 			box-shadow: none !important;
 			pointer-events: none;
 		}
 
-		&:focus {
+		button:focus > & {
 			@include button-shadow-focus;
 		}
 
-		&:any-hover { // 在触摸屏上不要支持 hover 样式。
+		button:any-hover > & { // 在触摸屏上不要支持 hover 样式。
 			@include button-shadow-hover;
 			background-color: c(accent-hover);
 		}
 
-		&:any-hover:focus {
+		button:any-hover:focus > & {
 			@include button-shadow-hover-focus;
 		}
 
-		&.secondary {
+		@container style(--appearance: secondary) {
 			color: c(accent);
 			background-color: transparent;
-			box-shadow: none;
+			
+			button:not(:focus-visible) > & {
+				box-shadow: none !important;
+			}
 
 			.icon {
+				margin-right: 8px;
 				color: c(accent);
 			}
 
 			:deep(.ripple-circle) {
-				background-color: c(accent-pressed, 15%);
+				background-color: c(accent-ripple);
 			}
 
-			&:any-hover {
-				background-color: c(accent-hover, 8%);
+			button:any-hover > &,
+			button:active > & {
+				background-color: c(accent-hover-film);
 			}
 
-			&:active {
-				background-color: c(accent-pressed, 8%);
-			}
-
-			&:focus {
-				box-shadow: none;
-			}
-
-			&:focus-visible {
+			button:focus-visible > & {
 				@include button-shadow-focus-only;
 			}
 
-			&[disabled] {
+			button[disabled] > & {
 				color: c(accent-disabled);
 			}
 		}
+	}
+	
+	@mixin icon-only {
+		margin-right: 0 !important;
+		font-size: 24px;
 	}
 
 	.icon {
@@ -134,18 +145,48 @@
 		min-height: $size;
 		color: white;
 		font-size: $size;
-
-		button:not(.icon-behind) > & {
+		
+		@container style(--icon-behind: false) {
 			margin-left: -$padding-inset;
 		}
-
-		button.icon-behind > & {
+		
+		@container style(--icon-behind: true) {
 			margin-right: -$padding-inset;
+		}
+		
+		&:has(+ .caption > :empty) {
+			@include icon-only;
+		}
+		
+		@container style(--hide-caption: true) {
+			@include icon-only;
+		}
+	}
+	
+	.caption {
+		display: grid;
+		grid-template-rows: 1fr;
+		grid-template-columns: 1fr;
+		
+		> * {
+			overflow: hidden;
+		}
+		
+		@container style(--hide-caption: true) {
+			grid-template-columns: 0fr;
 		}
 	}
 
 	.link {
 		@include square(100%);
 		position: absolute;
+	}
+	
+	button.secondary {
+		--appearance: secondary;
+	}
+	
+	button.icon-behind {
+		--icon-behind: true;
 	}
 </style>

@@ -48,7 +48,7 @@
 	}
 
 	:comp:any-hover {
-		background-color: c(hover-color);
+		background-color: c(hover-film);
 	}
 
 	:comp > div {
@@ -96,7 +96,7 @@
 		.trailing-icon {
 			color: c(icon-color);
 			font-size: 24px;
-			
+
 			&.soft-button {
 				margin-right: -8px;
 			}

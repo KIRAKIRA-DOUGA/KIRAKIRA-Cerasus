@@ -15,7 +15,7 @@
 	$light-color: null;
 	$dark-color: null;
 
-	@if type-of($value: $color) == "list" {
+	@if type-of($value: $color) == list {
 		$light-color: list.nth($color, 1);
 		$dark-color: list.nth($color, 2);
 	} @else {

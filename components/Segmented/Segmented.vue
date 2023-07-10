@@ -98,7 +98,7 @@
 <style scoped lang="scss">
 	$height: 36px;
 	$duration: 500ms;
-	
+
 	@layer props {
 		:comp {
 			/// 图标尺寸，建议的值为：18px | 24px。
@@ -131,7 +131,7 @@
 		padding: 0 11px;
 
 		&:any-hover {
-			background: c(hover-color);
+			background: c(hover-film);
 		}
 
 		.icon {

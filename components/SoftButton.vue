@@ -117,20 +117,28 @@
 				@include button-shadow-focus;
 			}
 
+			&:any-hover,
 			&:active {
-				background-color: c(hover-color);
-			}
-
-			&:any-hover {
-				background-color: c(hover-color);
+				background-color: c(hover-film);
 			}
 
 			&:is(:hover, :active, :has(> .ripple-circle)):not(:focus-visible) {
 				@include square(var(--ripple-size));
 			}
 
-			&.router-link-active > * {
-				color: c(accent);
+			&.router-link-active {
+				> * {
+					color: c(accent);
+				}
+
+				:deep(.ripple-circle) {
+					background-color: c(accent-ripple);
+				}
+				
+				&:any-hover,
+				&:active {
+					background-color: c(accent-hover-film);
+				}
 			}
 		}
 

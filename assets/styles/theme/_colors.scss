@@ -25,7 +25,7 @@ $neutral-colors: (
 	icon-color: (#797173, #e5e4e4),
 	divider: #505050,
 	text-color: map.get($grayscale-colors, gray-90),
-	hover-color: (c(black, 4%), c(white, 6%)),
+	hover-film: (c(black, 4%), c(white, 6%)),
 	surface-color: (c(white, 75%), c(white, 5%)),
 );
 
@@ -123,4 +123,6 @@ $state-colors: (
 	accent-pressed: accent-60,
 	accent-disabled: accent-20,
 	accent-shadow: neutral-10,
+	accent-ripple: accent-pressed 15%,
+	accent-hover-film: accent-hover 8%,
 );

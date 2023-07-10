@@ -107,12 +107,12 @@
 			table-layout: fixed;
 			background-color: c(main-bg);
 			border-spacing: 0;
-			
+
 			tbody {
 				position: absolute;
 				height: calc(100% - $item-height);
 			}
-			
+
 			.vue-recycle-scroller {
 				height: 100%;
 			}
@@ -132,7 +132,7 @@
 					cursor: pointer;
 
 					&:is(:hover, :active) {
-						background-color: c(hover-color) !important;
+						background-color: c(hover-film) !important;
 					}
 				}
 
@@ -183,7 +183,7 @@
 			}
 
 			tr:hover {
-				background-color: c(hover-color);
+				background-color: c(hover-film);
 			}
 
 			th .grip {
