@@ -238,11 +238,11 @@
 			cursor: pointer;
 
 			&:hover {
-				background-color: c(hover-color);
+				background-color: c(hover-film);
 			}
 
 			&.active {
-				background-color: c(hover-color);
+				background-color: c(hover-film);
 
 				&::before {
 					@include oval;

@@ -118,11 +118,11 @@
 			}
 
 			&:active {
-				background-color: c(hover-color);
+				background-color: c(hover-film);
 			}
 
 			&:any-hover {
-				background-color: c(hover-color);
+				background-color: c(hover-film);
 			}
 
 			&:is(:hover, :active, :has(> .ripple-circle)):not(:focus-visible) {
@@ -133,7 +133,7 @@
 				> * {
 					color: c(accent);
 				}
-				
+
 				:deep(.ripple-circle) {
 					background-color: c(accent-ripple);
 				}
