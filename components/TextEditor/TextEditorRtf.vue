@@ -13,7 +13,6 @@
 		],
 		content: `
 			<p>我正在用 Vue.js 运行 Tiptap。🎉</p>
-			<thumb-video></thumb-video>
 			<p>你看到了吗？这是 Vue 组件。我们真的生活在未来。</p>
 		`,
 		autofocus: false,

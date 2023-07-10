@@ -147,7 +147,9 @@ const English: LocaleIdentifiers = {
 	follow: "Follow",
 	following: "Following",
 	fans: "Fans",
-	views: "Views",
+	watches: "Watches",
+	join_time: "Join time",
+	user_info: "User info",
 };
 
 export default English;

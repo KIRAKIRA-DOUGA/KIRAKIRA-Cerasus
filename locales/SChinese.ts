@@ -147,7 +147,9 @@ const SChinese = {
 	follow: "关注",
 	following: "已关注",
 	fans: "粉丝",
-	views: "观看",
+	watches: "观看",
+	join_time: "加入时间",
+	user_info: "个人信息",
 } as const;
 
 export default SChinese;

@@ -1,3 +1,16 @@
+<script lang="ts">
+	export const tabs = [
+		{ id: "", icon: "home" },
+		{ id: "series", icon: "video_library" },
+		{ id: "video", icon: "movie" },
+		{ id: "audio", icon: "music" },
+		{ id: "photo", icon: "photo_library" },
+		{ id: "favorites", icon: "star" },
+	];
+
+	export const userTabs = tabs.map(tab => tab.id);
+</script>
+
 <script setup lang="ts">
 	import users from "helpers/users";
 
@@ -13,14 +26,6 @@
 		return !memo.trim() ? "" :
 			fullwidthRegexp.exec(memo) ? "fullwidth" : "halfwidth";
 	});
-	const tabs = [
-		{ id: "", icon: "home" },
-		{ id: "series", icon: "video_library" },
-		{ id: "video", icon: "movie" },
-		{ id: "audio", icon: "music" },
-		{ id: "photo", icon: "photo_library" },
-		{ id: "favorites", icon: "star" },
-	];
 	const currentTab = computed({
 		get: () => currentUserTab(),
 		set: id => navigate(`/user/${uid}/${id}`),

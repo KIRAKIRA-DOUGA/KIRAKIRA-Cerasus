@@ -28,8 +28,9 @@ export function getRoutePath({
  * @param route - 路由对象。留空时将会自动获取。
  * @returns 路由数组。
  */
-export function getLocaleRouteSlug(route?: Route) {
-	return getRoutePath({ route }).split("/").filter(i => i);
+export function getLocaleRouteSlug(route?: Route | string) {
+	if (typeof route !== "string") route = getRoutePath({ route });
+	return route.split("/").filter(i => i);
 }
 
 /**
