@@ -107,7 +107,7 @@
 
 			&:any-hover,
 			&:active {
-				background-color: c(accent-hover, 8%);
+				background-color: c(accent-hover-film);
 			}
 
 			&:focus {

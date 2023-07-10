@@ -117,11 +117,8 @@
 				@include button-shadow-focus;
 			}
 
+			&:any-hover,
 			&:active {
-				background-color: c(hover-film);
-			}
-
-			&:any-hover {
 				background-color: c(hover-film);
 			}
 
@@ -136,6 +133,11 @@
 
 				:deep(.ripple-circle) {
 					background-color: c(accent-ripple);
+				}
+				
+				&:any-hover,
+				&:active {
+					background-color: c(accent-hover-film);
 				}
 			}
 		}
