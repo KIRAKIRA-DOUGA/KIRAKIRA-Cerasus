@@ -86,7 +86,7 @@
 			}
 
 			:deep(.ripple-circle) {
-				background-color: c(accent-pressed, 15%);
+				background-color: c(accent-ripple);
 			}
 		}
 	}

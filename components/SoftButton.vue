@@ -129,8 +129,14 @@
 				@include square(var(--ripple-size));
 			}
 
-			&.router-link-active > * {
-				color: c(accent);
+			&.router-link-active {
+				> * {
+					color: c(accent);
+				}
+				
+				:deep(.ripple-circle) {
+					background-color: c(accent-ripple);
+				}
 			}
 		}
 

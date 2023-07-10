@@ -1,6 +1,8 @@
 @use "theme/colors" as *;
 @use "theme/internal" as *;
+@use "theme/functions" as *;
 @use "sass:map";
+@use "sass:list";
 
 // 下面的内容是根据 Sass 映射自动转换为 CSS 属性的逻辑代码，不用动。
 // TODO: [兰音] 即将支持相对颜色（Relative colors / rgb(from ...)）来实现改变颜色透明度的功能，然而截至目前除了 Safari 没有浏览器正式支持该功能。
@@ -24,7 +26,11 @@
 			@if $is-light {
 				@each $state, $color in $state-colors {
 					@if not $is-rgb-list {
-						--#{$state}: var(--#{$color});
+						@if type-of($color) != list {
+							--#{$state}: #{c($color)};
+						} @else {
+							--#{$state}: #{c(list.nth($color, 1), list.nth($color, 2))};
+						}
 					} @else {
 						--#{$state}-rgb: var(--#{$color}-rgb);
 					}

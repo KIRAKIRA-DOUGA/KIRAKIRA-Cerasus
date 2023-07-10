@@ -102,15 +102,12 @@
 			}
 
 			:deep(.ripple-circle) {
-				background-color: c(accent-pressed, 15%);
+				background-color: c(accent-ripple);
 			}
 
-			&:any-hover {
-				background-color: c(accent-hover, 8%);
-			}
-
+			&:any-hover,
 			&:active {
-				background-color: c(accent-pressed, 8%);
+				background-color: c(accent-hover, 8%);
 			}
 
 			&:focus {
