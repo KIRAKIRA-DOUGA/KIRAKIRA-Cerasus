@@ -231,6 +231,12 @@
 				.toolbox-card {
 					width: 100%;
 				}
+				
+				> .left,
+				> .right,
+				> .center-right > .right {
+					position: static;
+				}
 			}
 		}
 
