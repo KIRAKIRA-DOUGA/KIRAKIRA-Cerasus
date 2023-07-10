@@ -10,7 +10,7 @@
 		<div class="toolbox-card left">
 			<Accordion>
 				<AccordionItem title="我的收藏夹" />
-				<AccordionItem title="关注收藏夹" />
+				<AccordionItem title="订阅收藏夹" />
 			</Accordion>
 		</div>
 
@@ -19,7 +19,7 @@
 				<div class="left">
 					<Button secondary icon="info">修改信息</Button>
 					<Button secondary icon="clear_all">清理已失效视频</Button>
-					<Button secondary icon="placeholder">关注收藏夹</Button>
+					<Button secondary icon="placeholder">订阅收藏</Button>
 					<Button secondary icon="play">播放全部</Button>
 				</div>
 				<div class="right">
