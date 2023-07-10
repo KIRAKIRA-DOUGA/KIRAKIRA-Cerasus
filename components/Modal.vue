@@ -203,7 +203,7 @@
 					@include square(32px);
 					@include round-small;
 					@include absolute-center-sized;
-					background-color: c(hover-color);
+					background-color: c(hover-film);
 					opacity: 0;
 					content: "";
 				}

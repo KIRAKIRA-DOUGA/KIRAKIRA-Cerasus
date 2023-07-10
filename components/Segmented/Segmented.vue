@@ -131,7 +131,7 @@
 		padding: 0 11px;
 
 		&:any-hover {
-			background: c(hover-color);
+			background: c(hover-film);
 		}
 
 		.icon {

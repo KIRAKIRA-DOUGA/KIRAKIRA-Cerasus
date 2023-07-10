@@ -132,7 +132,7 @@
 					cursor: pointer;
 
 					&:is(:hover, :active) {
-						background-color: c(hover-color) !important;
+						background-color: c(hover-film) !important;
 					}
 				}
 
@@ -183,7 +183,7 @@
 			}
 
 			tr:hover {
-				background-color: c(hover-color);
+				background-color: c(hover-film);
 			}
 
 			th .grip {
