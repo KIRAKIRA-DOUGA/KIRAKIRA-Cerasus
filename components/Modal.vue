@@ -101,7 +101,7 @@
 					</div>
 					<div class="right">
 						<slot name="footer-right">
-							<Button secondary @click="open = false">取消</Button>
+							<Button class="secondary" @click="open = false">取消</Button>
 							<Button @click="open = false">确定</Button>
 						</slot>
 					</div>

@@ -97,8 +97,8 @@
 							</div>
 						</div>
 						<div class="action margin-left-inset margin-right-inset">
-							<Button secondary @click="currentPage = 'forget'">忘记了密码</Button>
-							<Button secondary @click="currentPage = 'register'">没有账号？注册</Button>
+							<Button @click="currentPage = 'forget'">忘记了密码</Button>
+							<Button @click="currentPage = 'register'">没有账号？注册</Button>
 						</div>
 					</div>
 				</div>
@@ -129,8 +129,8 @@
 							/>
 						</div>
 						<div class="action margin-left-inset">
-							<Button secondary @click="currentPage = 'login'">已有账号？登录</Button>
-							<Button icon="arrow_right" iconBehind class="button" @click="currentPage = 'register2'">下一步</Button>
+							<Button @click="currentPage = 'login'">已有账号？登录</Button>
+							<Button icon="arrow_right" class="button icon-behind" @click="currentPage = 'register2'">下一步</Button>
 						</div>
 					</div>
 					<div class="register2">
@@ -174,7 +174,7 @@
 							<Button icon="send" class="button">发送</Button>
 						</div>
 						<div class="action margin-left-inset">
-							<Button secondary @click="currentPage = 'login'">想起来密码了</Button>
+							<Button @click="currentPage = 'login'">想起来密码了</Button>
 						</div>
 					</div>
 					<div class="reset">
@@ -440,10 +440,18 @@
 
 		&.margin-left-inset {
 			margin-left: -$margin-inset;
+			
+			button:first-child {
+				--appearance: secondary;
+			}
 		}
 
 		&.margin-right-inset {
 			margin-right: -$margin-inset;
+			
+			button:last-child {
+				--appearance: secondary;
+			}
 		}
 	}
 
