@@ -1,7 +1,7 @@
 {
-  "name": "kirakira-backend",
+  "name": "kirakirabackend",
   "version": "0.0.1",
-  "description": "OpenAPI client for kirakira-backend",
+  "description": "OpenAPI client for kirakirabackend",
   "author": "OpenAPI-Generator Contributors",
   "repository": {
     "type": "git",

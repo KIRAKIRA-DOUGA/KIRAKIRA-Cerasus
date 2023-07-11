@@ -1,6 +1,6 @@
 # .DefaultApi
 
-All URIs are relative to *http://localhost:3000/api*
+All URIs are relative to *https://localhost:3000/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -10,9 +10,9 @@ Method | HTTP request | Description
 [**logout**](DefaultApi.md#logout) | **GET** /logout | Log user out
 [**register**](DefaultApi.md#register) | **POST** /register | Register user
 [**upload**](DefaultApi.md#upload) | **POST** /upload | Upload a new video
-[**users**](DefaultApi.md#users) | **GET** /user/{id} | Get user video data
-[**videoDetail**](DefaultApi.md#videoDetail) | **GET** /video/{id} | Get list of videos
-[**videos**](DefaultApi.md#videos) | **GET** /video | Get list of videos
+[**users**](DefaultApi.md#users) | **GET** /users/{id} | Get user video data
+[**videoDetail**](DefaultApi.md#videoDetail) | **GET** /videos/{id} | Get list of videos
+[**videos**](DefaultApi.md#videos) | **GET** /videos | Get list of videos
 
 
 # **comment**
