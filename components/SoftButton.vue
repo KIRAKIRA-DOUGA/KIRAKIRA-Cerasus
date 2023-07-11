@@ -55,21 +55,23 @@
 </script>
 
 <template>
-	<Comp :class="[appearance]" role="button" :aria-label="icon">
-		<component
-			:is="href ? LocaleLink : 'button'"
-			ref="wrapper"
-			v-ripple
-			:tabindex="nonclickable || nonfocusable ? -1 : ''"
-			:disabled="nonclickable"
-			v-bind="additionalAttrs"
-			:class="{ 'router-link-active': active }"
-			@click="(e: MouseEvent) => emits('click', e)"
-		>
-			<Icon v-if="icon" :name="icon" />
-			<AnimatedIcon v-if="animatedIcon" :name="animatedIcon" :state="state" />
-			<span v-if="text"><span>{{ text }}</span></span>
-		</component>
+	<Comp role="button" :aria-label="icon">
+		<div :class="[appearance]">
+			<component
+				:is="href ? LocaleLink : 'button'"
+				ref="wrapper"
+				v-ripple
+				:tabindex="nonclickable || nonfocusable ? -1 : ''"
+				:disabled="nonclickable"
+				v-bind="additionalAttrs"
+				:class="{ 'router-link-active': active }"
+				@click="(e: MouseEvent) => emits('click', e)"
+			>
+				<Icon v-if="icon" :name="icon" />
+				<AnimatedIcon v-if="animatedIcon" :name="animatedIcon" :state="state" />
+				<span v-if="text"><span>{{ text }}</span></span>
+			</component>
+		</div>
 	</Comp>
 </template>
 
@@ -89,6 +91,8 @@
 			--focus-size: #{$focus-size};
 			/// 图标大小。
 			--icon-size: #{$icon-size};
+			/// 是否**强制**高亮图标强调色？
+			--active: false;
 		}
 	}
 
@@ -96,11 +100,30 @@
 	.animated-icon {
 		font-size: var(--icon-size);
 	}
-
+	
 	:comp {
 		@include flex-center;
 		@include square(var(--wrapper-size));
 		@include circle;
+	}
+	
+	@mixin router-link-active {
+		> * {
+			color: c(accent) !important;
+		}
+
+		:deep(.ripple-circle) {
+			background-color: c(accent-ripple);
+		}
+		
+		&:any-hover,
+		&:active {
+			background-color: c(accent-hover-film);
+		}
+	}
+
+	:comp > div {
+		@include flex-center;
 		@include ripple-clickable-only-inside(var(--wrapper-size));
 		color: c(icon-color);
 		touch-action: manipulation;
@@ -127,18 +150,11 @@
 			}
 
 			&.router-link-active {
-				> * {
-					color: c(accent);
-				}
-
-				:deep(.ripple-circle) {
-					background-color: c(accent-ripple);
-				}
-				
-				&:any-hover,
-				&:active {
-					background-color: c(accent-hover-film);
-				}
+				@include router-link-active;
+			}
+			
+			@container style(--active: true) {
+				@include router-link-active;
 			}
 		}
 

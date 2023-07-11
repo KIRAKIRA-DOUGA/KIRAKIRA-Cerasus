@@ -27,6 +27,7 @@ $neutral-colors: (
 	text-color: map.get($grayscale-colors, gray-90),
 	hover-film: (c(black, 4%), c(white, 6%)),
 	surface-color: (c(white, 75%), c(white, 5%)),
+	ripple: (c(black, 15%), c(white, 15%)),
 );
 
 // 如果定义为列表，则第一项为浅色主题颜色，第二项为深色主题颜色。
