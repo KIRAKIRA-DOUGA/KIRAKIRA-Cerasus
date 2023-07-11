@@ -83,6 +83,7 @@
 		"unist-util-visit": "^4.1.1"
 	},
 	"dependencies": {
+		"kirakirabackend": "file:api",
 		"@nuxtjs/color-mode": "^3.2.0",
 		"@nuxtjs/robots": "^3.0.0",
 		"@nuxtjs/svg-sprite": "^1.0.2",
