@@ -26,7 +26,7 @@
 
 	/** logs the user in */
 	async function loginUser() {
-		const oapiClient = API();
+		const oapiClient = useApi();
 		await oapiClient.login(email.value, password.value);
 		isLogining.value = true;
 	}

@@ -6,7 +6,7 @@
 	import { DefaultApi } from "kirakirabackend";
 
 	const props = defineProps<{
-		videoID: number;
+		videoId: number;
 	}>();
 
 	const editor = useEditor({
@@ -82,12 +82,12 @@
 	* sends comment to the backend
 	*/
 	function sendComment() {
-		const api: DefaultApi = API();
+		const api: DefaultApi = useApi();
 		const content = editor.value?.getHTML() ?? "";
 		const utf8Encode = new TextEncoder();
 		const encodedContent = utf8Encode.encode(content);
 
-		api.comment(0, encodedContent, props.videoID) // TODO: video ID
+		api.comment(0, encodedContent, props.videoId) // TODO: video ID
 			.then(x => {
 				// TODO
 			})
@@ -135,7 +135,7 @@
 			<ToolItem :tooltip="t.at_person" icon="at" @click="showAtList" />
 			<ToolItem :tooltip="t.kaomoji" icon="kaomoji" :active="!!flyoutKaomoji" @click="e => flyoutKaomoji = [e, 'y']" />
 			<ToolItem :tooltip="t.image" icon="photo" @click="addVueComponents" />
-			<ToolItem :tooltip="t.image" icon="photo" @click="sendComment" />
+			<ToolItem :tooltip="t.send" icon="photo" @click="sendComment" />
 		</div>
 		<ClientOnly>
 			<EditorContent :editor="editor" />

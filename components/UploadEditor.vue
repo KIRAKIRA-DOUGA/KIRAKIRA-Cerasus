@@ -124,7 +124,7 @@
 
 			<div class="right">
 				<div class="card">
-					<!-- 在这里上传和管理分P -->
+					<!-- 在这里上传和管理分 P -->
 				</div>
 
 				<div class="card">
@@ -134,13 +134,17 @@
 					</section>
 
 					<section>
-						<Subheader icon="placeholder">Tags (comma separated, no spaces)</Subheader>
+						<Subheader icon="tag">{{ t.tags }}</Subheader>
+						<!-- Tags (comma separated, no spaces) -->
+						<!-- <div class="tags">
+							<Tag>{{ t.press_enter_to_add }}</Tag>
+						</div> -->
 						<TextBox v-model="tags" required />
 
 					</section>
 
 					<section>
-						<Subheader icon="placeholder">Description</Subheader>
+						<Subheader icon="details">{{ t.description_of_creation }}</Subheader>
 						<TextBox v-model="description" required />
 						<!-- 这里放简介，需要富文本编辑器 -->
 					</section>
@@ -148,7 +152,7 @@
 					<ToggleSwitch v-model="pushToFeed" icon="feed">{{ t.push_to_feed }}</ToggleSwitch>
 
 					<div class="submit">
-						<Button icon="check" @click="uploaded(files)">Upload!</Button>
+						<Button icon="check" @click="uploaded(files)">{{ t.upload_with_exclamation }}</Button>
 					</div>
 				</div>
 			</div>

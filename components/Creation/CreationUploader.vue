@@ -9,13 +9,13 @@
 		/** 是否已关注？ */
 		isFollowed?: boolean;
 
-		ID: number;
+		id: number;
 	}>();
 </script>
 
 <template>
 	<Comp>
-		<UserAvatar :avatar="avatar" :link="'/users/' + ID" />
+		<UserAvatar :avatar="avatar" :link="'/user/' + id" />
 		<div class="text">
 			<div class="username">{{ username }}</div>
 			<div class="fans">{{ fans }} {{ t.fans }}</div>
