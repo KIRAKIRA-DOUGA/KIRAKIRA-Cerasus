@@ -2,7 +2,7 @@
 	import videoPath from "assets/videos/shibamata.mp4";
 	import avatar from "assets/images/aira.webp";
 	import { DefaultApi, VideoDetail200Response } from "api";
-	import { Comments200ResponseInner } from "kirakirabackend";
+	import { Comments200ResponseInner } from "kirakira-backend";
 	// const videoPath = "https://video_api.kms233.com/bili/av9912788";
 	// 暂时不要用在线视频链接，虽然可以用，但是每次查看视频详细信息我都要等好久。
 
@@ -16,7 +16,7 @@
 
 	// Fetch video details
 	watch(() => id, () => {
-		const api: DefaultApi = useApi();
+		const api = useApi();
 		api.videoDetail(id)
 			.then(x => {
 				videoDetails.value = x;
@@ -27,7 +27,7 @@
 
 	// Fetch comments
 	watch(() => id, () => {
-		const api: DefaultApi = useApi();
+		const api = useApi();
 		api.comments(id)
 			.then(x => {
 				for (const comment of x)

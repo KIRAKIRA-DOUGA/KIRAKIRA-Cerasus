@@ -1,4 +1,4 @@
-import * as api from "kirakirabackend";
+import * as api from "kirakira-backend";
 
 /**
  * convenience singleton for the OpenAPI SDK

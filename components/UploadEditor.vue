@@ -1,6 +1,6 @@
 <script setup lang="ts">
-	import { DefaultApi, HttpFile } from "kirakirabackend";
-	import { DefaultApiRequestFactory } from "kirakirabackend/apis/DefaultApi";
+	import { DefaultApi, HttpFile } from "kirakira-backend";
+	import { DefaultApiRequestFactory } from "kirakira-backend/apis/DefaultApi";
 	import { toRaw } from "vue";
 	import axios from "axios";
 	const contentVisibility = ref<PrivacyType>("public");

@@ -3,7 +3,7 @@
 	import StarterKit from "@tiptap/starter-kit";
 	import { Underline } from "@tiptap/extension-underline";
 	import VueComponent from "helpers/editor-extension";
-	import { DefaultApi } from "kirakirabackend";
+	import { DefaultApi } from "kirakira-backend";
 
 	const props = defineProps<{
 		videoId: number;
@@ -82,7 +82,7 @@
 	* sends comment to the backend
 	*/
 	function sendComment() {
-		const api: DefaultApi = useApi();
+		const api = useApi();
 		const content = editor.value?.getHTML() ?? "";
 		const utf8Encode = new TextEncoder();
 		const encodedContent = utf8Encode.encode(content);
