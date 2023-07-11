@@ -4,9 +4,11 @@
 	const dragover = ref(false);
 	const successfulUploaded = ref(false);
 	const showEditor = ref(false);
-	const fileArr = Array<File>();
-	const uploaded = async (files: Array<File>) => {
+	const fileArr: File[] = [];
+	const uploaded = (files: File[]) => {
 		successfulUploaded.value = true;
+		// await delay(1500);
+		// navigate("/upload/edit");
 		fileArr.push(files[0]);
 		showEditor.value = true;
 	};
