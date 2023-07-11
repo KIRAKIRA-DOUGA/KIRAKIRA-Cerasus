@@ -70,7 +70,7 @@
 			padding-right: 13px;
 			padding-left: 17px;
 			color: c(text-color);
-			background-color: c(hover-film);
+			background-color: c(hover-overlay);
 		}
 
 		&:not(:any-hover) {

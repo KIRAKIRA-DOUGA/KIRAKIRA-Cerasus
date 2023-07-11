@@ -100,13 +100,13 @@
 	.animated-icon {
 		font-size: var(--icon-size);
 	}
-	
+
 	:comp {
 		@include flex-center;
 		@include square(var(--wrapper-size));
 		@include circle;
 	}
-	
+
 	@mixin router-link-active {
 		> * {
 			color: c(accent) !important;
@@ -115,10 +115,10 @@
 		:deep(.ripple-circle) {
 			background-color: c(accent-ripple);
 		}
-		
+
 		&:any-hover,
 		&:active {
-			background-color: c(accent-hover-film);
+			background-color: c(accent-hover-overlay);
 		}
 	}
 
@@ -142,7 +142,7 @@
 
 			&:any-hover,
 			&:active {
-				background-color: c(hover-film);
+				background-color: c(hover-overlay);
 			}
 
 			&:is(:hover, :active, :has(> .ripple-circle)):not(:focus-visible) {
@@ -152,7 +152,7 @@
 			&.router-link-active {
 				@include router-link-active;
 			}
-			
+
 			@container style(--active: true) {
 				@include router-link-active;
 			}

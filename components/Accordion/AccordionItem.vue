@@ -85,7 +85,7 @@
 		font-weight: normal;
 		font-size: inherit;
 		cursor: pointer;
-		
+
 		> * {
 			display: flex;
 			align-items: center;
@@ -109,7 +109,7 @@
 
 		&:any-hover {
 			padding-left: 1.25rem;
-			background-color: c(hover-film);
+			background-color: c(hover-overlay);
 		}
 
 		&.shown {
@@ -132,12 +132,12 @@
 			&:any-hover {
 				background-color: c(accent-10, 50%);
 			}
-			
+
 			html:not(.dark) & {
 				.right :deep(.soft-button) {
 					--active: true;
 				}
-			
+
 				:deep(.ripple-circle) {
 					background-color: c(accent-ripple);
 				}

@@ -48,7 +48,7 @@
 	}
 
 	:comp:any-hover {
-		background-color: c(hover-film);
+		background-color: c(hover-overlay);
 	}
 
 	:comp > div {

@@ -161,11 +161,11 @@
 		animation: outer-border-change-back $duration-half $duration-half $ease-in-expo reverse backwards;
 
 		:comp:any-hover & {
-			background-color: c(hover-film);
+			background-color: c(hover-overlay);
 		}
 
 		:comp:active & {
-			background-color: c(hover-film);
+			background-color: c(hover-overlay);
 		}
 	}
 

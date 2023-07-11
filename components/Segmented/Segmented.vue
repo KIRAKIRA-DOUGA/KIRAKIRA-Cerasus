@@ -131,7 +131,7 @@
 		padding: 0 11px;
 
 		&:any-hover {
-			background: c(hover-film);
+			background: c(hover-overlay);
 		}
 
 		.icon {
