@@ -38,8 +38,13 @@
 <template>
 	<Comp role="listitem" :aria-label="(title as string)" :aria-expanded="shown">
 		<h3 v-ripple class="header" :class="{ shown }" :tabindex="0" @click="toggle">
-			<div>{{ title }}</div>
-			<Icon name="chevron_down" />
+			<div class="left">
+				<Icon name="chevron_down" />
+				<div>{{ title }}</div>
+			</div>
+			<div class="right">
+				<slot name="actions"></slot>
+			</div>
 		</h3>
 		<Transition>
 			<div v-if="shown" class="content" :class="{ 'no-padding': noPadding }">
@@ -72,15 +77,24 @@
 	}
 
 	.header {
-		@include flex-center;
 		position: relative;
+		display: flex;
+		align-items: center;
 		justify-content: space-between;
+		overflow: hidden;
 		font-weight: normal;
 		font-size: inherit;
 		cursor: pointer;
+		
+		> * {
+			display: flex;
+			align-items: center;
+		}
 
 		.icon {
 			@include enable-hardware-3d;
+			margin-right: 4px;
+			margin-left: -4px;
 			color: c(icon-color);
 			font-size: 20px;
 			backface-visibility: hidden;
@@ -102,7 +116,7 @@
 			color: c(accent);
 			background-color: c(accent-10);
 
-			.dark & {
+			html.dark & {
 				color: c(icon-color);
 			}
 
@@ -117,6 +131,16 @@
 
 			&:any-hover {
 				background-color: c(accent-10, 50%);
+			}
+			
+			html:not(.dark) & {
+				.right :deep(.soft-button) {
+					--active: true;
+				}
+			
+				:deep(.ripple-circle) {
+					background-color: c(accent-ripple);
+				}
 			}
 		}
 	}

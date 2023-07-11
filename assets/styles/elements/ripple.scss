@@ -10,7 +10,7 @@
 		left: 0;
 		z-index: 2;
 		display: block;
-		background-color: c(main-fg, 20%);
+		background-color: c(ripple);
 		pointer-events: none;
 
 		~ :where(:not(.ripple-circle)) {

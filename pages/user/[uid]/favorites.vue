@@ -7,7 +7,7 @@
 	const hideToolbarCaptions = ref(false);
 
 	useEventListener("window", "resize", onResize);
-	
+
 	onMounted(() => {
 		onResize();
 	});
@@ -33,8 +33,16 @@
 	<div class="container">
 		<div class="toolbox-card left">
 			<Accordion>
-				<AccordionItem title="我的收藏夹" />
-				<AccordionItem title="订阅收藏夹" />
+				<AccordionItem title="我的收藏夹">
+					<template #actions>
+						<SoftButton icon="add" @click.stop />
+					</template>
+				</AccordionItem>
+				<AccordionItem title="订阅收藏夹">
+					<template #actions>
+						<SoftButton icon="add" @click.stop />
+					</template>
+				</AccordionItem>
 			</Accordion>
 		</div>
 
@@ -108,7 +116,7 @@
 		align-items: center;
 		justify-content: space-between;
 		padding: 6px;
-		
+
 		&:first-child {
 			position: static;
 		}
@@ -121,22 +129,32 @@
 		.right {
 			justify-content: flex-end;
 		}
-		
+
 		button {
 			--appearance: secondary;
 		}
-		
+
 		&.shadow {
 			visibility: hidden;
 		}
-		
+
 		&.hide-captions:not(.shadow) button {
 			--hide-caption: true;
 		}
 	}
 
-	.toolbox-card:not(.right) {
-		gap: 0;
-		padding: 0;
+	.toolbox-card {
+		&:not(.right) {
+			gap: 0;
+			padding: 0;
+		}
+
+		&.left {
+			overflow: visible;
+		}
+	}
+
+	.accordion-item .soft-button {
+		margin: -10px;
 	}
 </style>
