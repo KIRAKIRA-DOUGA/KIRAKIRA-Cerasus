@@ -70,10 +70,10 @@
 			background-color: c(accent);
 			content: "";
 		}
-		
+
 		&:any-hover,
 		&:active {
-			background-color: c(hover-film);
+			background-color: c(hover-overlay);
 		}
 
 		&.active {
@@ -93,10 +93,10 @@
 			:deep(.ripple-circle) {
 				background-color: c(accent-ripple);
 			}
-			
+
 			&:any-hover,
 			&:active {
-				background-color: c(accent-hover-film);
+				background-color: c(accent-hover-overlay);
 			}
 		}
 	}

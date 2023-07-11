@@ -72,7 +72,7 @@
 		> span {
 			font-family: inherit;
 		}
-		
+
 		@container style(--icon-behind: true) {
 			flex-direction: row-reverse;
 		}
@@ -104,7 +104,7 @@
 		@container style(--appearance: secondary) {
 			color: c(accent);
 			background-color: transparent;
-			
+
 			button:not(:focus-visible) > & {
 				box-shadow: none !important;
 			}
@@ -120,7 +120,7 @@
 
 			button:any-hover > &,
 			button:active > & {
-				background-color: c(accent-hover-film);
+				background-color: c(accent-hover-overlay);
 			}
 
 			button:focus-visible > & {
@@ -132,7 +132,7 @@
 			}
 		}
 	}
-	
+
 	@mixin icon-only {
 		margin-right: 0 !important;
 		font-size: 24px;
@@ -145,33 +145,33 @@
 		min-height: $size;
 		color: white;
 		font-size: $size;
-		
+
 		@container style(--icon-behind: false) {
 			margin-left: -$padding-inset;
 		}
-		
+
 		@container style(--icon-behind: true) {
 			margin-right: -$padding-inset;
 		}
-		
+
 		&:has(+ .caption > :empty) {
 			@include icon-only;
 		}
-		
+
 		@container style(--hide-caption: true) {
 			@include icon-only;
 		}
 	}
-	
+
 	.caption {
 		display: grid;
 		grid-template-rows: 1fr;
 		grid-template-columns: 1fr;
-		
+
 		> * {
 			overflow: hidden;
 		}
-		
+
 		@container style(--hide-caption: true) {
 			grid-template-columns: 0fr;
 		}
@@ -181,11 +181,11 @@
 		@include square(100%);
 		position: absolute;
 	}
-	
+
 	button.secondary {
 		--appearance: secondary;
 	}
-	
+
 	button.icon-behind {
 		--icon-behind: true;
 	}
