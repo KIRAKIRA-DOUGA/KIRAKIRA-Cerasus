@@ -37,6 +37,14 @@
 			"git add"
 		]
 	},
+	"cssnano": {
+		"preset": [
+			"default",
+			{
+				"calc": false
+			}
+		]
+	},
 	"overrides": {
 		"vue": "latest"
 	},
