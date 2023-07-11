@@ -15,7 +15,7 @@
 	import users from "helpers/users";
 
 	const uid = currentUserUid();
-	if (!users[uid]) navigate("/error/404");
+	// if (!users[uid]) navigate("/error/404"); // 在后端加持下暂时移除。
 	const user = users[uid] ?? {};
 
 	const actionMenu = ref<MenuModel>();
