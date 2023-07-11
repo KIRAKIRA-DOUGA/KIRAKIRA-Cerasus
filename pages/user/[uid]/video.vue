@@ -5,7 +5,7 @@
 	const sort = ref<SortModel>(["date", "descending"]);
 
 	const router = useRouter();
-	const id = router.currentRoute.value.path.split("/")[2];
+	const id = router.currentRoute.value.path.split("/")[3];
 
 	const videos = ref<User>();
 

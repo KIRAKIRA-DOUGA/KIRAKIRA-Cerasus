@@ -1,4 +1,4 @@
-## kirakira-backend@0.0.1
+## kirakirabackend@0.0.1
 
 This generator creates TypeScript/JavaScript client that utilizes fetch-api.
 
@@ -21,7 +21,7 @@ Navigate to the folder of your consuming project and run one of the following co
 _published:_
 
 ```
-npm install kirakira-backend@0.0.1 --save
+npm install kirakirabackend@0.0.1 --save
 ```
 
 _unPublished (not recommended):_
