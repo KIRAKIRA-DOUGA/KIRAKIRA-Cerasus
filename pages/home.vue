@@ -118,6 +118,15 @@
 			:current="page"
 			:onPageChange="changePage"
 		/>
+		
+		<Subheader icon="home" :badge="233">网站地图</Subheader>
+		<div class="pages">
+			<LocaleLink v-for="page in pages" :key="page.name" class="link lite" :to="page.link">{{ page.name }}</LocaleLink>
+		</div>
+		<Subheader icon="error" :badge="233">错误页</Subheader>
+		<div class="pages">
+			<a v-for="page in httpCodes" :key="page.name" class="link lite" :href="'/error/' + page.link">{{ page.name }}</a>
+		</div>
 	</div>
 </template>
 

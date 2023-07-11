@@ -55,7 +55,7 @@
 		axios({
 			method: "POST",
 			// TODO
-			url: "https://kirakira.dev/api/upload",
+			url: "https://localhost:3000/api/upload",
 			data: formData,
 			headers: {
 				"Content-Type": "multipart/form-data",
