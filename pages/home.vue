@@ -23,7 +23,7 @@
 
 	// fetch the videos according to the query
 	watch([() => search.value, () => sortCategory.value, () => sortDirection.value, () => page.value], async ([newSearch, newSortCategory, newSortDirection, newPageValue]) => {
-		const api : DefaultApi = useApi();
+		const api = useApi();
 		const utf8Encode = new TextEncoder();
 		const encodedContent = utf8Encode.encode(newSearch);
 		api.videos(encodedContent, newSortCategory, newSortDirection, "true", newPageValue).then(x => {
