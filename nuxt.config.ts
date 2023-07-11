@@ -197,7 +197,7 @@ export default defineNuxtConfig({
 	},
 	runtimeConfig: {
 		public: {
-			siteUrl: "https://kirakira.dev",
+			siteUrl: "https://localhost:3000",
 		},
 	},
 	components: [

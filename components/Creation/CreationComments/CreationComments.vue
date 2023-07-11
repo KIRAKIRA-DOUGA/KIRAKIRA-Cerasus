@@ -6,8 +6,8 @@
 	const props = defineProps<{
 		/** 评论数目。 */
 		count: number | string;
-		comments: Array<Comments200ResponseInner>;
-		videoID: number;
+		comments: Comments200ResponseInner[];
+		videoId: number;
 	}>();
 
 	const like = ref(0), dislike = ref(0), likeClicked = ref(false), dislikeClicked = ref(false), pinned = ref(false);
@@ -16,7 +16,7 @@
 <template>
 	<Comp>
 		<HeadingComments :count="count" />
-		<TextEditorRtf :videoID="props.videoID" />
+		<TextEditorRtf :videoId="videoId" />
 		<div class="items">
 			<CreationCommentsItem
 				v-for="comment in comments"
@@ -28,7 +28,10 @@
 				v-model:pinned="pinned"
 				:index="1"
 				:message="comment.content"
-			/>
+			>
+				ふたりの時間、選びとる未来。<br />
+				艾拉是整个 KIRAKIRA 开发组最笨的笨蛋です。
+			</CreationCommentsItem>
 		</div>
 	</Comp>
 </template>

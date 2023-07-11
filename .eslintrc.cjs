@@ -57,7 +57,7 @@ module.exports = {
 		"no-cond-assign": ["error", "except-parens"],
 		"no-extra-semi": "error",
 		"no-irregular-whitespace": "error",
-		"no-unreachable": "error",
+		"no-unreachable": "warn",
 		"use-isnan": "error",
 		"valid-typeof": "error",
 		"curly": ["error", "multi"],

@@ -43,7 +43,7 @@ body {
 	@include full-screen(relative);
 	margin: 0;
 	padding: 0;
-	overflow: scroll;
+	overflow: hidden;
 	color: c(text-color);
 	font-size: 14px;
 	background-color: c(main-bg);

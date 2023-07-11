@@ -2,21 +2,21 @@
 	import videoPath from "assets/videos/shibamata.mp4";
 	import avatar from "assets/images/aira.webp";
 	import { DefaultApi, VideoDetail200Response } from "api";
-	import { Comments200ResponseInner } from "kirakirabackend";
+	import { Comments200ResponseInner } from "kirakira-backend";
 	// const videoPath = "https://video_api.kms233.com/bili/av9912788";
 	// 暂时不要用在线视频链接，虽然可以用，但是每次查看视频详细信息我都要等好久。
 
 	// this is definitely the wrong way to do this. there's no doubt, lmao
 	// what is the right way? TODO
 	const router = useRouter();
-	const id = router.currentRoute.value.path.split("/")[2];
+	const id = +router.currentRoute.value.path.split("/")[2];
 	const videoDetails = ref<VideoDetail200Response>();
 	const videoLoc = ref(undefined);
-	const comments: Array<Comments200ResponseInner> = ref(Array<Comments200ResponseInner>());
+	const comments = ref<Comments200ResponseInner>([]);
 
 	// Fetch video details
 	watch(() => id, () => {
-		const api: DefaultApi = API();
+		const api = useApi();
 		api.videoDetail(id)
 			.then(x => {
 				videoDetails.value = x;
@@ -27,7 +27,7 @@
 
 	// Fetch comments
 	watch(() => id, () => {
-		const api: DefaultApi = API();
+		const api = useApi();
 		api.comments(id)
 			.then(x => {
 				for (const comment of x)
@@ -46,14 +46,13 @@
 				<CreationDetail
 					:date="new Date()"
 					category="音MAD"
-
 					:title="videoDetails?.title ?? ''"
-					copyright="unauthorized-repost"
+					copyright="repost"
 					:tags="videoDetails?.tags ?? []"
 				/>
 
 				<CreationComments
-					:videoID="id"
+					:videoId="id"
 					:count="comments.length"
 					:comments="comments"
 				/>
@@ -63,10 +62,10 @@
 			</div>
 			<div class="right">
 				<CreationUploader
+					:id="videoDetails?.authorID ?? 0"
 					:avatar="avatar"
 					:username="videoDetails?.username ?? ''"
 					:fans="233"
-					:ID="videoDetails?.authorID ?? 0"
 					isFollowed
 				/>
 			</div>
