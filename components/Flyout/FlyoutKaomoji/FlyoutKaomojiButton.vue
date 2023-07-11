@@ -26,7 +26,7 @@
 </template>
 
 <style scoped lang="scss">
-	button:comp {
+	:deep(.button-content) {
 		@include chip-shadow;
 		@include round-small;
 		display: flex;
@@ -34,34 +34,34 @@
 		color: c(text-color);
 		background-color: c(main-bg);
 
-		&:active {
+		button:comp:active & {
 			background-color: c(main-bg);
 		}
 
-		&:focus {
+		button:comp:focus & {
 			@include button-shadow-unchecked-focus;
 		}
 
-		&.highlighted:focus {
+		button:comp.highlighted:focus & {
 			@include button-shadow-focus;
 			color: white;
 			background-color: c(accent);
 		}
 
-		&.highlighted:active:focus {
+		button:comp.highlighted:active:focus & {
 			background-color: c(accent);
 		}
 
-		&:any-hover {
+		button:comp:any-hover & {
 			@include button-shadow-unchecked-hover;
 			background-color: c(gray-5);
 		}
 
-		&:any-hover:focus {
+		button:comp:any-hover:focus & {
 			@include button-shadow-unchecked-hover-focus;
 		}
 
-		&.highlighted:any-hover:focus {
+		button:comp.highlighted:any-hover:focus & {
 			@include button-shadow-hover-focus;
 			background-color: c(accent-hover);
 		}
