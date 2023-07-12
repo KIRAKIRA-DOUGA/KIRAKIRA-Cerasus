@@ -3,35 +3,32 @@
 	import testVideo2 from "assets/images/av820864307.jpg";
 	import testAudio from "assets/images/av893640047.jpg";
 	import { DefaultApi, Videos200Response } from "api";
-	import { Router, routerKey } from "../.nuxt/vue-router";
 
 	const selectedTab = ref("home");
 
 	useHead({ title: "首页" });
 
-	const videos = ref<Videos200Response>(undefined);
+	const videos = ref<Videos200Response>();
+	const route = useRoute();
+	const { query } = route;
 
-	const router: Router = useRouter();
-	const queryVals = router.currentRoute.value.query;
-
-	const search = ref(queryVals.search?.toString() ?? "none");
-	const sortCategory = ref(queryVals.sortCategory?.toString());
-	const sortDirection = ref(queryVals.sortDirection?.toString());
-	const page = ref(parseInt(queryVals.page?.toString() ?? "1"));
+	const search = ref(query.search ?? "none");
+	const sortCategory = ref(query.sortCategory!);
+	const sortDirection = ref(query.sortDirection!);
+	const page = ref(+(query.page ?? 1));
 	const numberOfItems = ref(0);
 	const numberOfPages = ref(1);
 
 	// fetch the videos according to the query
-	watch([() => search.value, () => sortCategory.value, () => sortDirection.value, () => page.value], async ([newSearch, newSortCategory, newSortDirection, newPageValue]) => {
+	watch([() => search.value, () => sortCategory.value, () => sortDirection.value, () => page.value], ([search, sortCategory, sortDirection, pageValue]) => {
 		const api = useApi();
 		const utf8Encode = new TextEncoder();
-		const encodedContent = utf8Encode.encode(newSearch);
-		api.videos(encodedContent, newSortCategory, newSortDirection, "true", newPageValue).then(x => {
-			numberOfPages.value = Math.ceil(x.paginationData.numberOfItems / 50.0);
-			numberOfItems.value = x.paginationData.numberOfItems;
+		const encodedContent = utf8Encode.encode(search) as unknown as string;
+		api.videos(encodedContent, sortCategory, sortDirection, "true", pageValue).then(x => {
+			numberOfPages.value = Math.ceil(x.paginationData!.numberOfItems! / 50.0);
+			numberOfItems.value = x.paginationData!.numberOfItems!;
 			videos.value = x;
-		})
-			.catch((error: any) => console.error(error));
+		}).catch(error => console.error(error));
 	}, { immediate: true });
 
 	const pages = getPages(
@@ -79,10 +76,6 @@
 		return pages.map(page => (typeof page === "number" ? { name: String(page), link: String(page) } :
 			{ name: page[0], link: page[1] }) as Page);
 	}
-
-	function changePage(x) {
-		page.value = x;
-	}
 </script>
 
 <template>
@@ -101,7 +94,7 @@
 			<ThumbVideo
 				v-for="video in videos?.videos"
 				:key="video.videoID"
-				:link="'/videos/' + video.videoID ?? ''"
+				:link="'/videos/kv' + video.videoID ?? ''"
 				:uploader="video.authorName ?? ''"
 				:image="video.thumbnailLoc"
 				:date="new Date()"
@@ -109,14 +102,11 @@
 				:duration="new Duration(2, 33)"
 			>{{ video.title }}</ThumbVideo>
 		</div>
-		<!-- TODO: the key stuff is a hack -->
-		<PaginationSimple
-			:key="numberOfPages"
+		<Pagination
+			v-model="page"
 			:pages="numberOfPages"
 			:displayPageCount="12"
 			enableArrowKeyMove
-			:current="page"
-			:onPageChange="changePage"
 		/>
 		
 		<Subheader icon="home" :badge="233">网站地图</Subheader>

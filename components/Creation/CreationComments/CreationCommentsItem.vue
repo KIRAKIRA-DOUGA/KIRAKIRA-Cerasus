@@ -8,8 +8,6 @@
 		index?: number; // 我不赞成在序号前导 0，因为你怎敢假定评论数在绝大多数情况下小于或等于两位数？
 		/** 评论发布日期。 */
 		date?: Date;
-
-		message: string;
 	}>(), {
 		avatar: undefined,
 		username: "匿名",
@@ -55,12 +53,10 @@
 				<span class="username">{{ username }}</span>
 			</div>
 			<div class="comments">
-				<!-- TODO: v-html -->
-				<div
-					type="text"
-					readonly
-					v-html="message"
-				></div>
+				<slot>
+					ふたりの時間、選びとる未来。<br />
+					艾拉是整个 KIRAKIRA 开发组最笨的笨蛋です。
+				</slot>
 			</div>
 			<div class="footer">
 				<div class="left">

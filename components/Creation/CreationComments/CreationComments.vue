@@ -21,16 +21,18 @@
 			<CreationCommentsItem
 				v-for="comment in comments"
 				:key="comment.id"
-				v-model:like="like"
+				v-model:like="comment.upvoteCount"
 				v-model:dislike="dislike"
-				v-model:likeClicked="likeClicked"
+				v-model:likeClicked="comment.userHasUpvoted"
 				v-model:dislikeClicked="dislikeClicked"
 				v-model:pinned="pinned"
-				:index="1"
-				:message="comment.content"
+				:index="comment.id"
+				:username="comment.fullname"
+				:avatar="comment.profilePictureUrl"
+				:date="new Date(comment.created!)"
 			>
-				ふたりの時間、選びとる未来。<br />
-				艾拉是整个 KIRAKIRA 开发组最笨的笨蛋です。
+				<!-- eslint-disable-next-line vue/no-v-html -->
+				<div v-html="comment.content"></div>
 			</CreationCommentsItem>
 		</div>
 	</Comp>

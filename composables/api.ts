@@ -2,10 +2,10 @@ import * as api from "kirakira-backend";
 
 /**
  * convenience singleton for the OpenAPI SDK
- * TODO make it an actual singleton lol
- * @returns: DefaultAPI
+ * @todo make it an actual singleton lol
+ * @returns DefaultAPI
  */
-export function useApi(): DefaultApi {
+export function useApi() {
 	const configParams = {
 		baseServer: api.servers[0],
 	};

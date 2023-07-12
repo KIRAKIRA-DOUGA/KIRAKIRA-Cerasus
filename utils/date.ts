@@ -5,6 +5,7 @@
  * @returns 格式化后的字符串。
  */
 export function formatDate(date: Date, format: string) {
+	if (!date) return "";
 	const object = {
 		"M+": date.getUTCMonth() + 1, // month
 		"d+": date.getUTCDate(), // day

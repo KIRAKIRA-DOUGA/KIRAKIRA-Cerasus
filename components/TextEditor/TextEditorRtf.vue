@@ -3,7 +3,6 @@
 	import StarterKit from "@tiptap/starter-kit";
 	import { Underline } from "@tiptap/extension-underline";
 	import VueComponent from "helpers/editor-extension";
-	import { DefaultApi } from "kirakira-backend";
 
 	const props = defineProps<{
 		videoId: number;
@@ -79,19 +78,18 @@
 	}
 
 	/**
-	* sends comment to the backend
-	*/
+	 * sends comment to the backend.
+	 */
 	function sendComment() {
 		const api = useApi();
 		const content = editor.value?.getHTML() ?? "";
 		const utf8Encode = new TextEncoder();
-		const encodedContent = utf8Encode.encode(content);
+		const encodedContent = utf8Encode.encode(content) as unknown as string;
 
-		api.comment(0, encodedContent, props.videoId) // TODO: video ID
-			.then(x => {
-				// TODO
-			})
-			.catch((error: any) => console.error(error));
+		// TODO: video ID
+		api.comment(0, encodedContent, props.videoId).then(x => {
+			// TODO
+		}).catch(error => console.error(error));
 	}
 
 	/**
@@ -128,14 +126,18 @@
 
 	<Comp ref="rtfEditor" @keyup.stop.ctrl.m="showRecentKaomojis">
 		<div class="toolbar">
-			<ToolItem :tooltip="t.bold" icon="bold" active="bold" @click="toggleBold" />
-			<ToolItem :tooltip="t.italic" icon="italic" active="italic" @click="toggleItalic" />
-			<ToolItem :tooltip="t.underline" icon="underline" active="underline" @click="toggleUnderline" />
-			<ToolItem :tooltip="t.strikethrough" icon="strikethrough" active="strike" @click="toggleStrike" />
-			<ToolItem :tooltip="t.at_person" icon="at" @click="showAtList" />
-			<ToolItem :tooltip="t.kaomoji" icon="kaomoji" :active="!!flyoutKaomoji" @click="e => flyoutKaomoji = [e, 'y']" />
-			<ToolItem :tooltip="t.image" icon="photo" @click="addVueComponents" />
-			<ToolItem :tooltip="t.send" icon="photo" @click="sendComment" />
+			<div class="left">
+				<ToolItem :tooltip="t.bold" icon="bold" active="bold" @click="toggleBold" />
+				<ToolItem :tooltip="t.italic" icon="italic" active="italic" @click="toggleItalic" />
+				<ToolItem :tooltip="t.underline" icon="underline" active="underline" @click="toggleUnderline" />
+				<ToolItem :tooltip="t.strikethrough" icon="strikethrough" active="strike" @click="toggleStrike" />
+				<ToolItem :tooltip="t.at_person" icon="at" @click="showAtList" />
+				<ToolItem :tooltip="t.kaomoji" icon="kaomoji" :active="!!flyoutKaomoji" @click="e => flyoutKaomoji = [e, 'y']" />
+				<ToolItem :tooltip="t.image" icon="photo" @click="addVueComponents" />
+			</div>
+			<div class="right">
+				<ToolItem :tooltip="t.send" icon="send" @click="sendComment" />
+			</div>
 		</div>
 		<ClientOnly>
 			<EditorContent :editor="editor" />
@@ -156,36 +158,41 @@
 		.toolbar {
 			@include card-in-card-shadow;
 			display: flex;
-			gap: 3px;
+			justify-content: space-between;
+			
+			> * {
+				display: flex;
+				gap: 3px;
 
-			> button {
-				@include round-small;
-				@include flex-center;
-				$size: 28px;
-				min-width: $size;
-				height: $size;
-				padding: 0 6px;
-				color: c(icon-color);
+				> button {
+					@include round-small;
+					@include flex-center;
+					$size: 28px;
+					min-width: $size;
+					height: $size;
+					padding: 0 6px;
+					color: c(icon-color);
 
-				.icon {
-					font-size: 20px;
-				}
+					.icon {
+						font-size: 20px;
+					}
 
-				&:hover {
-					background-color: c(hover-overlay);
-				}
+					&:hover {
+						background-color: c(hover-overlay);
+					}
 
-				&.active {
-					color: white;
-					background-color: c(accent);
+					&.active {
+						color: white;
+						background-color: c(accent);
+
+						&:focus {
+							@include button-shadow-focus;
+						}
+					}
 
 					&:focus {
-						@include button-shadow-focus;
+						@include button-shadow-unchecked-focus;
 					}
-				}
-
-				&:focus {
-					@include button-shadow-unchecked-focus;
 				}
 			}
 		}
