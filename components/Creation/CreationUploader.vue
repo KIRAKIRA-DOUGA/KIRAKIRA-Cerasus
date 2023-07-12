@@ -8,12 +8,14 @@
 		fans: number;
 		/** 是否已关注？ */
 		isFollowed?: boolean;
+
+		id: number;
 	}>();
 </script>
 
 <template>
 	<Comp>
-		<UserAvatar :avatar="avatar" link="/user" />
+		<UserAvatar :avatar="avatar" :link="'/user/' + id" />
 		<div class="text">
 			<div class="username">{{ username }}</div>
 			<div class="fans">{{ fans }} {{ t.fans }}</div>

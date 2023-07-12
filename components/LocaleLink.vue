@@ -12,6 +12,8 @@
 			activable: { type: Boolean, default: false },
 			/** 是否在新窗口打开链接？ */
 			blank: { type: Boolean, default: false },
+
+			query: { type: String, default: "" },
 		},
 		setup(props) {
 			const localePath = useLocalePath();
@@ -29,7 +31,7 @@
 					attrs.target = "_blank";
 				return attrs;
 			});
-			const href = computed(() => localePath(props.to));
+			const href = computed(() => localePath(props.to) + props.query);
 
 			return {
 				href, attrs,

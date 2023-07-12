@@ -1,6 +1,5 @@
 <script setup lang="ts">
 	import avatar from "assets/images/aira.webp";
-
 	const props = defineProps<{
 		/** 已打开，单向绑定使用。 */
 		open?: boolean;
@@ -24,6 +23,14 @@
 			if (value) closeLater();
 		},
 	});
+
+	/** logs the user in */
+	async function loginUser() {
+		const oapiClient = useApi();
+		await oapiClient.login(email.value, password.value);
+		isLogining.value = true;
+	}
+
 	const open = computed({
 		get: () => !!(model.value ?? props.open),
 		set: value => {
@@ -86,7 +93,7 @@
 								icon="lock"
 							/>
 							<div class="button login-button-placeholder">
-								<Button class="button login-button" @click="isLogining = true">Link Start!</Button>
+								<Button class="button login-button" @click="loginUser()">Link Start!</Button>
 							</div>
 						</div>
 						<div class="action margin-left-inset margin-right-inset">

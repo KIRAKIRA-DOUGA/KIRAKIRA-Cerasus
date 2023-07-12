@@ -3,6 +3,11 @@
 	import StarterKit from "@tiptap/starter-kit";
 	import { Underline } from "@tiptap/extension-underline";
 	import VueComponent from "helpers/editor-extension";
+	import { DefaultApi } from "kirakira-backend";
+
+	const props = defineProps<{
+		videoId: number;
+	}>();
 
 	const editor = useEditor({
 		extensions: [
@@ -74,6 +79,22 @@
 	}
 
 	/**
+	* sends comment to the backend
+	*/
+	function sendComment() {
+		const api = useApi();
+		const content = editor.value?.getHTML() ?? "";
+		const utf8Encode = new TextEncoder();
+		const encodedContent = utf8Encode.encode(content);
+
+		api.comment(0, encodedContent, props.videoId) // TODO: video ID
+			.then(x => {
+				// TODO
+			})
+			.catch((error: any) => console.error(error));
+	}
+
+	/**
 	 * 是否是激活状态？
 	 * @param active - 要验证的选项，如为字符串则会在编辑器中寻找对应格式，如为布尔型则直接返回之。
 	 * @returns 激活状态。
@@ -114,6 +135,7 @@
 			<ToolItem :tooltip="t.at_person" icon="at" @click="showAtList" />
 			<ToolItem :tooltip="t.kaomoji" icon="kaomoji" :active="!!flyoutKaomoji" @click="e => flyoutKaomoji = [e, 'y']" />
 			<ToolItem :tooltip="t.image" icon="photo" @click="addVueComponents" />
+			<ToolItem :tooltip="t.send" icon="photo" @click="sendComment" />
 		</div>
 		<ClientOnly>
 			<EditorContent :editor="editor" />

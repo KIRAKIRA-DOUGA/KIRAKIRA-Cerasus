@@ -126,3 +126,8 @@ export function currentUserTab() {
 	const routeSlug = getLocaleRouteSlug();
 	return routeSlug[0] === "user" ? routeSlug[2] ?? "" : "";
 }
+
+export function videos(route?: string) {
+	route ||= getRoutePath();
+	return route.match(/(?<=videos\/)[0-9-]+/)?.[0] ?? "";
+}

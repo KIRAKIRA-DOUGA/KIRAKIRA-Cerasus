@@ -6,6 +6,8 @@
 		disabled?: boolean;
 		/** 链接。 */
 		link?: string;
+
+		query?: string;
 	}>();
 
 	const model = defineModel<boolean>();
@@ -18,6 +20,7 @@
 		class="tag lite"
 		:class="{ checked: isChecked }"
 		:to="link || '#'"
+		:query="query"
 		draggable="false"
 		tabindex="0"
 		role="checkbox"

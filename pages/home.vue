@@ -2,10 +2,37 @@
 	import testVideo from "assets/images/cav5-cover.png";
 	import testVideo2 from "assets/images/av820864307.jpg";
 	import testAudio from "assets/images/av893640047.jpg";
+	import { DefaultApi, Videos200Response } from "api";
+	import { Router, routerKey } from "../.nuxt/vue-router";
 
 	const selectedTab = ref("home");
 
 	useHead({ title: "首页" });
+
+	const videos = ref<Videos200Response>(undefined);
+
+	const router: Router = useRouter();
+	const queryVals = router.currentRoute.value.query;
+
+	const search = ref(queryVals.search?.toString() ?? "none");
+	const sortCategory = ref(queryVals.sortCategory?.toString());
+	const sortDirection = ref(queryVals.sortDirection?.toString());
+	const page = ref(parseInt(queryVals.page?.toString() ?? "1"));
+	const numberOfItems = ref(0);
+	const numberOfPages = ref(1);
+
+	// fetch the videos according to the query
+	watch([() => search.value, () => sortCategory.value, () => sortDirection.value, () => page.value], async ([newSearch, newSortCategory, newSortDirection, newPageValue]) => {
+		const api = useApi();
+		const utf8Encode = new TextEncoder();
+		const encodedContent = utf8Encode.encode(newSearch);
+		api.videos(encodedContent, newSortCategory, newSortDirection, "true", newPageValue).then(x => {
+			numberOfPages.value = Math.ceil(x.paginationData.numberOfItems / 50.0);
+			numberOfItems.value = x.paginationData.numberOfItems;
+			videos.value = x;
+		})
+			.catch((error: any) => console.error(error));
+	}, { immediate: true });
 
 	const pages = getPages(
 		["组件测试页", "/components"],
@@ -52,6 +79,10 @@
 		return pages.map(page => (typeof page === "number" ? { name: String(page), link: String(page) } :
 			{ name: page[0], link: page[1] }) as Page);
 	}
+
+	function changePage(x) {
+		page.value = x;
+	}
 </script>
 
 <template>
@@ -65,34 +96,29 @@
 			<TabItem id="game" direction="vertical-reverse" :badge="233">{{ t.game }}</TabItem>
 			<TabItem id="synth" direction="vertical-reverse" :badge="233">{{ t.synthetical }}</TabItem>
 		</TabBar>
-		<Subheader icon="category" :badge="233">分区</Subheader>
+		<Subheader icon="category" :badge="numberOfItems">分区</Subheader>
 		<div class="videos-grid">
 			<ThumbVideo
-				link="video"
-				uploader="艾了个拉"
-				:image="testVideo"
+				v-for="video in videos?.videos"
+				:key="video.videoID"
+				:link="'/videos/' + video.videoID ?? ''"
+				:uploader="video.authorName ?? ''"
+				:image="video.thumbnailLoc"
 				:date="new Date()"
-				:watchedCount="233_0000"
+				:watchedCount="video.views"
 				:duration="new Duration(2, 33)"
-			>测试视频</ThumbVideo>
-			<ThumbVideo
-				blank
-				link="video"
-				uploader="艾了个拉"
-				:image="testVideo2"
-				:date="new Date()"
-				:watchedCount="233_0000"
-				:duration="new Duration(2, 33)"
-			>在新窗口打开视频</ThumbVideo>
-			<ThumbVideo
-				link="audio"
-				uploader="艾了个拉"
-				:image="testAudio"
-				:date="new Date()"
-				:watchedCount="233_0000"
-				:duration="new Duration(2, 33)"
-			>测试音频</ThumbVideo>
+			>{{ video.title }}</ThumbVideo>
 		</div>
+		<!-- TODO: the key stuff is a hack -->
+		<PaginationSimple
+			:key="numberOfPages"
+			:pages="numberOfPages"
+			:displayPageCount="12"
+			enableArrowKeyMove
+			:current="page"
+			:onPageChange="changePage"
+		/>
+		
 		<Subheader icon="home" :badge="233">网站地图</Subheader>
 		<div class="pages">
 			<LocaleLink v-for="page in pages" :key="page.name" class="link lite" :to="page.link">{{ page.name }}</LocaleLink>

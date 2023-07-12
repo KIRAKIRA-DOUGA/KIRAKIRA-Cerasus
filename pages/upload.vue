@@ -3,10 +3,14 @@
 	const file = ref<HTMLInputElement>();
 	const dragover = ref(false);
 	const successfulUploaded = ref(false);
-	const uploaded = async (files: File[]) => {
+	const showEditor = ref(false);
+	const fileArr: File[] = [];
+	const uploaded = (files: File[]) => {
 		successfulUploaded.value = true;
-		await delay(1500);
-		navigate("/upload/edit");
+		// await delay(1500);
+		// navigate("/upload/edit");
+		fileArr.push(files[0]);
+		showEditor.value = true;
 	};
 	const invalidUploaded = () => {
 		successfulUploaded.value = false;
@@ -89,6 +93,7 @@
 				<div class="outline successful"></div>
 			</div>
 		</div>
+		<UploadEditor v-if="showEditor" :files="fileArr" />
 	</div>
 </template>
 
@@ -151,23 +156,23 @@
 					mask-image: conic-gradient(black var(--rotation), transparent var(--rotation));
 				}
 			}
-			
+
 			.icon.upload-icon {
 				position: absolute;
 				color: c(accent);
 				font-size: 108px;
 				scale: 0;
 			}
-			
+
 			&.successful {
 				.outline.successful {
 					animation: clock $ease-in-out-smooth 1.5s forwards;
 				}
-				
+
 				.content {
 					animation: scale-out $ease-in-expo 500ms forwards;
 				}
-				
+
 				.icon.upload-icon {
 					animation: uploading $ease-out-smooth 1s 500ms forwards;
 				}
@@ -230,27 +235,27 @@
 			--rotation: 1turn;
 		}
 	}
-	
+
 	@keyframes scale-out {
 		from {
 			scale: 1;
 		}
-		
+
 		to {
 			scale: 0;
 		}
 	}
-	
+
 	@keyframes uploading {
 		0% {
 			scale: 0;
 		}
-		
+
 		50% {
 			scale: 1;
 			translate: 0;
 		}
-		
+
 		100% {
 			scale: 1;
 			translate: 0 calc((-100% - $box-height) / 2);
