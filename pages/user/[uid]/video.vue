@@ -4,29 +4,24 @@
 	const displayPageCount = ref(6);
 	const sort = ref<SortModel>(["date", "descending"]);
 
-	const router = useRouter();
-	const id = router.currentRoute.value.path.split("/")[3];
+	const route = useRoute();
+	const id = currentUserUid();
+	const videos = ref<Videos200Response>();
+	const { query } = route;
 
-	const videos = ref<User>();
-
-	const queryVals = router.currentRoute.value.query;
-
-	const search = ref(queryVals.search?.toString() ?? "none");
-	const sortCategory = ref(queryVals.sortCategory?.toString());
-	const sortDirection = ref(queryVals.sortDirection?.toString());
-	const page = ref(parseInt(queryVals.page?.toString() ?? "1"));
+	const search = ref(query.search ?? "none");
+	const sortCategory = ref(query.sortCategory!);
+	const sortDirection = ref(query.sortDirection!);
+	const page = ref(+(query.page ?? 1));
 	const pages = ref(1);
 
 	// fetch the videos according to the query
-	watch([() => search.value, () => sortCategory.value, () => sortDirection.value, () => page.value], async ([newSearch, newSortCategory, newSortDirection, newPageValue]) => {
+	watch([() => search.value, () => sortCategory.value, () => sortDirection.value, () => page.value], () => {
 		const api = useApi();
-		const utf8Encode = new TextEncoder();
-		const encodedContent = utf8Encode.encode(newSearch);
-		api.users(id).then(x => {
-			pages.value = Math.ceil(x.paginationData.numberOfItems / 50.0);
-			videos.value = x;
-		})
-			.catch((error: any) => console.error(error));
+		api.users(id).then(video => {
+			pages.value = Math.ceil(video.paginationData!.numberOfItems! / 50.0);
+			videos.value = video;
+		}).catch(error => console.error(error));
 	}, { immediate: true });
 </script>
 

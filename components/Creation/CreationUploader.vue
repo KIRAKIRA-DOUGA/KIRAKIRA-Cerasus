@@ -1,21 +1,21 @@
 <script setup lang="ts">
 	const props = defineProps<{
 		/** 头像网址。 */
-		avatar: string;
+		avatar?: string;
 		/** 用户名。 */
 		username: string;
 		/** 粉丝数。 */
 		fans: number;
 		/** 是否已关注？ */
 		isFollowed?: boolean;
-
-		id: number;
+		/** 用户 UID。 */
+		uid: number;
 	}>();
 </script>
 
 <template>
 	<Comp>
-		<UserAvatar :avatar="avatar" :link="'/user/' + id" />
+		<UserAvatar :avatar="avatar" :link="'/user/' + uid" />
 		<div class="text">
 			<div class="username">{{ username }}</div>
 			<div class="fans">{{ fans }} {{ t.fans }}</div>

@@ -1,41 +1,34 @@
 <script setup lang="ts">
 	import videoPath from "assets/videos/shibamata.mp4";
 	import avatar from "assets/images/aira.webp";
-	import { DefaultApi, VideoDetail200Response } from "api";
-	import { Comments200ResponseInner } from "kirakira-backend";
 	// const videoPath = "https://video_api.kms233.com/bili/av9912788";
 	// 暂时不要用在线视频链接，虽然可以用，但是每次查看视频详细信息我都要等好久。
 
-	// this is definitely the wrong way to do this. there's no doubt, lmao
-	// what is the right way? TODO
-	const router = useRouter();
-	const id = +router.currentRoute.value.path.split("/")[2];
+	const route = useRoute();
+	const kvid = +route.params.kvid;
 	const videoDetails = ref<VideoDetail200Response>();
-	const videoLoc = ref(undefined);
-	const comments = ref<Comments200ResponseInner>([]);
+	const videoLoc = ref<string>();
+	const comments = ref<Comments200ResponseInner[]>([]);
 
 	// Fetch video details
-	watch(() => id, () => {
+	watch(() => kvid, () => {
 		const api = useApi();
-		api.videoDetail(id)
-			.then(x => {
-				videoDetails.value = x;
-				videoLoc.value = x.mPDLoc.split(".mpd")[0];
-			})
-			.catch((error: any) => console.error(error));
+		api.videoDetail(kvid).then(video => {
+			videoDetails.value = video;
+			videoLoc.value = video.mPDLoc!.split(".mpd")[0];
+		}).catch(error => console.error(error));
 	}, { immediate: true });
 
 	// Fetch comments
-	watch(() => id, () => {
+	watch(() => kvid, () => {
 		const api = useApi();
-		api.comments(id)
-			.then(x => {
-				for (const comment of x)
-					comments.value.push(comment);
-			})
-			.catch((error: any) => console.error(error));
+		api.comments(kvid).then(x => {
+			for (const comment of x)
+				comments.value.push(comment);
+		}).catch(error => console.error(error));
 	}, { immediate: true });
-	useHead({ title: "柴又" });
+
+	useHead({ title: videoDetails.value?.title });
 </script>
 
 <template>
@@ -52,20 +45,25 @@
 				/>
 
 				<CreationComments
-					:videoId="id"
+					:videoId="kvid"
 					:count="comments.length"
 					:comments="comments"
 				/>
-				<!-- TODO: using v-html, likely unsafe -->
-				<!-- TODO: seems to be an issue with default comment newlining (no tags)... maybe a result of using getHTML? -->
 
+				<!--
+					TODO:
+					- using v-html, likely unsafe
+					- seems to be an issue with default comment newlining (no tags)... maybe a result of using getHTML?
+
+					- We shouldn't use any pure html, just marking these tag as markdown symbol or other things.
+				-->
 			</div>
 			<div class="right">
 				<CreationUploader
-					:id="videoDetails?.authorID ?? 0"
-					:avatar="avatar"
+					:uid="videoDetails?.authorID ?? 0"
+					:avatar="videoDetails?.profilePicture"
 					:username="videoDetails?.username ?? ''"
-					:fans="233"
+					:fans="videoDetails?.userSubscribers ?? 0"
 					isFollowed
 				/>
 			</div>

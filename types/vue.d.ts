@@ -37,13 +37,14 @@ declare module "vue" {
 	}
 }
 
-declare module "#app" {
+declare module "#app" { // Doesn't work.
 	interface PageMeta {
 		slug?: string[];
 		next?: string;
 		setting?: string;
 		error?: string;
 		uid?: number;
+		kvid?: number;
 	}
 }
 

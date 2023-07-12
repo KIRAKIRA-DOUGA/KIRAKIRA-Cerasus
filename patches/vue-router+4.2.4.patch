@@ -1,0 +1,22 @@
+diff --git a/node_modules/vue-router/dist/vue-router.d.ts b/node_modules/vue-router/dist/vue-router.d.ts
+index f7af273..cce3e25 100644
+--- a/node_modules/vue-router/dist/vue-router.d.ts
++++ b/node_modules/vue-router/dist/vue-router.d.ts
+@@ -173,7 +173,7 @@ export declare interface LocationAsRelativeRaw {
+  *
+  * @public
+  */
+-export declare type LocationQuery = Record<string, LocationQueryValue | LocationQueryValue[]>;
++export declare type LocationQuery = Record<string, LocationQueryValue>;
+ 
+ /**
+  * Loose {@link LocationQuery} object that can be passed to functions like
+@@ -623,7 +623,7 @@ export declare type RouteLocationRaw = string | RouteLocationPathRaw | RouteLoca
+ export declare interface RouteMeta extends Record<string | number | symbol, unknown> {
+ }
+ 
+-export declare type RouteParams = Record<string, RouteParamValue | RouteParamValue[]>;
++export declare type RouteParams = { slug: RouteParamValue[] } & Record<string, RouteParamValue>;
+ 
+ export declare type RouteParamsRaw = Record<string, RouteParamValueRaw | Exclude<RouteParamValueRaw, null | undefined>[]>;
+ 
