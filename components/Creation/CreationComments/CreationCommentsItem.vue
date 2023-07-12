@@ -8,11 +8,14 @@
 		index?: number; // 我不赞成在序号前导 0，因为你怎敢假定评论数在绝大多数情况下小于或等于两位数？
 		/** 评论发布日期。 */
 		date?: Date;
+		/** 用户 UID。 */
+		uid?: number;
 	}>(), {
 		avatar: undefined,
 		username: "匿名",
 		index: undefined,
 		date: () => new Date(),
+		uid: undefined,
 	});
 
 	/** 为该评论加分的值。 */
@@ -46,7 +49,7 @@
 
 <template>
 	<Comp>
-		<UserAvatar :avatar="avatar" />
+		<UserAvatar :avatar="avatar" :link="uid !== undefined ? `/user/${uid}` : undefined" />
 		<div class="content">
 			<div class="header">
 				<Icon v-if="pinned" name="pin" class="pin" />
@@ -122,7 +125,11 @@
 
 	.comments {
 		text-align: justify;
-		user-select: text;
+		
+		&,
+		:deep(*) {
+			user-select: text;
+		}
 	}
 
 	.footer {

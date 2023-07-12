@@ -49,7 +49,7 @@
 				filter: brightness(0.85);
 			}
 
-			&:not(:any-hover):has(~ a:not(:any-hover)) {
+			&:not(:any-hover):is(:not(:has(~ a)), :has(~ a:not(:any-hover))) {
 				transition-duration: 1s;
 			}
 		}

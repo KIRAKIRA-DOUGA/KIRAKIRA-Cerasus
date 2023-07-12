@@ -15,7 +15,7 @@
 
 <template>
 	<Comp>
-		<UserAvatar :avatar="avatar" :link="'/user/' + uid" />
+		<UserAvatar :avatar="avatar" :link="`/user/${uid}`" />
 		<div class="text">
 			<div class="username">{{ username }}</div>
 			<div class="fans">{{ fans }} {{ t.fans }}</div>

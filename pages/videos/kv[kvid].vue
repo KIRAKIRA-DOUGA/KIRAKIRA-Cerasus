@@ -7,7 +7,7 @@
 	const route = useRoute();
 	const kvid = +route.params.kvid;
 	const videoDetails = ref<VideoDetail200Response>();
-	const videoLoc = ref<string>();
+	const videoSource = ref<string>();
 	const comments = ref<Comments200ResponseInner[]>([]);
 
 	// Fetch video details
@@ -15,7 +15,7 @@
 		const api = useApi();
 		api.videoDetail(kvid).then(video => {
 			videoDetails.value = video;
-			videoLoc.value = video.mPDLoc!.split(".mpd")[0];
+			videoSource.value = video.mPDLoc!.split(".mpd")[0];
 		}).catch(error => console.error(error));
 	}, { immediate: true });
 
@@ -33,11 +33,11 @@
 
 <template>
 	<div class="container">
-		<PlayerVideo v-if="videoLoc !== undefined" :src="videoLoc" />
+		<PlayerVideo v-if="videoSource !== undefined" :src="videoSource" />
 		<div class="under-player">
 			<div class="left">
 				<CreationDetail
-					:date="new Date()"
+					:date="new Date(videoDetails?.uploadDate!)"
 					category="音MAD"
 					:title="videoDetails?.title ?? ''"
 					copyright="repost"
