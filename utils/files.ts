@@ -1,5 +1,3 @@
-import path from "helpers/path-browserify";
-
 /**
  * 将 URL 地址转换为 blob 对象。
  * @deprecated XMLHttpRequest 这种上古技术还有用的必要吗？
@@ -19,6 +17,7 @@ export function urlToBlob_legacy(url: string, callback: (blob: Blob) => void) {
 
 /**
  * 获取不带扩展名的文件名。
+ * @deprecated 已弃用，请使用改写的 path-browserify 库的同名函数。
  * @param filePath - 文件名或文件路径。
  * @returns 纯文件名。
  */

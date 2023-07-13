@@ -1,6 +1,5 @@
 <script setup lang="ts">
 	import mediainfo from "mediainfo.js";
-	import { basename } from "helpers/path-browserify";
 
 	const props = defineProps<{
 		src: string;
@@ -36,7 +35,7 @@
 	async function getInfo(videoPath: string) {
 		const response = await fetch(videoPath);
 		const blob = await response.blob();
-		const fileName = basename(videoPath);
+		const fileName = path.basename(videoPath);
 		const file = new File([blob], fileName);
 		const mediaInfo = await mediainfo();
 		const result = await mediaInfo.analyzeData(() => file.size,
