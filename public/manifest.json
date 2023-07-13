@@ -10,562 +10,562 @@
 	"display": "standalone",
 	"icons": [
 		{
-			"src": "/static/touch/windows/SmallTile.scale-100.png",
+			"src": "/static/images/touch/windows/SmallTile.scale-100.png",
 			"sizes": "71x71",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/SmallTile.scale-125.png",
+			"src": "/static/images/touch/windows/SmallTile.scale-125.png",
 			"sizes": "89x89",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/SmallTile.scale-150.png",
+			"src": "/static/images/touch/windows/SmallTile.scale-150.png",
 			"sizes": "107x107",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/SmallTile.scale-200.png",
+			"src": "/static/images/touch/windows/SmallTile.scale-200.png",
 			"sizes": "142x142",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/SmallTile.scale-400.png",
+			"src": "/static/images/touch/windows/SmallTile.scale-400.png",
 			"sizes": "284x284",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square150x150Logo.scale-100.png",
+			"src": "/static/images/touch/windows/Square150x150Logo.scale-100.png",
 			"sizes": "150x150",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square150x150Logo.scale-125.png",
+			"src": "/static/images/touch/windows/Square150x150Logo.scale-125.png",
 			"sizes": "188x188",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square150x150Logo.scale-150.png",
+			"src": "/static/images/touch/windows/Square150x150Logo.scale-150.png",
 			"sizes": "225x225",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square150x150Logo.scale-200.png",
+			"src": "/static/images/touch/windows/Square150x150Logo.scale-200.png",
 			"sizes": "300x300",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square150x150Logo.scale-400.png",
+			"src": "/static/images/touch/windows/Square150x150Logo.scale-400.png",
 			"sizes": "600x600",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Wide310x150Logo.scale-100.png",
+			"src": "/static/images/touch/windows/Wide310x150Logo.scale-100.png",
 			"sizes": "310x150",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Wide310x150Logo.scale-125.png",
+			"src": "/static/images/touch/windows/Wide310x150Logo.scale-125.png",
 			"sizes": "388x188",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Wide310x150Logo.scale-150.png",
+			"src": "/static/images/touch/windows/Wide310x150Logo.scale-150.png",
 			"sizes": "465x225",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Wide310x150Logo.scale-200.png",
+			"src": "/static/images/touch/windows/Wide310x150Logo.scale-200.png",
 			"sizes": "620x300",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Wide310x150Logo.scale-400.png",
+			"src": "/static/images/touch/windows/Wide310x150Logo.scale-400.png",
 			"sizes": "1240x600",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/LargeTile.scale-100.png",
+			"src": "/static/images/touch/windows/LargeTile.scale-100.png",
 			"sizes": "310x310",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/LargeTile.scale-125.png",
+			"src": "/static/images/touch/windows/LargeTile.scale-125.png",
 			"sizes": "388x388",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/LargeTile.scale-150.png",
+			"src": "/static/images/touch/windows/LargeTile.scale-150.png",
 			"sizes": "465x465",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/LargeTile.scale-200.png",
+			"src": "/static/images/touch/windows/LargeTile.scale-200.png",
 			"sizes": "620x620",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/LargeTile.scale-400.png",
+			"src": "/static/images/touch/windows/LargeTile.scale-400.png",
 			"sizes": "1240x1240",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.scale-100.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.scale-100.png",
 			"sizes": "44x44",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.scale-125.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.scale-125.png",
 			"sizes": "55x55",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.scale-150.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.scale-150.png",
 			"sizes": "66x66",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.scale-200.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.scale-200.png",
 			"sizes": "88x88",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.scale-400.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.scale-400.png",
 			"sizes": "176x176",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/StoreLogo.scale-100.png",
+			"src": "/static/images/touch/windows/StoreLogo.scale-100.png",
 			"sizes": "50x50",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/StoreLogo.scale-125.png",
+			"src": "/static/images/touch/windows/StoreLogo.scale-125.png",
 			"sizes": "63x63",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/StoreLogo.scale-150.png",
+			"src": "/static/images/touch/windows/StoreLogo.scale-150.png",
 			"sizes": "75x75",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/StoreLogo.scale-200.png",
+			"src": "/static/images/touch/windows/StoreLogo.scale-200.png",
 			"sizes": "100x100",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/StoreLogo.scale-400.png",
+			"src": "/static/images/touch/windows/StoreLogo.scale-400.png",
 			"sizes": "200x200",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/SplashScreen.scale-100.png",
+			"src": "/static/images/touch/windows/SplashScreen.scale-100.png",
 			"sizes": "620x300",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/SplashScreen.scale-125.png",
+			"src": "/static/images/touch/windows/SplashScreen.scale-125.png",
 			"sizes": "775x375",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/SplashScreen.scale-150.png",
+			"src": "/static/images/touch/windows/SplashScreen.scale-150.png",
 			"sizes": "930x450",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/SplashScreen.scale-200.png",
+			"src": "/static/images/touch/windows/SplashScreen.scale-200.png",
 			"sizes": "1240x600",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/SplashScreen.scale-400.png",
+			"src": "/static/images/touch/windows/SplashScreen.scale-400.png",
 			"sizes": "2480x1200",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.targetsize-16.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.targetsize-16.png",
 			"sizes": "16x16",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.targetsize-20.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.targetsize-20.png",
 			"sizes": "20x20",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.targetsize-24.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.targetsize-24.png",
 			"sizes": "24x24",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.targetsize-30.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.targetsize-30.png",
 			"sizes": "30x30",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.targetsize-32.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.targetsize-32.png",
 			"sizes": "32x32",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.targetsize-36.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.targetsize-36.png",
 			"sizes": "36x36",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.targetsize-40.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.targetsize-40.png",
 			"sizes": "40x40",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.targetsize-44.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.targetsize-44.png",
 			"sizes": "44x44",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.targetsize-48.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.targetsize-48.png",
 			"sizes": "48x48",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.targetsize-60.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.targetsize-60.png",
 			"sizes": "60x60",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.targetsize-64.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.targetsize-64.png",
 			"sizes": "64x64",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.targetsize-72.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.targetsize-72.png",
 			"sizes": "72x72",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.targetsize-80.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.targetsize-80.png",
 			"sizes": "80x80",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.targetsize-96.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.targetsize-96.png",
 			"sizes": "96x96",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.targetsize-256.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.targetsize-256.png",
 			"sizes": "256x256",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-unplated_targetsize-16.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-unplated_targetsize-16.png",
 			"sizes": "16x16",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-unplated_targetsize-20.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-unplated_targetsize-20.png",
 			"sizes": "20x20",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-unplated_targetsize-24.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-unplated_targetsize-24.png",
 			"sizes": "24x24",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-unplated_targetsize-30.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-unplated_targetsize-30.png",
 			"sizes": "30x30",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-unplated_targetsize-32.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-unplated_targetsize-32.png",
 			"sizes": "32x32",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-unplated_targetsize-36.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-unplated_targetsize-36.png",
 			"sizes": "36x36",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-unplated_targetsize-40.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-unplated_targetsize-40.png",
 			"sizes": "40x40",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-unplated_targetsize-44.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-unplated_targetsize-44.png",
 			"sizes": "44x44",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-unplated_targetsize-48.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-unplated_targetsize-48.png",
 			"sizes": "48x48",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-unplated_targetsize-60.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-unplated_targetsize-60.png",
 			"sizes": "60x60",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-unplated_targetsize-64.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-unplated_targetsize-64.png",
 			"sizes": "64x64",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-unplated_targetsize-72.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-unplated_targetsize-72.png",
 			"sizes": "72x72",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-unplated_targetsize-80.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-unplated_targetsize-80.png",
 			"sizes": "80x80",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-unplated_targetsize-96.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-unplated_targetsize-96.png",
 			"sizes": "96x96",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-unplated_targetsize-256.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-unplated_targetsize-256.png",
 			"sizes": "256x256",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-16.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-16.png",
 			"sizes": "16x16",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-20.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-20.png",
 			"sizes": "20x20",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-24.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-24.png",
 			"sizes": "24x24",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-30.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-30.png",
 			"sizes": "30x30",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-32.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-32.png",
 			"sizes": "32x32",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-36.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-36.png",
 			"sizes": "36x36",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-40.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-40.png",
 			"sizes": "40x40",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-44.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-44.png",
 			"sizes": "44x44",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-48.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-48.png",
 			"sizes": "48x48",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-60.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-60.png",
 			"sizes": "60x60",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-64.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-64.png",
 			"sizes": "64x64",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-72.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-72.png",
 			"sizes": "72x72",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-80.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-80.png",
 			"sizes": "80x80",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-96.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-96.png",
 			"sizes": "96x96",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-256.png",
+			"src": "/static/images/touch/windows/Square44x44Logo.altform-lightunplated_targetsize-256.png",
 			"sizes": "256x256",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/android/android-launchericon-512-512.png",
+			"src": "/static/images/touch/android/android-launchericon-512-512.png",
 			"sizes": "512x512",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/android/android-launchericon-192-192.png",
+			"src": "/static/images/touch/android/android-launchericon-192-192.png",
 			"sizes": "192x192",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/android/android-launchericon-144-144.png",
+			"src": "/static/images/touch/android/android-launchericon-144-144.png",
 			"sizes": "144x144",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/android/android-launchericon-96-96.png",
+			"src": "/static/images/touch/android/android-launchericon-96-96.png",
 			"sizes": "96x96",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/android/android-launchericon-72-72.png",
+			"src": "/static/images/touch/android/android-launchericon-72-72.png",
 			"sizes": "72x72",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/android/android-launchericon-48-48.png",
+			"src": "/static/images/touch/android/android-launchericon-48-48.png",
 			"sizes": "48x48",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/ios/16.png",
+			"src": "/static/images/touch/ios/16.png",
 			"sizes": "16x16",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/ios/20.png",
+			"src": "/static/images/touch/ios/20.png",
 			"sizes": "20x20",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/ios/29.png",
+			"src": "/static/images/touch/ios/29.png",
 			"sizes": "29x29",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/ios/32.png",
+			"src": "/static/images/touch/ios/32.png",
 			"sizes": "32x32",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/ios/40.png",
+			"src": "/static/images/touch/ios/40.png",
 			"sizes": "40x40",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/ios/50.png",
+			"src": "/static/images/touch/ios/50.png",
 			"sizes": "50x50",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/ios/57.png",
+			"src": "/static/images/touch/ios/57.png",
 			"sizes": "57x57",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/ios/58.png",
+			"src": "/static/images/touch/ios/58.png",
 			"sizes": "58x58",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/ios/60.png",
+			"src": "/static/images/touch/ios/60.png",
 			"sizes": "60x60",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/ios/64.png",
+			"src": "/static/images/touch/ios/64.png",
 			"sizes": "64x64",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/ios/72.png",
+			"src": "/static/images/touch/ios/72.png",
 			"sizes": "72x72",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/ios/76.png",
+			"src": "/static/images/touch/ios/76.png",
 			"sizes": "76x76",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/ios/80.png",
+			"src": "/static/images/touch/ios/80.png",
 			"sizes": "80x80",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/ios/87.png",
+			"src": "/static/images/touch/ios/87.png",
 			"sizes": "87x87",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/ios/100.png",
+			"src": "/static/images/touch/ios/100.png",
 			"sizes": "100x100",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/ios/114.png",
+			"src": "/static/images/touch/ios/114.png",
 			"sizes": "114x114",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/ios/120.png",
+			"src": "/static/images/touch/ios/120.png",
 			"sizes": "120x120",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/ios/128.png",
+			"src": "/static/images/touch/ios/128.png",
 			"sizes": "128x128",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/ios/144.png",
+			"src": "/static/images/touch/ios/144.png",
 			"sizes": "144x144",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/ios/152.png",
+			"src": "/static/images/touch/ios/152.png",
 			"sizes": "152x152",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/ios/167.png",
+			"src": "/static/images/touch/ios/167.png",
 			"sizes": "167x167",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/ios/180.png",
+			"src": "/static/images/touch/ios/180.png",
 			"sizes": "180x180",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/ios/192.png",
+			"src": "/static/images/touch/ios/192.png",
 			"sizes": "192x192",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/ios/256.png",
+			"src": "/static/images/touch/ios/256.png",
 			"sizes": "256x256",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/ios/512.png",
+			"src": "/static/images/touch/ios/512.png",
 			"sizes": "512x512",
 			"type": "image/png"
 		},
 		{
-			"src": "/static/touch/ios/1024.png",
+			"src": "/static/images/touch/ios/1024.png",
 			"sizes": "1024x1024",
 			"type": "image/png"
 		}

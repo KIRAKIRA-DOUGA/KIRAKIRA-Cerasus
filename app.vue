@@ -41,20 +41,20 @@
 			{ property: "og:site_name", content: manifest.name },
 			{ property: "og:title", content: manifest.name }, // XXX: 这里得放页面的 title。
 			{ property: "og:description", content: manifest.description },
-			{ property: "og:image", content: `${homepage}static/thumbnail.png` },
+			{ property: "og:image", content: `${homepage}static/images/thumbnail.png` },
 			{ property: "og:url", content: homepage },
 			// 以下内容为推特私有内容属性。
 			{ name: "twitter:card", content: "summary" },
 			{ name: "twitter:site", content: manifest.name },
 			{ name: "twitter:title", content: manifest.name }, // XXX: 这里得放页面的 title。
 			{ name: "twitter:description", content: manifest.description },
-			{ name: "twitter:image", content: `${homepage}static/thumbnail.png` },
+			{ name: "twitter:image", content: `${homepage}static/images/thumbnail.png` },
 			{ name: "twitter:url", content: homepage },
 		],
 		link: [
 			{ rel: "icon", type: "image/vnd.microsoft.icon", href: "/favicon.ico" },
 			{ rel: "shortcut icon", type: "image/x-icon", href: "/favicon.ico" },
-			{ rel: "apple-touch-icon", href: "/public/static/touch/48.png" },
+			{ rel: "apple-touch-icon", href: "/public/static/images/touch/48.png" },
 			{ rel: "manifest", href: "/manifest.json" },
 			{ rel: "alternate", href: homepage, hreflang: "x-default" },
 			{ rel: "alternate", href: homepage, hreflang: "zh-CN" },
