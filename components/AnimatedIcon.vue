@@ -42,7 +42,7 @@
 	/**
 	 * 获取以文件名形式的图标。
 	 */
-	async function getIcon() {
+	function getIcon() {
 		if (typeof props.name !== "string") {
 			animationData.value = props.name;
 			return;
@@ -50,9 +50,9 @@
 		try {
 			const iconsImport = import.meta.glob<string>("assets/lotties/**/**.json", {
 				as: "raw",
-				eager: false,
+				eager: true,
 			});
-			const rawIcon = await iconsImport[`/assets/lotties/${props.name}.json`]();
+			const rawIcon = iconsImport[`/assets/lotties/${props.name}.json`];
 			animationData.value = JSON.parse(rawIcon);
 		} catch (e) {
 			// eslint-disable-next-line no-console
@@ -112,16 +112,15 @@
 			ani.playSpeed = Math.abs(speed);
 			ani.playDirection = Math.sign(speed);
 		}
-		if (!marker) {
+		if (!marker)
 			if (speed === 0) ani.pause();
 			else ani.play();
-		} else {
+		else {
 			const markerItem = ani.markers.find(m => m.payload.name === marker);
-			if (markerItem) {
+			if (markerItem)
 				if (Object.is(speed, -0)) ani.goToAndStop(marker, true);
 				else if (Object.is(speed, 0)) ani.goToAndStop(markerItem.time + markerItem.duration - 1, true);
 				else ani.goToAndPlay(marker, true);
-			}
 		}
 	}
 	

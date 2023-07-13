@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import avatar from "assets/images/aira.webp";
+	import avatar from "assets/images/avatars/aira.webp";
 
 	const showLogin = ref(false);
 	const isLogined = ref(false);

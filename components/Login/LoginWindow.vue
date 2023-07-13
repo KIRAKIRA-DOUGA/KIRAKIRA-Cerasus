@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import avatar from "assets/images/aira.webp";
+	import avatar from "assets/images/avatars/aira.webp";
 	const props = defineProps<{
 		/** 已打开，单向绑定使用。 */
 		open?: boolean;
@@ -440,7 +440,7 @@
 
 		&.margin-left-inset {
 			margin-left: -$margin-inset;
-			
+
 			button:first-child {
 				--appearance: secondary;
 			}
@@ -448,7 +448,7 @@
 
 		&.margin-right-inset {
 			margin-right: -$margin-inset;
-			
+
 			button:last-child {
 				--appearance: secondary;
 			}
@@ -497,7 +497,7 @@
 	.action {
 		animation: float-left 500ms calc(var(--i) * 100ms) $ease-out-max backwards;
 	}
-	
+
 	.button-block {
 		width: 100%;
 	}
