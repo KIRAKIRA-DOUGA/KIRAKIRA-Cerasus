@@ -152,6 +152,8 @@ const Japanese: LocaleIdentifiers = {
 	watches: "再生数",
 	join_time: "アカウントの登録日",
 	user_info: "ユーザー情報",
+	acknowledgement: "鸣谢",
+	friendly_links: "友情链接",
 };
 
 export default Japanese;
