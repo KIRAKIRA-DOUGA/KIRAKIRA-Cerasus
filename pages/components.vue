@@ -149,15 +149,17 @@
 				<SegmentedItem id="grid" icon="grid">网格</SegmentedItem>
 				<SegmentedItem id="tile" icon="tile">磁贴</SegmentedItem>
 			</Segmented>
-			<Button class="test-button" @click="onClickButton">{{ isClicked ? t.button_clicked : t.button }}</Button>
-			<Button disabled>{{ t.button_disabled }}</Button>
-			<Button @click="showConfetti">{{ t.confetti }}</Button>
-			<Button icon="send">{{ t.send }}</Button>
-			<Button @click="reGacha">你说得不对</Button>
-			<Button @click="showAlert = true">{{ t.show_alert }}</Button>
-			<Button @click="showModal = true">显示模态框</Button>
-			<Button @click="showFlyout">显示浮窗</Button>
-			<Button @click="e => flyoutKaomoji = [e, 'y']">显示颜文字浮窗</Button>
+			<div class="buttons">
+				<Button class="test-button" @click="onClickButton">{{ isClicked ? t.button_clicked : t.button }}</Button>
+				<Button disabled>{{ t.button_disabled }}</Button>
+				<Button @click="showConfetti">{{ t.confetti }}</Button>
+				<Button icon="send">{{ t.send }}</Button>
+				<Button @click="reGacha">你说得不对</Button>
+				<Button @click="showAlert = true">{{ t.show_alert }}</Button>
+				<Button @click="showModal = true">显示模态框</Button>
+				<Button @click="showFlyout">显示浮窗</Button>
+				<Button @click="e => flyoutKaomoji = [e, 'y']">显示颜文字浮窗</Button>
+			</div>
 			<Alert v-model="showAlert" static />
 			<Modal v-model="showModal" title="标题栏">
 				<PopoverSlot />
@@ -438,5 +440,10 @@
 		display: flex;
 		flex-direction: column;
 		gap: 10px;
+	}
+	
+	.buttons {
+		display: flex;
+		gap: 0.5rem;
 	}
 </style>

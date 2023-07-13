@@ -51,6 +51,11 @@
 			--icon-behind: false;
 		}
 	}
+	
+	button {
+		display: contents;
+		color: white;
+	}
 
 	.button-content {
 		@include flex-center;
@@ -59,9 +64,9 @@
 		@include square(inherit);
 		position: relative;
 		display: inline-flex;
+		flex-shrink: 0;
 		min-height: 36px;
 		padding: 8px 16px;
-		color: white;
 		letter-spacing: 0.05em;
 		white-space: nowrap;
 		vertical-align: middle;
@@ -110,7 +115,6 @@
 			}
 
 			.icon {
-				margin-right: 8px;
 				color: c(accent);
 			}
 
@@ -140,10 +144,12 @@
 
 	.icon {
 		$padding-inset: 2px;
+		$padding-outset: 8px;
 		$size: 18px;
 		min-width: $size;
 		min-height: $size;
-		color: white;
+		margin-right: $padding-outset;
+		color: inherit;
 		font-size: $size;
 
 		@container style(--icon-behind: false) {
@@ -152,6 +158,7 @@
 
 		@container style(--icon-behind: true) {
 			margin-right: -$padding-inset;
+			margin-left: $padding-outset;
 		}
 
 		&:has(+ .caption > :empty) {

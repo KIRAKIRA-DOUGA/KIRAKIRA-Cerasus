@@ -4,10 +4,10 @@
 </script>
 
 <template>
-	<Subheader icon="block">屏蔽</Subheader>
+	<Subheader icon="block">封禁</Subheader>
 	<span>不想交流的人，他将禁止与你互动</span>
 	<section>
-		<SettingsChipItem icon="placeholder" details="添加日期：XXXX-XX-XX" trailingIcon="delete" @trailingIconClick="remove">被屏蔽的人</SettingsChipItem>
+		<SettingsChipItem icon="placeholder" details="添加日期：XXXX-XX-XX" trailingIcon="delete" @trailingIconClick="remove">被封禁的人</SettingsChipItem>
 	</section>
 
 	<Subheader icon="palette">隐藏</Subheader>

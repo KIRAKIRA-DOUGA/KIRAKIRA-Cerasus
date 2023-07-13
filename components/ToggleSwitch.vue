@@ -150,8 +150,8 @@
 				background-color: c(accent, 40%);
 			}
 
-			:comp.disabled & {
-				background-color: c(gray-30, 40%);
+			:comp:not(.on).disabled & {
+				background-color: c(gray-40, 40%);
 			}
 
 			:comp.on.disabled & {
@@ -187,9 +187,13 @@
 				background-color: c(accent);
 			}
 
-			:comp.disabled & {
+			:comp:not(.on).disabled & {
 				@include control-ball-shadow-off-disabled;
-				background-color: c(gray-30);
+				background-color: c(white);
+				
+				html.dark & {
+					background-color: c(gray-40);
+				}
 			}
 
 			:comp.on.disabled & {
@@ -197,7 +201,7 @@
 				background-color: c(accent-disabled);
 			}
 
-			:comp:focus & {
+			:comp:not(.on):focus & {
 				@include large-shadow-unchecked-focus;
 			}
 
