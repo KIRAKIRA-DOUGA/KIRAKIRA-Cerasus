@@ -9,7 +9,7 @@ a:visited {
 	color: c(accent-focus);
 }
 
-a:not(.lite) {
+:not(.lite-links) > a:not(.lite) {
 	text-decoration: underline;
 
 	&:hover,
