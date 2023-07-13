@@ -30,7 +30,7 @@
 	align-items: start;
 	justify-content: space-between;
 	
-	&:has(> .settings-grid-item) {
+	&:has(.settings-grid-item) {
 		gap: 12px;
 	}
 }
