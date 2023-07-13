@@ -152,6 +152,9 @@ const English: LocaleIdentifiers = {
 	user_info: "User info",
 	acknowledgement: "Acknowledgement",
 	friendly_links: "Friendly links",
+	zh: "Simplified Chinese",
+	en: "English",
+	ja: "Japanese",
 };
 
 export default English;

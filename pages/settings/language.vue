@@ -12,14 +12,41 @@
 </script>
 
 <template>
-	<section list>
-		<RadioButton
+	<section grid>
+		<SettingsGridItem
 			v-for="locale in localeList"
+			:id="locale.code"
 			:key="locale.code"
 			v-model="localeModel"
-			v-ripple
-			:value="locale.code"
 			:lang="locale.code"
-		>{{ locale.name }}</RadioButton>
+			:title="t[locale.code]"
+		>
+			<div class="line">
+				{{ locale.name }}
+			</div>
+		</SettingsGridItem>
 	</section>
 </template>
+
+<style scoped lang="scss">
+	.line {
+		width: 100%;
+		margin: 20px;
+		color: c(icon-color);
+		font-weight: 500;
+		font-size: 32px;
+		line-height: 56px;
+		text-align: center;
+		border: c(icon-color) solid;
+		border-width: 1px 0;
+		
+		&:lang(en) {
+			font-family: $english-logo-fonts;
+		}
+		
+		.settings-grid-item.active & {
+			color: c(accent);
+			border-color: c(accent-30);
+		}
+	}
+</style>

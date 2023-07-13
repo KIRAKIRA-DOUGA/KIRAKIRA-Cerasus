@@ -47,6 +47,7 @@
 	const showFlyout = (e: MouseEvent, placement?: Placement) => flyout.value = [e, placement];
 	const [DefinePopoverSlot, PopoverSlot] = createReusableTemplate();
 	const comboBoxValue = ref("obtuse angle");
+	const settingsGridItemSelect = ref("");
 
 	/**
 	 * 单击按钮事件。
@@ -192,6 +193,11 @@
 			<Checkbox v-model="kiraGoods" value="nijigen">二次元</Checkbox>
 			<Checkbox disabled checkState="unchecked">鼠鼠我呀最讨厌了</Checkbox>
 			<Checkbox disabled checkState="checked">欢迎白嫖</Checkbox>
+			<hr />
+			<div class="videos-grid">
+				<SettingsGridItem id="a" v-model="settingsGridItemSelect" title="a" />
+				<SettingsGridItem id="b" v-model="settingsGridItemSelect" title="b" />
+			</div>
 			<hr />
 			<TextBox v-model="inputValue" placeholder="小小的软软的香香的" :style="{ '--size': 'small' }" />
 			<TextBox v-model="inputValue" type="email" required placeholder="请输入正确的邮箱" />

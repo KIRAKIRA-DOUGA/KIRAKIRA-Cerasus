@@ -38,8 +38,20 @@ export function arrayClearAll<T>(array: T[]): void {
  * @param items - 新的数据。
  */
 export function arrayInject<T>(array: T[], items: Iterable<T>): void {
-	arrayClearAll(array);
-	array.push(...items);
+	array.splice(0, Infinity, ...items);
+}
+
+/**
+ * 切换数组是否包含项目。如果数组包含该项目则移除，反之则添加。
+ * @param array - 数组。
+ * @param item - 项目。
+ */
+export function arrayToggle<T>(array: T[], item: T): void {
+	const index = array.indexOf(item);
+	if (index === -1)
+		array.push(item);
+	else
+		arrayRemoveAt(array, index);
 }
 
 /**

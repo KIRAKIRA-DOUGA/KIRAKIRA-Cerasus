@@ -23,10 +23,18 @@
 	}
 }
 
-.videos-grid {
+@mixin videos-grid {
 	display: grid;
 	grid-gap: 0;
-	grid-template-columns: repeat(auto-fill, minmax(226px, auto));
+	grid-template-columns: repeat(auto-fill, minmax(226px, 1fr));
 	align-items: start;
 	justify-content: space-between;
+	
+	&:has(> .settings-grid-item) {
+		gap: 12px;
+	}
+}
+
+.videos-grid {
+	@include videos-grid;
 }

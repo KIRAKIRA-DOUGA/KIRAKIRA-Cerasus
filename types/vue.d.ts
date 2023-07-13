@@ -29,10 +29,10 @@ declare module "vue" {
 	}
 
 	export interface AllowedComponentProps extends Exclude<HTMLAttributes, EventHandlers<Events>> {
-		// lang?: string;
-		// title?: Readable;
-		// tabindex?: Numberish;
-		// hidden?: Boolish;
+		lang?: string;
+		title?: Readable;
+		tabindex?: Numberish;
+		hidden?: Boolish;
 		// onClick?: (payload: MouseEvent) => void;
 	}
 }

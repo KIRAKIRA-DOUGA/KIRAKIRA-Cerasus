@@ -152,6 +152,9 @@ const SChinese = {
 	user_info: "个人信息",
 	acknowledgement: "鸣谢",
 	friendly_links: "友情链接",
+	zh: "简体中文",
+	en: "英语",
+	ja: "日语",
 } as const;
 
 export default SChinese;
