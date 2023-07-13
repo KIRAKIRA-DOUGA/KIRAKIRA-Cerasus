@@ -20,7 +20,7 @@
 
 	const team: { name: string; job: string; uid: number; avatar?: string }[] = [
 		{ name: "艾了个拉", job: "站娘", uid: NaN, avatar: avatar("aira.webp") },
-		{ name: "兰音", job: "前端", uid: NaN, avatar: avatar("nucleic_acid.jpg") },
+		{ name: "兰音", job: "前端", uid: NaN, avatar: avatar("nucleic_acid_testing.jpg") },
 		{ name: "维他柠檬茶", job: "前端", uid: NaN, avatar: avatar("VTchara.webp") },
 		{ name: "鸣", job: "前端", uid: NaN, avatar: avatar("Mingeax.jpg") },
 		{ name: "冲锋的小卡卡", job: "后端", uid: NaN, avatar: avatar("ZERO_TWO.jpg") },

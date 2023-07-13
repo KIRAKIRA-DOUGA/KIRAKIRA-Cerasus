@@ -150,6 +150,8 @@ const English: LocaleIdentifiers = {
 	watches: "Watches",
 	join_time: "Join time",
 	user_info: "User info",
+	acknowledgement: "Acknowledgement",
+	friendly_links: "Friendly links",
 };
 
 export default English;

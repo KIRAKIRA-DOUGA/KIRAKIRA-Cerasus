@@ -33,6 +33,7 @@
 			{ id: "language", icon: "translate" },
 			{ id: "accessibility", icon: "accessibility" },
 			{ id: "about", icon: "info" },
+			{ id: "acknowledgement", icon: "campaign" },
 		],
 	};
 

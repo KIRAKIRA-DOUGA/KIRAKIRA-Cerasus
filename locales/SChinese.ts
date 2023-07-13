@@ -150,6 +150,8 @@ const SChinese = {
 	watches: "观看",
 	join_time: "加入时间",
 	user_info: "个人信息",
+	acknowledgement: "鸣谢",
+	friendly_links: "友情链接",
 } as const;
 
 export default SChinese;
