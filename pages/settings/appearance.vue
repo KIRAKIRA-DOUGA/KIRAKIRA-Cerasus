@@ -2,7 +2,14 @@
 	const theme = Theme.theme;
 	const palette = Theme.palette;
 	const themeList = ["light", "dark", "system"] as const;
-	const paletteList = ["pink", "sky", "blue", "orange", "purple", "green"] as const;
+	const paletteList = [
+		{ color: "pink", subtitle: "Kawaii forever" },
+		{ color: "sky", subtitle: "Joga Maya" },
+		{ color: "blue", subtitle: "Kafuu Chino" },
+		{ color: "orange", subtitle: "Hoto Kokoa" },
+		{ color: "purple", subtitle: "Tedeza Rize" },
+		{ color: "green", subtitle: "Ujimatsu Chiya" },
+	] as const;
 </script>
 
 <template>
@@ -19,14 +26,19 @@
 	</section>
 
 	<Subheader icon="palette">{{ t.palette }}</Subheader>
-	<section list>
-		<RadioButton
+	<section grid>
+		<SettingsGridItem
 			v-for="item in paletteList"
-			:key="item"
+			:id="item.color"
+			:key="item.color"
 			v-model="palette"
-			v-ripple
-			:value="item"
-		>{{ t[item] }}</RadioButton>
+			:title="t[item.color]"
+		>
+			<div class="content" :style="{ color: `var(--${item.color})` }">
+				<h3>{{ t[item.color] }}</h3>
+				<p>{{ item.subtitle }}</p>
+			</div>
+		</SettingsGridItem>
 	</section>
 
 	<Subheader icon="wallpaper">{{ t.background }}</Subheader>
@@ -48,5 +60,19 @@
 
 	.settings-chip-item {
 		--size: small;
+	}
+	
+	.content {
+		@include square(100%);
+		padding: 18px 20px;
+
+		> h3 {
+			margin-bottom: calc(4px + 0.1cqh);
+			font-size: calc(20px + 4cqw);
+		}
+		
+		> p {
+			font-size: calc(14px + 1cqw);
+		}
 	}
 </style>

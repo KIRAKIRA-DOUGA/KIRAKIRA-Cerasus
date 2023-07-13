@@ -79,6 +79,7 @@
 		width: 100%;
 		aspect-ratio: 16 / 9;
 		object-fit: cover;
+		container: card / inline-size;
 		
 		:comp.active & {
 			@include chip-shadow-checked;
