@@ -53,7 +53,7 @@
 	}
 	
 	button {
-		display: contents;
+		display: inline-grid;
 		color: white;
 	}
 
