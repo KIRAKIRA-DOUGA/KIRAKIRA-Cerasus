@@ -74,7 +74,6 @@
 					</div>
 					<div class="page-title-wrapper">
 						<Transition>
-							<!-- name="page-jump" mode="out-in" -->
 							<h2 :key="currentSetting">{{ title }}</h2>
 						</Transition>
 					</div>
@@ -90,6 +89,8 @@
 </template>
 
 <style scoped lang="scss">
+	@use "styles/elements/toolbox-card" as *;
+
 	$title-padding-top: 26px;
 	$nav-padding-x: 24px;
 	$main-padding-x: 48px;
@@ -341,28 +342,34 @@
 
 	:deep(section) {
 		@extend %chip;
+		$padding: 10px 20px;
 		overflow: hidden;
-	}
+		
+		&[list] > * {
+			$extra-padding: 16px;
+			padding: $padding;
+			overflow: visible;
 
-	:deep(section[list] > *) {
-		$extra-padding: 16px;
-		padding: 10px 20px;
-		overflow: visible;
+			&:has(.ripple-circle) {
+				overflow: hidden;
+			}
 
-		&:has(.ripple-circle) {
-			overflow: hidden;
+			&:first-child {
+				padding-top: $extra-padding;
+			}
+
+			&:last-child {
+				padding-bottom: $extra-padding;
+			}
+
+			&:any-hover {
+				background-color: c(hover-overlay);
+			}
 		}
-
-		&:first-child {
-			padding-top: $extra-padding;
-		}
-
-		&:last-child {
-			padding-bottom: $extra-padding;
-		}
-
-		&:any-hover {
-			background-color: c(hover-overlay);
+		
+		&[grid] {
+			@include videos-grid;
+			padding: $padding;
 		}
 	}
 

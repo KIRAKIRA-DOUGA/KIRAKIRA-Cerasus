@@ -154,6 +154,9 @@ const Japanese: LocaleIdentifiers = {
 	user_info: "ユーザー情報",
 	acknowledgement: "鸣谢",
 	friendly_links: "友情链接",
+	zh: "簡体字中国語",
+	en: "英語",
+	ja: "日本語",
 };
 
 export default Japanese;

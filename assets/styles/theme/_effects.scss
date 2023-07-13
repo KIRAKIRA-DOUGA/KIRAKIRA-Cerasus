@@ -184,6 +184,10 @@
 	box-shadow: 0 2px 4px c(accent-shadow, 30%);
 }
 
+@mixin chip-shadow-checked {
+	box-shadow: 0 2px 4px c(accent-shadow, 30%), 0 0 0 2px c(accent);
+}
+
 @mixin card-in-card-shadow {
 	box-shadow: 0 2px 8px c(accent-shadow, 8%);
 }
