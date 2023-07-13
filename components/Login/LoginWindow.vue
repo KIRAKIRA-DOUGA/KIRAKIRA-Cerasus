@@ -93,7 +93,7 @@
 								icon="lock"
 							/>
 							<div class="button login-button-placeholder">
-								<Button class="button login-button" @click="loginUser()">Link Start!</Button>
+								<Button class="button login-button button-block" @click="loginUser()">Link Start!</Button>
 							</div>
 						</div>
 						<div class="action margin-left-inset margin-right-inset">
@@ -171,7 +171,7 @@
 								placeholder="邮箱"
 								icon="email"
 							/>
-							<Button icon="send" class="button">发送</Button>
+							<Button icon="send" class="button button-block">发送</Button>
 						</div>
 						<div class="action margin-left-inset">
 							<Button @click="currentPage = 'login'">想起来密码了</Button>
@@ -496,6 +496,10 @@
 	.form > *,
 	.action {
 		animation: float-left 500ms calc(var(--i) * 100ms) $ease-out-max backwards;
+	}
+	
+	.button-block {
+		width: 100%;
 	}
 
 	.login-animation {

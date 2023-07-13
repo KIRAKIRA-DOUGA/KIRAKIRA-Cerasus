@@ -1,1 +1,5 @@
-api/*
+libraries/kirakira-backend/*
+dist/*
+.output/*
+node_modules/*
+.nuxt/*

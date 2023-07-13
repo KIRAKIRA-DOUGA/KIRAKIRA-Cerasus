@@ -2,7 +2,6 @@
 	import testVideo from "assets/images/cav5-cover.png";
 	import testVideo2 from "assets/images/av820864307.jpg";
 	import testAudio from "assets/images/av893640047.jpg";
-	import { DefaultApi, Videos200Response } from "api";
 
 	const selectedTab = ref("home");
 
@@ -33,6 +32,8 @@
 
 	const pages = getPages(
 		["组件测试页", "/components"],
+		["示例视频", "/video"],
+		["示例音频", "/audio"],
 		["富文本测试页", "/test-rich-text-editor"],
 		["API 测试页", "/test-api"],
 		["动态图标测试页", "/test-lottie"],

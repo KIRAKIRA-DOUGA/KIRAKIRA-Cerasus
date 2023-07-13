@@ -152,6 +152,10 @@
 		display: flex;
 		flex-direction: column;
 		gap: 8px;
+		
+		> button {
+			width: 100%;
+		}
 	}
 
 	:is(nav, main) > .content {
