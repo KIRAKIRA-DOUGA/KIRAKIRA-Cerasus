@@ -80,12 +80,26 @@
 		aspect-ratio: 16 / 9;
 		object-fit: cover;
 		container: card / inline-size;
+		cursor: pointer;
+		transition: $fallback-transitions, scale $ease-out-back 500ms !important;
+		
+		&:any-hover {
+			@include chip-shadow-hover;
+		}
+		
+		&:active {
+			@include button-scale-pressed;
+		}
 		
 		:comp.active & {
 			@include chip-shadow-checked;
 			
 			:deep(.ripple-circle) {
 				background-color: c(accent-ripple);
+			}
+			
+			&:any-hover {
+				@include chip-shadow-checked-hover;
 			}
 		}
 	}
