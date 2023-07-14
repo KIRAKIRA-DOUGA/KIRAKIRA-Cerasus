@@ -1,10 +1,15 @@
 <script setup lang="ts">
+	const getPaletteImage = (name: string) => {
+		const palettes = import.meta.glob<typeof import("*.webp")>("/assets/images/palettes/*", { eager: true });
+		return palettes[`/assets/images/palettes/${name}.webp`].default;
+	};
+
 	const theme = Theme.theme;
 	const palette = Theme.palette;
 	const themeList = ["light", "dark", "system"] as const;
 	const paletteList = [
 		{ color: "pink", subtitle: "Kawaii forever" },
-		{ color: "sky", subtitle: "Joga Maya" },
+		{ color: "sky", subtitle: "Jouga Maya" },
 		{ color: "blue", subtitle: "Kafuu Chino" },
 		{ color: "orange", subtitle: "Hoto Kokoa" },
 		{ color: "purple", subtitle: "Tedeza Rize" },
@@ -36,6 +41,10 @@
 			:class="['force-accent', item.color]"
 		>
 			<div class="content">
+				<img :src="getPaletteImage(item.color)" alt="Is the Order a Rabbit?" />
+				<div class="overlay light"></div>
+				<div class="overlay color"></div>
+				<Icon name="palette" />
 				<h3>{{ t[item.color] }}</h3>
 				<p>{{ item.subtitle }}</p>
 			</div>
@@ -67,14 +76,56 @@
 		@include square(100%);
 		padding: 18px 20px;
 		color: c(accent);
+		
+		> * {
+			position: relative;
+		}
 
-		> h3 {
-			margin-bottom: calc(4px + 0.1cqh);
-			font-size: calc(20px + 4cqw);
+		.icon,
+		h3 {
+			margin-bottom: calc(2px + 0.1cqh);
+			font-size: calc(16px + 4cqw);
 		}
 		
-		> p {
+		p {
 			font-size: calc(14px + 1cqw);
+		}
+		
+		.icon {
+			display: block;
+			margin-top: -0.125em;
+			margin-bottom: calc(4px + 0.2cqh);
+			
+			.settings-grid-item:not(.active) & {
+				margin-top: -1.25em;
+				translate: 0 -1.5em;
+			}
+		}
+		
+		img,
+		.overlay {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+		}
+		
+		img {
+			opacity: 0.6;
+		}
+		
+		.overlay {
+			@include square(100%);
+			
+			&.color {
+				background-color: c(accent);
+				mix-blend-mode: color;
+			}
+			
+			&.light {
+				background-color: c(main-bg);
+				opacity: 0.7;
+			}
 		}
 	}
 </style>
