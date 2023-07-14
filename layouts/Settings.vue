@@ -342,12 +342,11 @@
 
 	:deep(section) {
 		@extend %chip;
-		$padding: 10px 20px;
 		overflow: hidden;
 		
 		&[list] > * {
 			$extra-padding: 16px;
-			padding: $padding;
+			padding: 10px 20px;
 			overflow: visible;
 
 			&:has(.ripple-circle) {
@@ -369,7 +368,7 @@
 		
 		&[grid] {
 			@include videos-grid;
-			padding: $padding;
+			padding: 20px;
 		}
 	}
 

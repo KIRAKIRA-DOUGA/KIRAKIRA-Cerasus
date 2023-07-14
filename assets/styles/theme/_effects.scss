@@ -123,8 +123,12 @@
 	box-shadow: 0 0 0 3px c(accent-focus, 50%);
 }
 
-@mixin button-scale-pressed {
+@mixin scale-pressed {
 	scale: calc(35 / 36);
+}
+
+@mixin button-scale-pressed {
+	@include scale-pressed;
 	box-shadow: none !important;
 }
 
@@ -186,6 +190,14 @@
 
 @mixin chip-shadow-checked {
 	box-shadow: 0 2px 4px c(accent-shadow, 30%), 0 0 0 2px c(accent);
+}
+
+@mixin chip-shadow-hover {
+	box-shadow: 0 7px 9px 2px c(accent-shadow, 30%);
+}
+
+@mixin chip-shadow-checked-hover {
+	box-shadow: 0 7px 9px 2px c(accent-shadow, 30%), 0 0 0 4px c(accent);
 }
 
 @mixin card-in-card-shadow {
