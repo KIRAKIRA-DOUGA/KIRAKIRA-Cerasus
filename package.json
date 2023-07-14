@@ -84,7 +84,7 @@
 		"unist-util-visit": "^4.1.1"
 	},
 	"dependencies": {
-		"@kirakira/path-browserify": "file:libraries/path-browserify",
+		"@kirakira/path-browserify": "file:packages/path-browserify",
 		"@nuxtjs/color-mode": "^3.2.0",
 		"@nuxtjs/robots": "^3.0.0",
 		"@nuxtjs/svg-sprite": "^1.0.2",
@@ -102,8 +102,8 @@
 		"css-doodle": "^0.34.3",
 		"gsap": "^3.11.4",
 		"js-confetti": "^0.11.0",
-		"kirakira-backend": "file:libraries/kirakira-backend",
-		"kirakirabackend": "file:libraries/kirakira-backend",
+		"kirakira-backend": "file:packages/kirakira-backend",
+		"kirakirabackend": "file:packages/kirakira-backend",
 		"lottie-web": "^5.12.2",
 		"mediainfo.js": "^0.1.9",
 		"mitt": "^3.0.0",

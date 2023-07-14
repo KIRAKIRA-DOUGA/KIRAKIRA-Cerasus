@@ -1,4 +1,4 @@
-libraries/kirakira-backend/*
+packages/kirakira-backend/*
 dist/*
 .output/*
 node_modules/*
