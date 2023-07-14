@@ -37,7 +37,7 @@
 		font-size: 32px;
 		line-height: 56px;
 		text-align: center;
-		border: c(icon-color) solid;
+		border: c(gray-40) solid;
 		border-width: 1px 0;
 		
 		&:lang(en) {
