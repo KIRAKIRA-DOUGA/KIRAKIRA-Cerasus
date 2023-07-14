@@ -175,11 +175,16 @@
 </template>
 
 <style scoped lang="scss">
+	$card-gap: 24px;
+	$card-padding: $card-gap;
+	$section-gap: $card-gap;
+	$subheader-gap: 8px;
+
 	.card-container {
 		display: flex;
-		gap: 1.5rem;
+		gap: $card-gap;
 		align-items: flex-start;
-		margin-top: 1rem;
+		margin-top: 16px;
 
 		@include tablet {
 			flex-direction: column;
@@ -190,38 +195,34 @@
 	%card-content {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
+		gap: $section-gap;
 	}
 
 	.card {
 		@include round-large;
 		@include card-shadow;
+		padding: $card-padding;
 		@extend %card-content;
-		padding: 1rem;
 	}
 
 	.left {
+		gap: 16px;
 		align-items: center;
 		min-width: 250px;
+		padding: 16px;
 	}
 
 	.right {
-		@extend %card-content;
+		display: flex;
+		flex-direction: column;
 		flex-grow: 1;
+		gap: $card-gap;
 	}
 
 	section {
 		display: flex;
 		flex-direction: column;
-		gap: 0.5rem;
-	}
-
-	.subheader {
-		margin-top: 0.5rem;
-
-		&:first-child {
-			margin-top: 0
-		}
+		gap: $subheader-gap;
 	}
 
 	.cover {
@@ -246,10 +247,10 @@
 		}
 	}
 
-	.repost-options>* {
+	.repost-options > * {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
+		gap: $section-gap;
 		width: 100%;
 
 		&.v-enter-active,
@@ -258,7 +259,8 @@
 		}
 	}
 
-	.left>* {
+	.left > *,
+	.left > .left-1> * {
 		width: 100%;
 	}
 

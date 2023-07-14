@@ -6,20 +6,26 @@
 	@include card-shadow;
 	display: flex;
 	flex-direction: column;
-	gap: 12px;
+	gap: 24px;
 	padding: 16px;
 	overflow: hidden;
 	background-color: c(main-bg);
-	
+
 	@each $pos in left, right {
 		.#{$pos} &,
 		&.#{$pos} {
 			width: 250px;
 		}
 	}
-	
+
 	> main {
 		padding: 16px;
+	}
+
+	> section {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
 	}
 }
 
@@ -29,7 +35,7 @@
 	grid-template-columns: repeat(auto-fill, minmax(226px, 1fr));
 	align-items: start;
 	justify-content: space-between;
-	
+
 	&:has(.settings-grid-item) {
 		gap: 12px;
 	}
