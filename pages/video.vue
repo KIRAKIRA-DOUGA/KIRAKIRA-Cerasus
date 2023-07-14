@@ -1,6 +1,5 @@
 <script setup lang="ts">
 	import videoPath from "assets/videos/shibamata.mp4";
-	import avatar from "assets/images/avatars/aira.webp";
 	// const videoPath = "https://video_api.kms233.com/bili/av9912788";
 	// 暂时不要用在线视频链接，虽然可以用，但是每次查看视频详细信息我都要等好久。
 
@@ -20,12 +19,11 @@
 					:tags="['233', '天下笨蛋是一家', '艾拉原创出品']"
 				/>
 				<CreationComments
-					count="233"
+					:count="233"
 				/>
 			</div>
 			<div class="right">
 				<CreationUploader
-					:avatar="avatar"
 					username="艾了个拉"
 					:fans="233"
 					isFollowed

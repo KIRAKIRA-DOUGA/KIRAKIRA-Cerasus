@@ -3,12 +3,16 @@
 </docs>
 
 <script setup lang="ts">
-	const props = defineProps<{
+	const props = withDefaults(defineProps<{
 		/** 评论数目。 */
-		count: number | string;
-		comments: Comments200ResponseInner[];
-		videoId: number;
-	}>();
+		count?: number | string;
+		comments?: Comments200ResponseInner[];
+		videoId?: number;
+	}>(), {
+		count: 0,
+		comments: () => [],
+		videoId: undefined,
+	});
 
 	const like = ref(0), dislike = ref(0), likeClicked = ref(false), dislikeClicked = ref(false), pinned = ref(false);
 </script>

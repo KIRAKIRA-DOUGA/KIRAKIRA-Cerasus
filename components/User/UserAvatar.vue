@@ -6,16 +6,26 @@
 	const props = defineProps<{
 		/** 头像网址。 */
 		avatar?: string;
-		/** 点击后跳转到链接。 */
+		/**
+		 * 点击后跳转到链接。
+		 * @deprecated
+		 */
 		link?: string;
+		/** 用户 UID。 */
+		uid?: Readable;
 	}>();
+
+	const userLink = computed(() => {
+		const uid = props.uid === undefined ? NaN : Number(props.uid); // 不要用一元加号运算符！
+		return Number.isFinite(uid) ? `/user/${uid}` : props.link;
+	});
 </script>
 
 <template>
 	<Comp v-ripple>
 		<img v-if="avatar" :src="avatar" alt="avatar" draggable="false" />
 		<Icon v-else name="person" />
-		<LocaleLink v-if="link" :to="link" :draggable="false" />
+		<LocaleLink v-if="userLink" :to="userLink" :draggable="false" />
 	</Comp>
 </template>
 

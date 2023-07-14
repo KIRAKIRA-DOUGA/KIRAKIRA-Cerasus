@@ -9,7 +9,8 @@
 
 @for $i from 1 through 2 {
 	$is-light: $i == 1;
-	$selector: if($is-light, ":root", ":root.dark");
+	$force-accent: force-accent;
+	$selector: if($is-light, ":root, .#{$force-accent}", ":root.dark, .#{$force-accent}.dark");
 
 	#{$selector} {
 		color-scheme: if($is-light, light, dark);
