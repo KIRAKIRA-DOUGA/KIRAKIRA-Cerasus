@@ -10,6 +10,7 @@
 	const contentFeedPush = ref(true);
 	const copyright = ref<Copyright>("original");
 	const title = ref("");
+	const category = ref("");
 	const originalAuthor = ref("");
 	const originalLink = ref("");
 	const pushToFeed = ref(true);
@@ -131,6 +132,19 @@
 					<section>
 						<Subheader icon="header">{{ t.title }}</Subheader>
 						<TextBox v-model="title" required />
+					</section>
+
+					<section>
+						<Subheader icon="category">{{ t.category }}</Subheader>
+						<ComboBox v-model="category">
+							<ComboBoxItem id="anime">{{ t.category_anime }}</ComboBoxItem>
+							<ComboBoxItem id="music">{{ t.category_music }}</ComboBoxItem>
+							<ComboBoxItem id="otomad">{{ t.category_otomad }}</ComboBoxItem>
+							<ComboBoxItem id="tech">{{ t.category_tech }}</ComboBoxItem>
+							<ComboBoxItem id="design">{{ t.category_design }}</ComboBoxItem>
+							<ComboBoxItem id="game">{{ t.category_game }}</ComboBoxItem>
+							<ComboBoxItem id="other">{{ t.category_other }}</ComboBoxItem>
+						</ComboBox>
 					</section>
 
 					<section>
