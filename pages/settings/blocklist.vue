@@ -75,5 +75,9 @@
 		.text-box {
 			width: 100%;
 		}
+
+		button {
+			flex-shrink: 0;
+		}
 	}
 </style>
