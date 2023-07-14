@@ -83,12 +83,13 @@
 	<div class="container">
 		<TabBar v-model="selectedTab" class="category-tab">
 			<TabItem id="home" direction="vertical" icon="home">{{ t.home }}</TabItem>
-			<TabItem id="music" direction="vertical-reverse" :badge="233">{{ t.music }}</TabItem>
-			<TabItem id="anime" direction="vertical-reverse" :badge="233">{{ t.anime }}</TabItem>
-			<TabItem id="otomad" direction="vertical-reverse" :badge="233">{{ t.otomad }}</TabItem>
-			<TabItem id="tech" direction="vertical-reverse" :badge="233">{{ t.technology }}</TabItem>
-			<TabItem id="game" direction="vertical-reverse" :badge="233">{{ t.game }}</TabItem>
-			<TabItem id="synth" direction="vertical-reverse" :badge="233">{{ t.synthetical }}</TabItem>
+			<TabItem id="anime" direction="vertical-reverse" :badge="233">{{ t.category_anime }}</TabItem>
+			<TabItem id="music" direction="vertical-reverse" :badge="233">{{ t.category_music }}</TabItem>
+			<TabItem id="otomad" direction="vertical-reverse" :badge="233">{{ t.category_otomad }}</TabItem>
+			<TabItem id="tech" direction="vertical-reverse" :badge="233">{{ t.category_tech }}</TabItem>
+			<TabItem id="design" direction="vertical-reverse" :badge="233">{{ t.category_design }}</TabItem>
+			<TabItem id="game" direction="vertical-reverse" :badge="233">{{ t.category_game }}</TabItem>
+			<TabItem id="other" direction="vertical-reverse" :badge="233">{{ t.category_other }}</TabItem>
 		</TabBar>
 		<Subheader icon="category" :badge="numberOfItems">分区</Subheader>
 		<div class="videos-grid">
@@ -109,7 +110,7 @@
 			:displayPageCount="12"
 			enableArrowKeyMove
 		/>
-		
+
 		<Subheader icon="home" :badge="233">网站地图</Subheader>
 		<div class="pages">
 			<LocaleLink v-for="page in pages" :key="page.name" class="link lite" :to="page.link">{{ page.name }}</LocaleLink>
