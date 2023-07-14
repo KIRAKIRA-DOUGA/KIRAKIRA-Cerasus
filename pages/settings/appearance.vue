@@ -33,8 +33,9 @@
 			:key="item.color"
 			v-model="palette"
 			:title="t[item.color]"
+			:class="['force-accent', item.color]"
 		>
-			<div class="content" :style="{ color: `var(--${item.color})` }">
+			<div class="content">
 				<h3>{{ t[item.color] }}</h3>
 				<p>{{ item.subtitle }}</p>
 			</div>
@@ -65,6 +66,7 @@
 	.content {
 		@include square(100%);
 		padding: 18px 20px;
+		color: c(accent);
 
 		> h3 {
 			margin-bottom: calc(4px + 0.1cqh);

@@ -49,7 +49,7 @@
 
 <template>
 	<Comp>
-		<UserAvatar :avatar="avatar" :link="uid !== undefined ? `/user/${uid}` : undefined" />
+		<UserAvatar :avatar="avatar" :uid="uid" />
 		<div class="content">
 			<div class="header">
 				<Icon v-if="pinned" name="pin" class="pin" />
