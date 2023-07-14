@@ -1,7 +1,7 @@
 <script setup lang="ts">
-	import avatar from "assets/images/avatars/aira.webp";
 	import banner from "assets/images/banner-20220717.png";
 
+	const avatar = "/static/images/avatars/aira.webp";
 	const validChar = /[A-Za-z0-9\-_ぁ-ゖァ-ヺー〇一-鿿㐀-䶿𠀀-𮹊𰀀-𲎯]*/u;
 	const nickname = ref("艾了个拉");
 	const test = ref("");

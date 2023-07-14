@@ -1,12 +1,13 @@
 <script setup lang="ts">
 	const avatar = (name: string) => {
-		try {
+		/* try {
 			const avatars = import.meta.glob<typeof import("*.jpg")>("/assets/images/avatars/*", { eager: true });
 			const result = avatars[`/assets/images/avatars/${name}`];
 			return result.default;
 		} catch (e) {
 			return undefined;
-		}
+		} */ // 以上代码为调用需打包的资源。
+		return `/static/images/avatars/${name}`;
 	};
 	
 	const nuxt = useNuxtApp();

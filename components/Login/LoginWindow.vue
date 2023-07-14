@@ -1,11 +1,11 @@
 <script setup lang="ts">
-	import avatar from "assets/images/avatars/aira.webp";
 	const props = defineProps<{
 		/** 已打开，单向绑定使用。 */
 		open?: boolean;
 	}>();
 
 	const model = defineModel<boolean>();
+	const avatar = "/static/images/avatars/aira.webp";
 	type PageType = "login" | "forget" | "reset" | "register" | "register2";
 	const currentPage = ref<PageType>("login");
 	const isWelcome = computed(() => ["register", "register2"].includes(currentPage.value));
