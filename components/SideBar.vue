@@ -1,6 +1,5 @@
 <script setup lang="ts">
-	import avatar from "assets/images/avatars/aira.webp";
-
+	const avatar = "/static/images/avatars/aira.webp";
 	const showLogin = ref(false);
 	const isLogined = ref(false);
 	const isCurrentSettings = computed(() => !!currentSettingsPage());
