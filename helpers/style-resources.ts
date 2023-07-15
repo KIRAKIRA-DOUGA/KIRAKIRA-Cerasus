@@ -11,8 +11,8 @@ type Entries = Record<Preprocessor, Partial<Record<AtRule, string[]>>> & { hoist
  * @returns 全局引入的样式资源。
  */
 export default function styleResources(userOptions: Partial<Entries>) {
-	type PreprocessorOption = { [p in Preprocessor]?: { additionalData: string } };
-	const options = {} as PreprocessorOption;
+	type PreprocessorOptions = { [p in Preprocessor]?: { additionalData: string } };
+	const options = {} as PreprocessorOptions;
 	for (const [preprocessor, atRules] of entries(userOptions)) {
 		if (preprocessor === "hoistUseStatements" || typeof atRules !== "object") continue;
 		let additionalData = "";

@@ -44,4 +44,9 @@ declare global {
 	 * @template T - 指定类型及无参数函数返回的这个类型。
 	 */
 	type TypeOrReturnToType<T> = T | (() => T);
+	
+	/**
+	 * 使用 SCSS 中定义的变量的值。
+	 */
+	declare function useScssVariables(): Record<string, string> & { numbers: Record<string, string> };
 }

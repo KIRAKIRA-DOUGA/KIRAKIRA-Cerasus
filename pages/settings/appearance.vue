@@ -38,7 +38,7 @@
 			:key="item.color"
 			v-model="palette"
 			:title="t[item.color]"
-			:class="['force-accent', item.color]"
+			:class="['force-color', item.color]"
 		>
 			<div class="content">
 				<img :src="getPaletteImage(item.color)" alt="Is the Order a Rabbit?" />
@@ -71,12 +71,12 @@
 	.settings-chip-item {
 		--size: small;
 	}
-	
+
 	.content {
 		@include square(100%);
 		padding: 18px 20px;
 		color: c(accent);
-		
+
 		> * {
 			position: relative;
 		}
@@ -86,22 +86,22 @@
 			margin-bottom: calc(2px + 0.1cqh);
 			font-size: calc(16px + 4cqw);
 		}
-		
+
 		p {
 			font-size: calc(14px + 1cqw);
 		}
-		
+
 		.icon {
 			display: block;
 			margin-top: -0.125em;
 			margin-bottom: calc(4px + 0.2cqh);
-			
+
 			.settings-grid-item:not(.active) & {
 				margin-top: -1.25em;
 				translate: 0 -1.5em;
 			}
 		}
-		
+
 		img,
 		.overlay {
 			position: absolute;
@@ -109,19 +109,19 @@
 			left: 0;
 			width: 100%;
 		}
-		
+
 		img {
 			opacity: 0.6;
 		}
-		
+
 		.overlay {
 			@include square(100%);
-			
+
 			&.color {
 				background-color: c(accent);
 				mix-blend-mode: color;
 			}
-			
+
 			&.light {
 				background-color: c(main-bg);
 				opacity: 0.7;
