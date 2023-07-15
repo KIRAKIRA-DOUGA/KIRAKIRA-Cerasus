@@ -118,3 +118,12 @@ export function elementIndex(element: MaybeRef<Element | undefined | null>) {
 	if (!element.parentElement) return 0;
 	return [...element.parentElement.children].indexOf(element);
 }
+
+/**
+ * 清除 `<input type="file">` 的选中内容状态。
+ * @param file - `<input type="file">`
+ */
+export function clearFileInput(file: MaybeRef<HTMLInputElement | undefined | null>) {
+	file = toValue(file);
+	if (file) file.value = null as unknown as string;
+}

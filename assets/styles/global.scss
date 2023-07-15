@@ -48,10 +48,6 @@ body {
 	font-size: 14px;
 	background-color: c(main-bg);
 	transition: background-color $ease-out-max 250ms;
-
-	&.no-scroll {
-		overflow: hidden;
-	}
 }
 
 a {
@@ -60,6 +56,10 @@ a {
 
 [hidden] {
 	display: none !important;
+}
+
+.no-scroll {
+	overflow: hidden !important;
 }
 
 iframe.noscript-mask {

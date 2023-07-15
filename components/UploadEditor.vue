@@ -1,13 +1,10 @@
 <script setup lang="ts">
-	import { DefaultApi, HttpFile } from "kirakira-backend";
-	import { DefaultApiRequestFactory } from "kirakira-backend/apis/DefaultApi";
-	import { toRaw } from "vue";
 	import axios from "axios";
-	const contentVisibility = ref<PrivacyType>("public");
-	const contentCopyright = ref<Copyright>("original");
-	const contentOriginalCreator = ref("");
-	const contentOriginalLink = ref("");
-	const contentFeedPush = ref(true);
+
+	const props = defineProps<{
+		files: File[];
+	}>();
+
 	const copyright = ref<Copyright>("original");
 	const title = ref("");
 	const category = ref("");
@@ -15,42 +12,63 @@
 	const originalLink = ref("");
 	const pushToFeed = ref(true);
 	const ensureOriginal = ref(false);
-	const file = ref<HTMLInputElement>();
+	const thumbnail = ref<File>();
+	const thumbnailBlob = ref<string>();
+	const thumbnailInput = ref<HTMLInputElement>();
 
 	const tags = ref("");
 	const description = ref("");
 
-	/** validates mime type */
+	const invalidUploaded = () => {
+		useEvent("app:toast", { message: "不支持上传所选文件！", severity: "error" });
+		clearFileInput(thumbnailInput);
+	};
+
+	watch(() => props.files, files => {
+		const file = files[0];
+		const basename = path.filenameWithoutExtension(file.name);
+		title.value = basename;
+	}, { immediate: true });
+
+	/**
+	 * 验证 MIME 类型。
+	 * @param fileList - 文件列表。
+	 * @returns 获取符合条件的图片列表。
+	 */
 	function getValidFiles(fileList?: FileList | null) {
 		if (!fileList || !fileList.length) return [];
-		const files: Any[] = [];
+		const files: File[] = [];
 		for (const file of fileList)
 			if (file.type.startsWith("image"))
 				files.push(file);
 		return files;
 	}
 
-	const props = defineProps<{
-		files;
-	}>();
-
-	/** called on uploading a thumbnail */
-	function onChangeThumb(e: Event) {
+	/**
+	 * 在上传缩略图时调用。
+	 * @param e - 普通事件。
+	 */
+	function onChangeThumbnail(e: Event) {
 		const input = e.target as HTMLInputElement;
-		const filesInp = getValidFiles(input.files);
-		if (filesInp.length)
-			props.files.push(filesInp[0]);
+		const thumbnails = getValidFiles(input.files);
+		if (thumbnails.length)
+			thumbnailBlob.value = fileToBlob(thumbnail.value = thumbnails[0]);
 		else if (input.files?.length)
 			invalidUploaded();
 	}
-	const uploaded = async (files: Array<File>) => {
-		const tagsArr = tags.value.split(",");
+
+	/**
+	 * 上传文件。
+	 * @param files - 文件列表。
+	 */
+	function upload(files: File[]) {
+		const tagsArray = tags.value.split(",");
 
 		// severe bug in openapi around multiple file uploads using form-data
 
 		const formData = new FormData();
-		files.forEach((file, idx) => {
-			formData.append(`filename[${idx}]`, file);
+		files.forEach((file, index) => {
+			formData.append(`filename[${index}]`, file);
 		});
 
 		axios({
@@ -61,37 +79,31 @@
 			headers: {
 				"Content-Type": "multipart/form-data",
 				title: title.value,
-				tags: tagsArr.toString(),
+				tags: tagsArray.toString(),
 				description: description.value,
 			},
 		});
-	};
-
-	const invalidUploaded = () => {
-		useEvent("app:toast", { message: "不支持上传所选文件！", severity: "error" });
-	};
+	}
 
 	const [onContentEnter, onContentLeave] = simpleAnimateSize("height", 500, eases.easeInOutSmooth);
 </script>
 
 <template>
 	<div class="container">
-		<ShadingIcon icon="upload" position="right top" />
-		<HeadingGroup :name="t.upload" englishName="Upload" />
-
 		<div class="card-container">
 			<input
-				ref="file"
+				ref="thumbnailInput"
 				hidden
 				type="file"
-				multiple
 				accept="image/*"
-				@change="onChangeThumb"
+				@change="onChangeThumbnail"
 			/>
+
 			<div class="card left">
-				<div v-ripple class="cover" @click="file?.click()">
+				<div v-ripple class="cover" @click="thumbnailInput?.click()">
 					<!-- 选择封面，裁剪器可以先不做 -->
 					<div class="mask">{{ t.select_cover }}</div>
+					<img :src="thumbnailBlob" alt="thumbnail" :draggable="false" />
 				</div>
 
 				<Button icon="disambig">{{ t.associate_existing }}</Button>
@@ -166,7 +178,7 @@
 					<ToggleSwitch v-model="pushToFeed" icon="feed">{{ t.push_to_feed }}</ToggleSwitch>
 
 					<div class="submit">
-						<Button icon="check" @click="uploaded(files)">{{ t.upload_with_exclamation }}</Button>
+						<Button icon="check" @click="upload(files)">{{ t.upload }}</Button>
 					</div>
 				</div>
 			</div>
@@ -227,23 +239,50 @@
 
 	.cover {
 		@include round-small;
-		width: 100%;
+		position: relative;
+		width: 300px !important;
 		aspect-ratio: 16 / 9;
-		max-width: 300px;
 		background-color: c(gray-20);
 		cursor: pointer;
 
 		.mask {
 			@include square(100%);
 			@include flex-center;
+			position: absolute;
+			z-index: 5 !important;
 			color: white;
 			background-color: c(black, 30%);
 			opacity: 0;
 			pointer-events: none;
 		}
+		
+		&:any-hover {
+			.mask {
+				opacity: 1;
+			}
+			
+			img {
+				filter: brightness(0.75) blur(2px);
+				scale: 115%;
+			}
+		}
 
-		&:hover .mask {
-			opacity: 1;
+		&:not(:any-hover) img {
+			transition-duration: 1s;
+		}
+
+		img {
+			width: 100%;
+			aspect-ratio: 16 / 9;
+			object-fit: cover;
+			
+			&:not([src]) {
+				visibility: hidden;
+			}
+		}
+		
+		:deep(.ripple-circle) {
+			z-index: 4;
 		}
 	}
 
