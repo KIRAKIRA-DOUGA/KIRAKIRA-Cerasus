@@ -1,21 +1,30 @@
 <script setup lang="ts">
 	useHead({ title: t.upload });
-	const file = ref<HTMLInputElement>();
+	const fileInput = ref<HTMLInputElement>();
 	const dragover = ref(false);
 	const successfulUploaded = ref(false);
 	const showEditor = ref(false);
-	const fileArr: File[] = [];
-	const uploaded = (files: File[]) => {
+	const files = reactive<File[]>([]);
+
+	/**
+	 * 成功上传文件。
+	 * @param fileList - 文件列表。
+	 */
+	async function uploaded(fileList: File[]) {
 		successfulUploaded.value = true;
-		// await delay(1500);
-		// navigate("/upload/edit");
-		fileArr.push(files[0]);
+		await delay(1500);
+		files.push(fileList[0]);
 		showEditor.value = true;
-	};
-	const invalidUploaded = () => {
+	}
+
+	/**
+	 * 上传文件无效。
+	 */
+	function invalidUploaded() {
 		successfulUploaded.value = false;
 		useEvent("app:toast", { message: "不支持上传所选文件！", severity: "error" });
-	};
+		clearFileInput(fileInput);
+	}
 
 	/**
 	 * 获取合法的文件列表。
@@ -58,14 +67,26 @@
 		else if (input.files?.length)
 			invalidUploaded();
 	}
+
+	/**
+	 * 取消本次上传视频。
+	 */
+	function cancelUpdate() {
+		if (!showEditor.value) return;
+		if (!confirm("确定要取消本次上传吗？")) return;
+		arrayClearAll(files);
+		successfulUploaded.value = false;
+		showEditor.value = false;
+		clearFileInput(fileInput);
+	}
 </script>
 
 <template>
-	<div class="container">
+	<div class="container" :class="{ 'no-scroll': !showEditor }">
 		<ShadingIcon icon="upload" position="right top" />
-		<HeadingGroup :name="t.upload" englishName="Upload" />
+		<HeadingGroup :name="t.upload" englishName="Upload" :class="{ clickable: showEditor }" @click="cancelUpdate" />
 		<input
-			ref="file"
+			ref="fileInput"
 			hidden
 			type="file"
 			multiple
@@ -73,27 +94,30 @@
 			@change="onChangeFile"
 		/>
 
-		<div class="upload-wrapper">
-			<div
-				class="upload"
-				:class="{ dragover, successful: successfulUploaded }"
-				@dragover.stop.prevent="dragover = true"
-				@dragenter.stop.prevent="dragover = true"
-				@dragleave.stop.prevent="dragover = false"
-				@dragend.stop.prevent="dragover = false"
-				@drop.stop.prevent="onDrop"
-				@click="file?.click()"
-			>
-				<div class="content">
-					<h3>拖到此处上传</h3>
-					<p>支持MP4、WMV、WEBM等主流格式</p>
+		<Transition name="page-jump" mode="out-in">
+			<div v-if="!showEditor" class="upload-wrapper">
+				<div
+					class="upload"
+					:class="{ dragover, successful: successfulUploaded }"
+					@dragover.stop.prevent="dragover = true"
+					@dragenter.stop.prevent="dragover = true"
+					@dragleave.stop.prevent="dragover = false"
+					@dragend.stop.prevent="dragover = false"
+					@drop.stop.prevent="onDrop"
+					@click="fileInput?.click()"
+				>
+					<div class="content">
+						<h3>拖到此处上传</h3>
+						<p>支持MP4、WMV、WEBM等主流格式</p>
+					</div>
+					<Icon name="upload" class="upload-icon" />
+					<div class="outline normal"></div>
+					<div class="outline successful"></div>
 				</div>
-				<Icon name="upload" class="upload-icon" />
-				<div class="outline normal"></div>
-				<div class="outline successful"></div>
 			</div>
-		</div>
-		<UploadEditor v-if="showEditor" :files="fileArr" />
+
+			<UploadEditor v-else :files="files" />
+		</Transition>
 	</div>
 </template>
 
@@ -104,7 +128,10 @@
 		display: flex;
 		flex-direction: column;
 		height: 100dvh;
-		overflow: hidden;
+	}
+	
+	.clickable {
+		cursor: pointer !important;
 	}
 
 	@property --rotation {

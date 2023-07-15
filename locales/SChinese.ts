@@ -140,7 +140,6 @@ const SChinese = {
 	press_enter_to_add: "按回车键添加",
 	description_of_creation: "简介",
 	push_to_feed: "推送到动态",
-	upload_with_exclamation: "投稿！",
 	select_cover: "选择封面",
 	series: "合集",
 	audio: "音频",

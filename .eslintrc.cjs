@@ -271,6 +271,7 @@ module.exports = {
 		"vue/no-multiple-template-root": "off",
 		"vue/multiline-html-element-content-newline": "off",
 		"vue/no-template-shadow": "off",
+		"vue/no-mutating-props": ["error", { "shallowOnly": false }],
 		"no-restricted-properties": ["error", {
 			object: "arguments",
 			property: "callee",

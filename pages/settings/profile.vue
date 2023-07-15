@@ -96,7 +96,7 @@
 
 			&:any-hover {
 				filter: brightness(0.75) blur(2px);
-				scale: 1.05;
+				scale: 105%;
 
 				& + span {
 					opacity: 1;

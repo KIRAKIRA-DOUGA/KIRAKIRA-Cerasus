@@ -141,7 +141,6 @@ const Japanese: LocaleIdentifiers = {
 	press_enter_to_add: "Enterキーで追加",
 	description_of_creation: "説明文",
 	push_to_feed: "タイムラインにも投稿",
-	upload_with_exclamation: "投稿します！",
 	select_cover: "サムネイル選択",
 	series: "シリーズ",
 	audio: "音声",

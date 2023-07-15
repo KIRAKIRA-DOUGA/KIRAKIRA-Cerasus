@@ -24,3 +24,26 @@ export function urlToBlob_legacy(url: string, callback: (blob: Blob) => void) {
 export function filenameWithoutExtension(filePath: string) {
 	return path.parse(filePath).name;
 }
+
+/**
+ * 文件转 Blob: 链接。
+ * @param file - 文件。
+ * @returns Blob: 链接。
+ */
+export function fileToBlob(file: File) {
+	const blob = URL.createObjectURL(file);
+	return blob;
+}
+
+/**
+ * 文件转 Data: Base64 链接。
+ * @param file - 文件。
+ * @returns Data: Base64 链接。
+ */
+export function fileToData(file: File) {
+	return new Promise<string>(resolve => {
+		const fileReader = new FileReader();
+		fileReader.onload = function () { resolve(this.result as string); };
+		fileReader.readAsDataURL(file);
+	});
+}

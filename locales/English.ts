@@ -140,7 +140,6 @@ const English: LocaleIdentifiers = {
 	press_enter_to_add: "Press enter to add",
 	description_of_creation: "Description",
 	push_to_feed: "Push to feed",
-	upload_with_exclamation: "Upload!",
 	select_cover: "Select cover",
 	series: "Series",
 	audio: "Audio",
