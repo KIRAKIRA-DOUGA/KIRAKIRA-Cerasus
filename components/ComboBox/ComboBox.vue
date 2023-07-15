@@ -17,11 +17,6 @@
 	const selectedContent = computed(() => items.value.find(item => item.id === selected.value)?.content);
 	const selectedIndexStatic = ref(0);
 	const isSelectionValid = computed(() => selectedIndex.value !== -1);
-	
-	const variables = useScssVariables();
-	onMounted(() => {
-		console.log(variables);
-	});
 
 	const showMenu = ref(false);
 	const show = () => {
