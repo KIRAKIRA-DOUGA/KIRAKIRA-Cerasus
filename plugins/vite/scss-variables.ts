@@ -10,7 +10,7 @@ export default () => ({
 
 		const src = readFileSync(id, "utf-8");
 		// 原文建议我通过依赖 https://www.npmjs.com/package/scss-parser 解析 SCSS 中的变量，但我个懒人直接用正则表达式提取了。
-		const styles = [...src.matchAll(/<style.*?lang="scss".*?>(.*?)<\/style>/gisu)].map(block => block[1].trim());
+		const styles = Array.from(src.matchAll(/<style.*?lang="scss".*?>(.*?)<\/style>/gisu), block => block[1].trim());
 		const variables: AnyObject = {}, numbers: AnyObject = {};
 		variables.numbers = numbers;
 
