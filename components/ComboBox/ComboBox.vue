@@ -18,9 +18,9 @@
 	const selectedIndexStatic = ref(0);
 	const isSelectionValid = computed(() => selectedIndex.value !== -1);
 	
-	const instance = getCurrentInstance();
+	const variables = useScssVariables();
 	onMounted(() => {
-		// console.log(instance);
+		console.log(variables);
 	});
 
 	const showMenu = ref(false);

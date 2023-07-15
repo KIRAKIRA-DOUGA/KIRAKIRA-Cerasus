@@ -4,6 +4,7 @@ import defineAlias from "./helpers/alias";
 import styleResources from "./helpers/style-resources";
 import cssDoodleLoader from "./plugins/vite/css-doodle";
 import docsLoader from "./plugins/vite/docs";
+import vitePluginScssVariables from "./plugins/vite/scss-variables";
 import { environment } from "./utils/environment";
 /* import vueNestedSFC from "vite-plugin-vue-nested-sfc";
 import CopyPlugin from "copy-webpack-plugin";
@@ -64,6 +65,7 @@ export default defineNuxtConfig({
 		plugins: [
 			docsLoader(),
 			cssDoodleLoader(),
+			vitePluginScssVariables(),
 		],
 		optimizeDeps: {
 			needsInterop: [
