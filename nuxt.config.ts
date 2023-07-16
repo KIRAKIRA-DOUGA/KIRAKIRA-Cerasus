@@ -59,7 +59,9 @@ export default defineNuxtConfig({
 		"api",
 	),
 	css: [
+		"video.js/dist/video-js.css",
 		"styles/global.scss",
+
 	],
 	vite: {
 		plugins: [
@@ -73,6 +75,11 @@ export default defineNuxtConfig({
 			],
 			esbuildOptions: {
 				target: "esnext",
+			},
+		},
+		server: {
+			hmr: {
+				protocol: "ws",
 			},
 		},
 		vue: {
@@ -107,13 +114,13 @@ export default defineNuxtConfig({
 		},
 	},
 	nitro: {
-		devProxy: {
-			"/api": {
-				target: "https://kirakira.dev/api",
-				prependPath: true,
-				changeOrigin: true,
-			},
-		},
+		// devProxy: {
+		// 	"/api": {
+		// 		target: "https://kirakira.dev/api",
+		// 		prependPath: true,
+		// 		changeOrigin: true,
+		// 	},
+		// },
 		esbuild: {
 			options: {
 				target: "esnext",

@@ -71,10 +71,14 @@
 			formData.append(`filename[${index}]`, file);
 		});
 
+		// oh no no no NO!!!
+		formData.append("filename[1]", thumbnail.value);
+
+
 		axios({
 			method: "POST",
 			// TODO
-			url: "https://localhost:3000/api/upload",
+			url: "http://localhost:3000/api/upload",
 			data: formData,
 			headers: {
 				"Content-Type": "multipart/form-data",
@@ -255,12 +259,12 @@
 			opacity: 0;
 			pointer-events: none;
 		}
-		
+
 		&:any-hover {
 			.mask {
 				opacity: 1;
 			}
-			
+
 			img {
 				filter: brightness(0.75) blur(2px);
 				scale: 115%;
@@ -275,12 +279,12 @@
 			width: 100%;
 			aspect-ratio: 16 / 9;
 			object-fit: cover;
-			
+
 			&:not([src]) {
 				visibility: hidden;
 			}
 		}
-		
+
 		:deep(.ripple-circle) {
 			z-index: 4;
 		}
