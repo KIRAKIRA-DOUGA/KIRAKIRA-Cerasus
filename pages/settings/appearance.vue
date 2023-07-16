@@ -41,7 +41,7 @@
 			v-model="palette"
 			:title="t[item.color]"
 			class="force-color"
-			:class="[item.color]"
+			:class="[item.color, theme]"
 		>
 			<div class="content">
 				<img :src="getPaletteImage(item.color)" alt="Is the Order a Rabbit?" />
@@ -130,6 +130,10 @@
 			&.color {
 				background-color: c(accent);
 				mix-blend-mode: color;
+				
+				html.dark & {
+					mix-blend-mode: hue;
+				}
 			}
 
 			&.light {
