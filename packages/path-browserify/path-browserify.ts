@@ -531,7 +531,7 @@ const posix: Path = {
 	sep: "/",
 	delimiter: ":",
 	win32: null,
-	posix: null as unknown as Path,
+	posix: null! as Path,
 };
 
 (posix as Writeable<Path>).posix = posix;
