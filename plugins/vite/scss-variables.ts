@@ -8,7 +8,10 @@ export default () => ({
 	load(id: string) {
 		if (!id.endsWith(".vue")) return;
 
+		const MACRO = "useScssVariables()";
 		const src = readFileSync(id, "utf-8");
+		if (!src.includes(MACRO)) return;
+		
 		// 原文建议我通过依赖 https://www.npmjs.com/package/scss-parser 解析 SCSS 中的变量，但我个懒人直接用正则表达式提取了。
 		const styles = Array.from(src.matchAll(/<style.*?lang="scss".*?>(.*?)<\/style>/gisu), block => block[1].trim());
 		const variables: AnyObject = {}, numbers: AnyObject = {};
@@ -28,6 +31,6 @@ export default () => ({
 			}
 		}
 
-		return src.replaceAll("useScssVariables()", JSON.stringify(variables));
+		return src.replaceAll(MACRO, JSON.stringify(variables));
 	},
 });

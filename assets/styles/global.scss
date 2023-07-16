@@ -17,6 +17,10 @@
 	margin-block-end: 0;
 	margin-inline-start: 0;
 	margin-inline-end: 0;
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+	-moz-osx-font-smoothing: grayscale;
+	font-feature-settings: "liga";
 }
 
 :lang(ja) {
@@ -27,7 +31,11 @@
 	}
 }
 
-code {
+kbd,
+code,
+pre,
+samp,
+tt {
 	&,
 	* {
 		font-family: $monospace-fonts;
