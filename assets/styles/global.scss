@@ -113,6 +113,20 @@ p {
 	}
 }
 
+// 用户请求削弱动态效果。
+@media (prefers-reduced-motion: reduce) {
+	$enhanced-selector: repeat-string(":not([NONE_EXISTS_ATTR])", 10); // 用于强行提高优先级。
+
+	#{$enhanced-selector} {
+		&,
+		&::before,
+		&::after {
+			transition-duration: 0s !important;
+			animation-duration: 0s !important;
+		}
+	}
+}
+
 // #region 页面过渡
 .page-forward-enter-active,
 .page-backward-enter-active,

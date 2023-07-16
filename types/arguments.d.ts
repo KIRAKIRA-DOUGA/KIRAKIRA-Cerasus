@@ -33,6 +33,12 @@ declare global {
 	type ViewType = "list" | "grid" | "tile";
 	/** 排序顺序，升序或降序。 */
 	type SortOrder = "ascending" | "descending";
+	/** 主题。 */
+	type ThemeType = "light" | "dark";
+	/** 主题，包括跟随系统。 */
+	type ThemeSetType = ThemeType | "system";
+	/** 个性色。 */
+	type PaletteType = "pink" | "cyan" | "blue" | "green" | "orange" | "purple" | "red" | "yellow" | "sky" | "custom" | (string & {});
 
 	type FlyoutModel = FlyoutModelNS.Tuple | FlyoutModelNS.Object;
 	type MenuModel = MouseEvent | PointerEvent | null;

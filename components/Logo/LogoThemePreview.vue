@@ -1,14 +1,14 @@
 <script setup lang="ts">
 	const props = defineProps<{
 		/** 指定主题。 */
-		theme?: "light" | "dark" | "system";
+		theme?: ThemeSetType;
 		/** 强调色。未定义情况下貌似有 bug。 */
 		accent?: string;
 	}>();
 
 	const classes = computed(() =>
 		props.theme === "system" ? ["dark", "light"] :
-		props.theme === undefined ? [undefined! as string] : [props.theme]);
+		!props.theme ? [undefined! as string] : [props.theme]);
 </script>
 
 <template>

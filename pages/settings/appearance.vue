@@ -4,8 +4,7 @@
 		return palettes[`/assets/images/palettes/${name}.webp`].default;
 	};
 
-	const theme = Theme.theme;
-	const palette = Theme.palette;
+	const { theme, palette, actualTheme } = Theme;
 	const themeList = ["light", "dark", "system"] as const;
 	const paletteList = [
 		{ color: "pink", subtitle: "Kawaii forever" },
@@ -41,7 +40,7 @@
 			v-model="palette"
 			:title="t[item.color]"
 			class="force-color"
-			:class="[item.color, theme]"
+			:class="[item.color, actualTheme]"
 		>
 			<div class="content">
 				<img :src="getPaletteImage(item.color)" alt="Is the Order a Rabbit?" />
@@ -137,8 +136,12 @@
 			}
 
 			&.light {
-				background-color: c(main-bg);
+				background-color: white;
 				opacity: 0.7;
+				
+				html.dark & {
+					background-color: black;
+				}
 			}
 		}
 	}
