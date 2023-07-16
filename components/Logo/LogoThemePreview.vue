@@ -30,7 +30,7 @@
 				</g>
 				<g class="toolbox-filter">
 					<g clip-path="url(#toolbox-clip)">
-						<rect x="140" y="5" width="63" height="55" rx="2" class="main-bg" shape-rendering="crispEdges" />
+						<rect x="140" y="5" width="63" height="55" rx="2" class="surface-color" shape-rendering="crispEdges" />
 						<rect x="145" y="25" width="20" height="8" rx="4" class="accent" />
 						<rect x="168" y="25" width="20" height="8" rx="4" class="accent" />
 						<rect x="191" y="25" width="20" height="8" rx="4" class="accent" />
@@ -46,7 +46,7 @@
 				</g>
 				<g class="player-filter">
 					<g clip-path="url(#player-clip)">
-						<rect x="22" y="5" width="114" height="55" class="main-bg" />
+						<rect x="22" y="5" width="114" height="55" class="surface-color" />
 						<rect x="25" y="55" width="108" height="2" rx="1" class="gray-20" />
 						<rect x="25" y="55" width="70" height="2" rx="1" class="accent-20" />
 						<rect x="25" y="55" width="64" height="2" rx="1" class="accent" />
@@ -94,7 +94,7 @@
 </template>
 
 <style scoped lang="scss">
-	$colors: icon-color, text-color, main-bg, inset-bg, accent, accent-20, gray-20, gray-30, gray-40;
+	$colors: icon-color, text-color, surface-color, main-bg, inset-bg, accent, accent-20, gray-20, gray-30, gray-40;
 	
 	.wrapper {
 		@include square(100%);
