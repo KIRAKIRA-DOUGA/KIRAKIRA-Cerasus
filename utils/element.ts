@@ -127,3 +127,15 @@ export function clearFileInput(file: MaybeRef<HTMLInputElement | undefined | nul
 	file = toValue(file);
 	if (file) file.value = null! as string;
 }
+
+/**
+ * 通过布尔值控制元素的某个样式类名是否使能。
+ * @param element - HTML DOM 元素。
+ * @param className - 样式类名。
+ * @param enabled - 是否是能？
+ */
+export function setClassEnabled(element: MaybeRef<Element | undefined | null>, className: string, enabled: boolean) {
+	element = toValue(element);
+	if (!element) return;
+	element.classList[enabled ? "add" : "remove"](className);
+}

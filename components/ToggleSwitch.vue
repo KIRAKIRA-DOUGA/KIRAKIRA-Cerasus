@@ -56,7 +56,7 @@
 	watch(() => toggleSwitch.value?.classList.contains("on"), () => {
 		if (!toggleSwitch.value) return;
 		if (on.value !== toggleSwitch.value.classList.contains("on"))
-			toggleSwitch.value.classList[on.value ? "add" : "remove"]("on");
+			setClassEnabled(toggleSwitch, "on", on.value);
 	}, { immediate: true });
 
 	/**
@@ -106,7 +106,7 @@
 	$thumb-size: 20px;
 	$focus-ring-thickness: 10px;
 	$icon-size: 20px;
-	
+
 	@layer props {
 		:comp {
 			/// 图标大小。
@@ -190,7 +190,7 @@
 			:comp:not(.on).disabled & {
 				@include control-ball-shadow-off-disabled;
 				background-color: c(white);
-				
+
 				html.dark & {
 					background-color: c(gray-40);
 				}

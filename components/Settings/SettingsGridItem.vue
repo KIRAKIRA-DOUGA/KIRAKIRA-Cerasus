@@ -6,6 +6,7 @@
 		title: "",
 	});
 
+	const radio = refComp();
 	const selected = defineModel<string | string[]>({ default: [] });
 	const isRadio = computed(() => typeof selected.value === "string");
 	const active = computed(() => {
@@ -24,16 +25,25 @@
 		else
 			arrayToggle(selected.value as string[], props.id);
 	}
+
+	// 如果勾选情况与 prop 不同，就强制使其相同。
+	watch(() => radio.value?.classList.contains("active"), () => {
+		if (!radio.value) return;
+		if (active.value !== radio.value.classList.contains("active"))
+			setClassEnabled(radio, "active", active.value);
+	}, { immediate: true });
 </script>
 
 <template>
-	<Comp role="radio" :aria-checked="active" :class="{ active }" @click="onCheck">
-		<div v-ripple class="thumbnail">
-			<slot></slot>
-		</div>
-		<div class="caption">
-			<Icon name="check_circle_outline" />
-			<div class="title">{{ props.title }}</div>
+	<Comp ref="radio" role="radio" :aria-checked="active" :class="{ active }" @click="onCheck">
+		<div>
+			<div v-ripple class="thumbnail">
+				<slot></slot>
+			</div>
+			<div class="caption">
+				<Icon name="check_circle_outline" />
+				<div class="title">{{ props.title }}</div>
+			</div>
 		</div>
 	</Comp>
 </template>
@@ -41,7 +51,6 @@
 <style scoped lang="scss">
 	.caption {
 		position: relative;
-		margin-top: 12px;
 
 		.title {
 			overflow: hidden;
@@ -101,6 +110,22 @@
 			
 			&:any-hover {
 				@include chip-shadow-checked-hover;
+			}
+		}
+	}
+	
+	:comp > * {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+
+		@container style(--column: single) {
+			flex-direction: row;
+			align-items: center;
+
+			.thumbnail {
+				flex-shrink: 0;
+				width: 210px;
 			}
 		}
 	}

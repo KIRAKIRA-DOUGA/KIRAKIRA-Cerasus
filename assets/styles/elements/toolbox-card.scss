@@ -30,17 +30,30 @@
 }
 
 @mixin videos-grid {
+	$min-width: 226px;
+	$gap: 12px;
+	
 	display: grid;
 	grid-gap: 0;
-	grid-template-columns: repeat(auto-fill, minmax(226px, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax($min-width, 1fr));
 	align-items: start;
 	justify-content: space-between;
+	container: videos-grid / inline-size;
 
 	&:has(.settings-grid-item) {
-		gap: 12px;
+		gap: $gap;
+	}
+	
+	> * {
+		--column: multi;
+		
+		@container videos-grid (width < #{$min-width * 2 + $gap}) {
+			--column: single;
+		}
 	}
 }
 
 .videos-grid {
 	@include videos-grid;
 }
+

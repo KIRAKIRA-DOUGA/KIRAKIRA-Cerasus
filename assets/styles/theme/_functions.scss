@@ -77,3 +77,17 @@
 	}
 	@return $list;
 }
+
+/// 重复指定次数字符串。
+/// @param {String} $str - 字符串。
+/// @param {Number} $count - 重复次数。
+/// @return {String} 重复指定次数后的字符串。
+@function repeat-string($str, $count) {
+	$result: "";
+
+	@for $i from 1 through $count {
+		$result: $result + $str;
+	}
+
+	@return $result;
+}
