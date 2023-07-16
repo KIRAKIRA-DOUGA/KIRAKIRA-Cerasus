@@ -10,7 +10,11 @@
 @for $i from 1 through 2 {
 	$is-light: $i == 1;
 	$force-color: force-color;
-	$selector: if($is-light, ":root, .#{$force-color}", ":root.dark, .#{$force-color}.dark");
+	$selector: if(
+		$is-light,
+		":root, .#{$force-color}, :root.light, .#{$force-color}.light",
+		":root.dark, .#{$force-color}.dark"
+	);
 
 	#{$selector} {
 		color-scheme: if($is-light, light, dark);

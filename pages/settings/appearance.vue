@@ -20,14 +20,16 @@
 <template>
 	<Subheader icon="brightness_medium">{{ t.theme }}</Subheader>
 	<PlayerVideoController :currentTime="30" :duration="110" :buffered="60" class="chip" />
-	<section list>
-		<RadioButton
+	<section grid>
+		<SettingsGridItem
 			v-for="item in themeList"
+			:id="item"
 			:key="item"
 			v-model="theme"
-			v-ripple
-			:value="item"
-		>{{ t[item] }}</RadioButton>
+			:title="t[item]"
+		>
+			<LogoThemePreview :theme="item" :accent="palette" />
+		</SettingsGridItem>
 	</section>
 
 	<Subheader icon="palette">{{ t.palette }}</Subheader>
@@ -38,7 +40,8 @@
 			:key="item.color"
 			v-model="palette"
 			:title="t[item.color]"
-			:class="['force-color', item.color]"
+			class="force-color"
+			:class="[item.color]"
 		>
 			<div class="content">
 				<img :src="getPaletteImage(item.color)" alt="Is the Order a Rabbit?" />
@@ -70,6 +73,13 @@
 
 	.settings-chip-item {
 		--size: small;
+	}
+	
+	.settings-grid-item {
+		:deep(.ripple-circle) {
+			z-index: 4;
+			background-color: c(accent-ripple);
+		}
 	}
 
 	.content {

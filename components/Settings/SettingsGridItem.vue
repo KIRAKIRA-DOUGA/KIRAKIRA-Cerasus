@@ -79,6 +79,7 @@
 		width: 100%;
 		aspect-ratio: 16 / 9;
 		object-fit: cover;
+		overflow: hidden;
 		container: card / inline-size;
 		cursor: pointer;
 		transition: $fallback-transitions, scale $ease-out-back 500ms !important;

@@ -125,5 +125,5 @@ export function elementIndex(element: MaybeRef<Element | undefined | null>) {
  */
 export function clearFileInput(file: MaybeRef<HTMLInputElement | undefined | null>) {
 	file = toValue(file);
-	if (file) file.value = null as unknown as string;
+	if (file) file.value = null! as string;
 }
