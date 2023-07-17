@@ -51,11 +51,11 @@
 			--icon-behind: false;
 		}
 	}
-	
+
 	button {
 		display: inline-grid;
 		color: white;
-		
+
 		&[disabled] {
 			pointer-events: none;
 		}
