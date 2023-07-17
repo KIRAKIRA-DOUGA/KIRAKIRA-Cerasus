@@ -58,26 +58,9 @@
 		if (on.value !== toggleSwitch.value.classList.contains("on"))
 			setClassEnabled(toggleSwitch, "on", on.value);
 	}, { immediate: true });
-
-	/**
-	 * 当键盘松开空格键时相当于点击复选框。
-	 * @param e - 键盘事件。
-	 */
-	function onKeyUp(e: KeyboardEvent) {
-		if (e.code === "Space") {
-			e.preventDefault();
-			onClick();
-		}
-	}
-
-	/**
-	 * 当键盘按下空格键时不要下滑页面。
-	 * @param e - 键盘事件。
-	 */
-	function onKeyDown(e: KeyboardEvent) {
-		if (e.code === "Space")
-			stopEvent(e);
-	}
+	
+	// 当键盘松开空格键时相当于点击复选框。
+	// 当键盘按下空格键时不要下滑页面。
 </script>
 
 <template>
@@ -88,8 +71,9 @@
 		role="switch"
 		:aria-checked="on"
 		@click="onClick"
-		@keydown="onKeyDown"
-		@keyup="onKeyUp"
+		@keydown.space.prevent.stop
+		@keyup.space.prevent="onClick"
+		@keyup.enter.prevent="onClick"
 	>
 		<Icon v-if="icon" :name="icon" />
 		<label class="content"><slot></slot></label>

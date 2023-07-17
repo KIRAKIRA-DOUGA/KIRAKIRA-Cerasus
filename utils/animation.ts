@@ -40,6 +40,12 @@ export async function replayAnimation(element: Element, ...className: string[]) 
 	element.classList.add(...className);
 }
 
+/**
+ * 是否用户请求削弱动态效果？
+ * @returns 用户请求削弱动态效果。
+ */
+export const isPrefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 type StyleProperties = string & keyof FilterValueType<CSSStyleDeclaration, string>;
 type Keyframe = Partial<Override<Record<StyleProperties, Numberish>, { offset: number }>>;
 type Keyframes = Keyframe[];
@@ -116,8 +122,7 @@ export async function animateSize(
 		attachAnimations: [Element, Keyframes][] | false;
 	}> = {},
 ): Promise<Animation | void> {
-	if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) // 用户请求削弱动态效果。
-		duration = 0;
+	if (isPrefersReducedMotion()) duration = 0;
 	startHeight ??= element.clientHeight;
 	startWidth ??= element.clientWidth;
 	await changeFunc?.();

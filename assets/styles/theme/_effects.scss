@@ -184,24 +184,32 @@
 	box-shadow: 0 8px 12px c(accent-shadow, 30%);
 }
 
-@mixin chip-shadow($special: false) {
-	$shadow-color: is-special-accent-shadow($special);
-	box-shadow: 0 2px 4px c($shadow-color, 30%);
+@mixin chip-shadow {
+	box-shadow: 0 2px 4px c(accent-shadow, 30%);
 }
 
-@mixin chip-shadow-checked($special: false) {
-	$shadow-color: is-special-accent-shadow($special);
-	box-shadow: 0 2px 4px c($shadow-color, 30%), 0 0 0 2px c(accent);
+@mixin chip-shadow-checked {
+	box-shadow: 0 2px 4px c(accent-shadow, 30%), 0 0 0 2px c(accent);
 }
 
-@mixin chip-shadow-hover($special: false) {
-	$shadow-color: is-special-accent-shadow($special);
-	box-shadow: 0 7px 9px 2px c($shadow-color, 30%);
+@mixin chip-shadow-hover {
+	box-shadow: 0 7px 9px 2px c(accent-shadow, 30%);
 }
 
-@mixin chip-shadow-checked-hover($special: false) {
-	$shadow-color: is-special-accent-shadow($special);
-	box-shadow: 0 7px 9px 2px c($shadow-color, 30%), 0 0 0 4px c(accent);
+@mixin chip-shadow-checked-hover {
+	box-shadow: 0 7px 9px 2px c(accent-shadow, 30%), 0 0 0 4px c(accent);
+}
+
+@mixin chip-shadow-focus {
+	box-shadow: 0 2px 4px c(accent-shadow, 30%), 0 0 0 4px c(gray-40, 50%);
+}
+
+@mixin chip-shadow-hover-focus {
+	box-shadow: 0 7px 9px 2px c(accent-shadow, 30%), 0 0 0 4px c(gray-40, 50%);
+}
+
+@mixin chip-shadow-checked-focus {
+	box-shadow: 0 2px 4px c(accent-shadow, 30%), 0 0 0 4px c(accent);
 }
 
 @mixin card-in-card-shadow {

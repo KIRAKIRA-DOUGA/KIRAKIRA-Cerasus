@@ -112,6 +112,10 @@
 				height: 2px;
 				border-radius: 1px;
 				animation: progressing calc(var(--duration) * 1ms) linear forwards;
+				
+				@media (prefers-reduced-motion: reduce) {
+					display: none;
+				}
 			}
 
 			&.success {

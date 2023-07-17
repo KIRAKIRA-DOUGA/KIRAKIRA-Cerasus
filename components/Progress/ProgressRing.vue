@@ -31,19 +31,22 @@
 <template>
 	<Transition :duration="250">
 		<Comp v-if="shown" role="progressbar" :aria-busy="shown">
-			<div v-if="indeterminate" class="layer-wrapper">
-				<div class="layer">
-					<div class="circle-clipper left">
-						<div class="circle"></div>
-					</div>
-					<div class="gap-patch">
-						<div class="circle"></div>
-					</div>
-					<div class="circle-clipper right">
-						<div class="circle"></div>
+			<template v-if="indeterminate">
+				<div class="layer-wrapper">
+					<div class="layer">
+						<div class="circle-clipper left">
+							<div class="circle"></div>
+						</div>
+						<div class="gap-patch">
+							<div class="circle"></div>
+						</div>
+						<div class="circle-clipper right">
+							<div class="circle"></div>
+						</div>
 					</div>
 				</div>
-			</div>
+				<Icon name="refresh" />
+			</template>
 			<svg
 				v-else
 				class="ring"
@@ -86,9 +89,30 @@
 		}
 	}
 	
+	@media (prefers-reduced-motion: reduce) {
+		.layer-wrapper {
+			display: none;
+			
+			+ .icon {
+				display: block;
+			}
+		}
+	}
+	
 	.layer-wrapper {
 		@include square(100%);
 		animation: spinner 1568ms linear infinite;
+		
+		+ .icon {
+			display: none;
+			color: c(accent);
+			scale: 1.5;
+			
+			&,
+			:deep(*) {
+				@include square(100%);
+			}
+		}
 	}
 
 	.layer {

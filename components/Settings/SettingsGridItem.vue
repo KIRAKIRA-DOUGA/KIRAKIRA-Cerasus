@@ -35,7 +35,17 @@
 </script>
 
 <template>
-	<Comp ref="radio" role="radio" :aria-checked="active" :class="{ active }" @click="onCheck">
+	<Comp
+		ref="radio"
+		role="radio"
+		:aria-checked="active"
+		:class="{ active }"
+		:tabindex="0"
+		@click="onCheck"
+		@keydown.space.prevent.stop
+		@keyup.space.prevent="onCheck"
+		@keyup.enter.prevent="onCheck"
+	>
 		<div>
 			<div v-ripple class="thumbnail">
 				<slot></slot>
@@ -82,7 +92,7 @@
 
 	.thumbnail {
 		@include round-large;
-		@include chip-shadow(true);
+		@include chip-shadow;
 		@include flex-center;
 		position: relative;
 		width: 100%;
@@ -94,22 +104,34 @@
 		transition: $fallback-transitions, scale $ease-out-back 500ms !important;
 		
 		&:any-hover {
-			@include chip-shadow-hover(true);
+			@include chip-shadow-hover;
+			
+			:comp:focus & {
+				@include chip-shadow-hover-focus;
+			}
 		}
 		
 		&:active {
 			@include button-scale-pressed;
 		}
 		
+		:comp:focus & {
+			@include chip-shadow-focus;
+		}
+		
+		:comp.active:focus & {
+			@include chip-shadow-checked-focus;
+		}
+		
 		:comp.active & {
-			@include chip-shadow-checked(true);
+			@include chip-shadow-checked;
 			
 			:deep(.ripple-circle) {
 				background-color: c(accent-ripple);
 			}
 			
 			&:any-hover {
-				@include chip-shadow-checked-hover(true);
+				@include chip-shadow-checked-hover;
 			}
 		}
 	}

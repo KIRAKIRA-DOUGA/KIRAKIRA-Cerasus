@@ -12,7 +12,7 @@
 	 */
 	async function uploaded(fileList: File[]) {
 		successfulUploaded.value = true;
-		await delay(1500);
+		if (!isPrefersReducedMotion()) await delay(1500);
 		files.push(fileList[0]);
 		showEditor.value = true;
 	}
