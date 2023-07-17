@@ -104,7 +104,8 @@
 		}
 		let moveDirection = MoveDirection.NONE;
 		let prevItem: HTMLElement | null = null;
-		if (prevId === updateIndicatorWithoutAnimation) moveDirection = MoveDirection.IGNORE;
+		if (prevId === updateIndicatorWithoutAnimation || isPrefersReducedMotion())
+			moveDirection = MoveDirection.IGNORE;
 		else {
 			if (prevId !== undefined) prevItem = getChild(prevId);
 			if (prevId !== undefined && prevItem) {

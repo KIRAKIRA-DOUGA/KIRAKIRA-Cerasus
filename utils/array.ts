@@ -25,6 +25,29 @@ export function arrayRemoveItem<T>(array: T[], item: T): boolean {
 }
 
 /**
+ * 删除数组的所有指定项目。
+ * @param array - 数组。
+ * @param item - 项目。
+ */
+export function arrayRemoveAllItem<T>(array: T[], item: T) {
+	while (true) {
+		const index = array.indexOf(item);
+		if (index === -1) return;
+		array.splice(index, 1);
+	}
+}
+
+/**
+ * 仅在数组不包含该项目时，在数组末尾追加该项目。
+ * @param array - 数组。
+ * @param item - 项目。
+ */
+export function arrayPushDistinct<T>(array: T[], item: T) {
+	if (!array.includes(item))
+		array.push(item);
+}
+
+/**
  * 清空数组。
  * @param array - 数组。
  */

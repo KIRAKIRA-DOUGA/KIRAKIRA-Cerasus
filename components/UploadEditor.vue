@@ -99,7 +99,7 @@
 				@change="onChangeThumbnail"
 			/>
 
-			<div class="card left">
+			<div class="toolbox-card left">
 				<div v-ripple class="cover" @click="thumbnailInput?.click()">
 					<!-- 选择封面，裁剪器可以先不做 -->
 					<div class="mask">{{ t.select_cover }}</div>
@@ -135,12 +135,12 @@
 				</Fragment>
 			</div>
 
-			<div class="right">
-				<div class="card">
+			<div class="center">
+				<div class="toolbox-card">
 					<!-- 在这里上传和管理分 P -->
 				</div>
 
-				<div class="card">
+				<div class="toolbox-card">
 					<section>
 						<Subheader icon="header">{{ t.title }}</Subheader>
 						<TextBox v-model="title" required />
@@ -188,7 +188,7 @@
 
 <style scoped lang="scss">
 	$card-gap: 24px;
-	$card-padding: $card-gap;
+	$center-card-padding: $card-gap;
 	$section-gap: $card-gap;
 	$subheader-gap: 8px;
 
@@ -204,31 +204,23 @@
 		}
 	}
 
-	%card-content {
-		display: flex;
-		flex-direction: column;
-		gap: $section-gap;
-	}
-
-	.card {
-		@include round-large;
-		@include card-shadow;
-		padding: $card-padding;
-		@extend %card-content;
-	}
-
 	.left {
 		gap: 16px;
 		align-items: center;
+		width: unset;
 		min-width: 250px;
 		padding: 16px;
 	}
 
-	.right {
+	.center {
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
 		gap: $card-gap;
+		
+		.toolbox-card {
+			padding: $center-card-padding;
+		}
 	}
 
 	section {

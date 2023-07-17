@@ -14,6 +14,15 @@
 		{ color: "purple", subtitle: "Tedeza Rize" },
 		{ color: "green", subtitle: "Ujimatsu Chiya" },
 	] as const;
+	const paletteSection = ref<HTMLElement>();
+
+	onMounted(() => {
+		if (paletteSection.value)
+			for (const item of paletteSection.value.children) {
+				item.classList.remove("light", "dark");
+				item.classList.add(actualTheme.value);
+			}
+	});
 </script>
 
 <template>
@@ -32,7 +41,7 @@
 	</section>
 
 	<Subheader icon="palette">{{ t.palette }}</Subheader>
-	<section grid>
+	<section ref="paletteSection" grid>
 		<SettingsGridItem
 			v-for="item in paletteList"
 			:id="item.color"
@@ -40,7 +49,7 @@
 			v-model="palette"
 			:title="t[item.color]"
 			class="force-color"
-			:class="[item.color]"
+			:class="[item.color, actualTheme]"
 		>
 			<div class="content">
 				<img :src="getPaletteImage(item.color)" alt="Is the Order a Rabbit?" />
@@ -73,18 +82,18 @@
 	.settings-chip-item {
 		--size: small;
 	}
-
+	
 	.settings-grid-item {
 		:deep(.ripple-circle) {
 			z-index: 4;
-			background-color: c(accent-60, 15%); // 不能用：c(accent-ripple);
+			background-color: c(accent-ripple);
 		}
 	}
 
 	.content {
 		@include square(100%);
 		padding: 18px 20px;
-		color: c(accent-50);
+		color: c(accent);
 
 		> * {
 			position: relative;
@@ -127,7 +136,7 @@
 			@include square(100%);
 
 			&.color {
-				background-color: c(accent-50);
+				background-color: c(accent);
 				mix-blend-mode: color;
 				
 				html.dark & {

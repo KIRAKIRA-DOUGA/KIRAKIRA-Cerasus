@@ -17,7 +17,7 @@
 	}>();
 
 	const model = defineModel<T[]>();
-	const single = defineModel<boolean>("single");
+	const single = defineModel<boolean>("single", { default: undefined });
 	const isChecked = computed(() => {
 		// NOTE: 由于期望在点击半选状态后应该切换到选中状态，因此在二元的定义下半选应该归纳于未选中状态下。
 		if (single.value !== undefined)
@@ -38,8 +38,8 @@
 		const nextState: CheckState = nextChecked ? "checked" : "unchecked";
 		const modelValue = model.value ?? [];
 		if (props.value)
-			if (nextChecked) modelValue.push(props.value);
-			else arrayRemoveItem(modelValue, props.value);
+			if (nextChecked) arrayPushDistinct(modelValue, props.value);
+			else arrayRemoveAllItem(modelValue, props.value);
 		model.value = modelValue;
 		single.value = nextChecked;
 		emits("change", { value: checkbox.value.value as T, checkState: nextState, checked: nextChecked });
@@ -53,17 +53,6 @@
 		if (isIndeterminate.value !== checkbox.value.indeterminate)
 			checkbox.value.indeterminate = isIndeterminate.value;
 	}, { immediate: true });
-
-	/**
-	 * 当键盘松开空格键时相当于点击复选框。
-	 * @param e - 键盘事件。
-	 */
-	function onKeyUp(e: KeyboardEvent) {
-		if (e.code === "Space") {
-			e.preventDefault();
-			onChange();
-		}
-	}
 
 	/**
 	 * 当键盘按下方向键时移动到前一个或后一个复选框仅聚焦不选中。
@@ -102,7 +91,7 @@
 		:aria-checked="isChecked"
 		@click="onChange"
 		@keydown="onKeyDown"
-		@keyup="onKeyUp"
+		@keyup.space.prevent="onChange"
 	>
 		<input
 			ref="checkbox"
@@ -159,6 +148,10 @@
 		border-radius: $roundness;
 		box-shadow: inset 0 0 0 $border-size c(icon-color);
 		animation: outer-border-change-back $duration-half $duration-half $ease-in-expo reverse backwards;
+		
+		@media (prefers-reduced-motion: reduce) {
+			animation: outer-border-change-back 0s $ease-in-expo reverse backwards;
+		}
 
 		:comp:any-hover & {
 			background-color: c(hover-overlay);
@@ -187,6 +180,10 @@
 				check-symbol-resize $duration-half $duration-half $ease-out-max backwards,
 				cut-in $duration-half step-start;
 			translate: 0 -1px;
+			
+			@media (prefers-reduced-motion: reduce) {
+				animation: check-symbol-resize 0s $ease-out-max backwards;
+			}
 		}
 	}
 
@@ -197,6 +194,10 @@
 			animation:
 				indeterminate-symbol-resize $duration-half $duration-half $ease-out-max backwards,
 				cut-in $duration-half step-start;
+				
+			@media (prefers-reduced-motion: reduce) {
+				animation: indeterminate-symbol-resize 0s $ease-out-max backwards;
+			}
 		}
 	}
 

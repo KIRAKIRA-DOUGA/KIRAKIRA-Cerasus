@@ -47,17 +47,6 @@
 	});
 
 	/**
-	 * 当键盘松开空格键时相当于点击复选框。
-	 * @param e - 键盘事件。
-	 */
-	function onKeyUp(e: KeyboardEvent) {
-		if (e.code === "Space") {
-			e.preventDefault();
-			onChange();
-		}
-	}
-
-	/**
 	 * 当键盘按下方向键时移动到前一个或后一个单选框聚焦并选中。
 	 * 当键盘按下空格键时不要下滑页面。
 	 * @param e - 键盘事件。
@@ -98,7 +87,7 @@
 		:aria-checked="isChecked"
 		@click="onChange"
 		@keydown="onKeydown"
-		@keyup="onKeyUp"
+		@keyup.space.prevent="onChange"
 	>
 		<input
 			ref="radio"

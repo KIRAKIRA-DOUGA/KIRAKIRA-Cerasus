@@ -78,7 +78,7 @@
 		const nextItems = getScrolledItems(page);
 		const merged = mergePosition(prevItems, nextItems);
 		const animationOptions = (hasExistAnimations: boolean) => ({
-			duration: 500,
+			duration: isPrefersReducedMotion() ? 0 : 500,
 			easing: hasExistAnimations ? eases.easeOutMax : eases.easeInOutSmooth, // 连续快速滚动时切换成缓出插值。
 		});
 		// `Uncaught (in promise) DOMException: The user aborted a request.` 给👴爬！

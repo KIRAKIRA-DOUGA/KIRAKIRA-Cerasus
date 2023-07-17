@@ -9,12 +9,7 @@
 	$force-color: force-color;
 	$selector: if(
 		$is-light,
-		":root, :root.light, .#{$force-color}.light",
-		":root.dark, .#{$force-color}.dark"
-	);
-	$palette-selector: if(
-		$is-light,
-		":root, .#{$force-color}",
+		":root, .#{$force-color}, :root.light, .#{$force-color}.light",
 		":root.dark, .#{$force-color}.dark"
 	);
 
@@ -44,9 +39,7 @@
 				}
 			}
 		}
-	}
 
-	#{$palette-selector} {
 		@each $palette, $accents in $primary-colors {
 			&.#{"" + $palette} {
 				accent-color: themed-color(map.get($secondary-colors, $palette), $is-light);
