@@ -55,6 +55,10 @@
 	button {
 		display: inline-grid;
 		color: white;
+		
+		&[disabled] {
+			pointer-events: none;
+		}
 	}
 
 	.button-content {
@@ -88,9 +92,8 @@
 		}
 
 		button[disabled] > & {
-			background-color: c(accent-disabled);
+			background-color: c(accent-disabled) !important;
 			box-shadow: none !important;
-			pointer-events: none;
 		}
 
 		button:focus > & {
