@@ -116,6 +116,8 @@ export async function animateSize(
 		attachAnimations: [Element, Keyframes][] | false;
 	}> = {},
 ): Promise<Animation | void> {
+	if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) // 用户请求削弱动态效果。
+		duration = 0;
 	startHeight ??= element.clientHeight;
 	startWidth ??= element.clientWidth;
 	await changeFunc?.();
