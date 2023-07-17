@@ -107,3 +107,10 @@
 		}
 	}
 }
+
+/// 是否是特殊形式的强调阴影颜色？
+/// @param {Bool} $special - 是否是特殊形式的强调阴影颜色？
+/// @return {String} 获取阴影色名称。如果非特殊形式则返回具有语义性的 accent-shadow，如果是特殊形式的则返回强调色定义的色号 neutral-10。那么它们俩在功能上有什么区别呢？你试试就知道了，在特殊情况下其实是不一样的。
+@function is-special-accent-shadow($special) {
+	@return if($special, neutral-10, accent-shadow)
+}

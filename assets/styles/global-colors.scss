@@ -1,8 +1,5 @@
 @use "theme/colors" as *;
 @use "theme/internal" as *;
-@use "theme/functions" as *;
-@use "sass:map";
-@use "sass:list";
 
 // 下面的内容是根据 Sass 映射自动转换为 CSS 属性的逻辑代码，不用动。
 // TODO: [兰音] 即将支持相对颜色（Relative colors / rgb(from ...)）来实现改变颜色透明度的功能，然而截至目前除了 Safari 没有浏览器正式支持该功能。
@@ -12,7 +9,12 @@
 	$force-color: force-color;
 	$selector: if(
 		$is-light,
-		":root, .#{$force-color}, :root.light, .#{$force-color}.light",
+		":root, :root.light, .#{$force-color}.light",
+		":root.dark, .#{$force-color}.dark"
+	);
+	$palette-selector: if(
+		$is-light,
+		":root, .#{$force-color}",
 		":root.dark, .#{$force-color}.dark"
 	);
 
@@ -42,7 +44,9 @@
 				}
 			}
 		}
+	}
 
+	#{$palette-selector} {
 		@each $palette, $accents in $primary-colors {
 			&.#{"" + $palette} {
 				accent-color: themed-color(map.get($secondary-colors, $palette), $is-light);

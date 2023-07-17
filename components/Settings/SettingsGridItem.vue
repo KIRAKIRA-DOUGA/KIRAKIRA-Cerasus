@@ -82,7 +82,7 @@
 
 	.thumbnail {
 		@include round-large;
-		@include chip-shadow;
+		@include chip-shadow(true);
 		@include flex-center;
 		position: relative;
 		width: 100%;
@@ -94,7 +94,7 @@
 		transition: $fallback-transitions, scale $ease-out-back 500ms !important;
 		
 		&:any-hover {
-			@include chip-shadow-hover;
+			@include chip-shadow-hover(true);
 		}
 		
 		&:active {
@@ -102,14 +102,14 @@
 		}
 		
 		:comp.active & {
-			@include chip-shadow-checked;
+			@include chip-shadow-checked(true);
 			
 			:deep(.ripple-circle) {
 				background-color: c(accent-ripple);
 			}
 			
 			&:any-hover {
-				@include chip-shadow-checked-hover;
+				@include chip-shadow-checked-hover(true);
 			}
 		}
 	}

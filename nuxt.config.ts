@@ -60,6 +60,8 @@ export default defineNuxtConfig({
 	),
 	css: [
 		"styles/global.scss",
+		"styles/global-colors.scss",
+		"styles/elements/_index.scss",
 	],
 	vite: {
 		plugins: [
