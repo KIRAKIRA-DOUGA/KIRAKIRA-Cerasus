@@ -31,7 +31,6 @@
 			{ id: "danmaku", icon: "clear_all" },
 			{ id: "preference", icon: "star" },
 			{ id: "language", icon: "translate" },
-			{ id: "accessibility", icon: "accessibility" },
 			{ id: "about", icon: "info" },
 			{ id: "acknowledgement", icon: "campaign" },
 		],
@@ -154,7 +153,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 8px;
-		
+
 		> button {
 			width: 100%;
 		}
@@ -343,7 +342,7 @@
 	:deep(section) {
 		@extend %chip;
 		overflow: hidden;
-		
+
 		&[list] > * {
 			$extra-padding: 16px;
 			padding: 10px 20px;
@@ -365,7 +364,7 @@
 				background-color: c(hover-overlay);
 			}
 		}
-		
+
 		&[grid] {
 			@include videos-grid;
 			padding: 20px;
