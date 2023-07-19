@@ -116,13 +116,13 @@ export default defineNuxtConfig({
 		},
 	},
 	nitro: {
-		// devProxy: {
-		// 	"/api": {
-		// 		target: "https://kirakira.dev/api",
-		// 		prependPath: true,
-		// 		changeOrigin: true,
-		// 	},
-		// },
+		devProxy: {
+			"/api": {
+				target: "http://localhost:3000/api",
+				prependPath: true,
+				changeOrigin: true,
+			},
+		},
 		esbuild: {
 			options: {
 				target: "esnext",
@@ -208,7 +208,7 @@ export default defineNuxtConfig({
 	},
 	runtimeConfig: {
 		public: {
-			siteUrl: "https://localhost:3000",
+			siteUrl: "http://localhost:3003",
 		},
 	},
 	components: [
