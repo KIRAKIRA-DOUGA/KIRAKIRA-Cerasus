@@ -1,9 +1,5 @@
 <script setup lang="ts">
 	import mediainfo from "mediainfo.js";
-
-	import { ref } from "vue";
-	import videojs from "video.js";
-
 	const props = defineProps<{
 		src: string;
 	}>();
@@ -31,28 +27,6 @@
 		if (mediaInfos.value) showMediaInfo.value = true;
 	}
 
-	const player = ref(null);
-
-	onMounted(() => {
-		player.value = videojs(player.value,
-			{
-				controls: true,
-				sources: [
-					{
-						src: props.src,
-						type: "application/dash+xml",
-					},
-				],
-			}, () => {
-				player.value.log("onPlayerReady", player.value);
-			});
-	});
-
-	onBeforeUnmount(() => {
-		if (player.value != null)
-			player.value.dispose();
-	});
-
 	/**
 	 * 获取视频详细信息，使用库 `mediainfo.js`。
 	 * @param videoPath - 视频地址。
@@ -79,10 +53,92 @@
 		}
 		showMediaInfo.value = true;
 	}
+
+	watch(() => props.src, () => mediaInfos.value = undefined);
+
+	watch(playing, playing => {
+		if (!video.value) return;
+		video.value[playing ? "play" : "pause"]();
+	});
+
+	watch(currentTime, currentTime => {
+		if (!video.value || isTimeUpdating.value) return;
+		video.value.currentTime = currentTime;
+	});
+
+	watch(preservesPitch, preservesPitch => {
+		if (!video.value) return;
+		video.value.preservesPitch = preservesPitch;
+	});
+
+	watch(playbackRate, playbackRate => {
+		if (!video.value) return;
+		video.value.playbackRate = playbackRate;
+	});
+
+	const player = ref(null);
+
+	onMounted(async () => {
+		if (video.value) onCanPlay({ target: video.value });
+		const dashjs = await import("dashjs");
+
+		player.value = dashjs.MediaPlayer().create();
+		player.value.initialize(video.value, props.src, true);
+		player.updateSettings({
+			streaming: {
+				lowLatencyEnabled: true,
+				// abr: {
+				// 	maxBitrate: { audio: 2000000000000, video: 20000000000000 }, // lmao this can't be right
+				// },
+			},
+		});
+		player.value.attachView(video.value);
+	});
+
+	onBeforeUnmount(() => {
+		if (video.value != null)
+			video.value.destroy();
+	});
+
+	/**
+	 * 当视频已经准备好可以播放时执行的事件。
+	 * @param e - 普通事件。
+	 */
+	function onCanPlay(e: Event | { target: EventTarget }) {
+		const video = e.target as HTMLVideoElement;
+		playing.value = !video.paused;
+		playbackRate.value = video.playbackRate;
+		currentTime.value = video.currentTime;
+		duration.value = video.duration;
+		video.preservesPitch = preservesPitch.value;
+	}
+
+	/**
+	 * 视频时间码变化事件。
+	 * @param e - 普通事件。
+	 */
+	async function onTimeUpdate(e: Event) {
+		const video = e.target as HTMLVideoElement;
+		isTimeUpdating.value = true;
+		currentTime.value = video.currentTime;
+		await nextTick();
+		isTimeUpdating.value = false;
+	}
+
+	/**
+	 * 视频加载缓冲事件。
+	 * @param e - 普通事件。
+	 */
+	function onProgress(e: Event) {
+		const video = e.target as HTMLVideoElement;
+		try {
+			buffered.value = video.buffered.end(0);
+			// TODO: 这个只能获取视频缓存的总长度值，当用户手动跳时间时，会导致显示不准确。待优化。
+		} catch { }
+	}
 </script>
 
 <template>
-	<meta charset="UTF-8" />
 	<Comp>
 		<Alert v-model="showMediaInfo" title="视频详细信息">
 			<Accordion>
@@ -105,10 +161,27 @@
 
 		<div class="main">
 			<video
-				ref="player"
-				class="video-js"
+				ref="video"
+				@play="playing = true"
+				@pause="playing = false"
+				@ratechange="e => playbackRate = (e.target as HTMLVideoElement).playbackRate"
+				@timeupdate="onTimeUpdate"
+				@canplay="onCanPlay"
+				@progress="onProgress"
+				@click="playing = !playing"
+				@dblclick="toggle"
+				@contextmenu.prevent="e => menu = e"
 			>
 			</video>
+			<PlayerVideoController
+				v-model:currentTime="currentTime"
+				v-model:playing="playing"
+				v-model:fullScreen="fullScreen"
+				v-model:playbackRate="playbackRate"
+				:duration="duration"
+				:toggleFullScreen="toggle"
+				:buffered="buffered"
+			/>
 		</div>
 
 		<PlayerVideoPanel />
