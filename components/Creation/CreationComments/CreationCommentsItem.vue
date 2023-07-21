@@ -10,12 +10,15 @@
 		date?: Date;
 		/** 用户 UID。 */
 		uid?: number;
+
+		upvote_score?: number;
 	}>(), {
 		avatar: undefined,
 		username: "匿名",
 		index: undefined,
 		date: () => new Date(),
 		uid: undefined,
+		upvote_score: 0,
 	});
 
 	/** 为该评论加分的值。 */
@@ -32,18 +35,19 @@
 	const pinned = defineModel("pinned", { default: false });
 	const unpinnedCaption = computed(() => pinned.value ? "unpin" : "pin");
 
+	const upvotes = ref(props.upvote_score);
+
 	/**
 	 * 点击加分、减分按钮事件。
 	 * @param button - 点击的按钮是加分还是减分。
 	 * @param [noNestingDolls=false] - 禁止套娃，防止递归调用。
 	 */
-	function onClickLikes(button: "like" | "dislike", noNestingDolls: boolean = false) {
-		const states = { like, likeClicked, dislike, dislikeClicked };
-		const value = states[button], clicked = states[`${button}Clicked`]; // 面向字符串编程。
-		const another = button === "like" ? "dislike" : "like";
-		const isActive = clicked.value = !clicked.value, gain = isActive ? 1 : -1;
-		value.value += gain;
-		if (isActive && states[`${another}Clicked`].value && !noNestingDolls) onClickLikes(another, true);
+	async function onClickLikes(button: "like" | "dislike", noNestingDolls: boolean = false) {
+		const api = useApi();
+		const score = button === "like" ? 1 : -1;
+		await api.upvote(props.index ?? 0, score);
+
+		upvotes.value += score;
 	}
 </script>
 
@@ -68,11 +72,10 @@
 					<div class="likes-wrapper">
 						<div class="likes" :class="{ active: likeClicked }">
 							<SoftButton v-tooltip:bottom="t.bonus_point" icon="thumb_up" @click="onClickLikes('like')" />
-							<span v-if="like">{{ like }}</span>
+							<span v-if="like">{{ upvotes }}</span>
 						</div>
 						<div class="likes" :class="{ active: dislikeClicked }">
 							<SoftButton v-tooltip:bottom="t.minus_point" icon="thumb_down" @click="onClickLikes('dislike')" />
-							<span v-if="dislike">{{ dislike }}</span>
 						</div>
 					</div>
 				</div>
@@ -125,7 +128,7 @@
 
 	.comments {
 		text-align: justify;
-		
+
 		&,
 		:deep(*) {
 			user-select: text;

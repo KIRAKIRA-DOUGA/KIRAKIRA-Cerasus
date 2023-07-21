@@ -20,6 +20,7 @@ export class Comments200ResponseInner {
     'profilePictureUrl'?: string;
     'upvoteCount'?: number;
     'userHasUpvoted'?: boolean;
+    'userHasDownvoted'?: boolean;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -63,6 +64,12 @@ export class Comments200ResponseInner {
         {
             "name": "userHasUpvoted",
             "baseName": "user_has_upvoted",
+            "type": "boolean",
+            "format": ""
+        },
+        {
+            "name": "userHasDownvoted",
+            "baseName": "user_has_downvoted",
             "type": "boolean",
             "format": ""
         }    ];
