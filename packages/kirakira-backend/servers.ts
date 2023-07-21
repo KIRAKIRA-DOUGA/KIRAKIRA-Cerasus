@@ -1,4 +1,4 @@
-import { HttpMethod, RequestContext } from "./http/http";
+import { RequestContext, HttpMethod } from "./http/http";
 
 export interface BaseServerConfiguration {
     makeRequestContext(endpoint: string, httpMethod: HttpMethod): RequestContext;
@@ -14,10 +14,10 @@ export class ServerConfiguration<T extends { [key: string]: string }> implements
     public constructor(private url: string, private variableConfiguration: T) {}
 
     /**
-     * Sets the value of the variables of this server. Variables are included in
+     * Sets the value of the variables of this server. Variables are included in 
      * the `url` of this ServerConfiguration in the form `{variableName}`
      *
-     * @param variableConfiguration a partial variable configuration for the
+     * @param variableConfiguration a partial variable configuration for the 
      * variables contained in the url
      */
     public setVariables(variableConfiguration: Partial<T>) {

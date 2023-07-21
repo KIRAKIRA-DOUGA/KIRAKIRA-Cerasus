@@ -171,6 +171,30 @@ export class ObservableDefaultApi {
 
     /**
      * Get user video data
+     * @param id comment ID
+     * @param score upvote score
+     */
+    public upvote(id: number, score: number, _options?: Configuration): Observable<void> {
+        const requestContextPromise = this.requestFactory.upvote(id, score, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.upvote(rsp)));
+            }));
+    }
+
+    /**
+     * Get user video data
      * @param id user ID
      */
     public users(id: number, _options?: Configuration): Observable<Videos200Response> {

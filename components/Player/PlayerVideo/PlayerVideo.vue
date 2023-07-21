@@ -84,15 +84,18 @@
 
 		player.value = dashjs.MediaPlayer().create();
 		player.value.initialize(video.value, props.src, true);
-		player.updateSettings({
+		player.value.updateSettings({
 			streaming: {
 				lowLatencyEnabled: true,
-				// abr: {
-				// 	maxBitrate: { audio: 2000000000000, video: 20000000000000 }, // lmao this can't be right
-				// },
+				abr: {
+					initialBitrate: { audio: 2000000, video: 2000000 }, // 2mb/s, lol
+					// maxBitrate: { audio: 2000000000000, video: 20000000000000 }, // lmao this can't be right
+				},
 			},
 		});
+
 		player.value.attachView(video.value);
+		console.log(player.value.getAutoSwitchQuality());
 	});
 
 	onBeforeUnmount(() => {
