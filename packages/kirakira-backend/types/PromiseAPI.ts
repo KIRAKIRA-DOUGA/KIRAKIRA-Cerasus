@@ -83,6 +83,16 @@ export class PromiseDefaultApi {
 
     /**
      * Get user video data
+     * @param id comment ID
+     * @param score upvote score
+     */
+    public upvote(id: number, score: number, _options?: Configuration): Promise<void> {
+        const result = this.api.upvote(id, score, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * Get user video data
      * @param id user ID
      */
     public users(id: number, _options?: Configuration): Promise<Videos200Response> {

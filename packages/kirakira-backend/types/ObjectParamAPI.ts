@@ -106,6 +106,21 @@ export interface DefaultApiUploadRequest {
     filename?: Array<HttpFile>
 }
 
+export interface DefaultApiUpvoteRequest {
+    /**
+     * comment ID
+     * @type number
+     * @memberof DefaultApiupvote
+     */
+    id: number
+    /**
+     * upvote score
+     * @type number
+     * @memberof DefaultApiupvote
+     */
+    score: number
+}
+
 export interface DefaultApiUsersRequest {
     /**
      * user ID
@@ -210,6 +225,14 @@ export class ObjectDefaultApi {
      */
     public upload(param: DefaultApiUploadRequest, options?: Configuration): Promise<void> {
         return this.api.upload(param.tags, param.title, param.description, param.filename,  options).toPromise();
+    }
+
+    /**
+     * Get user video data
+     * @param param the request object
+     */
+    public upvote(param: DefaultApiUpvoteRequest, options?: Configuration): Promise<void> {
+        return this.api.upvote(param.id, param.score,  options).toPromise();
     }
 
     /**
