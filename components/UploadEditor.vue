@@ -178,7 +178,7 @@
 					<ToggleSwitch v-model="pushToFeed" icon="feed">{{ t.push_to_feed }}</ToggleSwitch>
 
 					<div class="submit">
-						<Button icon="check" @click="upload(files)">{{ t.upload }}</Button>
+						<Button icon="send" @click="upload(files)">{{ t.upload }}</Button>
 					</div>
 				</div>
 			</div>
@@ -217,7 +217,7 @@
 		flex-direction: column;
 		flex-grow: 1;
 		gap: $card-gap;
-		
+
 		.toolbox-card {
 			padding: $center-card-padding;
 		}
@@ -247,12 +247,12 @@
 			opacity: 0;
 			pointer-events: none;
 		}
-		
+
 		&:any-hover {
 			.mask {
 				opacity: 1;
 			}
-			
+
 			img {
 				filter: brightness(0.75) blur(2px);
 				scale: 115%;
@@ -267,12 +267,12 @@
 			width: 100%;
 			aspect-ratio: 16 / 9;
 			object-fit: cover;
-			
+
 			&:not([src]) {
 				visibility: hidden;
 			}
 		}
-		
+
 		:deep(.ripple-circle) {
 			z-index: 4;
 		}

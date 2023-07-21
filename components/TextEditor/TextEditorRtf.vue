@@ -128,6 +128,9 @@
 	<FlyoutKaomojiMini v-model="flyoutKaomojiMini" @insert="insertKaomoji" @escape="insertKaomoji" />
 
 	<Comp ref="rtfEditor" @keyup.stop.ctrl.m="showRecentKaomojis">
+		<ClientOnly class="inset-box">
+			<EditorContent :editor="editor" />
+		</ClientOnly>
 		<div class="toolbar">
 			<div class="left">
 				<ToolItem :tooltip="t.bold" icon="bold" active="bold" @click="toggleBold" />
@@ -142,38 +145,45 @@
 				<ToolItem :tooltip="t.send" icon="send" @click="sendComment" />
 			</div>
 		</div>
-		<ClientOnly>
-			<EditorContent :editor="editor" />
-		</ClientOnly>
 	</Comp>
 </template>
 
 <style scoped lang="scss">
 	:comp {
+		// @include round-large;
+		// @include card-shadow;
 		@include round-large;
-		@include card-shadow;
-		background-color: c(main-bg);
+		@include control-inner-shadow;
+		overflow: hidden;
+		background-color: c(inset-bg);
 
-		> :not(:empty) {
+		// > :not(:empty) {
+		// padding: 12px;
+		// }
+
+		> :first-child {
 			padding: 12px;
 		}
 
 		.toolbar {
 			@include card-in-card-shadow;
 			display: flex;
+			align-items: center;
 			justify-content: space-between;
-			
+			height: 36px;
+			background-color: c(main-bg, 45%);
+
 			> * {
 				display: flex;
-				gap: 3px;
+				gap: 4px;
 
 				> button {
-					@include round-small;
 					@include flex-center;
-					$size: 28px;
+					@include oval;
+					$size: 36px;
 					min-width: $size;
 					height: $size;
-					padding: 0 6px;
+					// padding: 0 6px;
 					color: c(icon-color);
 
 					.icon {
@@ -188,12 +198,12 @@
 						color: white;
 						background-color: c(accent);
 
-						&:focus {
+						&:focus-visible {
 							@include button-shadow-focus;
 						}
 					}
 
-					&:focus {
+					&:focus-visible {
 						@include button-shadow-unchecked-focus;
 					}
 				}
