@@ -41,6 +41,15 @@ export class PromiseDefaultApi {
     }
 
     /**
+     * Delete a comment
+     * @param id comment ID
+     */
+    public deleteComment(id: number, _options?: Configuration): Promise<void> {
+        const result = this.api.deleteComment(id, _options);
+        return result.toPromise();
+    }
+
+    /**
      * Log the user in
      * @param username search string
      * @param password sort category

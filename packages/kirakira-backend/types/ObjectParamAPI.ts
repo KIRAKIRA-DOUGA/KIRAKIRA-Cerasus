@@ -40,6 +40,15 @@ export interface DefaultApiCommentsRequest {
     id: number
 }
 
+export interface DefaultApiDeleteCommentRequest {
+    /**
+     * comment ID
+     * @type number
+     * @memberof DefaultApideleteComment
+     */
+    id: number
+}
+
 export interface DefaultApiLoginRequest {
     /**
      * search string
@@ -193,6 +202,14 @@ export class ObjectDefaultApi {
      */
     public comments(param: DefaultApiCommentsRequest, options?: Configuration): Promise<Array<Comments200ResponseInner>> {
         return this.api.comments(param.id,  options).toPromise();
+    }
+
+    /**
+     * Delete a comment
+     * @param param the request object
+     */
+    public deleteComment(param: DefaultApiDeleteCommentRequest, options?: Configuration): Promise<void> {
+        return this.api.deleteComment(param.id,  options).toPromise();
     }
 
     /**
