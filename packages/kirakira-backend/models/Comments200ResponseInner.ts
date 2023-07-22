@@ -21,6 +21,7 @@ export class Comments200ResponseInner {
     'upvoteCount'?: number;
     'userHasUpvoted'?: boolean;
     'userHasDownvoted'?: boolean;
+    'authoredByCurrentUser'?: boolean;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -70,6 +71,12 @@ export class Comments200ResponseInner {
         {
             "name": "userHasDownvoted",
             "baseName": "user_has_downvoted",
+            "type": "boolean",
+            "format": ""
+        },
+        {
+            "name": "authoredByCurrentUser",
+            "baseName": "authored_by_current_user",
             "type": "boolean",
             "format": ""
         }    ];
