@@ -84,9 +84,7 @@
 
 <template>
 	<NuxtLayout :name="layout">
-		<RouterView v-slot="{ Component }">
-			<component :is="Component" />
-		</RouterView>
+		<NuxtPage />
 	</NuxtLayout>
 	<Fragment id="teleports">
 		<Toasts />

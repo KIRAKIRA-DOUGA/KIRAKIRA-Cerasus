@@ -79,6 +79,16 @@ export class PromiseDefaultApi {
     }
 
     /**
+     * Reset password
+     * @param oldpassword old password
+     * @param newpassword new password
+     */
+    public resetPassword(oldpassword: string, newpassword: string, _options?: Configuration): Promise<void> {
+        const result = this.api.resetPassword(oldpassword, newpassword, _options);
+        return result.toPromise();
+    }
+
+    /**
      * Upload a new video
      * @param tags list of video tags
      * @param title video title

@@ -3,24 +3,24 @@
 	// 暂时不要用在线视频链接，虽然可以用，但是每次查看视频详细信息我都要等好久。
 
 	const route = useRoute();
-	const kvid = +route.params.kvid;
+	const kvid = () => route.params.kvid;
 	const videoDetails = ref<VideoDetail200Response>();
 	const videoSource = ref<string>();
 	const comments = ref<Comments200ResponseInner[]>([]);
 
 	// Fetch video details
-	watch(() => kvid, () => {
+	watch(() => kvid(), newkvid => {
 		const api = useApi();
-		api.videoDetail(kvid).then(video => {
+		api.videoDetail(newkvid).then(video => {
 			videoDetails.value = video;
 			videoSource.value = video.mPDLoc;
 		}).catch(error => console.error(error));
 	}, { immediate: true });
 
 	// Fetch comments
-	watch(() => kvid, () => {
+	watch(() => kvid(), newkvid => {
 		const api = useApi();
-		api.comments(kvid).then(x => {
+		api.comments(newkvid).then(x => {
 			for (const comment of x)
 				comments.value.push(comment);
 		}).catch(error => console.error(error));
