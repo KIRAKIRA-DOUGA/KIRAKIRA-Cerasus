@@ -71,10 +71,14 @@
 			formData.append(`filename[${index}]`, file);
 		});
 
+		// oh no no no NO!!!
+		formData.append("filename[1]", thumbnail.value);
+
+
 		axios({
 			method: "POST",
 			// TODO
-			url: "https://localhost:3000/api/upload",
+			url: "http://localhost:3000/api/upload",
 			data: formData,
 			headers: {
 				"Content-Type": "multipart/form-data",

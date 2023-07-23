@@ -13,7 +13,7 @@
 		const api = useApi();
 		api.videoDetail(kvid).then(video => {
 			videoDetails.value = video;
-			videoSource.value = video.mPDLoc!.split(".mpd")[0];
+			videoSource.value = video.mPDLoc;
 		}).catch(error => console.error(error));
 	}, { immediate: true });
 
