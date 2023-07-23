@@ -82,15 +82,13 @@
 	 * sends comment to the backend.
 	 */
 	function sendComment() {
-		const { videoId } = props;
-		if (!videoId || !Number.isFinite(videoId) || videoId < 0) return;
 		const api = useApi();
 		const content = editor.value?.getHTML() ?? "";
 		const utf8Encode = new TextEncoder();
 		const encodedContent = utf8Encode.encode(content) as unknown as string;
 
 		// TODO: video ID
-		api.comment(0, encodedContent, videoId).then(video => {
+		api.comment(0, encodedContent, props.videoId).then(video => {
 			// TODO
 		}).catch(error => console.error(error));
 	}
