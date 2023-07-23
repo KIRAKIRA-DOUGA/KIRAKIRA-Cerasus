@@ -88,6 +88,21 @@ export interface DefaultApiRegisterRequest {
     email: string
 }
 
+export interface DefaultApiResetPasswordRequest {
+    /**
+     * old password
+     * @type string
+     * @memberof DefaultApiresetPassword
+     */
+    oldpassword: string
+    /**
+     * new password
+     * @type string
+     * @memberof DefaultApiresetPassword
+     */
+    newpassword: string
+}
+
 export interface DefaultApiUploadRequest {
     /**
      * list of video tags
@@ -234,6 +249,14 @@ export class ObjectDefaultApi {
      */
     public register(param: DefaultApiRegisterRequest, options?: Configuration): Promise<void> {
         return this.api.register(param.username, param.password, param.email,  options).toPromise();
+    }
+
+    /**
+     * Reset password
+     * @param param the request object
+     */
+    public resetPassword(param: DefaultApiResetPasswordRequest, options?: Configuration): Promise<void> {
+        return this.api.resetPassword(param.oldpassword, param.newpassword,  options).toPromise();
     }
 
     /**

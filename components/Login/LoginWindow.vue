@@ -12,9 +12,14 @@
 	const coverMoveLeft = computed(() => currentPage.value !== "login");
 	const email = ref("");
 	const password = ref("");
+	const oldPassword = ref("");
+
+	const username = ref("");
+
 	const confirmPassword = ref("");
+	const newPassword = ref("");
+
 	const inviteCode = ref("");
-	const verificationCode = ref("");
 	const _isLogining = ref(false);
 	const isLogining = computed({
 		get: () => _isLogining.value,
@@ -29,6 +34,19 @@
 		const oapiClient = useApi();
 		await oapiClient.login(email.value, password.value);
 		isLogining.value = true;
+	}
+
+	async function registerUser() {
+		const oapiClient = useApi();
+		await oapiClient.register(username.value, password.value, email.value);
+		isLogining.value = true;
+		open.value = false;
+	}
+
+	async function resetPassword() {
+		const oapiClient = useApi();
+		await oapiClient.resetPassword(oldPassword.value, newPassword.value);
+		open.value = false;
 	}
 
 	const open = computed({
@@ -98,6 +116,7 @@
 						</div>
 						<div class="action margin-left-inset margin-right-inset">
 							<Button @click="currentPage = 'forget'">忘记了密码</Button>
+							<Button @click="currentPage = 'reset'">Reset</Button>
 							<Button @click="currentPage = 'register'">没有账号？注册</Button>
 						</div>
 					</div>
@@ -111,21 +130,20 @@
 						<div class="form">
 							<TextBox
 								v-model="email"
-								type="email"
-								placeholder="邮箱"
-								icon="email"
-							/>
-							<TextBox
-								v-model="password"
-								type="password"
-								placeholder="密码"
-								icon="lock"
-							/>
-							<TextBox
-								v-model="inviteCode"
 								type="text"
-								placeholder="邀请码"
-								icon="link"
+								placeholder="验证码"
+								icon="verified"
+							/>
+							<TextBox
+								v-model="username"
+								type="text"
+								placeholder="username"
+							/>
+							<TextBox
+								v-model="confirmPassword"
+								type="password"
+								placeholder="确认密码"
+								icon="lock"
 							/>
 						</div>
 						<div class="action margin-left-inset">
@@ -141,13 +159,18 @@
 						<div class="form">
 							<div>我们已向您的邮箱中发送了验证码，请在此输入验证码。<br />如未收到，您可以重新发送。</div>
 							<TextBox
-								v-model="verificationCode"
+								v-model="email"
 								type="text"
 								placeholder="验证码"
 								icon="verified"
 							/>
 							<TextBox
-								v-model="confirmPassword"
+								v-model="username"
+								type="text"
+								placeholder="username"
+							/>
+							<TextBox
+								v-model="password"
 								type="password"
 								placeholder="确认密码"
 								icon="lock"
@@ -155,7 +178,7 @@
 						</div>
 						<div class="action">
 							<Button icon="arrow_left" class="button" @click="currentPage = 'register'">上一步</Button>
-							<Button icon="check" class="button" @click="open = false">完成</Button>
+							<Button icon="check" class="button" @click="registerUser()">完成</Button>
 						</div>
 					</div>
 					<div class="forget">
@@ -185,21 +208,21 @@
 						<div class="form">
 							<div>您已成功重置密码。(/≧▽≦)/<br />请务必牢记您的新密码。</div>
 							<TextBox
-								v-model="password"
+								v-model="oldPassword"
 								type="password"
-								placeholder="新密码"
+								placeholder="current password"
 								icon="lock"
 							/>
 							<TextBox
-								v-model="confirmPassword"
+								v-model="newPassword"
 								type="password"
-								placeholder="确认新密码"
+								placeholder="new password"
 								icon="lock"
 							/>
 						</div>
 						<div class="action margin-left-inset">
 							<div></div>
-							<Button icon="check" class="button" @click="open = false">完成</Button>
+							<Button icon="check" class="button" @click="resetPassword()">完成</Button>
 						</div>
 					</div>
 					<div class="register-title">

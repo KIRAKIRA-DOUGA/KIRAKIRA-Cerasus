@@ -10,6 +10,7 @@ Method | HTTP request | Description
 [**login**](DefaultApi.md#login) | **POST** /login | Log the user in
 [**logout**](DefaultApi.md#logout) | **GET** /logout | Log user out
 [**register**](DefaultApi.md#register) | **POST** /register | Register user
+[**resetPassword**](DefaultApi.md#resetPassword) | **POST** /reset_password | Reset password
 [**upload**](DefaultApi.md#upload) | **POST** /upload | Upload a new video
 [**upvote**](DefaultApi.md#upvote) | **GET** /upvote/{id} | Get user video data
 [**users**](DefaultApi.md#users) | **GET** /users/{id} | Get user video data
@@ -346,6 +347,63 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | registration succeeded |  -  |
+**0** | Unexpected error |  -  |
+
+[[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
+
+# **resetPassword**
+> void resetPassword()
+
+
+### Example
+
+
+```typescript
+import {  } from '';
+import * as fs from 'fs';
+
+const configuration = .createConfiguration();
+const apiInstance = new .DefaultApi(configuration);
+
+let body:.DefaultApiResetPasswordRequest = {
+  // string | old password
+  oldpassword: "oldpassword_example",
+  // string | new password
+  newpassword: "newpassword_example",
+};
+
+apiInstance.resetPassword(body).then((data:any) => {
+  console.log('API called successfully. Returned data: ' + data);
+}).catch((error:any) => console.error(error));
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **oldpassword** | [**string**] | old password | defaults to undefined
+ **newpassword** | [**string**] | new password | defaults to undefined
+
+
+### Return type
+
+**void**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Password changed |  -  |
 **0** | Unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
