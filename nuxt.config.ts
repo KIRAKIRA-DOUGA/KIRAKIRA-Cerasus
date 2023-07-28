@@ -59,9 +59,11 @@ export default defineNuxtConfig({
 		"api",
 	),
 	css: [
+		"video.js/dist/video-js.css",
 		"styles/global.scss",
 		"styles/global-colors.scss",
 		"styles/elements/_index.scss",
+
 	],
 	vite: {
 		plugins: [
@@ -75,6 +77,11 @@ export default defineNuxtConfig({
 			],
 			esbuildOptions: {
 				target: "esnext",
+			},
+		},
+		server: {
+			hmr: {
+				protocol: "ws",
 			},
 		},
 		vue: {
@@ -201,7 +208,7 @@ export default defineNuxtConfig({
 	},
 	runtimeConfig: {
 		public: {
-			siteUrl: "https://localhost:3000",
+			siteUrl: "http://localhost:3003",
 		},
 	},
 	components: [

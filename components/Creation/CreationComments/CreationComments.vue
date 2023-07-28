@@ -40,12 +40,13 @@
 				v-model:like="comment.upvoteCount"
 				v-model:dislike="dislike"
 				v-model:likeClicked="comment.userHasUpvoted"
-				v-model:dislikeClicked="dislikeClicked"
+				v-model:dislikeClicked="comment.userHasDownvoted"
 				v-model:pinned="pinned"
 				:index="comment.id"
 				:username="comment.fullname"
 				:avatar="comment.profilePictureUrl"
 				:date="new Date(comment.created!)"
+				:upvote_score="comment.upvoteCount"
 			>
 				<!-- eslint-disable-next-line vue/no-v-html -->
 				<div v-html="comment.content"></div>

@@ -1,15 +1,18 @@
 # .DefaultApi
 
-All URIs are relative to *https://localhost:3000/api*
+All URIs are relative to *http://localhost:3003/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**comment**](DefaultApi.md#comment) | **POST** /comment | Comment on a video
 [**comments**](DefaultApi.md#comments) | **GET** /comments/{id} | Get comments for video ID
+[**deleteComment**](DefaultApi.md#deleteComment) | **POST** /delete_comment | Delete a comment
 [**login**](DefaultApi.md#login) | **POST** /login | Log the user in
 [**logout**](DefaultApi.md#logout) | **GET** /logout | Log user out
 [**register**](DefaultApi.md#register) | **POST** /register | Register user
+[**resetPassword**](DefaultApi.md#resetPassword) | **POST** /reset_password | Reset password
 [**upload**](DefaultApi.md#upload) | **POST** /upload | Upload a new video
+[**upvote**](DefaultApi.md#upvote) | **GET** /upvote/{id} | Get user video data
 [**users**](DefaultApi.md#users) | **GET** /users/{id} | Get user video data
 [**videoDetail**](DefaultApi.md#videoDetail) | **GET** /videos/{id} | Get list of videos
 [**videos**](DefaultApi.md#videos) | **GET** /videos | Get list of videos
@@ -125,6 +128,60 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | get video details for a specific video |  -  |
+**0** | Unexpected error |  -  |
+
+[[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
+
+# **deleteComment**
+> void deleteComment()
+
+
+### Example
+
+
+```typescript
+import {  } from '';
+import * as fs from 'fs';
+
+const configuration = .createConfiguration();
+const apiInstance = new .DefaultApi(configuration);
+
+let body:.DefaultApiDeleteCommentRequest = {
+  // number | comment ID
+  id: 1,
+};
+
+apiInstance.deleteComment(body).then((data:any) => {
+  console.log('API called successfully. Returned data: ' + data);
+}).catch((error:any) => console.error(error));
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | [**number**] | comment ID | defaults to undefined
+
+
+### Return type
+
+**void**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Comment deleted |  -  |
 **0** | Unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
@@ -294,6 +351,63 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
+# **resetPassword**
+> void resetPassword()
+
+
+### Example
+
+
+```typescript
+import {  } from '';
+import * as fs from 'fs';
+
+const configuration = .createConfiguration();
+const apiInstance = new .DefaultApi(configuration);
+
+let body:.DefaultApiResetPasswordRequest = {
+  // string | old password
+  oldpassword: "oldpassword_example",
+  // string | new password
+  newpassword: "newpassword_example",
+};
+
+apiInstance.resetPassword(body).then((data:any) => {
+  console.log('API called successfully. Returned data: ' + data);
+}).catch((error:any) => console.error(error));
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **oldpassword** | [**string**] | old password | defaults to undefined
+ **newpassword** | [**string**] | new password | defaults to undefined
+
+
+### Return type
+
+**void**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Password changed |  -  |
+**0** | Unexpected error |  -  |
+
+[[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
+
 # **upload**
 > void upload()
 
@@ -357,6 +471,63 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Logout successful |  -  |
+**0** | Unexpected error |  -  |
+
+[[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
+
+# **upvote**
+> void upvote()
+
+
+### Example
+
+
+```typescript
+import {  } from '';
+import * as fs from 'fs';
+
+const configuration = .createConfiguration();
+const apiInstance = new .DefaultApi(configuration);
+
+let body:.DefaultApiUpvoteRequest = {
+  // number | comment ID
+  id: 1,
+  // number | upvote score
+  score: 3.14,
+};
+
+apiInstance.upvote(body).then((data:any) => {
+  console.log('API called successfully. Returned data: ' + data);
+}).catch((error:any) => console.error(error));
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | [**number**] | comment ID | defaults to undefined
+ **score** | [**number**] | upvote score | defaults to undefined
+
+
+### Return type
+
+**void**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Upvote success |  -  |
 **0** | Unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)

@@ -40,6 +40,15 @@ export interface DefaultApiCommentsRequest {
     id: number
 }
 
+export interface DefaultApiDeleteCommentRequest {
+    /**
+     * comment ID
+     * @type number
+     * @memberof DefaultApideleteComment
+     */
+    id: number
+}
+
 export interface DefaultApiLoginRequest {
     /**
      * search string
@@ -79,6 +88,21 @@ export interface DefaultApiRegisterRequest {
     email: string
 }
 
+export interface DefaultApiResetPasswordRequest {
+    /**
+     * old password
+     * @type string
+     * @memberof DefaultApiresetPassword
+     */
+    oldpassword: string
+    /**
+     * new password
+     * @type string
+     * @memberof DefaultApiresetPassword
+     */
+    newpassword: string
+}
+
 export interface DefaultApiUploadRequest {
     /**
      * list of video tags
@@ -104,6 +128,21 @@ export interface DefaultApiUploadRequest {
      * @memberof DefaultApiupload
      */
     filename?: Array<HttpFile>
+}
+
+export interface DefaultApiUpvoteRequest {
+    /**
+     * comment ID
+     * @type number
+     * @memberof DefaultApiupvote
+     */
+    id: number
+    /**
+     * upvote score
+     * @type number
+     * @memberof DefaultApiupvote
+     */
+    score: number
 }
 
 export interface DefaultApiUsersRequest {
@@ -181,6 +220,14 @@ export class ObjectDefaultApi {
     }
 
     /**
+     * Delete a comment
+     * @param param the request object
+     */
+    public deleteComment(param: DefaultApiDeleteCommentRequest, options?: Configuration): Promise<void> {
+        return this.api.deleteComment(param.id,  options).toPromise();
+    }
+
+    /**
      * Log the user in
      * @param param the request object
      */
@@ -205,11 +252,27 @@ export class ObjectDefaultApi {
     }
 
     /**
+     * Reset password
+     * @param param the request object
+     */
+    public resetPassword(param: DefaultApiResetPasswordRequest, options?: Configuration): Promise<void> {
+        return this.api.resetPassword(param.oldpassword, param.newpassword,  options).toPromise();
+    }
+
+    /**
      * Upload a new video
      * @param param the request object
      */
     public upload(param: DefaultApiUploadRequest, options?: Configuration): Promise<void> {
         return this.api.upload(param.tags, param.title, param.description, param.filename,  options).toPromise();
+    }
+
+    /**
+     * Get user video data
+     * @param param the request object
+     */
+    public upvote(param: DefaultApiUpvoteRequest, options?: Configuration): Promise<void> {
+        return this.api.upvote(param.id, param.score,  options).toPromise();
     }
 
     /**

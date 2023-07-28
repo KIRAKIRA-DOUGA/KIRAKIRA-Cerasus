@@ -1,6 +1,5 @@
 <script setup lang="ts">
 	import mediainfo from "mediainfo.js";
-
 	const props = defineProps<{
 		src: string;
 	}>();
@@ -77,9 +76,30 @@
 		video.value.playbackRate = playbackRate;
 	});
 
-	onMounted(() => {
+	const player = ref(null);
+
+	onMounted(async () => {
 		if (video.value) onCanPlay({ target: video.value });
+		const dashjs = await import("dashjs");
+
+		player.value = dashjs.MediaPlayer().create();
+		player.value.initialize(video.value, props.src, true);
+		player.value.updateSettings({
+			streaming: {
+				abr: {
+					initialBitrate: { audio: 2000000, video: 2000000 }, // 2mb/s, lol
+					// maxBitrate: { audio: 2000000000000, video: 20000000000000 }, // lmao this can't be right
+				},
+			},
+		});
+
+		player.value.attachView(video.value);
 	});
+
+	// onBeforeUnmount(() => {
+	// 	if (video.value != null)
+	// 		video.value.destroy();
+	// });
 
 	/**
 	 * 当视频已经准备好可以播放时执行的事件。
@@ -153,8 +173,6 @@
 				@dblclick="toggle"
 				@contextmenu.prevent="e => menu = e"
 			>
-				<source :src="src" type="video/webm" />
-				<source :src="src" type="video/mp4" />
 			</video>
 			<PlayerVideoController
 				v-model:currentTime="currentTime"

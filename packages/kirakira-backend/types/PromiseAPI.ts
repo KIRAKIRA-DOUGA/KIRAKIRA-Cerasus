@@ -41,6 +41,15 @@ export class PromiseDefaultApi {
     }
 
     /**
+     * Delete a comment
+     * @param id comment ID
+     */
+    public deleteComment(id: number, _options?: Configuration): Promise<void> {
+        const result = this.api.deleteComment(id, _options);
+        return result.toPromise();
+    }
+
+    /**
      * Log the user in
      * @param username search string
      * @param password sort category
@@ -70,6 +79,16 @@ export class PromiseDefaultApi {
     }
 
     /**
+     * Reset password
+     * @param oldpassword old password
+     * @param newpassword new password
+     */
+    public resetPassword(oldpassword: string, newpassword: string, _options?: Configuration): Promise<void> {
+        const result = this.api.resetPassword(oldpassword, newpassword, _options);
+        return result.toPromise();
+    }
+
+    /**
      * Upload a new video
      * @param tags list of video tags
      * @param title video title
@@ -78,6 +97,16 @@ export class PromiseDefaultApi {
      */
     public upload(tags: Array<string>, title: string, description: string, filename?: Array<HttpFile>, _options?: Configuration): Promise<void> {
         const result = this.api.upload(tags, title, description, filename, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * Get user video data
+     * @param id comment ID
+     * @param score upvote score
+     */
+    public upvote(id: number, score: number, _options?: Configuration): Promise<void> {
+        const result = this.api.upvote(id, score, _options);
         return result.toPromise();
     }
 

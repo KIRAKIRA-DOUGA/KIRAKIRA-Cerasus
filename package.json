@@ -21,7 +21,7 @@
 	"author": "KIRAKIRA Project Team",
 	"scripts": {
 		"build": "nuxt build && nuxt start",
-		"dev": "cross-env HOST=0.0.0.0 nuxt dev --https --ssl-cert server/server.cer --ssl-key server/server.key",
+		"dev": "cross-env HOST=0.0.0.0 nuxt dev -p 3003",
 		"dev-http": "cross-env HOST=0.0.0.0 nuxt dev",
 		"generate": "nuxt generate",
 		"preview": "nuxt preview",
@@ -100,6 +100,7 @@
 		"@vueuse/nuxt": "^9.13.0",
 		"axios": "^0.27.2",
 		"css-doodle": "^0.34.3",
+		"dashjs": "^4.7.1",
 		"gsap": "^3.11.4",
 		"js-confetti": "^0.11.0",
 		"kirakira-backend": "file:packages/kirakira-backend",
@@ -109,6 +110,7 @@
 		"mitt": "^3.0.0",
 		"nuxt-icons": "^3.2.1",
 		"pinia": "^2.1.3",
+		"video.js": "^8.3.0",
 		"vue-audio-visual": "^3.0.3",
 		"vue-virtual-scroller": "^2.0.0-beta.8"
 	},
