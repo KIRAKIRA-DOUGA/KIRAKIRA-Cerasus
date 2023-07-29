@@ -12,7 +12,7 @@
 
 import { HttpFile } from '../http/http';
 
-export class Videos200ResponseVideosInner {
+export class Users200ResponseVideosInner {
     'title'?: string;
     'videoID'?: number;
     'views'?: number;
@@ -20,7 +20,6 @@ export class Videos200ResponseVideosInner {
     'authorName'?: string;
     'thumbnailLoc'?: string;
     'rating'?: number;
-    'videoDuration'?: number;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -66,16 +65,10 @@ export class Videos200ResponseVideosInner {
             "baseName": "Rating",
             "type": "number",
             "format": ""
-        },
-        {
-            "name": "videoDuration",
-            "baseName": "VideoDuration",
-            "type": "number",
-            "format": ""
         }    ];
 
     static getAttributeTypeMap() {
-        return Videos200ResponseVideosInner.attributeTypeMap;
+        return Users200ResponseVideosInner.attributeTypeMap;
     }
 
     public constructor() {

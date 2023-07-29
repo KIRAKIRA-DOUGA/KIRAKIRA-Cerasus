@@ -101,7 +101,7 @@
 				:image="video.thumbnailLoc"
 				:date="new Date()"
 				:watchedCount="video.views"
-				:duration="new Duration(2, 33)"
+				:duration="new Duration(video.videoDuration / 60, video.videoDuration % 60)"
 			>{{ video.title }}</ThumbVideo>
 		</div>
 		<Pagination
