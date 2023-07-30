@@ -1,6 +1,7 @@
 <script setup lang="ts">
 	import { LocaleObject } from "@nuxtjs/i18n/dist/runtime/composables";
 	const { locale: currentLocale, locales } = useI18n();
+	
 	const localeModel = computed({
 		get: () => currentLocale.value,
 		set: value => switchLanguage(value),
