@@ -74,8 +74,7 @@ const English: LocaleIdentifiers = {
 	user_settings: "User settings",
 	app_settings: "App settings",
 	nickname: "Nickname",
-	nickname_requirements:
-		'1~20 characters, including only upper & lower case Latin letters, numbers, common Hiragana/Katakana, Chinese characters, special symbols "-", "_"',
+	nickname_requirements: '1~20 characters, including only upper & lower case Latin letters, numbers, common Hiragana/Katakana, Chinese characters, special symbols "-", "_"',
 	gender: "Gender",
 	male: "Male",
 	female: "Female",
