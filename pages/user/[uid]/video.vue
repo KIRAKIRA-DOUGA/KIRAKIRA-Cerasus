@@ -49,7 +49,7 @@
 				<Subheader icon="sort">{{ t.sort_by }}</Subheader>
 				<Sort v-model="sort">
 					<SortItem id="date" preferOrder="descending">{{ t.upload_date }}</SortItem>
-					<SortItem id="view" preferOrder="descending">{{ t.sort_play }}</SortItem>
+					<SortItem id="view" preferOrder="descending">{{ t.sort_playback }}</SortItem>
 					<SortItem id="danmaku" preferOrder="descending">{{ t.sort_danmaku }}</SortItem>
 					<SortItem id="comment" preferOrder="descending">{{ t.sort_comment }}</SortItem>
 					<SortItem id="favorite" preferOrder="descending">{{ t.sort_favorite }}</SortItem>
