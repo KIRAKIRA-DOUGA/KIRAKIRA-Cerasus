@@ -131,15 +131,15 @@
 		}
 	}
 
-	.tab-bar {
-		--loose: true;
-	}
-
 	.category-tab {
-		.items {
-			gap: 2rem;
+		--loose: true;
+		margin-left: -8px;
+
+		:deep(.items) {
+			gap: 0;
 
 			> * {
+				width: 72px;
 				font-weight: 500;
 			}
 		}
