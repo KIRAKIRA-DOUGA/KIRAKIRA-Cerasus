@@ -91,7 +91,7 @@
 			<TabItem id="game" direction="vertical-reverse" :badge="233">{{ t.category_game }}</TabItem>
 			<TabItem id="other" direction="vertical-reverse" :badge="233">{{ t.category_other }}</TabItem>
 		</TabBar>
-		<Subheader icon="upload" :badge="numberOfItems">{{ t.latest_uploads }}</Subheader>
+		<Subheader icon="upload" :badge="numberOfItems">{{ t.latest }}</Subheader>
 		<div class="videos-grid">
 			<ThumbVideo
 				v-for="video in videos?.videos"
