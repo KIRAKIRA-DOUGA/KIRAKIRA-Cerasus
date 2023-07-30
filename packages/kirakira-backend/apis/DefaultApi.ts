@@ -8,6 +8,7 @@ import {canConsumeForm, isCodeInRange} from '../util';
 import {SecurityAuthentication} from '../auth/auth';
 
 
+import { Categories200ResponseInner } from '../models/Categories200ResponseInner';
 import { Comments200ResponseInner } from '../models/Comments200ResponseInner';
 import { VideoDetail200Response } from '../models/VideoDetail200Response';
 import { Videos200Response } from '../models/Videos200Response';
@@ -16,6 +17,29 @@ import { Videos200Response } from '../models/Videos200Response';
  * no description
  */
 export class DefaultApiRequestFactory extends BaseAPIRequestFactory {
+
+    /**
+     * Get category data
+     */
+    public async categories(_options?: Configuration): Promise<RequestContext> {
+        let _config = _options || this.configuration;
+
+        // Path Params
+        const localVarPath = '/categories';
+
+        // Make Request Context
+        const requestContext = _config.baseServer.makeRequestContext(localVarPath, HttpMethod.GET);
+        requestContext.setHeaderParam("Accept", "application/json, */*;q=0.8")
+
+
+        
+        const defaultAuth: SecurityAuthentication | undefined = _options?.authMethods?.default || this.configuration?.authMethods?.default
+        if (defaultAuth?.applySecurityAuthentication) {
+            await defaultAuth?.applySecurityAuthentication(requestContext);
+        }
+
+        return requestContext;
+    }
 
     /**
      * Comment on a video
@@ -301,9 +325,10 @@ export class DefaultApiRequestFactory extends BaseAPIRequestFactory {
      * @param tags list of video tags
      * @param title video title
      * @param description video description
+     * @param category video description
      * @param filename 
      */
-    public async upload(tags: Array<string>, title: string, description: string, filename?: Array<HttpFile>, _options?: Configuration): Promise<RequestContext> {
+    public async upload(tags: Array<string>, title: string, description: string, category: string, filename?: Array<HttpFile>, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
 
         // verify required parameter 'tags' is not null or undefined
@@ -324,6 +349,12 @@ export class DefaultApiRequestFactory extends BaseAPIRequestFactory {
         }
 
 
+        // verify required parameter 'category' is not null or undefined
+        if (category === null || category === undefined) {
+            throw new RequiredError("DefaultApi", "upload", "category");
+        }
+
+
 
         // Path Params
         const localVarPath = '/upload';
@@ -340,6 +371,9 @@ export class DefaultApiRequestFactory extends BaseAPIRequestFactory {
 
         // Header Params
         requestContext.setHeaderParam("description", ObjectSerializer.serialize(description, "string", ""));
+
+        // Header Params
+        requestContext.setHeaderParam("category", ObjectSerializer.serialize(category, "string", ""));
 
         // Form Params
         const useForm = canConsumeForm([
@@ -482,13 +516,15 @@ export class DefaultApiRequestFactory extends BaseAPIRequestFactory {
     /**
      * Get list of videos
      * @param search search string
-     * @param category sort category
+     * @param sortCategory sort category
      * @param order sort category
      * @param unapproved sort category
      * @param pageNumber page number
+     * @param category category
      */
-    public async videos(search?: string, category?: string, order?: string, unapproved?: string, pageNumber?: number, _options?: Configuration): Promise<RequestContext> {
+    public async videos(search?: string, sortCategory?: string, order?: string, unapproved?: string, pageNumber?: number, category?: string, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
+
 
 
 
@@ -506,7 +542,7 @@ export class DefaultApiRequestFactory extends BaseAPIRequestFactory {
         requestContext.setHeaderParam("search", ObjectSerializer.serialize(search, "string", "byte"));
 
         // Header Params
-        requestContext.setHeaderParam("category", ObjectSerializer.serialize(category, "string", ""));
+        requestContext.setHeaderParam("sortCategory", ObjectSerializer.serialize(sortCategory, "string", ""));
 
         // Header Params
         requestContext.setHeaderParam("order", ObjectSerializer.serialize(order, "string", ""));
@@ -516,6 +552,9 @@ export class DefaultApiRequestFactory extends BaseAPIRequestFactory {
 
         // Header Params
         requestContext.setHeaderParam("pageNumber", ObjectSerializer.serialize(pageNumber, "number", ""));
+
+        // Header Params
+        requestContext.setHeaderParam("category", ObjectSerializer.serialize(category, "string", "byte"));
 
 
         
@@ -530,6 +569,38 @@ export class DefaultApiRequestFactory extends BaseAPIRequestFactory {
 }
 
 export class DefaultApiResponseProcessor {
+
+    /**
+     * Unwraps the actual response sent by the server from the response context and deserializes the response content
+     * to the expected objects
+     *
+     * @params response Response returned by the server for a request to categories
+     * @throws ApiException if the response code was not in [200, 299]
+     */
+     public async categories(response: ResponseContext): Promise<Array<Categories200ResponseInner> > {
+        const contentType = ObjectSerializer.normalizeMediaType(response.headers["content-type"]);
+        if (isCodeInRange("200", response.httpStatusCode)) {
+            const body: Array<Categories200ResponseInner> = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "Array<Categories200ResponseInner>", ""
+            ) as Array<Categories200ResponseInner>;
+            return body;
+        }
+        if (isCodeInRange("0", response.httpStatusCode)) {
+            throw new ApiException<undefined>(response.httpStatusCode, "Unexpected error", undefined, response.headers);
+        }
+
+        // Work around for missing responses in specification, e.g. for petstore.yaml
+        if (response.httpStatusCode >= 200 && response.httpStatusCode <= 299) {
+            const body: Array<Categories200ResponseInner> = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "Array<Categories200ResponseInner>", ""
+            ) as Array<Categories200ResponseInner>;
+            return body;
+        }
+
+        throw new ApiException<string | Blob | undefined>(response.httpStatusCode, "Unknown API Status Code!", await response.getBodyAsAny(), response.headers);
+    }
 
     /**
      * Unwraps the actual response sent by the server from the response context and deserializes the response content
