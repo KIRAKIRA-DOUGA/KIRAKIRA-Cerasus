@@ -91,7 +91,7 @@
 			<TabItem id="game" direction="vertical-reverse" :badge="233">{{ t.category_game }}</TabItem>
 			<TabItem id="other" direction="vertical-reverse" :badge="233">{{ t.category_other }}</TabItem>
 		</TabBar>
-		<Subheader icon="category" :badge="numberOfItems">分区</Subheader>
+		<Subheader icon="upload" :badge="numberOfItems">{{ t.latest_uploads }}</Subheader>
 		<div class="videos-grid">
 			<ThumbVideo
 				v-for="video in videos?.videos"
@@ -111,11 +111,11 @@
 			enableArrowKeyMove
 		/>
 
-		<Subheader icon="home" :badge="233">网站地图</Subheader>
+		<Subheader icon="science">{{ t.test }}</Subheader>
 		<div class="pages">
 			<LocaleLink v-for="page in pages" :key="page.name" class="link lite" :to="page.link">{{ page.name }}</LocaleLink>
 		</div>
-		<Subheader icon="error" :badge="233">错误页</Subheader>
+		<Subheader icon="error">{{ t.error_pages }}</Subheader>
 		<div class="pages">
 			<a v-for="page in httpCodes" :key="page.name" class="link lite" :href="'/error/' + page.link">{{ page.name }}</a>
 		</div>
