@@ -4,6 +4,7 @@ All URIs are relative to *https://localhost:3000/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**categories**](DefaultApi.md#categories) | **GET** /categories | Get category data
 [**comment**](DefaultApi.md#comment) | **POST** /comment | Comment on a video
 [**comments**](DefaultApi.md#comments) | **GET** /comments/{id} | Get comments for video ID
 [**deleteComment**](DefaultApi.md#deleteComment) | **POST** /delete_comment | Delete a comment
@@ -17,6 +18,54 @@ Method | HTTP request | Description
 [**videoDetail**](DefaultApi.md#videoDetail) | **GET** /videos/{id} | Get list of videos
 [**videos**](DefaultApi.md#videos) | **GET** /videos | Get list of videos
 
+
+# **categories**
+> Array<Categories200ResponseInner> categories()
+
+
+### Example
+
+
+```typescript
+import {  } from '';
+import * as fs from 'fs';
+
+const configuration = .createConfiguration();
+const apiInstance = new .DefaultApi(configuration);
+
+let body:any = {};
+
+apiInstance.categories(body).then((data:any) => {
+  console.log('API called successfully. Returned data: ' + data);
+}).catch((error:any) => console.error(error));
+```
+
+
+### Parameters
+This endpoint does not need any parameter.
+
+
+### Return type
+
+**Array<Categories200ResponseInner>**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | get video details for a specific video |  -  |
+**0** | Unexpected error |  -  |
+
+[[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
 # **comment**
 > void comment()
@@ -431,6 +480,8 @@ let body:.DefaultApiUploadRequest = {
   title: "title_example",
   // string | video description
   description: "description_example",
+  // string | video description
+  category: "category_example",
   // Array<HttpFile> (optional)
   filename: [
     { data: Buffer.from(fs.readFileSync('/path/to/file', 'utf-8')), name: '/path/to/file' },
@@ -450,6 +501,7 @@ Name | Type | Description  | Notes
  **tags** | **Array&lt;string&gt;** | list of video tags | defaults to undefined
  **title** | [**string**] | video title | defaults to undefined
  **description** | [**string**] | video description | defaults to undefined
+ **category** | [**string**] | video description | defaults to undefined
  **filename** | **Array&lt;HttpFile&gt;** |  | (optional) defaults to undefined
 
 
@@ -658,13 +710,15 @@ let body:.DefaultApiVideosRequest = {
   // string | search string (optional)
   search: 'YQ==',
   // string | sort category (optional)
-  category: "category_example",
+  sortCategory: "sortCategory_example",
   // string | sort category (optional)
   order: "order_example",
   // string | sort category (optional)
   unapproved: "unapproved_example",
   // number | page number (optional)
   pageNumber: 1,
+  // string | category (optional)
+  category: 'YQ==',
 };
 
 apiInstance.videos(body).then((data:any) => {
@@ -678,10 +732,11 @@ apiInstance.videos(body).then((data:any) => {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **search** | [**string**] | search string | (optional) defaults to undefined
- **category** | [**string**] | sort category | (optional) defaults to undefined
+ **sortCategory** | [**string**] | sort category | (optional) defaults to undefined
  **order** | [**string**] | sort category | (optional) defaults to undefined
  **unapproved** | [**string**] | sort category | (optional) defaults to undefined
  **pageNumber** | [**number**] | page number | (optional) defaults to undefined
+ **category** | [**string**] | category | (optional) defaults to undefined
 
 
 ### Return type
