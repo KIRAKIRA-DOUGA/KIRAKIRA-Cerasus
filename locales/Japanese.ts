@@ -155,7 +155,7 @@ const Japanese: LocaleIdentifiers = {
 	user_info: "ユーザー情報",
 	acknowledgement: "スペシャルサンクス",
 	friendly_links: "相互リンク",
-	latest_uploads: "最新上传",
+	latest: "最新",
 	test: "测试",
 	error_pages: "错误页",
 	zh: "簡体字中国語",
