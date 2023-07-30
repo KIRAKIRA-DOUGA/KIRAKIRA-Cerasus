@@ -4,7 +4,7 @@
 	const counts = reactive({
 		play: 100,
 		rating: 5,
-		star: 100,
+		favorite: 100,
 		danmaku: 10000,
 		watching: 10,
 	});
@@ -48,10 +48,10 @@
 	<Comp>
 		<div class="top">
 			<div class="info">
-				<CountItem icon="play" :value="getWatchCount(counts.play)">{{ t.play }}</CountItem>
+				<CountItem icon="play" :value="getWatchCount(counts.play)">{{ t.playbacks }}</CountItem>
 				<CountItem icon="thumb_up" :value="getWatchCount(counts.rating)" :class="{ dislike: counts.rating < 0 }">{{ t.rating }}</CountItem>
-				<CountItem icon="star" :value="getWatchCount(counts.star)">{{ t.favorite_verb }}</CountItem>
-				<CountItem icon="play" :value="getWatchCount(counts.danmaku)">{{ t.danmaku }}</CountItem>
+				<CountItem icon="star" :value="getWatchCount(counts.favorite)">{{ t.favorites }}</CountItem>
+				<CountItem icon="danmaku" :value="getWatchCount(counts.danmaku)">{{ t.danmaku }}</CountItem>
 				<div class="watching">
 					<span class="watching-number">10</span>
 					<span class="watching-description">人正在看</span>
@@ -60,7 +60,7 @@
 			<div class="buttons">
 				<SoftButton v-tooltip:bottom="t.bonus_point" icon="thumb_up" class="button-like" @click="counts.rating++" />
 				<SoftButton v-tooltip:bottom="t.minus_point" icon="thumb_down" class="button-dislike" @click="counts.rating--" />
-				<SoftButton v-tooltip:bottom="t.favorite_verb" icon="star" class="button-star" @click="favorite" />
+				<SoftButton v-tooltip:bottom="t.favorite_verb" icon="star" class="button-favorite" @click="favorite" />
 				<SoftButton v-tooltip:bottom="t.share" icon="share" class="button-share" @click="share" />
 				<SoftButton v-tooltip:bottom="t.danmaku_history" icon="history" class="button-history" />
 				<SoftButton v-tooltip:bottom="t.settings" icon="settings" class="button-settings" />

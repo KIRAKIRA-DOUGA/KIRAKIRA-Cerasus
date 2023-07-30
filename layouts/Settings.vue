@@ -28,7 +28,7 @@
 		general: [
 			{ id: "appearance", icon: "palette" },
 			{ id: "player", icon: "play" },
-			{ id: "danmaku", icon: "clear_all" },
+			{ id: "danmaku", icon: "danmaku" },
 			{ id: "preference", icon: "star" },
 			{ id: "language", icon: "translate" },
 			{ id: "about", icon: "info" },
