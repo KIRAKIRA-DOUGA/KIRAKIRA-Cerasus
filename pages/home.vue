@@ -4,7 +4,7 @@
 	import testAudio from "assets/images/av893640047.jpg";
 	import { Categories200ResponseInner } from "../packages/kirakira-backend/models/Categories200ResponseInner";
 
-	const selectedTab = ref("home");
+	const selectedTab = ref("Home");
 
 	useHead({ title: "首页" });
 
@@ -19,23 +19,23 @@
 	const numberOfItems = ref(0);
 	const numberOfPages = ref(1);
 
-	const categories = ref<Array<Categories200ResponseInner>>();
+	const categories = ref<Map<string, number | undefined>>();
 
 	// fetch the videos according to the query
 	watch([() => search.value, () => sortCategory.value, () => sortDirection.value, () => page.value, () => selectedTab.value], ([search, sortCategory, sortDirection, pageValue, categ]) => {
 		const api = useApi();
 		const utf8Encode = new TextEncoder();
 		const encodedContent = utf8Encode.encode(search) as unknown as string;
-		const cat = categ !== "home" ? categ : "undefined";
+		const cat = categ !== "Home" ? categ : "undefined";
 		const encodedCategory = utf8Encode.encode(cat) as unknown as string;
 
-		api.videos(encodedContent, sortCategory, sortDirection, "true", pageValue, encodedCategory).then(x => {
+		api?.videos(encodedContent, sortCategory, sortDirection, "true", pageValue, encodedCategory).then(x => {
 			numberOfPages.value = Math.ceil(x.paginationData!.numberOfItems! / 50.0);
 			numberOfItems.value = x.paginationData!.numberOfItems!;
 			videos.value = x;
 		}).catch(error => console.error(error));
-		api.categories().then(x => {
-			categories.value = x;
+		api?.categories().then(x => {
+			categories.value = new Map(x.map(cat => [cat.name, cat.cardinality]));
 		}).catch(error => console.error(error));
 	}, { immediate: true });
 
@@ -91,14 +91,14 @@
 <template>
 	<div class="container">
 		<TabBar v-if="categories" v-model="selectedTab" class="category-tab">
-			<TabItem id="home" direction="vertical" icon="home">{{ t.home }}</TabItem>
-			<TabItem
-				v-for="category in categories"
-				:id="category.name"
-				:key="category.name"
-				direction="vertical-reverse"
-				:badge="category.cardinality"
-			> {{ category.name }} </TabItem>
+			<TabItem id="Home" direction="vertical" icon="home">{{ t.home }}</TabItem>
+			<TabItem id="Anime" direction="vertical-reverse" :badge="categories.get('Anime')">{{ t.category_anime }}</TabItem>
+			<TabItem id="Music" direction="vertical-reverse" :badge="categories.get('Music')">{{ t.category_music }}</TabItem>
+			<TabItem id="Otomad" direction="vertical-reverse" :badge="categories.get('Otomad')">{{ t.category_otomad }}</TabItem>
+			<TabItem id="Tech" direction="vertical-reverse" :badge="categories.get('Tech')">{{ t.category_tech }}</TabItem>
+			<TabItem id="Design" direction="vertical-reverse" :badge="categories.get('Design')">{{ t.category_design }}</TabItem>
+			<TabItem id="Game" direction="vertical-reverse" :badge="categories.get('Game')">{{ t.category_game }}</TabItem>
+			<TabItem id="Other" direction="vertical-reverse" :badge="categories.get('Other')">{{ t.category_other }}</TabItem>
 		</TabBar>
 		<Subheader icon="upload" :badge="numberOfItems">{{ t.latest }}</Subheader>
 		<div class="videos-grid">
@@ -113,12 +113,8 @@
 				:duration="new Duration(video.videoDuration / 60, video.videoDuration % 60)"
 			>{{ video.title }}</ThumbVideo>
 		</div>
-		<Pagination
-			v-model="page"
-			:pages="numberOfPages"
-			:displayPageCount="12"
-			enableArrowKeyMove
-		/>
+		<Pagination v-model="page" :pages="numberOfPages" :displayPageCount="12" enableArrowKeyMove />
+
 	</div>
 </template>
 
