@@ -5,14 +5,17 @@
 
 	const homepage = "https://cerasus.kirakira.moe/";
 	const { locale } = useI18n();
+
 	const langTag = computed(() => {
 		const langs = {
 			zh: "zh-cmn-Hans-CN", // 中文-普通话-简体字-大陆地区
 			en: "en",
 			ja: "ja",
 		};
+
 		return langs[locale.value as keyof typeof langs] ?? locale.value;
 	});
+
 	useHead({
 		htmlAttrs: {
 			lang: langTag,

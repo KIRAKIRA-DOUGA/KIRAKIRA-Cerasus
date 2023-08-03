@@ -2,8 +2,9 @@
 	import testVideo from "assets/images/cav5-cover.png";
 	import testVideo2 from "assets/images/av820864307.jpg";
 	import testAudio from "assets/images/av893640047.jpg";
+	import { Categories200ResponseInner } from "../packages/kirakira-backend/models/Categories200ResponseInner";
 
-	const selectedTab = ref("home");
+	const selectedTab = ref("Home");
 
 	useHead({ title: "首页" });
 
@@ -18,15 +19,23 @@
 	const numberOfItems = ref(0);
 	const numberOfPages = ref(1);
 
+	const categories = ref<Map<string, number | undefined>>();
+
 	// fetch the videos according to the query
-	watch([() => search.value, () => sortCategory.value, () => sortDirection.value, () => page.value], ([search, sortCategory, sortDirection, pageValue]) => {
+	watch([() => search.value, () => sortCategory.value, () => sortDirection.value, () => page.value, () => selectedTab.value], ([search, sortCategory, sortDirection, pageValue, categ]) => {
 		const api = useApi();
 		const utf8Encode = new TextEncoder();
 		const encodedContent = utf8Encode.encode(search) as unknown as string;
-		api.videos(encodedContent, sortCategory, sortDirection, "true", pageValue).then(x => {
+		const cat = categ !== "Home" ? categ : "undefined";
+		const encodedCategory = utf8Encode.encode(cat) as unknown as string;
+
+		api?.videos(encodedContent, sortCategory, sortDirection, "true", pageValue, encodedCategory).then(x => {
 			numberOfPages.value = Math.ceil(x.paginationData!.numberOfItems! / 50.0);
 			numberOfItems.value = x.paginationData!.numberOfItems!;
 			videos.value = x;
+		}).catch(error => console.error(error));
+		api?.categories().then(x => {
+			categories.value = new Map(x.map(cat => [cat.name, cat.cardinality]));
 		}).catch(error => console.error(error));
 	}, { immediate: true });
 
@@ -81,15 +90,15 @@
 
 <template>
 	<div class="container">
-		<TabBar v-model="selectedTab" class="category-tab">
-			<TabItem id="home" direction="vertical" icon="home">{{ t.home }}</TabItem>
-			<TabItem id="anime" direction="vertical-reverse" :badge="233">{{ t.category_anime }}</TabItem>
-			<TabItem id="music" direction="vertical-reverse" :badge="233">{{ t.category_music }}</TabItem>
-			<TabItem id="otomad" direction="vertical-reverse" :badge="233">{{ t.category_otomad }}</TabItem>
-			<TabItem id="tech" direction="vertical-reverse" :badge="233">{{ t.category_tech }}</TabItem>
-			<TabItem id="design" direction="vertical-reverse" :badge="233">{{ t.category_design }}</TabItem>
-			<TabItem id="game" direction="vertical-reverse" :badge="233">{{ t.category_game }}</TabItem>
-			<TabItem id="other" direction="vertical-reverse" :badge="233">{{ t.category_other }}</TabItem>
+		<TabBar v-if="categories" v-model="selectedTab" class="category-tab">
+			<TabItem id="Home" direction="vertical" icon="home">{{ t.home }}</TabItem>
+			<TabItem id="Anime" direction="vertical-reverse" :badge="categories.get('Anime')">{{ t.category_anime }}</TabItem>
+			<TabItem id="Music" direction="vertical-reverse" :badge="categories.get('Music')">{{ t.category_music }}</TabItem>
+			<TabItem id="Otomad" direction="vertical-reverse" :badge="categories.get('Otomad')">{{ t.category_otomad }}</TabItem>
+			<TabItem id="Tech" direction="vertical-reverse" :badge="categories.get('Tech')">{{ t.category_tech }}</TabItem>
+			<TabItem id="Design" direction="vertical-reverse" :badge="categories.get('Design')">{{ t.category_design }}</TabItem>
+			<TabItem id="Game" direction="vertical-reverse" :badge="categories.get('Game')">{{ t.category_game }}</TabItem>
+			<TabItem id="Other" direction="vertical-reverse" :badge="categories.get('Other')">{{ t.category_other }}</TabItem>
 		</TabBar>
 		<Subheader icon="upload" :badge="numberOfItems">{{ t.latest }}</Subheader>
 		<div class="videos-grid">
@@ -101,24 +110,11 @@
 				:image="video.thumbnailLoc"
 				:date="new Date()"
 				:watchedCount="video.views"
-				:duration="new Duration(2, 33)"
+				:duration="new Duration(0, video.videoDuration ?? 0)"
 			>{{ video.title }}</ThumbVideo>
 		</div>
-		<Pagination
-			v-model="page"
-			:pages="numberOfPages"
-			:displayPageCount="12"
-			enableArrowKeyMove
-		/>
+		<Pagination v-model="page" :pages="numberOfPages" :displayPageCount="12" enableArrowKeyMove />
 
-		<Subheader icon="science">{{ t.test }}</Subheader>
-		<div class="pages">
-			<LocaleLink v-for="page in pages" :key="page.name" class="link lite" :to="page.link">{{ page.name }}</LocaleLink>
-		</div>
-		<Subheader icon="error">{{ t.error_pages }}</Subheader>
-		<div class="pages">
-			<a v-for="page in httpCodes" :key="page.name" class="link lite" :href="'/error/' + page.link">{{ page.name }}</a>
-		</div>
 	</div>
 </template>
 

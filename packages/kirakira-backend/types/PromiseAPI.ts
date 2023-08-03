@@ -1,6 +1,7 @@
 import { ResponseContext, RequestContext, HttpFile } from '../http/http';
 import { Configuration} from '../configuration'
 
+import { Categories200ResponseInner } from '../models/Categories200ResponseInner';
 import { Comments200ResponseInner } from '../models/Comments200ResponseInner';
 import { VideoDetail200Response } from '../models/VideoDetail200Response';
 import { Videos200Response } from '../models/Videos200Response';
@@ -18,6 +19,14 @@ export class PromiseDefaultApi {
         responseProcessor?: DefaultApiResponseProcessor
     ) {
         this.api = new ObservableDefaultApi(configuration, requestFactory, responseProcessor);
+    }
+
+    /**
+     * Get category data
+     */
+    public categories(_options?: Configuration): Promise<Array<Categories200ResponseInner>> {
+        const result = this.api.categories(_options);
+        return result.toPromise();
     }
 
     /**
@@ -93,10 +102,11 @@ export class PromiseDefaultApi {
      * @param tags list of video tags
      * @param title video title
      * @param description video description
+     * @param category category
      * @param filename 
      */
-    public upload(tags: Array<string>, title: string, description: string, filename?: Array<HttpFile>, _options?: Configuration): Promise<void> {
-        const result = this.api.upload(tags, title, description, filename, _options);
+    public upload(tags: Array<string>, title: string, description: string, category: string, filename?: Array<HttpFile>, _options?: Configuration): Promise<void> {
+        const result = this.api.upload(tags, title, description, category, filename, _options);
         return result.toPromise();
     }
 
@@ -131,13 +141,14 @@ export class PromiseDefaultApi {
     /**
      * Get list of videos
      * @param search search string
-     * @param category sort category
+     * @param sortCategory sort category
      * @param order sort category
      * @param unapproved sort category
      * @param pageNumber page number
+     * @param category category
      */
-    public videos(search?: string, category?: string, order?: string, unapproved?: string, pageNumber?: number, _options?: Configuration): Promise<Videos200Response> {
-        const result = this.api.videos(search, category, order, unapproved, pageNumber, _options);
+    public videos(search?: string, sortCategory?: string, order?: string, unapproved?: string, pageNumber?: number, category?: string, _options?: Configuration): Promise<Videos200Response> {
+        const result = this.api.videos(search, sortCategory, order, unapproved, pageNumber, category, _options);
         return result.toPromise();
     }
 

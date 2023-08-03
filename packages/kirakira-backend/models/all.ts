@@ -1,3 +1,4 @@
+export * from '../models/Categories200ResponseInner'
 export * from '../models/Comments200ResponseInner'
 export * from '../models/VideoDetail200Response'
 export * from '../models/Videos200Response'

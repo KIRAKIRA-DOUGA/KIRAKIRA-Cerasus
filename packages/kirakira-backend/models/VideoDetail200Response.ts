@@ -27,6 +27,7 @@ export class VideoDetail200Response {
     'uploadDate'?: string;
     'comments'?: any;
     'tags'?: Array<string>;
+    'videoDuration'?: number;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -113,6 +114,12 @@ export class VideoDetail200Response {
             "name": "tags",
             "baseName": "Tags",
             "type": "Array<string>",
+            "format": ""
+        },
+        {
+            "name": "videoDuration",
+            "baseName": "VideoDuration",
+            "type": "number",
             "format": ""
         }    ];
 
