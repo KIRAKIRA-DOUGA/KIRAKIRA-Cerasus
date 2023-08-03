@@ -3,10 +3,10 @@
 </script>
 
 <template>
-	<Subheader icon="grid">视图</Subheader>
+	<Subheader icon="grid">{{ t.view }}</Subheader>
 	<Segmented v-model="view">
-		<SegmentedItem id="list" icon="list">列表</SegmentedItem>
-		<SegmentedItem id="grid" icon="grid">网格</SegmentedItem>
-		<SegmentedItem id="tile" icon="tile">磁贴</SegmentedItem>
+		<SegmentedItem id="list" icon="list">{{ t.view_list }}</SegmentedItem>
+		<SegmentedItem id="grid" icon="grid">{{ t.view_grid }}</SegmentedItem>
+		<SegmentedItem id="tile" icon="tile">{{ t.view_tile }}</SegmentedItem>
 	</Segmented>
 </template>

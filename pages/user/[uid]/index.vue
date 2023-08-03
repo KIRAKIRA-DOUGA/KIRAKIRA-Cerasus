@@ -24,7 +24,7 @@
 					</div>
 					<div>
 						<span class="value">{{ user.watches }}</span>
-						<p>{{ t.watches }}</p>
+						<p>{{ t.playbacks }}</p>
 					</div>
 					<div>
 						<span class="value">{{ user.rating }}</span>
@@ -73,7 +73,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
-		
+
 		@include tablet {
 			width: 100%;
 		}
@@ -98,15 +98,15 @@
 			}
 		}
 	}
-	
+
 	.user-info-container {
 		position: relative;
-		
+
 		.shading {
 			position: absolute;
 			right: 16px;
 			color: c(gray-80, 5%);
-			
+
 			&.shading-title {
 				top: 10px;
 				font-weight: 600;
@@ -116,7 +116,7 @@
 				text-align: center;
 				text-transform: capitalize;
 			}
-			
+
 			&.shading-icon {
 				bottom: 0;
 				font-size: 48px;

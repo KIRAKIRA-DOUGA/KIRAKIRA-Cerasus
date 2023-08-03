@@ -88,14 +88,15 @@
 
 			<div class="toolbox-card right">
 				<section>
-					<Subheader icon="sort">排序</Subheader>
+					<Subheader icon="sort">{{ t.sort_by }}</Subheader>
 					<Sort v-model="sort">
-						<SortItem id="date" preferOrder="descending">投稿日期</SortItem>
-						<SortItem id="play" preferOrder="descending">播放数</SortItem>
-						<SortItem id="danmaku" preferOrder="descending">弹幕数</SortItem>
-						<SortItem id="comment" preferOrder="descending">评论数</SortItem>
-						<SortItem id="star" preferOrder="descending">收藏数</SortItem>
-						<SortItem id="duration">视频时长</SortItem>
+						<SortItem id="date" preferOrder="descending">{{ t.upload_date }}</SortItem>
+						<SortItem id="view" preferOrder="descending">{{ t.sort_playback }}</SortItem>
+						<SortItem id="danmaku" preferOrder="descending">{{ t.sort_danmaku }}</SortItem>
+						<SortItem id="comment" preferOrder="descending">{{ t.sort_comment }}</SortItem>
+						<SortItem id="favorite" preferOrder="descending">{{ t.sort_favorite }}</SortItem>
+						<SortItem id="duration" preferOrder="descending">{{ t.duration }}</SortItem>
+						<SortItem id="rating">{{ t.rating }}</SortItem>
 					</Sort>
 				</section>
 				<Pagination v-model="page" :pages="pages" :displayPageCount="displayPageCount" enableArrowKeyMove />
