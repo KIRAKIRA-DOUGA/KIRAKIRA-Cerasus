@@ -13,18 +13,6 @@
 			ja: "ja",
 		};
 
-		// Infer the correct locale from browser language
-		if (process.client) {
-			let currLang = window.navigator.language;
-			if (currLang.includes("-"))
-				currLang = currLang.split("-")[0]; // could be e.g. en-GB, en-UK or equivalent
-
-			if (langs[currLang] !== undefined)
-				locale.value = currLang;
-		}
-		return langs[locale.value as keyof typeof langs] ?? locale.value;
-	});
-
 	useHead({
 		htmlAttrs: {
 			lang: langTag,
