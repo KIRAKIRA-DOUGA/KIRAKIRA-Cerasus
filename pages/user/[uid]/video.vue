@@ -37,7 +37,7 @@
 					:image="video.thumbnailLoc"
 					:date="new Date()"
 					:watchedCount="video.views"
-					:duration="new Duration(video.videoDuration / 60, video.videoDuration % 60)"
+					:duration="new Duration(0, video.videoDuration ?? 0)"
 				>{{ video.title }}</ThumbVideo>
 			</div>
 			<!-- <PaginationSimple v-model="page" :pages="pages" :displayPageCount="8" enableArrowKeyMove /> -->
