@@ -50,6 +50,6 @@ export class ServerConfiguration<T extends { [key: string]: string }> implements
     }
 }
 
-export const server1 = new ServerConfiguration<{  }>("https://localhost:3000/api", {  })
+export const server1 = new ServerConfiguration<{  }>("https://kirakira.dev/api", {  })
 
 export const servers = [server1];
