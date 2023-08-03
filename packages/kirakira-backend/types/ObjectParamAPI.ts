@@ -1,6 +1,7 @@
 import { ResponseContext, RequestContext, HttpFile } from '../http/http';
 import { Configuration} from '../configuration'
 
+import { Categories200ResponseInner } from '../models/Categories200ResponseInner';
 import { Comments200ResponseInner } from '../models/Comments200ResponseInner';
 import { VideoDetail200Response } from '../models/VideoDetail200Response';
 import { Videos200Response } from '../models/Videos200Response';
@@ -9,6 +10,9 @@ import { Videos200ResponseVideosInner } from '../models/Videos200ResponseVideosI
 
 import { ObservableDefaultApi } from "./ObservableAPI";
 import { DefaultApiRequestFactory, DefaultApiResponseProcessor} from "../apis/DefaultApi";
+
+export interface DefaultApiCategoriesRequest {
+}
 
 export interface DefaultApiCommentRequest {
     /**
@@ -123,6 +127,12 @@ export interface DefaultApiUploadRequest {
      */
     description: string
     /**
+     * video description
+     * @type string
+     * @memberof DefaultApiupload
+     */
+    category: string
+    /**
      * 
      * @type Array&lt;HttpFile&gt;
      * @memberof DefaultApiupload
@@ -175,7 +185,7 @@ export interface DefaultApiVideosRequest {
      * @type string
      * @memberof DefaultApivideos
      */
-    category?: string
+    sortCategory?: string
     /**
      * sort category
      * @type string
@@ -194,6 +204,12 @@ export interface DefaultApiVideosRequest {
      * @memberof DefaultApivideos
      */
     pageNumber?: number
+    /**
+     * category
+     * @type string
+     * @memberof DefaultApivideos
+     */
+    category?: string
 }
 
 export class ObjectDefaultApi {
@@ -201,6 +217,14 @@ export class ObjectDefaultApi {
 
     public constructor(configuration: Configuration, requestFactory?: DefaultApiRequestFactory, responseProcessor?: DefaultApiResponseProcessor) {
         this.api = new ObservableDefaultApi(configuration, requestFactory, responseProcessor);
+    }
+
+    /**
+     * Get category data
+     * @param param the request object
+     */
+    public categories(param: DefaultApiCategoriesRequest = {}, options?: Configuration): Promise<Array<Categories200ResponseInner>> {
+        return this.api.categories( options).toPromise();
     }
 
     /**
@@ -264,7 +288,7 @@ export class ObjectDefaultApi {
      * @param param the request object
      */
     public upload(param: DefaultApiUploadRequest, options?: Configuration): Promise<void> {
-        return this.api.upload(param.tags, param.title, param.description, param.filename,  options).toPromise();
+        return this.api.upload(param.tags, param.title, param.description, param.category, param.filename,  options).toPromise();
     }
 
     /**
@@ -296,7 +320,7 @@ export class ObjectDefaultApi {
      * @param param the request object
      */
     public videos(param: DefaultApiVideosRequest = {}, options?: Configuration): Promise<Videos200Response> {
-        return this.api.videos(param.search, param.category, param.order, param.unapproved, param.pageNumber,  options).toPromise();
+        return this.api.videos(param.search, param.sortCategory, param.order, param.unapproved, param.pageNumber, param.category,  options).toPromise();
     }
 
 }
