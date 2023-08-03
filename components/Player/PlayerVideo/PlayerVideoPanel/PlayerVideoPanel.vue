@@ -48,7 +48,7 @@
 	<Comp>
 		<div class="top">
 			<div class="info">
-				<CountItem icon="play" :value="getWatchCount(counts.play)">{{ t.playbacks }}</CountItem>
+				<CountItem icon="play" :value="getWatchCount(counts.play)">{{ t.views_video }}</CountItem>
 				<CountItem icon="thumb_up" :value="getWatchCount(counts.rating)" :class="{ dislike: counts.rating < 0 }">{{ t.rating }}</CountItem>
 				<CountItem icon="star" :value="getWatchCount(counts.favorite)">{{ t.favorites }}</CountItem>
 				<CountItem icon="danmaku" :value="getWatchCount(counts.danmaku)">{{ t.danmaku }}</CountItem>

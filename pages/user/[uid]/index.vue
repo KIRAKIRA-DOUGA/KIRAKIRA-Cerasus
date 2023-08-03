@@ -24,7 +24,7 @@
 					</div>
 					<div>
 						<span class="value">{{ user.watches }}</span>
-						<p>{{ t.playbacks }}</p>
+						<p>{{ t.views_video }}</p>
 					</div>
 					<div>
 						<span class="value">{{ user.rating }}</span>
