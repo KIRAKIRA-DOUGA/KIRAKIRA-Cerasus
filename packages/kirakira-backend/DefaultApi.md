@@ -480,7 +480,7 @@ let body:.DefaultApiUploadRequest = {
   title: "title_example",
   // string | video description
   description: "description_example",
-  // string | video description
+  // string | category
   category: "category_example",
   // Array<HttpFile> (optional)
   filename: [
@@ -501,7 +501,7 @@ Name | Type | Description  | Notes
  **tags** | **Array&lt;string&gt;** | list of video tags | defaults to undefined
  **title** | [**string**] | video title | defaults to undefined
  **description** | [**string**] | video description | defaults to undefined
- **category** | [**string**] | video description | defaults to undefined
+ **category** | [**string**] | category | defaults to undefined
  **filename** | **Array&lt;HttpFile&gt;** |  | (optional) defaults to undefined
 
 
