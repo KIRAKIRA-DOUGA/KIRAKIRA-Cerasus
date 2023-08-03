@@ -218,7 +218,7 @@ export class ObservableDefaultApi {
      * @param tags list of video tags
      * @param title video title
      * @param description video description
-     * @param category video description
+     * @param category category
      * @param filename 
      */
     public upload(tags: Array<string>, title: string, description: string, category: string, filename?: Array<HttpFile>, _options?: Configuration): Observable<void> {
