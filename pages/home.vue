@@ -29,12 +29,12 @@
 		const cat = categ !== "home" ? categ : "undefined";
 		const encodedCategory = utf8Encode.encode(cat) as unknown as string;
 
-		api.videos(encodedContent, sortCategory, sortDirection, "true", pageValue, encodedCategory).then(x => {
+		api?.videos(encodedContent, sortCategory, sortDirection, "true", pageValue, encodedCategory).then(x => {
 			numberOfPages.value = Math.ceil(x.paginationData!.numberOfItems! / 50.0);
 			numberOfItems.value = x.paginationData!.numberOfItems!;
 			videos.value = x;
 		}).catch(error => console.error(error));
-		api.categories().then(x => {
+		api?.categories().then(x => {
 			categories.value = x;
 		}).catch(error => console.error(error));
 	}, { immediate: true });
