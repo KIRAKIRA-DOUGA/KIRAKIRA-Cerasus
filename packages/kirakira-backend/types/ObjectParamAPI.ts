@@ -127,7 +127,7 @@ export interface DefaultApiUploadRequest {
      */
     description: string
     /**
-     * video description
+     * category
      * @type string
      * @memberof DefaultApiupload
      */
