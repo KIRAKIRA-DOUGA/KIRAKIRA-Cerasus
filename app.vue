@@ -13,6 +13,9 @@
 			ja: "ja",
 		};
 
+		return langs[locale.value as keyof typeof langs] ?? locale.value;
+	});
+
 	useHead({
 		htmlAttrs: {
 			lang: langTag,
