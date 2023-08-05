@@ -58,7 +58,7 @@
 					</TabBar>
 					<div class="nav-bottom-buttons">
 						<Button icon="logout" @click="logout">{{ t.logout }}</Button>
-						<Button href="/components">组件测试页</Button>
+						<Button href="/dev">Development Test Page</Button>
 					</div>
 				</header>
 			</div>
