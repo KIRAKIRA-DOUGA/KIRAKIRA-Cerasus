@@ -3,13 +3,13 @@
 </docs>
 
 <script setup lang="ts">
-	
+
 </script>
 
 <template>
 	<div class="no-settings">
 		<Icon name="settings" />
-		<p>请选择一项设置</p>
+		<p>{{ t.settings_unselected }}</p>
 	</div>
 </template>
 
