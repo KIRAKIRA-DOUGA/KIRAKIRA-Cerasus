@@ -3,7 +3,7 @@
 		/** 内容占位符，当选中的一项不是任何一项有效的标识符时显示。 */
 		placeholder?: string;
 	}>(), {
-		placeholder: "请选择一项",
+		placeholder: t.combobox_unselected,
 	});
 
 	const selected = defineModel<string>({ required: true });
