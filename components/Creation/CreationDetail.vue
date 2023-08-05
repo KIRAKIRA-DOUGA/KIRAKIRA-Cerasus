@@ -21,11 +21,11 @@
 			<div class="data">
 				<CreationDetailItem icon="calendar">{{ formatDate(date, "yyyy-MM-dd hh:mm:ss") }}</CreationDetailItem>
 				<CreationDetailItem icon="category">{{ category }}</CreationDetailItem>
-				<CreationDetailItem v-if="copyright === 'original'" icon="fact_check">原创内容</CreationDetailItem>
-				<CreationDetailItem v-if="copyright === 'authorized-repost'" icon="local_shipping">授权转载</CreationDetailItem>
-				<CreationDetailItem v-if="copyright === 'repost'" icon="local_shipping">转载</CreationDetailItem>
-				<a><CreationDetailItem icon="photo">查看封面</CreationDetailItem></a>
-				<a><CreationDetailItem icon="flag">稿件投诉</CreationDetailItem></a>
+				<CreationDetailItem v-if="copyright === 'original'" icon="fact_check">{{ t.original }}</CreationDetailItem>
+				<CreationDetailItem v-if="copyright === 'authorized-repost'" icon="local_shipping">{{ t.authorized_repost }}</CreationDetailItem>
+				<CreationDetailItem v-if="copyright === 'repost'" icon="local_shipping">{{ t.repost }}</CreationDetailItem>
+				<a><CreationDetailItem icon="photo">{{ t.cover }}</CreationDetailItem></a>
+				<a><CreationDetailItem icon="flag">{{ t.report }}</CreationDetailItem></a>
 			</div>
 			<h1>{{ title }}</h1>
 		</div>
