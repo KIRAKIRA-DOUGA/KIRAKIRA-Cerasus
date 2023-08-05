@@ -6,7 +6,7 @@
 
 	const model = defineModel<boolean>();
 	const avatar = "/static/images/avatars/aira.webp";
-	type PageType = "login" | "forget" | "reset" | "register" | "register2";
+	type PageType = "login" | "forgot" | "forgot2" | "forgot3" | "register" | "register2";
 	const currentPage = ref<PageType>("login");
 	const isWelcome = computed(() => ["register", "register2"].includes(currentPage.value));
 	const coverMoveLeft = computed(() => currentPage.value !== "login");
@@ -18,8 +18,9 @@
 
 	const confirmPassword = ref("");
 	const newPassword = ref("");
+	const confirmNewPassword = ref("");
 
-	const inviteCode = ref("");
+	const verificationCode = ref("");
 	const _isLogining = ref(false);
 	const isLogining = computed({
 		get: () => _isLogining.value,
@@ -35,6 +36,8 @@
 		await oapiClient.login(email.value, password.value);
 		isLogining.value = true;
 	}
+
+	// TODO: [Aira] Change passwords should be in settings, not login window.
 
 	async function registerUser() {
 		const oapiClient = useApi();
@@ -91,7 +94,9 @@
 				aria-modal="true"
 				:aria-label="currentPage"
 			>
+
 				<div class="main left">
+					<!-- Login -->
 					<div class="login">
 						<div class="title">
 							<Heading>登录</Heading>
@@ -101,13 +106,13 @@
 							<TextBox
 								v-model="email"
 								type="email"
-								placeholder="邮箱"
+								:placeholder="t.email_address"
 								icon="email"
 							/>
 							<TextBox
 								v-model="password"
 								type="password"
-								placeholder="密码"
+								:placeholder="t.password"
 								icon="lock"
 							/>
 							<div class="button login-button-placeholder">
@@ -115,13 +120,14 @@
 							</div>
 						</div>
 						<div class="action margin-left-inset margin-right-inset">
-							<Button @click="currentPage = 'forget'">忘记了密码</Button>
-							<Button @click="currentPage = 'reset'">Reset</Button>
-							<Button @click="currentPage = 'register'">没有账号？注册</Button>
+							<Button @click="currentPage = 'forgot'">{{ t.password_forgot }}</Button>
+							<Button @click="currentPage = 'register'">{{ t.register }}</Button>
 						</div>
 					</div>
 				</div>
+
 				<div class="main right">
+					<!-- Register Page 1 -->
 					<div class="register">
 						<div class="title collapse">
 							<Heading>注册</Heading>
@@ -131,110 +137,140 @@
 							<TextBox
 								v-model="email"
 								type="text"
-								placeholder="验证码"
-								icon="verified"
+								:placeholder="t.email"
+								icon="email"
 							/>
 							<TextBox
-								v-model="username"
-								type="text"
-								placeholder="username"
+								v-model="password"
+								type="password"
+								:placeholder="t.password"
+								icon="lock"
 							/>
 							<TextBox
 								v-model="confirmPassword"
 								type="password"
-								placeholder="确认密码"
+								:placeholder="t.password_retype"
 								icon="lock"
 							/>
 						</div>
 						<div class="action margin-left-inset">
-							<Button @click="currentPage = 'login'">已有账号？登录</Button>
-							<Button icon="arrow_right" class="button icon-behind" @click="currentPage = 'register2'">下一步</Button>
+							<Button @click="currentPage = 'login'">{{ t.loginwindow_register_back_to_login }}</Button>
+							<Button icon="arrow_right" class="button icon-behind" @click="currentPage = 'register2'">{{ t.step_next }}</Button>
 						</div>
 					</div>
+
+					<!-- Register Page 2 -->
 					<div class="register2">
 						<div class="title collapse">
 							<Heading>注册</Heading>
 							<Heading form="small">Register</Heading>
 						</div>
 						<div class="form">
-							<div>我们已向您的邮箱中发送了验证码，请在此输入验证码。<br />如未收到，您可以重新发送。</div>
+							<div>{{ t.loginwindow_email_sent }}<br />{{ t.loginwindow_if_not_received }}</div>
 							<TextBox
-								v-model="email"
+								v-model="verificationCode"
 								type="text"
-								placeholder="验证码"
+								:placeholder="t.verification_code"
 								icon="verified"
 							/>
-							<TextBox
-								v-model="username"
-								type="text"
-								placeholder="username"
-							/>
-							<TextBox
-								v-model="password"
-								type="password"
-								placeholder="确认密码"
-								icon="lock"
-							/>
-						</div>
-						<div class="action">
-							<Button icon="arrow_left" class="button" @click="currentPage = 'register'">上一步</Button>
-							<Button icon="check" class="button" @click="registerUser()">完成</Button>
-						</div>
-					</div>
-					<div class="forget">
-						<div class="title">
-							<Heading>忘记密码</Heading>
-							<Heading form="small">Forget</Heading>
-						</div>
-						<div class="form">
-							<div>请在此输入您的邮箱。<br />我们将会给您的邮箱发送一封邮件，请点击邮件中的链接重置密码。</div>
-							<TextBox
-								v-model="email"
-								type="email"
-								placeholder="邮箱"
-								icon="email"
-							/>
-							<Button icon="send" class="button button-block">发送</Button>
+							<!-- TODO: [Aira] There should be a resend button on the right of the verification code textbox -->
 						</div>
 						<div class="action margin-left-inset">
-							<Button @click="currentPage = 'login'">想起来密码了</Button>
+							<Button icon="arrow_left" class="button" @click="currentPage = 'register'">{{ t.step_previous }}</Button>
+							<Button icon="check" class="button" @click="registerUser()">{{ t.step_ok }}</Button>
 						</div>
 					</div>
-					<div class="reset">
-						<div class="title">
+
+					<!-- Forgot Password -->
+					<div class="forgot">
+						<div class="title collapse">
 							<Heading>重置密码</Heading>
 							<Heading form="small">Reset</Heading>
 						</div>
 						<div class="form">
-							<div>您已成功重置密码。(/≧▽≦)/<br />请务必牢记您的新密码。</div>
+							<div>{{ t.loginwindow_forgot_email_enter_1 }}<br />{{ t.loginwindow_forgot_email_enter_2 }}</div>
 							<TextBox
-								v-model="oldPassword"
-								type="password"
-								placeholder="current password"
-								icon="lock"
+								v-model="email"
+								type="email"
+								:placeholder="t.email_address"
+								icon="email"
 							/>
+							<Button icon="send" class="button button-block" @click="currentPage = 'forgot2'">{{ t.send }}</Button>
+						</div>
+						<div class="action margin-left-inset">
+							<Button @click="currentPage = 'login'">{{ t.loginwindow_forgot_found_password }}</Button>
+						</div>
+					</div>
+
+					<div class="forgot2">
+						<div class="title collapse">
+							<Heading>重置密码</Heading>
+							<Heading form="small">Reset</Heading>
+						</div>
+						<div class="form">
+							<div>{{ t.loginwindow_email_sent }}<br />{{ t.loginwindow_if_not_received }}</div>
+							<TextBox
+								v-model="verificationCode"
+								type="text"
+								:placeholder="t.verification_code"
+								icon="verified"
+							/>
+							<!-- TODO: [Aira] There should be a resend button on the right of the verification code textbox -->
+						</div>
+						<div class="action margin-left-inset">
+							<Button icon="arrow_left" class="button" @click="currentPage = 'forgot'">{{ t.step_previous }}</Button>
+							<Button icon="arrow_right" class="button" @click="currentPage = 'forgot3'">{{ t.step_next }}</Button>
+						</div>
+					</div>
+
+					<!-- Forgot Password - Reset Successful -->
+					<div class="forgot3">
+						<div class="title collapse">
+							<Heading>重置密码</Heading>
+							<Heading form="small">Reset</Heading>
+						</div>
+						<div class="form">
+							<div>{{ t.verification_successful }} (/≧▽≦)/<br />{{ t.loginwindow_forgot_please_remember }}</div>
 							<TextBox
 								v-model="newPassword"
 								type="password"
-								placeholder="new password"
+								:placeholder="t.password"
+								icon="lock"
+							/>
+							<TextBox
+								v-model="confirmNewPassword"
+								type="password"
+								:placeholder="t.password_retype"
 								icon="lock"
 							/>
 						</div>
 						<div class="action margin-left-inset">
-							<div></div>
-							<Button icon="check" class="button" @click="resetPassword()">完成</Button>
+							<Button icon="arrow_left" class="button" @click="currentPage = 'forgot2'">{{ t.step_previous }}</Button>
+							<Button icon="check" class="button" @click="resetPassword()">{{ t.step_ok }}</Button>
 						</div>
 					</div>
+
 					<div class="register-title">
 						<div class="title">
 							<Heading>注册</Heading>
 							<Heading form="small">Register</Heading>
 						</div>
 					</div>
+
+					<div class="forgot-title">
+						<div class="title">
+							<Heading>重置密码</Heading>
+							<Heading form="small">Reset</Heading>
+						</div>
+					</div>
+
 				</div>
+
 				<div class="cover-wrapper">
 					<LogoCover :welcome="isWelcome" />
 				</div>
+
+				<!-- Login Animation -->
 				<div class="login-animation">
 					<div class="add"></div>
 					<div class="burst">
@@ -357,10 +393,15 @@
 				// @include page("!.login", ".login", left);
 				@include page("!.register", ".register", right);
 				@include page("!.register2", ".register2", right);
-				@include page("!.forget", ".forget", right);
-				@include page("!.reset", ".reset", right);
+				@include page("!.forgot", ".forgot", right);
+				@include page("!.forgot2", ".forgot2", right);
+				@include page("!.forgot3", ".forgot3", right);
 				@include page(".register2", ".register", left);
+				@include page(".forgot3", ".forgot2", left);
+				@include page(".forgot2", ".forgot", left);
 				@include page("!.register, .register2", ".register-title", right);
+				@include page("!.forgot, .forgot2", ".forgot-title", right);
+				// @include page("!.forgot2, .forgot3", ".forgot-title", right); // FIXME: [Aira] 页面数量大于2时出现了问题。There is a bug when the page amount is larger than 2.
 			}
 		}
 
@@ -511,7 +552,8 @@
 		visibility: collapse !important;
 	}
 
-	.register-title {
+	.register-title,
+	.forgot-title {
 		pointer-events: none;
 	}
 
