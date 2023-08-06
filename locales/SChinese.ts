@@ -62,7 +62,7 @@ const SChinese = {
 	traces: "印迹",
 	privacy: "隐私",
 	security: "安全",
-	login_options: "登录选项",
+	login_options: "登入选项",
 	password: "密码",
 	password_forgot: "忘记密码",
 	password_retype: "确认密码",

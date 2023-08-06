@@ -7,16 +7,16 @@
 </script>
 
 <template>
-	<header>
+	<Comp>
 		<slot name="icon"></slot>
 		<Heading>{{ name }}</Heading>
 		<Heading v-if="count !== undefined" form="small-solid">{{ count }}</Heading>
 		<Heading form="small" class="english-after">{{ englishName }}</Heading>
-	</header>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
-	header {
+	:comp {
 		display: flex;
 		gap: 8px;
 		align-items: flex-end;
