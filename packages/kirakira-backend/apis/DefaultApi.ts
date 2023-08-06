@@ -476,7 +476,7 @@ export class DefaultApiRequestFactory extends BaseAPIRequestFactory {
             .replace('{' + 'id' + '}', encodeURIComponent(String(id)));
 
         // Make Request Context
-        const requestContext = _config.baseServer.makeRequestContext(localVarPath, HttpMethod.GET);
+        const requestContext = _config.baseServer.makeRequestContext(localVarPath, HttpMethod.POST);
         requestContext.setHeaderParam("Accept", "application/json, */*;q=0.8")
 
         // Header Params

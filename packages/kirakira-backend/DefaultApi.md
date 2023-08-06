@@ -14,7 +14,7 @@ Method | HTTP request | Description
 [**resetPassword**](DefaultApi.md#resetPassword) | **POST** /reset_password | Reset password
 [**upload**](DefaultApi.md#upload) | **POST** /upload | Upload a new video
 [**upvote**](DefaultApi.md#upvote) | **GET** /upvote/{id} | Get user video data
-[**upvoteVideo**](DefaultApi.md#upvoteVideo) | **GET** /upvotevideo/{id} | Upvote a video
+[**upvoteVideo**](DefaultApi.md#upvoteVideo) | **POST** /upvotevideo/{id} | Upvote a video
 [**users**](DefaultApi.md#users) | **GET** /users/{id} | Get user video data
 [**videoDetail**](DefaultApi.md#videoDetail) | **GET** /videos/{id} | Get list of videos
 [**videos**](DefaultApi.md#videos) | **GET** /videos | Get list of videos
