@@ -10,29 +10,38 @@
 	const comments = ref<Comments200ResponseInner[]>([]);
 
 	// Fetch video details
-	watch([() => kvid], () => {
+	watch([() => kvid], async () => {
 		const api = useApi();
-		api.videoDetail(kvid).then(video => {
+		try {
+			const video = await api.videoDetail(kvid);
 			videoDetails.value = video;
 			videoSource.value = video.mPDLoc;
-		}).catch(error => console.error(error));
+		} catch (error) {
+			console.log(error);
+		}
 	}, { immediate: true });
 
 	// Fetch comments
-	watch(() => kvid, () => {
+	watch(() => kvid, async () => {
 		const api = useApi();
-		api.comments(kvid).then(x => {
-			for (const comment of x)
+		try {
+			const commentsResp = await api.comments(kvid);
+			for (const comment of commentsResp)
 				comments.value.push(comment);
-		}).catch(error => console.error(error));
+		} catch (error) {
+			console.error(error);
+		}
 	}, { immediate: true });
 
 	// Fetch recommendations
-	watch(() => kvid, () => {
+	watch(() => kvid, async () => {
 		const api = useApi();
-		api.recommendations(kvid).then(x => {
-			recommendations.value = x;
-		}).catch(error => console.error(error));
+		try {
+			const newRecommendations = await api.recommendations(kvid);
+			recommendations.value = newRecommendations;
+		} catch (error) {
+			console.error(error);
+		}
 	}, { immediate: true });
 
 	useHead({ title: videoDetails.value?.title });
@@ -46,10 +55,7 @@
 			:src="videoSource"
 			:rating="videoDetails?.rating ?? 0"
 		/>
-		<div
-			class="
-			under-player"
-		>
+		<div class="under-player">
 			<div class="left">
 				<CreationDetail
 					:date="new Date(videoDetails?.uploadDate!)"
@@ -74,7 +80,7 @@
 					:fans="videoDetails?.userSubscribers ?? 0"
 					isFollowed
 				/>
-				<Subheader v-if="recommendations?.length !== undefined && recommendations?.length > 0" id="recheader" icon="movie" :badge="recommendations?.length">Recommendations </Subheader>
+				<Subheader v-if="recommendations?.length !== undefined && recommendations?.length > 0" class="recheader" icon="movie" :badge="recommendations?.length">Recommendations </Subheader>
 				<ThumbVideo
 					v-for="video in recommendations"
 					:key="video.videoID"
@@ -102,7 +108,7 @@
 		}
 	}
 
-	#recheader {
+	.recheader {
 		margin-top: 20px;
 		margin-bottom: 5px;
 		margin-left: 5px;

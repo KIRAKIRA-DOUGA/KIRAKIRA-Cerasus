@@ -21,14 +21,14 @@
 	}
 
 	/** upvotes the current video */
-	async function Upvote() {
+	async function upvote() {
 		const oapiClient = useApi();
 		await oapiClient.upvoteVideo(props.id, 1);
 		counts.rating++;
 	}
 
 	/** downvotes the current video */
-	async function Downvote() {
+	async function downvote() {
 		const oapiClient = useApi();
 		await oapiClient.upvoteVideo(props.id, -1);
 		counts.rating--;
@@ -76,8 +76,8 @@
 				</div>
 			</div>
 			<div class="buttons">
-				<SoftButton v-tooltip:bottom="t.bonus_point" icon="thumb_up" class="button-like" @click="Upvote()" />
-				<SoftButton v-tooltip:bottom="t.minus_point" icon="thumb_down" class="button-dislike" @click="Downvote()" />
+				<SoftButton v-tooltip:bottom="t.bonus_point" icon="thumb_up" class="button-like" @click="upvote" />
+				<SoftButton v-tooltip:bottom="t.minus_point" icon="thumb_down" class="button-dislike" @click="downvote" />
 				<SoftButton v-tooltip:bottom="t.favorite_verb" icon="star" class="button-favorite" @click="favorite" />
 				<SoftButton v-tooltip:bottom="t.share" icon="share" class="button-share" @click="share" />
 				<SoftButton v-tooltip:bottom="t.danmaku_history" icon="history" class="button-history" />
