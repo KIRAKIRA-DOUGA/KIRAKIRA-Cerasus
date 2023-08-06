@@ -6,6 +6,7 @@
 	const kvid = route.params.kvid;
 	const videoDetails = ref<VideoDetail200Response>();
 	const videoSource = ref<string>();
+	const recommmendations = ref<Array<Videos200ResponseVideosInner>>();
 	const comments = ref<Comments200ResponseInner[]>([]);
 
 	// Fetch video details
@@ -23,6 +24,14 @@
 		api.comments(kvid).then(x => {
 			for (const comment of x)
 				comments.value.push(comment);
+		}).catch(error => console.error(error));
+	}, { immediate: true });
+
+	// Fetch recommendations
+	watch(() => kvid, () => {
+		const api = useApi();
+		api.recommendations(kvid).then(x => {
+			recommmendations.value = x;
 		}).catch(error => console.error(error));
 	}, { immediate: true });
 
@@ -67,7 +76,7 @@
 				/>
 				<Subheader id="recheader" icon="upload" :badge="5">Recommendations </Subheader>
 				<ThumbVideo
-					v-for="video in videoDetails?.recommendedVideos"
+					v-for="video in recommmendations"
 					:key="video.videoID"
 					class="videorec"
 					:link="'/videos/kv' + video.videoID ?? ''"

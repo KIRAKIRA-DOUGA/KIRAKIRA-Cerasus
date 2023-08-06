@@ -77,6 +77,15 @@ export class PromiseDefaultApi {
     }
 
     /**
+     * Get list of videos
+     * @param id video ID
+     */
+    public recommendations(id: number, _options?: Configuration): Promise<Array<Videos200ResponseVideosInner>> {
+        const result = this.api.recommendations(id, _options);
+        return result.toPromise();
+    }
+
+    /**
      * Register user
      * @param username username to register
      * @param password sort category
