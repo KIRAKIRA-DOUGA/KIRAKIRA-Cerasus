@@ -89,7 +89,7 @@
 				</div>
 			</div>
 			<SoftButton :text="playbackRateText" @click="switchSpeed" />
-			<SoftButton :icon="fullScreen ? 'fullscreen' : 'fullscreen_exit'" @click="() => toggleFullScreen?.()" />
+			<SoftButton :icon="fullScreen ? 'fullscreen_exit' : 'fullscreen'" @click="() => toggleFullScreen?.()" />
 		</div>
 	</Comp>
 </template>
