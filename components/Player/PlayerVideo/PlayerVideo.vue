@@ -14,7 +14,7 @@
 	const isTimeUpdating = ref(false);
 	const showMediaInfo = ref(false);
 	const mediaInfos = ref<MediaInfo>();
-	const videoContainer = ref<HTMLVideoElement>();
+	const videoContainer = ref<HTMLDivElement>();
 	const video = ref<HTMLVideoElement>();
 	const { isFullscreen: fullScreen, toggle } = useFullscreen(videoContainer);
 	const menu = ref<MenuModel>();
