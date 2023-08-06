@@ -7,6 +7,7 @@
 	const playing = ref(false);
 	const playbackRate = ref(1);
 	const preservesPitch = ref(false);
+	const volume = ref(1);
 	const currentTime = ref(NaN);
 	const duration = ref(NaN);
 	const buffered = ref(0);
@@ -74,6 +75,11 @@
 	watch(playbackRate, playbackRate => {
 		if (!video.value) return;
 		video.value.playbackRate = playbackRate;
+	});
+
+	watch(volume, volume => {
+		if (!video.value) return;
+		video.value.volume = volume;
 	});
 
 	const player = ref(null);
@@ -179,6 +185,7 @@
 				v-model:playing="playing"
 				v-model:fullScreen="fullScreen"
 				v-model:playbackRate="playbackRate"
+				v-model:volume="volume"
 				:duration="duration"
 				:toggleFullScreen="toggle"
 				:buffered="buffered"
