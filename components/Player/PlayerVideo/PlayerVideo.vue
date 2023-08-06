@@ -14,8 +14,9 @@
 	const isTimeUpdating = ref(false);
 	const showMediaInfo = ref(false);
 	const mediaInfos = ref<MediaInfo>();
+	const videoContainer = ref<HTMLVideoElement>();
 	const video = ref<HTMLVideoElement>();
-	const { isFullscreen: fullScreen, toggle } = useFullscreen(video);
+	const { isFullscreen: fullScreen, toggle } = useFullscreen(videoContainer);
 	const menu = ref<MenuModel>();
 
 	type MediaInfo = Record<string, Record<string, unknown>>;
@@ -166,7 +167,7 @@
 			</Accordion>
 		</Alert>
 
-		<div class="main">
+		<div ref="videoContainer" :class="['main', { fullscreen: fullScreen }]">
 			<video
 				ref="video"
 				@play="playing = true"
@@ -207,9 +208,14 @@
 		background-color: c(surface-color);
 	}
 
-	.main,
-	video {
+	.main:not(.fullscreen), .main:not(.fullscreen) video {
 		width: 100%;
+	}
+
+	.main.fullscreen {
+		display: flex;
+		flex-direction: column;
+		height: 100dvh;
 	}
 
 	table {
