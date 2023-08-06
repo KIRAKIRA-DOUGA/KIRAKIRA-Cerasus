@@ -6,7 +6,7 @@
 	const kvid = route.params.kvid;
 	const videoDetails = ref<VideoDetail200Response>();
 	const videoSource = ref<string>();
-	const recommmendations = ref<Array<Videos200ResponseVideosInner>>();
+	const recommendations = ref<Array<Videos200ResponseVideosInner>>();
 	const comments = ref<Comments200ResponseInner[]>([]);
 
 	// Fetch video details
@@ -31,7 +31,7 @@
 	watch(() => kvid, () => {
 		const api = useApi();
 		api.recommendations(kvid).then(x => {
-			recommmendations.value = x;
+			recommendations.value = x;
 		}).catch(error => console.error(error));
 	}, { immediate: true });
 
@@ -74,9 +74,9 @@
 					:fans="videoDetails?.userSubscribers ?? 0"
 					isFollowed
 				/>
-				<Subheader id="recheader" icon="upload" :badge="5">Recommendations </Subheader>
+				<Subheader v-if="recommendations?.length !== undefined && recommendations?.length > 0" id="recheader" icon="movie" :badge="recommendations?.length">Recommendations </Subheader>
 				<ThumbVideo
-					v-for="video in recommmendations"
+					v-for="video in recommendations"
 					:key="video.videoID"
 					class="videorec"
 					:link="'/videos/kv' + video.videoID ?? ''"
@@ -104,6 +104,8 @@
 
 	#recheader {
 		margin-top: 20px;
+		margin-bottom: 5px;
+		margin-left: 5px;
 	}
 
 	.videorec {
