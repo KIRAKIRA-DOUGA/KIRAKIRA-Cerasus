@@ -16,6 +16,7 @@
 
 	const playing = defineModel<boolean>("playing");
 	const playbackRate = defineModel<number>("playbackRate", { default: 1 });
+	const volume = defineModel<number>("volume", { default: 1 });
 	const model = defineModel<number>("currentTime", { default: NaN });
 	const fullScreen = defineModel<boolean>("fullScreen");
 
@@ -52,6 +53,13 @@
 		playbackRate.value = newRate;
 	}
 
+	/**
+	 * Mute or unmute volume depending on current state.
+	 */
+	function toggleVolume() {
+		volume.value = volume.value ? 0 : 1;
+	}
+
 	const playbackRateText = computed(() => playbackRate.value.toFixed(2).replace(/\.?0+$/, "") + "×");
 </script>
 
@@ -69,7 +77,7 @@
 				<span class="divide">/</span>
 				<span class="duration">{{ duration }}</span>
 			</div>
-			<SoftButton icon="volume_up" />
+			<SoftButton :icon="volume ? 'volume_up' : 'volume_mute'" @click="toggleVolume" />
 			<SoftButton :text="playbackRateText" @click="switchSpeed" />
 			<SoftButton :icon="fullScreen ? 'fullscreen' : 'fullscreen_exit'" @click="() => toggleFullScreen?.()" />
 		</div>
