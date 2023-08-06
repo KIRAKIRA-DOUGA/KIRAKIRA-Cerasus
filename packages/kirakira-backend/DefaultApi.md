@@ -14,6 +14,7 @@ Method | HTTP request | Description
 [**resetPassword**](DefaultApi.md#resetPassword) | **POST** /reset_password | Reset password
 [**upload**](DefaultApi.md#upload) | **POST** /upload | Upload a new video
 [**upvote**](DefaultApi.md#upvote) | **GET** /upvote/{id} | Get user video data
+[**upvoteVideo**](DefaultApi.md#upvoteVideo) | **GET** /upvotevideo/{id} | Upvote a video
 [**users**](DefaultApi.md#users) | **GET** /users/{id} | Get user video data
 [**videoDetail**](DefaultApi.md#videoDetail) | **GET** /videos/{id} | Get list of videos
 [**videos**](DefaultApi.md#videos) | **GET** /videos | Get list of videos
@@ -559,6 +560,63 @@ apiInstance.upvote(body).then((data:any) => {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | [**number**] | comment ID | defaults to undefined
+ **score** | [**number**] | upvote score | defaults to undefined
+
+
+### Return type
+
+**void**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Upvote success |  -  |
+**0** | Unexpected error |  -  |
+
+[[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
+
+# **upvoteVideo**
+> void upvoteVideo()
+
+
+### Example
+
+
+```typescript
+import {  } from '';
+import * as fs from 'fs';
+
+const configuration = .createConfiguration();
+const apiInstance = new .DefaultApi(configuration);
+
+let body:.DefaultApiUpvoteVideoRequest = {
+  // number | video ID
+  id: 1,
+  // number | upvote score
+  score: 1,
+};
+
+apiInstance.upvoteVideo(body).then((data:any) => {
+  console.log('API called successfully. Returned data: ' + data);
+}).catch((error:any) => console.error(error));
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | [**number**] | video ID | defaults to undefined
  **score** | [**number**] | upvote score | defaults to undefined
 
 

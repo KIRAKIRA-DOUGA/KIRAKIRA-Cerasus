@@ -27,6 +27,7 @@
 	}, { immediate: true });
 
 	useHead({ title: videoDetails.value?.title });
+	console.log(videoDetails);
 </script>
 
 <template>
@@ -48,13 +49,6 @@
 					:comments="comments"
 				/>
 
-				<!--
-					TODO:
-					- using v-html, likely unsafe
-					- seems to be an issue with default comment newlining (no tags)... maybe a result of using getHTML?
-
-					- We shouldn't use any pure html, just marking these tag as markdown symbol or other things.
-				-->
 			</div>
 			<div class="right">
 				<CreationUploader
@@ -64,6 +58,19 @@
 					:fans="videoDetails?.userSubscribers ?? 0"
 					isFollowed
 				/>
+				<Subheader id="recheader" icon="upload" :badge="5">Recommendations </Subheader>
+				<ThumbVideo
+					v-for="video in videoDetails?.recommendedVideos"
+					:key="video.videoID"
+					class="videorec"
+					:link="'/videos/kv' + video.videoID ?? ''"
+					:uploader="video.authorName ?? ''"
+					:image="video.thumbnailLoc"
+					:date="new Date()"
+					:watchedCount="video.views"
+					:duration="new Duration(0, video.videoDuration ?? 0)"
+				>{{ video.title }}</ThumbVideo>
+
 			</div>
 		</div>
 	</div>
@@ -77,6 +84,14 @@
 		> * {
 			margin: 26px 0;
 		}
+	}
+
+	#recheader {
+		margin-top: 20px;
+	}
+
+	.videorec {
+		max-width: 100%;
 	}
 
 	.under-player {

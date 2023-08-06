@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 
+import { Videos200ResponseVideosInner } from '../models/Videos200ResponseVideosInner';
 import { HttpFile } from '../http/http';
 
 export class VideoDetail200Response {
@@ -28,6 +29,7 @@ export class VideoDetail200Response {
     'comments'?: any;
     'tags'?: Array<string>;
     'videoDuration'?: number;
+    'recommendedVideos'?: Array<Videos200ResponseVideosInner>;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -120,6 +122,12 @@ export class VideoDetail200Response {
             "name": "videoDuration",
             "baseName": "VideoDuration",
             "type": "number",
+            "format": ""
+        },
+        {
+            "name": "recommendedVideos",
+            "baseName": "RecommendedVideos",
+            "type": "Array<Videos200ResponseVideosInner>",
             "format": ""
         }    ];
 
