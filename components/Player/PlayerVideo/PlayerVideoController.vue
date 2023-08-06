@@ -77,7 +77,17 @@
 				<span class="divide">/</span>
 				<span class="duration">{{ duration }}</span>
 			</div>
-			<SoftButton :icon="volume ? 'volume_up' : 'volume_mute'" @click="toggleVolume" />
+			<div class="volume-container">
+				<SoftButton :icon="volume ? 'volume_up' : 'volume_mute'" @click="toggleVolume" />
+				<div class="volume-slider-container">
+					<div class="volume-slider-value">
+						{{ Math.floor(volume * 100) }}%
+					</div>
+					<div class="volume-slider">
+						<Slider v-model="volume" :min="0" :max="1" :buffered="1" />
+					</div>
+				</div>
+			</div>
 			<SoftButton :text="playbackRateText" @click="switchSpeed" />
 			<SoftButton :icon="fullScreen ? 'fullscreen' : 'fullscreen_exit'" @click="() => toggleFullScreen?.()" />
 		</div>
@@ -87,11 +97,43 @@
 <style scoped lang="scss">
 	$thickness: 36px;
 
+	.volume-container {
+		position: relative;
+	}
+
+	.volume-slider-container {
+		position: absolute;
+		left: 50%;
+		display: none;
+		flex-direction: column;
+		align-items: center;
+		width: 100px;
+		padding: 0.75rem;
+		transform: translateX(-50%);
+	}
+
+	.volume-slider-value {
+		display: none;
+	}
+
+	.volume-slider-container:focus-within .volume-slider-value {
+		display: block;
+	}
+
+	.volume-slider {
+		flex: 1 1;
+		width: 100%;
+	}
+
+	.volume-container:hover .volume-slider-container {
+		bottom: 100%;
+		display: flex;
+	}
+
 	:comp {
 		display: flex;
 		align-items: center;
 		height: $thickness;
-		overflow: hidden;
 		color: c(icon-color);
 		font-weight: 600;
 		font-size: 14px;
