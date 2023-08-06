@@ -155,6 +155,21 @@ export interface DefaultApiUpvoteRequest {
     score: number
 }
 
+export interface DefaultApiUpvoteVideoRequest {
+    /**
+     * video ID
+     * @type number
+     * @memberof DefaultApiupvoteVideo
+     */
+    id: number
+    /**
+     * upvote score
+     * @type number
+     * @memberof DefaultApiupvoteVideo
+     */
+    score: number
+}
+
 export interface DefaultApiUsersRequest {
     /**
      * user ID
@@ -297,6 +312,14 @@ export class ObjectDefaultApi {
      */
     public upvote(param: DefaultApiUpvoteRequest, options?: Configuration): Promise<void> {
         return this.api.upvote(param.id, param.score,  options).toPromise();
+    }
+
+    /**
+     * Upvote a video
+     * @param param the request object
+     */
+    public upvoteVideo(param: DefaultApiUpvoteVideoRequest, options?: Configuration): Promise<void> {
+        return this.api.upvoteVideo(param.id, param.score,  options).toPromise();
     }
 
     /**
