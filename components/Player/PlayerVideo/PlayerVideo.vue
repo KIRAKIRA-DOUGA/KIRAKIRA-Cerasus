@@ -2,6 +2,8 @@
 	import mediainfo from "mediainfo.js";
 	const props = defineProps<{
 		src: string;
+		id: number;
+		rating: number;
 	}>();
 
 	const playing = ref(false);
@@ -193,7 +195,7 @@
 			/>
 		</div>
 
-		<PlayerVideoPanel />
+		<PlayerVideoPanel :id="id" :rating="rating" />
 		<Menu v-model="menu">
 			<MenuItem icon="info" @click="showInfo">查看视频详细信息</MenuItem>
 		</Menu>

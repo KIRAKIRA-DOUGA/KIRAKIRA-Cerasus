@@ -27,13 +27,20 @@
 	}, { immediate: true });
 
 	useHead({ title: videoDetails.value?.title });
-	console.log(videoDetails);
 </script>
 
 <template>
 	<div class="container">
-		<PlayerVideo v-if="videoSource !== undefined" :src="videoSource" />
-		<div class="under-player">
+		<PlayerVideo
+			v-if="videoSource !== undefined"
+			:id="videoDetails?.videoID ?? 0"
+			:src="videoSource"
+			:rating="videoDetails?.rating ?? 0"
+		/>
+		<div
+			class="
+			under-player"
+		>
 			<div class="left">
 				<CreationDetail
 					:date="new Date(videoDetails?.uploadDate!)"
