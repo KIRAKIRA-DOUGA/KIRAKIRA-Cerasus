@@ -71,6 +71,15 @@ export interface DefaultApiLoginRequest {
 export interface DefaultApiLogoutRequest {
 }
 
+export interface DefaultApiRecommendationsRequest {
+    /**
+     * video ID
+     * @type number
+     * @memberof DefaultApirecommendations
+     */
+    id: number
+}
+
 export interface DefaultApiRegisterRequest {
     /**
      * username to register
@@ -280,6 +289,14 @@ export class ObjectDefaultApi {
      */
     public logout(param: DefaultApiLogoutRequest = {}, options?: Configuration): Promise<void> {
         return this.api.logout( options).toPromise();
+    }
+
+    /**
+     * Get list of videos
+     * @param param the request object
+     */
+    public recommendations(param: DefaultApiRecommendationsRequest, options?: Configuration): Promise<Array<Videos200ResponseVideosInner>> {
+        return this.api.recommendations(param.id,  options).toPromise();
     }
 
     /**
