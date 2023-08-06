@@ -118,7 +118,7 @@ export default defineNuxtConfig({
 	nitro: {
 		devProxy: {
 			"/api": {
-				target: "http://localhost:9000/api",
+				target: "https://kirakira.dev/api",
 				prependPath: true,
 				changeOrigin: true,
 			},
