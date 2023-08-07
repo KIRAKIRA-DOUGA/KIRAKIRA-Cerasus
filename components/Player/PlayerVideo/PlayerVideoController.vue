@@ -20,6 +20,8 @@
 	const model = defineModel<number>("currentTime", { default: NaN });
 	const fullScreen = defineModel<boolean>("fullScreen");
 
+	const isVolumeSliderActive = ref(false);
+
 	const currentPercent = computed({
 		get() {
 			const result = model.value / props.duration;
@@ -61,6 +63,29 @@
 	}
 
 	const playbackRateText = computed(() => playbackRate.value.toFixed(2).replace(/\.?0+$/, "") + "×");
+
+	/**
+	 * @param value - number from PlayerRangeControl
+	 * @returns string formatted value to display in UI
+	 */
+	function getDisplayValue(value: number): string {
+		return `${Math.floor(value * 100)}%`;
+	}
+
+	/**
+	 * Forces volume slider visibility during interaction
+	 */
+	function volumePointerDown() {
+		isVolumeSliderActive.value = true;
+
+		const pointerUp = () => {
+			isVolumeSliderActive.value = false;
+			document.removeEventListener("pointerup", pointerUp);
+		};
+		document.addEventListener("pointerup", pointerUp);
+	}
+
+	const forceVolumeSliderVisible = computed(() => isVolumeSliderActive.value);
 </script>
 
 <template>
@@ -79,12 +104,9 @@
 			</div>
 			<div class="volume-container">
 				<SoftButton :icon="volume ? 'volume_up' : 'volume_mute'" @click="toggleVolume" />
-				<div class="volume-slider-container">
-					<div class="volume-slider-value">
-						{{ Math.floor(volume * 100) }}%
-					</div>
+				<div :class="['volume-slider-container', { visible: forceVolumeSliderVisible }]" @pointerdown="volumePointerDown">
 					<div class="volume-slider">
-						<Slider v-model="volume" :min="0" :max="1" :buffered="1" />
+						<PlayerRangeControl v-model="volume" :min="0" :max="1" :getDisplayValue="getDisplayValue" />
 					</div>
 				</div>
 			</div>
@@ -103,11 +125,11 @@
 
 	.volume-slider-container {
 		position: absolute;
+		bottom: 100%;
 		left: 50%;
 		display: none;
 		flex-direction: column;
 		align-items: center;
-		width: 100px;
 		padding: 0.75rem;
 		transform: translateX(-50%);
 	}
@@ -122,11 +144,10 @@
 
 	.volume-slider {
 		flex: 1 1;
-		width: 100%;
+		width: 160px;
 	}
 
 	.volume-container:hover .volume-slider-container {
-		bottom: 100%;
 		display: flex;
 	}
 
@@ -187,5 +208,9 @@
 		flex-grow: 1;
 		flex-shrink: 1;
 		width: 100%;
+	}
+
+	.visible {
+		display: flex;
 	}
 </style>
