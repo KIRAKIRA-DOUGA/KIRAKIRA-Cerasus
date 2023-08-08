@@ -99,15 +99,6 @@
 </template>
 
 <style scoped lang="scss">
-	.container {
-		padding-top: 0 !important;
-		overflow: scroll;
-
-		> * {
-			margin: 26px 0;
-		}
-	}
-
 	.recheader {
 		margin-top: 20px;
 		margin-bottom: 5px;
