@@ -74,6 +74,7 @@ const SChinese = {
 	blocklist: "黑名单",
 	player: "播放",
 	danmaku: "弹幕",
+	danmaku_send: "发送弹幕",
 	preference: "偏好",
 	accessibility: "无障碍",
 	about: "关于",

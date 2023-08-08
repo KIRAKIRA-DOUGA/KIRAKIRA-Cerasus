@@ -279,6 +279,7 @@
 						:shown="invalid"
 						icon="error"
 					/>
+					<slot name="actions"></slot>
 				</Fragment>
 			</div>
 			<div class="stripe large-stripe"></div>
@@ -298,6 +299,7 @@
 		:comp {
 			/// 输入框尺寸，可选的值为：small | normal | large。
 			--size: normal;
+			--square: false;
 		}
 	}
 
@@ -325,6 +327,10 @@
 		@container style(--size: large) {
 			--height: #{$large-height};
 			height: $large-height;
+		}
+
+		@container style(--square: true) {
+			border-radius: 0;
 		}
 
 		&:has(input:invalid) {
@@ -479,10 +485,10 @@
 		input:invalid ~ & :deep(.icon) {
 			color: c(red) !important;
 		}
+	}
 
-		.soft-button {
-			--wrapper-size: var(--height);
-			--ripple-size: calc(var(--height) * 1.3);
-		}
+	:deep(.soft-button) {
+		--wrapper-size: var(--height);
+		--ripple-size: calc(var(--height) * 1.3);
 	}
 </style>
