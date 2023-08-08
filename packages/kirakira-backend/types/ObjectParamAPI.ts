@@ -71,6 +71,15 @@ export interface DefaultApiLoginRequest {
 export interface DefaultApiLogoutRequest {
 }
 
+export interface DefaultApiRecommendationsRequest {
+    /**
+     * video ID
+     * @type number
+     * @memberof DefaultApirecommendations
+     */
+    id: number
+}
+
 export interface DefaultApiRegisterRequest {
     /**
      * username to register
@@ -151,6 +160,21 @@ export interface DefaultApiUpvoteRequest {
      * upvote score
      * @type number
      * @memberof DefaultApiupvote
+     */
+    score: number
+}
+
+export interface DefaultApiUpvoteVideoRequest {
+    /**
+     * video ID
+     * @type number
+     * @memberof DefaultApiupvoteVideo
+     */
+    id: number
+    /**
+     * upvote score
+     * @type number
+     * @memberof DefaultApiupvoteVideo
      */
     score: number
 }
@@ -268,6 +292,14 @@ export class ObjectDefaultApi {
     }
 
     /**
+     * Get list of videos
+     * @param param the request object
+     */
+    public recommendations(param: DefaultApiRecommendationsRequest, options?: Configuration): Promise<Array<Videos200ResponseVideosInner>> {
+        return this.api.recommendations(param.id,  options).toPromise();
+    }
+
+    /**
      * Register user
      * @param param the request object
      */
@@ -297,6 +329,14 @@ export class ObjectDefaultApi {
      */
     public upvote(param: DefaultApiUpvoteRequest, options?: Configuration): Promise<void> {
         return this.api.upvote(param.id, param.score,  options).toPromise();
+    }
+
+    /**
+     * Upvote a video
+     * @param param the request object
+     */
+    public upvoteVideo(param: DefaultApiUpvoteVideoRequest, options?: Configuration): Promise<void> {
+        return this.api.upvoteVideo(param.id, param.score,  options).toPromise();
     }
 
     /**

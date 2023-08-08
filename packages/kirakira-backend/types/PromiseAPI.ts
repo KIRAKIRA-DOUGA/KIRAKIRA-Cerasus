@@ -77,6 +77,15 @@ export class PromiseDefaultApi {
     }
 
     /**
+     * Get list of videos
+     * @param id video ID
+     */
+    public recommendations(id: number, _options?: Configuration): Promise<Array<Videos200ResponseVideosInner>> {
+        const result = this.api.recommendations(id, _options);
+        return result.toPromise();
+    }
+
+    /**
      * Register user
      * @param username username to register
      * @param password sort category
@@ -117,6 +126,16 @@ export class PromiseDefaultApi {
      */
     public upvote(id: number, score: number, _options?: Configuration): Promise<void> {
         const result = this.api.upvote(id, score, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * Upvote a video
+     * @param id video ID
+     * @param score upvote score
+     */
+    public upvoteVideo(id: number, score: number, _options?: Configuration): Promise<void> {
+        const result = this.api.upvoteVideo(id, score, _options);
         return result.toPromise();
     }
 

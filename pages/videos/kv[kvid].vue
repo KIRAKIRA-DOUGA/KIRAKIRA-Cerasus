@@ -6,24 +6,42 @@
 	const kvid = route.params.kvid;
 	const videoDetails = ref<VideoDetail200Response>();
 	const videoSource = ref<string>();
+	const recommendations = ref<Array<Videos200ResponseVideosInner>>();
 	const comments = ref<Comments200ResponseInner[]>([]);
 
 	// Fetch video details
-	watch([() => kvid], () => {
+	watch([() => kvid], async () => {
 		const api = useApi();
-		api.videoDetail(kvid).then(video => {
+		try {
+			const video = await api.videoDetail(kvid);
 			videoDetails.value = video;
 			videoSource.value = video.mPDLoc;
-		}).catch(error => console.error(error));
+		} catch (error) {
+			console.log(error);
+		}
 	}, { immediate: true });
 
 	// Fetch comments
-	watch(() => kvid, () => {
+	watch(() => kvid, async () => {
 		const api = useApi();
-		api.comments(kvid).then(x => {
-			for (const comment of x)
+		try {
+			const commentsResp = await api.comments(kvid);
+			for (const comment of commentsResp)
 				comments.value.push(comment);
-		}).catch(error => console.error(error));
+		} catch (error) {
+			console.error(error);
+		}
+	}, { immediate: true });
+
+	// Fetch recommendations
+	watch(() => kvid, async () => {
+		const api = useApi();
+		try {
+			const newRecommendations = await api.recommendations(kvid);
+			recommendations.value = newRecommendations;
+		} catch (error) {
+			console.error(error);
+		}
 	}, { immediate: true });
 
 	useHead({ title: videoDetails.value?.title });
@@ -31,7 +49,12 @@
 
 <template>
 	<div class="container">
-		<PlayerVideo v-if="videoSource !== undefined" :src="videoSource" />
+		<PlayerVideo
+			v-if="videoSource !== undefined"
+			:id="videoDetails?.videoID ?? 0"
+			:src="videoSource"
+			:rating="videoDetails?.rating ?? 0"
+		/>
 		<div class="under-player">
 			<div class="left">
 				<CreationDetail
@@ -48,13 +71,6 @@
 					:comments="comments"
 				/>
 
-				<!--
-					TODO:
-					- using v-html, likely unsafe
-					- seems to be an issue with default comment newlining (no tags)... maybe a result of using getHTML?
-
-					- We shouldn't use any pure html, just marking these tag as markdown symbol or other things.
-				-->
 			</div>
 			<div class="right">
 				<CreationUploader
@@ -64,6 +80,19 @@
 					:fans="videoDetails?.userSubscribers ?? 0"
 					isFollowed
 				/>
+				<Subheader v-if="recommendations?.length !== undefined && recommendations?.length > 0" class="recheader" icon="movie" :badge="recommendations?.length">Recommendations </Subheader>
+				<ThumbVideo
+					v-for="video in recommendations"
+					:key="video.videoID"
+					class="videorec"
+					:link="'/videos/kv' + video.videoID ?? ''"
+					:uploader="video.authorName ?? ''"
+					:image="video.thumbnailLoc"
+					:date="new Date()"
+					:watchedCount="video.views"
+					:duration="new Duration(0, video.videoDuration ?? 0)"
+				>{{ video.title }}</ThumbVideo>
+
 			</div>
 		</div>
 	</div>
@@ -77,6 +106,16 @@
 		> * {
 			margin: 26px 0;
 		}
+	}
+
+	.recheader {
+		margin-top: 20px;
+		margin-bottom: 5px;
+		margin-left: 5px;
+	}
+
+	.videorec {
+		max-width: 100%;
 	}
 
 	.under-player {
