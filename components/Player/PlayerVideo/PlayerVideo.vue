@@ -86,7 +86,7 @@
 		const dashjs = await import("dashjs");
 
 		player.value = dashjs.MediaPlayer().create();
-		player.value.initialize(video.value, props.src, true);
+		player.value.initialize(video.value, props.src, false);
 		player.value.updateSettings({
 			streaming: {
 				abr: {
