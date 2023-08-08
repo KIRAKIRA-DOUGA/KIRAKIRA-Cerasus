@@ -16,8 +16,11 @@
 
 	const playing = defineModel<boolean>("playing");
 	const playbackRate = defineModel<number>("playbackRate", { default: 1 });
+	const volume = defineModel<number>("volume", { default: 1 });
 	const model = defineModel<number>("currentTime", { default: NaN });
 	const fullScreen = defineModel<boolean>("fullScreen");
+
+	const isVolumeSliderActive = ref(false);
 
 	const currentPercent = computed({
 		get() {
@@ -52,7 +55,37 @@
 		playbackRate.value = newRate;
 	}
 
+	/**
+	 * Mute or unmute volume depending on current state.
+	 */
+	function toggleVolume() {
+		volume.value = volume.value ? 0 : 1;
+	}
+
 	const playbackRateText = computed(() => playbackRate.value.toFixed(2).replace(/\.?0+$/, "") + "×");
+
+	/**
+	 * @param value - number from PlayerRangeControl
+	 * @returns string formatted value to display in UI
+	 */
+	function getDisplayValue(value: number): string {
+		return `${Math.floor(value * 100)}%`;
+	}
+
+	/**
+	 * Forces volume slider visibility during interaction
+	 */
+	function volumePointerDown() {
+		isVolumeSliderActive.value = true;
+
+		const pointerUp = () => {
+			isVolumeSliderActive.value = false;
+			document.removeEventListener("pointerup", pointerUp);
+		};
+		document.addEventListener("pointerup", pointerUp);
+	}
+
+	const forceVolumeSliderVisible = computed(() => isVolumeSliderActive.value);
 </script>
 
 <template>
@@ -69,7 +102,14 @@
 				<span class="divide">/</span>
 				<span class="duration">{{ duration }}</span>
 			</div>
-			<SoftButton icon="volume_up" />
+			<div class="volume-container">
+				<SoftButton :icon="volume ? 'volume_up' : 'volume_mute'" @click="toggleVolume" />
+				<div :class="['volume-slider-container', { visible: forceVolumeSliderVisible }]" @pointerdown="volumePointerDown">
+					<div class="volume-slider">
+						<PlayerRangeControl v-model="volume" :min="0" :max="1" :getDisplayValue="getDisplayValue" />
+					</div>
+				</div>
+			</div>
 			<SoftButton :text="playbackRateText" @click="switchSpeed" />
 			<SoftButton :icon="fullScreen ? 'fullscreen_exit' : 'fullscreen'" @click="() => toggleFullScreen?.()" />
 		</div>
@@ -79,11 +119,42 @@
 <style scoped lang="scss">
 	$thickness: 36px;
 
+	.volume-container {
+		position: relative;
+	}
+
+	.volume-slider-container {
+		position: absolute;
+		bottom: 100%;
+		left: 50%;
+		display: none;
+		flex-direction: column;
+		align-items: center;
+		padding: 0.75rem;
+		transform: translateX(-50%);
+	}
+
+	.volume-slider-value {
+		display: none;
+	}
+
+	.volume-slider-container:focus-within .volume-slider-value {
+		display: block;
+	}
+
+	.volume-slider {
+		flex: 1 1;
+		width: 160px;
+	}
+
+	.volume-container:hover .volume-slider-container {
+		display: flex;
+	}
+
 	:comp {
 		display: flex;
 		align-items: center;
 		height: $thickness;
-		overflow: hidden;
 		color: c(icon-color);
 		font-weight: 600;
 		font-size: 14px;
@@ -137,5 +208,9 @@
 		flex-grow: 1;
 		flex-shrink: 1;
 		width: 100%;
+	}
+
+	.visible {
+		display: flex;
 	}
 </style>
