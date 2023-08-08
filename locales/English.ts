@@ -74,6 +74,7 @@ const English: LocaleIdentifiers = {
 	blocklist: "Blocklist",
 	player: "Player",
 	danmaku: "Danmaku",
+	danmaku_send: "Send Danmaku",
 	preference: "Preference",
 	accessibility: "Accessibility",
 	about: "About",
