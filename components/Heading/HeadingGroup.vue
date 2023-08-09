@@ -18,7 +18,7 @@
 <style scoped lang="scss">
 	:comp {
 		display: flex;
-		gap: 8px;
+		gap: 16px;
 		align-items: flex-end;
 		white-space: nowrap;
 

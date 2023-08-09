@@ -98,10 +98,7 @@
 				<div class="main left">
 					<!-- Login -->
 					<div class="login">
-						<div class="title">
-							<Heading>登录</Heading>
-							<Heading form="small">Login</Heading>
-						</div>
+						<HeadingGroup :name="t.login" englishName="Login" />
 						<div class="form">
 							<TextBox
 								v-model="email"
@@ -129,10 +126,7 @@
 				<div class="main right">
 					<!-- Register Page 1 -->
 					<div class="register">
-						<div class="title collapse">
-							<Heading>注册</Heading>
-							<Heading form="small">Register</Heading>
-						</div>
+						<HeadingGroup :name="t.register" englishName="Register" class="collapse" />
 						<div class="form">
 							<TextBox
 								v-model="email"
@@ -161,10 +155,7 @@
 
 					<!-- Register Page 2 -->
 					<div class="register2">
-						<div class="title collapse">
-							<Heading>注册</Heading>
-							<Heading form="small">Register</Heading>
-						</div>
+						<HeadingGroup :name="t.register" englishName="Register" class="collapse" />
 						<div class="form">
 							<div>{{ t.loginwindow_email_sent }}<br />{{ t.loginwindow_if_not_received }}</div>
 							<TextBox
@@ -183,10 +174,7 @@
 
 					<!-- Forgot Password -->
 					<div class="forgot">
-						<div class="title collapse">
-							<Heading>重置密码</Heading>
-							<Heading form="small">Reset</Heading>
-						</div>
+						<HeadingGroup :name="t.reset" englishName="Reset" class="collapse" />
 						<div class="form">
 							<div>{{ t.loginwindow_forgot_email_enter_1 }}<br />{{ t.loginwindow_forgot_email_enter_2 }}</div>
 							<TextBox
@@ -203,10 +191,7 @@
 					</div>
 
 					<div class="forgot2">
-						<div class="title collapse">
-							<Heading>重置密码</Heading>
-							<Heading form="small">Reset</Heading>
-						</div>
+						<HeadingGroup :name="t.reset" englishName="Reset" class="collapse" />
 						<div class="form">
 							<div>{{ t.loginwindow_email_sent }}<br />{{ t.loginwindow_if_not_received }}</div>
 							<TextBox
@@ -225,10 +210,7 @@
 
 					<!-- Forgot Password - Reset Successful -->
 					<div class="forgot3">
-						<div class="title collapse">
-							<Heading>重置密码</Heading>
-							<Heading form="small">Reset</Heading>
-						</div>
+						<HeadingGroup :name="t.reset" englishName="Reset" class="collapse" />
 						<div class="form">
 							<div>{{ t.verification_successful }} (/≧▽≦)/<br />{{ t.loginwindow_forgot_please_remember }}</div>
 							<TextBox
@@ -251,17 +233,11 @@
 					</div>
 
 					<div class="register-title">
-						<div class="title">
-							<Heading>注册</Heading>
-							<Heading form="small">Register</Heading>
-						</div>
+						<HeadingGroup :name="t.register" englishName="Register" />
 					</div>
 
 					<div class="forgot-title">
-						<div class="title">
-							<Heading>重置密码</Heading>
-							<Heading form="small">Reset</Heading>
-						</div>
+						<HeadingGroup :name="t.reset" englishName="Reset" />
 					</div>
 
 				</div>
@@ -455,14 +431,14 @@
 		}
 	}
 
-	.title {
+	.heading-group {
 		--i: 3;
 		display: flex;
 		flex-direction: row;
 		gap: 1rem;
 		align-items: flex-end;
 
-		.sub {
+		:deep(.sub) {
 			--i: 3.5;
 		}
 	}
@@ -557,7 +533,7 @@
 		pointer-events: none;
 	}
 
-	.title > *,
+	.heading-group :deep(> *),
 	.form > *,
 	.action {
 		animation: float-left 500ms calc(var(--i) * 100ms) $ease-out-max backwards;
