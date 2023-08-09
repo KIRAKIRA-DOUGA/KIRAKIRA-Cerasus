@@ -3,8 +3,8 @@
 
 	const avatar = "/static/images/avatars/aira.webp";
 	const validChar = /[A-Za-z0-9\-_ぁ-ゖァ-ヺー〇一-鿿㐀-䶿𠀀-𮹊𰀀-𲎯]*/u;
-	const nickname = ref("艾了个拉");
-	const test = ref("");
+	const name = ref("艾了个拉");
+	// const test = ref("");
 	const signature = ref("");
 	const genderBasic = ref<"male" | "female" | "custom" | "">("");
 	const genderCustom = ref("");
@@ -14,19 +14,19 @@
 <template>
 	<div v-ripple class="banner">
 		<img :src="banner" alt="banner" draggable="false" />
-		<span>点击更换封面</span>
+		<span>{{ t.settings_profile_banner_change }}</span>
 	</div>
 
 	<div class="change-avatar">
 		<UserAvatar :avatar="avatar" />
-		<span>点击更换头像</span>
+		<span>{{ t.settings_profile_avatar_change }}</span>
 	</div>
 
 	<div class="items">
-		<div class="nickname">
+		<div class="name">
 			<TextBox
-				v-model="nickname"
-				:placeholder="t.nickname"
+				v-model="name"
+				:placeholder="t.user_name"
 				size="large"
 				icon="person"
 				required
@@ -34,10 +34,10 @@
 				:pattern="validChar"
 				:maxLength="20"
 			/>
-			<span>{{ t.nickname_requirements }}</span>
+			<span>{{ t.user_name_requirements }}</span>
 		</div>
 
-		<TextBox
+		<!-- <TextBox
 			v-model="test"
 			inputMode="numeric"
 			placeholder="测试：只能输入0到99之间的整数"
@@ -46,19 +46,19 @@
 			:min="0"
 			:max="99"
 			:step="1"
-		/>
+		/> -->
 
-		<TextBox v-model="signature" placeholder="个性签名" icon="edit" />
+		<TextBox v-model="signature" :placeholder="t.user_bio" icon="edit" />
 
 		<TextBox v-model="birthday" type="date" :placeholder="t.birthday" icon="birthday" />
-		<!-- TODO: [艾拉] 日期选择组件 -->
-		<!-- [琪露诺] 日期选择点击X按钮，再次选择日期后按钮不会出现。 -->
+		<!-- TODO: [艾拉] 这里需要日期选择组件，谁来做一下？ -->
+		<!-- [琪露诺瓦露] 日期选择点击X按钮，再次选择日期后按钮不会出现。 -->
 		<!-- [兰音] 由于日期组件尚未制作，目前仅是一个占位符，暂时不必在意其功能或外观等的问题。 -->
 
 		<div class="gender">
 			<div class="gender-subtitle">
 				<Icon name="gender" class="icon" />
-				<span class="text">{{ t.gender }}</span>
+				<span class="text">{{ t.user_gender }}</span>
 			</div>
 
 			<div class="gender-radio-group">
@@ -155,7 +155,7 @@
 		}
 	}
 
-	.nickname {
+	.name {
 		display: flex;
 		flex-direction: column;
 		gap: 8px;

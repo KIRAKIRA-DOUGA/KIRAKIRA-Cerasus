@@ -259,8 +259,8 @@
 					<div class="avatar">
 						<img :src="avatar" alt="avatar" />
 					</div>
-					<div class="welcome">欢迎回家</div>
-					<div class="nickname">艾了个拉</div>
+					<div class="welcome">{{ t.loginwindow_login_welcome }}</div>
+					<div class="name">name</div> <!-- TODO: user name here -->
 				</div>
 			</Comp>
 		</Transition>
@@ -597,7 +597,7 @@
 		font-size: 24px;
 	}
 
-	.nickname {
+	.name {
 		position: absolute;
 		top: 50%;
 		left: 48%;
@@ -686,7 +686,7 @@
 			animation: name-move 700ms 1.05s $ease-text-move both;
 		}
 
-		.nickname {
+		.name {
 			display: block;
 			animation: name-move 700ms 1.1s $ease-text-move both;
 		}
