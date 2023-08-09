@@ -76,6 +76,7 @@ const Japanese: LocaleIdentifiers = {
 	blocklist: "ブロックリスト",
 	player: "プレーヤー",
 	danmaku: "弾幕",
+	danmaku_send: "弾幕を投稿",
 	preference: "プリファレンス",
 	accessibility: "アクセシビリティ",
 	about: "概要",
@@ -182,19 +183,19 @@ const Japanese: LocaleIdentifiers = {
 	step_previous: "戻る",
 	step_ok: "完了",
 	step_cancel: "キャンセル",
-	loginwindow_register_back_to_login: "すでにアカウントをお持ちですか？ログイン",
+	loginwindow_register_back_to_login: "すでにアカウントをお持ちですか？",
 	loginwindow_email_sent: "確認コードを送信しました。受け取ったコードを入力してください。",
 	loginwindow_if_not_received: "届いてない場合、コードを再送信することができます。",
 	loginwindow_forgot_found_password: "パスワードを思い出した",
 	loginwindow_forgot_email_enter_1: "アカウントのメールアドレスを入力してください。",
 	loginwindow_forgot_email_enter_2: "このアドレス宛に確認コードを送信し、本人確認を行います。",
-	loginwindow_forgot_please_remember: "新しいパスワードを設定してください。そしてしっかりと覚えてください。",
+	loginwindow_forgot_please_remember: "新しいパスワードを設定してください。そして忘れないようにしてください。",
 	verification_successful: "本人確認ができました！",
 	settings_unselected: "設定項目を選択してください。",
 	combobox_unselected: "選択してください。",
 	settings_about_repositories: "リポジトリ",
 	settings_about_staff: "スタッフ",
-	settings_about_staff_webmaster: "Webマスター",
+	settings_about_staff_webmaster: "ウェブマスター",
 	settings_about_staff_design: "デザイン",
 	settings_about_staff_translate: "翻訳",
 	settings_about_staff_frontend: "フロントエンド",
@@ -206,3 +207,11 @@ const Japanese: LocaleIdentifiers = {
 };
 
 export default Japanese;
+/*  MEMO
+    loginwindow_register_back_to_login
+	  原译作"すでにアカウントをお持ちですか？ログイン",因文字列过长影响页面展示，故割爱
+	关于"弹幕 danmaku"与"评论 comment"
+	  日语语境中"弾幕"指同屏评论(コメント)数量如弹幕游戏一般多到盖住画面的现象
+	  而中文里指在视频画面上滚动的评论本身而不是现象
+	  此处暂且将视频中的评论译为"弾幕"，页面下方的评论作"コメント"
+*/
