@@ -15,7 +15,7 @@ function script(autoCall = true) {
 		palette: "pink",
 	};
 	try {
-		const error = new TypeError("数据类型错误。");
+		const error = new TypeError("The data type is incorrect");
 		if (!lastColorMode_str) throw error;
 		const lastColorMode = JSON.parse(lastColorMode_str) as Partial<NuxtColorMode>;
 		if (Object.prototype.toString.call(lastColorMode) !== "[object Object]") throw error;

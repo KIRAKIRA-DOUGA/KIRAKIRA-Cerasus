@@ -1,6 +1,7 @@
 import { addImports, addPlugin, addTemplate, createResolver, defineNuxtModule } from "@nuxt/kit";
 import { dirname } from "path";
 import { PREFERENTIAL_BASE_URL, PREFERENTIAL_ROUTE, TEMPLATE_PATH } from "../shared/constants";
+import { minifyJavaScript } from "../shared/encode";
 import script from "./script";
 
 const TEMPLATE_NAME = "theme.script.js";
@@ -21,23 +22,27 @@ export function getFunctionBody(func: Function, compressed: boolean) {
 }
 
 export default defineNuxtModule({
-	setup(_options, nuxt) {
+	async setup(_options, nuxt) {
 		const { resolve } = createResolver(import.meta.url);
-		addPlugin(resolve(__dirname, "plugin"));
-		addImports({ name: "Theme", as: "Theme", from: resolve(__dirname, "composables").replaceAll("\\", "/") });
+
+		addPlugin(resolve("plugin"));
+		addImports({ name: "Theme", as: "Theme", from: resolve("composables")/* .replaceAll("\\", "/") */ });
+
+		let scriptContent = `(function (autoCall) {${getFunctionBody(script, false)}})();`;
+		scriptContent = await minifyJavaScript(scriptContent);
 		const template = addTemplate({
 			filename: TEMPLATE_PATH + TEMPLATE_NAME,
 			write: true,
-			getContents() {
-				return `(function (autoCall) {${getFunctionBody(script, true)}})();`;
-			},
+			getContents: () => scriptContent,
 		});
+
 		// 参考自：https://github.com/nuxt/nuxt/discussions/17691
 		nuxt.options.nitro.publicAssets = nuxt.options.nitro.publicAssets || [];
 		nuxt.options.nitro.publicAssets.push({
 			baseURL: PREFERENTIAL_BASE_URL,
 			dir: dirname(template.dst),
 		});
+
 		nuxt.hook("nitro:config", nitro => {
 			nitro.plugins ??= [];
 			nitro.plugins.push(resolve("nitro-plugin.ts"));
