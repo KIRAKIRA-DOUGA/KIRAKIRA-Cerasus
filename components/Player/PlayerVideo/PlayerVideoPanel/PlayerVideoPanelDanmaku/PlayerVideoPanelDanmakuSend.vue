@@ -25,7 +25,6 @@
 		flex-shrink: 0;
 		width: 100%;
 		height: 36px;
-		background-color: c(inset-bg);
 
 		.text-box {
 			--square: true;

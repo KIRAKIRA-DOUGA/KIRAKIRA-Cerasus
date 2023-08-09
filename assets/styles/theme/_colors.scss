@@ -20,7 +20,7 @@ $grayscale-colors: (
 $neutral-colors: (
 	main-bg: (white, #171414),
 	main-fg: (black, white),
-	inset-bg: (c(black, 2%), c(white, 6%)),
+	inset-bg: (c(black, 2%), c(white, 5%)),
 	acrylic-bg: map.get($grayscale-colors, gray-5),
 	icon-color: (#797173, #e5e4e4),
 	divider: #505050,
