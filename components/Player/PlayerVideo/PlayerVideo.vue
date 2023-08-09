@@ -220,6 +220,20 @@
 		display: flex;
 		flex-direction: column;
 		height: 100dvh;
+
+		video {
+			width: 100%;
+			height: 100%;
+		}
+
+		.player-video-controller {
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			background-color: c(main-bg);
+			transition: $fallback-transitions, background-color 0s;
+		}
 	}
 
 	table {
