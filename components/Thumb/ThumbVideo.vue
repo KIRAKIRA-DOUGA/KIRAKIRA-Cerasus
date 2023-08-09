@@ -34,26 +34,28 @@
 			<div class="cover-wrapper">
 				<img :src="image" alt="cover" class="cover" />
 			</div>
-			<div class="title"><slot>视频标题</slot></div>
-			<div class="info">
-				<div class="line">
-					<div class="item">
-						<Icon name="play" />
-						<p>{{ watchedCount }}</p>
+			<div class="text-wrapper">
+				<div class="title"><slot>视频标题</slot></div>
+				<div class="info">
+					<div class="line">
+						<div class="item">
+							<Icon name="play" />
+							<p>{{ watchedCount }}</p>
+						</div>
+						<div class="item">
+							<Icon name="time" />
+							<p>{{ duration }}</p>
+						</div>
 					</div>
-					<div class="item">
-						<Icon name="time" />
-						<p>{{ duration }}</p>
-					</div>
-				</div>
-				<div class="line">
-					<LocaleLink class="item uploader" to="/user" linkInLink :blank="blank">
-						<Icon name="person" />
-						<div>{{ uploader }}</div>
-					</LocaleLink>
-					<div class="item">
-						<Icon name="calendar" />
-						<div>{{ date }}</div>
+					<div class="line">
+						<LocaleLink class="item uploader" to="/user" linkInLink :blank="blank">
+							<Icon name="person" />
+							<div>{{ uploader }}</div>
+						</LocaleLink>
+						<div class="item">
+							<Icon name="calendar" />
+							<div>{{ date }}</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -64,9 +66,14 @@
 <style scoped lang="scss">
 	.thumb-video {
 		@include round-large;
+		--view: grid;
 		position: relative;
 		display: inline-block;
 		color: c(text-color);
+
+		@container style(--view: list) {
+			width: 100%;
+		}
 
 		&:any-hover:not(:active) {
 			z-index: 1;
@@ -90,16 +97,32 @@
 	.card {
 		@include round-large;
 		padding: 8px 9px;
+
+		@container style(--view: tile) {
+			display: flex;
+			gap: 8px;
+			align-items: center;
+		}
+
+		@container style(--view: list) {
+			display: flex;
+			gap: 16px;
+			align-items: center;
+		}
 	}
 
 	.cover-wrapper {
 		@include round-large;
-		margin-bottom: 8px;
 		overflow: hidden;
+		aspect-ratio: 16 / 9;
+
+		@container style(--view: grid) {
+			margin-bottom: 8px;
+		}
 
 		img.cover {
 			width: 100%;
-			aspect-ratio: 16 / 9;
+			height: 100%;
 			object-fit: cover;
 		}
 	}
