@@ -34,6 +34,7 @@ export default defineNuxtConfig({
 		"@pinia-plugin-persistedstate/nuxt",
 		"modules/theme/module.ts",
 		"modules/noscript/module.ts",
+		"modules/unsupported-browsers/module.ts",
 		dev && "modules/components-globalized/module.ts",
 		"@nuxtjs/robots",
 		"nuxt-simple-sitemap",
@@ -63,7 +64,6 @@ export default defineNuxtConfig({
 		"styles/global.scss",
 		"styles/global-colors.scss",
 		"styles/elements/_index.scss",
-
 	],
 	vite: {
 		plugins: [
