@@ -5,6 +5,7 @@
 
 	const homepage = "https://cerasus.kirakira.moe/";
 	const { locale } = useI18n();
+	const appSettings = useAppSettingsStore();
 
 	const langTag = computed(() => {
 		const langs = {
@@ -64,6 +65,10 @@
 			{ rel: "alternate", href: `${homepage}en`, hreflang: "en" },
 			{ rel: "alternate", href: `${homepage}ja`, hreflang: "ja" },
 		],
+	});
+
+	watch(() => appSettings.rightAngleMode, enabled => {
+		setClassEnabled(document.documentElement, "right-angle", enabled);
 	});
 
 	const layout = ref("desktop-web");

@@ -67,6 +67,11 @@
 		<ToggleSwitch v-model="useAppSettingsStore().showCssDoodle" v-ripple icon="wallpaper">{{ t.animated_background }}</ToggleSwitch>
 		<SettingsChipItem icon="wallpaper" trailingIcon="edit">自定义背景</SettingsChipItem>
 	</section>
+	
+	<Subheader icon="apps">其它</Subheader>
+	<section list>
+		<ToggleSwitch v-model="useAppSettingsStore().rightAngleMode" v-ripple icon="data_array">直角模式</ToggleSwitch>
+	</section>
 </template>
 
 <style scoped lang="scss">

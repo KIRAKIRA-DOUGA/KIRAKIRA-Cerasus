@@ -2,6 +2,8 @@
 
 @layer base, theme, layout, props, utilities, components, special;
 
+$enhanced-selector: repeat-string(":not([NONE_EXISTS_ATTR])", 10); // 用于强行提高优先级。
+
 *,
 ::before,
 ::after {
@@ -117,14 +119,23 @@ p {
 
 // 用户请求削弱动态效果。
 @media (prefers-reduced-motion: reduce) {
-	$enhanced-selector: repeat-string(":not([NONE_EXISTS_ATTR])", 10); // 用于强行提高优先级。
-
 	#{$enhanced-selector} {
 		&,
 		&::before,
 		&::after {
 			transition-duration: 0s !important;
 			animation-duration: 0s !important;
+		}
+	}
+}
+
+// 直角模式
+html.right-angle {
+	#{$enhanced-selector} {
+		&,
+		&::before,
+		&::after {
+			border-radius: 0 !important;
 		}
 	}
 }
