@@ -26,7 +26,7 @@
 </script>
 
 <template>
-	<Subheader icon="brightness_medium">{{ t.theme }}</Subheader>
+	<Subheader icon="brightness_medium">{{ t.scheme }}</Subheader>
 	<PlayerVideoController :currentTime="30" :duration="110" :buffered="60" class="chip" />
 	<section grid>
 		<SettingsGridItem

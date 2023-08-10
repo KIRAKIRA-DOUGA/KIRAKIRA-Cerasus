@@ -42,7 +42,7 @@ const SChinese = {
 	checkbox: "复选框",
 	search_settings: "搜索设置",
 	appearance: "外观",
-	theme: "主题",
+	scheme: "主题",
 	palette: "个性色",
 	language: "语言",
 	tag: "标签",
@@ -78,6 +78,7 @@ const SChinese = {
 	preference: "偏好",
 	accessibility: "无障碍",
 	about: "关于",
+	experimental: "实验",
 	user_settings: "用户设置",
 	app_settings: "应用设置",
 	male: "男",
@@ -200,13 +201,13 @@ const SChinese = {
 	settings_about_staff_translate: "翻译",
 	settings_about_technologies_used: "使用技术",
 	user_name: "昵称",
-	user_name_requirements:
-		"1~20个字符，仅可包含大小写拉丁字母、数字、常用平/片假名、汉字、特殊符号 ｢-｣ ｢_｣",
+	user_name_requirements: "1~20个字符，仅可包含大小写拉丁字母、数字、常用平/片假名、汉字、特殊符号 ｢-｣ ｢_｣",
 	user_bio: "个性签名",
 	user_gender: "心理性别",
 	zh: "简体中文",
 	en: "英语",
 	ja: "日语",
+	development_test_page: "开发测试页面",
 } as const;
 
 export default SChinese;
