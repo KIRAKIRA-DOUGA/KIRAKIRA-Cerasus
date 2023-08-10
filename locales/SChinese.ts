@@ -208,6 +208,7 @@ const SChinese = {
 	en: "英语",
 	ja: "日语",
 	development_test_page: "开发测试页面",
+	components_test_page: "开发测试页面",
 } as const;
 
 export default SChinese;

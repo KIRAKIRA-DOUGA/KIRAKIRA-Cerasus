@@ -207,7 +207,8 @@ const English: LocaleIdentifiers = {
 	zh: "Simplified Chinese",
 	en: "English",
 	ja: "Japanese",
-	development_test_page: "Development test page",
+	development_test_page: "Development Test Page",
+	components_test_page: "Components Test Page",
 };
 
 export default English;
