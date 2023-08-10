@@ -29,13 +29,13 @@
 		const cat = categ !== "Home" ? categ : "undefined";
 		const encodedCategory = utf8Encode.encode(cat) as unknown as string;
 
-		api?.videos(encodedContent, sortCategory, sortDirection, "true", pageValue, encodedCategory).then(x => {
-			numberOfPages.value = Math.ceil(x.paginationData!.numberOfItems! / 50.0);
-			numberOfItems.value = x.paginationData!.numberOfItems!;
-			videos.value = x;
+		api?.videos(encodedContent, sortCategory, sortDirection, "true", pageValue, encodedCategory).then(video => {
+			numberOfPages.value = Math.ceil(video.paginationData!.numberOfItems! / 50.0);
+			numberOfItems.value = video.paginationData!.numberOfItems!;
+			videos.value = video;
 		}).catch(error => console.error(error));
-		api?.categories().then(x => {
-			categories.value = new Map(x.map(cat => [cat.name, cat.cardinality]));
+		api?.categories().then(categoriesResult => {
+			categories.value = new Map(categoriesResult.map(cat => [cat.name!, cat.cardinality]));
 		}).catch(error => console.error(error));
 	}, { immediate: true });
 </script>
