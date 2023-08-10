@@ -1,4 +1,5 @@
 // 注意：在日语中请为片假名中的外来语单词之间增添空格。
+// [琪露诺瓦露] 建议：新添加的键可以考虑将其注释，方便定位未翻译内容的位置
 
 import { LocaleIdentifiers } from "./SChinese";
 
@@ -70,8 +71,8 @@ const Japanese: LocaleIdentifiers = {
 	password_retype: "パスワードを確認",
 	password_change: "パスワードの変更",
 	password_current: "現在のパスワード",
-	password_new_retype: "新しいパスワードを確認",
-	password_new: "新密码",
+	password_new_retype: "新しいパスワードの確認",
+	password_new: "新しいパスワード",
 	account_linking: "SNSリンク",
 	blocklist: "ブロックリスト",
 	player: "プレーヤー",
@@ -95,7 +96,7 @@ const Japanese: LocaleIdentifiers = {
 	save: "保存",
 	add: "追加",
 	apply: "適用",
-	reset: "リセット",
+	reset: "再設定",
 	history: "履歴",
 	favorites: "お気に入り",
 	feed: "フィード",
@@ -139,7 +140,7 @@ const Japanese: LocaleIdentifiers = {
 	original: "自作",
 	repost: "転載",
 	authorized_repost: "許可を得た転載",
-	ensure_original: "この作品は自作であることを声明します。",
+	ensure_original: "この作品は自作であることを声明します",
 	original_author: "原作者",
 	original_link: "転載元リンク",
 	title: "タイトル",
@@ -191,8 +192,8 @@ const Japanese: LocaleIdentifiers = {
 	verification_successful: "本人確認ができました！",
 	settings_unselected: "設定項目を選択してください。",
 	combobox_unselected: "選択してください。",
-	// settings_profile_banner_change: "Edit banner",
-	// settings_profile_avatar_change: "Edit avatar",
+	settings_profile_banner_change: "バナー画像の変更",
+	settings_profile_avatar_change: "プロフィールアイコンの変更",
 	settings_about_repositories: "リポジトリ",
 	settings_about_staff: "スタッフ",
 	settings_about_staff_webmaster: "ウェブマスター",
@@ -202,7 +203,7 @@ const Japanese: LocaleIdentifiers = {
 	settings_about_staff_backend: "バックエンド",
 	settings_about_technologies_used: "使用されている技術",
 	user_name: "ニックネーム",
-	user_name_requirements: "1-20文字、大小英数字、ひらがな/カタカナ、漢字、特殊記号の｢-｣と｢_｣のみ使用できます",
+	user_name_requirements: "1-20文字、大小英数字、ひらがな/カタカナ、漢字、特殊記号の｢-｣と｢_｣のみ使用できます。",
 	user_bio: "自己紹介",
 	user_gender: "性別",
 	zh: "簡体字中国語",
