@@ -3,32 +3,33 @@
 @use "sass:map";
 @use "sass:list";
 @use "sass:string";
-@use "sass:meta";
 @use "../../assets/styles/theme/colors";
 @use "../../assets/styles/theme/functions" as *;
 @use "../../assets/styles/theme/internal" as *;
 
-$accent-colors: accent, accent-10;
-$state-colors: accent-shadow rgb, accent-hover, accent-focus;
-$neutral-colors: main-bg rgb;
+$accent-colors: accent-10;
+$state-colors: accent, accent-shadow-rgb, accent-hover, accent-focus;
+$neutral-colors: main-bg-rgb;
 
 $pink: map.get(colors.$primary-colors, pink);
 
-@function get-key($key) {
-	@return if(meta.type-of($key) != list, $key, list.nth($key, 1));
+@function get-key($tkey) {
+	$suffix-index: string.index($tkey, -rgb);
+	$key: if(not $suffix-index, $tkey, string.slice($tkey, 1, $suffix-index - 1));
+	@return $key;
 }
 
-@mixin use-color($key, $color, $is-light) {
-	$is-rgb-list: meta.type-of($key) == list;
-	$key: get-key($key);
-	
-	@if list.length($color) == 1 {
-		@debug $key;
-	}
+@mixin use-color($tkey, $color, $is-light) {
+	$key: get-key($tkey);
+	$is-rgb-list: $tkey != $key;
 	
 	$result: list.nth($color, if($is-light, 1, 2));
-
-	#{$key}: if(not $is-rgb-list, $result, color-to-rgb-list($result));
+	
+	@if not $is-rgb-list {
+		--#{$key}: #{$result};
+	} @else {
+		--#{$tkey}: #{color-to-rgb-list($result)};
+	}
 }
 
 @mixin definition($is-light) {
