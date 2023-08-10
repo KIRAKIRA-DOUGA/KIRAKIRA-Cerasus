@@ -1,3 +1,8 @@
-export const PREFERENTIAL_BASE_URL = "/prior";
-export const PREFERENTIAL_ROUTE = PREFERENTIAL_BASE_URL + "/";
-export const TEMPLATE_PATH = "prior/";
+const PREFERENTIAL = "prior";
+const UNSUPPORTED = "unsupported";
+
+export const PREFERENTIAL_BASE_URL = `/${PREFERENTIAL}`;
+export const PREFERENTIAL_ROUTE = `/${PREFERENTIAL}/`;
+export const PREFERENTIAL_TEMPLATE_PATH = `${PREFERENTIAL}/`;
+export const UNSUPPORTED_BASE_URL = `/${UNSUPPORTED}`;
+export const UNSUPPORTED_TEMPLATE_PATH = `${UNSUPPORTED}/`;

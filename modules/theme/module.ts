@@ -1,6 +1,6 @@
 import { addImports, addPlugin, addTemplate, createResolver, defineNuxtModule } from "@nuxt/kit";
 import { dirname } from "path";
-import { PREFERENTIAL_BASE_URL, PREFERENTIAL_ROUTE, TEMPLATE_PATH } from "../shared/constants";
+import { PREFERENTIAL_BASE_URL, PREFERENTIAL_ROUTE, PREFERENTIAL_TEMPLATE_PATH } from "../shared/constants";
 import { minifyJavaScript } from "../shared/encode";
 import script from "./script";
 
@@ -31,7 +31,7 @@ export default defineNuxtModule({
 		let scriptContent = `(function (autoCall = true) {${getFunctionBody(script, false)}})();`;
 		scriptContent = await minifyJavaScript(scriptContent);
 		const template = addTemplate({
-			filename: TEMPLATE_PATH + TEMPLATE_NAME,
+			filename: PREFERENTIAL_TEMPLATE_PATH + TEMPLATE_NAME,
 			write: true,
 			getContents: () => scriptContent,
 		});

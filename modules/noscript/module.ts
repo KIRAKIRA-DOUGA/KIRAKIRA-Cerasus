@@ -1,5 +1,5 @@
 import { addTemplate, defineNuxtModule } from "@nuxt/kit";
-import { PREFERENTIAL_ROUTE, TEMPLATE_PATH } from "../shared/constants";
+import { PREFERENTIAL_ROUTE, PREFERENTIAL_TEMPLATE_PATH } from "../shared/constants";
 import { compileSassFile, createReadFileResolver, minifyHtml, useNuxtHead } from "../shared/encode";
 
 const NOSCRIPT_HTML_FILE = "noscript.html";
@@ -14,7 +14,7 @@ export default defineNuxtModule({
 		noscriptHtml = noscriptHtml.replace(/(?=\s*<\/head>)/, `\n<style>\n${noscriptStyle}\n</style>`);
 		noscriptHtml = await minifyHtml(noscriptHtml);
 		addTemplate({
-			filename: TEMPLATE_PATH + NOSCRIPT_HTML_FILE,
+			filename: PREFERENTIAL_TEMPLATE_PATH + NOSCRIPT_HTML_FILE,
 			write: true,
 			getContents: () => noscriptHtml,
 		});

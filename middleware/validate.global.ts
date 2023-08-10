@@ -26,7 +26,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
 		if (routeNumber === 404)
 			return;
 		if (routeNumber === 601)
-			return navigateTo("/601.html");
+			return navigateTo("/unsupported");
 		if (routeNumber === 233)
 			return abortNavigation({
 				statusCode: 233,
