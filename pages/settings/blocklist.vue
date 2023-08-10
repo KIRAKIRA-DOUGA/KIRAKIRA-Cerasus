@@ -44,13 +44,13 @@
 		<Button icon="add">添加</Button>
 	</div>
 
-	<Subheader icon="data_array">正则表达式</Subheader>
+	<Subheader icon="regexp">正则表达式</Subheader>
 	<span>不想看到的稿件关键词正则表达式匹配</span>
 	<section>
 		<SettingsChipItem details="添加日期：XXXX-XX-XX" trailingIcon="delete" @trailingIconClick="remove">被隐藏的正则表达式</SettingsChipItem>
 	</section>
 	<div class="add">
-		<TextBox v-model="add" icon="data_array" />
+		<TextBox v-model="add" icon="regexp" />
 		<Button icon="add">添加</Button>
 	</div>
 </template>
