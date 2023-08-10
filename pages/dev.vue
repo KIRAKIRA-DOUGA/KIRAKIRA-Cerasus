@@ -1,9 +1,5 @@
-<docs>
-
-</docs>
-
 <script setup lang="ts">
-	useHead({ title: "Development Test Page" });
+	useHead({ title: t.development_test_page });
 
 	type Page = { name: string; link: string };
 
@@ -56,11 +52,11 @@
 
 <template>
 	<div class="container">
-		<Subheader icon="home" :badge="233">Tests</Subheader>
+		<Subheader icon="science" :badge="233">{{ t.test }}</Subheader>
 		<div class="pages">
 			<LocaleLink v-for="page in pages" :key="page.name" class="link lite" :to="page.link">{{ page.name }}</LocaleLink>
 		</div>
-		<Subheader icon="error" :badge="233">Error Page</Subheader>
+		<Subheader icon="error" :badge="233">{{ t.error_pages }}</Subheader>
 		<div class="pages">
 			<a v-for="page in httpCodes" :key="page.name" class="link lite" :href="'/error/' + page.link">{{ page.name }}</a>
 		</div>
