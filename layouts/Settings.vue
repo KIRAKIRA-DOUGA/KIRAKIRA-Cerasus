@@ -60,7 +60,7 @@
 					<div class="nav-bottom-buttons">
 						<Button icon="logout" @click="logout">{{ t.logout }}</Button>
 						<Button icon="build" href="/dev">{{ t.development_test_page }}</Button>
-						<Button icon="apps" href="/component">组件测试页</Button>
+						<Button icon="apps" href="/components">组件测试页</Button>
 					</div>
 				</header>
 			</div>
