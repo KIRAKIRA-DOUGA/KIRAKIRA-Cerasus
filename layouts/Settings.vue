@@ -31,6 +31,7 @@
 			{ id: "danmaku", icon: "danmaku" },
 			{ id: "preference", icon: "star" },
 			{ id: "language", icon: "translate" },
+			{ id: "experiment", icon: "science" },
 			{ id: "about", icon: "info" },
 			{ id: "acknowledgement", icon: "campaign" },
 		],
