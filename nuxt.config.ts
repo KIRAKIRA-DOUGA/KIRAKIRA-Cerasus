@@ -60,7 +60,6 @@ export default defineNuxtConfig({
 		"api",
 	),
 	css: [
-		"video.js/dist/video-js.css",
 		"styles/global.scss",
 		"styles/global-colors.scss",
 		"styles/elements/_index.scss",
