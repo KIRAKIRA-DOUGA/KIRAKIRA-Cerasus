@@ -4,6 +4,7 @@ import ts from "typescript";
 import * as terser from "terser";
 import htmlMinifierTerser from "html-minifier-terser";
 import { Nuxt } from "nuxt/schema";
+import sass from "sass";
 
 /**
  * 将 TypeScript 源码编译为 JavaScript 代码。
@@ -18,6 +19,24 @@ export function compileTypeScript(source: string, target: keyof typeof ts.Script
 			target: ts.ScriptTarget[target],
 		},
 	}).outputText;
+}
+
+/**
+ * 将 Sass/SCSS 源码编译为 CSS 代码。
+ * @param source - 源码。
+ * @returns 编译后的 CSS 代码。
+ */
+export function compileSass(source: string) {
+	return sass.compileString(source).css;
+}
+
+/**
+ * 将 Sass/SCSS 的**文件**编译为 CSS 代码。
+ * @param filename - 文件路径及名称。
+ * @returns 编译后的 CSS 代码。
+ */
+export function compileSassFile(...filename: string[]) {
+	return sass.compile(resolve(...filename)).css;
 }
 
 /**
