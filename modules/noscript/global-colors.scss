@@ -1,0 +1,59 @@
+// stylelint-disable order/order
+
+@use "sass:map";
+@use "sass:list";
+@use "sass:string";
+@use "sass:meta";
+@use "../../assets/styles/theme/colors";
+@use "../../assets/styles/theme/functions" as *;
+@use "../../assets/styles/theme/internal" as *;
+
+$accent-colors: accent, accent-10;
+$state-colors: accent-shadow rgb, accent-hover, accent-focus;
+$neutral-colors: main-bg rgb;
+
+$pink: map.get(colors.$primary-colors, pink);
+
+@function get-key($key) {
+	@return if(meta.type-of($key) != list, $key, list.nth($key, 1));
+}
+
+@mixin use-color($key, $color, $is-light) {
+	$is-rgb-list: meta.type-of($key) == list;
+	$key: get-key($key);
+	
+	@if list.length($color) == 1 {
+		@debug $key;
+	}
+	
+	$result: list.nth($color, if($is-light, 1, 2));
+
+	#{$key}: if(not $is-rgb-list, $result, color-to-rgb-list($result));
+}
+
+@mixin definition($is-light) {
+	@each $tkey in $accent-colors {
+		$key: get-key($tkey);
+		@include use-color($tkey, map.get($pink, $key), $is-light);
+	}
+
+	@each $tkey in $state-colors {
+		$key: get-key($tkey);
+		@include use-color($tkey, map.get($pink, map.get(colors.$state-colors, $key)), $is-light);
+	}
+
+	@each $tkey in $neutral-colors {
+		$key: get-key($tkey);
+		@include use-color($tkey, map.get(colors.$neutral-colors, $key), $is-light);
+	}
+
+	@include wave-link(true, map.get($pink, map.get(colors.$state-colors, accent-hover)), $is-light);
+}
+
+:root {
+	@include definition(true);
+
+	@media (prefers-color-scheme: dark) {
+		@include definition(false);
+	}
+}

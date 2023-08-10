@@ -28,7 +28,7 @@ export default defineNuxtModule({
 		addPlugin(resolve("plugin"));
 		addImports({ name: "Theme", as: "Theme", from: resolve("composables")/* .replaceAll("\\", "/") */ });
 
-		let scriptContent = `(function (autoCall) {${getFunctionBody(script, false)}})();`;
+		let scriptContent = `(function (autoCall = true) {${getFunctionBody(script, false)}})();`;
 		scriptContent = await minifyJavaScript(scriptContent);
 		const template = addTemplate({
 			filename: TEMPLATE_PATH + TEMPLATE_NAME,

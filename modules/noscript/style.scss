@@ -3,23 +3,11 @@
 @use "../../assets/styles/theme/eases" as *;
 @use "../../assets/styles/theme/mixins" as *;
 @use "../../assets/styles/theme/effects" as *;
-@use "../../assets/styles/theme/colors";
+@import "./global-colors";
+@import "../../assets/styles/elements/hyperlink";
 @import "../../assets/styles/theme/animations";
 
 $animation-options: $ease-out-expo 600ms backwards;
-
-@function use-accent($key) {
-	@return map.get(map.get(map.get(colors.$primary-colors, pink), $key);
-}
-
-$pink: map.get(colors.$primary-colors, pink);
-
-:root {
-	--accent: #f06e8e;
-	--accent-10: #ffedf2;
-	--accent-shadow-rgb: 193, 159, 168;
-	--accent-hover: #f390a9;
-}
 
 * {
 	user-select: none !important;
