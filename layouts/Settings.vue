@@ -31,7 +31,7 @@
 			{ id: "danmaku", icon: "danmaku" },
 			{ id: "preference", icon: "star" },
 			{ id: "language", icon: "translate" },
-			{ id: "experiment", icon: "science" },
+			{ id: "experimental", icon: "science" },
 			{ id: "about", icon: "info" },
 			{ id: "acknowledgement", icon: "campaign" },
 		],
@@ -59,7 +59,7 @@
 					</TabBar>
 					<div class="nav-bottom-buttons">
 						<Button icon="logout" @click="logout">{{ t.logout }}</Button>
-						<Button href="/dev">Development Test Page</Button>
+						<Button icon="build" href="/dev">{{ t.development_test_page }}</Button>
 					</div>
 				</header>
 			</div>

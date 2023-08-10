@@ -45,7 +45,7 @@ const Japanese: LocaleIdentifiers = {
 	checkbox: "チェックボックス",
 	search_settings: "設定を検索",
 	appearance: "外観",
-	theme: "テーマ",
+	scheme: "スキーム",
 	palette: "色",
 	language: "言語",
 	tag: "タグ",
@@ -81,6 +81,7 @@ const Japanese: LocaleIdentifiers = {
 	preference: "プリファレンス",
 	accessibility: "アクセシビリティ",
 	about: "概要",
+	experimental: "実験",
 	user_settings: "個人設定",
 	app_settings: "アプリの設定",
 	male: "男",
@@ -209,14 +210,17 @@ const Japanese: LocaleIdentifiers = {
 	zh: "簡体字中国語",
 	en: "英語",
 	ja: "日本語",
+	development_test_page: "テストページの開発",
 };
 
 export default Japanese;
-/*  MEMO
-    loginwindow_register_back_to_login
-	  原译作"すでにアカウントをお持ちですか？ログイン",因文字列过长影响页面展示，故割爱
-	关于"弹幕 danmaku"与"评论 comment"
-	  日语语境中"弾幕"指同屏评论(コメント)数量如弹幕游戏一般多到盖住画面的现象
-	  而中文里指在视频画面上滚动的评论本身而不是现象
-	  此处暂且将视频中的评论译为"弾幕"，页面下方的评论作"コメント"
-*/
+
+/**
+ * MEMO
+ * loginwindow_register_back_to_login
+ * 	原译作“すでにアカウントをお持ちですか？ログイン”,因文字列过长影响页面展示，故割爱
+ * 关于“弹幕 danmaku”与“评论 comment”
+ * 	日语语境中“弾幕”指同屏评论（コメント）数量如弹幕游戏一般多到盖住画面的现象
+ * 	而中文里指在视频画面上滚动的评论本身而不是现象
+ * 	此处暂且将视频中的评论译为“弾幕”，页面下方的评论作“コメント”
+ */

@@ -42,7 +42,7 @@ const English: LocaleIdentifiers = {
 	checkbox: "Checkbox",
 	search_settings: "Search Settings",
 	appearance: "Appearance",
-	theme: "Theme",
+	scheme: "Scheme",
 	palette: "Palette",
 	language: "Language",
 	tag: "Tag",
@@ -78,6 +78,7 @@ const English: LocaleIdentifiers = {
 	preference: "Preference",
 	accessibility: "Accessibility",
 	about: "About",
+	experimental: "Experimental",
 	user_settings: "User settings",
 	app_settings: "App settings",
 	male: "Male",
@@ -200,13 +201,13 @@ const English: LocaleIdentifiers = {
 	settings_about_staff_backend: "Backend",
 	settings_about_technologies_used: "Technologies used",
 	user_name: "Name",
-	user_name_requirements:
-		'1~20 characters, including only upper & lower case Latin letters, numbers, common Hiragana/Katakana, Chinese characters, special symbols "-", "_"',
+	user_name_requirements: '1~20 characters, including only upper & lower case Latin letters, numbers, common Hiragana/Katakana, Chinese characters, special symbols "-", "_"',
 	user_bio: "Bio",
 	user_gender: "Gender",
 	zh: "Simplified Chinese",
 	en: "English",
 	ja: "Japanese",
+	development_test_page: "Development test page",
 };
 
 export default English;
