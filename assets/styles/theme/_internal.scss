@@ -45,12 +45,12 @@
 
 /// 根据指定的键名确定是否生成波浪下划线链接背景。
 /// @access private
-/// @param {String} $key - 当前颜色键名。
+/// @param {String | Bool} $key - 当前颜色键名，如果传入 true 可以绕过检查。
 /// @param {String} $color - 当前颜色值。
 /// @param {Bool} $is-light - 当前是否是浅色主题？
 /// @output --accent-hover-wave-link-background
 @mixin wave-link($key, $color, $is-light) {
-	@if map.get($state-colors, accent-hover) == $key {
+	@if $key == true or map.get($state-colors, accent-hover) == $key {
 		$svg-color: color-to-svg-color(themed-color($color, $is-light));
 		--accent-hover-wave-link-background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 4'%3E%3Cpath fill='none' stroke='#{$svg-color}' d='M0 3.5c5 0 5-3 10-3s5 3 10 3 5-3 10-3 5 3 10 3'/%3E%3C/svg%3E");
 	}
