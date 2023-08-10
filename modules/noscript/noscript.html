@@ -25,7 +25,7 @@
 				</svg>
 			</div>
 			<div class="card-body">
-				<h1>警告，JavaScript被禁用</h1>
+				<h1 class="title">警告，JavaScript被禁用</h1>
 				<svg width="369" height="355" viewBox="0 0 369 355" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo">
 					<g clip-path="url(#clip0_1295_12041)">
 						<path d="M369 0H68.7856V300.214H369V0Z" fill="#F7DF1E" />
@@ -39,13 +39,17 @@
 						</clipPath>
 					</defs>
 				</svg>
-				<p>
+				<p class="content">
 					嘿！为什么禁用JavaScript？<br />
 					我们的站点使用了大量JavaScript技术，<br />
 					需要启用JavaScript才能使用。<br />
 					<a href="https://www.enable-javascript.com/" target="_blank">如何启用JavaScript？</a>
 				</p>
-				<button type="button" onclick="location.reload();">刷新</button>
+				<div class="refresh-area">
+					<p>请在启用JavaScript之后，再重新载入本网页。</p>
+					<button type="button" onclick="top.location.reload();">刷新</button>
+					<!-- 由于 JavaScript 已被禁用，因此不能保证按钮可被正常点击。 -->
+				</div>
 			</div>
 		</div>
 	</div>

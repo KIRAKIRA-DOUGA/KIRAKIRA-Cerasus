@@ -8,7 +8,7 @@
 @use "../../assets/styles/theme/internal" as *;
 
 $accent-colors: accent-10;
-$state-colors: accent, accent-shadow-rgb, accent-hover, accent-focus;
+$state-colors: accent, accent-rgb, accent-shadow-rgb, accent-hover, accent-focus, accent-focus-rgb, accent-pressed;
 $neutral-colors: main-bg-rgb;
 
 $pink: map.get(colors.$primary-colors, pink);
