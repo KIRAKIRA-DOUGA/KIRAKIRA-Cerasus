@@ -79,11 +79,6 @@ export default defineNuxtConfig({
 				target: "esnext",
 			},
 		},
-		server: {
-			hmr: {
-				protocol: "ws",
-			},
-		},
 		vue: {
 			script: {
 				defineModel: true,
