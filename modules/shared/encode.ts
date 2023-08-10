@@ -1,10 +1,11 @@
-import { resolve } from "path";
+import { createResolver } from "@nuxt/kit";
 import fs from "fs/promises";
-import ts from "typescript";
-import * as terser from "terser";
 import htmlMinifierTerser from "html-minifier-terser";
 import { Nuxt } from "nuxt/schema";
+import { resolve } from "path";
 import sass from "sass";
+import * as terser from "terser";
+import ts from "typescript";
 
 /**
  * 将 TypeScript 源码编译为 JavaScript 代码。
@@ -75,10 +76,16 @@ export function wrapIife(source: string) {
 
 /**
  * 获取一个根据路径异步读取文件的解析器。
- * @param dirname - 当前目录路径，使用 `__dirname` 填充之。
+ * @param dirname - 当前目录路径，使用 `__dirname` 或 `import.meta.url` 填充之。
  * @returns 根据路径异步读取文件的解析器。
  */
 export function createReadFileResolver(dirname: string) {
+	const isImportMetaUrl = dirname.includes("://");
+
+	const currentResolve = isImportMetaUrl ?
+		createResolver(dirname).resolve :
+		(...paths: string[]) => resolve(dirname, ...paths);
+
 	return {
 		/**
 		 * 根据路径异步读取文件。
@@ -86,7 +93,7 @@ export function createReadFileResolver(dirname: string) {
 		 * @returns 以 UTF-8 编码读取的文件内容。
 		 */
 		readFile: (...paths: string[]) =>
-			fs.readFile(resolve(dirname, ...paths), "utf-8"),
+			fs.readFile(currentResolve(...paths), "utf-8"),
 		/**
 		 * 最右边的参数被认为是 {to}。其他参数被视为 {from} 的数组。
 		 *
@@ -100,8 +107,7 @@ export function createReadFileResolver(dirname: string) {
 		 *
 		 * @throw {TypeError} 如果任何参数不是字符串，则抛出错误。
 		 */
-		resolve: (...paths: string[]) =>
-			resolve(dirname, ...paths),
+		resolve: currentResolve,
 	};
 }
 

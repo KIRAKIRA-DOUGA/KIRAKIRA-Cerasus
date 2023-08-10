@@ -4,8 +4,8 @@ const navigate = (path: string) => navigateTo(useLocalePath()(path));
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default defineNuxtRouteMiddleware((to, from) => {
-	// if (environment.client)
-	// 	console.log("to", to, "\nfrom", from, "\nrouteBaseName", useNuxtApp().$getRouteBaseName());
+	if (environment.client)
+		console.log("to", to, "\nfrom", from, "\nrouteBaseName", useNuxtApp().$getRouteBaseName());
 
 	const routePath = getRoutePath({ route: to });
 	const routeSlug = getLocaleRouteSlug(to);
