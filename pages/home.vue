@@ -1,48 +1,53 @@
 <script setup lang="ts">
-	import testVideo from "assets/images/cav5-cover.png";
-	import testVideo2 from "assets/images/av820864307.jpg";
-	import testAudio from "assets/images/av893640047.jpg";
-	import { Categories200ResponseInner } from "../packages/kirakira-backend/models/Categories200ResponseInner";
-
-	const selectedTab = ref("Home");
-
 	useHead({ title: "首页" });
 
 	const videos = ref<Videos200Response>();
 	const route = useRoute();
 	const { query } = route;
 
+	const data = reactive({
+		selectedTab: "Home",
+		search: query.search ?? "none",
+		sortCategory: query.sortCategory!,
+		sortDirection: query.sortDirection!,
+		page: +(query.page ?? 1),
+	});
+
+	/* const selectedTab = ref("Home");
 	const search = ref(query.search ?? "none");
 	const sortCategory = ref(query.sortCategory!);
 	const sortDirection = ref(query.sortDirection!);
-	const page = ref(+(query.page ?? 1));
+	const page = ref(+(query.page ?? 1)); */
+	
 	const numberOfItems = ref(0);
 	const numberOfPages = ref(1);
 
 	const categories = ref<Map<string, number | undefined>>();
+	const handleError = (error: unknown) => console.error(error);
 
 	// fetch the videos according to the query
-	watch([() => search.value, () => sortCategory.value, () => sortDirection.value, () => page.value, () => selectedTab.value], ([search, sortCategory, sortDirection, pageValue, categ]) => {
+	watch(data, () => {
 		const api = useApi();
 		const utf8Encode = new TextEncoder();
-		const encodedContent = utf8Encode.encode(search) as unknown as string;
-		const cat = categ !== "Home" ? categ : "undefined";
+		const encodedContent = utf8Encode.encode(data.search) as unknown as string;
+		const cat = data.selectedTab !== "Home" ? data.selectedTab : "undefined";
 		const encodedCategory = utf8Encode.encode(cat) as unknown as string;
 
-		api?.videos(encodedContent, sortCategory, sortDirection, "true", pageValue, encodedCategory).then(video => {
+		api?.videos(encodedContent, data.sortCategory, data.sortDirection, "true", data.page, encodedCategory).then(video => {
 			numberOfPages.value = Math.ceil(video.paginationData!.numberOfItems! / 50.0);
 			numberOfItems.value = video.paginationData!.numberOfItems!;
 			videos.value = video;
-		}).catch(error => console.error(error));
+		}).catch(handleError);
+
 		api?.categories().then(categoriesResult => {
 			categories.value = new Map(categoriesResult.map(cat => [cat.name!, cat.cardinality]));
-		}).catch(error => console.error(error));
-	}, { immediate: true });
+		}).catch(handleError);
+	}, { immediate: true, deep: true });
 </script>
 
 <template>
 	<div class="container">
-		<TabBar v-if="categories" v-model="selectedTab">
+		<TabBar v-if="categories" v-model="data.selectedTab">
 			<TabItem id="Home" direction="vertical" icon="home">{{ t.home }}</TabItem>
 			<TabItem id="Anime" direction="vertical-reverse" :badge="categories.get('Anime')">{{ t.category_anime }}</TabItem>
 			<TabItem id="Music" direction="vertical-reverse" :badge="categories.get('Music')">{{ t.category_music }}</TabItem>
@@ -54,18 +59,20 @@
 		</TabBar>
 		<Subheader icon="upload" :badge="numberOfItems">{{ t.latest }}</Subheader>
 		<div class="videos-grid">
-			<ThumbVideo
-				v-for="video in videos?.videos"
-				:key="video.videoID"
-				:link="'/videos/kv' + video.videoID ?? ''"
-				:uploader="video.authorName ?? ''"
-				:image="video.thumbnailLoc"
-				:date="new Date()"
-				:watchedCount="video.views"
-				:duration="new Duration(0, video.videoDuration ?? 0)"
-			>{{ video.title }}</ThumbVideo>
+			<TransitionGroup>
+				<ThumbVideo
+					v-for="video in videos?.videos"
+					:key="video.videoID"
+					:link="'/videos/kv' + video.videoID ?? ''"
+					:uploader="video.authorName ?? ''"
+					:image="video.thumbnailLoc"
+					:date="new Date()"
+					:watchedCount="video.views"
+					:duration="new Duration(0, video.videoDuration ?? 0)"
+				>{{ video.title }}</ThumbVideo>
+			</TransitionGroup>
 		</div>
-		<Pagination v-model="page" :pages="numberOfPages" :displayPageCount="12" enableArrowKeyMove />
+		<Pagination v-model="data.page" :pages="numberOfPages" :displayPageCount="12" enableArrowKeyMove />
 	</div>
 </template>
 
@@ -102,5 +109,13 @@
 		@extend %tabulation;
 		gap: 4px;
 		margin: 0 -8px;
+	}
+	
+	.thumb-video {
+		&.v-enter-from {
+			opacity: 0;
+			translate: 0 30px;
+			transition: all $ease-out-smooth 250ms;
+		}
 	}
 </style>
