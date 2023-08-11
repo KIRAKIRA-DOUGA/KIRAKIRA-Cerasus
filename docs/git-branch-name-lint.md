@@ -29,10 +29,10 @@ refactoring-<日期>-<修改内容简称>-<创建者>
 
 ##### 日期
 
-格式为 `yyyyMMddii`，共计 8 位数字。
+格式为 `yyyyMMddrr`，共计 8 位数字。
 
 其中  
-`y` - 年；`M` - 月；`d` - 日；`i` - 当日第几次修订号，以 1 起始。
+`y` - 年；`M` - 月；`d` - 日；`r` - 当日第几次修订号，以 1 起始。
 
 ##### 修改/修复内容简称
 
@@ -40,7 +40,7 @@ refactoring-<日期>-<修改内容简称>-<创建者>
 
 ---
 
-从 `develop` 分支创建开发分支 `feature-yyyyMMddii-xxxxxxxx-xxxx`，开发完成后 ***Merge*** 回 `develop` 分支；
+从 `develop` 分支创建开发分支 `feature-yyyyMMddrr-xxxxxxxx-xxxx`，开发完成后 ***Merge*** 回 `develop` 分支；
 
 在 `feature` 上执行单元测试，在 `develop` 上进行结合测试（如果可能的话）；
 
