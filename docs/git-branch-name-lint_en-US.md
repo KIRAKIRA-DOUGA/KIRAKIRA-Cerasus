@@ -29,7 +29,7 @@ refactoring-<date>-<name>-<creator>
 
 ---
 
-After creating your branch，***merge*** `develop` to own branch, and resolve conflicts；  
-Before you code，***merge*** `develop` to own branch, and resolve conflicts；  
-After you finished coding，***merge*** `develop` to own branch, and resolve conflicts；  
-Before you merge，***merge*** `develop` to own branch, and resolve conflicts。
+After creating your branch, ***merge*** `develop` to your own branch, and resolve the conflicts;  
+Before you coding, ***merge*** `develop` to your own branch, and resolve the conflicts;   
+After you finished coding, ***merge*** `develop` to your own branch, and resolve the conflicts;  
+Before you merging, ***merge*** `develop` to your own branch, and resolve the conflicts.
