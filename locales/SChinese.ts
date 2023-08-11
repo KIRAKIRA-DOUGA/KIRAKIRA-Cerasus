@@ -180,6 +180,8 @@ const SChinese = {
 	step_ok: "完成",
 	step_cancel: "取消",
 	loginwindow_login_welcome: "欢迎回家",
+	loginwindow_login_to_forgot: "忘记了密码",
+	loginwindow_login_to_register: "没有账号？注册",
 	loginwindow_register_back_to_login: "已有账号？登入",
 	loginwindow_email_sent: "我们已向您的邮箱中发送了验证码，请在此输入验证码。",
 	loginwindow_if_not_received: "如未收到，您可以重新发送。",

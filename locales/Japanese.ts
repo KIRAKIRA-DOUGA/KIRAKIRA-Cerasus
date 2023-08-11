@@ -183,6 +183,8 @@ const Japanese: LocaleIdentifiers = {
 	step_ok: "完了",
 	step_cancel: "キャンセル",
 	loginwindow_login_welcome: "ようこそ",
+	loginwindow_login_to_forgot: "(test)I forgot my password",
+	loginwindow_login_to_register: "(test)I don't have an account",
 	loginwindow_register_back_to_login: "すでにアカウントをお持ちですか？",
 	loginwindow_email_sent: "確認コードを送信しました。受け取ったコードを入力してください。",
 	loginwindow_if_not_received: "届いてない場合、コードを再送信することができます。",

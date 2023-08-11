@@ -117,8 +117,8 @@
 							</div>
 						</div>
 						<div class="action margin-left-inset margin-right-inset">
-							<Button @click="currentPage = 'forgot'">{{ t.password_forgot }}</Button>
-							<Button @click="currentPage = 'register'">{{ t.register }}</Button>
+							<Button @click="currentPage = 'forgot'">{{ t.loginwindow_login_to_forgot }}</Button>
+							<Button @click="currentPage = 'register'">{{ t.loginwindow_login_to_register }}</Button>
 						</div>
 					</div>
 				</div>
