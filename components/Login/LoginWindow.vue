@@ -30,28 +30,6 @@
 		},
 	});
 
-	/** logs the user in */
-	async function loginUser() {
-		const oapiClient = useApi();
-		await oapiClient.login(email.value, password.value);
-		isLogining.value = true;
-	}
-
-	// TODO: [Aira] Change passwords should be in settings, not login window.
-
-	async function registerUser() {
-		const oapiClient = useApi();
-		await oapiClient.register(username.value, password.value, email.value);
-		isLogining.value = true;
-		open.value = false;
-	}
-
-	async function resetPassword() {
-		const oapiClient = useApi();
-		await oapiClient.resetPassword(oldPassword.value, newPassword.value);
-		open.value = false;
-	}
-
 	const open = computed({
 		get: () => !!(model.value ?? props.open),
 		set: value => {
@@ -61,7 +39,37 @@
 		},
 	});
 	const loginWindow = refComp();
-	// const isInvalidEmail = computed(() => !!email.value && !email.value.match(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/));
+	const isInvalidEmail = computed(() => !!email.value && !email.value.match(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/));
+
+	/**
+	 * 登录账户。
+	 */
+	async function loginUser() {
+		const oapiClient = useApi();
+		await oapiClient.login(email.value, password.value);
+		isLogining.value = true;
+	}
+
+	// DELETE: [Aira] Change passwords should be in settings, not login window.
+
+	/**
+	 * 注册账户。
+	 */
+	async function registerUser() {
+		const oapiClient = useApi();
+		await oapiClient.register(username.value, password.value, email.value);
+		isLogining.value = true;
+		open.value = false;
+	}
+
+	/**
+	 * 重置密码。
+	 */
+	async function resetPassword() {
+		const oapiClient = useApi();
+		await oapiClient.resetPassword(oldPassword.value, newPassword.value);
+		open.value = false;
+	}
 
 	/**
 	 * 稍后关闭。
@@ -96,7 +104,7 @@
 			>
 
 				<div class="main left">
-					<!-- Login -->
+					<!-- 登录 Login -->
 					<div class="login">
 						<HeadingGroup :name="t.login" englishName="Login" />
 						<div class="form">
@@ -105,6 +113,7 @@
 								type="email"
 								:placeholder="t.email_address"
 								icon="email"
+								:invalid="isInvalidEmail"
 							/>
 							<TextBox
 								v-model="password"
@@ -124,7 +133,7 @@
 				</div>
 
 				<div class="main right">
-					<!-- Register Page 1 -->
+					<!-- 注册 其一 Register #1 -->
 					<div class="register">
 						<HeadingGroup :name="t.register" englishName="Register" class="collapse" />
 						<div class="form">
@@ -153,7 +162,7 @@
 						</div>
 					</div>
 
-					<!-- Register Page 2 -->
+					<!-- 注册 其二 Register #2 -->
 					<div class="register2">
 						<HeadingGroup :name="t.register" englishName="Register" class="collapse" />
 						<div class="form">
@@ -172,7 +181,7 @@
 						</div>
 					</div>
 
-					<!-- Forgot Password -->
+					<!-- 忘记密码 其一 Forgot Password #1 -->
 					<div class="forgot">
 						<HeadingGroup :name="t.reset" englishName="Reset" class="collapse" />
 						<div class="form">
@@ -190,6 +199,7 @@
 						</div>
 					</div>
 
+					<!-- 忘记密码 其二 Forgot Password #2 -->
 					<div class="forgot2">
 						<HeadingGroup :name="t.reset" englishName="Reset" class="collapse" />
 						<div class="form">
@@ -208,7 +218,7 @@
 						</div>
 					</div>
 
-					<!-- Forgot Password - Reset Successful -->
+					<!-- 忘记密码 - 重设成功 Forgot Password - Reset Successful -->
 					<div class="forgot3">
 						<HeadingGroup :name="t.reset" englishName="Reset" class="collapse" />
 						<div class="form">
@@ -246,7 +256,7 @@
 					<LogoCover :welcome="isWelcome" />
 				</div>
 
-				<!-- Login Animation -->
+				<!-- 登录动画 Login Animation -->
 				<div class="login-animation">
 					<div class="add"></div>
 					<div class="burst">
