@@ -210,8 +210,8 @@ const Japanese: LocaleIdentifiers = {
 	zh: "簡体字中国語",
 	en: "英語",
 	ja: "日本語",
-	// development_test_page: "テストページの開発",
-	// components_test_page: "Components Test Page",
+	development_test_page: "(test)テストページの開発",
+	components_test_page: "(test)Components Test Page",
 };
 
 export default Japanese;
