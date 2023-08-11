@@ -6,6 +6,9 @@ import { PREFERENTIAL_TEMPLATE_PATH } from "../shared/constants";
 export default defineEventHandler(async e => {
 	const { readFile, resolve } = createReadFileResolver(import.meta.url);
 	const IE_PAGE_HTML_RELATIVE_PATH = resolve("..", PREFERENTIAL_TEMPLATE_PATH, IE_PAGE_HTML_FILE);
+	
+	console.log(import.meta.url);
+	throw import.meta.url;
 
 	setHeader(e, "Content-Type", "text/html");
 	if (!process.dev)
