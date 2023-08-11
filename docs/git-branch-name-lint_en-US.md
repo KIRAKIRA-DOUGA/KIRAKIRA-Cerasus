@@ -33,10 +33,10 @@ refactoring-<Date>-<ModifiedContentAbbrName>-<Creator>
 
 ##### Date
 
-The format is `yyyyMMddii`, with a total of 8 digits.
+The format is `yyyyMMddrr`, with a total of 8 digits.
 
 Where  
-`y` - Year; `M` - Month; `d` - Date; `i` - The revision number of the day, starting with 1.
+`y` - Year; `M` - Month; `d` - Date; `r` - The revision number of the day, starting with 1.
 
 ##### Modified / Fixed Content Abbreviation Name
 
@@ -44,7 +44,7 @@ Named in Pascal form.
 
 ---
 
-Create a development branch `feature-yyyyMMddii-xxxxxxxx-xxxx` from the `develop` branch, then ***Merge*** back into development brance after the completion of development;
+Create a development branch `feature-yyyyMMddrr-xxxxxxxx-xxxx` from the `develop` branch, then ***Merge*** back into development brance after the completion of development;
 
 Perform unit testing on `feature`, and perform integration testing on `develop` (if possible);
 
