@@ -189,7 +189,7 @@
 
 	.link {
 		@include square(100%);
-		position: absolute;
+		position: absolute !important;
 	}
 
 	button.secondary {
