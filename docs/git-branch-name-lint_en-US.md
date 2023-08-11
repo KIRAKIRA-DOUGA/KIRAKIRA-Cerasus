@@ -1,35 +1,61 @@
 ## Git Branch Name Lint
 
-> **develop** -  main dev branch / test branch  
+> **develop** - main dev branch / test branch  
 > **deployment** - deployment / release branch
 
 #### Normal Bug Fix - **bugfix**
 
 ```
-bugfix-<date>-<name>-<creator>
+bugfix-<Date>-<FixedContentAbbrName>-<Creator>
 ```
 
 #### Hot Fix - **hotfix**
 
 ```
-hotfix-<date>-<name>-<creator>
+hotfix-<Date>-<FixedContentAbbrName>-<Creator>
 ```
 
 #### New Feature - **feature**
 
 ```
-feature-<date>-<name>-<creator>
+feature-<Date>-<ModifiedContentAbbrName>-<Creator>
 ```
 
 #### Refactor - **refactoring**
 
 ```
-refactoring-<date>-<name>-<creator>
+refactoring-<Date>-<ModifiedContentAbbrName>-<Creator>
 ```
 
 ---
 
-After creating your branch, ***merge*** `develop` to your own branch, and resolve the conflicts;  
-Before you coding, ***merge*** `develop` to your own branch, and resolve the conflicts;  
-After you finished coding, ***merge*** `develop` to your own branch, and resolve the conflicts;  
-Before you merging, ***merge*** `develop` to your own branch, and resolve the conflicts.
+#### Specific format
+
+##### Date
+
+The format is `yyyyMMddii`, with a total of 8 digits.
+
+Where  
+`y` - Year; `M` - Month; `d` - Date; `i` - The revision number of the day, starting with 1.
+
+##### Modified / Fixed Content Abbreviation Name
+
+Named in Pascal form.
+
+---
+
+Create a development branch `feature-yyyyMMddii-xxxxxxxx-xxxx` from the `develop` branch, then ***Merge*** back into development brance after the completion of development;
+
+Perform unit testing on `feature`, and perform integration testing on `develop` (if possible);
+
+***Merge*** the `develop` branch content to the `deployment` branch, and create a `tag`.
+
+---
+
+After creating your branch, ***Merge*** `develop` to your own branch, and resolve the conflicts;
+
+Before you coding, ***Merge*** `develop` to your own branch, and resolve the conflicts;
+
+After you finished coding, ***Merge*** `develop` to your own branch, and resolve the conflicts;
+
+Before you merging, ***Merge*** `develop` to your own branch, and resolve the conflicts.
