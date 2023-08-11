@@ -1,6 +1,5 @@
 <script setup lang="ts">
 	import "css-doodle";
-	import "vue-virtual-scroller/dist/vue-virtual-scroller.css";
 	import manifest from "public/manifest.json";
 
 	const homepage = "https://cerasus.kirakira.moe/";
