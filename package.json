@@ -17,7 +17,7 @@
 	],
 	"github": "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus",
 	"bugs": "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus/issues",
-	"license": "",
+	"license": "BSD 2-Clause",
 	"author": "KIRAKIRA Project Team",
 	"scripts": {
 		"build": "nuxt build && nuxt start",
