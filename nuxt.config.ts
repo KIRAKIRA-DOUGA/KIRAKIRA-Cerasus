@@ -63,6 +63,7 @@ export default defineNuxtConfig({
 		"styles/global.scss",
 		"styles/global-colors.scss",
 		"styles/elements/_index.scss",
+		"vue-virtual-scroller/dist/vue-virtual-scroller.css",
 	],
 	vite: {
 		plugins: [
