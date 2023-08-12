@@ -17,7 +17,7 @@
 		return {
 			videoTime: new Duration(index - 1),
 			content: `第${digitCase(index)}，火前留名！`,
-			sendTime: formatDate(new Date(), "yyyy-MM-dd"),
+			sendTime: formatDate(new Date(), "yyyy/MM/dd"),
 		};
 	}
 

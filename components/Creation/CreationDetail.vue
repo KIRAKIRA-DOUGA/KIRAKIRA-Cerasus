@@ -19,7 +19,7 @@
 	<Comp role="contentinfo">
 		<div class="info">
 			<div class="data">
-				<CreationDetailItem icon="calendar">{{ formatDate(date, "yyyy-MM-dd hh:mm:ss") }}</CreationDetailItem>
+				<CreationDetailItem icon="calendar">{{ formatDate(date, "yyyy/MM/dd hh:mm:ss") }}</CreationDetailItem>
 				<CreationDetailItem icon="category">{{ category }}</CreationDetailItem>
 				<CreationDetailItem v-if="copyright === 'original'" icon="fact_check">{{ t.original }}</CreationDetailItem>
 				<CreationDetailItem v-if="copyright === 'authorized-repost'" icon="local_shipping">{{ t.authorized_repost }}</CreationDetailItem>
