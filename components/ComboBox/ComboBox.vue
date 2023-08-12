@@ -29,7 +29,7 @@
 		showMenu.value = false;
 	};
 	const getMenuCssVars = (el: Element) => {
-		const { height, menuPadding } = arrayMapObject(["height", "menuPadding"],
+		const { height, menuPadding } = arrayMapObjectConst(["height", "menuPadding"],
 			i => parseFloat(useCssVar(new VariableName(i).cssVar, el as HTMLElement).value));
 		const top = 0;
 		const translateY = -height * selectedIndexStatic.value;

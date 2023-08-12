@@ -79,11 +79,9 @@
 	}
 
 	/**
-	 * 获取子选项卡项目。
-	 * @param id - 选项卡标识符。
-	 * @returns 子选项卡项目。
+	 * 获取子选项卡项目数组。
 	 */
-	function getChild(id: string) {
+	const children = computed(() => {
 		if (!slotNode.value) return null;
 		const nodes: VNode[] = [];
 		for (const child of slotNode.value.vnode)
@@ -92,9 +90,26 @@
 				if (child.type.description === "v-fgt" && Array.isArray(child.children))
 					nodes.push(...child.children as VNode[]);
 			} else nodes.push(child);
-		for (const child of nodes)
-			if (child.component?.props.id === id)
-				return child.el as HTMLElement;
+		return arrayMapObject(nodes, child => {
+			const id = child.component?.props.id as string;
+			return [
+				id, {
+					node: child,
+					el: child.el as HTMLElement,
+					id,
+				},
+			];
+		});
+	});
+
+	/**
+	 * 获取从样式层面（即强调色）的选中选项卡，而不是代码层面。
+	 * @returns 从样式层面（即强调色）的选中选项卡。
+	 */
+	function getStyledActiveItem() {
+		for (const [_, item] of entries(children.value ?? {}))
+			if (item.el.classList.contains("active"))
+				return item;
 		return null;
 	}
 
@@ -115,7 +130,7 @@
 			set [prev](value: number) { indicatorStyle[prev] = value + "px"; },
 			set [next](value: number) { indicatorStyle[next] = value + "px"; },
 		};
-		const item = getChild(id);
+		const item = children.value?.[id].el;
 		if (!item) return;
 		const itemPosEntry = getIndicatorPositions(item, LENGTH);
 		let prevItemPosEntry: ReturnType<typeof getIndicatorPositions>;
@@ -124,7 +139,7 @@
 		if (prevId === updateIndicatorWithoutAnimation || isPrefersReducedMotion())
 			movement = "ignore";
 		else {
-			if (prevId !== undefined) prevItem = getChild(prevId);
+			if (prevId !== undefined) prevItem = children.value?.[prevId].el;
 			if (prevId !== undefined && prevItem) {
 				prevItemPosEntry = getIndicatorPositions(prevItem, LENGTH);
 				movement = itemPosEntry[prev] >= prevItemPosEntry[prev] ? "next" : "previous";
@@ -159,6 +174,13 @@
 				setPosition1();
 				setPosition2();
 				break;
+		}
+		await nextTick();
+		// 如果在 modelValue 层面对返回值做出了拦截。
+		if (!item.classList.contains("active")) {
+			const actualItem = getStyledActiveItem();
+			if (actualItem)
+				update(actualItem.id, id);
 		}
 	}
 
