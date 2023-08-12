@@ -28,7 +28,7 @@
 				</div>
 				<div class="bottom-right">
 					<LogoText />
-					<div v-if="is500" class="fix-bug">又有bug了，快修哇！(っ °Д °;)っ</div>
+					<div v-if="is500 && environment.development" class="fix-bug">又有bug了，快修哇！</div>
 				</div>
 			</div>
 		</div>

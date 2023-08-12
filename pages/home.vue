@@ -39,6 +39,7 @@
 			categories.value = new Map(categoriesResult.map(cat => [cat.name!, cat.cardinality]));
 		}).catch(handleError);
 	}, { immediate: true, deep: true });
+	// TODO: Support SSR.
 </script>
 
 <template>
