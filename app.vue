@@ -66,8 +66,11 @@
 		],
 	});
 
-	watch(() => appSettings.rightAngleMode, enabled => {
-		setClassEnabled(document.documentElement, "right-angle", enabled);
+	watch(() => appSettings.sharpAppearanceMode, enabled => {
+		setClassEnabled(document.documentElement, "sharp", enabled);
+	});
+	watch(() => appSettings.flatAppearanceMode, enabled => {
+		setClassEnabled(document.documentElement, "flat", enabled);
 	});
 
 	const layout = ref("desktop-web");

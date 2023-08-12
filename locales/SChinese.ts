@@ -97,7 +97,7 @@ const SChinese = {
 	reset: "重设",
 	history: "历史",
 	favorites: "收藏",
-	feed: "关注动态",
+	feed: "发现",
 	upload: "投稿",
 	messages: "消息",
 	login: "登入",
