@@ -41,7 +41,7 @@
 <style scoped lang="scss">
 	@layer props {
 		button {
-			/// 外观偏好，可选的值为：primary | secondary。
+			/// 外观偏好，可选的值为：primary | secondary | tertiary。
 			/// primary: 强调色按钮。
 			/// secondary: 次要/无背景按钮。
 			--appearance: primary;
@@ -109,8 +109,7 @@
 			@include button-shadow-hover-focus;
 		}
 
-		@container style(--appearance: secondary) {
-			color: c(accent);
+		@container style(--appearance: secondary) or style(--appearance: tertiary) {
 			background-color: transparent;
 
 			button:not(:focus-visible) > & {
@@ -118,8 +117,12 @@
 			}
 
 			.icon {
-				color: c(accent);
+				color: inherit;
 			}
+		}
+		
+		@container style(--appearance: secondary) {
+			color: c(accent);
 
 			:deep(.ripple-circle) {
 				background-color: c(accent-ripple);
@@ -136,6 +139,23 @@
 
 			button[disabled] > & {
 				color: c(accent-disabled);
+			}
+		}
+
+		@container style(--appearance: tertiary) {
+			color: c(icon-color);
+			
+			button:any-hover > &,
+			button:active > & {
+				background-color: c(hover-overlay);
+			}
+
+			button:focus-visible > & {
+				@include button-shadow-unchecked-focus-only;
+			}
+
+			button[disabled] > & {
+				color: c(gray-40);
 			}
 		}
 	}
