@@ -172,6 +172,7 @@
 		<div ref="videoContainer" :class="['main', { fullscreen: fullScreen }]">
 			<video
 				ref="video"
+				class="player"
 				@play="playing = true"
 				@pause="playing = false"
 				@ratechange="e => playbackRate = (e.target as HTMLVideoElement).playbackRate"
@@ -212,6 +213,7 @@
 
 	.main:not(.fullscreen), .main:not(.fullscreen) video {
 		width: 100%;
+		max-height: 70dvh;
 	}
 
 	.main.fullscreen {
