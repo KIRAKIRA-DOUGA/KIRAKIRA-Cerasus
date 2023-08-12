@@ -1,5 +1,7 @@
 <script setup lang="ts">
 	import mediainfo from "mediainfo.js";
+	import Dash from "dashjs";
+
 	const props = defineProps<{
 		src: string;
 		id: number;
@@ -85,13 +87,13 @@
 		video.value.volume = volume;
 	});
 
-	const player = ref(null);
+	const player = ref<Dash.MediaPlayerClass>();
 
-	onMounted(async () => {
-		if (video.value) onCanPlay({ target: video.value });
-		const dashjs = await import("dashjs");
+	onMounted(() => {
+		if (!video.value) return;
+		onCanPlay({ target: video.value });
 
-		player.value = dashjs.MediaPlayer().create();
+		player.value = Dash.MediaPlayer().create();
 		player.value.initialize(video.value, props.src, false);
 		player.value.updateSettings({
 			streaming: {
@@ -104,11 +106,6 @@
 
 		player.value.attachView(video.value);
 	});
-
-	// onBeforeUnmount(() => {
-	// 	if (video.value != null)
-	// 		video.value.destroy();
-	// });
 
 	/**
 	 * 当视频已经准备好可以播放时执行的事件。
@@ -169,7 +166,7 @@
 			</Accordion>
 		</Alert>
 
-		<div ref="videoContainer" :class="['main', { fullscreen: fullScreen }]">
+		<div ref="videoContainer" class="main" :class="{ fullscreen: fullScreen }">
 			<video
 				ref="video"
 				class="player"
@@ -211,32 +208,46 @@
 		background-color: c(surface-color);
 	}
 
-	.main:not(.fullscreen), .main:not(.fullscreen) video {
-		width: 100%;
-		max-height: 70dvh;
-	}
+	.main {
+		background-color: black;
 
-	.main.fullscreen {
-		display: flex;
-		flex-direction: column;
-		height: 100dvh;
+		&:not(.fullscreen) {
+			&,
+			& video {
+				width: 100%;
+			}
 
-		video {
-			width: 100%;
-			height: 100%;
+			& video {
+				max-height: 70dvh;
+			}
 		}
 
-		.player-video-controller {
-			position: absolute;
-			right: 0;
-			bottom: 0;
-			left: 0;
-			background-color: c(main-bg);
-			transition: $fallback-transitions, background-color 0s;
+		&.fullscreen {
+			display: flex;
+			flex-direction: column;
+			height: 100dvh;
+
+			video {
+				width: 100%;
+				height: 100%;
+			}
+
+			.player-video-controller {
+				position: absolute;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				background-color: c(main-bg);
+				transition: $fallback-transitions, background-color 0s;
+			}
 		}
 	}
 
 	table {
 		border-radius: 0;
+	}
+	
+	.menu-item {
+		color: c(text-color) !important; // 避免黑底视频看不清文字。
 	}
 </style>

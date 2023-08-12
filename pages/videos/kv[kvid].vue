@@ -3,48 +3,40 @@
 	// 暂时不要用在线视频链接，虽然可以用，但是每次查看视频详细信息我都要等好久。
 
 	const route = useRoute();
-	const kvid = route.params.kvid;
+	const kvid = +route.params.kvid;
 	const videoDetails = ref<VideoDetail200Response>();
 	const videoSource = ref<string>();
-	const recommendations = ref<Array<Videos200ResponseVideosInner>>();
+	const recommendations = ref<Videos200ResponseVideosInner[]>();
 	const comments = ref<Comments200ResponseInner[]>([]);
+	const title = computed(() => videoDetails.value?.title ?? "");
+	const handleError = (e: unknown) => console.error(e);
 
-	// Fetch video details
-	watch([() => kvid], async () => {
+	watch(() => kvid, async () => {
 		const api = useApi();
+
+		// Fetch video details
 		try {
 			const video = await api.videoDetail(kvid);
 			videoDetails.value = video;
 			videoSource.value = video.mPDLoc;
-		} catch (error) {
-			console.log(error);
-		}
-	}, { immediate: true });
+		} catch (error) { handleError(error); }
 
-	// Fetch comments
-	watch(() => kvid, async () => {
-		const api = useApi();
+		// Fetch comments
 		try {
 			const commentsResp = await api.comments(kvid);
 			for (const comment of commentsResp)
 				comments.value.push(comment);
-		} catch (error) {
-			console.error(error);
-		}
-	}, { immediate: true });
+		} catch (error) { handleError(error); }
 
-	// Fetch recommendations
-	watch(() => kvid, async () => {
-		const api = useApi();
+		// Fetch recommendations
 		try {
-			const newRecommendations = await api.recommendations(kvid);
-			recommendations.value = newRecommendations;
-		} catch (error) {
-			console.error(error);
-		}
+			const commentsResp = await api.comments(kvid);
+			for (const comment of commentsResp)
+				comments.value.push(comment);
+		} catch (error) { handleError(error); }
 	}, { immediate: true });
 
-	useHead({ title: videoDetails.value?.title });
+	useHead({ title });
 </script>
 
 <template>
