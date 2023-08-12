@@ -8,6 +8,11 @@
 		vertical?: boolean;
 	}>();
 
+	const emits = defineEmits<{
+		moving: [movement: TabBarMovement];
+		movingForTransition: [transition: string];
+	}>();
+
 	defineSlots<{
 		default?: typeof TabItem;
 	}>();
@@ -23,7 +28,23 @@
 	 * @param id - 选项卡标识符。
 	 */
 	function changeTab(id: string) {
-		model.value = id;
+		update(id, model.value);
+		// model.value = id;
+	}
+
+	/**
+	 * 当选项卡指示器移动时触发的事件。
+	 * @param movement - 选项卡指示器移动方向。
+	 */
+	function onMoving(movement: TabBarMovement) {
+		const transitionName =
+			movement === "previous" ? "left" :
+			movement === "next" ? "right" :
+			// movement === "none" ? "page-jump" :
+			"";
+
+		emits("moving", movement);
+		if (transitionName) emits("movingForTransition", transitionName);
 	}
 
 	/**
@@ -77,12 +98,14 @@
 		return null;
 	}
 
+	let isUpdating = false;
 	/**
 	 * 更新选项卡指示器。
 	 * @param id - 当前选项卡标识符。
 	 * @param prevId - 先前选项卡标识符。
 	 */
 	async function update(id?: string, prevId?: string | typeof updateIndicatorWithoutAnimation) {
+		if (isUpdating) return;
 		const LENGTH = 16; // 指定选项卡指示器的最大长度。
 		id ??= model.value;
 		if (!indicator.value) return;
@@ -96,21 +119,25 @@
 		if (!item) return;
 		const itemPosEntry = getIndicatorPositions(item, LENGTH);
 		let prevItemPosEntry: ReturnType<typeof getIndicatorPositions>;
-		let moveDirection: TabBarMovement = "none";
+		let movement: TabBarMovement = "none";
 		let prevItem: HTMLElement | null = null;
 		if (prevId === updateIndicatorWithoutAnimation || isPrefersReducedMotion())
-			moveDirection = "ignore";
+			movement = "ignore";
 		else {
 			if (prevId !== undefined) prevItem = getChild(prevId);
 			if (prevId !== undefined && prevItem) {
 				prevItemPosEntry = getIndicatorPositions(prevItem, LENGTH);
-				moveDirection = itemPosEntry[prev] >= prevItemPosEntry[prev] ? "next" : "previous";
+				movement = itemPosEntry[prev] >= prevItemPosEntry[prev] ? "next" : "previous";
 			} else prevItemPosEntry = getIndicatorPositions(item, 0);
 		}
+		isUpdating = true;
+		onMoving(movement);
+		model.value = id;
+		isUpdating = false;
 		const setPosition1 = () => style[prev] = itemPosEntry[prev];
 		const setPosition2 = () => style[next] = itemPosEntry[next];
 		const delayTime = () => delay(100);
-		switch (moveDirection) {
+		switch (movement) {
 			case "previous":
 				setPosition1();
 				await delayTime();
