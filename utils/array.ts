@@ -109,8 +109,18 @@ export function randomOne<T>(array: T[], record?: MaybeRef<number[]>): T {
  * @param callbackFn 生成作为对象的值。
  * @returns 映射的对象。
  */
-export function arrayMapObject<const T extends string, U>(array: T[], callbackFn: (value: T, index: number, array: T[]) => U) {
+export function arrayMapObjectConst<const T extends string, U>(array: T[], callbackFn: (value: T, index: number, array: T[]) => U) {
 	return Object.fromEntries(array.map((value, index, array) => ([value, callbackFn(value, index, array)] as [T, U]))) as Record<T, U>;
+}
+
+/**
+ * 通过一个任意数组映射到一个对象。
+ * @param array - 任意数组。
+ * @param callbackFn - 生成作为对象的键值对元组。
+ * @returns 映射的对象。
+ */
+export function arrayMapObject<T, K extends ObjectKey, U>(array: T[], callbackFn: (value: T, index: number, array: T[]) => [K, U]) {
+	return Object.fromEntries(array.map((value, index, array) => callbackFn(value, index, array))) as Record<K, U>;
 }
 
 /**
