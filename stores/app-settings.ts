@@ -2,7 +2,8 @@ export const useAppSettingsStore = defineStore("app-settings", {
 	state: () => ({
 		showCssDoodle: false,
 		lastSettingPage: "appearance",
-		rightAngleMode: false,
+		sharpAppearanceMode: false,
+		flatAppearanceMode: false,
 	}),
 	persist: true,
 });

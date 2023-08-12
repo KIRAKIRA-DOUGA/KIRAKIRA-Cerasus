@@ -1,5 +1,6 @@
 @use "variables" as *;
 @use "internal" as *;
+@use "functions" as *;
 
 /// 一键弹性布局加居中元素 (flex - center - center)。
 /// @output display, align-items, justify-content
@@ -188,4 +189,19 @@
 /// @output transform
 @mixin enable-hardware-3d {
 	transform: translateZ(1px);
+}
+
+/// 声明一个超高优先级的选择器。
+/// @content 声明强化选择器下的定义。
+/// @output #{$enhanced-selector}
+@mixin enhanced-selector {
+	$enhanced-selector: repeat-string(":not([NONE_EXISTS_ATTR])", 10); // 用于强行提高优先级。
+
+	#{$enhanced-selector} {
+		&,
+		&::before,
+		&::after {
+			@content;
+		}
+	}
 }

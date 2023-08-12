@@ -118,7 +118,7 @@
 		op.value = getRandomOp();
 	}
 
-	useHead({ title: "组件测试页" });
+	useHead({ title: t.components_test_page });
 </script>
 
 <template>
