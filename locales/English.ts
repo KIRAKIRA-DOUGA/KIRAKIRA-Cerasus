@@ -175,6 +175,7 @@ const English: LocaleIdentifiers = {
 	view_tile: "Tile",
 	duration: "Duration",
 	viewers: "Viewers",
+	are_watching: "are watching",
 	step_next: "Next",
 	step_previous: "Previous",
 	step_ok: "OK",

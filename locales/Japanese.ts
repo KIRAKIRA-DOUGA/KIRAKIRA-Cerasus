@@ -178,6 +178,7 @@ const Japanese: LocaleIdentifiers = {
 	view_tile: "タイル",
 	duration: "長さ",
 	viewers: "視聴者",
+	are_watching: "(test)人正在看",
 	step_next: "次へ",
 	step_previous: "戻る",
 	step_ok: "完了",

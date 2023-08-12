@@ -72,7 +72,7 @@
 				<CountItem icon="danmaku" :value="getWatchCount(counts.danmaku)">{{ t.danmaku }}</CountItem>
 				<div class="watching">
 					<span class="watching-number">10</span>
-					<span class="watching-description">Viewers</span>
+					<span class="watching-description">{{ t.are_watching }}</span>
 				</div>
 			</div>
 			<div class="buttons">

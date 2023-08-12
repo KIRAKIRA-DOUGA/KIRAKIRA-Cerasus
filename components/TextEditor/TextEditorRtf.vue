@@ -88,7 +88,7 @@
 		const encodedContent = utf8Encode.encode(content) as unknown as string;
 
 		// TODO: video ID
-		api.comment(0, encodedContent, props.videoId).then(video => {
+		api.comment(0, encodedContent, props.videoId!).then(video => {
 			// TODO
 		}).catch(error => console.error(error));
 	}
@@ -99,7 +99,7 @@
 	 * @returns 激活状态。
 	 */
 	function isActive(active?: ActiveType) {
-		return typeof active === "boolean" ? active : active && editor.value?.isActive(active);
+		return typeof active === "boolean" ? active : !!active && editor.value?.isActive(active);
 	}
 
 	/*
@@ -110,16 +110,13 @@
 </script>
 
 <template>
-	<DefineToolItem v-slot="{ tooltip, active, icon, onClick, $slots }">
-		<button
-			v-ripple
-			v-tooltip:top="tooltip"
-			:class="{ active: isActive(active) }"
+	<DefineToolItem v-slot="{ tooltip, active, icon, onClick }">
+		<SoftButton
+			v-tooltip:bottom="tooltip"
+			:active="isActive(active)"
+			:icon="icon"
 			@click="onClick"
-		>
-			<Icon v-if="icon" :name="icon" />
-			<component :is="$slots.default!" />
-		</button>
+		/>
 	</DefineToolItem>
 
 	<FlyoutKaomoji v-model="flyoutKaomoji" @insert="insertKaomoji" />
@@ -136,7 +133,7 @@
 				<ToolItem :tooltip="t.underline" icon="underline" active="underline" @click="toggleUnderline" />
 				<ToolItem :tooltip="t.strikethrough" icon="strikethrough" active="strike" @click="toggleStrike" />
 				<ToolItem :tooltip="t.at_person" icon="at" @click="showAtList" />
-				<ToolItem :tooltip="t.kaomoji" icon="kaomoji" :active="!!flyoutKaomoji" @click="e => flyoutKaomoji = [e, 'y']" />
+				<ToolItem :tooltip="t.kaomoji" icon="kaomoji" :active="!!flyoutKaomoji" @click="e => flyoutKaomoji = [e, 'y', -3]" />
 				<ToolItem :tooltip="t.image" icon="photo" @click="addVueComponents" />
 			</div>
 			<div class="right">
@@ -165,23 +162,30 @@
 
 		.toolbar {
 			@include card-in-card-shadow;
+			$height: 36px;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			height: 36px;
+			height: $height;
+			overflow: hidden;
 			background-color: c(main-bg, 45%);
 
 			> * {
 				display: flex;
 				gap: 4px;
+				
+				.soft-button {
+					--wrapper-size: #{$height};
+					--icon-size: 20px;
+					--ripple-size: 58px;
+				}
 
-				> button {
+				/* > button {
 					@include flex-center;
 					@include oval;
 					$size: 36px;
 					min-width: $size;
 					height: $size;
-					// padding: 0 6px;
 					color: c(icon-color);
 
 					.icon {
@@ -204,9 +208,8 @@
 					&:focus-visible {
 						@include button-shadow-unchecked-focus;
 					}
-				}
+				} */
 			}
 		}
 	}
 </style>
-../../helpers/Extension

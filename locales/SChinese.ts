@@ -175,6 +175,7 @@ const SChinese = {
 	view_tile: "磁贴",
 	duration: "时长",
 	viewers: "观看者",
+	are_watching: "人正在看",
 	step_next: "下一步",
 	step_previous: "上一步",
 	step_ok: "完成",
