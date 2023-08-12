@@ -214,6 +214,7 @@ const Japanese: LocaleIdentifiers = {
 	ja: "日本語",
 	development_test_page: "(test)テストページの開発",
 	components_test_page: "(test)Components Test Page",
+	send_danmaku: "(test)发送弹幕",
 };
 
 export default Japanese;

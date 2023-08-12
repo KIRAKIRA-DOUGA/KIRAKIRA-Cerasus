@@ -9,7 +9,7 @@
 	<FlyoutKaomojiMini v-model="flyoutKaomojiMini" @insert="insertKaomoji" @escape="insertKaomoji" />
 
 	<Comp role="textbox">
-		<TextBox v-model="content" placeholder="Send Danmaku">
+		<TextBox v-model="content" :placeholder="t.send_danmaku">
 			<template #actions>
 				<SoftButton icon="kaomoji" appearance="textbox-trailingicon" :active="!!flyoutKaomoji" @click.stop @click="e => flyoutKaomoji = [e, 'y']" />
 				<SoftButton icon="text_format" appearance="textbox-trailingicon" @click.stop />

@@ -211,6 +211,7 @@ const SChinese = {
 	ja: "日语",
 	development_test_page: "开发测试页面",
 	components_test_page: "组件测试页面",
+	send_danmaku: "发送弹幕",
 } as const;
 
 export default SChinese;

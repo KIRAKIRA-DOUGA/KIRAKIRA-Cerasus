@@ -85,7 +85,7 @@
 			</div>
 		</div>
 		<PlayerVideoPanelDanmakuList />
-		<PlayerVideoPanelDanmakuSend />
+		<PlayerVideoPanelDanmakuSender />
 	</Comp>
 </template>
 
