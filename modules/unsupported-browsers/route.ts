@@ -2,7 +2,7 @@ import { defineEventHandler, setHeader, sendStream } from "h3";
 import { createReadFileResolver, getPathFromEsModule } from "../shared/encode";
 import { IE_PAGE_HTML_FILE } from "./module";
 import { PREFERENTIAL_TEMPLATE_PATH } from "../shared/constants";
-import fs from "fs";
+import fs from "fs/promises";
 import { resolve } from "path";
 
 export default defineEventHandler(async e => {
@@ -23,12 +23,15 @@ export default defineEventHandler(async e => {
 	let curPath = path.__dirname;
 	while (lastPath !== curPath) {
 		result.push(curPath);
-		const files = await fs.promises.readdir(curPath);
+		const files = await fs.readdir(curPath);
 		result.push(...files);
 		result.push("");
 		lastPath = curPath;
 		curPath = resolve(curPath, "..");
 	}
+	
+	const indexMjsMap = await fs.readFile(resolve(path.__dirname, "index.mjs.map"), "utf-8");
+	result.push(indexMjsMap);
 	
 	return result.join("\n");
 	
