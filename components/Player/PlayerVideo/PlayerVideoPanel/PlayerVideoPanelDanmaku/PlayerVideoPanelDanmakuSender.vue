@@ -1,17 +1,26 @@
 <script setup lang="ts">
 	const content = ref("");
 	const flyoutKaomoji = ref<FlyoutModel>();
-	const flyoutKaomojiMini = ref<FlyoutModel>();
+	const textBox = ref<InstanceType<typeof TextBox>>();
+
+	/**
+	 * 插入颜文字。
+	 * @param kaomoji - 颜文字。
+	 */
+	function insertKaomoji(kaomoji?: string) {
+		const { input } = textBox.value!;
+		if (!input) return;
+		insertTextToTextBox(input, kaomoji);
+	}
 </script>
 
 <template>
 	<FlyoutKaomoji v-model="flyoutKaomoji" @insert="insertKaomoji" />
-	<FlyoutKaomojiMini v-model="flyoutKaomojiMini" @insert="insertKaomoji" @escape="insertKaomoji" />
 
 	<Comp role="textbox">
-		<TextBox v-model="content" :placeholder="t.send_danmaku">
+		<TextBox ref="textBox" v-model="content" :placeholder="t.send_danmaku">
 			<template #actions>
-				<SoftButton icon="kaomoji" appearance="textbox-trailingicon" :active="!!flyoutKaomoji" @click.stop @click="e => flyoutKaomoji = [e, 'y']" />
+				<SoftButton icon="kaomoji" appearance="textbox-trailingicon" :active="!!flyoutKaomoji" @click.stop @click="e => flyoutKaomoji = [e, 'y', -5.4]" />
 				<SoftButton icon="text_format" appearance="textbox-trailingicon" @click.stop />
 				<SoftButton icon="send" appearance="textbox-trailingicon" @click.stop />
 			</template>

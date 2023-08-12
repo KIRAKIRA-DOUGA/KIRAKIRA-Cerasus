@@ -5,6 +5,8 @@
 	const props = defineProps<{
 		/** 是否**不**向加内边距？ */
 		noPadding?: boolean;
+		/** 是否在按下 `Esc` 按键时**不要**关闭浮窗？ */
+		doNotCloseOnEsc?: boolean;
 	}>();
 
 	const emits = defineEmits<{
@@ -29,6 +31,11 @@
 	/** 定义在关闭浮窗后的至少多少毫秒内不得再次打开浮窗，以免用户连续点击时浮窗有快速闪烁的动画。 */
 	const QUICK_CLICK_DURATION = 200;
 	const suppressShowing = ref(false);
+
+	useEventListener("window", "keydown", e => {
+		if (!props.doNotCloseOnEsc && e.code === "Escape")
+			hide();
+	});
 
 	/**
 	 * 隐藏浮窗。
