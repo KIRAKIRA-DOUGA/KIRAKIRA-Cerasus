@@ -152,23 +152,21 @@
 		overflow: hidden;
 		background-color: c(inset-bg);
 
-		// > :not(:empty) {
-		// padding: 12px;
-		// }
-
 		> :first-child {
 			padding: 12px;
 		}
 
 		.toolbar {
+			@include round-large(bottom);
 			@include card-in-card-shadow;
 			$height: 36px;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
 			height: $height;
+			padding: 0 8px;
 			overflow: hidden;
-			background-color: c(main-bg, 45%);
+			// background-color: c(main-bg, 45%);
 
 			> * {
 				display: flex;
@@ -179,36 +177,6 @@
 					--icon-size: 20px;
 					--ripple-size: 58px;
 				}
-
-				/* > button {
-					@include flex-center;
-					@include oval;
-					$size: 36px;
-					min-width: $size;
-					height: $size;
-					color: c(icon-color);
-
-					.icon {
-						font-size: 20px;
-					}
-
-					&:hover {
-						background-color: c(hover-overlay);
-					}
-
-					&.active {
-						color: white;
-						background-color: c(accent);
-
-						&:focus-visible {
-							@include button-shadow-focus;
-						}
-					}
-
-					&:focus-visible {
-						@include button-shadow-unchecked-focus;
-					}
-				} */
 			}
 		}
 	}
