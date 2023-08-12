@@ -1,43 +1,11 @@
-import { defineEventHandler, setHeader, sendStream } from "h3";
-import { createReadFileResolver, getPathFromEsModule } from "../shared/encode";
-import { IE_PAGE_HTML_FILE } from "./module";
-import { PREFERENTIAL_TEMPLATE_PATH } from "../shared/constants";
-import fs from "fs/promises";
-import { resolve } from "path";
+import { defineEventHandler, setHeader } from "h3";
+import { useRuntimeConfig } from "#imports";
 
-export default defineEventHandler(async e => {
-	// const { readFile, resolve } = createReadFileResolver(import.meta.url);
-	// const IE_PAGE_HTML_RELATIVE_PATH = resolve("..", PREFERENTIAL_TEMPLATE_PATH, IE_PAGE_HTML_FILE);
-	
-	setHeader(e, "Content-Type", "text/plain");
+export default defineEventHandler(e => {
+	setHeader(e, "Content-Type", "text/html");
 	if (!process.dev)
 		setHeader(e, "Cache-Control", "max-age=600, must-revalidate");
-	
-	const path = getPathFromEsModule(import.meta.url);
-	const result: string[] = [];
-	result.push("filename: " + path.__filename);
-	result.push("dirname: " + path.__dirname);
-	result.push("");
-	
-	let lastPath = "";
-	let curPath = path.__dirname;
-	while (lastPath !== curPath) {
-		result.push(curPath);
-		const files = await fs.readdir(curPath);
-		result.push(...files);
-		result.push("");
-		lastPath = curPath;
-		curPath = resolve(curPath, "..");
-	}
-	
-	const indexMjsMap = await fs.readFile(resolve(path.__dirname, "index.mjs.map"), "utf-8");
-	result.push(indexMjsMap);
-	
-	return result.join("\n");
-	
-	// return await (await e.fetch("https://localhost:3000/prior/601.html", { method: "POST" })).text();
-	// return sendStream(e, createReadStream("modules/unsupported-browsers/601.html"));
 
-	// const iePageHtml = await readFile(IE_PAGE_HTML_RELATIVE_PATH);
-	// return iePageHtml;
+	const iePageHtml = useRuntimeConfig().iePageHtml as string;
+	return iePageHtml;
 });
