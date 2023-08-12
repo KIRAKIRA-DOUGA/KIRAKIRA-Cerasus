@@ -211,6 +211,7 @@ const English: LocaleIdentifiers = {
 	ja: "Japanese",
 	development_test_page: "Development Test Page",
 	components_test_page: "Components Test Page",
+	send_danmaku: "Send danmaku",
 };
 
 export default English;
