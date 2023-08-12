@@ -8,7 +8,7 @@
 	const signature = ref("");
 	const genderBasic = ref<"male" | "female" | "custom" | "">("");
 	const genderCustom = ref("");
-	const birthday = ref(formatDate(new Date(), "yyyy-MM-dd"));
+	const birthday = ref(formatDate(new Date(), "yyyy/MM/dd"));
 </script>
 
 <template>

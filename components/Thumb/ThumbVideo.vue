@@ -23,7 +23,7 @@
 		duration: undefined,
 	});
 
-	const date = computed(() => props.date ? formatDate(props.date, "yyyy-MM-dd") : "----------");
+	const date = computed(() => props.date ? formatDate(props.date, "yyyy/MM/dd") : "----/--/--");
 	const watchedCount = computed(() => getWatchCount(props.watchedCount));
 	const duration = computed(() => props.duration ?? "--:--");
 </script>

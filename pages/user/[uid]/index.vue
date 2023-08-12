@@ -39,12 +39,12 @@
 					<div class="items">
 						<div v-tooltip:x="t.birthday" class="birthday">
 							<Icon name="birthday" />
-							<span>{{ formatDate(user.birthday, "yyyy-MM-dd") }}</span>
+							<span>{{ formatDate(user.birthday, "yyyy/MM/dd") }}</span>
 						</div>
 
 						<div v-tooltip:x="t.join_time" class="join-time">
 							<Icon name="history" />
-							<span>{{ formatDate(user.joinTime, "yyyy-MM-dd") }}</span>
+							<span>{{ formatDate(user.joinTime, "yyyy/MM/dd") }}</span>
 						</div>
 
 						<div v-tooltip:x="'UID'" class="uid">

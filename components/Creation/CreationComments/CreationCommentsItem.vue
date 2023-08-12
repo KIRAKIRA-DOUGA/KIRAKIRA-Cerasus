@@ -29,7 +29,7 @@
 	const dislike = defineModel("dislike", { default: 0 });
 	/** 是否已点击减分？ */
 	const dislikeClicked = defineModel("dislikeClicked", { default: false });
-	const date = computed(() => formatDate(props.date, "yyyy-MM-dd hh:mm:ss"));
+	const date = computed(() => formatDate(props.date, "yyyy/MM/dd hh:mm:ss"));
 	const menu = ref<MenuModel>(); // TODO: 菜单需要新增功能，使其像浮窗一样可以贴附某个元素展开。
 	/** 是否已置顶？ */
 	const pinned = defineModel("pinned", { default: false });
