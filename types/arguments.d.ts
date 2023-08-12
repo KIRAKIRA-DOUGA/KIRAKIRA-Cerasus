@@ -1,4 +1,5 @@
 import { AcceptedPlugin } from "postcss";
+import * as themeTypes from "modules/theme/types";
 
 export namespace FlyoutModelNS {
 	export type Target = MaybeRef<MouseEvent | PointerEvent | TwoD | HTMLElement | EventTarget | DOMRect | undefined | null>;
@@ -15,7 +16,7 @@ namespace AnimatedIconStateNS {
  * 在此处声明各组件或函数等希望全局使用的类型名称，其名称应尽可能复杂以规避重名。有必要时可使用命名空间。
  */
 declare global {
-	/** TAB 移动方向。 */
+	/** TAB 按键的移动方向。 */
 	type Movement = "previous" | "next";
 	/** 复选框选中状态。 */
 	type CheckState = "unchecked" | "indeterminate" | "checked";
@@ -34,11 +35,13 @@ declare global {
 	/** 排序顺序，升序或降序。 */
 	type SortOrder = "ascending" | "descending";
 	/** 主题。 */
-	type ThemeType = "light" | "dark";
+	type ThemeType = themeTypes.ThemeType;
 	/** 主题，包括跟随系统。 */
-	type ThemeSetType = ThemeType | "system";
+	type ThemeSetType = themeTypes.ThemeSetType;
 	/** 个性色。 */
-	type PaletteType = "pink" | "cyan" | "blue" | "green" | "orange" | "purple" | "red" | "yellow" | "sky" | "custom" | (string & {});
+	type PaletteType = themeTypes.PaletteType;
+	/** 选项卡指示器的移动方向。 */
+	type TabBarMovement = Movement | "ignore" | "none";
 
 	type FlyoutModel = FlyoutModelNS.Tuple | FlyoutModelNS.Object;
 	type MenuModel = MouseEvent | PointerEvent | null;

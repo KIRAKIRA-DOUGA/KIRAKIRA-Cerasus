@@ -47,19 +47,21 @@
 
 <template>
 	<div class="container">
-		<TabBar v-if="categories" v-model="data.selectedTab">
-			<TabItem id="Home" direction="vertical" icon="home">{{ t.home }}</TabItem>
-			<TabItem id="Anime" direction="vertical-reverse" :badge="categories.get('Anime')">{{ t.category_anime }}</TabItem>
-			<TabItem id="Music" direction="vertical-reverse" :badge="categories.get('Music')">{{ t.category_music }}</TabItem>
-			<TabItem id="Otomad" direction="vertical-reverse" :badge="categories.get('Otomad')">{{ t.category_otomad }}</TabItem>
-			<TabItem id="Tech" direction="vertical-reverse" :badge="categories.get('Tech')">{{ t.category_tech }}</TabItem>
-			<TabItem id="Design" direction="vertical-reverse" :badge="categories.get('Design')">{{ t.category_design }}</TabItem>
-			<TabItem id="Game" direction="vertical-reverse" :badge="categories.get('Game')">{{ t.category_game }}</TabItem>
-			<TabItem id="Other" direction="vertical-reverse" :badge="categories.get('Other')">{{ t.category_other }}</TabItem>
-		</TabBar>
+		<div>
+			<TabBar v-if="categories" v-model="data.selectedTab">
+				<TabItem id="Home" direction="vertical" icon="home">{{ t.home }}</TabItem>
+				<TabItem id="Anime" direction="vertical-reverse" :badge="categories.get('Anime')">{{ t.category_anime }}</TabItem>
+				<TabItem id="Music" direction="vertical-reverse" :badge="categories.get('Music')">{{ t.category_music }}</TabItem>
+				<TabItem id="Otomad" direction="vertical-reverse" :badge="categories.get('Otomad')">{{ t.category_otomad }}</TabItem>
+				<TabItem id="Tech" direction="vertical-reverse" :badge="categories.get('Tech')">{{ t.category_tech }}</TabItem>
+				<TabItem id="Design" direction="vertical-reverse" :badge="categories.get('Design')">{{ t.category_design }}</TabItem>
+				<TabItem id="Game" direction="vertical-reverse" :badge="categories.get('Game')">{{ t.category_game }}</TabItem>
+				<TabItem id="Other" direction="vertical-reverse" :badge="categories.get('Other')">{{ t.category_other }}</TabItem>
+			</TabBar>
+		</div>
 		<Subheader icon="upload" :badge="numberOfItems">{{ t.latest }}</Subheader>
-		<div class="videos-grid">
-			<TransitionGroup>
+		<Transition name="right" mode="out-in">
+			<div :key="data.selectedTab" class="videos-grid">
 				<ThumbVideo
 					v-for="video in videos?.videos"
 					:key="video.videoID"
@@ -70,8 +72,8 @@
 					:watchedCount="video.views"
 					:duration="new Duration(0, video.videoDuration ?? 0)"
 				>{{ video.title }}</ThumbVideo>
-			</TransitionGroup>
-		</div>
+			</div>
+		</Transition>
 		<Pagination v-model="data.page" :pages="numberOfPages" :displayPageCount="12" enableArrowKeyMove />
 	</div>
 </template>
@@ -96,26 +98,6 @@
 				width: 72px;
 				font-weight: 500;
 			}
-		}
-	}
-
-	%tabulation {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 10px;
-	}
-
-	.videos {
-		@extend %tabulation;
-		gap: 4px;
-		margin: 0 -8px;
-	}
-	
-	.thumb-video {
-		&.v-enter-from {
-			opacity: 0;
-			translate: 0 30px;
-			transition: all $ease-out-smooth 250ms;
 		}
 	}
 </style>

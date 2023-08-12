@@ -87,53 +87,47 @@
 		id ??= model.value;
 		if (!indicator.value) return;
 		const indicatorStyle = indicator.value.style;
-		const [pos1, pos2] = props.vertical ? ["top", "bottom"] as const : ["left", "right"] as const;
+		const [prev, next] = props.vertical ? ["top", "bottom"] as const : ["left", "right"] as const;
 		const style = {
-			set [pos1](value: number) { indicatorStyle[pos1] = value + "px"; },
-			set [pos2](value: number) { indicatorStyle[pos2] = value + "px"; },
+			set [prev](value: number) { indicatorStyle[prev] = value + "px"; },
+			set [next](value: number) { indicatorStyle[next] = value + "px"; },
 		};
 		const item = getChild(id);
 		if (!item) return;
 		const itemPosEntry = getIndicatorPositions(item, LENGTH);
 		let prevItemPosEntry: ReturnType<typeof getIndicatorPositions>;
-		enum MoveDirection {
-			POS1 = -1,
-			NONE,
-			POS2,
-			IGNORE,
-		}
-		let moveDirection = MoveDirection.NONE;
+		let moveDirection: TabBarMovement = "none";
 		let prevItem: HTMLElement | null = null;
 		if (prevId === updateIndicatorWithoutAnimation || isPrefersReducedMotion())
-			moveDirection = MoveDirection.IGNORE;
+			moveDirection = "ignore";
 		else {
 			if (prevId !== undefined) prevItem = getChild(prevId);
 			if (prevId !== undefined && prevItem) {
 				prevItemPosEntry = getIndicatorPositions(prevItem, LENGTH);
-				moveDirection = itemPosEntry[pos1] >= prevItemPosEntry[pos1] ? MoveDirection.POS2 : MoveDirection.POS1;
+				moveDirection = itemPosEntry[prev] >= prevItemPosEntry[prev] ? "next" : "previous";
 			} else prevItemPosEntry = getIndicatorPositions(item, 0);
 		}
-		const setPosition1 = () => style[pos1] = itemPosEntry[pos1];
-		const setPosition2 = () => style[pos2] = itemPosEntry[pos2];
+		const setPosition1 = () => style[prev] = itemPosEntry[prev];
+		const setPosition2 = () => style[next] = itemPosEntry[next];
 		const delayTime = () => delay(100);
 		switch (moveDirection) {
-			case MoveDirection.POS1:
+			case "previous":
 				setPosition1();
 				await delayTime();
 				setPosition2();
 				break;
-			case MoveDirection.POS2:
+			case "next":
 				setPosition2();
 				await delayTime();
 				setPosition1();
 				break;
-			case MoveDirection.IGNORE:
+			case "ignore":
 				setPosition1();
 				setPosition2();
 				break;
 			default:
-				style[pos1] = prevItemPosEntry![pos1];
-				style[pos2] = prevItemPosEntry![pos2];
+				style[prev] = prevItemPosEntry![prev];
+				style[next] = prevItemPosEntry![next];
 				await nextAnimationTick();
 				setPosition1();
 				setPosition2();
