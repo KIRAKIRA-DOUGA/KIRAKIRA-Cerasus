@@ -1,6 +1,4 @@
 <script setup lang="ts">
-	import testVideo from "assets/images/cav5-cover.png";
-
 	const displayPageCount = ref(6);
 	const sort = ref<SortModel>(["date", "descending"]);
 
@@ -9,20 +7,22 @@
 	const videos = ref<Videos200Response>();
 	const { query } = route;
 
-	const search = ref(query.search ?? "none");
-	const sortCategory = ref(query.sortCategory!);
-	const sortDirection = ref(query.sortDirection!);
-	const page = ref(+(query.page ?? 1));
+	const data = reactive({
+		search: query.search ?? "none",
+		sortCategory: query.sortCategory!,
+		sortDirection: query.sortDirection!,
+		page: +(query.page ?? 1),
+	});
 	const pages = ref(1);
 
 	// fetch the videos according to the query
-	watch([() => search.value, () => sortCategory.value, () => sortDirection.value, () => page.value], () => {
+	watch(data, () => {
 		const api = useApi();
 		api.users(id).then(video => {
-			pages.value = Math.ceil(video.paginationData!.numberOfItems! / 50.0);
+			pages.value = Math.ceil(video.paginationData!.numberOfItems! / 50);
 			videos.value = video;
 		}).catch(error => console.error(error));
-	}, { immediate: true });
+	}, { immediate: true, deep: true });
 </script>
 
 <template>
@@ -57,7 +57,7 @@
 					<SortItem id="rating">{{ t.rating }}</SortItem>
 				</Sort>
 			</section>
-			<Pagination v-model="page" :pages="pages" :displayPageCount="displayPageCount" enableArrowKeyMove />
+			<Pagination v-model="data.page" :pages="pages" :displayPageCount="displayPageCount" enableArrowKeyMove />
 		</div>
 	</div>
 </template>
