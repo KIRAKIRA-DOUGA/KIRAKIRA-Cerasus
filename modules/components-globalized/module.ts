@@ -19,8 +19,8 @@ export default defineNuxtModule({
 			const classes = await readdir(resolve("../classes"));
 			await writeFile(resolve("../types/", D_TS_NAME), (() => {
 				let result = "";
-				for (const klass of classes)
-					result += `import { ${parse(klass).name} } from "../classes/${klass}";\n`;
+				for (const [index, klass] of enumerate(classes, 1))
+					result += `import * as _${index} from "../classes/${klass}";\n`;
 				result += "\ndeclare global {\n";
 				result += "\t// components\n";
 				for (const component of components)

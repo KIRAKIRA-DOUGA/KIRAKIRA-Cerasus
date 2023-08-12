@@ -1,4 +1,4 @@
-import { AnimationItem } from "lottie-web";
+import * as _lottieWeb from "lottie-web";
 import { VTooltipBindingValue } from "plugins/vue/tooltip";
 import { AllowedComponentProps, DirectiveBinding } from "vue";
 import CSSDoodle from "./css-doodle";
