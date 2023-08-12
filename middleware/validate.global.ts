@@ -1,5 +1,6 @@
 import { httpResponseStatusCodes } from "helpers/http-status";
 
+const MEDIA_INFO_MODULE_WASM = "MediaInfoModule.wasm";
 const navigate = (path: string) => navigateTo(useLocalePath()(path));
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -21,6 +22,8 @@ export default defineNuxtRouteMiddleware((to, from) => {
 		return navigate("/user/2"); // TODO: 需要改成已登录用户自己的 UID。
 	if (routeSlug[0] === "user" && routeSlug.length >= 3 && !to.name)
 		return navigate(`/user/${routeSlug[1]}`);
+	if (routeSlug.at(-1) === MEDIA_INFO_MODULE_WASM)
+		return navigateTo(`/${MEDIA_INFO_MODULE_WASM}`);
 	if (routeSlug[0] === "error") {
 		const routeNumber = +routeSlug[1];
 		if (routeSlug[1] === "") // 论空字符串被转换成 0 ……
