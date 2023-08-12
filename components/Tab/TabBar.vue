@@ -20,6 +20,7 @@
 
 	const model = defineModel<string>({ required: true });
 	const { Slot, slotNode } = useFactory();
+	
 	const tabBar = refComp();
 	const indicator = ref<HTMLDivElement>();
 	const unmounted = ref(false);

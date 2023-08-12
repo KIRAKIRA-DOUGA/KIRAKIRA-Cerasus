@@ -10,7 +10,7 @@ export default function useRender(render: () => VNode): void {
 
 /**
  * 获取父组件。
- * @remarks 如果使用该函数，在修改该组件触发热重载时，会出现组件突然消失的情况。目前支持通过刷新网页解决。
+ * @remarks 如果使用该函数，在修改该组件触发热重载时，会出现组件突然消失的情况。目前只能支持通过刷新网页解决。
  * @param type - 父组件的类型筛选。
  * @returns 父组件或 null（如果没有）。
  */

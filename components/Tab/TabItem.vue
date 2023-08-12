@@ -22,8 +22,9 @@
 	}>();
 
 	const parent = useParent(TabBar)!;
-	const active = computed(() => parent.props.modelValue === props.id);
-	const flexDirection = computed(() => props.direction === "horizontal" ? undefined : props.direction.replace("horizontal", "row").replace("vertical", "column") as Property.FlexDirection);
+	const active = computed(() => parent?.props.modelValue === props.id);
+	const flexDirection = computed(() => props.direction === "horizontal" ? undefined :
+		props.direction.replace("horizontal", "row").replace("vertical", "column") as Property.FlexDirection);
 	const vertical = computed(() => !!parent?.props.vertical);
 
 	/**
@@ -50,7 +51,7 @@
 			<Icon :name="icon" />
 		</div>
 		<span><slot></slot></span>
-		<Badge v-if="badge !== undefined" class="badge">{{ badge }}</Badge>
+		<Badge class="badge"><slot name="badge">{{ badge }}</slot></Badge>
 	</Comp>
 </template>
 
@@ -89,6 +90,10 @@
 
 		.badge {
 			font-weight: normal;
+
+			&:empty {
+				display: none;
+			}
 		}
 		// TODO: 缺少横向 Tab 的 hover 和 pressed 样式，但不要用水波纹，你用了就知道有多丑了。
 

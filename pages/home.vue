@@ -14,16 +14,11 @@
 		page: +(query.page ?? 1),
 	});
 
-	/* const selectedTab = ref("Home");
-	const search = ref(query.search ?? "none");
-	const sortCategory = ref(query.sortCategory!);
-	const sortDirection = ref(query.sortDirection!);
-	const page = ref(+(query.page ?? 1)); */
-	
 	const numberOfItems = ref(0);
 	const numberOfPages = ref(1);
 
-	const categories = ref<Map<string, number | undefined>>();
+	const categoryList = ["Anime", "Music", "Otomad", "Tech", "Design", "Game", "Other"];
+	const categories = ref<Map<string, number | undefined>>(new Map());
 	const handleError = (error: unknown) => console.error(error);
 
 	// fetch the videos according to the query
@@ -49,15 +44,22 @@
 <template>
 	<div class="container">
 		<div>
-			<TabBar v-if="categories" v-model="data.selectedTab" @movingForTransition="name => transitionName = name">
-				<TabItem id="Home" direction="vertical" icon="home">{{ t.home }}</TabItem>
-				<TabItem id="Anime" direction="vertical-reverse" :badge="categories.get('Anime')">{{ t.category_anime }}</TabItem>
-				<TabItem id="Music" direction="vertical-reverse" :badge="categories.get('Music')">{{ t.category_music }}</TabItem>
-				<TabItem id="Otomad" direction="vertical-reverse" :badge="categories.get('Otomad')">{{ t.category_otomad }}</TabItem>
-				<TabItem id="Tech" direction="vertical-reverse" :badge="categories.get('Tech')">{{ t.category_tech }}</TabItem>
-				<TabItem id="Design" direction="vertical-reverse" :badge="categories.get('Design')">{{ t.category_design }}</TabItem>
-				<TabItem id="Game" direction="vertical-reverse" :badge="categories.get('Game')">{{ t.category_game }}</TabItem>
-				<TabItem id="Other" direction="vertical-reverse" :badge="categories.get('Other')">{{ t.category_other }}</TabItem>
+			<TabBar v-model="data.selectedTab" @movingForTransition="name => transitionName = name">
+				<TabItem
+					id="Home"
+					direction="vertical"
+					icon="home"
+				>{{ t.home }}</TabItem>
+				<TabItem
+					v-for="cat in categoryList"
+					:id="cat"
+					:key="cat"
+					direction="vertical-reverse"
+				>
+					{{ t["category_" + cat.toLowerCase()] }}
+					<template #badge>{{ categories.get(cat) || "" }}</template>
+					<!-- FIXME: TabItem 位于改写的 slot 中，无法使 props 响应式，目前只能通过插槽响应。 -->
+				</TabItem>
 			</TabBar>
 		</div>
 		<Subheader icon="upload" :badge="numberOfItems">{{ t.latest }}</Subheader>
