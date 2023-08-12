@@ -4,6 +4,7 @@
 	const videos = ref<Videos200Response>();
 	const route = useRoute();
 	const { query } = route;
+	const transitionName = ref("page-jump");
 
 	const data = reactive({
 		selectedTab: "Home",
@@ -48,7 +49,7 @@
 <template>
 	<div class="container">
 		<div>
-			<TabBar v-if="categories" v-model="data.selectedTab">
+			<TabBar v-if="categories" v-model="data.selectedTab" @movingForTransition="name => transitionName = name">
 				<TabItem id="Home" direction="vertical" icon="home">{{ t.home }}</TabItem>
 				<TabItem id="Anime" direction="vertical-reverse" :badge="categories.get('Anime')">{{ t.category_anime }}</TabItem>
 				<TabItem id="Music" direction="vertical-reverse" :badge="categories.get('Music')">{{ t.category_music }}</TabItem>
@@ -60,7 +61,7 @@
 			</TabBar>
 		</div>
 		<Subheader icon="upload" :badge="numberOfItems">{{ t.latest }}</Subheader>
-		<Transition name="right" mode="out-in">
+		<Transition :name="transitionName" mode="out-in">
 			<div :key="data.selectedTab" class="videos-grid">
 				<ThumbVideo
 					v-for="video in videos?.videos"

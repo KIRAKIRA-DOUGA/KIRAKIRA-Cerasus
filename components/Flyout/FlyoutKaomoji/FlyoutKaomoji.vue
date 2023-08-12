@@ -9,15 +9,10 @@
 	const RECENT_ID = "recent";
 	const selected = ref<keyof typeof kaomojis | typeof RECENT_ID>("happy");
 	const tabs = computed(() => Object.keys(kaomojis));
-	const transitionName = ref<"left" | "right" | "">("right");
+	const transitionName = ref("right");
 	const recentKaomoji = useRecentKaomojiStore();
 	const kaomojiList = computed(() => selected.value === RECENT_ID ? recentKaomoji.kaomojis : kaomojis[selected.value]);
 	const placement = ref<Placement>();
-
-	watch(selected, (curSelected, prevSelected) => {
-		const cur = tabs.value.indexOf(curSelected), prev = tabs.value.indexOf(prevSelected);
-		transitionName.value = cur > prev ? "right" : cur < prev ? "left" : "";
-	});
 
 	/**
 	 * 插入颜文字回调函数。
@@ -32,7 +27,7 @@
 <template>
 	<Flyout v-model="model" noPadding @beforeShow="p => placement = p">
 		<Comp :class="[placement]">
-			<TabBar v-model="selected">
+			<TabBar v-model="selected" @movingForTransition="name => transitionName = name">
 				<TabItem :id="RECENT_ID" icon="history" />
 				<TabItem v-for="tab in tabs" :id="tab" :key="tab">{{ t[tab] }}</TabItem>
 			</TabBar>
