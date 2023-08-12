@@ -44,3 +44,18 @@ export const Caret = {
 		selection.addRange(range);
 	},
 };
+
+/**
+ * 将文本插入指定文本框中光标的位置，如果选中了文本，则替换之。
+ * @param input - 输入框。
+ * @param text - 插入的文字。
+ */
+export function insertTextToTextBox(input: MaybeRef<HTMLInputElement | HTMLTextAreaElement>, text: string = "") {
+	input = toValue(input);
+	const { selectionStart: start, selectionEnd: end, value } = input;
+	if (start === null || end === null) return;
+	const newValue = value.slice(0, start) + text + value.slice(end);
+	const newCaret = start + text.length;
+	input.value = newValue;
+	input.setSelectionRange(newCaret, newCaret);
+}
