@@ -41,7 +41,7 @@ declare global {
 	/** 个性色。 */
 	type PaletteType = themeTypes.PaletteType;
 	/** 选项卡指示器的移动方向。 */
-	type TabBarMovement = Movement | "ignore" | "none";
+	type TabBarMovement = Movement | "ignore" | "none" | "fade";
 
 	type FlyoutModel = FlyoutModelNS.Tuple | FlyoutModelNS.Object;
 	type MenuModel = MouseEvent | PointerEvent | null;

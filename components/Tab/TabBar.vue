@@ -1,5 +1,6 @@
 <script lang="ts">
 	const updateIndicatorWithoutAnimation = Symbol("updateIndicatorWithoutAnimation");
+	const updateIndicatorToFade = Symbol("updateIndicatorToFade");
 </script>
 
 <script setup lang="ts">
@@ -29,7 +30,6 @@
 	 */
 	function changeTab(id: string) {
 		update(id, model.value);
-		// model.value = id;
 	}
 
 	/**
@@ -119,7 +119,10 @@
 	 * @param id - 当前选项卡标识符。
 	 * @param prevId - 先前选项卡标识符。
 	 */
-	async function update(id?: string, prevId?: string | typeof updateIndicatorWithoutAnimation) {
+	async function update(
+		id?: string | typeof updateIndicatorToFade,
+		prevId?: string | typeof updateIndicatorWithoutAnimation,
+	) {
 		if (isUpdating) return;
 		const LENGTH = 16; // 指定选项卡指示器的最大长度。
 		id ??= model.value;
@@ -130,14 +133,18 @@
 			set [prev](value: number) { indicatorStyle[prev] = value + "px"; },
 			set [next](value: number) { indicatorStyle[next] = value + "px"; },
 		};
-		const item = children.value?.[id].el;
+		if (typeof id !== "string" && typeof prevId !== "string") return; // 保证 id、prevId 至少有一个是 string 类型。
+		const isUpdateIndicatorToFade = id === updateIndicatorToFade;
+		const item = children.value?.[(!isUpdateIndicatorToFade ? id : prevId) as string]?.el;
 		if (!item) return;
-		const itemPosEntry = getIndicatorPositions(item, LENGTH);
-		let prevItemPosEntry: ReturnType<typeof getIndicatorPositions>;
+		const itemPosEntry = getIndicatorPositions(item, !isUpdateIndicatorToFade ? LENGTH : 0);
+		let prevItemPosEntry: ReturnType<typeof getIndicatorPositions> = undefined!;
 		let movement: TabBarMovement = "none";
 		let prevItem: HTMLElement | null = null;
 		if (prevId === updateIndicatorWithoutAnimation || isPrefersReducedMotion())
 			movement = "ignore";
+		else if (isUpdateIndicatorToFade)
+			movement = "fade";
 		else {
 			if (prevId !== undefined) prevItem = children.value?.[prevId].el;
 			if (prevId !== undefined && prevItem) {
@@ -147,7 +154,7 @@
 		}
 		isUpdating = true;
 		onMoving(movement);
-		model.value = id;
+		if (typeof id === "string") model.value = id;
 		isUpdating = false;
 		const setPosition1 = () => style[prev] = itemPosEntry[prev];
 		const setPosition2 = () => style[next] = itemPosEntry[next];
@@ -164,12 +171,13 @@
 				setPosition1();
 				break;
 			case "ignore":
+			case "fade":
 				setPosition1();
 				setPosition2();
 				break;
 			default:
-				style[prev] = prevItemPosEntry![prev];
-				style[next] = prevItemPosEntry![next];
+				style[prev] = prevItemPosEntry[prev];
+				style[next] = prevItemPosEntry[next];
 				await nextAnimationTick();
 				setPosition1();
 				setPosition2();
@@ -177,10 +185,9 @@
 		}
 		await nextTick();
 		// 如果在 modelValue 层面对返回值做出了拦截。
-		if (!item.classList.contains("active")) {
+		if (!item.classList.contains("active") && typeof id === "string") {
 			const actualItem = getStyledActiveItem();
-			if (actualItem)
-				update(actualItem.id, id);
+			update(actualItem ? actualItem.id : updateIndicatorToFade, id);
 		}
 	}
 
