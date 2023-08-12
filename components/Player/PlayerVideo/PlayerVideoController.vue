@@ -155,6 +155,7 @@
 		display: flex;
 		align-items: center;
 		height: $thickness;
+		overflow: hidden;
 		color: c(icon-color);
 		font-weight: 600;
 		font-size: 14px;
