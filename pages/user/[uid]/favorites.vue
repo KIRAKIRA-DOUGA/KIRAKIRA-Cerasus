@@ -5,6 +5,7 @@
 	const sort = ref<SortModel>(["date", "descending"]);
 	const toolbar = ref<HTMLDivElement[]>();
 	const hideToolbarCaptions = ref(false);
+	const isSelectedMode = ref(false);
 
 	useEventListener("window", "resize", onResize);
 
@@ -67,7 +68,11 @@
 						</div>
 						<div class="right">
 							<Button icon="add">添加视频</Button>
-							<Button icon="library_add_check">批量选择</Button>
+							<Button
+								:class="{ active: isSelectedMode }"
+								icon="library_add_check"
+								@click="isSelectedMode = !isSelectedMode"
+							>批量选择</Button>
 						</div>
 					</div>
 				</div>
@@ -134,7 +139,11 @@
 		}
 
 		button {
-			--appearance: secondary;
+			--appearance: tertiary;
+
+			&.active {
+				--appearance: secondary;
+			}
 		}
 
 		&.shadow {
