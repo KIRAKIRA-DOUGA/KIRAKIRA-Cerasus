@@ -2,10 +2,11 @@ import { createResolver } from "@nuxt/kit";
 import fs from "fs/promises";
 import htmlMinifierTerser from "html-minifier-terser";
 import { Nuxt } from "nuxt/schema";
-import { resolve } from "path";
+import { dirname, resolve } from "path";
 import sass from "sass";
 import * as terser from "terser";
 import ts from "typescript";
+import { fileURLToPath } from "url";
 
 /**
  * 将 TypeScript 源码编译为 JavaScript 代码。
@@ -118,4 +119,16 @@ export function createReadFileResolver(dirname: string) {
  */
 export function useNuxtHead(nuxt: Nuxt) {
 	return nuxt.options.app.head ??= [] as typeof nuxt.options.app.head;
+}
+
+/**
+ * 从 ES Module 中获取类似于 CommonJS 的 __filename 和 __dirname。
+ * @param importMetaUrl - `import.meta.url`。
+ * @returns 当前模块的文件名和目录名。
+ */
+export function getPathFromEsModule(importMetaUrl: string) {
+	const __filename = fileURLToPath(importMetaUrl);
+	const __dirname = dirname(__filename);
+
+	return { __filename, __dirname };
 }
