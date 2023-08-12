@@ -12,7 +12,7 @@ export default defineNuxtModule({
 
 		let iePageHtml = await readFile(IE_PAGE_HTML_FILE);
 		iePageHtml = await minifyHtml(iePageHtml);
-		nuxt.options.runtimeConfig.iePageHtml = iePageHtml; // XXX 该方式不优雅，等待更合适的方法。
+		nuxt.options.runtimeConfig.iePageHtml = iePageHtml; // XXX: 该方式不优雅，等待更合适的方法。
 
 		let iePageScript = await readFile(IE_PAGE_SCRIPT_FILE_TS);
 		iePageScript = compileTypeScript(iePageScript, "ES5");
