@@ -14,12 +14,8 @@
 		movingForTransition: [transition: string];
 	}>();
 
-	defineSlots<{
-		default?: typeof TabItem;
-	}>();
-
 	const model = defineModel<string>({ required: true });
-	const { Slot, slotNode } = useFactory();
+	const { RenderComp, slotNode } = useFactory();
 	
 	const tabBar = refComp();
 	const indicator = ref<HTMLDivElement>();
@@ -229,7 +225,7 @@
 <template>
 	<Comp ref="tabBar" :class="{ vertical }" role="tablist" :aria-details="model" :aria-orientation="vertical ? 'vertical' : 'horizontal'">
 		<div class="items">
-			<Slot />
+			<RenderComp :vnode="$slots.default?.()" />
 		</div>
 		<div ref="indicator" class="indicator"></div>
 	</Comp>
