@@ -56,10 +56,9 @@
 					:id="cat"
 					:key="cat"
 					direction="vertical-reverse"
+					:badge="categories.get(cat) || ''"
 				>
 					{{ t["category_" + cat.toLowerCase()] }}
-					<template #badge>{{ categories.get(cat) || "" }}</template>
-					<!-- FIXME: TabItem 位于改写的 slot 中，无法使 props 响应式，目前只能通过插槽响应。 -->
 				</TabItem>
 			</TabBar>
 		</div>

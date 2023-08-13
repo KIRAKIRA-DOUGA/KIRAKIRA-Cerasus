@@ -24,7 +24,7 @@ export const useCustomFactory = ({ mounted, updated, unmounted }: RenderCallback
 		props: {
 			vnode: {
 				type: Array as PropType<VNode[]>,
-				required: true,
+				default: undefined,
 			},
 		},
 		mounted() {
@@ -51,11 +51,12 @@ const findChildren = (vnodes: VNode[], type: unknown) => {
 };
 /**
  * 渲染插槽节点。
+ * @remarks 如果直接使用，目前有 bug，其 props 不能构成响应式。
  * @param type - 子组件类型筛选。
  * @param slotName - 插槽名称。留空表示 default 插槽。
  * @returns 插槽组件，和子节点引用。
  */
-export const useFactory = (type: unknown = undefined, slotName: string = "default") => {
+export const useFactory = (type: unknown = undefined, slotName: string | (() => VNode[]) = "default") => {
 	const instance = getCurrentInstance();
 	const scopeId = getScopeIdFromInstance(instance);
 	const slotNode = ref<SlotNode>();
@@ -70,7 +71,7 @@ export const useFactory = (type: unknown = undefined, slotName: string = "defaul
 			children.value = [];
 		},
 	});
-	const slot = useSlots()[slotName];
+	const slot = typeof slotName === "string" ? useSlots()[slotName] : slotName;
 	const addSlotScopeId = (s: ReturnType<Exclude<typeof slot, undefined>>) => {
 		if (scopeId) // 无论父组件是否有 `:slotted`，都一律无脑加上？
 			s.forEach(i => {
