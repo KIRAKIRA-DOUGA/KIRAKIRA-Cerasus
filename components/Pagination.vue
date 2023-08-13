@@ -355,6 +355,11 @@
 	:comp {
 		position: relative;
 		user-select: none;
+
+		&,
+		:deep(*) {
+			font-variant-emoji: emoji;
+		}
 	}
 
 	.thumb {
