@@ -1,3 +1,5 @@
+<!-- DELETE: 已弃用，请转移到 ./videos/kv[kvid].vue -->
+
 <script setup lang="ts">
 	import videoPath from "assets/videos/shibamata.mp4";
 	// const videoPath = "https://video_api.kms233.com/bili/av9912788";
