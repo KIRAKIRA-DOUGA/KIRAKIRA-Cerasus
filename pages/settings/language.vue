@@ -40,7 +40,8 @@
 		text-align: center;
 		border: c(gray-40) solid;
 		border-width: 1px 0;
-		
+		font-feature-settings: normal;
+
 		&:lang(en) {
 			font-family: $english-logo-fonts;
 		}

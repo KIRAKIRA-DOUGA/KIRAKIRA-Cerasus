@@ -68,10 +68,10 @@
 		<SettingsChipItem icon="wallpaper" trailingIcon="edit">自定义背景</SettingsChipItem>
 	</section>
 	
-	<Subheader icon="apps">其它</Subheader>
+	<Subheader icon="more_horiz">其它</Subheader>
 	<section list>
-		<ToggleSwitch v-model="useAppSettingsStore().sharpAppearanceMode" v-ripple icon="data_array">直角样式</ToggleSwitch>
-		<ToggleSwitch v-model="useAppSettingsStore().flatAppearanceMode" v-ripple icon="data_array">扁平样式</ToggleSwitch>
+		<ToggleSwitch v-model="useAppSettingsStore().sharpAppearanceMode" v-ripple icon="square">直角样式</ToggleSwitch>
+		<ToggleSwitch v-model="useAppSettingsStore().flatAppearanceMode" v-ripple icon="layers">扁平样式</ToggleSwitch>
 	</section>
 </template>
 

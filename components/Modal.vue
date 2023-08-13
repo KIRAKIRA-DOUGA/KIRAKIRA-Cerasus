@@ -122,7 +122,7 @@
 		max-width: 100dvw;
 		overflow: hidden;
 		background-color: c(acrylic-bg, 75%);
-		transform: translate(-50%, -50%);
+		transform: translate(-50%, -50%); // TODO: 修改密码模态框出现模糊情况。
 		transform-origin: left top;
 		transition: $fallback-transitions, all $ease-out-max 400ms, translate 0s;
 		translate: none;

@@ -12,8 +12,11 @@
 			activable: { type: Boolean, default: false },
 			/** 是否在新窗口打开链接？ */
 			blank: { type: Boolean, default: false },
-
-			query: { type: String, default: "" },
+			/** URL Search Params. */
+			query: {
+				type: [String, Object] as PropType<UrlQueryType>,
+				default: "",
+			},
 		},
 		setup(props) {
 			const localePath = useLocalePath();
@@ -31,7 +34,17 @@
 					attrs.target = "_blank";
 				return attrs;
 			});
-			const href = computed(() => localePath(props.to) + props.query);
+
+			const queryString = computed(() => {
+				let { query } = props;
+				if (typeof query === "string")
+					return query.startsWith("?") ? query : "?" + query;
+				if (!(query instanceof URLSearchParams))
+					query = new URLSearchParams(query as Record<string, string>);
+				return query.size ? "?" + query.toString() : "";
+			});
+
+			const href = computed(() => localePath(props.to) + queryString.value);
 
 			return {
 				href, attrs,

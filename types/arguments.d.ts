@@ -42,6 +42,8 @@ declare global {
 	type PaletteType = themeTypes.PaletteType;
 	/** 选项卡指示器的移动方向。 */
 	type TabBarMovement = Movement | "ignore" | "none" | "fade";
+	/** 可作为 URL Search Params 的更宽松类型。 */
+	type UrlQueryType = string | URLSearchParams | Record<string, Readable>;
 
 	type FlyoutModel = FlyoutModelNS.Tuple | FlyoutModelNS.Object;
 	type MenuModel = MouseEvent | PointerEvent | null;

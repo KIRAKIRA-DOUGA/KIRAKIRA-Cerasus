@@ -7,6 +7,7 @@
 ::after {
 	box-sizing: border-box;
 	font-family: $chinese-fonts;
+	font-feature-settings: "ss02" on, "ss01" on, "liga" on, "rlig" on, "dlig" on, "hlig" on, "onum" on, "kern" on;
 	tab-size: 4;
 	transition: $fallback-transitions;
 	user-select: none;
@@ -19,7 +20,6 @@
 	-webkit-font-smoothing: antialiased;
 	text-rendering: optimizeLegibility;
 	-moz-osx-font-smoothing: grayscale;
-	font-feature-settings: "liga";
 	white-space-collapse: discard;
 	text-space-collapse: discard;
 	text-spacing: normal;

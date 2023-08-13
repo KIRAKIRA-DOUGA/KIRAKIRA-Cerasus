@@ -40,8 +40,6 @@
 		<div class="change-password-modal">
 			<div>
 				<TextBox v-model="oldPassword" type="password" icon="lock" :placeholder="t.password_current" />
-			</div>
-			<div>
 				<TextBox v-model="confirmNewPassword" type="password" icon="lock" :placeholder="t.password_new" />
 				<TextBox v-model="newPassword" type="password" icon="lock" :placeholder="t.password_new_retype" />
 			</div>
