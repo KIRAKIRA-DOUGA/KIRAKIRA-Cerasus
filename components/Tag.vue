@@ -6,8 +6,8 @@
 		disabled?: boolean;
 		/** 链接。 */
 		link?: string;
-
-		query?: string;
+		/** URL Search Params. */
+		query?: UrlQueryType;
 	}>();
 
 	const model = defineModel<boolean>();

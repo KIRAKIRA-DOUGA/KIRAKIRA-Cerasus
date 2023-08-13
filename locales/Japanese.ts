@@ -207,7 +207,7 @@ const Japanese: LocaleIdentifiers = {
 	settings_about_staff_backend: "バックエンド",
 	settings_about_technologies_used: "使用されている技術",
 	user_name: "ニックネーム",
-	user_name_requirements: "1-20文字、大小英数字、ひらがな/カタカナ、漢字、特殊記号の｢-｣と｢_｣のみ使用できます。",
+	user_name_requirements: "1~20文字、大小英数字、ひらがな/カタカナ、漢字、特殊記号の｢-｣と｢_｣のみ使用できます。",
 	user_bio: "自己紹介",
 	user_gender: "性別",
 	zh: "簡体字中国語",
@@ -216,6 +216,10 @@ const Japanese: LocaleIdentifiers = {
 	development_test_page: "(test)テストページの開発",
 	components_test_page: "(test)Components Test Page",
 	send_danmaku: "(test)发送弹幕",
+	view_cover: "(test)查看封面",
+	watch_later: "(test)稍后观看",
+	download_video: "(test)下载视频",
+	report_creation: "(test)稿件投诉",
 };
 
 export default Japanese;

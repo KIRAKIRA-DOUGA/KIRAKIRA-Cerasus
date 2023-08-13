@@ -213,6 +213,10 @@ const SChinese = {
 	development_test_page: "开发测试页面",
 	components_test_page: "组件测试页面",
 	send_danmaku: "发送弹幕",
+	view_cover: "查看封面",
+	watch_later: "稍后观看",
+	download_video: "下载视频",
+	report_creation: "稿件投诉",
 } as const;
 
 export default SChinese;

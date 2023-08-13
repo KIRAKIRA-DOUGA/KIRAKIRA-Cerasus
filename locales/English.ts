@@ -27,7 +27,7 @@ const English: LocaleIdentifiers = {
 	off: "Off",
 	disabled: "Disabled",
 	background: "Background",
-	animated_background: "Animated Background",
+	animated_background: "Animated background",
 	settings: "Settings",
 	light: "Light theme",
 	dark: "Dark theme",
@@ -213,6 +213,10 @@ const English: LocaleIdentifiers = {
 	development_test_page: "Development Test Page",
 	components_test_page: "Components Test Page",
 	send_danmaku: "Send danmaku",
+	view_cover: "View cover",
+	watch_later: "Watch later",
+	download_video: "Download video",
+	report_creation: "Report creation",
 };
 
 export default English;
