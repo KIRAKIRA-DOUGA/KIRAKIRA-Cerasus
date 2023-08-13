@@ -9,8 +9,8 @@
 <template>
 	<header>
 		<slot name="icon"></slot>
-		<Heading>{{ name }}</Heading>
-		<Heading v-if="count !== undefined" form="small-solid">{{ count }}</Heading>
+		<Heading class="main-title">{{ name }}</Heading>
+		<Heading v-if="count !== undefined" form="small-solid" class="count">{{ count }}</Heading>
 		<Heading form="small" class="english-after">{{ englishName }}</Heading>
 	</header>
 </template>
@@ -30,6 +30,11 @@
 
 		.english-after:lang(en) {
 			display: none;
+		}
+
+		.main-title:lang(en),
+		.english-after {
+			font-feature-settings: normal;
 		}
 	}
 </style>
