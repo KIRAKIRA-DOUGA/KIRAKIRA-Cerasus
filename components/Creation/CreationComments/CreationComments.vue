@@ -28,9 +28,9 @@
 
 			</div>
 			<div class="right">
-				<SoftButton icon="deletion_history" />
 				<TextBox v-model="search" :placeholder="t.search" icon="search" />
 				<Pagination :current="1" :pages="99" :displayPageCount="7" />
+				<SoftButton icon="deletion_history" />
 			</div>
 		</div>
 		<div class="items">
