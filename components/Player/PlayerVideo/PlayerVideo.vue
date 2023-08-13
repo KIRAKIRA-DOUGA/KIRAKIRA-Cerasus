@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	import mediainfo from "mediainfo.js";
-	import Dash from "dashjs";
+	import { MediaPlayerClass } from "dashjs";
 
 	const props = defineProps<{
 		src: string;
@@ -87,12 +87,13 @@
 		video.value.volume = volume;
 	});
 
-	const player = ref<Dash.MediaPlayerClass>();
+	const player = ref<MediaPlayerClass>();
 
-	onMounted(() => {
+	onMounted(async () => {
 		if (!video.value) return;
 		onCanPlay({ target: video.value });
 
+		const Dash = await import("dashjs"); // 注意看，由于 Dash 无法在服务端下渲染，因此必须动态导入。
 		player.value = Dash.MediaPlayer().create();
 		player.value.initialize(video.value, props.src, false);
 		player.value.updateSettings({
