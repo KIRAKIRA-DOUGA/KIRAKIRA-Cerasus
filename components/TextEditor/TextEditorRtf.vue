@@ -9,6 +9,12 @@
 		videoId?: number;
 	}>();
 
+	type ActiveType = string | boolean;
+	const rtfEditor = refComp();
+	const flyoutKaomoji = ref<FlyoutModel>();
+	const flyoutKaomojiMini = ref<FlyoutModel>();
+	const textLength = ref(0);
+
 	const editor = useEditor({
 		extensions: [
 			StarterKit,
@@ -16,19 +22,18 @@
 			VueComponent.ThumbVideo,
 			VueComponent.CursorShadow,
 		],
-		// content: `
-		// 	<p>我正在用 Vue.js 运行 Tiptap。🎉</p>
-		// 	<p>你看到了吗？这是 Vue 组件。我们真的生活在未来。</p>
-		// `,
+		/* content: `
+			<p>我正在用 Vue.js 运行 Tiptap。🎉</p>
+			<p>你看到了吗？这是 Vue 组件。我们真的生活在未来。</p>
+		`, */
 		autofocus: false,
 		editable: true,
 		injectCSS: false,
+		onUpdate(props) {
+			textLength.value = props.editor.getText().length;
+		},
 	});
 
-	type ActiveType = string | boolean;
-	const rtfEditor = refComp();
-	const flyoutKaomoji = ref<FlyoutModel>();
-	const flyoutKaomojiMini = ref<FlyoutModel>();
 	const [DefineToolItem, ToolItem] = createReusableTemplate<{
 		tooltip?: string;
 		active?: ActiveType;
@@ -137,6 +142,7 @@
 				<ToolItem :tooltip="t.image" icon="photo" @click="addVueComponents" />
 			</div>
 			<div class="right">
+				<span class="text-length">{{ textLength }}</span>
 				<ToolItem :tooltip="t.send" icon="send" @click="sendComment" />
 			</div>
 		</div>
@@ -145,8 +151,6 @@
 
 <style scoped lang="scss">
 	:comp {
-		// @include round-large;
-		// @include card-shadow;
 		@include round-large;
 		@include control-inner-shadow;
 		overflow: hidden;
@@ -166,16 +170,22 @@
 			height: $height;
 			padding: 0 8px;
 			overflow: hidden;
-			// background-color: c(main-bg, 45%);
 
 			> * {
 				display: flex;
 				gap: 4px;
-				
+				align-items: center;
+
 				.soft-button {
 					--wrapper-size: #{$height};
 					--icon-size: 20px;
 					--ripple-size: 58px;
+				}
+				
+				.text-length {
+					display: block;
+					margin: 0 8px;
+					color: c(icon-color);
 				}
 			}
 		}
