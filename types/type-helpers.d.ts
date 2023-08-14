@@ -63,4 +63,13 @@ declare global {
 			symbol extends K ? never :
 			K
 	};
+
+	/**
+	 * 将对象的所有键大驼峰化。
+	 */
+	type CapitalizeObject<T extends object> = {
+		[key in keyof T as Capitalize<key>]:
+			T[key] extends (infer U)[] | undefined | null ? CapitalizeObject<U>[] :
+			CapitalizeObject<T[key]>;
+	} & T;
 }
