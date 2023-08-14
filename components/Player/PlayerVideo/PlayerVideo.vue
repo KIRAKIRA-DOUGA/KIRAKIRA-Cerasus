@@ -20,7 +20,7 @@
 	const mediaInfos = ref<MediaInfo>();
 	const videoContainer = ref<HTMLDivElement>();
 	const video = ref<HTMLVideoElement>();
-	const { isFullscreen: fullScreen, toggle } = useFullscreen(videoContainer);
+	const { isFullscreen: fullscreen, toggle } = useFullscreen(videoContainer);
 	const menu = ref<MenuModel>();
 
 	type MediaInfo = Record<string, Record<string, unknown>>;
@@ -167,7 +167,7 @@
 			</Accordion>
 		</Alert>
 
-		<div ref="videoContainer" class="main" :class="{ fullscreen: fullScreen }">
+		<div ref="videoContainer" class="main" :class="{ fullscreen }">
 			<video
 				ref="video"
 				class="player"
@@ -185,11 +185,11 @@
 			<PlayerVideoController
 				v-model:currentTime="currentTime"
 				v-model:playing="playing"
-				v-model:fullScreen="fullScreen"
+				v-model:fullscreen="fullscreen"
 				v-model:playbackRate="playbackRate"
 				v-model:volume="volume"
 				:duration="duration"
-				:toggleFullScreen="toggle"
+				:toggleFullscreen="toggle"
 				:buffered="buffered"
 			/>
 		</div>
@@ -238,7 +238,6 @@
 				right: 0;
 				bottom: 0;
 				left: 0;
-				background-color: c(main-bg);
 				transition: $fallback-transitions, background-color 0s;
 			}
 		}
