@@ -272,6 +272,7 @@ module.exports = {
 		"vue/multiline-html-element-content-newline": "off",
 		"vue/no-template-shadow": "off",
 		"vue/no-mutating-props": ["error", { "shallowOnly": false }],
+		"vue/no-deprecated-filter": "off", // 我要按位或，不是要什么过滤运算符。
 		"no-restricted-properties": ["error", {
 			object: "arguments",
 			property: "callee",

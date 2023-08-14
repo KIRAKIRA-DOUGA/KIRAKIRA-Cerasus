@@ -1,3 +1,8 @@
+<docs>
+	# 胶囊滑动条
+	适用于音量、速度控制。
+</docs>
+
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
 		/** 滑块最小值。 */
@@ -6,7 +11,7 @@
 		max?: number;
 		/** 滑块默认值。当单击鼠标中键或触摸屏长按组件时还原默认值。 */
 		defaultValue?: number;
-		/** Function to transform numeric value into display value. */
+		/** 函数将数值转换为显示值。 */
 		getDisplayValue?: (value: number) => string;
 	}>(), {
 		min: 0,
@@ -25,11 +30,11 @@
 	const model = defineModel<number>({ required: true });
 	const errorInfo = `取值范围应在 [${props.min}, ${props.max}] 其中，当前值为 ${model.value}。`;
 	if (props.min > props.max)
-		throw new RangeError(`PlayerRangeControl 的最小值比最大值要大？最小值为 ${props.min}，最大值为 ${props.max}。`);
+		throw new RangeError(`CapsuleRange 的最小值比最大值要大？最小值为 ${props.min}，最大值为 ${props.max}。`);
 	if (model.value < props.min)
-		throw new RangeError("PlayerRangeControl 的值比最小值要小。" + errorInfo);
+		throw new RangeError("CapsuleRange 的值比最小值要小。" + errorInfo);
 	if (model.value > props.max)
-		throw new RangeError("PlayerRangeControl 的值比最大值要大。" + errorInfo);
+		throw new RangeError("CapsuleRange 的值比最大值要大。" + errorInfo);
 
 	const restrict = (n: number | undefined, nanValue: number) => Number.isFinite(n) ? clamp(map(n!, props.min, props.max, 0, 1), 0, 1) : nanValue;
 	const value = computed(() => restrict(model.value, 0));
@@ -67,7 +72,6 @@
 		};
 		document.addEventListener("pointermove", pointerMove);
 		document.addEventListener("pointerup", pointerUp);
-
 		pointerMove(e);
 	}
 
@@ -80,7 +84,7 @@
 		resetDefault(e);
 	}
 
-	const displayValue = computed(() => props.getDisplayValue?.(model.value) || Math.floor(model.value * 100));
+	const displayValue = computed(() => props.getDisplayValue?.(model.value) ?? model.value);
 </script>
 
 <template>
@@ -98,6 +102,7 @@
 		<div class="track" @pointerdown="onTrackDown" @contextmenu="onLongPress">
 			<div class="value-container">
 				<div class="value">{{ displayValue }}</div>
+				<div class="value passed"></div>
 				<div class="value value-on">{{ displayValue }}</div>
 			</div>
 		</div>
@@ -137,15 +142,22 @@
 		align-items: center;
 		padding-left: 20px;
 		color: c(accent);
+		transition: none;
+		pointer-events: none;
+
+		html.dark & {
+			color: white;
+		}
 	}
 
-	.value-on {
-		position: absolute;
-		color: c(white);
+	.passed {
 		background-color: c(accent);
-		transition: none;
+		opacity: map(var(--value), 0, 1, 0.4, 1, true);
+	}
+	
+	.passed,
+	.value-on {
+		color: white;
 		clip-path: inset(0 $value 0 0);
-		pointer-events: none;
-		inset: 0;
 	}
 </style>
