@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	useHead({ title: "首页" });
 
-	const videos = ref<CapitalizeObject<Videos200Response>>(); // TODO: API 返回是大驼峰，而之前的 interface 又是小驼峰，后期可能需要重新写一下 interface。
+	const videos = ref<Videos200Response>();
 	const route = useRoute();
 	const { query } = route;
 	const transitionName = ref("page-jump");
@@ -16,60 +16,36 @@
 
 	const numberOfItems = ref(0);
 	const numberOfPages = ref(1);
-
 	const categoryList = ["Anime", "Music", "Otomad", "Tech", "Design", "Game", "Other"];
 	const categories = ref<Map<string, number | undefined>>(new Map());
-	const handleError = (error: unknown) => error && console.error(error);
+	const resultTimestamp = ref(0);
 
-	// fetch the videos according to the query
-	// watch(data, () => {
-	// 	const api = useApi();
-	// 	const utf8Encode = new TextEncoder();
-	// 	const encodedContent = utf8Encode.encode(data.search) as unknown as string;
-	// 	const cat = data.selectedTab !== "Home" ? data.selectedTab : "undefined";
-	// 	const encodedCategory = utf8Encode.encode(cat) as unknown as string;
+	/**
+	 * Fetch the videos according to the query.
+	 */
+	async function fetchData() {
+		const api = useApi();
+		const utf8Encoder = new TextEncoder();
+		const encodedContent = utf8Encoder.encode(data.search) as unknown as string;
+		const cat = data.selectedTab !== "Home" ? data.selectedTab : "undefined";
+		const encodedCategory = utf8Encoder.encode(cat) as unknown as string;
+		const handleError = (error: unknown) => error && console.error(error);
 
-	// 	api?.videos(encodedContent, data.sortCategory, data.sortDirection, "true", data.page, encodedCategory).then(video => {
-	// 		numberOfPages.value = Math.ceil(video.paginationData!.numberOfItems! / 50.0);
-	// 		numberOfItems.value = video.paginationData!.numberOfItems!;
-	// 		videos.value = video;
-	// 	}).catch(handleError);
+		try {
+			const videosResponse = await api?.videos(encodedContent, data.sortCategory, data.sortDirection, "true", data.page, encodedCategory);
+			numberOfPages.value = Math.ceil(videosResponse.paginationData!.numberOfItems! / 50.0);
+			numberOfItems.value = videosResponse.paginationData!.numberOfItems!;
+			videos.value = videosResponse;
+			resultTimestamp.value = new Date().valueOf();
+		} catch (error) { handleError(error); }
 
-	// 	api?.categories().then(categoriesResult => {
-	// 		categories.value = new Map(categoriesResult.map(cat => [cat.name!, cat.cardinality]));
-	// 	}).catch(handleError);
-	// }, { immediate: true, deep: true });
-
-	const config = useRuntimeConfig();
-	const siteUrl = config.public.siteUrl;
-	console.log(siteUrl);
-
-	const encoder = new TextEncoder();
-	const videosAsyncData = await useFetch(siteUrl + "/api/videos", {
-		method: "GET",
-		body: undefined,
-		credentials: "same-origin",
-		headers: {
-			Accept: "application/json, */*;q=0.8",
-			unapproved: "true",
-			pageNumber: 1,
-			search: encoder.encode("none"),
-			category: encoder.encode("undefined"),
-		} as never,
-	});
-	console.log(videosAsyncData);
-	handleError(videosAsyncData.error.value);
-	const videosResponse = videosAsyncData.data.value as CapitalizeObject<Videos200Response>;
-	numberOfPages.value = Math.ceil(videosResponse.PaginationData!.NumberOfItems! / 50);
-	numberOfItems.value = videosResponse.PaginationData!.NumberOfItems!;
-	videos.value = videosResponse;
-
-	const categoriesAsyncData = await useFetch(siteUrl + "/api/categories");
-	handleError(categoriesAsyncData.error.value);
-	const categoriesResponse = categoriesAsyncData.data.value as CapitalizeObject<Categories200ResponseInner>[];
-	categories.value = new Map(categoriesResponse.map(cat => [cat.Name!, cat.Cardinality]));
-
-	// fetch("https://localhost:3000/api/videos", { method: "GET", body: undefined, credentials: "same-origin", headers: { Accept: "application/json, */*;q=0.8", search: t.encode("none"), unapproved: "true", pageNumber: 1, category: t.encode("undefined") } }).then(r => r.text()).then(r => console.log(r))
+		try {
+			const categoriesResponse = await api?.categories();
+			categories.value = new Map(categoriesResponse.map(cat => [cat.name!, cat.cardinality]));
+		} catch (error) { handleError(error); }
+	}
+	watch(data, fetchData, { deep: true });
+	await fetchData();
 </script>
 
 <template>
@@ -94,16 +70,16 @@
 		</div>
 		<Subheader icon="upload" :badge="numberOfItems">{{ t.latest }}</Subheader>
 		<Transition :name="transitionName" mode="out-in">
-			<div :key="data.selectedTab" class="videos-grid">
+			<div :key="resultTimestamp" class="videos-grid">
 				<ThumbVideo
-					v-for="video in videos?.Videos"
-					:key="video.VideoID"
-					:link="'/videos/kv' + video.VideoID ?? ''"
-					:uploader="video.AuthorName ?? ''"
-					:image="video.ThumbnailLoc"
+					v-for="video in videos?.videos"
+					:key="video.videoID"
+					:link="'/videos/kv' + video.videoID ?? ''"
+					:uploader="video.authorName ?? ''"
+					:image="video.thumbnailLoc"
 					:date="new Date()"
-					:watchedCount="video.Views"
-					:duration="new Duration(0, video.VideoDuration ?? 0)"
+					:watchedCount="video.views"
+					:duration="new Duration(0, video.videoDuration ?? 0)"
 				>{{ video.title }}</ThumbVideo>
 			</div>
 		</Transition>
