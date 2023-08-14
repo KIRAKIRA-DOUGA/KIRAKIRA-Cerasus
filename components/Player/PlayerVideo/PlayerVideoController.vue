@@ -65,7 +65,7 @@
 	const playbackRateText = computed(() => playbackRate.value.toFixed(2).replace(/\.?0+$/, "") + "×");
 
 	/**
-	 * @param value - number from PlayerRangeControl
+	 * @param value - number from CapsuleRange
 	 * @returns string formatted value to display in UI
 	 */
 	function getDisplayValue(value: number): string {
@@ -106,7 +106,7 @@
 				<SoftButton :icon="volume ? 'volume_up' : 'volume_mute'" @click="toggleVolume" />
 				<div :class="['volume-slider-container', { visible: forceVolumeSliderVisible }]" @pointerdown="volumePointerDown">
 					<div class="volume-slider">
-						<PlayerRangeControl v-model="volume" :min="0" :max="1" :getDisplayValue="getDisplayValue" />
+						<CapsuleRange v-model="volume" :min="0" :max="1" :getDisplayValue="getDisplayValue" />
 					</div>
 				</div>
 			</div>
