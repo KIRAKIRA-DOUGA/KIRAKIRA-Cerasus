@@ -7,18 +7,18 @@
 		/** 缓冲加载进度值。 */
 		buffered?: number;
 		/** 切换全屏函数。 */
-		toggleFullScreen?: Function;
+		toggleFullscreen?: Function;
 	}>(), {
 		duration: NaN,
 		buffered: 0,
-		toggleFullScreen: undefined,
+		toggleFullscreen: undefined,
 	});
 
 	const playing = defineModel<boolean>("playing");
 	const playbackRate = defineModel<number>("playbackRate", { default: 1 });
 	const volume = defineModel<number>("volume", { default: 1 });
 	const model = defineModel<number>("currentTime", { default: NaN });
-	const fullScreen = defineModel<boolean>("fullScreen");
+	const fullscreen = defineModel<boolean>("fullscreen");
 
 	const isVolumeSliderActive = ref(false);
 
@@ -89,7 +89,7 @@
 </script>
 
 <template>
-	<Comp role="toolbar">
+	<Comp role="toolbar" :class="{ fullscreen, 'force-color dark': fullscreen }">
 		<div class="left">
 			<SoftButton class="play" :icon="playing ? 'pause' : 'play'" @click="playing = !playing" />
 		</div>
@@ -111,7 +111,7 @@
 				</div>
 			</div>
 			<SoftButton :text="playbackRateText" @click="switchSpeed" />
-			<SoftButton :icon="fullScreen ? 'fullscreen_exit' : 'fullscreen'" @click="() => toggleFullScreen?.()" />
+			<SoftButton :icon="fullscreen ? 'fullscreen_exit' : 'fullscreen'" @click="() => toggleFullscreen?.()" />
 		</div>
 	</Comp>
 </template>
@@ -160,6 +160,10 @@
 		font-weight: 600;
 		font-size: 14px;
 		background-color: c(main-bg);
+		
+		&.fullscreen {
+			background-color: transparent;
+		}
 
 		:where(& > *) {
 			flex-shrink: 0;
