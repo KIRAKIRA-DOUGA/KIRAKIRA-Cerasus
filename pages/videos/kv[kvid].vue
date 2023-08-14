@@ -9,10 +9,13 @@
 	const recommendations = ref<Videos200ResponseVideosInner[]>();
 	const comments = ref<Comments200ResponseInner[]>([]);
 	const title = computed(() => videoDetails.value?.title ?? "");
-	const handleError = (e: unknown) => console.error(e);
 
-	watch(() => kvid, async () => {
+	/**
+	 * Fetch video data.
+	 */
+	async function fetchData() {
 		const api = useApi();
+		const handleError = (e: unknown) => console.error(e);
 
 		// Fetch video details
 		try {
@@ -34,7 +37,9 @@
 			for (const comment of commentsResp)
 				comments.value.push(comment);
 		} catch (error) { handleError(error); }
-	}, { immediate: true });
+	}
+	watch(() => kvid, fetchData);
+	await fetchData();
 
 	useHead({ title });
 </script>
@@ -84,7 +89,6 @@
 					:watchedCount="video.views"
 					:duration="new Duration(0, video.videoDuration ?? 0)"
 				>{{ video.title }}</ThumbVideo>
-
 			</div>
 		</div>
 	</div>
