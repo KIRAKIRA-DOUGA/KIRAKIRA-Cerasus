@@ -1,5 +1,6 @@
 import { HttpLibrary, RequestContext, ResponseContext } from "./http";
 import { from, Observable } from "../rxjsStub";
+import { environment } from "../../../utils/environment";
 import "whatwg-fetch";
 
 export class IsomorphicFetchHttpLibrary implements HttpLibrary {
@@ -7,8 +8,10 @@ export class IsomorphicFetchHttpLibrary implements HttpLibrary {
 	public send(request: RequestContext): Observable<ResponseContext> {
 		let method = request.getHttpMethod().toString();
 		let body = request.getBody();
+		let url = request.getUrl();
+		if (environment.server) url.replace(/\w*:\/\/.*?\//, "https://kirakira.dev/");
 
-		const resultPromise = fetch(request.getUrl(), {
+		const resultPromise = fetch(url, {
 			method: method as any,
 			body: body as any,
 			headers: request.getHeaders(),
