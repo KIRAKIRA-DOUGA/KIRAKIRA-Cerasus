@@ -50,7 +50,7 @@
 	</section>
 
 	<div class="submit"><!-- TODO: 建议将按钮固定在底部更为合适。 -->
-		<Button icon="reset" :style="{ '--appearance': 'secondary' }">{{ t.reset }}</Button>
+		<Button icon="reset" class="secondary">{{ t.reset }}</Button>
 		<Button icon="check" @click="useToast('修改失败', 'error');">{{ t.apply }}</Button>
 	</div>
 </template>
