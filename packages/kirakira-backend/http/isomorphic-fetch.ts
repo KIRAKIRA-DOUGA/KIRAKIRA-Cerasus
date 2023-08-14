@@ -1,6 +1,5 @@
-import { HttpLibrary, RequestContext, ResponseContext } from './http';
-import { from, Observable } from '../rxjsStub';
-import { useFetch } from "nuxt/dist/app";
+import { HttpLibrary, RequestContext, ResponseContext } from "./http";
+import { from, Observable } from "../rxjsStub";
 import "whatwg-fetch";
 
 export class IsomorphicFetchHttpLibrary implements HttpLibrary {
@@ -9,7 +8,7 @@ export class IsomorphicFetchHttpLibrary implements HttpLibrary {
 		let method = request.getHttpMethod().toString();
 		let body = request.getBody();
 
-		const resultPromise = useFetch(request.getUrl(), {
+		const resultPromise = fetch(request.getUrl(), {
 			method: method as any,
 			body: body as any,
 			headers: request.getHeaders(),
