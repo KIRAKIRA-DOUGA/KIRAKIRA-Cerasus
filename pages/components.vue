@@ -232,6 +232,10 @@
 			<p>高度</p><Slider v-model="progressBarHeight" :min="1" :max="100" />
 			<ToggleSwitch v-model="progressIndeterminate">不定状态</ToggleSwitch>
 			<p>进度</p><Slider v-model="progressPercent" />
+			<div class="buttons">
+				<Button :loading="showProgress">加载中的按钮</Button>
+				<Button :loading="showProgress" disabled>加载中的禁用按钮</Button>
+			</div>
 			<ProgressRing :hidden="!showProgress" :style="{ '--size': progressRingSize + 'px', '--thickness': progressRingThickness + 'px' }" :value="progressValue" />
 			<ProgressBar :hidden="!showProgress" :style="{ height: progressBarHeight + 'px' }" :value="progressValue" />
 			<!-- <Lottie loop autoplay :animationData="animationData" /> -->

@@ -53,13 +53,16 @@
 
 	:comp {
 		@include oval;
-		position: relative;
 		height: 4px;
 		overflow: hidden;
 
 		&.v-enter-from,
 		&.v-leave-to {
 			scale: 1 0;
+		}
+		
+		@layer components {
+			position: relative;
 		}
 	}
 

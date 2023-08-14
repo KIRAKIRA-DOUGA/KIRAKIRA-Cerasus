@@ -10,6 +10,8 @@
 		 * **不推荐使用该功能**，比如鼠标中键新窗口打开，触屏长按链接操作都将不再起作用。应该使用链接组件。
 		 */
 		href?: string;
+		/** 按钮是否在加载中？ */
+		loading?: boolean;
 	}>();
 
 	const emits = defineEmits<{
@@ -33,6 +35,9 @@
 		<div v-ripple class="button-content">
 			<Icon v-if="icon" :name="icon" />
 			<span class="caption"><span><slot></slot></span></span>
+			<Transition>
+				<ProgressBar v-if="loading" />
+			</Transition>
 			<LocaleLink v-if="href" :draggable="false" :to="href" class="link lite" />
 		</div>
 	</button>
@@ -223,5 +228,26 @@
 
 	button.icon-behind {
 		--icon-behind: true;
+	}
+	
+	.progress-bar:deep {
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		border-radius: 0 !important;
+
+		.wrapper {
+			translate: -50%;
+			background-color: transparent;
+		}
+		
+		button:not([disabled]) & .line {
+			background-color: white;
+		}
+		
+		&.v-enter-from,
+		&.v-leave-to {
+			height: 0;
+		}
 	}
 </style>

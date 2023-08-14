@@ -78,6 +78,7 @@
 <style scoped lang="scss">
 	:comp {
 		@include flex-center;
+		z-index: 60;
 		flex-direction: column;
 		width: 100%;
 		margin-top: 12px;

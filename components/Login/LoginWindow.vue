@@ -24,6 +24,7 @@
 			if (value) closeLater();
 		},
 	});
+	const isTryingLogin = ref(false);
 
 	const open = computed({
 		get: () => !!(model.value ?? props.open),
@@ -40,8 +41,17 @@
 	 * 登录账户。
 	 */
 	async function loginUser() {
+		isTryingLogin.value = true;
 		const oapiClient = useApi();
-		await oapiClient.login(email.value, password.value);
+		try {
+			await oapiClient.login(email.value, password.value);
+		} catch (error) {
+			useToast("登录失败", "error");
+			console.error(error);
+			return;
+		} finally {
+			isTryingLogin.value = false;
+		}
 		isLogining.value = true;
 	}
 
@@ -118,7 +128,7 @@
 								icon="lock"
 							/>
 							<div class="button login-button-placeholder">
-								<Button class="button login-button button-block" @click="loginUser()">Link Start!</Button>
+								<Button class="button login-button button-block" :loading="isTryingLogin" :disabled="isTryingLogin" @click="loginUser">Link Start!</Button>
 							</div>
 						</div>
 						<div class="action margin-left-inset margin-right-inset">
@@ -179,7 +189,7 @@
 						</div>
 						<div class="action margin-left-inset">
 							<Button icon="arrow_left" class="button" @click="currentPage = 'register'">{{ t.step_previous }}</Button>
-							<Button icon="check" class="button" @click="registerUser()">{{ t.step_ok }}</Button>
+							<Button icon="check" class="button" @click="registerUser">{{ t.step_ok }}</Button>
 						</div>
 					</div>
 
@@ -221,7 +231,7 @@
 						</div>
 						<div class="action margin-left-inset">
 							<div></div>
-							<Button icon="check" class="button" @click="resetPassword()">{{ t.step_ok }}</Button>
+							<Button icon="check" class="button" @click="resetPassword">{{ t.step_ok }}</Button>
 						</div>
 					</div>
 
