@@ -1,6 +1,7 @@
 import { createResolver, defineNuxtModule } from "@nuxt/kit";
 import { readdir, readFile, writeFile } from "fs/promises";
 import { parse } from "path";
+import { enumerate } from "../../utils/array";
 
 export default defineNuxtModule({
 	setup(_options, nuxt) {
