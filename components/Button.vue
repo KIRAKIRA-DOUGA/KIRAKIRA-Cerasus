@@ -59,6 +59,11 @@
 		&[disabled] {
 			pointer-events: none;
 		}
+
+		* {
+			font-family: inherit;
+			font-feature-settings: inherit;
+		}
 	}
 
 	.button-content {

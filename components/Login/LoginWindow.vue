@@ -6,21 +6,16 @@
 
 	const model = defineModel<boolean>();
 	const avatar = "/static/images/avatars/aira.webp";
-	type PageType = "login" | "forgot" | "forgot2" | "forgot3" | "register" | "register2";
+	type PageType = "login" | "register" | "register2" | "forgot" | "reset";
 	const currentPage = ref<PageType>("login");
 	const isWelcome = computed(() => ["register", "register2"].includes(currentPage.value));
 	const coverMoveLeft = computed(() => currentPage.value !== "login");
 	const email = ref("");
 	const password = ref("");
-	const oldPassword = ref("");
-
 	const username = ref("");
-
 	const confirmPassword = ref("");
-	const newPassword = ref("");
-	const confirmNewPassword = ref("");
-
 	const verificationCode = ref("");
+	const passwordHint = ref("");
 	const _isLogining = ref(false);
 	const isLogining = computed({
 		get: () => _isLogining.value,
@@ -67,7 +62,8 @@
 	 */
 	async function resetPassword() {
 		const oapiClient = useApi();
-		await oapiClient.resetPassword(oldPassword.value, newPassword.value);
+		const oldPassword = ""; // Should we get this?
+		await oapiClient.resetPassword(oldPassword, password.value);
 		open.value = false;
 	}
 
@@ -140,9 +136,76 @@
 							<TextBox
 								v-model="email"
 								type="text"
-								:placeholder="t.email"
+								:placeholder="t.email_address"
 								icon="email"
 							/>
+							<TextBox
+								v-model="password"
+								type="password"
+								:placeholder="t.password"
+								icon="lock"
+							/>
+							<TextBox
+								v-model="passwordHint"
+								type="text"
+								:placeholder="t.password_hint"
+								icon="visibility"
+							/>
+						</div>
+						<div class="action margin-left-inset">
+							<Button @click="currentPage = 'login'">{{ t.loginwindow_register_back_to_login }}</Button>
+							<Button icon="arrow_right" class="button icon-behind" @click="currentPage = 'register2'">{{ t.step_next }}</Button>
+						</div>
+					</div>
+
+					<!-- 注册 其二 Register #2 -->
+					<div class="register2">
+						<HeadingGroup :name="t.register" englishName="Register" class="collapse" />
+						<div class="form">
+							<div><PreserveBr>{{ t.loginwindow_register_email_sent_info }}</PreserveBr></div>
+							<TextBox
+								v-model="verificationCode"
+								type="text"
+								:placeholder="t.verification_code"
+								icon="verified"
+							/>
+							<!-- TODO: [Aira] There should be a resend button on the right of the verification code textbox -->
+							<TextBox
+								v-model="confirmPassword"
+								type="password"
+								:placeholder="t.password_retype"
+								icon="lock"
+							/>
+						</div>
+						<div class="action margin-left-inset">
+							<Button icon="arrow_left" class="button" @click="currentPage = 'register'">{{ t.step_previous }}</Button>
+							<Button icon="check" class="button" @click="registerUser()">{{ t.step_ok }}</Button>
+						</div>
+					</div>
+
+					<!-- 忘记密码 Forgot Password -->
+					<div class="forgot">
+						<HeadingGroup :name="t.forgot_password" englishName="forgot" />
+						<div class="form">
+							<div><PreserveBr>{{ t.loginwindow_forgot_info }}</PreserveBr></div>
+							<TextBox
+								v-model="email"
+								type="email"
+								:placeholder="t.email_address"
+								icon="email"
+							/>
+							<Button icon="send" class="button button-block">{{ t.send }}</Button>
+						</div>
+						<div class="action margin-left-inset">
+							<Button @click="currentPage = 'login'">{{ t.loginwindow_forgot_found_password }}</Button>
+						</div>
+					</div>
+
+					<!-- 重设密码 Reset Password -->
+					<div class="reset">
+						<HeadingGroup :name="t.reset_password" englishName="Reset" />
+						<div class="form">
+							<div><PreserveBr>{{ t.loginwindow_reset_successful_info }}</PreserveBr></div>
 							<TextBox
 								v-model="password"
 								type="password"
@@ -157,87 +220,7 @@
 							/>
 						</div>
 						<div class="action margin-left-inset">
-							<Button @click="currentPage = 'login'">{{ t.loginwindow_register_back_to_login }}</Button>
-							<Button icon="arrow_right" class="button icon-behind" @click="currentPage = 'register2'">{{ t.step_next }}</Button>
-						</div>
-					</div>
-
-					<!-- 注册 其二 Register #2 -->
-					<div class="register2">
-						<HeadingGroup :name="t.register" englishName="Register" class="collapse" />
-						<div class="form">
-							<div>{{ t.loginwindow_email_sent }}<br />{{ t.loginwindow_if_not_received }}</div>
-							<TextBox
-								v-model="verificationCode"
-								type="text"
-								:placeholder="t.verification_code"
-								icon="verified"
-							/>
-							<!-- TODO: [Aira] There should be a resend button on the right of the verification code textbox -->
-						</div>
-						<div class="action margin-left-inset">
-							<Button icon="arrow_left" class="button" @click="currentPage = 'register'">{{ t.step_previous }}</Button>
-							<Button icon="check" class="button" @click="registerUser()">{{ t.step_ok }}</Button>
-						</div>
-					</div>
-
-					<!-- 忘记密码 其一 Forgot Password #1 -->
-					<div class="forgot">
-						<HeadingGroup :name="t.reset" englishName="Reset" class="collapse" />
-						<div class="form">
-							<div>{{ t.loginwindow_forgot_email_enter_1 }}<br />{{ t.loginwindow_forgot_email_enter_2 }}</div>
-							<TextBox
-								v-model="email"
-								type="email"
-								:placeholder="t.email_address"
-								icon="email"
-							/>
-							<Button icon="send" class="button button-block" @click="currentPage = 'forgot2'">{{ t.send }}</Button>
-						</div>
-						<div class="action margin-left-inset">
-							<Button @click="currentPage = 'login'">{{ t.loginwindow_forgot_found_password }}</Button>
-						</div>
-					</div>
-
-					<!-- 忘记密码 其二 Forgot Password #2 -->
-					<div class="forgot2">
-						<HeadingGroup :name="t.reset" englishName="Reset" class="collapse" />
-						<div class="form">
-							<div>{{ t.loginwindow_email_sent }}<br />{{ t.loginwindow_if_not_received }}</div>
-							<TextBox
-								v-model="verificationCode"
-								type="text"
-								:placeholder="t.verification_code"
-								icon="verified"
-							/>
-							<!-- TODO: [Aira] There should be a resend button on the right of the verification code textbox -->
-						</div>
-						<div class="action margin-left-inset">
-							<Button icon="arrow_left" class="button" @click="currentPage = 'forgot'">{{ t.step_previous }}</Button>
-							<Button icon="arrow_right" class="button" @click="currentPage = 'forgot3'">{{ t.step_next }}</Button>
-						</div>
-					</div>
-
-					<!-- 忘记密码 - 重设成功 Forgot Password - Reset Successful -->
-					<div class="forgot3">
-						<HeadingGroup :name="t.reset" englishName="Reset" class="collapse" />
-						<div class="form">
-							<div>{{ t.verification_successful }} (/≧▽≦)/<br />{{ t.loginwindow_forgot_please_remember }}</div>
-							<TextBox
-								v-model="newPassword"
-								type="password"
-								:placeholder="t.password"
-								icon="lock"
-							/>
-							<TextBox
-								v-model="confirmNewPassword"
-								type="password"
-								:placeholder="t.password_retype"
-								icon="lock"
-							/>
-						</div>
-						<div class="action margin-left-inset">
-							<Button icon="arrow_left" class="button" @click="currentPage = 'forgot2'">{{ t.step_previous }}</Button>
+							<div></div>
 							<Button icon="check" class="button" @click="resetPassword()">{{ t.step_ok }}</Button>
 						</div>
 					</div>
@@ -245,11 +228,6 @@
 					<div class="register-title">
 						<HeadingGroup :name="t.register" englishName="Register" />
 					</div>
-
-					<div class="forgot-title">
-						<HeadingGroup :name="t.reset" englishName="Reset" />
-					</div>
-
 				</div>
 
 				<div class="cover-wrapper">
@@ -270,7 +248,7 @@
 						<img :src="avatar" alt="avatar" />
 					</div>
 					<div class="welcome">{{ t.loginwindow_login_welcome }}</div>
-					<div class="name">name</div> <!-- TODO: user name here -->
+					<div class="name">艾了个拉</div> <!-- TODO: user name here -->
 				</div>
 			</Comp>
 		</Transition>
@@ -284,7 +262,7 @@
 	$enter-duration: 700ms;
 	$leave-duration: 150ms;
 	$transition-ease: $ease-out-smooth;
-	$narrow-screen: "(max-width: #{$width - 1})";
+	$narrow-screen: "(width < #{$width})";
 	$avatar-size: 128px;
 	$avatar-movement: 110px;
 
@@ -376,18 +354,12 @@
 			padding: 35px 45px;
 
 			@if true { // HACK: 为了故意不应用排序规则而将下面这部分页面声明单独提炼在下方。
-				// @include page("!.login", ".login", left);
 				@include page("!.register", ".register", right);
 				@include page("!.register2", ".register2", right);
 				@include page("!.forgot", ".forgot", right);
-				@include page("!.forgot2", ".forgot2", right);
-				@include page("!.forgot3", ".forgot3", right);
+				@include page("!.reset", ".reset", right);
 				@include page(".register2", ".register", left);
-				@include page(".forgot3", ".forgot2", left);
-				@include page(".forgot2", ".forgot", left);
 				@include page("!.register, .register2", ".register-title", right);
-				@include page("!.forgot, .forgot2", ".forgot-title", right);
-				// @include page("!.forgot2, .forgot3", ".forgot-title", right); // FIXME: [Aira] 页面数量大于2时出现了问题。There is a bug when the page amount is larger than 2.
 			}
 		}
 
@@ -441,7 +413,7 @@
 		}
 	}
 
-	.heading-group {
+	header {
 		--i: 3;
 		display: flex;
 		flex-direction: row;
@@ -467,7 +439,6 @@
 		.button {
 			height: 44px;
 			font-weight: 600;
-			font-family: $english-logo-fonts;
 			text-transform: uppercase;
 		}
 
@@ -478,6 +449,8 @@
 				@include square(100%);
 				--i: 0;
 				position: absolute;
+				font-family: $english-logo-fonts;
+				font-feature-settings: normal;
 			}
 		}
 	}
