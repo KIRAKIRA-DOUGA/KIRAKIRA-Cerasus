@@ -7,7 +7,7 @@
 </script>
 
 <template>
-	<header>
+	<header class="heading-group">
 		<slot name="icon"></slot>
 		<Heading class="main-title">{{ name }}</Heading>
 		<Heading v-if="count !== undefined" form="small-solid" class="count">{{ count }}</Heading>

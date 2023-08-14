@@ -77,6 +77,7 @@
 		text-transform: uppercase;
 		transition: all $ease-out-smooth 800ms;
 		scale: 2.5;
+		font-feature-settings: normal;
 
 		.titles:not(.welcome) > &.welcome {
 			margin-top: $move-distance;

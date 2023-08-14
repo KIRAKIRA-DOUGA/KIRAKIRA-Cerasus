@@ -187,13 +187,10 @@ const Japanese: LocaleIdentifiers = {
 	loginwindow_login_to_forgot: "(test)I forgot my password",
 	loginwindow_login_to_register: "(test)I don't have an account",
 	loginwindow_register_back_to_login: "すでにアカウントをお持ちですか？",
-	loginwindow_email_sent: "確認コードを送信しました。受け取ったコードを入力してください。",
-	loginwindow_if_not_received: "届いてない場合、コードを再送信することができます。",
 	loginwindow_forgot_found_password: "パスワードを思い出した",
-	loginwindow_forgot_email_enter_1: "アカウントのメールアドレスを入力してください。",
-	loginwindow_forgot_email_enter_2: "このアドレス宛に確認コードを送信し、本人確認を行います。",
-	loginwindow_forgot_please_remember: "新しいパスワードを設定してください。そして忘れないようにしてください。",
-	verification_successful: "本人確認ができました！",
+	loginwindow_register_email_sent_info: "確認コードを送信しました。受け取ったコードを入力してください。\n届いてない場合、コードを再送信することができます。",
+	loginwindow_forgot_info: "(test)アカウントのメールアドレスを入力してください。\n我们将会给您的邮箱发送一封邮件，请点击邮件中的链接重置密码。",
+	loginwindow_reset_successful_info: "本人確認ができました！\n新しいパスワードを設定してください。そして忘れないようにしてください。",
 	settings_unselected: "設定項目を選択してください。",
 	combobox_unselected: "選択してください。",
 	settings_profile_banner_change: "バナー画像の変更",
@@ -220,6 +217,9 @@ const Japanese: LocaleIdentifiers = {
 	watch_later: "(test)稍后观看",
 	download_video: "(test)下载视频",
 	report_creation: "(test)稿件投诉",
+	password_hint: "(test)密码提示",
+	forgot_password: "(test)忘记密码",
+	reset_password: "(test)重设密码",
 };
 
 export default Japanese;

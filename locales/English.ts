@@ -184,13 +184,10 @@ const English: LocaleIdentifiers = {
 	loginwindow_login_to_forgot: "I forgot my password",
 	loginwindow_login_to_register: "I don't have an account",
 	loginwindow_register_back_to_login: "I have an account",
-	loginwindow_email_sent: "We have sent a verification code to your email, please enter the code here.",
-	loginwindow_if_not_received: "If you did not receive it, you can resend.",
 	loginwindow_forgot_found_password: "I found my password",
-	loginwindow_forgot_email_enter_1: "Please enter your email.",
-	loginwindow_forgot_email_enter_2: "We will send a verification code to your email.",
-	loginwindow_forgot_please_remember: "Please enter and remember your new password.",
-	verification_successful: "Verification successful!",
+	loginwindow_register_email_sent_info: "We have sent a verification code to your email, please enter the code here.\nIf you did not receive it, you can resend.",
+	loginwindow_forgot_info: "Please enter your email.\nWe will send a verification code to your email.",
+	loginwindow_reset_successful_info: "Verification successful!\nPlease enter and remember your new password.",
 	settings_unselected: "Please select a setting",
 	combobox_unselected: "Please select",
 	settings_profile_banner_change: "Edit banner",
@@ -217,6 +214,9 @@ const English: LocaleIdentifiers = {
 	watch_later: "Watch later",
 	download_video: "Download video",
 	report_creation: "Report creation",
+	password_hint: "Password hint",
+	forgot_password: "Forgot Password",
+	reset_password: "Reset Password",
 };
 
 export default English;
