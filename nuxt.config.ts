@@ -111,13 +111,13 @@ export default defineNuxtConfig({
 		},
 	},
 	nitro: {
-		devProxy: {
+		/* devProxy: {
 			"/api": {
 				target: "https://kirakira.dev/api",
 				prependPath: true,
 				changeOrigin: true,
 			},
-		},
+		}, */
 		esbuild: {
 			options: {
 				target: "esnext",
