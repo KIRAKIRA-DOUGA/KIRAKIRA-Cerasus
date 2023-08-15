@@ -8,7 +8,6 @@ export class IsomorphicFetchHttpLibrary implements HttpLibrary {
 		const method = request.getHttpMethod().toString();
 		const body = request.getBody();
 		const url = request.getUrl();
-		// if ((process as any).server) url = url.replace(/\w*:\/\/.*?\//, "https://kirakira.dev/");
 
 		const resultPromise = fetch(url, {
 			method,
