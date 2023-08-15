@@ -19,5 +19,5 @@ export default defineEventHandler(async event => {
 		body,
 		headers,
 		credentials: "same-origin",
-	}).then(response => response.json());
+	}).then(response => response.json()); // FIXME: You can only GET, cannot POST.
 });
