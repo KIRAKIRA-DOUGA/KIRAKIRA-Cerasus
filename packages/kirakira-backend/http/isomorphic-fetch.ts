@@ -5,25 +5,25 @@ import "whatwg-fetch";
 export class IsomorphicFetchHttpLibrary implements HttpLibrary {
 
 	public send(request: RequestContext): Observable<ResponseContext> {
-		let method = request.getHttpMethod().toString();
-		let body = request.getBody();
-		let url = request.getUrl();
+		const method = request.getHttpMethod().toString();
+		const body = request.getBody();
+		const url = request.getUrl();
 		// if ((process as any).server) url = url.replace(/\w*:\/\/.*?\//, "https://kirakira.dev/");
 
 		const resultPromise = fetch(url, {
-			method: method as any,
-			body: body as any,
+			method,
+			body,
 			headers: request.getHeaders(),
-			credentials: "same-origin"
+			credentials: "same-origin",
 		}).then((resp: any) => {
-			const headers: { [name: string]: string } = {};
+			const headers: Record<string, string> = {};
 			resp.headers.forEach((value: string, name: string) => {
 				headers[name] = value;
 			});
 
 			const body = {
 				text: () => resp.text(),
-				binary: () => resp.blob()
+				binary: () => resp.blob(),
 			};
 			return new ResponseContext(resp.status, headers, body);
 		});
