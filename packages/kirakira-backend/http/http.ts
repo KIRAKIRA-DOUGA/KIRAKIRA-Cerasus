@@ -39,8 +39,7 @@ export type RequestBody = undefined | string | FormData | URLSearchParams;
 export class RequestContext {
 	private headers: { [key: string]: string } = {};
 	private body: RequestBody = undefined;
-	private url!: string;
-	private searchParams!: URLSearchParams;
+	private url: URL;
 
 	/**
 	 * Creates the request context using a http method and request resource url
@@ -49,7 +48,7 @@ export class RequestContext {
 	 * @param httpMethod http method
 	 */
 	public constructor(url: string, private httpMethod: HttpMethod) {
-		this.setUrl(url);
+		this.url = new URL(url);
 	}
 
 	/*
@@ -57,9 +56,7 @@ export class RequestContext {
 	 *
 	 */
 	public getUrl(): string {
-		let url = this.url; // .replace(/\/$/, "")
-		if (this.searchParams.size > 0) url += "?" + this.searchParams.toString();
-		return url;
+		return this.url.toString().replace(/\/$/, "");
 	}
 
 	/**
@@ -67,10 +64,7 @@ export class RequestContext {
 	 *
 	 */
 	public setUrl(url: string) {
-		let [origin, search] = url.split("?");
-		search ??= "";
-		this.url = origin;
-		this.searchParams = new URLSearchParams(search);
+		this.url = new URL(url);
 	}
 
 	/**
@@ -99,7 +93,7 @@ export class RequestContext {
 	}
 
 	public setQueryParam(name: string, value: string) {
-		this.searchParams.set(name, value);
+		this.url.searchParams.set(name, value);
 	}
 
 	/**

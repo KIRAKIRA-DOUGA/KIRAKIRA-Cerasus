@@ -6,8 +6,12 @@ import * as api from "kirakira-backend";
  * @returns DefaultAPI
  */
 export function useApi() {
+	const runtimeConfig = useRuntimeConfig();
+	const siteUrl = runtimeConfig.public.siteUrl;
+	const { host } = new URL(siteUrl);
+
 	const configParams = {
-		baseServer: api.servers[0],
+		baseServer: api.getServers(host)[0],
 	};
 	const config = api.createConfiguration(configParams);
 
