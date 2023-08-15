@@ -11,13 +11,13 @@
 		max?: number;
 		/** 滑块默认值。当单击鼠标中键或触摸屏长按组件时还原默认值。 */
 		defaultValue?: number;
-		/** 函数将数值转换为显示值。 */
-		getDisplayValue?: (value: number) => string;
+		/** 显示值，或将数值转换为显示值的函数。 */
+		displayValue?: ((value: number) => Readable) | Readable;
 	}>(), {
 		min: 0,
 		max: 100,
 		defaultValue: undefined,
-		getDisplayValue: undefined,
+		displayValue: undefined,
 	});
 
 	const emits = defineEmits<{
@@ -39,6 +39,10 @@
 	const restrict = (n: number | undefined, nanValue: number) => Number.isFinite(n) ? clamp(map(n!, props.min, props.max, 0, 1), 0, 1) : nanValue;
 	const value = computed(() => restrict(model.value, 0));
 	const smoothValue = useSmoothValue(value, 0.5); // 修改这个参数可以调整滑动条的平滑移动值。
+	const adjustedValue = computed(() => { // 由于 clip-path 造成视觉上的白边，因此对数值进行小幅调整。
+		const TINY = 0.005;
+		return (1 - smoothValue.value) * (1 + TINY) - TINY;
+	});
 
 	/**
 	 * 重置默认值。
@@ -84,15 +88,15 @@
 		resetDefault(e);
 	}
 
-	const displayValue = computed(() => props.getDisplayValue?.(model.value) ?? model.value);
+	const displayValue = computed(() =>
+		(typeof props.displayValue === "function" ? props.displayValue(model.value) : props.displayValue)
+		?? model.value);
 </script>
 
 <template>
 	<Comp
 		tabindex="0"
-		:style="{
-			'--value': smoothValue,
-		}"
+		:style="{ '--value': smoothValue }"
 		role="slider"
 		:aria-valuenow="value"
 		:aria-valuemin="min"
@@ -111,7 +115,6 @@
 
 <style scoped lang="scss">
 	$track-thickness: 32px;
-	$value: calc(100% - var(--value) * 100%);
 
 	:comp {
 		--value: 0;
@@ -120,13 +123,14 @@
 	}
 
 	.track {
+		@include round-large;
+		@include dropdown-flyouts;
 		position: relative;
 		width: 100%;
 		height: $track-thickness;
 		margin: 0;
 		overflow: hidden;
-		background-color: c(main-bg);
-		border-radius: 6px;
+		background-color: c(acrylic-bg, 75%);
 		cursor: pointer;
 	}
 
@@ -158,6 +162,6 @@
 	.passed,
 	.value-on {
 		color: white;
-		clip-path: inset(0 $value 0 0);
+		clip-path: inset(-1rem calc(v-bind(adjustedValue) * 100%) -1rem -1rem);
 	}
 </style>

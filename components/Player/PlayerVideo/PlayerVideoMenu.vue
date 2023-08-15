@@ -11,6 +11,9 @@
 	const model = defineModel<MenuModel>();
 	const shown = ref(false);
 	const locationStyle = ref<CSSProperties>({});
+	/** 指定在鼠标移除区域后多久自动隐藏。 */
+	const WAITING = 1000;
+	const hideTimeoutId = ref<NodeJS.Timeout>();
 
 	/**
 	 * 隐藏菜单。
@@ -22,35 +25,46 @@
 	}
 
 	/**
+	 * 鼠标移出区域，超时后自动关闭。
+	 */
+	function moveout() {
+		hideTimeoutId.value = setTimeout(hide, WAITING);
+	}
+
+	/**
+	 * 鼠标移入区域，取消自动关闭。
+	 */
+	function reshow() {
+		clearTimeout(hideTimeoutId.value);
+		hideTimeoutId.value = undefined;
+	}
+
+	/**
 	 * 显示菜单。
 	 * @param e - 如有鼠标事件则为上下文菜单，否则为弹出式菜单。
 	 */
 	function show(e: NonNull<MenuModel>) {
 		const relativeEl = getPath(e).find(element => getComputedStyle(element).position === "relative");
 		if (!relativeEl) return;
-		const scrollEl = getPath(e).find(element => element.scrollTop);
-		const { scrollLeft, scrollTop } = scrollEl ?? { scrollLeft: 0, scrollTop: 0 };
-		const { left: relativeLeft, top: relativeTop, bottom: relativeBottom } = relativeEl.getBoundingClientRect();
+		reshow();
+		const { right: relativeRight, bottom: relativeBottom } = relativeEl.getBoundingClientRect();
 		const el = e.currentTarget as HTMLElement;
-		const { left: clientX, top: clientY } = el.getBoundingClientRect();
-		const top = relativeBottom - (clientY - relativeTop + scrollTop), left = clientX - relativeLeft + scrollLeft;
-		const style = getLocationStyle([left, top]);
-		style.bottom = style.top;
-		style.top = undefined;
-		locationStyle.value = style;
+		const { right: targetRight, top: targetTop } = el.getBoundingClientRect();
+		const bottom = relativeBottom - targetTop, right = relativeRight - targetRight;
+		locationStyle.value = { right: right + "px", bottom: bottom + "px" };
 		shown.value = true;
 		emits("show");
 	}
 
 	watch(model, e => {
-		if (!e) hide();
+		if (!e) moveout();
 		else show(e);
 	}, { immediate: true });
 </script>
 
 <template>
 	<Transition>
-		<Comp v-if="shown" role="menu" :style="locationStyle">
+		<Comp v-if="shown" role="menu" :style="locationStyle" @mouseenter="reshow" @mouseleave="moveout">
 			<menu @contextmenu.prevent>
 				<slot></slot>
 			</menu>
@@ -60,28 +74,39 @@
 </template>
 
 <style scoped lang="scss">
-	$width: 400px;
+	$width: 250px;
 
 	:comp {
 		position: absolute;
+		width: $width;
+		
+		&.v-enter-from,
+		&.v-leave-to {
+			translate: 0 20px;
+			opacity: 0;
+		}
 	}
 
 	menu {
 		@include round-large;
 		@include dropdown-flyouts;
 		z-index: 70;
-		width: $width;
 		margin: 0;
-		padding: $menu-padding 0;
+		padding: $menu-padding;
 		overflow: hidden;
-		background-color: c(main-bg, 50%);
+		background-color: c(acrylic-bg, 75%);
 		
 		&:empty {
 			display: none;
 		}
 		
-		+ * {
-			margin-top: 1rem;
+		+ :deep(*) {
+			margin-top: 10px;
+		}
+		
+		:deep(.toggle-switch) {
+			min-height: 36px;
+			padding: 0 16px 0 8px;
 		}
 	}
 </style>

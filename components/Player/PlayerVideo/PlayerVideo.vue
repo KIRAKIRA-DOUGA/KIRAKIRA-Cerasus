@@ -11,7 +11,9 @@
 	const playing = ref(false);
 	const playbackRate = ref(1);
 	const preservesPitch = ref(false);
+	const steplessRate = ref(true);
 	const volume = ref(1);
+	const muted = ref(false);
 	const currentTime = ref(NaN);
 	const duration = ref(NaN);
 	const buffered = ref(0);
@@ -21,6 +23,7 @@
 	const videoContainer = ref<HTMLDivElement>();
 	const video = ref<HTMLVideoElement>();
 	const { isFullscreen: fullscreen, toggle } = useFullscreen(videoContainer);
+	const resample = computed({ get: () => !preservesPitch.value, set: value => preservesPitch.value = !value });
 	const menu = ref<MenuModel>();
 
 	type MediaInfo = Record<string, Record<string, unknown>>;
@@ -84,7 +87,12 @@
 
 	watch(volume, volume => {
 		if (!video.value) return;
-		video.value.volume = volume;
+		video.value.volume = volume ** 2; // 使用对数音量。
+	});
+
+	watch(muted, muted => {
+		if (!video.value) return;
+		video.value.muted = muted;
 	});
 
 	const player = ref<MediaPlayerClass>();
@@ -188,6 +196,9 @@
 				v-model:fullscreen="fullscreen"
 				v-model:playbackRate="playbackRate"
 				v-model:volume="volume"
+				v-model:muted="muted"
+				v-model:resample="resample"
+				v-model:steplessRate="steplessRate"
 				:duration="duration"
 				:toggleFullscreen="toggle"
 				:buffered="buffered"

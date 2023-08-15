@@ -17,12 +17,27 @@
 	const playing = defineModel<boolean>("playing");
 	const playbackRate = defineModel<number>("playbackRate", { default: 1 });
 	const volume = defineModel<number>("volume", { default: 1 });
+	const muted = defineModel<boolean>("muted", { default: false });
 	const model = defineModel<number>("currentTime", { default: NaN });
 	const fullscreen = defineModel<boolean>("fullscreen");
+	const resample = defineModel<boolean>("resample", { default: true });
+	const steplessRate = defineModel<boolean>("steplessRate", { default: true });
+	const volumeBackup = ref(volume);
+	const volumeSet = computed({
+		get: () => muted.value ? 0 : volume.value,
+		set: value => {
+			muted.value = false;
+			volume.value = value;
+			volumeBackup.value = value;
+		},
+	});
+	const playbackRateLinear = computed({
+		get: () => Math.log2(playbackRate.value),
+		set: value => playbackRate.value = 2 ** value,
+	});
 
 	const volumeMenu = ref<MenuModel>();
-
-	const isVolumeSliderActive = ref(false);
+	const rateMenu = ref<MenuModel>();
 
 	const currentPercent = computed({
 		get() {
@@ -39,9 +54,7 @@
 	const duration = computed(() => new Duration(props.duration).toString());
 	const buffered = computed(() => props.buffered / props.duration);
 
-	/**
-	 * 常用速度列表。
-	 */
+	/** 常用速度列表。 */
 	const playbackRates = [0.5, 1, 2];
 
 	/**
@@ -57,27 +70,13 @@
 		playbackRate.value = newRate;
 	}
 
-	/**
-	 * Mute or unmute volume depending on current state.
-	 */
-	function toggleVolume() {
-		volume.value = volume.value ? 0 : 1;
-	}
-
 	const playbackRateText = computed(() => playbackRate.value.toFixed(2).replace(/\.?0+$/, "") + "×");
-
-	/**
-	 * @param value - number from CapsuleSlider
-	 * @returns string formatted value to display in UI
-	 */
-	function getDisplayValue(value: number): string {
-		return `${Math.floor(value * 100)}%`;
-	}
+	const volumeText = computed(() => (volumeSet.value * 100 | 0) + "%");
 
 	/**
 	 * Forces volume slider visibility during interaction
 	 */
-	function volumePointerDown() {
+	/* function volumePointerDown() {
 		isVolumeSliderActive.value = true;
 
 		const pointerUp = () => {
@@ -85,15 +84,22 @@
 			document.removeEventListener("pointerup", pointerUp);
 		};
 		document.addEventListener("pointerup", pointerUp);
-	}
-
-	const forceVolumeSliderVisible = computed(() => isVolumeSliderActive.value);
+	} */
 </script>
 
 <template>
 	<div class="menus">
 		<PlayerVideoMenu v-model="volumeMenu">
-			123
+			<template #slider>
+				<CapsuleSlider v-model="volumeSet" :min="0" :max="1" :displayValue="volumeText" :defaultValue="1" />
+			</template>
+		</PlayerVideoMenu>
+		<PlayerVideoMenu v-model="rateMenu">
+			<ToggleSwitch v-model="resample" icon="placeholder">重采样音频</ToggleSwitch>
+			<ToggleSwitch v-model="steplessRate" icon="placeholder">无级变速</ToggleSwitch>
+			<template #slider>
+				<CapsuleSlider v-model="playbackRateLinear" :min="-2" :max="2" :displayValue="playbackRateText" :defaultValue="0" />
+			</template>
 		</PlayerVideoMenu>
 	</div>
 
@@ -110,16 +116,22 @@
 				<span class="divide">/</span>
 				<span class="duration">{{ duration }}</span>
 			</div>
-			<SoftButton :text="playbackRateText" @click="switchSpeed" />
-			<SoftButton :icon="volume ? 'volume_up' : 'volume_mute'" @click="toggleVolume" @mouseenter="e => volumeMenu = e" @mouseleave="volumeMenu = undefined" />
-			<SoftButton :icon="fullscreen ? 'fullscreen_exit' : 'fullscreen'" @click="() => toggleFullscreen?.()" />
-		</div>
-		<div class="volume-container">
-			<div class="volume-slider-container visible" @pointerdown="volumePointerDown">
-				<div class="volume-slider">
-					<CapsuleSlider v-model="volume" :min="0" :max="1" :getDisplayValue="getDisplayValue" />
-				</div>
-			</div>
+			<SoftButton
+				:text="playbackRateText"
+				@click="switchSpeed"
+				@mouseenter="e => rateMenu = e"
+				@mouseleave="rateMenu = undefined"
+			/>
+			<SoftButton
+				:icon="volumeSet ? 'volume_up' : 'volume_mute'"
+				@click="muted = !muted"
+				@mouseenter="e => volumeMenu = e"
+				@mouseleave="volumeMenu = undefined"
+			/>
+			<SoftButton
+				:icon="fullscreen ? 'fullscreen_exit' : 'fullscreen'"
+				@click="() => toggleFullscreen?.()"
+			/>
 		</div>
 	</Comp>
 </template>
@@ -127,39 +139,9 @@
 <style scoped lang="scss">
 	$thickness: 36px;
 
-	.volume-container {
-		position: relative;
-	}
-
-	.volume-slider-container {
-		position: absolute;
-		bottom: 100%;
-		left: 50%;
-		display: none;
-		flex-direction: column;
-		align-items: center;
-		padding: 0.75rem;
-		transform: translateX(-50%);
-	}
-
-	.volume-slider-value {
-		display: none;
-	}
-
-	.volume-slider-container:focus-within .volume-slider-value {
-		display: block;
-	}
-
-	.volume-slider {
-		flex: 1 1;
-		width: 160px;
-	}
-
-	.volume-container:hover .volume-slider-container {
-		display: flex;
-	}
-
 	:comp {
+		position: relative;
+		z-index: 10;
 		display: flex;
 		align-items: center;
 		height: $thickness;
@@ -229,7 +211,6 @@
 	}
 
 	.menus {
-		position: absolute;
-		inset: 0;
+		display: contents;
 	}
 </style>

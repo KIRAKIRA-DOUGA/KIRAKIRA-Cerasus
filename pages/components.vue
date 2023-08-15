@@ -247,7 +247,7 @@
 			<p>音量</p><Slider v-model="volume" :defaultValue="100" @changed="onSlided" />
 			<p>音调</p><Slider v-model="pitch" :min="-24" :max="24" :defaultValue="0" @changed="onSlided" />
 			<div class="capsule-range-container">
-				<CapsuleSlider v-model="volume" :defaultValue="100" :getDisplayValue="v => v | 0" @changed="onSlided" />
+				<CapsuleSlider v-model="volume" :defaultValue="100" :displayValue="v => v | 0" @changed="onSlided" />
 			</div>
 			<em>单击鼠标中键或触摸屏长按组件以还原默认值。</em>
 			<audio ref="beep" :src="beepSrc"></audio>
