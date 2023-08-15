@@ -247,7 +247,7 @@
 			<p>音量</p><Slider v-model="volume" :defaultValue="100" @changed="onSlided" />
 			<p>音调</p><Slider v-model="pitch" :min="-24" :max="24" :defaultValue="0" @changed="onSlided" />
 			<div class="capsule-range-container">
-				<CapsuleRange v-model="volume" :defaultValue="100" :getDisplayValue="v => v | 0" @changed="onSlided" />
+				<CapsuleSlider v-model="volume" :defaultValue="100" :getDisplayValue="v => v | 0" @changed="onSlided" />
 			</div>
 			<em>单击鼠标中键或触摸屏长按组件以还原默认值。</em>
 			<audio ref="beep" :src="beepSrc"></audio>
@@ -448,19 +448,19 @@
 		gap: 10px;
 		padding: 1rem 0;
 	}
-	
+
 	.pagination-test {
 		display: flex;
 		flex-direction: column;
 		gap: 10px;
 	}
-	
+
 	.buttons {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 0.5rem;
 	}
-	
+
 	.capsule-range-container {
 		max-width: 400px;
 		padding: 1rem;

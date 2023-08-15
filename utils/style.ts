@@ -62,7 +62,17 @@ export function moveIntoPage(location: MaybeRef<TwoD | HTMLElement>, size?: Mayb
 		location.forEach((original, i) => result[i] += adjustment[i] - original);
 	}
 	if (!returnAsStyle) return result;
-	return { left: result[0] + "px", top: result[1] + "px" };
+	return getLocationStyle(result);
+}
+
+/**
+ * 将二维坐标转换为位置的样式值。
+ * @param location - 二维坐标。
+ * @returns 位置的样式值。
+ */
+export function getLocationStyle(location: MaybeRef<TwoD>): CSSProperties {
+	location = toValue(location);
+	return location[0] !== 0 || location[1] !== 0 ? { left: location[0] + "px", top: location[1] + "px" } : {};
 }
 
 /**

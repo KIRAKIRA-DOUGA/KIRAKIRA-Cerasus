@@ -16,10 +16,6 @@
 	const menu = ref<HTMLMenuElement>();
 	const isContextMenu = ref(false);
 	const location = ref<TwoD>([0, 0]);
-	const locationStyle = computed(() => {
-		const l = location.value;
-		return l[0] !== 0 || l[1] !== 0 ? { left: l[0] + "px", top: l[1] + "px" } : undefined;
-	});
 	const size = ref<TwoD>([0, 0]);
 
 	/**
@@ -91,7 +87,7 @@
 				v-if="shown"
 				ref="menu"
 				:class="{ context: isContextMenu }"
-				:style="locationStyle"
+				:style="getLocationStyle(location)"
 				@contextmenu.prevent
 			>
 				<slot></slot>

@@ -30,11 +30,11 @@
 	const model = defineModel<number>({ required: true });
 	const errorInfo = `取值范围应在 [${props.min}, ${props.max}] 其中，当前值为 ${model.value}。`;
 	if (props.min > props.max)
-		throw new RangeError(`CapsuleRange 的最小值比最大值要大？最小值为 ${props.min}，最大值为 ${props.max}。`);
+		throw new RangeError(`CapsuleSlider 的最小值比最大值要大？最小值为 ${props.min}，最大值为 ${props.max}。`);
 	if (model.value < props.min)
-		throw new RangeError("CapsuleRange 的值比最小值要小。" + errorInfo);
+		throw new RangeError("CapsuleSlider 的值比最小值要小。" + errorInfo);
 	if (model.value > props.max)
-		throw new RangeError("CapsuleRange 的值比最大值要大。" + errorInfo);
+		throw new RangeError("CapsuleSlider 的值比最大值要大。" + errorInfo);
 
 	const restrict = (n: number | undefined, nanValue: number) => Number.isFinite(n) ? clamp(map(n!, props.min, props.max, 0, 1), 0, 1) : nanValue;
 	const value = computed(() => restrict(model.value, 0));
@@ -154,7 +154,7 @@
 		background-color: c(accent);
 		opacity: map(var(--value), 0, 1, 0.4, 1, true);
 	}
-	
+
 	.passed,
 	.value-on {
 		color: white;
