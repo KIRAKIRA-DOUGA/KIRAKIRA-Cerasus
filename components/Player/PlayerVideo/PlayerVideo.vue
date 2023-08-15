@@ -11,7 +11,7 @@
 	const playing = ref(false);
 	const playbackRate = ref(1);
 	const preservesPitch = ref(false);
-	const steplessRate = ref(true);
+	const steplessRate = ref(false);
 	const volume = ref(1);
 	const muted = ref(false);
 	const currentTime = ref(NaN);
@@ -243,14 +243,6 @@
 			video {
 				width: 100%;
 				height: 100%;
-			}
-
-			.player-video-controller {
-				position: absolute;
-				right: 0;
-				bottom: 0;
-				left: 0;
-				transition: $fallback-transitions, background-color 0s;
 			}
 		}
 	}

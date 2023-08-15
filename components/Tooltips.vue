@@ -27,12 +27,12 @@
 		}
 	}
 
-	useListen("app:showTooltip", e => {
+	useListen("component:showTooltip", e => {
 		if (isMobile()) return; // 触摸屏不要显示工具提示。
 		const tooltip = e as TooltipEventWithPosition;
 		if (!tooltip.title?.toString().trim()) return; // toString() 以刻意识别 i18n 的函数字符串。
 		if (tooltipList.find(i => i.element === e.element)) {
-			useEvent("app:updateTooltip", e);
+			useEvent("component:updateTooltip", e);
 			return;
 		}
 		tooltip.position = getPositionByEvent(e);
@@ -40,13 +40,13 @@
 		adjustPosition();
 	});
 
-	useListen("app:hideTooltip", element => {
+	useListen("component:hideTooltip", element => {
 		for (let i = tooltipList.length - 1; i >= 0; i--)
 			if (tooltipList[i].element === element)
 				arrayRemoveAt(tooltipList, i);
 	});
 
-	useListen("app:updateTooltip", e => {
+	useListen("component:updateTooltip", e => {
 		if (isMobile()) return;
 		for (let i = tooltipList.length - 1; i >= 0; i--)
 			if (tooltipList[i].element === e.element) {
@@ -58,7 +58,7 @@
 		adjustPosition();
 	});
 
-	useListen("app:refreshTooltip", map => {
+	useListen("component:refreshTooltip", map => {
 		for (let i = tooltipList.length - 1; i >= 0; i--)
 			if (!map.has(tooltipList[i].element))
 				arrayRemoveAt(tooltipList, i);
