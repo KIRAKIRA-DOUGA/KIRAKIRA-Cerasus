@@ -104,16 +104,12 @@
 						<div v-for="item in items" :key="item.id" class="item-shadow"></div>
 					</div>
 					<div class="items">
-						<div
+						<RadioOption
 							v-for="item in items"
 							:key="item.id"
-							v-ripple
-							class="item"
-							:class="{ active: item.id === selected }"
+							:active="item.id === selected"
 							@click="setItem(item.id)"
-						>
-							<span>{{ item.content }}</span>
-						</div>
+						>{{ item.content }}</RadioOption>
 					</div>
 				</div>
 			</Transition>
@@ -229,43 +225,8 @@
 		width: 100%;
 
 		.item {
-			@include round-small;
-			position: relative;
-			display: flex;
-			align-items: center;
 			height: var(--height);
 			padding: 0 $start-indent;
-			cursor: pointer;
-
-			&:hover {
-				background-color: c(hover-overlay);
-			}
-
-			&.active {
-				background-color: c(hover-overlay);
-
-				&::before {
-					@include oval;
-					position: absolute;
-					left: 0;
-					z-index: 3;
-					width: 3px;
-					height: 16px;
-					background-color: c(accent);
-					animation: show-indicator 250ms $ease-out-max;
-					content: "";
-				}
-
-				&:active:hover::before {
-					height: 10px;
-				}
-			}
-		}
-	}
-
-	@keyframes show-indicator {
-		from {
-			height: 0;
 		}
 	}
 </style>
