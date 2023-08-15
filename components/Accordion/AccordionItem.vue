@@ -147,6 +147,7 @@
 
 	.content {
 		@include animated-auto-size(height);
+		overflow: hidden;
 		transition-duration: 500ms;
 
 		&.no-padding {

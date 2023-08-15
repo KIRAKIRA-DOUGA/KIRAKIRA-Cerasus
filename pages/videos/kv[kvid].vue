@@ -33,9 +33,10 @@
 
 		// Fetch recommendations
 		try {
-			const commentsResp = await api.comments(kvid);
-			for (const comment of commentsResp)
-				comments.value.push(comment);
+			// const commentsResp = await api.comments(kvid);
+			// for (const comment of commentsResp)
+			// 	comments.value.push(comment);
+			// TODO: Fetch recommendations
 		} catch (error) { handleError(error); }
 	}
 	watch(() => kvid, fetchData);

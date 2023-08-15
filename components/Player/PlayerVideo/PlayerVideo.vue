@@ -210,6 +210,7 @@
 	}
 
 	.main {
+		position: relative;
 		background-color: black;
 
 		&:not(.fullscreen) {

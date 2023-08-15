@@ -3,6 +3,10 @@ import { VTooltipBindingValue } from "plugins/vue/tooltip";
 import { AllowedComponentProps, DirectiveBinding } from "vue";
 import CSSDoodle from "./css-doodle";
 
+type EventHandlers<E> = {
+	[K in keyof E]?: E[K] extends (...args: Any) => Any ? E[K] : (payload: E[K]) => void;
+};
+
 declare module "vue" {
 	/**
 	 * 在此处声明自定义 HTML 标签。
@@ -28,7 +32,7 @@ declare module "vue" {
 		__scopeId?: string;
 	}
 
-	export interface AllowedComponentProps extends Exclude<HTMLAttributes, EventHandlers<Events>> {
+	export interface AllowedComponentProps extends HTMLAttributes { // Exclude<HTMLAttributes, EventHandlers<Events>>
 		lang?: string;
 		title?: Readable;
 		tabindex?: Numberish;

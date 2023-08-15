@@ -20,6 +20,8 @@
 	const model = defineModel<number>("currentTime", { default: NaN });
 	const fullscreen = defineModel<boolean>("fullscreen");
 
+	const volumeMenu = ref<MenuModel>();
+
 	const isVolumeSliderActive = ref(false);
 
 	const currentPercent = computed({
@@ -65,7 +67,7 @@
 	const playbackRateText = computed(() => playbackRate.value.toFixed(2).replace(/\.?0+$/, "") + "×");
 
 	/**
-	 * @param value - number from CapsuleRange
+	 * @param value - number from CapsuleSlider
 	 * @returns string formatted value to display in UI
 	 */
 	function getDisplayValue(value: number): string {
@@ -89,6 +91,12 @@
 </script>
 
 <template>
+	<div class="menus">
+		<PlayerVideoMenu v-model="volumeMenu">
+			123
+		</PlayerVideoMenu>
+	</div>
+
 	<Comp role="toolbar" :class="{ fullscreen, 'force-color dark': fullscreen }">
 		<div class="left">
 			<SoftButton class="play" :icon="playing ? 'pause' : 'play'" @click="playing = !playing" />
@@ -102,16 +110,16 @@
 				<span class="divide">/</span>
 				<span class="duration">{{ duration }}</span>
 			</div>
-			<div class="volume-container">
-				<SoftButton :icon="volume ? 'volume_up' : 'volume_mute'" @click="toggleVolume" />
-				<div :class="['volume-slider-container', { visible: forceVolumeSliderVisible }]" @pointerdown="volumePointerDown">
-					<div class="volume-slider">
-						<CapsuleRange v-model="volume" :min="0" :max="1" :getDisplayValue="getDisplayValue" />
-					</div>
+			<SoftButton :text="playbackRateText" @click="switchSpeed" />
+			<SoftButton :icon="volume ? 'volume_up' : 'volume_mute'" @click="toggleVolume" @mouseenter="e => volumeMenu = e" @mouseleave="volumeMenu = undefined" />
+			<SoftButton :icon="fullscreen ? 'fullscreen_exit' : 'fullscreen'" @click="() => toggleFullscreen?.()" />
+		</div>
+		<div class="volume-container">
+			<div class="volume-slider-container visible" @pointerdown="volumePointerDown">
+				<div class="volume-slider">
+					<CapsuleSlider v-model="volume" :min="0" :max="1" :getDisplayValue="getDisplayValue" />
 				</div>
 			</div>
-			<SoftButton :text="playbackRateText" @click="switchSpeed" />
-			<SoftButton :icon="fullscreen ? 'fullscreen_exit' : 'fullscreen'" @click="() => toggleFullscreen?.()" />
 		</div>
 	</Comp>
 </template>
@@ -160,7 +168,7 @@
 		font-weight: 600;
 		font-size: 14px;
 		background-color: c(main-bg);
-		
+
 		&.fullscreen {
 			background-color: transparent;
 		}
@@ -218,5 +226,10 @@
 
 	.visible {
 		display: flex;
+	}
+
+	.menus {
+		position: absolute;
+		inset: 0;
 	}
 </style>
