@@ -27,6 +27,7 @@
 	const fullscreen = defineModel<boolean>("fullscreen", { default: false });
 	const resample = defineModel<boolean>("resample", { default: true });
 	const steplessRate = defineModel<boolean>("steplessRate", { default: false });
+	const showDanmaku = defineModel<boolean>("showDanmaku", { default: false });
 	const volumeBackup = ref(volume);
 	const volumeSet = computed({
 		get: () => muted.value ? 0 : volume.value,
@@ -51,7 +52,10 @@
 
 	const volumeMenu = ref<MenuModel>();
 	const rateMenu = ref<MenuModel>();
+	const resolutionMenu = ref<MenuModel>();
 	const fullscreenColorClass = computed(() => ({ [`force-color dark ${Theme.palette.value}`]: fullscreen.value }));
+
+	const [resolution, resolutionOptions] = defineMenuOptions(["4K", "1080P", "720P", "480P", "360P"], "1080P");
 
 	const currentPercent = computed({
 		get() {
@@ -81,8 +85,28 @@
 		playbackRate.value = newRate;
 	}
 
-	const playbackRateText = computed(() => playbackRate.value.toFixed(2).replace(/\.?0+$/, "") + "×");
-	const volumeText = computed(() => (volumeSet.value * 100 | 0) + "%");
+	const playbackRateText = (rate: number) => (2 ** rate).toFixed(2).replace(/\.?0+$/, "") + "×";
+	const volumeText = (volume: number) => Math.round(volume * 100) + "%";
+
+	/**
+	 * 创建一组菜单选项。
+	 * @param options - 选项们。
+	 * @param def - 默认值。
+	 * @returns 引用响应式变量。
+	 */
+	function defineMenuOptions<const T>(options: T[], def: T) {
+		const value = ref<T>(def) as Ref<T>;
+
+		const list = reactive(options.map(option => {
+			if (option === undefined || option === null) return undefined!;
+			const _option = option as object;
+			const key = typeof _option === "object" && "key" in _option ? _option.key as string : _option.toString();
+			const active = computed(() => value.value === option);
+			return { data: option, key, active, onChange: () => value.value = option };
+		}).filter(option => option));
+
+		return [value, list] as const;
+	}
 
 	/**
 	 * Forces volume slider visibility during interaction
@@ -106,11 +130,19 @@
 			</template>
 		</PlayerVideoMenu>
 		<PlayerVideoMenu v-model="rateMenu">
-			<ToggleSwitch v-model="resample" v-ripple icon="placeholder">重采样音频</ToggleSwitch>
-			<ToggleSwitch v-model="steplessRate" v-ripple icon="placeholder">无级变速</ToggleSwitch>
+			<ToggleSwitch v-model="resample" v-ripple icon="tunning">重采样音频</ToggleSwitch>
+			<ToggleSwitch v-model="steplessRate" v-ripple icon="speed">无级变速</ToggleSwitch>
 			<template #slider>
 				<CapsuleSlider v-model="playbackRateLinear" :min="-2" :max="2" :displayValue="playbackRateText" :defaultValue="0" />
 			</template>
+		</PlayerVideoMenu>
+		<PlayerVideoMenu v-model="resolutionMenu">
+			<RadioOption
+				v-for="option in resolutionOptions"
+				:key="option"
+				:active="option.active"
+				@click="option.onChange"
+			>{{ option.data }}</RadioOption>
 		</PlayerVideoMenu>
 	</div>
 
@@ -128,16 +160,26 @@
 				<span class="duration">{{ duration }}</span>
 			</div>
 			<SoftButton
-				:text="playbackRateText"
+				:text="resolution"
+				@mouseenter="e => resolutionMenu = e"
+				@mouseleave="resolutionMenu = undefined"
+			/>
+			<SoftButton
+				icon="speed_outline"
 				@click="switchSpeed"
 				@mouseenter="e => rateMenu = e"
 				@mouseleave="rateMenu = undefined"
 			/>
 			<SoftButton
-				:icon="volumeSet ? 'volume_up' : 'volume_mute'"
+				:icon="volumeSet >= 0.5 ? 'volume_up' : volumeSet > 0 ? 'volume_down' : 'volume_mute'"
 				@click="muted = !muted"
 				@mouseenter="e => volumeMenu = e"
 				@mouseleave="volumeMenu = undefined"
+			/>
+			<!-- TODO: 音量图标需要修改为三根弧线，并且使用动画切换，参考 Windows 11 / i(Pad)OS 的动画。 -->
+			<SoftButton
+				:icon="showDanmaku ? 'danmaku' : 'danmaku_off'"
+				@click="showDanmaku = !showDanmaku"
 			/>
 			<SoftButton
 				:icon="fullscreen ? 'fullscreen_exit' : 'fullscreen'"

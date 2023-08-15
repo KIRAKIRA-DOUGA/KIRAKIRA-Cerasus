@@ -118,13 +118,15 @@
 			display: none;
 		}
 		
-		:deep(.toggle-switch) {
-			@include round-small;
-			min-height: 36px;
-			padding: 0 16px 0 8px;
-			
-			&:not(:has(.ripple-circle)) {
-				overflow: visible;
+		&:deep {
+			.toggle-switch {
+				@include round-small;
+				min-height: 36px;
+				padding: 0 16px 0 8px;
+				
+				&:not(:has(.ripple-circle)) {
+					overflow: visible;
+				}
 			}
 		}
 	}

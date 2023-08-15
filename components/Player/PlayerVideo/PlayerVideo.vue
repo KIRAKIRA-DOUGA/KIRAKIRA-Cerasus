@@ -25,6 +25,7 @@
 	const { isFullscreen: fullscreen, toggle } = useFullscreen(videoContainer);
 	const resample = computed({ get: () => !preservesPitch.value, set: value => preservesPitch.value = !value });
 	const menu = ref<MenuModel>();
+	const showDanmaku = ref(false);
 
 	type MediaInfo = Record<string, Record<string, unknown>>;
 
@@ -199,6 +200,7 @@
 				v-model:muted="muted"
 				v-model:resample="resample"
 				v-model:steplessRate="steplessRate"
+				v-model:showDanmaku="showDanmaku"
 				:duration="duration"
 				:toggleFullscreen="toggle"
 				:buffered="buffered"

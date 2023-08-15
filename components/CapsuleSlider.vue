@@ -43,6 +43,7 @@
 		const TINY = 0.005;
 		return (1 - smoothValue.value) * (1 + TINY) - TINY;
 	});
+	const smoothOriginalValue = computed(() => map(smoothValue.value, 0, 1, props.min, props.max));
 
 	/**
 	 * 重置默认值。
@@ -89,8 +90,8 @@
 	}
 
 	const displayValue = computed(() =>
-		(typeof props.displayValue === "function" ? props.displayValue(model.value) : props.displayValue)
-		?? model.value);
+		(typeof props.displayValue === "function" ? props.displayValue(smoothOriginalValue.value) : props.displayValue)
+		?? smoothOriginalValue.value);
 </script>
 
 <template>
