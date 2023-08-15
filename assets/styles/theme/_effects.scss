@@ -1,3 +1,4 @@
+@use "sass:string";
 @use "functions" as *;
 @use "internal" as *;
 @use "variables" as *;
@@ -171,9 +172,14 @@
 	backdrop-filter: blur(8px);
 }
 
-@mixin dropdown-flyouts {
-	box-shadow: 0 8px 16px c(accent-shadow, 50%);
-	backdrop-filter: blur(16px);
+@mixin dropdown-flyouts($includes: shadow-blur) {
+	@if string.index($includes, shadow) {
+		box-shadow: 0 8px 16px c(accent-shadow, 50%);
+	}
+	
+	@if string.index($includes, blur) {
+		backdrop-filter: blur(16px);
+	}
 }
 
 @mixin dropdown-flyouts-unhover {
