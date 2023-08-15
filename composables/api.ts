@@ -1,19 +1,22 @@
 import * as api from "kirakira-backend";
 
+const apiSingleton = ref<api.DefaultApi>();
+
 /**
- * convenience singleton for the OpenAPI SDK
- * @todo make it an actual singleton lol
- * @returns DefaultAPI
+ * convenience singleton for the OpenAPI SDK.
+ * @returns DefaultAPI.
  */
 export function useApi() {
-	const runtimeConfig = useRuntimeConfig();
-	const siteUrl = runtimeConfig.public.siteUrl;
-	const { host } = new URL(siteUrl);
+	if (apiSingleton.value) return apiSingleton.value;
+
+	const nuxtApp = useNuxtApp();
+	const host = process.server ? nuxtApp.ssrContext!.event.node.req.headers.host! : window.location.host;
 
 	const configParams = {
 		baseServer: api.getServers(host)[0],
 	};
 	const config = api.createConfiguration(configParams);
 
-	return new api.DefaultApi(config);
+	apiSingleton.value = new api.DefaultApi(config);
+	return apiSingleton.value;
 }
