@@ -6,10 +6,11 @@ type ApplicationEvents = {
 	// 在此处定义需要全局使用的事件。
 	"app:requestLogin": void;
 	"app:toast": ToastEvent;
-	"app:showTooltip": TooltipEvent;
-	"app:hideTooltip": HTMLElement;
-	"app:updateTooltip": TooltipEvent;
-	"app:refreshTooltip": WeakMap<HTMLElement, { value: VTooltipBindingValue; symbol: symbol }>;
+	"component:showTooltip": TooltipEvent;
+	"component:hideTooltip": HTMLElement;
+	"component:updateTooltip": TooltipEvent;
+	"component:refreshTooltip": WeakMap<HTMLElement, { value: VTooltipBindingValue; symbol: symbol }>;
+	"component:hideAllPlayerVideoMenu": void;
 	"user:login": boolean;
 };
 

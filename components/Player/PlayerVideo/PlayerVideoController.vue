@@ -14,14 +14,19 @@
 		toggleFullscreen: undefined,
 	});
 
-	const playing = defineModel<boolean>("playing");
+	/** 常用速度列表。 */
+	const loopedPlaybackRates = [0.5, 1, 2];
+	/** 有级速度列表。 */
+	const stepedPlaybackRates = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 3, 4];
+
+	const playing = defineModel<boolean>("playing", { default: false });
 	const playbackRate = defineModel<number>("playbackRate", { default: 1 });
 	const volume = defineModel<number>("volume", { default: 1 });
 	const muted = defineModel<boolean>("muted", { default: false });
 	const model = defineModel<number>("currentTime", { default: NaN });
-	const fullscreen = defineModel<boolean>("fullscreen");
+	const fullscreen = defineModel<boolean>("fullscreen", { default: false });
 	const resample = defineModel<boolean>("resample", { default: true });
-	const steplessRate = defineModel<boolean>("steplessRate", { default: true });
+	const steplessRate = defineModel<boolean>("steplessRate", { default: false });
 	const volumeBackup = ref(volume);
 	const volumeSet = computed({
 		get: () => muted.value ? 0 : volume.value,
@@ -33,11 +38,20 @@
 	});
 	const playbackRateLinear = computed({
 		get: () => Math.log2(playbackRate.value),
-		set: value => playbackRate.value = 2 ** value,
+		set: value => {
+			value = 2 ** value;
+			if (!steplessRate.value) {
+				const variances = stepedPlaybackRates.map(rate => (value - rate) ** 2);
+				const minimum = Math.min(...variances);
+				value = stepedPlaybackRates[variances.indexOf(minimum)];
+			}
+			playbackRate.value = value;
+		},
 	});
 
 	const volumeMenu = ref<MenuModel>();
 	const rateMenu = ref<MenuModel>();
+	const fullscreenColorClass = computed(() => ({ [`force-color dark ${Theme.palette.value}`]: fullscreen.value }));
 
 	const currentPercent = computed({
 		get() {
@@ -54,19 +68,16 @@
 	const duration = computed(() => new Duration(props.duration).toString());
 	const buffered = computed(() => props.buffered / props.duration);
 
-	/** 常用速度列表。 */
-	const playbackRates = [0.5, 1, 2];
-
 	/**
 	 * 点击速度按钮时，在速度中循环。
 	 */
 	function switchSpeed() {
-		let index = playbackRates.indexOf(playbackRate.value);
+		let index = loopedPlaybackRates.indexOf(playbackRate.value);
 		if (index === -1) {
-			index = playbackRates.indexOf(1);
+			index = loopedPlaybackRates.indexOf(1);
 			if (index === -1) throw new Error("在 playbackRates 速度列表中必须包含原速 1。");
-		} else index = (index + 1) % playbackRates.length;
-		const newRate = playbackRates[index];
+		} else index = (index + 1) % loopedPlaybackRates.length;
+		const newRate = loopedPlaybackRates[index];
 		playbackRate.value = newRate;
 	}
 
@@ -88,22 +99,22 @@
 </script>
 
 <template>
-	<div class="menus">
+	<div class="menus" :class="{ ...fullscreenColorClass }">
 		<PlayerVideoMenu v-model="volumeMenu">
 			<template #slider>
 				<CapsuleSlider v-model="volumeSet" :min="0" :max="1" :displayValue="volumeText" :defaultValue="1" />
 			</template>
 		</PlayerVideoMenu>
 		<PlayerVideoMenu v-model="rateMenu">
-			<ToggleSwitch v-model="resample" icon="placeholder">重采样音频</ToggleSwitch>
-			<ToggleSwitch v-model="steplessRate" icon="placeholder">无级变速</ToggleSwitch>
+			<ToggleSwitch v-model="resample" v-ripple icon="placeholder">重采样音频</ToggleSwitch>
+			<ToggleSwitch v-model="steplessRate" v-ripple icon="placeholder">无级变速</ToggleSwitch>
 			<template #slider>
 				<CapsuleSlider v-model="playbackRateLinear" :min="-2" :max="2" :displayValue="playbackRateText" :defaultValue="0" />
 			</template>
 		</PlayerVideoMenu>
 	</div>
 
-	<Comp role="toolbar" :class="{ fullscreen, 'force-color dark': fullscreen }">
+	<Comp role="toolbar" :class="{ fullscreen, ...fullscreenColorClass }">
 		<div class="left">
 			<SoftButton class="play" :icon="playing ? 'pause' : 'play'" @click="playing = !playing" />
 		</div>
@@ -152,7 +163,12 @@
 		background-color: c(main-bg);
 
 		&.fullscreen {
+			position: fixed;
+			right: 0;
+			bottom: 0;
+			left: 0;
 			background-color: transparent;
+			transition: $fallback-transitions, background-color 0s;
 		}
 
 		:where(& > *) {
