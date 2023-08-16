@@ -31,6 +31,7 @@
 		align-items: center;
 		height: 36px;
 		padding: 0 12px;
+		color: c(text-color);
 		cursor: pointer;
 
 		&:hover {
