@@ -1,12 +1,7 @@
 <script setup lang="ts">
 	const currentSetting = computed({
 		get: () => currentSettingsPage(),
-		set: async id => {
-			while (currentSetting.value !== id) {
-				navigate(`/settings/${id}`);
-				await delay(50); // 解决有可能会跳转失败的问题。
-			}
-		},
+		set: async id => { await forceNavigate(`/settings/${id}`, () => currentSetting.value === id); },
 	});
 	const search = ref("");
 	const main = ref<HTMLElement>();

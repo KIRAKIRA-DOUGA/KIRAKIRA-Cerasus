@@ -28,7 +28,7 @@
 	});
 	const currentTab = computed({
 		get: () => currentUserTab(),
-		set: id => navigate(`/user/${uid}/${id}`),
+		set: async id => { await forceNavigate(`/user/${uid}/${id}`, () => currentTab.value === id); },
 	});
 
 	useHead({ title: user.username + "的个人中心" });

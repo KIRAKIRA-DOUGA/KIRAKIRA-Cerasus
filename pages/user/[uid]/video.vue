@@ -37,8 +37,9 @@
 				<ThumbVideo
 					v-for="video in videos?.videos"
 					:key="video.videoID"
-					:link="'/videos/' + video.videoID ?? ''"
+					:videoId="video.videoID"
 					:uploader="video.authorName ?? ''"
+					:uploaderId="video.authorID"
 					:image="video.thumbnailLoc"
 					:date="new Date()"
 					:watchedCount="video.views"
