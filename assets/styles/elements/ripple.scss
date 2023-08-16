@@ -1,6 +1,18 @@
 .ripple-button {
 	position: relative;
-	overflow: hidden;
+
+	&.ripple-button-cut {
+		overflow: hidden;
+	}
+
+	.ripple-wrapper {
+		position: absolute;
+		inset: 0;
+		z-index: 2;
+		overflow: hidden;
+		border-radius: inherit;
+		pointer-events: none;
+	}
 
 	.ripple-circle {
 		@include square(1rem);
@@ -12,10 +24,11 @@
 		display: block;
 		background-color: c(ripple);
 		pointer-events: none;
+	}
 
-		~ :where(:not(.ripple-circle)) {
-			position: relative;
-			z-index: 3;
-		}
+	.ripple-wrapper ~ :where(*),
+	.ripple-circle ~ :where(:not(.ripple-circle)) {
+		position: relative;
+		z-index: 3;
 	}
 }

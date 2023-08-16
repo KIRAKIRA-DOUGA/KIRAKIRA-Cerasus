@@ -29,16 +29,38 @@ export default defineNuxtPlugin(nuxt => {
 	const rippleClass = "ripple-button";
 	const circleClass = "ripple-circle";
 	const spreadRippleId = "spread-ripple";
+	const wrapperClass = "ripple-wrapper";
+	const cutClass = "ripple-button-cut";
 	let isInitedPointerUp = false;
-	type D = Directive<HTMLElement, boolean>;
+	type D = Directive<HTMLElement, boolean | "overlay">;
+	type EffectHook = DirectiveEffectHook<D>;
+	
+	const updated: EffectHook = (element, binding) => {
+		const isOverlay = binding.arg === "overlay";
+		// 当指定参数为 overlay 时，不会给元素加 overflow: hidden，以保证元素内的子元素可以正常超出该元素范围。
+		// 但是如果给所有水波纹默认使用此模式，在另外一些情况下又会出现其它异常，如圆角等的问题。
+		element.classList.add(rippleClass);
+		if (!isOverlay) element.classList.add(cutClass);
+	};
 
 	nuxt.vueApp.directive("ripple", {
+		updated,
 		mounted(element, binding) {
-			element.classList.add(rippleClass);
+			const isOverlay = binding.arg === "overlay";
+			updated(element, binding);
 			element.addEventListener("pointerdown", e => {
 				if (binding.value === false) return;
 				const rect = element.getBoundingClientRect();
 				if (!rect) return;
+				let wrapper = element;
+				if (isOverlay) {
+					wrapper = [...element.children].find(el => el.classList.contains(wrapperClass)) as HTMLElement;
+					if (!wrapper) {
+						wrapper = document.createElement("div");
+						wrapper.classList.add(wrapperClass);
+						element.prepend(wrapper);
+					}
+				}
 				const circleRadius = getMaxRadius(rect, e) + 1; // + 1 用于边缘问题。
 				let pointerX = e.clientX - rect.x,
 					pointerY = e.clientY - rect.y;
@@ -50,7 +72,7 @@ export default defineNuxtPlugin(nuxt => {
 				circle.style.height = circleRadius * 2 + "px";
 				circle.style.left = pointerX + "px";
 				circle.style.top = pointerY + "px";
-				element.prepend(circle);
+				wrapper.prepend(circle);
 				circle.animate([
 					{ scale: 0 },
 					{ scale: 1 },
@@ -80,9 +102,6 @@ export default defineNuxtPlugin(nuxt => {
 					}).finished.then(() => circle.remove());
 				}
 			});
-		},
-		updated(element) {
-			element.classList.add(rippleClass);
 		},
 	} as D);
 });

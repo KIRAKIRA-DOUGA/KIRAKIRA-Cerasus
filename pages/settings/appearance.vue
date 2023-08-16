@@ -89,8 +89,8 @@
 		--size: small;
 	}
 	
-	.settings-grid-item {
-		:deep(.ripple-circle) {
+	.settings-grid-item:deep {
+		.ripple-circle {
 			z-index: 4;
 			background-color: c(accent-ripple);
 		}
