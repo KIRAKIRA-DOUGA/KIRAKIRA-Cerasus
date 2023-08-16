@@ -12,11 +12,13 @@
 			activable: { type: Boolean, default: false },
 			/** 是否在新窗口打开链接？ */
 			blank: { type: Boolean, default: false },
-			/** URL Search Params. */
+			/** URL Search Params (?). */
 			query: {
 				type: [String, Object] as PropType<UrlQueryType>,
 				default: "",
 			},
+			/** URL Hash (#). */
+			hash: { type: String, default: undefined },
 		},
 		setup(props) {
 			const localePath = useLocalePath();
@@ -35,24 +37,19 @@
 				return attrs;
 			});
 
-			const queryString = computed(() => {
-				let { query } = props;
-				if (typeof query === "string")
-					return query.startsWith("?") ? query : "?" + query;
-				if (!(query instanceof URLSearchParams))
-					query = new URLSearchParams(query as Record<string, string>);
-				return query.size ? "?" + query.toString() : "";
-			});
-
-			const href = computed(() => localePath(props.to) + queryString.value);
+			const routeLocation = computed(() => ({
+				path: localePath(props.to),
+				hash: props.hash,
+				query: props.query,
+			} as RouteLocation));
 
 			return {
-				href, attrs,
+				routeLocation, attrs,
 			};
 		},
 		render() {
 			const slot = this.$slots.default?.();
-			let link = <NuxtLink to={this.href} {...this.attrs}>{slot}</NuxtLink>;
+			let link = <NuxtLink to={this.routeLocation} {...this.attrs}>{slot}</NuxtLink>;
 			if (this.linkInLink)
 				link = <object>{link}</object>;
 			return link;

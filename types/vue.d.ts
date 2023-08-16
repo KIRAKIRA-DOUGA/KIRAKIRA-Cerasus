@@ -1,4 +1,5 @@
 import * as _lottieWeb from "lottie-web";
+import * as _vueRouter from "#vue-router";
 import { VTooltipBindingValue } from "plugins/vue/tooltip";
 import { AllowedComponentProps, DirectiveBinding } from "vue";
 import CSSDoodle from "./css-doodle";
@@ -85,5 +86,6 @@ declare global {
 
 	export { Editor } from "@tiptap/vue-3";
 	export { AnimationItem } from "lottie-web";
+	export { RouteLocation } from "#vue-router";
 	export { CSSProperties, ComponentInternalInstance, ConcreteComponent, Directive, Events, MaybeRef, MaybeRefOrGetter, Ref, RendererElement, RendererNode, ShallowRef, Slot, Slots, StyleValue, VNode, VNodeProps, WritableComputedRef } from "vue";
 }
