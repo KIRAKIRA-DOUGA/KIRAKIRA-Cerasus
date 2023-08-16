@@ -3,7 +3,8 @@
 </docs>
 
 <script lang="ts">
-	
+	/** 在某个实例中鼠标已按下，因此暂时禁止显示其它菜单。 */
+	const preventShowing = ref(false);
 </script>
 
 <script setup lang="ts">
@@ -22,21 +23,30 @@
 	const hideExceptMe = ref(false);
 	/** 视频播放器控制栏中 SoftButton 的水波纹半径与容器半径之差。 */
 	const X_OFFSET = 12;
+	const isMouseEnter = ref(false);
+	const isMouseDown = ref(false);
 
 	/**
 	 * 隐藏菜单。
 	 */
 	function hide() {
+		if (!shown.value) return;
 		shown.value = false;
 		model.value = undefined;
+		isMouseEnter.value = false;
+		isMouseDown.value = false;
+		preventShowing.value = false;
+		hideExceptMe.value = false;
 		emits("hide");
 	}
 
 	/**
 	 * 鼠标移出区域，超时后自动隐藏。
 	 */
-	function moveout() {
-		hideTimeoutId.value = setTimeout(hide, WAITING);
+	function moveOut() {
+		isMouseEnter.value = false;
+		if (!isMouseDown.value)
+			hideTimeoutId.value = setTimeout(hide, WAITING);
 	}
 
 	/**
@@ -45,13 +55,15 @@
 	function reshow() {
 		clearTimeout(hideTimeoutId.value);
 		hideTimeoutId.value = undefined;
+		isMouseEnter.value = true;
 	}
 
 	/**
 	 * 显示菜单。
-	 * @param e - 如有鼠标事件则为上下文菜单，否则为弹出式菜单。
+	 * @param e - 如有鼠标事件则为上下文菜单，否则没有否则。
 	 */
 	function show(e: NonNull<MenuModel>) {
+		if (preventShowing.value) return;
 		hideExceptMe.value = true;
 		useEvent("component:hideAllPlayerVideoMenu");
 		hideExceptMe.value = false;
@@ -64,7 +76,25 @@
 		const bottom = relativeBottom - targetTop, right = relativeRight - targetRight - X_OFFSET;
 		locationStyle.value = { right: right + "px", bottom: bottom + "px" };
 		shown.value = true;
+		isMouseEnter.value = true;
 		emits("show");
+	}
+
+	/**
+	 * 当指针在菜单中按下时的事件。
+	 * @param _e - 指针事件。
+	 */
+	function pointerDown(_e: PointerEvent) {
+		isMouseDown.value = true;
+		preventShowing.value = true;
+
+		const pointerUp = () => {
+			isMouseDown.value = false;
+			preventShowing.value = false;
+			window.removeEventListener("pointerup", pointerUp);
+			if (!isMouseEnter.value) moveOut();
+		};
+		window.addEventListener("pointerup", pointerUp);
 	}
 
 	useListen("component:hideAllPlayerVideoMenu", () => {
@@ -72,14 +102,21 @@
 	});
 
 	watch(model, e => {
-		if (!e) moveout();
+		if (!e) moveOut();
 		else show(e);
 	}, { immediate: true });
 </script>
 
 <template>
 	<Transition>
-		<Comp v-if="shown" role="menu" :style="locationStyle" @mouseenter="reshow" @mouseleave="moveout">
+		<Comp
+			v-if="shown"
+			role="menu"
+			:style="locationStyle"
+			@mouseenter="reshow"
+			@mouseleave="moveOut"
+			@pointerdown="pointerDown"
+		>
 			<menu @contextmenu.prevent>
 				<slot></slot>
 			</menu>

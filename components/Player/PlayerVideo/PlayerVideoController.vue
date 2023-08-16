@@ -107,19 +107,6 @@
 
 		return [value, list] as const;
 	}
-
-	/**
-	 * Forces volume slider visibility during interaction
-	 */
-	/* function volumePointerDown() {
-		isVolumeSliderActive.value = true;
-
-		const pointerUp = () => {
-			isVolumeSliderActive.value = false;
-			document.removeEventListener("pointerup", pointerUp);
-		};
-		document.addEventListener("pointerup", pointerUp);
-	} */
 </script>
 
 <template>
