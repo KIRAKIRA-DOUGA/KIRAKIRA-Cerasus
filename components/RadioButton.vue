@@ -6,8 +6,11 @@
 		value?: T;
 		/** 已勾选，单向绑定使用。 */
 		checked?: boolean;
+		/** 详细信息。 */
+		details?: Readable;
 	}>(), {
 		value: undefined,
+		details: undefined,
 	});
 
 	const emits = defineEmits<{
@@ -101,7 +104,10 @@
 				<div class="radio" :class="{ 'is-animating': isAnimating }"></div>
 			</div>
 		</div>
-		<label><slot></slot></label>
+		<div>
+			<label><slot></slot></label>
+			<label class="details"><slot name="details">{{ details }}</slot></label>
+		</div>
 	</Comp>
 </template>
 

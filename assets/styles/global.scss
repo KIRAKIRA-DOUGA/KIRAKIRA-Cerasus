@@ -112,6 +112,19 @@ p {
 	transition: none;
 }
 
+label {
+	display: block;
+
+	&:empty {
+		display: none;
+	}
+
+	&.details {
+		color: c(icon-color);
+		font-size: 12px;
+	}
+}
+
 @layer base {
 	#popovers > * {
 		position: fixed;

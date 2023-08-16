@@ -23,7 +23,7 @@
 		{ name: "艾了个拉", job: [t.settings_about_staff_webmaster, t.settings_about_staff_design], uid: NaN, avatar: avatar("aira.webp") },
 		{ name: "兰音", job: [t.settings_about_staff_frontend, t.settings_about_staff_design], uid: NaN, avatar: avatar("nucleic_acid_testing.jpg") },
 		{ name: "OtoMAN", job: [t.settings_about_staff_backend], uid: NaN, avatar: avatar("Otoman.png") },
-		{ name: "冲锋的小卡卡", job: [t.settings_about_staff_frontend], uid: NaN, avatar: avatar("ZERO_TWO.jpg") },
+		{ name: "冲锋的小卡卡", job: [t.settings_about_staff_backend], uid: NaN, avatar: avatar("ZERO_TWO.jpg") },
 		{ name: "维他柠檬茶", job: [t.settings_about_staff_frontend], uid: NaN, avatar: avatar("VTchara.webp") },
 		{ name: "琪露诺瓦露", job: [t.ja, t.settings_about_staff_translate], uid: NaN, avatar: avatar("Cirnoire.png") },
 		{ name: "Sidd", job: [t.settings_about_staff_frontend], uid: NaN, avatar: avatar("sidd.jpg") },

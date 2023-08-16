@@ -3,6 +3,7 @@ import { LocaleIdentifiers } from "./SChinese";
 const English: LocaleIdentifiers = {
 	colon: ": ",
 	semicolon: "; ",
+	caesura: ", ",
 	welcome: "Welcome",
 	home: "Home",
 	category: "Category",

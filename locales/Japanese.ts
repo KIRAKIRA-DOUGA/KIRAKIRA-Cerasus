@@ -6,6 +6,7 @@ import { LocaleIdentifiers } from "./SChinese";
 const Japanese: LocaleIdentifiers = {
 	colon: "：",
 	semicolon: "；",
+	caesura: "・",
 	welcome: "ようこそ",
 	home: "ホーム",
 	category: "カテゴリ",

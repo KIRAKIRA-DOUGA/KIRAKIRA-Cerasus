@@ -17,6 +17,11 @@
 		{ name: "电话号码", icon: "phone", privacy: "private" },
 	]);
 
+	const enableCookie = computed({
+		get: () => true,
+		set: value => !value && useToast("禁用Cookie失败！", "error"),
+	});
+
 	/**
 	 * 快速设置一列的可见性。
 	 * @param privacy - 隐私可见性。
@@ -29,7 +34,7 @@
 <template>
 	<Subheader icon="cookie">网络曲奇☆</Subheader>
 	<section list>
-		<ToggleSwitch v-ripple on icon="cookie">允许网站使用Cookie</ToggleSwitch>
+		<ToggleSwitch v-model="enableCookie" v-ripple icon="cookie">允许网站使用Cookie</ToggleSwitch>
 	</section>
 
 	<div class="privacy-header">

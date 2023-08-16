@@ -1,5 +1,4 @@
 <script setup lang="ts" generic="T extends string">
-	// WARN: 泛型功能有问题，暂时禁用检查。
 	const props = withDefaults(defineProps<{
 		/** 禁用。 */
 		disabled?: boolean;
@@ -7,9 +6,12 @@
 		value?: T;
 		/** 复选状态，单向绑定使用。 */
 		checkState?: CheckState;
+		/** 详细信息。 */
+		details?: Readable;
 	}>(), {
 		checkState: "unchecked",
 		value: undefined,
+		details: undefined,
 	});
 
 	const emits = defineEmits<{
@@ -109,7 +111,10 @@
 				</div>
 			</div>
 		</div>
-		<label><slot></slot></label>
+		<div>
+			<label><slot></slot></label>
+			<label class="details"><slot name="details">{{ details }}</slot></label>
+		</div>
 	</Comp>
 </template>
 
