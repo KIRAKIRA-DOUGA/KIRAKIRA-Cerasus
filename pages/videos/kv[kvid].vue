@@ -83,7 +83,7 @@
 					v-for="video in recommendations"
 					:key="video.videoID"
 					class="videorec"
-					:link="'/videos/kv' + video.videoID ?? ''"
+					:videoId="video.videoID"
 					:uploader="video.authorName ?? ''"
 					:image="video.thumbnailLoc"
 					:date="new Date()"

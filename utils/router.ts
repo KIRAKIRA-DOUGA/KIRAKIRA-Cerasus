@@ -68,6 +68,18 @@ export function navigate(path: string) {
 }
 
 /**
+ * 强制导航到页面，如果没有导航到该页面，则再次发起请求，直到导航到该页面为止。
+ * @param path - 路由地址。
+ * @param until - 确认已导航到该页面？
+ */
+export async function forceNavigate(path: string, until: () => boolean) {
+	while (!until()) {
+		navigate(path);
+		await delay(50); // 解决有可能会跳转失败的问题。
+	}
+}
+
+/**
  * 切换语言。
  * @param lang - 语言代码。
  */

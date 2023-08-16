@@ -2,30 +2,42 @@
 	import testBackground from "assets/images/test-background.png";
 
 	const props = withDefaults(defineProps<{
-		/** 最终视频链接。目前仅在开发环境中使用，生产环境应该换成 kv 编号。 */
-		link: string;
+		/**
+		 * 最终视频链接。
+		 * @deprecated 目前仅在开发环境中使用，生产环境应该换成 kv 编号。
+		 */
+		link?: string;
+		/** 视频编号 KVID。 */
+		videoId?: number;
 		/** 图片链接。 */
 		image?: string;
 		/** 视频上传日期。 */
 		date?: Date;
 		/** 视频播放量。 */
 		watchedCount?: number;
-		/** UP 主名称。 */
+		/** 创作者名称。 */
 		uploader: string;
+		/** 创作者编号 UID。 */
+		uploaderId: number;
 		/** 视频时长。 */
 		duration?: Duration;
 		/** 在新窗口打开视频？ */
 		blank?: boolean;
 	}>(), {
+		link: "#",
+		videoId: undefined,
 		image: testBackground,
 		date: undefined,
 		watchedCount: 0,
+		uploaderId: undefined,
 		duration: undefined,
 	});
 
 	const date = computed(() => props.date ? formatDate(props.date, "yyyy/MM/dd") : "----/--/--");
 	const watchedCount = computed(() => getWatchCount(props.watchedCount));
 	const duration = computed(() => props.duration ?? "--:--");
+	const link = computed(() => props.videoId !== undefined && props.videoId !== null ?
+		`/videos/${props.videoId}` : props.link);
 </script>
 
 <template>
@@ -48,7 +60,7 @@
 						</div>
 					</div>
 					<div class="line">
-						<LocaleLink class="item uploader" to="/user" linkInLink :blank="blank">
+						<LocaleLink class="item uploader" :to="`/user/${uploaderId ?? ''}`" linkInLink :blank="blank">
 							<Icon name="person" />
 							<div>{{ uploader }}</div>
 						</LocaleLink>
