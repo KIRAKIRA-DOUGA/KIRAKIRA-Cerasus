@@ -45,7 +45,7 @@
 /// 将长宽均设为 100% 视窗宽高度值。
 /// @param {String} $position [fixed] - 指定元素的 position 属性。
 /// @output width, height
-@mixin full-screen($position: fixed) {
+@mixin fullscreen($position: fixed) {
 	position: $position;
 	top: 0;
 	left: 0;

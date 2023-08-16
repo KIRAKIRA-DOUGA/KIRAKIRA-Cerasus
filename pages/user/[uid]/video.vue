@@ -3,7 +3,7 @@
 	const sort = ref<SortModel>(["date", "descending"]);
 
 	const route = useRoute();
-	const id = currentUserUid();
+	const uid = currentUserUid();
 	const videos = ref<Videos200Response>();
 	const { query } = route;
 
@@ -15,14 +15,19 @@
 	});
 	const pages = ref(1);
 
-	// fetch the videos according to the query
-	watch(data, () => {
+	/**
+	 * fetch the videos according to the query.
+	 */
+	async function fetchData() {
 		const api = useApi();
-		api.users(id).then(video => {
-			pages.value = Math.ceil(video.paginationData!.numberOfItems! / 50);
-			videos.value = video;
-		}).catch(error => console.error(error));
-	}, { immediate: true, deep: true });
+		try {
+			const videoResponse = await api.users(uid);
+			pages.value = Math.ceil(videoResponse.paginationData!.numberOfItems! / 50);
+			videos.value = videoResponse;
+		} catch (error) { console.error(error); }
+	}
+	watch(data, fetchData, { deep: true });
+	await fetchData();
 </script>
 
 <template>
@@ -40,8 +45,6 @@
 					:duration="new Duration(0, video.videoDuration ?? 0)"
 				>{{ video.title }}</ThumbVideo>
 			</div>
-			<!-- <PaginationSimple v-model="page" :pages="pages" :displayPageCount="8" enableArrowKeyMove /> -->
-
 		</div>
 
 		<div class="toolbox-card right">

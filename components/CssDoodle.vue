@@ -26,12 +26,12 @@
 		color: transparent;
 
 		&.fullscreen {
-			@include full-screen;
+			@include fullscreen;
 		}
 	}
 
 	:comp.wrapper {
-		@include full-screen;
+		@include fullscreen;
 		@include flex-center;
 	}
 </style>

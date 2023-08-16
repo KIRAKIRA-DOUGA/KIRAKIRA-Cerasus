@@ -20,7 +20,7 @@ $animation-options: $ease-out-expo 600ms backwards;
 
 .mask {
 	@include flex-center;
-	@include full-screen;
+	@include fullscreen;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -71,16 +71,16 @@ $animation-options: $ease-out-expo 600ms backwards;
 			line-height: 30px;
 			animation: move-left $animation-options;
 		}
-		
+
 		div.refresh-area {
 			margin-bottom: 60px;
 			font-size: 16px;
 			animation: move-up $animation-options;
-			
+
 			p {
 				margin-top: 0;
 			}
-			
+
 			button {
 				min-width: 80px;
 			}
@@ -128,7 +128,7 @@ button {
 	background-color: c(accent);
 	transition: $fallback-transitions, all $ease-out-back 500ms !important;
 	touch-action: manipulation;
-	
+
 	&:hover {
 		@include button-shadow-hover;
 		background-color: c(accent-hover);
@@ -137,12 +137,12 @@ button {
 	&:hover:focus {
 		@include button-shadow-hover-focus;
 	}
-	
+
 	&:active {
 		@include button-scale-pressed;
 		background-color: c(accent-pressed);
 	}
-	
+
 	&:focus {
 		@include button-shadow-focus;
 	}

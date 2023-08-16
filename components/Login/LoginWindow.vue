@@ -172,7 +172,7 @@
 					<div class="register2">
 						<HeadingGroup :name="t.register" englishName="Register" class="collapse" />
 						<div class="form">
-							<div><PreserveBr>{{ t.loginwindow_register_email_sent_info }}</PreserveBr></div>
+							<div><Preserves>{{ t.loginwindow_register_email_sent_info }}</Preserves></div>
 							<TextBox
 								v-model="verificationCode"
 								type="text"
@@ -197,7 +197,7 @@
 					<div class="forgot">
 						<HeadingGroup :name="t.forgot_password" englishName="forgot" />
 						<div class="form">
-							<div><PreserveBr>{{ t.loginwindow_forgot_info }}</PreserveBr></div>
+							<div><Preserves>{{ t.loginwindow_forgot_info }}</Preserves></div>
 							<TextBox
 								v-model="email"
 								type="email"
@@ -215,7 +215,7 @@
 					<div class="reset">
 						<HeadingGroup :name="t.reset_password" englishName="Reset" />
 						<div class="form">
-							<div><PreserveBr>{{ t.loginwindow_reset_successful_info }}</PreserveBr></div>
+							<div><Preserves>{{ t.loginwindow_reset_successful_info }}</Preserves></div>
 							<TextBox
 								v-model="password"
 								type="password"

@@ -314,7 +314,7 @@
 	}
 
 	.mask {
-		@include full-screen(fixed);
+		@include fullscreen(fixed);
 		z-index: 4;
 		background-color: c(main-bg, 50%);
 		transition-duration: $show-drawer-duration;

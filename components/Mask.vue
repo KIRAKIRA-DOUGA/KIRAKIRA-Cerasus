@@ -49,7 +49,7 @@
 
 <style scoped lang="scss">
 	.mask {
-		@include full-screen(fixed);
+		@include fullscreen(fixed);
 		$slot: "+ :slotted(*)";
 
 		&:not(.effectless) {

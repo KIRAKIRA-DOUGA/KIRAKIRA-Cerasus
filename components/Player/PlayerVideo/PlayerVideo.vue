@@ -3,8 +3,11 @@
 	import { MediaPlayerClass } from "dashjs";
 
 	const props = defineProps<{
+		/** 视频源。 */
 		src: string;
+		/** 视频 ID。 */
 		id: number;
+		/** 视频评分。 */
 		rating: number;
 	}>();
 

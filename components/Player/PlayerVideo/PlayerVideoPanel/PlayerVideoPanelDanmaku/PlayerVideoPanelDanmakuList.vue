@@ -81,7 +81,7 @@
 			<template #fallback>
 				<div class="danmaku-placeholder">
 					<ProgressRing />
-					<span>弹幕装填中……</span>
+					<span>弹幕装填中⋯⋯</span>
 				</div>
 			</template>
 		</ClientOnly>

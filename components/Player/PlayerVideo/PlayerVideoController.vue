@@ -7,7 +7,7 @@
 		/** 缓冲加载进度值。 */
 		buffered?: number;
 		/** 切换全屏函数。 */
-		toggleFullscreen?: Function;
+		toggleFullscreen?: () => void;
 	}>(), {
 		duration: NaN,
 		buffered: 0,
@@ -139,7 +139,7 @@
 		<PlayerVideoMenu v-model="resolutionMenu">
 			<RadioOption
 				v-for="option in resolutionOptions"
-				:key="option"
+				:key="option.data"
 				:active="option.active"
 				@click="option.onChange"
 			>{{ option.data }}</RadioOption>
@@ -183,7 +183,7 @@
 			/>
 			<SoftButton
 				:icon="fullscreen ? 'fullscreen_exit' : 'fullscreen'"
-				@click="() => toggleFullscreen?.()"
+				@click="toggleFullscreen"
 			/>
 		</div>
 	</Comp>
