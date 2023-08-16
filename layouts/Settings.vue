@@ -1,7 +1,12 @@
 <script setup lang="ts">
 	const currentSetting = computed({
 		get: () => currentSettingsPage(),
-		set: id => navigate(`/settings/${id}`),
+		set: async id => {
+			while (currentSetting.value !== id) {
+				navigate(`/settings/${id}`);
+				await delay(50); // 解决有可能会跳转失败的问题。
+			}
+		},
 	});
 	const search = ref("");
 	const main = ref<HTMLElement>();
@@ -98,6 +103,8 @@
 	$show-drawer-duration: 500ms;
 	$nav-width: 245px + 2 * $nav-padding-x;
 	$max-width: 960px;
+	$backdrop-filter: blur(4px);
+	$submit-margin-y: 2rem;
 
 	.settings {
 		--side-width: calc(max((100% - #{$max-width + $nav-width}) / 2, 0px)); // 注意这里的 0px 一旦省略 px 就会报错，因此不能去掉单位。
@@ -266,7 +273,7 @@
 
 		&.nav-header,
 		&.page-header {
-			backdrop-filter: blur(4px);
+			backdrop-filter: $backdrop-filter;
 		}
 	}
 
@@ -333,49 +340,63 @@
 		}
 	}
 
-	%chip,
-	:deep(.chip) {
+	%chip {
 		@include chip-shadow;
 		@include round-large;
 		overflow: hidden;
 		background-color: c(surface-color);
 	}
+	
+	:deep {
+		.chip {
+			@extend %chip;
+		}
+		
+		section {
+			@extend %chip;
+			overflow: hidden;
 
-	:deep(section) {
-		@extend %chip;
-		overflow: hidden;
+			&[list] > * {
+				$extra-padding: 16px;
+				padding: 10px 20px;
+				overflow: visible;
 
-		&[list] > * {
-			$extra-padding: 16px;
-			padding: 10px 20px;
-			overflow: visible;
+				&:has(.ripple-circle) {
+					overflow: hidden;
+				}
 
-			&:has(.ripple-circle) {
-				overflow: hidden;
+				&:first-child {
+					padding-top: $extra-padding;
+				}
+
+				&:last-child {
+					padding-bottom: $extra-padding;
+				}
+
+				&:any-hover {
+					background-color: c(hover-overlay);
+				}
 			}
 
-			&:first-child {
-				padding-top: $extra-padding;
-			}
-
-			&:last-child {
-				padding-bottom: $extra-padding;
-			}
-
-			&:any-hover {
-				background-color: c(hover-overlay);
+			&[grid] {
+				@include videos-grid;
+				padding: 20px;
 			}
 		}
-
-		&[grid] {
-			@include videos-grid;
-			padding: 20px;
+		
+		.submit {
+			position: sticky;
+			right: 0;
+			bottom: 0;
+			z-index: 4;
+			display: flex;
+			gap: 5px;
+			justify-content: flex-end;
+			margin: 0 #{-$main-padding-x} #{-$submit-margin-y};
+			margin-top: 0;
+			padding: 0 $main-padding-x $submit-margin-y;
+			background-color: c(main-bg, 80%);
+			backdrop-filter: $backdrop-filter;
 		}
-	}
-
-	:deep(.submit) {
-		display: flex;
-		gap: 5px;
-		justify-content: flex-end;
 	}
 </style>

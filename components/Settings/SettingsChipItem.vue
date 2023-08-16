@@ -25,10 +25,8 @@
 			</div>
 			<Icon v-else-if="icon" :name="icon" :filled="filled" class="item-icon" />
 			<div class="text">
-				<div class="title">
-					<slot></slot>
-				</div>
-				<div v-if="details" class="details">{{ details }}</div>
+				<label class="title"><slot></slot></label>
+				<label class="details"><slot name="details">{{ details }}</slot></label>
 			</div>
 			<template v-if="trailingIcon">
 				<Icon v-if="!onTrailingIconClick" class="trailing-icon" :name="trailingIcon" />
@@ -88,8 +86,6 @@
 
 			.details {
 				margin-top: 4px;
-				color: c(icon-color);
-				font-size: 12px;
 			}
 		}
 

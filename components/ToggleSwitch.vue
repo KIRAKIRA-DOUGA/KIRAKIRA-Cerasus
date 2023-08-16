@@ -6,9 +6,12 @@
 		disabled?: boolean;
 		/** 图标，可选。 */
 		icon?: string;
+		/** 详细信息。 */
+		details?: Readable;
 	}>(), {
 		disabled: false,
 		icon: undefined,
+		details: undefined,
 	});
 
 	const model = defineModel<boolean>();
@@ -76,7 +79,10 @@
 		@keyup.enter.prevent="onClick"
 	>
 		<Icon v-if="icon" :name="icon" />
-		<label class="content"><slot></slot></label>
+		<div class="content">
+			<label class="title"><slot></slot></label>
+			<label class="details"><slot name="details">{{ details }}</slot></label>
+		</div>
 		<div class="switch">
 			<div class="base"></div>
 			<div class="thumb" @pointerdown="onThumbDown"></div>
@@ -110,10 +116,13 @@
 		}
 
 		> .content {
-			display: flex;
-			align-items: center;
 			width: 100%;
 			color: c(text-color);
+
+			> * {
+				display: flex;
+				align-items: center;
+			}
 		}
 	}
 
