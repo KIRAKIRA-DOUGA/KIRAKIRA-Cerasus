@@ -1,7 +1,9 @@
 <script setup lang="tsx">
 	import { Icon } from "#components";
 	const props = defineProps<{
+		/** 视频 ID。 */
 		id: number;
+		/** 视频评分。 */
 		rating: number;
 	}>();
 
@@ -20,14 +22,18 @@
 		useEvent("app:requestLogin");
 	}
 
-	/** upvotes the current video */
+	/**
+	 * 为当前视频加分。
+	 */
 	async function upvote() {
 		const oapiClient = useApi();
 		await oapiClient.upvoteVideo(props.id, 1);
 		counts.rating++;
 	}
 
-	/** downvotes the current video */
+	/**
+	 * 为当前视频减分。
+	 */
 	async function downvote() {
 		const oapiClient = useApi();
 		await oapiClient.upvoteVideo(props.id, -1);

@@ -1,4 +1,5 @@
 // stylelint-disable property-no-unknown
+// stylelint-disable declaration-block-no-duplicate-properties
 
 @layer base, theme, layout, props, utilities, components, special;
 
@@ -7,8 +8,14 @@
 ::after {
 	box-sizing: border-box;
 	font-family: $chinese-fonts;
-	font-feature-settings: "ss02" on, "ss01" on, "liga" on, "rlig" on, "dlig" on, "hlig" on, "onum" on, "kern" on;
+	// font-feature-settings: "ss02" on, "ss01" on, "liga" on, "rlig" on, "dlig" on, "hlig" on, "onum" on, "kern" on;
 	font-variant-east-asian: proportional-width;
+	font-variant-ligatures: common-ligatures discretionary-ligatures historical-ligatures contextual;
+	font-variant-numeric: oldstyle-nums;
+	font-kerning: normal;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
 	tab-size: 4;
 	transition: $fallback-transitions;
 	user-select: none;
@@ -18,9 +25,7 @@
 	margin-block-end: 0;
 	margin-inline-start: 0;
 	margin-inline-end: 0;
-	-webkit-font-smoothing: antialiased;
-	text-rendering: optimizeLegibility;
-	-moz-osx-font-smoothing: grayscale;
+	white-space-collapse: collapse;
 	white-space-collapse: discard;
 	text-space-collapse: discard;
 	text-spacing: normal;
@@ -51,7 +56,7 @@ tt {
 }
 
 body {
-	@include full-screen(relative);
+	@include fullscreen(relative);
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
@@ -74,7 +79,7 @@ a {
 }
 
 iframe.noscript-mask {
-	@include full-screen;
+	@include fullscreen;
 	z-index: 100;
 	border: none;
 }
