@@ -1,5 +1,6 @@
 <script lang="tsx">
 	const comp = defineComponent({
+		inheritAttrs: true,
 		props: {
 			/**
 			 * 指示其元素是否可以聚焦，以及它是否/在何处参与顺序键盘导航。
