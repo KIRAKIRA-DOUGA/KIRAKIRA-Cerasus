@@ -179,7 +179,6 @@
 				.soft-button {
 					--wrapper-size: #{$height};
 					--icon-size: 20px;
-					--ripple-size: 58px;
 				}
 				
 				.text-length {

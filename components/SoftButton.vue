@@ -77,7 +77,8 @@
 
 <style scoped lang="scss">
 	$wrapper-size: 40px;
-	$ripple-size: 64px;
+	$ripple-ratio: calc(64px / 40px);
+	$ripple-size: calc(var(--wrapper-size) * $ripple-ratio);
 	$focus-size: var(--wrapper-size);
 	$icon-size: 24px;
 

@@ -2,6 +2,10 @@
 	# 视频控制栏浮出菜单
 </docs>
 
+<script lang="ts">
+	
+</script>
+
 <script setup lang="ts">
 	const emits = defineEmits<{
 		show: [];
@@ -14,8 +18,8 @@
 	/** 指定在鼠标移出区域多久后自动隐藏。 */
 	const WAITING = 1000;
 	const hideTimeoutId = ref<NodeJS.Timeout>();
-	/** 在请求关闭本组件的所有实例时，要求本实例不得关闭。 */
-	const exceptMe = ref(false);
+	/** 在请求隐藏本组件的所有实例时，要求本实例不得隐藏。 */
+	const hideExceptMe = ref(false);
 	/** 视频播放器控制栏中 SoftButton 的水波纹半径与容器半径之差。 */
 	const X_OFFSET = 12;
 
@@ -29,14 +33,14 @@
 	}
 
 	/**
-	 * 鼠标移出区域，超时后自动关闭。
+	 * 鼠标移出区域，超时后自动隐藏。
 	 */
 	function moveout() {
 		hideTimeoutId.value = setTimeout(hide, WAITING);
 	}
 
 	/**
-	 * 鼠标移入区域，取消自动关闭。
+	 * 鼠标移入区域，取消自动隐藏。
 	 */
 	function reshow() {
 		clearTimeout(hideTimeoutId.value);
@@ -48,9 +52,9 @@
 	 * @param e - 如有鼠标事件则为上下文菜单，否则为弹出式菜单。
 	 */
 	function show(e: NonNull<MenuModel>) {
-		exceptMe.value = true;
+		hideExceptMe.value = true;
 		useEvent("component:hideAllPlayerVideoMenu");
-		exceptMe.value = false;
+		hideExceptMe.value = false;
 		const relativeEl = getPath(e).find(element => getComputedStyle(element).position === "relative");
 		if (!relativeEl) return;
 		reshow();
@@ -64,7 +68,7 @@
 	}
 
 	useListen("component:hideAllPlayerVideoMenu", () => {
-		if (!exceptMe.value) hide();
+		if (!hideExceptMe.value) hide();
 	});
 
 	watch(model, e => {
@@ -99,10 +103,6 @@
 		
 		> :deep(*) {
 			margin-bottom: 12px;
-			
-			&:last-child {
-				margin-bottom: 10px;
-			}
 		}
 	}
 
@@ -123,10 +123,6 @@
 				@include round-small;
 				min-height: 36px;
 				padding: 0 16px 0 8px;
-				
-				&:not(:has(.ripple-circle)) {
-					overflow: visible;
-				}
 			}
 		}
 	}

@@ -130,8 +130,8 @@
 			</template>
 		</PlayerVideoMenu>
 		<PlayerVideoMenu v-model="rateMenu">
-			<ToggleSwitch v-model="resample" v-ripple icon="tunning">重采样音频</ToggleSwitch>
-			<ToggleSwitch v-model="steplessRate" v-ripple icon="speed">无级变速</ToggleSwitch>
+			<ToggleSwitch v-model="resample" v-ripple:overlay icon="tunning">重采样音频</ToggleSwitch>
+			<ToggleSwitch v-model="steplessRate" v-ripple:overlay icon="speed">无级变速</ToggleSwitch>
 			<template #slider>
 				<CapsuleSlider v-model="playbackRateLinear" :min="-2" :max="2" :displayValue="playbackRateText" :defaultValue="0" />
 			</template>
@@ -160,6 +160,7 @@
 				<span class="duration">{{ duration }}</span>
 			</div>
 			<SoftButton
+				class="resolution-button"
 				:text="resolution"
 				@mouseenter="e => resolutionMenu = e"
 				@mouseleave="resolutionMenu = undefined"
@@ -270,5 +271,16 @@
 
 	.menus {
 		display: contents;
+	}
+	
+	.soft-button {
+		--wrapper-size: #{$thickness};
+		
+		&.resolution-button:deep {
+			&,
+			* {
+				min-width: 50px;
+			}
+		}
 	}
 </style>

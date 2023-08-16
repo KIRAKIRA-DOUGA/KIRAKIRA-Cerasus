@@ -341,15 +341,14 @@
 		overflow: hidden;
 		background-color: c(surface-color);
 	}
-	
+
 	:deep {
 		.chip {
 			@extend %chip;
 		}
-		
+
 		section {
 			@extend %chip;
-			overflow: hidden;
 
 			&[list] > * {
 				$extra-padding: 16px;
@@ -378,7 +377,7 @@
 				padding: 20px;
 			}
 		}
-		
+
 		.submit {
 			position: sticky;
 			right: 0;
