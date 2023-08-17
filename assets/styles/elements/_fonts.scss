@@ -1,4 +1,4 @@
-/// 英文标题字体 Montserrat。
+/// 英文标题字体 Montserrat
 @for $_weight from 1 through 9 {
 	$weight: $_weight * 100;
 
@@ -13,22 +13,14 @@
 	}
 }
 
-@font-face {
-	font-weight: 100 900;
-	font-family: InterVar;
-	font-style: normal;
-	src: url("assets/fonts/Inter/InterVariable.woff2?v=4.0") format("woff2-variations"),
-		url("assets/fonts/Inter/InterVariable.woff2?v=4.0") format("woff2");
-	src: url("assets/fonts/Inter/InterVariable.woff2?v=4.0") format("woff2") tech("variations");
-	font-display: swap;
-}
-
-@font-face {
-	font-weight: 100 900;
-	font-family: InterVar;
-	font-style: italic;
-	src: url("assets/fonts/Inter/InterVariable-Italic.woff2?v=4.0") format("woff2-variations"),
-		url("assets/fonts/Inter/InterVariable-Italic.woff2?v=4.0") format("woff2");
-	src: url("assets/fonts/Inter/InterVariable-Italic.woff2?v=4.0") format("woff2") tech("variations");
-	font-display: swap;
+/// 英文正文可变字体 Inter
+/// https://github.com/rsms/inter/
+@for $_style from 1 through 2 {
+	@font-face {
+		font-weight: 100 900;
+		font-family: InterVar;
+		font-style: if($_style == 1, normal, italic);
+		font-display: swap;
+		src: url("assets/fonts/Inter/InterVariable#{if($_style == 1, '', '-Italic')}.woff2?v=4.0") format("woff2-variations");
+	}
 }
