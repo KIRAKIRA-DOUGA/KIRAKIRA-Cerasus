@@ -7,7 +7,7 @@
 			font-weight: $weight;
 			font-family: Montserrat;
 			font-style: if($_style == 1, normal, italic);
-			font-display: swap;
+			font-display: block;
 			src: url("assets/fonts/Montserrat/#{$weight}#{if($_style == 1, '', _italic)}.woff2") format("woff2");
 		}
 	}
