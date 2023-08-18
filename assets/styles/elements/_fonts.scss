@@ -18,7 +18,7 @@
 @for $_style from 1 through 2 {
 	@font-face {
 		font-weight: 100 900;
-		font-family: InterVar;
+		font-family: "Inter Variable";
 		font-style: if($_style == 1, normal, italic);
 		font-display: swap;
 		src: url("assets/fonts/Inter/InterVariable#{if($_style == 1, '', '-Italic')}.woff2?v=4.0") format("woff2-variations");
