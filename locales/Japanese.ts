@@ -1,5 +1,6 @@
 // 注意：在日语中请为片假名中的外来语单词之间增添空格。
 // [琪露诺瓦露] 建议：新添加的键可以考虑将其注释，方便定位未翻译内容的位置
+// [琪露诺瓦露] 2308119：部分因为长度过长会出现无法显示完全的情况(如忘记密码)，需要考虑对策
 
 import { LocaleIdentifiers } from "./SChinese";
 
@@ -219,7 +220,7 @@ const Japanese: LocaleIdentifiers = {
 	download_video: "ダウンロード",
 	report_creation: "通報",
 	password_hint: "パスワードのヒント",
-	forgot_password: "パスワードをお忘れの場合",
+	forgot_password: "1パスワードをお忘れの場合",
 	reset_password: "パスワードの再設定",
 };
 
@@ -233,4 +234,6 @@ export default Japanese;
  * 	日语语境中“弾幕”指同屏评论（コメント）数量如弹幕游戏一般多到盖住画面的现象
  * 	而中文里指在视频画面上滚动的评论本身而不是现象
  * 	此处暂且将视频中的评论译为“弾幕”，页面下方的评论作“コメント”
+ * forgot_password (230819)
+ *  作为登录组件忘记密码时的标题，目前存在长度过长影响展示的情况
  */
