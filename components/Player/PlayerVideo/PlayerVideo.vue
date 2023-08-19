@@ -101,7 +101,10 @@
 
 	watch(fullscreen, fullscreen => {
 		if (fullscreen)
-			screen.orientation.lock("landscape"); // 全屏时请求横屏。在设备不支持或安全问题时可能会报错，以后正式上线时记得把错误吞掉。
+			try {
+				screen.orientation.lock("landscape");
+				// 全屏时请求横屏。在设备不支持或安全问题时可能会报错，以后正式上线时记得把错误吞掉。
+			} catch { }
 		else
 			screen.orientation.unlock();
 	});
