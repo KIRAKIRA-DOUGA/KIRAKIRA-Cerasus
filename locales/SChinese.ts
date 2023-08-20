@@ -218,13 +218,9 @@ const SChinese = {
 	password_hint: "密码提示",
 	forgot_password: "忘记密码",
 	reset_password: "重设密码",
+	foo: {
+		bar: "大数据开发{0}还是",
+	},
 } as const;
 
 export default SChinese;
-type $ = {
-	(...args: Readable[]): string;
-	(args: Readable[] | RecordValue<Readable>): string;
-};
-export type I18nArgsFunction = $;
-export type LocaleWithDefaultValue = { [key in keyof typeof SChinese]: typeof SChinese[key] & I18nArgsFunction };
-export type LocaleIdentifiers = Record<keyof typeof SChinese, string>;

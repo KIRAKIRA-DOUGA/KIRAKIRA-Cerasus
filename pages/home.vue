@@ -50,6 +50,7 @@
 
 <template>
 	<div class="container">
+		{{ t.foo.bar(123) }}
 		<div>
 			<TabBar v-model="data.selectedTab" @movingForTransition="name => transitionName = name">
 				<TabItem

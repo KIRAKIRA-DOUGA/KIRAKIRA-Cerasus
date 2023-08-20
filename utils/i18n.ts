@@ -1,19 +1,28 @@
-import { I18nArgsFunction, LocaleWithDefaultValue } from "locales/SChinese";
+import { I18nArgsFunction, LocaleWithDefaultValue } from "locales/types";
 
 // 如果需要 <i18n> 块内语言字符串：useI18n({ useScope: "local" })
-const handler = {
+const getHandler = (...parents: string[]) => ({
 	get(_target: object, name: string) {
 		if (name === "__v_isRef") return; // Vuex 干的好事。
 		const i18n = useNuxtApp().$i18n;
-		const value = i18n.t(name);
-		const withArgs = (...args: Readable[]) =>
-			typeof args[0] === "object" ? i18n.t(name, args[0]) : i18n.t(name, args);
-		withArgs.toString = () => value;
-		return withArgs;
+		const getParentsPrefix = (...prefixes: string[]) => prefixes.length ? prefixes.join(".") : "";
+		const value = i18n.t(getParentsPrefix(...parents, name) + name);
+		const getWithArgsFunction = (...prefixes: string[]) =>
+			(...args: Readable[]) =>
+				i18n.t(getParentsPrefix(...prefixes), typeof args[0] === "object" ? args[0] : args);
+		const withArgsProxy = new Proxy(getWithArgsFunction(...parents, name), {
+			get(_target, name2): unknown {
+				if (name2 === Symbol.toPrimitive || name2 === "toString")
+					return () => value;
+				if (typeof name2 === "string")
+					return new Proxy(getWithArgsFunction(...parents, name2), getHandler(...parents, name2));
+			},
+		});
+		return withArgsProxy;
 	},
-};
+});
 /** 获取本地化字符串对象。 */
-export const t = new Proxy({}, handler) as LocaleWithDefaultValue & Readonly<Record<string, string & I18nArgsFunction>>;
+export const t = new Proxy({}, getHandler()) as LocaleWithDefaultValue & Readonly<Record<string, string & I18nArgsFunction>>;
 Object.freeze(t);
 
 /**
