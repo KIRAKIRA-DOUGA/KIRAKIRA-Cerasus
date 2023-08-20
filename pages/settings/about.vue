@@ -13,21 +13,21 @@
 	const nuxt = useNuxtApp();
 
 	const repositories: { name: string; codeName?: string; link: string; icon?: string }[] = [
-		{ name: "GitHub前端仓库地址与问题反馈", codeName: "Cerasus", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus" },
+		{ name: "GitHub前端仓库地址与问题反馈", codeName: "KIRAKIRA Cerasus", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus" },
 		{ name: "个人中心Markdown仓库地址与问题反馈", codeName: "KIRAKIRA Flavored Markdown", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Flavored-Markdown" },
 		{ name: "GitHub后端仓库地址与问题反馈", codeName: "KIRAKIRA Golang Backend", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-golang-backend" },
-		// { name: "GitHub后端仓库地址与问题反馈", codeName: "Rosales", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Rosales" },
+		// { name: "GitHub后端仓库地址与问题反馈", codeName: "KIRAKIRA Rosales", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Rosales" },
 	];
 
 	const team: { name: string; job: string[]; uid: number; avatar?: string }[] = [
-		{ name: "艾了个拉", job: [t.settings_about_staff_webmaster, t.settings_about_staff_design], uid: NaN, avatar: avatar("aira.webp") },
-		{ name: "兰音", job: [t.settings_about_staff_frontend, t.settings_about_staff_design], uid: NaN, avatar: avatar("nucleic_acid_testing.jpg") },
-		{ name: "OtoMAN", job: [t.settings_about_staff_backend], uid: NaN, avatar: avatar("Otoman.png") },
-		{ name: "冲锋的小卡卡", job: [t.settings_about_staff_backend], uid: NaN, avatar: avatar("ZERO_TWO.jpg") },
-		{ name: "维他柠檬茶", job: [t.settings_about_staff_frontend], uid: NaN, avatar: avatar("VTchara.webp") },
-		{ name: "琪露诺瓦露", job: [t.ja, t.settings_about_staff_translate], uid: NaN, avatar: avatar("Cirnoire.png") },
-		{ name: "Sidd", job: [t.settings_about_staff_frontend], uid: NaN, avatar: avatar("sidd.jpg") },
-		{ name: "鸣", job: [t.settings_about_staff_frontend], uid: NaN, avatar: avatar("Mingeax.jpg") },
+		{ name: "艾了个拉", job: [t.settings.about.staff.webmistress, t.settings.about.staff.designer], uid: NaN, avatar: avatar("aira.webp") },
+		{ name: "兰音", job: [t.settings.about.staff.frontend, t.settings.about.staff.designer], uid: NaN, avatar: avatar("nucleic_acid_testing.jpg") },
+		{ name: "OtoMAN", job: [t.settings.about.staff.backend], uid: NaN, avatar: avatar("Otoman.png") },
+		{ name: "冲锋的小卡卡", job: [t.settings.about.staff.backend], uid: NaN, avatar: avatar("ZERO_TWO.jpg") },
+		{ name: "维他柠檬茶", job: [t.settings.about.staff.frontend], uid: NaN, avatar: avatar("VTchara.webp") },
+		{ name: "琪露诺瓦露", job: [t.ja, t.settings.about.staff.translator], uid: NaN, avatar: avatar("Cirnoire.png") },
+		{ name: "Sidd", job: [t.settings.about.staff.frontend], uid: NaN, avatar: avatar("sidd.jpg") },
+		{ name: "鸣", job: [t.settings.about.staff.frontend], uid: NaN, avatar: avatar("Mingeax.jpg") },
 	];
 
 	const technologies: { name: string; version: string; ability: string; icon?: string; monochrome?: boolean; link: string }[] = [
@@ -45,7 +45,7 @@
 	<LogoText />
 	<p class="slogan"><span>一个可爱的视频网站，</span><span><b>献给可爱的你！</b></span></p>
 
-	<Subheader icon="link">{{ t.settings_about_repositories }}</Subheader>
+	<Subheader icon="link">{{ t.settings.about.repositories }}</Subheader>
 	<section>
 		<SettingsChipItem
 			v-for="repo in repositories"
@@ -57,7 +57,7 @@
 		>{{ repo.name }}</SettingsChipItem>
 	</section>
 
-	<Subheader icon="people">{{ t.settings_about_staff }}</Subheader>
+	<Subheader icon="people">{{ t.settings.about.creative_team }}</Subheader>
 	<section>
 		<SettingsChipItem
 			v-for="staff in team"
@@ -69,7 +69,7 @@
 		>{{ staff.name }}</SettingsChipItem>
 	</section>
 
-	<Subheader icon="build">{{ t.settings_about_technologies_used }}</Subheader>
+	<Subheader icon="build">{{ t.settings.about.technologies_used }}</Subheader>
 	<section>
 		<SettingsChipItem
 			v-for="tech in technologies"

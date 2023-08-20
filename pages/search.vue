@@ -32,13 +32,13 @@
 					</section>
 
 					<section>
-						<Subheader icon="sort">{{ t.sort_by }}</Subheader>
+						<Subheader icon="sort">{{ t.sort.by }}</Subheader>
 						<Sort v-model="sort">
 							<SortItem id="date" preferOrder="descending">{{ t.upload_date }}</SortItem>
-							<SortItem id="view" preferOrder="descending">{{ t.sort_view }}</SortItem>
-							<SortItem id="danmaku" preferOrder="descending">{{ t.sort_danmaku }}</SortItem>
-							<SortItem id="comment" preferOrder="descending">{{ t.sort_comment }}</SortItem>
-							<SortItem id="favorite" preferOrder="descending">{{ t.sort_favorite }}</SortItem>
+							<SortItem id="view" preferOrder="descending">{{ t.sort.view }}</SortItem>
+							<SortItem id="danmaku" preferOrder="descending">{{ t.sort.danmaku }}</SortItem>
+							<SortItem id="comment" preferOrder="descending">{{ t.sort.comment }}</SortItem>
+							<SortItem id="favorite" preferOrder="descending">{{ t.sort.favorite }}</SortItem>
 							<SortItem id="duration" preferOrder="descending">{{ t.duration }}</SortItem>
 							<SortItem id="rating">{{ t.rating }}</SortItem>
 						</Sort>

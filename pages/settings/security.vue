@@ -36,16 +36,16 @@
 		>{{ t.authenticator }}</SettingsChipItem>
 	</section>
 
-	<Modal v-model="showChangePassword" :title="t.password_change" icon="password">
+	<Modal v-model="showChangePassword" :title="t.password.change" icon="password">
 		<div class="change-password-modal">
 			<div>
-				<TextBox v-model="oldPassword" type="password" icon="lock" :placeholder="t.password_current" />
-				<TextBox v-model="confirmNewPassword" type="password" icon="lock" :placeholder="t.password_new" />
-				<TextBox v-model="newPassword" type="password" icon="lock" :placeholder="t.password_new_retype" />
+				<TextBox v-model="oldPassword" type="password" icon="lock" :placeholder="t.password.current" />
+				<TextBox v-model="confirmNewPassword" type="password" icon="lock" :placeholder="t.password.new" />
+				<TextBox v-model="newPassword" type="password" icon="lock" :placeholder="t.password.new_retype" />
 			</div>
 		</div>
 		<template #footer-right>
-			<Button class="secondary" @click="showChangePassword = false">{{ t.step_cancel }}</Button>
+			<Button class="secondary" @click="showChangePassword = false">{{ t.step.cancel }}</Button>
 			<Button>{{ t.apply }}</Button>
 			<!-- TODO: Use a toast to show success or not, usage can be seen in page/components. -->
 			<!-- if success, the modal should be closed automaticly -->

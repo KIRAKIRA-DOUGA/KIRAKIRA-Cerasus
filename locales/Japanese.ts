@@ -1,6 +1,10 @@
-// 注意：在日语中请为片假名中的外来语单词之间增添空格。
-// [琪露诺瓦露] 建议：新添加的键可以考虑将其注释，方便定位未翻译内容的位置
-// [琪露诺瓦露] 2308119：部分因为长度过长会出现无法显示完全的情况(如忘记密码)，需要考虑对策
+/**
+ * 说明：
+ * 1. 在日语中请为片假名中的外来语单词之间增添空格。
+ * 2. 在对按钮等标签的引用，需要在外面用方括号括起来。例如：[OK] ボタンをクリックして続行します。
+ * 3. 请在新添加的键之后标注注释，方便定位未翻译内容的位置。
+ * 4. 部分因为长度过长会出现无法显示完全的情况（如忘记密码），需要考虑对策。
+ */
 
 import { LocaleIdentifiers } from "./types";
 
@@ -10,14 +14,16 @@ const Japanese: LocaleIdentifiers = {
 	caesura: "・",
 	welcome: "ようこそ",
 	home: "ホーム",
-	category: "カテゴリ",
-	category_anime: "アニメ",
-	category_music: "音楽",
-	category_otomad: "音MAD",
-	category_tech: "技術",
-	category_design: "デザイン",
-	category_game: "ゲーム",
-	category_other: "総合",
+	category: {
+		_: "カテゴリ",
+		anime: "アニメ",
+		music: "音楽",
+		otomad: "音MAD",
+		tech: "技術",
+		design: "デザイン",
+		game: "ゲーム",
+		other: "総合",
+	},
 	content: "コンテンツ",
 	search: "検索",
 	button: "ボタン",
@@ -33,7 +39,6 @@ const Japanese: LocaleIdentifiers = {
 	disabled: "無効化されたスイッチ",
 	background: "背景",
 	animated_background: "動く背景",
-	settings: "設定",
 	light: "ライト テーマ",
 	dark: "ダーク テーマ",
 	system: "システムのテーマ設定を使用する",
@@ -68,18 +73,20 @@ const Japanese: LocaleIdentifiers = {
 	privacy: "プライバシー",
 	security: "セキュリティ",
 	login_options: "ログイン オプション",
-	password: "パスワード",
-	password_forgot: "パスワードをお忘れの場合",
-	password_retype: "パスワードを確認",
-	password_change: "パスワードの変更",
-	password_current: "現在のパスワード",
-	password_new_retype: "新しいパスワードの確認",
-	password_new: "新しいパスワード",
+	password: {
+		_: "パスワード",
+		forgot: "パスワードをお忘れの場合",
+		retype: "パスワードを確認",
+		change: "パスワードの変更",
+		current: "現在のパスワード",
+		new_retype: "新しいパスワードの確認",
+		new: "新しいパスワード",
+	},
 	account_linking: "SNSリンク",
 	blocklist: "ブロックリスト",
 	player: "プレーヤー",
 	danmaku: "弾幕",
-	danmaku_send: "弾幕を投稿",
+	send_danmaku: "弾幕を送信",
 	preference: "プリファレンス",
 	accessibility: "アクセシビリティ",
 	about: "概要",
@@ -119,8 +126,8 @@ const Japanese: LocaleIdentifiers = {
 	awa: "萌え",
 	sad: "悲しみ",
 	embarrassed: "困惑",
-	bonus_point: "高評価",
-	minus_point: "低評価",
+	upvote: "高評価",
+	downvote: "低評価",
 	favorite_verb: "お気に入りに追加",
 	share: "共有",
 	danmaku_history: "弾幕履歴",
@@ -169,52 +176,70 @@ const Japanese: LocaleIdentifiers = {
 	test: "テスト",
 	error_pages: "エラーページ",
 	upload_date: "投稿日時",
-	sort_by: "並べ替え",
-	sort_view: "再生数",
-	sort_danmaku: "弾幕数",
-	sort_comment: "コメント数",
-	sort_favorite: "お気に入り登録数",
-	view: "表示形式",
-	view_list: "リスト",
-	view_grid: "グリッド",
-	view_tile: "タイル",
+	sort: {
+		by: "並べ替え",
+		view: "再生数",
+		danmaku: "弾幕数",
+		comment: "コメント数",
+		favorite: "お気に入り登録数",
+	},
+	view: {
+		_: "表示形式",
+		list: "リスト",
+		grid: "グリッド",
+		tile: "タイル",
+	},
 	duration: "長さ",
 	viewers: "視聴者",
 	are_watching: "人が視聴中",
-	step_next: "次へ",
-	step_previous: "戻る",
-	step_ok: "完了",
-	step_cancel: "キャンセル",
-	loginwindow_login_welcome: "ようこそ",
-	loginwindow_login_to_forgot: "パスワードをお忘れの場合",
-	loginwindow_login_to_register: "新規登録",
-	loginwindow_register_back_to_login: "すでにアカウントをお持ちですか？",
-	loginwindow_forgot_found_password: "パスワードを思い出した",
-	loginwindow_register_email_sent_info: "確認コードを送信しました。受け取ったコードを入力してください。\n届いてない場合、コードを再送信することができます。",
-	loginwindow_forgot_info: "アカウントのメールアドレスを入力してください。\nこのアドレス宛にメールを送ります。メールの中のリンクをクリックしてパスワード再設定の手続を続行します。",
-	loginwindow_reset_successful_info: "本人確認ができました！\n新しいパスワードを設定してください。そして忘れないようにしてください。",
+	step: {
+		next: "次へ",
+		previous: "戻る",
+		ok: "完了",
+		cancel: "キャンセル",
+	},
+	loginwindow: {
+		login_welcome: "ようこそ",
+		login_to_forgot: "パスワードをお忘れの場合",
+		login_to_register: "新規登録",
+		register_to_login: "すでにアカウントをお持ちですか？",
+		forgot_to_login: "パスワードを思い出した",
+		register_email_sent_info: "確認コードを送信しました。受け取ったコードを入力してください。\n届いてない場合、コードを再送信することができます。",
+		forgot_info: "アカウントのメールアドレスを入力してください。\nこのアドレス宛にメールを送ります。メールの中のリンクをクリックしてパスワード再設定の手続を続行します。",
+		reset_successful_info: "本人確認ができました！\n新しいパスワードを設定してください。そして忘れないようにしてください。",
+	},
 	settings_unselected: "設定項目を選択してください。",
 	combobox_unselected: "選択してください。",
-	settings_profile_banner_change: "バナー画像の変更",
-	settings_profile_avatar_change: "プロフィールアイコンの変更",
-	settings_about_repositories: "リポジトリ",
-	settings_about_staff: "スタッフ",
-	settings_about_staff_webmaster: "ウェブマスター",
-	settings_about_staff_design: "デザイン",
-	settings_about_staff_translate: "翻訳",
-	settings_about_staff_frontend: "フロントエンド",
-	settings_about_staff_backend: "バックエンド",
-	settings_about_technologies_used: "使用されている技術",
-	user_name: "ニックネーム",
-	user_name_requirements: "1~20文字、大小英数字、ひらがな/カタカナ、漢字、特殊記号の｢-｣と｢_｣のみ使用できます。",
-	user_bio: "自己紹介",
-	user_gender: "性別",
+	settings: {
+		_: "設定",
+		profile: {
+			edit_banner: "バナー画像の変更",
+			edit_avatar: "プロフィールアイコンの変更",
+		},
+		about: {
+			repositories: "リポジトリ",
+			creative_team: "クリエイティブ チーム", // NEW
+			staff: {
+				webmistress: "ウェブマストレス", // NEW
+				designer: "デザイナー", // NEW
+				frontend: "フロントエンド",
+				backend: "バックエンド",
+				translator: "翻訳者", // NEW
+			},
+			technologies_used: "使用されている技術",
+		},
+	},
+	user: {
+		name: "ニックネーム",
+		name_requirements: "1~20文字、大小英数字、ひらがな/カタカナ、漢字、特殊記号の｢-｣と｢_｣のみ使用できます。",
+		bio: "自己紹介",
+		gender: "性別",
+	},
 	zh: "簡体字中国語",
 	en: "英語",
 	ja: "日本語",
 	development_test_page: "デベロップメント テストページ",
 	components_test_page: "コンポーネンツ テストページ",
-	send_danmaku: "弾幕を送信",
 	view_cover: "サムネイルの確認",
 	watch_later: "後で見る",
 	download_video: "ダウンロード",
@@ -226,9 +251,9 @@ const Japanese: LocaleIdentifiers = {
 
 export default Japanese;
 
-/**
+/*
  * MEMO
- * loginwindow_register_back_to_login
+ * loginwindow_register_to_login
  * 	原译作“すでにアカウントをお持ちですか？ログイン”,因文字列过长影响页面展示，故割爱
  * 关于“弹幕 danmaku”与“评论 comment”
  * 	日语语境中“弾幕”指同屏评论（コメント）数量如弹幕游戏一般多到盖住画面的现象

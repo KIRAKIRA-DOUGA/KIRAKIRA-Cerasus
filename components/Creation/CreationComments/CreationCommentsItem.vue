@@ -10,49 +10,57 @@
 		date?: Date;
 		/** 用户 UID。 */
 		uid?: number;
-
-		upvote_score?: number;
 	}>(), {
 		avatar: undefined,
 		username: "匿名",
 		index: undefined,
 		date: () => new Date(),
 		uid: undefined,
-		upvote_score: 0,
 	});
 
 	/** 为该评论加分的值。 */
-	const like = defineModel("like", { default: 0 });
+	const upvote = defineModel("upvote", { default: 0 });
 	/** 是否已点击加分？ */
-	const likeClicked = defineModel("likeClicked", { default: false });
+	const isUpvoted = defineModel("isUpvoted", { default: false });
 	/** 为该评论减分的值。 */
-	const dislike = defineModel("dislike", { default: 0 });
+	const downvote = defineModel("downvote", { default: 0 });
 	/** 是否已点击减分？ */
-	const dislikeClicked = defineModel("dislikeClicked", { default: false });
+	const isDownvoted = defineModel("isDownvoted", { default: false });
 	const date = computed(() => formatDate(props.date, "yyyy/MM/dd hh:mm:ss"));
 	const menu = ref<MenuModel>(); // TODO: 菜单需要新增功能，使其像浮窗一样可以贴附某个元素展开。
 	/** 是否已置顶？ */
 	const pinned = defineModel("pinned", { default: false });
 	const unpinnedCaption = computed(() => pinned.value ? "unpin" : "pin");
 
-	const upvotes = ref(props.upvote_score);
-
 	/**
 	 * 点击加分、减分按钮事件。
 	 * @param button - 点击的按钮是加分还是减分。
 	 * @param [noNestingDolls=false] - 禁止套娃，防止递归调用。
 	 */
-	async function onClickLikes(button: "like" | "dislike", noNestingDolls: boolean = false) {
-		const api = useApi();
-		const score = button === "like" ? 1 : -1;
-		await api.upvote(props.index ?? 0, score);
+	async function onClickVotes(button: "upvote" | "downvote", noNestingDolls: boolean = false) {
+		// const states = { upvote, isUpvoted, downvote, isDownvoted };
+		// const value = states[button], clicked = states[`${button}Clicked`]; // 面向字符串编程。
+		// const another = button === "like" ? "dislike" : "like";
+		// const isActive = clicked.value = !clicked.value, gain = isActive ? 1 : -1;
+		// value.value += gain;
+		// if (isActive && states[`${another}Clicked`].value && !noNestingDolls) onClickUpvote(another, true);
 
-		upvotes.value += score;
+		if (!props.index) return;
+		const api = useApi();
+		const score = button === "upvote" ? 1 : -1;
+		await api.upvote(props.index, score);
+		upvote.value += score;
+		// TODO: We should separate upvote and downvote value!
 	}
 
-	async function deleteComment(commentID) {
+	/**
+	 * 删除评论。
+	 * @param commentId - 评论 ID。
+	 */
+	async function deleteComment(commentId: number | undefined) {
+		if (!commentId) return;
 		const api = useApi();
-		await api.deleteComment(commentID);
+		await api.deleteComment(commentId);
 		// TODO: trigger reload in parent
 	}
 </script>
@@ -75,13 +83,14 @@
 				<div class="left">
 					<div v-if="index !== undefined">#{{ index }}</div>
 					<div>{{ date }}</div>
-					<div class="likes-wrapper">
-						<div class="likes" :class="{ active: likeClicked }">
-							<SoftButton v-tooltip:bottom="t.bonus_point" icon="thumb_up" @click="onClickLikes('like')" />
-							<span v-if="like">{{ upvotes }}</span>
+					<div class="votes-wrapper">
+						<div class="votes" :class="{ active: isUpvoted }">
+							<SoftButton v-tooltip:bottom="t.upvote" icon="thumb_up" @click="onClickVotes('upvote')" />
+							<span v-if="upvote">{{ upvote }}</span>
 						</div>
-						<div class="likes" :class="{ active: dislikeClicked }">
-							<SoftButton v-tooltip:bottom="t.minus_point" icon="thumb_down" @click="onClickLikes('dislike')" />
+						<div class="votes" :class="{ active: isDownvoted }">
+							<SoftButton v-tooltip:bottom="t.downvote" icon="thumb_down" @click="onClickVotes('downvote')" />
+							<span v-if="downvote">{{ downvote }}</span>
 						</div>
 					</div>
 				</div>
@@ -160,12 +169,12 @@
 			margin-left: auto;
 		}
 
-		.likes-wrapper {
+		.votes-wrapper {
 			display: flex;
 			gap: 14px;
 		}
 
-		.likes {
+		.votes {
 			display: flex;
 			gap: 11px;
 			align-items: center;
