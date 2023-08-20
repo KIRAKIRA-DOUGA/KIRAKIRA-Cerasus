@@ -1,4 +1,4 @@
-import { LocaleIdentifiers } from "./SChinese";
+import { LocaleIdentifiers } from "./types";
 
 const English: LocaleIdentifiers = {
 	colon: ": ",

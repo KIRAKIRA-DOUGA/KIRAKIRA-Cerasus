@@ -2,7 +2,7 @@
 // [琪露诺瓦露] 建议：新添加的键可以考虑将其注释，方便定位未翻译内容的位置
 // [琪露诺瓦露] 2308119：部分因为长度过长会出现无法显示完全的情况(如忘记密码)，需要考虑对策
 
-import { LocaleIdentifiers } from "./SChinese";
+import { LocaleIdentifiers } from "./types";
 
 const Japanese: LocaleIdentifiers = {
 	colon: "：",
