@@ -7,7 +7,7 @@
 	const { theme, palette, actualTheme } = Theme;
 	const themeList = ["light", "dark", "system"] as const;
 	const paletteList = [
-		{ color: "pink", subtitle: "Kawaii forever" },
+		{ color: "pink", subtitle: "Kawaii Forever" },
 		{ color: "sky", subtitle: "Jouga Maya" },
 		{ color: "blue", subtitle: "Kafuu Chino" },
 		{ color: "orange", subtitle: "Hoto Kokoa" },
@@ -67,7 +67,7 @@
 		<ToggleSwitch v-model="useAppSettingsStore().showCssDoodle" v-ripple icon="wallpaper">{{ t.animated_background }}</ToggleSwitch>
 		<SettingsChipItem icon="wallpaper" trailingIcon="edit">自定义背景</SettingsChipItem>
 	</section>
-	
+
 	<Subheader icon="more_horiz">其它</Subheader>
 	<section list>
 		<ToggleSwitch v-model="useAppSettingsStore().sharpAppearanceMode" v-ripple icon="square">直角样式</ToggleSwitch>
@@ -88,7 +88,7 @@
 	.settings-chip-item {
 		--size: small;
 	}
-	
+
 	.settings-grid-item:deep {
 		.ripple-circle {
 			z-index: 4;
@@ -144,7 +144,7 @@
 			&.color {
 				background-color: c(accent);
 				mix-blend-mode: color;
-				
+
 				html.dark & {
 					mix-blend-mode: hue;
 				}
@@ -153,7 +153,7 @@
 			&.light {
 				background-color: white;
 				opacity: 0.7;
-				
+
 				html.dark & {
 					background-color: black;
 				}
