@@ -118,6 +118,9 @@ export default defineNuxtConfig({
 				changeOrigin: true,
 			},
 		}, */
+		compressPublicAssets: {
+			brotli: true,
+		},
 		esbuild: {
 			options: {
 				target: "esnext",
