@@ -98,7 +98,8 @@
 		const value = ref<T>(def) as Ref<T>;
 
 		const list = reactive(options.map(option => {
-			if (option === undefined || option === null) return undefined!;
+			if ((option ?? "") === "") return undefined!;
+			// (value !== null && value !== undefined) 等价于 ((value ?? "") !== "")
 			const _option = option as object;
 			const key = typeof _option === "object" && "key" in _option ? _option.key as string : _option.toString();
 			const active = computed(() => value.value === option);
