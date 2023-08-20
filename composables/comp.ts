@@ -36,7 +36,8 @@ export function refMenu() {
 	return ref<InstanceType<typeof Menu>>();
 }
 
-type UnknownFunctionType = (...args: Any[]) => Any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type UnknownFunctionType = (...args: any[]) => any;
 
 /**
  * 获取基类组件的显示、隐藏函数。

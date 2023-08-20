@@ -219,7 +219,12 @@ const SChinese = {
 	forgot_password: "忘记密码",
 	reset_password: "重设密码",
 	foo: {
-		bar: "大数据开发{0}还是",
+		bar: "不错撒比{0}发顺丰",
+		baz: "csaca",
+		qua: {
+			abcd: "后",
+		},
+		_: "大数据开发{0}还是",
 	},
 } as const;
 
