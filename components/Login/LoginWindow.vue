@@ -132,8 +132,8 @@
 							</div>
 						</div>
 						<div class="action margin-left-inset margin-right-inset">
-							<Button @click="currentPage = 'forgot'">{{ t.loginwindow_login_to_forgot }}</Button>
-							<Button @click="currentPage = 'register'">{{ t.loginwindow_login_to_register }}</Button>
+							<Button @click="currentPage = 'forgot'">{{ t.loginwindow.login_to_forgot }}</Button>
+							<Button @click="currentPage = 'register'">{{ t.loginwindow.login_to_register }}</Button>
 						</div>
 					</div>
 				</div>
@@ -158,13 +158,13 @@
 							<TextBox
 								v-model="passwordHint"
 								type="text"
-								:placeholder="t.password_hint"
+								:placeholder="t.password.hint"
 								icon="visibility"
 							/>
 						</div>
 						<div class="action margin-left-inset">
-							<Button @click="currentPage = 'login'">{{ t.loginwindow_register_back_to_login }}</Button>
-							<Button icon="arrow_right" class="button icon-behind" @click="currentPage = 'register2'">{{ t.step_next }}</Button>
+							<Button @click="currentPage = 'login'">{{ t.loginwindow.register_to_login }}</Button>
+							<Button icon="arrow_right" class="button icon-behind" @click="currentPage = 'register2'">{{ t.step.next }}</Button>
 						</div>
 					</div>
 
@@ -172,7 +172,7 @@
 					<div class="register2">
 						<HeadingGroup :name="t.register" englishName="Register" class="collapse" />
 						<div class="form">
-							<div><Preserves>{{ t.loginwindow_register_email_sent_info }}</Preserves></div>
+							<div><Preserves>{{ t.loginwindow.register_email_sent_info }}</Preserves></div>
 							<TextBox
 								v-model="verificationCode"
 								type="text"
@@ -183,13 +183,13 @@
 							<TextBox
 								v-model="confirmPassword"
 								type="password"
-								:placeholder="t.password_retype"
+								:placeholder="t.password.retype"
 								icon="lock"
 							/>
 						</div>
 						<div class="action margin-left-inset">
-							<Button icon="arrow_left" class="button" @click="currentPage = 'register'">{{ t.step_previous }}</Button>
-							<Button icon="check" class="button" @click="registerUser">{{ t.step_ok }}</Button>
+							<Button icon="arrow_left" class="button" @click="currentPage = 'register'">{{ t.step.previous }}</Button>
+							<Button icon="check" class="button" @click="registerUser">{{ t.step.ok }}</Button>
 						</div>
 					</div>
 
@@ -197,7 +197,7 @@
 					<div class="forgot">
 						<HeadingGroup :name="t.forgot_password" englishName="forgot" />
 						<div class="form">
-							<div><Preserves>{{ t.loginwindow_forgot_info }}</Preserves></div>
+							<div><Preserves>{{ t.loginwindow.forgot_info }}</Preserves></div>
 							<TextBox
 								v-model="email"
 								type="email"
@@ -207,7 +207,7 @@
 							<Button icon="send" class="button button-block">{{ t.send }}</Button>
 						</div>
 						<div class="action margin-left-inset">
-							<Button @click="currentPage = 'login'">{{ t.loginwindow_forgot_found_password }}</Button>
+							<Button @click="currentPage = 'login'">{{ t.loginwindow.forgot_to_login }}</Button>
 						</div>
 					</div>
 
@@ -215,7 +215,7 @@
 					<div class="reset">
 						<HeadingGroup :name="t.reset_password" englishName="Reset" />
 						<div class="form">
-							<div><Preserves>{{ t.loginwindow_reset_successful_info }}</Preserves></div>
+							<div><Preserves>{{ t.loginwindow.reset_successful_info }}</Preserves></div>
 							<TextBox
 								v-model="password"
 								type="password"
@@ -225,13 +225,13 @@
 							<TextBox
 								v-model="confirmPassword"
 								type="password"
-								:placeholder="t.password_retype"
+								:placeholder="t.password.retype"
 								icon="lock"
 							/>
 						</div>
 						<div class="action margin-left-inset">
 							<div></div>
-							<Button icon="check" class="button" @click="resetPassword">{{ t.step_ok }}</Button>
+							<Button icon="check" class="button" @click="resetPassword">{{ t.step.ok }}</Button>
 						</div>
 					</div>
 
@@ -257,7 +257,7 @@
 					<div class="avatar">
 						<img :src="avatar" alt="avatar" />
 					</div>
-					<div class="welcome">{{ t.loginwindow_login_welcome }}</div>
+					<div class="welcome">{{ t.loginwindow.login_welcome }}</div>
 					<div class="name">艾了个拉</div> <!-- TODO: user name here -->
 				</div>
 			</Comp>

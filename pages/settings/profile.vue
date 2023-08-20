@@ -14,19 +14,19 @@
 <template>
 	<div v-ripple class="banner">
 		<img :src="banner" alt="banner" draggable="false" />
-		<span>{{ t.settings_profile_banner_change }}</span>
+		<span>{{ t.settings.profile.edit_banner }}</span>
 	</div>
 
 	<div class="change-avatar">
 		<UserAvatar :avatar="avatar" />
-		<span>{{ t.settings_profile_avatar_change }}</span>
+		<span>{{ t.settings.profile.edit_avatar }}</span>
 	</div>
 
 	<div class="items">
 		<div class="name">
 			<TextBox
 				v-model="name"
-				:placeholder="t.user_name"
+				:placeholder="t.user.name"
 				size="large"
 				icon="person"
 				required
@@ -34,7 +34,7 @@
 				:pattern="validChar"
 				:maxLength="20"
 			/>
-			<span>{{ t.user_name_requirements }}</span>
+			<span>{{ t.user.name_requirements }}</span>
 		</div>
 
 		<!-- <TextBox
@@ -48,7 +48,7 @@
 			:step="1"
 		/> -->
 
-		<TextBox v-model="signature" :placeholder="t.user_bio" icon="edit" />
+		<TextBox v-model="signature" :placeholder="t.user.bio" icon="edit" />
 
 		<TextBox v-model="birthday" type="date" :placeholder="t.birthday" icon="birthday" />
 		<!-- TODO: [艾拉] 这里需要日期选择组件，谁来做一下？ -->
@@ -58,7 +58,7 @@
 		<div class="gender">
 			<div class="gender-subtitle">
 				<Icon name="gender" class="icon" />
-				<span class="text">{{ t.user_gender }}</span>
+				<span class="text">{{ t.user.gender }}</span>
 			</div>
 
 			<div class="gender-radio-group">

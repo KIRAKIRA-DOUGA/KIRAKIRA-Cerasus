@@ -14,8 +14,7 @@
 		videoId: undefined,
 	});
 
-	const like = ref(0), dislike = ref(0), likeClicked = ref(false), dislikeClicked = ref(false), pinned = ref(false);
-
+	const downvote = ref(0), pinned = ref(false);
 	const search = ref("");
 </script>
 
@@ -37,10 +36,10 @@
 			<CreationCommentsItem
 				v-for="comment in comments"
 				:key="comment.id"
-				v-model:like="comment.upvoteCount"
-				v-model:dislike="dislike"
-				v-model:likeClicked="comment.userHasUpvoted"
-				v-model:dislikeClicked="comment.userHasDownvoted"
+				v-model:upvote="comment.upvoteCount"
+				v-model:downvote="downvote"
+				v-model:isUpvoted="comment.userHasUpvoted"
+				v-model:isDownvoted="comment.userHasDownvoted"
 				v-model:pinned="pinned"
 				:index="comment.id"
 				:username="comment.fullname"

@@ -64,7 +64,7 @@
 					direction="vertical-reverse"
 					:badge="categories.get(cat) || ''"
 				>
-					{{ t["category_" + cat.toLowerCase()] }}
+					{{ t.category[cat.toLowerCase()] }}
 				</TabItem>
 			</TabBar>
 		</div>
