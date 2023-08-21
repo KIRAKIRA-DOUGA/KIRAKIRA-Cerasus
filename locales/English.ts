@@ -1,6 +1,6 @@
 /*
  * 说明：
- * 1. 关于单复数的问题，Vue i18n 目前有一套自己的解决方案，不过目前还没有用例，先忽略之。
+ * 1. 使用管道符定义单复数，格式为 `单数 | 复数`。
  */
 
 import { LocaleIdentifiers } from "./types";
@@ -82,7 +82,7 @@ const English: LocaleIdentifiers = {
 	account_linking: "Account Linking",
 	blocklist: "Blocklist",
 	player: "Player",
-	danmaku: "Danmaku",
+	danmaku: "Danmaku | Danmakus",
 	send_danmaku: "Send Danmaku",
 	preference: "Preference",
 	accessibility: "Accessibility",
@@ -105,7 +105,9 @@ const English: LocaleIdentifiers = {
 	apply: "Apply",
 	reset: "Reset",
 	history: "History",
+	favorite: "Favorite | Favorites",
 	favorites: "Favorites",
+	favorite_verb: "Add to Favorites",
 	feed: "Feed",
 	upload: "Upload",
 	messages: "Messages",
@@ -125,7 +127,6 @@ const English: LocaleIdentifiers = {
 	embarrassed: "Embarrassed",
 	upvote: "Upvote",
 	downvote: "Downvote",
-	favorite_verb: "Add to Favorites",
 	share: "Share",
 	danmaku_history: "Danmaku History",
 	play: "Play",
@@ -163,8 +164,8 @@ const English: LocaleIdentifiers = {
 	album: "Album",
 	follow: "Follow",
 	following: "Following",
-	fans: "Fans",
-	views_video: "Views",
+	fans: "Fan | Fans",
+	views_video: "View | Views",
 	join_time: "Join Time",
 	user_info: "User Info",
 	acknowledgement: "Acknowledgement",
@@ -188,7 +189,7 @@ const English: LocaleIdentifiers = {
 	},
 	duration: "Duration",
 	viewers: "Viewers",
-	are_watching: "are watching",
+	are_watching: "is watching | are watching",
 	step: {
 		next: "Next",
 		previous: "Previous",

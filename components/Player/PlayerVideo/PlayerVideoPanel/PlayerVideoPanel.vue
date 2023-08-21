@@ -8,11 +8,11 @@
 	}>();
 
 	const counts = reactive({
-		play: 100,
+		play: 100n,
 		rating: props.rating,
-		favorite: 100,
-		danmaku: 10000,
-		watching: 10,
+		favorite: 100n,
+		danmaku: 10000n,
+		watching: 1n,
 	});
 
 	/**
@@ -72,13 +72,13 @@
 	<Comp>
 		<div class="top">
 			<div class="info">
-				<CountItem icon="play" :value="getWatchCount(counts.play)">{{ t.views_video }}</CountItem>
+				<CountItem icon="play" :value="getWatchCount(counts.play)">{{ t(counts.play).views_video }}</CountItem>
 				<CountItem icon="thumb_up" :value="getWatchCount(counts.rating)" :class="{ dislike: counts.rating < 0 }">{{ t.rating }}</CountItem>
-				<CountItem icon="star" :value="getWatchCount(counts.favorite)">{{ t.favorites }}</CountItem>
-				<CountItem icon="danmaku" :value="getWatchCount(counts.danmaku)">{{ t.danmaku }}</CountItem>
+				<CountItem icon="star" :value="getWatchCount(counts.favorite)">{{ t(counts.favorite).favorite }}</CountItem>
+				<CountItem icon="danmaku" :value="getWatchCount(counts.danmaku)">{{ t(counts.danmaku).danmaku }}</CountItem>
 				<div class="watching">
-					<span class="watching-number">10</span>
-					<span class="watching-description">{{ t.are_watching }}</span>
+					<span class="watching-number">{{ counts.watching }}</span>
+					<span class="watching-description">{{ t(counts.watching).are_watching }}</span>
 				</div>
 			</div>
 			<div class="buttons">
