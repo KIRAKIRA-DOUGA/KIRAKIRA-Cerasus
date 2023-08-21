@@ -24,7 +24,7 @@
 				<CreationDetailItem v-if="copyright === 'original'" icon="fact_check">{{ t.original }}</CreationDetailItem>
 				<CreationDetailItem v-if="copyright === 'authorized-repost'" icon="local_shipping">{{ t.authorized_repost }}</CreationDetailItem>
 				<CreationDetailItem v-if="copyright === 'repost'" icon="local_shipping">{{ t.repost }}</CreationDetailItem>
-				<a><CreationDetailItem icon="photo">{{ t.view.cover }}</CreationDetailItem></a>
+				<a><CreationDetailItem icon="photo">{{ t.view_cover }}</CreationDetailItem></a>
 				<a><CreationDetailItem icon="playlist_play">{{ t.watch_later }}</CreationDetailItem></a>
 				<a><CreationDetailItem icon="arrow_down">{{ t.download_video }}</CreationDetailItem></a>
 				<a><CreationDetailItem icon="flag">{{ t.report_creation }}</CreationDetailItem></a>

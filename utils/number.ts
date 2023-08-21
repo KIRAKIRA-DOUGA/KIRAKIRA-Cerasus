@@ -83,12 +83,22 @@ export function digitCase(n: number | bigint, upperCase: boolean = false, amount
  * @param value - 数字。
  * @returns 通用数字加数级。
  */
-export function getWatchCount(value: number) {
-	let count = value | 0;
-	let count_str = count + "";
-	if ((count = count / 10000 | 0) !== 0)
-		count_str = count + "万";
-	if ((count = count / 10000 | 0) !== 0)
-		count_str = count + "亿";
-	return count_str;
+export function getWatchCount(value: number | bigint) {
+	value = typeof value === "number" ? BigInt(Math.trunc(value)) : value;
+	const { locale } = useI18n();
+	const radix = locale.value.startsWith("zh") || locale.value.startsWith("ja") ? 10000n : 1000n;
+	const units = {
+		zh: ["万", "亿", "兆", "京", "垓", "秭", "壤", "沟", "涧", "正", "载", "极", "恒河沙", "阿僧祇", "那由他", "不可思议", "无量大数"],
+		ja: ["万", "億", "兆", "京", "垓", "𥝱", "穣", "溝", "澗", "正", "載", "極", "恒河沙", "阿僧祇", "那由他", "不可思議", "無量大数"],
+		en: ["k", "M", "G", "T", "P", "E", "Z", "Y", "R", "Q"],
+	};
+	const unit = units[keys(units).find(code => locale.value.startsWith(code)) ?? "en"];
+
+	let value_str = value + "";
+	let index = 0;
+	while ((value = value / radix) !== 0n) {
+		if (unit[index] === undefined) return value >= 0n ? "∞" : "-∞";
+		value_str = value + unit[index++];
+	}
+	return value_str;
 }
