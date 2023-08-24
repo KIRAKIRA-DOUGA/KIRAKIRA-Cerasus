@@ -65,7 +65,7 @@
 	<Subheader icon="wallpaper">{{ t.background }}</Subheader>
 	<section list>
 		<ToggleSwitch v-model="useAppSettingsStore().showCssDoodle" v-ripple icon="wallpaper">{{ t.animated_background }}</ToggleSwitch>
-		<SettingsChipItem icon="wallpaper" trailingIcon="edit">自定义背景</SettingsChipItem>
+		<SettingsChipItem icon="wallpaper" trailingIcon="edit">{{ t.custom_background }}</SettingsChipItem>
 	</section>
 
 	<Subheader icon="more_horiz">其它</Subheader>

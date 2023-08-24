@@ -37,6 +37,7 @@ const SChinese = {
 	disabled: "禁用",
 	background: "背景",
 	animated_background: "动态背景",
+	custom_background: "自定义背景",
 	light: "浅色主题",
 	dark: "深色主题",
 	system: "跟随系统",

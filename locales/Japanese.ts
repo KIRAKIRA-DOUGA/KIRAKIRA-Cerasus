@@ -39,6 +39,7 @@ const Japanese: LocaleIdentifiers = {
 	disabled: "無効化されたスイッチ",
 	background: "背景",
 	animated_background: "動く背景",
+	custom_background: "カスタム背景",
 	light: "ライト テーマ",
 	dark: "ダーク テーマ",
 	system: "システムのテーマ設定を使用する",
@@ -69,7 +70,7 @@ const Japanese: LocaleIdentifiers = {
 	dashboard: "ダッシュボード",
 	account: "アカウント",
 	profile: "プロフィール",
-	traces: "各種履歴",
+	traces: "閲覧履歴",
 	privacy: "プライバシー",
 	security: "セキュリティ",
 	login_options: "ログイン オプション",
@@ -89,7 +90,7 @@ const Japanese: LocaleIdentifiers = {
 	send_danmaku: "弾幕を送信",
 	preference: "プリファレンス",
 	accessibility: "アクセシビリティ",
-	about: "概要",
+	about: "KIRAKIRAについて",
 	experimental: "実験",
 	user_settings: "個人設定",
 	app_settings: "アプリの設定",
@@ -106,7 +107,7 @@ const Japanese: LocaleIdentifiers = {
 	save: "保存",
 	add: "追加",
 	apply: "適用",
-	reset: "再設定",
+	reset: "リセット",
 	history: "履歴",
 	favorite: "お気に入り",
 	favorites: "お気に入り",
@@ -118,7 +119,7 @@ const Japanese: LocaleIdentifiers = {
 	logout: "ログアウト",
 	register: "新規登録",
 	verification_code: "確認コード",
-	signature: "サイン",
+	signature: "自己紹介",
 	close: "閉じる",
 	current_page_label: "{0}/{1}ページ",
 	switch_page_label: "{0}ページに切り替える",
@@ -219,13 +220,13 @@ const Japanese: LocaleIdentifiers = {
 		},
 		about: {
 			repositories: "リポジトリ",
-			creative_team: "クリエイティブ チーム", // NEW
+			creative_team: "開発チーム",
 			staff: {
-				webmistress: "ウェブマストレス", // NEW
-				designer: "デザイナー", // NEW
+				webmistress: "WEBミストレス",
+				designer: "デザイナー",
 				frontend: "フロントエンド",
 				backend: "バックエンド",
-				translator: "翻訳者", // NEW
+				translator: "翻訳者",
 			},
 			technologies_used: "使用されている技術",
 		},
@@ -246,14 +247,14 @@ const Japanese: LocaleIdentifiers = {
 	download_video: "ダウンロード",
 	report_creation: "通報",
 	password_hint: "パスワードのヒント",
-	forgot_password: "1パスワードをお忘れの場合",
+	forgot_password: "パスワードをお忘れの場合",
 	reset_password: "パスワードの再設定",
 };
 
 export default Japanese;
 
 /*
- * MEMO
+ * 备注区
  * loginwindow_register_to_login
  * 	原译作“すでにアカウントをお持ちですか？ログイン”,因文字列过长影响页面展示，故割爱
  * 关于“弹幕 danmaku”与“评论 comment”

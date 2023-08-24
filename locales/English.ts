@@ -36,6 +36,7 @@ const English: LocaleIdentifiers = {
 	disabled: "Disabled",
 	background: "Background",
 	animated_background: "Background Animation",
+	custom_background: "Custom Background",
 	light: "Light Theme",
 	dark: "Dark Theme",
 	system: "Follow System Theme",
