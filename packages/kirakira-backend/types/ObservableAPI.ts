@@ -2,10 +2,11 @@ import { ResponseContext, RequestContext, HttpFile } from '../http/http';
 import { Configuration} from '../configuration'
 import { Observable, of, from } from '../rxjsStub';
 import {mergeMap, map} from  '../rxjsStub';
-import { Categories200ResponseInner } from '../models/Categories200ResponseInner';
 import { Comments200ResponseInner } from '../models/Comments200ResponseInner';
+import { Users200Response } from '../models/Users200Response';
 import { VideoDetail200Response } from '../models/VideoDetail200Response';
 import { Videos200Response } from '../models/Videos200Response';
+import { Videos200ResponseCategoriesInner } from '../models/Videos200ResponseCategoriesInner';
 import { Videos200ResponsePaginationData } from '../models/Videos200ResponsePaginationData';
 import { Videos200ResponseVideosInner } from '../models/Videos200ResponseVideosInner';
 
@@ -23,28 +24,6 @@ export class ObservableDefaultApi {
         this.configuration = configuration;
         this.requestFactory = requestFactory || new DefaultApiRequestFactory(configuration);
         this.responseProcessor = responseProcessor || new DefaultApiResponseProcessor();
-    }
-
-    /**
-     * Get category data
-     */
-    public categories(_options?: Configuration): Observable<Array<Categories200ResponseInner>> {
-        const requestContextPromise = this.requestFactory.categories(_options);
-
-        // build promise chain
-        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
-            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
-        }
-
-        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
-            pipe(mergeMap((response: ResponseContext) => {
-                let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
-                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
-                }
-                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.categories(rsp)));
-            }));
     }
 
     /**
@@ -115,6 +94,51 @@ export class ObservableDefaultApi {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.deleteComment(rsp)));
+            }));
+    }
+
+    /**
+     * Upvote a video
+     * @param id user ID
+     */
+    public follow(id: number, _options?: Configuration): Observable<void> {
+        const requestContextPromise = this.requestFactory.follow(id, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.follow(rsp)));
+            }));
+    }
+
+    /**
+     * Upvote a video
+     */
+    public followFeed(_options?: Configuration): Observable<Array<Videos200ResponseVideosInner>> {
+        const requestContextPromise = this.requestFactory.followFeed(_options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.followFeed(rsp)));
             }));
     }
 
@@ -315,7 +339,7 @@ export class ObservableDefaultApi {
      * Get user video data
      * @param id user ID
      */
-    public users(id: number, _options?: Configuration): Observable<Videos200Response> {
+    public users(id: number, _options?: Configuration): Observable<Users200Response> {
         const requestContextPromise = this.requestFactory.users(id, _options);
 
         // build promise chain

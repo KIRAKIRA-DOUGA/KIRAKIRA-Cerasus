@@ -1,6 +1,13 @@
-import { HttpLibrary, RequestContext, ResponseContext } from "./http";
-import { from, Observable } from "../rxjsStub";
 import "whatwg-fetch";
+import { Observable, from } from "../rxjsStub";
+import { HttpLibrary, RequestContext, ResponseContext } from "./http";
+
+
+export var fetch: any;
+
+export function changeFetch(f: any) {
+	fetch = f;
+}
 
 export class IsomorphicFetchHttpLibrary implements HttpLibrary {
 
@@ -14,17 +21,16 @@ export class IsomorphicFetchHttpLibrary implements HttpLibrary {
 			body,
 			headers: request.getHeaders(),
 			credentials: "same-origin",
-		}).then((resp: any) => {
-			const headers: Record<string, string> = {};
-			resp.headers.forEach((value: string, name: string) => {
-				headers[name] = value;
-			});
-
+		}).then((data: any) => {
 			const body = {
-				text: () => resp.text(),
-				binary: () => resp.blob(),
+				text: async () => JSON.stringify(data.data._value),
+				binary: async () => {
+					return new Blob([JSON.stringify(data.data._value)], {
+						type: "application/json",
+					});
+			},
 			};
-			return new ResponseContext(resp.status, headers, body);
+			return new ResponseContext(200, { "content-type": "application/json" }, body);
 		});
 
 		return from<Promise<ResponseContext>>(resultPromise);

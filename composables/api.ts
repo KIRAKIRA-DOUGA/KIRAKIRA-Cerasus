@@ -7,16 +7,17 @@ const apiSingleton = ref<api.DefaultApi>();
  * @returns DefaultAPI.
  */
 export function useApi() {
-	if (apiSingleton.value) return apiSingleton.value;
-
-	const nuxtApp = useNuxtApp();
-	const host = process.server ? nuxtApp.ssrContext!.event.node.req.headers.host! : window.location.host;
+	const runtimeConfig = useRuntimeConfig();
+	const siteUrl = runtimeConfig.public.siteUrl;
+	const { host } = new URL(siteUrl);
 
 	const configParams = {
 		baseServer: api.getServers(host)[0],
 	};
+
+	api.changeFetch(useFetch);
+
 	const config = api.createConfiguration(configParams);
 
-	apiSingleton.value = new api.DefaultApi(config);
-	return apiSingleton.value;
+	return new api.DefaultApi(config);
 }

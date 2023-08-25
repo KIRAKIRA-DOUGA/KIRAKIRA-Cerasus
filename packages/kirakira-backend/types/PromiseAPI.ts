@@ -1,10 +1,11 @@
 import { ResponseContext, RequestContext, HttpFile } from '../http/http';
 import { Configuration} from '../configuration'
 
-import { Categories200ResponseInner } from '../models/Categories200ResponseInner';
 import { Comments200ResponseInner } from '../models/Comments200ResponseInner';
+import { Users200Response } from '../models/Users200Response';
 import { VideoDetail200Response } from '../models/VideoDetail200Response';
 import { Videos200Response } from '../models/Videos200Response';
+import { Videos200ResponseCategoriesInner } from '../models/Videos200ResponseCategoriesInner';
 import { Videos200ResponsePaginationData } from '../models/Videos200ResponsePaginationData';
 import { Videos200ResponseVideosInner } from '../models/Videos200ResponseVideosInner';
 import { ObservableDefaultApi } from './ObservableAPI';
@@ -19,14 +20,6 @@ export class PromiseDefaultApi {
         responseProcessor?: DefaultApiResponseProcessor
     ) {
         this.api = new ObservableDefaultApi(configuration, requestFactory, responseProcessor);
-    }
-
-    /**
-     * Get category data
-     */
-    public categories(_options?: Configuration): Promise<Array<Categories200ResponseInner>> {
-        const result = this.api.categories(_options);
-        return result.toPromise();
     }
 
     /**
@@ -55,6 +48,23 @@ export class PromiseDefaultApi {
      */
     public deleteComment(id: number, _options?: Configuration): Promise<void> {
         const result = this.api.deleteComment(id, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * Upvote a video
+     * @param id user ID
+     */
+    public follow(id: number, _options?: Configuration): Promise<void> {
+        const result = this.api.follow(id, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * Upvote a video
+     */
+    public followFeed(_options?: Configuration): Promise<Array<Videos200ResponseVideosInner>> {
+        const result = this.api.followFeed(_options);
         return result.toPromise();
     }
 
@@ -143,7 +153,7 @@ export class PromiseDefaultApi {
      * Get user video data
      * @param id user ID
      */
-    public users(id: number, _options?: Configuration): Promise<Videos200Response> {
+    public users(id: number, _options?: Configuration): Promise<Users200Response> {
         const result = this.api.users(id, _options);
         return result.toPromise();
     }
