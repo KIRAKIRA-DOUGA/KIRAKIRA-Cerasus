@@ -11,11 +11,12 @@ http/http.ts
 http/isomorphic-fetch.ts
 index.ts
 middleware.ts
-models/Categories200ResponseInner.ts
 models/Comments200ResponseInner.ts
 models/ObjectSerializer.ts
+models/Users200Response.ts
 models/VideoDetail200Response.ts
 models/Videos200Response.ts
+models/Videos200ResponseCategoriesInner.ts
 models/Videos200ResponsePaginationData.ts
 models/Videos200ResponseVideosInner.ts
 models/all.ts
