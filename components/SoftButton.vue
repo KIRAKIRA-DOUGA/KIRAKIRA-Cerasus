@@ -10,9 +10,9 @@
 		animatedState?: string;
 		/** 文本。 */
 		text?: Readable;
-		/** 是否仅显示图标不可点击。 */
+		/** 是否仅显示图标不可点击？与 disabled 的区别是按钮不会变灰，表示只是展示图标。 */
 		nonclickable?: boolean;
-		/** 是否不可聚焦但仍可点击。 */
+		/** 是否不可聚焦但仍可点击？ */
 		nonfocusable?: boolean;
 		/** 外观偏好。 */
 		appearance?: "default" | "textbox-trailingicon";

@@ -31,6 +31,7 @@
 	const emitted = defineModel<DanmakuComment>();
 	const danmakuContainer = ref<HTMLDivElement>();
 	const danmaku = ref<Danmaku>();
+	const resizeObserver = ref<ResizeObserver>();
 
 	onMounted(() => {
 		if (!danmakuContainer.value) return;
@@ -43,10 +44,14 @@
 			engine: props.engine,
 			speed: props.speed,
 		});
+
+		resizeObserver.value = new ResizeObserver(() => danmaku.value?.resize());
+		resizeObserver.value.observe(danmakuContainer.value);
 	});
 
-	onUnmounted(() => {
+	onBeforeUnmount(() => {
 		danmaku.value?.destroy();
+		danmakuContainer.value && resizeObserver.value?.observe(danmakuContainer.value);
 	});
 
 	watch(() => props.hidden, hidden => {
@@ -81,8 +86,6 @@
 		emitted.value = undefined;
 	});
 
-	useEventListener("window", "resize", () => danmaku.value?.resize());
-
 	defineExpose({
 		clear, emit,
 	});
@@ -93,13 +96,24 @@
 </template>
 
 <style scoped lang="scss">
-	.danmaku-container {
+	.danmaku-container:deep {
 		position: absolute;
 		inset: 0;
+		bottom: 36px;
 		pointer-events: none;
 
-		:deep(*) {
+		* {
 			transition: none;
+		}
+
+		.dm {
+			box-shadow: -1px -1px black, -1px 1px black, 1px -1px black, 1px 1px black;
+
+			&.dm-rainbow {
+				background: linear-gradient(to right, #f2509e, #308bcd);
+				background-clip: text;
+				-webkit-text-stroke: 2px transparent;
+			}
 		}
 	}
 </style>

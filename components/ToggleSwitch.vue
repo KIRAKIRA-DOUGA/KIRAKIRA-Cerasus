@@ -128,6 +128,7 @@
 
 	.switch {
 		position: relative;
+		flex-shrink: 0;
 		width: $width;
 		height: $thumb-size;
 		touch-action: pinch-zoom;

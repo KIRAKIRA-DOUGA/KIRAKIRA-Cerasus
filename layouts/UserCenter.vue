@@ -155,7 +155,7 @@
 					}
 
 					.other-gender {
-						background: linear-gradient(90deg, #58c8f2, #eda4b2);
+						background: linear-gradient(to right, #58c8f2, #eda4b2);
 						background-clip: text;
 						-webkit-text-fill-color: transparent;
 					}
