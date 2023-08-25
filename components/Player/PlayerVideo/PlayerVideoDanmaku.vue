@@ -33,10 +33,13 @@
 	const danmaku = ref<Danmaku>();
 	const resizeObserver = ref<ResizeObserver>();
 
-	onMounted(() => {
-		if (!danmakuContainer.value) return;
+	/**
+	 * 初始化弹幕组件。
+	 */
+	function initDanmaku() {
 		const media = toValue(props.media);
-
+		if (!media || !danmakuContainer.value) return;
+		danmaku.value?.destroy();
 		danmaku.value = new Danmaku({
 			container: danmakuContainer.value,
 			media,
@@ -44,7 +47,13 @@
 			engine: props.engine,
 			speed: props.speed,
 		});
+	}
 
+	watch(() => props.media, initDanmaku);
+
+	onMounted(() => {
+		if (!danmakuContainer.value) return;
+		initDanmaku();
 		resizeObserver.value = new ResizeObserver(() => danmaku.value?.resize());
 		resizeObserver.value.observe(danmakuContainer.value);
 	});

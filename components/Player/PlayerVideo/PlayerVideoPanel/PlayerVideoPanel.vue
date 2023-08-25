@@ -9,6 +9,7 @@
 	}>();
 
 	const sendDanmaku = defineModel<DanmakuComment>("sendDanmaku");
+	const insertDanmaku = defineModel<DanmakuListItem>("insertDanmaku");
 
 	const counts = reactive({
 		play: 100n,
@@ -93,7 +94,7 @@
 				<SoftButton v-tooltip:bottom="t.settings" icon="settings" class="button-settings" />
 			</div>
 		</div>
-		<PlayerVideoPanelDanmakuList />
+		<PlayerVideoPanelDanmakuList v-model="insertDanmaku" />
 		<PlayerVideoPanelDanmakuSender v-model="sendDanmaku" />
 	</Comp>
 </template>

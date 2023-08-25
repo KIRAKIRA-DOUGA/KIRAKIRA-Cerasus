@@ -1,25 +1,24 @@
 <script setup lang="ts">
 	import { RecycleScroller } from "vue-virtual-scroller";
 
+	type DanmakuListItemInternal = Override<DanmakuListItem, { sendTime: string }>;
+	const insertDanmaku = defineModel<DanmakuListItem>();
 	const danmakuItemMenu = ref<MenuModel>();
-	const currentDanmaku = ref<ReturnType<typeof getDanmaku>>();
+	const currentDanmaku = ref<DanmakuListItemInternal>();
 	const { copy } = useClipboard();
 	const headers = ["时间", "内容", "发送时间"];
 	const colWidths = reactive([60, 150, 100]);
-	const danmakuList = reactive(forMap(10000, i => getDanmaku(i))); // 让你逝世一万条弹幕会不会把设备弄炸！
+	const danmakuList = reactive<DanmakuListItemInternal[]>([]);
+	const danmakuListKey = ref(0); // 理论上 vue-virtual-scroller 会自动监测弹幕数组更新，但是目前不知道为什么不生效，暂时用这种方法解决。
 
-	/**
-	 * 获取弹幕。
-	 * @param index - 弹幕序号。
-	 * @returns - 弹幕信息。
-	 */
-	function getDanmaku(index: number) {
-		return {
-			videoTime: new Duration(index - 1),
-			content: `第${digitCase(index)}，火前留名！`,
-			sendTime: formatDate(new Date(), "yyyy/MM/dd"),
-		};
-	}
+	watch(insertDanmaku, _danmaku => {
+		if (!_danmaku) return;
+		const danmaku = _danmaku as unknown as DanmakuListItemInternal;
+		danmaku.sendTime = formatDate(_danmaku.sendTime, "yyyy/MM/dd");
+		danmakuList.push(danmaku);
+		danmakuListKey.value = new Date().valueOf();
+		insertDanmaku.value = undefined;
+	});
 
 	/**
 	 * 拖拽抓柄逻辑处理。
@@ -71,7 +70,7 @@
 					</div>
 				</thead>
 				<tbody>
-					<RecycleScroller v-slot="{ item }" :itemSize="28" keyField="content" :items="danmakuList">
+					<RecycleScroller v-slot="{ item }" :key="danmakuListKey" :itemSize="28" keyField="content" :items="danmakuList">
 						<tr v-ripple @contextmenu.prevent="e => { currentDanmaku = item; danmakuItemMenu = e; }">
 							<td v-for="(value, key, j) in item" :key="key" :width="colWidths[j]">{{ value }}</td>
 						</tr>
@@ -88,6 +87,8 @@
 		<Menu v-model="danmakuItemMenu">
 			<MenuItem icon="copy" @click="copyDanmaku">复制</MenuItem>
 			<MenuItem icon="flag">举报</MenuItem>
+			<hr />
+			<MenuItem icon="person">进入该用户首页</MenuItem>
 		</Menu>
 	</Comp>
 </template>
