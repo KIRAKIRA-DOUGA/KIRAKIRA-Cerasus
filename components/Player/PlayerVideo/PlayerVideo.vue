@@ -28,7 +28,8 @@
 	const { isFullscreen: fullscreen, toggle } = useFullscreen(videoContainer);
 	const resample = computed({ get: () => !preservesPitch.value, set: value => preservesPitch.value = !value });
 	const menu = ref<MenuModel>();
-	const showDanmaku = ref(false);
+	const showDanmaku = ref(true);
+	const willSendDanmaku = ref<DanmakuComment>();
 
 	type MediaInfo = Record<string, Record<string, unknown>>;
 
@@ -204,6 +205,7 @@
 				@contextmenu.prevent="e => menu = e"
 			>
 			</video>
+			<PlayerVideoDanmaku v-model="willSendDanmaku" :media="video" />
 			<PlayerVideoController
 				v-model:currentTime="currentTime"
 				v-model:playing="playing"
@@ -220,7 +222,7 @@
 			/>
 		</div>
 
-		<PlayerVideoPanel :id="id" :rating="rating" />
+		<PlayerVideoPanel :id="id" v-model:sendDanmaku="willSendDanmaku" :rating="rating" />
 		<Menu v-model="menu">
 			<MenuItem icon="info" @click="showInfo">查看视频详细信息</MenuItem>
 		</Menu>
