@@ -7,6 +7,8 @@
 		noPadding?: boolean;
 		/** 是否在按下 `Esc` 按键时**不要**关闭浮窗？ */
 		doNotCloseOnEsc?: boolean;
+		/** 是否**不** `overflow: hidden;`？ */
+		noCropping?: boolean;
 	}>();
 
 	const emits = defineEmits<{
@@ -31,6 +33,7 @@
 	/** 定义在关闭浮窗后的至少多少毫秒内不得再次打开浮窗，以免用户连续点击时浮窗有快速闪烁的动画。 */
 	const QUICK_CLICK_DURATION = 200;
 	const suppressShowing = ref(false);
+	const cropping = ref(!props.noCropping); // 修正在要求 noCropping 的同时开/关浮窗动画时显示错误的问题。
 
 	useEventListener("window", "keydown", e => {
 		if (!props.doNotCloseOnEsc && e.code === "Escape")
@@ -112,6 +115,7 @@
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
 	async function onFlyoutEnter(el: Element, done: () => void) {
+		cropping.value = true;
 		await animateSize(el, null, {
 			[isWidthAnimation.value ? "startWidth" : "startHeight"]: 0,
 			startReverseSlideIn: isReverseSlide.value,
@@ -120,6 +124,7 @@
 			startChildTranslate: isReverseSlide.value ? undefined : placementForAnimation.value === "bottom" ? "0 -100%" : "-100% 0",
 		});
 		done();
+		cropping.value = !props.noCropping;
 	}
 
 	/**
@@ -129,6 +134,7 @@
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
 	async function onFlyoutLeave(el: Element, done: () => void) {
+		cropping.value = true;
 		await animateSize(el, null, {
 			[isWidthAnimation.value ? "endWidth" : "endHeight"]: 0,
 			endReverseSlideIn: isReverseSlide.value,
@@ -152,7 +158,7 @@
 				v-if="shown"
 				ref="flyout"
 				:[scopeId]="''"
-				:class="{ padding: !noPadding }"
+				:class="{ padding: !noPadding, cropping }"
 				:style="locationStyle"
 			>
 				<slot></slot>
@@ -168,9 +174,12 @@
 		@include dropdown-flyouts;
 		@include round-large;
 		max-width: 100dvw;
-		overflow: hidden;
 		background-color: c(acrylic-bg, 75%);
 		transition: $fallback-transitions, left 0s, top 0s;
+
+		&.cropping {
+			overflow: hidden;
+		}
 
 		&.padding {
 			padding: $padding;
