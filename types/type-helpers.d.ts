@@ -39,19 +39,19 @@ declare global {
 	 * @template U - 重写后的字段及其类型。
 	 */
 	type Override<T, U> = Omit<T, keyof U> & U;
-	
+
 	/**
 	 * 获取组件的 Props。
 	 * @template T - Vue 组件。
 	 */
 	type ComponentProps<T> = Omit<InstanceType<T>["$props"], keyof VNodeProps>;
-	
+
 	/**
 	 * 去除 Ref 的类型。
 	 * @template R - 可能为 Ref 的类型。
 	 */
 	type Unref<R> = R extends MaybeRefOrGetter<infer U> ? U : T;
-	
+
 	/**
 	 * 删除 T 的索引签名，只使用已知的属性键名。例如从枚举类型中删除 `[x: string]`。
 	 * @template T - 源对象。
@@ -66,10 +66,17 @@ declare global {
 
 	/**
 	 * 将对象的所有键大驼峰化。
+	 * @template T - 源对象。
 	 */
 	type CapitalizeObject<T extends object> = {
 		[key in keyof T as Capitalize<key>]:
 			T[key] extends (infer U)[] | undefined | null ? CapitalizeObject<U>[] :
 			CapitalizeObject<T[key]>;
 	} & T;
+
+	/**
+	 * 类似 `keyof` 关键字，只不过返回的是值的类型集合而不是键的类型集合。
+	 * @template T - 源对象。
+	 */
+	type ValueOf<T extends object> = T[keyof T];
 }

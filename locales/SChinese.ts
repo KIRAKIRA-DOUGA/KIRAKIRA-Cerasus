@@ -247,6 +247,7 @@ const SChinese = {
 	password_hint: "密码提示",
 	forgot_password: "忘记密码",
 	reset_password: "重设密码",
+	format: "格式",
 } as const;
 
 export default SChinese;
