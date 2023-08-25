@@ -32,6 +32,7 @@
 	const menu = ref<MenuModel>();
 	const showDanmaku = ref(true);
 	const willSendDanmaku = ref<DanmakuComment>();
+	const willInsertDanmaku = ref<DanmakuListItem>();
 
 	type MediaInfo = Record<string, Record<string, unknown>>;
 
@@ -110,6 +111,15 @@
 			} catch { }
 		else
 			screen.orientation.unlock();
+	});
+
+	watch(willSendDanmaku, danmaku => {
+		if (danmaku)
+			willInsertDanmaku.value = {
+				videoTime: new Duration(currentTime.value),
+				content: danmaku.text!,
+				sendTime: new Date(),
+			};
 	});
 
 	const player = ref<MediaPlayerClass>();
@@ -260,7 +270,12 @@
 			/>
 		</div>
 
-		<PlayerVideoPanel :id="id" v-model:sendDanmaku="willSendDanmaku" :rating="rating" />
+		<PlayerVideoPanel
+			:id="id"
+			v-model:sendDanmaku="willSendDanmaku"
+			v-model:insertDanmaku="willInsertDanmaku"
+			:rating="rating"
+		/>
 		<Menu v-model="menu">
 			<MenuItem icon="info" @click="showInfo">查看视频详细信息</MenuItem>
 		</Menu>

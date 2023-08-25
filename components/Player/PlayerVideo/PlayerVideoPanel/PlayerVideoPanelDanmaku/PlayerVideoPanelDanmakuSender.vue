@@ -32,6 +32,7 @@
 		if (!content.value) return;
 		const text = content.value;
 		sendDanmaku.value = {
+			text,
 			mode: style.mode,
 			render() {
 				const div = document.createElement("div");
