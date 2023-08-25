@@ -246,6 +246,7 @@ const English: LocaleIdentifiers = {
 	password_hint: "Password Hint",
 	forgot_password: "Forgot Password",
 	reset_password: "Reset Password",
+	format: "Format",
 };
 
 export default English;

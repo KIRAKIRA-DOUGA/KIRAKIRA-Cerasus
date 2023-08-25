@@ -1,24 +1,32 @@
 <script setup lang="ts">
 	import { RecycleScroller } from "vue-virtual-scroller";
 
-	type DanmakuListItemInternal = Override<DanmakuListItem, { sendTime: string }>;
 	const insertDanmaku = defineModel<DanmakuListItem>();
 	const danmakuItemMenu = ref<MenuModel>();
-	const currentDanmaku = ref<DanmakuListItemInternal>();
+	const currentDanmaku = ref<DanmakuListItem>();
 	const { copy } = useClipboard();
 	const headers = ["时间", "内容", "发送时间"];
 	const colWidths = reactive([60, 150, 100]);
-	const danmakuList = reactive<DanmakuListItemInternal[]>([]);
-	const danmakuListKey = ref(0); // 理论上 vue-virtual-scroller 会自动监测弹幕数组更新，但是目前不知道为什么不生效，暂时用这种方法解决。
+	const danmakuList = ref<{ item: DanmakuListItem; key: ObjectKey }[]>([]);
+	const danmakuListKey = ref(0); // FIXME: 理论上 vue-virtual-scroller 会自动监测弹幕数组更新，但是目前不知道为什么不生效，暂时只能用这种方法解决。
 
-	watch(insertDanmaku, _danmaku => {
-		if (!_danmaku) return;
-		const danmaku = _danmaku as unknown as DanmakuListItemInternal;
-		danmaku.sendTime = formatDate(_danmaku.sendTime, "yyyy/MM/dd");
-		danmakuList.push(danmaku);
+	watch(insertDanmaku, danmaku => {
+		if (!danmaku) return;
+		const key = danmaku.content + danmaku.sendTime.valueOf();
+		danmakuList.value.push({ item: danmaku, key });
 		danmakuListKey.value = new Date().valueOf();
 		insertDanmaku.value = undefined;
 	});
+
+	/**
+	 * 单击表头排序。
+	 * @param columnIndex - 单击的列。
+	 */
+	function sort(columnIndex: number) {
+		console.log(columnIndex);
+		danmakuList.value.sort((a, b) => b.item.videoTime.seconds - a.item.videoTime.seconds);
+		danmakuListKey.value = new Date().valueOf();
+	}
 
 	/**
 	 * 拖拽抓柄逻辑处理。
@@ -53,6 +61,17 @@
 		copy(currentDanmaku.value.content);
 		useToast("已复制", "success");
 	}
+
+	/**
+	 * 处理单元格显示文本。
+	 * @param value - 不同类型的数据。
+	 * @returns 显示为字符串的值。
+	 */
+	function handleTableDataCellText(value: ValueOf<DanmakuListItem>) {
+		if (value instanceof Date) return formatDate(value, "yyyy/MM/dd");
+		else if (value instanceof Duration) return value.toString();
+		else return value;
+	}
 </script>
 
 <template>
@@ -60,7 +79,7 @@
 		<ClientOnly>
 			<table class="lite">
 				<thead>
-					<th v-for="(header, j) in headers" :key="header" v-ripple :width="colWidths[j]">
+					<th v-for="(header, j) in headers" :key="header" v-ripple :width="colWidths[j]" @click="() => sort(j)">
 						<span>{{ header }}</span>
 					</th>
 					<div class="shadow">
@@ -70,9 +89,9 @@
 					</div>
 				</thead>
 				<tbody>
-					<RecycleScroller v-slot="{ item }" :key="danmakuListKey" :itemSize="28" keyField="content" :items="danmakuList">
-						<tr v-ripple @contextmenu.prevent="e => { currentDanmaku = item; danmakuItemMenu = e; }">
-							<td v-for="(value, key, j) in item" :key="key" :width="colWidths[j]">{{ value }}</td>
+					<RecycleScroller v-slot="{ item }" :key="danmakuListKey" :itemSize="28" keyField="key" :items="danmakuList">
+						<tr v-ripple @contextmenu.prevent="e => { currentDanmaku = item.item; danmakuItemMenu = e; }">
+							<td v-for="(value, key, j) in item.item" :key="key" :width="colWidths[j]">{{ handleTableDataCellText(value) }}</td>
 						</tr>
 					</RecycleScroller>
 				</tbody>

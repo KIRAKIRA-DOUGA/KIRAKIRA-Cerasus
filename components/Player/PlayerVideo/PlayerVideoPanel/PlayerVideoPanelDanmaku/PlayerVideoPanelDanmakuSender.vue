@@ -41,7 +41,7 @@
 				if (style.enableRainbow) div.classList.add("dm-rainbow");
 				Object.assign(div.style, {
 					fontSize: style.fontSize + "px",
-					color: style.color,
+					color: style.color || undefined,
 				});
 				return div;
 			},
@@ -83,18 +83,21 @@
 		<TextBox ref="textBox" v-model="content" :placeholder="t.send_danmaku">
 			<template #actions>
 				<SoftButton
+					v-tooltip:bottom="t.kaomoji"
 					icon="kaomoji"
 					appearance="textbox-trailingicon"
 					:active="!!flyoutKaomoji"
 					@click="e => flyoutKaomoji = [e, 'y', OFFSET_Y]"
 				/>
 				<SoftButton
+					v-tooltip:bottom="t.format"
 					icon="text_format"
 					appearance="textbox-trailingicon"
 					:active="!!flyoutStyle"
 					@click="e => flyoutStyle = [e, 'y', OFFSET_Y]"
 				/>
 				<SoftButton
+					v-tooltip:bottom="t.send"
 					:disabled="!content"
 					icon="send"
 					appearance="textbox-trailingicon"
