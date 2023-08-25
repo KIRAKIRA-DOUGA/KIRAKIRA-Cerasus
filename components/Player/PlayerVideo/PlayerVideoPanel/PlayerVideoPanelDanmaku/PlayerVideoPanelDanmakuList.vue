@@ -5,15 +5,16 @@
 	const danmakuItemMenu = ref<MenuModel>();
 	const currentDanmaku = ref<DanmakuListItem>();
 	const { copy } = useClipboard();
-	const headers = ["时间", "内容", "发送时间"];
+	const headers = { videoTime: "时间", content: "内容", sendTime: "发送时间" };
 	const colWidths = reactive([60, 150, 100]);
-	const danmakuList = ref<{ item: DanmakuListItem; key: ObjectKey }[]>([]);
+	const danmakuList = reactive<{ item: DanmakuListItem; key: ObjectKey }[]>([]);
 	const danmakuListKey = ref(0); // FIXME: 理论上 vue-virtual-scroller 会自动监测弹幕数组更新，但是目前不知道为什么不生效，暂时只能用这种方法解决。
+	const sortBy = reactive<[column: "videoTime" | "sendTime", order: SortOrder]>(["videoTime", "ascending"]);
 
 	watch(insertDanmaku, danmaku => {
 		if (!danmaku) return;
 		const key = danmaku.content + danmaku.sendTime.valueOf();
-		danmakuList.value.push({ item: danmaku, key });
+		danmakuList.push({ item: danmaku, key });
 		danmakuListKey.value = new Date().valueOf();
 		insertDanmaku.value = undefined;
 	});
@@ -23,8 +24,15 @@
 	 * @param columnIndex - 单击的列。
 	 */
 	function sort(columnIndex: number) {
-		console.log(columnIndex);
-		danmakuList.value.sort((a, b) => b.item.videoTime.seconds - a.item.videoTime.seconds);
+		const column = columnIndex === 0 ? "videoTime" : columnIndex === 2 ? "sendTime" : undefined;
+		if (!column) return;
+		if (sortBy[0] === column) sortBy[1] = sortBy[1] === "ascending" ? "descending" : "ascending";
+		else [sortBy[0], sortBy[1]] = [column, "ascending"];
+		danmakuList.sort((a, b) => {
+			let compare = a.item[sortBy[0]].valueOf() - b.item[sortBy[0]].valueOf();
+			if (sortBy[1] === "descending") compare = -compare;
+			return compare;
+		});
 		danmakuListKey.value = new Date().valueOf();
 	}
 
@@ -79,11 +87,18 @@
 		<ClientOnly>
 			<table class="lite">
 				<thead>
-					<th v-for="(header, j) in headers" :key="header" v-ripple :width="colWidths[j]" @click="() => sort(j)">
+					<th v-for="(header, column, j) in headers" :key="header" v-ripple :width="colWidths[j]" @click="() => sort(j)">
 						<span>{{ header }}</span>
+						<Icon
+							name="chevron_up"
+							:class="sortBy[0] === column && {
+								ascending: sortBy[1] === 'ascending',
+								descending: sortBy[1] === 'descending',
+							}"
+						/>
 					</th>
 					<div class="shadow">
-						<th v-for="(header, j) in headers" :key="header" :width="colWidths[j]">
+						<th v-for="(header, _column, j) in headers" :key="header" :width="colWidths[j]">
 							<div class="grip" :data-index="j" @pointerdown="onGripDown"></div>
 						</th>
 					</div>
@@ -154,6 +169,25 @@
 					&:is(:hover, :active) {
 						background-color: c(hover-overlay) !important;
 					}
+
+					.icon {
+						$transition: $fallback-transitions, rotate $ease-out-smooth 500ms;
+						font-size: 16px;
+						rotate: x 100grad;
+						vertical-align: text-top;
+						transform-style: preserve-3d;
+						perspective: 250px;
+
+						&.ascending {
+							rotate: x 0grad;
+							transition: $transition;
+						}
+
+						&.descending {
+							rotate: x 200grad;
+							transition: $transition;
+						}
+					}
 				}
 
 				.shadow {
@@ -178,15 +212,12 @@
 				min-width: 60px;
 				height: $item-height;
 				padding: 0.25rem 0.75rem;
+				padding-right: 0;
 				overflow: hidden;
 				white-space: nowrap;
 				text-align: left;
 				text-overflow: ellipsis;
 				transition: $fallback-transitions, width 0s;
-			}
-
-			td {
-				padding-right: 0;
 			}
 
 			thead,
