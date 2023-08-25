@@ -20,6 +20,8 @@
 		href?: string;
 		/** 是否**强制**高亮图标强调色？默认情况下会根据路由自动添加 router-link-active 类。 */
 		active?: boolean;
+		/** 按钮已禁用？ */
+		disabled?: boolean;
 	}>(), {
 		icon: undefined,
 		animatedIcon: undefined,
@@ -62,9 +64,9 @@
 				ref="wrapper"
 				v-ripple
 				:tabindex="nonclickable || nonfocusable ? -1 : ''"
-				:disabled="nonclickable"
+				:disabled="nonclickable || disabled"
 				v-bind="additionalAttrs"
-				:class="{ 'router-link-active': active }"
+				:class="{ 'router-link-active': active, disabled }"
 				@click="(e: MouseEvent) => emits('click', e)"
 			>
 				<Icon v-if="icon" :name="icon" />
@@ -123,7 +125,7 @@
 			background-color: c(accent-hover-overlay);
 		}
 	}
-
+	
 	:comp > div {
 		@include flex-center;
 		@include ripple-clickable-only-inside(var(--wrapper-size));
@@ -156,6 +158,10 @@
 
 			@container style(--active: true) {
 				@include router-link-active;
+			}
+			
+			&.disabled {
+				color: c(gray-40);
 			}
 		}
 

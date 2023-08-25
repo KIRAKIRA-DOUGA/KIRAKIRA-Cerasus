@@ -1,11 +1,14 @@
 <script setup lang="tsx">
 	import { Icon } from "#components";
+
 	const props = defineProps<{
 		/** 视频 ID。 */
 		id: number;
 		/** 视频评分。 */
 		rating: number;
 	}>();
+
+	const sendDanmaku = defineModel<DanmakuComment>("sendDanmaku");
 
 	const counts = reactive({
 		play: 100n,
@@ -91,7 +94,7 @@
 			</div>
 		</div>
 		<PlayerVideoPanelDanmakuList />
-		<PlayerVideoPanelDanmakuSender />
+		<PlayerVideoPanelDanmakuSender v-model="sendDanmaku" />
 	</Comp>
 </template>
 
