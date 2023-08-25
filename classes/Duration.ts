@@ -54,4 +54,12 @@ export class Duration {
 		if (hours) result = `${padStart(hours)}:${result}`;
 		return result;
 	}
+
+	/**
+	 * 将对象转换成基本类型值。
+	 * @returns 转换成对象的 this 值。
+	 */
+	valueOf() {
+		return this.seconds;
+	}
 }
