@@ -1,6 +1,5 @@
 <script setup lang="ts">
 	import mediainfo from "mediainfo.js";
-	import { MediaPlayerClass } from "dashjs";
 
 	const props = defineProps<{
 		/** 视频源。 */
@@ -22,6 +21,9 @@
 	const buffered = ref(0);
 	const isTimeUpdating = ref(false);
 	const showMediaInfo = ref(false);
+	const currQuality = ref("720P");
+
+	const qualities = ref(new Array<dashjs.BitrateInfo>());
 	const mediaInfos = ref<MediaInfo>();
 	const videoContainer = ref<HTMLDivElement>();
 	const video = ref<HTMLVideoElement>();
@@ -126,19 +128,39 @@
 		if (!video.value) return;
 		onCanPlay({ target: video.value });
 
-		const Dash = await import("dashjs"); // 注意看，由于 Dash 无法在服务端下渲染，因此必须动态导入。
-		player.value = Dash.MediaPlayer().create();
-		player.value.initialize(video.value, props.src, false);
-		player.value.updateSettings({
-			streaming: {
-				abr: {
-					initialBitrate: { audio: 2000000, video: 2000000 }, // 2mb/s, lol
-					// maxBitrate: { audio: 2000000000000, video: 20000000000000 }, // lmao this can't be right
-				},
-			},
-		});
+		if (process.client) {
+			const Dash = await import("dashjs"); // 注意看，由于 Dash 无法在服务端下渲染，因此必须动态导入。
+			player.value = Dash.MediaPlayer().create();
 
-		player.value.attachView(video.value);
+			player.value.on(Dash.MediaPlayer.events.STREAM_INITIALIZED, function (e) {
+				player.value.on(Dash.MediaPlayer.events.QUALITY_CHANGE_REQUESTED, function (e) {
+					const qual = player.value?.getQualityFor("video");
+					const currentQual = qualities.value[qual];
+					if (currentQual !== undefined)
+						currQuality.value = currentQual.height + "P";
+				});
+
+				const bitrateInfoList = player.value?.getBitrateInfoListFor("video");
+				player.value?.setQualityFor("video", bitrateInfoList.length - 1);
+				qualities.value = bitrateInfoList;
+			});
+
+			player.value.initialize(video.value, props.src, false);
+
+			player.value.updateSettings({
+				streaming: {
+					buffer: {
+						fastSwitchEnabled: true,
+					},
+					abr: {
+						// initialBitrate: { audio: 2000000, video: 2000000 }, // 2mb/s, lol
+						// maxBitrate: { audio: 2000000000000, video: 20000000000000 }, // lmao this can't be right
+					},
+				},
+			});
+
+			player.value.attachView(video.value);
+		}
 	});
 
 	/**
@@ -152,6 +174,18 @@
 		currentTime.value = video.currentTime;
 		duration.value = video.duration;
 		video.preservesPitch = preservesPitch.value;
+	}
+
+	/**
+	 * handles quality changes
+	 * @param qual - current quality
+	 */
+	function onQualityChanged(qual) {
+		// TODO CRINGE ALERT COPY PASTA
+		const qualityList = qualities.value.map(qual => qual.height + "P");
+		const ind = qualityList.findIndex(q => q === qual);
+		player.value.setQualityFor("video", ind);
+		player.value.updateSettings({ streaming: { abr: { autoSwitchBitrate: { video: false } } } });
 	}
 
 	/**
@@ -217,6 +251,7 @@
 			</video>
 			<PlayerVideoDanmaku v-model="willSendDanmaku" :media="video" :hidden="!showDanmaku" />
 			<PlayerVideoController
+				v-if="qualities.length !== 0"
 				v-model:currentTime="currentTime"
 				v-model:playing="playing"
 				v-model:fullscreen="fullscreen"
@@ -229,6 +264,9 @@
 				:duration="duration"
 				:toggleFullscreen="toggle"
 				:buffered="buffered"
+				:qualities="qualities"
+				:currentQuality="currQuality"
+				:onQualityChanged="onQualityChanged"
 			/>
 		</div>
 
@@ -282,7 +320,7 @@
 	table {
 		border-radius: 0;
 	}
-	
+
 	.menu-item {
 		color: c(text-color) !important; // 避免黑底视频看不清文字。
 	}

@@ -1,18 +1,16 @@
 import { ResponseContext, RequestContext, HttpFile } from '../http/http';
 import { Configuration} from '../configuration'
 
-import { Categories200ResponseInner } from '../models/Categories200ResponseInner';
 import { Comments200ResponseInner } from '../models/Comments200ResponseInner';
+import { Users200Response } from '../models/Users200Response';
 import { VideoDetail200Response } from '../models/VideoDetail200Response';
 import { Videos200Response } from '../models/Videos200Response';
+import { Videos200ResponseCategoriesInner } from '../models/Videos200ResponseCategoriesInner';
 import { Videos200ResponsePaginationData } from '../models/Videos200ResponsePaginationData';
 import { Videos200ResponseVideosInner } from '../models/Videos200ResponseVideosInner';
 
 import { ObservableDefaultApi } from "./ObservableAPI";
 import { DefaultApiRequestFactory, DefaultApiResponseProcessor} from "../apis/DefaultApi";
-
-export interface DefaultApiCategoriesRequest {
-}
 
 export interface DefaultApiCommentRequest {
     /**
@@ -51,6 +49,18 @@ export interface DefaultApiDeleteCommentRequest {
      * @memberof DefaultApideleteComment
      */
     id: number
+}
+
+export interface DefaultApiFollowRequest {
+    /**
+     * user ID
+     * @type number
+     * @memberof DefaultApifollow
+     */
+    id: number
+}
+
+export interface DefaultApiFollowFeedRequest {
 }
 
 export interface DefaultApiLoginRequest {
@@ -244,14 +254,6 @@ export class ObjectDefaultApi {
     }
 
     /**
-     * Get category data
-     * @param param the request object
-     */
-    public categories(param: DefaultApiCategoriesRequest = {}, options?: Configuration): Promise<Array<Categories200ResponseInner>> {
-        return this.api.categories( options).toPromise();
-    }
-
-    /**
      * Comment on a video
      * @param param the request object
      */
@@ -273,6 +275,22 @@ export class ObjectDefaultApi {
      */
     public deleteComment(param: DefaultApiDeleteCommentRequest, options?: Configuration): Promise<void> {
         return this.api.deleteComment(param.id,  options).toPromise();
+    }
+
+    /**
+     * Upvote a video
+     * @param param the request object
+     */
+    public follow(param: DefaultApiFollowRequest, options?: Configuration): Promise<void> {
+        return this.api.follow(param.id,  options).toPromise();
+    }
+
+    /**
+     * Upvote a video
+     * @param param the request object
+     */
+    public followFeed(param: DefaultApiFollowFeedRequest = {}, options?: Configuration): Promise<Array<Videos200ResponseVideosInner>> {
+        return this.api.followFeed( options).toPromise();
     }
 
     /**
@@ -343,7 +361,7 @@ export class ObjectDefaultApi {
      * Get user video data
      * @param param the request object
      */
-    public users(param: DefaultApiUsersRequest, options?: Configuration): Promise<Videos200Response> {
+    public users(param: DefaultApiUsersRequest, options?: Configuration): Promise<Users200Response> {
         return this.api.users(param.id,  options).toPromise();
     }
 

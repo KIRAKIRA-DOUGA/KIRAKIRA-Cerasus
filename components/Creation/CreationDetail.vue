@@ -35,8 +35,8 @@
 			<Tag
 				v-for="tag in tags"
 				:key="tag"
-				link="/search"
-				:query="{ q: tag }"
+				link="/"
+				:query="{ search: tag }"
 			>{{ tag }}</Tag>
 		</div>
 	</Comp>

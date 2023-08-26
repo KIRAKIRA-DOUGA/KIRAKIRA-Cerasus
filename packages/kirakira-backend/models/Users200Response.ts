@@ -10,8 +10,8 @@
  * Do not edit the class manually.
  */
 
-import { Users200ResponseVideosInner } from '../models/Users200ResponseVideosInner';
 import { Videos200ResponsePaginationData } from '../models/Videos200ResponsePaginationData';
+import { Videos200ResponseVideosInner } from '../models/Videos200ResponseVideosInner';
 import { HttpFile } from '../http/http';
 
 export class Users200Response {
@@ -19,7 +19,7 @@ export class Users200Response {
     'userID'?: number;
     'username'?: string;
     'profilePictureURL'?: string;
-    'videos'?: Array<Users200ResponseVideosInner>;
+    'videos'?: Array<Videos200ResponseVideosInner>;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -51,7 +51,7 @@ export class Users200Response {
         {
             "name": "videos",
             "baseName": "Videos",
-            "type": "Array<Users200ResponseVideosInner>",
+            "type": "Array<Videos200ResponseVideosInner>",
             "format": ""
         }    ];
 

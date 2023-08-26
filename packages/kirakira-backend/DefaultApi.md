@@ -4,10 +4,11 @@ All URIs are relative to *https://localhost:3000/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**categories**](DefaultApi.md#categories) | **GET** /categories | Get category data
 [**comment**](DefaultApi.md#comment) | **POST** /comment | Comment on a video
 [**comments**](DefaultApi.md#comments) | **GET** /comments/{id} | Get comments for video ID
 [**deleteComment**](DefaultApi.md#deleteComment) | **POST** /delete_comment | Delete a comment
+[**follow**](DefaultApi.md#follow) | **POST** /follow/{id} | Upvote a video
+[**followFeed**](DefaultApi.md#followFeed) | **GET** /follow-feed | Upvote a video
 [**login**](DefaultApi.md#login) | **POST** /login | Log the user in
 [**logout**](DefaultApi.md#logout) | **GET** /logout | Log user out
 [**recommendations**](DefaultApi.md#recommendations) | **GET** /recommendations/{id} | Get list of videos
@@ -20,54 +21,6 @@ Method | HTTP request | Description
 [**videoDetail**](DefaultApi.md#videoDetail) | **GET** /videos/{id} | Get list of videos
 [**videos**](DefaultApi.md#videos) | **GET** /videos | Get list of videos
 
-
-# **categories**
-> Array<Categories200ResponseInner> categories()
-
-
-### Example
-
-
-```typescript
-import {  } from '';
-import * as fs from 'fs';
-
-const configuration = .createConfiguration();
-const apiInstance = new .DefaultApi(configuration);
-
-let body:any = {};
-
-apiInstance.categories(body).then((data:any) => {
-  console.log('API called successfully. Returned data: ' + data);
-}).catch((error:any) => console.error(error));
-```
-
-
-### Parameters
-This endpoint does not need any parameter.
-
-
-### Return type
-
-**Array<Categories200ResponseInner>**
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | get video details for a specific video |  -  |
-**0** | Unexpected error |  -  |
-
-[[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
 # **comment**
 > void comment()
@@ -233,6 +186,108 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Comment deleted |  -  |
+**0** | Unexpected error |  -  |
+
+[[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
+
+# **follow**
+> void follow()
+
+
+### Example
+
+
+```typescript
+import {  } from '';
+import * as fs from 'fs';
+
+const configuration = .createConfiguration();
+const apiInstance = new .DefaultApi(configuration);
+
+let body:.DefaultApiFollowRequest = {
+  // number | user ID
+  id: 1,
+};
+
+apiInstance.follow(body).then((data:any) => {
+  console.log('API called successfully. Returned data: ' + data);
+}).catch((error:any) => console.error(error));
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | [**number**] | user ID | defaults to undefined
+
+
+### Return type
+
+**void**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Follow success |  -  |
+**0** | Unexpected error |  -  |
+
+[[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
+
+# **followFeed**
+> Array<Videos200ResponseVideosInner> followFeed()
+
+
+### Example
+
+
+```typescript
+import {  } from '';
+import * as fs from 'fs';
+
+const configuration = .createConfiguration();
+const apiInstance = new .DefaultApi(configuration);
+
+let body:any = {};
+
+apiInstance.followFeed(body).then((data:any) => {
+  console.log('API called successfully. Returned data: ' + data);
+}).catch((error:any) => console.error(error));
+```
+
+
+### Parameters
+This endpoint does not need any parameter.
+
+
+### Return type
+
+**Array<Videos200ResponseVideosInner>**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | list of follow feed videos |  -  |
 **0** | Unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
@@ -698,7 +753,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
 # **users**
-> Videos200Response users()
+> Users200Response users()
 
 
 ### Example
@@ -731,7 +786,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**Videos200Response**
+**Users200Response**
 
 ### Authorization
 

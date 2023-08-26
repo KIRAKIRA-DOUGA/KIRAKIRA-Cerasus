@@ -8,6 +8,12 @@
 		buffered?: number;
 		/** 切换全屏函数。 */
 		toggleFullscreen?: () => void;
+		/** list of tracks */
+		qualities?: Array<dashjs.BitrateInfo>;
+		/** current quality */
+		currentQuality: string;
+		/** callback for quality change */
+		onQualityChanged;
 	}>(), {
 		duration: NaN,
 		buffered: 0,
@@ -55,7 +61,7 @@
 	const resolutionMenu = ref<MenuModel>();
 	const fullscreenColorClass = computed(() => ({ [`force-color dark ${Theme.palette.value}`]: fullscreen.value }));
 
-	const [resolution, resolutionOptions] = defineMenuOptions(["4K", "1080P", "720P", "480P", "360P"], "1080P");
+	const [resolution, resolutionOptions] = defineMenuOptions(props.qualities?.map(qual => qual.height + "P").sort().reverse() || [], props.currentQuality);
 
 	const currentPercent = computed({
 		get() {
@@ -103,7 +109,15 @@
 			const _option = option as object;
 			const key = typeof _option === "object" && "key" in _option ? _option.key as string : _option.toString();
 			const active = computed(() => value.value === option);
-			return { data: option, key, active, onChange: () => value.value = option };
+			return {
+				data: option,
+				key,
+				active,
+				onChange: () => {
+					value.value = option;
+					props.onQualityChanged(option);
+				},
+			};
 		}).filter(option => option));
 
 		return [value, list] as const;
@@ -260,10 +274,10 @@
 	.menus {
 		display: contents;
 	}
-	
+
 	.soft-button {
 		--wrapper-size: #{$thickness};
-		
+
 		&.resolution-button:deep {
 			&,
 			* {
