@@ -83,8 +83,20 @@ const English: LocaleIdentifiers = {
 	account_linking: "Account Linking",
 	blocklist: "Blocklist",
 	player: "Player",
-	danmaku: "Danmaku | Danmakus",
-	send_danmaku: "Send Danmaku",
+	danmaku: {
+		_: "Danmaku | Danmakus",
+		send: "Send Danmaku",
+		history: "Danmaku History",
+		format: {
+			mode: {
+				rtl: "R-L",
+				top: "Top",
+				bottom: "Bottom",
+				ltr: "L-R",
+			},
+			send_as_creator: "Creator's Gradient", // NEW
+		},
+	},
 	preference: "Preference",
 	accessibility: "Accessibility",
 	about: "About",
@@ -129,7 +141,6 @@ const English: LocaleIdentifiers = {
 	upvote: "Upvote",
 	downvote: "Downvote",
 	share: "Share",
-	danmaku_history: "Danmaku History",
 	play: "Play",
 	pause: "Pause",
 	rating: "Rating",
@@ -247,6 +258,20 @@ const English: LocaleIdentifiers = {
 	forgot_password: "Forgot Password",
 	reset_password: "Reset Password",
 	format: "Format",
+	text: {
+		_: "Text",
+		size: "Text Size",
+	},
+	color: "Color",
+	mode: "Mode",
+	size: {
+		_: "Size",
+		mini: "Mini",
+		small: "Small",
+		medium: "Medium",
+		large: "Large",
+		extra_large: "Extra Large",
+	},
 };
 
 export default English;

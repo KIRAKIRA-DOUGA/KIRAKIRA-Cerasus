@@ -61,7 +61,7 @@
 
 	<Flyout v-model="flyoutStyle" noCropping>
 		<div class="style-container">
-			<Subheader icon="palette">颜色</Subheader>
+			<Subheader icon="palette">{{ t.color }}</Subheader>
 			<section class="color-section">
 				<div class="color current-color" :style="{ backgroundColor: '#' + style.color }"></div>
 				<div class="color-list">
@@ -78,25 +78,25 @@
 					</div>
 				</div>
 			</section>
-			<ToggleSwitch v-model="style.enableRainbow">以创作者身份发送</ToggleSwitch>
-			<Subheader icon="font_size">字号</Subheader>
+			<ToggleSwitch v-model="style.enableRainbow">{{ t.danmaku.format.send_as_creator }}</ToggleSwitch>
+			<Subheader icon="font_size">{{ t.text.size }}</Subheader>
 			<Segmented v-model="style.fontSize">
-				<SegmentedItem id="small" icon="font_size_small">小</SegmentedItem>
-				<SegmentedItem id="medium" icon="font_size_medium">中</SegmentedItem>
-				<SegmentedItem id="large" icon="font_size_large">大</SegmentedItem>
+				<SegmentedItem id="small" icon="font_size_small">{{ t.size.small }}</SegmentedItem>
+				<SegmentedItem id="medium" icon="font_size_medium">{{ t.size.medium }}</SegmentedItem>
+				<SegmentedItem id="large" icon="font_size_large">{{ t.size.large }}</SegmentedItem>
 			</Segmented>
-			<Subheader icon="danmaku">模式</Subheader>
+			<Subheader icon="danmaku">{{ t.mode }}</Subheader>
 			<Segmented v-model="style.mode">
-				<SegmentedItem id="rtl" icon="danmaku_rtl">滚动</SegmentedItem>
-				<SegmentedItem id="top" icon="danmaku_top">顶部</SegmentedItem>
-				<SegmentedItem id="bottom" icon="danmaku_bottom">底部</SegmentedItem>
-				<SegmentedItem id="ltr" icon="danmaku_ltr">逆向</SegmentedItem>
+				<SegmentedItem id="rtl" icon="danmaku_rtl">{{ t.danmaku.format.mode.rtl }}</SegmentedItem>
+				<SegmentedItem id="top" icon="danmaku_top">{{ t.danmaku.format.mode.top }}</SegmentedItem>
+				<SegmentedItem id="bottom" icon="danmaku_bottom">{{ t.danmaku.format.mode.bottom }}</SegmentedItem>
+				<SegmentedItem id="ltr" icon="danmaku_ltr">{{ t.danmaku.format.mode.ltr }}</SegmentedItem>
 			</Segmented>
 		</div>
 	</Flyout>
 
 	<Comp role="textbox">
-		<TextBox ref="textBox" v-model="content" :placeholder="t.send_danmaku">
+		<TextBox ref="textBox" v-model="content" :placeholder="t.danmaku.send">
 			<template #actions>
 				<SoftButton
 					v-tooltip:bottom="t.kaomoji"

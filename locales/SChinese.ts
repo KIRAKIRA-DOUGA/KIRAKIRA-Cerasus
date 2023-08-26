@@ -84,8 +84,20 @@ const SChinese = {
 	account_linking: "关联社交平台",
 	blocklist: "黑名单",
 	player: "播放",
-	danmaku: "弹幕",
-	send_danmaku: "发送弹幕",
+	danmaku: {
+		_: "弹幕",
+		send: "发送弹幕",
+		history: "弹幕历史",
+		format: {
+			mode: {
+				rtl: "滚动",
+				top: "顶部",
+				bottom: "底部",
+				ltr: "逆向",
+			},
+			send_as_creator: "创作者专用渐变",
+		},
+	},
 	preference: "偏好",
 	accessibility: "无障碍",
 	about: "关于",
@@ -130,7 +142,6 @@ const SChinese = {
 	upvote: "加分",
 	downvote: "减分",
 	share: "分享",
-	danmaku_history: "弹幕历史",
 	play: "播放",
 	pause: "暂停",
 	rating: "评分",
@@ -248,6 +259,20 @@ const SChinese = {
 	forgot_password: "忘记密码",
 	reset_password: "重设密码",
 	format: "格式",
+	text: {
+		_: "文本",
+		size: "字号",
+	},
+	color: "颜色",
+	mode: "模式",
+	size: {
+		_: "大小",
+		mini: "迷你",
+		small: "小",
+		medium: "中",
+		large: "大",
+		extra_large: "超大",
+	},
 } as const;
 
 export default SChinese;

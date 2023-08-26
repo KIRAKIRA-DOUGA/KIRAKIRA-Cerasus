@@ -86,8 +86,20 @@ const Japanese: LocaleIdentifiers = {
 	account_linking: "SNSリンク",
 	blocklist: "ブロックリスト",
 	player: "プレーヤー",
-	danmaku: "弾幕",
-	send_danmaku: "弾幕を送信",
+	danmaku: {
+		_: "弾幕",
+		send: "弾幕を送信",
+		history: "弾幕履歴",
+		format: {
+			mode: {
+				rtl: "滚动", // NEW
+				top: "顶部", // NEW
+				bottom: "底部", // NEW
+				ltr: "逆向", // NEW
+			},
+			send_as_creator: "创作者专用渐变", // NEW
+		},
+	},
 	preference: "プリファレンス",
 	accessibility: "アクセシビリティ",
 	about: "KIRAKIRAについて",
@@ -132,7 +144,6 @@ const Japanese: LocaleIdentifiers = {
 	upvote: "高評価",
 	downvote: "低評価",
 	share: "共有",
-	danmaku_history: "弾幕履歴",
 	play: "再生",
 	pause: "一時停止",
 	rating: "評価",
@@ -250,6 +261,20 @@ const Japanese: LocaleIdentifiers = {
 	forgot_password: "パスワードをお忘れの場合",
 	reset_password: "パスワードの再設定",
 	format: "格式", // NEW
+	text: {
+		_: "文本", // NEW
+		size: "字号", // NEW
+	},
+	color: "颜色", // NEW
+	mode: "模式", // NEW
+	size: {
+		_: "大小", // NEW
+		mini: "迷你", // NEW
+		small: "小", // NEW
+		medium: "中", // NEW
+		large: "大", // NEW
+		extra_large: "超大", // NEW
+	},
 };
 
 export default Japanese;
