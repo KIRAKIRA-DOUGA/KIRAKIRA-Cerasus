@@ -3,6 +3,7 @@
 	import StarterKit from "@tiptap/starter-kit";
 	import { Underline } from "@tiptap/extension-underline";
 	import VueComponent from "helpers/editor-extension";
+	import { SoftButton } from "#components";
 
 	const props = defineProps<{
 		/** 视频 ID。 */
