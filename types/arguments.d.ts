@@ -1,5 +1,5 @@
-import { AcceptedPlugin } from "postcss";
 import * as themeTypes from "modules/theme/types";
+import { AcceptedPlugin } from "postcss";
 
 export namespace FlyoutModelNS {
 	export type Target = MaybeRef<MouseEvent | PointerEvent | TwoD | HTMLElement | EventTarget | DOMRect | undefined | null>;
@@ -33,7 +33,7 @@ declare global {
 	/** 视图。 */
 	type ViewType = "list" | "grid" | "tile";
 	/** 排序顺序，升序或降序。 */
-	type SortOrder = "ascending" | "descending";
+	type SortOrder = "asc" | "desc";
 	/** 主题。 */
 	type ThemeType = themeTypes.ThemeType;
 	/** 主题，包括跟随系统。 */
