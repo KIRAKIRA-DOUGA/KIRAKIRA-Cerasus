@@ -77,7 +77,7 @@
 		<div class="top">
 			<div class="info">
 				<CountItem icon="play" :value="getWatchCount(counts.play)">{{ t(counts.play).views_video }}</CountItem>
-				<CountItem icon="thumb_up" :value="getWatchCount(counts.rating)" :class="{ dislike: counts.rating < 0 }">{{ t.rating }}</CountItem>
+				<CountItem icon="thumb_up" :value="getWatchCount(counts.rating)" :class="{ downvote: counts.rating < 0 }">{{ t.rating }}</CountItem>
 				<CountItem icon="star" :value="getWatchCount(counts.favorite)">{{ t(counts.favorite).favorite }}</CountItem>
 				<CountItem icon="danmaku" :value="getWatchCount(counts.danmaku)">{{ t(counts.danmaku).danmaku }}</CountItem>
 				<div class="watching">
@@ -86,8 +86,8 @@
 				</div>
 			</div>
 			<div class="buttons">
-				<SoftButton v-tooltip:bottom="t.upvote" icon="thumb_up" class="button-like" @click="upvote" />
-				<SoftButton v-tooltip:bottom="t.downvote" icon="thumb_down" class="button-dislike" @click="downvote" />
+				<SoftButton v-tooltip:bottom="t.upvote" icon="thumb_up" class="button-upvote" @click="upvote" />
+				<SoftButton v-tooltip:bottom="t.downvote" icon="thumb_down" class="button-downvote" @click="downvote" />
 				<SoftButton v-tooltip:bottom="t.favorite_verb" icon="star" class="button-favorite" @click="favorite" />
 				<SoftButton v-tooltip:bottom="t.share" icon="share" class="button-share" @click="share" />
 				<SoftButton v-tooltip:bottom="t.danmaku_history" icon="history" class="button-history" />
@@ -144,7 +144,7 @@
 				text-align: center;
 			}
 
-			&.dislike .icon {
+			&.downvote .icon {
 				rotate: 0.5turn;
 			}
 		}
