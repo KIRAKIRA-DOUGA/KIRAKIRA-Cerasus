@@ -62,10 +62,22 @@
 	<Flyout v-model="flyoutStyle" noCropping>
 		<div class="style-container">
 			<Subheader icon="palette">颜色</Subheader>
-			<div class="color-wrapper">
-				<div class="color" :style="{ backgroundColor: style.color }"></div>
-				<TextBox v-model="style.color" />
-			</div>
+			<section class="color-section">
+				<div class="color current-color" :style="{ backgroundColor: '#' + style.color }"></div>
+				<div class="color-list">
+					<div
+						v-for="color in colors"
+						:key="color"
+						class="color"
+						:style="{ backgroundColor: '#' + color }"
+						@click="style.color = color"
+					></div>
+					<div class="color custom-color">
+						<div class="hue"></div>
+						<div class="luminance"></div>
+					</div>
+				</div>
+			</section>
 			<ToggleSwitch v-model="style.enableRainbow">以创作者身份发送</ToggleSwitch>
 			<Subheader icon="font_size">字号</Subheader>
 			<Segmented v-model="style.fontSize">
@@ -130,31 +142,65 @@
 		flex-direction: column;
 		gap: 14px;
 		min-width: 344px;
-		
+
 		.segmented {
 			width: 100%;
 		}
-		/* display: grid;
-		grid-template-columns: auto 200px;
-		gap: 10px;
-		align-items: center;
 
-		.color-wrapper {
+		.color-section {
 			display: flex;
-			gap: 10px;
+			gap: 18px;
+			justify-content: space-between;
 
 			.color {
 				@include round-small;
-				width: 3rem;
+				@include square(24px);
+				@include button-shadow-unchecked-hover;
+				flex-shrink: 0;
+				border: c(color-palette-stroke) 2px solid;
+
+				&.current-color {
+					width: 78px;
+					height: auto;
+				}
 			}
 
-			.text-box {
-				width: 100%;
+			.color-list {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 8px;
+
+				.color {
+					cursor: pointer;
+
+					&:any-hover {
+						@include button-shadow-unchecked-hover-deeper;
+					}
+
+					&:active {
+						@include button-scale-pressed;
+					}
+
+					&.custom-color {
+						position: relative;
+						overflow: hidden;
+						border: none;
+
+						* {
+							position: absolute;
+							inset: 0;
+						}
+
+						.hue {
+							background: $hue-radial;
+						}
+
+						.luminance {
+							background: $luminance-radial;
+						}
+					}
+				}
 			}
 		}
-
-		.toggle-switch {
-			grid-column-end: span 2;
-		} */
 	}
 </style>

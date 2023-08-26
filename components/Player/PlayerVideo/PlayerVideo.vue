@@ -249,7 +249,7 @@
 				@contextmenu.prevent="e => menu = e"
 			>
 			</video>
-			<PlayerVideoDanmaku v-model="willSendDanmaku" :media="video" />
+			<PlayerVideoDanmaku v-model="willSendDanmaku" :media="video" :hidden="!showDanmaku" />
 			<PlayerVideoController
 				v-if="qualities.length !== 0"
 				v-model:currentTime="currentTime"

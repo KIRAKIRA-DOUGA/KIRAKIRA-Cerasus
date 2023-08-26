@@ -20,6 +20,13 @@ $english-logo-fonts: Montserrat, "SF Pro Display", $english-fonts, $fallback-fon
 $monospace-fonts: "Cascadia Code", "JetBrains Mono", Consolas, "SF Mono", monospace;
 // #endregion
 
+// #region 渐变
+$hue-radial: conic-gradient(from 90deg at center, red 0deg, yellow 60deg, lime 120deg, cyan 180deg, blue 240deg, magenta 300deg, red 360deg);
+$luminance-radial: radial-gradient(closest-side, white 0%, #fff0 100%);
+$-sixth: calc(100% / 6);
+$hue-linear: linear-gradient(to right, red 0%, yellow $-sixth, lime $-sixth * 2, cyan $-sixth * 3, blue $-sixth * 4, magenta $-sixth * 5, red 100%);
+// #endregion
+
 /// 侧边栏宽度。
 $sidebar-width: 48px;
 /// 菜单边距。
