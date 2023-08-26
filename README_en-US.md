@@ -33,7 +33,9 @@ npm install
 
 #### HTTPS (Default)
 
-Press the keyboard keys <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>, and then select `npm: dev`.
+Press <kbd>F5</kbd> in VSCode, and you can stop the server using <kbd>Shift</kbd> + <kbd>F5</kbd>.
+
+Or press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>, and then select `npm: dev`.
 
 ```bash
 npm run dev
