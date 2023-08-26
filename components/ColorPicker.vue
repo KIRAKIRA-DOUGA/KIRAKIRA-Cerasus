@@ -2,11 +2,53 @@
 	const main = ref<TwoD>([1, 0]);
 	const smoothMain = useSmoothValue(main, 0.5);
 	const auxiliary = ref(0);
-	const model = ref("rgb");
+	const model = ref<"rgb" | "hsl" | "hsb">("rgb");
 	const values = ref<ThreeD>([255, 0, 0]);
+	const color = reactive(Color.fromHex("ff0000")) as Color;
+	// const hex = computed({ get: () => color.hex.slice(0, 6), set: v => color.hex = v });
 	const hex = ref("ff0000");
 	const hashHex = computed(() => "#" + hex.value);
 	const boxShadowColor = computed(() => hashHex.value + "cc");
+
+	const isUpdatingHex = ref(false);
+	const isUpdatingValues = ref(false);
+
+	const setHex = () => { if (!isUpdatingHex.value) hex.value = color.hex.slice(0, 6); };
+	const setValues = () => {
+		if (!isUpdatingValues.value)
+			if (model.value === "rgb") {
+				const { r, g, b } = color.rgb;
+				values.value = [r, g, b];
+			} else if (model.value === "hsl") {
+				const { h, s, l } = color.hsl;
+				values.value = [h, s, l];
+			} else if (model.value === "hsb") {
+				const { h, s, b } = color.hsb;
+				values.value = [h, s, b];
+			}
+	};
+
+	watch(hex, async hex => {
+		isUpdatingHex.value = true;
+		color.hex = hex;
+		setValues();
+		await nextTick();
+		isUpdatingHex.value = false;
+	});
+
+	watch(values, async values => {
+		isUpdatingValues.value = true;
+		color[model.value] = values as never;
+		if (!isUpdatingHex.value) setHex();
+		await nextTick();
+		isUpdatingValues.value = false;
+	}, { deep: true });
+
+	watch(model, model => {
+		setHex();
+		setValues();
+	}, { deep: true });
+
 	/**
 	 * 按下主要调节平面逻辑处理。
 	 * @param e - 指针事件（包括鼠标和触摸）。
@@ -40,15 +82,15 @@
 		}"
 	>
 		<div class="plane color" @pointerdown="onPlaneDown">
-			<div v-if="model === 'rgb'" class="rgb">
+			<div v-if="model === 'rgb'" class="preview rgb">
 				<div class="solid"></div>
 				<div class="cover black"></div>
 			</div>
-			<div v-else-if="model === 'hsl'" class="hsl">
+			<div v-else-if="model === 'hsl'" class="preview hsl">
 				<div class="hue"></div>
 				<div class="cover gray"></div>
 			</div>
-			<div v-else-if="model === 'hsb'" class="hsb">
+			<div v-else-if="model === 'hsb'" class="preview hsb">
 				<div class="hue"></div>
 				<div class="cover white"></div>
 			</div>
@@ -87,7 +129,7 @@
 		aspect-ratio: 1 / 1;
 		cursor: pointer;
 		
-		> * {
+		> .preview {
 			display: contents;
 			pointer-events: none;
 			
@@ -176,12 +218,12 @@
 	}
 	
 	.view-color {
+		@include color-palette-stroke;
 		background-color: var(--color);
 	}
 	
 	.color {
 		@include round-large;
-		@include color-palette-stroke;
 	}
 	
 	.thumb {
@@ -195,7 +237,6 @@
 		background-color: c(main-bg);
 		cursor: pointer;
 		transition: $fallback-transitions, left 0s, top 0s;
-		pointer-events: auto;
 		
 		&::after {
 			@include square(100%);

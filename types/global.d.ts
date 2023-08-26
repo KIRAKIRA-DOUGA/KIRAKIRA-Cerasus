@@ -44,6 +44,10 @@ declare global {
 	 */
 	type ThreeD = [number, number, number];
 	/**
+	 * 表示四维点的元组。
+	 */
+	type FourD = [number, number, number, number];
+	/**
 	 * 指定类型或一个无参数函数返回为指定类型。
 	 * @template T - 指定类型及无参数函数返回的这个类型。
 	 */
