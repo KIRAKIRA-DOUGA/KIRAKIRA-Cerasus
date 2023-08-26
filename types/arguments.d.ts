@@ -1,5 +1,6 @@
 import * as themeTypes from "modules/theme/types";
 import { AcceptedPlugin } from "postcss";
+import type Danmaku from "danmaku";
 
 export namespace FlyoutModelNS {
 	export type Target = MaybeRef<MouseEvent | PointerEvent | TwoD | HTMLElement | EventTarget | DOMRect | undefined | null>;
@@ -44,6 +45,14 @@ declare global {
 	type TabBarMovement = Movement | "ignore" | "none" | "fade";
 	/** 可作为 URL Search Params 的更宽松类型。 */
 	type UrlQueryType = string | URLSearchParams | Record<string, Readable>;
+	
+	type DanmakuComment = Parameters<Danmaku["emit"]>[0];
+	/** 弹幕列表项目。 */
+	interface DanmakuListItem {
+		videoTime: Duration;
+		content: string;
+		sendTime: Date;
+	}
 
 	type FlyoutModel = FlyoutModelNS.Tuple | FlyoutModelNS.Object;
 	type MenuModel = MouseEvent | PointerEvent | null;
