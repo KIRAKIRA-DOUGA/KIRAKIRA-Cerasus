@@ -87,7 +87,7 @@
 				<SoftButton v-tooltip:bottom="t.downvote" icon="thumb_down" class="button-downvote" @click="downvote" />
 				<SoftButton v-tooltip:bottom="t.favorite_verb" icon="star" class="button-favorite" @click="favorite" />
 				<SoftButton v-tooltip:bottom="t.share" icon="share" class="button-share" @click="share" />
-				<SoftButton v-tooltip:bottom="t.danmaku_history" icon="history" class="button-history" />
+				<SoftButton v-tooltip:bottom="t.danmaku.history" icon="history" class="button-history" />
 				<SoftButton v-tooltip:bottom="t.settings" icon="settings" class="button-settings" />
 			</div>
 		</div>
