@@ -247,8 +247,9 @@
 			<p>音量</p><Slider v-model="volume" :defaultValue="100" @changed="onSlided" />
 			<p>音调</p><Slider v-model="pitch" :min="-24" :max="24" :defaultValue="0" @changed="onSlided" />
 			<div class="capsule-range-container">
-				<CapsuleSlider v-model="volume" :defaultValue="100" :displayValue="v => v | 0" @changed="onSlided" />
+				<CapsuleSlider v-model="volume" :defaultValue="100" :displayValue="Math.round" @changed="onSlided" />
 			</div>
+			<Slider v-model="volume" :defaultValue="100" :style="{ '--size': 'large' }" @changed="onSlided" />
 			<em>单击鼠标中键或触摸屏长按组件以还原默认值。</em>
 			<audio ref="beep" :src="beepSrc"></audio>
 			<TabBar v-model="selectedTab">
@@ -276,6 +277,7 @@
 					<MenuItem icon="delete">删除</MenuItem>
 				</Menu>
 			</div>
+			<hr />
 			<div class="toast-test">
 				<RadioButton v-model="toastSeverity" value="info">信息</RadioButton>
 				<RadioButton v-model="toastSeverity" value="success">成功</RadioButton>
@@ -286,10 +288,16 @@
 					<Button icon="send" @click="useToast(toastMessage, toastSeverity)">发送到消息框</Button>
 				</section>
 			</div>
+			<hr />
 			<RadioButton v-model="logoTextForm" value="hidden">{{ t.logo_hidden }}</RadioButton>
 			<RadioButton v-model="logoTextForm" value="half">{{ t.logo_half }}</RadioButton>
 			<RadioButton v-model="logoTextForm" value="full">{{ t.logo_show }}</RadioButton>
 			<LogoText :style="{ '--form': logoTextForm }" />
+			<hr />
+			<div class="flyout-bg" :style="{ width: '344px' }">
+				<ColorPicker />
+			</div>
+			<hr />
 			<Accordion autoCollapse>
 				<AccordionItem title="第1个">
 					<h4>标题</h4>
@@ -462,8 +470,17 @@
 	}
 
 	.capsule-range-container {
+		@include round-large;
 		max-width: 400px;
 		padding: 1rem;
 		background-color: black;
+	}
+	
+	.flyout-bg {
+		@include dropdown-flyouts;
+		@include round-large;
+		max-width: 100dvw;
+		padding: 0.75rem 1rem;
+		background-color: c(acrylic-bg, 75%);
 	}
 </style>

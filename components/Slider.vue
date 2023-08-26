@@ -111,32 +111,52 @@
 		:aria-valuemax="max"
 		aria-orientation="horizontal"
 	>
-		<div class="track" @pointerdown="onTrackDown" @contextmenu="onLongPress"></div>
-		<div v-show="Number.isFinite(buffered)" class="buffered"></div>
-		<div class="passed"></div>
-		<div class="thumb" @pointerdown="onThumbDown" @contextmenu="onLongPress"></div>
+		<Fragment>
+			<div class="track" @pointerdown="onTrackDown" @contextmenu="onLongPress"></div>
+			<div v-show="Number.isFinite(buffered)" class="buffered"></div>
+			<div class="passed"></div>
+			<div class="thumb" @pointerdown="onThumbDown" @contextmenu="onLongPress"></div>
+		</Fragment>
 	</Comp>
 </template>
 
 <style scoped lang="scss">
 	$thumb-size: 16px;
-	$thumb-size-half: calc($thumb-size / 2);
+	$thumb-size-half: calc(var(--thumb-size) / 2);
 	$track-thickness: 6px;
-	$value: calc(var(--value) * (100% - $thumb-size));
-	$buffered: calc(var(--buffered) * (100% - $thumb-size));
+	$value: calc(var(--value) * (100% - var(--thumb-size)));
+	$buffered: calc(var(--buffered) * (100% - var(--thumb-size)));
+	
+	$large-track-thickness: 16px;
+	$large-thumb-size: 24px;
+	
+	@layer props {
+		/// 滑动条尺寸，可选的值为：small | large。
+		--size: small;
+	}
 
 	:comp {
 		--value: 0;
 		--buffered: 0;
 		position: relative;
 		touch-action: none;
+		
+		> * {
+			--thumb-size: #{$thumb-size};
+			--track-thickness: #{$track-thickness};
+			
+			@container style(--size: large) {
+				--thumb-size: #{$large-thumb-size};
+				--track-thickness: #{$large-track-thickness};
+			}
+		}
 	}
 
 	.track,
 	.passed,
 	.buffered {
 		@include oval;
-		height: $track-thickness;
+		height: var(--track-thickness);
 		margin: $thumb-size-half;
 	}
 
@@ -166,12 +186,12 @@
 	}
 
 	.thumb {
-		@include square($thumb-size);
+		@include square(var(--thumb-size));
 		@include circle;
 		@include flex-center;
 		@include control-ball-shadow;
 		position: absolute;
-		top: calc($track-thickness / 2 - $thumb-size-half);
+		top: calc(var(--track-thickness) / 2 - $thumb-size-half);
 		left: $value;
 		background-color: c(main-bg);
 		cursor: pointer;
@@ -196,13 +216,23 @@
 			scale: 0.5;
 		}
 
-		&:hover::after {
+		&:any-hover::after {
 			scale: 0.7;
 		}
 
 		.track:active ~ &::after,
 		&:active::after {
-			scale: 0.4;
+			scale: 0.4 !important;
+		}
+		
+		@container style(--size: large) {
+			&::after {
+				scale: 0.625;
+			}
+			
+			&:any-hover::after {
+				scale: 0.765;
+			}
 		}
 
 		:comp:focus & {

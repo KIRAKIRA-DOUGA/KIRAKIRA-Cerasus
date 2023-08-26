@@ -101,6 +101,10 @@
 @mixin textbox-trailingicon-focus {
 	box-shadow: 0 0 0 3px c(gray-50, 30%) inset;
 }
+
+@mixin color-palette-stroke {
+	box-shadow: 0 0 0 2px c(color-palette-stroke) inset;
+}
 // #endregion
 
 // #region 主要主题色
