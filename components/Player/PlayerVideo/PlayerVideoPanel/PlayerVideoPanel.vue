@@ -1,6 +1,4 @@
-<script setup lang="tsx">
-	import { Icon } from "#components";
-
+<script setup lang="ts">
 	const props = defineProps<{
 		/** 视频 ID。 */
 		id: number;
@@ -55,24 +53,23 @@
 		});
 	}
 
-	const CountItem = (() => {
-		interface Props {
-			value: number | string;
-			icon: string;
-		}
-		return ((props, { slots }) => (
-			<div>
-				<Icon name={props.icon} />
-				<span>
-					{slots.default()}
-					<span class="value">{props.value}</span>
-				</span>
-			</div>
-		)) as VueJsx<Props>;
-	})();
+	const [DefineCountItem, CountItem] = createReusableTemplate<{
+		value: number | string;
+		icon: string;
+	}>();
 </script>
 
 <template>
+	<DefineCountItem v-slot="{ value, icon, $slots }">
+		<div>
+			<Icon :name="icon" />
+			<span>
+				<component :is="$slots.default!" />
+				<span class="value">{{ value }}</span>
+			</span>
+		</div>
+	</DefineCountItem>
+
 	<Comp>
 		<div class="top">
 			<div class="info">
