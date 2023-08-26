@@ -70,7 +70,10 @@
 	const isScrolling = ref(false);
 	const isForceSmallRipple = ref(false);
 	const newPageNumber = ref<HTMLDivElement>();
-	const [DefineUnselectedItem, UnselectedItem] = createReusableTemplate<{ page: number; position?: number }>();
+	const [DefineUnselectedItem, UnselectedItem] = createReusableTemplate<{
+		page: number;
+		position?: number;
+	}>();
 
 	watch(() => currentPage.value, (page, prevPage) => {
 		// #region 导轨动画

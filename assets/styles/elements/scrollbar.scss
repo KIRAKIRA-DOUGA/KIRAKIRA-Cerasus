@@ -43,11 +43,11 @@
 ::-webkit-scrollbar-thumb {
 	@include oval;
 	background-color: transparent;
-	border: 5px solid transparent;
+	border: transparent 5px solid;
 	box-shadow: 4px 0 0 4px c(main-fg, 45%) inset;
 
 	&:hover {
-		border: 3px solid transparent;
+		border: transparent 3px solid;
 	}
 }
 

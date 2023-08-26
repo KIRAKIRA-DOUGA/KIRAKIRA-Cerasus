@@ -1,24 +1,39 @@
 <script setup lang="ts">
 	import { RecycleScroller } from "vue-virtual-scroller";
 
+	const insertDanmaku = defineModel<DanmakuListItem>();
 	const danmakuItemMenu = ref<MenuModel>();
-	const currentDanmaku = ref<ReturnType<typeof getDanmaku>>();
+	const currentDanmaku = ref<DanmakuListItem>();
 	const { copy } = useClipboard();
-	const headers = ["时间", "内容", "发送时间"];
+	const headers = { videoTime: "时间", content: "内容", sendTime: "发送时间" };
 	const colWidths = reactive([60, 150, 100]);
-	const danmakuList = reactive(forMap(10000, i => getDanmaku(i))); // 让你逝世一万条弹幕会不会把设备弄炸！
+	const danmakuList = reactive<{ item: DanmakuListItem; key: ObjectKey }[]>([]);
+	const danmakuListKey = ref(0); // FIXME: 理论上 vue-virtual-scroller 会自动监测弹幕数组更新，但是目前不知道为什么不生效，暂时只能用这种方法解决。
+	const sortBy = reactive<[column: "videoTime" | "sendTime", order: SortOrder]>(["videoTime", "ascending"]);
+
+	watch(insertDanmaku, danmaku => {
+		if (!danmaku) return;
+		const key = danmaku.content + danmaku.sendTime.valueOf();
+		danmakuList.push({ item: danmaku, key });
+		danmakuListKey.value = new Date().valueOf();
+		insertDanmaku.value = undefined;
+	});
 
 	/**
-	 * 获取弹幕。
-	 * @param index - 弹幕序号。
-	 * @returns - 弹幕信息。
+	 * 单击表头排序。
+	 * @param columnIndex - 单击的列。
 	 */
-	function getDanmaku(index: number) {
-		return {
-			videoTime: new Duration(index - 1),
-			content: `第${digitCase(index)}，火前留名！`,
-			sendTime: formatDate(new Date(), "yyyy/MM/dd"),
-		};
+	function sort(columnIndex: number) {
+		const column = columnIndex === 0 ? "videoTime" : columnIndex === 2 ? "sendTime" : undefined;
+		if (!column) return;
+		if (sortBy[0] === column) sortBy[1] = sortBy[1] === "ascending" ? "descending" : "ascending";
+		else [sortBy[0], sortBy[1]] = [column, "ascending"];
+		danmakuList.sort((a, b) => {
+			let compare = a.item[sortBy[0]].valueOf() - b.item[sortBy[0]].valueOf();
+			if (sortBy[1] === "descending") compare = -compare;
+			return compare;
+		});
+		danmakuListKey.value = new Date().valueOf();
 	}
 
 	/**
@@ -54,6 +69,17 @@
 		copy(currentDanmaku.value.content);
 		useToast("已复制", "success");
 	}
+
+	/**
+	 * 处理单元格显示文本。
+	 * @param value - 不同类型的数据。
+	 * @returns 显示为字符串的值。
+	 */
+	function handleTableDataCellText(value: ValueOf<DanmakuListItem>) {
+		if (value instanceof Date) return formatDate(value, "yyyy/MM/dd");
+		else if (value instanceof Duration) return value.toString();
+		else return value;
+	}
 </script>
 
 <template>
@@ -61,19 +87,26 @@
 		<ClientOnly>
 			<table class="lite">
 				<thead>
-					<th v-for="(header, j) in headers" :key="header" v-ripple :width="colWidths[j]">
+					<th v-for="(header, column, j) in headers" :key="header" v-ripple :width="colWidths[j]" @click="() => sort(j)">
 						<span>{{ header }}</span>
+						<Icon
+							name="chevron_up"
+							:class="sortBy[0] === column && {
+								ascending: sortBy[1] === 'ascending',
+								descending: sortBy[1] === 'descending',
+							}"
+						/>
 					</th>
 					<div class="shadow">
-						<th v-for="(header, j) in headers" :key="header" :width="colWidths[j]">
+						<th v-for="(header, _column, j) in headers" :key="header" :width="colWidths[j]">
 							<div class="grip" :data-index="j" @pointerdown="onGripDown"></div>
 						</th>
 					</div>
 				</thead>
 				<tbody>
-					<RecycleScroller v-slot="{ item }" :itemSize="28" keyField="content" :items="danmakuList">
-						<tr v-ripple @contextmenu.prevent="e => { currentDanmaku = item; danmakuItemMenu = e; }">
-							<td v-for="(value, key, j) in item" :key="key" :width="colWidths[j]">{{ value }}</td>
+					<RecycleScroller v-slot="{ item }" :key="danmakuListKey" :itemSize="28" keyField="key" :items="danmakuList">
+						<tr v-ripple @contextmenu.prevent="e => { currentDanmaku = item.item; danmakuItemMenu = e; }">
+							<td v-for="(value, key, j) in item.item" :key="key" :width="colWidths[j]">{{ handleTableDataCellText(value) }}</td>
 						</tr>
 					</RecycleScroller>
 				</tbody>
@@ -88,6 +121,8 @@
 		<Menu v-model="danmakuItemMenu">
 			<MenuItem icon="copy" @click="copyDanmaku">复制</MenuItem>
 			<MenuItem icon="flag">举报</MenuItem>
+			<hr />
+			<MenuItem icon="person">进入该用户首页</MenuItem>
 		</Menu>
 	</Comp>
 </template>
@@ -134,6 +169,25 @@
 					&:is(:hover, :active) {
 						background-color: c(hover-overlay) !important;
 					}
+
+					.icon {
+						$transition: $fallback-transitions, rotate $ease-out-smooth 500ms;
+						font-size: 16px;
+						rotate: x 100grad;
+						vertical-align: text-top;
+						transform-style: preserve-3d;
+						perspective: 250px;
+
+						&.ascending {
+							rotate: x 0grad;
+							transition: $transition;
+						}
+
+						&.descending {
+							rotate: x 200grad;
+							transition: $transition;
+						}
+					}
 				}
 
 				.shadow {
@@ -158,15 +212,12 @@
 				min-width: 60px;
 				height: $item-height;
 				padding: 0.25rem 0.75rem;
+				padding-right: 0;
 				overflow: hidden;
 				white-space: nowrap;
 				text-align: left;
 				text-overflow: ellipsis;
 				transition: $fallback-transitions, width 0s;
-			}
-
-			td {
-				padding-right: 0;
 			}
 
 			thead,

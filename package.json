@@ -103,6 +103,7 @@
 		"@vueuse/nuxt": "^9.13.0",
 		"axios": "^0.27.2",
 		"css-doodle": "^0.34.3",
+		"danmaku": "^2.0.6",
 		"dashjs": "^4.7.1",
 		"gsap": "^3.11.4",
 		"js-confetti": "^0.11.0",

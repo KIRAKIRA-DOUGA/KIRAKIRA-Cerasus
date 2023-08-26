@@ -129,6 +129,7 @@ module.exports = {
 		"no-void": ["off", { "allowAsStatement": true }], // 我就是要使用 void。
 		"no-labels": "off",
 		"default-case-last": "off",
+		"no-useless-constructor": "off", // private constructor() { } 你跟我说无用？
 		"import/order": "off", // 与 VSCode 内置导入排序特性打架。
 		"import/first": "off", // 与 Vue 特性冲突。
 		"import/named": "off", // 与 TypeScript 特性冲突。
@@ -176,6 +177,7 @@ module.exports = {
 			"named": "never",
 			"asyncArrow": "always",
 		}],
+		"@typescript-eslint/no-useless-constructor": "error",
 		// "@typescript-eslint/no-confusing-void-expression": "error",
 		// "@typescript-eslint/no-floating-promises": "error",
 		// 嗯对这几个不晓得怎么用不了。

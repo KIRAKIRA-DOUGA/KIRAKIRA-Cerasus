@@ -10,9 +10,9 @@
 		animatedState?: string;
 		/** 文本。 */
 		text?: Readable;
-		/** 是否仅显示图标不可点击。 */
+		/** 是否仅显示图标不可点击？与 disabled 的区别是按钮不会变灰，表示只是展示图标。 */
 		nonclickable?: boolean;
-		/** 是否不可聚焦但仍可点击。 */
+		/** 是否不可聚焦但仍可点击？ */
 		nonfocusable?: boolean;
 		/** 外观偏好。 */
 		appearance?: "default" | "textbox-trailingicon";
@@ -20,6 +20,8 @@
 		href?: string;
 		/** 是否**强制**高亮图标强调色？默认情况下会根据路由自动添加 router-link-active 类。 */
 		active?: boolean;
+		/** 按钮已禁用？ */
+		disabled?: boolean;
 	}>(), {
 		icon: undefined,
 		animatedIcon: undefined,
@@ -62,9 +64,9 @@
 				ref="wrapper"
 				v-ripple
 				:tabindex="nonclickable || nonfocusable ? -1 : ''"
-				:disabled="nonclickable"
+				:disabled="nonclickable || disabled"
 				v-bind="additionalAttrs"
-				:class="{ 'router-link-active': active }"
+				:class="{ 'router-link-active': active, disabled }"
 				@click="(e: MouseEvent) => emits('click', e)"
 			>
 				<Icon v-if="icon" :name="icon" />
@@ -123,7 +125,7 @@
 			background-color: c(accent-hover-overlay);
 		}
 	}
-
+	
 	:comp > div {
 		@include flex-center;
 		@include ripple-clickable-only-inside(var(--wrapper-size));
@@ -156,6 +158,10 @@
 
 			@container style(--active: true) {
 				@include router-link-active;
+			}
+			
+			&.disabled {
+				color: c(gray-40);
 			}
 		}
 

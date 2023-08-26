@@ -1,8 +1,9 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 	import { useEditor, EditorContent } from "@tiptap/vue-3";
 	import StarterKit from "@tiptap/starter-kit";
 	import { Underline } from "@tiptap/extension-underline";
 	import VueComponent from "helpers/editor-extension";
+	import { SoftButton } from "#components";
 
 	const props = defineProps<{
 		/** 视频 ID。 */
@@ -33,13 +34,6 @@
 			textLength.value = props.editor.getText().length;
 		},
 	});
-
-	const [DefineToolItem, ToolItem] = createReusableTemplate<{
-		tooltip?: string;
-		active?: ActiveType;
-		icon?: string;
-		onClick?: (e: MouseEvent) => void;
-	}>();
 
 	/** 切换文本加粗。 */
 	const toggleBold = () => { editor.value?.chain().focus().toggleBold().run(); };
@@ -107,6 +101,25 @@
 		return typeof active === "boolean" ? active : !!active && editor.value?.isActive(active);
 	}
 
+	const ToolItem = (() => {
+		interface Props {
+			tooltip?: string;
+			active?: ActiveType;
+			disabled?: boolean;
+			icon?: string;
+			onClick?: (e: MouseEvent) => void;
+		}
+		return (props => (
+			<SoftButton
+				v-tooltip:bottom={props.tooltip}
+				active={isActive(props.active)}
+				disabled={props.disabled}
+				icon={props.icon}
+				onClick={props.onClick}
+			/>
+		)) as VueJsx<Props>;
+	})();
+
 	/*
 	 * 自定义快捷键侦听。
 	 * 目前已有的快捷键：
@@ -115,20 +128,11 @@
 </script>
 
 <template>
-	<DefineToolItem v-slot="{ tooltip, active, icon, onClick }">
-		<SoftButton
-			v-tooltip:bottom="tooltip"
-			:active="isActive(active)"
-			:icon="icon"
-			@click="onClick"
-		/>
-	</DefineToolItem>
-
 	<FlyoutKaomoji v-model="flyoutKaomoji" @insert="insertKaomoji" />
 	<FlyoutKaomojiMini v-model="flyoutKaomojiMini" @insert="insertKaomoji" @escape="insertKaomoji" />
 
 	<Comp ref="rtfEditor" @keyup.stop.ctrl.m="showRecentKaomojis">
-		<ClientOnly class="inset-box">
+		<ClientOnly>
 			<EditorContent :editor="editor" />
 		</ClientOnly>
 		<div class="toolbar">
@@ -143,7 +147,7 @@
 			</div>
 			<div class="right">
 				<span class="text-length">{{ textLength }}</span>
-				<ToolItem :tooltip="t.send" icon="send" @click="sendComment" />
+				<ToolItem :tooltip="t.send" icon="send" :disabled="!textLength" @click="sendComment" />
 			</div>
 		</div>
 	</Comp>
@@ -157,6 +161,8 @@
 		background-color: c(inset-bg);
 
 		> :first-child {
+			display: block;
+			min-height: 3em;
 			padding: 12px;
 		}
 

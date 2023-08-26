@@ -47,6 +47,10 @@
 		step?: number;
 		/** 输入法模式。 */
 		inputMode?: "none" | "text" | "decimal" | "numeric" | "tel" | "search" | "email" | "url";
+		/** 前缀。 */
+		prefix?: string;
+		/** 后缀。 */
+		suffix?: string;
 	}>(), {
 		icon: undefined,
 		size: "normal",
@@ -63,13 +67,15 @@
 		pattern: undefined,
 		step: undefined,
 		inputMode: undefined,
+		prefix: "",
+		suffix: "",
 	});
 
 	const emits = defineEmits<{
 		input: [e: InputEvent];
 	}>();
 
-	const value = defineModel<string>({ required: true });
+	const value = defineModel<string | number>({ required: true });
 	/** 是否显示密码。 */
 	const showPassword = ref(false);
 	const type = computed(() => {
@@ -100,7 +106,7 @@
 			if (props.min === undefined || props.min < 0) validChar += "-";
 			if (!Number.isInteger(props.step) || props.inputMode === "decimal") validChar += ".";
 			const pattern = new RegExp(`[^${validChar}]`, "g");
-			value.value = value.value.replace(pattern, "");
+			value.value = value.value.toString().replace(pattern, "");
 			if (e.data && e.data.match(pattern)) status = "invalid";
 			else if (input.value.match(pattern)) status = "invalid";
 			const isEmpty = !input.value.trim().length;
@@ -126,14 +132,14 @@
 		const caret = Caret.get(input);
 		emits("input", e);
 		const undo = () => {
-			const length = input.value.length - value.value.length;
-			input.value = value.value;
+			const length = input.value.length - value.value.toString().length;
+			input.value = value.value.toString();
 			if (length >= 0 && caret !== null) Caret.set(input, caret - length);
 		};
 		if (props.preventIfInvalid) {
 			if (props.pattern) {
 				const pattern = new RegExp(`^${props.pattern.source.replace(/\*$/, "+")}$`, props.pattern.flags);
-				value.value = value.value.match(props.pattern)?.[0] ?? "";
+				value.value = value.value.toString().match(props.pattern)?.[0] ?? "";
 				if (e.data && !e.data.match(pattern)) undo();
 				else if (!input.value.match(pattern)) undo();
 			}
@@ -242,6 +248,7 @@
 		<div>
 			<div class="wrapper">
 				<Icon v-if="icon" :name="icon" class="leading-icon" />
+				<span class="prefix">{{ prefix }}</span>
 				<input
 					ref="input"
 					:value="value ?? ''"
@@ -265,6 +272,7 @@
 					:inputmode="inputMode"
 					@input="onInput"
 				/>
+				<span class="suffix">{{ suffix }}</span>
 				<label>{{ placeholder }}</label>
 				<Fragment class="trailing-icons">
 					<TrailingIcon
@@ -397,6 +405,18 @@
 		@include is-large-size {
 			clip-path: inset(0 0 $focus-stripe-height)
 		}
+		
+		> span:empty {
+			display: none;
+		}
+		
+		.prefix {
+			margin-left: $start-indent;
+		}
+		
+		.suffix:has(~ .trailing-icons:empty) {
+			margin-right: $start-indent;
+		}
 	}
 
 	label {
@@ -429,10 +449,13 @@
 		padding: 0;
 		color: c(text-color);
 		font-size: 14px;
-		text-indent: $start-indent;
 		background: transparent;
 		border: 0;
 		appearance: none;
+		
+		.prefix:empty ~ & {
+			text-indent: $start-indent;
+		}
 
 		&::placeholder {
 			color: c(icon-color);

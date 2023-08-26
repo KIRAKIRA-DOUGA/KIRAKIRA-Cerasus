@@ -30,7 +30,9 @@
 	const { isFullscreen: fullscreen, toggle } = useFullscreen(videoContainer);
 	const resample = computed({ get: () => !preservesPitch.value, set: value => preservesPitch.value = !value });
 	const menu = ref<MenuModel>();
-	const showDanmaku = ref(false);
+	const showDanmaku = ref(true);
+	const willSendDanmaku = ref<DanmakuComment>();
+	const willInsertDanmaku = ref<DanmakuListItem>();
 
 	type MediaInfo = Record<string, Record<string, unknown>>;
 
@@ -109,6 +111,15 @@
 			} catch { }
 		else
 			screen.orientation.unlock();
+	});
+
+	watch(willSendDanmaku, danmaku => {
+		if (danmaku)
+			willInsertDanmaku.value = {
+				videoTime: new Duration(currentTime.value),
+				content: danmaku.text!,
+				sendTime: new Date(),
+			};
 	});
 
 	const player = ref<MediaPlayerClass>();
@@ -238,6 +249,7 @@
 				@contextmenu.prevent="e => menu = e"
 			>
 			</video>
+			<PlayerVideoDanmaku v-model="willSendDanmaku" :media="video" :hidden="!showDanmaku" />
 			<PlayerVideoController
 				v-if="qualities.length !== 0"
 				v-model:currentTime="currentTime"
@@ -258,7 +270,12 @@
 			/>
 		</div>
 
-		<PlayerVideoPanel :id="id" :rating="rating" />
+		<PlayerVideoPanel
+			:id="id"
+			v-model:sendDanmaku="willSendDanmaku"
+			v-model:insertDanmaku="willInsertDanmaku"
+			:rating="rating"
+		/>
 		<Menu v-model="menu">
 			<MenuItem icon="info" @click="showInfo">查看视频详细信息</MenuItem>
 		</Menu>

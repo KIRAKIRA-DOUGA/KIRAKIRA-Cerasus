@@ -1,11 +1,13 @@
-<script setup lang="tsx">
-	import { Icon } from "#components";
+<script setup lang="ts">
 	const props = defineProps<{
 		/** 视频 ID。 */
 		id: number;
 		/** 视频评分。 */
 		rating: number;
 	}>();
+
+	const sendDanmaku = defineModel<DanmakuComment>("sendDanmaku");
+	const insertDanmaku = defineModel<DanmakuListItem>("insertDanmaku");
 
 	const counts = reactive({
 		play: 100n,
@@ -51,29 +53,28 @@
 		});
 	}
 
-	const CountItem = (() => {
-		interface Props {
-			value: number | string;
-			icon: string;
-		}
-		return ((props, { slots }) => (
-			<div>
-				<Icon name={props.icon} />
-				<span>
-					{slots.default()}
-					<span class="value">{props.value}</span>
-				</span>
-			</div>
-		)) as VueJsx<Props>;
-	})();
+	const [DefineCountItem, CountItem] = createReusableTemplate<{
+		value: number | string;
+		icon: string;
+	}>();
 </script>
 
 <template>
+	<DefineCountItem v-slot="{ value, icon, $slots }">
+		<div>
+			<Icon :name="icon" />
+			<span>
+				<component :is="$slots.default!" />
+				<span class="value">{{ value }}</span>
+			</span>
+		</div>
+	</DefineCountItem>
+
 	<Comp>
 		<div class="top">
 			<div class="info">
 				<CountItem icon="play" :value="getWatchCount(counts.play)">{{ t(counts.play).views_video }}</CountItem>
-				<CountItem icon="thumb_up" :value="getWatchCount(counts.rating)" :class="{ dislike: counts.rating < 0 }">{{ t.rating }}</CountItem>
+				<CountItem icon="thumb_up" :value="getWatchCount(counts.rating)" :class="{ downvote: counts.rating < 0 }">{{ t.rating }}</CountItem>
 				<CountItem icon="star" :value="getWatchCount(counts.favorite)">{{ t(counts.favorite).favorite }}</CountItem>
 				<CountItem icon="danmaku" :value="getWatchCount(counts.danmaku)">{{ t(counts.danmaku).danmaku }}</CountItem>
 				<div class="watching">
@@ -82,16 +83,16 @@
 				</div>
 			</div>
 			<div class="buttons">
-				<SoftButton v-tooltip:bottom="t.upvote" icon="thumb_up" class="button-like" @click="upvote" />
-				<SoftButton v-tooltip:bottom="t.downvote" icon="thumb_down" class="button-dislike" @click="downvote" />
+				<SoftButton v-tooltip:bottom="t.upvote" icon="thumb_up" class="button-upvote" @click="upvote" />
+				<SoftButton v-tooltip:bottom="t.downvote" icon="thumb_down" class="button-downvote" @click="downvote" />
 				<SoftButton v-tooltip:bottom="t.favorite_verb" icon="star" class="button-favorite" @click="favorite" />
 				<SoftButton v-tooltip:bottom="t.share" icon="share" class="button-share" @click="share" />
 				<SoftButton v-tooltip:bottom="t.danmaku_history" icon="history" class="button-history" />
 				<SoftButton v-tooltip:bottom="t.settings" icon="settings" class="button-settings" />
 			</div>
 		</div>
-		<PlayerVideoPanelDanmakuList />
-		<PlayerVideoPanelDanmakuSender />
+		<PlayerVideoPanelDanmakuList v-model="insertDanmaku" />
+		<PlayerVideoPanelDanmakuSender v-model="sendDanmaku" />
 	</Comp>
 </template>
 
@@ -140,7 +141,7 @@
 				text-align: center;
 			}
 
-			&.dislike .icon {
+			&.downvote .icon {
 				rotate: 0.5turn;
 			}
 		}

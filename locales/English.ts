@@ -35,7 +35,7 @@ const English: LocaleIdentifiers = {
 	off: "Off",
 	disabled: "Disabled",
 	background: "Background",
-	animated_background: "Background Animation",
+	animated_background: "Animated Background",
 	custom_background: "Custom Background",
 	light: "Light Theme",
 	dark: "Dark Theme",
@@ -246,6 +246,7 @@ const English: LocaleIdentifiers = {
 	password_hint: "Password Hint",
 	forgot_password: "Forgot Password",
 	reset_password: "Reset Password",
+	format: "Format",
 };
 
 export default English;

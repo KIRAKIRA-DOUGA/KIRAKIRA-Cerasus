@@ -249,12 +249,13 @@ const Japanese: LocaleIdentifiers = {
 	password_hint: "パスワードのヒント",
 	forgot_password: "パスワードをお忘れの場合",
 	reset_password: "パスワードの再設定",
+	format: "格式", // NEW
 };
 
 export default Japanese;
 
 /*
- * 备注区
+ * 备注：
  * loginwindow_register_to_login
  * 	原译作“すでにアカウントをお持ちですか？ログイン”,因文字列过长影响页面展示，故割爱
  * 关于“弹幕 danmaku”与“评论 comment”
