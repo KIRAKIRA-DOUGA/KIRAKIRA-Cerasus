@@ -7,9 +7,15 @@
 	const textBox = ref<InstanceType<typeof TextBox>>();
 	const OFFSET_Y = -5.4;
 	type DanmakuMode = NonNull<DanmakuComment["mode"]>;
+	const colors = ["FFFFFF", "FF3225", "F06E8E", "FFA800", "FBFF34", "2CE73F", "39C5BB", "24C1F2", "DC1FED"];
+	const fontSizes = {
+		small: 14,
+		medium: 20,
+		large: 28,
+	};
 	const style = reactive({
-		fontSize: String(20),
-		color: "#ffffff",
+		fontSize: "medium" as keyof typeof fontSizes,
+		color: "FFFFFF",
 		mode: "rtl" as DanmakuMode,
 		enableRainbow: false,
 	});
@@ -40,8 +46,8 @@
 				div.classList.add("dm");
 				if (style.enableRainbow) div.classList.add("dm-rainbow");
 				Object.assign(div.style, {
-					fontSize: style.fontSize + "px",
-					color: style.color || undefined,
+					fontSize: fontSizes[style.fontSize] + "px",
+					color: style.color ? "#" + style.color : undefined,
 				});
 				return div;
 			},
@@ -52,30 +58,28 @@
 
 <template>
 	<FlyoutKaomoji v-model="flyoutKaomoji" @insert="insertKaomoji" />
-	
+
 	<Flyout v-model="flyoutStyle" noCropping>
 		<div class="style-container">
-			<span>字号</span>
-			<TextBox
-				v-model="style.fontSize"
-				type="number"
-				:min="4"
-				:max="64"
-				:step="1"
-			/>
-			<span>模式</span>
-			<ComboBox v-model="style.mode">
-				<ComboBoxItem id="rtl">滚动</ComboBoxItem>
-				<ComboBoxItem id="top">顶部</ComboBoxItem>
-				<ComboBoxItem id="bottom">底部</ComboBoxItem>
-				<ComboBoxItem id="ltr">逆向</ComboBoxItem>
-			</ComboBox>
-			<span>颜色</span>
+			<Subheader icon="palette">颜色</Subheader>
 			<div class="color-wrapper">
 				<div class="color" :style="{ backgroundColor: style.color }"></div>
 				<TextBox v-model="style.color" />
 			</div>
-			<ToggleSwitch v-model="style.enableRainbow">某大会员专属颜色</ToggleSwitch>
+			<ToggleSwitch v-model="style.enableRainbow">以创作者身份发送</ToggleSwitch>
+			<Subheader icon="font_size">字号</Subheader>
+			<Segmented v-model="style.fontSize">
+				<SegmentedItem id="small" icon="font_size_small">小</SegmentedItem>
+				<SegmentedItem id="medium" icon="font_size_medium">中</SegmentedItem>
+				<SegmentedItem id="large" icon="font_size_large">大</SegmentedItem>
+			</Segmented>
+			<Subheader icon="danmaku">模式</Subheader>
+			<Segmented v-model="style.mode">
+				<SegmentedItem id="rtl" icon="danmaku_rtl">滚动</SegmentedItem>
+				<SegmentedItem id="top" icon="danmaku_top">顶部</SegmentedItem>
+				<SegmentedItem id="bottom" icon="danmaku_bottom">底部</SegmentedItem>
+				<SegmentedItem id="ltr" icon="danmaku_ltr">逆向</SegmentedItem>
+			</Segmented>
 		</div>
 	</Flyout>
 
@@ -122,11 +126,19 @@
 	}
 
 	.style-container {
-		display: grid;
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+		min-width: 344px;
+		
+		.segmented {
+			width: 100%;
+		}
+		/* display: grid;
 		grid-template-columns: auto 200px;
 		gap: 10px;
 		align-items: center;
-		
+
 		.color-wrapper {
 			display: flex;
 			gap: 10px;
@@ -135,14 +147,14 @@
 				@include round-small;
 				width: 3rem;
 			}
-			
+
 			.text-box {
 				width: 100%;
 			}
 		}
-		
+
 		.toggle-switch {
 			grid-column-end: span 2;
-		}
+		} */
 	}
 </style>
