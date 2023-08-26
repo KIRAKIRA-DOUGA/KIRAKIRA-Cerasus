@@ -380,7 +380,7 @@
 	.marquee {
 		font-size: 3rem;
 		font-style: italic;
-		border: solid red;
+		border: red solid;
 	}
 
 	.marquee-section {

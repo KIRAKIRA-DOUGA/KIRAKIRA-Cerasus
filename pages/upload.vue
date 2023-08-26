@@ -179,7 +179,7 @@
 				}
 
 				&.successful {
-					border: 4px solid c(accent);
+					border: c(accent) 4px solid;
 					mask-image: conic-gradient(black var(--rotation), transparent var(--rotation));
 				}
 			}
