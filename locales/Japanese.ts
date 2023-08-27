@@ -87,21 +87,21 @@ const Japanese: LocaleIdentifiers = {
 	blocklist: {
 		_: "ブロックリスト",
 		ban: {
-			_: "封禁", // NEW
-			description: "不想与其交流的用户，他将被禁止与你互动", // NEW
+			_: "ブロック",
+			description: "交流したくないのユーザー、あなたと交流できなくなります",
 		},
 		hide: {
-			_: "隐藏",
-			description: "不想看到的用户，其将会从你的视角消失（除非你主动进入其个人空间）", // NEW
+			_: "隠す",
+			description: "目にしたくないのユーザー、あなたの視点から消えさせます(対象のプロフィールにアクセス場合を除く)",
 		},
 		tags: {
-			description: "使用标签匹配不想看到的稿件", // NEW
+			description: "タグで目にしたくない投稿を選択します",
 		},
 		keywords: {
-			description: "使用关键词匹配不想看到的稿件", // NEW
+			description: "キーワードで目にしたくない投稿を選択します",
 		},
 		regexp: {
-			description: "使用正则表达式匹配不想看到的稿件", // NEW
+			description: "正規表現で目にしたくない投稿を選択します",
 		},
 	},
 	player: "プレーヤー",
@@ -111,12 +111,12 @@ const Japanese: LocaleIdentifiers = {
 		history: "弾幕履歴",
 		format: {
 			mode: {
-				rtl: "滚动", // NEW
-				top: "顶部", // NEW
-				bottom: "底部", // NEW
-				ltr: "逆向", // NEW
+				rtl: "スクロール",
+				top: "中央上",
+				bottom: "中央下",
+				ltr: "逆スクロール",
 			},
-			send_as_creator: "创作者专用渐变", // NEW
+			send_as_creator: "クリエイター専用グラデーション",
 		},
 	},
 	preference: "プリファレンス",
@@ -279,26 +279,26 @@ const Japanese: LocaleIdentifiers = {
 	password_hint: "パスワードのヒント",
 	forgot_password: "パスワードをお忘れの場合",
 	reset_password: "パスワードの再設定",
-	format: "格式", // NEW
+	format: "フォーマット",
 	text: {
-		_: "文本", // NEW
-		size: "字号", // NEW
+		_: "テキスト",
+		size: "フォント サイズ",
 	},
-	color: "颜色", // NEW
-	mode: "模式", // NEW
+	color: "文字色",
+	mode: "モード",
 	size: {
-		_: "大小", // NEW
-		mini: "迷你", // NEW
-		small: "小", // NEW
-		medium: "中", // NEW
-		large: "大", // NEW
-		extra_large: "超大", // NEW
+		_: "サイズ",
+		mini: "ミニ",
+		small: "小",
+		medium: "中",
+		large: "大",
+		extra_large: "特大",
 	},
-	unknown: "未知", // NEW
-	shortcut_key: "快捷键", // NEW
-	shortcut_key_guide: "快捷键指南", // NEW
-	regexp: "正则表达式", // NEW
-	keywords: "关键词", // NEW
+	unknown: "不明",
+	shortcut_key: "ショートカットキー",
+	shortcut_key_guide: "ショートカットキーのガイド",
+	regexp: "正規表現",
+	keywords: "キーワード",
 };
 
 export default Japanese;
