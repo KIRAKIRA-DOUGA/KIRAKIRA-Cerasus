@@ -264,7 +264,7 @@ const English: LocaleIdentifiers = {
 		bio: "Bio",
 		gender: "Gender",
 	},
-	zh_Hans: "Simplified Chinese",
+	zhs: "Simplified Chinese",
 	en: "English",
 	ja: "Japanese",
 	development_test_page: "Development Test Page",

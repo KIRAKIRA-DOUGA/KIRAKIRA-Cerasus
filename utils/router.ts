@@ -88,7 +88,7 @@ export function switchLanguage(lang: string) {
 	const switchLocalePath = useSwitchLocalePath();
 	switchLocalePath(lang);
 	// useRouter().push(switchLocalePath(value)); // 旧方法，不推荐使用。
-	if (lang === "zh_Hans") lang = "/";
+	if (lang === "zhs") lang = "/";
 	else lang = `/${lang}/`;
 	useRouter().push(lang + getRoutePath());
 	if (environment.client) { // 切换语言动画。
@@ -106,7 +106,7 @@ export function switchLanguage(lang: string) {
  * @returns - 移除了语言前缀的路由。
  */
 export function removeI18nPrefix(route: string) {
-	let result = route.replace(/^\/(zh_Hans|en|ja)(?=\/|$)/, "");
+	let result = route.replace(/^\/(zhs|en|ja)(?=\/|$)/, "");
 	if (result === "") result = "/";
 	return result;
 }
