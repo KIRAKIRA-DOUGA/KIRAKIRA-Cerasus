@@ -11,4 +11,9 @@ kbd {
 	background-color: c(gray-5);
 	border-radius: 4px;
 	box-shadow: 0 1.2px 0 1px c(gray-30), 0 2px 0 1px c(gray-40);
+
+	&:active {
+		box-shadow: 0 -1.2px 0 1px c(gray-30), 0 -2px 0 1px c(gray-30);
+		translate: 0 3.2px;
+	}
 }
