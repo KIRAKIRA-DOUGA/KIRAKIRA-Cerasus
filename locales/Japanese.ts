@@ -248,7 +248,7 @@ const Japanese: LocaleIdentifiers = {
 		bio: "自己紹介",
 		gender: "性別",
 	},
-	zh: "簡体字中国語",
+	zh_Hans: "簡体字中国語",
 	en: "英語",
 	ja: "日本語",
 	development_test_page: "デベロップメント テストページ",

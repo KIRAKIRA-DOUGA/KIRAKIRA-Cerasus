@@ -156,11 +156,11 @@ export default defineNuxtConfig({
 	},
 	i18n: {
 		locales: [
-			{ code: "zh", name: "简体中文" },
+			{ code: "zh_Hans", name: "简体中文" },
 			{ code: "en", name: "English" },
 			{ code: "ja", name: "日本語" },
 		],
-		defaultLocale: "zh",
+		defaultLocale: "zh_Hans",
 		vueI18n: "./i18n.config.ts",
 		detectBrowserLanguage: {
 			useCookie: true,
