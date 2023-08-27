@@ -35,9 +35,9 @@ npm install
 
 #### HTTPS（默认）
 
-在VSCode中按下 <kbd>F5</kbd> 即可启动，停止服务器可以按下 <kbd>Shift</kbd> + <kbd>F5</kbd>。
+在 Visual Studio Code 中按下 <kbd>F5</kbd> 即可启动，停止服务器可以按下 <kbd>Shift</kbd> + <kbd>F5</kbd>。
 
-又或者：按下 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>，然后选择 `npm: dev`。
+或者，按下 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>，然后选择 `npm: dev`。
 
 ```bash
 npm run dev
