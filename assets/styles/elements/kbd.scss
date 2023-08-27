@@ -8,9 +8,7 @@ kbd {
 	font-size: 100%;
 	font-family: monospace, sans-serif;
 	line-height: 1.4;
-	text-shadow: 0 1px 0 c(main-bg);
-	background-color: c(gray-10);
-	border: c(gray-40) 1px solid;
+	background-color: c(gray-5);
 	border-radius: 4px;
-	box-shadow: 0 1px 0 c(main-fg, 20%), 0 0 0 2px c(main-bg) inset;
+	box-shadow: 0 1.2px 0 1px c(gray-30), 0 2px 0 1px c(gray-40);
 }

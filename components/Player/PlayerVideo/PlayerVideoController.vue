@@ -281,7 +281,7 @@
 		&.quality-button:deep {
 			&,
 			* {
-				min-width: 50px;
+				min-width: 55px;
 			}
 		}
 	}
