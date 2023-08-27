@@ -101,7 +101,7 @@ export class Color {
 	 * 获取并设置不带井号开头的 16 进制颜色值。
 	 */
 	get hex() {
-		const padStart = (value: number) => value.toString(16).padStart(2, "0");
+		const padStart = (value: number) => Math.round(value).toString(16).padStart(2, "0");
 		let result = padStart(this.r) + padStart(this.g) + padStart(this.b);
 		if (this.a) result += padStart(this.a * 255);
 		return result;
@@ -301,7 +301,7 @@ function rgbToHsl(r: number, g: number, b: number): ThreeD {
 	const l = (vmax + vmin) / 2;
 
 	if (vmax === vmin)
-		return [0, 0, l]; // achromatic
+		return [0, 0, l * 100]; // achromatic
 	
 	const d = vmax - vmin;
 	const s = l > 0.5 ? d / (2 - vmax - vmin) : d / (vmax + vmin);

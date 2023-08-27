@@ -9,6 +9,7 @@
 	const hex = ref("ff0000");
 	const hashHex = computed(() => "#" + hex.value);
 	const boxShadowColor = computed(() => hashHex.value + "cc");
+	const hueColor = computed(() => Color.fromHsv(color.hsv.h, 100, 100).hashHex);
 
 	const isUpdatingHex = ref(false);
 	const isUpdatingValues = ref(false);
@@ -44,9 +45,11 @@
 		isUpdatingValues.value = false;
 	}, { deep: true });
 
-	watch(model, model => {
-		setHex();
+	watch(model, async _model => {
+		isUpdatingHex.value = true;
 		setValues();
+		await nextTick();
+		isUpdatingHex.value = false;
 	}, { deep: true });
 
 	/**
@@ -79,6 +82,7 @@
 		:style="{
 			'--color': hashHex,
 			'--box-shadow-color': boxShadowColor,
+			'--hue': hueColor,
 		}"
 	>
 		<div class="plane color" @pointerdown="onPlaneDown">
@@ -141,7 +145,7 @@
 		}
 		
 		.rgb .solid {
-			background: linear-gradient(to right, white, var(--color));
+			background: linear-gradient(to right, white, var(--hue));
 		}
 		
 		.hue {
@@ -192,11 +196,11 @@
 	}
 	
 	#{slider-model(hsl)} {
-		background: linear-gradient(to right, black, var(--color), white);
+		background: linear-gradient(to right, black, var(--hue), white);
 	}
 	
 	#{slider-model(hsb)} {
-		background: linear-gradient(to right, black, var(--color));
+		background: linear-gradient(to right, black, var(--hue));
 	}
 	
 	.controls {
