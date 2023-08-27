@@ -19,10 +19,9 @@
 			:id="locale.code"
 			:key="locale.code"
 			v-model="localeModel"
-			:lang="locale.code"
 			:title="t[locale.code]"
 		>
-			<div class="line">
+			<div class="line" :lang="locale.code">
 				{{ locale.name }}
 			</div>
 		</SettingsGridItem>
