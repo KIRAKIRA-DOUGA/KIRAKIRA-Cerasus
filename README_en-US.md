@@ -33,7 +33,7 @@ npm install
 
 #### HTTPS (Default)
 
-Press <kbd>F5</kbd> in VSCode, and you can stop the server using <kbd>Shift</kbd> + <kbd>F5</kbd>.
+Press <kbd>F5</kbd> in Visual Studio Code, and you can stop the server using <kbd>Shift</kbd> + <kbd>F5</kbd>.
 
 Or press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>, and then select `npm: dev`.
 
