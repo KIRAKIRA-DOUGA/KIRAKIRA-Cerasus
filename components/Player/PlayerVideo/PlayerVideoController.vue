@@ -1,4 +1,6 @@
 <script setup lang="ts">
+	import { BitrateInfo } from "dashjs";
+
 	const props = withDefaults(defineProps<{
 		/** 速度保持音高？ */
 		preservesPitch?: boolean;
@@ -8,16 +10,13 @@
 		buffered?: number;
 		/** 切换全屏函数。 */
 		toggleFullscreen?: () => void;
-		/** list of tracks */
-		qualities?: Array<dashjs.BitrateInfo>;
-		/** current quality */
-		currentQuality: string;
-		/** callback for quality change */
-		onQualityChanged;
+		/** 视频质量列表。 */
+		qualities?: BitrateInfo[];
 	}>(), {
 		duration: NaN,
 		buffered: 0,
 		toggleFullscreen: undefined,
+		qualities: () => [],
 	});
 
 	/** 常用速度列表。 */
@@ -34,6 +33,7 @@
 	const resample = defineModel<boolean>("resample", { default: true });
 	const steplessRate = defineModel<boolean>("steplessRate", { default: false });
 	const showDanmaku = defineModel<boolean>("showDanmaku", { default: false });
+	const quality = defineModel<string>("quality", { default: "720P" });
 	const volumeBackup = ref(volume);
 	const volumeSet = computed({
 		get: () => muted.value ? 0 : volume.value,
@@ -58,10 +58,10 @@
 
 	const volumeMenu = ref<MenuModel>();
 	const rateMenu = ref<MenuModel>();
-	const resolutionMenu = ref<MenuModel>();
+	const qualityMenu = ref<MenuModel>();
 	const fullscreenColorClass = computed(() => ({ [`force-color dark ${Theme.palette.value}`]: fullscreen.value }));
 
-	const [resolution, resolutionOptions] = defineMenuOptions(props.qualities?.map(qual => qual.height + "P").sort().reverse() || [], props.currentQuality);
+	const [_, qualityOptions] = defineMenuOptions(props.qualities?.map(qual => qual.height + "P").sort().reverse(), quality.value);
 
 	const currentPercent = computed({
 		get() {
@@ -115,7 +115,7 @@
 				active,
 				onChange: () => {
 					value.value = option;
-					props.onQualityChanged(option);
+					quality.value = option as string;
 				},
 			};
 		}).filter(option => option));
@@ -138,9 +138,9 @@
 				<CapsuleSlider v-model="playbackRateLinear" :min="-2" :max="2" :displayValue="playbackRateText" :defaultValue="0" />
 			</template>
 		</PlayerVideoMenu>
-		<PlayerVideoMenu v-model="resolutionMenu">
+		<PlayerVideoMenu v-model="qualityMenu">
 			<RadioOption
-				v-for="option in resolutionOptions"
+				v-for="option in qualityOptions"
 				:key="option.data"
 				:active="option.active"
 				@click="option.onChange"
@@ -162,10 +162,10 @@
 				<span class="duration">{{ duration }}</span>
 			</div>
 			<SoftButton
-				class="resolution-button"
-				:text="resolution"
-				@mouseenter="e => resolutionMenu = e"
-				@mouseleave="resolutionMenu = undefined"
+				class="quality-button"
+				:text="quality"
+				@mouseenter="e => qualityMenu = e"
+				@mouseleave="qualityMenu = undefined"
 			/>
 			<SoftButton
 				icon="speed_outline"
@@ -278,7 +278,7 @@
 	.soft-button {
 		--wrapper-size: #{$thickness};
 
-		&.resolution-button:deep {
+		&.quality-button:deep {
 			&,
 			* {
 				min-width: 50px;

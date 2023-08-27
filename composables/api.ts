@@ -1,7 +1,5 @@
 import * as api from "kirakira-backend";
 
-const apiSingleton = ref<api.DefaultApi>();
-
 /**
  * convenience singleton for the OpenAPI SDK.
  * @returns DefaultAPI.
