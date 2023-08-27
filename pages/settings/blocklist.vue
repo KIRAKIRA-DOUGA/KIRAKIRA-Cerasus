@@ -4,54 +4,56 @@
 </script>
 
 <template>
-	<Subheader icon="block">封禁</Subheader>
-	<span>不想交流的人，他将禁止与你互动</span>
+	<Subheader icon="block">{{ t.blocklist.ban }}</Subheader>
+	<span>{{ t.blocklist.ban.description }}</span>
 	<section>
-		<SettingsChipItem icon="placeholder" details="添加日期：XXXX-XX-XX" trailingIcon="delete" @trailingIconClick="remove">被封禁的人</SettingsChipItem>
+		<SettingsChipItem icon="placeholder" :details="t.addition_date + t.colon" trailingIcon="delete" @trailingIconClick="remove">user</SettingsChipItem>
 	</section>
 	<div class="add">
 		<TextBox v-model="add" icon="person" />
-		<Button icon="add">添加</Button>
+		<Button icon="add">{{ t.add }}</Button>
 	</div>
 
-	<Subheader icon="visibility_off">隐藏</Subheader>
-	<span>不想看到的人，他将会从你的视角消失（除非你主动进入他的个人空间）</span>
+	<Subheader icon="visibility_off">{{ t.blocklist.hide }}</Subheader>
+	<span>{{ t.blocklist.hide.description }}</span>
 	<section>
-		<SettingsChipItem icon="placeholder" details="添加日期：XXXX-XX-XX" trailingIcon="delete" @trailingIconClick="remove">被隐藏的人</SettingsChipItem>
+		<SettingsChipItem icon="placeholder" :details="t.addition_date + t.colon" trailingIcon="delete" @trailingIconClick="remove">user</SettingsChipItem>
 	</section>
 	<div class="add">
 		<TextBox v-model="add" icon="person" />
-		<Button icon="add">添加</Button>
+		<Button icon="add">{{ t.add }}</Button>
 	</div>
 
-	<Subheader icon="tag">标签</Subheader>
-	<span>不想看到的稿件标签匹配</span>
+	<hr />
+
+	<Subheader icon="tag">{{ t.tags }}</Subheader>
+	<span>{{ t.blocklist.tags.description }}</span>
 	<section>
-		<SettingsChipItem details="添加日期：XXXX-XX-XX" trailingIcon="delete" @trailingIconClick="remove">被隐藏的标签</SettingsChipItem>
+		<SettingsChipItem :details="t.addition_date + t.colon" trailingIcon="delete" @trailingIconClick="remove">tag</SettingsChipItem>
 	</section>
 	<div class="add">
 		<TextBox v-model="add" icon="tag" />
-		<Button icon="add">添加</Button>
+		<Button icon="add">{{ t.add }}</Button>
 	</div>
 
-	<Subheader icon="key">关键词</Subheader>
-	<span>不想看到的稿件关键词匹配</span>
+	<Subheader icon="key">{{ t.keywords }}</Subheader>
+	<span>{{ t.blocklist.keywords.description }}</span>
 	<section>
-		<SettingsChipItem details="添加日期：XXXX-XX-XX" trailingIcon="delete" @trailingIconClick="remove">被隐藏的关键词</SettingsChipItem>
+		<SettingsChipItem :details="t.addition_date + t.colon" trailingIcon="delete" @trailingIconClick="remove">keyword</SettingsChipItem>
 	</section>
 	<div class="add">
 		<TextBox v-model="add" icon="key" />
-		<Button icon="add">添加</Button>
+		<Button icon="add">{{ t.add }}</Button>
 	</div>
 
-	<Subheader icon="regexp">正则表达式</Subheader>
-	<span>不想看到的稿件关键词正则表达式匹配</span>
+	<Subheader icon="regexp">{{ t.regexp }}</Subheader>
+	<span>{{ t.blocklist.regexp.description }}</span>
 	<section>
-		<SettingsChipItem details="添加日期：XXXX-XX-XX" trailingIcon="delete" @trailingIconClick="remove">被隐藏的正则表达式</SettingsChipItem>
+		<SettingsChipItem :details="t.addition_date + t.colon" trailingIcon="delete" @trailingIconClick="remove">regexp</SettingsChipItem>
 	</section>
 	<div class="add">
 		<TextBox v-model="add" icon="regexp" />
-		<Button icon="add">添加</Button>
+		<Button icon="add">{{ t.add }}</Button>
 	</div>
 </template>
 
@@ -79,5 +81,9 @@
 		button {
 			flex-shrink: 0;
 		}
+	}
+
+	hr {
+		margin-top: 1rem;
 	}
 </style>

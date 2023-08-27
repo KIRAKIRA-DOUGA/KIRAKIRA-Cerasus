@@ -81,7 +81,26 @@ const English: LocaleIdentifiers = {
 		new_retype: "Retype New Password",
 	},
 	account_linking: "Account Linking",
-	blocklist: "Blocklist",
+	blocklist: {
+		_: "Blocklist",
+		ban: {
+			_: "Ban",
+			description: "Users you don't want to allow to intract with you.",
+		},
+		hide: {
+			_: "Hide",
+			description: "Users you don't want to see which will be disappeared (unless you enter his personal homepage directly).",
+		},
+		tags: {
+			description: "Use tags to hide content you don't want to see.",
+		},
+		keywords: {
+			description: "Use keywords to hide content you don't want to see.",
+		},
+		regexp: {
+			description: "Use regular expression to hide content you don't want to see.",
+		},
+	},
 	player: "Player",
 	danmaku: {
 		_: "Danmaku | Danmakus",
@@ -245,7 +264,7 @@ const English: LocaleIdentifiers = {
 		bio: "Bio",
 		gender: "Gender",
 	},
-	zh: "Simplified Chinese",
+	zh_Hans: "Simplified Chinese",
 	en: "English",
 	ja: "Japanese",
 	development_test_page: "Development Test Page",
@@ -275,6 +294,8 @@ const English: LocaleIdentifiers = {
 	unknown: "Unknown",
 	shortcut_key: "Shortcut Key",
 	shortcut_key_guide: "Shortcut Key Guide",
+	regexp: "Regular Expression",
+	keywords: "Keywords",
 };
 
 export default English;

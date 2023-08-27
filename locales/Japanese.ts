@@ -84,7 +84,26 @@ const Japanese: LocaleIdentifiers = {
 		new: "新しいパスワード",
 	},
 	account_linking: "SNSリンク",
-	blocklist: "ブロックリスト",
+	blocklist: {
+		_: "ブロックリスト",
+		ban: {
+			_: "封禁", // NEW
+			description: "不想与其交流的用户，他将被禁止与你互动", // NEW
+		},
+		hide: {
+			_: "隐藏",
+			description: "不想看到的用户，其将会从你的视角消失（除非你主动进入其个人空间）", // NEW
+		},
+		tags: {
+			description: "使用标签匹配不想看到的稿件", // NEW
+		},
+		keywords: {
+			description: "使用关键词匹配不想看到的稿件", // NEW
+		},
+		regexp: {
+			description: "使用正则表达式匹配不想看到的稿件", // NEW
+		},
+	},
 	player: "プレーヤー",
 	danmaku: {
 		_: "弾幕",
@@ -248,7 +267,7 @@ const Japanese: LocaleIdentifiers = {
 		bio: "自己紹介",
 		gender: "性別",
 	},
-	zh: "簡体字中国語",
+	zh_Hans: "簡体字中国語",
 	en: "英語",
 	ja: "日本語",
 	development_test_page: "デベロップメント テストページ",
@@ -278,6 +297,8 @@ const Japanese: LocaleIdentifiers = {
 	unknown: "未知", // NEW
 	shortcut_key: "快捷键", // NEW
 	shortcut_key_guide: "快捷键指南", // NEW
+	regexp: "正则表达式", // NEW
+	keywords: "关键词", // NEW
 };
 
 export default Japanese;

@@ -82,7 +82,26 @@ const SChinese = {
 		new_retype: "确认新密码",
 	},
 	account_linking: "关联社交平台",
-	blocklist: "黑名单",
+	blocklist: {
+		_: "黑名单",
+		ban: {
+			_: "封禁",
+			description: "不想与其交流的用户，他将被禁止与你互动。",
+		},
+		hide: {
+			_: "隐藏",
+			description: "不想看到的用户，其将会从你的视角消失（除非你主动进入其个人空间）。",
+		},
+		tags: {
+			description: "使用标签匹配不想看到的内容。",
+		},
+		keywords: {
+			description: "使用关键词匹配不想看到的内容。",
+		},
+		regexp: {
+			description: "使用正则表达式匹配不想看到的内容。",
+		},
+	},
 	player: "播放",
 	danmaku: {
 		_: "弹幕",
@@ -246,7 +265,7 @@ const SChinese = {
 		bio: "个性签名",
 		gender: "性别",
 	},
-	zh: "简体中文",
+	zh_Hans: "简体中文",
 	en: "英语",
 	ja: "日语",
 	development_test_page: "开发测试页面",
@@ -276,6 +295,8 @@ const SChinese = {
 	unknown: "未知",
 	shortcut_key: "快捷键",
 	shortcut_key_guide: "快捷键指南",
+	regexp: "正则表达式",
+	keywords: "关键词",
 } as const;
 
 export default SChinese;

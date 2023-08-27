@@ -471,7 +471,8 @@
 		}
 
 		&::-ms-reveal,
-		&::-ms-clear {
+		&::-ms-clear,
+		&::-webkit-search-cancel-button {
 			display: none;
 		}
 
