@@ -275,6 +275,7 @@ const Japanese: LocaleIdentifiers = {
 		large: "大", // NEW
 		extra_large: "超大", // NEW
 	},
+	unknown: "未知",
 };
 
 export default Japanese;

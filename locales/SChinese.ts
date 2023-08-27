@@ -273,6 +273,7 @@ const SChinese = {
 		large: "大",
 		extra_large: "超大",
 	},
+	unknown: "未知",
 } as const;
 
 export default SChinese;

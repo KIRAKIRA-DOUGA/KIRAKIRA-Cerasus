@@ -272,6 +272,7 @@ const English: LocaleIdentifiers = {
 		large: "Large",
 		extra_large: "Extra Large",
 	},
+	unknown: "Unknown",
 };
 
 export default English;
