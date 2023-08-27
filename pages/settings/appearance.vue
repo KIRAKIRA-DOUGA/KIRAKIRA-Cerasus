@@ -27,7 +27,9 @@
 
 <template>
 	<Subheader icon="brightness_medium">{{ t.scheme }}</Subheader>
-	<PlayerVideoController :currentTime="30" :duration="110" :buffered="60" class="chip" />
+	<div class="chip video-controller">
+		<PlayerVideoController :currentTime="30" :duration="110" :buffered="60" class="chip" />
+	</div>
 	<section grid>
 		<SettingsGridItem
 			v-for="item in themeList"
@@ -76,7 +78,7 @@
 </template>
 
 <style scoped lang="scss">
-	.player-video-controller {
+	.video-controller {
 		&,
 		*,
 		::before,
