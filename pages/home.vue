@@ -16,7 +16,7 @@
 
 	const numberOfItems = ref(0);
 	const numberOfPages = ref(1);
-	const categoryList = ["Anime", "Music", "Otomad", "Tech", "Design", "Game", "Entertainment", "Other"];
+	const categoryList = ["Anime", "Music", "Otomad", "Tech", "Design", "Game", "Other"];
 	const categories = ref<Map<string | undefined, number | undefined>>(new Map());
 	const resultTimestamp = ref(0);
 
