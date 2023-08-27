@@ -205,11 +205,6 @@ export default defineNuxtConfig({
 			"postcss-combine-media-query": true,
 		},
 	},
-	runtimeConfig: {
-		public: {
-			siteUrl: "https://localhost:3000",
-		},
-	},
 	components: [
 		{
 			path: "components",
