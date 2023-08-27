@@ -265,7 +265,7 @@ const SChinese = {
 		bio: "个性签名",
 		gender: "性别",
 	},
-	zh_Hans: "简体中文",
+	zhs: "简体中文",
 	en: "英语",
 	ja: "日语",
 	development_test_page: "开发测试页面",
