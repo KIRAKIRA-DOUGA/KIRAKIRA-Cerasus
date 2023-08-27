@@ -87,7 +87,7 @@
 	const isInvalid = () => input.value?.validity.valid === false; // 注意不要写成 !valid，还需要排除 undefined 的情况。
 	const invalid = ref(false); // 如果使用 computed，则只会调用一次。并不能监测 isInvalid 的变化，所以 computed 功能只是个废物？
 	const isNumberMode = computed(() => props.min !== undefined || props.max !== undefined || ["decimal", "numberic", "tel"].includes(props.inputMode!));
-	
+
 	defineExpose({
 		input,
 	});
@@ -405,15 +405,15 @@
 		@include is-large-size {
 			clip-path: inset(0 0 $focus-stripe-height)
 		}
-		
+
 		> span:empty {
 			display: none;
 		}
-		
+
 		.prefix {
 			margin-left: $start-indent;
 		}
-		
+
 		.suffix:has(~ .trailing-icons:empty) {
 			margin-right: $start-indent;
 		}
@@ -452,7 +452,7 @@
 		background: transparent;
 		border: 0;
 		appearance: none;
-		
+
 		.prefix:empty ~ & {
 			text-indent: $start-indent;
 		}
@@ -474,7 +474,7 @@
 
 		.leading-icon ~ & {
 			padding-left: $start-indent + 24px + 4px;
-			text-indent: 0;
+			text-indent: 0 !important;
 
 			@include is-large-size {
 				padding-left: $start-indent + 24px + 16px;

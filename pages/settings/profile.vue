@@ -6,7 +6,7 @@
 	const name = ref("艾了个拉");
 	// const test = ref("");
 	const signature = ref("");
-	const genderBasic = ref<"male" | "female" | "custom" | "">("");
+	const genderBasic = ref<"male" | "female" | "unknown" | "custom" | "">("");
 	const genderCustom = ref("");
 	const birthday = ref(formatDate(new Date(), "yyyy/MM/dd"));
 </script>
@@ -64,6 +64,7 @@
 			<div class="gender-radio-group">
 				<RadioButton v-model="genderBasic" value="male">{{ t.male }}</RadioButton>
 				<RadioButton v-model="genderBasic" value="female">{{ t.female }}</RadioButton>
+				<RadioButton v-model="genderBasic" value="unknown">{{ t.unknown }}</RadioButton>
 				<div class="gender-custom">
 					<RadioButton v-model="genderBasic" value="custom">{{ t.custom }}</RadioButton>
 					<Transition>
