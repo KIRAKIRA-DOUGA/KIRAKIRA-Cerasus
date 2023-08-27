@@ -5,18 +5,16 @@
 	const model = ref<"rgb" | "hsl" | "hsb">("rgb");
 	const values = ref<ThreeD>([255, 0, 0]);
 	const color = reactive(Color.fromHex("ff0000")) as Color;
-	// const hex = computed({ get: () => color.hex.slice(0, 6), set: v => color.hex = v });
 	const hex = ref("ff0000");
 	const hashHex = computed(() => "#" + hex.value);
 	const boxShadowColor = computed(() => hashHex.value + "cc");
 	const hueColor = computed(() => Color.fromHsv(color.hsv.h, 100, 100).hashHex);
+	const isUpdating = reactive({}) as Record<ChangedParam, boolean>;
+	const maxValue = computed<ThreeD>(() => model.value === "rgb" ? [255, 255, 255] : [359, 100, 100]);
 
-	const isUpdatingHex = ref(false);
-	const isUpdatingValues = ref(false);
-
-	const setHex = () => { if (!isUpdatingHex.value) hex.value = color.hex.slice(0, 6); };
+	const setHex = () => { if (!isUpdating.hex) hex.value = color.hex.slice(0, 6); };
 	const setValues = () => {
-		if (!isUpdatingValues.value)
+		if (!isUpdating.values)
 			if (model.value === "rgb") {
 				const { r, g, b } = color.rgb;
 				values.value = [r, g, b];
@@ -28,29 +26,20 @@
 				values.value = [h, s, b];
 			}
 	};
-
-	watch(hex, async hex => {
-		isUpdatingHex.value = true;
+	
+	watch(hex, useChange("hex", hex => {
 		color.hex = hex;
 		setValues();
-		await nextTick();
-		isUpdatingHex.value = false;
-	});
-
-	watch(values, async values => {
-		isUpdatingValues.value = true;
+	}));
+	
+	watch(values, useChange("values", values => {
 		color[model.value] = values as never;
-		if (!isUpdatingHex.value) setHex();
-		await nextTick();
-		isUpdatingValues.value = false;
-	}, { deep: true });
-
-	watch(model, async _model => {
-		isUpdatingHex.value = true;
+		setHex();
+	}), { deep: true });
+	
+	watch(model, useChange("hex", () => {
 		setValues();
-		await nextTick();
-		isUpdatingHex.value = false;
-	}, { deep: true });
+	}));
 
 	/**
 	 * 按下主要调节平面逻辑处理。
@@ -73,6 +62,23 @@
 		document.addEventListener("pointermove", pointerMove);
 		document.addEventListener("pointerup", pointerUp);
 		pointerMove(e);
+	}
+
+	type ChangedParam = "hex" | "values";
+
+	/**
+	 * 监测要不改变的参数。
+	 * @param param - 要改变的参数名称。
+	 * @param callback - 回调函数。
+	 * @returns 产生的 watch 回调函数。
+	 */
+	function useChange<T>(param: ChangedParam, callback: (current: T, previous: T) => void) {
+		return async (current: T, previous: T) => {
+			isUpdating[param] = true;
+			callback(current, previous);
+			await nextTick();
+			isUpdating[param] = false;
+		};
 	}
 </script>
 
@@ -107,9 +113,36 @@
 				<SegmentedItem id="hsl">HSL</SegmentedItem>
 				<SegmentedItem id="hsb">HSB</SegmentedItem>
 			</Segmented>
-			<TextBox v-model="values[0]" />
-			<TextBox v-model="values[1]" />
-			<TextBox v-model="values[2]" />
+			<TextBox
+				v-model="values[0]"
+				type="number"
+				required
+				preventIfInvalid
+				hideClearAll
+				:min="0"
+				:max="maxValue[0]"
+				:step="1"
+			/>
+			<TextBox
+				v-model="values[1]"
+				type="number"
+				required
+				preventIfInvalid
+				hideClearAll
+				:min="0"
+				:max="maxValue[1]"
+				:step="1"
+			/>
+			<TextBox
+				v-model="values[2]"
+				type="number"
+				required
+				preventIfInvalid
+				hideClearAll
+				:min="0"
+				:max="maxValue[2]"
+				:step="1"
+			/>
 			<div class="view-color color"></div>
 			<TextBox v-model="hex" class="hex" prefix="#" />
 		</div>
@@ -132,6 +165,7 @@
 		margin: 0 12px;
 		aspect-ratio: 1 / 1;
 		cursor: pointer;
+		touch-action: pinch-zoom;
 		
 		> .preview {
 			display: contents;
@@ -177,14 +211,6 @@
 		.passed {
 			display: none;
 		}
-		
-		.thumb {
-			box-shadow: 0 1px 6px var(--box-shadow-color) !important;
-			
-			&::after {
-				background-color: var(--color);
-			}
-		}
 	}
 	
 	@function slider-model($model) {
@@ -212,6 +238,7 @@
 		padding: 0 12px;
 		
 		.segmented {
+			--ease: ease-out;
 			grid-column-end: span 3;
 			width: 100%;
 		}
@@ -230,6 +257,15 @@
 		@include round-large;
 	}
 	
+	.slider:deep .thumb,
+	.plane .thumb {
+		box-shadow: 0 1px 6px var(--box-shadow-color) !important;
+		
+		&::after {
+			background-color: var(--color) !important;
+		}
+	}
+	
 	.thumb {
 		@include square($thumb-size);
 		@include circle;
@@ -246,7 +282,6 @@
 			@include square(100%);
 			@include circle;
 			display: block;
-			background-color: var(--color);
 			transition: $fallback-transitions;
 			content: "";
 			scale: 0.625;
