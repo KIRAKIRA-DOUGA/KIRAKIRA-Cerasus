@@ -103,7 +103,7 @@ export class Color {
 	get hex() {
 		const padStart = (value: number) => Math.round(value).toString(16).padStart(2, "0");
 		let result = padStart(this.r) + padStart(this.g) + padStart(this.b);
-		if (this.a) result += padStart(this.a * 255);
+		if (this.a !== 1) result += padStart(this.a * 255);
 		return result;
 	}
 	
