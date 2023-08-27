@@ -60,8 +60,7 @@
 	const rateMenu = ref<MenuModel>();
 	const qualityMenu = ref<MenuModel>();
 	const fullscreenColorClass = computed(() => ({ [`force-color dark ${Theme.palette.value}`]: fullscreen.value }));
-
-	const [_, qualityOptions] = defineMenuOptions(props.qualities?.map(qual => qual.height + "P").sort().reverse(), quality.value);
+	const qualities = computed(() => props.qualities.map(quality => quality.height + "P").sort().reverse());
 
 	const currentPercent = computed({
 		get() {
@@ -93,35 +92,6 @@
 
 	const playbackRateText = (rate: number) => (2 ** rate).toFixed(2).replace(/\.?0+$/, "") + "×";
 	const volumeText = (volume: number) => Math.round(volume * 100) + "%";
-
-	/**
-	 * 创建一组菜单选项。
-	 * @param options - 选项们。
-	 * @param def - 默认值。
-	 * @returns 引用响应式变量。
-	 */
-	function defineMenuOptions<const T>(options: T[], def: T) {
-		const value = ref<T>(def) as Ref<T>;
-
-		const list = reactive(options.map(option => {
-			if ((option ?? "") === "") return undefined!;
-			// (value !== null && value !== undefined) 等价于 ((value ?? "") !== "")
-			const _option = option as object;
-			const key = typeof _option === "object" && "key" in _option ? _option.key as string : _option.toString();
-			const active = computed(() => value.value === option);
-			return {
-				data: option,
-				key,
-				active,
-				onChange: () => {
-					value.value = option;
-					quality.value = option as string;
-				},
-			};
-		}).filter(option => option));
-
-		return [value, list] as const;
-	}
 </script>
 
 <template>
@@ -140,11 +110,11 @@
 		</PlayerVideoMenu>
 		<PlayerVideoMenu v-model="qualityMenu">
 			<RadioOption
-				v-for="option in qualityOptions"
-				:key="option.data"
-				:active="option.active"
-				@click="option.onChange"
-			>{{ option.data }}</RadioOption>
+				v-for="qual in qualities"
+				:key="qual"
+				:active="quality === qual"
+				@click="quality = qual"
+			>{{ qual }}</RadioOption>
 		</PlayerVideoMenu>
 	</div>
 
