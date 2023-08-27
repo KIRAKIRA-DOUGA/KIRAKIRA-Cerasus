@@ -51,6 +51,8 @@
 		prefix?: string;
 		/** 后缀。 */
 		suffix?: string;
+		/** 手动声明数据是否无效。如为字符串可自定义数据无效时的说明。 */
+		invalid?: string | boolean; // 注意 string 必须写在前面，不然 Vue 会擅自把空字符串转换为 true！
 	}>(), {
 		icon: undefined,
 		size: "normal",
@@ -69,6 +71,7 @@
 		inputMode: undefined,
 		prefix: "",
 		suffix: "",
+		invalid: undefined,
 	});
 
 	const emits = defineEmits<{
@@ -85,8 +88,14 @@
 	const input = ref<HTMLInputElement>();
 	const showClearAll = computed(() => !props.hideClearAll && value.value !== "");
 	const isInvalid = () => input.value?.validity.valid === false; // 注意不要写成 !valid，还需要排除 undefined 的情况。
-	const invalid = ref(false); // 如果使用 computed，则只会调用一次。并不能监测 isInvalid 的变化，所以 computed 功能只是个废物？
+	const _invalid = ref(false); // 如果使用 computed，则只会调用一次。并不能监测 isInvalid 的变化，所以 computed 功能只是个废物？
 	const isNumberMode = computed(() => props.min !== undefined || props.max !== undefined || ["decimal", "numberic", "tel"].includes(props.inputMode!));
+
+	watch(() => props.invalid, invalid => {
+		if (invalid === undefined || !input.value) return;
+		if (!invalid) input.value.setCustomValidity("");
+		else input.value.setCustomValidity(typeof invalid === "boolean" ? "参数值不合法！" : invalid);
+	}, { immediate: true });
 
 	defineExpose({
 		input,
@@ -166,7 +175,7 @@
 				input.setCustomValidity(status === "valid" ? "" : validationMessage || " ");
 			}
 		}
-		invalid.value = isInvalid();
+		_invalid.value = isInvalid();
 		value.value = input.value;
 	}
 
@@ -210,11 +219,11 @@
 
 	watch(value, async () => {
 		await nextTick();
-		invalid.value = isInvalid();
+		_invalid.value = isInvalid();
 	});
 
 	onMounted(() => {
-		invalid.value = isInvalid();
+		_invalid.value = isInvalid();
 	});
 
 	const TrailingIcon = (() => {
@@ -288,7 +297,7 @@
 					/>
 					<TrailingIcon
 						v-tooltip:y="input?.validationMessage || undefined"
-						:shown="invalid"
+						:shown="_invalid"
 						icon="error"
 					/>
 					<slot name="actions"></slot>
