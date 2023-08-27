@@ -32,6 +32,7 @@
 			{ id: "preference", icon: "star" },
 			{ id: "language", icon: "translate" },
 			{ id: "experimental", icon: "science" },
+			{ id: "shortcut-key", icon: "keyboard" },
 			{ id: "about", icon: "info" },
 			{ id: "acknowledgement", icon: "campaign" },
 		],
