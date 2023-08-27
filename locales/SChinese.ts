@@ -274,6 +274,8 @@ const SChinese = {
 		extra_large: "超大",
 	},
 	unknown: "未知",
+	shortcut_key: "快捷键",
+	shortcut_key_guide: "快捷键指南",
 } as const;
 
 export default SChinese;

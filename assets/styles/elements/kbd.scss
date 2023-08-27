@@ -1,0 +1,16 @@
+@use "../theme/functions" as *;
+
+kbd {
+	display: inline-block;
+	margin: 0 0.1em;
+	padding: 0.1em 0.6em;
+	color: c(text-color);
+	font-size: 100%;
+	font-family: monospace, sans-serif;
+	line-height: 1.4;
+	text-shadow: 0 1px 0 c(main-bg);
+	background-color: c(gray-10);
+	border: c(gray-40) 1px solid;
+	border-radius: 4px;
+	box-shadow: 0 1px 0 c(main-fg, 20%), 0 0 0 2px c(main-bg) inset;
+}

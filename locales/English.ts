@@ -273,6 +273,8 @@ const English: LocaleIdentifiers = {
 		extra_large: "Extra Large",
 	},
 	unknown: "Unknown",
+	shortcut_key: "Shortcut Key",
+	shortcut_key_guide: "Shortcut Key Guide",
 };
 
 export default English;
