@@ -1,12 +1,12 @@
 import en from "locales/English";
 import ja from "locales/Japanese";
-import zh from "locales/SChinese";
+import zh_Hans from "locales/SChinese";
 
 export default defineI18nConfig(() => ({
 	legacy: false,
-	locale: "zh",
+	locale: "zh_Hans",
 	messages: {
-		zh,
+		zh_Hans,
 		en,
 		ja,
 	},
