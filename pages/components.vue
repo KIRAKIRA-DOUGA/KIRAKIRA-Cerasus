@@ -380,11 +380,6 @@
 		gap: 8px;
 	}
 
-	hr {
-		border: none;
-		border-top: c(divider, 10%) 1px solid;
-	}
-
 	.marquee {
 		font-size: 3rem;
 		font-style: italic;
@@ -475,7 +470,7 @@
 		padding: 1rem;
 		background-color: black;
 	}
-	
+
 	.flyout-bg {
 		@include dropdown-flyouts;
 		@include round-large;

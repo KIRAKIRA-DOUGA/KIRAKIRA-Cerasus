@@ -98,6 +98,11 @@ p {
 	margin: 0;
 }
 
+hr {
+	border: none;
+	border-top: c(divider, 10%) 1px solid;
+}
+
 ::selection {
 	color: white;
 	background-color: c(accent); // WARN: Chromium 111 开始在 `::selection` 设定 `var()` 都会失效。包括 GitHub 和 Edge 的开发工具在内都有这种显示问题。https://bugs.chromium.org/p/chromium/issues/detail?id=1429546
