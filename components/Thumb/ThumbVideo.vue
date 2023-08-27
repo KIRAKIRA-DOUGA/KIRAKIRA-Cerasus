@@ -94,6 +94,7 @@
 				@include system-card;
 				translate: 0 -6px;
 				background-color: c(surface-color);
+				backdrop-filter: none; // WARN: WTF Chromium? Again? https://bugs.chromium.org/p/chromium/issues/detail?id=1422867
 			}
 		}
 
