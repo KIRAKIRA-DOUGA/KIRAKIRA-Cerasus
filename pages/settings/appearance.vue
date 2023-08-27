@@ -27,8 +27,8 @@
 
 <template>
 	<Subheader icon="brightness_medium">{{ t.scheme }}</Subheader>
-	<div class="chip video-controller">
-		<PlayerVideoController :currentTime="30" :duration="110" :buffered="60" class="chip" />
+	<div class="chip sample">
+		<PlayerVideoController :currentTime="30" :duration="110" :buffered="60" />
 	</div>
 	<section grid>
 		<SettingsGridItem
@@ -78,7 +78,7 @@
 </template>
 
 <style scoped lang="scss">
-	.video-controller {
+	.sample {
 		&,
 		*,
 		::before,
