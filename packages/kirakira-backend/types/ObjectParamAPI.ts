@@ -126,6 +126,33 @@ export interface DefaultApiResetPasswordRequest {
     newpassword: string
 }
 
+export interface DefaultApiUpdateProfileRequest {
+    /**
+     * new username
+     * @type string
+     * @memberof DefaultApiupdateProfile
+     */
+    username: string
+    /**
+     * new gender
+     * @type string
+     * @memberof DefaultApiupdateProfile
+     */
+    gender: string
+    /**
+     * new birthdate
+     * @type string
+     * @memberof DefaultApiupdateProfile
+     */
+    birthdate: string
+    /**
+     * new bio
+     * @type string
+     * @memberof DefaultApiupdateProfile
+     */
+    bio: string
+}
+
 export interface DefaultApiUploadRequest {
     /**
      * list of video tags
@@ -331,6 +358,14 @@ export class ObjectDefaultApi {
      */
     public resetPassword(param: DefaultApiResetPasswordRequest, options?: Configuration): Promise<void> {
         return this.api.resetPassword(param.oldpassword, param.newpassword,  options).toPromise();
+    }
+
+    /**
+     * Update user\'s profile
+     * @param param the request object
+     */
+    public updateProfile(param: DefaultApiUpdateProfileRequest, options?: Configuration): Promise<void> {
+        return this.api.updateProfile(param.username, param.gender, param.birthdate, param.bio,  options).toPromise();
     }
 
     /**

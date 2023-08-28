@@ -261,6 +261,32 @@ export class ObservableDefaultApi {
     }
 
     /**
+     * Update user\'s profile
+     * @param username new username
+     * @param gender new gender
+     * @param birthdate new birthdate
+     * @param bio new bio
+     */
+    public updateProfile(username: string, gender: string, birthdate: string, bio: string, _options?: Configuration): Observable<void> {
+        const requestContextPromise = this.requestFactory.updateProfile(username, gender, birthdate, bio, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.updateProfile(rsp)));
+            }));
+    }
+
+    /**
      * Upload a new video
      * @param tags list of video tags
      * @param title video title
