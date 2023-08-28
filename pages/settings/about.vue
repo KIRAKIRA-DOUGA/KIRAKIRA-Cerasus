@@ -20,8 +20,8 @@
 	];
 
 	const team: { name: string; job: string[]; uid: number; avatar?: string }[] = [
-		{ name: "艾了个拉", job: [t.settings.about.staff.webmistress, t.settings.about.staff.designer], uid: NaN, avatar: avatar("aira.webp") },
-		{ name: "兰音", job: [t.settings.about.staff.frontend, t.settings.about.staff.designer], uid: NaN, avatar: avatar("nucleic_acid_testing.jpg") },
+		{ name: "艾了个拉", job: [t.settings.about.staff.webmistress, "/", t.settings.about.staff.designer], uid: NaN, avatar: avatar("aira.webp") },
+		{ name: "兰音", job: [t.settings.about.staff.frontend, "/", t.settings.about.staff.designer], uid: NaN, avatar: avatar("nucleic_acid_testing.jpg") },
 		{ name: "OtoMAN", job: [t.settings.about.staff.backend], uid: NaN, avatar: avatar("Otoman.png") },
 		{ name: "冲锋的小卡卡", job: [t.settings.about.staff.backend], uid: NaN, avatar: avatar("ZERO_TWO.jpg") },
 		{ name: "维他柠檬茶", job: [t.settings.about.staff.frontend], uid: NaN, avatar: avatar("VTchara.webp") },

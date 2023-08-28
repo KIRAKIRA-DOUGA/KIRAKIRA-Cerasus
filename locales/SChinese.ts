@@ -294,7 +294,7 @@ const SChinese = {
 	},
 	unknown: "未知",
 	shortcut_key: "快捷键",
-	shortcut_key_guide: "快捷键指南",
+	guide: "指南",
 	regexp: "正则表达式",
 	keywords: "关键词",
 	user_page: {

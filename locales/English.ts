@@ -293,7 +293,7 @@ const English: LocaleIdentifiers = {
 	},
 	unknown: "Unknown",
 	shortcut_key: "Shortcut Key",
-	shortcut_key_guide: "Shortcut Key Guide",
+	guide: "Guide",
 	regexp: "Regular Expression",
 	keywords: "Keywords",
 	user_page: {

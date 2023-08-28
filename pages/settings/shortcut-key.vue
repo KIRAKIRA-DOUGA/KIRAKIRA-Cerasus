@@ -3,7 +3,7 @@
 </script>
 
 <template>
-	<Subheader icon="keyboard">{{ t.shortcut_key_guide }}</Subheader>
+	<Subheader icon="keyboard">{{ t.guide }}</Subheader>
 	<div class="table">
 		<!-- #region 播放页 -->
 		<h3>播放页</h3>

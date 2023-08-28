@@ -296,7 +296,7 @@ const Japanese: LocaleIdentifiers = {
 	},
 	unknown: "不明",
 	shortcut_key: "ショートカットキー",
-	shortcut_key_guide: "ショートカットキーのガイド",
+	guide: "ガイド",
 	regexp: "正規表現",
 	keywords: "キーワード",
 	user_page: {
