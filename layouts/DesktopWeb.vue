@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	import background from "assets/styles/css-doodles/background.css-doodle";
 	import Settings from "./Settings.vue";
-	import UserCenter from "./UserCenter.vue";
+	import UserPage from "./UserPage.vue";
 	import usePageTransition from "helpers/page-transition";
 
 	const container = ref<HTMLDivElement>();
@@ -11,7 +11,7 @@
 	const SETTINGS = "settings";
 	const pageTransition = usePageTransition();
 	const isSettings = computed(() => getLocaleRouteSlug()[0] === SETTINGS);
-	const isUserCenter = computed(() => getLocaleRouteSlug()[0] === "user");
+	const isUserPage = computed(() => getLocaleRouteSlug()[0] === "user");
 	const cssDoodle = refComp();
 	const showCssDoodle = computed(() => useAppSettingsStore().showCssDoodle);
 	const isToggleSettings = ref(false);
@@ -50,10 +50,10 @@
 			<main v-else ref="containerMain" class="scroll">
 				<Banner :collapsed="!showBanner" />
 				<Transition :css="false" @enter="onContentEnter" @leave="onContentLeave">
-					<UserCenter v-if="isUserCenter" />
+					<UserPage v-if="isUserPage" />
 				</Transition>
 				<Transition :name="pageTransition" v-bind="transitionProps(false)">
-					<div :key="localedRoute" :class="{ 'user-center-slot': isUserCenter }">
+					<div :key="localedRoute" :class="{ 'user-center-slot': isUserPage }">
 						<slot></slot>
 					</div>
 				</Transition>
