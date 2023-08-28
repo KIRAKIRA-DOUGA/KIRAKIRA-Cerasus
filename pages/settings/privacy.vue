@@ -1,6 +1,7 @@
 <script setup lang="ts">
 	const visibilities = reactive < { name: string; icon?: string; logo?: string; privacy: PrivacyType }[]>([
 		{ name: "生日", icon: "birthday", privacy: "public" },
+		{ name: "性别", icon: "gender", privacy: "public" },
 		{ name: "关注", icon: "person_add", privacy: "public" },
 		{ name: "粉丝", icon: "person_heart", privacy: "public" },
 		{ name: "收藏", icon: "star", privacy: "public" },
@@ -14,7 +15,7 @@
 		{ name: "Discord", logo: "discord", privacy: "public" },
 		{ name: "Telegram", logo: "telegram", privacy: "public" },
 		{ name: "MidiShow", logo: "midi", privacy: "public" },
-		{ name: "电话号码", icon: "phone", privacy: "private" },
+		// { name: "电话号码", icon: "phone", privacy: "private" },
 	]);
 
 	const enableCookie = computed({
