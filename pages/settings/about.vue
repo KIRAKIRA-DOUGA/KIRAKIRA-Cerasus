@@ -14,7 +14,7 @@
 
 	const repositories: { name: string; codeName?: string; link: string; icon?: string }[] = [
 		{ name: "GitHub前端仓库地址与问题反馈", codeName: "KIRAKIRA Cerasus", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus" },
-		{ name: "个人中心Markdown仓库地址与问题反馈", codeName: "KIRAKIRA Flavored Markdown", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Flavored-Markdown" },
+		{ name: "用户页Markdown仓库地址与问题反馈", codeName: "KIRAKIRA Flavored Markdown", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Flavored-Markdown" },
 		{ name: "GitHub后端仓库地址与问题反馈", codeName: "KIRAKIRA Golang Backend", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-golang-backend" },
 		// { name: "GitHub后端仓库地址与问题反馈", codeName: "KIRAKIRA Rosales", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Rosales" },
 	];

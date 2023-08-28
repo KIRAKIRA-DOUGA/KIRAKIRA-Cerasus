@@ -18,6 +18,8 @@
 	// if (!users[uid]) navigate("/error/404"); // 在后端加持下暂时移除。
 	const user = users[uid] ?? {};
 
+	const isSelf = ref(false); // 是否为登录用户本人。
+
 	const actionMenu = ref<MenuModel>();
 	const fullwidthRegexp = /[⺀-ㄯ㆐-ㇿ㈠-㉇㊀-㊰㋀-㋋㋐-㍰㍻-㍿㏠-㏾㐀-䶿一-鿿豈-龎︐-︙︰-﹫！-｠￠-￦𚿰-𛅧𠀀-𲎯]/u;
 	// 验证是否是加上全宽括弧而不是半宽括弧，条件是包含至少一个非谚文的全宽字符。
@@ -31,7 +33,7 @@
 		set: async id => { await forceNavigate(`/user/${uid}/${id}`, () => currentTab.value === id); },
 	});
 
-	useHead({ title: user.username + "的个人中心" });
+	useHead({ title: user.username + t.user_page.title_suffix });
 </script>
 
 <template>
@@ -62,8 +64,11 @@
 						<MenuItem icon="flag">{{ t.report }}</MenuItem>
 						<MenuItem icon="block">加入黑名单</MenuItem>
 					</Menu>
-					<Button v-if="!user.isFollowed">{{ t.follow }}</Button>
-					<Button v-else disabled>{{ t.following }}</Button>
+					<div v-if="!isSelf" class="follow-button">
+						<Button v-if="!user.isFollowed">{{ t.follow }}</Button>
+						<Button v-else disabled>{{ t.following }}</Button>
+					</div>
+					<Button v-if="isSelf">{{ t.manage_contents }}</Button>
 				</div>
 			</div>
 			<TabBar v-model="currentTab">
@@ -172,6 +177,7 @@
 		.actions {
 			display: flex;
 			gap: 16px;
+			align-items: center;
 			justify-content: flex-end;
 			margin-left: auto;
 		}
@@ -212,26 +218,26 @@
 		> .center-right > .center {
 			width: 100%;
 		}
-		
+
 		> .center-right {
 			display: flex;
 			gap: 20px;
 			align-items: flex-start;
 			width: 100%;
 		}
-		
+
 		&:has(> .center-right) {
 			@media (width < 1280px) {
 				flex-direction: column;
-				
+
 				> .center-right {
 					flex-direction: column-reverse;
 				}
-				
+
 				.toolbox-card {
 					width: 100%;
 				}
-				
+
 				> .left,
 				> .right,
 				> .center-right > .right {

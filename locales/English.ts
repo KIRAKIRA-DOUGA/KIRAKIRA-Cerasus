@@ -89,7 +89,7 @@ const English: LocaleIdentifiers = {
 		},
 		hide: {
 			_: "Hide",
-			description: "Users you don't want to see which will be disappeared (unless you enter his personal homepage directly).",
+			description: "Users you don't want to see which will be disappeared (unless you enter their user pages directly).",
 		},
 		tags: {
 			description: "Use tags to hide content you don't want to see.",
@@ -296,6 +296,11 @@ const English: LocaleIdentifiers = {
 	shortcut_key_guide: "Shortcut Key Guide",
 	regexp: "Regular Expression",
 	keywords: "Keywords",
+	user_page: {
+		_: "User Page",
+		title_suffix: "'s User Page",
+	},
+	manage_contents: "Manage Contents",
 };
 
 export default English;

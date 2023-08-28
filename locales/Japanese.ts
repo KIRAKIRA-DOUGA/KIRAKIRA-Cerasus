@@ -299,6 +299,11 @@ const Japanese: LocaleIdentifiers = {
 	shortcut_key_guide: "ショートカットキーのガイド",
 	regexp: "正規表現",
 	keywords: "キーワード",
+	user_page: {
+		_: "個人プロフィール", // NEW
+		title_suffix: "のプロフィール", // NEW
+	},
+	manage_contents: "稿件管理", // NEW
 };
 
 export default Japanese;

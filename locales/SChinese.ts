@@ -90,7 +90,7 @@ const SChinese = {
 		},
 		hide: {
 			_: "隐藏",
-			description: "不想看到的用户，其将会从你的视角消失（除非你主动进入其个人空间）。",
+			description: "不想看到的用户，其将会从你的视角消失（除非你主动进入其用户页）。",
 		},
 		tags: {
 			description: "使用标签匹配不想看到的内容。",
@@ -297,6 +297,11 @@ const SChinese = {
 	shortcut_key_guide: "快捷键指南",
 	regexp: "正则表达式",
 	keywords: "关键词",
+	user_page: {
+		_: "用户页",
+		title_suffix: "的用户页",
+	},
+	manage_contents: "稿件管理",
 } as const;
 
 export default SChinese;
