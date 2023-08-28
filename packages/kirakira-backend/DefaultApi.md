@@ -14,6 +14,7 @@ Method | HTTP request | Description
 [**recommendations**](DefaultApi.md#recommendations) | **GET** /recommendations/{id} | Get list of videos
 [**register**](DefaultApi.md#register) | **POST** /register | Register user
 [**resetPassword**](DefaultApi.md#resetPassword) | **POST** /reset_password | Reset password
+[**updateProfile**](DefaultApi.md#updateProfile) | **POST** /update-profile | Update user\&#39;s profile
 [**upload**](DefaultApi.md#upload) | **POST** /upload | Upload a new video
 [**upvote**](DefaultApi.md#upvote) | **GET** /upvote/{id} | Get user video data
 [**upvoteVideo**](DefaultApi.md#upvoteVideo) | **POST** /upvotevideo/{id} | Upvote a video
@@ -564,6 +565,69 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Password changed |  -  |
+**0** | Unexpected error |  -  |
+
+[[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
+
+# **updateProfile**
+> void updateProfile()
+
+
+### Example
+
+
+```typescript
+import {  } from '';
+import * as fs from 'fs';
+
+const configuration = .createConfiguration();
+const apiInstance = new .DefaultApi(configuration);
+
+let body:.DefaultApiUpdateProfileRequest = {
+  // string | new username
+  username: 'YQ==',
+  // string | new gender
+  gender: 'YQ==',
+  // string | new birthdate
+  birthdate: "birthdate_example",
+  // string | new bio
+  bio: 'YQ==',
+};
+
+apiInstance.updateProfile(body).then((data:any) => {
+  console.log('API called successfully. Returned data: ' + data);
+}).catch((error:any) => console.error(error));
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **username** | [**string**] | new username | defaults to undefined
+ **gender** | [**string**] | new gender | defaults to undefined
+ **birthdate** | [**string**] | new birthdate | defaults to undefined
+ **bio** | [**string**] | new bio | defaults to undefined
+
+
+### Return type
+
+**void**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Update profile success |  -  |
 **0** | Unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)

@@ -6,6 +6,7 @@
     "esModuleInterop": true,
     "moduleResolution": "node",
     "declaration": true,
+	"noImplicitAny": false,
 
     /* Additional Checks */
      "noUnusedLocals": false,                /* Report errors on unused locals. */ // TODO: reenable (unused imports!)

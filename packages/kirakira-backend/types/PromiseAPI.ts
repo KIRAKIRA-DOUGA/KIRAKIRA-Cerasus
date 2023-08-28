@@ -117,6 +117,18 @@ export class PromiseDefaultApi {
     }
 
     /**
+     * Update user\'s profile
+     * @param username new username
+     * @param gender new gender
+     * @param birthdate new birthdate
+     * @param bio new bio
+     */
+    public updateProfile(username: string, gender: string, birthdate: string, bio: string, _options?: Configuration): Promise<void> {
+        const result = this.api.updateProfile(username, gender, birthdate, bio, _options);
+        return result.toPromise();
+    }
+
+    /**
      * Upload a new video
      * @param tags list of video tags
      * @param title video title
