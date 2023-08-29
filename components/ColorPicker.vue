@@ -365,6 +365,7 @@
 	.view-color {
 		@include color-palette-stroke;
 		background-color: var(--color);
+		transition: $fallback-transitions, background-color 0s;
 	}
 
 	.color {
