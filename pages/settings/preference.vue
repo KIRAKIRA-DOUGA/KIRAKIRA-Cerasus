@@ -3,7 +3,10 @@
 	const focusMode = reactive({
 		noSearchRecommendations: false,
 		noRelatedVideos: false,
+		noRecentSearch: false,
+		noViewHistory: false,
 	});
+	const openInNewWindow = ref(false);
 </script>
 
 <template>
@@ -18,5 +21,16 @@
 	<section list>
 		<Checkbox v-model:single="focusMode.noSearchRecommendations" v-ripple value="noSearchRecommendations">禁用搜索推荐</Checkbox>
 		<Checkbox v-model:single="focusMode.noRelatedVideos" v-ripple value="noRelatedVideos">禁用相关视频</Checkbox>
+	</section>
+	
+	<Subheader icon="placeholder">隐私</Subheader>
+	<section list>
+		<Checkbox v-model:single="focusMode.noRecentSearch" v-ripple value="noRecentSearch">停止显示搜索历史</Checkbox>
+		<Checkbox v-model:single="focusMode.noViewHistory" v-ripple value="noViewHistory">停用历史记录</Checkbox>
+	</section>
+	
+	<Subheader icon="placeholder">新窗口</Subheader>
+	<section list>
+		<ToggleSwitch v-model="openInNewWindow" icon="placeholder">在新窗口打开视频</ToggleSwitch>
 	</section>
 </template>

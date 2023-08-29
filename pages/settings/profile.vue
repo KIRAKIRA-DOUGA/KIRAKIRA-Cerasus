@@ -30,7 +30,6 @@
 				size="large"
 				icon="person"
 				required
-				preventIfInvalid
 				:pattern="validChar"
 				:maxLength="20"
 			/>
