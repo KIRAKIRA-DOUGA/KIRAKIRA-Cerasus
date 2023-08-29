@@ -2,7 +2,7 @@
 	import Menu from "./Menu.vue";
 
 	const props = withDefaults(defineProps<{
-		icon?: string;
+		icon?: DeclaredIcons;
 	}>(), {
 		icon: undefined,
 	});

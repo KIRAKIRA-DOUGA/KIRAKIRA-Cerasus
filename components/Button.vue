@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	const props = defineProps<{
 		/** 图标，可选。 */
-		icon?: string;
+		icon?: DeclaredIcons;
 		/**
 		 * 点击按钮是否切换导航？
 		 * #### NOTE

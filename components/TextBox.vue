@@ -6,7 +6,7 @@
 		/** 内容占位符。 */
 		placeholder?: string;
 		/** 图标名称。 */
-		icon?: string;
+		icon?: DeclaredIcons;
 		/** 输入框类型。 */
 		type?: "date" | "datetime-local" | "email" | "month" | "number" | "password" | "search" | "tel" | "text" | "time" | "url" | "week";
 		// 已弃用："datetime"。
@@ -238,7 +238,7 @@
 		interface Props {
 			shown?: boolean;
 			onClick?: (payload: MouseEvent) => void;
-			icon?: string;
+			icon?: DeclaredIcons;
 			animatedIcon?: string;
 			animatedState?: string;
 		}

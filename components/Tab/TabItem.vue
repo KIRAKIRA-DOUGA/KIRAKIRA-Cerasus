@@ -10,7 +10,7 @@
 		/** 角标，可选。 */
 		badge?: Readable;
 		/** 图标，可选。 */
-		icon?: string;
+		icon?: DeclaredIcons;
 	}>(), {
 		direction: "horizontal",
 		badge: undefined,

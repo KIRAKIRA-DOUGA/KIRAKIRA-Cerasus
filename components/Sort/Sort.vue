@@ -3,15 +3,15 @@
 	const selectedId = computed(() => selected.value[0]), selectedOrder = computed(() => selected.value[1]);
 	const slots = useSlots();
 	const vdoms = slots.default?.();
-	const items = computed(() => getSlotItems<typeof SortItem>(vdoms)({ preferOrder: "asc" }));
+	const items = computed(() => getSlotItems<typeof SortItem>(vdoms)({ preferOrder: "ascending" }));
 
 	/**
 	 * 颠倒排序顺序。
 	 * @param order - 排序顺序。
 	 * @returns 颠倒后的排序顺序。
 	 */
-	function invertSortOrder(order: SortOrder) {
-		return order === "asc" ? "desc" : "asc";
+	function invertSortOrder(order: SortOrder): SortOrder {
+		return order === "ascending" ? "descending" : "ascending";
 	}
 
 	/**
@@ -109,12 +109,12 @@
 		transform-style: preserve-3d;
 		perspective: 250px;
 
-		&.asc {
+		&.ascending {
 			rotate: x 0grad;
 			transition: $transition;
 		}
 
-		&.desc {
+		&.descending {
 			rotate: x 200grad;
 			transition: $transition;
 		}

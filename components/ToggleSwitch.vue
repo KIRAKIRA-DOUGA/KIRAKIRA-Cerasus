@@ -5,7 +5,7 @@
 		/** 禁用。 */
 		disabled?: boolean;
 		/** 图标，可选。 */
-		icon?: string;
+		icon?: DeclaredIcons;
 		/** 详细信息。 */
 		details?: Readable;
 	}>(), {

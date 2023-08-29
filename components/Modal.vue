@@ -11,7 +11,7 @@
 		/** 聚焦内容。是否**不要**单击空白处关闭。 */
 		static?: boolean;
 		/** 应用图标。 */
-		icon?: string;
+		icon?: DeclaredIcons;
 		/** 不显示标题部分。 */
 		hideTitle?: boolean;
 	}>(), {

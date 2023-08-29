@@ -55,7 +55,7 @@
 
 	const [DefineCountItem, CountItem] = createReusableTemplate<{
 		value: number | string;
-		icon: string;
+		icon: DeclaredIcons;
 	}>();
 </script>
 

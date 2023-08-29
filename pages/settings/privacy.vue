@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	const visibilities = reactive < { name: string; icon?: string; logo?: string; privacy: PrivacyType }[]>([
+	const visibilities = reactive<{ name: string; icon?: string; logo?: string; privacy: PrivacyType }[]>([
 		{ name: "生日", icon: "birthday", privacy: "public" },
 		{ name: "性别", icon: "gender", privacy: "public" },
 		{ name: "关注", icon: "person_add", privacy: "public" },

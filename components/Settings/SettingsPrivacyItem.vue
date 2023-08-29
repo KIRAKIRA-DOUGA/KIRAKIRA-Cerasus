@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	const props = defineProps<{
-		icon?: string;
+		icon?: DeclaredIcons;
 	}>();
 
 	const privacy = defineModel<PrivacyType>();
