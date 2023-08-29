@@ -5,7 +5,7 @@
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
 		/** 图标。 */
-		icon: string;
+		icon: DeclaredIcons;
 		/** 是否使用大图标。 */
 		large?: boolean;
 		/** 位置。 */

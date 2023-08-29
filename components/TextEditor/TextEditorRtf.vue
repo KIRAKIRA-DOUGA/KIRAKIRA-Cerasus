@@ -106,7 +106,7 @@
 			tooltip?: string;
 			active?: ActiveType;
 			disabled?: boolean;
-			icon?: string;
+			icon?: DeclaredIcons;
 			onClick?: (e: MouseEvent) => void;
 		}
 		return (props => (

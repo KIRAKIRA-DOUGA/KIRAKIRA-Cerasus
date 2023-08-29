@@ -3,7 +3,7 @@
 
 	const props = withDefaults(defineProps<{
 		/** 图标。 */
-		icon?: string;
+		icon?: DeclaredIcons;
 		/** 动态图标。 */
 		animatedIcon?: string;
 		/** 动态图标当前状态。 */
