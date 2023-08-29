@@ -1,22 +1,24 @@
 <script setup lang="ts">
+	const color = defineModel<Color>({ required: true });
+
 	const main = ref<TwoD>([1, 1]);
 	const smoothMain = useSmoothValue(main, 0.5);
 	const auxiliary = ref(0);
 	const model = ref<"rgb" | "hsl" | "hsb">("rgb");
 	const values = ref<ThreeD>([255, 0, 0]);
-	const color = reactive(Color.fromHex("ff0000")) as Color;
 	const hex = ref("ff0000");
 	const hashHex = computed(() => "#" + hex.value);
 	const partialColor = computed(() => {
-		const { hsl, hsv } = color;
+		const { hsl, hsv } = color.value;
 		// wo (w/o) is an abbr of "without".
 		return {
 			boxShadow: Color.fromHsv(hsv.h, hsv.s, hsv.v, 0.8).hashHex,
 			h: Color.fromHsv(hsv.h, 100, 100).hashHex,
 			woL: Color.fromHsl(hsl.h, hsl.s, 50).hashHex,
 			woV: Color.fromHsv(hsv.h, hsv.s, 100).hashHex,
-			l: Color.fromRgb(...(hsl.l >= 50 ? [255, 255, 255] : [0, 0, 0]) as ThreeD, Math.abs(hsl.l - 50) / 50).hashHex,
-			v: Color.fromRgb(0, 0, 0, 1 - hsv.v / 100).hashHex,
+			l: Color.fromHsv(0, 0, hsl.l >= 50 ? 100 : 0, Math.abs(hsl.l - 50) / 50).hashHex,
+			v: Color.fromHsv(0, 0, 0, 1 - hsv.v / 100).hashHex,
+			woH: Color.fromHsv(0, 0, hsv.v, 1 - (hsv.s / 100 * hsv.v / 100) ** 0.5).hashHex,
 		};
 	});
 	const isUpdating = reactive({}) as Record<ChangedParam, boolean>;
@@ -30,40 +32,44 @@
 		},
 	});
 
-	const update = () => {
+	const update = async () => {
+		if (isUpdating.update) return;
+		isUpdating.update = true;
 		if (!isUpdating.hex)
-			hex.value = color.hex.slice(0, 6);
+			hex.value = color.value.hex.slice(0, 6);
 		if (!isUpdating.values)
 			if (model.value === "rgb") {
-				const { r, g, b } = color.rgb;
+				const { r, g, b } = color.value.rgb;
 				values.value = [r, g, b];
 			} else if (model.value === "hsl") {
-				const { h, s, l } = color.hsl;
+				const { h, s, l } = color.value.hsl;
 				values.value = [h, s, l];
 			} else if (model.value === "hsb") {
-				const { h, s, b } = color.hsb;
+				const { h, s, b } = color.value.hsb;
 				values.value = [h, s, b];
 			}
 		if (!isUpdating.spectrums)
 			if (model.value === "rgb") {
-				const { h, s, b } = color.hsb;
+				const { h, s, b } = color.value.hsb;
 				spectrums.value = [s / 100, b / 100, h / 359];
 			} else if (model.value === "hsl") {
-				const { h, s, l } = color.hsl;
+				const { h, s, l } = color.value.hsl;
 				spectrums.value = [h / 359, s / 100, l / 100];
 			} else if (model.value === "hsb") {
-				const { h, s, b } = color.hsb;
+				const { h, s, b } = color.value.hsb;
 				spectrums.value = [h / 359, s / 100, b / 100];
 			}
+		await nextTick();
+		isUpdating.update = false;
 	};
 
 	watch(hex, useChange("hex", hex => {
-		color.hex = hex;
+		color.value.hex = hex;
 		update();
 	}));
 
 	watch(values, useChange("values", values => {
-		color[model.value] = values as never;
+		color.value[model.value] = values as never;
 		update();
 	}), { deep: true });
 
@@ -74,13 +80,13 @@
 	watch(spectrums, useChange("spectrums", spectrums => {
 		if (model.value === "rgb") {
 			const [s, b, h] = spectrums;
-			color.hsb = [h * 359, s * 100, b * 100];
+			color.value.hsb = [h * 359, s * 100, b * 100];
 		} else if (model.value === "hsl") {
 			const [h, s, l] = spectrums;
-			color.hsl = [h * 359, s * 100, l * 100];
+			color.value.hsl = [h * 359, s * 100, l * 100];
 		} else if (model.value === "hsb") {
 			const [h, s, b] = spectrums;
-			color.hsb = [h * 359, s * 100, b * 100];
+			color.value.hsb = [h * 359, s * 100, b * 100];
 		}
 		update();
 	}), { deep: true });
@@ -108,7 +114,7 @@
 		pointerMove(e);
 	}
 
-	type ChangedParam = "hex" | "values" | "spectrums";
+	type ChangedParam = "hex" | "values" | "spectrums" | "update";
 
 	/**
 	 * 监测要不改变的参数。
@@ -118,6 +124,7 @@
 	 */
 	function useChange<T>(param: ChangedParam, callback: (current: T, previous: T) => void) {
 		return async (current: T, previous: T) => {
+			if (isUpdating.update) return;
 			isUpdating[param] = true;
 			callback(current, previous);
 			await nextTick();
@@ -137,6 +144,7 @@
 			'--wo-v': partialColor.woV,
 			'--l': partialColor.l,
 			'--v': partialColor.v,
+			'--wo-h': partialColor.woH,
 		}"
 	>
 		<div class="plane color" @pointerdown="onPlaneDown">
@@ -209,21 +217,34 @@
 
 <style scoped lang="scss">
 	$thumb-size: 24px;
+	$thumb-size-half: calc($thumb-size / 2);
 
 	.subheader {
-		margin-bottom: 16px;
+		margin: 0 $thumb-size-half 16px;
 	}
 
 	:comp > :not(:last-child) {
 		margin-bottom: 16px;
 	}
+	
+	%inner-border {
+		@include color-palette-stroke;
+		position: absolute;
+		border-radius: inherit;
+		inset: 0;
+		content: "";
+	}
 
 	.plane {
 		position: relative;
-		margin: 0 12px;
+		margin: $thumb-size-half;
 		aspect-ratio: 1 / 1;
 		cursor: pointer;
 		touch-action: pinch-zoom;
+		
+		&::after {
+			@extend %inner-border;
+		}
 
 		> .spectrum {
 			display: contents;
@@ -281,6 +302,15 @@
 		.passed {
 			display: none;
 		}
+		
+		.track {
+			position: relative;
+			overflow: hidden;
+			
+			&::after {
+				@extend %inner-border;
+			}
+		}
 	}
 
 	@function slider-model($model) {
@@ -289,6 +319,14 @@
 
 	#{slider-model(rgb)} {
 		background: $hue-linear;
+		
+		&::before {
+			position: absolute;
+			background-color: var(--wo-h);
+			inset: 0;
+			transition: none;
+			content: "";
+		}
 	}
 
 	#{slider-model(hsl)} {
@@ -305,7 +343,7 @@
 		gap: 12px 6px;
 		width: 100%;
 		margin-bottom: 4px;
-		padding: 0 12px;
+		padding: 0 $thumb-size-half;
 
 		.segmented {
 			--ease: ease-out;
@@ -329,11 +367,13 @@
 
 	.slider:deep .thumb,
 	.plane .thumb {
+		z-index: 1;
 		box-shadow: 0 1px 6px var(--box-shadow) !important;
+		transition: $fallback-transitions, left 0s, top 0s, box-shadow 0s;
 
 		&::after {
 			background-color: var(--color) !important;
-			transition: $fallback-transitions, background-color 0s;
+			transition: $fallback-transitions, scale $ease-out-back 250ms, background-color 0s;
 		}
 	}
 
@@ -347,7 +387,6 @@
 		left: calc(var(--x) * 100% - $thumb-size / 2);;
 		background-color: c(main-bg);
 		cursor: pointer;
-		transition: $fallback-transitions, left 0s, top 0s;
 
 		&::after {
 			@include square(100%);

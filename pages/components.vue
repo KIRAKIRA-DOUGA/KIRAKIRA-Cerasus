@@ -48,6 +48,7 @@
 	const [DefinePopoverSlot, PopoverSlot] = createReusableTemplate();
 	const comboBoxValue = ref("obtuse angle");
 	const settingsGridItemSelect = ref("");
+	const color = ref(Color.fromHex("#f00")) as Ref<Color>;
 
 	/**
 	 * 单击按钮事件。
@@ -295,7 +296,7 @@
 			<LogoText :style="{ '--form': logoTextForm }" />
 			<hr />
 			<div class="flyout-bg" :style="{ width: '344px' }">
-				<ColorPicker />
+				<ColorPicker v-model="color" />
 			</div>
 			<hr />
 			<Accordion autoCollapse>

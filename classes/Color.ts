@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 const { min, max, round } = Math;
 const { isArray } = Array;
 
@@ -5,20 +7,16 @@ const { isArray } = Array;
  * 颜色类。
  */
 export class Color {
-	private _rgba: [number, number, number, number]; // #rgba will raise an error.
-	
+	private hsva: FourD;
+
+	// eslint-disable-next-line valid-jsdoc
 	/**
-	 * 从红绿蓝透创建颜色类实例。
-	 * @ignore 不可用！
-	 * @param r - 红色分量 ∈ [0 ~ 255]。
-	 * @param g - 绿色分量 ∈ [0 ~ 255]。
-	 * @param b - 蓝色分量 ∈ [0 ~ 255]。
-	 * @param a - 不透明度 ∈ [0 ~ 1]。
+	 * @access private
 	 */
-	private constructor(r: number, g: number, b: number, a: number) {
-		this._rgba = [r, g, b, a];
+	private constructor(h: number, s: number, v: number, a: number) {
+		this.hsva = [h, s, v, a];
 	}
-	
+
 	/**
 	 * 从红绿蓝创建颜色类实例。
 	 * @param r - 红色分量 ∈ [0 ~ 255]。
@@ -28,9 +26,10 @@ export class Color {
 	 * @returns 颜色类实例。
 	 */
 	static fromRgb(r: number, g: number, b: number, a: number = 1) {
-		return new Color(r, g, b, a);
+		const [h, s, v] = rgbToHsv(r, g, b);
+		return new Color(h, s, v, a);
 	}
-	
+
 	/**
 	 * 从色饱亮创建颜色类实例。
 	 * @param h - 色相分量 ∈ [0 ~ 360)。
@@ -40,10 +39,10 @@ export class Color {
 	 * @returns 颜色类实例。
 	 */
 	static fromHsl(h: number, s: number, l: number, a: number = 1) {
-		const [r, g, b] = hslToRgb(h, s, l);
-		return new Color(r, g, b, a);
+		const [_h, _s, _v] = hslToHsv(h, s, l);
+		return new Color(_h, _s, _v, a);
 	}
-	
+
 	/**
 	 * 从色饱明创建颜色类实例。
 	 * @param h - 色相分量 ∈ [0 ~ 360)。
@@ -53,10 +52,9 @@ export class Color {
 	 * @returns 颜色类实例。
 	 */
 	static fromHsv(h: number, s: number, v: number, a: number = 1) {
-		const [r, g, b] = hsvToRgb(h, s, v);
-		return new Color(r, g, b, a);
+		return new Color(h, s, v, a);
 	}
-	
+
 	/**
 	 * 从色饱明创建颜色类实例。
 	 * @param h - 色相分量 ∈ [0 ~ 360)。
@@ -68,7 +66,7 @@ export class Color {
 	static fromHsb(h: number, s: number, v: number, a: number = 1) {
 		return this.fromHsv(h, s, v, a);
 	}
-	
+
 	/**
 	 * 从 16 进制颜色值创建颜色类实例。
 	 * @param hex - 16 进制颜色值。
@@ -78,85 +76,87 @@ export class Color {
 		const rgba = hexToRgb(hex);
 		if (!rgba) throw new RangeError("Invalid HEX");
 		const [r, g, b, a] = rgba;
-		return new Color(r, g, b, a);
+		return Color.fromRgb(r, g, b, a);
 	}
-	
-	/** 红色分量。 */
-	get r() { return this._rgba[0]; }
-	set r(v) { this._rgba[0] = clamp(v, 0, 255); }
-	
-	/** 绿色分量。 */
-	get g() { return this._rgba[1]; }
-	set g(v) { this._rgba[1] = clamp(v, 0, 255); }
-	
-	/** 蓝色分量。 */
-	get b() { return this._rgba[2]; }
-	set b(v) { this._rgba[2] = clamp(v, 0, 255); }
-	
+
+	/** 色相分量。 */
+	get h() { return this.hsva[0]; }
+	set h(v) { this.hsva[0] = PNMod(v, 360); }
+
+	/** 饱和度分量。 */
+	get s() { return this.hsva[1]; }
+	set s(v) { this.hsva[1] = clamp(v, 0, 100); }
+
+	/** 明度分量。 */
+	get v() { return this.hsva[2]; }
+	set v(v) { this.hsva[2] = clamp(v, 0, 100); }
+
 	/** 不透明度分量。 */
-	get a() { return this._rgba[3]; }
-	set a(v) { this._rgba[3] = clamp(v, 0, 1); }
-	
+	get a() { return this.hsva[3]; }
+	set a(v) { this.hsva[3] = clamp(v, 0, 1); }
+
 	/**
 	 * 获取并设置不带井号开头的 16 进制颜色值。
 	 */
 	get hex() {
 		const padStart = (value: number) => Math.round(value).toString(16).padStart(2, "0");
-		let result = padStart(this.r) + padStart(this.g) + padStart(this.b);
-		if (this.a !== 1) result += padStart(this.a * 255);
+		const { r, g, b, a } = this.rgb;
+		let result = padStart(r) + padStart(g) + padStart(b);
+		if (a !== 1) result += padStart(a * 255);
 		return result;
 	}
-	
+
 	set hex(value: string) {
 		const rgba = hexToRgb(value);
 		if (!rgba) return;
 		this.rgb = rgba;
 	}
-	
+
 	/**
 	 * 获取并设置带井号开头的 16 进制颜色值。
 	 */
 	get hashHex() {
 		return "#" + this.hex;
 	}
-	
+
 	set hashHex(value: string) {
 		this.hex = value;
 	}
-	
+
 	/**
 	 * RGB
 	 */
 	get rgb(): ColorGetter<"r" | "g" | "b"> {
-		const { r, g, b, a } = this;
+		const { h, s, v, a } = this;
+		const [r, g, b] = hsvToRgb(h, s, v);
 		return { r: round(r), g: round(g), b: round(b), a };
 	}
-	
+
 	set rgb(value: ColorSetter<"r" | "g" | "b">) {
 		let r: number, g: number, b: number, a: number | undefined;
-		
+
 		if (isArray(value))
 			[r, g, b, a] = value;
 		else
 			({ r, g, b, a } = value);
-		
+
 		r = clamp(r, 0, 255);
 		g = clamp(g, 0, 255);
 		b = clamp(b, 0, 255);
-		
-		[this.r, this.g, this.b] = [r, g, b];
+
+		[this.h, this.s, this.v] = rgbToHsv(r, g, b);
 		if (a !== undefined) this.a = a;
 	}
-	
+
 	/**
 	 * HSL
 	 */
 	get hsl(): ColorGetter<"h" | "s" | "l"> {
-		const { r, g, b, a } = this;
-		const [h, s, l] = rgbToHsl(r, g, b);
-		return { h: round(h), s: round(s), l: round(l), a };
+		const { h, s, v, a } = this;
+		const [_h, _s, _l] = hsvToHsl(h, s, v);
+		return { h: round(_h), s: round(_s), l: round(_l), a };
 	}
-	
+
 	set hsl(value: ColorSetter<"h" | "s" | "l">) {
 		let h: number, s: number, l: number, a: number | undefined;
 
@@ -164,24 +164,23 @@ export class Color {
 			[h, s, l, a] = value;
 		else
 			({ h, s, l, a } = value);
-		
+
 		h = clamp(h, 0, 360);
 		s = clamp(s, 0, 100);
 		l = clamp(l, 0, 100);
 
-		[this.r, this.g, this.b] = hslToRgb(h, s, l);
+		[this.h, this.s, this.v] = hslToHsv(h, s, l);
 		if (a !== undefined) this.a = a;
 	}
-	
+
 	/**
 	 * HSV
 	 */
 	get hsv(): ColorGetter<"h" | "s" | "v"> {
-		const { r, g, b, a } = this;
-		const [h, s, v] = rgbToHsv(r, g, b);
+		const { h, s, v, a } = this;
 		return { h: round(h), s: round(s), v: round(v), a };
 	}
-	
+
 	set hsv(value: ColorSetter<"h" | "s" | "v">) {
 		let h: number, s: number, v: number, a: number | undefined;
 
@@ -194,10 +193,10 @@ export class Color {
 		s = clamp(s, 0, 100);
 		v = clamp(v, 0, 100);
 
-		[this.r, this.g, this.b] = hsvToRgb(h, s, v);
+		[this.h, this.s, this.v] = [h, s, v];
 		if (a !== undefined) this.a = a;
 	}
-	
+
 	/**
 	 * HSB
 	 */
@@ -205,7 +204,7 @@ export class Color {
 		const { h, s, v, a } = this.hsv;
 		return { h, s, b: v, a };
 	}
-	
+
 	set hsb(value: ColorSetter<"h" | "s" | "b">) {
 		let h: number, s: number, b: number, a: number | undefined;
 
@@ -213,7 +212,7 @@ export class Color {
 			[h, s, b, a] = value;
 		else
 			({ h, s, b, a } = value);
-		
+
 		this.hsv = { h, s, v: b, a };
 	}
 }
@@ -252,7 +251,7 @@ function hexToRgb(hex: string): FourD | undefined {
  */
 function hslToRgb(h: number, s: number, l: number): ThreeD {
 	let r, g, b;
-	
+
 	h /= 360;
 	s /= 100;
 	l /= 100;
@@ -295,14 +294,14 @@ function rgbToHsl(r: number, g: number, b: number): ThreeD {
 	r /= 255;
 	g /= 255;
 	b /= 255;
-	
+
 	const vmax = max(r, g, b), vmin = min(r, g, b);
 	let h = 0;
 	const l = (vmax + vmin) / 2;
 
 	if (vmax === vmin)
 		return [0, 0, l * 100]; // achromatic
-	
+
 	const d = vmax - vmin;
 	const s = l > 0.5 ? d / (2 - vmax - vmin) : d / (vmax + vmin);
 	if (vmax === r) h = (g - b) / d + (g < b ? 6 : 0);
@@ -322,17 +321,17 @@ function rgbToHsl(r: number, g: number, b: number): ThreeD {
  */
 function hsvToRgb(h: number, s: number, v: number): ThreeD {
 	let r, g, b;
-	
+
 	h /= 360;
 	s /= 100;
 	v /= 100;
-	
+
 	const i = Math.floor(h * 6);
 	const f = h * 6 - i;
 	const p = v * (1 - s);
 	const q = v * (1 - f * s);
 	const t = v * (1 - (1 - f) * s);
-	
+
 	switch (i % 6) {
 		default:
 		case 0: r = v; g = t; b = p; break;
@@ -342,7 +341,7 @@ function hsvToRgb(h: number, s: number, v: number): ThreeD {
 		case 4: r = t; g = p; b = v; break;
 		case 5: r = v; g = p; b = q; break;
 	}
-	
+
 	return [r * 255, g * 255, b * 255];
 }
 
@@ -358,7 +357,7 @@ function rgbToHsv(r: number, g: number, b: number): ThreeD {
 		max = Math.max(r, g, b),
 		min = Math.min(r, g, b),
 		d = max - min,
-		s = (max === 0 ? 0 : d / max),
+		s = max === 0 ? 0 : d / max,
 		v = max / 255;
 	let h;
 
@@ -371,4 +370,43 @@ function rgbToHsv(r: number, g: number, b: number): ThreeD {
 	}
 
 	return [h * 360, s * 100, v * 100];
+}
+
+/**
+ * Converts an HSB/HSV color value to HSL.
+ * @param h - The hue.
+ * @param s - The saturation.
+ * @param v - The brightness value.
+ * @returns The HSL representation.
+ */
+function hsvToHsl(h: number, s: number, v: number) {
+	s /= 100;
+	v /= 100;
+
+	let _s = s * v;
+	let l = (2 - s) * v;
+	_s /= (l <= 1 ? l : 2 - l) || 1;
+	l /= 2;
+	
+	return [h, _s * 100, l * 100];
+}
+
+/**
+ * Converts an HSL color value to HSB/HSV.
+ * @param h - The hue.
+ * @param s - The saturation.
+ * @param l - The lightness.
+ * @returns The HSB/HSV representation.
+ */
+function hslToHsv(h: number, s: number, l: number) {
+	s /= 100;
+	l /= 100;
+	l ||= 1e-7;
+
+	l *= 2;
+	s *= l <= 1 ? l : 2 - l;
+	const v = (l + s) / 2;
+	const _s = 2 * s / (l + s);
+	
+	return [h, _s * 100, v * 100];
 }
