@@ -148,7 +148,6 @@ const SChinese = {
 	logout: "登出",
 	register: "注册",
 	verification_code: "验证码",
-	signature: "个性签名",
 	close: "关闭",
 	current_page_label: "第{0}页，共{1}页",
 	switch_page_label: "切换到第{0}页",
@@ -246,6 +245,10 @@ const SChinese = {
 			edit_banner: "点击更换封面",
 			edit_avatar: "点击更换头像",
 		},
+		privacy: {
+			allow_cookies: "允许网站使用Cookies",
+			info_visibility: "信息可见性",
+		},
 		about: {
 			repositories: "代码仓库",
 			creative_team: "创作团队",
@@ -264,6 +267,8 @@ const SChinese = {
 		name_requirements: "1~20个字符，仅可包含大小写拉丁字母、数字、常用平/片假名、汉字、特殊符号 ｢-｣ ｢_｣",
 		bio: "个性签名",
 		gender: "性别",
+		memo: "备注",
+		age: "年龄",
 	},
 	zhs: "简体中文",
 	en: "英语",
@@ -302,6 +307,13 @@ const SChinese = {
 		title_suffix: "的用户页",
 	},
 	manage_contents: "稿件管理",
+	add_to: "加入",
+	platform: {
+		bilibili: "哔哩哔哩",
+		niconico: "niconico",
+		otomad_wiki: "音MAD维基",
+		weibo: "微博",
+	},
 } as const;
 
 export default SChinese;
