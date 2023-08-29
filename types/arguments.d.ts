@@ -45,7 +45,7 @@ declare global {
 	type TabBarMovement = Movement | "ignore" | "none" | "fade";
 	/** 可作为 URL Search Params 的更宽松类型。 */
 	type UrlQueryType = string | URLSearchParams | Record<string, Readable>;
-	
+	/** 发射弹幕信息。 */
 	type DanmakuComment = Parameters<Danmaku["emit"]>[0];
 	/** 弹幕列表项目。 */
 	interface DanmakuListItem {
@@ -53,6 +53,8 @@ declare global {
 		content: string;
 		sendTime: Date;
 	}
+	/** 颜色模型。 */
+	type ColorModel = "rgb" | "hsl" | "hsb";
 
 	type FlyoutModel = FlyoutModelNS.Tuple | FlyoutModelNS.Object;
 	type MenuModel = MouseEvent | PointerEvent | null;

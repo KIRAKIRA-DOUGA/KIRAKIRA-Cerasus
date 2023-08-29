@@ -1,12 +1,13 @@
 <script setup lang="ts">
-	const color = defineModel<Color>({ required: true });
+	const color = defineModel<Color | UnwrapRef<Color>>({ required: true });
+	const specificModel = defineModel<ColorModel>("model", { default: "hsl" });
 
 	const main = ref<TwoD>([1, 1]);
 	const smoothMain = useSmoothValue(main, 0.5);
 	const auxiliary = ref(0);
-	const model = ref<"rgb" | "hsl" | "hsb">("rgb");
+	const model = ref(specificModel.value!);
 	const values = ref<ThreeD>([255, 0, 0]);
-	const hex = ref("ff0000");
+	const hex = ref("FF0000");
 	const hashHex = computed(() => "#" + hex.value);
 	const partialColor = computed(() => {
 		const { hsl, hsv } = color.value;
@@ -62,6 +63,7 @@
 		await nextTick();
 		isUpdating.update = false;
 	};
+	update();
 
 	watch(hex, useChange("hex", hex => {
 		color.value.hex = hex;
@@ -73,8 +75,9 @@
 		update();
 	}), { deep: true });
 
-	watch(model, useChange("hex", () => {
+	watch(model, useChange("hex", model => {
 		update();
+		specificModel.value = model;
 	}));
 
 	watch(spectrums, useChange("spectrums", spectrums => {
@@ -90,6 +93,8 @@
 		}
 		update();
 	}), { deep: true });
+
+	watch(specificModel, specificModel => specificModel && (model.value = specificModel));
 
 	/**
 	 * 按下主要调节平面逻辑处理。
@@ -210,6 +215,7 @@
 				required
 				:pattern="/[0-9A-Fa-f]{0,6}/"
 				:invalid="hexInvalidMessage"
+				case="uppercase"
 			/>
 		</div>
 	</Comp>
@@ -226,7 +232,7 @@
 	:comp > :not(:last-child) {
 		margin-bottom: 16px;
 	}
-	
+
 	%inner-border {
 		@include color-palette-stroke;
 		position: absolute;
@@ -241,7 +247,7 @@
 		aspect-ratio: 1 / 1;
 		cursor: pointer;
 		touch-action: pinch-zoom;
-		
+
 		&::after {
 			@extend %inner-border;
 		}
@@ -302,11 +308,11 @@
 		.passed {
 			display: none;
 		}
-		
+
 		.track {
 			position: relative;
 			overflow: hidden;
-			
+
 			&::after {
 				@extend %inner-border;
 			}
@@ -319,7 +325,7 @@
 
 	#{slider-model(rgb)} {
 		background: $hue-linear;
-		
+
 		&::before {
 			position: absolute;
 			background-color: var(--wo-h);
