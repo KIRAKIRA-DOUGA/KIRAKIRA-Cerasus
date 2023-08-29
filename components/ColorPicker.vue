@@ -7,11 +7,11 @@
 	const color = reactive(Color.fromHex("ff0000")) as Color;
 	const hex = ref("ff0000");
 	const hashHex = computed(() => "#" + hex.value);
-	const boxShadowColor = computed(() => hashHex.value + "cc");
 	const partialColor = computed(() => {
 		const { hsl, hsv } = color;
 		// wo (w/o) is an abbr of "without".
 		return {
+			boxShadow: Color.fromHsv(hsv.h, hsv.s, hsv.v, 0.8).hashHex,
 			h: Color.fromHsv(hsv.h, 100, 100).hashHex,
 			woL: Color.fromHsl(hsl.h, hsl.s, 50).hashHex,
 			woV: Color.fromHsv(hsv.h, hsv.s, 100).hashHex,
@@ -30,8 +30,9 @@
 		},
 	});
 
-	const setHex = () => { if (!isUpdating.hex) hex.value = color.hex.slice(0, 6); };
-	const setValues = () => {
+	const update = () => {
+		if (!isUpdating.hex)
+			hex.value = color.hex.slice(0, 6);
 		if (!isUpdating.values)
 			if (model.value === "rgb") {
 				const { r, g, b } = color.rgb;
@@ -43,8 +44,6 @@
 				const { h, s, b } = color.hsb;
 				values.value = [h, s, b];
 			}
-	};
-	const setSpectrums = () => {
 		if (!isUpdating.spectrums)
 			if (model.value === "rgb") {
 				const { h, s, b } = color.hsb;
@@ -57,22 +56,19 @@
 				spectrums.value = [h / 359, s / 100, b / 100];
 			}
 	};
-	
+
 	watch(hex, useChange("hex", hex => {
 		color.hex = hex;
-		setValues();
-		setSpectrums();
+		update();
 	}));
-	
+
 	watch(values, useChange("values", values => {
 		color[model.value] = values as never;
-		setHex();
-		setSpectrums();
+		update();
 	}), { deep: true });
-	
+
 	watch(model, useChange("hex", () => {
-		setValues();
-		setSpectrums();
+		update();
 	}));
 
 	watch(spectrums, useChange("spectrums", spectrums => {
@@ -86,7 +82,7 @@
 			const [h, s, b] = spectrums;
 			color.hsb = [h * 359, s * 100, b * 100];
 		}
-		setHex();
+		update();
 	}), { deep: true });
 
 	/**
@@ -96,13 +92,13 @@
 	function onPlaneDown(e: PointerEvent) {
 		const plane = e.currentTarget as HTMLDivElement;
 		const { left: x, width: xMax, top: y, height: yMax } = plane.getBoundingClientRect();
-		const pointerMove = (e: PointerEvent) => {
+		const pointerMove = useDebounce((e: PointerEvent) => {
 			const positionX = clamp(e.clientX - x, 0, xMax);
 			const positionY = clamp(e.clientY - y, 0, yMax);
 			const valueX = map(positionX, 0, xMax, 0, 1);
 			const valueY = map(positionY, 0, yMax, 1, 0);
 			main.value = [valueX, valueY];
-		};
+		});
 		const pointerUp = () => {
 			document.removeEventListener("pointermove", pointerMove);
 			document.removeEventListener("pointerup", pointerUp);
@@ -135,7 +131,7 @@
 	<Comp
 		:style="{
 			'--color': hashHex,
-			'--box-shadow-color': boxShadowColor,
+			'--box-shadow': partialColor.boxShadow,
 			'--h': partialColor.h,
 			'--wo-l': partialColor.woL,
 			'--wo-v': partialColor.woV,
@@ -217,88 +213,92 @@
 	.subheader {
 		margin-bottom: 16px;
 	}
-	
+
 	:comp > :not(:last-child) {
 		margin-bottom: 16px;
 	}
-	
+
 	.plane {
 		position: relative;
 		margin: 0 12px;
 		aspect-ratio: 1 / 1;
 		cursor: pointer;
 		touch-action: pinch-zoom;
-		
+
 		> .spectrum {
 			display: contents;
 			pointer-events: none;
-			
+
 			> * {
 				position: absolute;
 				border-radius: 8px; // 与下方滑动条的圆角大小一致，因此使用特殊值。
 				inset: 0;
 			}
 		}
-		
+
 		.rgb .solid {
 			background: linear-gradient(to right, white, var(--h));
 		}
-		
+
 		.hue {
 			background: $hue-linear;
 		}
-		
+
 		.cover {
 			// stylelint-disable-next-line function-disallowed-list
 			background: linear-gradient(to top, rgb(var(--rgb)), rgb(var(--rgb) / 0%));
-			
+
 			&.black {
 				--rgb: 0 0 0;
 			}
-			
+
 			&.gray {
 				--rgb: 127 127 127;
 			}
-			
+
 			&.white {
 				--rgb: 255 255 255;
 			}
 		}
-		
+
+		.mask {
+			transition: none;
+		}
+
 		.hsb .mask {
 			background-color: var(--v);
 		}
-		
+
 		.hsl .mask {
 			background-color: var(--l);
 		}
 	}
-	
+
 	.slider:deep {
 		--size: large;
 		margin-top: 16px;
-		
+
 		.passed {
 			display: none;
 		}
 	}
-	
+
 	@function slider-model($model) {
 		@return ".slider.#{$model}:deep .track";
 	}
-	
+
 	#{slider-model(rgb)} {
 		background: $hue-linear;
 	}
-	
+
 	#{slider-model(hsl)} {
 		background: linear-gradient(to right, black, var(--wo-l), white);
 	}
-	
+
 	#{slider-model(hsb)} {
 		background: linear-gradient(to right, black, var(--wo-v));
 	}
-	
+
 	.controls {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
@@ -306,37 +306,37 @@
 		width: 100%;
 		margin-bottom: 4px;
 		padding: 0 12px;
-		
+
 		.segmented {
 			--ease: ease-out;
 			grid-column-end: span 3;
 			width: 100%;
 		}
-		
+
 		.text-box.hex {
 			grid-column-end: span 2;
 		}
 	}
-	
+
 	.view-color {
 		@include color-palette-stroke;
 		background-color: var(--color);
 	}
-	
+
 	.color {
 		@include round-large;
 	}
-	
+
 	.slider:deep .thumb,
 	.plane .thumb {
-		box-shadow: 0 1px 6px var(--box-shadow-color) !important;
-		
+		box-shadow: 0 1px 6px var(--box-shadow) !important;
+
 		&::after {
 			background-color: var(--color) !important;
 			transition: $fallback-transitions, background-color 0s;
 		}
 	}
-	
+
 	.thumb {
 		@include square($thumb-size);
 		@include circle;
@@ -348,7 +348,7 @@
 		background-color: c(main-bg);
 		cursor: pointer;
 		transition: $fallback-transitions, left 0s, top 0s;
-		
+
 		&::after {
 			@include square(100%);
 			@include circle;
@@ -356,11 +356,11 @@
 			content: "";
 			scale: 0.625;
 		}
-		
+
 		&:any-hover::after {
 			scale: 0.765;
 		}
-		
+
 		.plane:active &::after,
 		&:active::after {
 			scale: 0.4 !important;

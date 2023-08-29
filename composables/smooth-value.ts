@@ -12,21 +12,23 @@ export function useSmoothValue<T extends number | number[] | Point>(current: May
 		throw new RangeError(`useSmoothValue speed 参数取值范围错误。参数值必须在 (0 ~ 1] 区间内，当前值为 ${speed}。`);
 	const smoothValue = ref(toValue(current)) as Ref<T>;
 	const animationId = ref<number>();
+	const FRACTION_DIGITS = 6; // 保留 6 位小数。
 	onMounted(() => {
 		const animation = () => {
-			const value = toValue(current);
 			const _speed = isPrefersReducedMotion() ? 1 : speed;
+			const value = toValue(current);
+			const getNewValue = (cur: number, prev: number) => +(prev + (cur - prev) * _speed).toFixed(FRACTION_DIGITS);
 			if (typeof value === "number") {
 				const prev = smoothValue as Ref<number>;
-				prev.value += (value - prev.value) * _speed;
+				prev.value = getNewValue(value, prev.value); // (value - prev.value) * _speed;
 			} else if (value instanceof Point) {
 				const prev = smoothValue as Ref<Point>;
-				prev.value.x += prev.value.distanceX(value) * _speed;
-				prev.value.y += prev.value.distanceY(value) * _speed;
+				prev.value.x = getNewValue(value.x, prev.value.x); // (value.x - prev.value.x) * _speed;
+				prev.value.y = getNewValue(value.y, prev.value.y); // (value.y - prev.value.y) * _speed;
 			} else {
 				const prev = smoothValue as Ref<number[]>;
 				for (let i = 0; i < value.length; i++)
-					prev.value[i] += (value[i] - prev.value[i]) * _speed;
+					prev.value[i] = getNewValue(value[i], prev.value[i]); // (value[i] - prev.value[i]) * _speed;
 			}
 			animationId.value = requestAnimationFrame(animation);
 		};

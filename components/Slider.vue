@@ -58,12 +58,12 @@
 		const track = thumb.parentElement!.querySelector(".track")!;
 		const { left, width: max } = track.getBoundingClientRect();
 		const x = triggerByTrack ? 0 : e.pageX - left - thumb.offsetLeft;
-		const pointerMove = (e: PointerEvent) => {
+		const pointerMove = useDebounce((e: PointerEvent) => {
 			const position = clamp(e.pageX - left - x, 0, max);
 			const value = map(position, 0, max, props.min, props.max);
 			model.value = value;
 			emits("changing", value);
-		};
+		});
 		const pointerUp = () => {
 			document.removeEventListener("pointermove", pointerMove);
 			document.removeEventListener("pointerup", pointerUp);
@@ -126,10 +126,10 @@
 	$track-thickness: 6px;
 	$value: calc(var(--value) * (100% - var(--thumb-size)));
 	$buffered: calc(var(--buffered) * (100% - var(--thumb-size)));
-	
+
 	$large-track-thickness: 16px;
 	$large-thumb-size: 24px;
-	
+
 	@layer props {
 		/// 滑动条尺寸，可选的值为：small | large。
 		--size: small;
@@ -140,11 +140,11 @@
 		--buffered: 0;
 		position: relative;
 		touch-action: none;
-		
+
 		> * {
 			--thumb-size: #{$thumb-size};
 			--track-thickness: #{$track-thickness};
-			
+
 			@container style(--size: large) {
 				--thumb-size: #{$large-thumb-size};
 				--track-thickness: #{$large-track-thickness};
@@ -224,12 +224,12 @@
 		&:active::after {
 			scale: 0.4 !important;
 		}
-		
+
 		@container style(--size: large) {
 			&::after {
 				scale: 0.625;
 			}
-			
+
 			&:any-hover::after {
 				scale: 0.765;
 			}
