@@ -1,17 +1,18 @@
 <script setup lang="ts">
 	const visibilities = reactive<{ name: string; icon?: string; logo?: string; privacy: PrivacyType }[]>([
-		{ name: "生日", icon: "birthday", privacy: "public" },
-		{ name: "性别", icon: "gender", privacy: "public" },
-		{ name: "关注", icon: "person_add", privacy: "public" },
-		{ name: "粉丝", icon: "person_heart", privacy: "public" },
-		{ name: "收藏", icon: "star", privacy: "public" },
+		{ name: t.birthday, icon: "birthday", privacy: "public" },
+		{ name: t.user.age, icon: "calendar", privacy: "public" },
+		{ name: t.user.gender, icon: "gender", privacy: "public" },
+		{ name: t.follow, icon: "person_add", privacy: "public" },
+		{ name: t.fans, icon: "person_heart", privacy: "public" },
+		{ name: t.favorites, icon: "star", privacy: "public" },
 		{ name: "Twitter", logo: "twitter", privacy: "public" },
 		{ name: "QQ", logo: "qq", privacy: "public" },
-		{ name: "哔哩哔哩", logo: "bilibili", privacy: "public" },
-		{ name: "ニコニコ", logo: "niconico", privacy: "public" },
+		{ name: t.platform.bilibili, logo: "bilibili", privacy: "public" },
+		{ name: t.platform.niconico, logo: "niconico", privacy: "public" },
 		{ name: "YouTube", logo: "youtube", privacy: "public" },
-		{ name: "音MAD维基", logo: "otomadwiki", privacy: "public" },
-		{ name: "微博", logo: "weibo", privacy: "public" },
+		{ name: t.platform.otomad_wiki, logo: "otomadwiki", privacy: "public" },
+		{ name: t.platform.weibo, logo: "weibo", privacy: "public" },
 		{ name: "Discord", logo: "discord", privacy: "public" },
 		{ name: "Telegram", logo: "telegram", privacy: "public" },
 		{ name: "MidiShow", logo: "midi", privacy: "public" },
@@ -35,11 +36,11 @@
 <template>
 	<Subheader icon="cookie">网络曲奇☆</Subheader>
 	<section list>
-		<ToggleSwitch v-model="enableCookie" v-ripple icon="cookie">允许网站使用Cookie</ToggleSwitch>
+		<ToggleSwitch v-model="enableCookie" v-ripple icon="cookie">{{ t.settings.privacy.allow_cookies }}</ToggleSwitch>
 	</section>
 
 	<div class="privacy-header">
-		<Subheader icon="visibility">个人信息可见性</Subheader>
+		<Subheader icon="visibility">{{ t.settings.privacy.info_visibility }}</Subheader>
 		<div class="options">
 			<SoftButton v-tooltip:top="'公开'" icon="visibility" @click="setColonVisibility('public')" />
 			<SoftButton v-tooltip:top="'仅你关注的人可见'" icon="person_add" @click="setColonVisibility('following')" />

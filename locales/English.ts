@@ -147,7 +147,6 @@ const English: LocaleIdentifiers = {
 	logout: "Logout",
 	register: "Register",
 	verification_code: "Verification Code",
-	signature: "Signature",
 	close: "Close",
 	current_page_label: "Page {0} of {1}",
 	switch_page_label: "Switch to page {0}",
@@ -245,6 +244,10 @@ const English: LocaleIdentifiers = {
 			edit_banner: "Edit Banner",
 			edit_avatar: "Edit Avatar",
 		},
+		privacy: {
+			allow_cookies: "Allow to use Cookies",
+			info_visibility: "Info Visilibity",
+		},
 		about: {
 			repositories: "Repositories",
 			creative_team: "Creative Team",
@@ -263,6 +266,8 @@ const English: LocaleIdentifiers = {
 		name_requirements: '1~20 characters, including only upper & lower case Latin letters, numbers, common Hiragana/Katakana, CJK characters, special symbols "-", "_"',
 		bio: "Bio",
 		gender: "Gender",
+		memo: "Memo",
+		age: "Age",
 	},
 	zhs: "Simplified Chinese",
 	en: "English",
@@ -301,6 +306,13 @@ const English: LocaleIdentifiers = {
 		title_suffix: "'s User Page",
 	},
 	manage_contents: "Manage Contents",
+	add_to: "Add to ",
+	platform: {
+		bilibili: "bilibili",
+		niconico: "niconico",
+		otomad_wiki: "Otomad Wiki",
+		weibo: "Weibo",
+	},
 };
 
 export default English;

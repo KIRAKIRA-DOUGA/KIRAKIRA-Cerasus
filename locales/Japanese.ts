@@ -150,7 +150,6 @@ const Japanese: LocaleIdentifiers = {
 	logout: "ログアウト",
 	register: "新規登録",
 	verification_code: "確認コード",
-	signature: "自己紹介",
 	close: "閉じる",
 	current_page_label: "{0}/{1}ページ",
 	switch_page_label: "{0}ページに切り替える",
@@ -248,6 +247,10 @@ const Japanese: LocaleIdentifiers = {
 			edit_banner: "バナー画像の変更",
 			edit_avatar: "プロフィールアイコンの変更",
 		},
+		privacy: {
+			allow_cookies: "允许网站使用Cookies", // NEW
+			info_visibility: "信息可见性", // NEW
+		},
 		about: {
 			repositories: "リポジトリ",
 			creative_team: "開発チーム",
@@ -266,6 +269,8 @@ const Japanese: LocaleIdentifiers = {
 		name_requirements: "1~20文字、大小英数字、ひらがな/カタカナ、漢字、特殊記号の｢-｣と｢_｣のみ使用できます。",
 		bio: "自己紹介",
 		gender: "性別",
+		memo: "备注", // NEW
+		age: "年龄", // NEW
 	},
 	zhs: "簡体字中国語",
 	en: "英語",
@@ -304,6 +309,13 @@ const Japanese: LocaleIdentifiers = {
 		title_suffix: "のプロフィール", // NEW
 	},
 	manage_contents: "稿件管理", // NEW
+	add_to: "加入", // NEW
+	platform: {
+		bilibili: "ビリビリ",
+		niconico: "ニコニコ",
+		otomad_wiki: "音MADウィキ", // NEW
+		weibo: "ウェイボー",
+	},
 };
 
 export default Japanese;

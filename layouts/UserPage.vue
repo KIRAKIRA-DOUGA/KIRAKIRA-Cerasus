@@ -52,17 +52,17 @@
 								<span v-else class="other-gender">{{ user.gender }}</span>
 							</span>
 						</div>
-						<div class="signature">{{ user.signature }}</div>
+						<div class="bio">{{ user.bio }}</div>
 					</div>
 				</div>
 				<div class="actions">
-					<SoftButton v-tooltip:top="'私信'" icon="email" />
-					<SoftButton v-tooltip:top="'更多操作'" icon="more_vert" @click="e => actionMenu = e" />
+					<!-- <SoftButton v-tooltip:top="'私信'" icon="email" /> -->
+					<SoftButton v-tooltip:top="t.more" icon="more_vert" @click="e => actionMenu = e" />
 					<Menu v-model="actionMenu">
-						<MenuItem icon="badge">修改备注</MenuItem>
+						<MenuItem icon="badge">{{ t.user.memo }}</MenuItem>
 						<hr />
 						<MenuItem icon="flag">{{ t.report }}</MenuItem>
-						<MenuItem icon="block">加入黑名单</MenuItem>
+						<MenuItem icon="block">{{ t.add_to + t.blocklist }}</MenuItem>
 					</Menu>
 					<div v-if="!isSelf" class="follow-button">
 						<Button v-if="!user.isFollowed">{{ t.follow }}</Button>
@@ -167,7 +167,7 @@
 				}
 			}
 
-			.signature {
+			.bio {
 				margin-top: 6px;
 				color: c(icon-color);
 				user-select: text;
