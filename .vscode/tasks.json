@@ -7,7 +7,7 @@
 			"group": "build",
 			"problemMatcher": [],
 			"label": "npm: dev",
-			"detail": "nuxt dev https"
+			"detail": "nuxt dev https - 启动开发服务器 (HTTPS)"
 		},
 		{
 			"type": "npm",
@@ -15,7 +15,7 @@
 			"group": "build",
 			"problemMatcher": [],
 			"label": "npm: dev http",
-			"detail": "nuxt dev http"
+			"detail": "nuxt dev http - 启动开发服务器 (HTTP)"
 		},
 		{
 			"type": "npm",
@@ -23,7 +23,7 @@
 			"group": "build",
 			"problemMatcher": [],
 			"label": "npm: build",
-			"detail": "nuxt build"
+			"detail": "nuxt build - 为生产构建应用程序"
 		},
 		{
 			"type": "npm",
@@ -31,7 +31,7 @@
 			"group": "build",
 			"problemMatcher": [],
 			"label": "npm: generate",
-			"detail": "nuxt generate"
+			"detail": "nuxt generate - 为生产生成应用程序"
 		},
 		{
 			"type": "npm",
@@ -39,14 +39,14 @@
 			"group": "build",
 			"problemMatcher": [],
 			"label": "npm: preview",
-			"detail": "nuxt preview"
+			"detail": "nuxt preview - 本地预览生产版本"
 		},
 		{
 			"type": "npm",
 			"script": "update-eases",
 			"problemMatcher": [],
 			"label": "npm: update-eases",
-			"detail": "tsx scripts/update-eases.ts",
+			"detail": "Update eases declaration - 更新缓动值样式声明文件",
 			"presentation": {
 				"reveal": "never",
 				"close": true
@@ -57,11 +57,20 @@
 			"script": "compact-svg -- ${file}",
 			"problemMatcher": [],
 			"label": "Compact SVG",
-			"detail": "Remove excess parts from SVG",
+			"detail": "Remove excess parts from SVG - 压缩 SVG",
 			"presentation": {
 				"reveal": "never",
 				"close": true
 			}
 		},
+		{
+			"type": "npm",
+			"script": "build",
+			"path": "packages/kirakira-backend",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: build - kirakira-backend",
+			"detail": "tsc - 构建后端 API 项目"
+		}
 	]
 }
