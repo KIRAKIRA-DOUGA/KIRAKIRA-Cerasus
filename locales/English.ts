@@ -108,10 +108,10 @@ const English: LocaleIdentifiers = {
 		history: "Danmaku History",
 		format: {
 			mode: {
-				rtl: "R-L",
+				rtl: "Scroll",
 				top: "Top",
 				bottom: "Bottom",
-				ltr: "L-R",
+				ltr: "Reversed",
 			},
 			send_as_creator: "Creator's Gradient", // NEW
 		},

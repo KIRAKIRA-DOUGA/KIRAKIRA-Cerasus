@@ -114,7 +114,7 @@ const SChinese = {
 				bottom: "底部",
 				ltr: "逆向",
 			},
-			send_as_creator: "创作者专用渐变",
+			send_as_creator: "创作者专属渐变",
 		},
 	},
 	preference: "偏好",
