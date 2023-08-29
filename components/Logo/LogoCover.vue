@@ -119,7 +119,7 @@
 			position: absolute;
 			width: calc(var(--line-height) * 15);
 			height: var(--line-height);
-			background-color: c(accent-20);
+			background-color: c(accent, 30%);
 
 			:comp.animation & {
 				animation: movement 4s infinite linear;

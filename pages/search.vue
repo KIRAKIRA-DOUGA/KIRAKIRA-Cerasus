@@ -13,7 +13,7 @@
 		page: 1,
 		pages: 99,
 	});
-	
+
 	/**
 	 * Fetch the videos according to the query.
 	 */
@@ -92,6 +92,10 @@
 	.card-container {
 		display: flex;
 		gap: 1rem;
+
+		@include mobile {
+			flex-direction: column-reverse;
+		}
 	}
 
 	.center {

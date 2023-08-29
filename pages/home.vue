@@ -46,7 +46,7 @@
 
 <template>
 	<div class="container">
-		<div>
+		<div class="tab-bar-wrapper">
 			<TabBar v-model="data.selectedTab" @movingForTransition="name => transitionName = name">
 				<TabItem
 					id="Home"
@@ -90,6 +90,12 @@
 
 		> * {
 			margin: 26px 0;
+		}
+	}
+
+	.tab-bar-wrapper {
+		@include mobile {
+			overflow: auto;
 		}
 	}
 
