@@ -48,7 +48,7 @@
 	const [DefinePopoverSlot, PopoverSlot] = createReusableTemplate();
 	const comboBoxValue = ref("obtuse angle");
 	const settingsGridItemSelect = ref("");
-	const color = ref(Color.fromHex("#f00")) as Ref<Color>;
+	const color = ref(Color.fromHex("#f00"));
 
 	/**
 	 * 单击按钮事件。

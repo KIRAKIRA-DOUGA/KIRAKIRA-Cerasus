@@ -103,7 +103,7 @@ export class Color {
 		const { r, g, b, a } = this.rgb;
 		let result = padStart(r) + padStart(g) + padStart(b);
 		if (a !== 1) result += padStart(a * 255);
-		return result;
+		return result.toUpperCase();
 	}
 
 	set hex(value: string) {
@@ -214,6 +214,12 @@ export class Color {
 			({ h, s, b, a } = value);
 
 		this.hsv = { h, s, v: b, a };
+	}
+
+	/** 获取更自然亮度值。 */
+	get naturalLightness() {
+		const { r, g, b } = this.rgb;
+		return 0.299 * r / 255 + 0.587 * g / 255 + 0.114 * b / 255;
 	}
 }
 
@@ -387,7 +393,7 @@ function hsvToHsl(h: number, s: number, v: number) {
 	let l = (2 - s) * v;
 	_s /= (l <= 1 ? l : 2 - l) || 1;
 	l /= 2;
-	
+
 	return [h, _s * 100, l * 100];
 }
 
@@ -407,6 +413,6 @@ function hslToHsv(h: number, s: number, l: number) {
 	s *= l <= 1 ? l : 2 - l;
 	const v = (l + s) / 2;
 	const _s = 2 * s / (l + s);
-	
+
 	return [h, _s * 100, v * 100];
 }

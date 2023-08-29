@@ -275,6 +275,7 @@ module.exports = {
 		"vue/no-template-shadow": "off",
 		"vue/no-mutating-props": ["error", { "shallowOnly": false }],
 		"vue/no-deprecated-filter": "off", // 我要按位或，不是要什么过滤运算符。
+		"vue/no-dupe-keys": "off",
 		"no-restricted-properties": ["error", {
 			object: "arguments",
 			property: "callee",
