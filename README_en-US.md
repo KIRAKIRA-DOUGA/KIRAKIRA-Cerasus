@@ -63,6 +63,14 @@ npm run dev-http
 
 Then start the development server on: http://localhost:3000/
 
+### 构建后端 API 项目
+
+在 packages/kirakira-backend 目录包含由 OpenAPI 生成的后端 API 助手文件。
+
+如后端项目相关文件发生改动，请按下键盘按键 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>，然后选择 `npm: build - kirakira-backend`。
+
+这将会更新并重新构建后端 API 项目的相关文件。
+
 ### Production
 
 #### Generate the Application for Production:
