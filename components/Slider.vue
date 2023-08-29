@@ -211,7 +211,7 @@
 			@include circle;
 			display: block;
 			background-color: c(accent);
-			transition: $fallback-transitions;
+			transition: $fallback-transitions, scale $ease-out-back 250ms;
 			content: "";
 			scale: 0.5;
 		}
