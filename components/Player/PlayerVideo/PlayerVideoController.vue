@@ -235,6 +235,10 @@
 		flex-grow: 1;
 		flex-shrink: 1;
 		width: 100%;
+
+		:deep(.passed) {
+			opacity: 1;
+		}
 	}
 
 	.visible {
