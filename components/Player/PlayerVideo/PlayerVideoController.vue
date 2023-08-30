@@ -96,12 +96,12 @@
 
 <template>
 	<div class="menus" :class="{ ...fullscreenColorClass }">
-		<PlayerVideoMenu v-model="volumeMenu" class="force-right">
+		<PlayerVideoMenu v-model="volumeMenu">
 			<template #slider>
 				<CapsuleSlider v-model="volumeSet" :min="0" :max="1" :displayValue="volumeText" :defaultValue="1" />
 			</template>
 		</PlayerVideoMenu>
-		<PlayerVideoMenu v-model="rateMenu" class="force-right">
+		<PlayerVideoMenu v-model="rateMenu">
 			<ToggleSwitch v-model="resample" v-ripple:overlay icon="tunning">重采样音频</ToggleSwitch>
 			<ToggleSwitch v-model="steplessRate" v-ripple:overlay icon="speed">无级变速</ToggleSwitch>
 			<template #slider>
@@ -247,10 +247,6 @@
 
 	.menus {
 		display: contents;
-
-		.force-right {
-			right: 12px !important;
-		}
 	}
 
 	.soft-button {

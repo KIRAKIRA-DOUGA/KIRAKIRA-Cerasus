@@ -58,6 +58,7 @@ export default defineNuxtConfig({
 		"locales",
 		"stores",
 		"api",
+		"types",
 	),
 	css: [
 		"styles/global.scss",

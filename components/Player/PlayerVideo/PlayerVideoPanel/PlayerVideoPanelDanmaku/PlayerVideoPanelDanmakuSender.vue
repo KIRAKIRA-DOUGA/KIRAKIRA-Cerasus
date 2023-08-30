@@ -29,7 +29,7 @@
 	 */
 	function onSwitchPageEnter() {
 		if (flyout.value && flyoutStyle.value instanceof Array)
-			flyout.value.moveIntoPage(flyoutStyle.value[0]);
+			flyout.value.moveIntoPage(...flyoutStyle.value);
 	}
 
 	/**
@@ -262,13 +262,14 @@
 	}
 	
 	.color-container {
-		min-width: $format-width;
-		margin: 0 -12px;
+		$margin: 12px;
+		min-width: $format-width + 12px * 2;
+		margin: 0 #{-$margin};
 		
 		.back {
 			display: flex;
 			gap: 5px;
-			margin: 0 12px 10px;
+			margin: 0 $margin 10px;
 			color: c(accent);
 			cursor: pointer;
 			

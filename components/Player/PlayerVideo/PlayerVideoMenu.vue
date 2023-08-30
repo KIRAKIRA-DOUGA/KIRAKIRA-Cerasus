@@ -25,6 +25,7 @@
 	const X_OFFSET = 12;
 	const isMouseEnter = ref(false);
 	const isMouseDown = ref(false);
+	const { width: menuWidth, gap } = useScssVariables().numbers;
 
 	/**
 	 * 隐藏菜单。
@@ -72,8 +73,9 @@
 		reshow();
 		const { right: relativeRight, bottom: relativeBottom } = relativeEl.getBoundingClientRect();
 		const el = e.currentTarget as HTMLElement;
-		const { right: targetRight, top: targetTop } = el.getBoundingClientRect();
-		const bottom = relativeBottom - targetTop, right = relativeRight - targetRight - X_OFFSET;
+		const { right: targetRight, top: targetTop, width: targetWidth } = el.getBoundingClientRect();
+		const bottom = relativeBottom - targetTop;
+		const right = Math.max(relativeRight - targetRight - (menuWidth - targetWidth) / 2, gap);
 		locationStyle.value = { right: right + "px", bottom: bottom + "px" };
 		shown.value = true;
 		isMouseEnter.value = true;
@@ -127,6 +129,7 @@
 
 <style scoped lang="scss">
 	$width: 235px;
+	$gap: 12px;
 
 	:comp {
 		position: absolute;
@@ -139,7 +142,7 @@
 		}
 		
 		> :deep(*) {
-			margin-bottom: 12px;
+			margin-bottom: $gap;
 		}
 	}
 
