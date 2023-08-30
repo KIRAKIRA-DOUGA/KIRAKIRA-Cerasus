@@ -307,13 +307,21 @@ const SChinese = {
 		title_suffix: "的个人主页",
 	},
 	manage_contents: "稿件管理",
-	add_to: "加入",
+	add_to_blocklist: "加入黑名单",
 	platform: {
 		bilibili: "哔哩哔哩",
-		niconico: "niconico",
+		niconico: "Niconico",
 		otomad_wiki: "音MAD维基",
 		weibo: "微博",
+		twitter: "推特",
+		qq: "QQ",
+		youtube: "YouTube",
+		discord: "Discord",
+		telegram: "电报",
+		midishow: "MidiShow",
 	},
+	modify_memo: "修改备注",
+	add_to_group: "加入分组",
 } as const;
 
 export default SChinese;

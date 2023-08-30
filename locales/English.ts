@@ -306,13 +306,21 @@ const English: LocaleIdentifiers = {
 		title_suffix: "'s User Page",
 	},
 	manage_contents: "Manage Contents",
-	add_to: "Add to ",
+	add_to_blocklist: "Add to Blocklist",
 	platform: {
-		bilibili: "bilibili",
-		niconico: "niconico",
+		bilibili: "Bilibili",
+		niconico: "Niconico",
 		otomad_wiki: "Otomad Wiki",
 		weibo: "Weibo",
+		twitter: "Twitter",
+		qq: "QQ",
+		youtube: "YouTube",
+		discord: "Discord",
+		telegram: "Telegram",
+		midishow: "MidiShow",
 	},
+	modify_memo: "Modify Memo",
+	add_to_group: "Add to Group",
 };
 
 export default English;

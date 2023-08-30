@@ -309,13 +309,21 @@ const Japanese: LocaleIdentifiers = {
 		title_suffix: "のプロフィール", // NEW
 	},
 	manage_contents: "稿件管理", // NEW
-	add_to: "加入", // NEW
+	add_to_blocklist: "加入黑名单", // NEW
 	platform: {
 		bilibili: "ビリビリ",
 		niconico: "ニコニコ",
 		otomad_wiki: "音MADウィキ", // NEW
 		weibo: "ウェイボー",
+		twitter: "ツイッター",
+		qq: "QQ",
+		youtube: "YouTube",
+		discord: "Discord",
+		telegram: "Telegram",
+		midishow: "MidiShow",
 	},
+	modify_memo: "修改备注",
+	add_to_group: "加入分组",
 };
 
 export default Japanese;
