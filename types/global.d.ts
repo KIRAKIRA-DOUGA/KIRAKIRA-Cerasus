@@ -56,7 +56,7 @@ declare global {
 	/**
 	 * 使用 SCSS 中定义的变量的值。
 	 */
-	declare function useScssVariables(): Record<string, string> & { numbers: Record<string, string> };
+	declare function useScssVariables(): Record<string, string> & { numbers: Record<string, number> };
 	
 	interface Window {
 		/**

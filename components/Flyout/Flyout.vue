@@ -104,14 +104,19 @@
 	 * @param placement - 浮窗出现方向。
 	 * @param offset - 与目标元素距离偏移。
 	 */
-	async function _moveIntoPage(target: FlyoutModelNS.Target) {
+	async function _moveIntoPage(target: FlyoutModelNS.Target, placement?: Placement, offset?: number) {
 		target = toValue(target);
-		const [_location] = getLocation(target);
+		const [_location, targetRect] = getLocation(target);
 		if (!_location || !flyout.value) return;
 		moving.value = true;
 		const flyoutRect = flyout.value.getBoundingClientRect();
+		if (targetRect) {
+			const result = getPosition(targetRect, placement, offset, flyoutRect);
+			location.value = result.position;
+			await nextTick();
+		}
 		location.value = moveIntoPage(location, flyoutRect);
-		await delay(250);
+		await delay(600);
 		moving.value = false;
 	}
 
