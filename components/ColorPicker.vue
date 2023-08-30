@@ -32,6 +32,7 @@
 			auxiliary.value = value[2];
 		},
 	});
+	const darkThumb = computed(() => color.value.naturalLightness >= 0.7);
 
 	const update = async () => {
 		if (isUpdating.update) return;
@@ -141,6 +142,9 @@
 <template>
 	<Subheader icon="palette">调色板</Subheader>
 	<Comp
+		:class="{
+			'dark-thumb': darkThumb,
+		}"
 		:style="{
 			'--color': hashHex,
 			'--box-shadow': partialColor.boxShadow,
@@ -375,8 +379,13 @@
 	.slider:deep .thumb,
 	.plane .thumb {
 		z-index: 1;
+		background-color: white;
 		box-shadow: 0 1px 6px var(--box-shadow) !important;
 		transition: $fallback-transitions, left 0s, top 0s, box-shadow 0s;
+		
+		:comp.dark-thumb & {
+			background-color: black;
+		}
 
 		&::after {
 			background-color: var(--color) !important;
