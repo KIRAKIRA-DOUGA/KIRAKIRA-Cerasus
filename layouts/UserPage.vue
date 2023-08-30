@@ -59,10 +59,11 @@
 					<!-- <SoftButton v-tooltip:top="'私信'" icon="email" /> -->
 					<SoftButton v-tooltip:top="t.more" icon="more_vert" @click="e => actionMenu = e" />
 					<Menu v-model="actionMenu">
-						<MenuItem icon="badge">{{ t.user.memo }}</MenuItem>
+						<MenuItem icon="badge">{{ t.modify_memo }}</MenuItem>
+						<MenuItem icon="groups">{{ t.add_to_group }}</MenuItem>
 						<hr />
-						<MenuItem icon="flag">{{ t.report }}</MenuItem>
-						<MenuItem icon="block">{{ t.add_to + t.blocklist }}</MenuItem>
+						<MenuItem v-tooltip:x="'老铁们，给我举报他！'" icon="flag">{{ t.report }}</MenuItem>
+						<MenuItem icon="block">{{ t.add_to_blocklist }}</MenuItem>
 					</Menu>
 					<div v-if="!isSelf" class="follow-button">
 						<Button v-if="!user.isFollowed">{{ t.follow }}</Button>
