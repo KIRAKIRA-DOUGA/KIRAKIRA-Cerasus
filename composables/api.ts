@@ -5,8 +5,7 @@ import * as api from "kirakira-backend";
  * @returns DefaultAPI.
  */
 export function useApi() {
-	const nuxtApp = useNuxtApp();
-	const host = process.server ? nuxtApp.ssrContext!.event.node.req.headers.host! : window.location.host;
+	const host = getHost();
 
 	const configParams = {
 		baseServer: api.getServers(host)[0],
