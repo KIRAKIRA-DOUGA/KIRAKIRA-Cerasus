@@ -80,6 +80,7 @@ const SChinese = {
 		current: "当前密码",
 		new: "新密码",
 		new_retype: "确认新密码",
+		hint: "密码提示",
 	},
 	account_linking: "关联社交平台",
 	blocklist: {
@@ -90,7 +91,7 @@ const SChinese = {
 		},
 		hide: {
 			_: "隐藏",
-			description: "不想看到的用户，其将会从你的视角消失（除非你主动进入其用户页）。",
+			description: "不想看到的用户，其将会从你的视角消失（除非你主动进入其个人主页）。",
 		},
 		tags: {
 			description: "使用标签匹配不想看到的内容。",
@@ -279,7 +280,6 @@ const SChinese = {
 	watch_later: "稍后观看",
 	download_video: "下载视频",
 	report_creation: "稿件投诉",
-	password_hint: "密码提示",
 	forgot_password: "忘记密码",
 	reset_password: "重设密码",
 	format: "格式",
@@ -303,8 +303,8 @@ const SChinese = {
 	regexp: "正则表达式",
 	keywords: "关键词",
 	user_page: {
-		_: "用户页",
-		title_suffix: "的用户页",
+		_: "个人主页",
+		title_suffix: "的个人主页",
 	},
 	manage_contents: "稿件管理",
 	add_to: "加入",

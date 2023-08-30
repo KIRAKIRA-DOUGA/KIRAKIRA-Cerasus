@@ -62,6 +62,11 @@
 	 * @param files - 文件列表。
 	 */
 	function upload(files: File[]) {
+		if (!thumbnail.value) {
+			useEvent("app:toast", { message: "请上传封面！", severity: "error" });
+			return;
+		}
+		
 		const tagsArray = tags.value.split(",");
 
 		// severe bug in openapi around multiple file uploads using form-data

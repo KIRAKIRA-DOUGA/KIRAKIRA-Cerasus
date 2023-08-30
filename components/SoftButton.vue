@@ -5,7 +5,7 @@
 		/** 图标。 */
 		icon?: DeclaredIcons;
 		/** 动态图标。 */
-		animatedIcon?: string;
+		animatedIcon?: DeclaredLotties;
 		/** 动态图标当前状态。 */
 		animatedState?: string;
 		/** 文本。 */

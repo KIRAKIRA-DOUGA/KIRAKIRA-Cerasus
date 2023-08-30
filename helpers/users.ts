@@ -1,3 +1,5 @@
+// DELETE: 将由后端推送 profile 信息，本文件作废。
+
 interface UserInfo {
 	username: string;
 	memo?: string;

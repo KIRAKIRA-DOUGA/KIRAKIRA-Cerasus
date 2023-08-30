@@ -82,6 +82,7 @@ const Japanese: LocaleIdentifiers = {
 		current: "現在のパスワード",
 		new_retype: "新しいパスワードの確認",
 		new: "新しいパスワード",
+		hint: "パスワードのヒント",
 	},
 	account_linking: "SNSリンク",
 	blocklist: {
@@ -281,7 +282,6 @@ const Japanese: LocaleIdentifiers = {
 	watch_later: "後で見る",
 	download_video: "ダウンロード",
 	report_creation: "通報",
-	password_hint: "パスワードのヒント",
 	forgot_password: "パスワードをお忘れの場合",
 	reset_password: "パスワードの再設定",
 	format: "フォーマット",

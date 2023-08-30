@@ -239,7 +239,7 @@
 			shown?: boolean;
 			onClick?: (payload: MouseEvent) => void;
 			icon?: DeclaredIcons;
-			animatedIcon?: string;
+			animatedIcon?: DeclaredLotties;
 			animatedState?: string;
 		}
 		return (props: Props) => (

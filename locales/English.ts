@@ -79,6 +79,7 @@ const English: LocaleIdentifiers = {
 		current: "Current Password",
 		new: "New Password",
 		new_retype: "Retype New Password",
+		hint: "Password Hint",
 	},
 	account_linking: "Account Linking",
 	blocklist: {
@@ -278,7 +279,6 @@ const English: LocaleIdentifiers = {
 	watch_later: "Watch Later",
 	download_video: "Download Video",
 	report_creation: "Report Creation",
-	password_hint: "Password Hint",
 	forgot_password: "Forgot Password",
 	reset_password: "Reset Password",
 	format: "Format",
