@@ -1,17 +1,15 @@
-import { defineEventHandler, setHeader } from "h3";
-// import { getHost } from "../../utils/host";
-import { useRuntimeConfig } from "#imports";
+import { defineEventHandler, setHeader, getRequestURL } from "h3";
+import { PREFERENTIAL_ROUTE } from "../shared/constants";
+import { IE_PAGE_HTML_FILE } from "./constants";
 
 export default defineEventHandler(async e => {
 	setHeader(e, "Content-Type", "text/html");
 	if (!process.dev)
 		setHeader(e, "Cache-Control", "max-age=600, must-revalidate");
 
-	// const nuxtApp = useNuxtApp();
-	// const host = process.server ? nuxtApp.ssrContext!.event.node.req.headers.host! : window.location.host;
-	
-	const runtimeConfig = useRuntimeConfig();
-	const iePageHtml = runtimeConfig; // await (await fetch("https://localhost:3000/prior/jump-if-ie.js")).text();
-	// const iePageHtml = useRuntimeConfig().iePageHtml as string;
+	const url = getRequestURL(e);
+	url.protocol = "https:";
+	url.pathname = PREFERENTIAL_ROUTE + IE_PAGE_HTML_FILE;
+	const iePageHtml = await (await fetch(url)).text();
 	return iePageHtml;
 });
