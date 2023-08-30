@@ -4,7 +4,7 @@
 </docs>
 
 <script setup lang="ts">
-	import Danmaku from "danmaku";
+	import Danmaku from "danmaku/dist/esm/danmaku.dom.js";
 
 	const props = withDefaults(defineProps<{
 		/** 媒体可以是 `<video>` 或 `<audio>` 元素，如果未提供，会变成实时模式。 */

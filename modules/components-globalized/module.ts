@@ -1,6 +1,6 @@
 import { createResolver, defineNuxtModule } from "@nuxt/kit";
 import { lstat, readFile, readdir, writeFile } from "fs/promises";
-import { throttle } from "lodash";
+import { throttle } from "lodash-es";
 import { parse } from "path";
 import { enumerate } from "../../utils/array";
 import { environment } from "../../utils/environment";
