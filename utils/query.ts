@@ -22,8 +22,8 @@ export function currentUserUid() {
 }
 
 /**
- * 获取当前用户页选中标签页。
- * @returns - 当前用户页标签。
+ * 获取当前个人主页选中标签页。
+ * @returns - 当前个人主页标签。
  */
 export function currentUserTab() {
 	const routeSlug = getLocaleRouteSlug();

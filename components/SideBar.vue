@@ -8,7 +8,7 @@
 	useListen("user:login", value => isLogined.value = value);
 
 	/**
-	 * 点击用户头像事件。未登录时提示登录，已登录时导航到用户页。
+	 * 点击用户头像事件。未登录时提示登录，已登录时导航到个人主页。
 	 */
 	function onClickUser() {
 		if (!isLogined.value) showLogin.value = true;

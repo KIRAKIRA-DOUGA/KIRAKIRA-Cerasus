@@ -39,22 +39,27 @@ export default defineNuxtModule({
 		};
 
 		const initIcons = async () => {
-			const icons: string[] = [];
-			const fileDisplay = async (filePath: string, parents: string[] = []) => {
+			const icons: string[] = [], lotties: string[] = [];
+			const fileDisplay = async (filePath: string, carrier: string[], parents: string[] = []) => {
 				const files = await readdir(resolve(filePath));
 				for (const filename of files) {
 					const filedir = resolve(filePath, filename);
 					const stats = await lstat(filedir);
 					const basename = parse(filename).name;
-					if (stats.isFile()) icons.push([...parents, basename].join("/"));
-					else if (stats.isDirectory()) await fileDisplay(filedir, [...parents, filename]);
+					if (stats.isFile()) carrier.push([...parents, basename].join("/"));
+					else if (stats.isDirectory()) await fileDisplay(filedir, carrier, [...parents, filename]);
 				}
 			};
-			await fileDisplay("../assets/icons");
+			await Promise.all([
+				fileDisplay("../assets/icons", icons),
+				fileDisplay("../assets/lotties", lotties),
+			]);
 			const D_TS_NAME = "icons.d.ts";
 			await writeFile(resolve("../types/", D_TS_NAME), (() => {
 				let result = 'declare global {\n\ttype DeclaredIcons = "';
 				result += icons.join('" | "');
+				result += '" | (string & {});\n\ttype DeclaredLotties = "';
+				result += lotties.join('" | "');
 				result += '" | (string & {});\n}\n\nexport { };\n';
 				return result;
 			})());
@@ -66,16 +71,16 @@ export default defineNuxtModule({
 		});
 
 		const throttledFn = throttle((path: string[]) => {
-			if (path[1] === "components" || path[1] === "classes")
+			if (["components", "classes"].includes(path[1]))
 				initComponentsGlobalized();
-			else if (path[1] === "assets" && path[2] === "icons")
+			else if (path[1] === "assets" && ["icons", "lotties"].includes(path[2]))
 				initIcons();
 		}, 5000);
 
 		nuxt.hook("nitro:init", nitro => {
 			nitro.storage.watch((event, file) => {
 				const path = file.split(":");
-				if (path[0] !== "root" || event === "remove" || !path[1]) return;
+				if (path[0] !== "root" || !path[1]) return;
 				throttledFn(path);
 			});
 		});
