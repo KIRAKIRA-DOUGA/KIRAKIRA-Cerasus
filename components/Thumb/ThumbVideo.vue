@@ -83,10 +83,6 @@
 		display: inline-block;
 		color: c(text-color);
 
-		@container style(--view: list) {
-			width: 100%;
-		}
-
 		&:any-hover:not(:active) {
 			z-index: 1;
 
@@ -104,6 +100,10 @@
 
 		&:active {
 			@include button-scale-pressed;
+		}
+
+		@container style(--view: list) {
+			width: 100%;
 		}
 	}
 
@@ -129,23 +129,28 @@
 		overflow: hidden;
 		aspect-ratio: 16 / 9;
 
-		@container style(--view: grid) {
-			margin-bottom: 8px;
-		}
-
 		img.cover {
 			width: 100%;
 			height: 100%;
 			object-fit: cover;
 		}
+
+		@container style(--view: grid) {
+			margin-bottom: 8px;
+		}
 	}
 
 	.title {
+		$title-line-height: 22px;
+		height: $title-line-height * 2;
 		overflow: hidden;
 		font-weight: 500;
-		white-space: nowrap;
+		line-height: $title-line-height;
+		white-space: normal;
 		text-align: justify;
 		text-overflow: ellipsis;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
 	}
 
 	.info {

@@ -321,6 +321,10 @@ const English: LocaleIdentifiers = {
 	},
 	modify_memo: "Modify Memo",
 	add_to_group: "Add to Group",
+	navigation: {
+		_: "Navigation",
+		back: "Back",
+	},
 };
 
 export default English;

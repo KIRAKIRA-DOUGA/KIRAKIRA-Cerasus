@@ -145,6 +145,10 @@
 	box-shadow: 0 0 24px c(accent, 30%);
 }
 
+@mixin sidebar-shadow-colored {
+	box-shadow: 0 0 24px c(accent, 80%);
+}
+
 @mixin card-shadow {
 	box-shadow: 0 5px 10px c(accent-shadow, 30%);
 }

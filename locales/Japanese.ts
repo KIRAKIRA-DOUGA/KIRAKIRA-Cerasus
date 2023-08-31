@@ -315,15 +315,19 @@ const Japanese: LocaleIdentifiers = {
 		niconico: "ニコニコ",
 		otomad_wiki: "音MADウィキ", // NEW
 		weibo: "ウェイボー",
-		twitter: "ツイッター",
+		twitter: "Twitter",
 		qq: "QQ",
 		youtube: "YouTube",
 		discord: "Discord",
 		telegram: "Telegram",
 		midishow: "MidiShow",
 	},
-	modify_memo: "修改备注",
-	add_to_group: "加入分组",
+	modify_memo: "修改备注", // NEW
+	add_to_group: "加入分组", // NEW
+	navigation: {
+		_: "Navigation", // NEW
+		back: "Back", // NEW
+	},
 };
 
 export default Japanese;
