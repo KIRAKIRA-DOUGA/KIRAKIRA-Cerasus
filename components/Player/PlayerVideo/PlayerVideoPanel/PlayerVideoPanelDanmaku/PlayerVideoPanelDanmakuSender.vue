@@ -105,6 +105,7 @@
 							>
 								<div class="hue"></div>
 								<div class="luminance"></div>
+								<div class="stroke"></div>
 								<Icon name="check" />
 							</div>
 						</div>
@@ -240,6 +241,10 @@
 
 						.luminance {
 							background: $luminance-radial;
+						}
+						
+						.stroke {
+							@include color-palette-stroke;
 						}
 					}
 					
