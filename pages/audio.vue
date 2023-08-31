@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	import { useAVBars } from "vue-audio-visual";
-	const audio = (await import(`assets/audios/test${randBetween(0, 2)}.mp3`) as typeof import("*.mp3")).default;
+	const audio = (await import(`assets/audios/test${randBetween(3, 3)}.mp3`) as typeof import("*.mp3")).default;
 	const player = ref<HTMLAudioElement | null>(null);
 	const canvas = ref<HTMLCanvasElement | null>(null);
 	const accent = useCssVar("--accent");
