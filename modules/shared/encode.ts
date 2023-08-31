@@ -7,7 +7,7 @@ import sass from "sass";
 import * as terser from "terser";
 import ts from "typescript";
 import { fileURLToPath } from "url";
-import { rollup } from "rollup";
+import { rollup, ModuleFormat } from "rollup";
 
 /**
  * 将 TypeScript 源码编译为 JavaScript 代码。
@@ -30,7 +30,7 @@ export function compileTypeScript(source: string, target: keyof typeof ts.Script
  * @param format - 打包后的 JavaScript 模块格式。
  * @returns 打包后的 JavaScript 代码。
  */
-export async function bundleJavaScript(input: string, format: string = "iife") {
+export async function bundleJavaScript(input: string, format: ModuleFormat = "iife") {
 	const bundle = await rollup({ input });
 	const { output } = await bundle.generate({ format });
 	return output[0].code;
