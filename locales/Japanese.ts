@@ -249,8 +249,8 @@ const Japanese: LocaleIdentifiers = {
 			edit_avatar: "プロフィールアイコンの変更",
 		},
 		privacy: {
-			allow_cookies: "允许网站使用Cookies", // NEW
-			info_visibility: "信息可见性", // NEW
+			allow_cookies: "Cookieの利用を同意する",
+			info_visibility: "情報の公開範囲",
 		},
 		about: {
 			repositories: "リポジトリ",
@@ -270,8 +270,8 @@ const Japanese: LocaleIdentifiers = {
 		name_requirements: "1~20文字、大小英数字、ひらがな/カタカナ、漢字、特殊記号の｢-｣と｢_｣のみ使用できます。",
 		bio: "自己紹介",
 		gender: "性別",
-		memo: "备注", // NEW
-		age: "年龄", // NEW
+		memo: "メモ",
+		age: "年齢",
 	},
 	zhs: "簡体字中国語",
 	en: "英語",
@@ -305,16 +305,16 @@ const Japanese: LocaleIdentifiers = {
 	regexp: "正規表現",
 	keywords: "キーワード",
 	user_page: {
-		_: "個人プロフィール", // NEW
-		title_suffix: "のプロフィール", // NEW
+		_: "プロフィール",
+		title_suffix: "のプロフィール",
 	},
-	manage_contents: "稿件管理", // NEW
-	add_to_blocklist: "加入黑名单", // NEW
+	manage_contents: "投稿管理",
+	add_to_blocklist: "ブロックする",
 	platform: {
-		bilibili: "ビリビリ",
+		bilibili: "Bilibili",
 		niconico: "ニコニコ",
-		otomad_wiki: "音MADウィキ", // NEW
-		weibo: "ウェイボー",
+		otomad_wiki: "OtomadWiki",
+		weibo: "Weibo",
 		twitter: "Twitter",
 		qq: "QQ",
 		youtube: "YouTube",
@@ -322,11 +322,11 @@ const Japanese: LocaleIdentifiers = {
 		telegram: "Telegram",
 		midishow: "MidiShow",
 	},
-	modify_memo: "修改备注", // NEW
-	add_to_group: "加入分组", // NEW
+	modify_memo: "メモの編集",
+	add_to_group: "グループに追加",
 	navigation: {
-		_: "Navigation", // NEW
-		back: "Back", // NEW
+		_: "ナビ",
+		back: "戻る",
 	},
 };
 
