@@ -1,7 +1,7 @@
 import { addServerHandler, addTemplate, defineNuxtModule } from "@nuxt/kit";
 import { PREFERENTIAL_ROUTE, PREFERENTIAL_TEMPLATE_PATH } from "../shared/constants";
 import { compileTypeScript, createReadFileResolver, minifyHtml, minifyJavaScript, useNuxtHead, wrapIife } from "../shared/encode";
-import { IE_PAGE_HTML_FILE, IE_PAGE_SCRIPT_FILE_TS, IE_PAGE_SCRIPT_FILE_JS } from "./constants";
+import { IE_PAGE_HTML_FILE, IE_PAGE_SCRIPT_FILE_TS, IE_PAGE_SCRIPT_FILE_JS, UNSUPPORTED_ROUTE } from "./constants";
 
 export default defineNuxtModule({
 	async setup(_options, nuxt) {
@@ -31,7 +31,7 @@ export default defineNuxtModule({
 		head.script.push({ src: IE_PAGE_SCRIPT_PATH });
 
 		addServerHandler({
-			route: "/unsupported",
+			route: UNSUPPORTED_ROUTE,
 			handler: resolve("route"),
 		});
 	},
