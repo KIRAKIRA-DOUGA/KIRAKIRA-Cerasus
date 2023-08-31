@@ -1,0 +1,71 @@
+/**
+ * 弹幕数据包格式
+ * 接口：GET https://api.bilibili.com/x/v2/dm/web/seg.so?type=1&oid=${AV号}&pid=${分P编号}&segment_index=${视频分段序号}
+ * 仓库：https://github.com/MoyuScript/bilibili-protobuf
+ * 作者：MoyuScript
+ */
+
+syntax = "proto3";
+
+package bilibili.danmaku;
+
+/**
+ * 单个弹幕信息
+ */
+message Danmaku {
+	// 弹幕数字 ID
+	required int64 id = 1;
+	// 弹幕在视频的出现位置
+	required int32 progress = 2;
+	// 弹幕模式
+	enum Mode {
+		// 飞行弹幕
+		SCROLL = 1;
+		// 顶部固定弹幕
+		TOP = 5;
+		// 底部固定弹幕
+		BOTTOM = 4;
+		// 逆向飞行弹幕
+		REVERSED = 6;
+	}
+	required Mode mode = 3;
+	// 弹幕大小
+	enum Fontsize {
+		XXS = 12;
+		XS = 16;
+		S = 18;
+		M = 25;
+		L = 36;
+		XL = 45;
+		XXL = 64;
+	}
+	required Fontsize font_size = 4;
+	// 弹幕 RGBA 颜色
+	required uint32 color = 5;
+	// 弹幕发送者经过 crc32 计算摘要后的值
+	required string mid_hash = 6;
+	// 弹幕内容
+	required string content = 7;
+	// 弹幕发送时间戳
+	required int64 ctime = 8;
+	// 弹幕在弹幕列表显示的权重，数字越大越靠上
+	required int32 weight = 9;
+	// 目前不清楚
+	optional string action = 10;
+	// 目前不清楚
+	optional int32 pool = 11;
+	// 弹幕字符串 ID 
+	required string id_str = 12;
+	// 目前不清楚
+	optional int32 attr = 13;
+}
+
+/**
+ * 根节点
+ */
+message Root {
+	// 弹幕数组
+	repeated Danmaku danmakus = 1;
+	// 弹幕是否被关闭，仅当被关闭时会有这个选项
+	optional bool is_close = 1;
+}
