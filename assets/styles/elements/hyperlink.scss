@@ -5,7 +5,7 @@ a {
 	text-decoration: none;
 }
 
-a:visited {
+a:where(:not(.no-visited):visited) {
 	color: c(accent-focus);
 }
 

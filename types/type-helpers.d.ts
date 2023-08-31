@@ -79,4 +79,12 @@ declare global {
 	 * @template T - 源对象。
 	 */
 	type ValueOf<T extends object> = T[keyof T];
+
+	/**
+	 * 深度只读对象。
+	 * @template T - 源对象。
+	 */
+	type DeepReadonly<T> = Readonly<{
+		[key in keyof T]: DeepReadonly<T[key]>;
+	}>;
 }

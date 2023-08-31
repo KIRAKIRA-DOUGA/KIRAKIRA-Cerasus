@@ -52,12 +52,12 @@ declare global {
 	 * @template T - 指定类型及无参数函数返回的这个类型。
 	 */
 	type TypeOrReturnToType<T> = T | (() => T);
-	
+
 	/**
 	 * 使用 SCSS 中定义的变量的值。
 	 */
-	declare function useScssVariables(): Record<string, string> & { numbers: Record<string, number> };
-	
+	declare function useScssVariables(): DeepReadonly<Record<string, string> & { numbers: Record<string, number> }>;
+
 	interface Window {
 		/**
 		 * 仅在 Internet Explorer 中可用的 ActiveX 对象，高版本浏览器则会返回 undefined。

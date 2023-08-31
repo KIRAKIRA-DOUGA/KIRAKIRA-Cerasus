@@ -1,13 +1,11 @@
-import { addTemplate, defineNuxtModule } from "@nuxt/kit";
-import { PREFERENTIAL_ROUTE, PREFERENTIAL_TEMPLATE_PATH } from "../shared/constants";
-import { compileSassFile, createReadFileResolver, minifyHtml, useNuxtHead } from "../shared/encode";
-
-const NOSCRIPT_HTML_FILE = "noscript.html";
-const NOSCRPIT_SCSS_FILE = "style.scss";
+import { addServerHandler, addTemplate, defineNuxtModule } from "@nuxt/kit";
+import { PREFERENTIAL_TEMPLATE_PATH } from "../shared/constants";
+import { compileSassFile, createReadFileResolver, minifyHtml } from "../shared/encode";
+import { NOSCRIPT_HTML_FILE, NOSCRPIT_SCSS_FILE, NOSCRIPT_ROUTE } from "./constants";
 
 export default defineNuxtModule({
 	async setup(_options, nuxt) {
-		const { readFile } = createReadFileResolver(__dirname);
+		const { readFile, resolve } = createReadFileResolver(__dirname);
 
 		let noscriptHtml = await readFile(NOSCRIPT_HTML_FILE);
 		const noscriptStyle = compileSassFile(__dirname, NOSCRPIT_SCSS_FILE);
@@ -18,12 +16,15 @@ export default defineNuxtModule({
 			write: true,
 			getContents: () => noscriptHtml,
 		});
-
-		const NOSCRIPT_PATH = PREFERENTIAL_ROUTE + NOSCRIPT_HTML_FILE;
-		const head = useNuxtHead(nuxt);
-		head.noscript ??= [];
-		head.noscript.push({
-			children: `<iframe class="noscript-mask" src="${NOSCRIPT_PATH}" aria-label="警告，JavaScript被禁用！"></iframe>`,
+		
+		nuxt.hook("nitro:config", nitro => {
+			nitro.plugins ??= [];
+			nitro.plugins.push(resolve("nitro-plugin.ts"));
+		});
+		
+		addServerHandler({
+			route: NOSCRIPT_ROUTE,
+			handler: resolve("route"),
 		});
 	},
 });
