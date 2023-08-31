@@ -1,4 +1,4 @@
-import { UNSUPPORTED_ROUTE } from "./constants";
+import { UNSUPPORTED_ROUTE } from "./constants.ts";
 
 if (window.ActiveXObject || "ActiveXObject" in window) {
 	const IE_PAGE_URL = UNSUPPORTED_ROUTE;

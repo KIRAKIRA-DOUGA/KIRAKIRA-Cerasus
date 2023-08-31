@@ -22,7 +22,6 @@
 	/** 在请求隐藏本组件的所有实例时，要求本实例不得隐藏。 */
 	const hideExceptMe = ref(false);
 	/** 视频播放器控制栏中 SoftButton 的水波纹半径与容器半径之差。 */
-	const X_OFFSET = 12;
 	const isMouseEnter = ref(false);
 	const isMouseDown = ref(false);
 	const { width: menuWidth, gap } = useScssVariables().numbers;

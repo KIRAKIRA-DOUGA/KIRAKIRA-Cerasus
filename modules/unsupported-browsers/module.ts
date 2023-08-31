@@ -1,6 +1,6 @@
 import { addServerHandler, addTemplate, defineNuxtModule } from "@nuxt/kit";
 import { PREFERENTIAL_ROUTE, PREFERENTIAL_TEMPLATE_PATH } from "../shared/constants";
-import { compileTypeScript, createReadFileResolver, minifyHtml, minifyJavaScript, useNuxtHead, wrapIife } from "../shared/encode";
+import { compileTypeScript, createReadFileResolver, minifyHtml, minifyJavaScript, useNuxtHead, bundleJavaScript } from "../shared/encode";
 import { IE_PAGE_HTML_FILE, IE_PAGE_SCRIPT_FILE_TS, IE_PAGE_SCRIPT_FILE_JS, UNSUPPORTED_ROUTE } from "./constants";
 
 export default defineNuxtModule({
@@ -15,9 +15,8 @@ export default defineNuxtModule({
 			getContents: () => iePageHtml,
 		});
 
-		let iePageScript = await readFile(IE_PAGE_SCRIPT_FILE_TS);
+		let iePageScript = await bundleJavaScript(resolve(IE_PAGE_SCRIPT_FILE_TS));
 		iePageScript = compileTypeScript(iePageScript, "ES5");
-		iePageScript = wrapIife(iePageScript);
 		iePageScript = await minifyJavaScript(iePageScript);
 		addTemplate({
 			filename: PREFERENTIAL_TEMPLATE_PATH + IE_PAGE_SCRIPT_FILE_JS,

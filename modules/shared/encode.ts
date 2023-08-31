@@ -7,6 +7,7 @@ import sass from "sass";
 import * as terser from "terser";
 import ts from "typescript";
 import { fileURLToPath } from "url";
+import { rollup } from "rollup";
 
 /**
  * 将 TypeScript 源码编译为 JavaScript 代码。
@@ -21,6 +22,18 @@ export function compileTypeScript(source: string, target: keyof typeof ts.Script
 			target: ts.ScriptTarget[target],
 		},
 	}).outputText;
+}
+
+/**
+ * 打包 JavaScript 模块代码。
+ * @param input - 入口模块路径。
+ * @param format - 打包后的 JavaScript 模块格式。
+ * @returns 打包后的 JavaScript 代码。
+ */
+export async function bundleJavaScript(input: string, format: string = "iife") {
+	const bundle = await rollup({ input });
+	const { output } = await bundle.generate({ format });
+	return output[0].code;
 }
 
 /**
