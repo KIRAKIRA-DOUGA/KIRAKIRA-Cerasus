@@ -1,14 +1,30 @@
+<docs>
+	# 颜色选取器
+</docs>
+
+<script lang="ts">
+	import checkerboard from "worklets/paint/checkerboard?url";
+	if (environment.client)
+		CSS.paintWorklet?.addModule(checkerboard);
+</script>
+
 <script setup lang="ts">
+	const props = defineProps<{
+		/** 是否允许带不透明度的颜色。 */
+		enableAlpha?: boolean;
+	}>();
+
 	const color = defineModel<Color | UnwrapRef<Color>>({ required: true });
 	const specificModel = defineModel<ColorModel>("model", { default: "hsl" });
 
 	const main = ref<TwoD>([1, 1]);
 	const smoothMain = useSmoothValue(main, 0.5);
 	const auxiliary = ref(0);
+	const opacity = ref(1);
 	const model = ref(specificModel.value!);
 	const values = ref<ThreeD>([255, 0, 0]);
 	const hex = ref("FF0000");
-	const hashHex = computed(() => "#" + hex.value);
+	const hashHex = computed(() => color.value.hashHex);
 	const partialColor = computed(() => {
 		const { hsl, hsv } = color.value;
 		// wo (w/o) is an abbr of "without".
@@ -20,16 +36,21 @@
 			l: Color.fromHsv(0, 0, hsl.l >= 50 ? 100 : 0, Math.abs(hsl.l - 50) / 50).hashHex,
 			v: Color.fromHsv(0, 0, 0, 1 - hsv.v / 100).hashHex,
 			woH: Color.fromHsv(0, 0, hsv.v, 1 - (hsv.s / 100 * hsv.v / 100) ** 0.5).hashHex,
+			woA: Color.fromHsv(hsv.h, hsv.s, hsv.v, 1).hashHex,
 		};
 	});
 	const isUpdating = reactive({}) as Record<ChangedParam, boolean>;
 	const maxValue = computed<ThreeD>(() => model.value === "rgb" ? [255, 255, 255] : [359, 100, 100]);
-	const hexInvalidMessage = computed(() => [3, 6].includes(hex.value.length) ? "" : "HEX颜色值的长度必须为3位数或6位数。");
+	const getHexInvalidMessage = (hex: string) => !props.enableAlpha ?
+		[3, 6].includes(hex.length) ? "" : "HEX颜色值的长度必须为3位数或6位数。" :
+		[3, 4, 6, 8].includes(hex.length) ? "" : "HEX颜色值的长度必须为3位数、4位数、6位数或8位数。";
+	const hexInvalidMessage = computed(() => getHexInvalidMessage(hex.value));
 	const spectrums = computed({
-		get: () => [...main.value, auxiliary.value] as ThreeD,
+		get: () => [...main.value, auxiliary.value, opacity.value] as FourD,
 		set: value => {
 			main.value = [value[0], value[1]];
 			auxiliary.value = value[2];
+			opacity.value = value[3];
 		},
 	});
 	const darkThumb = computed(() => color.value.naturalLightness >= 0.7);
@@ -38,7 +59,7 @@
 		if (isUpdating.update) return;
 		isUpdating.update = true;
 		if (!isUpdating.hex)
-			hex.value = color.value.hex.slice(0, 6);
+			hex.value = color.value.hex;
 		if (!isUpdating.values)
 			if (model.value === "rgb") {
 				const { r, g, b } = color.value.rgb;
@@ -52,14 +73,14 @@
 			}
 		if (!isUpdating.spectrums)
 			if (model.value === "rgb") {
-				const { h, s, b } = color.value.hsb;
-				spectrums.value = [s / 100, b / 100, h / 359];
+				const { h, s, b, a } = color.value.hsb;
+				spectrums.value = [s / 100, b / 100, h / 359, a];
 			} else if (model.value === "hsl") {
-				const { h, s, l } = color.value.hsl;
-				spectrums.value = [h / 359, s / 100, l / 100];
+				const { h, s, l, a } = color.value.hsl;
+				spectrums.value = [h / 359, s / 100, l / 100, a];
 			} else if (model.value === "hsb") {
-				const { h, s, b } = color.value.hsb;
-				spectrums.value = [h / 359, s / 100, b / 100];
+				const { h, s, b, a } = color.value.hsb;
+				spectrums.value = [h / 359, s / 100, b / 100, a];
 			}
 		await nextTick();
 		isUpdating.update = false;
@@ -67,6 +88,7 @@
 	update();
 
 	watch(hex, useChange("hex", hex => {
+		if (getHexInvalidMessage(hex)) return;
 		color.value.hex = hex;
 		update();
 	}));
@@ -83,14 +105,14 @@
 
 	watch(spectrums, useChange("spectrums", spectrums => {
 		if (model.value === "rgb") {
-			const [s, b, h] = spectrums;
-			color.value.hsb = [h * 359, s * 100, b * 100];
+			const [s, b, h, a] = spectrums;
+			color.value.hsb = [h * 359, s * 100, b * 100, a];
 		} else if (model.value === "hsl") {
-			const [h, s, l] = spectrums;
-			color.value.hsl = [h * 359, s * 100, l * 100];
+			const [h, s, l, a] = spectrums;
+			color.value.hsl = [h * 359, s * 100, l * 100, a];
 		} else if (model.value === "hsb") {
-			const [h, s, b] = spectrums;
-			color.value.hsb = [h * 359, s * 100, b * 100];
+			const [h, s, b, a] = spectrums;
+			color.value.hsb = [h * 359, s * 100, b * 100, a];
 		}
 		update();
 	}), { deep: true });
@@ -154,6 +176,7 @@
 			'--l': partialColor.l,
 			'--v': partialColor.v,
 			'--wo-h': partialColor.woH,
+			'--wo-a': partialColor.woA,
 		}"
 	>
 		<div class="plane color" @pointerdown="onPlaneDown">
@@ -173,7 +196,8 @@
 			</div>
 			<div class="thumb" :style="{ '--x': smoothMain[0], '--y': 1 - smoothMain[1] }"></div>
 		</div>
-		<Slider v-model="auxiliary" :min="0" :max="1" :class="[model]" />
+		<Slider v-model="auxiliary" class="auxiliary" :min="0" :max="1" :class="[model]" />
+		<Slider v-if="enableAlpha" v-model="opacity" class="opacity" :min="0" :max="1" />
 		<div class="controls">
 			<Segmented v-model="model">
 				<SegmentedItem id="rgb">RGB</SegmentedItem>
@@ -210,14 +234,18 @@
 				:max="maxValue[2]"
 				:step="1"
 			/>
-			<div class="view-color color"></div>
+			<div class="view-color color">
+				<div class="checkerboard"></div>
+				<div class="solid"></div>
+				<div class="stroke"></div>
+			</div>
 			<TextBox
 				v-model="hex"
 				class="hex"
 				prefix="#"
 				preventIfInvalid
 				required
-				:pattern="/[0-9A-Fa-f]{0,6}/"
+				:pattern="!enableAlpha ? /[0-9A-Fa-f]{0,6}/ : /[0-9A-Fa-f]{0,8}/"
 				:invalid="hexInvalidMessage"
 				case="uppercase"
 			/>
@@ -237,7 +265,7 @@
 		margin-bottom: 16px;
 	}
 
-	%inner-border {
+	%inner-stroke {
 		@include color-palette-stroke;
 		position: absolute;
 		border-radius: inherit;
@@ -253,7 +281,7 @@
 		touch-action: pinch-zoom;
 
 		&::after {
-			@extend %inner-border;
+			@extend %inner-stroke;
 		}
 
 		> .spectrum {
@@ -318,13 +346,13 @@
 			overflow: hidden;
 
 			&::after {
-				@extend %inner-border;
+				@extend %inner-stroke;
 			}
 		}
 	}
 
 	@function slider-model($model) {
-		@return ".slider.#{$model}:deep .track";
+		@return ".slider.auxiliary.#{$model}:deep .track";
 	}
 
 	#{slider-model(rgb)} {
@@ -347,6 +375,33 @@
 		background: linear-gradient(to right, black, var(--wo-v));
 	}
 
+	.slider.opacity:deep .track,
+	.checkerboard {
+		$color: c(gray-40);
+		--checkerboard-size: 8px;
+		--checkerboard-color-odd: #{$color};
+		--checkerboard-color-even: transparent;
+		background: paint(checkerboard);
+
+		@supports (not (background: paint(id))) {
+			background:
+				linear-gradient(-45deg, $color 25%, transparent 0),
+				linear-gradient(-45deg, transparent 75%, $color 0),
+				linear-gradient(-45deg, $color 25%, transparent 0),
+				linear-gradient(-45deg, transparent 75%, $color 0);
+			background-position: 0 0, 8px 8px, 8px 8px, 16px 16px;
+			background-size: 16px 16px;
+		}
+	}
+
+	.slider.opacity:deep .track::before {
+		position: absolute;
+		background: linear-gradient(to right, transparent, var(--wo-a));
+		inset: 0;
+		transition: none;
+		content: "";
+	}
+
 	.controls {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
@@ -367,9 +422,22 @@
 	}
 
 	.view-color {
-		@include color-palette-stroke;
-		background-color: var(--color);
-		transition: $fallback-transitions, background-color 0s;
+		position: relative;
+		overflow: hidden;
+
+		* {
+			position: absolute;
+			inset: 0;
+			border-radius: inherit;
+		}
+
+		.stroke {
+			@include color-palette-stroke;
+		}
+
+		.solid {
+			background-color: var(--color);
+		}
 	}
 
 	.color {
@@ -382,7 +450,7 @@
 		background-color: white;
 		box-shadow: 0 1px 6px var(--box-shadow) !important;
 		transition: $fallback-transitions, left 0s, top 0s, box-shadow 0s;
-		
+
 		:comp.dark-thumb & {
 			background-color: black;
 		}
