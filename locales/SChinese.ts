@@ -313,15 +313,19 @@ const SChinese = {
 		niconico: "Niconico",
 		otomad_wiki: "音MAD维基",
 		weibo: "微博",
-		twitter: "推特",
+		twitter: "Twitter", // 官方对于自身的称呼并未汉化，因此应使用原名作称呼。
 		qq: "QQ",
 		youtube: "YouTube",
 		discord: "Discord",
-		telegram: "电报",
+		telegram: "Telegram",
 		midishow: "MidiShow",
 	},
 	modify_memo: "修改备注",
 	add_to_group: "加入分组",
+	navigation: {
+		_: "导航",
+		back: "返回",
+	},
 } as const;
 
 export default SChinese;
