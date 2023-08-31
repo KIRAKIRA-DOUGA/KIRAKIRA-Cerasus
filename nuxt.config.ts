@@ -59,6 +59,8 @@ export default defineNuxtConfig({
 		"stores",
 		"api",
 		"types",
+		"utils",
+		"worklets",
 	),
 	css: [
 		"styles/global.scss",
@@ -88,6 +90,9 @@ export default defineNuxtConfig({
 		},
 		build: {
 			target: "esnext",
+		},
+		worker: {
+			format: "es",
 		},
 		css: {
 			preprocessorOptions: styleResources({

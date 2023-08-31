@@ -296,7 +296,7 @@
 			<LogoText :style="{ '--form': logoTextForm }" />
 			<hr />
 			<div class="flyout-bg" :style="{ width: '344px' }">
-				<ColorPicker v-model="color" />
+				<ColorPicker v-model="color" enableAlpha />
 			</div>
 			<hr />
 			<Accordion autoCollapse>
