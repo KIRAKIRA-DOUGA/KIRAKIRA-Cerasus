@@ -8,9 +8,11 @@
 
 	const langTag = computed(() => {
 		const langs = {
-			zh: "zh-cmn-Hans-CN", // 中文-普通话-简体字-大陆地区
+			zhs: "zh-Hans-CN",
+			zht: "zh-Hant-TW",
 			en: "en",
 			ja: "ja",
+			ko: "ko",
 		};
 
 		return langs[locale.value as keyof typeof langs] ?? locale.value;
