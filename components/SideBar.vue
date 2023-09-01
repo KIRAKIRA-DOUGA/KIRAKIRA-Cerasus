@@ -249,6 +249,10 @@
 				}
 			}
 
+			&:active::after {
+				height: 14px;
+			}
+
 			&:has(.router-link-active)::after {
 				scale: 1;
 			}
