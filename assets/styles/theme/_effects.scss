@@ -233,6 +233,10 @@
 @mixin card-in-card-shadow {
 	box-shadow: 0 2px 8px c(accent-shadow, 8%);
 }
+
+@mixin mini-card-shadow {
+	box-shadow: 0 4px 8px c(accent-shadow, 30%);
+}
 // #endregion
 
 // #region 次要主题色
