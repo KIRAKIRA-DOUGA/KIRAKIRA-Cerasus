@@ -308,7 +308,7 @@ const Japanese: LocaleIdentifiers = {
 		_: "プロフィール",
 		title_suffix: "のプロフィール",
 	},
-	manage_contents: "投稿管理",
+	manage_content: "投稿管理",
 	add_to_blocklist: "ブロックする",
 	platform: {
 		bilibili: "Bilibili",
