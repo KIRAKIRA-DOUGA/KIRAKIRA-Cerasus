@@ -65,7 +65,7 @@
 
 		<LoginWindow v-model="showLogin" />
 	</aside>
-	
+
 	<nav :[scopeId]="''">
 		<div class="icons">
 			<MobileBottomNavItem icon="home" href="/">{{ t.home }}</MobileBottomNavItem>
@@ -88,16 +88,16 @@
 		padding: $icons-gap 0;
 		overflow: hidden;
 		background-color: c(main-bg);
-		
+
 		&.colored {
 			@include sidebar-shadow-colored;
 			--color: white;
 			background-color: c(accent);
-			
+
 			.soft-button {
 				--white: true;
 			}
-			
+
 			.decorative-icon,
 			.logo-text {
 				color: white;
@@ -181,47 +181,47 @@
 		.soft-button {
 			--ripple-size: 40px;
 		}
-		
+
 		@include mobile {
 			flex-direction: row;
-			
+
 			.top,
 			.pc {
 				display: none;
 			}
-			
+
 			.pe {
 				display: flex;
 			}
-			
+
 			> * {
 				width: initial;
 			}
-			
+
 			.center {
 				rotate: 0deg;
 				gap: 8px;
 				padding-left: 4px;
-				
+
 				.stripes {
 					display: none;
 				}
-				
+
 				.logo-text {
 					--form: half !important;
 				}
 			}
-			
+
 			.bottom {
 				margin-right: 4px;
 			}
-			
+
 			.user-avatar {
 				margin-right: 4px;
 			}
 		}
 	}
-	
+
 	.icons {
 		@include flex-center;
 		flex-direction: column;
@@ -230,7 +230,30 @@
 		@media (height <= 432px) {
 			gap: 0;
 		}
-		
+
+		.soft-button {
+			&::after {
+				@include oval(left);
+				position: absolute;
+				right: 0;
+				z-index: 3;
+				display: block;
+				width: 3px;
+				height: 24px;
+				scale: 1 0;
+				background-color: var(--color);
+				content: "";
+
+				@include mobile {
+					display: none;
+				}
+			}
+
+			&:has(.router-link-active)::after {
+				scale: 1;
+			}
+		}
+
 		@include mobile {
 			flex-direction: row;
 		}
@@ -239,30 +262,30 @@
 	.user-avatar {
 		--size: 40px;
 	}
-	
+
 	.decorative-icon {
 		$size: 24px;
 		margin-left: calc($size / -2 - 4px);
 		color: c(icon-color);
 		font-size: $size;
 		cursor: pointer;
-		
+
 		&:any-hover {
 			color: c(accent);
 		}
-		
+
 		&:active {
 			opacity: 0.6;
 		}
 	}
-	
+
 	nav {
 		@include sidebar-shadow;
 		z-index: 30;
 		padding: $icons-gap 0;
 		overflow: hidden;
 		background-color: c(main-bg);
-		
+
 		.icons {
 			justify-content: space-evenly;
 			width: 100%;
