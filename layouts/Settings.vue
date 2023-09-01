@@ -264,7 +264,7 @@
 	.title {
 		position: sticky;
 		top: 0;
-		z-index: 4;
+		z-index: 11;
 		padding-top: $title-padding-top;
 
 		&.nav-header,

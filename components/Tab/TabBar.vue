@@ -234,7 +234,7 @@
 		else if (el.scrollWidth <= el.offsetWidth) arrivedState.value = hide;
 		else arrivedState.value = {
 			left: el.scrollLeft > 0,
-			right: el.scrollLeft < el.scrollWidth - el.offsetWidth,
+			right: el.scrollLeft < el.scrollWidth - el.offsetWidth - 1,
 		};
 	}
 

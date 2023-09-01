@@ -4,6 +4,7 @@ export const useAppSettingsStore = defineStore("app-settings", {
 		lastSettingPage: "appearance",
 		sharpAppearanceMode: false,
 		flatAppearanceMode: false,
+		coloredSideBar: false,
 	}),
 	persist: true,
 });

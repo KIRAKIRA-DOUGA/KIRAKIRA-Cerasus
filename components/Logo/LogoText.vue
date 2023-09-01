@@ -43,6 +43,7 @@
 		:comp {
 			/// LOGO 文字形式，可选的值为：hidden | half | full。
 			--form: hidden;
+			color: c(accent);
 		}
 	}
 
@@ -51,7 +52,6 @@
 		display: flex;
 		width: $left-half-width;
 		height: $height;
-		color: c(accent);
 
 		.hidden-wrapper {
 			@include flex-center;

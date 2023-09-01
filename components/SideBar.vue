@@ -3,6 +3,8 @@
 	const showLogin = ref(false);
 	const isLogined = ref(false);
 	const isCurrentSettings = computed(() => !!currentSettingsPage());
+	const appSettings = useAppSettingsStore();
+	const [DefineAvatar, Avatar] = createReusableTemplate();
 
 	useListen("app:requestLogin", () => showLogin.value = true);
 	useListen("user:login", value => isLogined.value = value);
@@ -17,17 +19,27 @@
 </script>
 
 <template>
-	<aside role="toolbar" aria-label="side bar" aria-orientation="vertical">
+	<aside :class="{ colored: appSettings.coloredSideBar }" role="toolbar" aria-label="side bar" aria-orientation="vertical">
+		<DefineAvatar>
+			<UserAvatar
+				v-tooltip="isLogined ? '艾草' : t.login"
+				:avatar="isLogined ? avatar : undefined"
+				@click="onClickUser"
+			/>
+		</DefineAvatar>
+		
 		<div class="top icons">
-			<SoftButton v-i="0" v-tooltip:right="t.home" icon="home" href="/" />
-			<SoftButton v-i="1" v-tooltip:right="t.search" icon="search" href="/search" />
-			<SoftButton v-i="2" v-tooltip:right="t.history" icon="history" />
-			<SoftButton v-i="3" v-tooltip:right="t.favorites" icon="star" />
-			<SoftButton v-i="4" v-tooltip:right="t.feed" icon="feed" />
-			<SoftButton v-i="5" v-tooltip:right="t.upload" icon="upload" href="/upload" />
+			<SoftButton v-tooltip="t.home" icon="home" href="/" />
+			<SoftButton v-tooltip="t.search" icon="search" href="/search" />
+			<SoftButton v-tooltip="t.history" icon="history" />
+			<SoftButton v-tooltip="t.favorites" icon="star" />
+			<SoftButton v-tooltip="t.feed" icon="feed" />
+			<SoftButton v-tooltip="t.upload" icon="upload" href="/upload" />
 		</div>
 
-		<div v-i="6" class="center">
+		<div class="center">
+			<Icon name="dehaze" class="pe decorative-icon" />
+			<Avatar class="pe" />
 			<div class="stripes">
 				<div v-for="i in 2" :key="i" class="stripe"></div>
 			</div>
@@ -35,14 +47,10 @@
 		</div>
 
 		<div class="bottom icons">
-			<UserAvatar
-				v-i="7"
-				v-tooltip:right="isLogined ? '艾草' : t.login"
-				:avatar="isLogined ? avatar : undefined"
-				@click="onClickUser"
-			/>
-			<SoftButton v-i="8" v-tooltip:right="t.messages" icon="email" href="/test-rich-text-editor" />
-			<SoftButton v-i="9" v-tooltip:right="t.settings" icon="settings" href="/settings" :active="isCurrentSettings" />
+			<Avatar class="pc" />
+			<SoftButton v-tooltip="t.messages" icon="email" href="/test-rich-text-editor" />
+			<SoftButton v-tooltip="t.settings" class="pc" icon="settings" href="/settings" :active="isCurrentSettings" />
+			<SoftButton v-tooltip="t.search" class="pe" icon="search" href="/search" />
 		</div>
 
 		<LoginWindow v-model="showLogin" />
@@ -55,13 +63,28 @@
 	aside {
 		@include sidebar-shadow;
 		@include flex-center;
+		--color: #{c(accent)};
 		z-index: 30;
 		flex-direction: column;
 		justify-content: space-between;
-		width: $sidebar-width;
 		padding: $icons-gap 0;
 		overflow: hidden;
 		background-color: c(main-bg);
+		
+		&.colored {
+			@include sidebar-shadow-colored;
+			--color: white;
+			background-color: c(accent);
+			
+			.soft-button {
+				--white: true;
+			}
+			
+			.decorative-icon,
+			.logo-text {
+				color: white;
+			}
+		}
 
 		> * {
 			flex-grow: 0;
@@ -83,11 +106,16 @@
 				gap: 0;
 			}
 		}
+		
+		.pe {
+			display: none;
+		}
 
 		.center {
 			@include flex-center;
 			width: max-content;
 			rotate: -100grad;
+			transition: $fallback-transitions, rotate 0s;
 
 			.stripes {
 				display: flex; // 结论：池沼 block 布局会恶意在元素之间加空隙还找不出原因。
@@ -99,7 +127,7 @@
 					width: 8px;
 					height: $sidebar-width;
 					margin-right: 12px;
-					background-color: c(accent);
+					background-color: var(--color);
 				}
 
 				@media (height < 678px) {
@@ -145,10 +173,69 @@
 		.soft-button {
 			--ripple-size: 40px;
 		}
+		
+		@include mobile {
+			flex-direction: row;
+			
+			.icons {
+				flex-direction: row;
+			}
+			
+			.top,
+			.pc {
+				display: none;
+			}
+			
+			.pe {
+				display: flex;
+			}
+			
+			> * {
+				width: initial;
+			}
+			
+			.center {
+				rotate: 0deg;
+				gap: 8px;
+				padding-left: 4px;
+				
+				.stripes {
+					display: none;
+				}
+				
+				.logo-text {
+					--form: half !important;
+				}
+			}
+			
+			.bottom {
+				margin-right: 4px;
+			}
+			
+			.user-avatar {
+				margin-right: 4px;
+			}
+		}
 	}
 
 	.user-avatar {
 		--size: 40px;
+	}
+	
+	.decorative-icon {
+		$size: 24px;
+		margin-left: calc($size / -2 - 4px);
+		color: c(icon-color);
+		font-size: $size;
+		cursor: pointer;
+		
+		&:any-hover {
+			color: c(accent);
+		}
+		
+		&:active {
+			opacity: 0.6;
+		}
 	}
 
 	@keyframes jump-in {
