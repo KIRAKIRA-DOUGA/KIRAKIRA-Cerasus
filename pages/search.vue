@@ -21,7 +21,7 @@
 		const api = useApi();
 		const utf8Encoder = new TextEncoder();
 		const encodedContent = utf8Encoder.encode(data.search !== "" ? data.search : "none") as unknown as string;
-		useRouter().push({ path: useRoute().path, query: { ...useRoute().query, q: data.search } });
+		useRouter().push({ path: useRoute().path, query: { ...useRoute().query, q: data.search || undefined } });
 		const handleError = (error: unknown) => error && console.error(error);
 
 		const cat = data.selectedTab !== "Home" ? data.selectedTab : "undefined";
