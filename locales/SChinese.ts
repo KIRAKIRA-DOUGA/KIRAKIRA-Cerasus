@@ -306,7 +306,7 @@ const SChinese = {
 		_: "个人主页",
 		title_suffix: "的个人主页",
 	},
-	manage_contents: "稿件管理",
+	manage_content: "稿件管理",
 	add_to_blocklist: "加入黑名单",
 	platform: {
 		bilibili: "哔哩哔哩",
