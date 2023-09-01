@@ -143,7 +143,8 @@
 				background-color: c(accent-hover-overlay);
 			}
 
-			button:focus-visible > & {
+			button:focus-visible > &,
+			button:focus-visible:hover > & {
 				@include button-shadow-focus-only;
 			}
 
@@ -160,7 +161,8 @@
 				background-color: c(hover-overlay);
 			}
 
-			button:focus-visible > & {
+			button:focus-visible > &,
+			button:focus-visible:hover > & {
 				@include button-shadow-unchecked-focus-only;
 			}
 

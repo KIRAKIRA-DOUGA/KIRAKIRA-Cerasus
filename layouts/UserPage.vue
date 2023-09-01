@@ -205,8 +205,7 @@
 		}
 
 		> .left,
-		> .right,
-		> .center-right > .right {
+		> .right {
 			flex-shrink: 0;
 
 			@include computer {
@@ -215,34 +214,29 @@
 			}
 		}
 
-		> .center,
-		> .center-right > .center {
+		> .center {
 			width: 100%;
 		}
 
-		> .center-right {
-			display: flex;
-			gap: 20px;
-			align-items: flex-start;
-			width: 100%;
-		}
-
-		&:has(> .center-right) {
+		&:has(> .center):has(> .left):has(> .right) {
 			@media (width < 1280px) {
 				flex-direction: column;
-
-				> .center-right {
-					flex-direction: column-reverse;
-				}
 
 				.toolbox-card {
 					width: 100%;
 				}
 
 				> .left,
-				> .right,
-				> .center-right > .right {
+				> .right {
 					position: static;
+				}
+
+				> .right {
+					order: 1;
+				}
+
+				> .center {
+					order: 2;
 				}
 			}
 		}
