@@ -47,65 +47,63 @@
 			</Accordion>
 		</div>
 
-		<div class="center-right">
-			<div class="toolbox-card center">
-				<div class="toolbar-wrapper">
-					<div
-						v-for="i in 2"
-						:key="i"
-						ref="toolbar"
-						class="toolbar"
-						:class="{
-							shadow: i === 2,
-							'hide-captions': hideToolbarCaptions,
-						}"
-					>
-						<div class="left">
-							<Button icon="info">修改信息</Button>
-							<Button icon="clear_all">清理已失效视频</Button>
-							<Button icon="star">订阅收藏</Button>
-							<Button icon="play">播放全部</Button>
-						</div>
-						<div class="right">
-							<Button icon="add">添加视频</Button>
-							<Button
-								:class="{ active: isSelectedMode }"
-								icon="library_add_check"
-								@click="isSelectedMode = !isSelectedMode"
-							>批量选择</Button>
-						</div>
+		<div class="toolbox-card center">
+			<div class="toolbar-wrapper">
+				<div
+					v-for="i in 2"
+					:key="i"
+					ref="toolbar"
+					class="toolbar"
+					:class="{
+						shadow: i === 2,
+						'hide-captions': hideToolbarCaptions,
+					}"
+				>
+					<div class="left">
+						<Button icon="info">修改信息</Button>
+						<Button icon="clear_all">清理已失效视频</Button>
+						<Button icon="star">订阅收藏</Button>
+						<Button icon="play">播放全部</Button>
+					</div>
+					<div class="right">
+						<Button icon="add">添加视频</Button>
+						<Button
+							:class="{ active: isSelectedMode }"
+							icon="library_add_check"
+							@click="isSelectedMode = !isSelectedMode"
+						>批量选择</Button>
 					</div>
 				</div>
-				<main>
-					<div class="videos-grid">
-						<ThumbVideo
-							v-for="i in 5"
-							:key="i"
-							link="video"
-							uploader="艾了个拉"
-							:date="new Date()"
-							:watchedCount="233_0000"
-							:duration="new Duration(2, 33)"
-						>测试视频</ThumbVideo>
-					</div>
-				</main>
 			</div>
+			<main>
+				<div class="videos-grid">
+					<ThumbVideo
+						v-for="i in 5"
+						:key="i"
+						link="video"
+						uploader="艾了个拉"
+						:date="new Date()"
+						:watchedCount="233_0000"
+						:duration="new Duration(2, 33)"
+					>{{ "测试视频".repeat(10) }}</ThumbVideo>
+				</div>
+			</main>
+		</div>
 
-			<div class="toolbox-card right">
-				<section>
-					<Subheader icon="sort">{{ t.sort.by }}</Subheader>
-					<Sort v-model="sort">
-						<SortItem id="date" preferOrder="descending">{{ t.upload_date }}</SortItem>
-						<SortItem id="view" preferOrder="descending">{{ t.sort.view }}</SortItem>
-						<SortItem id="danmaku" preferOrder="descending">{{ t.sort.danmaku }}</SortItem>
-						<SortItem id="comment" preferOrder="descending">{{ t.sort.comment }}</SortItem>
-						<SortItem id="favorite" preferOrder="descending">{{ t.sort.favorite }}</SortItem>
-						<SortItem id="duration" preferOrder="descending">{{ t.duration }}</SortItem>
-						<SortItem id="rating">{{ t.rating }}</SortItem>
-					</Sort>
-				</section>
-				<Pagination v-model="page" :pages="pages" :displayPageCount="displayPageCount" enableArrowKeyMove />
-			</div>
+		<div class="toolbox-card right">
+			<section>
+				<Subheader icon="sort">{{ t.sort.by }}</Subheader>
+				<Sort v-model="sort">
+					<SortItem id="date" preferOrder="descending">{{ t.upload_date }}</SortItem>
+					<SortItem id="view" preferOrder="descending">{{ t.sort.view }}</SortItem>
+					<SortItem id="danmaku" preferOrder="descending">{{ t.sort.danmaku }}</SortItem>
+					<SortItem id="comment" preferOrder="descending">{{ t.sort.comment }}</SortItem>
+					<SortItem id="favorite" preferOrder="descending">{{ t.sort.favorite }}</SortItem>
+					<SortItem id="duration" preferOrder="descending">{{ t.duration }}</SortItem>
+					<SortItem id="rating">{{ t.rating }}</SortItem>
+				</Sort>
+			</section>
+			<Pagination v-model="page" :pages="pages" :displayPageCount="displayPageCount" enableArrowKeyMove />
 		</div>
 	</div>
 </template>

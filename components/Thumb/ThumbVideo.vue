@@ -141,16 +141,27 @@
 	}
 
 	.title {
-		$title-line-height: 22px;
-		height: $title-line-height * 2;
 		overflow: hidden;
 		font-weight: 500;
-		line-height: $title-line-height;
-		white-space: normal;
+		white-space: nowrap;
 		text-align: justify;
 		text-overflow: ellipsis;
-		-webkit-line-clamp: 2;
-		-webkit-box-orient: vertical;
+
+		&:lang(zh),
+		&:lang(ja) {
+			text-overflow: "⋯⋯";
+		}
+
+		@supports (display: -webkit-box) { // 只有 -webkit-box 才能支持多行省略号
+			$title-line-height: 22px;
+			// stylelint-disable-next-line value-no-vendor-prefix
+			display: -webkit-box;
+			height: $title-line-height * 2;
+			line-height: $title-line-height;
+			white-space: normal;
+			-webkit-line-clamp: 2;
+			-webkit-box-orient: vertical;
+		}
 	}
 
 	.info {
