@@ -147,7 +147,7 @@
 
 			.thumbnail {
 				flex-shrink: 0;
-				width: 210px;
+				width: 135px;
 			}
 		}
 	}

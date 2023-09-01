@@ -162,5 +162,15 @@
 				}
 			}
 		}
+		
+		@container style(--column: single) {
+			p {
+				display: none;
+			}
+			
+			.icon {
+				margin-top: -0.25em;
+			}
+		}
 	}
 </style>

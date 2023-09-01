@@ -49,6 +49,7 @@
 			/// 外观偏好，可选的值为：primary | secondary | tertiary。
 			/// primary: 强调色按钮。
 			/// secondary: 次要/无背景按钮。
+			/// tertiary: 非强调色状态按钮。
 			--appearance: primary;
 			/// 是否隐藏标签文本？
 			--hide-caption: false;

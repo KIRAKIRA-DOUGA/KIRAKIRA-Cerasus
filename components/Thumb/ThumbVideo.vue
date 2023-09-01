@@ -76,9 +76,15 @@
 </template>
 
 <style scoped lang="scss">
-	.thumb-video {
+	@layer props {
+		a:comp {
+			/// 视图，可选的值为: grid | tile | list。
+			--view: grid;
+		}
+	}
+
+	a:comp {
 		@include round-large;
-		--view: grid;
 		position: relative;
 		display: inline-block;
 		color: c(text-color);
@@ -126,6 +132,7 @@
 
 	.cover-wrapper {
 		@include round-large;
+		flex-shrink: 0;
 		overflow: hidden;
 		aspect-ratio: 16 / 9;
 
@@ -137,6 +144,18 @@
 
 		@container style(--view: grid) {
 			margin-bottom: 8px;
+		}
+		
+		@container style(--view: list) {
+			width: 135px;
+		}
+	}
+	
+	.text-wrapper {
+		overflow: hidden;
+		
+		@container style(--view: list) {
+			width: 100%;
 		}
 	}
 
@@ -177,11 +196,16 @@
 			display: flex;
 			gap: 8px;
 			justify-content: space-between;
+			
+			@container style(--view: list) {
+				flex-direction: column;
+			}
 		}
 
 		.item {
 			@include flex-center;
 			flex-shrink: 0;
+			justify-content: flex-start;
 			gap: 2px;
 
 			.icon {

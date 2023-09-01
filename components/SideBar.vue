@@ -5,6 +5,9 @@
 	const isCurrentSettings = computed(() => !!currentSettingsPage());
 	const appSettings = useAppSettingsStore();
 	const [DefineAvatar, Avatar] = createReusableTemplate();
+	// const windowSize = useWindowSize();
+	// const isMobile = computed(() => windowSize.width.value <= 639);
+	const scopeId = useParentScopeId()!;
 
 	useListen("app:requestLogin", () => showLogin.value = true);
 	useListen("user:login", value => isLogined.value = value);
@@ -16,18 +19,25 @@
 		if (!isLogined.value) showLogin.value = true;
 		else navigate("/user");
 	}
+
+	/**
+	 * 显示移动端抽屉。
+	 */
+	function onClickDrawer() {
+		useEvent("app:showDrawer");
+	}
 </script>
 
 <template>
-	<aside :class="{ colored: appSettings.coloredSideBar }" role="toolbar" aria-label="side bar" aria-orientation="vertical">
-		<DefineAvatar>
-			<UserAvatar
-				v-tooltip="isLogined ? '艾草' : t.login"
-				:avatar="isLogined ? avatar : undefined"
-				@click="onClickUser"
-			/>
-		</DefineAvatar>
-		
+	<DefineAvatar>
+		<UserAvatar
+			v-tooltip="isLogined ? '艾草' : t.login"
+			:avatar="isLogined ? avatar : undefined"
+			@click="onClickUser"
+		/>
+	</DefineAvatar>
+
+	<aside :class="{ colored: appSettings.coloredSideBar }" :[scopeId]="''" role="toolbar" aria-label="side bar" aria-orientation="vertical">
 		<div class="top icons">
 			<SoftButton v-tooltip="t.home" icon="home" href="/" />
 			<SoftButton v-tooltip="t.search" icon="search" href="/search" />
@@ -38,7 +48,7 @@
 		</div>
 
 		<div class="center">
-			<Icon name="dehaze" class="pe decorative-icon" />
+			<Icon name="dehaze" class="pe decorative-icon" @click="onClickDrawer" />
 			<Avatar class="pe" />
 			<div class="stripes">
 				<div v-for="i in 2" :key="i" class="stripe"></div>
@@ -55,6 +65,14 @@
 
 		<LoginWindow v-model="showLogin" />
 	</aside>
+	
+	<nav :[scopeId]="''">
+		<div class="icons">
+			<MobileBottomNavItem icon="home" href="/">{{ t.home }}</MobileBottomNavItem>
+			<MobileBottomNavItem icon="category" href="/category">{{ t.category }}</MobileBottomNavItem>
+			<MobileBottomNavItem icon="feed" href="/audio">{{ t.feed }}</MobileBottomNavItem>
+		</div>
+	</nav>
 </template>
 
 <style scoped lang="scss">
@@ -97,16 +115,6 @@
 			}
 		}
 
-		.icons {
-			@include flex-center;
-			flex-direction: column;
-			gap: $icons-gap;
-
-			@media (height <= 432px) {
-				gap: 0;
-			}
-		}
-		
 		.pe {
 			display: none;
 		}
@@ -177,10 +185,6 @@
 		@include mobile {
 			flex-direction: row;
 			
-			.icons {
-				flex-direction: row;
-			}
-			
 			.top,
 			.pc {
 				display: none;
@@ -217,6 +221,20 @@
 			}
 		}
 	}
+	
+	.icons {
+		@include flex-center;
+		flex-direction: column;
+		gap: $icons-gap;
+
+		@media (height <= 432px) {
+			gap: 0;
+		}
+		
+		@include mobile {
+			flex-direction: row;
+		}
+	}
 
 	.user-avatar {
 		--size: 40px;
@@ -235,6 +253,19 @@
 		
 		&:active {
 			opacity: 0.6;
+		}
+	}
+	
+	nav {
+		@include sidebar-shadow;
+		z-index: 30;
+		padding: $icons-gap 0;
+		overflow: hidden;
+		background-color: c(main-bg);
+		
+		.icons {
+			justify-content: space-evenly;
+			width: 100%;
 		}
 	}
 

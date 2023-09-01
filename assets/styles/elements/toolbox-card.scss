@@ -54,6 +54,10 @@
 		@container videos-grid (width < #{$min-width * 2 + $gap}) {
 			--column: single;
 		}
+
+		@container videos-grid (width < #{$min-width * 2}) {
+			--view: list;
+		}
 	}
 }
 

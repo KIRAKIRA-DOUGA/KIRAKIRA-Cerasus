@@ -239,7 +239,7 @@
 	}
 
 	watch(model, (id, prevId) => update(id, prevId));
-	useEventListener("window", "resize", () => update(undefined, updateIndicatorWithoutAnimation));
+	// useEventListener("window", "resize", () => update(undefined, updateIndicatorWithoutAnimation));
 	useEventListener(scrollArea, "scroll", showFlipViewButtonHandler);
 
 	onMounted(async () => {
@@ -252,7 +252,7 @@
 
 	onUnmounted(() => {
 		unmounted.value = true;
-		scrollArea.value && resizeObserver.value?.unobserve(scrollArea.value);
+		resizeObserver.value?.disconnect();
 		clearLongPressTimeoutId();
 	});
 
