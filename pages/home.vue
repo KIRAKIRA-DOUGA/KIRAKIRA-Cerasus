@@ -46,24 +46,22 @@
 
 <template>
 	<div class="container">
-		<div class="tab-bar-wrapper">
-			<TabBar v-model="data.selectedTab" @movingForTransition="name => transitionName = name">
-				<TabItem
-					id="Home"
-					direction="vertical"
-					icon="home"
-				>{{ t.home }}</TabItem>
-				<TabItem
-					v-for="cat in categoryList"
-					:id="cat"
-					:key="cat"
-					direction="vertical-reverse"
-					:badge="categories.get(cat.toLowerCase())"
-				>
-					{{ t.category[cat.toLowerCase()] }}
-				</TabItem>
-			</TabBar>
-		</div>
+		<TabBar v-model="data.selectedTab" @movingForTransition="name => transitionName = name">
+			<TabItem
+				id="Home"
+				direction="vertical"
+				icon="home"
+			>{{ t.home }}</TabItem>
+			<TabItem
+				v-for="cat in categoryList"
+				:id="cat"
+				:key="cat"
+				direction="vertical-reverse"
+				:badge="categories.get(cat.toLowerCase())"
+			>
+				{{ t.category[cat.toLowerCase()] }}
+			</TabItem>
+		</TabBar>
 		<Subheader icon="upload" :badge="numberOfItems">{{ t.latest }}</Subheader>
 		<Transition :name="transitionName" mode="out-in">
 			<div :key="resultTimestamp" class="videos-grid">
@@ -93,15 +91,14 @@
 		}
 	}
 
-	.tab-bar-wrapper {
-		@include mobile {
-			overflow: auto;
-		}
-	}
+	// .tab-bar-wrapper {
+	// 	@include mobile {
+	// 		overflow: auto;
+	// 	}
+	// }
 
 	.tab-bar {
 		--loose: true;
-		margin-left: -8px;
 
 		:deep(.items) {
 			gap: 0;

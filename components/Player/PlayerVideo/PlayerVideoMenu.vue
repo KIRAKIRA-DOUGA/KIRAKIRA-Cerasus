@@ -18,7 +18,7 @@
 	const locationStyle = ref<CSSProperties>({});
 	/** 指定在鼠标移出区域多久后自动隐藏。 */
 	const WAITING = 1000;
-	const hideTimeoutId = ref<NodeJS.Timeout>();
+	const hideTimeoutId = ref<Timeout>();
 	/** 在请求隐藏本组件的所有实例时，要求本实例不得隐藏。 */
 	const hideExceptMe = ref(false);
 	/** 视频播放器控制栏中 SoftButton 的水波纹半径与容器半径之差。 */
