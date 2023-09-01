@@ -20,7 +20,7 @@
 
 		.icon {
 			color: c(icon-color);
-			font-size: 28px;
+			font-size: 32px;
 		}
 
 		&:any-hover {
@@ -29,6 +29,18 @@
 
 		&:active {
 			opacity: 0.6;
+		}
+
+		&.left {
+			@include mobile {
+				background-image: linear-gradient(to left, transparent, c(icon-color, 7%));
+			}
+		}
+
+		&.right {
+			@include mobile {
+				background-image: linear-gradient(to right, transparent, c(icon-color, 7%));
+			}
 		}
 	}
 </style>

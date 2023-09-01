@@ -96,6 +96,10 @@
 </template>
 
 <style scoped lang="scss">
+	.player-video {
+		margin: -16px -16px 0;
+	}
+
 	.recheader {
 		margin-top: 20px;
 		margin-bottom: 5px;
