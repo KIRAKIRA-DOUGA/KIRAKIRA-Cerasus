@@ -85,6 +85,10 @@
 				@include tablet {
 					padding: 26px 40px;
 				}
+
+				@include mobile {
+					padding: 16px;
+				}
 			}
 		}
 	}
@@ -108,30 +112,30 @@
 		height: 100dvh;
 		transition: background-color $ease-out-max 250ms;
 	}
-	
+
 	nav {
 		position: fixed;
 		bottom: 0;
 		left: 0;
 		display: none;
 	}
-	
+
 	@include mobile {
 		.container {
 			padding-top: $sidebar-width;
 			padding-left: 0;
 		}
-		
+
 		aside,
 		nav {
 			display: flex;
 			width: 100dvw;
 			height: $sidebar-width;
 		}
-		
+
 		.scroll {
 			height: calc(100dvh - 2 * $sidebar-width);
-			
+
 			&.container {
 				height: calc(100dvh - $sidebar-width);
 			}
@@ -156,26 +160,26 @@
 			overflow: hidden;
 		}
 	}
-	
+
 	.viewport {
 		height: 100dvh;
 		background-color: c(main-bg);
-		
+
 		&:has(> .hide-drawer-mask) {
 			transition-duration: 600ms;
-			
+
 			&:any-hover:active {
 				transform-origin: left center !important;
 				scale: 0.975;
 			}
 		}
 	}
-	
+
 	.offcanvas {
 		position: fixed;
 		height: 100dvh;
 		transform-origin: -100% center;
-		
+
 		&:not(.v-leave-active) ~ .viewport {
 			@include system-card;
 			@include round-large;
@@ -184,7 +188,7 @@
 			transform: translateX(50dvw) scale(0.8);
 			transform-origin: left center;
 		}
-		
+
 		&.v-enter-active,
 		&.v-leave-active {
 			&,
@@ -192,14 +196,14 @@
 				transition-duration: 600ms;
 			}
 		}
-		
+
 		&.v-enter-from,
 		&.v-leave-to {
 			opacity: 0;
 			scale: 0.8;
 		}
 	}
-	
+
 	.hide-drawer-mask {
 		position: absolute;
 		inset: 0;
