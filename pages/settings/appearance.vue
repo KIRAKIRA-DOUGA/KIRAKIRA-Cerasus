@@ -74,6 +74,7 @@
 	<section list>
 		<ToggleSwitch v-model="useAppSettingsStore().sharpAppearanceMode" v-ripple icon="square">直角样式</ToggleSwitch>
 		<ToggleSwitch v-model="useAppSettingsStore().flatAppearanceMode" v-ripple icon="layers">扁平样式</ToggleSwitch>
+		<ToggleSwitch v-model="useAppSettingsStore().coloredSideBar" v-ripple icon="dehaze">彩色导航栏</ToggleSwitch>
 	</section>
 </template>
 

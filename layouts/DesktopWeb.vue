@@ -37,7 +37,7 @@
 	<Transition>
 		<CssDoodle v-show="showCssDoodle" ref="cssDoodle" :rule="background" class="background" />
 	</Transition>
-	<SideBar class="sidebar" />
+	<SideBar />
 	<div ref="container" class="container" :class="{ scroll: isSettings, 'toggle-settings': isToggleSettings }">
 		<Transition name="settings" v-bind="transitionProps(true)">
 			<Settings v-if="isSettings">
@@ -91,12 +91,25 @@
 		// }
 	}
 
-	.sidebar {
+	aside {
 		position: fixed;
 		top: 0;
 		left: 0;
+		width: $sidebar-width;
 		height: 100dvh;
 		transition: background-color $ease-out-max 250ms;
+	}
+	
+	@include mobile {
+		.container {
+			padding-top: $sidebar-width;
+			padding-left: 0;
+		}
+		
+		aside {
+			width: 100dvw;
+			height: $sidebar-width;
+		}
 	}
 
 	.background {
