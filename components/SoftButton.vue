@@ -117,7 +117,7 @@
 			color: c(accent) !important;
 
 			@container style(--white: true) {
-				color: c(accent-20) !important;
+				color: c(white) !important;
 			}
 		}
 
