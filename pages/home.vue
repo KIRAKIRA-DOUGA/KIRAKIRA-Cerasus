@@ -91,17 +91,12 @@
 		}
 	}
 
-	// .tab-bar-wrapper {
-	// 	@include mobile {
-	// 		overflow: auto;
-	// 	}
-	// }
-
 	.tab-bar {
 		--loose: true;
 
 		:deep(.items) {
 			gap: 0;
+			margin-left: -8px;
 
 			> * {
 				width: 72px;
