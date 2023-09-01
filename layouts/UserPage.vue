@@ -69,7 +69,7 @@
 						<Button v-if="!user.isFollowed">{{ t.follow }}</Button>
 						<Button v-else disabled>{{ t.following }}</Button>
 					</div>
-					<Button v-if="isSelf">{{ t.manage_contents }}</Button>
+					<Button v-if="isSelf">{{ t.manage_content }}</Button>
 				</div>
 			</div>
 			<TabBar v-model="currentTab">
