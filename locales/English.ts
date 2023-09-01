@@ -305,7 +305,7 @@ const English: LocaleIdentifiers = {
 		_: "User Page",
 		title_suffix: "'s User Page",
 	},
-	manage_content: "Manage Contents",
+	manage_content: "Manage Content",
 	add_to_blocklist: "Add to Blocklist",
 	platform: {
 		bilibili: "Bilibili",
