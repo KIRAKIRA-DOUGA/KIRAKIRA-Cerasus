@@ -13,7 +13,7 @@
 	const isClicked = ref(false);
 	const theme = Theme.theme;
 	const palette = Theme.palette;
-	const timeoutId = ref<NodeJS.Timeout>();
+	const timeoutId = ref<Timeout>();
 	const isTagChecked = ref(false);
 	const volume = ref(100);
 	const pitch = ref(0);

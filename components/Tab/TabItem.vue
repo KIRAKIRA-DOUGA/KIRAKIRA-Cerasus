@@ -97,7 +97,7 @@
 		}
 		// TODO: 缺少横向 Tab 的 hover 和 pressed 样式，但不要用水波纹，你用了就知道有多丑了。
 
-		.tab-bar.vertical > * > & {
+		.tab-bar.vertical & {
 			@include round-small;
 			justify-content: flex-start;
 			width: 100%;
