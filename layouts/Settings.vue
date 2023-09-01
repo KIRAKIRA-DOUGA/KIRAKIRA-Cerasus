@@ -96,6 +96,7 @@
 	$title-padding-top: 26px;
 	$nav-padding-x: 24px;
 	$main-padding-x: 48px;
+	$mobile-padding-x: 24px;
 	$show-drawer-duration: 500ms;
 	$nav-width: 245px + 2 * $nav-padding-x;
 	$max-width: 960px;
@@ -209,6 +210,10 @@
 			gap: 1rem;
 			max-width: $max-width;
 			padding: 0 $main-padding-x;
+			
+			@include mobile {
+				padding: 0 $mobile-padding-x;
+			}
 
 			> :deep(.router-view) {
 				display: flex;
