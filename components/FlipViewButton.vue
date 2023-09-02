@@ -17,6 +17,7 @@
 		width: 24px;
 		height: 100%;
 		max-height: 60px;
+		// backdrop-filter: blur(4px); // TODO: 效果略丑，待调整。
 
 		.icon {
 			color: c(icon-color);
@@ -29,18 +30,6 @@
 
 		&:active {
 			opacity: 0.6;
-		}
-
-		&.left {
-			@include mobile {
-				background-image: linear-gradient(to left, transparent, c(icon-color, 7%));
-			}
-		}
-
-		&.right {
-			@include mobile {
-				background-image: linear-gradient(to right, transparent, c(icon-color, 7%));
-			}
 		}
 	}
 </style>

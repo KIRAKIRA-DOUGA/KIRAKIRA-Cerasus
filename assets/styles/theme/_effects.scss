@@ -48,6 +48,24 @@
 		@content;
 	}
 }
+
+/// 非手机端布局。
+/// @content
+/// @output @media screen
+@mixin not-mobile {
+	@media (width > #{$mobile-max-width}) {
+		@content;
+	}
+}
+
+/// 非电脑端布局。
+/// @content
+/// @output @media screen
+@mixin not-computer {
+	@media (width <= #{$tablet-max-width}) {
+		@content;
+	}
+}
 // #endregion
 
 // #region 中性色
