@@ -145,15 +145,19 @@
 		@container style(--view: grid) {
 			margin-bottom: 8px;
 		}
-		
-		@container style(--view: list) {
+
+		@container style(--view: list), {
+			width: 135px;
+		}
+
+		@container style(--view: tile) {
 			width: 135px;
 		}
 	}
-	
+
 	.text-wrapper {
 		overflow: hidden;
-		
+
 		@container style(--view: list) {
 			width: 100%;
 		}
@@ -196,7 +200,7 @@
 			display: flex;
 			gap: 8px;
 			justify-content: space-between;
-			
+
 			@container style(--view: list) {
 				flex-direction: column;
 			}
@@ -205,8 +209,8 @@
 		.item {
 			@include flex-center;
 			flex-shrink: 0;
-			justify-content: flex-start;
 			gap: 2px;
+			justify-content: flex-start;
 
 			.icon {
 				font-size: 16px;
