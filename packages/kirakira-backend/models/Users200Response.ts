@@ -19,6 +19,9 @@ export class Users200Response {
     'userID'?: number;
     'username'?: string;
     'profilePictureURL'?: string;
+    'bio'?: string;
+    'birthdate'?: string;
+    'gender'?: string;
     'videos'?: Array<Videos200ResponseVideosInner>;
 
     static readonly discriminator: string | undefined = undefined;
@@ -45,6 +48,24 @@ export class Users200Response {
         {
             "name": "profilePictureURL",
             "baseName": "ProfilePictureURL",
+            "type": "string",
+            "format": ""
+        },
+        {
+            "name": "bio",
+            "baseName": "Bio",
+            "type": "string",
+            "format": ""
+        },
+        {
+            "name": "birthdate",
+            "baseName": "Birthdate",
+            "type": "string",
+            "format": ""
+        },
+        {
+            "name": "gender",
+            "baseName": "Gender",
             "type": "string",
             "format": ""
         },

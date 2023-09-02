@@ -111,7 +111,7 @@
 				<tbody>
 					<!-- <RecycleScroller v-slot="{ item }" class="scroller" :itemSize="28" keyField="key" :items="danmakuList"> -->
 					<tr v-for="item in danmakuList" :key="item.key" v-ripple @contextmenu.prevent="e => { currentDanmaku = item.item; danmakuItemMenu = e; }">
-						<td v-for="(value, key, j) in item.item" :key="j" :width="colWidths[j]">{{ handleTableDataCellText(value) }}</td>
+						<td v-for="(value, key, j) in item.item" :key="j" :width="colWidths[j]">{{ j > 0 ? handleTableDataCellText(value) : Math.round(value) }}</td>
 					</tr>
 					<!-- </RecycleScroller> -->
 				</tbody>
