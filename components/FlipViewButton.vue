@@ -17,6 +17,7 @@
 		width: 24px;
 		height: 100%;
 		max-height: 60px;
+		backdrop-filter: blur(1px);
 
 		.icon {
 			color: c(icon-color);
@@ -32,15 +33,11 @@
 		}
 
 		&.left {
-			@include mobile {
-				background-image: linear-gradient(to left, transparent, c(icon-color, 7%));
-			}
+			background-image: linear-gradient(to left, transparent, c(icon-color, 7%));
 		}
 
 		&.right {
-			@include mobile {
-				background-image: linear-gradient(to right, transparent, c(icon-color, 7%));
-			}
+			background-image: linear-gradient(to right, transparent, c(icon-color, 7%));
 		}
 	}
 </style>
