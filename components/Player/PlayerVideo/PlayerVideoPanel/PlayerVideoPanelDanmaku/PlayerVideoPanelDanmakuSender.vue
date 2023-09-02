@@ -1,4 +1,6 @@
 <script setup lang="ts">
+	import { animateSizeGenerator } from "utils/animation";
+
 	const sendDanmaku = defineModel<DanmakuComment>();
 
 	const content = ref("");
@@ -22,7 +24,16 @@
 	});
 	const colorModel = ref<ColorModel>();
 	const styleContainer = ref<HTMLDivElement>();
-	const showColorPicker = ref(false);
+	const showColorPickerAnimationGenerator = ref<AsyncGenerator>();
+	const _showColorPicker = ref(false);
+	const showColorPicker = computed({
+		get: () => _showColorPicker.value,
+		set: async value => {
+			showColorPickerAnimationGenerator.value = animateSizeGenerator(styleContainer, { duration: 600, noCropping: true });
+			await showColorPickerAnimationGenerator.value.next();
+			_showColorPicker.value = value;
+		},
+	});
 
 	/**
 	 * 切换页面时，移动浮窗到页面内部。
@@ -30,6 +41,7 @@
 	function onSwitchPageEnter() {
 		if (flyout.value && flyoutStyle.value instanceof Array)
 			flyout.value.moveIntoPage(...flyoutStyle.value);
+		showColorPickerAnimationGenerator.value?.next();
 	}
 
 	/**
@@ -147,7 +159,6 @@
 					@click="e => flyoutKaomoji = [e, 'y', OFFSET_Y]"
 				/>
 				<SoftButton
-					v-tooltip:bottom="t.format"
 					icon="text_format"
 					appearance="textbox-trailingicon"
 					:active="!!flyoutStyle"

@@ -294,3 +294,9 @@ declare module "*.css-doodle" {
 	const raw: string;
 	export default raw;
 }
+
+// get css preprocessor variables
+declare module "*.scss?var" {
+	const variables: IScssVariables;
+	export default variables;
+}

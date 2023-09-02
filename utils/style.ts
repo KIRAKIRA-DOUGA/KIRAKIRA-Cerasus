@@ -134,3 +134,24 @@ export function nullifyTransforms(el: HTMLElement) {
 			});
 	}
 }
+
+/**
+ * @remarks 该函数由 Vite 插件调用，不应手动直接使用。
+ * @access private
+ * @param variables - 变量键值声明。
+ * @returns 包装后的对象。
+ */
+export function createScssVariablesReference(variables: Record<string, string>) {
+	Object.defineProperty(variables, "numbers", {
+		enumerable: false,
+		configurable: false,
+		get() {
+			const numbers: Record<string, number> = {};
+			for (const [key, value] of entries(variables))
+				numbers[key] = parseFloat(value);
+			return numbers;
+		},
+	});
+	Object.freeze(variables);
+	return variables;
+}
