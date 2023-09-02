@@ -254,9 +254,9 @@ const Japanese: LocaleIdentifiers = {
 		},
 		appearance: {
 			other: {
-				sharp_mode: "直角模式", // NEW
-				flat_mode: "扁平模式", // NEW
-				colorful_navbar: "彩色导航栏", // NEW
+				sharp_mode: "直角スタイル",
+				flat_mode: "フラットスタイル",
+				colorful_navbar: "カラフル ナビバー",
 			},
 		},
 		about: {
@@ -335,7 +335,7 @@ const Japanese: LocaleIdentifiers = {
 		_: "ナビ",
 		back: "戻る",
 	},
-	other: "Other", // NEW
+	other: "その他",
 };
 
 export default Japanese;
