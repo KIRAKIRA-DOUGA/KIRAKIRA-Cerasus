@@ -249,6 +249,13 @@ const English: LocaleIdentifiers = {
 			allow_cookies: "Allow to use Cookies",
 			info_visibility: "Info Visilibity",
 		},
+		appearance: {
+			other: {
+				sharp_mode: "Sharp Mode",
+				flat_mode: "Flat Mode",
+				colorful_navbar: "Colorful Navigation Bar",
+			},
+		},
 		about: {
 			repositories: "Repositories",
 			creative_team: "Creative Team",
@@ -325,6 +332,7 @@ const English: LocaleIdentifiers = {
 		_: "Navigation",
 		back: "Back",
 	},
+	other: "Other",
 };
 
 export default English;
