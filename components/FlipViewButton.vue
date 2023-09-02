@@ -17,7 +17,7 @@
 		width: 24px;
 		height: 100%;
 		max-height: 60px;
-		// backdrop-filter: blur(4px); // TODO: 效果略丑，待调整。
+		backdrop-filter: blur(1px);
 
 		.icon {
 			color: c(icon-color);
