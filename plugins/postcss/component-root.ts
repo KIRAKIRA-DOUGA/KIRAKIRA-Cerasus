@@ -3,9 +3,12 @@ import parser from "postcss-selector-parser";
 import { VariableName } from "../../classes/VariableName";
 import { arrayClearAll } from "../../utils/array";
 
-const transformPseudo = (componentName: string) => (selectors => {
+const KIRA_COMPONENT_TAGNAME = "kira-component";
+
+const transformPseudo = (componentName: string): parser.SyncProcessor => (selectors => {
 	selectors.walk(selector => {
 		if (selector.type === "pseudo" && selector.value.match(/:comp(onent)?$/)) {
+			let kiraComponentTag: parser.Pseudo | undefined;
 			if (selector.parent) {
 				const oneElementNodes: parser.Node[] = [];
 				const { nodes } = selector.parent;
@@ -23,15 +26,15 @@ const transformPseudo = (componentName: string) => (selectors => {
 					if (node.type === "tag") containsTag = true;
 				}
 				const firstNode = oneElementNodes[0];
-				if (!containsTag && firstNode) {
-					const index = nodes.indexOf(firstNode);
-					nodes.splice(index, 0, parser.tag({ value: "kira-component" }));
-				}
+				if (!containsTag && firstNode)
+					kiraComponentTag = parser.pseudo({ value: `:where(${KIRA_COMPONENT_TAGNAME})` });
 			}
-			selector.replaceWith(parser.className({ value: componentName }));
+			const newSelectors: parser.Node[] = [parser.className({ value: componentName })];
+			if (kiraComponentTag) newSelectors.push(kiraComponentTag);
+			selector.replaceWith(...newSelectors);
 		}
 	});
-}) as parser.SyncProcessor;
+});
 
 const componentRoot: PostCSSPlugin = (_opts = {}) => {
 	return {

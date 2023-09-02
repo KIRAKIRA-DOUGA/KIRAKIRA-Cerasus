@@ -3,7 +3,6 @@
 	const showLogin = ref(false);
 	const isLogined = ref(false);
 	const isCurrentSettings = computed(() => !!currentSettingsPage());
-	const appSettings = useAppSettingsStore();
 	const [DefineAvatar, Avatar] = createReusableTemplate();
 	// const windowSize = useWindowSize();
 	// const isMobile = computed(() => windowSize.width.value <= 639);
@@ -37,7 +36,7 @@
 		/>
 	</DefineAvatar>
 
-	<aside :class="{ colored: appSettings.coloredSideBar }" :[scopeId]="''" role="toolbar" aria-label="side bar" aria-orientation="vertical">
+	<aside :class="{ colored: useAppSettingsStore().coloredSideBar }" :[scopeId]="''" role="toolbar" aria-label="side bar" aria-orientation="vertical">
 		<div class="top icons">
 			<SoftButton v-tooltip="t.home" icon="home" href="/" />
 			<SoftButton v-tooltip="t.search" icon="search" href="/search" />
@@ -115,10 +114,6 @@
 			}
 		}
 
-		.pe {
-			display: none;
-		}
-
 		.center {
 			@include flex-center;
 			width: max-content;
@@ -181,6 +176,12 @@
 		.soft-button {
 			--ripple-size: 40px;
 		}
+		
+		@include not-mobile {
+			.pe {
+				display: none;
+			}
+		}
 
 		@include mobile {
 			flex-direction: row;
@@ -188,10 +189,6 @@
 			.top,
 			.pc {
 				display: none;
-			}
-
-			.pe {
-				display: flex;
 			}
 
 			> * {
@@ -249,12 +246,12 @@
 				}
 			}
 
-			&:active::after {
-				height: 14px;
-			}
-
 			&:has(.router-link-active)::after {
 				scale: 1;
+			}
+
+			&:active::after {
+				height: 14px;
 			}
 		}
 
@@ -291,8 +288,8 @@
 		background-color: c(main-bg);
 
 		.icons {
+			@include square(100%);
 			justify-content: space-evenly;
-			width: 100%;
 		}
 	}
 

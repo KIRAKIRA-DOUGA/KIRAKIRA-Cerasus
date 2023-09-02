@@ -105,19 +105,26 @@
 	}
 
 	aside {
-		position: fixed;
 		top: 0;
-		left: 0;
 		width: $sidebar-width;
 		height: 100dvh;
-		transition: background-color $ease-out-max 250ms;
 	}
 
 	nav {
-		position: fixed;
 		bottom: 0;
+	}
+	
+	aside,
+	nav {
+		position: fixed;
 		left: 0;
-		display: none;
+		transition: background-color $ease-out-max 250ms;
+	}
+	
+	@include not-mobile {
+		nav {
+			display: none;
+		}
 	}
 
 	@include mobile {
@@ -128,7 +135,6 @@
 
 		aside,
 		nav {
-			display: flex;
 			width: 100dvw;
 			height: $sidebar-width;
 		}
