@@ -84,6 +84,8 @@
 		else location.value = _location;
 		shown.value = true;
 		await nextTick();
+		await nextTick();
+		await nextTick(); // BUG: 不知道为啥，需要三个 nextTick 才能跑。
 		if (targetRect) {
 			shown.value = false;
 			const result = getPosition(targetRect, placement, offset, flyoutRect);
