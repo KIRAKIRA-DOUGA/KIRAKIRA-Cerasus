@@ -9,6 +9,7 @@ import {SecurityAuthentication} from '../auth/auth';
 
 
 import { Comments200ResponseInner } from '../models/Comments200ResponseInner';
+import { GetDanmaku200ResponseInner } from '../models/GetDanmaku200ResponseInner';
 import { Users200Response } from '../models/Users200Response';
 import { VideoDetail200Response } from '../models/VideoDetail200Response';
 import { Videos200Response } from '../models/Videos200Response';
@@ -104,6 +105,99 @@ export class DefaultApiRequestFactory extends BaseAPIRequestFactory {
     }
 
     /**
+     * Create new danmaku
+     * @param videoID video ID for danmaku
+     * @param timestamp timestamp for danmaku
+     * @param message message
+     * @param authorID author of comment
+     * @param type type of comment
+     * @param color comment color
+     * @param fontSize comment font size
+     */
+    public async createDanmaku(videoID: number, timestamp: string, message: string, authorID: number, type: string, color: string, fontSize: string, _options?: Configuration): Promise<RequestContext> {
+        let _config = _options || this.configuration;
+
+        // verify required parameter 'videoID' is not null or undefined
+        if (videoID === null || videoID === undefined) {
+            throw new RequiredError("DefaultApi", "createDanmaku", "videoID");
+        }
+
+
+        // verify required parameter 'timestamp' is not null or undefined
+        if (timestamp === null || timestamp === undefined) {
+            throw new RequiredError("DefaultApi", "createDanmaku", "timestamp");
+        }
+
+
+        // verify required parameter 'message' is not null or undefined
+        if (message === null || message === undefined) {
+            throw new RequiredError("DefaultApi", "createDanmaku", "message");
+        }
+
+
+        // verify required parameter 'authorID' is not null or undefined
+        if (authorID === null || authorID === undefined) {
+            throw new RequiredError("DefaultApi", "createDanmaku", "authorID");
+        }
+
+
+        // verify required parameter 'type' is not null or undefined
+        if (type === null || type === undefined) {
+            throw new RequiredError("DefaultApi", "createDanmaku", "type");
+        }
+
+
+        // verify required parameter 'color' is not null or undefined
+        if (color === null || color === undefined) {
+            throw new RequiredError("DefaultApi", "createDanmaku", "color");
+        }
+
+
+        // verify required parameter 'fontSize' is not null or undefined
+        if (fontSize === null || fontSize === undefined) {
+            throw new RequiredError("DefaultApi", "createDanmaku", "fontSize");
+        }
+
+
+        // Path Params
+        const localVarPath = '/danmaku';
+
+        // Make Request Context
+        const requestContext = _config.baseServer.makeRequestContext(localVarPath, HttpMethod.POST);
+        requestContext.setHeaderParam("Accept", "application/json, */*;q=0.8")
+
+        // Header Params
+        requestContext.setHeaderParam("VideoID", ObjectSerializer.serialize(videoID, "number", ""));
+
+        // Header Params
+        requestContext.setHeaderParam("timestamp", ObjectSerializer.serialize(timestamp, "string", ""));
+
+        // Header Params
+        requestContext.setHeaderParam("message", ObjectSerializer.serialize(message, "string", ""));
+
+        // Header Params
+        requestContext.setHeaderParam("AuthorID", ObjectSerializer.serialize(authorID, "number", ""));
+
+        // Header Params
+        requestContext.setHeaderParam("Type", ObjectSerializer.serialize(type, "string", ""));
+
+        // Header Params
+        requestContext.setHeaderParam("Color", ObjectSerializer.serialize(color, "string", ""));
+
+        // Header Params
+        requestContext.setHeaderParam("FontSize", ObjectSerializer.serialize(fontSize, "string", ""));
+
+
+        
+        const defaultAuth: SecurityAuthentication | undefined = _options?.authMethods?.default || this.configuration?.authMethods?.default
+        if (defaultAuth?.applySecurityAuthentication) {
+            await defaultAuth?.applySecurityAuthentication(requestContext);
+        }
+
+        return requestContext;
+    }
+
+    /**
      * Delete a comment
      * @param id comment ID
      */
@@ -175,6 +269,37 @@ export class DefaultApiRequestFactory extends BaseAPIRequestFactory {
 
         // Path Params
         const localVarPath = '/follow-feed';
+
+        // Make Request Context
+        const requestContext = _config.baseServer.makeRequestContext(localVarPath, HttpMethod.GET);
+        requestContext.setHeaderParam("Accept", "application/json, */*;q=0.8")
+
+
+        
+        const defaultAuth: SecurityAuthentication | undefined = _options?.authMethods?.default || this.configuration?.authMethods?.default
+        if (defaultAuth?.applySecurityAuthentication) {
+            await defaultAuth?.applySecurityAuthentication(requestContext);
+        }
+
+        return requestContext;
+    }
+
+    /**
+     * Get danmaku for video
+     * @param id video ID
+     */
+    public async getDanmaku(id: number, _options?: Configuration): Promise<RequestContext> {
+        let _config = _options || this.configuration;
+
+        // verify required parameter 'id' is not null or undefined
+        if (id === null || id === undefined) {
+            throw new RequiredError("DefaultApi", "getDanmaku", "id");
+        }
+
+
+        // Path Params
+        const localVarPath = '/danmaku/{id}'
+            .replace('{' + 'id' + '}', encodeURIComponent(String(id)));
 
         // Make Request Context
         const requestContext = _config.baseServer.makeRequestContext(localVarPath, HttpMethod.GET);
@@ -801,6 +926,34 @@ export class DefaultApiResponseProcessor {
      * Unwraps the actual response sent by the server from the response context and deserializes the response content
      * to the expected objects
      *
+     * @params response Response returned by the server for a request to createDanmaku
+     * @throws ApiException if the response code was not in [200, 299]
+     */
+     public async createDanmaku(response: ResponseContext): Promise<void > {
+        const contentType = ObjectSerializer.normalizeMediaType(response.headers["content-type"]);
+        if (isCodeInRange("200", response.httpStatusCode)) {
+            return;
+        }
+        if (isCodeInRange("0", response.httpStatusCode)) {
+            throw new ApiException<undefined>(response.httpStatusCode, "Unexpected error", undefined, response.headers);
+        }
+
+        // Work around for missing responses in specification, e.g. for petstore.yaml
+        if (response.httpStatusCode >= 200 && response.httpStatusCode <= 299) {
+            const body: void = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "void", ""
+            ) as void;
+            return body;
+        }
+
+        throw new ApiException<string | Blob | undefined>(response.httpStatusCode, "Unknown API Status Code!", await response.getBodyAsAny(), response.headers);
+    }
+
+    /**
+     * Unwraps the actual response sent by the server from the response context and deserializes the response content
+     * to the expected objects
+     *
      * @params response Response returned by the server for a request to deleteComment
      * @throws ApiException if the response code was not in [200, 299]
      */
@@ -879,6 +1032,35 @@ export class DefaultApiResponseProcessor {
                 ObjectSerializer.parse(await response.body.text(), contentType),
                 "Array<Videos200ResponseVideosInner>", ""
             ) as Array<Videos200ResponseVideosInner>;
+            return body;
+        }
+
+        throw new ApiException<string | Blob | undefined>(response.httpStatusCode, "Unknown API Status Code!", await response.getBodyAsAny(), response.headers);
+    }
+
+    /**
+     * Unwraps the actual response sent by the server from the response context and deserializes the response content
+     * to the expected objects
+     *
+     * @params response Response returned by the server for a request to getDanmaku
+     * @throws ApiException if the response code was not in [200, 299]
+     */
+     public async getDanmaku(response: ResponseContext): Promise<Array<GetDanmaku200ResponseInner> > {
+        const contentType = ObjectSerializer.normalizeMediaType(response.headers["content-type"]);
+        if (isCodeInRange("200", response.httpStatusCode)) {
+            const body: Array<GetDanmaku200ResponseInner> = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "Array<GetDanmaku200ResponseInner>", ""
+            ) as Array<GetDanmaku200ResponseInner>;
+            return body;
+        }
+
+        // Work around for missing responses in specification, e.g. for petstore.yaml
+        if (response.httpStatusCode >= 200 && response.httpStatusCode <= 299) {
+            const body: Array<GetDanmaku200ResponseInner> = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "Array<GetDanmaku200ResponseInner>", ""
+            ) as Array<GetDanmaku200ResponseInner>;
             return body;
         }
 

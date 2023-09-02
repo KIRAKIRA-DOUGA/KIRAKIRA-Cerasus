@@ -1,4 +1,5 @@
 export * from '../models/Comments200ResponseInner';
+export * from '../models/GetDanmaku200ResponseInner';
 export * from '../models/Users200Response';
 export * from '../models/VideoDetail200Response';
 export * from '../models/Videos200Response';
@@ -7,6 +8,7 @@ export * from '../models/Videos200ResponsePaginationData';
 export * from '../models/Videos200ResponseVideosInner';
 
 import { Comments200ResponseInner } from '../models/Comments200ResponseInner';
+import { GetDanmaku200ResponseInner } from '../models/GetDanmaku200ResponseInner';
 import { Users200Response } from '../models/Users200Response';
 import { VideoDetail200Response } from '../models/VideoDetail200Response';
 import { Videos200Response } from '../models/Videos200Response';
@@ -38,6 +40,7 @@ let enumsMap: Set<string> = new Set<string>([
 
 let typeMap: {[index: string]: any} = {
     "Comments200ResponseInner": Comments200ResponseInner,
+    "GetDanmaku200ResponseInner": GetDanmaku200ResponseInner,
     "Users200Response": Users200Response,
     "VideoDetail200Response": VideoDetail200Response,
     "Videos200Response": Videos200Response,

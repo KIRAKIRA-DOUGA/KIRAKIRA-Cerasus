@@ -2,6 +2,7 @@ import { ResponseContext, RequestContext, HttpFile } from '../http/http';
 import { Configuration} from '../configuration'
 
 import { Comments200ResponseInner } from '../models/Comments200ResponseInner';
+import { GetDanmaku200ResponseInner } from '../models/GetDanmaku200ResponseInner';
 import { Users200Response } from '../models/Users200Response';
 import { VideoDetail200Response } from '../models/VideoDetail200Response';
 import { Videos200Response } from '../models/Videos200Response';
@@ -43,6 +44,21 @@ export class PromiseDefaultApi {
     }
 
     /**
+     * Create new danmaku
+     * @param videoID video ID for danmaku
+     * @param timestamp timestamp for danmaku
+     * @param message message
+     * @param authorID author of comment
+     * @param type type of comment
+     * @param color comment color
+     * @param fontSize comment font size
+     */
+    public createDanmaku(videoID: number, timestamp: string, message: string, authorID: number, type: string, color: string, fontSize: string, _options?: Configuration): Promise<void> {
+        const result = this.api.createDanmaku(videoID, timestamp, message, authorID, type, color, fontSize, _options);
+        return result.toPromise();
+    }
+
+    /**
      * Delete a comment
      * @param id comment ID
      */
@@ -65,6 +81,15 @@ export class PromiseDefaultApi {
      */
     public followFeed(_options?: Configuration): Promise<Array<Videos200ResponseVideosInner>> {
         const result = this.api.followFeed(_options);
+        return result.toPromise();
+    }
+
+    /**
+     * Get danmaku for video
+     * @param id video ID
+     */
+    public getDanmaku(id: number, _options?: Configuration): Promise<Array<GetDanmaku200ResponseInner>> {
+        const result = this.api.getDanmaku(id, _options);
         return result.toPromise();
     }
 
