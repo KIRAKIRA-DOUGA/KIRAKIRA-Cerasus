@@ -115,21 +115,12 @@
 	});
 
 	watch(willSendDanmaku, danmaku => {
-		if (danmaku) {
+		if (danmaku)
 			willInsertDanmaku.value = {
 				videoTime: new Duration(currentTime.value),
 				content: danmaku.text!,
 				sendTime: new Date(),
 			};
-
-			// Insert into backend
-			const api = useApi();
-			// TODO: video id
-			// TODO: user id
-			// TODO: color
-			// TODO: font size
-			api.createDanmaku(6, currentTime.value.toString(), danmaku.text!, 6, danmaku?.mode?.toString(), "DC1FED", "large");
-		}
 	});
 
 	const player = ref<MediaPlayerClass>();
@@ -282,6 +273,7 @@
 			:id="id"
 			v-model:sendDanmaku="willSendDanmaku"
 			v-model:insertDanmaku="willInsertDanmaku"
+			:getTime="() => currentTime"
 			:rating="rating"
 		/>
 		<Menu v-model="menu">

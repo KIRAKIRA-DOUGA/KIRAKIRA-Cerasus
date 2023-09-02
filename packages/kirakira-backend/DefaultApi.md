@@ -160,8 +160,6 @@ let body:.DefaultApiCreateDanmakuRequest = {
   timestamp: "timestamp_example",
   // string | message
   message: "message_example",
-  // number | author of comment
-  authorID: 3.14,
   // string | type of comment
   type: "Type_example",
   // string | comment color
@@ -183,7 +181,6 @@ Name | Type | Description  | Notes
  **videoID** | [**number**] | video ID for danmaku | defaults to undefined
  **timestamp** | [**string**] | timestamp for danmaku | defaults to undefined
  **message** | [**string**] | message | defaults to undefined
- **authorID** | [**number**] | author of comment | defaults to undefined
  **type** | [**string**] | type of comment | defaults to undefined
  **color** | [**string**] | comment color | defaults to undefined
  **fontSize** | [**string**] | comment font size | defaults to undefined

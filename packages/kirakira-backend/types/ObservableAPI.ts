@@ -80,13 +80,12 @@ export class ObservableDefaultApi {
      * @param videoID video ID for danmaku
      * @param timestamp timestamp for danmaku
      * @param message message
-     * @param authorID author of comment
      * @param type type of comment
      * @param color comment color
      * @param fontSize comment font size
      */
-    public createDanmaku(videoID: number, timestamp: string, message: string, authorID: number, type: string, color: string, fontSize: string, _options?: Configuration): Observable<void> {
-        const requestContextPromise = this.requestFactory.createDanmaku(videoID, timestamp, message, authorID, type, color, fontSize, _options);
+    public createDanmaku(videoID: number, timestamp: string, message: string, type: string, color: string, fontSize: string, _options?: Configuration): Observable<void> {
+        const requestContextPromise = this.requestFactory.createDanmaku(videoID, timestamp, message, type, color, fontSize, _options);
 
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);

@@ -1,4 +1,9 @@
 <script setup lang="ts">
+	const props = defineProps<{
+		getTime: Function;
+		videoID: number;
+	}>();
+
 	const sendDanmaku = defineModel<DanmakuComment>();
 
 	const content = ref("");
@@ -36,7 +41,13 @@
 	 */
 	function onSend() {
 		if (!content.value) return;
+
 		const text = content.value;
+
+		// Insert into backend
+		const api = useApi();
+		api.createDanmaku(props.videoID, props.getTime(), text, style.mode, style.color.toString(), style.fontSize);
+
 		sendDanmaku.value = {
 			text,
 			mode: style.mode,

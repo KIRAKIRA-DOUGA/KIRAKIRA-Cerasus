@@ -63,12 +63,6 @@ export interface DefaultApiCreateDanmakuRequest {
      */
     message: string
     /**
-     * author of comment
-     * @type number
-     * @memberof DefaultApicreateDanmaku
-     */
-    authorID: number
-    /**
      * type of comment
      * @type string
      * @memberof DefaultApicreateDanmaku
@@ -356,7 +350,7 @@ export class ObjectDefaultApi {
      * @param param the request object
      */
     public createDanmaku(param: DefaultApiCreateDanmakuRequest, options?: Configuration): Promise<void> {
-        return this.api.createDanmaku(param.videoID, param.timestamp, param.message, param.authorID, param.type, param.color, param.fontSize,  options).toPromise();
+        return this.api.createDanmaku(param.videoID, param.timestamp, param.message, param.type, param.color, param.fontSize,  options).toPromise();
     }
 
     /**

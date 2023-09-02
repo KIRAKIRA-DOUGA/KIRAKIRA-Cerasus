@@ -48,13 +48,12 @@ export class PromiseDefaultApi {
      * @param videoID video ID for danmaku
      * @param timestamp timestamp for danmaku
      * @param message message
-     * @param authorID author of comment
      * @param type type of comment
      * @param color comment color
      * @param fontSize comment font size
      */
-    public createDanmaku(videoID: number, timestamp: string, message: string, authorID: number, type: string, color: string, fontSize: string, _options?: Configuration): Promise<void> {
-        const result = this.api.createDanmaku(videoID, timestamp, message, authorID, type, color, fontSize, _options);
+    public createDanmaku(videoID: number, timestamp: string, message: string, type: string, color: string, fontSize: string, _options?: Configuration): Promise<void> {
+        const result = this.api.createDanmaku(videoID, timestamp, message, type, color, fontSize, _options);
         return result.toPromise();
     }
 
