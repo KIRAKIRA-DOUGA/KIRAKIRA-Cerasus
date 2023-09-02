@@ -49,5 +49,10 @@
 			color: c(accent);
 			border-color: c(accent-30);
 		}
+		
+		@container style(--column: single) {
+			font-size: 20px;
+			line-height: 42px;
+		}
 	}
 </style>
