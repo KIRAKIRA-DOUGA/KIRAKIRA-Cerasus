@@ -8,8 +8,8 @@
 		getTime: Function;
 	}>();
 
-	const sendDanmaku = defineModel<DanmakuComment>("sendDanmaku");
-	const insertDanmaku = defineModel<DanmakuListItem>("insertDanmaku");
+	const sendDanmaku = defineModel<DanmakuComment[]>("sendDanmaku");
+	const insertDanmaku = defineModel<DanmakuListItem[]>("insertDanmaku");
 
 	const counts = reactive({
 		play: 100n,

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 	import mediainfo from "mediainfo.js";
 	import { MediaPlayerClass, BitrateInfo } from "dashjs";
+	import { GetDanmaku200ResponseInner } from "packages/kirakira-backend";
 
 	const props = defineProps<{
 		/** 视频源。 */
@@ -32,9 +33,9 @@
 	const resample = computed({ get: () => !preservesPitch.value, set: value => preservesPitch.value = !value });
 	const menu = ref<MenuModel>();
 	const showDanmaku = ref(true);
-	const willSendDanmaku = ref<DanmakuComment>();
-	const willInsertDanmaku = ref<DanmakuListItem>();
-
+	const willSendDanmaku = ref<Array<DanmakuComment>>();
+	const willInsertDanmaku = ref<Array<DanmakuListItem>>();
+	const initialDanmaku = ref<DanmakuComment[]>();
 	type MediaInfo = Record<string, Record<string, unknown>>;
 
 	/**
@@ -114,13 +115,53 @@
 			screen.orientation.unlock();
 	});
 
+	// COPY PASTA ALERT
+	const fontSizes = {
+		small: 14,
+		medium: 20,
+		large: 28,
+	};
+	type DanmakuMode = NonNull<DanmakuComment["mode"]>;
+
+	/**
+	 * Fetch video danmaku
+	 */
+	async function fetchDanmaku() {
+		const api = useApi();
+		const handleError = (e: unknown) => console.error(e);
+
+		try {
+			const danmaku :Array<GetDanmaku200ResponseInner> = await api.getDanmaku(props.id);
+			willSendDanmaku.value = danmaku.map((e: GetDanmaku200ResponseInner) => {
+				return {
+					text: e.message,
+					mode: e.type as DanmakuMode,
+					time: e.timestamp,
+					render() {
+						const div = document.createElement("div");
+						div.textContent = e.message || "";
+						div.classList.add("dm");
+						// if (style.enableRainbow) div.classList.add("dm-rainbow");
+						Object.assign(div.style, {
+							fontSize: fontSizes[e.fontSize] + "px",
+							color: e.color ? "#" + e.color : undefined,
+						});
+						return div;
+					},
+				} as DanmakuComment;
+			});
+		} catch (error) { handleError(error); }
+	}
+
 	watch(willSendDanmaku, danmaku => {
 		if (danmaku)
-			willInsertDanmaku.value = {
-				videoTime: new Duration(currentTime.value),
-				content: danmaku.text!,
-				sendTime: new Date(),
-			};
+			willInsertDanmaku.value = danmaku.map(e => {
+				return {
+					videoTime: e.time ?? currentTime.value,
+					content: e.text!,
+					sendTime: new Date(),
+				};
+			});
 	});
 
 	const player = ref<MediaPlayerClass>();
@@ -161,6 +202,9 @@
 			});
 
 			player.value.attachView(video.value);
+
+			watch(() => props.id, fetchDanmaku);
+			await fetchDanmaku();
 		}
 	});
 
@@ -249,7 +293,7 @@
 				@contextmenu.prevent="e => menu = e"
 			>
 			</video>
-			<PlayerVideoDanmaku v-model="willSendDanmaku" :media="video" :hidden="!showDanmaku" />
+			<PlayerVideoDanmaku v-model="willSendDanmaku" :comments="initialDanmaku" :media="video" :hidden="!showDanmaku" />
 			<PlayerVideoController
 				:key="qualities.length"
 				v-model:currentTime="currentTime"
