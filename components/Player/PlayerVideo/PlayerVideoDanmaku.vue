@@ -28,7 +28,7 @@
 		speed: undefined,
 	});
 
-	const emitted = defineModel<DanmakuComment>();
+	const emitted = defineModel<DanmakuComment[]>();
 	const danmakuContainer = ref<HTMLDivElement>();
 	const danmaku = ref<Danmaku>();
 	const resizeObserver = ref<ResizeObserver>();
@@ -91,8 +91,12 @@
 	}
 
 	watch(emitted, emittedDanmaku => {
-		if (emittedDanmaku) emit(emittedDanmaku);
-		emitted.value = undefined;
+		if (emittedDanmaku) {
+			emittedDanmaku.forEach(e => {
+				emit(e);
+			});
+			emitted.value = undefined;
+		}
 	});
 
 	defineExpose({

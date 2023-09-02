@@ -4,7 +4,7 @@
 		videoID: number;
 	}>();
 
-	const sendDanmaku = defineModel<DanmakuComment>();
+	const sendDanmaku = defineModel<DanmakuComment[]>();
 
 	const content = ref("");
 	const flyoutKaomoji = ref<FlyoutModel>();
@@ -48,7 +48,7 @@
 		const api = useApi();
 		api.createDanmaku(props.videoID, props.getTime(), text, style.mode, style.color.toString(), style.fontSize);
 
-		sendDanmaku.value = {
+		sendDanmaku.value = [{
 			text,
 			mode: style.mode,
 			render() {
@@ -62,7 +62,7 @@
 				});
 				return div;
 			},
-		};
+		}];
 		content.value = "";
 	}
 </script>

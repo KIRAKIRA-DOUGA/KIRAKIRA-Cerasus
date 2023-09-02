@@ -1,6 +1,6 @@
+import type Danmaku from "danmaku";
 import * as themeTypes from "modules/theme/types";
 import { AcceptedPlugin } from "postcss";
-import type Danmaku from "danmaku";
 
 export namespace FlyoutModelNS {
 	export type Target = MaybeRef<MouseEvent | PointerEvent | TwoD | HTMLElement | EventTarget | DOMRect | undefined | null>;
@@ -34,7 +34,7 @@ declare global {
 	/** 视图。 */
 	type ViewType = "list" | "grid" | "tile";
 	/** 排序顺序，升序或降序。 */
-	type SortOrder = "ascending" | "descending";
+	type SortOrder = "asc" | "desc";
 	/** 主题。 */
 	type ThemeType = themeTypes.ThemeType;
 	/** 主题，包括跟随系统。 */
@@ -45,16 +45,15 @@ declare global {
 	type TabBarMovement = Movement | "ignore" | "none" | "fade";
 	/** 可作为 URL Search Params 的更宽松类型。 */
 	type UrlQueryType = string | URLSearchParams | Record<string, Readable>;
-	/** 发射弹幕信息。 */
+
 	type DanmakuComment = Parameters<Danmaku["emit"]>[0];
+
 	/** 弹幕列表项目。 */
 	interface DanmakuListItem {
 		videoTime: Duration;
 		content: string;
 		sendTime: Date;
 	}
-	/** 颜色模型。 */
-	type ColorModel = "rgb" | "hsl" | "hsb";
 
 	type FlyoutModel = FlyoutModelNS.Tuple | FlyoutModelNS.Object;
 	type MenuModel = MouseEvent | PointerEvent | null;
