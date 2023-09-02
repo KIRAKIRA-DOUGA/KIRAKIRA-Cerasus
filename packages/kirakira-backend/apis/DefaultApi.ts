@@ -109,12 +109,11 @@ export class DefaultApiRequestFactory extends BaseAPIRequestFactory {
      * @param videoID video ID for danmaku
      * @param timestamp timestamp for danmaku
      * @param message message
-     * @param authorID author of comment
      * @param type type of comment
      * @param color comment color
      * @param fontSize comment font size
      */
-    public async createDanmaku(videoID: number, timestamp: string, message: string, authorID: number, type: string, color: string, fontSize: string, _options?: Configuration): Promise<RequestContext> {
+    public async createDanmaku(videoID: number, timestamp: string, message: string, type: string, color: string, fontSize: string, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
 
         // verify required parameter 'videoID' is not null or undefined
@@ -132,12 +131,6 @@ export class DefaultApiRequestFactory extends BaseAPIRequestFactory {
         // verify required parameter 'message' is not null or undefined
         if (message === null || message === undefined) {
             throw new RequiredError("DefaultApi", "createDanmaku", "message");
-        }
-
-
-        // verify required parameter 'authorID' is not null or undefined
-        if (authorID === null || authorID === undefined) {
-            throw new RequiredError("DefaultApi", "createDanmaku", "authorID");
         }
 
 
@@ -174,9 +167,6 @@ export class DefaultApiRequestFactory extends BaseAPIRequestFactory {
 
         // Header Params
         requestContext.setHeaderParam("message", ObjectSerializer.serialize(message, "string", ""));
-
-        // Header Params
-        requestContext.setHeaderParam("AuthorID", ObjectSerializer.serialize(authorID, "number", ""));
 
         // Header Params
         requestContext.setHeaderParam("Type", ObjectSerializer.serialize(type, "string", ""));

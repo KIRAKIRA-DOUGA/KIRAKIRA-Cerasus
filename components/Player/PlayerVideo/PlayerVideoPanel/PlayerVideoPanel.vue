@@ -4,6 +4,8 @@
 		id: number;
 		/** 视频评分。 */
 		rating: number;
+
+		getTime: Function;
 	}>();
 
 	const sendDanmaku = defineModel<DanmakuComment>("sendDanmaku");
@@ -92,7 +94,7 @@
 			</div>
 		</div>
 		<PlayerVideoPanelDanmakuList v-model="insertDanmaku" />
-		<PlayerVideoPanelDanmakuSender v-model="sendDanmaku" />
+		<PlayerVideoPanelDanmakuSender v-model="sendDanmaku" :videoID="props.id" :getTime="props.getTime" />
 	</Comp>
 </template>
 
