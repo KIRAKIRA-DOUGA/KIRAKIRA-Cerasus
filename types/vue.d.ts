@@ -33,7 +33,7 @@ declare module "vue" {
 		__scopeId?: string;
 	}
 
-	export interface AllowedComponentProps extends Exclude<HTMLAttributes, EventHandlers<Events>> {
+	export interface AllowedComponentProps extends HTMLAttributes { // Exclude<HTMLAttributes, EventHandlers<Events>> {
 		lang?: string;
 		title?: Readable;
 		tabindex?: Numberish;

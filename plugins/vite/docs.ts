@@ -1,4 +1,4 @@
-import plaintextLoaderPluginGenerator from "./plaintext";
+import plaintextLoaderPluginGenerator from "./utils/plaintext";
 
 // vueDocsPlugin
 const docsLoader = plaintextLoaderPluginGenerator("docs-loader", /vue&type=docs/);
