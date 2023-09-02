@@ -19,11 +19,11 @@ declare global {
 		readonly height: number;
 	}
 
-	type PaintStylePropertyMapReadOnly<T> = Override<StylePropertyMapReadOnly, {
+	type PaintStylePropertyMapReadOnly<T extends string = string> = Override<StylePropertyMapReadOnly, {
 		get(property: T): CSSUnparsedValue;
 	}>;
 
-	interface PaintWorklet<T> {
+	interface PaintWorklet<T extends string = string> {
 		paint(
 			context: PaintRenderingContext2D,
 			geometry: PaintSize,
@@ -31,15 +31,15 @@ declare global {
 		): void;
 	}
 
-	interface PaintWorkletConstructor<T> {
-		inputProperties: T[];
+	interface PaintWorkletConstructor<T extends string> {
+		inputProperties: readonly T[];
 		contextOptions?: { alpha: boolean };
 		new(): PaintWorklet<T>;
 	}
 
-	declare function registerPaint(
+	declare function registerPaint<T extends string>(
 		name: string,
-		worklet: PaintWorkletConstructor | typeof PaintWorklet<string>,
+		worklet: PaintWorkletConstructor<T>,
 	): void;
 
 	declare namespace CSS {
