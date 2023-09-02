@@ -250,6 +250,13 @@ const SChinese = {
 			allow_cookies: "允许网站使用Cookies",
 			info_visibility: "信息可见性",
 		},
+		appearance: {
+			other: {
+				sharp_mode: "直角模式",
+				flat_mode: "扁平模式",
+				colorful_navbar: "彩色导航栏",
+			},
+		},
 		about: {
 			repositories: "代码仓库",
 			creative_team: "创作团队",
@@ -326,6 +333,7 @@ const SChinese = {
 		_: "导航",
 		back: "返回",
 	},
+	other: "其它",
 } as const;
 
 export default SChinese;

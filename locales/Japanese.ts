@@ -252,6 +252,13 @@ const Japanese: LocaleIdentifiers = {
 			allow_cookies: "Cookieの利用を同意する",
 			info_visibility: "情報の公開範囲",
 		},
+		appearance: {
+			other: {
+				sharp_mode: "直角模式", // NEW
+				flat_mode: "扁平模式", // NEW
+				colorful_navbar: "彩色导航栏", // NEW
+			},
+		},
 		about: {
 			repositories: "リポジトリ",
 			creative_team: "開発チーム",
@@ -328,6 +335,7 @@ const Japanese: LocaleIdentifiers = {
 		_: "ナビ",
 		back: "戻る",
 	},
+	other: "Other", // NEW
 };
 
 export default Japanese;

@@ -70,11 +70,11 @@
 		<SettingsChipItem icon="wallpaper" trailingIcon="edit">{{ t.custom_background }}</SettingsChipItem>
 	</section>
 
-	<Subheader icon="more_horiz">其它</Subheader>
+	<Subheader icon="more_horiz">{{ t.other }}</Subheader>
 	<section list>
-		<ToggleSwitch v-model="useAppSettingsStore().sharpAppearanceMode" v-ripple icon="square">直角样式</ToggleSwitch>
-		<ToggleSwitch v-model="useAppSettingsStore().flatAppearanceMode" v-ripple icon="layers">扁平样式</ToggleSwitch>
-		<ToggleSwitch v-model="useAppSettingsStore().coloredSideBar" v-ripple icon="dehaze">彩色导航栏</ToggleSwitch>
+		<ToggleSwitch v-model="useAppSettingsStore().sharpAppearanceMode" v-ripple icon="square">{{ t.settings.appearance.other.sharp_mode }}</ToggleSwitch>
+		<ToggleSwitch v-model="useAppSettingsStore().flatAppearanceMode" v-ripple icon="layers">{{ t.settings.appearance.other.flat_mode }}</ToggleSwitch>
+		<ToggleSwitch v-model="useAppSettingsStore().coloredSideBar" v-ripple icon="dehaze">{{ t.settings.appearance.other.colorful_navbar }}</ToggleSwitch>
 	</section>
 </template>
 
@@ -162,12 +162,12 @@
 				}
 			}
 		}
-		
+
 		@container style(--column: single) {
 			p {
 				display: none;
 			}
-			
+
 			.icon {
 				margin-top: -0.25em;
 			}
