@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	useHead({ title: "首页" });
+	useHead({ title: t.home });
 
 	const videos = ref<Videos200Response>();
 	const route = useRoute();

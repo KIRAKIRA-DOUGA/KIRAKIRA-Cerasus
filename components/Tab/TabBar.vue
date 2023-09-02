@@ -337,16 +337,19 @@
 	}
 	
 	.flip-view-button {
+		$hide-color: c(icon-color, 7%);
 		position: absolute;
 		top: 0;
 		z-index: 5;
-		
+
 		&.left {
 			left: 0;
+			background: linear-gradient(to left, transparent, $hide-color);
 		}
 		
 		&.right {
 			right: 0;
+			background: linear-gradient(to right, transparent, $hide-color);
 		}
 	}
 
