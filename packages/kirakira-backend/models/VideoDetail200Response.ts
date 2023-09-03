@@ -26,6 +26,7 @@ export class VideoDetail200Response {
     'profilePicture'?: string;
     'uploadDate'?: string;
     'comments'?: any;
+    'thumbnail'?: string;
     'tags'?: Array<string>;
     'videoDuration'?: number;
 
@@ -108,6 +109,12 @@ export class VideoDetail200Response {
             "name": "comments",
             "baseName": "Comments",
             "type": "any",
+            "format": ""
+        },
+        {
+            "name": "thumbnail",
+            "baseName": "Thumbnail",
+            "type": "string",
             "format": ""
         },
         {

@@ -22,6 +22,7 @@ export class Users200Response {
     'bio'?: string;
     'birthdate'?: string;
     'gender'?: string;
+    'joinDate'?: string;
     'videos'?: Array<Videos200ResponseVideosInner>;
 
     static readonly discriminator: string | undefined = undefined;
@@ -66,6 +67,12 @@ export class Users200Response {
         {
             "name": "gender",
             "baseName": "Gender",
+            "type": "string",
+            "format": ""
+        },
+        {
+            "name": "joinDate",
+            "baseName": "JoinDate",
             "type": "string",
             "format": ""
         },
