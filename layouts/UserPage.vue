@@ -13,31 +13,18 @@
 
 <script setup lang="ts">
 	import users from "helpers/users";
-	import { Users200Response } from "packages/kirakira-backend";
 
-	// TODO nice copy pasta dude
 	const uid = currentUserUid();
-	const user = ref<Users200Response>();
+	// if (!users[uid]) navigate("/error/404"); // 在后端加持下暂时移除。
+	const user = users[uid] ?? {};
 
-	const data = reactive({
-		uid,
-	});
+	const isSelf = ref(false); // 是否为登录用户本人。
 
-	/** fetch the user profile data */
-	async function fetchData() {
-		const api = useApi();
-		try {
-			user.value = await api.users(uid);
-		} catch (error) { console.error(error); }
-	}
-	watch(data, fetchData, { deep: true });
-	await fetchData();
-
-	const actionMenu = ref<MenuModel>();
+	const actionMenu = ref<FlyoutModel>();
 	const fullwidthRegexp = /[⺀-ㄯ㆐-ㇿ㈠-㉇㊀-㊰㋀-㋋㋐-㍰㍻-㍿㏠-㏾㐀-䶿一-鿿豈-龎︐-︙︰-﹫！-｠￠-￦𚿰-𛅧𠀀-𲎯]/u;
 	// 验证是否是加上全宽括弧而不是半宽括弧，条件是包含至少一个非谚文的全宽字符。
 	const memoParen = computed(() => {
-		const memo = user.value?.bio ?? "";
+		const memo = user.memo ?? "";
 		return !memo.trim() ? "" :
 			fullwidthRegexp.exec(memo) ? "fullwidth" : "halfwidth";
 	});
@@ -46,7 +33,7 @@
 		set: async id => { await forceNavigate(`/user/${uid}/${id}`, () => currentTab.value === id); },
 	});
 
-	useHead({ title: user.value?.username });
+	useHead({ title: user.username + t.user_page.title_suffix });
 </script>
 
 <template>
@@ -58,27 +45,31 @@
 					<div class="texts">
 						<div class="names">
 							<span class="username">{{ user.username }}</span>
-							<span v-if="memoParen" class="memo" :class="[memoParen]">{{ user.bio }}</span>
+							<span v-if="memoParen" class="memo" :class="[memoParen]">{{ user.memo }}</span>
 							<span class="icons">
 								<Icon v-if="user.gender === 'male'" name="male" class="male" />
 								<Icon v-else-if="user.gender === 'female'" name="female" class="female" />
 								<span v-else class="other-gender">{{ user.gender }}</span>
 							</span>
 						</div>
-						<div class="signature">{{ user.signature }}</div>
+						<div class="bio">{{ user.bio }}</div>
 					</div>
 				</div>
 				<div class="actions">
-					<SoftButton v-tooltip:top="'私信'" icon="email" />
-					<SoftButton v-tooltip:top="'更多操作'" icon="more_vert" @click="e => actionMenu = e" />
+					<!-- <SoftButton v-tooltip:top="'私信'" icon="email" /> -->
+					<SoftButton v-tooltip:top="t.more" icon="more_vert" @click="e => actionMenu = [e, 'y']" />
 					<Menu v-model="actionMenu">
-						<MenuItem icon="badge">修改备注</MenuItem>
+						<MenuItem icon="badge">{{ t.modify_memo }}</MenuItem>
+						<MenuItem icon="groups">{{ t.add_to_group }}</MenuItem>
 						<hr />
-						<MenuItem icon="flag">{{ t.report }}</MenuItem>
-						<MenuItem icon="block">加入黑名单</MenuItem>
+						<MenuItem v-tooltip:x="'老铁们，给我举报他！'" icon="flag">{{ t.report }}</MenuItem>
+						<MenuItem icon="block">{{ t.add_to_blocklist }}</MenuItem>
 					</Menu>
-					<Button v-if="!user.isFollowed">{{ t.follow }}</Button>
-					<Button v-else disabled>{{ t.following }}</Button>
+					<div v-if="!isSelf" class="follow-button">
+						<Button v-if="!user.isFollowed">{{ t.follow }}</Button>
+						<Button v-else disabled>{{ t.following }}</Button>
+					</div>
+					<Button v-if="isSelf">{{ t.manage_content }}</Button>
 				</div>
 			</div>
 			<TabBar v-model="currentTab">
@@ -177,7 +168,7 @@
 				}
 			}
 
-			.signature {
+			.bio {
 				margin-top: 6px;
 				color: c(icon-color);
 				user-select: text;
@@ -187,6 +178,7 @@
 		.actions {
 			display: flex;
 			gap: 16px;
+			align-items: center;
 			justify-content: flex-end;
 			margin-left: auto;
 		}
@@ -213,8 +205,7 @@
 		}
 
 		> .left,
-		> .right,
-		> .center-right > .right {
+		> .right {
 			flex-shrink: 0;
 
 			@include computer {
@@ -223,34 +214,29 @@
 			}
 		}
 
-		> .center,
-		> .center-right > .center {
+		> .center {
 			width: 100%;
 		}
 
-		> .center-right {
-			display: flex;
-			gap: 20px;
-			align-items: flex-start;
-			width: 100%;
-		}
-
-		&:has(> .center-right) {
+		&:has(> .center):has(> .left):has(> .right) {
 			@media (width < 1280px) {
 				flex-direction: column;
-
-				> .center-right {
-					flex-direction: column-reverse;
-				}
 
 				.toolbox-card {
 					width: 100%;
 				}
 
 				> .left,
-				> .right,
-				> .center-right > .right {
+				> .right {
 					position: static;
+				}
+
+				> .right {
+					order: 1;
+				}
+
+				> .center {
+					order: 2;
 				}
 			}
 		}

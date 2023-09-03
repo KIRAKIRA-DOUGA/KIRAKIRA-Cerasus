@@ -36,6 +36,7 @@ export default defineNuxtPlugin(nuxt => {
 		mounted(element, binding) {
 			setElementBinding(element, binding.value, binding.arg);
 			addEventListeners(element, "mouseenter", "focusin", () => {
+				console.log(element);
 				if (!elementBinding.has(element)) return;
 				useEvent("component:showTooltip", createEvent(element));
 			});
