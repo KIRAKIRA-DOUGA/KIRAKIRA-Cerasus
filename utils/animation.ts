@@ -198,8 +198,8 @@ export async function animateSize(
 	options: AnimateSizeOptions = {},
 ): Promise<Animation | void> {
 	const gen = animateSizeGenerator(element, options);
-	await gen.next();
-	await changeFunc?.();
+	gen.next();
+	if (changeFunc) await changeFunc();
 	const animation = await gen.next(!!changeFunc);
 	return animation.value;
 }
