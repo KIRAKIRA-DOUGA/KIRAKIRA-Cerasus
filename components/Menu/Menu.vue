@@ -1,5 +1,8 @@
 <script setup lang="ts">
 	import { ClientOnlyTeleport, Fragment } from "#components";
+	import { FlyoutModelNS } from "types/arguments";
+	import { getLocation } from "components/Flyout/Flyout.vue";
+	import { getPosition } from "plugins/vue/tooltip";
 
 	const emits = defineEmits<{
 		show: [];
@@ -10,13 +13,13 @@
 		default?: typeof MenuItem;
 	}>();
 
-	const model = defineModel<MenuModel>();
+	const model = defineModel<MenuModel | FlyoutModel>();
 	/** 是否显示菜单？ */
 	const shown = ref(false);
 	const menu = ref<HTMLMenuElement>();
 	const isContextMenu = ref(false);
 	const location = ref<TwoD>([0, 0]);
-	const size = ref<TwoD>([0, 0]);
+	const size = ref<TwoD>();
 
 	/**
 	 * 隐藏菜单。
@@ -29,23 +32,49 @@
 
 	/**
 	 * 显示菜单。
-	 * @param e - 如有鼠标事件则为上下文菜单，否则为弹出式菜单。
+	 * @param target - 如有鼠标事件则为上下文菜单，否则为弹出式菜单。
+	 * @param placement - 上下文菜单出现方向。
+	 * @param offset - 与目标元素距离偏移。
 	 */
-	async function show(e?: MenuModel) {
-		const context = isContextMenu.value = !!e;
+	async function show(target: FlyoutModelNS.Target, placement?: Placement | false, offset?: number) {
+		target = toValue(target);
 		await nextTick();
-		if (!context) location.value = [0, 0];
-		else location.value = [e.clientX, e.clientY];
+		const [_location, targetRect] = getLocation(target);
+		if (!_location) location.value = [0, 0];
+		else if (placement === false && target instanceof MouseEvent)
+			location.value = [target.clientX, target.clientY];
+		else location.value = _location;
+		isContextMenu.value = !!_location;
 		shown.value = true;
-		await nextTick();
+		let retryCount = 10;
+		while (!size.value && retryCount--)
+			await nextTick();
+		if (placement !== false && targetRect) {
+			shown.value = false;
+			const result = getPosition(targetRect, placement, offset, size);
+			location.value = result.position;
+			await nextTick();
+			shown.value = true;
+			await nextTick();
+		}
 		location.value = moveIntoPage(location, size);
 		emits("show");
 	}
 
 	watch(model, e => {
-		if (e === undefined) hide(); // undefined 表示隐藏，null 表示占位菜单而非上下文菜单。
-		else show(e);
-	}, { immediate: true });
+		if (e === undefined) {
+			hide(); // undefined 表示隐藏，null 表示占位菜单而非上下文菜单。
+			return;
+		}
+		if (e instanceof Array) {
+			const [target, placement, offset] = e;
+			e = { target, placement, offset };
+		}
+		if (e === null || e instanceof MouseEvent)
+			show(e, false);
+		else
+			show(e.target, e.placement, e.offset);
+	}, { immediate: true, deep: true });
 
 	defineExpose({
 		hide, show,
@@ -58,7 +87,7 @@
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
 	async function onMenuEnter(el: Element, done: () => void) {
-		await animateSize(el, null, { startHeight: 0, duration: 500, getSize: size.value, withoutAdjustPadding: "both" });
+		await animateSize(el, null, { startHeight: 0, duration: 500, getSize: size, withoutAdjustPadding: "both" });
 		done();
 	}
 
@@ -70,6 +99,7 @@
 	 */
 	async function onMenuLeave(el: Element, done: () => void) {
 		await animateSize(el, null, { endHeight: 0, duration: 300 });
+		size.value = undefined;
 		done();
 	}
 

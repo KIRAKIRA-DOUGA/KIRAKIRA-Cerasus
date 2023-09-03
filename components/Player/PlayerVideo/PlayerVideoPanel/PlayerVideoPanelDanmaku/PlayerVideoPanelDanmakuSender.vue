@@ -160,6 +160,7 @@
 					@click="e => flyoutKaomoji = [e, 'y', OFFSET_Y]"
 				/>
 				<SoftButton
+					v-tooltip:bottom="t.format"
 					icon="text_format"
 					appearance="textbox-trailingicon"
 					:active="!!flyoutStyle"

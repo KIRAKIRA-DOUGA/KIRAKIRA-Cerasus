@@ -72,7 +72,7 @@ type AnimateSizeOptions = Partial<{
 	/** 在改变回调函数后自动增加等待下一帧。 */
 	nextTick: boolean;
 	/** 获取最终的元素尺寸。 */
-	getSize: TwoD;
+	getSize: TwoD | Ref<TwoD | undefined>;
 	/** 获取最终的元素矩形。 */
 	getRect: Ref<DOMRect | undefined>;
 	/** 显式指定初始样式（可选）。 */
@@ -135,7 +135,8 @@ export async function* animateSizeGenerator(
 	endHeight ??= element.clientHeight;
 	endWidth ??= element.clientWidth;
 	if (getSize)
-		[getSize[0], getSize[1]] = [endWidth, endHeight];
+		if (getSize instanceof Array) [getSize[0], getSize[1]] = [endWidth, endHeight];
+		else getSize.value = [endWidth, endHeight];
 	if (getRect)
 		getRect.value = element.getBoundingClientRect();
 	let isHeightChanged = specified === "height" || specified === "both",
