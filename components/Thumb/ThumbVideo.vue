@@ -146,7 +146,7 @@
 			margin-bottom: 8px;
 		}
 
-		@container style(--view: list), {
+		@container style(--view: list) {
 			width: 135px;
 		}
 
