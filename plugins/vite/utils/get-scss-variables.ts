@@ -34,7 +34,11 @@ export function getScssVariables(styles: string | string[]) {
 
 export function getScssVariablesFromScript(styles: string | string[], objectName: string) {
 	const { variables } = getScssVariables(styles);
-	return `\n\tconst ${objectName} = createScssVariablesReference(${JSON.stringify(variables)});\n`;
+	return `<script lang="ts">
+	const ${objectName} = createScssVariablesReference(${JSON.stringify(variables)});
+</script>
+
+`;
 }
 
 export function getScssVariablesFromModule(styles: string | string[]) {

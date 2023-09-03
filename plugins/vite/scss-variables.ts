@@ -17,6 +17,6 @@ export default () => ({
 		const styles = Array.from(src.matchAll(/<style.*?lang="scss".*?>(.*?)<\/style>/gisu), block => block[1].trim());
 		const declaration = getScssVariablesFromScript(styles, OBJECT_NAME);
 
-		return src.replace(/(?<=<script.*?>)/, declaration).replaceAll(MACRO, OBJECT_NAME);
+		return declaration + src.replaceAll(MACRO, OBJECT_NAME);
 	},
 });
