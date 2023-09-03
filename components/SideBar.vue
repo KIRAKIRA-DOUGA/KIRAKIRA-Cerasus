@@ -118,7 +118,7 @@
 			@include flex-center;
 			width: max-content;
 			rotate: -100grad;
-			transition: $fallback-transitions, rotate 0s;
+			transition: $fallback-transitions, rotate 0s, padding 0s;
 
 			.stripes {
 				display: flex; // 结论：池沼 block 布局会恶意在元素之间加空隙还找不出原因。
@@ -169,14 +169,18 @@
 			} */
 		}
 
-		.bottom ~ * {
-			display: none;
+		.bottom {
+			transition: $fallback-transitions, margin 0s;
+
+			~ * {
+				display: none;
+			}
 		}
 
 		.soft-button {
 			--ripple-size: 40px;
 		}
-		
+
 		@include not-mobile {
 			.pe {
 				display: none;
