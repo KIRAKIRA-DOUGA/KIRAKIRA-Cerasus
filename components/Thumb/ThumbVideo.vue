@@ -133,6 +133,7 @@
 	.cover-wrapper {
 		@include round-large;
 		flex-shrink: 0;
+		margin-bottom: 8px;
 		overflow: hidden;
 		aspect-ratio: 16 / 9;
 
@@ -142,16 +143,9 @@
 			object-fit: cover;
 		}
 
-		@container style(--view: grid) {
-			margin-bottom: 8px;
-		}
-
-		@container style(--view: list) {
+		@container style(--view: list) or style(--view: tile) {
 			width: 135px;
-		}
-
-		@container style(--view: tile) {
-			width: 135px;
+			margin-bottom: 0;
 		}
 	}
 
