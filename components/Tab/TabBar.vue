@@ -16,7 +16,7 @@
 
 	const model = defineModel<string>({ required: true });
 	const { RenderComp, slotNode } = useFactory();
-	
+
 	const tabBarInline = ref<HTMLSpanElement>();
 	const indicator = ref<HTMLDivElement>();
 	const unmounted = ref(false);
@@ -324,18 +324,16 @@
 			align-items: flex-start;
 		}
 	}
-	
+
 	.inline {
 		position: relative;
 		display: inline-block;
-		
-		// TODO: 当页面宽度过窄时，横向 Tab 内容超出页面宽度范围会被截去内容，还需要添加点击 TAB 两侧三角形按钮来滑动 TAB 页面。
 
 		:comp.vertical & {
 			width: 100%;
 		}
 	}
-	
+
 	.flip-view-button {
 		$hide-color: c(icon-color, 7%);
 		position: absolute;
@@ -346,7 +344,7 @@
 			left: 0;
 			background: linear-gradient(to left, transparent, $hide-color);
 		}
-		
+
 		&.right {
 			right: 0;
 			background: linear-gradient(to right, transparent, $hide-color);

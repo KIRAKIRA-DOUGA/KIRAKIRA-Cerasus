@@ -20,7 +20,7 @@
 
 	const isSelf = ref(false); // 是否为登录用户本人。
 
-	const actionMenu = ref<MenuModel>();
+	const actionMenu = ref<FlyoutModel>();
 	const fullwidthRegexp = /[⺀-ㄯ㆐-ㇿ㈠-㉇㊀-㊰㋀-㋋㋐-㍰㍻-㍿㏠-㏾㐀-䶿一-鿿豈-龎︐-︙︰-﹫！-｠￠-￦𚿰-𛅧𠀀-𲎯]/u;
 	// 验证是否是加上全宽括弧而不是半宽括弧，条件是包含至少一个非谚文的全宽字符。
 	const memoParen = computed(() => {
@@ -57,7 +57,7 @@
 				</div>
 				<div class="actions">
 					<!-- <SoftButton v-tooltip:top="'私信'" icon="email" /> -->
-					<SoftButton v-tooltip:top="t.more" icon="more_vert" @click="e => actionMenu = e" />
+					<SoftButton v-tooltip:top="t.more" icon="more_vert" @click="e => actionMenu = [e, 'y']" />
 					<Menu v-model="actionMenu">
 						<MenuItem icon="badge">{{ t.modify_memo }}</MenuItem>
 						<MenuItem icon="groups">{{ t.add_to_group }}</MenuItem>

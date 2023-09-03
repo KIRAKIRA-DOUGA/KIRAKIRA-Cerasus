@@ -27,7 +27,7 @@
 	/** 是否已点击减分？ */
 	const isDownvoted = defineModel("isDownvoted", { default: false });
 	const date = computed(() => formatDate(props.date, "yyyy/MM/dd hh:mm:ss"));
-	const menu = ref<MenuModel>(); // TODO: 菜单需要新增功能，使其像浮窗一样可以贴附某个元素展开。
+	const menu = ref<FlyoutModel>();
 	/** 是否已置顶？ */
 	const pinned = defineModel("pinned", { default: false });
 	const unpinnedCaption = computed(() => pinned.value ? "unpin" : "pin");
@@ -96,7 +96,7 @@
 				</div>
 				<div class="right">
 					<SoftButton v-tooltip:bottom="t.reply" icon="reply" />
-					<SoftButton icon="more_vert" @click="e => menu = e" />
+					<SoftButton v-tooltip:bottom="t.more" icon="more_vert" @click="e => menu = [e, 'y']" />
 					<Menu v-model="menu">
 						<MenuItem icon="delete" @click="deleteComment(index)">{{ t.delete }}</MenuItem>
 						<MenuItem :icon="unpinnedCaption" @click="pinned = !pinned">{{ t[unpinnedCaption] }}</MenuItem>
