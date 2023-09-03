@@ -38,13 +38,13 @@
 	 */
 	async function show(target: FlyoutModelNS.Target, placement?: Placement | false, offset?: number) {
 		target = toValue(target);
+		isContextMenu.value = !!target;
 		await nextTick();
 		const [_location, targetRect] = getLocation(target);
 		if (!_location) location.value = [0, 0];
 		else if (placement === false && target instanceof MouseEvent)
 			location.value = [target.clientX, target.clientY];
 		else location.value = _location;
-		isContextMenu.value = !!_location;
 		shown.value = true;
 		let retryCount = 10;
 		while (!size.value && retryCount--)
