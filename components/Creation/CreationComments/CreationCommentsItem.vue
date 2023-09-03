@@ -96,7 +96,7 @@
 				</div>
 				<div class="right">
 					<SoftButton v-tooltip:bottom="t.reply" icon="reply" />
-					<SoftButton v-tooltip:bottom="t.more" icon="more_vert" @click="e => menu = e" />
+					<SoftButton icon="more_vert" @click="e => menu = e" />
 					<Menu v-model="menu">
 						<MenuItem icon="delete" @click="deleteComment(index)">{{ t.delete }}</MenuItem>
 						<MenuItem :icon="unpinnedCaption" @click="pinned = !pinned">{{ t[unpinnedCaption] }}</MenuItem>
