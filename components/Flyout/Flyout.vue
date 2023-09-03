@@ -1,3 +1,22 @@
+<script lang="ts">
+	/**
+	 * 获取位置和矩形。
+	 * @param target - 目标元素。
+	 * @return 位置和矩形。
+	 */
+	export function getLocation(target: FlyoutModelNS.Target): [location: TwoD | null, targetRect: DOMRect | undefined] {
+		if (target instanceof Array) return [target, undefined];
+		if (target instanceof Event)
+			if (target.target instanceof Element) target = target.currentTarget!;
+			else return [[target.clientX, target.clientY], undefined];
+		if (target instanceof Element || target instanceof DOMRect) {
+			const targetRect = target instanceof Element ? target.getBoundingClientRect() : target;
+			return [[targetRect.left, targetRect.bottom], targetRect];
+		}
+		return [null, undefined];
+	}
+</script>
+
 <script setup lang="ts">
 	import { getPosition } from "plugins/vue/tooltip";
 	import { FlyoutModelNS } from "types/arguments";
@@ -25,7 +44,7 @@
 		const l = location.value;
 		return l[0] !== 0 || l[1] !== 0 ? { left: l[0] + "px", top: l[1] + "px" } : undefined;
 	});
-	const flyoutRect = ref<DOMRect>(undefined!);
+	const flyoutRect = ref<DOMRect>();
 	const placementForAnimation = ref<Placement>("bottom");
 	const scopeId = useParentScopeId() ?? "";
 	const isWidthAnimation = computed(() => ["left", "right", "x"].includes(placementForAnimation.value));
@@ -54,23 +73,6 @@
 	}
 
 	/**
-	 * 获取位置和矩形。
-	 * @param target - 目标元素。
-	 * @return 位置和矩形。
-	 */
-	function getLocation(target: FlyoutModelNS.Target): [location: TwoD | null, targetRect: DOMRect | undefined] {
-		if (target instanceof Array) return [target, undefined];
-		if (target instanceof Event)
-			if (target.target instanceof Element) target = target.currentTarget!;
-			else return [[target.clientX, target.clientY], undefined];
-		if (target instanceof Element || target instanceof DOMRect) {
-			const targetRect = target instanceof Element ? target.getBoundingClientRect() : target;
-			return [[targetRect.left, targetRect.bottom], targetRect];
-		}
-		return [null, undefined];
-	}
-
-	/**
 	 * 显示浮窗。
 	 * @param target - 指定浮窗位置。
 	 * @param placement - 浮窗出现方向。
@@ -83,9 +85,9 @@
 		if (!_location) return;
 		else location.value = _location;
 		shown.value = true;
-		await nextTick();
-		await nextTick();
-		await nextTick(); // BUG: 不知道为啥，需要三个 nextTick 才能跑。
+		let retryCount = 10;
+		while (!flyoutRect.value && retryCount--)
+			await nextTick();
 		if (targetRect) {
 			shown.value = false;
 			const result = getPosition(targetRect, placement, offset, flyoutRect);
@@ -172,6 +174,7 @@
 			duration: 300,
 			endChildTranslate: isReverseSlide.value ? undefined : placementForAnimation.value === "bottom" ? "0 -100%" : "-100% 0",
 		});
+		flyoutRect.value = undefined;
 		done();
 	}
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 	import { animateSizeGenerator } from "utils/animation";
+	import { FlyoutModelNS } from "types/arguments";
 
 	const sendDanmaku = defineModel<DanmakuComment>();
 
@@ -40,7 +41,7 @@
 	 */
 	function onSwitchPageEnter() {
 		if (flyout.value && flyoutStyle.value instanceof Array)
-			flyout.value.moveIntoPage(...flyoutStyle.value);
+			flyout.value.moveIntoPage(flyoutStyle.value[0], flyoutStyle.value[1], 0);
 		showColorPickerAnimationGenerator.value?.next();
 	}
 

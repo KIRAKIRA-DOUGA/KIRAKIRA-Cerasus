@@ -23,7 +23,7 @@ function moveIntoPage_tuple(location: TwoD, size: TwoD) {
  * @param size - 元素的元组类型尺寸。
  * @returns 返回移动入页面后的新坐标。
  */
-export function moveIntoPage(location: MaybeRef<TwoD>, size: MaybeRef<TwoD | DOMRect>): TwoD;
+export function moveIntoPage(location: MaybeRef<TwoD>, size?: MaybeRef<TwoD | DOMRect | undefined>): TwoD;
 /**
  * 探测元素溢出。如果元素超出了页面范围，则将其移动到页面内。
  * @param element - HTML DOM 元素。
@@ -36,14 +36,14 @@ export function moveIntoPage(element: MaybeRef<HTMLElement>): { top: string; lef
  * @param adjustElement - 要调整位置的 HTML DOM 元素。
  * @returns 返回移动入页面后的新坐标样式声明。
  */
-export function moveIntoPage(measureElement: MaybeRef<HTMLElement>, adjustElement: MaybeRef<HTMLElement>): { top: string; left: string };
+export function moveIntoPage(measureElement: MaybeRef<HTMLElement>, adjustElement?: MaybeRef<HTMLElement | undefined>): { top: string; left: string };
 /**
  * 探测元素溢出。如果元素超出了页面范围，则将其移动到页面内。
  * @param location - 元素的坐标。
  * @param size - 元素的尺寸。
  * @returns 返回移动入页面后的新坐标。
  */
-export function moveIntoPage(location: MaybeRef<TwoD | HTMLElement>, size?: MaybeRef<TwoD | DOMRect | HTMLElement>) {
+export function moveIntoPage(location: MaybeRef<TwoD | HTMLElement>, size?: MaybeRef<TwoD | DOMRect | HTMLElement | undefined>) {
 	location = toValue(location);
 	size = toValue(size);
 	const adjustElementStyle = size instanceof Element && size.style;
