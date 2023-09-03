@@ -64,7 +64,7 @@ export default defineNuxtModule({
 				if (path[2] === "icons")
 					if (registered.icons.includes(path.slice(path.indexOf("icons") + 1).join("/"))) return;
 				if (path[2] === "lotties") {
-					console.log(registered.icons, path.at(-1));
+					console.log(registered.lotties, path.slice(path.indexOf("lotties") + 1).join("/"));
 					if (registered.lotties.includes(path.slice(path.indexOf("lotties") + 1).join("/"))) return;
 				}
 			}
@@ -105,9 +105,9 @@ export default defineNuxtModule({
 
 		const throttledFn = throttle((event: WatchEvent, path: string[]) => {
 			if (["components", "classes"].includes(path[1]))
-				initComponentsGlobalized();
+				initComponentsGlobalized(event, path);
 			else if (path[1] === "assets" && ["icons", "lotties"].includes(path[2]))
-				initIcons();
+				initIcons(event, path);
 		}, 5000);
 
 		nuxt.hook("nitro:init", nitro => {
