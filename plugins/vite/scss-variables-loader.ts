@@ -1,15 +1,23 @@
 import { readFileSync } from "fs";
+import { resolve } from "path";
 import { getScssVariablesFromModule } from "./utils/get-scss-variables";
 
-const suffix = /.scss\?var$/;
+const virtualModuleId = "virtual:scss-var:";
 
-// FIXME: 根本用不了。
 const scssVariablesLoader = () => ({
 	name: "scss-variables-loader",
 
+	resolveId(id: string) {
+		if (id.startsWith(virtualModuleId))
+			return "\0" + id;
+	},
+
 	load(id: string) {
-		if (suffix.test(id)) {
-			const src = readFileSync(id.replace(suffix, ".scss"), "utf-8");
+		const resolvedVirtualModuleId = "\0" + virtualModuleId;
+		if (id.startsWith(resolvedVirtualModuleId)) {
+			const path = id.replace(resolvedVirtualModuleId, "");
+			const resolvedPath = resolve(__dirname, "../../assets/styles", path + ".scss");
+			const src = readFileSync(resolvedPath, "utf-8");
 			return getScssVariablesFromModule(src);
 		}
 	},

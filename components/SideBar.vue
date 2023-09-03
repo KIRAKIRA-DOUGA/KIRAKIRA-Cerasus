@@ -1,11 +1,15 @@
 <script setup lang="ts">
+	// import { numbers } from "virtual:scss-var:theme/_variables";
+	// onMounted(() => console.log(numbers));
+	// const windowSize = useWindowSize();
+	// const isMobile = computed(() => windowSize.width.value <= numbers.mobileMaxWidth);
+	// 以后使用以上代码可获取在 SCSS 文件中定义的移动端宽度值。
+
 	const avatar = "/static/images/avatars/aira.webp";
 	const showLogin = ref(false);
 	const isLogined = ref(false);
 	const isCurrentSettings = computed(() => !!currentSettingsPage());
 	const [DefineAvatar, Avatar] = createReusableTemplate();
-	// const windowSize = useWindowSize();
-	// const isMobile = computed(() => windowSize.width.value <= 639);
 	const scopeId = useParentScopeId()!;
 
 	useListen("app:requestLogin", () => showLogin.value = true);

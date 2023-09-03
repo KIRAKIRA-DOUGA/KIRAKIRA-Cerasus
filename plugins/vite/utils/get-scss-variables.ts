@@ -1,5 +1,8 @@
 /* eslint-disable require-jsdoc */
 import { VariableName } from "../../../classes/VariableName";
+import { createScssVariablesReference } from "../../../utils/style";
+
+const createScssVariablesReferenceFunctionName = "createScssVariablesReference";
 
 export function getScssVariables(styles: string | string[]) {
 	if (typeof styles === "string") styles = [styles];
@@ -35,12 +38,17 @@ export function getScssVariables(styles: string | string[]) {
 export function getScssVariablesFromScript(styles: string | string[], objectName: string) {
 	const { variables } = getScssVariables(styles);
 	return `
-	const ${objectName} = createScssVariablesReference(${JSON.stringify(variables)});
+	const ${objectName} = ${createScssVariablesReferenceFunctionName}(${JSON.stringify(variables)});
 `;
 }
 
 export function getScssVariablesFromModule(styles: string | string[]) {
-	const { variables, numbers } = getScssVariables(styles);
-	Object.defineProperty(variables, "numbers", { value: numbers, enumerable: true });
-	return `export default Object.freeze(${JSON.stringify(variables)});`;
+	const { variables } = getScssVariables(styles);
+	const result = [
+		createScssVariablesReference.toString(),
+		`const variables = ${createScssVariablesReferenceFunctionName}(${JSON.stringify(variables)});`,
+		"export default variables;",
+		"export const numbers = variables.numbers;",
+	];
+	return result.join("\n\n") + "\n";
 }

@@ -26,10 +26,8 @@ export default defineNuxtModule({
 			if (event === "update" && path) {
 				if (path[1] === "components")
 					if (registered.components.includes(path.at(-1)!)) return;
-				if (path[1] === "classes") {
-					console.log(registered.classes, path.at(-1));
+				if (path[1] === "classes")
 					if (registered.classes.includes(path.at(-1)!)) return;
-				}
 			}
 			let components_string: string;
 			while (true)
@@ -63,10 +61,8 @@ export default defineNuxtModule({
 			if (event === "update" && path) {
 				if (path[2] === "icons")
 					if (registered.icons.includes(path.slice(path.indexOf("icons") + 1).join("/"))) return;
-				if (path[2] === "lotties") {
-					console.log(registered.lotties, path.slice(path.indexOf("lotties") + 1).join("/"));
+				if (path[2] === "lotties")
 					if (registered.lotties.includes(path.slice(path.indexOf("lotties") + 1).join("/"))) return;
-				}
 			}
 			const icons: string[] = [], lotties: string[] = [];
 			registered.icons = []; registered.lotties = [];

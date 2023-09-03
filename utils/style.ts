@@ -147,9 +147,9 @@ export function createScssVariablesReference(variables: Record<string, string>) 
 		configurable: false,
 		get() {
 			const numbers: Record<string, number> = {};
-			for (const [key, value] of entries(variables))
+			for (const [key, value] of Object.entries(variables))
 				numbers[key] = parseFloat(value);
-			return numbers;
+			return Object.freeze(numbers);
 		},
 	});
 	Object.freeze(variables);
