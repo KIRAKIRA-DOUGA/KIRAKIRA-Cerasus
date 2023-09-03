@@ -42,7 +42,17 @@
 	watch(() => kvid, fetchData);
 	await fetchData();
 
-	useHead({ title });
+	useHead({
+		title,
+		meta: [
+			{ property: "og:title", content: title },
+			{ property: "og:description", content: videoDetails.value?.videoDescription },
+			// { property: "og:image", content: "" }, // TODO: We should get the video thumbnail here.
+			{ name: "twitter:title", content: title },
+			{ name: "twitter:description", content: videoDetails.value?.videoDescription },
+			// { name: "twitter:image", content: "" }, // TODO: We should get the video thumbnail here.
+		],
+	});
 </script>
 
 <template>
@@ -63,12 +73,15 @@
 					:tags="videoDetails?.tags ?? []"
 				/>
 
+				<p class="description">
+					<Preserves>{{ videoDetails?.videoDescription }}</Preserves>
+				</p>
+
 				<CreationComments
 					:videoId="kvid"
 					:count="comments.length"
 					:comments="comments"
 				/>
-
 			</div>
 			<div class="right">
 				<CreationUploader
@@ -126,5 +139,9 @@
 		@include tablet {
 			display: none;
 		}
+	}
+	
+	.description {
+		margin: 1.5rem 0;
 	}
 </style>
