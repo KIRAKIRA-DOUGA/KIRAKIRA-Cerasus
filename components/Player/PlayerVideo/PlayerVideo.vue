@@ -129,7 +129,9 @@
 		if (!video.value) return;
 		onCanPlay({ target: video.value });
 
-		if (process.client) {
+		if (props.src.endsWith(".mp4"))
+			video.value.src = props.src;
+		else if (process.client) {
 			const Dash = await import("dashjs"); // 注意看，由于 Dash 无法在服务端下渲染，因此必须动态导入。
 			player.value = Dash.MediaPlayer().create();
 
