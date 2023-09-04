@@ -47,7 +47,7 @@
 		meta: [
 			{ property: "og:title", content: title },
 			{ property: "og:description", content: videoDetails.value?.videoDescription },
-			// { property: "og:image", content: "" }, // TODO: We should get the video thumbnail here.
+			{ property: "og:image", content: videoDetails.value?.thumbnail }, // TODO: We should get the video thumbnail here.
 			{ name: "twitter:title", content: title },
 			{ name: "twitter:description", content: videoDetails.value?.videoDescription },
 			{ name: "twitter:image", content: videoDetails.value?.thumbnail }, // TODO: We should get the video thumbnail here.
