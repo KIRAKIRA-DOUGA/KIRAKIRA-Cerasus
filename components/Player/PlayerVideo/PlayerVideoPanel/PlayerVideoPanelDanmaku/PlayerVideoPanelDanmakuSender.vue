@@ -73,7 +73,7 @@
 		const utf8Encoder = new TextEncoder();
 		const encodedContent = utf8Encoder.encode(text) as unknown as string;
 
-		api.createDanmaku(props.videoID, props.getTime(), encodedContent, style.mode, style.color.toString(), style.fontSize);
+		api.createDanmaku(props.videoID, props.getTime(), encodedContent, style.mode, style.color.hex, style.fontSize);
 
 		sendDanmaku.value = [{
 			text,
