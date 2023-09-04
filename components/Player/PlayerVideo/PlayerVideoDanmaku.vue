@@ -54,7 +54,11 @@
 	onMounted(() => {
 		if (!danmakuContainer.value) return;
 		initDanmaku();
-		resizeObserver.value = new ResizeObserver(() => danmaku.value?.resize());
+		resizeObserver.value = new ResizeObserver(() => {
+			try {
+				danmaku.value?.resize();
+			} catch { }
+		});
 		resizeObserver.value.observe(danmakuContainer.value);
 	});
 
