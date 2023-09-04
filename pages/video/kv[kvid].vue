@@ -130,8 +130,10 @@
 </template>
 
 <style scoped lang="scss">
-	.player-video {
-		margin: -16px -16px 0;
+	@include mobile {
+		.player-video {
+			margin: -16px -16px 0;
+		}
 	}
 
 	.recommendations-header {

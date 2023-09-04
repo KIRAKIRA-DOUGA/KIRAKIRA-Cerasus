@@ -29,7 +29,7 @@
 </script>
 
 <template>
-	<LocaleLink ref="localeLink" v-ripple activable :to="href || '#'" class="mobile-bottom-nav-item lite">
+	<LocaleLink ref="localeLink" v-ripple activable :to="href || '#'" class="bottom-nav-item lite">
 		<Icon :name="icon" />
 		<Transition @enter="onLabelEnter" @leave="onLabelLeave">
 			<label v-if="active"><slot></slot></label>
