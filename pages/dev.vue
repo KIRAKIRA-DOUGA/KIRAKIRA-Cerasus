@@ -27,7 +27,7 @@
 
 	const pages = getPages(
 		["组件测试页", "/components"],
-		["示例视频", "/video"],
+		["示例视频", "/video/kvtest"],
 		["示例音频", "/audio"],
 		["富文本测试页", "/test-rich-text-editor"],
 		["API 测试页", "/test-api"],

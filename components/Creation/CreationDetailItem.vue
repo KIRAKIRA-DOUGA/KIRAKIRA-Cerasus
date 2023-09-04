@@ -28,4 +28,8 @@
 	p {
 		user-select: text;
 	}
+
+	a p {
+		user-select: none;
+	}
 </style>

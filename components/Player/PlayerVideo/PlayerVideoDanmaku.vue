@@ -120,7 +120,12 @@
 		}
 
 		.dm {
-			box-shadow: -1px -1px black, -1px 1px black, 1px -1px black, 1px 1px black;
+			@include round-small;
+
+			&.user-sent {
+				// box-shadow: -1px -1px black, -1px 1px black, 1px -1px black, 1px 1px black;
+				backdrop-filter: invert(1);
+			}
 
 			&.dm-rainbow {
 				background: linear-gradient(to right, #f2509e, #308bcd);
