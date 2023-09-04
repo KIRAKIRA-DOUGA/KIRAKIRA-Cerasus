@@ -87,5 +87,5 @@ declare global {
 	export { RouteLocation } from "#vue-router";
 	export { Editor } from "@tiptap/vue-3";
 	export { AnimationItem } from "lottie-web";
-	export { CSSProperties, ComponentInternalInstance, ConcreteComponent, Directive, Events, MaybeRef, MaybeRefOrGetter, Ref, RendererElement, RendererNode, ShallowRef, Slot, Slots, StyleValue, UnwrapRef, VNode, VNodeProps, WritableComputedRef } from "vue";
+	export { CSSProperties, ComponentInternalInstance, ConcreteComponent, Directive, DirectiveBinding, Events, MaybeRef, MaybeRefOrGetter, Ref, RendererElement, RendererNode, ShallowRef, Slot, Slots, StyleValue, UnwrapRef, VNode, VNodeProps, WritableComputedRef } from "vue";
 }
