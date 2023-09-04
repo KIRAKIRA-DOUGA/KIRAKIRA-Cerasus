@@ -7,25 +7,8 @@
 	}>();
 
 	const localeLink = ref<InstanceType<typeof LocaleLink>>();
-	const mutationObserver = ref<MutationObserver>();
-	const active = ref(false);
+	const active = computed(() => props.href !== undefined && isCurrentPath(props.href));
 	const [onLabelEnter, onLabelLeave] = simpleAnimateSize("width", 600);
-
-	onMounted(() => {
-		if (!localeLink.value) return;
-		mutationObserver.value = new MutationObserver(mutationList => {
-			for (const mutation of mutationList)
-				if (mutation.type === "attributes" && mutation.attributeName === "class") {
-					active.value = (mutation.target as HTMLAnchorElement).classList.contains("router-link-active");
-					return;
-				}
-		});
-		mutationObserver.value.observe(localeLink.value.$el, { attributes: true });
-	});
-
-	onUnmounted(() => {
-		mutationObserver.value?.disconnect();
-	});
 </script>
 
 <template>
