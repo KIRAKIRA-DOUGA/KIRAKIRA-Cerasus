@@ -17,7 +17,7 @@
 	const numberOfItems = ref(0);
 	const numberOfPages = ref(1);
 	const categoryList = ["Anime", "Music", "Otomad", "Tech", "Design", "Game", "Other"];
-	const categories = ref<Map<string | undefined, number | undefined>>(new Map());
+	const categories = ref<Map<string | undefined, number | undefined>>();
 	const resultTimestamp = ref(0);
 
 	/**
@@ -37,7 +37,8 @@
 			numberOfItems.value = videosResponse.paginationData!.numberOfItems!;
 			videos.value = videosResponse;
 			resultTimestamp.value = new Date().valueOf();
-			categories.value = new Map(videosResponse?.categories?.map(cat => [cat.name, cat.cardinality]));
+			// pepelaugh TODO FIXME
+			categories.value ??= new Map(videosResponse?.categories?.map(cat => [cat.name, cat.cardinality]));
 		} catch (error) { handleError(error); }
 	}
 	watch(data, fetchData, { deep: true });
