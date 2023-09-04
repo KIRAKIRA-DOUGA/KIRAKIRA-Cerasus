@@ -31,13 +31,5 @@
 		&:active {
 			opacity: 0.6;
 		}
-
-		&.left {
-			background-image: linear-gradient(to left, transparent, c(icon-color, 7%));
-		}
-
-		&.right {
-			background-image: linear-gradient(to right, transparent, c(icon-color, 7%));
-		}
 	}
 </style>
