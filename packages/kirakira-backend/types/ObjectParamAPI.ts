@@ -31,7 +31,7 @@ export interface DefaultApiCommentRequest {
      * @type number
      * @memberof DefaultApicomment
      */
-    videoID: number
+    videoIDf: number
 }
 
 export interface DefaultApiCommentsRequest {
@@ -334,7 +334,7 @@ export class ObjectDefaultApi {
      * @param param the request object
      */
     public comment(param: DefaultApiCommentRequest, options?: Configuration): Promise<void> {
-        return this.api.comment(param.parent, param.content, param.videoID,  options).toPromise();
+        return this.api.comment(param.parent, param.content, param.videoIDf,  options).toPromise();
     }
 
     /**

@@ -24,9 +24,9 @@ export class DefaultApiRequestFactory extends BaseAPIRequestFactory {
      * Comment on a video
      * @param parent parent comment ID
      * @param content comment message
-     * @param videoID comment\&#39;s video ID
+     * @param videoIDf comment\&#39;s video ID
      */
-    public async comment(parent: number, content: string, videoID: number, _options?: Configuration): Promise<RequestContext> {
+    public async comment(parent: number, content: string, videoIDf: number, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
 
         // verify required parameter 'parent' is not null or undefined
@@ -41,9 +41,9 @@ export class DefaultApiRequestFactory extends BaseAPIRequestFactory {
         }
 
 
-        // verify required parameter 'videoID' is not null or undefined
-        if (videoID === null || videoID === undefined) {
-            throw new RequiredError("DefaultApi", "comment", "videoID");
+        // verify required parameter 'videoIDf' is not null or undefined
+        if (videoIDf === null || videoIDf === undefined) {
+            throw new RequiredError("DefaultApi", "comment", "videoIDf");
         }
 
 
@@ -61,7 +61,7 @@ export class DefaultApiRequestFactory extends BaseAPIRequestFactory {
         requestContext.setHeaderParam("content", ObjectSerializer.serialize(content, "string", "byte"));
 
         // Header Params
-        requestContext.setHeaderParam("videoID", ObjectSerializer.serialize(videoID, "number", ""));
+        requestContext.setHeaderParam("videoIDf", ObjectSerializer.serialize(videoIDf, "number", ""));
 
 
         
@@ -166,7 +166,7 @@ export class DefaultApiRequestFactory extends BaseAPIRequestFactory {
         requestContext.setHeaderParam("timestamp", ObjectSerializer.serialize(timestamp, "string", ""));
 
         // Header Params
-        requestContext.setHeaderParam("message", ObjectSerializer.serialize(message, "string", ""));
+        requestContext.setHeaderParam("message", ObjectSerializer.serialize(message, "string", "byte"));
 
         // Header Params
         requestContext.setHeaderParam("Type", ObjectSerializer.serialize(type, "string", ""));

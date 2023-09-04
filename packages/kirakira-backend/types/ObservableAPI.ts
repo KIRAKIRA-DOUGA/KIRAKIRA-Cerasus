@@ -31,10 +31,10 @@ export class ObservableDefaultApi {
      * Comment on a video
      * @param parent parent comment ID
      * @param content comment message
-     * @param videoID comment\&#39;s video ID
+     * @param videoIDf comment\&#39;s video ID
      */
-    public comment(parent: number, content: string, videoID: number, _options?: Configuration): Observable<void> {
-        const requestContextPromise = this.requestFactory.comment(parent, content, videoID, _options);
+    public comment(parent: number, content: string, videoIDf: number, _options?: Configuration): Observable<void> {
+        const requestContextPromise = this.requestFactory.comment(parent, content, videoIDf, _options);
 
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
