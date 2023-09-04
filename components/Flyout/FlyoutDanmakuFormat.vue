@@ -220,25 +220,6 @@
 		mask-composite: exclude;
 	}
 	
-	@for $j from 1 through 2 {
-		$placement: if($j == 1, top, bottom);
-		$keyframes-name: if($j == 1, float-up, float-down);
-		$direction: if($j == 1, 1, -1);
-		$length: 7;
-
-		@for $i from 1 through $length {
-			$delay: if($j == 1, $i, $length + 1 - $i);
-
-			:comp.#{$placement} .style-container > :nth-child(#{$i}) {
-				animation: #{$keyframes-name} 600ms #{$delay * 50ms} $ease-out-smooth backwards;
-			}
-		}
-
-		@keyframes #{$keyframes-name} {
-			from {
-				opacity: 0;
-				translate: 0 #{$direction * 200px};
-			}
-		}
-	}
+	// stylelint-disable-next-line order/order
+	@include float-in-children($selector: ":comp$placement .style-container", $length: 7, $delay: 50ms, $ease: $ease-out-smooth);
 </style>

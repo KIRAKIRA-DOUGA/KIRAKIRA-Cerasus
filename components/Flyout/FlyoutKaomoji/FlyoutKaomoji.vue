@@ -68,25 +68,6 @@
 		overflow-y: auto;
 	}
 
-	@for $j from 1 through 2 {
-		$placement: if($j == 1, top, bottom);
-		$keyframes-name: if($j == 1, float-up, float-down);
-		$direction: if($j == 1, 1, -1);
-		$length: 2;
-
-		@for $i from 1 through $length {
-			$delay: if($j == 1, $i, $length + 1 - $i);
-
-			:comp.#{$placement} > :nth-child(#{$i}) {
-				animation: #{$keyframes-name} 600ms #{$delay * 100ms} $ease-out-expo backwards;
-			}
-		}
-
-		@keyframes #{$keyframes-name} {
-			from {
-				opacity: 0;
-				translate: 0 #{$direction * 200px};
-			}
-		}
-	}
+	// stylelint-disable-next-line order/order
+	@include float-in-children($selector: ":comp$placement", $length: 2);
 </style>
