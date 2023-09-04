@@ -27,10 +27,10 @@ export class PromiseDefaultApi {
      * Comment on a video
      * @param parent parent comment ID
      * @param content comment message
-     * @param videoID comment\&#39;s video ID
+     * @param videoIDf comment\&#39;s video ID
      */
-    public comment(parent: number, content: string, videoID: number, _options?: Configuration): Promise<void> {
-        const result = this.api.comment(parent, content, videoID, _options);
+    public comment(parent: number, content: string, videoIDf: number, _options?: Configuration): Promise<void> {
+        const result = this.api.comment(parent, content, videoIDf, _options);
         return result.toPromise();
     }
 

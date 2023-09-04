@@ -45,7 +45,7 @@ let body:.DefaultApiCommentRequest = {
   // string | comment message
   content: 'YQ==',
   // number | comment\'s video ID
-  videoID: 1,
+  videoIDf: 1,
 };
 
 apiInstance.comment(body).then((data:any) => {
@@ -60,7 +60,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **parent** | [**number**] | parent comment ID | defaults to undefined
  **content** | [**string**] | comment message | defaults to undefined
- **videoID** | [**number**] | comment\&#39;s video ID | defaults to undefined
+ **videoIDf** | [**number**] | comment\&#39;s video ID | defaults to undefined
 
 
 ### Return type
@@ -159,7 +159,7 @@ let body:.DefaultApiCreateDanmakuRequest = {
   // string | timestamp for danmaku
   timestamp: "timestamp_example",
   // string | message
-  message: "message_example",
+  message: 'YQ==',
   // string | type of comment
   type: "Type_example",
   // string | comment color
