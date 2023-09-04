@@ -6,7 +6,6 @@
 
 	const sendDanmaku = defineModel<DanmakuComment[]>();
 	import { animateSizeGenerator } from "utils/animation";
-	import { FlyoutModelNS } from "types/arguments";
 
 	const content = ref("");
 	const flyoutKaomoji = ref<FlyoutModel>();
