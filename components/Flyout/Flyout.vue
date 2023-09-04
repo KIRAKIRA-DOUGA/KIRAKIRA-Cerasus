@@ -1,3 +1,22 @@
+<script lang="ts">
+	/**
+	 * 获取位置和矩形。
+	 * @param target - 目标元素。
+	 * @return 位置和矩形。
+	 */
+	export function getLocation(target: FlyoutModelNS.Target): [location: TwoD | null, targetRect: DOMRect | undefined] {
+		if (target instanceof Array) return [target, undefined];
+		if (target instanceof Event)
+			if (target.target instanceof Element) target = target.currentTarget!;
+			else return [[target.clientX, target.clientY], undefined];
+		if (target instanceof Element || target instanceof DOMRect) {
+			const targetRect = target instanceof Element ? target.getBoundingClientRect() : target;
+			return [[targetRect.left, targetRect.bottom], targetRect];
+		}
+		return [null, undefined];
+	}
+</script>
+
 <script setup lang="ts">
 	import { getPosition } from "plugins/vue/tooltip";
 	import { FlyoutModelNS } from "types/arguments";
@@ -25,7 +44,7 @@
 		const l = location.value;
 		return l[0] !== 0 || l[1] !== 0 ? { left: l[0] + "px", top: l[1] + "px" } : undefined;
 	});
-	const flyoutRect = ref<DOMRect>(undefined!);
+	const flyoutRect = ref<DOMRect>();
 	const placementForAnimation = ref<Placement>("bottom");
 	const scopeId = useParentScopeId() ?? "";
 	const isWidthAnimation = computed(() => ["left", "right", "x"].includes(placementForAnimation.value));
@@ -34,6 +53,7 @@
 	const QUICK_CLICK_DURATION = 200;
 	const suppressShowing = ref(false);
 	const cropping = ref(!props.noCropping); // 修正在要求 noCropping 的同时开/关浮窗动画时显示错误的问题。
+	const moving = ref(false);
 
 	useEventListener("window", "keydown", e => {
 		if (!props.doNotCloseOnEsc && e.code === "Escape")
@@ -61,22 +81,13 @@
 	async function show(target: FlyoutModelNS.Target, placement?: Placement, offset?: number) {
 		if (suppressShowing.value) return;
 		target = toValue(target);
-		let targetRect: DOMRect | undefined;
-		const _location = ((): TwoD | null => {
-			if (target instanceof Array) return target;
-			if (target instanceof Event)
-				if (target.target instanceof Element) target = target.currentTarget!;
-				else return [target.clientX, target.clientY];
-			if (target instanceof Element || target instanceof DOMRect) {
-				targetRect = target instanceof Element ? target.getBoundingClientRect() : target;
-				return [targetRect.left, targetRect.bottom];
-			}
-			return null;
-		})();
+		const [_location, targetRect] = getLocation(target);
 		if (!_location) return;
 		else location.value = _location;
 		shown.value = true;
-		await nextTick();
+		let retryCount = 10;
+		while (!flyoutRect.value && retryCount--)
+			await nextTick();
 		if (targetRect) {
 			shown.value = false;
 			const result = getPosition(targetRect, placement, offset, flyoutRect);
@@ -89,6 +100,28 @@
 		}
 		location.value = moveIntoPage(location, flyoutRect);
 		emits("show");
+	}
+
+	/**
+	 * 移动浮窗到页面内部。
+	 * @param target - 指定浮窗位置。
+	 * @param placement - 浮窗出现方向。
+	 * @param offset - 与目标元素距离偏移。
+	 */
+	async function _moveIntoPage(target: FlyoutModelNS.Target, placement?: Placement, offset?: number) {
+		target = toValue(target);
+		const [_location, targetRect] = getLocation(target);
+		if (!_location || !flyout.value) return;
+		moving.value = true;
+		const flyoutRect = flyout.value.getBoundingClientRect();
+		if (targetRect) {
+			const result = getPosition(targetRect, placement, offset, flyoutRect);
+			location.value = result.position;
+			await nextTick();
+		}
+		location.value = moveIntoPage(location, flyoutRect);
+		await delay(600);
+		moving.value = false;
 	}
 
 	watch(model, e => {
@@ -105,7 +138,7 @@
 	}, { immediate: true, deep: true });
 
 	defineExpose({
-		hide, show,
+		hide, show, moveIntoPage: _moveIntoPage,
 	});
 
 	/**
@@ -141,6 +174,7 @@
 			duration: 300,
 			endChildTranslate: isReverseSlide.value ? undefined : placementForAnimation.value === "bottom" ? "0 -100%" : "-100% 0",
 		});
+		flyoutRect.value = undefined;
 		done();
 	}
 
@@ -158,7 +192,7 @@
 				v-if="shown"
 				ref="flyout"
 				:[scopeId]="''"
-				:class="{ padding: !noPadding, cropping }"
+				:class="{ padding: !noPadding, cropping, moving }"
 				:style="locationStyle"
 			>
 				<slot></slot>
@@ -183,6 +217,10 @@
 
 		&.padding {
 			padding: $padding;
+		}
+		
+		&.moving {
+			transition: $fallback-transitions, left $ease-out-smooth 600ms, top $ease-out-smooth 600ms;
 		}
 
 		> :deep(*) {

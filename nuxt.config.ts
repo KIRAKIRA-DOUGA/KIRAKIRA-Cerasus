@@ -5,6 +5,7 @@ import styleResources from "./helpers/style-resources";
 import cssDoodleLoader from "./plugins/vite/css-doodle";
 import docsLoader from "./plugins/vite/docs";
 import vitePluginScssVariables from "./plugins/vite/scss-variables";
+import scssVariablesLoader from "./plugins/vite/scss-variables-loader";
 import { environment } from "./utils/environment";
 /* import vueNestedSFC from "vite-plugin-vue-nested-sfc";
 import CopyPlugin from "copy-webpack-plugin";
@@ -58,6 +59,9 @@ export default defineNuxtConfig({
 		"locales",
 		"stores",
 		"api",
+		"types",
+		"utils",
+		"worklets",
 	),
 	css: [
 		"styles/global.scss",
@@ -70,6 +74,7 @@ export default defineNuxtConfig({
 			docsLoader(),
 			cssDoodleLoader(),
 			vitePluginScssVariables(),
+			scssVariablesLoader(),
 		],
 		optimizeDeps: {
 			needsInterop: [
@@ -87,6 +92,9 @@ export default defineNuxtConfig({
 		},
 		build: {
 			target: "esnext",
+		},
+		worker: {
+			format: "es",
 		},
 		css: {
 			preprocessorOptions: styleResources({

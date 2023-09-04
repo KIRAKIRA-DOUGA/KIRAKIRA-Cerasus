@@ -1,5 +1,5 @@
 import { readFileSync } from "fs";
-import { VariableName } from "../../classes/VariableName";
+import { getScssVariablesFromScript } from "./utils/get-scss-variables";
 
 // 代码参考自我在 Stack Overflow 提的问题中人们回答的答案：https://stackoverflow.com/questions/76693342
 export default () => ({
@@ -9,28 +9,14 @@ export default () => ({
 		if (!id.endsWith(".vue")) return;
 
 		const MACRO = "useScssVariables()";
+		const OBJECT_NAME = "__scssVariables__";
 		const src = readFileSync(id, "utf-8");
 		if (!src.includes(MACRO)) return;
 		
 		// 原文建议我通过依赖 https://www.npmjs.com/package/scss-parser 解析 SCSS 中的变量，但我个懒人直接用正则表达式提取了。
 		const styles = Array.from(src.matchAll(/<style.*?lang="scss".*?>(.*?)<\/style>/gisu), block => block[1].trim());
-		const variables: AnyObject = {}, numbers: AnyObject = {};
-		variables.numbers = numbers;
+		const declaration = getScssVariablesFromScript(styles, OBJECT_NAME);
 
-		for (const style of styles) {
-			const declarations = style.match(/(?<=\s|^)\$[\w-]+\s*:.*?;/gsu);
-			if (!declarations) continue;
-			for (const declaration of declarations) {
-				let name = declaration.match(/(?<=^\$)[\w-]+(?=\s*:)/su)?.[0];
-				const value = declaration.match(/(?<=:).*?(?=;)/su)?.[0].replaceAll(/\s+/g, " ").trim();
-				if (!name || !value) continue;
-				name = new VariableName(name).camel;
-				if (name in variables) continue;
-				variables[name] = value;
-				numbers[name] = parseFloat(value);
-			}
-		}
-
-		return src.replaceAll(MACRO, JSON.stringify(variables));
+		return src.replace(/(?<=<script.*?>)/, declaration).replaceAll(MACRO, OBJECT_NAME);
 	},
 });

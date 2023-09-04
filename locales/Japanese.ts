@@ -82,6 +82,7 @@ const Japanese: LocaleIdentifiers = {
 		current: "現在のパスワード",
 		new_retype: "新しいパスワードの確認",
 		new: "新しいパスワード",
+		hint: "パスワードのヒント",
 	},
 	account_linking: "SNSリンク",
 	blocklist: {
@@ -150,7 +151,6 @@ const Japanese: LocaleIdentifiers = {
 	logout: "ログアウト",
 	register: "新規登録",
 	verification_code: "確認コード",
-	signature: "自己紹介",
 	close: "閉じる",
 	current_page_label: "{0}/{1}ページ",
 	switch_page_label: "{0}ページに切り替える",
@@ -248,6 +248,17 @@ const Japanese: LocaleIdentifiers = {
 			edit_banner: "バナー画像の変更",
 			edit_avatar: "プロフィールアイコンの変更",
 		},
+		privacy: {
+			allow_cookies: "Cookieの利用を同意する",
+			info_visibility: "情報の公開範囲",
+		},
+		appearance: {
+			other: {
+				sharp_mode: "直角スタイル",
+				flat_mode: "フラットスタイル",
+				colorful_navbar: "カラフル ナビバー",
+			},
+		},
 		about: {
 			repositories: "リポジトリ",
 			creative_team: "開発チーム",
@@ -266,6 +277,8 @@ const Japanese: LocaleIdentifiers = {
 		name_requirements: "1~20文字、大小英数字、ひらがな/カタカナ、漢字、特殊記号の｢-｣と｢_｣のみ使用できます。",
 		bio: "自己紹介",
 		gender: "性別",
+		memo: "メモ",
+		age: "年齢",
 	},
 	zhs: "簡体字中国語",
 	en: "英語",
@@ -276,7 +289,6 @@ const Japanese: LocaleIdentifiers = {
 	watch_later: "後で見る",
 	download_video: "ダウンロード",
 	report_creation: "通報",
-	password_hint: "パスワードのヒント",
 	forgot_password: "パスワードをお忘れの場合",
 	reset_password: "パスワードの再設定",
 	format: "フォーマット",
@@ -296,9 +308,34 @@ const Japanese: LocaleIdentifiers = {
 	},
 	unknown: "不明",
 	shortcut_key: "ショートカットキー",
-	shortcut_key_guide: "ショートカットキーのガイド",
+	guide: "ガイド",
 	regexp: "正規表現",
 	keywords: "キーワード",
+	user_page: {
+		_: "プロフィール",
+		title_suffix: "のプロフィール",
+	},
+	manage_content: "投稿管理",
+	add_to_blocklist: "ブロックする",
+	platform: {
+		bilibili: "Bilibili",
+		niconico: "ニコニコ",
+		otomad_wiki: "OtomadWiki",
+		weibo: "Weibo",
+		twitter: "Twitter",
+		qq: "QQ",
+		youtube: "YouTube",
+		discord: "Discord",
+		telegram: "Telegram",
+		midishow: "MidiShow",
+	},
+	modify_memo: "メモの編集",
+	add_to_group: "グループに追加",
+	navigation: {
+		_: "ナビ",
+		back: "戻る",
+	},
+	other: "その他",
 };
 
 export default Japanese;

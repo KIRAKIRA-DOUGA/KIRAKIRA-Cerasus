@@ -9,7 +9,7 @@
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
 		/** 图标文件名称。 */
-		name: string;
+		name: DeclaredIcons;
 		/** 是否保持图标本身的颜色。 */
 		filled?: boolean;
 	}>(), {

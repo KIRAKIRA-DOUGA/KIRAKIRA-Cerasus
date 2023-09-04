@@ -244,7 +244,7 @@ module.exports = {
 		"vue/singleline-html-element-content-newline": "off",
 		"vue/no-unused-vars": "warn",
 		"vue/no-v-model-argument": "off",
-		// "vue/require-typed-ref": "error", // 预计下个版本才支持。
+		"vue/require-typed-ref": "error",
 		"vue/block-lang": ["error", {
 			"script": {
 				"lang": ["ts", "tsx"],
@@ -274,7 +274,8 @@ module.exports = {
 		"vue/multiline-html-element-content-newline": "off",
 		"vue/no-template-shadow": "off",
 		"vue/no-mutating-props": ["error", { "shallowOnly": false }],
-		"vue/no-deprecated-filter": "off", // 我要按位或，不是要什么过滤运算符。
+		"vue/no-deprecated-filter": "off", // 我要按位或，不是要什么过滤器。
+		"vue/no-dupe-keys": "off",
 		"no-restricted-properties": ["error", {
 			object: "arguments",
 			property: "callee",

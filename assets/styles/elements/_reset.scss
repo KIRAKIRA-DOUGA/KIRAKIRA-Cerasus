@@ -8,6 +8,7 @@
 		margin: 0;
 		padding: 0;
 		font-size: inherit;
+		font-family: inherit;
 		background: none;
 		border: none;
 		outline: none !important;
@@ -22,7 +23,7 @@
 		display: block;
 		vertical-align: bottom;
 	}
-	
+
 	// 标签的鼠标光标应该使用继承的样式。
 	label {
 		cursor: inherit;

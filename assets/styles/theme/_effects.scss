@@ -48,6 +48,24 @@
 		@content;
 	}
 }
+
+/// 非手机端布局。
+/// @content
+/// @output @media screen
+@mixin not-mobile {
+	@media (width > #{$mobile-max-width}) {
+		@content;
+	}
+}
+
+/// 非电脑端布局。
+/// @content
+/// @output @media screen
+@mixin not-computer {
+	@media (width <= #{$tablet-max-width}) {
+		@content;
+	}
+}
 // #endregion
 
 // #region 中性色
@@ -83,7 +101,7 @@
 }
 
 @mixin button-shadow-unchecked-focus-only {
-	box-shadow: 0 0 0 3px c(gray-40, 50%);
+	box-shadow: 0 0 0 transparent, 0 0 0 3px c(gray-40, 50%);
 }
 
 @mixin button-shadow-unchecked-hover {
@@ -129,7 +147,7 @@
 }
 
 @mixin button-shadow-focus-only {
-	box-shadow: 0 0 0 3px c(accent-focus, 50%);
+	box-shadow: 0 0 0 transparent, 0 0 0 3px c(accent-focus, 50%);
 }
 
 @mixin scale-pressed {
@@ -143,6 +161,10 @@
 
 @mixin sidebar-shadow {
 	box-shadow: 0 0 24px c(accent, 30%);
+}
+
+@mixin sidebar-shadow-colored {
+	box-shadow: 0 0 24px c(accent, 80%);
 }
 
 @mixin card-shadow {
@@ -228,6 +250,10 @@
 
 @mixin card-in-card-shadow {
 	box-shadow: 0 2px 8px c(accent-shadow, 8%);
+}
+
+@mixin mini-card-shadow {
+	box-shadow: 0 4px 8px c(accent-shadow, 30%);
 }
 // #endregion
 

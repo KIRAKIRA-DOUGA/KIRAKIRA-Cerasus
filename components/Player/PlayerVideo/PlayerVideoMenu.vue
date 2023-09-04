@@ -18,13 +18,13 @@
 	const locationStyle = ref<CSSProperties>({});
 	/** 指定在鼠标移出区域多久后自动隐藏。 */
 	const WAITING = 1000;
-	const hideTimeoutId = ref<NodeJS.Timeout>();
+	const hideTimeoutId = ref<Timeout>();
 	/** 在请求隐藏本组件的所有实例时，要求本实例不得隐藏。 */
 	const hideExceptMe = ref(false);
 	/** 视频播放器控制栏中 SoftButton 的水波纹半径与容器半径之差。 */
-	const X_OFFSET = 12;
 	const isMouseEnter = ref(false);
 	const isMouseDown = ref(false);
+	const { width: menuWidth, margin } = useScssVariables().numbers;
 
 	/**
 	 * 隐藏菜单。
@@ -72,8 +72,9 @@
 		reshow();
 		const { right: relativeRight, bottom: relativeBottom } = relativeEl.getBoundingClientRect();
 		const el = e.currentTarget as HTMLElement;
-		const { right: targetRight, top: targetTop } = el.getBoundingClientRect();
-		const bottom = relativeBottom - targetTop, right = relativeRight - targetRight - X_OFFSET;
+		const { right: targetRight, top: targetTop, width: targetWidth } = el.getBoundingClientRect();
+		const bottom = relativeBottom - targetTop;
+		const right = Math.max(relativeRight - targetRight - (menuWidth - targetWidth) / 2, margin);
 		locationStyle.value = { right: right + "px", bottom: bottom + "px" };
 		shown.value = true;
 		isMouseEnter.value = true;
@@ -127,6 +128,7 @@
 
 <style scoped lang="scss">
 	$width: 235px;
+	$margin: 12px;
 
 	:comp {
 		position: absolute;
@@ -139,7 +141,7 @@
 		}
 		
 		> :deep(*) {
-			margin-bottom: 12px;
+			margin-bottom: $margin;
 		}
 	}
 

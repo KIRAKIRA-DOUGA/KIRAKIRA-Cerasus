@@ -80,6 +80,7 @@ const SChinese = {
 		current: "当前密码",
 		new: "新密码",
 		new_retype: "确认新密码",
+		hint: "密码提示",
 	},
 	account_linking: "关联社交平台",
 	blocklist: {
@@ -90,7 +91,7 @@ const SChinese = {
 		},
 		hide: {
 			_: "隐藏",
-			description: "不想看到的用户，其将会从你的视角消失（除非你主动进入其个人空间）。",
+			description: "不想看到的用户，其将会从你的视角消失（除非你主动进入其个人主页）。",
 		},
 		tags: {
 			description: "使用标签匹配不想看到的内容。",
@@ -114,7 +115,7 @@ const SChinese = {
 				bottom: "底部",
 				ltr: "逆向",
 			},
-			send_as_creator: "创作者专用渐变",
+			send_as_creator: "创作者专属渐变",
 		},
 	},
 	preference: "偏好",
@@ -148,7 +149,6 @@ const SChinese = {
 	logout: "登出",
 	register: "注册",
 	verification_code: "验证码",
-	signature: "个性签名",
 	close: "关闭",
 	current_page_label: "第{0}页，共{1}页",
 	switch_page_label: "切换到第{0}页",
@@ -246,6 +246,17 @@ const SChinese = {
 			edit_banner: "点击更换封面",
 			edit_avatar: "点击更换头像",
 		},
+		privacy: {
+			allow_cookies: "允许网站使用Cookies",
+			info_visibility: "信息可见性",
+		},
+		appearance: {
+			other: {
+				sharp_mode: "直角模式",
+				flat_mode: "扁平模式",
+				colorful_navbar: "彩色导航栏",
+			},
+		},
 		about: {
 			repositories: "代码仓库",
 			creative_team: "创作团队",
@@ -264,6 +275,8 @@ const SChinese = {
 		name_requirements: "1~20个字符，仅可包含大小写拉丁字母、数字、常用平/片假名、汉字、特殊符号 ｢-｣ ｢_｣",
 		bio: "个性签名",
 		gender: "性别",
+		memo: "备注",
+		age: "年龄",
 	},
 	zhs: "简体中文",
 	en: "英语",
@@ -274,7 +287,6 @@ const SChinese = {
 	watch_later: "稍后观看",
 	download_video: "下载视频",
 	report_creation: "稿件投诉",
-	password_hint: "密码提示",
 	forgot_password: "忘记密码",
 	reset_password: "重设密码",
 	format: "格式",
@@ -294,9 +306,34 @@ const SChinese = {
 	},
 	unknown: "未知",
 	shortcut_key: "快捷键",
-	shortcut_key_guide: "快捷键指南",
+	guide: "指南",
 	regexp: "正则表达式",
 	keywords: "关键词",
+	user_page: {
+		_: "个人主页",
+		title_suffix: "的个人主页",
+	},
+	manage_content: "稿件管理",
+	add_to_blocklist: "加入黑名单",
+	platform: {
+		bilibili: "哔哩哔哩",
+		niconico: "Niconico",
+		otomad_wiki: "音MAD维基",
+		weibo: "微博",
+		twitter: "Twitter", // 官方对于自身的称呼并未汉化，因此应使用原名作称呼。
+		qq: "QQ",
+		youtube: "YouTube",
+		discord: "Discord",
+		telegram: "Telegram",
+		midishow: "MidiShow",
+	},
+	modify_memo: "修改备注",
+	add_to_group: "加入分组",
+	navigation: {
+		_: "导航",
+		back: "返回",
+	},
+	other: "其它",
 } as const;
 
 export default SChinese;

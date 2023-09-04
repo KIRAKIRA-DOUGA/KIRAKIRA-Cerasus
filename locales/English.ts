@@ -79,6 +79,7 @@ const English: LocaleIdentifiers = {
 		current: "Current Password",
 		new: "New Password",
 		new_retype: "Retype New Password",
+		hint: "Password Hint",
 	},
 	account_linking: "Account Linking",
 	blocklist: {
@@ -89,7 +90,7 @@ const English: LocaleIdentifiers = {
 		},
 		hide: {
 			_: "Hide",
-			description: "Users you don't want to see which will be disappeared (unless you enter his personal homepage directly).",
+			description: "Users you don't want to see which will be disappeared (unless you enter their user pages directly).",
 		},
 		tags: {
 			description: "Use tags to hide content you don't want to see.",
@@ -108,10 +109,10 @@ const English: LocaleIdentifiers = {
 		history: "Danmaku History",
 		format: {
 			mode: {
-				rtl: "R-L",
+				rtl: "Scroll",
 				top: "Top",
 				bottom: "Bottom",
-				ltr: "L-R",
+				ltr: "Reversed",
 			},
 			send_as_creator: "Creator's Gradient", // NEW
 		},
@@ -147,7 +148,6 @@ const English: LocaleIdentifiers = {
 	logout: "Logout",
 	register: "Register",
 	verification_code: "Verification Code",
-	signature: "Signature",
 	close: "Close",
 	current_page_label: "Page {0} of {1}",
 	switch_page_label: "Switch to page {0}",
@@ -245,6 +245,17 @@ const English: LocaleIdentifiers = {
 			edit_banner: "Edit Banner",
 			edit_avatar: "Edit Avatar",
 		},
+		privacy: {
+			allow_cookies: "Allow to use Cookies",
+			info_visibility: "Info Visilibity",
+		},
+		appearance: {
+			other: {
+				sharp_mode: "Sharp Mode",
+				flat_mode: "Flat Mode",
+				colorful_navbar: "Colorful Navigation Bar",
+			},
+		},
 		about: {
 			repositories: "Repositories",
 			creative_team: "Creative Team",
@@ -263,6 +274,8 @@ const English: LocaleIdentifiers = {
 		name_requirements: '1~20 characters, including only upper & lower case Latin letters, numbers, common Hiragana/Katakana, CJK characters, special symbols "-", "_"',
 		bio: "Bio",
 		gender: "Gender",
+		memo: "Memo",
+		age: "Age",
 	},
 	zhs: "Simplified Chinese",
 	en: "English",
@@ -273,7 +286,6 @@ const English: LocaleIdentifiers = {
 	watch_later: "Watch Later",
 	download_video: "Download Video",
 	report_creation: "Report Creation",
-	password_hint: "Password Hint",
 	forgot_password: "Forgot Password",
 	reset_password: "Reset Password",
 	format: "Format",
@@ -293,9 +305,34 @@ const English: LocaleIdentifiers = {
 	},
 	unknown: "Unknown",
 	shortcut_key: "Shortcut Key",
-	shortcut_key_guide: "Shortcut Key Guide",
+	guide: "Guide",
 	regexp: "Regular Expression",
 	keywords: "Keywords",
+	user_page: {
+		_: "User Page",
+		title_suffix: "'s User Page",
+	},
+	manage_content: "Manage Content",
+	add_to_blocklist: "Add to Blocklist",
+	platform: {
+		bilibili: "Bilibili",
+		niconico: "Niconico",
+		otomad_wiki: "Otomad Wiki",
+		weibo: "Weibo",
+		twitter: "Twitter",
+		qq: "QQ",
+		youtube: "YouTube",
+		discord: "Discord",
+		telegram: "Telegram",
+		midishow: "MidiShow",
+	},
+	modify_memo: "Modify Memo",
+	add_to_group: "Add to Group",
+	navigation: {
+		_: "Navigation",
+		back: "Back",
+	},
+	other: "Other",
 };
 
 export default English;

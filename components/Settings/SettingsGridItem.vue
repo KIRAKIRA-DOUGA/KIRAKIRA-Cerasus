@@ -82,7 +82,7 @@
 			color: c(accent);
 			font-size: 24px;
 			transform-origin: left center;
-			
+
 			:comp:not(.active) & {
 				opacity: 0;
 				scale: 0.5;
@@ -102,40 +102,40 @@
 		container: card / inline-size;
 		cursor: pointer;
 		transition: $fallback-transitions, scale $ease-out-back 500ms !important;
-		
-		&:any-hover {
+
+		:comp:any-hover & {
 			@include chip-shadow-hover;
-			
-			:comp:focus & {
-				@include chip-shadow-hover-focus;
-			}
 		}
-		
-		&:active {
+
+		:comp:any-hover:focus & {
+			@include chip-shadow-hover-focus;
+		}
+
+		:comp:active & {
 			@include button-scale-pressed;
 		}
-		
+
 		:comp:focus & {
 			@include chip-shadow-focus;
 		}
-		
+
 		:comp.active:focus & {
 			@include chip-shadow-checked-focus;
 		}
-		
+
 		:comp.active & {
 			@include chip-shadow-checked;
-			
+
 			:deep(.ripple-circle) {
 				background-color: c(accent-ripple);
 			}
-			
-			&:any-hover {
-				@include chip-shadow-checked-hover;
-			}
+		}
+
+		:comp.active:any-hover & {
+			@include chip-shadow-checked-hover;
 		}
 	}
-	
+
 	:comp > * {
 		display: flex;
 		flex-direction: column;
@@ -147,7 +147,7 @@
 
 			.thumbnail {
 				flex-shrink: 0;
-				width: 210px;
+				width: 135px;
 			}
 		}
 	}

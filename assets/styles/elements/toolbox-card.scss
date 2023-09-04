@@ -27,12 +27,16 @@
 		flex-direction: column;
 		gap: 8px;
 	}
+
+	> .accordion {
+		box-shadow: none !important;
+	}
 }
 
 @mixin videos-grid {
 	$min-width: 226px;
 	$gap: 12px;
-	
+
 	display: grid;
 	grid-gap: 0;
 	grid-template-columns: repeat(auto-fill, minmax($min-width, 1fr));
@@ -43,12 +47,16 @@
 	&:has(.settings-grid-item) {
 		gap: $gap;
 	}
-	
+
 	> * {
 		--column: multi;
-		
+
 		@container videos-grid (width < #{$min-width * 2 + $gap}) {
 			--column: single;
+		}
+
+		@container videos-grid (width < #{$min-width * 2}) {
+			--view: list;
 		}
 	}
 }
@@ -56,4 +64,3 @@
 .videos-grid {
 	@include videos-grid;
 }
-

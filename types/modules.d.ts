@@ -294,3 +294,10 @@ declare module "*.css-doodle" {
 	const raw: string;
 	export default raw;
 }
+
+// get css preprocessor variables
+declare module "virtual:scss-var:*" {
+	const variables: IScssVariables;
+	export default variables;
+	export const numbers: IScssVariables["numbers"];
+}

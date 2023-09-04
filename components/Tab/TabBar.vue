@@ -16,10 +16,16 @@
 
 	const model = defineModel<string>({ required: true });
 	const { RenderComp, slotNode } = useFactory();
-	
-	const tabBar = refComp();
+
+	const tabBarInline = ref<HTMLSpanElement>();
 	const indicator = ref<HTMLDivElement>();
 	const unmounted = ref(false);
+	const scrollArea = ref<HTMLDivElement>();
+	const { x: scrollX } = useScroll(scrollArea, { behavior: "smooth" });
+	const resizeObserver = ref<ResizeObserver>();
+	const arrivedState = ref({ left: false, right: false }); // 用以解决 useScroll 自带 arrivedState 属性的功能实现缺陷。
+	const longPressTimeoutId = ref<Timeout>();
+	const clearLongPressTimeoutId = () => clearInterval(longPressTimeoutId.value!);
 
 	/**
 	 * 根据标识符切换选项卡。
@@ -51,7 +57,7 @@
 	 * @returns 指示器的四边位置。
 	 */
 	function getIndicatorPositions(item: HTMLElement, maxLength: number) {
-		if (!tabBar.value) throw new ReferenceError("DOM 未完全初始化。");
+		if (!tabBarInline.value) throw new ReferenceError("DOM 未完全初始化。");
 		const {
 			left: itemLeft,
 			right: itemRight,
@@ -65,7 +71,7 @@
 			right: tabBarRight,
 			top: tabBarTop,
 			bottom: tabBottom,
-		} = tabBar.value.getBoundingClientRect();
+		} = tabBarInline.value.getBoundingClientRect();
 		const offset = ((props.vertical ? itemHeight : itemWidth) - maxLength) / 2;
 		return {
 			left: (itemWidth <= maxLength ? itemLeft : itemLeft + offset) - tabBarLeft,
@@ -193,8 +199,8 @@
 	 * @returns 是否没有变换。
 	 */
 	function isNoTransform() {
-		if (!tabBar.value) return false;
-		for (const element of getPath(tabBar)) {
+		if (!tabBarInline.value) return false;
+		for (const element of getPath(tabBarInline)) {
 			const style = getComputedStyle(element);
 			for (const property of ["scale", "translate", "rotate", "transform"] as const)
 				if (style[property] !== "none")
@@ -203,11 +209,42 @@
 		return true;
 	}
 
-	watch(model, (id, prevId) => update(id, prevId));
+	/**
+	 * 当按下选项卡左右两侧按钮时的事件。
+	 * @param direction - 翻动方向。
+	 */
+	function onFlipViewButtonDown(direction: "left" | "right") {
+		clearLongPressTimeoutId();
+		const action = () => {
+			const dir = direction === "left" ? -1 : 1;
+			scrollX.value += 50 * dir;
+		};
+		action();
+		longPressTimeoutId.value = setInterval(action, 200);
+	}
 
-	useEventListener("window", "resize", () => update(undefined, updateIndicatorWithoutAnimation));
+	/**
+	 * 控制是否显示选项卡左右两侧按钮的逻辑。
+	 */
+	function showFlipViewButtonHandler() {
+		const el = scrollArea.value;
+		if (!el) return;
+		const hide = { left: false, right: false };
+		if (props.vertical) arrivedState.value = hide;
+		else if (el.scrollWidth <= el.offsetWidth) arrivedState.value = hide;
+		else arrivedState.value = {
+			left: el.scrollLeft > 0,
+			right: el.scrollLeft < el.scrollWidth - el.offsetWidth - 1,
+		};
+	}
+
+	watch(model, (id, prevId) => update(id, prevId));
+	// useEventListener("window", "resize", () => update(undefined, updateIndicatorWithoutAnimation));
+	useEventListener(scrollArea, "scroll", showFlipViewButtonHandler);
 
 	onMounted(async () => {
+		resizeObserver.value = new ResizeObserver(showFlipViewButtonHandler);
+		scrollArea.value && resizeObserver.value.observe(scrollArea.value);
 		while (!isNoTransform() && !unmounted.value)
 			await delay(100);
 		update(undefined);
@@ -215,6 +252,8 @@
 
 	onUnmounted(() => {
 		unmounted.value = true;
+		resizeObserver.value?.disconnect();
+		clearLongPressTimeoutId();
 	});
 
 	defineExpose({
@@ -223,11 +262,21 @@
 </script>
 
 <template>
-	<Comp ref="tabBar" :class="{ vertical }" role="tablist" :aria-details="model" :aria-orientation="vertical ? 'vertical' : 'horizontal'">
-		<div class="items">
-			<RenderComp :vnode="$slots.default?.()" />
+	<Comp :class="{ vertical }" role="tablist" :aria-details="model" :aria-orientation="vertical ? 'vertical' : 'horizontal'">
+		<Transition name="fade">
+			<FlipViewButton v-if="arrivedState.left" direction="left" @pointerdown="onFlipViewButtonDown('left')" @pointerup="clearLongPressTimeoutId" />
+		</Transition>
+		<div ref="scrollArea" class="scroll-area">
+			<div ref="tabBarInline" class="inline">
+				<div class="items">
+					<RenderComp :vnode="$slots.default?.()" />
+				</div>
+				<div ref="indicator" class="indicator"></div>
+			</div>
 		</div>
-		<div ref="indicator" class="indicator"></div>
+		<Transition name="fade">
+			<FlipViewButton v-if="arrivedState.right" direction="right" @pointerdown="onFlipViewButtonDown('right')" @pointerup="clearLongPressTimeoutId" />
+		</Transition>
 	</Comp>
 </template>
 
@@ -241,15 +290,26 @@
 		}
 	}
 
+	:comp {
+		position: relative;
+	}
+
+	.scroll-area {
+		overflow-x: hidden;
+
+		@media (hover: none) { // 触摸屏允许直接左右滑动翻页。
+			overflow-x: auto;
+		}
+	}
+
 	.items {
 		display: flex;
 		gap: 1rem;
 		align-items: flex-end;
 		padding-bottom: 9px;
 
-		> :slotted(*) {
+		> :deep(*) {
 			flex-shrink: 0;
-			cursor: pointer;
 		}
 
 		@container style(--loose: true) {
@@ -257,7 +317,7 @@
 			padding-bottom: 15px;
 		}
 
-		:comp.vertical > & {
+		:comp.vertical & {
 			display: flex;
 			flex-direction: column;
 			gap: 2px;
@@ -265,13 +325,29 @@
 		}
 	}
 
-	:comp {
+	.inline {
 		position: relative;
 		display: inline-block;
-		// TODO: 当页面宽度过窄时，横向 Tab 内容超出页面宽度范围会被截去内容，还需要添加点击 TAB 两侧三角形按钮来滑动 TAB 页面。
 
-		&.vertical {
+		:comp.vertical & {
 			width: 100%;
+		}
+	}
+
+	.flip-view-button {
+		$hide-color: c(icon-color, 7%);
+		position: absolute;
+		top: 0;
+		z-index: 5;
+
+		&.left {
+			left: 0;
+			background: linear-gradient(to left, transparent, $hide-color);
+		}
+
+		&.right {
+			right: 0;
+			background: linear-gradient(to right, transparent, $hide-color);
 		}
 	}
 
@@ -296,11 +372,11 @@
 			scale: $pressed-scale 1;
 		}
 
-		:comp.vertical > #{$active-item-pressed} ~ & {
+		:comp.vertical #{$active-item-pressed} ~ & {
 			scale: 1 $pressed-scale;
 		}
 
-		:comp.vertical > & {
+		:comp.vertical & {
 			width: $thickness;
 			height: unset;
 			margin-top: 2px;

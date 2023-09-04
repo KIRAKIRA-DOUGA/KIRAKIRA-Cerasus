@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	useHead({ title: "首页" });
+	useHead({ title: t.home });
 
 	const videos = ref<Videos200Response>();
 	const route = useRoute();
@@ -47,24 +47,22 @@
 
 <template>
 	<div class="container">
-		<div>
-			<TabBar v-model="data.selectedTab" @movingForTransition="name => transitionName = name">
-				<TabItem
-					id="Home"
-					direction="vertical"
-					icon="home"
-				>{{ t.home }}</TabItem>
-				<TabItem
-					v-for="cat in categoryList"
-					:id="cat"
-					:key="cat"
-					direction="vertical-reverse"
-					:badge="categories.get(cat.toLowerCase())"
-				>
-					{{ t.category[cat.toLowerCase()] }}
-				</TabItem>
-			</TabBar>
-		</div>
+		<TabBar v-model="data.selectedTab" @movingForTransition="name => transitionName = name">
+			<TabItem
+				id="Home"
+				direction="vertical"
+				icon="home"
+			>{{ t.home }}</TabItem>
+			<TabItem
+				v-for="cat in categoryList"
+				:id="cat"
+				:key="cat"
+				direction="vertical-reverse"
+				:badge="categories.get(cat.toLowerCase())"
+			>
+				{{ t.category[cat.toLowerCase()] }}
+			</TabItem>
+		</TabBar>
 		<Subheader icon="upload" :badge="numberOfItems">{{ t.latest }}</Subheader>
 		<Transition :name="transitionName" mode="out-in">
 			<div :key="resultTimestamp" class="videos-grid">
@@ -96,10 +94,10 @@
 
 	.tab-bar {
 		--loose: true;
-		margin-left: -8px;
 
 		:deep(.items) {
 			gap: 0;
+			margin-left: -8px;
 
 			> * {
 				width: 72px;

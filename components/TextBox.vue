@@ -6,7 +6,7 @@
 		/** 内容占位符。 */
 		placeholder?: string;
 		/** 图标名称。 */
-		icon?: string;
+		icon?: DeclaredIcons;
 		/** 输入框类型。 */
 		type?: "date" | "datetime-local" | "email" | "month" | "number" | "password" | "search" | "tel" | "text" | "time" | "url" | "week";
 		// 已弃用："datetime"。
@@ -53,6 +53,8 @@
 		suffix?: string;
 		/** 手动声明数据是否无效。如为字符串可自定义数据无效时的说明。 */
 		invalid?: string | boolean; // 注意 string 必须写在前面，不然 Vue 会擅自把空字符串转换为 true！
+		/** 强行指定字母大小写。 */
+		case?: "uppercase" | "lowercase";
 	}>(), {
 		icon: undefined,
 		size: "normal",
@@ -72,6 +74,7 @@
 		prefix: "",
 		suffix: "",
 		invalid: undefined,
+		case: undefined,
 	});
 
 	const emits = defineEmits<{
@@ -88,7 +91,7 @@
 	const input = ref<HTMLInputElement>();
 	const showClearAll = computed(() => !props.hideClearAll && value.value !== "");
 	const isInvalid = () => input.value?.validity.valid === false; // 注意不要写成 !valid，还需要排除 undefined 的情况。
-	const _invalid = ref(false); // 如果使用 computed，则只会调用一次。并不能监测 isInvalid 的变化，所以 computed 功能只是个废物？
+	const invalid = ref(false); // 如果使用 computed，则只会调用一次。并不能监测 isInvalid 的变化，所以 computed 功能只是个废物？
 	const isNumberMode = computed(() => props.min !== undefined || props.max !== undefined || ["decimal", "numberic", "tel"].includes(props.inputMode!));
 
 	watch(() => props.invalid, invalid => {
@@ -175,7 +178,12 @@
 				input.setCustomValidity(status === "valid" ? "" : validationMessage || " ");
 			}
 		}
-		_invalid.value = isInvalid();
+		if (props.case) {
+			const toCase = props.case === "uppercase" ? "toUpperCase" : "toLowerCase";
+			input.value = input.value[toCase]();
+			if (length >= 0 && caret !== null) Caret.set(input, caret);
+		}
+		invalid.value = isInvalid();
 		value.value = input.value;
 	}
 
@@ -219,19 +227,19 @@
 
 	watch(value, async () => {
 		await nextTick();
-		_invalid.value = isInvalid();
+		invalid.value = isInvalid();
 	});
 
 	onMounted(() => {
-		_invalid.value = isInvalid();
+		invalid.value = isInvalid();
 	});
 
 	const TrailingIcon = (() => {
 		interface Props {
 			shown?: boolean;
 			onClick?: (payload: MouseEvent) => void;
-			icon?: string;
-			animatedIcon?: string;
+			icon?: DeclaredIcons;
+			animatedIcon?: DeclaredLotties;
 			animatedState?: string;
 		}
 		return (props: Props) => (
@@ -297,7 +305,7 @@
 					/>
 					<TrailingIcon
 						v-tooltip:y="input?.validationMessage || undefined"
-						:shown="_invalid"
+						:shown="invalid"
 						icon="error"
 					/>
 					<slot name="actions"></slot>

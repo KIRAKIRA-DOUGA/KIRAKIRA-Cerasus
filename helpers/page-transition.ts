@@ -1,4 +1,4 @@
-import { userTabs } from "layouts/UserCenter.vue";
+import { userTabs } from "layouts/UserPage.vue";
 
 const SETTINGS = "/settings";
 const USER = "/user";
@@ -11,7 +11,7 @@ const USER = "/user";
 export default function usePageTransition() {
 	/** 页面切换引用变量。 */
 	const pageTransition = ref("page-forward");
-	
+
 	watchRoute((route, prevRoute) => {
 		[route, prevRoute] = [removeI18nPrefix(route), removeI18nPrefix(prevRoute)];
 		const [slug, prevSlug] = [getLocaleRouteSlug(route), getLocaleRouteSlug(prevRoute)];
@@ -26,6 +26,6 @@ export default function usePageTransition() {
 			pageTransition.value = index > prevIndex ? "right" : index < prevIndex ? "left" : "";
 		}
 	});
-	
+
 	return pageTransition;
 }

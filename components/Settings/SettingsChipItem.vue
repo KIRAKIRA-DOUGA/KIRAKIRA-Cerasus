@@ -3,13 +3,13 @@
 		/** 图片。 */
 		image?: string;
 		/** 图标。如果图片和图标同时指定，则图片会替换掉图标。 */
-		icon?: string;
+		icon?: DeclaredIcons;
 		/** 是否保持图标本身的颜色。 */
 		filled?: boolean;
 		/** 详细信息。 */
 		details?: Readable;
 		/** 尾随操作图标。 */
-		trailingIcon?: string;
+		trailingIcon?: DeclaredIcons;
 		/** 尾随操作图标单击事件。 */
 		onTrailingIconClick?: () => void;
 		/** 点击链接。在域名未完全确定前目前只能支持外链，如内链需要额外的自动检测。 */

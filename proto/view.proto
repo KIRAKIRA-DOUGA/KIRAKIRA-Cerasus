@@ -1,0 +1,125 @@
+/**
+ * 视频弹幕的一些设置
+ * 接口：GET https://api.bilibili.com/x/v2/dm/web/view?type=1&oid=${AV号}&pid=${分P编号}
+ * 仓库：https://github.com/MoyuScript/bilibili-protobuf
+ * 作者：MoyuScript
+ */
+
+syntax = "proto3";
+
+package bilibili.view;
+
+/** 
+ * 弹幕分段设置
+ */
+message SegmentConfig {
+	// 每段时长（毫秒）
+	optional int64 page_size = 1;
+	// 共有几段
+	optional int64 total = 2;
+}
+
+/** 
+ * 暂不清楚作用
+ */
+message FlagConfig {
+	optional int32 rec_flag = 1;
+	optional string rec_text = 2;
+	optional int32 rec_switch = 3;
+}
+
+/**
+ * 弹幕样式设置
+ */
+message WebPlayerConfig {
+	// 是否开启弹幕
+	optional bool dm_switch = 1;
+	// 是否开启智能云屏蔽弹幕
+	optional bool ai_switch = 2;
+	// 智能云屏蔽等级
+	optional int32 ai_level = 3;
+	// 是否显示顶部弹幕
+	optional bool display_top = 4;
+	// 是否显示飞行弹幕
+	optional bool display_scroll = 5;
+	// 是否显示底部弹幕
+	optional bool display_bottom = 6;
+	// 是否显示彩色弹幕
+	optional bool display_color = 7;
+	// 是否显示高级弹幕
+	optional bool display_special = 8;
+	// 是否开启防挡字幕
+	optional bool prevent_shade = 9;
+	// 是否开启弹幕蒙版（不挡住人像）
+	optional bool dmask = 10;
+	// 弹幕不透明度
+	optional float opacity = 11;
+	// 弹幕显示区域
+	optional int32 dm_area = 12;
+	// 弹幕速度
+	optional float speed_plus = 13;
+	// 弹幕字体大小
+	optional float font_size = 14;
+	// 是否弹幕大小跟随屏幕等比缩放
+	optional bool screen_sync = 15;
+	// 是否弹幕速度同步播放倍数
+	optional bool speed_sync = 16;
+	// 弹幕字体
+	optional string font_family = 17;
+	// 是否开启粗体
+	optional bool bold = 18;
+	// 描边类型
+	optional int32 font_border = 19;
+	// 渲染类型
+	optional string draw_type = 20;
+}
+
+/**
+ * 命令弹幕内容
+ */
+message CommandDanmaku {
+	// 弹幕数字 ID
+	optional int64 id = 1;
+	// 所在视频分 P 编号
+	optional int64 oid = 2;
+	// 发送者 UID
+	optional int64 mid = 3;
+	// 命令
+	optional string command = 4;
+	// 内容
+	optional string content = 5;
+	// 出现进度
+	optional int32 progress = 6;
+	// 发送时间
+	optional string ctime = 7;
+	// 修改时间
+	optional string mtime = 8;
+	// 额外 JSON 信息
+	optional string extra = 9;
+	// 弹幕字符串 ID
+	optional string id_str = 10;
+}
+
+/**
+ * 总设置根节点
+ */
+message Root {
+	// 状态，为 1 时视频弹幕被关闭
+	optional int32 state = 1;
+	// 弹幕输入框占位符文本
+	optional string text = 2;
+	// 弹幕列表占位符文本
+	optional string text_side = 3;
+	// 弹幕分段设置
+	optional SegmentConfig dm_seg = 4;
+	optional FlagConfig flag = 5;
+	// 高级弹幕资源地址数组
+	repeated string special_dms = 6;
+	optional bool check_box = 7;
+	// 当前弹幕数量
+	optional int64 count = 8;
+	// 命令弹幕数组
+	repeated CommandDanmaku command_dms = 9;
+	// 弹幕样式设置
+	optional WebPlayerConfig dm_settings = 10;
+}

@@ -10,7 +10,7 @@
 		/** 角标，可选。 */
 		badge?: Readable;
 		/** 图标，可选。 */
-		icon?: string;
+		icon?: DeclaredIcons;
 	}>(), {
 		direction: "horizontal",
 		badge: undefined,
@@ -97,7 +97,7 @@
 		}
 		// TODO: 缺少横向 Tab 的 hover 和 pressed 样式，但不要用水波纹，你用了就知道有多丑了。
 
-		.tab-bar.vertical > * > & {
+		.tab-bar.vertical & {
 			@include round-small;
 			justify-content: flex-start;
 			width: 100%;

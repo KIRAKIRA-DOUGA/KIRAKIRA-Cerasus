@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	import background from "assets/styles/css-doodles/background.css-doodle";
 	import Settings from "./Settings.vue";
-	import UserCenter from "./UserCenter.vue";
+	import UserPage from "./UserPage.vue";
 	import usePageTransition from "helpers/page-transition";
 
 	const container = ref<HTMLDivElement>();
@@ -11,7 +11,7 @@
 	const SETTINGS = "settings";
 	const pageTransition = usePageTransition();
 	const isSettings = computed(() => getLocaleRouteSlug()[0] === SETTINGS);
-	const isUserCenter = computed(() => getLocaleRouteSlug()[0] === "user");
+	const isUserPage = computed(() => getLocaleRouteSlug()[0] === "user");
 	const cssDoodle = refComp();
 	const showCssDoodle = computed(() => useAppSettingsStore().showCssDoodle);
 	const isToggleSettings = ref(false);
@@ -23,6 +23,9 @@
 		return attrs;
 	};
 	const [onContentEnter, onContentLeave] = simpleAnimateSize("height", 700, eases.easeInOutSmooth);
+	const showDrawer = ref(false);
+
+	useListen("app:showDrawer", () => showDrawer.value = true);
 
 	watchRoute(() => {
 		showBanner.value = localedRoute.value === "" || localedRoute.value.startsWith("user");
@@ -35,30 +38,36 @@
 
 <template>
 	<Transition>
-		<CssDoodle v-show="showCssDoodle" ref="cssDoodle" :rule="background" class="background" />
+		<Offcanvas v-if="showDrawer" />
 	</Transition>
-	<SideBar class="sidebar" />
-	<div ref="container" class="container" :class="{ scroll: isSettings, 'toggle-settings': isToggleSettings }">
-		<Transition name="settings" v-bind="transitionProps(true)">
-			<Settings v-if="isSettings">
-				<Transition name="page-jump" v-bind="transitionProps(true)">
-					<div :key="localedRoute" class="router-view">
-						<slot></slot>
-					</div>
-				</Transition>
-			</Settings>
-			<main v-else ref="containerMain" class="scroll">
-				<Banner :collapsed="!showBanner" />
-				<Transition :css="false" @enter="onContentEnter" @leave="onContentLeave">
-					<UserCenter v-if="isUserCenter" />
-				</Transition>
-				<Transition :name="pageTransition" v-bind="transitionProps(false)">
-					<div :key="localedRoute" :class="{ 'user-center-slot': isUserCenter }">
-						<slot></slot>
-					</div>
-				</Transition>
-			</main>
+	<div class="viewport">
+		<Transition>
+			<CssDoodle v-show="showCssDoodle" ref="cssDoodle" :rule="background" class="background" />
 		</Transition>
+		<SideBar />
+		<div ref="container" class="container" :class="{ scroll: isSettings, 'toggle-settings': isToggleSettings }">
+			<Transition name="settings" v-bind="transitionProps(true)">
+				<Settings v-if="isSettings">
+					<Transition name="page-jump" v-bind="transitionProps(true)">
+						<div :key="localedRoute" class="router-view">
+							<slot></slot>
+						</div>
+					</Transition>
+				</Settings>
+				<main v-else ref="containerMain" class="scroll">
+					<Banner :collapsed="!showBanner" />
+					<Transition :css="false" @enter="onContentEnter" @leave="onContentLeave">
+						<UserPage v-if="isUserPage" />
+					</Transition>
+					<Transition :name="pageTransition" v-bind="transitionProps(false)">
+						<div :key="localedRoute" :class="{ 'user-center-slot': isUserPage }">
+							<slot></slot>
+						</div>
+					</Transition>
+				</main>
+			</Transition>
+		</div>
+		<div v-if="showDrawer" class="hide-drawer-mask" @click="showDrawer = false"></div>
 	</div>
 </template>
 
@@ -76,6 +85,10 @@
 				@include tablet {
 					padding: 26px 40px;
 				}
+
+				@include mobile {
+					padding: 16px;
+				}
 			}
 		}
 	}
@@ -91,12 +104,48 @@
 		// }
 	}
 
-	.sidebar {
-		position: fixed;
+	aside {
 		top: 0;
-		left: 0;
+		width: $sidebar-width;
 		height: 100dvh;
+	}
+
+	nav {
+		bottom: 0;
+	}
+	
+	aside,
+	nav {
+		position: fixed;
+		left: 0;
 		transition: background-color $ease-out-max 250ms;
+	}
+	
+	@include not-mobile {
+		nav {
+			display: none;
+		}
+	}
+
+	@include mobile {
+		.container {
+			padding-top: $sidebar-width;
+			padding-left: 0;
+		}
+
+		aside,
+		nav {
+			width: 100dvw;
+			height: $sidebar-width;
+		}
+
+		.scroll {
+			height: calc(100dvh - 2 * $sidebar-width);
+
+			&.container {
+				height: calc(100dvh - $sidebar-width);
+			}
+		}
 	}
 
 	.background {
@@ -116,5 +165,55 @@
 		&.toggle-settings {
 			overflow: hidden;
 		}
+	}
+
+	.viewport {
+		height: 100dvh;
+		background-color: c(main-bg);
+
+		&:has(> .hide-drawer-mask) {
+			transition-duration: 600ms;
+
+			&:any-hover:active {
+				transform-origin: left center !important;
+				scale: 0.975;
+			}
+		}
+	}
+
+	.offcanvas {
+		position: fixed;
+		height: 100dvh;
+		transform-origin: -100% center;
+
+		&:not(.v-leave-active) ~ .viewport {
+			@include system-card;
+			@include round-large;
+			position: relative;
+			overflow: hidden;
+			transform: translateX(50dvw) scale(0.8);
+			transform-origin: left center;
+		}
+
+		&.v-enter-active,
+		&.v-leave-active {
+			&,
+			~ .viewport {
+				transition-duration: 600ms;
+			}
+		}
+
+		&.v-enter-from,
+		&.v-leave-to {
+			opacity: 0;
+			scale: 0.8;
+		}
+	}
+
+	.hide-drawer-mask {
+		position: absolute;
+		inset: 0;
+		z-index: 99;
+		cursor: pointer;
 	}
 </style>

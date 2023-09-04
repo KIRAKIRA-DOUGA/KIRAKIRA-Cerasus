@@ -1,5 +1,6 @@
 <script setup lang="ts">
 	useHead({ title: t.search });
+	const querySearch = useRoute().query.q ?? "";
 
 	const view = ref<ViewType>("grid");
 	const displayPageCount = ref(6);
@@ -7,12 +8,12 @@
 
 	const data = reactive({
 		selectedTab: "Home",
-		search: "",
-		sort: ref<SortModel>(["upload_date", "desc"]),
+		search: querySearch,
+		sort: ref<SortModel>(["upload_date", "descending"]),
 		page: 1,
 		pages: 99,
-
 	});
+
 	/**
 	 * Fetch the videos according to the query.
 	 */
@@ -20,13 +21,14 @@
 		const api = useApi();
 		const utf8Encoder = new TextEncoder();
 		const encodedContent = utf8Encoder.encode(data.search !== "" ? data.search : "none") as unknown as string;
+		useRouter().push({ path: useRoute().path, query: { ...useRoute().query, q: data.search || undefined } });
 		const handleError = (error: unknown) => error && console.error(error);
 
 		const cat = data.selectedTab !== "Home" ? data.selectedTab : "undefined";
 		const encodedCategory = utf8Encoder.encode(cat) as unknown as string;
 		try {
-			const videosResponse = await api?.videos(encodedContent, data.sort[0], data.sort[1], "true", data.page, encodedCategory);
-			data.pages = Math.ceil(videosResponse.paginationData?.numberOfItems / 50.0);
+			const videosResponse = await api?.videos(encodedContent, data.sort[0], data.sort[1].slice(0, -6), "true", data.page, encodedCategory);
+			data.pages = Math.ceil(videosResponse.paginationData!.numberOfItems! / 50.0);
 			videos.value = videosResponse;
 		} catch (error) { handleError(error); }
 	}
@@ -40,7 +42,6 @@
 		<HeadingGroup :name="t.search" englishName="Search" />
 
 		<div class="card-container">
-
 			<div class="center">
 				<div class="videos-grid">
 					<ThumbVideo
@@ -58,7 +59,6 @@
 			</div>
 
 			<div class="right">
-
 				<div class="toolbox-card">
 					<TextBox v-model="data.search" :placeholder="t.search" icon="search" />
 				</div>
@@ -71,23 +71,20 @@
 					<section>
 						<Subheader icon="sort">{{ t.sort.by }}</Subheader>
 						<Sort v-model="data.sort">
-							<SortItem id="upload_date" preferOrder="desc">{{ t.upload_date }}</SortItem>
-							<SortItem id="views" preferOrder="desc">{{ t.sort.view }}</SortItem>
+							<SortItem id="upload_date" preferOrder="descending">{{ t.upload_date }}</SortItem>
+							<SortItem id="views" preferOrder="descending">{{ t.sort.view }}</SortItem>
 							<!-- TODO: OTOMAN WILL IMPLEMENT -->
-							<!-- <SortItem id="danmaku" preferOrder="desc">{{ t.sort.danmaku }}</SortItem>
-							<SortItem id="comments" preferOrder="desc">{{ t.sort.comment }}</SortItem>
-							<SortItem id="favorites" preferOrder="desc">{{ t.sort.favorite }}</SortItem>
-							<SortItem id="duration" preferOrder="desc">{{ t.duration }}</SortItem> -->
+							<!-- <SortItem id="danmaku" preferOrder="descending">{{ t.sort.danmaku }}</SortItem>
+							<SortItem id="comments" preferOrder="descending">{{ t.sort.comment }}</SortItem>
+							<SortItem id="favorites" preferOrder="descending">{{ t.sort.favorite }}</SortItem>
+							<SortItem id="duration" preferOrder="descending">{{ t.duration }}</SortItem> -->
 							<SortItem id="rating">{{ t.rating }}</SortItem>
 						</Sort>
 					</section>
 					<Pagination v-model="data.page" :pages="data.pages" :displayPageCount="displayPageCount" enableArrowKeyMove />
 				</div>
-
 			</div>
-
 		</div>
-
 	</div>
 </template>
 
@@ -95,6 +92,10 @@
 	.card-container {
 		display: flex;
 		gap: 1rem;
+
+		@include mobile {
+			flex-direction: column-reverse;
+		}
 	}
 
 	.center {

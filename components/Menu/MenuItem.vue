@@ -2,7 +2,7 @@
 	import Menu from "./Menu.vue";
 
 	const props = withDefaults(defineProps<{
-		icon?: string;
+		icon?: DeclaredIcons;
 	}>(), {
 		icon: undefined,
 	});
@@ -60,6 +60,7 @@
 		padding: 8px 16px;
 		padding-left: 14px;
 		color: c(gray-60);
+		white-space: nowrap;
 		cursor: pointer;
 
 		.icon {

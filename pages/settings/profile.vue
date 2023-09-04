@@ -5,7 +5,7 @@
 	const validChar = /[A-Za-z0-9\-_ぁ-ゖァ-ヺー〇一-鿿㐀-䶿𠀀-𮹊𰀀-𲎯]*/u;
 	const name = ref("艾了个拉");
 	// const test = ref("");
-	const signature = ref("");
+	const bio = ref("");
 	const genderBasic = ref<"male" | "female" | "custom" | "">("");
 	const genderCustom = ref("");
 	const birthday = ref(formatDate(new Date(), "yyyy/MM/dd"));
@@ -48,7 +48,6 @@
 				size="large"
 				icon="person"
 				required
-				preventIfInvalid
 				:pattern="validChar"
 				:maxLength="20"
 			/>
@@ -66,7 +65,7 @@
 			:step="1"
 		/> -->
 
-		<TextBox v-model="signature" :placeholder="t.user.bio" icon="edit" />
+		<TextBox v-model="bio" :placeholder="t.user.bio" icon="edit" />
 
 		<TextBox v-model="birthday" type="date" :placeholder="t.birthday" icon="birthday" />
 		<!-- TODO: [艾拉] 这里需要日期选择组件，谁来做一下？ -->

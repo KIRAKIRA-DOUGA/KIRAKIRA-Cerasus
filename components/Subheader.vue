@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
 		/** 图标。 */
-		icon?: string;
+		icon?: DeclaredIcons;
 		/** 角标。 */
 		badge?: Readable;
 	}>(), {

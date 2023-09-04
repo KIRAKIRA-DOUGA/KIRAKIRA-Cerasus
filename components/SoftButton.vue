@@ -3,9 +3,9 @@
 
 	const props = withDefaults(defineProps<{
 		/** 图标。 */
-		icon?: string;
+		icon?: DeclaredIcons;
 		/** 动态图标。 */
-		animatedIcon?: string;
+		animatedIcon?: DeclaredLotties;
 		/** 动态图标当前状态。 */
 		animatedState?: string;
 		/** 文本。 */
@@ -96,6 +96,8 @@
 			--icon-size: #{$icon-size};
 			/// 是否**强制**高亮图标强调色？
 			--active: false;
+			/// 是否使用彩色背景的强制白色图标？
+			--white: false;
 		}
 	}
 
@@ -108,12 +110,15 @@
 		@include flex-center;
 		@include square(var(--wrapper-size));
 		@include circle;
-		color: c(icon-color);
 	}
 
 	@mixin router-link-active {
 		> * {
 			color: c(accent) !important;
+
+			@container style(--white: true) {
+				color: c(white) !important;
+			}
 		}
 
 		:deep(.ripple-circle) {
@@ -125,11 +130,16 @@
 			background-color: c(accent-hover-overlay);
 		}
 	}
-	
+
 	:comp > div {
 		@include flex-center;
 		@include ripple-clickable-only-inside(var(--wrapper-size));
+		color: c(icon-color);
 		touch-action: manipulation;
+
+		@container style(--white: true) {
+			color: white;
+		}
 
 		> * {
 			@include flex-center;
@@ -159,9 +169,20 @@
 			@container style(--active: true) {
 				@include router-link-active;
 			}
-			
+
 			&.disabled {
 				color: c(gray-40);
+			}
+
+			@container style(--white: true) {
+				:deep(.ripple-circle) {
+					background-color: c(white, 15%) !important;
+				}
+
+				&:any-hover,
+				&:active {
+					background-color: c(white, 6%) !important;
+				}
 			}
 		}
 

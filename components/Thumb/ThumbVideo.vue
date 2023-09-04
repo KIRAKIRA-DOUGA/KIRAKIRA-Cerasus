@@ -76,16 +76,18 @@
 </template>
 
 <style scoped lang="scss">
-	.thumb-video {
+	@layer props {
+		a:comp {
+			/// 视图，可选的值为: grid | tile | list。
+			--view: grid;
+		}
+	}
+
+	a:comp {
 		@include round-large;
-		--view: grid;
 		position: relative;
 		display: inline-block;
 		color: c(text-color);
-
-		@container style(--view: list) {
-			width: 100%;
-		}
 
 		&:any-hover:not(:active) {
 			z-index: 1;
@@ -104,6 +106,10 @@
 
 		&:active {
 			@include button-scale-pressed;
+		}
+
+		@container style(--view: list) {
+			width: 100%;
 		}
 	}
 
@@ -126,17 +132,28 @@
 
 	.cover-wrapper {
 		@include round-large;
+		flex-shrink: 0;
+		margin-bottom: 8px;
 		overflow: hidden;
 		aspect-ratio: 16 / 9;
-
-		@container style(--view: grid) {
-			margin-bottom: 8px;
-		}
 
 		img.cover {
 			width: 100%;
 			height: 100%;
 			object-fit: cover;
+		}
+
+		@container style(--view: list) or style(--view: tile) {
+			width: 135px;
+			margin-bottom: 0;
+		}
+	}
+
+	.text-wrapper {
+		overflow: hidden;
+
+		@container style(--view: list) {
+			width: 100%;
 		}
 	}
 
@@ -146,6 +163,22 @@
 		white-space: nowrap;
 		text-align: justify;
 		text-overflow: ellipsis;
+
+		&:lang(zh),
+		&:lang(ja) {
+			text-overflow: "⋯⋯";
+		}
+
+		@supports (display: -webkit-box) { // 只有 -webkit-box 才能支持多行省略号
+			$title-line-height: 22px;
+			// stylelint-disable-next-line value-no-vendor-prefix
+			display: -webkit-box;
+			height: $title-line-height * 2;
+			line-height: $title-line-height;
+			white-space: normal;
+			-webkit-line-clamp: 2;
+			-webkit-box-orient: vertical;
+		}
 	}
 
 	.info {
@@ -161,12 +194,17 @@
 			display: flex;
 			gap: 8px;
 			justify-content: space-between;
+
+			@container style(--view: list) {
+				flex-direction: column;
+			}
 		}
 
 		.item {
 			@include flex-center;
 			flex-shrink: 0;
 			gap: 2px;
+			justify-content: flex-start;
 
 			.icon {
 				font-size: 16px;

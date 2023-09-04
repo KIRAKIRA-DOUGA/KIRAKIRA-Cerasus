@@ -66,7 +66,7 @@ export default defineNuxtPlugin(nuxt => {
  * @param adjustBySize - 如否则只返回该点位置（默认）；是则根据元素尺寸调整到其左上角的坐标。
  * @returns 表示工具提示位置的样式属性值。
  */
-export function getPosition(rect: MaybeRef<DOMRect | Element>, placement?: Placement, offset: number = 10, flyoutRect?: MaybeRef<DOMRect | Element>) {
+export function getPosition(rect: MaybeRef<DOMRect | Element>, placement?: Placement, offset: number = 10, flyoutRect?: MaybeRef<DOMRect | Element | TwoD | undefined>) {
 	rect = toValue(rect);
 	flyoutRect = toValue(flyoutRect);
 	if (rect instanceof Element) rect = rect.getBoundingClientRect();
@@ -88,6 +88,7 @@ export function getPosition(rect: MaybeRef<DOMRect | Element>, placement?: Place
 		position = [rect.right + offset, rect.top + rect.height / 2];
 	if (flyoutRect) {
 		if (flyoutRect instanceof Element) flyoutRect = flyoutRect.getBoundingClientRect();
+		else if (flyoutRect instanceof Array) flyoutRect = { width: flyoutRect[0], height: flyoutRect[1] } as DOMRect;
 		if (placement === "top")
 			position = [position[0] - flyoutRect.width / 2, position[1] - flyoutRect.height];
 		else if (placement === "bottom")

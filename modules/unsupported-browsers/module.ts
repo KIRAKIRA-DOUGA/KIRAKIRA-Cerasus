@@ -1,10 +1,7 @@
 import { addServerHandler, addTemplate, defineNuxtModule } from "@nuxt/kit";
 import { PREFERENTIAL_ROUTE, PREFERENTIAL_TEMPLATE_PATH } from "../shared/constants";
-import { compileTypeScript, createReadFileResolver, minifyHtml, minifyJavaScript, useNuxtHead, wrapIife } from "../shared/encode";
-
-export const IE_PAGE_HTML_FILE = "601.html";
-const IE_PAGE_SCRIPT_FILE = "jump-if-ie";
-const IE_PAGE_SCRIPT_FILE_TS = IE_PAGE_SCRIPT_FILE + ".ts", IE_PAGE_SCRIPT_FILE_JS = IE_PAGE_SCRIPT_FILE + ".js";
+import { compileTypeScript, createReadFileResolver, minifyHtml, minifyJavaScript, useNuxtHead, bundleJavaScript } from "../shared/encode";
+import { IE_PAGE_HTML_FILE, IE_PAGE_SCRIPT_FILE_TS, IE_PAGE_SCRIPT_FILE_JS, UNSUPPORTED_ROUTE } from "./constants";
 
 export default defineNuxtModule({
 	async setup(_options, nuxt) {
@@ -12,11 +9,14 @@ export default defineNuxtModule({
 
 		let iePageHtml = await readFile(IE_PAGE_HTML_FILE);
 		iePageHtml = await minifyHtml(iePageHtml);
-		nuxt.options.runtimeConfig.iePageHtml = iePageHtml; // XXX: 该方式不优雅，等待更合适的方法。
+		addTemplate({
+			filename: PREFERENTIAL_TEMPLATE_PATH + IE_PAGE_HTML_FILE,
+			write: true,
+			getContents: () => iePageHtml,
+		});
 
-		let iePageScript = await readFile(IE_PAGE_SCRIPT_FILE_TS);
+		let iePageScript = await bundleJavaScript(resolve(IE_PAGE_SCRIPT_FILE_TS));
 		iePageScript = compileTypeScript(iePageScript, "ES5");
-		iePageScript = wrapIife(iePageScript);
 		iePageScript = await minifyJavaScript(iePageScript);
 		addTemplate({
 			filename: PREFERENTIAL_TEMPLATE_PATH + IE_PAGE_SCRIPT_FILE_JS,
@@ -28,9 +28,9 @@ export default defineNuxtModule({
 		const head = useNuxtHead(nuxt);
 		head.script ??= [];
 		head.script.push({ src: IE_PAGE_SCRIPT_PATH });
-		
+
 		addServerHandler({
-			route: "/unsupported",
+			route: UNSUPPORTED_ROUTE,
 			handler: resolve("route"),
 		});
 	},

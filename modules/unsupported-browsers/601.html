@@ -1,17 +1,56 @@
 <!DOCTYPE html>
-<html lang="zh-cmn-Hans-CN">
+<html lang="zh-Hans-CN" class="zh-Hans-CN">
 
 <head>
 	<meta charset="UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
-	<title>请升级你的浏览器</title>
+	<title>是时候更换你的浏览器了 - KIRAKIRA☆DOUGA</title>
+	<script>
+		/** @type Record<"lang" | "next", string> */
+		var params = (function () {
+			var search = location.search;
+			var paramArray = search.slice(search.indexOf("?") + 1).split("&");
+			var params = {};
+			for (var i = 0; i < paramArray.length; i++) {
+				var pair = paramArray[i].split("=");
+				params[pair[0]] = decodeURIComponent(pair[1]);
+			}
+			return params;
+		})();
+		(function () {
+			// 设置网页语言。
+			var lang = params.lang;
+			if (!lang) {
+				var isIe11 = navigator.userAgent.indexOf("Trident") > 0;
+				lang = isIe11 ? navigator.browserLanguage : navigator.language;
+			}
+			if (lang.match(/^en/i)) lang = "en";
+			else if (lang.match(/^ja/i)) lang = "ja";
+			else if (lang.match(/^zh/i)) {
+				if (lang.match(/(CN|SG|MY)$/i) || lang === "zhs") lang = "zh-Hans-CN";
+				// else if (lang.match(/(TW|HK|MO)$/i) || lang === "zht") lang = "zh-Hant-TW"; // 等确定支持繁体中文时再添加。
+				else return;
+			}
+			else return;
+			document.documentElement.lang = lang;
+			document.documentElement.className = lang;
+			var titles = {
+				"zh-Hans-CN": "是时候更换你的浏览器了",
+				en: "Time to Change Your Browser",
+				ja: "ブラウザの変更時期",
+			};
+			var title = titles[lang];
+			if (title) document.title = title + " - KIRAKIRA☆DOUGA";
+		})();
+	</script>
 	<style>
 		/* stylelint-disable function-disallowed-list */
 		/* stylelint-disable alpha-value-notation */
 		/* stylelint-disable color-function-notation */
 		/* stylelint-disable property-no-vendor-prefix */
+		/* stylelint-disable selector-class-pattern */
 
 		html,
 		body {
@@ -25,6 +64,10 @@
 			-moz-user-select: none;
 			-ms-user-select: none;
 			user-select: none;
+		}
+
+		html.ja body {
+			font-family: "Yu Gothic UI", "Meiryo UI", "MS UI Gothic", "Segoe UI", Tahoma, Geneva, Verdana, Arial, SimHei, sans-serif;
 		}
 
 		@keyframes intro {
@@ -66,6 +109,8 @@
 			color: #f06e8e;
 			font-weight: bold;
 			font-size: 40px;
+			line-height: 53px;
+			white-space: nowrap;
 		}
 
 		.main-card p {
@@ -73,6 +118,25 @@
 			top: 165px;
 			color: #797173;
 			font-size: 14px;
+		}
+
+		html.en .main-card h1 {
+			line-height: 45px;
+		}
+
+		html.en .main-card p {
+			top: 145px;
+			text-align: left;
+		}
+
+		html.en .main-card .right,
+		html.ja .main-card .right {
+			width: 500px;
+		}
+
+		html.en .browsers-title,
+		html.ja .browsers-title {
+			margin-right: 50px;
 		}
 
 		.browsers-title {
@@ -192,6 +256,16 @@
 			height: 217px;
 			background-image: url("/static/images/601/internet_explorer.svg");
 		}
+
+		.text {
+			display: none;
+		}
+
+		html.zh-Hans-CN .text.zh-Hans-CN,
+		html.en .text.en,
+		html.ja .text.ja {
+			display: block;
+		}
 	</style>
 
 	<!--[if lte IE 8]>
@@ -244,7 +318,7 @@
 		</div>
 
 		<div class="right">
-			<div id="text">
+			<div lang="zh-Hans-CN" class="text zh-Hans-CN">
 				<!-- <h1>是时候更换你的浏览器了</h1> -->
 				<h1>使用过时浏览器的你，<br />可真让人瞧不起啊</h1>
 				<p>
@@ -261,6 +335,32 @@
 					<span class="browsers-title">
 						<!-- 请使用下面的浏览器继续浏览本网站 -->
 						你可以尝试换乘
+					</span>
+				</p>
+			</div>
+			<div lang="en" class="text en">
+				<h1>You are really despised for<br />using outdated browser</h1>
+				<p>
+					You arrived at the ocean of ACG by Internet Explorer, unfortunately, you ran aground...<br />
+					Such old technology is hard to adapt to this ocean environment, and this aged browser is also difficult for you to set sail.<br />
+					Internet Explorer represents the past and the beauty of the Internet in the early 21<sup>st</sup> century.<br />
+					Although you may share our aversion to the madness, busyness, and isolation of the new era, as well as our nostalgia for the laughter, slow pace, and openness of the past, what we need to do is to change the times and add a touch of our own color to this new era, just like this website, rather than trapped in the past.<br />
+					<span class="browsers-title">
+						You can try transferring
+					</span>
+				</p>
+			</div>
+			<div lang="ja" class="text ja">
+				<h1>古すぎるブラウザをまだ使ってる奴<br />これ完全に舐めとるねぇ</h1>
+				<p>
+					Internet Explorerという名の船に乗ってACGの海にやってきたが、残念ながら座礁してしまった⋯⋯<br />
+					このような古い技術はこの海に適応するのが難しく、これからの航海に役に立つことも難しい。<br />
+					<br />
+					Internet Explorerは21世紀初頭のインターネットとその時の素晴らしさを代表しています。<br />
+					あなたは私たちと同じように、新しい時代の狂騒、多忙と閉鎖を嫌って、過去の笑い、スローテンポと公開性を懐かしんでいるかもしれませんが、やるべきことはこのサイトのように、過去に囚われないように、時代を変え、この新しい時代に自分の色を残していきます。<br />
+					<br />
+					<span class="browsers-title">
+						乗換案内：
 					</span>
 				</p>
 			</div>
@@ -288,7 +388,9 @@
 			// 解决点击 browser-card 外边缘无效的问题。
 			var links = [
 				"https://www.microsoft.com/edge/download",
-				"https://www.google.cn/chrome/index.html",
+				document.documentElement.lang === "zh-Hans-CN" ?
+					"https://www.google.cn/chrome/index.html" :
+					"https://www.google.com/chrome/index.html",
 				"https://www.mozilla.org/firefox/new"
 			];
 			for (var i = 0; i < links.length; i++) {
@@ -319,16 +421,6 @@
 		(function () {
 			// 该部分脚本仅在非 IE 浏览器下才会执行。
 			if (!(window.ActiveXObject || "ActiveXObject" in window)) {
-				var params = (function () {
-					var search = location.search;
-					var paramArray = search.slice(search.indexOf("?") + 1).split("&");
-					var params = {};
-					for (var i = 0; i < paramArray.length; i++) {
-						var pair = paramArray[i].split("=");
-						params[pair[0]] = decodeURIComponent(pair[1]);
-					}
-					return params;
-				})();
 				if (params.next)
 					location.href = params.next;
 			}

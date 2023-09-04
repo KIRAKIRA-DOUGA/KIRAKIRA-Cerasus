@@ -1,6 +1,12 @@
 @use "../theme/functions" as *;
 
+@mixin set-box-shadow($border-color, $broadside-color, $is-pressed: false) {
+	$is-pressed: if($is-pressed, -1, 1);
+	box-shadow: 0 1.2px * $is-pressed 0 1px c($border-color), 0 2px * $is-pressed 0 1px c($broadside-color);
+}
+
 kbd {
+	@include set-box-shadow(gray-30, gray-40);
 	display: inline-block;
 	margin: 0 0.1em;
 	padding: 0.1em 0.6em;
@@ -10,10 +16,18 @@ kbd {
 	line-height: 1.4;
 	background-color: c(gray-5);
 	border-radius: 4px;
-	box-shadow: 0 1.2px 0 1px c(gray-30), 0 2px 0 1px c(gray-40);
+	
+	html.dark & {
+		@include set-box-shadow(gray-10, gray-5);
+		background-color: c(gray-20);
+	}
 
 	&:active {
-		box-shadow: 0 -1.2px 0 1px c(gray-30), 0 -2px 0 1px c(gray-30);
+		@include set-box-shadow(gray-30, gray-30, true);
 		translate: 0 3.2px;
+		
+		html.dark & {
+			@include set-box-shadow(gray-5, gray-5, true);
+		}
 	}
 }

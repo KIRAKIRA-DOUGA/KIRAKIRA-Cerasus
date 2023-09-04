@@ -52,15 +52,56 @@ type Keyframes = Keyframe[];
 type DimensionAxis = "height" | "width" | "both";
 type MaybePromise<T> = T | Promise<T>;
 
+type AnimateSizeOptions = Partial<{
+	/** 显式指定初始高度（可选）。 */
+	startHeight: number;
+	/** 显式指定结束高度（可选）。 */
+	endHeight: number;
+	/** 显式指定初始宽度（可选）。 */
+	startWidth: number;
+	/** 显式指定结束宽度（可选）。 */
+	endWidth: number;
+	/** 动画时间。 */
+	duration: number;
+	/** 动画运动曲线。默认为：平滑缓出。 */
+	easing: string;
+	/** 显式指定需要动画的是哪个方向。 */
+	specified: DimensionAxis;
+	/** 指定**不**需要动画调整哪个方向的内/外边距值。 */
+	withoutAdjustPadding: DimensionAxis;
+	/** 在改变回调函数后自动增加等待下一帧。 */
+	nextTick: boolean;
+	/** 获取最终的元素尺寸。 */
+	getSize: TwoD | Ref<TwoD | undefined>;
+	/** 获取最终的元素矩形。 */
+	getRect: Ref<DOMRect | undefined>;
+	/** 显式指定初始样式（可选）。 */
+	startStyle: Keyframe;
+	/** 显式指定结束样式（可选）。 */
+	endStyle: Keyframe;
+	/** 初始从反向滑入界面。 */
+	startReverseSlideIn: boolean;
+	/** 结束从反向滑入界面。 */
+	endReverseSlideIn: boolean;
+	/** 元素的**唯一**子元素初始位移。 */
+	startChildTranslate: Numberish;
+	/** 元素的**唯一**子元素结束位移。 */
+	endChildTranslate: Numberish;
+	/** 是否抽掉动画的第一帧以解决可能存在的动画故障？仅在有子元素时生效。 */
+	removeGlitchFrame: boolean;
+	/** 动画播放的同时附加其它动画，并使用与之相同的时长与缓动值。 */
+	attachAnimations: [Element, Keyframes][] | false;
+	/** 不要 `overflow: hidden;`？ */
+	noCropping: boolean;
+}>;
+
 /**
- * 当宽/高度值设为 auto 时的动画宽/高度。
+ * 当宽/高度值设为 auto 时的动画宽/高度的高级钩子生成器函数。
  * @param element - HTML DOM 元素。
- * @param changeFunc - 使宽/高度将会改变的回调函数。
- * @returns 动画异步承诺。
+ * @returns 最终返回动画异步承诺的生成器函数。
  */
-export async function animateSize(
-	element: Element,
-	changeFunc: (() => MaybePromise<void | unknown>) | undefined | null,
+export async function* animateSizeGenerator(
+	element: MaybeRef<Element | undefined>,
 	{
 		startHeight,
 		endHeight,
@@ -81,56 +122,21 @@ export async function animateSize(
 		endChildTranslate,
 		removeGlitchFrame,
 		attachAnimations,
-	}: Partial<{
-		/** 显式指定初始高度（可选）。 */
-		startHeight: number;
-		/** 显式指定结束高度（可选）。 */
-		endHeight: number;
-		/** 显式指定初始宽度（可选）。 */
-		startWidth: number;
-		/** 显式指定结束宽度（可选）。 */
-		endWidth: number;
-		/** 动画时间。 */
-		duration: number;
-		/** 动画运动曲线。默认为：平滑缓出。 */
-		easing: string;
-		/** 显式指定需要动画的是哪个方向。 */
-		specified: DimensionAxis;
-		/** 指定**不**需要动画调整哪个方向的内/外边距值。 */
-		withoutAdjustPadding: DimensionAxis;
-		/** 在改变回调函数后自动增加等待下一帧。 */
-		nextTick: boolean;
-		/** 获取最终的元素尺寸。 */
-		getSize: TwoD;
-		/** 获取最终的元素矩形。 */
-		getRect: Ref<DOMRect | undefined>;
-		/** 显式指定初始样式（可选）。 */
-		startStyle: Keyframe;
-		/** 显式指定结束样式（可选）。 */
-		endStyle: Keyframe;
-		/** 初始从反向滑入界面。 */
-		startReverseSlideIn: boolean;
-		/** 结束从反向滑入界面。 */
-		endReverseSlideIn: boolean;
-		/** 元素的**唯一**子元素初始位移。 */
-		startChildTranslate: Numberish;
-		/** 元素的**唯一**子元素结束位移。 */
-		endChildTranslate: Numberish;
-		/** 是否抽掉动画的第一帧以解决可能存在的动画故障？仅在有子元素时生效。 */
-		removeGlitchFrame: boolean;
-		/** 动画播放的同时附加其它动画，并使用与之相同的时长与缓动值。 */
-		attachAnimations: [Element, Keyframes][] | false;
-	}> = {},
-): Promise<Animation | void> {
+		noCropping = false,
+	}: AnimateSizeOptions = {},
+): AsyncGenerator<void, Animation | void, boolean> {
+	element = toValue(element);
+	if (!element) return;
 	if (isPrefersReducedMotion()) duration = 0;
 	startHeight ??= element.clientHeight;
 	startWidth ??= element.clientWidth;
-	await changeFunc?.();
-	if (changeFunc && awaitNextTick) await nextTick();
+	const hasChangeFunc = yield;
+	if (hasChangeFunc && awaitNextTick) await nextTick();
 	endHeight ??= element.clientHeight;
 	endWidth ??= element.clientWidth;
 	if (getSize)
-		[getSize[0], getSize[1]] = [endWidth, endHeight];
+		if (getSize instanceof Array) [getSize[0], getSize[1]] = [endWidth, endHeight];
+		else getSize.value = [endWidth, endHeight];
 	if (getRect)
 		getRect.value = element.getBoundingClientRect();
 	let isHeightChanged = specified === "height" || specified === "both",
@@ -161,9 +167,9 @@ export async function animateSize(
 	Object.assign(keyframes[1], endStyle);
 	const animationOptions = { duration, easing };
 	const htmlElement = element as HTMLElement;
-	htmlElement.style.overflow = "hidden";
+	if (!noCropping) htmlElement.style.overflow = "hidden";
 	const result = element.animate(keyframes, animationOptions);
-	result.addEventListener("finish", () => htmlElement.style.removeProperty("overflow"));
+	if (!noCropping) result.addEventListener("finish", () => htmlElement.style.removeProperty("overflow"));
 	if (startChildTranslate || endChildTranslate || attachAnimations) {
 		const onlyChild = element.children[0]; // 只取唯一一个子元素。
 		if (onlyChild && element instanceof HTMLElement && removeGlitchFrame) {
@@ -178,6 +184,25 @@ export async function animateSize(
 		if (attachAnimations) attachAnimations.forEach(group => group[0]?.animate(group[1], animationOptions));
 	}
 	return result.finished;
+}
+
+/**
+ * 当宽/高度值设为 auto 时的动画宽/高度。
+ * @param element - HTML DOM 元素。
+ * @param changeFunc - 使宽/高度将会改变的回调函数。
+ * @param options - 配置选项。
+ * @returns 动画异步承诺。
+ */
+export async function animateSize(
+	element: MaybeRef<Element | undefined>,
+	changeFunc: (() => MaybePromise<void | unknown>) | undefined | null,
+	options: AnimateSizeOptions = {},
+): Promise<Animation | void> {
+	const gen = animateSizeGenerator(element, options);
+	gen.next();
+	if (changeFunc) await changeFunc();
+	const animation = await gen.next(!!changeFunc);
+	return animation.value;
 }
 
 type SameOrDifferent<T> = T | undefined | [T | undefined, T | undefined];
@@ -206,7 +231,7 @@ export function simpleAnimateSize(specified: "width" | "height" = "height", dura
 	leave.duration = duration[1];
 	enter.easing = easing[0];
 	leave.easing = easing[1];
-	
+
 	const onEnter: TransitionHook = async (el, done) => {
 		await animateSize(el, null, enter);
 		done();
@@ -215,6 +240,6 @@ export function simpleAnimateSize(specified: "width" | "height" = "height", dura
 		await animateSize(el, null, leave);
 		done();
 	};
-	
+
 	return [onEnter, onLeave];
 }

@@ -13,7 +13,7 @@
 	const isClicked = ref(false);
 	const theme = Theme.theme;
 	const palette = Theme.palette;
-	const timeoutId = ref<NodeJS.Timeout>();
+	const timeoutId = ref<Timeout>();
 	const isTagChecked = ref(false);
 	const volume = ref(100);
 	const pitch = ref(0);
@@ -48,6 +48,7 @@
 	const [DefinePopoverSlot, PopoverSlot] = createReusableTemplate();
 	const comboBoxValue = ref("obtuse angle");
 	const settingsGridItemSelect = ref("");
+	const color = ref(Color.fromHex("#f00"));
 
 	/**
 	 * 单击按钮事件。
@@ -295,7 +296,7 @@
 			<LogoText :style="{ '--form': logoTextForm }" />
 			<hr />
 			<div class="flyout-bg" :style="{ width: '344px' }">
-				<ColorPicker />
+				<ColorPicker v-model="color" enableAlpha />
 			</div>
 			<hr />
 			<Accordion autoCollapse>

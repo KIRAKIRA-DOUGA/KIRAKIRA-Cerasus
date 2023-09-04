@@ -8,9 +8,11 @@
 
 	const langTag = computed(() => {
 		const langs = {
-			zh: "zh-cmn-Hans-CN", // 中文-普通话-简体字-大陆地区
+			zhs: "zh-Hans-CN",
+			zht: "zh-Hant-TW",
 			en: "en",
 			ja: "ja",
+			ko: "ko",
 		};
 
 		return langs[locale.value as keyof typeof langs] ?? locale.value;
@@ -42,14 +44,14 @@
 			// 以下内容为开放图谱协议 (Open Graph Protocol) 属性。
 			{ property: "og:type", content: "website" },
 			{ property: "og:site_name", content: manifest.name },
-			{ property: "og:title", content: manifest.name }, // XXX: 这里得放页面的 title。
+			{ property: "og:title", content: manifest.name }, // 这里得放页面的 title。
 			{ property: "og:description", content: manifest.description },
 			{ property: "og:image", content: `${homepage}static/images/thumbnail.png` },
 			{ property: "og:url", content: homepage },
 			// 以下内容为推特私有内容属性。
 			{ name: "twitter:card", content: "summary" },
 			{ name: "twitter:site", content: manifest.name },
-			{ name: "twitter:title", content: manifest.name }, // XXX: 这里得放页面的 title。
+			{ name: "twitter:title", content: manifest.name }, // 这里得放页面的 title。
 			{ name: "twitter:description", content: manifest.description },
 			{ name: "twitter:image", content: `${homepage}static/images/thumbnail.png` },
 			{ name: "twitter:url", content: homepage },

@@ -23,7 +23,7 @@ function moveIntoPage_tuple(location: TwoD, size: TwoD) {
  * @param size - 元素的元组类型尺寸。
  * @returns 返回移动入页面后的新坐标。
  */
-export function moveIntoPage(location: MaybeRef<TwoD>, size: MaybeRef<TwoD | DOMRect>): TwoD;
+export function moveIntoPage(location: MaybeRef<TwoD>, size?: MaybeRef<TwoD | DOMRect | undefined>): TwoD;
 /**
  * 探测元素溢出。如果元素超出了页面范围，则将其移动到页面内。
  * @param element - HTML DOM 元素。
@@ -36,14 +36,14 @@ export function moveIntoPage(element: MaybeRef<HTMLElement>): { top: string; lef
  * @param adjustElement - 要调整位置的 HTML DOM 元素。
  * @returns 返回移动入页面后的新坐标样式声明。
  */
-export function moveIntoPage(measureElement: MaybeRef<HTMLElement>, adjustElement: MaybeRef<HTMLElement>): { top: string; left: string };
+export function moveIntoPage(measureElement: MaybeRef<HTMLElement>, adjustElement?: MaybeRef<HTMLElement | undefined>): { top: string; left: string };
 /**
  * 探测元素溢出。如果元素超出了页面范围，则将其移动到页面内。
  * @param location - 元素的坐标。
  * @param size - 元素的尺寸。
  * @returns 返回移动入页面后的新坐标。
  */
-export function moveIntoPage(location: MaybeRef<TwoD | HTMLElement>, size?: MaybeRef<TwoD | DOMRect | HTMLElement>) {
+export function moveIntoPage(location: MaybeRef<TwoD | HTMLElement>, size?: MaybeRef<TwoD | DOMRect | HTMLElement | undefined>) {
 	location = toValue(location);
 	size = toValue(size);
 	const adjustElementStyle = size instanceof Element && size.style;
@@ -133,4 +133,25 @@ export function nullifyTransforms(el: HTMLElement) {
 				return parseFloat(v);
 			});
 	}
+}
+
+/**
+ * @remarks 该函数由 Vite 插件调用，不应手动直接使用。
+ * @access private
+ * @param variables - 变量键值声明。
+ * @returns 包装后的对象。
+ */
+export function createScssVariablesReference(variables: Record<string, string>) {
+	Object.defineProperty(variables, "numbers", {
+		enumerable: false,
+		configurable: false,
+		get() {
+			const numbers: Record<string, number> = {};
+			for (const [key, value] of Object.entries(variables))
+				numbers[key] = parseFloat(value);
+			return Object.freeze(numbers);
+		},
+	});
+	Object.freeze(variables);
+	return variables;
 }

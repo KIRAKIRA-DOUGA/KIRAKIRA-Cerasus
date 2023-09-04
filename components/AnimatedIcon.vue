@@ -11,7 +11,7 @@
 		/** 自动播放？ */
 		autoplay?: boolean;
 		/** 动画数据 JSON 或其文件名。 */
-		name: object | string;
+		name: object | DeclaredLotties;
 		/** 隐藏？ */
 		hidden?: boolean;
 		/** 播放速度。 */

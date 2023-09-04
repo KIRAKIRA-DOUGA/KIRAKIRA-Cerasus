@@ -18,6 +18,24 @@ $animation-options: $ease-out-expo 600ms backwards;
 	user-select: none !important;
 }
 
+body {
+	font-family: "Segoe UI", "Microsoft YaHei", Tahoma, Geneva, Verdana, Arial, SimHei, sans-serif;
+
+	&:lang(ja) {
+		font-family: "Yu Gothic UI", "Meiryo UI", "MS UI Gothic", "Segoe UI", Tahoma, Geneva, Verdana, Arial, SimHei, sans-serif;
+	}
+}
+
+span {
+	display: none;
+}
+
+html:lang(zh) span:lang(zh),
+html:lang(en) span:lang(en),
+html:lang(ja) span:lang(ja) {
+	display: inline;
+}
+
 .mask {
 	@include flex-center;
 	@include fullscreen;
@@ -54,9 +72,13 @@ $animation-options: $ease-out-expo 600ms backwards;
 			grid-column: 1 / 3;
 			margin: 0;
 			color: c(accent);
-			font-size: 64px;
+			font-size: 54px;
 			text-align: right;
 			animation: move-down $animation-options;
+			
+			&:lang(zh) {
+				font-size: 64px;
+			}
 		}
 
 		.logo {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	const props = defineProps<{
 		/** 图标，可选。 */
-		icon?: string;
+		icon?: DeclaredIcons;
 		/**
 		 * 点击按钮是否切换导航？
 		 * #### NOTE
@@ -49,6 +49,7 @@
 			/// 外观偏好，可选的值为：primary | secondary | tertiary。
 			/// primary: 强调色按钮。
 			/// secondary: 次要/无背景按钮。
+			/// tertiary: 非强调色状态按钮。
 			--appearance: primary;
 			/// 是否隐藏标签文本？
 			--hide-caption: false;
@@ -143,7 +144,8 @@
 				background-color: c(accent-hover-overlay);
 			}
 
-			button:focus-visible > & {
+			button:focus-visible > &,
+			button:focus-visible:hover > & {
 				@include button-shadow-focus-only;
 			}
 
@@ -160,7 +162,8 @@
 				background-color: c(hover-overlay);
 			}
 
-			button:focus-visible > & {
+			button:focus-visible > &,
+			button:focus-visible:hover > & {
 				@include button-shadow-unchecked-focus-only;
 			}
 

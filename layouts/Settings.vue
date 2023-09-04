@@ -42,7 +42,7 @@
 </script>
 
 <template>
-	<div v-bind="$attrs" class="settings">
+	<div v-bind="$attrs" class="settings" :class="{ transparent: useAppSettingsStore().showCssDoodle }">
 		<ShadingIcon icon="settings" position="right top" rotating elastic />
 
 		<nav :class="{ show: showDrawer }">
@@ -96,6 +96,7 @@
 	$title-padding-top: 26px;
 	$nav-padding-x: 24px;
 	$main-padding-x: 48px;
+	$mobile-padding-x: 24px;
 	$show-drawer-duration: 500ms;
 	$nav-width: 245px + 2 * $nav-padding-x;
 	$max-width: 960px;
@@ -108,6 +109,10 @@
 		min-height: 100dvh;
 		background-color: c(gray-5);
 		transition: $fallback-transitions, width 0s, height 0s, min-height 0s;
+
+		&.transparent {
+			background: none;
+		}
 	}
 
 	nav {
@@ -142,6 +147,10 @@
 			overflow-y: overlay;
 			transition: none;
 			// scrollbar-gutter: stable; // WARN: Chromium 114 开始，overflow 的 overlay 成了 auto 的别名，因此只能提前占位显示来确保不晃动。目前甚至 Chromium 自己的设置页都在依赖于 overlay，太荒谬了。https://bugs.chromium.org/p/chromium/issues/detail?id=1450927
+
+			@include mobile {
+				max-height: calc(100dvh - 2 * $sidebar-width);
+			}
 
 			> * {
 				flex-shrink: 0;
@@ -201,6 +210,10 @@
 		background-color: c(main-bg);
 		transition: $fallback-transitions, width 0s, height 0s, min-height 0s;
 
+		.settings.transparent & {
+			background: none;
+		}
+
 		> .content {
 			position: relative;
 			z-index: 1;
@@ -209,6 +222,10 @@
 			gap: 1rem;
 			max-width: $max-width;
 			padding: 0 $main-padding-x;
+
+			@include mobile {
+				padding: 0 $mobile-padding-x;
+			}
 
 			> :deep(.router-view) {
 				display: flex;
@@ -264,7 +281,7 @@
 	.title {
 		position: sticky;
 		top: 0;
-		z-index: 4;
+		z-index: 11;
 		padding-top: $title-padding-top;
 
 		&.nav-header,

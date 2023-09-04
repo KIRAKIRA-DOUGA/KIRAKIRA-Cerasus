@@ -1,7 +1,9 @@
+// DELETE: 将由后端推送 profile 信息，本文件作废。
+
 interface UserInfo {
 	username: string;
 	memo?: string;
-	signature?: string;
+	bio?: string;
 	gender: "male" | "female" | (string & {});
 	isFollowed: boolean;
 	follow: number;
@@ -17,14 +19,14 @@ const users = reactive<Record<string | number, UserInfo>>({
 	2: {
 		username: "艾了个拉",
 		memo: "艾拉",
-		signature: "Kind and Kawaii, Forever!~",
+		bio: "Kind and Kawaii, Forever!~",
 		gender: "female",
 		isFollowed: true,
 		follow: 233,
 		fans: 233,
 		watches: 233,
 		rating: 233,
-		birthday: new Date("2002-12-24"),
+		birthday: new Date("2003-12-24"),
 		joinTime: new Date(),
 		uid: 2n,
 	},
