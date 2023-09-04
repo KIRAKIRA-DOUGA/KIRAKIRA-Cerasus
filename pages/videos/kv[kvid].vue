@@ -50,7 +50,7 @@
 			// { property: "og:image", content: "" }, // TODO: We should get the video thumbnail here.
 			{ name: "twitter:title", content: title },
 			{ name: "twitter:description", content: videoDetails.value?.videoDescription },
-			// { name: "twitter:image", content: "" }, // TODO: We should get the video thumbnail here.
+			{ name: "twitter:image", content: videoDetails.value?.thumbnail }, // TODO: We should get the video thumbnail here.
 		],
 	});
 </script>
@@ -140,7 +140,7 @@
 			display: none;
 		}
 	}
-	
+
 	.description {
 		margin: 1.5rem 0;
 	}
