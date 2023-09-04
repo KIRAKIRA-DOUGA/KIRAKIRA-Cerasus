@@ -45,6 +45,7 @@
 	useHead({
 		title,
 		meta: [
+			{ property: "og:type", content: "video" },
 			{ property: "og:title", content: title },
 			{ property: "og:description", content: videoDetails.value?.videoDescription },
 			// { property: "og:image", content: "" }, // TODO: We should get the video thumbnail here.
