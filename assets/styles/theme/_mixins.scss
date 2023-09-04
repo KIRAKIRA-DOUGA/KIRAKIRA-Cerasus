@@ -1,6 +1,7 @@
 @use "variables" as *;
 @use "internal" as *;
 @use "functions" as *;
+@use "eases";
 
 /// 一键弹性布局加居中元素 (flex - center - center)。
 /// @output display, align-items, justify-content
@@ -195,13 +196,45 @@
 /// @content 声明强化选择器下的定义。
 /// @output #{$enhanced-selector}
 @mixin enhanced-selector {
-	$enhanced-selector: repeat-string(":not([NONE_EXISTS_ATTR])", 10); // 用于强行提高优先级。
+	$enhanced-selector: string-repeat(":not([NONE_EXISTS_ATTR])", 10); // 用于强行提高优先级。
 
 	#{$enhanced-selector} {
 		&,
 		&::before,
 		&::after {
 			@content;
+		}
+	}
+}
+
+/// 为子元素开启逐个浮入动画。
+/// @param {String} $selector - 要动画元素的唯一父选择器。
+/// @param {Number} $length - 要动画元素的最小个数。
+/// @param {Number} $duration - 单个元素动画持续时间。
+/// @param {Number} $delay - 各元素开始动画间隔时间。
+/// @param {String} $ease - 动画缓动曲线。
+/// @param {Number} $distance - 各元素动画的移动距离。
+/// @output
+@mixin float-in-children($selector, $length, $duration: 600ms, $delay: 100ms, $ease: eases.$ease-out-expo, $distance: 200px) {
+	@for $j from 1 through 2 {
+		$placement: if($j == 1, top, bottom);
+		$keyframes-name: if($j == 1, float-up, float-down);
+		$direction: if($j == 1, 1, -1);
+		$-selector: string-replace($selector, "$placement", "." + $placement);
+
+		@for $i from 1 through $length {
+			$delay-index: if($j == 1, $i, $length + 1 - $i);
+
+			#{$-selector} > :nth-child(#{$i}) {
+				animation: #{$keyframes-name} $duration #{$delay-index * $delay} $ease backwards;
+			}
+		}
+
+		@keyframes #{$keyframes-name} {
+			from {
+				opacity: 0;
+				translate: 0 #{$direction * $distance};
+			}
 		}
 	}
 }
