@@ -44,7 +44,7 @@
 	<Flyout ref="flyout" v-model="flyoutFormat" @hide="showColorPicker = false" @beforeShow="p => placement = p">
 		<Comp ref="styleContainer" :class="[placement]">
 			<Transition :name="showColorPicker ? 'page-forward' : 'page-backward'" mode="out-in" @enter="onSwitchPageEnter">
-				<div v-if="!showColorPicker" class="style-container">
+				<div v-if="!showColorPicker" class="page-style">
 					<Subheader icon="palette">{{ t.color }}</Subheader>
 					<section class="color-section">
 						<div class="color current-color" :style="{ backgroundColor: format.color.hashHex }"></div>
@@ -89,7 +89,7 @@
 						<SegmentedItem id="ltr" icon="danmaku_ltr">{{ t.danmaku.format.mode.ltr }}</SegmentedItem>
 					</Segmented>
 				</div>
-				<div v-else class="color-container">
+				<div v-else class="page-color">
 					<p class="back" @click="showColorPicker = false"><Icon name="arrow_left" />返回</p>
 					<ColorPicker v-model="format.color" v-model:model="colorModel" />
 				</div>
@@ -101,7 +101,7 @@
 <style scoped lang="scss">
 	$format-width: 344px;
 
-	.style-container {
+	.page-style {
 		display: flex;
 		flex-direction: column;
 		gap: 14px;
@@ -187,7 +187,7 @@
 		}
 	}
 	
-	.color-container {
+	.page-color {
 		$margin: 12px;
 		min-width: $format-width + 12px * 2;
 		margin: 0 #{-$margin};
@@ -221,5 +221,5 @@
 	}
 	
 	// stylelint-disable-next-line order/order
-	@include float-in-children($selector: ":comp$placement .style-container", $length: 7, $delay: 50ms, $ease: $ease-out-smooth);
+	@include float-in-children($selector: ":comp$placement .page-style", $length: 7, $delay: 50ms, $ease: $ease-out-smooth);
 </style>
