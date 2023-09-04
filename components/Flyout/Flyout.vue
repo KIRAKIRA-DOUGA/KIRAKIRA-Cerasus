@@ -194,6 +194,7 @@
 			<Comp
 				v-if="shown"
 				ref="flyout"
+				v-bind="$attrs"
 				:[scopeId]="''"
 				:class="{ padding: !noPadding, cropping, moving }"
 				:style="locationStyle"

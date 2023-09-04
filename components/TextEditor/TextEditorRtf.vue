@@ -82,7 +82,7 @@
 	 */
 	function sendComment() {
 		const api = useApi();
-		const content = editor.value?.getHTML() ?? "";
+		const content = editor.value?.getText() ?? ""; // Get plain text currently to avoid web attack.
 		const utf8Encode = new TextEncoder();
 		const encodedContent = utf8Encode.encode(content) as unknown as string;
 

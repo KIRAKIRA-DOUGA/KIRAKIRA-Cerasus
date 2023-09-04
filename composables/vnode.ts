@@ -139,21 +139,26 @@ export function getSlotItems<
 		D extends Partial<Record<keyof ComponentProps<C>, unknown>> = {},
 	>(
 		def = {} as D,
-	) => vdoms?.map(item => {
-		const props = { ...item.props };
-		const content = getSlotVNodeNormalizedChildren(item);
-		if (typeof content !== "string") return undefined!;
-		for (const [key, value] of entries(def))
-			props[key] ??= value;
-		props.content ??= content;
-		props.id ??= content;
-		type OriginalProps = ComponentProps<C> & { content: string };
-		type OverrideProps = Override<OriginalProps, {
-			[key in keyof D]:
-				key extends keyof OriginalProps ?
-				D[key] extends undefined | null ? OriginalProps[key] : NonNull<OriginalProps[key]> :
-				D[key];
-		}>;
-		return props as Readonly<OverrideProps>;
+	) => vdoms?.flatMap(item => {
+		let items = [item];
+		if (typeof item.type === "symbol" && item.type.description === "v-fgt" && Array.isArray(item.children))
+			items = item.children as VNode[];
+		return items.map(item => {
+			const props = { ...item.props };
+			const content = getSlotVNodeNormalizedChildren(item);
+			if (typeof content !== "string") return undefined!;
+			for (const [key, value] of entries(def))
+				props[key] ??= value;
+			props.content ??= content;
+			props.id ??= content;
+			type OriginalProps = ComponentProps<C> & { content: string };
+			type OverrideProps = Override<OriginalProps, {
+				[key in keyof D]:
+					key extends keyof OriginalProps ?
+					D[key] extends undefined | null ? OriginalProps[key] : NonNull<OriginalProps[key]> :
+					D[key];
+			}>;
+			return props as Readonly<OverrideProps>;
+		});
 	}).filter(item => item) ?? [];
 }
