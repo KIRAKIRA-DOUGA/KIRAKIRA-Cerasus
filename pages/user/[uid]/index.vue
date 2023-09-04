@@ -72,7 +72,7 @@
 
 						<div v-tooltip:x="t.join_time" class="join-time">
 							<Icon name="history" />
-							<span>{{ "" }}</span>
+							<span>{{ formatDate(new Date(user?.joinDate), "yyyy/MM/dd") }}</span>
 						</div>
 
 						<div v-tooltip:x="'UID'" class="uid">
