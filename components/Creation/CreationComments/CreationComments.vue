@@ -65,12 +65,14 @@
 
 	.toolbar {
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
 		justify-content: space-between;
 		margin-top: 16px;
 
-		> div {
+		> * {
 			display: flex;
+			flex-wrap: wrap;
 			gap: 16px;
 			align-items: center;
 			justify-content: flex-end;

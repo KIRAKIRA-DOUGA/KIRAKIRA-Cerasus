@@ -1,6 +1,5 @@
 <script setup lang="ts">
 	import { animateSizeGenerator } from "utils/animation";
-	import { FlyoutModelNS } from "types/arguments";
 
 	const sendDanmaku = defineModel<DanmakuComment>();
 
