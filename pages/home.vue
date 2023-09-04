@@ -38,7 +38,9 @@
 			videos.value = videosResponse;
 			resultTimestamp.value = new Date().valueOf();
 			// pepelaugh TODO FIXME
-			categories.value = new Map(videosResponse?.categories?.map(cat => [cat.name, cat.cardinality]));
+			if (categories.value === undefined) {
+				categories.value = new Map(videosResponse?.categories?.map(cat => [cat.name, cat.cardinality]));
+			}
 		} catch (error) { handleError(error); }
 	}
 	watch(data, fetchData, { deep: true });
