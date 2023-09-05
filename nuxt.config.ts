@@ -117,6 +117,16 @@ export default defineNuxtConfig({
 				localsConvention: "camelCaseOnly",
 			},
 		},
+		server: {
+			proxy: {
+				"/api": {
+					target: "https://kirakira.dev/api",
+					ws: true,
+					changeOrigin: true,
+					rewrite: path => path.replace(/^\/api/, ""),
+				},
+			},
+		},
 	},
 	nitro: {
 		devProxy: {
