@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	const props = defineProps<{
 		/** 视频 ID。 */
-		id: number;
+		videoId: number;
 		/** 视频评分。 */
 		rating: number;
 
@@ -31,7 +31,7 @@
 	 */
 	async function upvote() {
 		const oapiClient = useApi();
-		await oapiClient.upvoteVideo(props.id, 1);
+		await oapiClient.upvoteVideo(props.videoId, 1);
 		counts.rating++;
 	}
 
@@ -40,7 +40,7 @@
 	 */
 	async function downvote() {
 		const oapiClient = useApi();
-		await oapiClient.upvoteVideo(props.id, -1);
+		await oapiClient.upvoteVideo(props.videoId, -1);
 		counts.rating--;
 	}
 
@@ -94,7 +94,7 @@
 			</div>
 		</div>
 		<PlayerVideoPanelDanmakuList v-model="insertDanmaku" />
-		<PlayerVideoPanelDanmakuSender v-model="sendDanmaku" :videoID="props.id" :getTime="props.getTime" />
+		<PlayerVideoPanelDanmakuSender v-model="sendDanmaku" :videoId="props.videoId" :getTime="props.getTime" />
 	</Comp>
 </template>
 

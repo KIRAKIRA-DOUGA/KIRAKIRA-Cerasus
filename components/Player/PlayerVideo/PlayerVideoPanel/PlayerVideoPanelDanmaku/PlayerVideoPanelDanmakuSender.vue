@@ -35,7 +35,7 @@
 <script setup lang="ts">
 	const props = defineProps<{
 		getTime: Function;
-		videoID: number;
+		videoId: number;
 	}>();
 
 	const sendDanmaku = defineModel<DanmakuComment[]>();
@@ -77,7 +77,7 @@
 		const utf8Encoder = new TextEncoder();
 		const encodedContent = utf8Encoder.encode(text) as unknown as string;
 
-		api.createDanmaku(props.videoID, props.getTime(), encodedContent, format.mode, format.color.hex, format.fontSize);
+		api.createDanmaku(props.videoId, props.getTime(), encodedContent, format.mode, format.color.hex, format.fontSize);
 
 		sendDanmaku.value = [createDanmakuComment(text, undefined, format)];
 		content.value = "";

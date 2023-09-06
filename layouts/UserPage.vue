@@ -58,15 +58,15 @@
 					<UserAvatar />
 					<div class="texts">
 						<div class="names">
-							<span class="username">{{ user.username }}</span>
-							<span v-if="memoParen" class="memo" :class="[memoParen]">{{ user.bio }}</span>
+							<span class="username">{{ user?.username }}</span>
+							<span v-if="memoParen" class="memo" :class="[memoParen]">{{ user?.bio }}</span>
 							<span class="icons">
-								<Icon v-if="user.gender === 'male'" name="male" class="male" />
-								<Icon v-else-if="user.gender === 'female'" name="female" class="female" />
-								<span v-else class="other-gender">{{ user.gender }}</span>
+								<Icon v-if="user?.gender === 'male'" name="male" class="male" />
+								<Icon v-else-if="user?.gender === 'female'" name="female" class="female" />
+								<span v-else class="other-gender">{{ user?.gender }}</span>
 							</span>
 						</div>
-						<div class="bio">{{ user.bio }}</div>
+						<div class="bio">{{ user?.bio }}</div>
 					</div>
 				</div>
 				<div class="actions">
@@ -80,7 +80,8 @@
 						<MenuItem icon="block">{{ t.add_to_blocklist }}</MenuItem>
 					</Menu>
 					<div v-if="!isSelf" class="follow-button">
-						<Button v-if="!user.isFollowed">{{ t.follow }}</Button>
+						<Button v-if="true">{{ t.follow }}</Button>
+						<!-- TODO: !user.isFollowed -->
 						<Button v-else disabled>{{ t.following }}</Button>
 					</div>
 					<Button v-if="isSelf">{{ t.manage_content }}</Button>

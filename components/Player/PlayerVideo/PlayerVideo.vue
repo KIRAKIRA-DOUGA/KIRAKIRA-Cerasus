@@ -298,9 +298,9 @@
 		</div>
 
 		<PlayerVideoPanel
-			:id="id"
 			v-model:sendDanmaku="willSendDanmaku"
 			v-model:insertDanmaku="willInsertDanmaku"
+			:videoId="id"
 			:getTime="() => currentTime"
 			:rating="rating"
 		/>

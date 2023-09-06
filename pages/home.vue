@@ -38,9 +38,8 @@
 			videos.value = videosResponse;
 			resultTimestamp.value = new Date().valueOf();
 			// pepelaugh TODO FIXME
-			if (categories.value === undefined) {
+			if (categories.value === undefined)
 				categories.value = new Map(videosResponse?.categories?.map(cat => [cat.name, cat.cardinality]));
-			}
 		} catch (error) { handleError(error); }
 	}
 	watch(data, fetchData, { deep: true });
@@ -60,7 +59,7 @@
 				:id="cat"
 				:key="cat"
 				direction="vertical-reverse"
-				:badge="categories.get(cat.toLowerCase())"
+				:badge="categories?.get(cat.toLowerCase())"
 			>
 				{{ t.category[cat.toLowerCase()] }}
 			</TabItem>
