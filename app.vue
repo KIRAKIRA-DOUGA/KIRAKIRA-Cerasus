@@ -75,14 +75,9 @@
 		setClassEnabled(document.documentElement, "flat", enabled);
 	});
 
-	const layout = ref("desktop-web");
-	// const slotName = ref("desktop-web-slot");
-	// 下方为测试用，5秒延时后将具名layout和具名插槽的名字赋值为 PE 端
-	// setTimeout(() => {
-	// 	layout.value = "pocket-edition-web";
-	// 	slotName.value = "pocket-edition-web-slot";
-	// }, 5000);
+	const layout = ref("responsive-web"); // 还特么必须得用连字符形式书写。
 
+	// Service Worker
 	if (environment.client)
 		window.addEventListener("load", () => {
 			if (!("serviceWorker" in navigator))
