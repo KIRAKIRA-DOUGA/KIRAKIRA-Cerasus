@@ -301,7 +301,7 @@
 			v-model:sendDanmaku="willSendDanmaku"
 			v-model:insertDanmaku="willInsertDanmaku"
 			:videoId="id"
-			:getTime="() => currentTime"
+			:currentTime="currentTime"
 			:rating="rating"
 		/>
 		<Menu v-model="menu">
