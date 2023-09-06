@@ -1,5 +1,13 @@
 <script setup lang="ts">
-	const sendDanmaku = defineModel<DanmakuComment>();
+	import { animateSizeGenerator } from "utils/animation";
+	import { FlyoutModelNS } from "types/arguments";
+
+	const props = defineProps<{
+		getTime: Function;
+		videoID: number;
+	}>();
+
+	const sendDanmaku = defineModel<DanmakuComment[]>();
 
 	const content = ref("");
 	const flyoutKaomoji = ref<FlyoutModel>();
@@ -17,7 +25,7 @@
 		mode: "rtl",
 		enableRainbow: false,
 	}) as DanmakuFormat;
-	
+
 	/**
 	 * 插入颜文字。
 	 * @param kaomoji - 颜文字。
@@ -34,8 +42,18 @@
 	 */
 	function onSend() {
 		if (!content.value) return;
+
 		const text = content.value;
-		sendDanmaku.value = {
+
+		// Insert into backend
+		const api = useApi();
+
+		const utf8Encoder = new TextEncoder();
+		const encodedContent = utf8Encoder.encode(text) as unknown as string;
+
+		api.createDanmaku(props.videoID, props.getTime(), encodedContent, style.mode, style.color.hex, style.fontSize);
+
+		sendDanmaku.value = [{
 			text,
 			mode: format.mode,
 			render() {
@@ -49,7 +67,7 @@
 				});
 				return div;
 			},
-		};
+		}];
 		content.value = "";
 	}
 </script>
