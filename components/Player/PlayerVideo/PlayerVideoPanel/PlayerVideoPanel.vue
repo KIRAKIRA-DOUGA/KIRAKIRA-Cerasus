@@ -1,13 +1,15 @@
 <script setup lang="ts">
 	const props = defineProps<{
 		/** 视频 ID。 */
-		id: number;
+		videoId: number;
 		/** 视频评分。 */
 		rating: number;
+		/** 当前视频时间。 */
+		currentTime: number;
 	}>();
 
-	const sendDanmaku = defineModel<DanmakuComment>("sendDanmaku");
-	const insertDanmaku = defineModel<DanmakuListItem>("insertDanmaku");
+	const sendDanmaku = defineModel<DanmakuComment[]>("sendDanmaku");
+	const insertDanmaku = defineModel<DanmakuListItem[]>("insertDanmaku");
 
 	const counts = reactive({
 		play: 100n,
@@ -29,7 +31,7 @@
 	 */
 	async function upvote() {
 		const oapiClient = useApi();
-		await oapiClient.upvoteVideo(props.id, 1);
+		await oapiClient.upvoteVideo(props.videoId, 1);
 		counts.rating++;
 	}
 
@@ -38,7 +40,7 @@
 	 */
 	async function downvote() {
 		const oapiClient = useApi();
-		await oapiClient.upvoteVideo(props.id, -1);
+		await oapiClient.upvoteVideo(props.videoId, -1);
 		counts.rating--;
 	}
 
@@ -92,7 +94,7 @@
 			</div>
 		</div>
 		<PlayerVideoPanelDanmakuList v-model="insertDanmaku" />
-		<PlayerVideoPanelDanmakuSender v-model="sendDanmaku" />
+		<PlayerVideoPanelDanmakuSender v-model="sendDanmaku" :videoId="props.videoId" :currentTime="currentTime" />
 	</Comp>
 </template>
 

@@ -2,6 +2,7 @@ import { ResponseContext, RequestContext, HttpFile } from '../http/http';
 import { Configuration} from '../configuration'
 
 import { Comments200ResponseInner } from '../models/Comments200ResponseInner';
+import { GetDanmaku200ResponseInner } from '../models/GetDanmaku200ResponseInner';
 import { Users200Response } from '../models/Users200Response';
 import { VideoDetail200Response } from '../models/VideoDetail200Response';
 import { Videos200Response } from '../models/Videos200Response';
@@ -30,7 +31,7 @@ export interface DefaultApiCommentRequest {
      * @type number
      * @memberof DefaultApicomment
      */
-    videoID: number
+    videoIDf: number
 }
 
 export interface DefaultApiCommentsRequest {
@@ -40,6 +41,45 @@ export interface DefaultApiCommentsRequest {
      * @memberof DefaultApicomments
      */
     id: number
+}
+
+export interface DefaultApiCreateDanmakuRequest {
+    /**
+     * video ID for danmaku
+     * @type number
+     * @memberof DefaultApicreateDanmaku
+     */
+    videoID: number
+    /**
+     * timestamp for danmaku
+     * @type string
+     * @memberof DefaultApicreateDanmaku
+     */
+    timestamp: string
+    /**
+     * message
+     * @type string
+     * @memberof DefaultApicreateDanmaku
+     */
+    message: string
+    /**
+     * type of comment
+     * @type string
+     * @memberof DefaultApicreateDanmaku
+     */
+    type: string
+    /**
+     * comment color
+     * @type string
+     * @memberof DefaultApicreateDanmaku
+     */
+    color: string
+    /**
+     * comment font size
+     * @type string
+     * @memberof DefaultApicreateDanmaku
+     */
+    fontSize: string
 }
 
 export interface DefaultApiDeleteCommentRequest {
@@ -61,6 +101,15 @@ export interface DefaultApiFollowRequest {
 }
 
 export interface DefaultApiFollowFeedRequest {
+}
+
+export interface DefaultApiGetDanmakuRequest {
+    /**
+     * video ID
+     * @type number
+     * @memberof DefaultApigetDanmaku
+     */
+    id: number
 }
 
 export interface DefaultApiLoginRequest {
@@ -124,6 +173,33 @@ export interface DefaultApiResetPasswordRequest {
      * @memberof DefaultApiresetPassword
      */
     newpassword: string
+}
+
+export interface DefaultApiUpdateProfileRequest {
+    /**
+     * new username
+     * @type string
+     * @memberof DefaultApiupdateProfile
+     */
+    username: string
+    /**
+     * new gender
+     * @type string
+     * @memberof DefaultApiupdateProfile
+     */
+    gender: string
+    /**
+     * new birthdate
+     * @type string
+     * @memberof DefaultApiupdateProfile
+     */
+    birthdate: string
+    /**
+     * new bio
+     * @type string
+     * @memberof DefaultApiupdateProfile
+     */
+    bio: string
 }
 
 export interface DefaultApiUploadRequest {
@@ -258,7 +334,7 @@ export class ObjectDefaultApi {
      * @param param the request object
      */
     public comment(param: DefaultApiCommentRequest, options?: Configuration): Promise<void> {
-        return this.api.comment(param.parent, param.content, param.videoID,  options).toPromise();
+        return this.api.comment(param.parent, param.content, param.videoIDf,  options).toPromise();
     }
 
     /**
@@ -267,6 +343,14 @@ export class ObjectDefaultApi {
      */
     public comments(param: DefaultApiCommentsRequest, options?: Configuration): Promise<Array<Comments200ResponseInner>> {
         return this.api.comments(param.id,  options).toPromise();
+    }
+
+    /**
+     * Create new danmaku
+     * @param param the request object
+     */
+    public createDanmaku(param: DefaultApiCreateDanmakuRequest, options?: Configuration): Promise<void> {
+        return this.api.createDanmaku(param.videoID, param.timestamp, param.message, param.type, param.color, param.fontSize,  options).toPromise();
     }
 
     /**
@@ -291,6 +375,14 @@ export class ObjectDefaultApi {
      */
     public followFeed(param: DefaultApiFollowFeedRequest = {}, options?: Configuration): Promise<Array<Videos200ResponseVideosInner>> {
         return this.api.followFeed( options).toPromise();
+    }
+
+    /**
+     * Get danmaku for video
+     * @param param the request object
+     */
+    public getDanmaku(param: DefaultApiGetDanmakuRequest, options?: Configuration): Promise<Array<GetDanmaku200ResponseInner>> {
+        return this.api.getDanmaku(param.id,  options).toPromise();
     }
 
     /**
@@ -331,6 +423,14 @@ export class ObjectDefaultApi {
      */
     public resetPassword(param: DefaultApiResetPasswordRequest, options?: Configuration): Promise<void> {
         return this.api.resetPassword(param.oldpassword, param.newpassword,  options).toPromise();
+    }
+
+    /**
+     * Update user\'s profile
+     * @param param the request object
+     */
+    public updateProfile(param: DefaultApiUpdateProfileRequest, options?: Configuration): Promise<void> {
+        return this.api.updateProfile(param.username, param.gender, param.birthdate, param.bio,  options).toPromise();
     }
 
     /**

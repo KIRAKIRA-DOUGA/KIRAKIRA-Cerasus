@@ -1,6 +1,8 @@
 <script setup lang="ts">
 	import mediainfo from "mediainfo.js";
 	import { MediaPlayerClass, BitrateInfo } from "dashjs";
+	import { GetDanmaku200ResponseInner } from "kirakira-backend";
+	import { createDanmakuComment } from "./PlayerVideoPanel/PlayerVideoPanelDanmaku/PlayerVideoPanelDanmakuSender.vue";
 
 	const props = defineProps<{
 		/** 视频源。 */
@@ -32,9 +34,9 @@
 	const resample = computed({ get: () => !preservesPitch.value, set: value => preservesPitch.value = !value });
 	const menu = ref<MenuModel>();
 	const showDanmaku = ref(true);
-	const willSendDanmaku = ref<DanmakuComment>();
-	const willInsertDanmaku = ref<DanmakuListItem>();
-
+	const willSendDanmaku = ref<DanmakuComment[]>();
+	const willInsertDanmaku = ref<DanmakuListItem[]>();
+	const initialDanmaku = ref<DanmakuComment[]>();
 	type MediaInfo = Record<string, Record<string, unknown>>;
 
 	/**
@@ -114,13 +116,34 @@
 			screen.orientation.unlock();
 	});
 
+	/**
+	 * Fetch video danmaku
+	 */
+	async function fetchDanmaku() {
+		const api = useApi();
+		const handleError = (e: unknown) => console.error(e);
+		type DanmakuMode = NonNull<DanmakuComment["mode"]>;
+		type DanmakuFontSize = NonNull<DanmakuFormat["fontSize"]>;
+
+		try {
+			const danmaku = await api.getDanmaku(props.id);
+			willSendDanmaku.value = danmaku.map((e: GetDanmaku200ResponseInner) =>
+				createDanmakuComment(e.message ?? "", +e.timestamp!, {
+					mode: e.type as DanmakuMode,
+					color: Color.fromHex(e.color ?? "fff"),
+					enableRainbow: false, // TODO
+					fontSize: e.fontSize as DanmakuFontSize ?? "medium",
+				}));
+		} catch (error) { handleError(error); }
+	}
+
 	watch(willSendDanmaku, danmaku => {
 		if (danmaku)
-			willInsertDanmaku.value = {
-				videoTime: new Duration(currentTime.value),
-				content: danmaku.text!,
+			willInsertDanmaku.value = danmaku.map(e => ({
+				videoTime: new Duration(e.time ?? currentTime.value),
+				content: e.text!,
 				sendTime: new Date(),
-			};
+			}));
 	});
 
 	const player = ref<MediaPlayerClass>();
@@ -163,6 +186,9 @@
 			});
 
 			player.value.attachView(video.value);
+
+			watch(() => props.id, fetchDanmaku);
+			await fetchDanmaku();
 		}
 	});
 
@@ -251,7 +277,7 @@
 				@contextmenu.prevent="e => menu = e"
 			>
 			</video>
-			<PlayerVideoDanmaku v-model="willSendDanmaku" :media="video" :hidden="!showDanmaku" />
+			<PlayerVideoDanmaku v-model="willSendDanmaku" :comments="initialDanmaku" :media="video" :hidden="!showDanmaku" />
 			<PlayerVideoController
 				:key="qualities.length"
 				v-model:currentTime="currentTime"
@@ -272,9 +298,10 @@
 		</div>
 
 		<PlayerVideoPanel
-			:id="id"
 			v-model:sendDanmaku="willSendDanmaku"
 			v-model:insertDanmaku="willInsertDanmaku"
+			:videoId="id"
+			:currentTime="currentTime"
 			:rating="rating"
 		/>
 		<Menu v-model="menu">

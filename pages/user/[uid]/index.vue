@@ -1,33 +1,59 @@
 <script setup lang="ts">
-	import users from "helpers/users";
+	import { Users200Response } from "kirakira-backend";
 
 	const uid = currentUserUid();
-	const user = users[uid] ?? {};
+	const user = ref<Users200Response>();
+
+	const data = reactive({
+		uid,
+	});
+
+	/** fetch the user profile data */
+	async function fetchData() {
+		const api = useApi();
+		try {
+			user.value = await api.users(uid);
+		} catch (error) { console.error(error); }
+	}
+	watch(data, fetchData, { deep: true });
+	await fetchData();
 </script>
 
 <template>
 	<div class="container">
 		<div class="toolbox-card center">
-
+			<div class="videos-grid">
+				<ThumbVideo
+					v-for="video in user?.videos"
+					:key="video.videoID"
+					:videoId="video.videoID"
+					:uploader="video.authorName ?? ''"
+					:uploaderId="video.authorID"
+					:image="video.thumbnailLoc"
+					:date="new Date()"
+					:watchedCount="video.views"
+					:duration="new Duration(0, video.videoDuration ?? 0)"
+				>{{ video.title }}</ThumbVideo>
+			</div>
 		</div>
 
 		<div class="right">
 			<div class="toolbox-card">
 				<div class="user-counts">
 					<div>
-						<span class="value">{{ user.follow }}</span>
+						<span class="value">{{ 0 }}</span>
 						<p>{{ t.follow }}</p>
 					</div>
 					<div>
-						<span class="value">{{ user.fans }}</span>
+						<span class="value">{{ 0 }}</span>
 						<p>{{ t.fans }}</p>
 					</div>
 					<div>
-						<span class="value">{{ user.watches }}</span>
+						<span class="value">{{ 0 }}</span>
 						<p>{{ t.views_video }}</p>
 					</div>
 					<div>
-						<span class="value">{{ user.rating }}</span>
+						<span class="value">{{ 0 }}</span>
 						<p>{{ t.rating }}</p>
 					</div>
 				</div>
@@ -39,17 +65,17 @@
 					<div class="items">
 						<div v-tooltip:x="t.birthday" class="birthday">
 							<Icon name="birthday" />
-							<span>{{ formatDate(user.birthday, "yyyy/MM/dd") }}</span>
+							<span>{{ user?.birthdate !== "" && user?.birthdate !== undefined ? formatDate(new Date(user?.birthdate), "yyyy/MM/dd") : "" }}</span>
 						</div>
 
 						<div v-tooltip:x="t.join_time" class="join-time">
 							<Icon name="history" />
-							<span>{{ formatDate(user.joinTime, "yyyy/MM/dd") }}</span>
+							<span>{{ formatDate(new Date(user?.joinDate!), "yyyy/MM/dd") }}</span>
 						</div>
 
 						<div v-tooltip:x="'UID'" class="uid">
 							<Icon name="fingerprint" />
-							<span>{{ user.uid }}</span>
+							<span>{{ user?.userID }}</span>
 						</div>
 					</div>
 					<div class="shading shading-title">

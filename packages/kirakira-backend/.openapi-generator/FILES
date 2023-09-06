@@ -12,6 +12,7 @@ http/isomorphic-fetch.ts
 index.ts
 middleware.ts
 models/Comments200ResponseInner.ts
+models/GetDanmaku200ResponseInner.ts
 models/ObjectSerializer.ts
 models/Users200Response.ts
 models/VideoDetail200Response.ts

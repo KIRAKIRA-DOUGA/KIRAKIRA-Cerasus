@@ -9,6 +9,24 @@
 	const genderBasic = ref<"male" | "female" | "custom" | "">("");
 	const genderCustom = ref("");
 	const birthday = ref(formatDate(new Date(), "yyyy/MM/dd"));
+
+	/**
+	 * Fetch the videos according to the query.
+	 */
+	async function updateProfile() {
+		const api = useApi();
+		const utf8Encoder = new TextEncoder();
+
+		const nameUTF8 = utf8Encoder.encode(name.value) as unknown as string;
+		const genderUTF8 = utf8Encoder.encode(genderBasic.value === "male" || genderBasic.value === "female" ? genderBasic.value : genderCustom.value) as unknown as string;
+		const bioUTF8 = utf8Encoder.encode(signature.value) as unknown as string;
+
+		const handleError = (error: unknown) => error && console.error(error);
+
+		try {
+			await api?.updateProfile(nameUTF8, genderUTF8, birthday.value, bioUTF8);
+		} catch (error) { handleError(error); }
+	}
 </script>
 
 <template>
@@ -75,7 +93,7 @@
 
 	<div class="submit">
 		<Button icon="reset" class="secondary">{{ t.reset }}</Button>
-		<Button icon="check" @click="useToast('修改失败', 'error');">{{ t.save }}</Button>
+		<Button icon="check" @click="updateProfile">{{ t.save }}</Button>
 	</div>
 </template>
 

@@ -1,21 +1,26 @@
 <script setup lang="ts">
 	import { RecycleScroller } from "vue-virtual-scroller";
 
-	const insertDanmaku = defineModel<DanmakuListItem>();
+	const insertDanmaku = defineModel<DanmakuListItem[]>();
 	const danmakuItemMenu = ref<MenuModel>();
 	const currentDanmaku = ref<DanmakuListItem>();
 	const { copy } = useClipboard();
 	const headers = { videoTime: "时间", content: "内容", sendTime: "发送时间" };
 	const colWidths = reactive([60, 150, 100]);
-	const danmakuList = reactive<{ item: DanmakuListItem; key: ObjectKey }[]>([]);
+	const danmakuList = ref<Array<{ item: DanmakuListItem; key: ObjectKey }>>([]);
 	const danmakuListKey = ref(0); // FIXME: 理论上 vue-virtual-scroller 会自动监测弹幕数组更新，但是目前不知道为什么不生效，暂时只能用这种方法解决。
 	const sortBy = reactive<[column: "videoTime" | "sendTime", order: SortOrder]>(["videoTime", "ascending"]);
 
 	watch(insertDanmaku, danmaku => {
 		if (!danmaku) return;
-		const key = danmaku.content + danmaku.sendTime.valueOf();
-		danmakuList.push({ item: danmaku, key });
+		// damn lmao
+		// FIXME
+		danmakuList.value = danmakuList.value.concat(danmaku.map(e => {
+			const key = e.content + e.sendTime.valueOf();
+			return { item: e, key };
+		}));
 		danmakuListKey.value = new Date().valueOf();
+
 		insertDanmaku.value = undefined;
 	});
 
@@ -28,7 +33,7 @@
 		if (!column) return;
 		if (sortBy[0] === column) sortBy[1] = sortBy[1] === "ascending" ? "descending" : "ascending";
 		else [sortBy[0], sortBy[1]] = [column, "ascending"];
-		danmakuList.sort((a, b) => {
+		danmakuList.value.sort((a, b) => {
 			let compare = a.item[sortBy[0]].valueOf() - b.item[sortBy[0]].valueOf();
 			if (sortBy[1] === "descending") compare = -compare;
 			return compare;
@@ -104,11 +109,11 @@
 					</div>
 				</thead>
 				<tbody>
-					<RecycleScroller v-slot="{ item }" :key="danmakuListKey" :itemSize="28" keyField="key" :items="danmakuList">
-						<tr v-ripple @contextmenu.prevent="e => { currentDanmaku = item.item; danmakuItemMenu = e; }">
-							<td v-for="(value, key, j) in item.item" :key="key" :width="colWidths[j]">{{ handleTableDataCellText(value) }}</td>
-						</tr>
-					</RecycleScroller>
+					<!-- <RecycleScroller v-slot="{ item }" class="scroller" :itemSize="28" keyField="key" :items="danmakuList"> -->
+					<tr v-for="item in danmakuList" :key="item.key" v-ripple @contextmenu.prevent="e => { currentDanmaku = item.item; danmakuItemMenu = e; }">
+						<td v-for="(value, key, j) in item.item" :key="key" :width="colWidths[j]">{{ handleTableDataCellText(value) }}</td>
+					</tr>
+					<!-- </RecycleScroller> -->
 				</tbody>
 			</table>
 			<template #fallback>
@@ -223,6 +228,13 @@
 			thead,
 			th {
 				background-color: c(main-bg);
+			}
+
+			tbody tr {
+				td:nth-child(1),
+				td:nth-child(3) {
+					font-variant-numeric: tabular-nums;
+				}
 			}
 
 			thead,

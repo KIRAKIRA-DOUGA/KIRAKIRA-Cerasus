@@ -2,6 +2,7 @@ import { ResponseContext, RequestContext, HttpFile } from '../http/http';
 import { Configuration} from '../configuration'
 
 import { Comments200ResponseInner } from '../models/Comments200ResponseInner';
+import { GetDanmaku200ResponseInner } from '../models/GetDanmaku200ResponseInner';
 import { Users200Response } from '../models/Users200Response';
 import { VideoDetail200Response } from '../models/VideoDetail200Response';
 import { Videos200Response } from '../models/Videos200Response';
@@ -26,10 +27,10 @@ export class PromiseDefaultApi {
      * Comment on a video
      * @param parent parent comment ID
      * @param content comment message
-     * @param videoID comment\&#39;s video ID
+     * @param videoIDf comment\&#39;s video ID
      */
-    public comment(parent: number, content: string, videoID: number, _options?: Configuration): Promise<void> {
-        const result = this.api.comment(parent, content, videoID, _options);
+    public comment(parent: number, content: string, videoIDf: number, _options?: Configuration): Promise<void> {
+        const result = this.api.comment(parent, content, videoIDf, _options);
         return result.toPromise();
     }
 
@@ -39,6 +40,20 @@ export class PromiseDefaultApi {
      */
     public comments(id: number, _options?: Configuration): Promise<Array<Comments200ResponseInner>> {
         const result = this.api.comments(id, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * Create new danmaku
+     * @param videoID video ID for danmaku
+     * @param timestamp timestamp for danmaku
+     * @param message message
+     * @param type type of comment
+     * @param color comment color
+     * @param fontSize comment font size
+     */
+    public createDanmaku(videoID: number, timestamp: string, message: string, type: string, color: string, fontSize: string, _options?: Configuration): Promise<void> {
+        const result = this.api.createDanmaku(videoID, timestamp, message, type, color, fontSize, _options);
         return result.toPromise();
     }
 
@@ -65,6 +80,15 @@ export class PromiseDefaultApi {
      */
     public followFeed(_options?: Configuration): Promise<Array<Videos200ResponseVideosInner>> {
         const result = this.api.followFeed(_options);
+        return result.toPromise();
+    }
+
+    /**
+     * Get danmaku for video
+     * @param id video ID
+     */
+    public getDanmaku(id: number, _options?: Configuration): Promise<Array<GetDanmaku200ResponseInner>> {
+        const result = this.api.getDanmaku(id, _options);
         return result.toPromise();
     }
 
@@ -113,6 +137,18 @@ export class PromiseDefaultApi {
      */
     public resetPassword(oldpassword: string, newpassword: string, _options?: Configuration): Promise<void> {
         const result = this.api.resetPassword(oldpassword, newpassword, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * Update user\'s profile
+     * @param username new username
+     * @param gender new gender
+     * @param birthdate new birthdate
+     * @param bio new bio
+     */
+    public updateProfile(username: string, gender: string, birthdate: string, bio: string, _options?: Configuration): Promise<void> {
+        const result = this.api.updateProfile(username, gender, birthdate, bio, _options);
         return result.toPromise();
     }
 

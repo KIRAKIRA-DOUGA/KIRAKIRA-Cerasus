@@ -6,14 +6,17 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**comment**](DefaultApi.md#comment) | **POST** /comment | Comment on a video
 [**comments**](DefaultApi.md#comments) | **GET** /comments/{id} | Get comments for video ID
+[**createDanmaku**](DefaultApi.md#createDanmaku) | **POST** /danmaku | Create new danmaku
 [**deleteComment**](DefaultApi.md#deleteComment) | **POST** /delete_comment | Delete a comment
 [**follow**](DefaultApi.md#follow) | **POST** /follow/{id} | Upvote a video
 [**followFeed**](DefaultApi.md#followFeed) | **GET** /follow-feed | Upvote a video
+[**getDanmaku**](DefaultApi.md#getDanmaku) | **GET** /danmaku/{id} | Get danmaku for video
 [**login**](DefaultApi.md#login) | **POST** /login | Log the user in
 [**logout**](DefaultApi.md#logout) | **GET** /logout | Log user out
 [**recommendations**](DefaultApi.md#recommendations) | **GET** /recommendations/{id} | Get list of videos
 [**register**](DefaultApi.md#register) | **POST** /register | Register user
 [**resetPassword**](DefaultApi.md#resetPassword) | **POST** /reset_password | Reset password
+[**updateProfile**](DefaultApi.md#updateProfile) | **POST** /update-profile | Update user\&#39;s profile
 [**upload**](DefaultApi.md#upload) | **POST** /upload | Upload a new video
 [**upvote**](DefaultApi.md#upvote) | **GET** /upvote/{id} | Get user video data
 [**upvoteVideo**](DefaultApi.md#upvoteVideo) | **POST** /upvotevideo/{id} | Upvote a video
@@ -42,7 +45,7 @@ let body:.DefaultApiCommentRequest = {
   // string | comment message
   content: 'YQ==',
   // number | comment\'s video ID
-  videoID: 1,
+  videoIDf: 1,
 };
 
 apiInstance.comment(body).then((data:any) => {
@@ -57,7 +60,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **parent** | [**number**] | parent comment ID | defaults to undefined
  **content** | [**string**] | comment message | defaults to undefined
- **videoID** | [**number**] | comment\&#39;s video ID | defaults to undefined
+ **videoIDf** | [**number**] | comment\&#39;s video ID | defaults to undefined
 
 
 ### Return type
@@ -132,6 +135,75 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | get video details for a specific video |  -  |
+**0** | Unexpected error |  -  |
+
+[[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
+
+# **createDanmaku**
+> void createDanmaku()
+
+
+### Example
+
+
+```typescript
+import {  } from '';
+import * as fs from 'fs';
+
+const configuration = .createConfiguration();
+const apiInstance = new .DefaultApi(configuration);
+
+let body:.DefaultApiCreateDanmakuRequest = {
+  // number | video ID for danmaku
+  videoID: 1,
+  // string | timestamp for danmaku
+  timestamp: "timestamp_example",
+  // string | message
+  message: 'YQ==',
+  // string | type of comment
+  type: "Type_example",
+  // string | comment color
+  color: "Color_example",
+  // string | comment font size
+  fontSize: "FontSize_example",
+};
+
+apiInstance.createDanmaku(body).then((data:any) => {
+  console.log('API called successfully. Returned data: ' + data);
+}).catch((error:any) => console.error(error));
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **videoID** | [**number**] | video ID for danmaku | defaults to undefined
+ **timestamp** | [**string**] | timestamp for danmaku | defaults to undefined
+ **message** | [**string**] | message | defaults to undefined
+ **type** | [**string**] | type of comment | defaults to undefined
+ **color** | [**string**] | comment color | defaults to undefined
+ **fontSize** | [**string**] | comment font size | defaults to undefined
+
+
+### Return type
+
+**void**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Danmaku creation success |  -  |
 **0** | Unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
@@ -289,6 +361,59 @@ No authorization required
 |-------------|-------------|------------------|
 **200** | list of follow feed videos |  -  |
 **0** | Unexpected error |  -  |
+
+[[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
+
+# **getDanmaku**
+> Array<GetDanmaku200ResponseInner> getDanmaku()
+
+
+### Example
+
+
+```typescript
+import {  } from '';
+import * as fs from 'fs';
+
+const configuration = .createConfiguration();
+const apiInstance = new .DefaultApi(configuration);
+
+let body:.DefaultApiGetDanmakuRequest = {
+  // number | video ID
+  id: 1,
+};
+
+apiInstance.getDanmaku(body).then((data:any) => {
+  console.log('API called successfully. Returned data: ' + data);
+}).catch((error:any) => console.error(error));
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | [**number**] | video ID | defaults to undefined
+
+
+### Return type
+
+**Array<GetDanmaku200ResponseInner>**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | list of danmaku |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -564,6 +689,69 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Password changed |  -  |
+**0** | Unexpected error |  -  |
+
+[[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
+
+# **updateProfile**
+> void updateProfile()
+
+
+### Example
+
+
+```typescript
+import {  } from '';
+import * as fs from 'fs';
+
+const configuration = .createConfiguration();
+const apiInstance = new .DefaultApi(configuration);
+
+let body:.DefaultApiUpdateProfileRequest = {
+  // string | new username
+  username: 'YQ==',
+  // string | new gender
+  gender: 'YQ==',
+  // string | new birthdate
+  birthdate: "birthdate_example",
+  // string | new bio
+  bio: 'YQ==',
+};
+
+apiInstance.updateProfile(body).then((data:any) => {
+  console.log('API called successfully. Returned data: ' + data);
+}).catch((error:any) => console.error(error));
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **username** | [**string**] | new username | defaults to undefined
+ **gender** | [**string**] | new gender | defaults to undefined
+ **birthdate** | [**string**] | new birthdate | defaults to undefined
+ **bio** | [**string**] | new bio | defaults to undefined
+
+
+### Return type
+
+**void**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Update profile success |  -  |
 **0** | Unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)

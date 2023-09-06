@@ -3,6 +3,7 @@ import { Configuration} from '../configuration'
 import { Observable, of, from } from '../rxjsStub';
 import {mergeMap, map} from  '../rxjsStub';
 import { Comments200ResponseInner } from '../models/Comments200ResponseInner';
+import { GetDanmaku200ResponseInner } from '../models/GetDanmaku200ResponseInner';
 import { Users200Response } from '../models/Users200Response';
 import { VideoDetail200Response } from '../models/VideoDetail200Response';
 import { Videos200Response } from '../models/Videos200Response';
@@ -30,10 +31,10 @@ export class ObservableDefaultApi {
      * Comment on a video
      * @param parent parent comment ID
      * @param content comment message
-     * @param videoID comment\&#39;s video ID
+     * @param videoIDf comment\&#39;s video ID
      */
-    public comment(parent: number, content: string, videoID: number, _options?: Configuration): Observable<void> {
-        const requestContextPromise = this.requestFactory.comment(parent, content, videoID, _options);
+    public comment(parent: number, content: string, videoIDf: number, _options?: Configuration): Observable<void> {
+        const requestContextPromise = this.requestFactory.comment(parent, content, videoIDf, _options);
 
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
@@ -71,6 +72,34 @@ export class ObservableDefaultApi {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.comments(rsp)));
+            }));
+    }
+
+    /**
+     * Create new danmaku
+     * @param videoID video ID for danmaku
+     * @param timestamp timestamp for danmaku
+     * @param message message
+     * @param type type of comment
+     * @param color comment color
+     * @param fontSize comment font size
+     */
+    public createDanmaku(videoID: number, timestamp: string, message: string, type: string, color: string, fontSize: string, _options?: Configuration): Observable<void> {
+        const requestContextPromise = this.requestFactory.createDanmaku(videoID, timestamp, message, type, color, fontSize, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.createDanmaku(rsp)));
             }));
     }
 
@@ -139,6 +168,29 @@ export class ObservableDefaultApi {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.followFeed(rsp)));
+            }));
+    }
+
+    /**
+     * Get danmaku for video
+     * @param id video ID
+     */
+    public getDanmaku(id: number, _options?: Configuration): Observable<Array<GetDanmaku200ResponseInner>> {
+        const requestContextPromise = this.requestFactory.getDanmaku(id, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getDanmaku(rsp)));
             }));
     }
 
@@ -257,6 +309,32 @@ export class ObservableDefaultApi {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.resetPassword(rsp)));
+            }));
+    }
+
+    /**
+     * Update user\'s profile
+     * @param username new username
+     * @param gender new gender
+     * @param birthdate new birthdate
+     * @param bio new bio
+     */
+    public updateProfile(username: string, gender: string, birthdate: string, bio: string, _options?: Configuration): Observable<void> {
+        const requestContextPromise = this.requestFactory.updateProfile(username, gender, birthdate, bio, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.updateProfile(rsp)));
             }));
     }
 
