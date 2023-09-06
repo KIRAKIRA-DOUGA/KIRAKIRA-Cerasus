@@ -12,7 +12,6 @@
 	const coverMoveLeft = computed(() => currentPage.value !== "login");
 	const email = ref("");
 	const password = ref("");
-	const username = ref("");
 	const confirmPassword = ref("");
 	const verificationCode = ref("");
 	const passwordHint = ref("");
@@ -44,7 +43,7 @@
 		isTryingLogin.value = true;
 		const oapiClient = useApi();
 		try {
-			await oapiClient.login(username.value, password.value);
+			await oapiClient.login(email.value, password.value);
 		} catch (error) {
 			useToast("登录失败", "error");
 			console.error(error);
@@ -63,7 +62,7 @@
 	async function registerUser() {
 		if (password.value === confirmPassword.value) {
 			const oapiClient = useApi();
-			await oapiClient.register(username.value, password.value, email.value);
+			await oapiClient.register("", password.value, email.value);
 			isLogining.value = true;
 			open.value = false;
 		} else
@@ -119,9 +118,11 @@
 						<HeadingGroup :name="t.login" englishName="Login" />
 						<div class="form">
 							<TextBox
-								v-model="username"
-								:placeholder="t.user.name"
+								v-model="email"
+								type="email"
+								:placeholder="t.email_address"
 								icon="email"
+								:invalid="isInvalidEmail"
 							/>
 							<TextBox
 								v-model="password"
@@ -152,27 +153,21 @@
 								icon="email"
 							/>
 							<TextBox
-								v-model="username"
-								type="text"
-								:placeholder="t.user.name"
-								icon="email"
-							/>
-							<TextBox
 								v-model="password"
 								type="password"
 								:placeholder="t.password"
 								icon="lock"
 							/>
 							<TextBox
-								v-model="confirmPassword"
-								type="password"
-								:placeholder="t.password.retype"
-								icon="lock"
+								v-model="passwordHint"
+								type="text"
+								:placeholder="t.password.hint"
+								icon="visibility"
 							/>
 						</div>
 						<div class="action margin-left-inset">
 							<Button @click="currentPage = 'login'">{{ t.loginwindow.register_to_login }}</Button>
-							<Button icon="arrow_right" class="button icon-behind" @click="registerUser">{{ t.step.ok }}</Button>
+							<Button icon="arrow_right" class="button icon-behind" @click="currentPage = 'register2'">{{ t.step.next }}</Button>
 						</div>
 					</div>
 
@@ -188,6 +183,12 @@
 								icon="verified"
 							/>
 							<!-- TODO: [Aira] There should be a resend button on the right of the verification code textbox -->
+							<TextBox
+								v-model="confirmPassword"
+								type="password"
+								:placeholder="t.password.retype"
+								icon="lock"
+							/>
 						</div>
 						<div class="action margin-left-inset">
 							<Button icon="arrow_left" class="button" @click="currentPage = 'register'">{{ t.step.previous }}</Button>
