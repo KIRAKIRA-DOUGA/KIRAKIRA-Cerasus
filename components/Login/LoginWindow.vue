@@ -148,9 +148,10 @@
 						<div class="form">
 							<TextBox
 								v-model="email"
-								type="text"
+								type="email"
 								:placeholder="t.email"
 								icon="email"
+								:invalid="isInvalidEmail"
 							/>
 							<TextBox
 								v-model="password"
