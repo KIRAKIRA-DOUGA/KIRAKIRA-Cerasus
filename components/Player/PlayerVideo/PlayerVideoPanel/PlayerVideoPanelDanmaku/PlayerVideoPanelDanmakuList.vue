@@ -19,7 +19,7 @@
 			const key = e.content + e.sendTime.valueOf();
 			return { item: e, key };
 		}));
-		danmakuListKey.value = new Date().valueOf();
+		// danmakuListKey.value = new Date().valueOf();
 
 		insertDanmaku.value = undefined;
 	});
@@ -111,7 +111,7 @@
 				<tbody>
 					<!-- <RecycleScroller v-slot="{ item }" class="scroller" :itemSize="28" keyField="key" :items="danmakuList"> -->
 					<tr v-for="item in danmakuList" :key="item.key" v-ripple @contextmenu.prevent="e => { currentDanmaku = item.item; danmakuItemMenu = e; }">
-						<td v-for="(value, key, j) in item.item" :key="j" :width="colWidths[j]">{{ j > 0 ? handleTableDataCellText(value) : Math.round(value) }}</td>
+						<td v-for="(value, key, j) in item.item" :key="key" :width="colWidths[j]">{{ handleTableDataCellText(value) }}</td>
 					</tr>
 					<!-- </RecycleScroller> -->
 				</tbody>
@@ -228,6 +228,13 @@
 			thead,
 			th {
 				background-color: c(main-bg);
+			}
+
+			tbody tr {
+				td:nth-child(1),
+				td:nth-child(3) {
+					font-variant-numeric: tabular-nums;
+				}
 			}
 
 			thead,
