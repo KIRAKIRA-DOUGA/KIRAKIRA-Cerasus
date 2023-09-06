@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	// 把该文件移动到根目录即可自定义错误（如 404、500）页面样式。
+	// 把该文件放在根目录即可自定义错误（如 404、500）页面样式。
 
 	import { NuxtError } from "nuxt/dist/app/composables/error";
 	import { httpResponseStatusCodes } from "helpers/http-status";
@@ -38,7 +38,7 @@
 </script>
 
 <template>
-	<NuxtLayout v-if="isStatusCode(404, 233)" name="error404" :statusCode="error.statusCode" :message="error.message" />
-	<NuxtLayout v-else-if="isStatusCode(502)" name="error502" :statusCode="error.statusCode" :message="error.message" />
-	<NuxtLayout v-else name="error500" :statusCode="error.statusCode" :message="error.message" :stack="error.stack ?? ''" />
+	<NuxtLayout v-if="isStatusCode(404, 233)" name="error-404" :statusCode="error.statusCode" :message="error.message" />
+	<NuxtLayout v-else-if="isStatusCode(502)" name="error-502" :statusCode="error.statusCode" :message="error.message" />
+	<NuxtLayout v-else name="error-500" :statusCode="error.statusCode" :message="error.message" :stack="error.stack ?? ''" />
 </template>

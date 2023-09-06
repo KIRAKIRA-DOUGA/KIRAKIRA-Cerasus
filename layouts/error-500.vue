@@ -16,7 +16,7 @@
 			<div class="stack">
 				<h2>{{ message }}</h2>
 				<!-- eslint-disable-next-line vue/no-v-html -->
-				<pre v-html="stack"></pre>
+				<div v-html="stack"></div>
 			</div>
 			<div class="card-bottom">
 				<div class="bottom-left">
@@ -124,6 +124,7 @@
 			display: flex;
 			flex-direction: column;
 			gap: 20px;
+			height: 100%;
 			padding: 40px 60px;
 			overflow: auto;
 
@@ -133,8 +134,12 @@
 				user-select: text;
 			}
 
-			pre {
+			div:deep {
 				color: c(icon-color);
+				
+				> pre > span.stack {
+					display: block;
+				}
 			}
 		}
 	}

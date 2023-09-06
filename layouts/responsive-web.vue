@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	import background from "assets/styles/css-doodles/background.css-doodle";
-	import Settings from "./Settings.vue";
-	import UserPage from "./UserPage.vue";
+	import Settings from "./settings.vue";
+	import UserPage from "./user-page.vue";
 	import usePageTransition from "helpers/page-transition";
 
 	const container = ref<HTMLDivElement>();
