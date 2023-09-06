@@ -37,7 +37,7 @@
 	const watchedCount = computed(() => getWatchCount(props.watchedCount));
 	const duration = computed(() => props.duration ?? "--:--");
 	const link = computed(() => props.videoId !== undefined && props.videoId !== null ?
-		`/videos/kv${props.videoId}` : props.link);
+		`/video/kv${props.videoId}` : props.link);
 </script>
 
 <template>

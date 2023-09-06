@@ -1,5 +1,6 @@
 <script setup lang="ts">
-	// const videoPath = "https://video_api.kms233.com/bili/av9912788";
+	import exampleVideoPath from "assets/videos/shibamata.mp4";
+	// const exampleVideoPath = "https://video_api.kms233.com/bili/av9912788";
 	// 暂时不要用在线视频链接，虽然可以用，但是每次查看视频详细信息我都要等好久。
 
 	const route = useRoute();
@@ -16,6 +17,18 @@
 	async function fetchData() {
 		const api = useApi();
 		const handleError = (e: unknown) => console.error(e);
+
+		// Invalid video id, show example video
+		if (!Number.isFinite(kvid)) {
+			videoSource.value = exampleVideoPath;
+			videoDetails.value = {
+				title: "柴又",
+				tags: ["233", "天下笨蛋是一家", "艾拉原创出品"],
+				username: "艾了个拉",
+				uploadDate: new Date().toString(),
+			};
+			return;
+		}
 
 		// Fetch video details
 		try {
@@ -45,6 +58,7 @@
 	useHead({
 		title,
 		meta: [
+			{ property: "og:type", content: "video" },
 			{ property: "og:title", content: title },
 			{ property: "og:description", content: videoDetails.value?.videoDescription },
 			{ property: "og:image", content: videoDetails.value?.thumbnail }, // TODO: We should get the video thumbnail here.
@@ -91,17 +105,24 @@
 					:fans="videoDetails?.userSubscribers ?? 0"
 					isFollowed
 				/>
-				<Subheader v-if="recommendations?.length !== undefined && recommendations?.length > 0" class="recheader" icon="movie" :badge="recommendations?.length">Recommendations </Subheader>
+				
+				<Subheader
+					v-if="(recommendations?.length ?? 0) > 0"
+					class="recommendations-header"
+					icon="movie"
+					:badge="recommendations?.length"
+				>Recommendations</Subheader>
+				
 				<ThumbVideo
 					v-for="video in recommendations"
 					:key="video.videoID"
-					class="videorec"
+					class="video-recomendation"
 					:videoId="video.videoID"
 					:uploader="video.authorName ?? ''"
 					:image="video.thumbnailLoc"
 					:date="new Date()"
 					:watchedCount="video.views"
-					:duration="new Duration(0, video.videoDuration ?? 0)"
+					:duration="new Duration(video.videoDuration ?? 0)"
 				>{{ video.title }}</ThumbVideo>
 			</div>
 		</div>
@@ -109,17 +130,17 @@
 </template>
 
 <style scoped lang="scss">
-	.player-video {
-		margin: -16px -16px 0;
+	@include mobile {
+		.player-video {
+			margin: -16px -16px 0;
+		}
 	}
 
-	.recheader {
-		margin-top: 20px;
-		margin-bottom: 5px;
-		margin-left: 5px;
+	.recommendations-header {
+		margin: 20px 0 5px 5px;
 	}
 
-	.videorec {
+	.video-recomendation {
 		max-width: 100%;
 	}
 

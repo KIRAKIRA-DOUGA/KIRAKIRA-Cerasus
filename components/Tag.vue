@@ -1,4 +1,6 @@
 <script setup lang="ts">
+	import { LocaleLink } from "#components";
+
 	const props = defineProps<{
 		/** 勾选，单向绑定使用。 */
 		checked?: boolean;
@@ -15,11 +17,12 @@
 </script>
 
 <template>
-	<LocaleLink
+	<component
+		:is="link !== undefined ? LocaleLink : 'span'"
 		v-ripple
 		class="tag lite"
 		:class="{ checked: isChecked }"
-		:to="link || '#'"
+		:to="link"
 		:query="query"
 		draggable="false"
 		tabindex="0"
@@ -37,7 +40,7 @@
 			</Transition>
 			<slot></slot>
 		</div>
-	</LocaleLink>
+	</component>
 </template>
 
 <style scoped lang="scss">
@@ -46,12 +49,14 @@
 
 	.tag {
 		@include oval;
+		@include flex-center;
 		position: relative;
 		display: inline-flex;
 		padding: 6px 12px;
 		overflow: hidden;
 		color: inherit;
 		font-size: inherit;
+		line-height: 1rem;
 		background-color: c(text-color, 5%);
 		cursor: pointer;
 

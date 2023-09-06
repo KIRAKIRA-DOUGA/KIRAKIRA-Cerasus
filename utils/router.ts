@@ -12,12 +12,12 @@ export function getRoutePath({
 	removeI18nPrefix: removeI18n = true, // removeI18nPrefix 和下面的函数重名因而会导致异常。
 }: Partial<{
 	/** 路由对象。留空时将会自动获取。 */
-	route: Route;
+	route: Route | string;
 	/** 是否移除语言名称前缀。默认为是。 */
 	removeI18nPrefix: boolean;
 }> = {}): string {
-	let path = route.path;
-	path = path.slice(1); // 移除根节点斜杠。
+	let path = typeof route === "string" ? route : route.path;
+	path = path.replace(/^\//, ""); // 移除根节点斜杠。
 	if (removeI18n)
 		path = path.replace(new RegExp(`^(${localeCodes.value.join("|")})\\/?`), ""); // 移除语言前缀。
 	return path;
@@ -109,4 +109,13 @@ export function removeI18nPrefix(route: string) {
 	let result = route.replace(/^\/(zhs|en|ja)(?=\/|$)/, "");
 	if (result === "") result = "/";
 	return result;
+}
+
+/**
+ * 判断是否是当前路由路径，去除语言前缀和哈希、查询参数后缀。
+ * @param path - 要判断的路由路径。
+ * @returns 是否是当前路由路径？
+ */
+export function isCurrentPath(path: string) {
+	return getRoutePath({ route: path }) === getRoutePath();
 }

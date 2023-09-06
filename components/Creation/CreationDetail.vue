@@ -13,6 +13,8 @@
 	}>(), {
 		tags: () => [], // （？）奇怪的写法
 	});
+
+	const flyoutTag = ref<FlyoutModel>();
 </script>
 
 <template>
@@ -38,7 +40,9 @@
 				link="/search"
 				:query="{ q: tag }"
 			>{{ tag }}</Tag>
+			<Tag class="add-tag" @click="e => flyoutTag = [e, 'y']"><Icon name="add" /></Tag>
 		</div>
+		<FlyoutTag v-model="flyoutTag" />
 	</Comp>
 </template>
 
@@ -71,5 +75,11 @@
 		display: flex;
 		flex-wrap: wrap;
 		gap: 8px;
+		
+		.add-tag {
+			padding: 6px;
+			color: c(icon-color);
+			font-size: 18px;
+		}
 	}
 </style>

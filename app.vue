@@ -90,6 +90,8 @@
 			navigator.serviceWorker.register("/sw.js");
 		});
 
+	// 开发环境测试用全局变量
+	loadDevGlobal();
 	// 彩蛋
 	loadEgg();
 </script>

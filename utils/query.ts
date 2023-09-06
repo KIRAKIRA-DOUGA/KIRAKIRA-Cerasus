@@ -36,5 +36,5 @@ export function currentUserTab() {
  */
 export function currentVideoKvid() {
 	const routeSlug = getLocaleRouteSlug();
-	return routeSlug[0] === "videos" || routeSlug[0] === "video" ? +routeSlug[1] ?? 0 : -1;
+	return routeSlug[0].test(/^videos?$/) ? +routeSlug[1] ?? 0 : -1;
 }

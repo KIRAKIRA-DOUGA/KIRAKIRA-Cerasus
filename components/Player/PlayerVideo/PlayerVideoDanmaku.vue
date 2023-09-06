@@ -54,7 +54,11 @@
 	onMounted(() => {
 		if (!danmakuContainer.value) return;
 		initDanmaku();
-		resizeObserver.value = new ResizeObserver(() => danmaku.value?.resize());
+		resizeObserver.value = new ResizeObserver(() => {
+			try {
+				danmaku.value?.resize();
+			} catch { }
+		});
 		resizeObserver.value.observe(danmakuContainer.value);
 	});
 
@@ -120,7 +124,12 @@
 		}
 
 		.dm {
-			box-shadow: -1px -1px black, -1px 1px black, 1px -1px black, 1px 1px black;
+			@include round-small;
+
+			&.user-sent {
+				// box-shadow: -1px -1px black, -1px 1px black, 1px -1px black, 1px 1px black;
+				backdrop-filter: invert(1);
+			}
 
 			&.dm-rainbow {
 				background: linear-gradient(to right, #f2509e, #308bcd);

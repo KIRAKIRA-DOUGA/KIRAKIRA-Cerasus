@@ -107,8 +107,9 @@
 	 * @param target - 指定浮窗位置。
 	 * @param placement - 浮窗出现方向。
 	 * @param offset - 与目标元素距离偏移。
+	 * @param getNewPosition - 获取改变后的新位置和偏移量。
 	 */
-	async function _moveIntoPage(target: FlyoutModelNS.Target, placement?: Placement, offset?: number) {
+	async function _moveIntoPage(target: FlyoutModelNS.Target, placement?: Placement, offset?: number, getNewPosition?: (placement: Placement, offset: number) => void) {
 		target = toValue(target);
 		const [_location, targetRect] = getLocation(target);
 		if (!_location || !flyout.value) return;
@@ -116,7 +117,9 @@
 		const flyoutRect = flyout.value.getBoundingClientRect();
 		if (targetRect) {
 			const result = getPosition(targetRect, placement, offset, flyoutRect);
+			getNewPosition?.(result.placement, result.offset);
 			location.value = result.position;
+			placementForAnimation.value = result.placement;
 			await nextTick();
 		}
 		location.value = moveIntoPage(location, flyoutRect);
@@ -138,7 +141,7 @@
 	}, { immediate: true, deep: true });
 
 	defineExpose({
-		hide, show, moveIntoPage: _moveIntoPage,
+		hide, show, moveIntoPage: _moveIntoPage, placementForAnimation,
 	});
 
 	/**
@@ -191,6 +194,7 @@
 			<Comp
 				v-if="shown"
 				ref="flyout"
+				v-bind="$attrs"
 				:[scopeId]="''"
 				:class="{ padding: !noPadding, cropping, moving }"
 				:style="locationStyle"

@@ -1,5 +1,6 @@
 @use "sass:color";
 @use "sass:list";
+@use "sass:string";
 
 /// 将指定颜色反转亮度。
 /// @param {Color} $color - 颜色值。
@@ -82,7 +83,7 @@
 /// @param {String} $str - 字符串。
 /// @param {Number} $count - 重复次数。
 /// @return {String} 重复指定次数后的字符串。
-@function repeat-string($str, $count) {
+@function string-repeat($str, $count) {
 	$result: "";
 
 	@for $i from 1 through $count {
@@ -90,4 +91,19 @@
 	}
 
 	@return $result;
+}
+
+/// 将 `$string` 中的 `$search` 替换为 `$replace`。
+/// @param {String} $string - 初始字符串。
+/// @param {String} $search - 要更换的子字符串。
+/// @param {String} $replace [""] - 新值。
+/// @return {String} - 更新后的字符串。
+@function string-replace($string, $search, $replace: "") {
+	$index: string.index($string, $search);
+
+	@if $index {
+		@return string.slice($string, 1, $index - 1) + $replace + string-replace(string.slice($string, $index + string.length($search)), $search, $replace);
+	}
+
+	@return $string;
 }

@@ -38,7 +38,7 @@
 
 <template>
 	<Transition>
-		<Offcanvas v-if="showDrawer" />
+		<Offcanvas v-if="showDrawer" v-model="showDrawer" />
 	</Transition>
 	<div class="viewport">
 		<Transition>

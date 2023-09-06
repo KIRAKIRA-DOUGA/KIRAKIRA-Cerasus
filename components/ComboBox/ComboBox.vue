@@ -7,6 +7,7 @@
 	});
 
 	const selected = defineModel<string>({ required: true });
+	const getShown = defineModel<boolean>("shown");
 	const slots = useSlots();
 
 	const menu = ref<HTMLDivElement>();
@@ -19,6 +20,7 @@
 	const isSelectionValid = computed(() => selectedIndex.value !== -1);
 
 	const showMenu = ref(false);
+	watch(showMenu, showMenu => getShown.value = showMenu);
 	const show = () => {
 		selectedIndexStatic.value = isSelectionValid.value ? selectedIndex.value : 0;
 		showMenu.value = true;

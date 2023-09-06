@@ -25,7 +25,7 @@
 	<Comp v-ripple>
 		<img v-if="avatar" :src="avatar" alt="avatar" draggable="false" />
 		<Icon v-else name="person" />
-		<LocaleLink v-if="userLink" :to="userLink" :draggable="false" />
+		<LocaleLink v-if="userLink" :to="userLink" :draggable="false" class="lite" />
 	</Comp>
 </template>
 

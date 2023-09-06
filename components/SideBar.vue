@@ -71,9 +71,9 @@
 
 	<nav :[scopeId]="''">
 		<div class="icons">
-			<MobileBottomNavItem icon="home" href="/">{{ t.home }}</MobileBottomNavItem>
-			<MobileBottomNavItem icon="category" href="/category">{{ t.category }}</MobileBottomNavItem>
-			<MobileBottomNavItem icon="feed" href="/audio">{{ t.feed }}</MobileBottomNavItem>
+			<BottomNavItem icon="home" href="/">{{ t.home }}</BottomNavItem>
+			<BottomNavItem icon="category" href="/category">{{ t.category }}</BottomNavItem>
+			<BottomNavItem icon="feed" href="/audio">{{ t.feed }}</BottomNavItem>
 		</div>
 	</nav>
 </template>

@@ -13,6 +13,8 @@ namespace AnimatedIconStateNS {
 	export type Object = { marker?: string; loop?: boolean; speed?: number };
 }
 
+type DanmakuMode = NonNull<DanmakuComment["mode"]>;
+
 /**
  * 在此处声明各组件或函数等希望全局使用的类型名称，其名称应尽可能复杂以规避重名。有必要时可使用命名空间。
  */
@@ -56,6 +58,13 @@ declare global {
 	}
 	/** 颜色模型。 */
 	type ColorModel = "rgb" | "hsl" | "hsb";
+	/** 弹幕格式。 */
+	interface DanmakuFormat {
+		fontSize: "small" | "medium" | "large";
+		color: Color;
+		mode: DanmakuMode;
+		enableRainbow: boolean;
+	}
 
 	type FlyoutModel = FlyoutModelNS.Tuple | FlyoutModelNS.Object;
 	type MenuModel = MouseEvent | PointerEvent | null;

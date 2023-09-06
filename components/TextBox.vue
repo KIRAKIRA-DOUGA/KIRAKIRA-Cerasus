@@ -142,7 +142,6 @@
 		const e = _e as InputEvent;
 		const input = e.target as HTMLInputElement;
 		const caret = Caret.get(input);
-		emits("input", e);
 		const undo = () => {
 			const length = input.value.length - value.value.toString().length;
 			input.value = value.value.toString();
@@ -185,6 +184,7 @@
 		}
 		invalid.value = isInvalid();
 		value.value = input.value;
+		emits("input", e);
 	}
 
 	/**

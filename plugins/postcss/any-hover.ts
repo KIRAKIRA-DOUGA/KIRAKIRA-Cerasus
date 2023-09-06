@@ -54,12 +54,7 @@ const anyHover: PostCSSPlugin = () => {
 			const clonedRule = (selectors: string[] = hoverSelectors) => rule.clone({ selectors });
 
 			let existAnyHoverAtRule: AtRule | undefined;
-			/* rule.root().walkAtRules("media", atRule => {
-				if (atRule.params.includes("any-hover: hover") && !existAnyHoverAtRule)
-					existAnyHoverAtRule = atRule;
-			}); */
-			// 如果下次有想法来研究如何节省 CSS 文件大小的话可以再开启本段代码。
-			// 目前问题是不能检测外部是否有嵌套其它 At Rule。
+			// CSS 压缩环节会合并这些 At Rules，因此不必考虑节省 CSS 文件大小。
 
 			if (!existAnyHoverAtRule) {
 				const mediaQuery = createMediaQuery(clonedRule(), { AtRule });
