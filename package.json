@@ -21,7 +21,7 @@
 	"license": "BSD 2-Clause",
 	"author": "KIRAKIRA Project Team",
 	"scripts": {
-		"build": "nuxt build && node .output/server/index.mjs",
+		"build": "nuxt build && nuxt start",
 		"dev": "cross-env nuxt dev --host localhost --https --ssl-cert server/server.cer --ssl-key server/server.key",
 		"dev-http": "cross-env HOST=0.0.0.0 nuxt dev",
 		"generate": "nuxt generate",

@@ -1,4 +1,4 @@
-import { userTabs } from "layouts/UserPage.vue";
+import { userTabs } from "layouts/user-page.vue";
 
 const SETTINGS = "/settings";
 const USER = "/user";
