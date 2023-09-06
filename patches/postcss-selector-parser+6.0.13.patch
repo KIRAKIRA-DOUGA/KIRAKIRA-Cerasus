@@ -1,5 +1,5 @@
 diff --git a/node_modules/postcss-selector-parser/dist/parser.js b/node_modules/postcss-selector-parser/dist/parser.js
-index b4c75e3..58edbd8 100644
+index b4c75e3..e225b8a 100644
 --- a/node_modules/postcss-selector-parser/dist/parser.js
 +++ b/node_modules/postcss-selector-parser/dist/parser.js
 @@ -127,7 +127,7 @@ var Parser = /*#__PURE__*/function () {
@@ -7,7 +7,7 @@ index b4c75e3..58edbd8 100644
      return function (message, errorOptions) {
        if (typeof _this.rule === 'string') {
 -        return new Error(message);
-+        // return new Error(message);
++        return;
        }
        return _this.rule.error(message, errorOptions);
      };
