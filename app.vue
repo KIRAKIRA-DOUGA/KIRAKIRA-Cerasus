@@ -75,7 +75,7 @@
 		setClassEnabled(document.documentElement, "flat", enabled);
 	});
 
-	const layout = ref("responsive-web"); // 还特么必须得用连字符形式书写。
+	const layout = ref("responsive-web");
 
 	// Service Worker
 	if (environment.client)
