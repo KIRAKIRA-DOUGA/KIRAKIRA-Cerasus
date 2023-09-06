@@ -1,3 +1,37 @@
+<script lang="ts">
+	const fontSizes = {
+		small: 14,
+		medium: 20,
+		large: 28,
+	};
+
+	/**
+	 * 创建一个可发射的弹幕内容。
+	 * @param text - 弹幕内容。
+	 * @param time - 弹幕出现时间。
+	 * @param format - 弹幕格式。
+	 * @returns 可发射的弹幕内容。
+	 */
+	export function createDanmakuComment(text: string, time: number | undefined, format: DanmakuFormat): DanmakuComment {
+		return {
+			text,
+			time,
+			mode: format.mode,
+			render() {
+				const div = document.createElement("div");
+				div.textContent = text;
+				div.classList.add("dm");
+				if (format.enableRainbow) div.classList.add("dm-rainbow");
+				Object.assign(div.style, {
+					fontSize: fontSizes[format.fontSize] + "px",
+					color: format.color ? format.color.hashHex : undefined,
+				});
+				return div;
+			},
+		};
+	}
+</script>
+
 <script setup lang="ts">
 	const props = defineProps<{
 		getTime: Function;
@@ -11,11 +45,6 @@
 	const flyoutFormat = ref<FlyoutModel>();
 	const textBox = ref<InstanceType<typeof TextBox>>();
 	const OFFSET_Y = -5.4;
-	const fontSizes = {
-		small: 14,
-		medium: 20,
-		large: 28,
-	};
 	const format = reactive({
 		fontSize: "medium",
 		color: Color.fromHex("#FFFFFF"),
@@ -48,23 +77,9 @@
 		const utf8Encoder = new TextEncoder();
 		const encodedContent = utf8Encoder.encode(text) as unknown as string;
 
-		api.createDanmaku(props.videoID, props.getTime(), encodedContent, style.mode, style.color.hex, style.fontSize);
+		api.createDanmaku(props.videoID, props.getTime(), encodedContent, format.mode, format.color.hex, format.fontSize);
 
-		sendDanmaku.value = [{
-			text,
-			mode: format.mode,
-			render() {
-				const div = document.createElement("div");
-				div.textContent = text;
-				div.classList.add("dm");
-				if (format.enableRainbow) div.classList.add("dm-rainbow");
-				Object.assign(div.style, {
-					fontSize: fontSizes[format.fontSize] + "px",
-					color: format.color ? format.color.hashHex : undefined,
-				});
-				return div;
-			},
-		}];
+		sendDanmaku.value = [createDanmakuComment(text, undefined, format)];
 		content.value = "";
 	}
 </script>

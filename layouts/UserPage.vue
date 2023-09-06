@@ -12,8 +12,7 @@
 </script>
 
 <script setup lang="ts">
-	import users from "helpers/users";
-	import { Users200Response } from "packages/kirakira-backend";
+	import { Users200Response } from "kirakira-backend";
 
 	// TODO nice copy pasta dude
 	const uid = currentUserUid();
