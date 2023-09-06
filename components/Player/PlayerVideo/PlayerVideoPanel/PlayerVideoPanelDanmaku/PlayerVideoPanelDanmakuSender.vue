@@ -1,7 +1,4 @@
 <script setup lang="ts">
-	import { animateSizeGenerator } from "utils/animation";
-	import { FlyoutModelNS } from "types/arguments";
-
 	const props = defineProps<{
 		getTime: Function;
 		videoID: number;
