@@ -13,6 +13,7 @@
 			en: "en",
 			ja: "ja",
 			ko: "ko",
+			vi: "vi",
 		};
 
 		return langs[locale.value as keyof typeof langs] ?? locale.value;
