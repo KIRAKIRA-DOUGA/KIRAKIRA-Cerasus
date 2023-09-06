@@ -234,7 +234,7 @@
 	}
 	
 	.progress-bar:deep {
-		position: absolute;
+		position: absolute !important;
 		bottom: 0;
 		width: 100%;
 		border-radius: 0 !important;
