@@ -34,7 +34,9 @@
 
 <script setup lang="ts">
 	const props = defineProps<{
-		getTime: Function;
+		/** 当前视频时间。 */
+		currentTime: number;
+		/** 视频 ID。 */
 		videoId: number;
 	}>();
 
@@ -77,7 +79,7 @@
 		const utf8Encoder = new TextEncoder();
 		const encodedContent = utf8Encoder.encode(text) as unknown as string;
 
-		api.createDanmaku(props.videoId, props.getTime(), encodedContent, format.mode, format.color.hex, format.fontSize);
+		api.createDanmaku(props.videoId, String(props.currentTime), encodedContent, format.mode, format.color.hex, format.fontSize);
 
 		sendDanmaku.value = [createDanmakuComment(text, undefined, format)];
 		content.value = "";

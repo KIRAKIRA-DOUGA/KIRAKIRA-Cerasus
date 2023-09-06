@@ -19,7 +19,7 @@
 			const key = e.content + e.sendTime.valueOf();
 			return { item: e, key };
 		}));
-		// danmakuListKey.value = new Date().valueOf();
+		danmakuListKey.value = new Date().valueOf();
 
 		insertDanmaku.value = undefined;
 	});
