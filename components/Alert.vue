@@ -77,7 +77,7 @@
 			scale: $scale;
 
 			.body {
-				translate: 0 #{-$padding};
+				translate: 0 (-$padding);
 				scale: $scale-reciprocal;
 			}
 

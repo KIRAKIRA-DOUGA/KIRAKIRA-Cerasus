@@ -163,22 +163,22 @@
 						.luminance {
 							background: $luminance-radial;
 						}
-						
+
 						.stroke {
 							@include color-palette-stroke;
 						}
 					}
-					
+
 					.icon {
 						position: relative;
 						color: white;
 						font-size: 16px;
 					}
-					
+
 					&.dark-check .icon {
 						color: black;
 					}
-					
+
 					&:not(.checked) .icon {
 						scale: 0;
 					}
@@ -186,30 +186,30 @@
 			}
 		}
 	}
-	
+
 	.page-color {
 		$margin: 12px;
 		min-width: $format-width + 12px * 2;
-		margin: 0 #{-$margin};
-		
+		margin: 0 (-$margin);
+
 		.back {
 			display: flex;
 			gap: 5px;
 			margin: 0 $margin 10px;
 			color: c(accent);
 			cursor: pointer;
-			
+
 			&:any-hover,
 			&:active {
 				opacity: 0.7;
 			}
-			
+
 			.icon {
 				font-size: 18px;
 			}
 		}
 	}
-	
+
 	.rainbow-example {
 		@include round-small;
 		@include square(20px);
@@ -219,7 +219,7 @@
 		mask: linear-gradient(white 0 0) padding-box, linear-gradient(white 0 0);
 		mask-composite: exclude;
 	}
-	
+
 	// stylelint-disable-next-line order/order
 	@include float-in-children($selector: ":comp$placement .page-style", $length: 7, $delay: 50ms, $ease: $ease-out-smooth);
 </style>

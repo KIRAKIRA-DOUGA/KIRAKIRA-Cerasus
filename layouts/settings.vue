@@ -291,9 +291,9 @@
 	}
 
 	.nav-header {
-		margin-right: #{-$nav-padding-x};
+		margin-right: (-$nav-padding-x);
 		margin-bottom: -10px;
-		margin-left: #{-$nav-padding-x};
+		margin-left: (-$nav-padding-x);
 		padding-right: $nav-padding-x;
 		padding-bottom: 10px;
 		padding-left: $nav-padding-x;
@@ -308,9 +308,9 @@
 		display: flex;
 		gap: 0.75rem;
 		align-items: center;
-		margin-right: #{-$main-padding-x};
+		margin-right: (-$main-padding-x);
 		margin-bottom: -0.5rem;
-		margin-left: #{-$main-padding-x};
+		margin-left: (-$main-padding-x);
 		padding-right: $main-padding-x;
 		padding-bottom: 0.5rem;
 		padding-left: $main-padding-x;
@@ -404,7 +404,7 @@
 			display: flex;
 			gap: 5px;
 			justify-content: flex-end;
-			margin: 0 #{-$main-padding-x} #{-$submit-margin-y};
+			margin: 0 (-$main-padding-x) (-$submit-margin-y);
 			margin-top: 0;
 			padding: 0 $main-padding-x $submit-margin-y;
 			background-color: c(main-bg, 80%);
