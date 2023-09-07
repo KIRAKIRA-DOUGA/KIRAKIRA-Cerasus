@@ -40,7 +40,6 @@ export class IsomorphicFetchHttpLibrary implements HttpLibrary {
 				},
 			};
 
-			console.log(headers);
 			return new ResponseContext(status, headers, body);
 		});
 
