@@ -121,7 +121,7 @@
 		.text-box {
 			--square: true;
 		}
-		
+
 		.empty {
 			@include flex-center;
 			flex-direction: column;
@@ -129,15 +129,15 @@
 			height: 100%;
 			color: c(icon-color);
 			font-size: 16px;
-			
+
 			.icon {
 				font-size: 42px;
 			}
-			
+
 			&.v-enter-from,
 			&.v-leave-to {
 				opacity: 0;
-				translate: 0 #{-$translate};
+				translate: 0 (-$translate);
 			}
 		}
 
@@ -154,7 +154,7 @@
 				}
 			}
 		}
-		
+
 		.empty,
 		.list {
 			position: absolute;
@@ -185,62 +185,62 @@
 			&:any-hover {
 				background-color: c(hover-overlay);
 			}
-			
+
 			&.v-enter-from,
 			&.v-leave-to {
 				translate: 0 $translate;
 				opacity: 0;
 			}
-			
+
 			&.v-leave-active {
 				position: absolute;
 			}
 		}
 	}
-	
+
 	.page-editor {
 		display: flex;
 		flex-direction: column;
 		height: 100%;
 		padding: 16px;
-		
+
 		.list-wrapper {
 			position: relative;
 			height: 100%;
 			overflow: auto;
 		}
-		
+
 		.list {
 			position: absolute;
 			display: grid;
 			grid-template-columns: repeat(2, auto);
 			gap: 16px 8px;
 			width: 100%;
-			
+
 			.tags {
 				display: flex;
 				flex-wrap: wrap;
 				gap: 8px;
-				
+
 				.tag {
 					min-height: 36px;
 				}
 			}
 		}
-		
+
 		.submit {
 			position: relative;
 			bottom: 0;
 			display: flex;
 			gap: 5px;
 			margin-top: 12px;
-			
+
 			> :first-child {
 				margin-left: auto;
 			}
 		}
 	}
-	
+
 	.flyout.show-combobox {
 		&,
 		.page-editor .list-wrapper {
