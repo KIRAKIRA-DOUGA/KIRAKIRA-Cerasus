@@ -162,7 +162,7 @@
 </script>
 
 <template>
-	<Subheader icon="palette">调色板</Subheader>
+	<Subheader icon="palette">{{ t.color_picker }}</Subheader>
 	<Comp
 		:class="{
 			'dark-thumb': darkThumb,
@@ -429,6 +429,7 @@
 			position: absolute;
 			inset: 0;
 			border-radius: inherit;
+			transition: none;
 		}
 
 		.stroke {

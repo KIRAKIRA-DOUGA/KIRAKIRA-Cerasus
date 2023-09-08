@@ -351,6 +351,7 @@ const Japanese: LocaleIdentifiers = {
 		back: "戻る",
 	},
 	other: "その他",
+	color_picker: "Color Picker", // NEW
 };
 
 export default Japanese;

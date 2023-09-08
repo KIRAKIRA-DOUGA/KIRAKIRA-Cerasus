@@ -349,6 +349,7 @@ const SChinese = {
 		back: "返回",
 	},
 	other: "其它",
+	color_picker: "调色板",
 } as const;
 
 export default SChinese;

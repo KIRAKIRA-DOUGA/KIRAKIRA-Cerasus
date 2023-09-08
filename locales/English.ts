@@ -348,6 +348,7 @@ const English: LocaleIdentifiers = {
 		back: "Back",
 	},
 	other: "Other",
+	color_picker: "Color Picker",
 };
 
 export default English;
