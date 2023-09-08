@@ -103,7 +103,13 @@ const SChinese = {
 			description: "使用正则表达式匹配不想看到的内容。",
 		},
 	},
-	player: "播放",
+	player: {
+		_: "播放器",
+		speed: {
+			resample_audio: "重采样音频",
+			continuous: "无级变速",
+		},
+	},
 	danmaku: {
 		_: "弹幕",
 		send: "发送弹幕",
@@ -116,6 +122,14 @@ const SChinese = {
 				ltr: "逆向",
 			},
 			send_as_creator: "创作者专属渐变",
+		},
+		list: {
+			loading: "弹幕装填中⋯⋯",
+			thead: {
+				time: "时间",
+				content: "内容",
+				sending_time: "发送时间",
+			},
 		},
 	},
 	preference: "偏好",
@@ -174,6 +188,7 @@ const SChinese = {
 	reply: "回复",
 	more: "更多",
 	delete: "删除",
+	copy: "复制",
 	pin: "置顶",
 	unpin: "取消置顶",
 	report: "投诉",

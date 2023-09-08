@@ -102,8 +102,8 @@
 			</template>
 		</PlayerVideoMenu>
 		<PlayerVideoMenu v-model="rateMenu">
-			<ToggleSwitch v-model="resample" v-ripple.overlay icon="tunning">重采样音频</ToggleSwitch>
-			<ToggleSwitch v-model="steplessRate" v-ripple.overlay icon="speed">无级变速</ToggleSwitch>
+			<ToggleSwitch v-model="resample" v-ripple.overlay icon="tunning">{{ t.player.speed.resample_audio }}</ToggleSwitch>
+			<ToggleSwitch v-model="steplessRate" v-ripple.overlay icon="speed">{{ t.player.speed.continuous }}</ToggleSwitch>
 			<template #slider>
 				<CapsuleSlider v-model="playbackRateLinear" :min="-2" :max="2" :displayValue="playbackRateText" :defaultValue="0" />
 			</template>

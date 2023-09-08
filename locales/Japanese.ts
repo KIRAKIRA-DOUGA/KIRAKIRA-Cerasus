@@ -105,7 +105,13 @@ const Japanese: LocaleIdentifiers = {
 			description: "正規表現で目にしたくない投稿を選択します",
 		},
 	},
-	player: "プレーヤー",
+	player: {
+		_: "プレーヤー",
+		speed: {
+			resample_audio: "重采样音频", // NEW
+			continuous: "无级变速", // NEW
+		},
+	},
 	danmaku: {
 		_: "弾幕",
 		send: "弾幕を送信",
@@ -118,6 +124,14 @@ const Japanese: LocaleIdentifiers = {
 				ltr: "逆スクロール",
 			},
 			send_as_creator: "クリエイター専用グラデーション",
+		},
+		list: {
+			loading: "弹幕装填中⋯⋯", // NEW
+			thead: {
+				time: "时间", // NEW
+				content: "内容", // NEW
+				sending_time: "发送时间", // NEW
+			},
 		},
 	},
 	preference: "プリファレンス",
@@ -176,6 +190,7 @@ const Japanese: LocaleIdentifiers = {
 	reply: "返信",
 	more: "詳細",
 	delete: "削除",
+	copy: "コピー", // NEW
 	pin: "固定",
 	unpin: "固定解除",
 	report: "通報",

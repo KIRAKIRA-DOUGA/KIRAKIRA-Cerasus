@@ -5,7 +5,7 @@
 	const danmakuItemMenu = ref<MenuModel>();
 	const currentDanmaku = ref<DanmakuListItem>();
 	const { copy } = useClipboard();
-	const headers = { videoTime: "时间", content: "内容", sendTime: "发送时间" };
+	const headers = { videoTime: t.danmaku.list.thead.time, content: t.danmaku.list.thead.content, sendTime: t.danmaku.list.thead.sending_time };
 	const colWidths = reactive([60, 150, 100]);
 	const danmakuList = ref<Array<{ item: DanmakuListItem; key: ObjectKey }>>([]);
 	const danmakuListKey = ref(0); // FIXME: 理论上 vue-virtual-scroller 会自动监测弹幕数组更新，但是目前不知道为什么不生效，暂时只能用这种方法解决。
@@ -119,15 +119,15 @@
 			<template #fallback>
 				<div class="danmaku-placeholder">
 					<ProgressRing />
-					<span>弹幕装填中⋯⋯</span>
+					<span>{{ t.danmaku.list.loading }}</span>
 				</div>
 			</template>
 		</ClientOnly>
 		<Menu v-model="danmakuItemMenu">
-			<MenuItem icon="copy" @click="copyDanmaku">复制</MenuItem>
-			<MenuItem icon="flag">举报</MenuItem>
+			<MenuItem icon="copy" @click="copyDanmaku">{{ t.copy }}</MenuItem>
+			<MenuItem icon="flag">{{ t.report }}</MenuItem>
 			<hr />
-			<MenuItem icon="person">进入该用户首页</MenuItem>
+			<MenuItem icon="person">TODO: USER NAME HERE</MenuItem>
 		</Menu>
 	</Comp>
 </template>

@@ -102,7 +102,13 @@ const English: LocaleIdentifiers = {
 			description: "Use regular expression to hide content you don't want to see.",
 		},
 	},
-	player: "Player",
+	player: {
+		_: "Player",
+		speed: {
+			resample_audio: "Resample Audio",
+			continuous: "Continuous Control",
+		},
+	},
 	danmaku: {
 		_: "Danmaku | Danmakus",
 		send: "Send Danmaku",
@@ -115,6 +121,14 @@ const English: LocaleIdentifiers = {
 				ltr: "Reversed",
 			},
 			send_as_creator: "Creator's Gradient", // NEW
+		},
+		list: {
+			loading: "Loading Danmakus",
+			thead: {
+				time: "Time",
+				content: "Content",
+				sending_time: "Sending Time",
+			},
 		},
 	},
 	preference: "Preference",
@@ -173,6 +187,7 @@ const English: LocaleIdentifiers = {
 	reply: "Reply",
 	more: "More",
 	delete: "Delete",
+	copy: "Copy",
 	pin: "Pin",
 	unpin: "Unpin",
 	report: "Report",
