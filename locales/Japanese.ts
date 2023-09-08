@@ -296,8 +296,11 @@ const Japanese: LocaleIdentifiers = {
 		age: "年齢",
 	},
 	zhs: "簡体字中国語",
+	zht: "繁体字中国語", // NEW
 	en: "英語",
 	ja: "日本語",
+	ko: "韓国語",
+	vi: "ベトナム語", // NEW
 	development_test_page: "デベロップメント テストページ",
 	components_test_page: "コンポーネンツ テストページ",
 	view_cover: "サムネイルの確認",

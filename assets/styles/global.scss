@@ -7,7 +7,7 @@
 ::before,
 ::after {
 	box-sizing: border-box;
-	font-family: $chinese-fonts;
+	font-family: $schinese-fonts;
 	// font-feature-settings: "ss02" on, "ss01" on, "liga" on, "rlig" on, "dlig" on, "hlig" on, "onum" on, "kern" on;
 	font-variant-east-asian: proportional-width;
 	font-variant-ligatures: common-ligatures historical-ligatures contextual;
@@ -32,11 +32,27 @@
 	scroll-behavior: smooth;
 }
 
+:lang(zh-Hant-TW) {
+	&,
+	&::before,
+	&::after {
+		font-family: $tchinese-fonts;
+	}
+}
+
 :lang(ja) {
 	&,
 	&::before,
 	&::after {
 		font-family: $japanese-fonts;
+	}
+}
+
+:lang(ko) {
+	&,
+	&::before,
+	&::after {
+		font-family: $korean-fonts;
 	}
 }
 

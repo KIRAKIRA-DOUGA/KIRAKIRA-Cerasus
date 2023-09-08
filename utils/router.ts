@@ -106,7 +106,7 @@ export function switchLanguage(lang: string) {
  * @returns - 移除了语言前缀的路由。
  */
 export function removeI18nPrefix(route: string) {
-	let result = route.replace(/^\/(zhs|en|ja)(?=\/|$)/, "");
+	let result = route.replace(/^\/(zhs|zht|en|ja|ko|vi)(?=\/|$)/, "");
 	if (result === "") result = "/";
 	return result;
 }

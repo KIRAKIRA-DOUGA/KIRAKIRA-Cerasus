@@ -296,7 +296,7 @@ const English: LocaleIdentifiers = {
 	zht: "Traditional Chinese",
 	en: "English",
 	ja: "Japanese",
-	ko: "Korean",
+	ko: "한국어",
 	vi: "Vietnamese",
 	development_test_page: "Development Test Page",
 	components_test_page: "Components Test Page",
