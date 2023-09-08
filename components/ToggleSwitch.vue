@@ -61,7 +61,7 @@
 		if (on.value !== toggleSwitch.value.classList.contains("on"))
 			setClassEnabled(toggleSwitch, "on", on.value);
 	}, { immediate: true });
-	
+
 	// 当键盘松开空格键时相当于点击复选框。
 	// 当键盘按下空格键时不要下滑页面。
 </script>
@@ -139,14 +139,14 @@
 			top: calc(($thumb-size - $base-height) / 2);
 			width: $width;
 			height: $base-height;
-			background-color: c(gray-40);
+			background-color: c(main-fg, 25%);
 
 			:comp.on & {
 				background-color: c(accent, 40%);
 			}
 
 			:comp:not(.on).disabled & {
-				background-color: c(gray-40, 40%);
+				background-color: c(main-fg, 10%);
 			}
 
 			:comp.on.disabled & {
