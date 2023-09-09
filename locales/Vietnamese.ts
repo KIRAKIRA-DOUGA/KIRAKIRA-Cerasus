@@ -34,7 +34,7 @@ const Vietnamese: LocaleIdentifiers = {
 		purple: "Rize",
 	},
 	language: {
-		_: "Ngôn Ngữ",
+		_: "Ngôn ngữ",
 		zhs: "Tiếng Trung - giản thể",
 		zht: "Tiếng Trung - phồn thể",
 		en: "Tiếng Anh",
