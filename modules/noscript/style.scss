@@ -9,7 +9,7 @@
 @import "./global-colors";
 @import "../../assets/styles/elements/hyperlink";
 @import "../../assets/styles/elements/reset";
-@import "../../assets/styles/theme/animations";
+@import "../../assets/styles/elements/animations";
 
 $animation-options: $ease-out-expo 600ms backwards;
 
@@ -75,7 +75,7 @@ html:lang(ja) span:lang(ja) {
 			font-size: 54px;
 			text-align: right;
 			animation: move-down $animation-options;
-			
+
 			&:lang(zh) {
 				font-size: 64px;
 			}
