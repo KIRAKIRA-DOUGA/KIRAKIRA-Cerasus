@@ -9,7 +9,7 @@ const Vietnamese: LocaleIdentifiers = {
 		_: "Danh mục",
 		anime: "Anime",
 		music: "Âm nhạc",
-		otomad: "Âm-MAD",
+		otomad: "音MAD",
 		tech: "Công nghệ",
 		design: "Thiết kế",
 		game: "Trò chơi",
@@ -20,8 +20,8 @@ const Vietnamese: LocaleIdentifiers = {
 	custom: "Tùy chỉnh",
 	scheme: {
 		_: "Chế độ",
-		light: "Bật đèn",
-		dark: "Tắt đèn",
+		light: "Chế độ sáng",
+		dark: "Chế độ tối",
 		system: "Chiếu theo hệ thống",
 	},
 	palette: {
@@ -50,7 +50,7 @@ const Vietnamese: LocaleIdentifiers = {
 	},
 	appearance: {
 		_: "Giao diện",
-		sharp_mode: "Sắc nét",
+		sharp_mode: "Sắc sảo",
 		flat_mode: "Đơn giản",
 		colorful_navbar: "Thêm hiệu ứng màu vào thanh tìm kiếm",
 	},
@@ -68,7 +68,7 @@ const Vietnamese: LocaleIdentifiers = {
 	all: "Tất cả",
 	video: "Videos",
 	image: "Hình ảnh",
-	series: "Loạt",
+	series: "Loạt video",
 	audio: "Âm thanh",
 	photo: "Ảnh chụp",
 	album: "Album",
