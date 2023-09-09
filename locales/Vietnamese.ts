@@ -224,8 +224,8 @@ const Vietnamese: LocaleIdentifiers = {
 	},
 	feed: "Tường",
 	upload: {
-		_: "Đăng tải",
-		drag_to_upload: "Kéo vào đây để đăng video",
+		_: "Tải lên",
+		drag_to_upload: "Kéo vào đây để tải lên video",
 		format_info: "Hỗ trọ các định dạng như MP4, WMV, WEBM",
 	},
 	messages: "Tin nhắn",
