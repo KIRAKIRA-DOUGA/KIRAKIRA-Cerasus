@@ -327,7 +327,7 @@ const English: LocaleIdentifiers = {
 	},
 	user: {
 		name: "Name",
-		name_requirements: "1~20 characters, including only upper & lower case Latin letters, numbers, common Hiragana/Katakana, CJK characters, special symbols \"-\", \"_\"",
+		name_requirements: '1~20 characters, including only upper & lower case Latin letters, numbers, common Hiragana/Katakana, CJK characters, special symbols "-", "_"',
 		bio: "Bio",
 		gender: "Gender",
 		memo: "Memo",
