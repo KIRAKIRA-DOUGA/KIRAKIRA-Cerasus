@@ -118,7 +118,7 @@ const Vietnamese: LocaleIdentifiers = {
 			description: "Người dùng bạn không muốn liên hệ.",
 		},
 		hide: {
-			_: "Hide",
+			_: "Ẩn",
 			description: "Ẩn đi người dùng bạn không muốn thấy (trừ khi truy cập trang cá nhân của họ).",
 		},
 		tags: {
