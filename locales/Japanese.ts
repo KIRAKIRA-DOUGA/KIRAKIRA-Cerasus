@@ -379,7 +379,7 @@ const Japanese: LocaleIdentifiers = {
 		bilibili: "ビリビリ",
 		niconico: "ニコニコ",
 		otomad_wiki: "音MADウィキ",
-		weibo: "Weibo",
+		weibo: "微博",
 		twitter: "Twitter",
 		qq: "QQ",
 		youtube: "YouTube",
