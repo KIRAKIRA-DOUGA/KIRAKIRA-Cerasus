@@ -200,7 +200,7 @@ const Vietnamese: LocaleIdentifiers = {
 	email: "Email",
 	email_address: "Email",
 	authenticator: "Bộ xác thực",
-	current_email: "Địa chỉ email hiện hành",
+	current_email: "Địa chỉ email hiện tại",
 	modification_date: "Ngày chỉnh sửa",
 	addition_date: "Ngày thêm",
 	history: "Lịch sử",
