@@ -20,14 +20,14 @@
 	];
 
 	const team: { name: string; job: string[]; uid: number; avatar?: string }[] = [
-		{ name: "艾了个拉", job: [t.settings.about.staff.webmistress, "/", t.settings.about.staff.designer], uid: NaN, avatar: avatar("aira.webp") },
-		{ name: "兰音", job: [t.settings.about.staff.frontend, "/", t.settings.about.staff.designer], uid: NaN, avatar: avatar("nucleic_acid_testing.jpg") },
-		{ name: "OtoMAN", job: [t.settings.about.staff.backend], uid: NaN, avatar: avatar("Otoman.png") },
-		{ name: "冲锋的小卡卡", job: [t.settings.about.staff.backend], uid: NaN, avatar: avatar("ZERO_TWO.jpg") },
-		{ name: "维他柠檬茶", job: [t.settings.about.staff.frontend], uid: NaN, avatar: avatar("VTchara.webp") },
-		{ name: "琪露诺瓦露", job: [t.ja, t.settings.about.staff.translator], uid: NaN, avatar: avatar("Cirnoire.png") },
-		{ name: "Sidd", job: [t.settings.about.staff.frontend], uid: NaN, avatar: avatar("sidd.jpg") },
-		{ name: "鸣", job: [t.settings.about.staff.frontend], uid: NaN, avatar: avatar("Mingeax.jpg") },
+		{ name: "艾了个拉", job: [t.about.staff.webmistress, "/", t.about.staff.designer], uid: NaN, avatar: avatar("aira.webp") },
+		{ name: "兰音", job: [t.about.staff.frontend, "/", t.about.staff.designer], uid: NaN, avatar: avatar("nucleic_acid_testing.jpg") },
+		{ name: "OtoMAN", job: [t.about.staff.backend], uid: NaN, avatar: avatar("Otoman.png") },
+		{ name: "冲锋的小卡卡", job: [t.about.staff.backend], uid: NaN, avatar: avatar("ZERO_TWO.jpg") },
+		{ name: "维他柠檬茶", job: [t.about.staff.frontend], uid: NaN, avatar: avatar("VTchara.webp") },
+		{ name: "琪露诺瓦露", job: [t.ja, t.about.staff.translator], uid: NaN, avatar: avatar("Cirnoire.png") },
+		{ name: "Sidd", job: [t.about.staff.frontend], uid: NaN, avatar: avatar("sidd.jpg") },
+		{ name: "鸣", job: [t.about.staff.frontend], uid: NaN, avatar: avatar("Mingeax.jpg") },
 	];
 
 	const technologies: { name: string; version: string; ability: string; icon?: string; monochrome?: boolean; link: string }[] = [
@@ -45,7 +45,7 @@
 	<LogoText />
 	<p class="slogan"><span>一个可爱的视频网站，</span><span><b>献给可爱的你！</b></span></p>
 
-	<Subheader icon="link">{{ t.settings.about.repositories }}</Subheader>
+	<Subheader icon="link">{{ t.about.repositories }}</Subheader>
 	<section>
 		<SettingsChipItem
 			v-for="repo in repositories"
@@ -57,7 +57,7 @@
 		>{{ repo.name }}</SettingsChipItem>
 	</section>
 
-	<Subheader icon="people">{{ t.settings.about.creative_team }}</Subheader>
+	<Subheader icon="people">{{ t.about.creative_team }}</Subheader>
 	<section>
 		<SettingsChipItem
 			v-for="staff in team"
@@ -69,7 +69,7 @@
 		>{{ staff.name }}</SettingsChipItem>
 	</section>
 
-	<Subheader icon="build">{{ t.settings.about.technologies_used }}</Subheader>
+	<Subheader icon="build">{{ t.about.technologies_used }}</Subheader>
 	<section>
 		<SettingsChipItem
 			v-for="tech in technologies"

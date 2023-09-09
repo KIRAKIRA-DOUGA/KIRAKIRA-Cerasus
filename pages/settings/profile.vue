@@ -19,7 +19,7 @@
 
 		const nameUTF8 = utf8Encoder.encode(name.value) as unknown as string;
 		const genderUTF8 = utf8Encoder.encode(genderBasic.value === "male" || genderBasic.value === "female" ? genderBasic.value : genderCustom.value) as unknown as string;
-		const bioUTF8 = utf8Encoder.encode(signature.value) as unknown as string;
+		const bioUTF8 = utf8Encoder.encode(bio.value) as unknown as string;
 
 		const handleError = (error: unknown) => error && console.error(error);
 
@@ -32,12 +32,12 @@
 <template>
 	<div v-ripple class="banner">
 		<img :src="banner" alt="banner" draggable="false" />
-		<span>{{ t.settings.profile.edit_banner }}</span>
+		<span>{{ t.profile.edit_banner }}</span>
 	</div>
 
 	<div class="change-avatar">
 		<UserAvatar :avatar="avatar" />
-		<span>{{ t.settings.profile.edit_avatar }}</span>
+		<span>{{ t.profile.edit_avatar }}</span>
 	</div>
 
 	<div class="items">
@@ -67,7 +67,7 @@
 
 		<TextBox v-model="bio" :placeholder="t.user.bio" icon="edit" />
 
-		<TextBox v-model="birthday" type="date" :placeholder="t.birthday" icon="birthday" />
+		<TextBox v-model="birthday" type="date" :placeholder="t.user.birthday" icon="birthday" />
 		<!-- TODO: [艾拉] 这里需要日期选择组件，谁来做一下？ -->
 		<!-- [琪露诺瓦露] 日期选择点击X按钮，再次选择日期后按钮不会出现。 -->
 		<!-- [兰音] 由于日期组件尚未制作，目前仅是一个占位符，暂时不必在意其功能或外观等的问题。 -->
@@ -79,8 +79,8 @@
 			</div>
 
 			<div class="gender-radio-group">
-				<RadioButton v-model="genderBasic" value="male">{{ t.male }}</RadioButton>
-				<RadioButton v-model="genderBasic" value="female">{{ t.female }}</RadioButton>
+				<RadioButton v-model="genderBasic" value="male">{{ t.user.male }}</RadioButton>
+				<RadioButton v-model="genderBasic" value="female">{{ t.user.female }}</RadioButton>
 				<div class="gender-custom">
 					<RadioButton v-model="genderBasic" value="custom">{{ t.custom }}</RadioButton>
 					<Transition>
@@ -92,8 +92,8 @@
 	</div>
 
 	<div class="submit">
-		<Button icon="reset" class="secondary">{{ t.reset }}</Button>
-		<Button icon="check" @click="updateProfile">{{ t.save }}</Button>
+		<Button icon="reset" class="secondary">{{ t.step.reset }}</Button>
+		<Button icon="check" @click="updateProfile">{{ t.step.save }}</Button>
 	</div>
 </template>
 

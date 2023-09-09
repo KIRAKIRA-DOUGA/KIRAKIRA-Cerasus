@@ -152,12 +152,12 @@
 				<SegmentedItem id="tile" icon="tile">磁贴</SegmentedItem>
 			</Segmented>
 			<div class="buttons">
-				<Button class="test-button" @click="onClickButton">{{ isClicked ? t.button_clicked : t.button }}</Button>
-				<Button disabled>{{ t.button_disabled }}</Button>
+				<Button class="test-button" @click="onClickButton">{{ isClicked ? "我被单击了 呜呜呜~" : "按钮" }}</Button>
+				<Button disabled>按钮被禁用</Button>
 				<Button @click="showConfetti">{{ t.confetti }}</Button>
 				<Button icon="send">{{ t.send }}</Button>
 				<Button @click="reGacha">你说得不对</Button>
-				<Button @click="showAlert = true">{{ t.show_alert }}</Button>
+				<Button @click="showAlert = true">显示警告框</Button>
 				<Button @click="showModal = true">显示模态框</Button>
 				<Button @click="showFlyout">显示浮窗</Button>
 				<Button @click="e => flyoutKaomoji = [e, 'y']">显示颜文字浮窗</Button>
@@ -170,20 +170,20 @@
 				<PopoverSlot />
 			</Flyout>
 			<FlyoutKaomoji v-model="flyoutKaomoji" />
-			<ToggleSwitch v-model="toggle">{{ t.toggle_switch }} {{ toggle ? t.on : t.off }}</ToggleSwitch>
+			<ToggleSwitch v-model="toggle">切换开关 {{ toggle ? t.on : t.off }}</ToggleSwitch>
 			<ToggleSwitch disabled>{{ t.disabled }} {{ t.off }}</ToggleSwitch>
 			<ToggleSwitch on disabled>{{ t.disabled }} {{ t.on }}</ToggleSwitch>
 			<ToggleSwitch v-model="useAppSettingsStore().showCssDoodle">{{ t.animated_background }}</ToggleSwitch>
-			<RadioButton v-model="theme" value="light">{{ t.light }}</RadioButton>
-			<RadioButton v-model="theme" value="dark">{{ t.dark }}</RadioButton>
-			<RadioButton v-model="theme" value="system">{{ t.system }}</RadioButton>
+			<RadioButton v-model="theme" value="light">{{ t.scheme.light }}</RadioButton>
+			<RadioButton v-model="theme" value="dark">{{ t.scheme.dark }}</RadioButton>
+			<RadioButton v-model="theme" value="system">{{ t.scheme.system }}</RadioButton>
 			<hr />
-			<RadioButton v-model="palette" value="pink">{{ t.pink }}</RadioButton>
-			<RadioButton v-model="palette" value="sky">{{ t.sky }}</RadioButton>
-			<RadioButton v-model="palette" value="blue">{{ t.blue }}</RadioButton>
-			<RadioButton v-model="palette" value="orange">{{ t.orange }}</RadioButton>
-			<RadioButton v-model="palette" value="purple">{{ t.purple }}</RadioButton>
-			<RadioButton v-model="palette" value="green">{{ t.green }}</RadioButton>
+			<RadioButton v-model="palette" value="pink">{{ t.palette.pink }}</RadioButton>
+			<RadioButton v-model="palette" value="sky">{{ t.palette.sky }}</RadioButton>
+			<RadioButton v-model="palette" value="blue">{{ t.palette.blue }}</RadioButton>
+			<RadioButton v-model="palette" value="orange">{{ t.palette.orange }}</RadioButton>
+			<RadioButton v-model="palette" value="purple">{{ t.palette.purple }}</RadioButton>
+			<RadioButton v-model="palette" value="green">{{ t.palette.green }}</RadioButton>
 			<RadioButton v-model="palette" value="custom" disabled>{{ t.custom }}</RadioButton>
 			<RadioButton checked disabled>{{ t.disabled }} {{ t.on }}</RadioButton>
 			<hr />
@@ -290,9 +290,9 @@
 				</section>
 			</div>
 			<hr />
-			<RadioButton v-model="logoTextForm" value="hidden">{{ t.logo_hidden }}</RadioButton>
-			<RadioButton v-model="logoTextForm" value="half">{{ t.logo_half }}</RadioButton>
-			<RadioButton v-model="logoTextForm" value="full">{{ t.logo_show }}</RadioButton>
+			<RadioButton v-model="logoTextForm" value="hidden">LOGO隐藏</RadioButton>
+			<RadioButton v-model="logoTextForm" value="half">LOGO半显示</RadioButton>
+			<RadioButton v-model="logoTextForm" value="full">LOGO全显示</RadioButton>
 			<LogoText :style="{ '--form': logoTextForm }" />
 			<hr />
 			<div class="flyout-bg" :style="{ width: '344px' }">

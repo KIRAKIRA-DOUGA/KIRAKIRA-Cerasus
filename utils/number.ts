@@ -95,7 +95,7 @@ export function getCompactDecimal(value: number | bigint) {
 		ko: ["만", "억", "조", "경", "해", "자", "양", "구", "간", "정", "재", "극", "항하사", "아승기", "나유타", "불가사의", "무량", "대수"],
 		en: ["k", "M", "B", "T", "P", "E", "Z", "Y", "R", "Q"],
 		vi: ["N", "Tr", "T", "NT", "TrT", "TT", "NTT", "TrTT", "TTT", "NTTT"],
-		id: ["rb", "jt", "M", "T", "Ka", "Ki", "Sk", "Sp"],
+		id: ["rb", "jt", "M", "T", "KT", "QI", "SX", "SP"],
 	};
 	const unit = units[keys(units).find(code => locale.value.startsWith(code)) ?? "en"];
 	const spaceBeforeUnit = ["vi", "id"].some(startsWithLang) ? " " : "";

@@ -36,7 +36,7 @@
 			:id="item"
 			:key="item"
 			v-model="theme"
-			:title="t[item]"
+			:title="t.scheme[item]"
 		>
 			<LogoThemePreview :theme="item" :accent="palette" />
 		</SettingsGridItem>
@@ -49,7 +49,7 @@
 			:id="item.color"
 			:key="item.color"
 			v-model="palette"
-			:title="t[item.color]"
+			:title="t.palette[item.color]"
 			class="force-color"
 			:class="[item.color, actualTheme]"
 		>
@@ -72,9 +72,9 @@
 
 	<Subheader icon="more_horiz">{{ t.other }}</Subheader>
 	<section list>
-		<ToggleSwitch v-model="useAppSettingsStore().sharpAppearanceMode" v-ripple icon="square">{{ t.settings.appearance.other.sharp_mode }}</ToggleSwitch>
-		<ToggleSwitch v-model="useAppSettingsStore().flatAppearanceMode" v-ripple icon="layers">{{ t.settings.appearance.other.flat_mode }}</ToggleSwitch>
-		<ToggleSwitch v-model="useAppSettingsStore().coloredSideBar" v-ripple icon="dehaze">{{ t.settings.appearance.other.colorful_navbar }}</ToggleSwitch>
+		<ToggleSwitch v-model="useAppSettingsStore().sharpAppearanceMode" v-ripple icon="square">{{ t.appearance.sharp_mode }}</ToggleSwitch>
+		<ToggleSwitch v-model="useAppSettingsStore().flatAppearanceMode" v-ripple icon="layers">{{ t.appearance.flat_mode }}</ToggleSwitch>
+		<ToggleSwitch v-model="useAppSettingsStore().coloredSideBar" v-ripple icon="dehaze">{{ t.appearance.colorful_navbar }}</ToggleSwitch>
 	</section>
 </template>
 

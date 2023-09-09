@@ -46,7 +46,7 @@
 		</div>
 		<template #footer-right>
 			<Button class="secondary" @click="showChangePassword = false">{{ t.step.cancel }}</Button>
-			<Button>{{ t.apply }}</Button>
+			<Button>{{ t.step.apply }}</Button>
 			<!-- TODO: Use a toast to show success or not, usage can be seen in page/components. -->
 			<!-- if success, the modal should be closed automaticly -->
 		</template>

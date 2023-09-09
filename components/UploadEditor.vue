@@ -66,7 +66,7 @@
 			useEvent("app:toast", { message: "请上传封面！", severity: "error" });
 			return;
 		}
-		
+
 		const tagsArray = tags.value.split(",");
 
 		// severe bug in openapi around multiple file uploads using form-data
@@ -179,7 +179,7 @@
 					</section>
 
 					<section>
-						<Subheader icon="details">{{ t.description_of_creation }}</Subheader>
+						<Subheader icon="details">{{ t.description }}</Subheader>
 						<TextBox v-model="description" required />
 						<!-- 这里放简介，需要富文本编辑器 -->
 					</section>

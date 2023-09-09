@@ -3,7 +3,7 @@
 		/** 内容占位符，当选中的一项不是任何一项有效的标识符时显示。 */
 		placeholder?: string;
 	}>(), {
-		placeholder: () => t.combobox_unselected, // 注意看，如果在 prop 的默认值中使用 i18n 则必须这样写。
+		placeholder: () => t.unselected.combobox, // 注意看，如果在 prop 的默认值中使用 i18n 则必须这样写。
 	});
 
 	const selected = defineModel<string>({ required: true });

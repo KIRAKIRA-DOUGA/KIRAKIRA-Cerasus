@@ -50,12 +50,12 @@
 				<header class="title content padding-end">
 					<header class="title nav-header">
 						<h1>{{ t.settings }}</h1>
-						<TextBox v-model="search" type="search" :placeholder="t.search_settings" />
+						<TextBox v-model="search" type="search" :placeholder="t.settings.search" />
 					</header>
 					<TabBar v-model="currentSetting" vertical>
-						<Subheader icon="person">{{ t.user_settings }}</Subheader>
+						<Subheader icon="person">{{ t.settings.user }}</Subheader>
 						<TabItem v-for="setting in settings.personal" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
-						<Subheader icon="apps">{{ t.app_settings }}</Subheader>
+						<Subheader icon="apps">{{ t.settings.app }}</Subheader>
 						<TabItem v-for="setting in settings.general" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
 					</TabBar>
 					<div class="nav-bottom-buttons">

@@ -11,7 +11,7 @@
 	</section>
 	<div class="add">
 		<TextBox v-model="add" icon="person" />
-		<Button icon="add">{{ t.add }}</Button>
+		<Button icon="add">{{ t.step.add }}</Button>
 	</div>
 
 	<Subheader icon="visibility_off">{{ t.blocklist.hide }}</Subheader>
@@ -21,7 +21,7 @@
 	</section>
 	<div class="add">
 		<TextBox v-model="add" icon="person" />
-		<Button icon="add">{{ t.add }}</Button>
+		<Button icon="add">{{ t.step.add }}</Button>
 	</div>
 
 	<hr />
@@ -33,7 +33,7 @@
 	</section>
 	<div class="add">
 		<TextBox v-model="add" icon="tag" />
-		<Button icon="add">{{ t.add }}</Button>
+		<Button icon="add">{{ t.step.add }}</Button>
 	</div>
 
 	<Subheader icon="key">{{ t.keywords }}</Subheader>
@@ -43,7 +43,7 @@
 	</section>
 	<div class="add">
 		<TextBox v-model="add" icon="key" />
-		<Button icon="add">{{ t.add }}</Button>
+		<Button icon="add">{{ t.step.add }}</Button>
 	</div>
 
 	<Subheader icon="regexp">{{ t.regexp }}</Subheader>
@@ -53,7 +53,7 @@
 	</section>
 	<div class="add">
 		<TextBox v-model="add" icon="regexp" />
-		<Button icon="add">{{ t.add }}</Button>
+		<Button icon="add">{{ t.step.add }}</Button>
 	</div>
 </template>
 

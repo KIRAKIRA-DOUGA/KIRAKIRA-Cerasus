@@ -19,7 +19,7 @@
 			:id="locale.code"
 			:key="locale.code"
 			v-model="localeModel"
-			:title="t[locale.code]"
+			:title="t.language[locale.code]"
 		>
 			<div class="line" :lang="locale.code">
 				{{ locale.name }}

@@ -9,7 +9,7 @@
 <template>
 	<div class="no-settings">
 		<Icon name="settings" />
-		<p>{{ t.settings_unselected }}</p>
+		<p>{{ t.unselected.settings }}</p>
 	</div>
 </template>
 
