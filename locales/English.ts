@@ -311,8 +311,8 @@ const English: LocaleIdentifiers = {
 	},
 	loginwindow: {
 		login_welcome: "Welcome",
-		login_to_forgot: "I forgot my password",
-		login_to_register: "I don't have an account",
+		login_to_forgot: "Forgot Password",
+		login_to_register: "Register",
 		register_to_login: "I have an account",
 		forgot_to_login: "I found my password",
 		register_email_sent_info: "We have sent a verification code to your email, please enter the code here.\nIf you did not receive it, you can resend.",
