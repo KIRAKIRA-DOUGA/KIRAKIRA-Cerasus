@@ -134,7 +134,7 @@ const TChinese: LocaleIdentifiers = {
 	player: {
 		_: "播放",
 		speed: {
-			resample_audio: "重採樣音訊",
+			resample: "重採樣音訊",
 			continuous: "無級變速",
 		},
 	},
