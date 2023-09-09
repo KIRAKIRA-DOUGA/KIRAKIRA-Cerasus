@@ -12,9 +12,9 @@ $fallback-transitions: all $ease-out-expo 250ms, color $ease-out-expo 100ms, fil
 // #region 字体
 $pan-unicode-fonts: TH-Times, "TH-Tshyn-P0", "TH-Tshyn-P1", "TH-Tshyn-P2", "TH-Tshyn-P16", "Arial Unicode MS", Unifont, "Unifont Upper";
 $emoji-fonts: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", emoji;
-$fallback-fonts: sans-serif, $emoji-fonts, $pan-unicode-fonts;
+$fallback-fonts: "Microsoft YaHei", "Microsoft JhengHei", SimHei, sans-serif, $emoji-fonts, $pan-unicode-fonts;
 $english-fonts: "Inter Variable", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", "Roboto Flex", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", Tahoma, Geneva, Verdana, "Helvetica Neue", Helvetica, Arial/* , Monu */;
-$schinese-fonts: $english-fonts, "HarmonyOS Sans SC", MiSans, "PingFang SC", "Noto Sans CJK SC", "Noto Sans SC", "Source Han Sans CN", "Source Han Sans SC", "Microsoft YaHei", SimHei, $fallback-fonts;
+$schinese-fonts: $english-fonts, "HarmonyOS Sans SC", MiSans, "PingFang SC", "Noto Sans CJK SC", "Noto Sans SC", "Source Han Sans CN", "Source Han Sans SC", $fallback-fonts;
 $tchinese-fonts: $english-fonts, "PingFang TC", "Noto Sans CJK TC", "Noto Sans TC", "Source Han Sans TC", "Microsoft JhengHei", $fallback-fonts;
 $japanese-fonts: $english-fonts, "Yu Gothic UI", "Hiragino Kaku Gothic ProN", "Hiragino Kaku Gothic Pro W3", "Meiryo UI", "MS UI Gothic", "Noto Sans CJK JP", "Noto Sans JP", "Source Han Sans JP", $fallback-fonts;
 $korean-fonts: $english-fonts, "Apple SD Gothic Neo Regular", "Noto Sans CJK KR", "Noto Sans KR", "Source Han Sans KR", "Malgun Gothic", $fallback-fonts;

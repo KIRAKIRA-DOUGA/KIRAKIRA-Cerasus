@@ -1,6 +1,6 @@
 import { LocaleIdentifiers } from "./types";
 
-const Vietnamese: LocaleIdentifiers = {
+const Indonesian: LocaleIdentifiers = {
 	colon: ": ",
 	semicolon: "; ",
 	caesura: ", ",
@@ -349,4 +349,4 @@ const Vietnamese: LocaleIdentifiers = {
 	color_picker: "Color Picker",
 };
 
-export default Vietnamese;
+export default Indonesian;

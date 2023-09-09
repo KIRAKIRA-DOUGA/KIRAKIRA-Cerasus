@@ -34,7 +34,7 @@
 	});
 
 	const date = computed(() => props.date ? formatDate(props.date, "yyyy/MM/dd") : "----/--/--");
-	const watchedCount = computed(() => getWatchCount(props.watchedCount));
+	const watchedCount = computed(() => getCompactDecimal(props.watchedCount));
 	const duration = computed(() => props.duration ?? "--:--");
 	const link = computed(() => props.videoId !== undefined && props.videoId !== null ?
 		`/video/kv${props.videoId}` : props.link);

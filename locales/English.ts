@@ -328,7 +328,7 @@ const English: LocaleIdentifiers = {
 	keywords: "Keywords",
 	user_page: {
 		_: "User Page",
-		title_suffix: "'s User Page",
+		title_affix: "'s User Page",
 	},
 	manage_content: "Manage Content",
 	add_to_blocklist: "Add to Blocklist",

@@ -14,6 +14,7 @@
 			ja: "ja",
 			ko: "ko",
 			vi: "vi",
+			id: "id",
 		};
 
 		return langs[locale.value as keyof typeof langs] ?? locale.value;
@@ -63,9 +64,19 @@
 			{ rel: "apple-touch-icon", href: "/public/static/images/touch/48.png" },
 			{ rel: "manifest", href: "/manifest.json" },
 			{ rel: "alternate", href: homepage, hreflang: "x-default" },
+			{ rel: "alternate", href: homepage, hreflang: "zh-Hans" },
 			{ rel: "alternate", href: homepage, hreflang: "zh-CN" },
+			{ rel: "alternate", href: homepage, hreflang: "zh-SG" },
+			{ rel: "alternate", href: homepage, hreflang: "zh-MY" },
+			{ rel: "alternate", href: `${homepage}zht`, hreflang: "zh-Hant" },
+			{ rel: "alternate", href: `${homepage}zht`, hreflang: "zh-TW" },
+			{ rel: "alternate", href: `${homepage}zht`, hreflang: "zh-HK" },
+			{ rel: "alternate", href: `${homepage}zht`, hreflang: "zh-MO" },
 			{ rel: "alternate", href: `${homepage}en`, hreflang: "en" },
 			{ rel: "alternate", href: `${homepage}ja`, hreflang: "ja" },
+			{ rel: "alternate", href: `${homepage}ko`, hreflang: "ko" },
+			{ rel: "alternate", href: `${homepage}vi`, hreflang: "vi" },
+			{ rel: "alternate", href: `${homepage}id`, hreflang: "id" },
 		],
 	});
 

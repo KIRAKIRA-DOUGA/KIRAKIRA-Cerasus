@@ -79,27 +79,32 @@ export function digitCase(n: number | bigint, upperCase: boolean = false, amount
 }
 
 /**
- * 获取类似于播放量的通用数字加数级的写法。
+ * 获取类似于播放量的通用数字加数级的紧凑十进制格式写法。
  * @param value - 数字。
- * @returns 通用数字加数级。
+ * @returns 通用数字加数级的紧凑十进制格式。
  */
-export function getWatchCount(value: number | bigint) {
+export function getCompactDecimal(value: number | bigint) {
 	value = typeof value === "number" ? BigInt(Math.trunc(value)) : value;
 	const { locale } = useI18n();
-	const radix = locale.value.startsWith("zh") || locale.value.startsWith("ja") ? 10000n : 1000n;
+	const startsWithLang = (lang: string) => locale.value.startsWith(lang);
+	const radix = ["zh", "ja", "ko"].some(startsWithLang) ? 10000n : 1000n;
 	const units = {
 		zhs: ["万", "亿", "兆", "京", "垓", "秭", "穰", "沟", "涧", "正", "载", "极", "恒河沙", "阿僧祇", "那由他", "不可思议", "无量", "大数"],
 		zht: ["萬", "億", "兆", "京", "垓", "秭", "穰", "溝", "澗", "正", "載", "極", "恆河沙", "阿僧祇", "那由他", "不可思議", "無量", "大數"],
 		ja: ["万", "億", "兆", "京", "垓", "𥝱", "穣", "溝", "澗", "正", "載", "極", "恒河沙", "阿僧祇", "那由他", "不可思議", "無量", "大数"],
-		en: ["k", "M", "G", "T", "P", "E", "Z", "Y", "R", "Q"],
+		ko: ["만", "억", "조", "경", "해", "자", "양", "구", "간", "정", "재", "극", "항하사", "아승기", "나유타", "불가사의", "무량", "대수"],
+		en: ["k", "M", "B", "T", "P", "E", "Z", "Y", "R", "Q"],
+		vi: ["N", "Tr", "T", "NT", "TrT", "TT", "NTT", "TrTT", "TTT", "NTTT"],
+		id: ["rb", "jt", "M", "T", "Ka", "Ki", "Sk", "Sp"],
 	};
 	const unit = units[keys(units).find(code => locale.value.startsWith(code)) ?? "en"];
+	const spaceBeforeUnit = ["vi", "id"].some(startsWithLang) ? " " : "";
 
 	let value_str = value + "";
 	let index = 0;
 	while ((value = value / radix) !== 0n) {
 		if (unit[index] === undefined) return value >= 0n ? "∞" : "-∞";
-		value_str = value + unit[index++];
+		value_str = value + spaceBeforeUnit + unit[index++];
 	}
 	return value_str;
 }

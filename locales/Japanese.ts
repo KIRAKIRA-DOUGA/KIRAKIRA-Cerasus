@@ -331,7 +331,7 @@ const Japanese: LocaleIdentifiers = {
 	keywords: "キーワード",
 	user_page: {
 		_: "プロフィール",
-		title_suffix: "のプロフィール",
+		title_affix: "のプロフィール",
 	},
 	manage_content: "投稿管理",
 	add_to_blocklist: "ブロックする",

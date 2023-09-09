@@ -47,7 +47,7 @@
 		set: async id => { await forceNavigate(`/user/${uid}/${id}`, () => currentTab.value === id); },
 	});
 
-	useHead({ title: user.value?.username + t.user_page.title_suffix });
+	useHead({ title: user.value?.username + t.user_page.title_affix });
 </script>
 
 <template>
