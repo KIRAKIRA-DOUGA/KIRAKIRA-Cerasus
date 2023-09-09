@@ -67,7 +67,11 @@ const SChinese = {
 	on: "开",
 	off: "关",
 	disabled: "禁用",
-	tag: "标签",
+	tag: {
+		_: "标签",
+		search: "搜索标签",
+		new: "创建新标签",
+	},
 	all: "全部",
 	video: "视频",
 	image: "图片",
@@ -353,6 +357,7 @@ const SChinese = {
 	},
 	other: "其它",
 	color_picker: "调色板",
+	video_count: "{0}个视频",
 } as const;
 
 export default SChinese;

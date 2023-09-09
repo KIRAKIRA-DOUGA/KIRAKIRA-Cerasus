@@ -71,16 +71,16 @@
 								<TransitionGroup>
 									<div v-for="tag in matchedTags" :key="tag" v-ripple class="list-item">
 										<p class="title">{{ tag }}</p>
-										<p class="count">100个视频</p>
+										<p class="count">{{ t.video_count(100) }}</p>
 									</div>
 									<div v-if="showCreateNew" v-ripple class="list-item" @click="switchTagEditor(true)">
-										<p class="title">创建新标签</p>
+										<p class="title">{{ t.tag.new }}</p>
 									</div>
 								</TransitionGroup>
 							</div>
 						</Transition>
 					</div>
-					<TextBox v-model="search" icon="search" placeholder="搜索标签" @input="onInput" />
+					<TextBox v-model="search" icon="search" :placeholder="t.tag.search" @input="onInput" />
 				</div>
 				<div v-else class="page-editor">
 					<div class="list-wrapper">
