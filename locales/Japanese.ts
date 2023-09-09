@@ -190,7 +190,7 @@ const Japanese: LocaleIdentifiers = {
 			backend: "GitHub后端仓库地址与问题反馈", // NEW
 			markdown: "个人主页Markdown仓库地址与问题反馈", // NEW
 		},
-		creative_team: "開発チーム",
+		team: "開発チーム",
 		staff: {
 			webmistress: "WEBミストレス",
 			designer: "デザイナー",

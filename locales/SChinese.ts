@@ -188,7 +188,7 @@ const SChinese = {
 			backend: "GitHub后端仓库地址与问题反馈",
 			markdown: "个人主页Markdown仓库地址与问题反馈",
 		},
-		creative_team: "创作团队",
+		team: "创作团队",
 		staff: {
 			webmistress: "站娘",
 			designer: "设计",

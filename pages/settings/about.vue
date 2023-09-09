@@ -51,7 +51,7 @@
 		>{{ repo.name }}</SettingsChipItem>
 	</section>
 
-	<Subheader icon="people">{{ t.about.creative_team }}</Subheader>
+	<Subheader icon="people">{{ t.about.team }}</Subheader>
 	<section>
 		<SettingsChipItem
 			v-for="staff in team"
