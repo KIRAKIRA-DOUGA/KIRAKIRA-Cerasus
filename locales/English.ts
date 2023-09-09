@@ -71,12 +71,12 @@ const English: LocaleIdentifiers = {
 		new: "Create New Tag",
 	},
 	all: "All",
-	video: "Videos",
-	image: "Images",
+	video: "Video | Videos",
+	image: "Image | Images",
 	series: "Series",
-	audio: "Audio",
-	photo: "Photo",
-	album: "Album",
+	audio: "Audio | Audios",
+	photo: "Photo | Photos",
+	album: "Album | Albums",
 	comments: "Comments",
 	you_know_too_much: "You know too much.",
 	settings: {
@@ -96,11 +96,11 @@ const English: LocaleIdentifiers = {
 	privacy: {
 		_: "Privacy",
 		cookie: "Cookie☆",
-		allow_cookies: "Allow to use Cookies",
+		allow_cookies: "Allow to Use Cookies",
 		info_visibility: "Info Visilibity",
 		public: "Public",
 		private: "Private",
-		following: "Visible for Your Following",
+		following: "Only Visible to Users You Follow",
 	},
 	security: "Security",
 	login_options: "Login Options",
@@ -139,7 +139,7 @@ const English: LocaleIdentifiers = {
 	player: {
 		_: "Player",
 		speed: {
-			resample_audio: "Resample Audio",
+			resample: "Resample Audio",
 			continuous: "Continuous Control",
 		},
 	},
@@ -187,7 +187,7 @@ const English: LocaleIdentifiers = {
 			backend: "GitHub Backend Repositories and Issue Feedback",
 			markdown: "User Page Markdown Repositories and Issue Feedback",
 		},
-		team: "Team",
+		creative_team: "Creative Team",
 		staff: {
 			webmistress: "Webmistress",
 			designer: "Designer",
@@ -395,7 +395,7 @@ const English: LocaleIdentifiers = {
 	video_count: "{0} Video | {0} Videos",
 	video_recommendations: "Recommendations",
 	page_not_found_info: "You seem to have arrived at a very new page.",
-	click_to_refresh: "Click to refresh",
+	click_to_refresh: "Click to Refresh",
 	toast: {
 		finish: "Operation Completed Successfully",
 		unsupported_file: "Uploading the selected file is not supported!",
