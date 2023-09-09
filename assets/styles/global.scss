@@ -99,6 +99,63 @@ iframe.noscript-mask {
 	@include fullscreen;
 	z-index: 100;
 	border: none;
+
+	+ form {
+		position: fixed;
+		right: 32px;
+		bottom: 32px;
+		z-index: 101;
+		animation: noscript-refresh-enter 500ms 1s $ease-out-smooth both;
+
+		button {
+			@include square(96px);
+			@include circle;
+			@include button-shadow;
+			color: white;
+			font-size: 48px;
+			background-color: c(accent);
+
+			&::after {
+				display: block;
+				animation: noscript-refresh-rotation 1s linear infinite paused;
+				content: "↻";
+			}
+
+			&:any-hover {
+				@include button-shadow-hover;
+				background-color: c(accent-hover);
+
+				&::after {
+					animation-play-state: running;
+				}
+			}
+
+			&:any-hover:focus-visible {
+				@include button-shadow-hover-focus;
+			}
+
+			&:active {
+				@include button-scale-pressed;
+				background-color: c(accent-pressed);
+			}
+
+			&:focus-visible {
+				@include button-shadow-focus;
+			}
+		}
+	}
+}
+
+@keyframes noscript-refresh-enter {
+	from {
+		scale: 0;
+	}
+}
+
+@keyframes noscript-refresh-rotation {
+	to {
+		rotate: 1turn;
+	}
 }
 
 kira-component {
