@@ -12,7 +12,6 @@ const Japanese: LocaleIdentifiers = {
 	colon: "：",
 	semicolon: "；",
 	caesura: "・",
-	welcome: "ようこそ",
 	home: "ホーム",
 	category: {
 		_: "カテゴリ",
@@ -26,62 +25,97 @@ const Japanese: LocaleIdentifiers = {
 	},
 	content: "コンテンツ",
 	search: "検索",
-	button: "ボタン",
-	button_disabled: "無効化されたボタン",
-	button_clicked: "私はクリックされました ううっ~",
+	custom: "カスタム",
+	scheme: {
+		_: "スキーム",
+		light: "ライト テーマ",
+		dark: "ライト テーマ",
+		system: "システムのテーマ設定を使用する",
+	},
+	palette: {
+		_: "色",
+		pink: "カワイイ ピンク",
+		sky: "空色",
+		blue: "チノ 青",
+		green: "千夜 緑",
+		orange: "ココア オレンジ",
+		purple: "リゼ 紫",
+	},
+	language: {
+		_: "言語",
+		zhs: "簡体字中国語",
+		zht: "繁体字中国語",
+		en: "英語",
+		ja: "日本語",
+		ko: "韓国語",
+		vi: "ベトナム語",
+		id: "インドネシア語",
+	},
+	background: {
+		_: "背景",
+		animated: "動く背景",
+		custom: "カスタム背景",
+	},
+	appearance: {
+		_: "外観",
+		sharp_mode: "直角スタイル",
+		flat_mode: "フラットスタイル",
+		colorful_navbar: "カラフル ナビバー",
+	},
 	confetti: "紙吹雪",
 	send: "送信",
 	query: "検索",
-	show_alert: "アラートを表示",
-	toggle_switch: "トグルスイッチ",
 	on: "オン",
 	off: "オフ",
 	disabled: "無効化されたスイッチ",
-	background: "背景",
-	animated_background: "動く背景",
-	custom_background: "カスタム背景",
-	light: "ライト テーマ",
-	dark: "ダーク テーマ",
-	system: "システムのテーマ設定を使用する",
-	pink: "カワイイ ピンク",
-	sky: "空色",
-	blue: "チノ 青",
-	green: "千夜 緑",
-	orange: "ココア オレンジ",
-	purple: "リゼ 紫",
-	custom: "カスタム",
-	checkbox: "チェックボックス",
-	search_settings: "設定を検索",
-	appearance: "外観",
-	scheme: "スキーム",
-	palette: "色",
-	language: "言語",
-	tag: "タグ",
+	tag: {
+		_: "タグ",
+		search: "搜索标签", // NEW
+		new: "创建新标签", // NEW
+	},
 	all: "すべて",
 	video: "動画",
 	image: "画像",
-	logo_hidden: "LOGO非表示",
-	logo_half: "LOGO部分表示",
-	logo_show: "LOGO全表示",
+	series: "シリーズ",
+	audio: "音声",
+	photo: "画像",
+	album: "アルバム",
 	comments: "コメント",
-	uploaders_lovin_it: "うP主がいいねしました",
-	finish: "操作は正常に完了しました",
 	you_know_too_much: "あなたは知りすぎた。",
+	settings: {
+		_: "設定",
+		search: "設定を検索",
+		user: "個人設定",
+		app: "アプリの設定",
+	},
 	dashboard: "ダッシュボード",
 	account: "アカウント",
-	profile: "プロフィール",
+	profile: {
+		_: "プロフィール",
+		edit_banner: "バナー画像の変更",
+		edit_avatar: "プロフィールアイコンの変更",
+	},
 	traces: "閲覧履歴",
-	privacy: "プライバシー",
+	privacy: {
+		_: "プライバシー",
+		cookie: "クッキー☆",
+		allow_cookies: "Cookieの利用を同意する",
+		info_visibility: "情報の公開範囲",
+		public: "公开", // NEW
+		private: "私密", // NEW
+		following: "仅你关注的人可见", // NEW
+	},
 	security: "セキュリティ",
 	login_options: "ログイン オプション",
 	password: {
 		_: "パスワード",
 		forgot: "パスワードをお忘れの場合",
+		reset: "パスワードの再設定",
 		retype: "パスワードを確認",
 		change: "パスワードの変更",
 		current: "現在のパスワード",
-		new_retype: "新しいパスワードの確認",
 		new: "新しいパスワード",
+		new_retype: "新しいパスワードの確認",
 		hint: "パスワードのヒント",
 	},
 	account_linking: "SNSリンク",
@@ -135,62 +169,100 @@ const Japanese: LocaleIdentifiers = {
 		},
 	},
 	preference: "プリファレンス",
-	accessibility: "アクセシビリティ",
-	about: "KIRAKIRAについて",
 	experimental: "実験",
-	user_settings: "個人設定",
-	app_settings: "アプリの設定",
-	male: "男",
-	female: "女",
-	birthday: "生年月日",
+	accessibility: "アクセシビリティ",
+	shortcut_key: {
+		_: "ショートカットキー",
+		player_page: "播放页", // NEW
+		play_pause: "播放/暂停", // NEW
+		exit_fullscreen: "退出全屏", // NEW
+		pagination: "分页器", // NEW
+		page_turning: "翻页", // NEW
+		comment_area: "评论区", // NEW
+		quick_insert_kaomoji: "快捷插入颜文字", // NEW
+	},
+	guide: "ガイド",
+	about: {
+		_: "KIRAKIRAについて",
+		repositories: {
+			_: "リポジトリ",
+			frontend: "GitHub前端仓库地址与问题反馈", // NEW
+			backend: "GitHub后端仓库地址与问题反馈", // NEW
+			markdown: "个人主页Markdown仓库地址与问题反馈", // NEW
+		},
+		creative_team: "開発チーム",
+		staff: {
+			webmistress: "WEBミストレス",
+			designer: "デザイナー",
+			frontend: "フロントエンド",
+			backend: "バックエンド",
+			translator: "翻訳者",
+		},
+		technologies_used: "使用されている技術",
+		slogan: "一个可爱的视频网站，\n献给可爱的你！", // NEW
+	},
+	acknowledgement: "スペシャルサンクス",
+	friendly_links: "相互リンク",
+	regexp: "正規表現",
+	keywords: "キーワード",
 	email: "メール",
 	email_address: "メールアドレス",
 	authenticator: "オーセンティケーター",
 	current_email: "現在のメールアドレス",
 	modification_date: "変更日",
 	addition_date: "追加日",
-	modify: "変更",
-	save: "保存",
-	add: "追加",
-	apply: "適用",
-	reset: "リセット",
 	history: "履歴",
 	favorite: "お気に入り",
-	favorites: "お気に入り",
 	favorite_verb: "お気に入りに追加",
+	favorites: {
+		_: "お気に入り",
+		my_favorites: "我的收藏夹", // NEW
+		subscribed_favorites: "订阅收藏夹", // NEW
+		modify_info: "修改信息", // NEW
+		clear_expired: "清理已失效视频", // NEW
+		subscribe: "订阅收藏", // NEW
+		play_all: "播放全部", // NEW
+		play_selected: "播放选中", // NEW
+		select_all_this_page: "全选本页", // NEW
+		add: "添加视频", // NEW
+		remove: "取消收藏", // NEW
+		copy_to: "复制到", // NEW
+		move_to: "移动到", // NEW
+		multi_select: "批量选择", // NEW
+	},
 	feed: "フィード",
-	upload: "投稿",
+	upload: {
+		_: "投稿",
+		drag_to_upload: "拖到此处上传", // NEW
+		format_info: "支持MP4、WMV、WEBM等主流格式", // NEW
+	},
 	messages: "メッセージ",
 	login: "ログイン",
 	logout: "ログアウト",
 	register: "新規登録",
 	verification_code: "確認コード",
-	close: "閉じる",
 	current_page_label: "{0}/{1}ページ",
 	switch_page_label: "{0}ページに切り替える",
 	selected_item_label: "選択しているアイテムは：",
-	happy: "嬉しい",
-	greet: "挨拶",
-	awa: "萌え",
-	sad: "悲しみ",
-	embarrassed: "困惑",
 	upvote: "高評価",
 	downvote: "低評価",
 	share: "共有",
 	play: "再生",
 	pause: "一時停止",
 	rating: "評価",
-	bold: "太字",
-	italic: "斜体",
-	underline: "下線",
-	strikethrough: "取り消し線",
-	at_person: "メンション",
-	kaomoji: "顔文字",
+	kaomoji: {
+		_: "顔文字",
+		happy: "嬉しい",
+		greet: "挨拶",
+		awa: "萌え",
+		sad: "悲しみ",
+		embarrassed: "困惑",
+	},
 	associate_existing: "関連コンテンツ登録",
 	reply: "返信",
 	more: "詳細",
 	delete: "削除",
-	copy: "コピー", // NEW
+	copy: "コピー",
 	pin: "固定",
 	unpin: "固定解除",
 	report: "通報",
@@ -201,27 +273,16 @@ const Japanese: LocaleIdentifiers = {
 	original_author: "原作者",
 	original_link: "転載元リンク",
 	title: "タイトル",
-	tags: "タグ",
 	press_enter_to_add: "Enterキーで追加",
 	description: "説明文",
 	push_to_feed: "タイムラインにも投稿",
 	cover: "サムネイル",
 	select_cover: "サムネイル選択",
-	series: "シリーズ",
-	audio: "音声",
-	photo: "画像",
-	album: "アルバム",
 	follow: "フォロー",
 	following: "フォロワー",
 	fans: "ファン",
 	watched: "再生数",
-	join_time: "アカウントの登録日",
-	user_info: "ユーザー情報",
-	acknowledgement: "スペシャルサンクス",
-	friendly_links: "相互リンク",
 	latest: "新着",
-	test: "テスト",
-	error_pages: "エラーページ",
 	upload_date: "投稿日時",
 	sort: {
 		by: "並べ替え",
@@ -237,13 +298,19 @@ const Japanese: LocaleIdentifiers = {
 		tile: "タイル",
 	},
 	duration: "長さ",
-	viewers: "視聴者",
 	are_watching: "人が視聴中",
 	step: {
 		next: "次へ",
 		previous: "戻る",
-		ok: "完了",
+		ok: "OK", // NEW
 		cancel: "キャンセル",
+		finish: "完了",
+		close: "閉じる",
+		modify: "変更",
+		save: "保存",
+		add: "追加",
+		apply: "適用",
+		reset: "リセット",
 	},
 	loginwindow: {
 		login_welcome: "ようこそ",
@@ -255,37 +322,11 @@ const Japanese: LocaleIdentifiers = {
 		forgot_info: "アカウントのメールアドレスを入力してください。\nこのアドレス宛にメールを送ります。メールの中のリンクをクリックしてパスワード再設定の手続を続行します。",
 		reset_successful_info: "本人確認ができました！\n新しいパスワードを設定してください。そして忘れないようにしてください。",
 	},
-	settings_unselected: "設定項目を選択してください。",
-	combobox_unselected: "選択してください。",
-	settings: {
-		_: "設定",
-		profile: {
-			edit_banner: "バナー画像の変更",
-			edit_avatar: "プロフィールアイコンの変更",
-		},
-		privacy: {
-			allow_cookies: "Cookieの利用を同意する",
-			info_visibility: "情報の公開範囲",
-		},
-		appearance: {
-			other: {
-				sharp_mode: "直角スタイル",
-				flat_mode: "フラットスタイル",
-				colorful_navbar: "カラフル ナビバー",
-			},
-		},
-		about: {
-			repositories: "リポジトリ",
-			creative_team: "開発チーム",
-			staff: {
-				webmistress: "WEBミストレス",
-				designer: "デザイナー",
-				frontend: "フロントエンド",
-				backend: "バックエンド",
-				translator: "翻訳者",
-			},
-			technologies_used: "使用されている技術",
-		},
+	unselected: {
+		combobox: "请选择一项", // NEW
+		settings: "请选择一项设置", // NEW
+		tag: "请搜索标签", // NEW
+		language: "选择语言", // NEW
 	},
 	user: {
 		name: "ニックネーム",
@@ -294,22 +335,26 @@ const Japanese: LocaleIdentifiers = {
 		gender: "性別",
 		memo: "メモ",
 		age: "年齢",
+		male: "男",
+		female: "女",
+		birthday: "生年月日",
+		info: "ユーザー情報",
+		join_time: "アカウントの登録日",
 	},
-	zhs: "簡体字中国語",
-	zht: "繁体字中国語", // NEW
-	en: "英語",
-	ja: "日本語",
-	ko: "韓国語",
-	vi: "ベトナム語", // NEW
 	development_test_page: "デベロップメント テストページ",
 	components_test_page: "コンポーネンツ テストページ",
 	view_cover: "サムネイルの確認",
 	watch_later: "後で見る",
 	download_video: "ダウンロード",
 	report_creation: "通報",
-	forgot_password: "パスワードをお忘れの場合",
-	reset_password: "パスワードの再設定",
-	format: "フォーマット",
+	format: {
+		_: "フォーマット",
+		bold: "太字",
+		italic: "斜体",
+		underline: "下線",
+		strikethrough: "取り消し線",
+		at_person: "メンション",
+	},
 	text: {
 		_: "テキスト",
 		size: "フォント サイズ",
@@ -318,27 +363,22 @@ const Japanese: LocaleIdentifiers = {
 	mode: "モード",
 	size: {
 		_: "サイズ",
-		mini: "ミニ",
+		tiny: "微", // NEW
 		small: "小",
 		medium: "中",
 		large: "大",
-		extra_large: "特大",
+		huge: "巨", // NEW
 	},
-	unknown: "不明",
-	shortcut_key: "ショートカットキー",
-	guide: "ガイド",
-	regexp: "正規表現",
-	keywords: "キーワード",
 	user_page: {
 		_: "プロフィール",
 		title_affix: "{0}のプロフィール",
 	},
-	manage_content: "投稿管理",
+	manage_content: "投稿管理", // NEW
 	add_to_blocklist: "ブロックする",
 	platform: {
-		bilibili: "Bilibili",
+		bilibili: "ビリビリ",
 		niconico: "ニコニコ",
-		otomad_wiki: "OtomadWiki",
+		otomad_wiki: "音MADウィキ",
 		weibo: "Weibo",
 		twitter: "Twitter",
 		qq: "QQ",
@@ -354,7 +394,24 @@ const Japanese: LocaleIdentifiers = {
 		back: "戻る",
 	},
 	other: "その他",
-	color_picker: "Color Picker", // NEW
+	color_picker: "Color Picker",
+	video_count: "{0}个视频", // NEW
+	video_recommendations: "相关视频", // NEW
+	page_not_found_info: "你似乎来到了一个很新的页面。", // NEW
+	click_to_refresh: "点击刷新", // NEW
+	toast: {
+		finish: "操作は正常に完了しました",
+		unsupported_file: "不支持上传所选文件！", // NEW
+		no_cover: "请上传封面！", // NEW
+		login_failed: "登录失败！用户名或密码错误。", // NEW
+		password_mismatch: "两次输入密码不一致！", // NEW
+		copied: "已复制！", // NEW
+		modification_failed: "修改失败！", // NEW
+		failed_to_disable_cookies: "禁用Cookie失败！", // NEW
+	},
+	confirm: {
+		cancel_upload: "确定要取消本次上传吗？", // NEW
+	},
 };
 
 export default Japanese;

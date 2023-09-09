@@ -27,41 +27,41 @@
 	<audio ref="sfx" :src="k1bod"></audio>
 	<div class="table">
 		<!-- #region 播放页 -->
-		<h3>播放页</h3>
+		<h3>{{ t.shortcut_key.player_page }}</h3>
 
-		<p>播放/暂停</p>
+		<p>{{ t.shortcut_key.play_pause }}</p>
 		<p><Kbd>Space</Kbd></p>
 
-		<p>退出全屏</p>
+		<p>{{ t.shortcut_key.exit_fullscreen }}</p>
 		<p><Kbd>Esc</Kbd></p>
 		<!-- #endregion -->
 
 		<!-- #region 分页器 -->
-		<h3>分页器</h3>
+		<h3>{{ t.shortcut_key.pagination }}</h3>
 
-		<p>翻页</p>
+		<p>{{ t.shortcut_key.page_turning }}</p>
 		<p><Kbd>←</Kbd> <Kbd>→</Kbd></p>
 		<!-- #endregion -->
 
 		<!-- #region 评论区 -->
-		<h3>评论区</h3>
+		<h3>{{ t.shortcut_key.comment_area }}</h3>
 
-		<p>加粗</p>
+		<p>{{ t.format.bold }}</p>
 		<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>B</Kbd></p>
 
-		<p>倾斜</p>
+		<p>{{ t.format.italic }}</p>
 		<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>I</Kbd></p>
 
-		<p>下划线</p>
+		<p>{{ t.format.underline }}</p>
 		<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>U</Kbd></p>
 
-		<p>删除线</p>
+		<p>{{ t.format.strikethrough }}</p>
 		<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>Shift</Kbd> + <Kbd>X</Kbd></p>
 
-		<p>快捷插入颜文字</p>
+		<p>{{ t.shortcut_key.quick_insert_kaomoji }}</p>
 		<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>M</Kbd></p>
 
-		<p>发送</p>
+		<p>{{ t.send }}</p>
 		<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>Enter</Kbd></p>
 		<!-- #endregion -->
 	</div>

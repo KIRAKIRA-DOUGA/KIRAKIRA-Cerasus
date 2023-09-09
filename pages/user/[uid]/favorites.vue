@@ -34,12 +34,12 @@
 	<div class="container">
 		<div class="toolbox-card left">
 			<Accordion>
-				<AccordionItem title="我的收藏夹">
+				<AccordionItem :title="t.favorites.my_favorites">
 					<template #actions>
 						<SoftButton icon="add" @click.stop />
 					</template>
 				</AccordionItem>
-				<AccordionItem title="订阅收藏夹">
+				<AccordionItem :title="t.favorites.subscribed_favorites">
 					<template #actions>
 						<SoftButton icon="add" @click.stop />
 					</template>
@@ -60,18 +60,18 @@
 					}"
 				>
 					<div class="left">
-						<Button icon="info">修改信息</Button>
-						<Button icon="clear_all">清理已失效视频</Button>
-						<Button icon="star">订阅收藏</Button>
-						<Button icon="play">播放全部</Button>
+						<Button icon="info">{{ t.favorites.modify_info }}</Button>
+						<Button icon="clear_all">{{ t.favorites.clear_expired }}</Button>
+						<Button icon="star">{{ t.favorites.subscribe }}</Button>
+						<Button icon="play">{{ t.favorites.play_all }}</Button>
 					</div>
 					<div class="right">
-						<Button icon="add">添加视频</Button>
+						<Button icon="add">{{ t.favorites.add }}</Button>
 						<Button
 							:class="{ active: isSelectedMode }"
 							icon="library_add_check"
 							@click="isSelectedMode = !isSelectedMode"
-						>批量选择</Button>
+						>{{ t.favorites.multi_select }}</Button>
 					</div>
 				</div>
 			</div>

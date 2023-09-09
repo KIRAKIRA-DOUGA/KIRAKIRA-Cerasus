@@ -61,14 +61,14 @@
 
 			<div class="toolbox-card user-info-container">
 				<div class="user-info">
-					<h3>{{ t.user_info }}</h3>
+					<h3>{{ t.user.info }}</h3>
 					<div class="items">
 						<div v-tooltip:x="t.user.birthday" class="birthday">
 							<Icon name="birthday" />
 							<span>{{ user?.birthdate !== "" && user?.birthdate !== undefined ? formatDate(new Date(user?.birthdate), "yyyy/MM/dd") : "" }}</span>
 						</div>
 
-						<div v-tooltip:x="t.join_time" class="join-time">
+						<div v-tooltip:x="t.user.join_time" class="join-time">
 							<Icon name="history" />
 							<span>{{ formatDate(new Date(user?.joinDate!), "yyyy/MM/dd") }}</span>
 						</div>

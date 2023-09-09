@@ -19,25 +19,25 @@
 	<div class="user-counts chip">
 		<div>
 			<span class="value">233</span>
-			<p>关注</p>
+			<p>{{ t.follow }}</p>
 		</div>
 		<div>
 			<span class="value">233</span>
-			<p>粉丝</p>
+			<p>{{ t.fans }}</p>
 		</div>
 		<div>
 			<span class="value">233</span>
-			<p>播放</p>
+			<p>{{ t.watched }}</p>
 		</div>
 		<div>
 			<span class="value">233</span>
-			<p>评分</p>
+			<p>{{ t.rating }}</p>
 		</div>
 	</div>
 
 	<div class="user-info chip">
-		<SettingsChipItem icon="birthday" :details="registerDateDisplay">生日</SettingsChipItem>
-		<SettingsChipItem icon="history" :details="registerDateDisplay">注册日期</SettingsChipItem>
+		<SettingsChipItem icon="birthday" :details="registerDateDisplay">{{ t.user.birthday }}</SettingsChipItem>
+		<SettingsChipItem icon="history" :details="registerDateDisplay">{{ t.user.join_time }}</SettingsChipItem>
 		<SettingsChipItem icon="fingerprint" :details="uid">UID</SettingsChipItem>
 	</div>
 </template>

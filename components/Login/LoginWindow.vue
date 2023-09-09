@@ -45,7 +45,7 @@
 		try {
 			await oapiClient.login(email.value, password.value);
 		} catch (error) {
-			useToast("登录失败", "error");
+			useToast(t.toast.login_failed, "error");
 			console.error(error);
 			return;
 		} finally {
@@ -53,8 +53,6 @@
 		}
 		isLogining.value = true;
 	}
-
-	// DELETE: [Aira] Change passwords should be in settings, not login window.
 
 	/**
 	 * 注册账户。
@@ -66,10 +64,10 @@
 			isLogining.value = true;
 			open.value = false;
 		} else
-			// TODO: localize
-			useToast("Passwords don't match", "error");
+			useToast(t.toast.password_mismatch, "error");
 	}
 
+	// DELETE: [Aira] Change passwords should be in settings, not login window.
 	/**
 	 * 重置密码。
 	 */

@@ -111,7 +111,7 @@
 					class="recommendations-header"
 					icon="movie"
 					:badge="recommendations?.length"
-				>Recommendations</Subheader>
+				>{{ t.video_recommendations }}</Subheader>
 				
 				<ThumbVideo
 					v-for="video in recommendations"

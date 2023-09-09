@@ -71,7 +71,7 @@
 								<TransitionGroup>
 									<div v-for="tag in matchedTags" :key="tag" v-ripple class="list-item">
 										<p class="title">{{ tag }}</p>
-										<p class="count">{{ t.video_count(100) }}</p>
+										<p class="count">{{ t(100).video_count(100) }}</p>
 									</div>
 									<div v-if="showCreateNew" v-ripple class="list-item" @click="switchTagEditor(true)">
 										<p class="title">{{ t.tag.new }}</p>
