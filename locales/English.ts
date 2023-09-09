@@ -66,7 +66,7 @@ const English: LocaleIdentifiers = {
 	off: "Off",
 	disabled: "Disabled",
 	tag: {
-		_: "Tag",
+		_: "Tag | Tags",
 		search: "Search Tags",
 		new: "Create New Tag",
 	},
@@ -390,7 +390,7 @@ const English: LocaleIdentifiers = {
 		_: "Navigation",
 		back: "Back",
 	},
-	other: "Other",
+	other: "Other | Others",
 	color_picker: "Color Picker",
 	video_count: "{0} Video | {0} Videos",
 	video_recommendations: "Recommendations",

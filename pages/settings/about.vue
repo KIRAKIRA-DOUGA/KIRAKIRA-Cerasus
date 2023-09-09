@@ -16,7 +16,7 @@
 		{ name: "OtoMAN", job: [t.about.staff.backend], uid: NaN, avatar: avatar("Otoman.png") },
 		{ name: "冲锋的小卡卡", job: [t.about.staff.backend], uid: NaN, avatar: avatar("ZERO_TWO.jpg") },
 		{ name: "维他柠檬茶", job: [t.about.staff.frontend], uid: NaN, avatar: avatar("VTchara.webp") },
-		{ name: "琪露诺瓦露", job: [t.ja, t.about.staff.translator], uid: NaN, avatar: avatar("Cirnoire.png") },
+		{ name: "琪露诺瓦露", job: [t.language.ja, t.about.staff.translator], uid: NaN, avatar: avatar("Cirnoire.png") },
 		{ name: "Sidd", job: [t.about.staff.frontend], uid: NaN, avatar: avatar("sidd.jpg") },
 		{ name: "鸣", job: [t.about.staff.frontend], uid: NaN, avatar: avatar("Mingeax.jpg") },
 	];

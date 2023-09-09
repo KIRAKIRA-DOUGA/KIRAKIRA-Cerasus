@@ -172,7 +172,7 @@
 					</section>
 
 					<section>
-						<Subheader icon="tag">{{ t.tags }}</Subheader>
+						<Subheader icon="tag">{{ t(2).tag }}</Subheader>
 						<!-- Tags (comma separated, no spaces) -->
 						<!-- <div class="tags">
 							<Tag>{{ t.press_enter_to_add }}</Tag>
