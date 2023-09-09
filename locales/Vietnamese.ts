@@ -322,7 +322,7 @@ const Vietnamese: LocaleIdentifiers = {
 	},
 	user: {
 		name: "Tên người dùng",
-		name_requirements: "Phạm vi từ 1 đến 20 ký tự. Chỉ được bao gồm: chữ số, mẫu tự Latinh, Hán tự, tiếng Hàn, Hiragana/Katakana và các ký tự đặc biệt\"-\", \"_\"",
+		name_requirements: "Phạm vi từ 1 đến 20 ký tự. Chỉ được bao gồm: chữ số, mẫu tự Latinh, Hán tự, tiếng Hàn, Hiragana/Katakana và các ký tự đặc biệt \"-\", \"_\"",
 		bio: "Tự thuật",
 		gender: "Giới tính",
 		memo: "Phụ chú",
