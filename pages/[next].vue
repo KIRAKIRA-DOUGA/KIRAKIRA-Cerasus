@@ -21,8 +21,8 @@
 		<h1 class="slug">{{ $route.fullPath }}</h1>
 		<ContentDoc>
 			<template #not-found>
-				<p>你似乎来到了一个很新的页面。</p>
-				<Button @click="reload">点击刷新</Button>
+				<p>{{ t.page_not_found_info }}</p>
+				<Button @click="reload">{{ t.click_to_refresh }}</Button>
 			</template>
 		</ContentDoc>
 	</main>

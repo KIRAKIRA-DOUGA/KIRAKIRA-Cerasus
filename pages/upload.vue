@@ -22,7 +22,7 @@
 	 */
 	function invalidUploaded() {
 		successfulUploaded.value = false;
-		useEvent("app:toast", { message: "不支持上传所选文件！", severity: "error" });
+		useToast(t.toast.unsupported_file, "error");
 		clearFileInput(fileInput);
 	}
 
@@ -73,7 +73,7 @@
 	 */
 	function cancelUpdate() {
 		if (!showEditor.value) return;
-		if (!confirm("确定要取消本次上传吗？")) return;
+		if (!confirm(t.confirm.cancel_upload)) return;
 		arrayClearAll(files);
 		successfulUploaded.value = false;
 		showEditor.value = false;
@@ -107,8 +107,8 @@
 					@click="fileInput?.click()"
 				>
 					<div class="content">
-						<h3>拖到此处上传</h3>
-						<p>支持MP4、WMV、WEBM等主流格式</p>
+						<h3>{{ t.upload.drag_to_upload }}</h3>
+						<p>{{ t.upload.format_info }}</p>
 					</div>
 					<Icon name="upload" class="upload-icon" />
 					<div class="outline normal"></div>

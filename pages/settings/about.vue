@@ -1,22 +1,13 @@
 <script setup lang="ts">
-	const avatar = (name: string) => {
-		/* try {
-			const avatars = import.meta.glob<typeof import("*.jpg")>("/assets/images/avatars/*", { eager: true });
-			const result = avatars[`/assets/images/avatars/${name}`];
-			return result.default;
-		} catch (e) {
-			return undefined;
-		} */ // 以上代码为调用需打包的资源。
-		return `/static/images/avatars/${name}`;
-	};
+	const avatar = (name: string) => `/static/images/avatars/${name}`;
 
 	const nuxt = useNuxtApp();
 
 	const repositories: { name: string; codeName?: string; link: string; icon?: string }[] = [
-		{ name: "GitHub前端仓库地址与问题反馈", codeName: "KIRAKIRA Cerasus", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus" },
-		{ name: "个人主页Markdown仓库地址与问题反馈", codeName: "KIRAKIRA Flavored Markdown", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Flavored-Markdown" },
-		{ name: "GitHub后端仓库地址与问题反馈", codeName: "KIRAKIRA Golang Backend", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-golang-backend" },
-		// { name: "GitHub后端仓库地址与问题反馈", codeName: "KIRAKIRA Rosales", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Rosales" },
+		{ name: t.about.repositories.frontend, codeName: "KIRAKIRA Cerasus", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus" },
+		{ name: t.about.repositories.markdown, codeName: "KIRAKIRA Flavored Markdown", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Flavored-Markdown" },
+		{ name: t.about.repositories.backend, codeName: "KIRAKIRA Golang Backend", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-golang-backend" },
+		// { name: t.about.repositories.backend, codeName: "KIRAKIRA Rosales", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Rosales" },
 	];
 
 	const team: { name: string; job: string[]; uid: number; avatar?: string }[] = [
@@ -30,20 +21,23 @@
 		{ name: "鸣", job: [t.about.staff.frontend], uid: NaN, avatar: avatar("Mingeax.jpg") },
 	];
 
-	const technologies: { name: string; version: string; ability: string; icon?: string; monochrome?: boolean; link: string }[] = [
-		{ name: "Nuxt", version: nuxt.versions.nuxt || "3", ability: "服务端渲染框架", icon: "nuxt", link: "https://nuxt.com/" },
-		{ name: "Vue", version: nuxt.versions.vue || "3", ability: "渐进式前端框架", icon: "vue", link: "https://vuejs.org/" },
-		{ name: "TypeScript", version: "5", ability: "静态类型检查器", icon: "typescript", link: "https://www.typescriptlang.org/" },
-		{ name: "Node.js", version: "18", ability: "服务端开发平台", icon: "nodejs", link: "https://nodejs.org/" },
-		// { name: "Koa", version: "3", ability: "服务端网络框架", icon: "koa", monochrome: true, link: "https://koajs.com/" },
-		{ name: "Go", version: "1.20", ability: "服务端编程语言", icon: "go", link: "https://go.dev/" },
+	const technologies: { name: string; version?: string; ability: string; icon?: string; monochrome?: boolean; link: string }[] = [
+		{ name: "Nuxt", version: nuxt.versions.nuxt || "3", ability: "SSR Framework", icon: "nuxt", link: "https://nuxt.com/" },
+		{ name: "Vue", version: nuxt.versions.vue || "3", ability: "Progressive Frontend Framework", icon: "vue", link: "https://vuejs.org/" },
+		{ name: "TypeScript", version: "5", ability: "Static Type Checker", icon: "typescript", link: "https://www.typescriptlang.org/" },
+		{ name: "Node.js", version: "18", ability: "Server Operation Platform", icon: "nodejs", link: "https://nodejs.org/" },
+		// { name: "Koa", version: "3", ability: "Server Network Framework", icon: "koa", monochrome: true, link: "https://koajs.com/" },
+		{ name: "Go", version: "1.20", ability: "Server Programming Language", icon: "go", link: "https://go.dev/" },
+		{ name: "Vercel", ability: "Website Hosting Services", icon: "vercel", link: "https://vercel.com/" },
 		// 基于前端运行时的版本号可以自动识别，后端和编译时的版本号只能委屈你自己手打了。
 	];
+
+	const sloganLines = computed(() => t.about.slogan.toString().split("\n"));
 </script>
 
 <template>
 	<LogoText />
-	<p class="slogan"><span>一个可爱的视频网站，</span><span><b>献给可爱的你！</b></span></p>
+	<p class="slogan"><span>{{ sloganLines[0] }}</span><span><b>{{ sloganLines[1] }}</b></span></p>
 
 	<Subheader icon="link">{{ t.about.repositories }}</Subheader>
 	<section>
@@ -76,7 +70,7 @@
 			:key="tech.name"
 			:icon="tech.icon ? 'colored-logo/' + tech.icon : 'placeholder'"
 			:filled="!tech.monochrome"
-			:details="`${tech.ability} - v${tech.version}`"
+			:details="tech.version ? `${tech.ability} - v${tech.version}` : tech.ability"
 			:href="tech.link"
 			trailingIcon="open_in_new"
 		>{{ tech.name }}</SettingsChipItem>

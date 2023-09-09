@@ -19,10 +19,13 @@
 	const tags = ref("");
 	const description = ref("");
 
-	const invalidUploaded = () => {
-		useEvent("app:toast", { message: "不支持上传所选文件！", severity: "error" });
+	/**
+	 * 上传文件无效。
+	 */
+	function invalidUploaded() {
+		useToast(t.toast.unsupported_file, "error");
 		clearFileInput(thumbnailInput);
-	};
+	}
 
 	watch(() => props.files, files => {
 		const file = files[0];
@@ -63,7 +66,7 @@
 	 */
 	function upload(files: File[]) {
 		if (!thumbnail.value) {
-			useEvent("app:toast", { message: "请上传封面！", severity: "error" });
+			useToast(t.toast.no_cover, "error");
 			return;
 		}
 

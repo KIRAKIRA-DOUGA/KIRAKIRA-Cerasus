@@ -66,7 +66,7 @@
 				>
 					<div class="content">
 						<Icon :name="toast.icon" />
-						<span>{{ toast.message || t.finish }}</span>
+						<span>{{ toast.message || t.toast.finish }}</span>
 					</div>
 					<div class="progress"></div>
 				</div>

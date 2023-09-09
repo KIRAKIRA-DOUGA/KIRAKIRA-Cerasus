@@ -20,7 +20,7 @@
 
 	const enableCookie = computed({
 		get: () => true,
-		set: value => !value && useToast("禁用Cookie失败！", "error"),
+		set: value => !value && useToast(t.toast.failed_to_disable_cookies, "error"),
 	});
 
 	/**
@@ -41,9 +41,9 @@
 	<div class="privacy-header">
 		<Subheader icon="visibility">{{ t.privacy.info_visibility }}</Subheader>
 		<div class="options">
-			<SoftButton v-tooltip:top="'公开'" icon="visibility" @click="setColonVisibility('public')" />
-			<SoftButton v-tooltip:top="'仅你关注的人可见'" icon="person_add" @click="setColonVisibility('following')" />
-			<SoftButton v-tooltip:top="'私密'" icon="visibility_off" @click="setColonVisibility('private')" />
+			<SoftButton v-tooltip:top="t.privacy.public" icon="visibility" @click="setColonVisibility('public')" />
+			<SoftButton v-tooltip:top="t.privacy.following" icon="person_add" @click="setColonVisibility('following')" />
+			<SoftButton v-tooltip:top="t.privacy.private" icon="visibility_off" @click="setColonVisibility('private')" />
 		</div>
 	</div>
 	<section list>
@@ -57,7 +57,7 @@
 
 	<div class="submit">
 		<Button icon="reset" class="secondary">{{ t.step.reset }}</Button>
-		<Button icon="check" @click="useToast('修改失败', 'error');">{{ t.step.apply }}</Button>
+		<Button icon="check" @click="useToast(t.toast.modification_failed, 'error');">{{ t.step.apply }}</Button>
 	</div>
 </template>
 
