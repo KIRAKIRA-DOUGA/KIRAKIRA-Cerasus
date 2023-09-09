@@ -1,29 +1,33 @@
 # Translation
 
-**Welcome to KIRAKIRA☆TRANSLATION TEAM!**
+**Welcome to KIRAKIRA☆DOUGA PROJECT TEAM TRANSLATION GROUP!**
 
-If you are from Discord or another non-GitHub platform, tell Aira your GitHub ID, and she will invite you to our GitHub organization and let you join the *Translation* team.
+If you are from Discord or other non-GitHub platform, please tell @Aira your GitHub ID, and she will invite you to our GitHub organization and let you join the *Translation* group.
 
-We will create a branch for each language called `locale-<语言名>` (e.g. `locale-Japanese`). Once you join the team, you can push commits to these branches directly.
+We will create a branch for each language named `locale-<Language>` (e.g. `locale-Japanese`). Once you have joined the team, you can push commits to these branches directly.
 
-Remember to check file updates frequently. We may add or modify content that needs to be translated.
+Remember to check file updates frequently. We may add new or modify existing strings that needs to be translated.
 
-New and modified content will be marked with `// NEW`. You should remove the mark after you can confirm this string is ok.
+The new and modified strings will be marked with
+```typescript
+// NEW
+```
+at the end of each strings. You should remove this mark after you have confirmed that this string is okay.
 
 ---
 
-### For non-developers
+### For Non-developers
 
-We recommend you use **Visual Studio Code** to edit files, just like our developers. If you are new to git, you can try to use **GitHub Desktop**. Remember to select the correct branch, you can't commit directly to `main`.
+We strongly recommend you to use **Visual Studio Code** to edit the files, just like other developers. If you are new in Git, you could try to use **GitHub Desktop**. And remember to select the correct branch, you can't directly commit to `develop` and `deployment` branches.
 
 ---
 
 ### Tips
 
-Our designers are from China, the UI was designed in Chinese. So if you speak Chinese, please consider translating from Chinese first.
+Our designers are from China, the UI was designed in Chinese. So if you could speak Chinese, please consider translating from Chinese directly first.
 
 ---
 
-### Need help?
+### Need Helps?
 
-You can contact our developers directly in `Translation / general` in our Discord server. But don't @ them too often unless it's very important.
+You could contact our developers directly in `Translation / general` in our Discord server. But don't **@** them too often unless it's very important.
