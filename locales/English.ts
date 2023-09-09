@@ -157,7 +157,7 @@ const English: LocaleIdentifiers = {
 			send_as_creator: "Creator's Gradient",
 		},
 		list: {
-			loading: "Loading Danmakus",
+			loading: "Loading Danmakus…",
 			thead: {
 				time: "Time",
 				content: "Content",
