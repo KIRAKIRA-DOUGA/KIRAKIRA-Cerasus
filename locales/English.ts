@@ -97,7 +97,7 @@ const English: LocaleIdentifiers = {
 		_: "Privacy",
 		cookie: "Cookie☆",
 		allow_cookies: "Allow to Use Cookies",
-		info_visibility: "Info Visilibity",
+		info_visibility: "Info Visibility",
 		public: "Public",
 		private: "Private",
 		following: "Only Visible to Users You Follow",

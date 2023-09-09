@@ -92,7 +92,7 @@ const Korean: LocaleIdentifiers = {
 		_: "Privacy",
 		cookie: "Cookie☆",
 		allow_cookies: "Allow to use Cookies",
-		info_visibility: "Info Visilibity",
+		info_visibility: "Info Visibility",
 		public: "Public",
 		private: "Private",
 		following: "Visible for Your Following",
