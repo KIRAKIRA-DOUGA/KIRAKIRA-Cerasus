@@ -58,7 +58,7 @@
 				<div class="overlay light"></div>
 				<div class="overlay color"></div>
 				<Icon name="palette" />
-				<h3>{{ t[item.color] }}</h3>
+				<h3>{{ t.palette[item.color] }}</h3>
 				<p>{{ item.subtitle }}</p>
 			</div>
 		</SettingsGridItem>
@@ -66,11 +66,11 @@
 
 	<Subheader icon="wallpaper">{{ t.background }}</Subheader>
 	<section list>
-		<ToggleSwitch v-model="useAppSettingsStore().showCssDoodle" v-ripple icon="wallpaper">{{ t.animated_background }}</ToggleSwitch>
-		<SettingsChipItem icon="wallpaper" trailingIcon="edit">{{ t.custom_background }}</SettingsChipItem>
+		<ToggleSwitch v-model="useAppSettingsStore().showCssDoodle" v-ripple icon="wallpaper">{{ t.background.animated }}</ToggleSwitch>
+		<SettingsChipItem icon="wallpaper" trailingIcon="edit">{{ t.background.custom }}</SettingsChipItem>
 	</section>
 
-	<Subheader icon="more_horiz">{{ t.other }}</Subheader>
+	<Subheader icon="more_horiz">{{ t(2).other }}</Subheader>
 	<section list>
 		<ToggleSwitch v-model="useAppSettingsStore().sharpAppearanceMode" v-ripple icon="square">{{ t.appearance.sharp_mode }}</ToggleSwitch>
 		<ToggleSwitch v-model="useAppSettingsStore().flatAppearanceMode" v-ripple icon="layers">{{ t.appearance.flat_mode }}</ToggleSwitch>

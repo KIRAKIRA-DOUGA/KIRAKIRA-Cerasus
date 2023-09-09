@@ -139,37 +139,6 @@ html:lang(ja) span:lang(ja) {
 	display: none;
 }
 
-button {
-	@include flex-center;
-	@include button-shadow;
-	@include round-small;
-	padding: 8px 16px;
-	color: white;
-	font-size: 14px;
-	text-align: center;
-	background-color: c(accent);
-	transition: $fallback-transitions, all $ease-out-back 500ms !important;
-	touch-action: manipulation;
-
-	&:hover {
-		@include button-shadow-hover;
-		background-color: c(accent-hover);
-	}
-
-	&:hover:focus {
-		@include button-shadow-hover-focus;
-	}
-
-	&:active {
-		@include button-scale-pressed;
-		background-color: c(accent-pressed);
-	}
-
-	&:focus {
-		@include button-shadow-focus;
-	}
-}
-
 @keyframes move-down {
 	from {
 		translate: 0 -50px;

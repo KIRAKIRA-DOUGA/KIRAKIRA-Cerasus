@@ -26,7 +26,7 @@
 
 	<hr />
 
-	<Subheader icon="tag">{{ t.tags }}</Subheader>
+	<Subheader icon="tag">{{ t(2).tag }}</Subheader>
 	<span>{{ t.blocklist.tags.description }}</span>
 	<section>
 		<SettingsChipItem :details="t.addition_date + t.colon" trailingIcon="delete" @trailingIconClick="remove">tag</SettingsChipItem>

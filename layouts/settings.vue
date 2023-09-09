@@ -228,9 +228,16 @@
 			}
 
 			> :deep(.router-view) {
+				$length: 20;
 				display: flex;
 				flex-direction: column;
 				gap: 1rem;
+				
+				@for $i from 1 through $length {
+					> :nth-child(#{$i}) {
+						animation: float-in 600ms (100ms * ($i - 1)) $ease-out-smooth backwards;
+					}
+				}
 			}
 		}
 	}
@@ -409,6 +416,13 @@
 			padding: 0 $main-padding-x $submit-margin-y;
 			background-color: c(main-bg, 80%);
 			backdrop-filter: $backdrop-filter;
+		}
+	}
+	
+	@keyframes float-in {
+		from {
+			opacity: 0;
+			translate: 0 1rem;
 		}
 	}
 </style>

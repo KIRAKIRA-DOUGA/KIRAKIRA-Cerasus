@@ -32,7 +32,7 @@
 	scroll-behavior: smooth;
 }
 
-:lang(zh-Hant-TW) {
+:lang(zh-Hant) {
 	&,
 	&::before,
 	&::after {
@@ -63,7 +63,7 @@ samp,
 tt {
 	&,
 	* {
-		font-family: $monospace-fonts;
+		font-family: $monospace-fonts !important;
 	}
 }
 
