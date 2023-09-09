@@ -170,6 +170,7 @@ export default defineNuxtConfig({
 			{ code: "ja", name: "日本語" },
 			{ code: "ko", name: "한국어" },
 			{ code: "vi", name: "Tiếng Việt" },
+			{ code: "id", name: "Bahasa Indonesia" },
 		],
 		defaultLocale: "zhs",
 		vueI18n: "./i18n.config.ts",

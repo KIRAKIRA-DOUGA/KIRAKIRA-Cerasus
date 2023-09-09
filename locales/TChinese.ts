@@ -1,12 +1,6 @@
-/*
- * 说明：
- * 1. 当任意一门语言文件的字符串声明缺少或多余其它语言文件时都会报错，因此请务必及时为所有语言文件补齐字符串声明。
- * 2. 提倡尽量多复用少分类，虽然目前已支持分类以使归纳更清晰，但在保证各语言均不会有太大差异的情况下应尽可能多的复用来减少文件体积。
- * 3. `{ } @ $ |` 是 Vue i18n 中定义的元字符，因此不能在字符串中使用这些字符，除非你想使用它们在 Vue i18n 中表达的特殊含义。
- * 4. `apply bind call toString Symbol` 等作为关键字，不得用作字符串的键名，即便是在嵌套分类当中。
- */
+import { LocaleIdentifiers } from "./types";
 
-const TChinese = {
+const TChinese: LocaleIdentifiers = {
 	colon: "：",
 	semicolon: "；",
 	caesura: "、",
@@ -80,7 +74,7 @@ const TChinese = {
 		current: "目前密碼",
 		new: "新密碼",
 		new_retype: "確認新密碼",
-		hint: "密碼提示", // NEW
+		hint: "密碼提示",
 	},
 	account_linking: "關聯社交平台",
 	blocklist: {
@@ -163,7 +157,6 @@ const TChinese = {
 	logout: "登出",
 	register: "註冊",
 	verification_code: "驗證碼",
-	signature: "個性簽名",
 	close: "關閉",
 	current_page_label: "第{0}頁，共{1}頁",
 	switch_page_label: "切換到第{0}頁",
@@ -278,9 +271,9 @@ const TChinese = {
 			creative_team: "創作團隊",
 			staff: {
 				webmistress: "站娘",
-				designer: "設計師",
-				frontend: "前端工程師",
-				backend: "後端工程師",
+				designer: "設計",
+				frontend: "前端",
+				backend: "後端",
 				translator: "翻譯",
 			},
 			technologies_used: "使用技術",
@@ -291,6 +284,8 @@ const TChinese = {
 		name_requirements: "1~20個字元，僅可包含大小寫拉丁字母、數字、常用平/片假名、漢字、特殊符號 ｢-｣ ｢_｣",
 		bio: "個性簽名",
 		gender: "性別",
+		memo: "備注", // NEW
+		age: "年齡",
 	},
 	zhs: "簡體中文",
 	zht: "繁體中文",
@@ -304,7 +299,6 @@ const TChinese = {
 	watch_later: "稍後觀看",
 	download_video: "下載影片",
 	report_creation: "稿件檢舉",
-	password_hint: "密碼提示",
 	forgot_password: "忘記密碼",
 	reset_password: "重設密碼",
 	format: "格式",
@@ -329,15 +323,15 @@ const TChinese = {
 	keywords: "关键词", // NEW
 	user_page: {
 		_: "个人主页", // NEW
-		title_suffix: "的个人主页", // NEW
+		title_affix: "的个人主页", // NEW
 	},
 	manage_content: "稿件管理", // NEW
 	add_to_blocklist: "加入黑名单", // NEW
 	platform: {
-		bilibili: "哔哩哔哩", // NEW
+		bilibili: "嗶哩嗶哩",
 		niconico: "Niconico",
-		otomad_wiki: "音MAD维基", // NEW
-		weibo: "微博", // NEW
+		otomad_wiki: "音MAD維基",
+		weibo: "微博",
 		twitter: "Twitter",
 		qq: "QQ",
 		youtube: "YouTube",

@@ -329,7 +329,7 @@ const SChinese = {
 	keywords: "关键词",
 	user_page: {
 		_: "个人主页",
-		title_suffix: "的个人主页",
+		title_affix: "的个人主页",
 	},
 	manage_content: "稿件管理",
 	add_to_blocklist: "加入黑名单",

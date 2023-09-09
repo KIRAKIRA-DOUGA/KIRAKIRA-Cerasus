@@ -1,11 +1,6 @@
-/*
- * 说明：
- * 1. 使用管道符定义单复数，格式为 `单数 | 复数`。
- */
-
 import { LocaleIdentifiers } from "./types";
 
-const English: LocaleIdentifiers = {
+const Korean: LocaleIdentifiers = {
 	colon: ": ",
 	semicolon: "; ",
 	caesura: ", ",
@@ -328,7 +323,7 @@ const English: LocaleIdentifiers = {
 	keywords: "Keywords",
 	user_page: {
 		_: "User Page",
-		title_suffix: "'s User Page",
+		title_affix: "'s User Page",
 	},
 	manage_content: "Manage Content",
 	add_to_blocklist: "Add to Blocklist",
@@ -354,4 +349,4 @@ const English: LocaleIdentifiers = {
 	color_picker: "Color Picker",
 };
 
-export default English;
+export default Korean;

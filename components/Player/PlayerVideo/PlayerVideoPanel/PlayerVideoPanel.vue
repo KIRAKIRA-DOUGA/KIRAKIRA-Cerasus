@@ -75,10 +75,10 @@
 	<Comp>
 		<div class="top">
 			<div class="info">
-				<CountItem icon="play" :value="getWatchCount(counts.play)">{{ t(counts.play).views_video }}</CountItem>
-				<CountItem icon="thumb_up" :value="getWatchCount(counts.rating)" :class="{ downvote: counts.rating < 0 }">{{ t.rating }}</CountItem>
-				<CountItem icon="star" :value="getWatchCount(counts.favorite)">{{ t(counts.favorite).favorite }}</CountItem>
-				<CountItem icon="danmaku" :value="getWatchCount(counts.danmaku)">{{ t(counts.danmaku).danmaku }}</CountItem>
+				<CountItem icon="play" :value="getCompactDecimal(counts.play)">{{ t(counts.play).views_video }}</CountItem>
+				<CountItem icon="thumb_up" :value="getCompactDecimal(counts.rating)" :class="{ downvote: counts.rating < 0 }">{{ t.rating }}</CountItem>
+				<CountItem icon="star" :value="getCompactDecimal(counts.favorite)">{{ t(counts.favorite).favorite }}</CountItem>
+				<CountItem icon="danmaku" :value="getCompactDecimal(counts.danmaku)">{{ t(counts.danmaku).danmaku }}</CountItem>
 				<div class="watching">
 					<span class="watching-number">{{ counts.watching }}</span>
 					<span class="watching-description">{{ t(counts.watching).are_watching }}</span>
