@@ -80,7 +80,7 @@ const Vietnamese: LocaleIdentifiers = {
 		user: "Cài đặt người dùng",
 		app: "Cài đặt ứng dụng",
 	},
-	dashboard: "Thứ hạng",
+	dashboard: "Tổng quan",
 	account: "Tài khoản",
 	profile: {
 		_: "Hồ sơ",
@@ -134,8 +134,8 @@ const Vietnamese: LocaleIdentifiers = {
 	player: {
 		_: "Trình phát",
 		speed: {
-			resample: "Phối lại âm thanh",
-			continuous: "Kiểm soát liên tục",
+			resample: "Điều chỉnh cao độ",
+			continuous: "Điều chỉnh tốc độ",
 		},
 	},
 	danmaku: {
