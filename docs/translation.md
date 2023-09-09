@@ -30,4 +30,4 @@ Our designers are from China, the UI was designed in Chinese. So if you could sp
 
 ### Need Helps?
 
-You could contact our developers directly in `Translation / general` in our Discord server. But don't **@** them too often unless it's very important.
+You could contact our developers directly in `Translation / general` in our Discord server. But please do not **@** them too often unless it's very important.
