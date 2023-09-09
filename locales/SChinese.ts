@@ -10,7 +10,6 @@ const SChinese = {
 	colon: "：",
 	semicolon: "；",
 	caesura: "、",
-	welcome: "欢迎",
 	home: "首页",
 	category: {
 		_: "分区",
