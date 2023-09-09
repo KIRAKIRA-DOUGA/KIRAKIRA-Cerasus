@@ -4,7 +4,7 @@
 
 If you are from Discord or other non-GitHub platform, please tell @Aira your GitHub ID, and she will invite you to our GitHub organization and let you join the *Translation* group.
 
-We will create a branch for each language named `locale-<Language>` (e.g. `locale-Japanese`). Once you have joined the team, you can push commits to these branches directly.
+We will create branches for each languages named `locale-<Language>` (e.g. `locale-Japanese`). Once you have joined the team, you can push commits to these branches directly.
 
 Remember to check file updates frequently. We may add new or modify existing strings that needs to be translated.
 
