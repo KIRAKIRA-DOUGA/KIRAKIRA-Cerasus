@@ -65,7 +65,7 @@
 						<Transition>
 							<div v-if="!isSearched" class="empty">
 								<Icon name="tag" />
-								<p>请搜索标签</p>
+								<p>{{ t.unselected.tag }}</p>
 							</div>
 							<div v-else class="list">
 								<TransitionGroup>
@@ -86,7 +86,7 @@
 					<div class="list-wrapper">
 						<div class="list">
 							<template v-for="(item, index) in editor" :key="index">
-								<ComboBox v-model="item.language" v-model:shown="showComboBox" placeholder="选择语言">
+								<ComboBox v-model="item.language" v-model:shown="showComboBox" :placeholder="t.unselected.language">
 									<ComboBoxItem v-for="lang in languages" :id="lang" :key="lang">{{ lang }}</ComboBoxItem>
 								</ComboBox>
 								<div class="tags">
@@ -96,8 +96,8 @@
 						</div>
 					</div>
 					<div class="submit">
-						<Button class="secondary" @click="switchTagEditor('cancel')">取消</Button>
-						<Button @click="switchTagEditor('ok')">确定</Button>
+						<Button class="secondary" @click="switchTagEditor('cancel')">{{ t.step.cancel }}</Button>
+						<Button @click="switchTagEditor('ok')">{{ t.step.ok }}</Button>
 					</div>
 				</div>
 			</Transition>

@@ -52,11 +52,11 @@
 
 <template>
 	<div class="container">
-		<Subheader icon="science" :badge="233">{{ t.test }}</Subheader>
+		<Subheader icon="science" :badge="233">测试</Subheader>
 		<div class="pages">
 			<LocaleLink v-for="page in pages" :key="page.name" class="link lite" :to="page.link">{{ page.name }}</LocaleLink>
 		</div>
-		<Subheader icon="error" :badge="233">{{ t.error_pages }}</Subheader>
+		<Subheader icon="error" :badge="233">错误页</Subheader>
 		<div class="pages">
 			<a v-for="page in httpCodes" :key="page.name" class="link lite" :href="'/error/' + page.link">{{ page.name }}</a>
 		</div>

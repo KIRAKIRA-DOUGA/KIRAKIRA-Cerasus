@@ -137,11 +137,11 @@
 		</ClientOnly>
 		<div class="toolbar">
 			<div class="left">
-				<ToolItem :tooltip="t.bold" icon="bold" active="bold" @click="toggleBold" />
-				<ToolItem :tooltip="t.italic" icon="italic" active="italic" @click="toggleItalic" />
-				<ToolItem :tooltip="t.underline" icon="underline" active="underline" @click="toggleUnderline" />
-				<ToolItem :tooltip="t.strikethrough" icon="strikethrough" active="strike" @click="toggleStrike" />
-				<ToolItem :tooltip="t.at_person" icon="at" @click="showAtList" />
+				<ToolItem :tooltip="t.format.bold" icon="bold" active="bold" @click="toggleBold" />
+				<ToolItem :tooltip="t.format.italic" icon="italic" active="italic" @click="toggleItalic" />
+				<ToolItem :tooltip="t.format.underline" icon="underline" active="underline" @click="toggleUnderline" />
+				<ToolItem :tooltip="t.format.strikethrough" icon="strikethrough" active="strike" @click="toggleStrike" />
+				<ToolItem :tooltip="t.format.at_person" icon="at" @click="showAtList" />
 				<ToolItem :tooltip="t.kaomoji" icon="kaomoji" :active="!!flyoutKaomoji" @click="e => flyoutKaomoji = [e, 'y', -3]" />
 				<ToolItem :tooltip="t.image" icon="photo" @click="addVueComponents" />
 			</div>

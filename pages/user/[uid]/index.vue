@@ -50,7 +50,7 @@
 					</div>
 					<div>
 						<span class="value">{{ 0 }}</span>
-						<p>{{ t.views_video }}</p>
+						<p>{{ t.watched }}</p>
 					</div>
 					<div>
 						<span class="value">{{ 0 }}</span>
@@ -63,7 +63,7 @@
 				<div class="user-info">
 					<h3>{{ t.user_info }}</h3>
 					<div class="items">
-						<div v-tooltip:x="t.birthday" class="birthday">
+						<div v-tooltip:x="t.user.birthday" class="birthday">
 							<Icon name="birthday" />
 							<span>{{ user?.birthdate !== "" && user?.birthdate !== undefined ? formatDate(new Date(user?.birthdate), "yyyy/MM/dd") : "" }}</span>
 						</div>

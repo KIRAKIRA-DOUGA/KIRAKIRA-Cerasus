@@ -75,7 +75,7 @@
 	<Comp>
 		<div class="top">
 			<div class="info">
-				<CountItem icon="play" :value="getCompactDecimal(counts.play)">{{ t(counts.play).views_video }}</CountItem>
+				<CountItem icon="play" :value="getCompactDecimal(counts.play)">{{ t(counts.play).watched }}</CountItem>
 				<CountItem icon="thumb_up" :value="getCompactDecimal(counts.rating)" :class="{ downvote: counts.rating < 0 }">{{ t.rating }}</CountItem>
 				<CountItem icon="star" :value="getCompactDecimal(counts.favorite)">{{ t(counts.favorite).favorite }}</CountItem>
 				<CountItem icon="danmaku" :value="getCompactDecimal(counts.danmaku)">{{ t(counts.danmaku).danmaku }}</CountItem>

@@ -193,13 +193,13 @@
 						</div>
 						<div class="action margin-left-inset">
 							<Button icon="arrow_left" class="button" @click="currentPage = 'register'">{{ t.step.previous }}</Button>
-							<Button icon="check" class="button" @click="registerUser">{{ t.step.ok }}</Button>
+							<Button icon="check" class="button" @click="registerUser">{{ t.step.finish }}</Button>
 						</div>
 					</div>
 
 					<!-- 忘记密码 Forgot Password -->
 					<div class="forgot">
-						<HeadingGroup :name="t.forgot_password" englishName="forgot" />
+						<HeadingGroup :name="t.password.forgot" englishName="forgot" />
 						<div class="form">
 							<div><Preserves>{{ t.loginwindow.forgot_info }}</Preserves></div>
 							<TextBox
@@ -217,7 +217,7 @@
 
 					<!-- 重设密码 Reset Password -->
 					<div class="reset">
-						<HeadingGroup :name="t.reset_password" englishName="Reset" />
+						<HeadingGroup :name="t.password.reset" englishName="Reset" />
 						<div class="form">
 							<div><Preserves>{{ t.loginwindow.reset_successful_info }}</Preserves></div>
 							<TextBox
@@ -235,7 +235,7 @@
 						</div>
 						<div class="action margin-left-inset">
 							<div></div>
-							<Button icon="check" class="button" @click="resetPassword">{{ t.step.ok }}</Button>
+							<Button icon="check" class="button" @click="resetPassword">{{ t.step.finish }}</Button>
 						</div>
 					</div>
 

@@ -81,7 +81,7 @@ const TChinese: LocaleIdentifiers = {
 		_: "黑名單",
 		ban: {
 			_: "封禁", // NEW
-			description: "不想与其交流的用户，他将被禁止与你互动。", // NEW
+			description: "不想与其交流的用户，该用户将被禁止与你互动。", // NEW
 		},
 		hide: {
 			_: "隐藏", // NEW
@@ -115,7 +115,7 @@ const TChinese: LocaleIdentifiers = {
 				bottom: "底部",
 				ltr: "逆向",
 			},
-			send_as_creator: "創作者專用漸變",
+			send_as_creator: "創作者專屬漸變",
 		},
 		list: {
 			loading: "弹幕装填中⋯⋯", // NEW
@@ -195,7 +195,7 @@ const TChinese: LocaleIdentifiers = {
 	title: "標題",
 	tags: "標籤",
 	press_enter_to_add: "按Enter鍵添加",
-	description_of_creation: "簡介",
+	description: "簡介",
 	push_to_feed: "推送到動態",
 	cover: "封面",
 	select_cover: "選擇封面",
@@ -206,7 +206,7 @@ const TChinese: LocaleIdentifiers = {
 	follow: "追蹤",
 	following: "已追蹤",
 	fans: "粉絲",
-	views_video: "觀看",
+	watched: "觀看",
 	join_time: "加入時間",
 	user_info: "個人資訊",
 	acknowledgement: "鳴謝",
@@ -323,7 +323,7 @@ const TChinese: LocaleIdentifiers = {
 	keywords: "关键词", // NEW
 	user_page: {
 		_: "个人主页", // NEW
-		title_affix: "的个人主页", // NEW
+		title_affix: "{0}的个人主页", // NEW
 	},
 	manage_content: "稿件管理", // NEW
 	add_to_blocklist: "加入黑名单", // NEW

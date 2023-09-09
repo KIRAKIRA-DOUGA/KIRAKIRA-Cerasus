@@ -1,8 +1,7 @@
 <script setup lang="ts">
 	const visibilities = reactive<{ name: string; icon?: string; logo?: string; privacy: PrivacyType }[]>([
-		{ name: t.birthday, icon: "birthday", privacy: "public" },
+		{ name: t.user.birthday, icon: "birthday", privacy: "public" },
 		{ name: t.user.age, icon: "calendar", privacy: "public" },
-		{ name: t.user.gender, icon: "gender", privacy: "public" },
 		{ name: t.follow, icon: "person_add", privacy: "public" },
 		{ name: t.fans, icon: "person_heart", privacy: "public" },
 		{ name: t.favorites, icon: "star", privacy: "public" },
@@ -36,11 +35,11 @@
 <template>
 	<Subheader icon="cookie">网络曲奇☆</Subheader>
 	<section list>
-		<ToggleSwitch v-model="enableCookie" v-ripple icon="cookie">{{ t.settings.privacy.allow_cookies }}</ToggleSwitch>
+		<ToggleSwitch v-model="enableCookie" v-ripple icon="cookie">{{ t.privacy.allow_cookies }}</ToggleSwitch>
 	</section>
 
 	<div class="privacy-header">
-		<Subheader icon="visibility">{{ t.settings.privacy.info_visibility }}</Subheader>
+		<Subheader icon="visibility">{{ t.privacy.info_visibility }}</Subheader>
 		<div class="options">
 			<SoftButton v-tooltip:top="'公开'" icon="visibility" @click="setColonVisibility('public')" />
 			<SoftButton v-tooltip:top="'仅你关注的人可见'" icon="person_add" @click="setColonVisibility('following')" />
@@ -57,8 +56,8 @@
 	</section>
 
 	<div class="submit">
-		<Button icon="reset" class="secondary">{{ t.reset }}</Button>
-		<Button icon="check" @click="useToast('修改失败', 'error');">{{ t.apply }}</Button>
+		<Button icon="reset" class="secondary">{{ t.step.reset }}</Button>
+		<Button icon="check" @click="useToast('修改失败', 'error');">{{ t.step.apply }}</Button>
 	</div>
 </template>
 

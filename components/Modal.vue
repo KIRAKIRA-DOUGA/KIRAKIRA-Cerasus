@@ -87,7 +87,7 @@
 							<Icon :name="icon" filled @dblclick="open = false" />
 							<span>{{ title }}</span>
 						</div>
-						<button class="close-button" :aria-label="t.close" @click="open = false">
+						<button class="close-button" :aria-label="t.step.close" @click="open = false">
 							<Icon name="close" />
 						</button>
 					</div>
