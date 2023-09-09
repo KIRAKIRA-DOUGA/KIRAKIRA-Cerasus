@@ -142,7 +142,7 @@ const Japanese: LocaleIdentifiers = {
 	player: {
 		_: "プレーヤー",
 		speed: {
-			resample_audio: "重采样音频", // NEW
+			resample: "重采样音频", // NEW
 			continuous: "无级变速", // NEW
 		},
 	},
