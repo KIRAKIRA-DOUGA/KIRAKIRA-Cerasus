@@ -140,7 +140,7 @@ const SChinese = {
 	player: {
 		_: "播放",
 		speed: {
-			resample_audio: "重采样音频",
+			resample: "重采样音频",
 			continuous: "无级变速",
 		},
 	},
