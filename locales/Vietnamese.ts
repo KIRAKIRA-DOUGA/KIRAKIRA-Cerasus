@@ -182,7 +182,7 @@ const Vietnamese: LocaleIdentifiers = {
 			backend: "GitHub Backend Repositories and Issue Feedback",
 			markdown: "User Page Markdown Repositories and Issue Feedback",
 		},
-		creative_team: "Creative Team",
+		team: "Team",
 		staff: {
 			webmistress: "Webmistress",
 			designer: "Designer",

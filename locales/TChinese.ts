@@ -182,7 +182,7 @@ const TChinese: LocaleIdentifiers = {
 			backend: "GitHub後端倉庫地址與問題回饋",
 			markdown: "個人主頁Markdown倉庫地址與問題回饋",
 		},
-		creative_team: "創作團隊",
+		team: "創作團隊",
 		staff: {
 			webmistress: "站娘",
 			designer: "設計",
