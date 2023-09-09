@@ -134,7 +134,7 @@ const Vietnamese: LocaleIdentifiers = {
 	player: {
 		_: "Player",
 		speed: {
-			resample_audio: "Resample Audio",
+			resample: "Resample Audio",
 			continuous: "Continuous Control",
 		},
 	},
@@ -152,7 +152,7 @@ const Vietnamese: LocaleIdentifiers = {
 			send_as_creator: "Creator's Gradient",
 		},
 		list: {
-			loading: "Loading Danmakus",
+			loading: "Loading Danmakus…",
 			thead: {
 				time: "Time",
 				content: "Content",
@@ -305,7 +305,7 @@ const Vietnamese: LocaleIdentifiers = {
 		reset: "Reset",
 	},
 	loginwindow: {
-		login_welcome: "Welcome",
+		login_welcome: "Welcome Home",
 		login_to_forgot: "I forgot my password",
 		login_to_register: "I don't have an account",
 		register_to_login: "I have an account",
