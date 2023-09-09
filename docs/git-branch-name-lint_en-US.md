@@ -27,6 +27,12 @@ feature-<Date>-<ModifiedContentAbbrName>-<Creator>
 refactoring-<Date>-<ModifiedContentAbbrName>-<Creator>
 ```
 
+#### Locale - **locale**
+
+```
+locale-<Language>
+```
+
 ---
 
 #### Specific format
