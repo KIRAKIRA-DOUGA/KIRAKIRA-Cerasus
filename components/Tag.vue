@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	import { LocaleLink } from "#components";
 
-	const props = defineProps<{
+	const props = withDefaults(defineProps<{
 		/** 勾选，单向绑定使用。 */
 		checked?: boolean;
 		/** 禁用。 */
@@ -10,10 +10,42 @@
 		link?: string;
 		/** URL Search Params. */
 		query?: UrlQueryType;
+		/** 当标签为文本输入模式时，显示的文本占位符。 */
+		placeholder?: string;
+	}>(), {
+		link: undefined,
+		query: undefined,
+		placeholder: "",
+	});
+
+	const emits = defineEmits<{
+		change: [value: string];
 	}>();
 
 	const model = defineModel<boolean>();
+	const input = defineModel<string>("input");
+	const editable = computed(() => input.value !== undefined);
 	const isChecked = withOneWayProp(model, () => props.checked);
+
+	/**
+	 * 键盘在标签输入框中输入文本时的更新事件。
+	 * @param e - 普通事件。
+	 */
+	function onInput(e: Event) {
+		const div = e.target as HTMLDivElement;
+		input.value = div.innerText;
+	}
+	
+	/**
+	 * 标签输入框中文本输入完成后的更新事件。
+	 * @param e - 普通事件。
+	 */
+	function onChange(e: Event) {
+		const div = e.target as HTMLDivElement;
+		div.blur();
+		const value = div.innerText;
+		emits("change", value);
+	}
 </script>
 
 <template>
@@ -21,7 +53,7 @@
 		:is="link !== undefined ? LocaleLink : 'span'"
 		v-ripple
 		class="tag lite"
-		:class="{ checked: isChecked }"
+		:class="{ checked: isChecked, editable }"
 		:to="link"
 		:query="query"
 		draggable="false"
@@ -38,7 +70,17 @@
 					<Icon name="check" class="check" />
 				</div>
 			</Transition>
-			<slot></slot>
+			<div
+				v-if="editable"
+				class="text-box"
+				:data-placeholder="placeholder"
+				:contenteditable="true"
+				@input="onInput"
+				@change="onChange"
+				@blur="onChange"
+				@keyup.enter.prevent="onChange"
+			>{{ input }}</div>
+			<div v-else><slot></slot></div>
 		</div>
 	</component>
 </template>
@@ -46,13 +88,14 @@
 <style scoped lang="scss">
 	$check-icon-size: 19px;
 	$duration: 400ms;
+	$padding: 6px 12px;
 
 	.tag {
 		@include oval;
 		@include flex-center;
 		position: relative;
 		display: inline-flex;
-		padding: 6px 12px;
+		padding: $padding;
 		overflow: hidden;
 		color: inherit;
 		font-size: inherit;
@@ -64,11 +107,11 @@
 			@include button-shadow-unchecked-hover;
 		}
 
-		&:focus {
+		&:focus-within {
 			@include button-shadow-unchecked-focus;
 		}
 
-		&:hover:focus {
+		&:hover:focus-within {
 			@include button-shadow-unchecked-hover-focus;
 		}
 
@@ -81,11 +124,11 @@
 				@include button-shadow-hover;
 			}
 
-			&:focus {
+			&:focus-within {
 				@include button-shadow-focus;
 			}
 
-			&:hover:focus {
+			&:hover:focus-within {
 				@include button-shadow-hover-focus;
 			}
 
@@ -98,6 +141,10 @@
 		&,
 		* {
 			transition: $fallback-transitions, all $ease-out-expo $duration;
+		}
+		
+		&.editable {
+			cursor: text;
 		}
 	}
 
@@ -124,6 +171,8 @@
 		z-index: 2;
 		display: inline-flex;
 		gap: 0;
+		align-items: center;
+		min-height: $check-icon-size;
 
 		.checked & {
 			gap: 8px;
@@ -139,5 +188,15 @@
 		z-index: 1;
 		display: none;
 		background-color: c(accent);
+	}
+
+	.text-box {
+		margin: list-negative($padding);
+		padding: $padding;
+		
+		&:empty::before {
+			color: c(icon-color);
+			content: attr(data-placeholder);
+		}
 	}
 </style>

@@ -134,3 +134,12 @@ export function arrayMapObject<T, K extends ObjectKey, U>(array: T[], callbackFn
 export function enumerate<T>(array: T[], start: number = 0) {
 	return array.map((value, index, array) => [index + start, value, array] as const);
 }
+
+/**
+ * 数组去重。
+ * @param array - 数组。
+ * @returns 注意是会返回一个新的数组。
+ */
+export function arrayToRemoveDuplicates<T>(array: T[]) {
+	return [...new Set(array)];
+}
