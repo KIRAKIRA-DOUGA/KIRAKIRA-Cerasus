@@ -28,15 +28,11 @@
 			fill: c(accent);
 		}
 
-		.english-after:lang(en),
-		.english-after:lang(vi),
-		.english-after:lang(id) {
+		.english-after:lang(en) {
 			display: none;
 		}
 
-		.main-title:lang(en),
-		.main-title:lang(vi),
-		.main-title:lang(id),
+		.main-title:lang-latin,
 		.english-after {
 			font-feature-settings: normal;
 		}
