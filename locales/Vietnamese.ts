@@ -114,7 +114,7 @@ const Vietnamese: LocaleIdentifiers = {
 	blocklist: {
 		_: "Danh sách chặn",
 		ban: {
-			_: "Cấm",
+			_: "Chặn",
 			description: "Người dùng bạn không muốn liên hệ.",
 		},
 		hide: {
@@ -394,7 +394,7 @@ const Vietnamese: LocaleIdentifiers = {
 	toast: {
 		finish: "Xong",
 		unsupported_file: "Định dạng này không được hỗ trợ!",
-		no_cover: "Hãy đăng bìa cho video!",
+		no_cover: "Hãy thêm bìa cho video!",
 		login_failed: "Tên người dùng hoặc mật khẩu không đúng.",
 		password_mismatch: "Mật khẩu nhập mới nhập lại không khớp!",
 		copied: "Đã sao chép!",
