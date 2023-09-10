@@ -376,13 +376,13 @@ const Japanese: LocaleIdentifiers = {
 	manage_content: "投稿管理", // NEW
 	add_to_blocklist: "ブロックする",
 	platform: {
-		bilibili: "ビリビリ",
-		niconico: "ニコニコ",
-		otomad_wiki: "音MADウィキ",
-		weibo: "微博",
 		twitter: "Twitter",
 		qq: "QQ",
+		bilibili: "ビリビリ",
+		niconico: "ニコニコ",
 		youtube: "YouTube",
+		otomad_wiki: "音MADウィキ",
+		weibo: "微博",
 		discord: "Discord",
 		telegram: "Telegram",
 		midishow: "MidiShow",

@@ -44,7 +44,7 @@ module.exports = {
 		"declaration-empty-line-before": null,
 		"custom-property-empty-line-before": null,
 		"selector-pseudo-class-no-unknown": [true, {
-			"ignorePseudoClasses": ["deep", "slotted", "global", "export", "vertical", "horizontal", "decrement", "increment", "component", "comp", "any-hover"],
+			"ignorePseudoClasses": ["deep", "slotted", "global", "export", "vertical", "horizontal", "decrement", "increment", "component", "comp", "any-hover", "lang-latin"],
 		}],
 		"declaration-block-no-duplicate-properties": true,
 		"declaration-block-no-duplicate-custom-properties": true,

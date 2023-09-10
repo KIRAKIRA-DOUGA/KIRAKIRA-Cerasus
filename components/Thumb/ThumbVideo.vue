@@ -164,8 +164,7 @@
 		text-align: justify;
 		text-overflow: ellipsis;
 
-		&:lang(zh),
-		&:lang(ja) {
+		&:lang(zh, ja) {
 			text-overflow: "⋯⋯";
 		}
 

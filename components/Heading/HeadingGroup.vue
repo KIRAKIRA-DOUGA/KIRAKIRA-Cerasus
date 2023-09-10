@@ -32,7 +32,7 @@
 			display: none;
 		}
 
-		.main-title:lang(en),
+		.main-title:lang-latin,
 		.english-after {
 			font-feature-settings: normal;
 		}

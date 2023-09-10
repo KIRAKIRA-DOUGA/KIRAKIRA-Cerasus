@@ -216,6 +216,7 @@ export default defineNuxtConfig({
 		plugins: {
 			"./plugins/postcss/component-root": true,
 			"./plugins/postcss/any-hover": true,
+			"./plugins/postcss/lang-latin": true,
 			"postcss-combine-media-query": true,
 		},
 	},

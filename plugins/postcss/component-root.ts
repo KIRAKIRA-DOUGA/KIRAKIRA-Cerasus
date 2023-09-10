@@ -40,7 +40,7 @@ const componentRoot: PostCSSPlugin = (_opts = {}) => {
 	return {
 		postcssPlugin: "postcss-component-root",
 		Rule(rule, _helper) {
-			if (rule.selector.match(/:comp(onent)?(?![A-Za-z0-9\-_])/)) {
+			if (rule.selector.match(/:comp(onent)?(?![-_\w])/)) {
 				const filePath = rule.source?.input.file;
 				if (!filePath) return;
 				let fileName: string | undefined = path.parse(filePath).name;

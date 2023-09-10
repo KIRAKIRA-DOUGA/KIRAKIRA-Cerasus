@@ -43,9 +43,7 @@
 		border-width: 1px 0;
 		font-feature-settings: normal;
 
-		&:lang(en),
-		&:lang(vi),
-		&:lang(id) {
+		&:lang-latin {
 			font-family: $english-logo-fonts;
 		}
 
