@@ -16,8 +16,17 @@
 	const thumbnailBlob = ref<string>();
 	const thumbnailInput = ref<HTMLInputElement>();
 
-	const tags = ref("");
+	const tags = ref<string[]>([""]); // TODO: 稍后将修改为 Record<number, string> 以解决动画的 bug。
 	const description = ref("");
+
+	/**
+	 * 更新标签项目。
+	 */
+	function updateTags() {
+		const newTags = arrayToRemoveDuplicates(tags.value.map(tag => tag.replace(/[\r\n\t\v]/g, "").replace(/\s+/g, " ")).filter(tag => tag));
+		newTags.push("");
+		tags.value = newTags;
+	}
 
 	/**
 	 * 上传文件无效。
@@ -70,8 +79,6 @@
 			return;
 		}
 
-		const tagsArray = tags.value.split(",");
-
 		// severe bug in openapi around multiple file uploads using form-data
 
 		const formData = new FormData();
@@ -90,7 +97,7 @@
 			headers: {
 				"Content-Type": "multipart/form-data",
 				title: title.value,
-				tags: tagsArray.toString(),
+				tags: tags.value.filter(tag => tag).toString(),
 				description: description.value,
 				category: category.value,
 			},
@@ -173,11 +180,11 @@
 
 					<section>
 						<Subheader icon="tag">{{ t(2).tag }}</Subheader>
-						<!-- Tags (comma separated, no spaces) -->
-						<!-- <div class="tags">
-							<Tag>{{ t.press_enter_to_add }}</Tag>
-						</div> -->
-						<TextBox v-model="tags" required />
+						<div class="tags">
+							<TransitionGroup>
+								<Tag v-for="(tag, i) in tags" :key="i" v-model:input="tags[i]" :placeholder="t.press_enter_to_add" @change="updateTags">{{ tag }}</Tag>
+							</TransitionGroup>
+						</div>
 
 					</section>
 
@@ -315,5 +322,19 @@
 	.submit {
 		display: flex;
 		justify-content: right;
+	}
+	
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		
+		.tag {
+			&.v-enter-from,
+			&.v-leave-to {
+				scale: 0.8;
+				opacity: 0;
+			}
+		}
 	}
 </style>
