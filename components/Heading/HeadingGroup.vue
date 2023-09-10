@@ -28,7 +28,7 @@
 			fill: c(accent);
 		}
 
-		.english-after:lang-latin {
+		.english-after:lang(en) {
 			display: none;
 		}
 

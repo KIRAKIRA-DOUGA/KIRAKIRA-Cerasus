@@ -21,7 +21,7 @@
 /// @param {Color} $color - 颜色值。
 /// @return {String} 转义 SVG 中的颜色值。
 @function color-to-svg-color($color) {
-	@return unquote("%23" + str-slice(#{$color}, -6));
+	@return unquote("%23" + string.slice(#{$color}, -6)); // $color 变量是颜色类型，需要转换成字符串类型才可继续使用。
 }
 
 /// 将颜色（如 `#f00`）转换为 RGB 列表（如 `255, 0, 0`），方便用于调用 rgba 函数。

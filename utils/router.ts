@@ -93,10 +93,13 @@ export function switchLanguage(lang: string) {
 	useRouter().push(lang + getRoutePath());
 	if (environment.client) { // 切换语言动画。
 		const element = document.querySelector(".settings") ?? document.body;
+		const routerView = element.querySelector(".router-view");
+		routerView?.classList.add("stop-animation");
 		element.animate([
 			{ filter: "blur(10px)" },
 			{ filter: "blur(0)" },
 		], { duration: 500, easing: eases.easeOutSmooth });
+		// nextTick(() => routerView?.classList.add("stop-animation"));
 	}
 }
 

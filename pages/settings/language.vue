@@ -30,6 +30,19 @@
 </template>
 
 <style scoped lang="scss">
+	section {
+		$length: 10;
+		animation: none !important;
+
+		:not(.stop-animation) > & {
+			@for $i from 1 through $length {
+				> :nth-child(#{$i}) {
+					animation: scale-in 600ms (100ms * ($i - 1)) $ease-out-smooth backwards;
+				}
+			}
+		}
+	}
+
 	.line {
 		width: 100%;
 		margin: 0 20px;
@@ -57,6 +70,13 @@
 			padding: 12px 0;
 			font-size: 20px;
 			line-height: 20px;
+		}
+	}
+	
+	@keyframes scale-in {
+		from {
+			scale: 0.8;
+			opacity: 0;
 		}
 	}
 </style>
