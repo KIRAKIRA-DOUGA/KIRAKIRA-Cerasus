@@ -70,8 +70,8 @@ const Japanese: LocaleIdentifiers = {
 	disabled: "無効化されたスイッチ",
 	tag: {
 		_: "タグ",
-		search: "搜索标签", // NEW
-		new: "创建新标签", // NEW
+		search: "タグ検索",
+		new: "タグ新規登録",
 	},
 	all: "すべて",
 	video: "動画",
@@ -101,9 +101,9 @@ const Japanese: LocaleIdentifiers = {
 		cookie: "クッキー☆",
 		allow_cookies: "Cookieの利用を同意する",
 		info_visibility: "情報の公開範囲",
-		public: "公开", // NEW
-		private: "私密", // NEW
-		following: "仅你关注的人可见", // NEW
+		public: "公開",
+		private: "自分のみ",
+		following: "自分のフォローのみ",
 	},
 	security: "セキュリティ",
 	login_options: "ログイン オプション",
@@ -123,48 +123,48 @@ const Japanese: LocaleIdentifiers = {
 		_: "ブロックリスト",
 		ban: {
 			_: "ブロック",
-			description: "交流したくないのユーザー、あなたと交流できなくなります",
+			description: "交流したくないのユーザー、あなたとの交流をできなくさせます",
 		},
 		hide: {
-			_: "隠す",
-			description: "目にしたくないのユーザー、あなたの視点から消えさせます(対象のプロフィールにアクセス場合を除く)",
+			_: "非表示",
+			description: "目にしたくないのユーザー、あなたの視点から消えさせます（わざわざ対象のプロフィールにアクセス場合を除く）",
 		},
 		tags: {
-			description: "タグで目にしたくない投稿を選択します",
+			description: "タグで目にしたくない投稿を非表示にします",
 		},
 		keywords: {
-			description: "キーワードで目にしたくない投稿を選択します",
+			description: "キーワードで目にしたくない投稿を非表示にします",
 		},
 		regexp: {
-			description: "正規表現で目にしたくない投稿を選択します",
+			description: "正規表現で目にしたくない投稿を非表示にします",
 		},
 	},
 	player: {
 		_: "プレーヤー",
 		speed: {
-			resample: "重采样音频", // NEW
-			continuous: "无级变速", // NEW
+			resample: "リサンプリング",
+			continuous: "無段変速",
 		},
 	},
 	danmaku: {
 		_: "弾幕",
-		send: "弾幕を送信",
+		send: "弾幕の送信",
 		history: "弾幕履歴",
 		format: {
 			mode: {
-				rtl: "スクロール",
+				rtl: "ｽｸﾛｰﾙ",
 				top: "中央上",
 				bottom: "中央下",
-				ltr: "逆スクロール",
+				ltr: "逆ｽｸﾛｰﾙ",
 			},
 			send_as_creator: "クリエイター専用グラデーション",
 		},
 		list: {
-			loading: "弹幕装填中⋯⋯", // NEW
+			loading: "弾幕ロード中⋯⋯",
 			thead: {
-				time: "时间", // NEW
-				content: "内容", // NEW
-				sending_time: "发送时间", // NEW
+				time: "時間",
+				content: "弾幕内容",
+				sending_time: "書込時刻",
 			},
 		},
 	},
@@ -173,22 +173,22 @@ const Japanese: LocaleIdentifiers = {
 	accessibility: "アクセシビリティ",
 	shortcut_key: {
 		_: "ショートカットキー",
-		player_page: "播放页", // NEW
-		play_pause: "播放/暂停", // NEW
-		exit_fullscreen: "退出全屏", // NEW
-		pagination: "分页器", // NEW
-		page_turning: "翻页", // NEW
-		comment_area: "评论区", // NEW
-		quick_insert_kaomoji: "快捷插入颜文字", // NEW
+		player_page: "再生ページ",
+		play_pause: "再生/一時停止",
+		exit_fullscreen: "フルスクリーン解除",
+		pagination: "ページネーション",
+		page_turning: "ページめくり",
+		comment_area: "コメント",
+		quick_insert_kaomoji: "顔文字クイック挿入",
 	},
 	guide: "ガイド",
 	about: {
 		_: "KIRAKIRAについて",
 		repositories: {
 			_: "リポジトリ",
-			frontend: "GitHub前端仓库地址与问题反馈", // NEW
-			backend: "GitHub后端仓库地址与问题反馈", // NEW
-			markdown: "个人主页Markdown仓库地址与问题反馈", // NEW
+			frontend: "GitHubフロントエンド リポジトリ リンク & フィードバック",
+			backend: "GitHubバックエンド リポジトリ リンク & フィードバック",
+			markdown: "プロフィールページ Markdown リポジトリ リンク & フィードバック",
 		},
 		team: "開発チーム",
 		staff: {
@@ -199,7 +199,7 @@ const Japanese: LocaleIdentifiers = {
 			translator: "翻訳者",
 		},
 		technologies_used: "使用されている技術",
-		slogan: "一个可爱的视频网站，\n献给可爱的你！", // NEW
+		slogan: "かわいい動画サイトを，\nかわいいあなたに！",
 	},
 	acknowledgement: "スペシャルサンクス",
 	friendly_links: "相互リンク",
@@ -216,25 +216,25 @@ const Japanese: LocaleIdentifiers = {
 	favorite_verb: "お気に入りに追加",
 	favorites: {
 		_: "お気に入り",
-		my_favorites: "我的收藏夹", // NEW
-		subscribed_favorites: "订阅收藏夹", // NEW
-		modify_info: "修改信息", // NEW
-		clear_expired: "清理已失效视频", // NEW
-		subscribe: "订阅收藏", // NEW
-		play_all: "播放全部", // NEW
-		play_selected: "播放选中", // NEW
-		select_all_this_page: "全选本页", // NEW
-		add: "添加视频", // NEW
-		remove: "取消收藏", // NEW
-		copy_to: "复制到", // NEW
-		move_to: "移动到", // NEW
-		multi_select: "批量选择", // NEW
+		my_favorites: "自分のお気に入り",
+		subscribed_favorites: "購読中のお気に入り",
+		modify_info: "編集",
+		clear_expired: "利用できない動画を削除する",
+		subscribe: "購読する",
+		play_all: "全て再生",
+		play_selected: "選択中の動画を再生",
+		select_all_this_page: "このページを全選択",
+		add: "動画の追加",
+		remove: "お気に入りを解除",
+		copy_to: "コピー",
+		move_to: "移動",
+		multi_select: "複数選択",
 	},
 	feed: "フィード",
 	upload: {
 		_: "投稿",
-		drag_to_upload: "拖到此处上传", // NEW
-		format_info: "支持MP4、WMV、WEBM等主流格式", // NEW
+		drag_to_upload: "ここにドラッグしてアップロード",
+		format_info: "MP4、WMV、WEBMなどの主な形式をサポートしています",
 	},
 	messages: "メッセージ",
 	login: "ログイン",
@@ -302,7 +302,7 @@ const Japanese: LocaleIdentifiers = {
 	step: {
 		next: "次へ",
 		previous: "戻る",
-		ok: "OK", // NEW
+		ok: "OK",
 		cancel: "キャンセル",
 		finish: "完了",
 		close: "閉じる",
@@ -323,10 +323,10 @@ const Japanese: LocaleIdentifiers = {
 		reset_successful_info: "本人確認ができました！\n新しいパスワードを設定してください。そして忘れないようにしてください。",
 	},
 	unselected: {
-		combobox: "请选择一项", // NEW
-		settings: "请选择一项设置", // NEW
-		tag: "请搜索标签", // NEW
-		language: "选择语言", // NEW
+		combobox: "選択してください",
+		settings: "設定項目を選択してください",
+		tag: "目標タグを検索してください",
+		language: "言語を選んでください",
 	},
 	user: {
 		name: "ニックネーム",
@@ -363,17 +363,17 @@ const Japanese: LocaleIdentifiers = {
 	mode: "モード",
 	size: {
 		_: "サイズ",
-		tiny: "微", // NEW
+		tiny: "ミニ",
 		small: "小",
 		medium: "中",
 		large: "大",
-		huge: "巨", // NEW
+		huge: "特大",
 	},
 	user_page: {
 		_: "プロフィール",
 		title_affix: "{0}のプロフィール",
 	},
-	manage_content: "投稿管理", // NEW
+	manage_content: "投稿管理",
 	add_to_blocklist: "ブロックする",
 	platform: {
 		twitter: "Twitter",
@@ -394,23 +394,23 @@ const Japanese: LocaleIdentifiers = {
 		back: "戻る",
 	},
 	other: "その他",
-	color_picker: "Color Picker",
-	video_count: "{0}个视频", // NEW
-	video_recommendations: "相关视频", // NEW
-	page_not_found_info: "你似乎来到了一个很新的页面。", // NEW
-	click_to_refresh: "点击刷新", // NEW
+	color_picker: "カラー選択",
+	video_count: "{0}本の動画",
+	video_recommendations: "おすすめ動画",
+	page_not_found_info: "新しいすぎるページにやってきたみたい。",
+	click_to_refresh: "クリックして再読込",
 	toast: {
 		finish: "操作は正常に完了しました",
-		unsupported_file: "不支持上传所选文件！", // NEW
-		no_cover: "请上传封面！", // NEW
-		login_failed: "登录失败！用户名或密码错误。", // NEW
-		password_mismatch: "两次输入密码不一致！", // NEW
-		copied: "已复制！", // NEW
-		modification_failed: "修改失败！", // NEW
-		failed_to_disable_cookies: "禁用Cookie失败！", // NEW
+		unsupported_file: "このファイル形式はサポートされていません！",
+		no_cover: "サムネイルを指定してください！",
+		login_failed: "ログインに失敗しました！ユーザー名またはパスワードが間違っています。",
+		password_mismatch: "パスワードが一致しません。！",
+		copied: "コピーしました。",
+		modification_failed: "編集に失敗しました。",
+		failed_to_disable_cookies: "Cookieを無効化できませんでした。",
 	},
 	confirm: {
-		cancel_upload: "确定要取消本次上传吗？", // NEW
+		cancel_upload: "アップロードをキャンセルしますか？",
 	},
 };
 
