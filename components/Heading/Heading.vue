@@ -40,7 +40,7 @@
 			font-variant-caps: small-caps;
 			transition: none;
 
-			&:lang(en) {
+			&:lang(en), &:lang(vi), &:lang(id) {
 				font-family: $english-logo-fonts;
 				font-style: italic;
 				transform: none;
