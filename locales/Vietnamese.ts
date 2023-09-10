@@ -52,7 +52,7 @@ const Vietnamese: LocaleIdentifiers = {
 		_: "Giao diện",
 		sharp_mode: "Sắc sảo",
 		flat_mode: "Đơn giản",
-		colorful_navbar: "Thêm màu vào thanh tìm kiếm",
+		colorful_navbar: "Thêm màu vào thanh điều hướng",
 	},
 	confetti: "Pháo bông",
 	send: "Gửi",
