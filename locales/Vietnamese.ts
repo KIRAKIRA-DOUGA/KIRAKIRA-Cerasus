@@ -105,7 +105,7 @@ const Vietnamese: LocaleIdentifiers = {
 		reset: "Đặt lại mật khẩu",
 		retype: "Nhập lại mật khẩu",
 		change: "Thay mật khẩu",
-		current: "Mật khẩu hiện hành",
+		current: "Mật khẩu hiện tại",
 		new: "Mật khẩu mới",
 		new_retype: "Nhập lại mật khẩu mới",
 		hint: "Gợi ý mật khẩu",
@@ -154,7 +154,7 @@ const Vietnamese: LocaleIdentifiers = {
 		list: {
 			loading: "Đang nạp Đạn Mạc…",
 			thead: {
-				time: "Thời lượng",
+				time: "Mốc thời gian",
 				content: "Nội dung",
 				sending_time: "Thời gian gửi",
 			},
@@ -251,7 +251,7 @@ const Vietnamese: LocaleIdentifiers = {
 		embarrassed: "Xấu hổ",
 	},
 	associate_existing: "Chia phần video",
-	reply: "Hồi đáp",
+	reply: "Trả lời",
 	more: "Xem thêm",
 	delete: "Xóa",
 	copy: "Sao chép",
