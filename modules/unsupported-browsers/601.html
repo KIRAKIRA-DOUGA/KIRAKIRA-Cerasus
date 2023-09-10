@@ -28,9 +28,12 @@
 			}
 			if (lang.match(/^en/i)) lang = "en";
 			else if (lang.match(/^ja/i)) lang = "ja";
+			else if (lang.match(/^ko/i)) lang = "ko";
+			else if (lang.match(/^vi/i)) lang = "vi";
+			else if (lang.match(/^id/i)) lang = "id";
 			else if (lang.match(/^zh/i)) {
 				if (lang.match(/(CN|SG|MY)$/i) || lang === "zhs") lang = "zh-Hans-CN";
-				// else if (lang.match(/(TW|HK|MO)$/i) || lang === "zht") lang = "zh-Hant-TW"; // 等确定支持繁体中文时再添加。
+				else if (lang.match(/(TW|HK|MO)$/i) || lang === "zht") lang = "zh-Hant-TW";
 				else return;
 			}
 			else return;
@@ -38,8 +41,12 @@
 			document.documentElement.className = lang;
 			var titles = {
 				"zh-Hans-CN": "是时候更换你的浏览器了",
+				"zh-Hant-TW": "是时候更换你的浏览器了",
 				en: "Time to Change Your Browser",
 				ja: "ブラウザの変更時期",
+				ko: "Time to Change Your Browser",
+				vi: "Time to Change Your Browser",
+				id: "Time to Change Your Browser",
 			};
 			var title = titles[lang];
 			if (title) document.title = title + " - KIRAKIRA☆DOUGA";
@@ -262,8 +269,12 @@
 		}
 
 		html.zh-Hans-CN .text.zh-Hans-CN,
+		html.zh-Hant-TW .text.zh-Hant-TW,
 		html.en .text.en,
-		html.ja .text.ja {
+		html.ja .text.ja,
+		html.ko .text.ko,
+		html.vi .text.vi,
+		html.id .text.id {
 			display: block;
 		}
 	</style>
@@ -338,6 +349,22 @@
 					</span>
 				</p>
 			</div>
+			<div lang="zh-Hant-TW" class="text zh-Hant-TW">
+				<h1>使用过时浏览器的你，<br />可真让人瞧不起啊</h1>
+				<p>
+					你乘坐着Internet Explorer来到了ACG的海洋，很可惜，你搁浅了⋯⋯<br />
+					如此老旧的技术很难适应这片海洋环境，这个苍老的浏览器也难以使你扬帆起航。<br />
+					<br />
+					Internet Explorer代表了过去，代表了21世纪初互联网曾经的美好。<br />
+					虽然你可能和我们一样，厌恶新时代的狂躁、忙碌与封闭，<br />
+					怀念过去的欢笑、慢节奏与开放，但是我们要做的，是像这个网站一样，<br />
+					去改变时代，为这新时代添上一笔自己的色彩，而不是将自己困在过去。<br />
+					<br />
+					<span class="browsers-title">
+						你可以尝试换乘
+					</span>
+				</p>
+			</div>
 			<div lang="en" class="text en">
 				<h1>You are really despised for<br />using outdated browser</h1>
 				<p>
@@ -361,6 +388,42 @@
 					<br />
 					<span class="browsers-title">
 						乗換案内：
+					</span>
+				</p>
+			</div>
+			<div lang="ko" class="text ko">
+				<h1>You are really despised for<br />using outdated browser</h1>
+				<p>
+					You arrived at the ocean of ACG by Internet Explorer, unfortunately, you ran aground...<br />
+					Such old technology is hard to adapt to this ocean environment, and this aged browser is also difficult for you to set sail.<br />
+					Internet Explorer represents the past and the beauty of the Internet in the early 21<sup>st</sup> century.<br />
+					Although you may share our aversion to the madness, busyness, and isolation of the new era, as well as our nostalgia for the laughter, slow pace, and openness of the past, what we need to do is to change the times and add a touch of our own color to this new era, just like this website, rather than trapped in the past.<br />
+					<span class="browsers-title">
+						You can try transferring
+					</span>
+				</p>
+			</div>
+			<div lang="vi" class="text vi">
+				<h1>You are really despised for<br />using outdated browser</h1>
+				<p>
+					You arrived at the ocean of ACG by Internet Explorer, unfortunately, you ran aground...<br />
+					Such old technology is hard to adapt to this ocean environment, and this aged browser is also difficult for you to set sail.<br />
+					Internet Explorer represents the past and the beauty of the Internet in the early 21<sup>st</sup> century.<br />
+					Although you may share our aversion to the madness, busyness, and isolation of the new era, as well as our nostalgia for the laughter, slow pace, and openness of the past, what we need to do is to change the times and add a touch of our own color to this new era, just like this website, rather than trapped in the past.<br />
+					<span class="browsers-title">
+						You can try transferring
+					</span>
+				</p>
+			</div>
+			<div lang="id" class="text id">
+				<h1>You are really despised for<br />using outdated browser</h1>
+				<p>
+					You arrived at the ocean of ACG by Internet Explorer, unfortunately, you ran aground...<br />
+					Such old technology is hard to adapt to this ocean environment, and this aged browser is also difficult for you to set sail.<br />
+					Internet Explorer represents the past and the beauty of the Internet in the early 21<sup>st</sup> century.<br />
+					Although you may share our aversion to the madness, busyness, and isolation of the new era, as well as our nostalgia for the laughter, slow pace, and openness of the past, what we need to do is to change the times and add a touch of our own color to this new era, just like this website, rather than trapped in the past.<br />
+					<span class="browsers-title">
+						You can try transferring
 					</span>
 				</p>
 			</div>
