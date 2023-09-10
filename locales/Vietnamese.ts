@@ -389,10 +389,10 @@ const Vietnamese: LocaleIdentifiers = {
 	color_picker: "Chọn màu",
 	video_count: "{0} Video",
 	video_recommendations: "Gợi ý cho bạn",
-	page_not_found_info: "Trống trơn...", // FIXME: ??? Is it different from the original text?
+	page_not_found_info: "Có vẻ như bạn vừa đến một trang mới...",
 	click_to_refresh: "Bấm để tải lại",
 	toast: {
-		finish: "Đăng tải video thành công", // FIXME: This toast has nothing to do with video
+		finish: "Xong",
 		unsupported_file: "Định dạng này không được hỗ trợ!",
 		no_cover: "Hãy đăng bìa cho video!",
 		login_failed: "Tên người dùng hoặc mật khẩu không đúng.",
