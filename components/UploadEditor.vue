@@ -15,9 +15,9 @@
 	const thumbnail = ref<File>();
 	const thumbnailBlob = ref<string>();
 	const thumbnailInput = ref<HTMLInputElement>();
-
 	const tags = ref<string[]>([]);
 	const description = ref("");
+	const uploadProgress = ref(0);
 
 	/**
 	 * 上传文件无效。
@@ -92,9 +92,10 @@
 				description: description.value,
 				category: category.value,
 			},
-			// onUploadProgress(progressEvent) {
-				
-			// },
+			onUploadProgress(progressEvent) {
+				if (progressEvent.lengthComputable)
+					uploadProgress.value = progressEvent.loaded / progressEvent.total * 100;
+			},
 		});
 	}
 
@@ -151,6 +152,7 @@
 			<div class="center">
 				<div class="toolbox-card">
 					<!-- 在这里上传和管理分 P -->
+					<ProgressBar :value="uploadProgress" />
 				</div>
 
 				<div class="toolbox-card">
