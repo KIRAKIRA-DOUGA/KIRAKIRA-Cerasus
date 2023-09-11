@@ -1,15 +1,11 @@
 /// 英文标题字体 Montserrat
-@for $_weight from 1 through 9 {
-	$weight: $_weight * 100;
-
-	@for $style from 1 through 2 {
-		@font-face {
-			font-weight: $weight;
-			font-family: Montserrat;
-			font-style: if($style == 1, normal, italic);
-			font-display: block;
-			src: url("assets/fonts/Montserrat/Montserrat_#{$weight}#{if($style == 1, '', _Italic)}.woff2") format("woff2");
-		}
+@for $style from 1 through 2 {
+	@font-face {
+		font-weight: 100 900;
+		font-family: Montserrat;
+		font-style: if($style == 1, normal, italic);
+		font-display: block;
+		src: url("assets/fonts/Montserrat/Montserrat#{if($style == 1, '', _Italic)}.woff2") format("woff2-variations");
 	}
 }
 

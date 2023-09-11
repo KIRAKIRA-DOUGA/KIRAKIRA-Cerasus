@@ -23,6 +23,14 @@
 		}"
 	>
 		<slot></slot>
+		<svg viewBox="0 0 210 297" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+			<filter id="outline">
+				<feMorphology in="SourceAlpha" result="expanded" operator="dilate" radius="1" />
+				<feFlood flood-color="yellow" />
+				<feComposite in2="expanded" operator="in" />
+				<feComposite in="SourceGraphic" />
+			</filter>
+		</svg>
 	</h1>
 </template>
 
@@ -56,10 +64,11 @@
 			text-transform: uppercase;
 
 			&.stroked {
-				background-clip: text;
-				opacity: 0.4;
-				-webkit-text-stroke-width: 1px;
-				-webkit-text-fill-color: transparent;
+				filter: url("#outline");
+				// background-clip: text;
+				// opacity: 0.4;
+				// -webkit-text-stroke-width: 1px;
+				// -webkit-text-fill-color: transparent;
 			}
 		}
 	}
