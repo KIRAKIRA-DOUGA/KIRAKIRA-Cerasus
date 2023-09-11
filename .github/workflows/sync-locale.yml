@@ -1,25 +1,18 @@
 name: Sync Develop to Locale
-
 on:
   push:
     branches:
       - develop
-
 jobs:
-  sync-branches:
+  sync-branch:
     runs-on: ubuntu-latest
-    name: Syncing branches
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Set up Node
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@master
+
+      - name: Merge development -> staging
+        uses: devmasx/merge-branch@master
         with:
-          node-version: 12
-      - name: Opening pull request
-        id: pull
-        uses: tretuna/sync-branches@1.2.0
-        with:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          FROM_BRANCH: 'develop'
-          TO_BRANCH: 'locale'
+          type: now
+          from_branch: develop
+          target_branch: locale
+          github_token: ${{ secrets.GITHUB_TOKEN }}
