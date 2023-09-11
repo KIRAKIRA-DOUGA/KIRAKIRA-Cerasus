@@ -315,6 +315,8 @@ const English: LocaleIdentifiers = {
 		login_to_register: "Register",
 		register_to_login: "I have an account",
 		forgot_to_login: "I found my password",
+		forgot_title: "Forgot",
+		reset_title: "Reset",
 		register_email_sent_info: "We have sent a verification code to your email, please enter the code here.\nIf you did not receive it, you can resend.",
 		forgot_info: "Please enter your email.\nWe will send a verification code to your email.",
 		reset_successful_info: "Verification successful!\nPlease enter and remember your new password.",
@@ -405,6 +407,7 @@ const English: LocaleIdentifiers = {
 		copied: "Copied!",
 		modification_failed: "Modification failed!",
 		failed_to_disable_cookies: "Failed to disable cookies!",
+		duplicate_label: "Duplicate label!",
 	},
 	confirm: {
 		cancel_upload: "Are you sure you want to cancel this upload?",

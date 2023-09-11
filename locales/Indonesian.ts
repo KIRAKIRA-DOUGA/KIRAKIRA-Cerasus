@@ -105,8 +105,8 @@ const Indonesian: LocaleIdentifiers = {
 	login_options: "Opsi Masuk",
 	password: {
 		_: "Kata Sandi",
-		forgot: "Lupa Kata Sandi",
-		reset: "Lupa Kata Sandi",
+		forgot: "Lupa Kata Sandi", // FIXME: Are they same?
+		reset: "Lupa Kata Sandi", // FIXME: Are they same?
 		retype: "Ketik Ulang Kata Sandi",
 		change: "Ganti Kata Sandi",
 		current: "Kata Sandi Saat Ini",
@@ -314,6 +314,8 @@ const Indonesian: LocaleIdentifiers = {
 		login_to_register: "Saya belum punya akun",
 		register_to_login: "Daftar",
 		forgot_to_login: "Saya punya akun",
+		forgot_title: "Forgot", // NEW
+		reset_title: "Reset", // NEW
 		register_email_sent_info: "Kami telah mengirimkan kode verifikasi ke email Anda, silakan masukkan kode tersebut di sini.\nJika Anda tidak menerimanya, Anda dapat mengirim ulang.",
 		forgot_info: "Silakan masukkan email Anda.\nKami akan mengirimkan kode verifikasi ke email Anda.",
 		reset_successful_info: "Vertifikasi berhasil!\nMasukan dan ingatlah password barumu.",
@@ -404,6 +406,7 @@ const Indonesian: LocaleIdentifiers = {
 		copied: "Disalin!",
 		modification_failed: "Modifikasi gagal",
 		failed_to_disable_cookies: "Gagal menonaktifkan cookie!",
+		duplicate_label: "Duplicate label!", // NEW
 	},
 	confirm: {
 		cancel_upload: "Apakah Anda yakin ingin membatalkan Unggah?",

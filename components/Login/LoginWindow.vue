@@ -197,7 +197,7 @@
 
 					<!-- 忘记密码 Forgot Password -->
 					<div class="forgot">
-						<HeadingGroup :name="t.password.forgot" englishName="forgot" />
+						<HeadingGroup :name="t.loginwindow.forgot_title" englishName="forgot" />
 						<div class="form">
 							<div><Preserves>{{ t.loginwindow.forgot_info }}</Preserves></div>
 							<TextBox
@@ -206,7 +206,7 @@
 								:placeholder="t.email_address"
 								icon="email"
 							/>
-							<Button icon="send" class="button button-block">{{ t.send }}</Button>
+							<Button icon="send" class="button logo-font button-block">{{ t.send }}</Button>
 						</div>
 						<div class="action margin-left-inset">
 							<Button @click="currentPage = 'login'">{{ t.loginwindow.forgot_to_login }}</Button>
@@ -215,7 +215,7 @@
 
 					<!-- 重设密码 Reset Password -->
 					<div class="reset">
-						<HeadingGroup :name="t.password.reset" englishName="Reset" />
+						<HeadingGroup :name="t.loginwindow.reset_title" englishName="Reset" />
 						<div class="form">
 							<div><Preserves>{{ t.loginwindow.reset_successful_info }}</Preserves></div>
 							<TextBox
@@ -459,12 +459,16 @@
 
 			.login-button {
 				@include square(100%);
+				@extend .logo-font;
 				--i: 0;
 				position: absolute;
-				font-family: $english-logo-fonts;
-				font-feature-settings: normal;
 			}
 		}
+	}
+	
+	.logo-font {
+		font-family: $english-logo-fonts;
+		font-feature-settings: normal;
 	}
 
 	.action {

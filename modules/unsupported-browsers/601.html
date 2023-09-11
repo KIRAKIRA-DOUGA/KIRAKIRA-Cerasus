@@ -41,12 +41,12 @@
 			document.documentElement.className = lang;
 			var titles = {
 				"zh-Hans-CN": "是时候更换你的浏览器了",
-				"zh-Hant-TW": "是时候更换你的浏览器了",
+				"zh-Hant-TW": "是時候更換你的瀏覽器了",
 				en: "Time to Change Your Browser",
 				ja: "ブラウザの変更時期",
 				ko: "Time to Change Your Browser",
 				vi: "Đến lúc đổi trình duyệt rồi",
-				id: "Time to Change Your Browser",
+				id: "Time to Change Your Browser"
 			};
 			var title = titles[lang];
 			if (title) document.title = title + " - KIRAKIRA☆DOUGA";
@@ -73,8 +73,16 @@
 			user-select: none;
 		}
 
+		html.zh-Hant-TW body {
+			font-family: "Segoe UI", "Microsoft JhengHei", "Microsoft YaHei", Tahoma, Geneva, Verdana, Arial, SimHei, sans-serif;
+		}
+
 		html.ja body {
 			font-family: "Yu Gothic UI", "Meiryo UI", "MS UI Gothic", "Segoe UI", Tahoma, Geneva, Verdana, Arial, SimHei, sans-serif;
+		}
+
+		html.ko body {
+			font-family: "Segoe UI", "Malgun Gothic", Dotum, Tahoma, Geneva, Verdana, Arial, SimHei, sans-serif;
 		}
 
 		@keyframes intro {
@@ -127,22 +135,30 @@
 			font-size: 14px;
 		}
 
-		html.en .main-card h1 {
+		html.en .main-card h1,
+		html.vi .main-card h1,
+		html.id .main-card h1 {
 			line-height: 45px;
 		}
 
-		html.en .main-card p {
+		html.en .main-card p,
+		html.vi .main-card p,
+		html.id .main-card p {
 			top: 145px;
 			text-align: left;
 		}
 
 		html.en .main-card .right,
-		html.ja .main-card .right {
+		html.ja .main-card .right,
+		html.vi .main-card .right,
+		html.id .main-card .right {
 			width: 500px;
 		}
 
 		html.en .browsers-title,
-		html.ja .browsers-title {
+		html.ja .browsers-title,
+		html.vi .browsers-title,
+		html.id .browsers-title {
 			margin-right: 50px;
 		}
 
@@ -350,18 +366,18 @@
 				</p>
 			</div>
 			<div lang="zh-Hant-TW" class="text zh-Hant-TW">
-				<h1>使用过时浏览器的你，<br />可真让人瞧不起啊</h1>
+				<h1>使用過時瀏覽器的你，<br />可真讓人瞧不起啊</h1>
 				<p>
-					你乘坐着Internet Explorer来到了ACG的海洋，很可惜，你搁浅了⋯⋯<br />
-					如此老旧的技术很难适应这片海洋环境，这个苍老的浏览器也难以使你扬帆起航。<br />
+					你乘坐著Internet Explorer來到了ACG的海洋，很可惜，你擱淺了⋯⋯<br />
+					如此老舊的技術很難適應這片海洋環境，這個蒼老的瀏覽器也難以使你揚帆起航。<br />
 					<br />
-					Internet Explorer代表了过去，代表了21世纪初互联网曾经的美好。<br />
-					虽然你可能和我们一样，厌恶新时代的狂躁、忙碌与封闭，<br />
-					怀念过去的欢笑、慢节奏与开放，但是我们要做的，是像这个网站一样，<br />
-					去改变时代，为这新时代添上一笔自己的色彩，而不是将自己困在过去。<br />
+					Internet Explorer代表了過去，代表了21世紀初互聯網曾經的美好。<br />
+					雖然你可能和我們一樣，厭惡新時代的狂躁、忙碌與封閉，<br />
+					懷念過去的歡笑、慢節奏與開放，但是我們要做的，是像這個網站一樣，<br />
+					去改變時代，為這新時代添上一筆自己的色彩，而不是將自己困在過去。<br />
 					<br />
 					<span class="browsers-title">
-						你可以尝试换乘
+						你可以嘗試換乘
 					</span>
 				</p>
 			</div>

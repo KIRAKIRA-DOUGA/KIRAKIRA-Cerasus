@@ -28,7 +28,7 @@
 			fill: c(accent);
 		}
 
-		.english-after:lang(en) {
+		.english-after:is(:lang(en), :lang(vi)) {
 			display: none;
 		}
 
