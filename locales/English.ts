@@ -1,8 +1,3 @@
-/*
- * 说明：
- * 1. 使用管道符定义单复数，格式为 `单数 | 复数`。
- */
-
 import { LocaleIdentifiers } from "./types";
 
 const English: LocaleIdentifiers = {
