@@ -89,9 +89,11 @@
 								<ComboBox v-model="item.language" v-model:shown="showComboBox" :placeholder="t.unselected.language">
 									<ComboBoxItem v-for="lang in languages" :id="lang" :key="lang">{{ lang }}</ComboBoxItem>
 								</ComboBox>
-								<div class="tags">
+								<TagsEditor v-model="item.values" />
+								<!-- <div class="tags">
 									<Tag v-for="value in item.values" :key="value" :checked="item.default === value" @click="item.default = value">{{ value }}</Tag>
-								</div>
+								</div> -->
+								<!-- TODO: 支持选择默认值。 -->
 							</template>
 						</div>
 					</div>
@@ -216,16 +218,6 @@
 			grid-template-columns: repeat(2, auto);
 			gap: 16px 8px;
 			width: 100%;
-
-			.tags {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 8px;
-
-				.tag {
-					min-height: 36px;
-				}
-			}
 		}
 
 		.submit {
