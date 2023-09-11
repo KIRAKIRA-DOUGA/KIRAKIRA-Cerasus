@@ -226,7 +226,7 @@ const Indonesian: LocaleIdentifiers = {
 		move_to: "Pindahkan ke",
 		multi_select: "Pilih Banyak",
 	},
-	feed: "Masukan",
+	feed: "Feed",
 	upload: {
 		_: "Unggah",
 		drag_to_upload: "Seret ini untuk Mengunggah",
