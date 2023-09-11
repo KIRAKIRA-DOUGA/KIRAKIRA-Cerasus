@@ -316,6 +316,8 @@ const SChinese = {
 		login_to_register: "我没有账号？注册",
 		register_to_login: "我已有账号？登入",
 		forgot_to_login: "我想起来密码了",
+		forgot_title: "忘记密码",
+		reset_title: "重设密码",
 		register_email_sent_info: "我们已向您的邮箱中发送了验证码，请在此输入验证码。\n如未收到，您可以重新发送。",
 		forgot_info: "请在此输入您的邮箱，\n我们将会给您的邮箱发送一封邮件，请点击邮件中的链接重置密码。",
 		reset_successful_info: "验证成功！\n请输入并务必牢记您的新密码。",

@@ -197,7 +197,7 @@
 
 					<!-- 忘记密码 Forgot Password -->
 					<div class="forgot">
-						<HeadingGroup :name="t.password.forgot" englishName="forgot" />
+						<HeadingGroup :name="t.loginwindow.forgot_title" englishName="forgot" />
 						<div class="form">
 							<div><Preserves>{{ t.loginwindow.forgot_info }}</Preserves></div>
 							<TextBox
@@ -215,7 +215,7 @@
 
 					<!-- 重设密码 Reset Password -->
 					<div class="reset">
-						<HeadingGroup :name="t.password.reset" englishName="Reset" />
+						<HeadingGroup :name="t.loginwindow.reset_title" englishName="Reset" />
 						<div class="form">
 							<div><Preserves>{{ t.loginwindow.reset_successful_info }}</Preserves></div>
 							<TextBox
