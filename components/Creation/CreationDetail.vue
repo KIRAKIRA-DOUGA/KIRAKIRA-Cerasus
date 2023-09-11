@@ -80,6 +80,7 @@
 			padding: 6px;
 			color: c(icon-color);
 			font-size: 18px;
+			aspect-ratio: 1 / 1;
 		}
 	}
 </style>

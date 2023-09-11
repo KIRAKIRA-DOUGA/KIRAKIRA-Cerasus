@@ -19,6 +19,11 @@
 		},
 	}) as Record<number, string>;
 	const isUpdatingTags = ref(false);
+	const maxIndex = computed(() => {
+		let maxIndex = Math.max(...tagsWithKey.keys());
+		if (maxIndex === -Infinity) maxIndex = -1;
+		return maxIndex;
+	});
 
 	watch(tags, curTags => {
 		if (isUpdatingTags.value) return;
@@ -35,8 +40,10 @@
 	async function updateTags(index: number) {
 		isUpdatingTags.value = true;
 		const tag = tagsWithKey.get(index);
-		if (!tag) tagsWithKey.delete(index);
-		else {
+		if (!tag) {
+			if (index !== maxIndex.value)
+				tagsWithKey.delete(index);
+		} else {
 			const normalizedTag = normalizeTag(tag);
 			let duplicated = false;
 			for (const [i, curTag] of tagsWithKey) {
@@ -89,10 +96,8 @@
 	 * 在数组末尾增加一个空的标签提示用户可新增标签。
 	 */
 	function appendEmptyTag() {
-		let maxIndex = Math.max(...tagsWithKey.keys());
-		if (maxIndex === -Infinity) maxIndex = -1;
-		if (tagsWithKey.get(maxIndex)?.trim() !== "")
-			tagsWithKey.set(maxIndex + 1, "");
+		if (tagsWithKey.get(maxIndex.value)?.trim() !== "")
+			tagsWithKey.set(maxIndex.value + 1, "");
 	}
 
 	/**
