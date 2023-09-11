@@ -402,7 +402,7 @@ const Vietnamese: LocaleIdentifiers = {
 		copied: "Đã sao chép!",
 		modification_failed: "Không thể sửa đổi!",
 		failed_to_disable_cookies: "Không thể vô hiệu các Cookie!",
-		duplicate_label: "Duplicate label!", // NEW
+		duplicate_label: "Nhân đôi nhãn!", // NEW
 	},
 	confirm: {
 		cancel_upload: "Bạn có chắc muốn ngừng quá trình đăng tải?",
