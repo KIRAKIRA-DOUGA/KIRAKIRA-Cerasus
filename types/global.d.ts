@@ -62,19 +62,16 @@ declare global {
 	 * SCSS 中定义的变量的值。其中的 numbers 属性表示已转换为数字类型的值。
 	 */
 	interface IScssVariables extends DeepReadonly<Record<string, string> & { numbers: Record<string, number> }> { }
-
 	/**
 	 * 使用 SCSS 中定义的变量的值。其中的 numbers 属性表示已转换为数字类型的值。
 	 */
 	declare function useScssVariables(): IScssVariables;
-
 	interface Window {
 		/**
 		 * 仅在 Internet Explorer 中可用的 ActiveX 对象，高版本浏览器则会返回 undefined。
 		 */
 		ActiveXObject: undefined;
 	}
-	
 	interface ScreenOrientation {
 		/**
 		 * `ScreenOrientation` 接口的 `lock()` 属性将包含文档的方向锁定为指定的方向。
