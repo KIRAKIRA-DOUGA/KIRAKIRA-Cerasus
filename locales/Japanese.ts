@@ -318,6 +318,8 @@ const Japanese: LocaleIdentifiers = {
 		login_to_register: "新規登録",
 		register_to_login: "すでにアカウントをお持ちですか？",
 		forgot_to_login: "パスワードを思い出した",
+		forgot_title: "Forgot", // NEW: 将会显示在标题，不宜过长。
+		reset_title: "Reset", // NEW: 将会显示在标题，不宜过长。
 		register_email_sent_info: "確認コードを送信しました。受け取ったコードを入力してください。\n届いてない場合、コードを再送信することができます。",
 		forgot_info: "アカウントのメールアドレスを入力してください。\nこのアドレス宛にメールを送ります。メールの中のリンクをクリックしてパスワード再設定の手続を続行します。",
 		reset_successful_info: "本人確認ができました！\n新しいパスワードを設定してください。そして忘れないようにしてください。",

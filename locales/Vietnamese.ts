@@ -310,6 +310,8 @@ const Vietnamese: LocaleIdentifiers = {
 		login_to_register: "Đăng ký ngay!",
 		register_to_login: "Đã có tài khoản?",
 		forgot_to_login: "Tôi nhớ mật khẩu rồi",
+		forgot_title: "Quên mật khẩu",
+		reset_title: "Đặt lại mật khẩu",
 		register_email_sent_info: "Vui lòng nhập mã xác nhận chúng tôi vừa gửi vào email của bạn.\nHãy yêu cầu gửi lại trong trường hợp chưa nhận được mã.",
 		forgot_info: "Hãy nhập email.\nChúng tôi sẽ gửi một mã xác nhận vào email.",
 		reset_successful_info: "Xác nhận thành công!\nHãy nhập và ghi nhớ mật khẩu.",

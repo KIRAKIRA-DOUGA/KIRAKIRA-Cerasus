@@ -310,6 +310,8 @@ const TChinese: LocaleIdentifiers = {
 		login_to_register: "我沒有帳號？註冊",
 		register_to_login: "我已有帳號？登入",
 		forgot_to_login: "我想起來密碼了",
+		forgot_title: "忘記密碼",
+		reset_title: "重設密碼",
 		register_email_sent_info: "我們已向您的郵箱中發送了驗證碼，請在此輸入驗證碼。\n如未收到，您可以重新發送。",
 		forgot_info: "請在此輸入您的郵箱，\n我們將會給您的郵箱發送一封郵件，請點擊郵件中的連結重置密碼。",
 		reset_successful_info: "驗證成功！\n請輸入並務必牢記您的新密碼。",

@@ -24,10 +24,14 @@ kbd {
 
 	&:active {
 		@include set-box-shadow(gray-30, gray-30, true);
+		color: c(icon-color);
 		translate: 0 3.2px;
+		background-color: c(gray-20);
 		
 		html.dark & {
 			@include set-box-shadow(gray-5, gray-5, true);
+			color: c(gray-40);
+			background-color: c(gray-10);
 		}
 	}
 }
