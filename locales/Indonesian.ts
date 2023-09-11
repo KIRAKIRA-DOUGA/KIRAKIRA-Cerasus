@@ -1,7 +1,3 @@
-/*
-*mungkin ada kesalahan terjemahan
-*/
-
 import { LocaleIdentifiers } from "./types";
 
 const Indonesian: LocaleIdentifiers = {
