@@ -97,6 +97,7 @@
 		<Transition name="page-jump" mode="out-in">
 			<div v-if="!showEditor" class="upload-wrapper">
 				<div
+					v-ripple
 					class="upload"
 					:class="{ dragover, successful: successfulUploaded }"
 					@dragover.stop.prevent="dragover = true"

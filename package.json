@@ -102,7 +102,7 @@
 		"@vueuse/core": "^10.1.2",
 		"@vueuse/head": "^1.0.0-rc.14",
 		"@vueuse/nuxt": "^9.13.0",
-		"axios": "^0.27.2",
+		"axios": "^1.5.0",
 		"css-doodle": "^0.34.3",
 		"danmaku": "^2.0.6",
 		"dashjs": "^4.7.1",

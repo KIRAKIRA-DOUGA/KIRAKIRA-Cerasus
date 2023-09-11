@@ -35,7 +35,7 @@
 		const div = e.target as HTMLDivElement;
 		input.value = div.innerText;
 	}
-	
+
 	/**
 	 * 标签输入框中文本输入完成后的更新事件。
 	 * @param e - 普通事件。
@@ -78,6 +78,7 @@
 				@input="onInput"
 				@change="onChange"
 				@blur="onChange"
+				@keydown.enter.prevent
 				@keyup.enter.prevent="onChange"
 			>{{ input }}</div>
 			<div v-else><slot></slot></div>
@@ -142,7 +143,7 @@
 		* {
 			transition: $fallback-transitions, all $ease-out-expo $duration;
 		}
-		
+
 		&.editable {
 			cursor: text;
 		}
@@ -193,7 +194,7 @@
 	.text-box {
 		margin: list-negative($padding);
 		padding: $padding;
-		
+
 		&:empty::before {
 			color: c(icon-color);
 			content: attr(data-placeholder);

@@ -206,7 +206,7 @@
 								:placeholder="t.email_address"
 								icon="email"
 							/>
-							<Button icon="send" class="button button-block">{{ t.send }}</Button>
+							<Button icon="send" class="button logo-font button-block">{{ t.send }}</Button>
 						</div>
 						<div class="action margin-left-inset">
 							<Button @click="currentPage = 'login'">{{ t.loginwindow.forgot_to_login }}</Button>
@@ -459,12 +459,16 @@
 
 			.login-button {
 				@include square(100%);
+				@extend .logo-font;
 				--i: 0;
 				position: absolute;
-				font-family: $english-logo-fonts;
-				font-feature-settings: normal;
 			}
 		}
+	}
+	
+	.logo-font {
+		font-family: $english-logo-fonts;
+		font-feature-settings: normal;
 	}
 
 	.action {
