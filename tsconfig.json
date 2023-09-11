@@ -13,7 +13,7 @@
 			"ESNext.AsyncIterable",
 			"ES2015.Promise",
 			"DOM",
-			"DOM.Iterable",
+			"DOM.Iterable"
 		],
 		"esModuleInterop": true,
 		"allowJs": false,
@@ -27,17 +27,17 @@
 			{
 				"name": "typescript-plugin-css-modules",
 				"options": {
-					"classnameTransform": "camelCaseOnly",
-				},
-			},
-		],
+					"classnameTransform": "camelCaseOnly"
+				}
+			}
+		]
 	},
 	"vueCompilerOptions": {
 		"plugins": [
 			"vite-plugin-vue-nested-sfc/tooling"
-		],
+		]
 		// "experimentalAdditionalLanguageModules": [
 		// 	"./plugins/nuxt/nuxt-virtual-files.cjs",
-		// ],
-	},
+		// ]
+	}
 }

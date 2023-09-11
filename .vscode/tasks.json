@@ -71,6 +71,15 @@
 			"problemMatcher": [],
 			"label": "npm: build - kirakira-backend",
 			"detail": "tsc - 构建后端 API 项目"
-		}
+		},
+		{
+			"type": "npm",
+			"script": "dev",
+			"path": "locales/editor",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: dev - i18n-editor",
+			"detail": "dev - 启动多语言编辑器服务器"
+		},
 	]
 }

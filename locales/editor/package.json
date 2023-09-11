@@ -1,0 +1,16 @@
+{
+	"name": "kirakira-i18n-editor",
+	"version": "0.1.0",
+	"description": "",
+	"main": "app.js",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "node dist/bin/www.js",
+		"build": "tsc",
+		"watch": "tsc --watch",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "otomad",
+	"license": "ISC"
+}
