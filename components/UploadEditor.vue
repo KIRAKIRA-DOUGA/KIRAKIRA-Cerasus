@@ -16,17 +16,8 @@
 	const thumbnailBlob = ref<string>();
 	const thumbnailInput = ref<HTMLInputElement>();
 
-	const tags = ref<string[]>([""]); // TODO: 稍后将修改为 Record<number, string> 以解决动画的 bug。
+	const tags = ref<string[]>([]);
 	const description = ref("");
-
-	/**
-	 * 更新标签项目。
-	 */
-	function updateTags() {
-		const newTags = arrayToRemoveDuplicates(tags.value.map(tag => tag.replace(/[\r\n\t\v]/g, "").replace(/\s+/g, " ")).filter(tag => tag));
-		newTags.push("");
-		tags.value = newTags;
-	}
 
 	/**
 	 * 上传文件无效。
@@ -101,6 +92,9 @@
 				description: description.value,
 				category: category.value,
 			},
+			// onUploadProgress(progressEvent) {
+				
+			// },
 		});
 	}
 
@@ -180,11 +174,7 @@
 
 					<section>
 						<Subheader icon="tag">{{ t(2).tag }}</Subheader>
-						<div class="tags">
-							<TransitionGroup>
-								<Tag v-for="(tag, i) in tags" :key="i" v-model:input="tags[i]" :placeholder="t.press_enter_to_add" @change="updateTags">{{ tag }}</Tag>
-							</TransitionGroup>
-						</div>
+						<TagsEditor v-model="tags" />
 
 					</section>
 
@@ -224,6 +214,7 @@
 	}
 
 	.left {
+		flex-shrink: 0;
 		gap: 16px;
 		align-items: center;
 		width: unset;
@@ -322,19 +313,5 @@
 	.submit {
 		display: flex;
 		justify-content: right;
-	}
-	
-	.tags {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 8px;
-		
-		.tag {
-			&.v-enter-from,
-			&.v-leave-to {
-				scale: 0.8;
-				opacity: 0;
-			}
-		}
 	}
 </style>
