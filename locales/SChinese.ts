@@ -220,7 +220,7 @@ const SChinese = {
 		move_to: "移动到",
 		multi_select: "批量选择",
 	},
-	feed: "发现",
+	feed: "动态",
 	upload: {
 		_: "投稿",
 		drag_to_upload: "拖到此处上传",
