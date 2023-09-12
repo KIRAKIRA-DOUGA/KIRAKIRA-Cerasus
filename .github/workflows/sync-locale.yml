@@ -7,7 +7,8 @@ jobs:
   sync-branch:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - name: Checkout
+        uses: actions/checkout@master
         with:
           fetch-depth: 0
 
@@ -20,12 +21,14 @@ jobs:
       #     github_token: ${{ secrets.GITHUB_TOKEN }}
       #     disable_fastforwards: true
 
-      - name: Merge develop -> Locale
+      - name: Merge develop -> locale
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "Github Actions"
 
-          git switch locale
+          git checkout develop
+          git fetch origin
+          git checkout locale
+          git pull
           git merge origin/develop --no-commit
-
-          git push origin master
+          git push origin locale
