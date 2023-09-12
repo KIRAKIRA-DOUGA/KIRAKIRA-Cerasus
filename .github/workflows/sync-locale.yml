@@ -16,3 +16,4 @@ jobs:
           from_branch: develop
           target_branch: locale
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          disable_fastforwards: true
