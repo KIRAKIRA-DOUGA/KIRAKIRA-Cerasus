@@ -2,7 +2,7 @@ import { resolve, parse, extname } from "path";
 import { fileURLToPath } from "url";
 import { readdir, readFile } from "fs/promises";
 
-const __dirname = fileURLToPath(new URL(".", import.meta.url));
+export const __dirname = fileURLToPath(new URL(".", import.meta.url));
 const filenameWithoutExtension = (filename: string) => parse(filename).name;
 const excludesFiles = ["types.ts"];
 
@@ -13,7 +13,7 @@ const excludesFiles = ["types.ts"];
 export default async function getLocales() {
 	const path = resolve(__dirname, "../../..");
 	const files = await readdir(path);
-	const object: Record<string, string | Record<string, string>> = {};
+	const object: NestedLocaleData = {};
 	for (const file of files) {
 		if (extname(file) !== ".ts") continue;
 		if (excludesFiles.includes(file)) continue;
