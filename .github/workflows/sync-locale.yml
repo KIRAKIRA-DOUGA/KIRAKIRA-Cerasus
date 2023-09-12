@@ -7,13 +7,28 @@ jobs:
   sync-branch:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-
-      - name: Merge development -> staging
-        uses: devmasx/merge-branch@master
+      - name: Checkout
+        uses: actions/checkout@master
         with:
-          type: now
-          from_branch: develop
-          target_branch: locale
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          disable_fastforwards: true
+          fetch-depth: 0
+
+      # - name: Merge development -> staging
+      #   uses: devmasx/merge-branch@master
+      #   with:
+      #     type: now
+      #     from_branch: develop
+      #     target_branch: locale
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     disable_fastforwards: true
+
+      - name: Merge develop -> locale
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "Github Actions"
+
+          git checkout develop
+          git fetch origin
+          git checkout locale
+          git pull
+          git merge origin/develop
+          git push origin locale
