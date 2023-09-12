@@ -26,7 +26,7 @@
 		"dev-http": "cross-env HOST=0.0.0.0 nuxt dev",
 		"generate": "nuxt generate",
 		"preview": "nuxt preview",
-		"postinstall": "nuxt prepare && patch-package && npm --prefix ./packages/kirakira-backend run build && npm --prefix ./locales/editor run build",
+		"postinstall": "node postinstall.js",
 		"lint:css": "stylelint **/*.{html,vue,css,sass,scss}",
 		"typed-scss-modules": "typed-scss-modules assets/styles/*.module.scss --exportType default",
 		"update-eases": "tsx scripts/update-eases.ts",
