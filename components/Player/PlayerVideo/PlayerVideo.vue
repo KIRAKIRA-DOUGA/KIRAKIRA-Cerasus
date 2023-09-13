@@ -37,6 +37,7 @@
 	const willSendDanmaku = ref<DanmakuComment[]>();
 	const willInsertDanmaku = ref<DanmakuListItem[]>();
 	const initialDanmaku = ref<DanmakuComment[]>();
+	const screenOrientationBeforeFullscreen = ref<OrientationType>("portrait-primary");
 	type MediaInfo = Record<string, Record<string, unknown>>;
 
 	/**
@@ -107,13 +108,15 @@
 	});
 
 	watch(fullscreen, fullscreen => {
-		if (fullscreen)
-			try {
+		try { // 全屏时请求横屏。在设备不支持或安全问题时有可能会报错。
+			if (fullscreen) {
+				screenOrientationBeforeFullscreen.value = screen.orientation.type;
 				screen.orientation.lock("landscape");
-				// 全屏时请求横屏。在设备不支持或安全问题时可能会报错，以后正式上线时记得把错误吞掉。
-			} catch { }
-		else
-			screen.orientation.unlock();
+			} else {
+				screen.orientation.lock(screenOrientationBeforeFullscreen.value);
+				screen.orientation.unlock();
+			}
+		} catch { }
 	});
 
 	/**
