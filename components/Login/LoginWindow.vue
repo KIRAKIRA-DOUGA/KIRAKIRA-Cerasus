@@ -281,11 +281,11 @@
 	:comp {
 		@include dropdown-flyouts;
 		@include round-large;
+		@include set-max-size;
 		--avatar-center: #{calc($width / 2) - $avatar-movement} 50%;
 		display: flex;
 		justify-content: space-between;
 		width: $width;
-		max-width: 100dvw;
 		height: $height;
 		overflow: hidden;
 		background-color: c(acrylic-bg, 75%);
@@ -355,13 +355,13 @@
 
 		> * {
 			@include square(100%);
+			@include set-max-size;
 			position: absolute;
 			top: 0;
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between;
 			width: $width * 0.5;
-			max-width: 100dvw;
 			height: 100%;
 			padding: 35px 45px;
 
