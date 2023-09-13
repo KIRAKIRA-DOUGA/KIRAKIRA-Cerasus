@@ -25,12 +25,15 @@
 		return maxIndex;
 	});
 
-	watch(tags, curTags => {
+	watch(tags, async curTags => {
 		if (isUpdatingTags.value) return;
+		isUpdatingTags.value = true;
 		tags.value = normalizeTags(curTags);
 		tagsWithKey.clear();
 		curTags.forEach((tag, index) => tagsWithKey.set(index, tag));
 		appendEmptyTag();
+		await nextTick();
+		isUpdatingTags.value = false;
 	}, { deep: true, immediate: true });
 
 	/**
@@ -119,10 +122,9 @@
 			<Tag
 				v-for="[key, tag] in tagsWithKey"
 				:key="key"
-				:input="tagsWithKey.get(key)"
+				v-model:input="tagsWithKeyProxy[key]"
 				:placeholder="t.press_enter_to_add"
 				@change="updateTags(key)"
-				@update:input="value => tagsWithKey.set(key, value)"
 			>{{ tag }}</Tag>
 		</TransitionGroup>
 	</Comp>
