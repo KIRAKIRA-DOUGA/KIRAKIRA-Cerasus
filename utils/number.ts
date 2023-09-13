@@ -87,14 +87,15 @@ export function getCompactDecimal(value: number | bigint) {
 	value = typeof value === "number" ? BigInt(Math.trunc(value)) : value;
 	const { locale } = useI18n();
 	const startsWithLang = (lang: string) => locale.value.startsWith(lang);
-	const radix = ["zh", "ja", "ko"].some(startsWithLang) ? 10000n : 1000n;
+	const radix = ["zh", "ja", "ko", "vi"].some(startsWithLang) ? 10000n : 1000n;
 	const units = {
 		zhs: ["万", "亿", "兆", "京", "垓", "秭", "穰", "沟", "涧", "正", "载", "极", "恒河沙", "阿僧祇", "那由他", "不可思议", "无量", "大数"],
 		zht: ["萬", "億", "兆", "京", "垓", "秭", "穰", "溝", "澗", "正", "載", "極", "恆河沙", "阿僧祇", "那由他", "不可思議", "無量", "大數"],
 		ja: ["万", "億", "兆", "京", "垓", "𥝱", "穣", "溝", "澗", "正", "載", "極", "恒河沙", "阿僧祇", "那由他", "不可思議", "無量", "大数"],
 		ko: ["만", "억", "조", "경", "해", "자", "양", "구", "간", "정", "재", "극", "항하사", "아승기", "나유타", "불가사의", "무량", "대수"],
 		en: ["k", "M", "B", "T", "P", "E", "Z", "Y", "R", "Q"],
-		vi: ["N", "Vn", "Tr", "T", "Hằng Hà Sa Số", "A-Tăng-Kỳ", "Na-do-tha", "Bất Khả Tư Nghị", "Vô Lượng", "Đại Sổ"],
+		vi: ["V", "Ứ", "Tr", "K", "Giai", "T", "Nhương", "Câu", "Giản", "Chánh", "Tái", "Cực", "Hằng Hà Sa", "A Tăng Kỳ", "Na Do Tha", "Bất Khả Tư Nghị", "Vô Lượng", "Đại Sổ"],
+		// vi: ["N", "Tr", "T", "NT", "TrT", "TT", "NTT", "TrTT", "TTT", "NTTT"], // In Modern Vietnamese Number
 		id: ["rb", "jt", "M", "T", "KT", "QI", "SX", "SP"],
 	};
 	const unit = units[keys(units).find(code => locale.value.startsWith(code)) ?? "en"];
