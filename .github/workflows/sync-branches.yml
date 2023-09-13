@@ -20,5 +20,4 @@ jobs:
 
           git checkout locale
           git pull origin develop
-          git merge origin/develop --no-commit --no-ff
           git push origin locale
