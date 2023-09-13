@@ -1,0 +1,24 @@
+name: Sync Develop to Locale Branch
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  sync-branches:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+        with:
+          fetch-depth: 0
+
+      - name: Merge develop -> locale
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "Github Actions"
+          git config pull.rebase false
+
+          git checkout locale
+          git pull origin develop
+          git merge origin/develop --no-commit --no-ff
+          git push origin locale
