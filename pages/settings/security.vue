@@ -1,8 +1,8 @@
 <script setup lang="ts">
 	const passwordChangeDate = ref(new Date());
 	const authenticatorAddDate = ref(new Date());
-	const passwordChangeDateDisplay = computed(() => formatDate(passwordChangeDate.value, "yyyy/MM/dd"));
-	const authenticatorAddDateDisplay = computed(() => formatDate(authenticatorAddDate.value, "yyyy/MM/dd"));
+	const passwordChangeDateDisplay = computed(() => formatDateWithLocale(passwordChangeDate.value));
+	const authenticatorAddDateDisplay = computed(() => formatDateWithLocale(authenticatorAddDate.value));
 	const email = ref("aira@aira.cafe");
 
 	const showChangePassword = ref(false);

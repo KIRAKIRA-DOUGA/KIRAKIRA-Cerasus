@@ -26,7 +26,7 @@
 	const downvote = defineModel("downvote", { default: 0 });
 	/** 是否已点击减分？ */
 	const isDownvoted = defineModel("isDownvoted", { default: false });
-	const date = computed(() => formatDate(props.date, "yyyy/MM/dd hh:mm:ss"));
+	const date = computed(() => formatDateWithLocale(props.date, { time: true }));
 	const menu = ref<FlyoutModel>();
 	/** 是否已置顶？ */
 	const pinned = defineModel("pinned", { default: false });

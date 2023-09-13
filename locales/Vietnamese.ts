@@ -402,11 +402,12 @@ const Vietnamese: LocaleIdentifiers = {
 		copied: "Đã sao chép!",
 		modification_failed: "Không thể sửa đổi!",
 		failed_to_disable_cookies: "Không thể vô hiệu các Cookie!",
-		duplicate_label: "Nhân đôi nhãn!", 
+		duplicate_label: "Nhân đôi nhãn!",
 	},
 	confirm: {
 		cancel_upload: "Bạn có chắc muốn ngừng quá trình đăng tải?",
 	},
+	current_time: "Current Time", // NEW
 };
 
 export default Vietnamese;

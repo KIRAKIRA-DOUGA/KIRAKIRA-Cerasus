@@ -1,6 +1,9 @@
 <script setup lang="ts">
 	import { LocaleObject } from "@nuxtjs/i18n/dist/runtime/composables";
+	import { useNow } from "@vueuse/core"; // 它与 lodash 同名函数冲突，只得显式引入。
+
 	const { locale: currentLocale, locales } = useI18n();
+	const date = useNow();
 
 	const localeModel = computed({
 		get: () => currentLocale.value,
@@ -8,12 +11,16 @@
 	});
 	const localeList = computed(() => (locales.value as LocaleObject[]).map(locale => ({
 		code: locale.code,
-		lang: locale.code === "zhs" ? "zh-Hans-CN" : locale.code === "zht" ? "zh-Hant-TW" : locale.code,
+		lang: getCurrentLocaleLangCode(locale.code),
 		name: locale.name || locale.code,
 	})));
 </script>
 
 <template>
+	<div class="date-time">
+		<Subheader icon="time">{{ t.current_time }}</Subheader>
+		<p>{{ formatDateWithLocale(date, { time: true }) }}</p>
+	</div>
 	<section grid>
 		<SettingsGridItem
 			v-for="locale in localeList"
@@ -40,6 +47,27 @@
 					animation: scale-in 600ms (100ms * ($i - 1)) $ease-out-smooth backwards;
 				}
 			}
+		}
+	}
+
+	.date-time {
+		$length: 2;
+		animation: none !important;
+
+		:not(.stop-animation) > & {
+			@for $i from 1 through $length {
+				> :nth-child(#{$i}) {
+					animation: float-left 1s (100ms * ($i - 1)) $ease-out-smooth backwards;
+				}
+			}
+		}
+
+		> .subheader {
+			margin-bottom: 10px;
+		}
+
+		> p {
+			margin-bottom: 4px;
 		}
 	}
 
@@ -72,10 +100,17 @@
 			line-height: 20px;
 		}
 	}
-	
+
 	@keyframes scale-in {
 		from {
 			scale: 0.8;
+			opacity: 0;
+		}
+	}
+
+	@keyframes float-left {
+		from {
+			translate: 2rem;
 			opacity: 0;
 		}
 	}

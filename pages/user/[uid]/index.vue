@@ -63,14 +63,14 @@
 				<div class="user-info">
 					<h3>{{ t.user.info }}</h3>
 					<div class="items">
-						<div v-tooltip:x="t.user.birthday" class="birthday">
+						<div v-if="user?.birthdate" v-tooltip:x="t.user.birthday" class="birthday">
 							<Icon name="birthday" />
-							<span>{{ user?.birthdate !== "" && user?.birthdate !== undefined ? formatDate(new Date(user?.birthdate), "yyyy/MM/dd") : "" }}</span>
+							<span>{{ formatDateWithLocale(new Date(user?.birthdate)) }}</span>
 						</div>
 
-						<div v-tooltip:x="t.user.join_time" class="join-time">
+						<div v-if="user?.joinDate" v-tooltip:x="t.user.join_time" class="join-time">
 							<Icon name="history" />
-							<span>{{ formatDate(new Date(user?.joinDate!), "yyyy/MM/dd") }}</span>
+							<span>{{ formatDateWithLocale(new Date(user?.joinDate)) }}</span>
 						</div>
 
 						<div v-tooltip:x="'UID'" class="uid">

@@ -407,6 +407,7 @@ const Korean: LocaleIdentifiers = {
 	confirm: {
 		cancel_upload: "Are you sure you want to cancel this upload?",
 	},
+	current_time: "Current Time",
 };
 
 export default Korean;

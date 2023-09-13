@@ -407,6 +407,7 @@ const TChinese: LocaleIdentifiers = {
 	confirm: {
 		cancel_upload: "確定要取消本次上傳嗎？",
 	},
+	current_time: "現在時間",
 };
 
 export default TChinese;

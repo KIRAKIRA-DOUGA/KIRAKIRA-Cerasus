@@ -81,7 +81,7 @@
 	 * @returns 显示为字符串的值。
 	 */
 	function handleTableDataCellText(value: ValueOf<DanmakuListItem>) {
-		if (value instanceof Date) return formatDate(value, "yyyy/MM/dd");
+		if (value instanceof Date) return formatDateWithLocale(value);
 		else if (value instanceof Duration) return value.toString();
 		else return value;
 	}
