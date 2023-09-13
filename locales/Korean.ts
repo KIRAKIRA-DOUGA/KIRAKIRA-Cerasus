@@ -188,7 +188,7 @@ const Korean: LocaleIdentifiers = {
 			designer: "Designer",
 			frontend: "Frontend",
 			backend: "Backend",
-			translator: "Translator",
+			translator: "{0} Translator",
 		},
 		technologies_used: "Technologies Used",
 		slogan: "A cute video site\xa0\nfor your loveliness!",

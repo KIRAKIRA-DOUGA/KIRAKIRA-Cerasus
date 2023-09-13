@@ -186,7 +186,7 @@ const SChinese = {
 			designer: "设计",
 			frontend: "前端",
 			backend: "后端",
-			translator: "翻译",
+			translator: "{0} 翻译",
 		},
 		technologies_used: "使用技术",
 		slogan: "一个可爱的视频网站，\n献给可爱的你！",

@@ -11,14 +11,19 @@
 	];
 
 	const team: { name: string; job: string[]; uid: number; avatar?: string }[] = [
-		{ name: "艾了个拉", job: [t.about.staff.webmistress, "/", t.about.staff.designer], uid: NaN, avatar: avatar("aira.webp") },
-		{ name: "兰音", job: [t.about.staff.frontend, "/", t.about.staff.designer], uid: NaN, avatar: avatar("nucleic_acid_testing.jpg") },
-		{ name: "OtoMAN", job: [t.about.staff.backend], uid: NaN, avatar: avatar("Otoman.png") },
-		{ name: "冲锋的小卡卡", job: [t.about.staff.backend], uid: NaN, avatar: avatar("ZERO_TWO.jpg") },
+		{ name: "艾了个拉", job: [t.about.staff.webmistress, t.about.staff.designer], uid: NaN, avatar: avatar("aira.webp") },
+		{ name: "兰音", job: [t.about.staff.frontend, t.about.staff.designer], uid: NaN, avatar: avatar("nucleic_acid_testing.jpg") },
 		{ name: "维他柠檬茶", job: [t.about.staff.frontend], uid: NaN, avatar: avatar("VTchara.webp") },
-		{ name: "琪露诺瓦露", job: [t.language.ja, t.about.staff.translator], uid: NaN, avatar: avatar("Cirnoire.png") },
 		{ name: "Sidd", job: [t.about.staff.frontend], uid: NaN, avatar: avatar("sidd.jpg") },
 		{ name: "鸣", job: [t.about.staff.frontend], uid: NaN, avatar: avatar("Mingeax.jpg") },
+		{ name: "OtoMAN", job: [t.about.staff.backend], uid: NaN, avatar: avatar("Otoman.png") },
+		{ name: "冲锋的小卡卡", job: [t.about.staff.backend], uid: NaN, avatar: avatar("ZERO_TWO.jpg") },
+		{ name: "琪露诺瓦露", job: [t.about.staff.translator(t.language.ja)], uid: NaN, avatar: avatar("Cirnoire.png") },
+		{ name: "韩琦Mica", job: [t.about.staff.translator(t.language.zht)], uid: NaN, avatar: avatar("HanceyMica.png") },
+		{ name: "Cyahega", job: [t.about.staff.translator(t.language.vi)], uid: NaN, avatar: avatar("Cyahega.jpg") },
+		{ name: "Remagtacrepus", job: [t.about.staff.translator(t.language.vi)], uid: NaN, avatar: avatar("remagtacrepus.png") },
+		{ name: "Ade Edogawa", job: [t.about.staff.translator(t.language.id)], uid: NaN, avatar: avatar("AdeEdogawa.jpg") },
+		{ name: "Jujun Gamers", job: [t.about.staff.translator(t.language.id)], uid: NaN, avatar: avatar("JujunG.webp") },
 	];
 
 	const technologies: { name: string; version?: string; ability: string; icon?: string; monochrome?: boolean; link: string }[] = [
@@ -58,7 +63,7 @@
 			:key="staff.name"
 			:image="staff.avatar"
 			icon="placeholder"
-			:details="`${staff.job.join(' ')} - UID ${staff.uid}`"
+			:details="`${staff.job.join(' / ')} - UID ${staff.uid}`"
 			trailingIcon="open_in_new"
 		>{{ staff.name }}</SettingsChipItem>
 	</section>

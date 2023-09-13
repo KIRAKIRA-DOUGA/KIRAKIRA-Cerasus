@@ -188,7 +188,7 @@ const Indonesian: LocaleIdentifiers = {
 			designer: "Designer",
 			frontend: "Paling depan",
 			backend: "Paling Belakang",
-			translator: "Penerjemah",
+			translator: "Penerjemah {0}",
 		},
 		technologies_used: "Teknologi yang Digunakan",
 		slogan: "Sebuah web video yang imutch\xa0\nuntuk kencantikanmu",
