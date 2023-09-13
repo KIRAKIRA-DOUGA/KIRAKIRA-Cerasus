@@ -22,4 +22,4 @@ jobs:
           git checkout locale-2023091201-Backup-Aira
           git pull
           git merge origin/develop --no-commit
-          git push origin locale
+          git push origin locale-2023091201-Backup-Aira
