@@ -188,7 +188,7 @@ const TChinese: LocaleIdentifiers = {
 			designer: "設計",
 			frontend: "前端",
 			backend: "後端",
-			translator: "翻譯",
+			translator: "{0} 翻譯",
 		},
 		technologies_used: "使用技術",
 		slogan: "一個可愛的視頻網站，\n獻給可愛的你！",

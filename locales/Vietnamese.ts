@@ -188,7 +188,7 @@ const Vietnamese: LocaleIdentifiers = {
 			designer: "Thiết kế",
 			frontend: "Thiết kế mã đầu trước",
 			backend: "Thiết kế mã đầu sau",
-			translator: "Dịch giả",
+			translator: "Dịch giả {0}",
 		},
 		technologies_used: "Dự án có sử dụng:",
 		slogan: "Trang video nhỏ xinh\xa0\ncho niềm yêu linh đình!",

@@ -188,7 +188,7 @@ const Japanese: LocaleIdentifiers = {
 			designer: "デザイナー",
 			frontend: "フロントエンド",
 			backend: "バックエンド",
-			translator: "翻訳者",
+			translator: "{0} 翻訳者",
 		},
 		technologies_used: "使用されている技術",
 		slogan: "かわいい動画サイトを，\nかわいいあなたに！",
