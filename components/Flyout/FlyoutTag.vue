@@ -7,9 +7,10 @@
 	const matchedTags = ref<string[]>([]);
 	const showCreateNew = ref(false);
 	const showTagEditor = ref(false);
-	const languages = ["简体中文", "英语", "日语", "繁体中文", "韩语", "越南语", "印尼语", "阿拉伯语", "西班牙语", "葡萄糖语", "其它"] as const;
-	const editor = reactive<{ language: typeof languages[number] | ""; values: string[]; default?: string }[]>([]);
-	const showComboBox = ref(false);
+	const languages = ["简体中文", "英语", "日语", "繁体中文", "韩语", "越南语", "印尼语", "阿拉伯语", "西班牙语", "葡萄牙语", "其它"] as const;
+	type LanguageList = typeof languages[number];
+	const editor = reactive<{ language: LanguageList | ""; values: string[]; default?: string }[]>([]);
+	const availableLanguages = ref<LanguageList[][]>([]);
 
 	/**
 	 * 用户在搜索框内输入文本时的事件。
@@ -37,7 +38,7 @@
 		else {
 			const text = search.value.trim().replaceAll(/\s+/g, " ");
 			arrayClearAll(editor);
-			// editor.push({ language: "", values: [text] });
+			// editor.push({ language: "", values: [text] }); // 正式上线时把下面的范例 tag 去掉，然后把这行代码取消注释。
 			editor.push(
 				{ language: "英语", values: ["Minecraft", "MC"], default: "Minecraft" },
 				{ language: "简体中文", values: ["我的世界", "当个创世神"], default: "我的世界" },
@@ -46,6 +47,20 @@
 			showTagEditor.value = true;
 		}
 	}
+
+	watch(editor, editor => {
+		if (editor.at(-1)?.language !== "")
+			editor.push({ language: "", values: [] });
+		availableLanguages.value = [];
+		const allComboBoxLanguages = editor.map(item => item.language);
+		editor.forEach(({ language }, index) => {
+			availableLanguages.value[index] = languages.filter(lang => {
+				if (lang === language) return true;
+				else if (allComboBoxLanguages.includes(lang)) return false;
+				else return true;
+			});
+		});
+	}, { deep: true });
 
 	/**
 	 * 关闭浮窗后事件。
@@ -57,7 +72,7 @@
 </script>
 
 <template>
-	<Flyout v-model="flyout" noPadding :class="{ 'show-combobox': showComboBox }">
+	<Flyout v-model="flyout" noPadding :ignoreOutsideElementClasses="['contextual-toolbar']">
 		<Comp>
 			<Transition :name="showTagEditor ? 'page-forward' : 'page-backward'" mode="out-in">
 				<div v-if="!showTagEditor" class="page-search">
@@ -86,14 +101,11 @@
 					<div class="list-wrapper">
 						<div class="list">
 							<template v-for="(item, index) in editor" :key="index">
-								<ComboBox v-model="item.language" v-model:shown="showComboBox" :placeholder="t.unselected.language">
-									<ComboBoxItem v-for="lang in languages" :id="lang" :key="lang">{{ lang }}</ComboBoxItem>
+								<ComboBox v-model="item.language" :placeholder="t.unselected.language">
+									<ComboBoxItem v-for="lang in availableLanguages[index]" :id="lang" :key="lang">{{ lang }}</ComboBoxItem>
 								</ComboBox>
-								<TagsEditor v-model="item.values" />
-								<!-- <div class="tags">
-									<Tag v-for="value in item.values" :key="value" :checked="item.default === value" @click="item.default = value">{{ value }}</Tag>
-								</div> -->
-								<!-- TODO: 支持选择默认值。 -->
+								<!-- TODO: ComboBox 组件的选项目前不是响应式的，因此暂时无法做成内容可变的选项内容。 -->
+								<TagsEditor v-model="item.values" v-model:default="item.default" />
 							</template>
 						</div>
 					</div>
@@ -108,11 +120,14 @@
 </template>
 
 <style scoped lang="scss">
+	$width: 500px;
+	$height: 360px;
 	$translate: 30px;
 
 	:comp {
-		@include square(360px);
 		position: relative;
+		width: $width;
+		height: $height;
 	}
 
 	.page-search {
@@ -209,13 +224,13 @@
 		.list-wrapper {
 			position: relative;
 			height: 100%;
-			overflow: auto;
+			// overflow: auto;
 		}
 
 		.list {
 			position: absolute;
 			display: grid;
-			grid-template-columns: repeat(2, auto);
+			grid-template-columns: 110px auto;
 			gap: 16px 8px;
 			width: 100%;
 		}
@@ -233,9 +248,9 @@
 		}
 	}
 
-	.flyout.show-combobox {
-		&,
-		.page-editor .list-wrapper {
+	.flyout,
+	.flyout .page-editor .list-wrapper {
+		&:has(.combo-box .show) {
 			overflow: visible;
 		}
 	}

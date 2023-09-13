@@ -101,7 +101,7 @@
 				<Icon name="chevron_down" />
 			</div>
 			<Transition :css="false" @enter="onMenuEnter" @leave="onMenuLeave">
-				<div v-if="showMenu" ref="menu">
+				<div v-if="showMenu" ref="menu" class="show">
 					<div class="menu">
 						<div v-for="item in items" :key="item.id" class="item-shadow"></div>
 					</div>
@@ -162,7 +162,7 @@
 		cursor: pointer;
 
 		.placeholder {
-			color: c(icon-color);
+			color: c(placeholder-color);
 		}
 
 		.icon {

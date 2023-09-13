@@ -361,6 +361,7 @@
 
 		&,
 		:deep(*) {
+			// stylelint-disable-next-line property-no-unknown
 			font-variant-emoji: emoji;
 		}
 	}
@@ -433,7 +434,7 @@
 
 		::selection {
 			color: c(accent);
-			background-color: #fff9;
+			background-color: c(accented-selection);
 		}
 	}
 

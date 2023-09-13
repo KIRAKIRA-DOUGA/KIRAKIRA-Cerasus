@@ -43,6 +43,21 @@ export const Caret = {
 		selection.removeAllRanges();
 		selection.addRange(range);
 	},
+
+	/**
+	 * 清除文本选择。
+	 *
+	 * 注意是不选择文本，而不是将选择文本删除。
+	 */
+	clear() {
+		if (window.getSelection) {
+			if (window.getSelection()?.empty) // Chrome
+				window.getSelection()?.empty();
+			else if (window.getSelection()?.removeAllRanges) // Firefox
+				window.getSelection()?.removeAllRanges();
+		} else if (document.selection) // IE?
+			document.selection.empty();
+	},
 };
 
 /**

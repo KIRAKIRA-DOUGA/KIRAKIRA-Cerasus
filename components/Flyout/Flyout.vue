@@ -21,14 +21,18 @@
 	import { getPosition } from "plugins/vue/tooltip";
 	import { FlyoutModelNS } from "types/arguments";
 
-	const props = defineProps<{
+	const props = withDefaults(defineProps<{
 		/** 是否**不**向加内边距？ */
 		noPadding?: boolean;
 		/** 是否在按下 `Esc` 按键时**不要**关闭浮窗？ */
 		doNotCloseOnEsc?: boolean;
 		/** 是否**不** `overflow: hidden;`？ */
 		noCropping?: boolean;
-	}>();
+		/** 在点击元素外围时，如其包含以下类名的元素，则不会触发自动关闭。 */
+		ignoreOutsideElementClasses?: string[];
+	}>(), {
+		ignoreOutsideElementClasses: () => [],
+	});
 
 	const emits = defineEmits<{
 		show: [];
@@ -183,7 +187,8 @@
 
 	useEventListener("window", "pointerdown", e => {
 		if (!flyout.value || !shown.value) return;
-		const clickOutside = !isInPath(e, flyout);
+		let clickOutside = !isInPath(e, flyout);
+		if (clickOutside) clickOutside = props.ignoreOutsideElementClasses.every(klass => !isInPath(e, klass));
 		if (clickOutside) hide();
 	});
 </script>

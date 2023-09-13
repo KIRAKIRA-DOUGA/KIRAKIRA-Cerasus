@@ -3,6 +3,8 @@
 </docs>
 
 <script setup lang="ts">
+	/** 指定默认的标签值，如为 undefined 表示未设定默认值，如为 null 表示当前组件不适用默认值。 */
+	const def = defineModel<string | undefined | null>("default", { default: null });
 	const tags = defineModel<string[]>({ default: [] });
 	const tagsWithKey = reactive<Map<number, string>>(new Map());
 	const tagsWithKeyProxy = new Proxy({}, {
@@ -18,12 +20,19 @@
 			return true;
 		},
 	}) as Record<number, string>;
+	const tagsWithKeySorted = computed(() =>
+		[...tagsWithKey.entries()].sort((a, b) =>
+			a[1] === def.value ? -1 : b[1] === def.value ? 1 : a[0] - b[0]));
 	const isUpdatingTags = ref(false);
 	const maxIndex = computed(() => {
 		let maxIndex = Math.max(...tagsWithKey.keys());
 		if (maxIndex === -Infinity) maxIndex = -1;
 		return maxIndex;
 	});
+	const contextualToolbar = ref<FlyoutModel>();
+	const hoveredTagContent = ref<[number, string]>();
+	const hideExceptMe = ref(false);
+	const hideTimeoutId = ref<Timeout>();
 
 	watch(tags, async curTags => {
 		if (isUpdatingTags.value) return;
@@ -39,10 +48,12 @@
 	/**
 	 * 更新标签项目。
 	 * @param index - 标签索引值。
+	 * @param value - 可在此直接设值。
 	 */
-	async function updateTags(index: number) {
+	async function updateTags(index: number, value?: string) {
+		if (index === undefined) return;
 		isUpdatingTags.value = true;
-		const tag = tagsWithKey.get(index);
+		const tag = value ?? tagsWithKey.get(index);
 		if (!tag) {
 			if (index !== maxIndex.value)
 				tagsWithKey.delete(index);
@@ -62,6 +73,7 @@
 		}
 		tags.value = normalizeTags();
 		appendEmptyTag();
+		contextualToolbar.value = undefined;
 		await nextTick();
 		isUpdatingTags.value = false;
 	}
@@ -114,19 +126,84 @@
 		await animateSize(el, null, { endWidth: 0, endStyle: { marginLeft: "-8px" }, specified: "width" });
 		done();
 	}
+
+	/**
+	 * 将某个标签设为默认值（如果允许）。
+	 */
+	function setToDefault() {
+		const tag = hoveredTagContent.value?.[1];
+		if (def.value === null || !tag) return;
+		def.value = tag;
+		contextualToolbar.value = undefined;
+	}
+
+	/**
+	 * 显示标签的上下文工具栏。
+	 * @param key - 标签键名。
+	 * @param tag - 标签内容。
+	 * @param e - 鼠标事件。
+	 */
+	function showContextualToolbar(key: number, tag: string, e: MouseEvent) {
+		if (!tag) return;
+		if ((e.currentTarget as HTMLSpanElement).querySelector(".text-box:focus")) return;
+		reshowContextualToolbar();
+		if (hoveredTagContent.value?.[0] === key && hoveredTagContent.value?.[1] === tag) return;
+		hoveredTagContent.value = [key, tag];
+		hideExceptMe.value = true;
+		useEvent("component:hideAllContextualToolbar");
+		hideExceptMe.value = false;
+		contextualToolbar.value = [e, "top", 0];
+	}
+
+	/**
+	 * 隐藏标签的上下文工具栏。
+	 */
+	function hideContextualToolbar() {
+		hideTimeoutId.value = setTimeout(() => {
+			contextualToolbar.value = undefined;
+			hoveredTagContent.value = undefined;
+		}, 100);
+	}
+
+	/**
+	 * 鼠标移入区域，取消自动隐藏。
+	 */
+	function reshowContextualToolbar() {
+		clearTimeout(hideTimeoutId.value);
+	}
+
+	useListen("component:hideAllContextualToolbar", () => {
+		if (hideExceptMe.value) return;
+		contextualToolbar.value = undefined;
+	});
 </script>
 
 <template>
 	<Comp class="tags">
 		<TransitionGroup @leave="onTagLeave">
 			<Tag
-				v-for="[key, tag] in tagsWithKey"
+				v-for="[key, tag] in tagsWithKeySorted"
 				:key="key"
 				v-model:input="tagsWithKeyProxy[key]"
 				:placeholder="t.press_enter_to_add"
+				:checked="def === tag"
 				@change="updateTags(key)"
+				@mouseenter="e => showContextualToolbar(key, tag, e)"
+				@mouseleave="hideContextualToolbar"
 			>{{ tag }}</Tag>
 		</TransitionGroup>
+
+		<Flyout
+			v-if="def !== null"
+			v-model="contextualToolbar"
+			noPadding
+			class="contextual-toolbar"
+			@mouseenter="reshowContextualToolbar"
+			@mouseleave="hideContextualToolbar"
+		>
+			<Button v-if="hoveredTagContent?.[1] !== def" icon="check" @click="setToDefault()">设为默认</Button>
+			<Button icon="close" @click="updateTags(hoveredTagContent![0], '')">删除</Button>
+		</Flyout>
 	</Comp>
 </template>
 
@@ -147,6 +224,12 @@
 			&.v-leave-active {
 				white-space: nowrap;
 			}
+		}
+	}
+
+	.contextual-toolbar {
+		button {
+			--appearance: tertiary;
 		}
 	}
 </style>
