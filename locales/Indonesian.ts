@@ -386,6 +386,7 @@ const Indonesian: LocaleIdentifiers = {
 	navigation: {
 		_: "Navigasi",
 		back: "Kembali",
+		return_to_home: "Return to Home", // NEW
 	},
 	other: "Lainnya",
 	color_picker: "Pemilih warna",

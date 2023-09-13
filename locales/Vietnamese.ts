@@ -386,6 +386,7 @@ const Vietnamese: LocaleIdentifiers = {
 	navigation: {
 		_: "Tìm kiếm...",
 		back: "Quay lại",
+		return_to_home: "Return to Home", // NEW
 	},
 	other: "Khác",
 	color_picker: "Chọn màu",

@@ -386,6 +386,7 @@ const TChinese: LocaleIdentifiers = {
 	navigation: {
 		_: "導航",
 		back: "返回",
+		return_to_home: "返回首頁",
 	},
 	other: "其它",
 	color_picker: "調色板",
