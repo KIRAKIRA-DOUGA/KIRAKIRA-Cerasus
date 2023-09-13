@@ -407,6 +407,7 @@ const Indonesian: LocaleIdentifiers = {
 	confirm: {
 		cancel_upload: "Apakah Anda yakin ingin membatalkan Unggah?",
 	},
+	current_time: "Current Time", // NEW
 };
 
 export default Indonesian;

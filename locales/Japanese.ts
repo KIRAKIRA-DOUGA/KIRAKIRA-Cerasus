@@ -407,6 +407,7 @@ const Japanese: LocaleIdentifiers = {
 	confirm: {
 		cancel_upload: "アップロードをキャンセルしますか？",
 	},
+	current_time: "现在时间", // NEW
 };
 
 export default Japanese;

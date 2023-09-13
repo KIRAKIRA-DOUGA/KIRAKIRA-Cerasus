@@ -76,5 +76,15 @@ Object.freeze(t);
  * @returns 当前语言名称。
  */
 export function getCurrentLocale() {
-	return (useNuxtApp().$i18n.locale as unknown as ComputedRef<string>).value;
+	return useNuxtApp().$i18n.locale.value;
+}
+
+/**
+ * 获取当前语言的语言代码。（主要是为了单独处理简体中文和繁体中文。）
+ * @param locale - 手动指定语言代码，留空时会自动获取。
+ * @returns 语言代码。
+ */
+export function getCurrentLocaleLangCode(locale?: string) {
+	locale ||= getCurrentLocale();
+	return locale === "zhs" ? "zh-Hans-CN" : locale === "zht" ? "zh-Hant-TW" : locale;
 }

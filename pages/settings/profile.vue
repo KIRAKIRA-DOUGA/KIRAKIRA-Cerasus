@@ -8,7 +8,7 @@
 	const bio = ref("");
 	const genderBasic = ref<"male" | "female" | "custom" | "">("");
 	const genderCustom = ref("");
-	const birthday = ref(formatDate(new Date(), "yyyy/MM/dd"));
+	const birthday = ref(formatDateWithLocale(new Date()));
 
 	/**
 	 * Fetch the videos according to the query.

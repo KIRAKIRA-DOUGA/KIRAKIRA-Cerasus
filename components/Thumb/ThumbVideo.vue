@@ -33,7 +33,7 @@
 		duration: undefined,
 	});
 
-	const date = computed(() => props.date ? formatDate(props.date, "yyyy/MM/dd") : "----/--/--");
+	const date = computed(() => props.date ? formatDateWithLocale(props.date) : "----/--/--"); // TODO: 占位符日期应该也要遵循地区格式。
 	const watchedCount = computed(() => getCompactDecimal(props.watchedCount));
 	const duration = computed(() => props.duration ?? "--:--");
 	const link = computed(() => props.videoId !== undefined && props.videoId !== null ?

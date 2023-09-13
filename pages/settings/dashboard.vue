@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	const avatar = "/static/images/avatars/aira.webp";
 	const registerDate = ref(new Date());
-	const registerDateDisplay = computed(() => formatDate(registerDate.value, "yyyy/MM/dd"));
+	const registerDateDisplay = computed(() => formatDateWithLocale(registerDate.value));
 	const uid = ref<bigint>(2n);
 </script>
 
