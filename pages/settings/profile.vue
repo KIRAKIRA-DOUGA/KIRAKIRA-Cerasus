@@ -9,6 +9,7 @@
 	const genderBasic = ref<"male" | "female" | "custom" | "">("");
 	const genderCustom = ref("");
 	const birthday = ref(formatDateWithLocale(new Date()));
+	const tags = ref([]);
 
 	/**
 	 * Fetch the videos according to the query.
@@ -88,6 +89,14 @@
 					</Transition>
 				</div>
 			</div>
+		</div>
+		
+		<div class="gender">
+			<div class="gender-subtitle">
+				<Icon name="tag" class="icon" />
+				<span class="text">{{ t(2).tag }}</span>
+			</div>
+			<TagsEditor v-model="tags" />
 		</div>
 	</div>
 
