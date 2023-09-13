@@ -211,7 +211,7 @@
 	:comp {
 		@include dropdown-flyouts;
 		@include round-large;
-		max-width: 100dvw;
+		@include set-max-size;
 		background-color: c(acrylic-bg, 75%);
 		transition: $fallback-transitions, left 0s, top 0s;
 

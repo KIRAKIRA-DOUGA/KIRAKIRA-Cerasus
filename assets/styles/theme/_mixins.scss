@@ -238,3 +238,10 @@
 		}
 	}
 }
+
+/// 为元素设置最大宽高度到屏幕宽高度，防止元素超出到屏幕外面。
+/// @output max-width, max-height
+@mixin set-max-size {
+	max-width: 100dvw;
+	max-height: 100dvh;
+}
