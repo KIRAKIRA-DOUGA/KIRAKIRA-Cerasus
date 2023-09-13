@@ -23,6 +23,7 @@
 	 * @param e - 鼠标事件。
 	 */
 	function onClick(e: MouseEvent) {
+		props.href && navigate(props.href);
 		emits("click", e);
 	}
 </script>
