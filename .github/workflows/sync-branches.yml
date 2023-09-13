@@ -17,9 +17,7 @@ jobs:
           git config --local user.email "actions@github.com"
           git config --local user.name "Github Actions"
 
-          git checkout develop
-          git fetch origin
           git checkout locale-2023091301-Backup-Ranne
-          git pull
+          git pull origin develop
           git merge origin/develop --no-commit --no-ff
           git push origin locale-2023091301-Backup-Ranne
