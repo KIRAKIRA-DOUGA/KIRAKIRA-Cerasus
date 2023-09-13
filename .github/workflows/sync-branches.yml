@@ -1,25 +1,16 @@
-name: Sync Develop to Locale
+name: Sync Develop to Locale Branch
 on:
   push:
     branches:
       - develop
 jobs:
-  sync-branch:
+  sync-branches:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@master
         with:
           fetch-depth: 0
-
-      # - name: Merge development -> staging
-      #   uses: devmasx/merge-branch@master
-      #   with:
-      #     type: now
-      #     from_branch: develop
-      #     target_branch: locale
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     disable_fastforwards: true
 
       - name: Merge develop -> locale
         run: |
@@ -28,7 +19,7 @@ jobs:
 
           git checkout develop
           git fetch origin
-          git checkout locale
+          git checkout locale-2023091201-Backup-Aira
           git pull
-          git merge origin/develop
-          git push origin locale
+          git merge origin/develop --no-commit
+          git push origin locale-2023091201-Backup-Aira
