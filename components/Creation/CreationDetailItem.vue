@@ -19,6 +19,14 @@
 		gap: 0.25rem;
 		align-items: center;
 		color: c(icon-color);
+
+		a:any-hover & {
+			color: c(accent-hover);
+		}
+
+		a:active & {
+			color: c(accent-pressed);
+		}
 	}
 
 	.icon {
@@ -27,9 +35,9 @@
 
 	p {
 		user-select: text;
-	}
 
-	a p {
-		user-select: none;
+		a & {
+			user-select: none;
+		}
 	}
 </style>

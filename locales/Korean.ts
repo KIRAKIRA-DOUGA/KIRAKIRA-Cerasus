@@ -386,6 +386,7 @@ const Korean: LocaleIdentifiers = {
 	navigation: {
 		_: "Navigation",
 		back: "Back",
+		return_to_home: "Return to Home",
 	},
 	other: "Other",
 	color_picker: "Color Picker",

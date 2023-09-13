@@ -386,6 +386,7 @@ const Japanese: LocaleIdentifiers = {
 	navigation: {
 		_: "ナビ",
 		back: "戻る",
+		return_to_home: "返回首页", // NEW
 	},
 	other: "その他",
 	color_picker: "カラー選択",

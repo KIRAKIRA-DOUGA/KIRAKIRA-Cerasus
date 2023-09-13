@@ -61,10 +61,12 @@
 			{ property: "og:type", content: "video" },
 			{ property: "og:title", content: title },
 			{ property: "og:description", content: videoDetails.value?.videoDescription },
-			{ property: "og:image", content: videoDetails.value?.thumbnail }, // TODO: We should get the video thumbnail here.
+			{ property: "og:image", content: videoDetails.value?.thumbnail },
+			{ property: "og:image:width", content: 1280 },
+			{ property: "og:image:height", content: 720 },
 			{ name: "twitter:title", content: title },
 			{ name: "twitter:description", content: videoDetails.value?.videoDescription },
-			{ name: "twitter:image", content: videoDetails.value?.thumbnail }, // TODO: We should get the video thumbnail here.
+			{ name: "twitter:image", content: videoDetails.value?.thumbnail },
 		],
 	});
 </script>
@@ -83,8 +85,10 @@
 					:date="new Date(videoDetails?.uploadDate!)"
 					category="音MAD"
 					:title="videoDetails?.title ?? ''"
+					:videoId="videoDetails?.videoID ?? NaN"
 					copyright="repost"
 					:tags="videoDetails?.tags ?? []"
+					:cover="videoDetails?.thumbnail"
 				/>
 
 				<p class="description">

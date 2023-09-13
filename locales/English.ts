@@ -386,6 +386,7 @@ const English: LocaleIdentifiers = {
 	navigation: {
 		_: "Navigation",
 		back: "Back",
+		return_to_home: "Return to Home",
 	},
 	other: "Other | Others",
 	color_picker: "Color Picker",

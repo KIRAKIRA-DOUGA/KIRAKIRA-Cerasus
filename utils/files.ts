@@ -1,6 +1,6 @@
 /**
  * 将 URL 地址转换为 blob 对象。
- * @deprecated XMLHttpRequest 这种上古技术还有用的必要吗？
+ * @deprecated XMLHttpRequest 这种上古技术还有使用的必要吗？
  * @param url - 链接。
  * @param callback - 回调函数。
  */
@@ -45,5 +45,22 @@ export function fileToData(file: File) {
 		const fileReader = new FileReader();
 		fileReader.onload = function () { resolve(this.result as string); };
 		fileReader.readAsDataURL(file);
+	});
+}
+
+/**
+ * 下载文件。
+ * @param url - 链接地址。
+ * @param filename - 欲保存的文件名。
+ */
+export function downloadFile(url: string, filename: string = "") {
+	fetch(url).then(async res => await res.blob()).then(blob => {
+		const a = document.createElement("a");
+		a.style.display = "none";
+		a.href = URL.createObjectURL(blob);
+		a.download = filename;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
 	});
 }

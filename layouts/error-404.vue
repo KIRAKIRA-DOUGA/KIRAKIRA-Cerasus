@@ -66,7 +66,7 @@
 			<!-- <div>test pointer: {{ parallax.x }}, {{ parallax.y }}</div>
 			<div>test gsensor: {{ gsensor.alpha }}, {{ gsensor.beta }}, {{ gsensor.gamma }}</div>
 			<div>{{ rotationDeg }}</div> -->
-			<Button href="/">返回首页</Button>
+			<Button href="/">{{ t.navigation.return_to_home }}</Button>
 		</div>
 	</main>
 </template>
