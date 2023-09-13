@@ -477,7 +477,7 @@
 	.flyout-bg {
 		@include dropdown-flyouts;
 		@include round-large;
-		max-width: 100dvw;
+		@include set-max-size;
 		padding: 0.75rem 1rem;
 		background-color: c(acrylic-bg, 75%);
 	}

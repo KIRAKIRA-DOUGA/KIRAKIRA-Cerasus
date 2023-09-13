@@ -119,7 +119,7 @@
 		@include absolute-center(fixed);
 		@include dropdown-flyouts;
 		@include round-large;
-		max-width: 100dvw;
+		@include set-max-size;
 		overflow: hidden;
 		background-color: c(acrylic-bg, 75%);
 		transform: translate(-50%, -50%); // TODO: 修改密码模态框出现模糊情况。
