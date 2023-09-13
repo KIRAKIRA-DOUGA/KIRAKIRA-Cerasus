@@ -19,7 +19,7 @@ jobs:
 
           git checkout develop
           git fetch origin
-          git checkout locale-2023091201-Backup-Aira
+          git checkout locale-2023091301-Backup-Ranne
           git pull
-          git merge origin/develop --no-commit
-          git push origin locale-2023091201-Backup-Aira
+          git merge origin/develop --no-commit --no-ff
+          git push origin locale-2023091301-Backup-Ranne
