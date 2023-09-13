@@ -43,6 +43,7 @@
 	function onChange(e: Event) {
 		const div = e.target as HTMLDivElement;
 		div.blur();
+		Caret.clear();
 		const value = div.innerText;
 		emits("change", value);
 	}
@@ -196,8 +197,13 @@
 		padding: $padding;
 
 		&:empty::before {
-			color: c(icon-color);
+			color: c(placeholder-color);
 			content: attr(data-placeholder);
+		}
+
+		.tag.checked &::selection {
+			color: c(accent);
+			background-color: c(accented-selection);
 		}
 	}
 </style>

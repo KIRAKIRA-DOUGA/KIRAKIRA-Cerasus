@@ -72,6 +72,13 @@ declare global {
 		 */
 		ActiveXObject: undefined;
 	}
+	interface Document {
+		/**
+		 * 在 Internet Explorer 中可用的文本选中对象。
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Window/getSelection)
+		 */
+		selection: Selection | null;
+	}
 	interface ScreenOrientation {
 		/**
 		 * `ScreenOrientation` 接口的 `lock()` 属性将包含文档的方向锁定为指定的方向。

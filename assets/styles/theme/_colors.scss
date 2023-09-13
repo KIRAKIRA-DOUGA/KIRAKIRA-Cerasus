@@ -29,6 +29,8 @@ $neutral-colors: (
 	surface-color: c(white, 75%) c(white, 5%),
 	ripple: c(black, 15%) c(white, 15%),
 	color-palette-stroke: c(black, 10%) c(white, 10%),
+	accented-selection: #fff9 #fff9,
+	placeholder-color: #757575 #9e9e9e,
 );
 
 // 如果定义为列表，则第一项为浅色主题颜色，第二项为深色主题颜色。
