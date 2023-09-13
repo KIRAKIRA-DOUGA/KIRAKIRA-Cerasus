@@ -119,9 +119,10 @@
 			<Tag
 				v-for="[key, tag] in tagsWithKey"
 				:key="key"
-				v-model:input="tagsWithKeyProxy[key]"
+				:input="tagsWithKey.get(key)"
 				:placeholder="t.press_enter_to_add"
 				@change="updateTags(key)"
+				@update:input="value => tagsWithKey.set(key, value)"
 			>{{ tag }}</Tag>
 		</TransitionGroup>
 	</Comp>
