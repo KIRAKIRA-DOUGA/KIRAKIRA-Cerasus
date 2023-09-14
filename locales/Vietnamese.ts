@@ -403,7 +403,7 @@ const Vietnamese: LocaleIdentifiers = {
 		copied: "Đã sao chép!",
 		modification_failed: "Không thể sửa đổi!",
 		failed_to_disable_cookies: "Không thể vô hiệu các Cookie!",
-		duplicate_label: "Nhân đôi nhãn!",
+		duplicate_label: "Nhân đôi thẻ!",
 		no_language_selected: "Vui lòng chọn một ngôn ngữ trước tiên!",
 	},
 	confirm: {
