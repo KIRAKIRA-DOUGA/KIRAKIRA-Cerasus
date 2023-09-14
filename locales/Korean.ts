@@ -403,7 +403,8 @@ const Korean: LocaleIdentifiers = {
 		copied: "Copied!",
 		modification_failed: "Modification failed!",
 		failed_to_disable_cookies: "Failed to disable cookies!",
-		duplicate_label: "Duplicate label!", // NEW
+		duplicate_label: "Duplicate label!",
+		no_language_selected: "Please select a language first!",
 	},
 	confirm: {
 		cancel_upload: "Are you sure you want to cancel this upload?",

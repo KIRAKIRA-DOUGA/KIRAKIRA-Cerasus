@@ -404,6 +404,7 @@ const Indonesian: LocaleIdentifiers = {
 		modification_failed: "Modifikasi gagal",
 		failed_to_disable_cookies: "Gagal menonaktifkan cookie!",
 		duplicate_label: "Duplicate label!", // NEW
+		no_language_selected: "Please select a language first!", // NEW
 	},
 	confirm: {
 		cancel_upload: "Apakah Anda yakin ingin membatalkan Unggah?",

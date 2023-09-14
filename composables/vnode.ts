@@ -2,7 +2,7 @@
  * 在组合式 API 定义 render 函数，比如返回特定的 JSX。
  * @param render - 指定渲染函数，比如 JSX。
  */
-export default function useRender(render: () => VNode): void {
+export function useRender(render: () => VNode): void {
 	const vm = getCurrentInstance() as ComponentInternalInstance & { render: () => VNode } | null;
 	if (!vm) throw new Error("[useRender] must be called from inside a setup function");
 	vm.render = render;

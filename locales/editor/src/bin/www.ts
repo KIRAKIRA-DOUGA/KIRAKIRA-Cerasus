@@ -10,7 +10,7 @@ const server = http.createServer(serverHandler);
 
 const colors = consoleColors.foreground;
 // eslint-disable-next-line no-console
-console.log(`    ${colors.green}→${colors.white} Start i18n editor server: ${colors.yellow}${URL}`);
+console.log(`  ${colors.green}➜${colors.white} Start i18n editor server: ${colors.yellow}${URL}`);
 exec(`start ${URL}`);
 
 server.listen(PORT);

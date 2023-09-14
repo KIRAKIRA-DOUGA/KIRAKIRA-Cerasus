@@ -2,11 +2,13 @@
 	const props = defineProps<{
 		/** 图标，可选。 */
 		icon?: DeclaredIcons;
+		/** 是否可点击？ */
+		clickable?: boolean;
 	}>();
 </script>
 
 <template>
-	<Comp>
+	<Comp :class="{ clickable }">
 		<Icon v-if="icon" :name="icon" />
 		<p><slot></slot></p>
 	</Comp>
@@ -20,12 +22,16 @@
 		align-items: center;
 		color: c(icon-color);
 
-		a:any-hover & {
-			color: c(accent-hover);
-		}
+		&.clickable {
+			cursor: pointer;
 
-		a:active & {
-			color: c(accent-pressed);
+			&:any-hover {
+				color: c(accent-hover);
+			}
+
+			&:active {
+				color: c(accent-pressed);
+			}
 		}
 	}
 
@@ -36,7 +42,7 @@
 	p {
 		user-select: text;
 
-		a & {
+		:comp.clickable & {
 			user-select: none;
 		}
 	}
