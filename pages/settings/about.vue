@@ -33,7 +33,7 @@
 		{ name: "Node.js", version: "18", ability: "Server Operation Platform", icon: "nodejs", link: "https://nodejs.org/" },
 		// { name: "Koa", version: "3", ability: "Server Network Framework", icon: "koa", monochrome: true, link: "https://koajs.com/" },
 		{ name: "Go", version: "1.20", ability: "Server Programming Language", icon: "go", link: "https://go.dev/" },
-		{ name: "Vercel", ability: "Website Hosting Services", icon: "vercel", link: "https://vercel.com/" },
+		{ name: "Vercel", ability: "Website Hosting Services", icon: "vercel", monochrome: true, link: "https://vercel.com/" },
 		// 基于前端运行时的版本号可以自动识别，后端和编译时的版本号只能委屈你自己手打了。
 	];
 
