@@ -410,7 +410,7 @@ const Vietnamese: LocaleIdentifiers = {
 		cancel_upload: "Bạn có chắc muốn ngừng quá trình đăng tải?",
 	},
 	current_time: "Thời gian hiện tại",
-	set_as_default: "Set as Default", // NEW
+	set_as_default: "Đặt về mặc định", 
 };
 
 export default Vietnamese;
