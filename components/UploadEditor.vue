@@ -100,6 +100,8 @@
 	}
 
 	const [onContentEnter, onContentLeave] = simpleAnimateSize("height", 500, eases.easeInOutSmooth);
+
+	const flyoutTag = ref<FlyoutModel>();
 </script>
 
 <template>
@@ -176,9 +178,17 @@
 
 					<section>
 						<Subheader icon="tag">{{ t(2).tag }}</Subheader>
-						<TagsEditor v-model="tags" />
-
+						<div class="tags">
+							<Tag
+								v-for="tag in tags"
+								:key="tag"
+								:query="{ q: tag }"
+							>{{ tag }}</Tag>
+							<Tag class="add-tag" @click="e => flyoutTag = [e, 'y']"><Icon name="add" /></Tag>
+						</div>
 					</section>
+
+					<FlyoutTag v-model="flyoutTag" />
 
 					<section>
 						<Subheader icon="details">{{ t.description }}</Subheader>
@@ -305,6 +315,19 @@
 	.left > *,
 	.left > .left-1> * {
 		width: 100%;
+	}
+
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+
+		.add-tag {
+			padding: 6px;
+			color: c(icon-color);
+			font-size: 18px;
+			aspect-ratio: 1 / 1;
+		}
 	}
 
 	.toggle-switch {

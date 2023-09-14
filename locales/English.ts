@@ -226,7 +226,7 @@ const English: LocaleIdentifiers = {
 	upload: {
 		_: "Upload",
 		drag_to_upload: "Drag Here to Upload",
-		format_info: "Supports mainstream formats such as MP4, WMV, WEBM",
+		format_info: "Supports video formats such as MP4, WMV, WEBM",
 	},
 	messages: "Messages",
 	login: "Login",
@@ -410,6 +410,7 @@ const English: LocaleIdentifiers = {
 		cancel_upload: "Are you sure you want to cancel this upload?",
 	},
 	current_time: "Current Time",
+	set_as_default: "Set as Default",
 };
 
 export default English;

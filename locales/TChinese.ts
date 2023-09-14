@@ -410,6 +410,7 @@ const TChinese: LocaleIdentifiers = {
 		cancel_upload: "確定要取消本次上傳嗎？",
 	},
 	current_time: "現在時間",
+	set_as_default: "设为默认", // NEW
 };
 
 export default TChinese;

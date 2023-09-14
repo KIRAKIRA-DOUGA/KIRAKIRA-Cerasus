@@ -203,8 +203,8 @@
 			@mouseenter="reshowContextualToolbar"
 			@mouseleave="hideContextualToolbar"
 		>
-			<Button v-if="hoveredTagContent?.[1] !== def" icon="check" @click="setToDefault()">设为默认</Button>
-			<Button icon="close" @click="updateTags(hoveredTagContent![0], '')">删除</Button>
+			<Button v-if="hoveredTagContent?.[1] !== def" icon="check" @click="setToDefault()">{{ t.set_as_default }}</Button>
+			<Button icon="close" @click="updateTags(hoveredTagContent![0], '')">{{ t.delete }}</Button>
 		</Flyout>
 	</Comp>
 </template>
