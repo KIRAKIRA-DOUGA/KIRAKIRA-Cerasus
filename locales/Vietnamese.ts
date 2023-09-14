@@ -386,7 +386,7 @@ const Vietnamese: LocaleIdentifiers = {
 	navigation: {
 		_: "Tìm kiếm...",
 		back: "Quay lại",
-		return_to_home: "Return to Home", // NEW
+		return_to_home: "Trở về trang chủ", 
 	},
 	other: "Khác",
 	color_picker: "Chọn màu",
@@ -404,12 +404,12 @@ const Vietnamese: LocaleIdentifiers = {
 		modification_failed: "Không thể sửa đổi!",
 		failed_to_disable_cookies: "Không thể vô hiệu các Cookie!",
 		duplicate_label: "Nhân đôi nhãn!",
-		no_language_selected: "Please select a language first!", // NEW
+		no_language_selected: "Vui lòng chọn một ngôn ngữ trước tiên!",
 	},
 	confirm: {
 		cancel_upload: "Bạn có chắc muốn ngừng quá trình đăng tải?",
 	},
-	current_time: "Current Time", // NEW
+	current_time: "Thời gian hiện tại", 
 };
 
 export default Vietnamese;
