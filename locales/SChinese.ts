@@ -408,6 +408,7 @@ const SChinese = {
 		cancel_upload: "确定要取消本次上传吗？",
 	},
 	current_time: "现在时间",
+	set_as_default: "设为默认",
 } as const;
 
 export default SChinese;

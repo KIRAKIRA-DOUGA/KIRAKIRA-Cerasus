@@ -386,7 +386,7 @@ const Vietnamese: LocaleIdentifiers = {
 	navigation: {
 		_: "Tìm kiếm...",
 		back: "Quay lại",
-		return_to_home: "Trở về trang chủ", 
+		return_to_home: "Trở về trang chủ",
 	},
 	other: "Khác",
 	color_picker: "Chọn màu",
@@ -409,7 +409,8 @@ const Vietnamese: LocaleIdentifiers = {
 	confirm: {
 		cancel_upload: "Bạn có chắc muốn ngừng quá trình đăng tải?",
 	},
-	current_time: "Thời gian hiện tại", 
+	current_time: "Thời gian hiện tại",
+	set_as_default: "Set as Default", // NEW
 };
 
 export default Vietnamese;

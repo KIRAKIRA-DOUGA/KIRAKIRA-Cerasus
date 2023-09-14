@@ -226,7 +226,7 @@ const Indonesian: LocaleIdentifiers = {
 	upload: {
 		_: "Unggah",
 		drag_to_upload: "Seret kesini untuk Mengunggah",
-		format_info: "Mendukung format mainstream seperti MP4, WMV, WEBM",
+		format_info: "Mendukung format video seperti MP4, WMV, WEBM", // NEW
 	},
 	messages: "Pesan",
 	login: "Masuk",
@@ -410,6 +410,7 @@ const Indonesian: LocaleIdentifiers = {
 		cancel_upload: "Apakah Anda yakin ingin membatalkan Unggah?",
 	},
 	current_time: "Current Time", // NEW
+	set_as_default: "Set as Default", // NEW
 };
 
 export default Indonesian;
