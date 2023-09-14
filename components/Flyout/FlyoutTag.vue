@@ -89,11 +89,21 @@
 							<div v-else class="list">
 								<TransitionGroup>
 									<div v-for="tag in matchedTags" :key="tag" v-ripple class="list-item">
-										<p class="title">{{ tag }}</p>
-										<p class="count">{{ t(100).video_count(100) }}</p>
+										<div class="content">
+											<p class="title">{{ tag }}</p>
+											<p class="count">{{ t(100).video_count(100) }}</p>
+										</div>
+										<div class="trailing">
+											<SoftButton icon="edit" />
+										</div>
 									</div>
-									<div v-if="showCreateNew" v-ripple class="list-item" @click="switchTagEditor(true)">
-										<p class="title">{{ t.tag.new }}</p>
+									<div v-if="showCreateNew" v-ripple class="list-item create-new" @click="switchTagEditor(true)">
+										<div class="leading">
+											<Icon name="add" />
+										</div>
+										<div class="content">
+											<p class="title">{{ t.tag.new }}</p>
+										</div>
 									</div>
 								</TransitionGroup>
 							</div>
@@ -182,6 +192,9 @@
 		}
 
 		.list-item {
+			display: flex;
+			gap: 4px;
+			align-items: center;
 			width: 100%;
 			padding: 8px 16px;
 			cursor: pointer;
@@ -190,8 +203,28 @@
 				padding-top: 16px;
 			}
 
-			&:last-child {
-				padding-bottom: 16px;
+			&.create-new {
+				color: c(icon-color);
+			}
+
+			.leading {
+				display: flex;
+
+				.icon {
+					font-size: 24px;
+				}
+			}
+
+			&:has(.leading .icon) {
+				padding: 8px 12px;
+
+				&:only-child {
+					padding: 16px 12px;
+				}
+			}
+
+			.content {
+				flex-grow: 1;
 			}
 
 			.title {
@@ -208,8 +241,8 @@
 
 			&.v-enter-from,
 			&.v-leave-to {
-				translate: 0 $translate;
 				opacity: 0;
+				translate: 0 $translate;
 			}
 
 			&.v-leave-active {
@@ -237,7 +270,7 @@
 			gap: 16px 8px;
 			width: 100%;
 			margin: 16px;
-			
+
 			&::after {
 				content: "";
 			}
