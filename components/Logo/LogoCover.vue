@@ -129,14 +129,14 @@
 		:nth-child(1) {
 			--line-height: 2rem;
 			top: -2rem;
-			animation-duration: 8s;
+			animation-duration: 8s !important;
 		}
 
 		:nth-child(2) {
 			--line-height: 1rem;
 			--from: 300%;
 			top: 30%;
-			animation-duration: 16s;
+			animation-duration: 16s !important;
 		}
 
 		:nth-child(3) {
@@ -144,7 +144,7 @@
 			--from: 550%;
 			--to: -200%;
 			top: 55%;
-			animation-duration: 32s;
+			animation-duration: 32s !important;
 		}
 
 		:nth-child(4) {
@@ -152,13 +152,13 @@
 			--from: 150%;
 			--to: -150%;
 			top: 58%;
-			animation-duration: 8s;
+			animation-duration: 8s !important;
 		}
 
 		:nth-child(5) {
 			--line-height: 4rem;
 			bottom: 0;
-			animation-duration: 6s;
+			animation-duration: 6s !important;
 		}
 	}
 

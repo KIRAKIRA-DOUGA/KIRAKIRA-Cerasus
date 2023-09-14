@@ -112,7 +112,7 @@ $primary-colors: (
 // 此处的颜色各主题色均保持固定不变。
 $secondary-colors: (
 	red: #dd1818,
-	yellow: #ffca2c,
+	yellow: #f98d00,
 );
 
 @each $palette, $accents in $primary-colors {
