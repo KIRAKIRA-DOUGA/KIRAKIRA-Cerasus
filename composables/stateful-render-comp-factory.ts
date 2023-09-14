@@ -2,9 +2,14 @@
  * 参考：Vue 中如何获取插槽的 DOM 对象
  * @see https://free_pan.gitee.io/freepan-blog/articles/05-vue3/vue3-杂项/vue中如何获取插槽的dom对象.html
  */
+/* eslint-disable vue/one-component-per-file */
 
-type SlotNode = ComponentPublicInstance & { vnode: VNode[] };
+type SlotNode = InstanceType<ReturnType<typeof useCustomFactory>>;
 type CallFun = (slotNode: SlotNode) => void;
+const vnodePropType = {
+	type: Array as PropType<VNode[]>,
+	default: undefined,
+} as const;
 interface RenderCallbackObj {
 	/**
 	 * 自定义 mounted 回调。
@@ -22,10 +27,7 @@ interface RenderCallbackObj {
 export const useCustomFactory = ({ mounted, updated, unmounted }: RenderCallbackObj) => {
 	return defineComponent({
 		props: {
-			vnode: {
-				type: Array as PropType<VNode[]>,
-				default: undefined,
-			},
+			vnode: vnodePropType,
 		},
 		mounted() {
 			// 这个 this.$el 就代表当前 vnode 的 DOM 对象。
@@ -42,7 +44,7 @@ export const useCustomFactory = ({ mounted, updated, unmounted }: RenderCallback
 		},
 	});
 };
-const findChildren = (vnodes: VNode[], type: unknown) => {
+const findChildren = (vnodes: VNode[] = [], type: unknown) => {
 	const children = [] as VNode[];
 	for (const child of vnodes)
 		if (child.type === type) children.push(child);
@@ -83,4 +85,18 @@ export const useFactory = (type: unknown = undefined, slotName: string | (() => 
 	const _Slot = slot ? h(RenderComp, { vnode: addSlotScopeId(slot()) }) : undefined;
 	const Slot = (_Slot as Partial<typeof _Slot>)!;
 	return { RenderComp, Slot, children, slotNode };
+};
+export const useReactifySlotItems = <T>() => {
+	const vnode = ref<VNode[]>([]);
+	const items = computed(() => getSlotItems<T>(vnode.value)());
+	const RenderComp = defineComponent({
+		props: {
+			vnode: vnodePropType,
+		},
+		// eslint-disable-next-line vue/require-render-return
+		render(props: { vnode: VNode[] }) {
+			vnode.value = props.vnode;
+		},
+	});
+	return { vnode, items, RenderComp };
 };

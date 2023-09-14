@@ -3,8 +3,8 @@
 </docs>
 
 <script setup lang="ts">
-	/** 指定默认的标签值，如为 undefined 表示未设定默认值，如为 null 表示当前组件不适用默认值。 */
-	const def = defineModel<string | undefined | null>("default", { default: null });
+	/** 指定默认的标签值，如为 null 表示未设定默认值，如为 undefined 表示当前组件不适用默认值。 */
+	const def = defineModel<string | null | undefined>("default");
 	const tags = defineModel<string[]>({ default: [] });
 	const tagsWithKey = reactive<Map<number, string>>(new Map());
 	const tagsWithKeyProxy = new Proxy({}, {
@@ -132,11 +132,12 @@
 	 */
 	function setToDefault() {
 		const tag = hoveredTagContent.value?.[1];
-		if (def.value === null || !tag) return;
+		if (def.value === undefined || !tag) return;
 		def.value = tag;
 		contextualToolbar.value = undefined;
 	}
 
+	const a = ref();
 	/**
 	 * 显示标签的上下文工具栏。
 	 * @param key - 标签键名。
@@ -194,7 +195,8 @@
 		</TransitionGroup>
 
 		<Flyout
-			v-if="def !== null"
+			v-if="def !== undefined"
+			ref="a"
 			v-model="contextualToolbar"
 			noPadding
 			class="contextual-toolbar"

@@ -9,7 +9,7 @@
 	const showTagEditor = ref(false);
 	const languages = ["简体中文", "英语", "日语", "繁体中文", "韩语", "越南语", "印尼语", "阿拉伯语", "西班牙语", "葡萄牙语", "其它"] as const;
 	type LanguageList = typeof languages[number];
-	const editor = reactive<{ language: LanguageList | ""; values: string[]; default?: string }[]>([]);
+	const editor = reactive<{ language: LanguageList | ""; values: string[]; default: string | null }[]>([]);
 	const availableLanguages = ref<LanguageList[][]>([]);
 
 	/**
@@ -38,22 +38,26 @@
 		else {
 			const text = search.value.trim().replaceAll(/\s+/g, " ");
 			arrayClearAll(editor);
-			// editor.push({ language: "", values: [text] }); // 正式上线时把下面的范例 tag 去掉，然后把这行代码取消注释。
-			editor.push(
+			editor.push({ language: "", values: [text], default: null }); // 正式上线时把下面的范例 tag 去掉，然后把这行代码取消注释。
+			/* editor.push(
 				{ language: "英语", values: ["Minecraft", "MC"], default: "Minecraft" },
 				{ language: "简体中文", values: ["我的世界", "当个创世神"], default: "我的世界" },
 				{ language: "日语", values: ["マインクラフト", "マイクラ"], default: "マインクラフト" },
-			);
+			); */
 			showTagEditor.value = true;
 		}
 	}
 
 	watch(editor, editor => {
 		if (editor.at(-1)?.language !== "")
-			editor.push({ language: "", values: [] });
+			editor.push({ language: "", values: [], default: null });
 		availableLanguages.value = [];
 		const allComboBoxLanguages = editor.map(item => item.language);
-		editor.forEach(({ language }, index) => {
+		editor.forEach(({ language, default: def }, index) => {
+			if (!language && def) {
+				editor[index].default = null;
+				useToast(t.toast.no_language_selected, "warning");
+			}
 			availableLanguages.value[index] = languages.filter(lang => {
 				if (lang === language) return true;
 				else if (allComboBoxLanguages.includes(lang)) return false;
@@ -104,7 +108,6 @@
 								<ComboBox v-model="item.language" :placeholder="t.unselected.language">
 									<ComboBoxItem v-for="lang in availableLanguages[index]" :id="lang" :key="lang">{{ lang }}</ComboBoxItem>
 								</ComboBox>
-								<!-- TODO: ComboBox 组件的选项目前不是响应式的，因此暂时无法做成内容可变的选项内容。 -->
 								<TagsEditor v-model="item.values" v-model:default="item.default" />
 							</template>
 						</div>
@@ -219,12 +222,12 @@
 		display: flex;
 		flex-direction: column;
 		height: 100%;
-		padding: 16px;
 
 		.list-wrapper {
 			position: relative;
 			height: 100%;
-			// overflow: auto;
+			overflow-x: hidden;
+			overflow-y: auto; // FIXME: 开启页面滚动，但是会导致打开下拉菜单时，元素溢出到外面。
 		}
 
 		.list {
@@ -233,6 +236,11 @@
 			grid-template-columns: 110px auto;
 			gap: 16px 8px;
 			width: 100%;
+			margin: 16px;
+			
+			&::after {
+				content: "";
+			}
 		}
 
 		.submit {
@@ -240,7 +248,8 @@
 			bottom: 0;
 			display: flex;
 			gap: 5px;
-			margin-top: 12px;
+			margin: 16px;
+			margin-top: 0;
 
 			> :first-child {
 				margin-left: auto;

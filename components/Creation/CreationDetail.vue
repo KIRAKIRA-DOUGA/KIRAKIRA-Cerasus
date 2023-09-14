@@ -39,10 +39,10 @@
 				<CreationDetailItem v-if="copyright === 'original'" icon="fact_check">{{ t.original }}</CreationDetailItem>
 				<CreationDetailItem v-if="copyright === 'authorized-repost'" icon="local_shipping">{{ t.authorized_repost }}</CreationDetailItem>
 				<CreationDetailItem v-if="copyright === 'repost'" icon="local_shipping">{{ t.repost }}</CreationDetailItem>
-				<a v-if="cover" class="lite" @click="downloadCover"><CreationDetailItem icon="photo">{{ t.view_cover }}</CreationDetailItem></a>
-				<a class="lite"><CreationDetailItem icon="playlist_play">{{ t.watch_later }}</CreationDetailItem></a>
-				<a class="lite"><CreationDetailItem icon="arrow_down">{{ t.download_video }}</CreationDetailItem></a>
-				<a class="lite"><CreationDetailItem icon="flag">{{ t.report_creation }}</CreationDetailItem></a>
+				<CreationDetailItem icon="photo" clickable @click="downloadCover">{{ t.view_cover }}</CreationDetailItem>
+				<CreationDetailItem icon="playlist_play" clickable>{{ t.watch_later }}</CreationDetailItem>
+				<CreationDetailItem icon="arrow_down" clickable>{{ t.download_video }}</CreationDetailItem>
+				<CreationDetailItem icon="flag" clickable>{{ t.report_creation }}</CreationDetailItem>
 			</div>
 			<h1>{{ title }}</h1>
 		</div>
@@ -88,7 +88,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		gap: 8px;
-		
+
 		.add-tag {
 			padding: 6px;
 			color: c(icon-color);

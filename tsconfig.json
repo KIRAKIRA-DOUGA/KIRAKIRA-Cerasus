@@ -23,6 +23,7 @@
 		"allowSyntheticDefaultImports": true,
 		"experimentalDecorators": true,
 		"resolveJsonModule": true,
+		"noErrorTruncation": true,
 		"plugins": [
 			{
 				"name": "typescript-plugin-css-modules",

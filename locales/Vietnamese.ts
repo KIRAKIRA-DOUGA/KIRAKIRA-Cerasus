@@ -404,6 +404,7 @@ const Vietnamese: LocaleIdentifiers = {
 		modification_failed: "Không thể sửa đổi!",
 		failed_to_disable_cookies: "Không thể vô hiệu các Cookie!",
 		duplicate_label: "Nhân đôi nhãn!",
+		no_language_selected: "Please select a language first!", // NEW
 	},
 	confirm: {
 		cancel_upload: "Bạn có chắc muốn ngừng quá trình đăng tải?",

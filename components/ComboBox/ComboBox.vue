@@ -8,11 +8,9 @@
 
 	const selected = defineModel<string>({ required: true });
 	const getShown = defineModel<boolean>("shown");
-	const slots = useSlots();
 
+	const { items, RenderComp } = useReactifySlotItems<typeof ComboBoxItem>();
 	const menu = ref<HTMLDivElement>();
-	const vdoms = slots.default?.();
-	const items = computed(() => getSlotItems<typeof ComboBoxItem>(vdoms)());
 	const itemsLength = computed(() => items.value.length);
 	const selectedIndex = computed(() => items.value.findIndex(item => item.id === selected.value && selected.value));
 	const selectedContent = computed(() => items.value.find(item => item.id === selected.value)?.content);
@@ -115,6 +113,7 @@
 					</div>
 				</div>
 			</Transition>
+			<RenderComp :vnode="$slots.default?.()" />
 		</div>
 	</Comp>
 </template>

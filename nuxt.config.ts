@@ -226,4 +226,7 @@ export default defineNuxtConfig({
 			pathPrefix: false,
 		},
 	],
+	lodash: {
+		exclude: ["now"],
+	},
 } as BroadNuxtConfig);

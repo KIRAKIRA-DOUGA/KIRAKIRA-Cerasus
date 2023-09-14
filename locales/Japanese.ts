@@ -404,6 +404,7 @@ const Japanese: LocaleIdentifiers = {
 		modification_failed: "編集に失敗しました。",
 		failed_to_disable_cookies: "Cookieを無効化できませんでした。",
 		duplicate_label: "Duplicate label!", // NEW
+		no_language_selected: "Please select a language first!", // NEW
 	},
 	confirm: {
 		cancel_upload: "アップロードをキャンセルしますか？",
