@@ -97,6 +97,18 @@
 		@include mobile {
 			flex-direction: column-reverse;
 		}
+
+		.right {
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
+
+			@include computer {
+				position: sticky;
+				top: 0;
+				max-height: 100dvh;
+			}
+		}
 	}
 
 	.center {
@@ -105,11 +117,5 @@
 
 	.sort {
 		grid-template-columns: repeat(2, 1fr);
-	}
-
-	.right {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
 	}
 </style>
