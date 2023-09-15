@@ -166,7 +166,7 @@ const Vietnamese: LocaleIdentifiers = {
 	shortcut_key: {
 		_: "Phím tắt",
 		player_page: "Trình phát",
-		play_pause: "Phát/dừng",
+		play_pause: "Phát/Dừng",
 		exit_fullscreen: "Thoát chế độ toàn màn hình",
 		pagination: "Xem dưới dạng Trang",
 		page_turning: "Sang trang",
