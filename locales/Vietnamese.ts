@@ -134,8 +134,8 @@ const Vietnamese: LocaleIdentifiers = {
 	player: {
 		_: "Trình phát",
 		speed: {
-			resample: "Điều chỉnh cao độ",
-			continuous: "Điều chỉnh tốc độ",
+			resample: "Điều chỉnh cao độ phát",
+			continuous: "Điều chỉnh tốc độ phát",
 		},
 	},
 	danmaku: {
