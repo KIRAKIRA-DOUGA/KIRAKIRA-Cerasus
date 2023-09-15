@@ -191,7 +191,7 @@ const Korean: LocaleIdentifiers = {
 			translator: "{0} Translator",
 		},
 		technologies_used: "Technologies Used",
-		slogan: "A lovely video site\xa0\nfor lovely you!",
+		slogan: "A cute video site\xa0\nfor your loveliness!",
 	},
 	acknowledgement: "Acknowledgement",
 	friendly_links: "Friendly Links",
