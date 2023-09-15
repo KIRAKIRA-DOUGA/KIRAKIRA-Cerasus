@@ -96,7 +96,8 @@
 
 <style scoped lang="scss">
 	$padding-x: 100px;
-	$padding-x-narrow: 40px;
+	$padding-x-tablet: 40px;
+	$padding-x-mobile: 16px;
 	$header-height: 134px;
 	$main-margin-top: 32px;
 
@@ -261,11 +262,16 @@
 		}
 	}
 
-	@include tablet {
-		header,
-		main {
-			padding-right: $padding-x-narrow;
-			padding-left: $padding-x-narrow;
+	header,
+	main {
+		@include tablet {
+			padding-right: $padding-x-tablet;
+			padding-left: $padding-x-tablet;
+		}
+
+		@include mobile {
+			padding-right: $padding-x-mobile;
+			padding-left: $padding-x-mobile;
 		}
 	}
 </style>

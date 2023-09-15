@@ -78,17 +78,15 @@
 		padding-left: $sidebar-width;
 		transition: $fallback-transitions, width 0s, height 0s;
 
-		> main > div {
-			> :deep(.container) {
-				padding: 26px 100px;
+		> main > div:deep > .container {
+			padding: 26px 100px;
 
-				@include tablet {
-					padding: 26px 40px;
-				}
+			@include tablet {
+				padding: 26px 40px;
+			}
 
-				@include mobile {
-					padding: 16px;
-				}
+			@include mobile {
+				padding: 16px;
 			}
 		}
 	}

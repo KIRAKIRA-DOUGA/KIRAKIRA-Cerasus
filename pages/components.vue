@@ -147,7 +147,7 @@
 		<div class="component-test">
 			<Pagination v-model="page" :pages="pages" :displayPageCount="displayPageCount" enableArrowKeyMove />
 			<Pagination v-model="opPage" :pages="op" :displayPageCount="isMobile() ? 9 : 15" enableArrowKeyMove />
-			<Segmented v-model="selectedSegmented">
+			<Segmented v-model="selectedSegmented" :style="{ '--ease': 'ease-in-out' }">
 				<SegmentedItem id="list" icon="list">列表</SegmentedItem>
 				<SegmentedItem id="grid" icon="grid">网格</SegmentedItem>
 				<SegmentedItem id="tile" icon="tile">磁贴</SegmentedItem>
