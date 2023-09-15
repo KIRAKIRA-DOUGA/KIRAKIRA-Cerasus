@@ -3,7 +3,7 @@
 
 	const insertDanmaku = defineModel<DanmakuListItem[]>();
 	const danmakuItemMenu = ref<MenuModel>();
-	const currentDanmaku = ref<DanmakuListItem>();
+	const currentDanmaku = ref<UnwrapRef<DanmakuListItem>>();
 	const { copy } = useClipboard();
 	const headers = { videoTime: t.danmaku.list.thead.time, content: t.danmaku.list.thead.content, sendTime: t.danmaku.list.thead.sending_time };
 	const colWidths = reactive([60, 150, 100]);
@@ -80,7 +80,7 @@
 	 * @param value - 不同类型的数据。
 	 * @returns 显示为字符串的值。
 	 */
-	function handleTableDataCellText(value: ValueOf<DanmakuListItem>) {
+	function handleTableDataCellText(value: ValueOf<UnwrapRef<DanmakuListItem>>) {
 		if (value instanceof Date) return formatDateWithLocale(value);
 		else if (value instanceof Duration) return value.toString();
 		else return value;

@@ -7,7 +7,11 @@
  */
 export class Duration {
 	/** 秒值。 */
-	seconds: number;
+	private seconds: number;
+	/** 时间中间的分隔符。 */
+	private static colon = "∶" as const;
+	/** 当没有时间数据时显示的占位符字符串。 */
+	static placeholder = "‒‒∶‒‒" as const;
 
 	/**
 	 * 通过秒构造时长对象。
@@ -45,12 +49,12 @@ export class Duration {
 	 */
 	toString() {
 		if (!Number.isFinite(this.seconds))
-			return "--:--"; // 当没有时间数据时显示占位符字符串。
+			return Duration.placeholder; // 当没有时间数据时显示占位符字符串。
 		const seconds = this.seconds % 60 | 0;
 		const minutes = this.seconds / 60 % 60 | 0;
 		const hours = this.seconds / 60 / 60 % 60 | 0;
 		const padStart = (n: number) => String(n).padStart(2, "0");
-		let result = `${padStart(minutes)}:${padStart(seconds)}`;
+		let result = `${padStart(minutes)}${Duration.colon}${padStart(seconds)}`;
 		if (hours) result = `${padStart(hours)}:${result}`;
 		return result;
 	}

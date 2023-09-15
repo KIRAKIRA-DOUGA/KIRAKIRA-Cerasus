@@ -29,7 +29,7 @@ export function formatDate(date: Date, format: string) {
  * @returns 格式化后的字符串。
  */
 export function formatDateWithLocale(
-	date: Date,
+	date: Date | null,
 	{
 		time = false,
 	}: {
@@ -48,5 +48,7 @@ export function formatDateWithLocale(
 			second: "2-digit",
 		}),
 	};
-	return Intl.DateTimeFormat(locale, options).format(date);
+	let result = Intl.DateTimeFormat(locale, options).format(date ?? new Date());
+	if (date === null) result = result.replaceAll(/\d/g, "‒");
+	return result;
 }
