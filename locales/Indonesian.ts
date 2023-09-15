@@ -121,10 +121,10 @@ const Indonesian: LocaleIdentifiers = {
 			_: "Sembunyikan",
 			description: "Pengguna yang tidak ingin Anda lihat mana yang akan dihilangkan (kecuali kalau kamu langsung masuk ke halaman penggunanya).",
 		},
-		tags: {
+		tag: {
 			description: "Gunakan tag untuk menyembunyikan konten yang tidak ingin dilihat.",
 		},
-		keywords: {
+		keyword: {
 			description: "Gunakan kata kunci untuk menyembunyikan konten yang tidak ingin dilihat.",
 		},
 		regexp: {
@@ -196,7 +196,7 @@ const Indonesian: LocaleIdentifiers = {
 	acknowledgement: "Pengakuan",
 	friendly_links: "Tautan Ramah",
 	regexp: "Ekspresi Reguler",
-	keywords: "Kata Kunci",
+	keyword: "Kata Kunci",
 	email: "Email",
 	email_address: "Email",
 	authenticator: "Pengautentik",
@@ -323,6 +323,7 @@ const Indonesian: LocaleIdentifiers = {
 		language: "Pilih Bahasa",
 	},
 	user: {
+		_: "User", // NEW
 		name: "Nama",
 		name_requirements: '1~20 karakter, hanya mencakup huruf Latin besar & kecil, angka, Hiragana/Katakana umum, karakter CJK, simbol khusus "-", "_"',
 		bio: "Bio",
@@ -411,6 +412,7 @@ const Indonesian: LocaleIdentifiers = {
 	},
 	current_time: "Current Time", // NEW
 	set_as_default: "Set as Default", // NEW
+	advanced_search: "Advanced Search", // NEW
 };
 
 export default Indonesian;
