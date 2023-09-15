@@ -134,8 +134,8 @@ const Vietnamese: LocaleIdentifiers = {
 	player: {
 		_: "Trình phát",
 		speed: {
-			resample: "Điều chỉnh cao độ",
-			continuous: "Điều chỉnh tốc độ",
+			resample: "Điều chỉnh cao độ phát",
+			continuous: "Điều chỉnh tốc độ phát",
 		},
 	},
 	danmaku: {
@@ -166,7 +166,7 @@ const Vietnamese: LocaleIdentifiers = {
 	shortcut_key: {
 		_: "Phím tắt",
 		player_page: "Trình phát",
-		play_pause: "Phát/dừng",
+		play_pause: "Phát/Dừng",
 		exit_fullscreen: "Thoát chế độ toàn màn hình",
 		pagination: "Xem dưới dạng Trang",
 		page_turning: "Sang trang",
