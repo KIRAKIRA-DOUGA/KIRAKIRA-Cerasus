@@ -1,6 +1,7 @@
 <script setup lang="ts">
 	useHead({ title: t.search });
-	const querySearch = useRoute().query.q ?? "";
+	const router = useRouter(), route = useRoute();
+	const querySearch = route.query.q ?? "";
 
 	const view = ref<ViewType>("grid");
 	const displayPageCount = ref(6);
@@ -8,8 +9,7 @@
 
 	const data = reactive({
 		selectedTab: "Home",
-		// search: querySearch, // FIXME: This causes a white screen when rendering on client side.
-		search: "",
+		search: querySearch,
 		sort: ref<SortModel>(["upload_date", "descending"]),
 		page: 1,
 		pages: 99,
@@ -22,7 +22,6 @@
 		const api = useApi();
 		const utf8Encoder = new TextEncoder();
 		const encodedContent = utf8Encoder.encode(data.search !== "" ? data.search : "none") as unknown as string;
-		// useRouter().push({ path: useRoute().path, query: { ...useRoute().query, q: data.search || undefined } });
 		const handleError = (error: unknown) => error && console.error(error);
 
 		const cat = data.selectedTab !== "Home" ? data.selectedTab : "undefined";
@@ -35,6 +34,10 @@
 	}
 	watch(data, fetchData, { deep: true });
 	await fetchData();
+
+	watch(() => data.search, search => {
+		router.push({ path: route.path, query: { ...route.query, q: search || undefined } });
+	});
 </script>
 
 <template>
@@ -55,6 +58,7 @@
 						:date="new Date()"
 						:watchedCount="video.views"
 						:duration="new Duration(0, video.videoDuration ?? 0)"
+						:style="{ '--view': view }"
 					>{{ video.title }}</ThumbVideo>
 				</div>
 			</div>
@@ -90,11 +94,15 @@
 </template>
 
 <style scoped lang="scss">
+	header {
+		margin-bottom: 1rem;
+	}
+
 	.card-container {
 		display: flex;
 		gap: 1rem;
 
-		@include mobile {
+		@include tablet {
 			flex-direction: column-reverse;
 		}
 
@@ -104,9 +112,11 @@
 			gap: 1rem;
 
 			@include computer {
+				$margin-top: 1rem;
 				position: sticky;
-				top: 0;
-				max-height: 100dvh;
+				top: $margin-top;
+				height: fit-content;
+				max-height: calc(100dvh - 2 * $margin-top);
 			}
 		}
 	}
@@ -117,5 +127,9 @@
 
 	.sort {
 		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.toolbox-view {
+		width: 100%;
 	}
 </style>
