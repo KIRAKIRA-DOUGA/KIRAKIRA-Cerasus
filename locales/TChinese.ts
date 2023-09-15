@@ -403,7 +403,7 @@ const TChinese: LocaleIdentifiers = {
 		copied: "已複製！",
 		modification_failed: "修改失敗！",
 		failed_to_disable_cookies: "禁用Cookie失敗！",
-		duplicate_label: "標籤重複！",
+		duplicate_tag: "標籤重複！",
 		no_language_selected: "請先選擇語言！",
 	},
 	confirm: {

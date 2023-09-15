@@ -64,7 +64,7 @@
 				if (i === index) continue;
 				if (curTag === normalizedTag) {
 					duplicated = true;
-					useToast(t.toast.duplicate_label, "warning");
+					useToast(t.toast.duplicate_tag, "warning");
 					break;
 				}
 			}

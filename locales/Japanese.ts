@@ -403,7 +403,7 @@ const Japanese: LocaleIdentifiers = {
 		copied: "コピーしました。",
 		modification_failed: "編集に失敗しました。",
 		failed_to_disable_cookies: "Cookieを無効化できませんでした。",
-		duplicate_label: "Duplicate label!", // NEW
+		duplicate_tag: "Duplicate tag!", // NEW
 		no_language_selected: "Please select a language first!", // NEW
 	},
 	confirm: {

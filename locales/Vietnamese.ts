@@ -403,14 +403,14 @@ const Vietnamese: LocaleIdentifiers = {
 		copied: "Đã sao chép!",
 		modification_failed: "Không thể sửa đổi!",
 		failed_to_disable_cookies: "Không thể vô hiệu các Cookie!",
-		duplicate_label: "Nhân đôi thẻ!",
+		duplicate_tag: "Nhân đôi thẻ!",
 		no_language_selected: "Vui lòng chọn một ngôn ngữ trước tiên!",
 	},
 	confirm: {
 		cancel_upload: "Bạn có chắc muốn ngừng quá trình đăng tải?",
 	},
 	current_time: "Thời gian hiện tại",
-	set_as_default: "Đặt về mặc định", 
+	set_as_default: "Đặt về mặc định",
 };
 
 export default Vietnamese;

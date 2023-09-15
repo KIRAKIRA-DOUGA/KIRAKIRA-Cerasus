@@ -403,7 +403,7 @@ const English: LocaleIdentifiers = {
 		copied: "Copied!",
 		modification_failed: "Modification failed!",
 		failed_to_disable_cookies: "Failed to disable cookies!",
-		duplicate_label: "Duplicate label!",
+		duplicate_tag: "Duplicate tag!",
 		no_language_selected: "Please select a language first!",
 	},
 	confirm: {
