@@ -41,8 +41,10 @@
 </script>
 
 <template>
-	<LogoText />
-	<p class="slogan"><span>{{ sloganLines[0] }}</span><span><b>{{ sloganLines[1] }}</b></span></p>
+	<div class="info">
+		<LogoText />
+		<p class="slogan"><span>{{ sloganLines[0] }}</span><span><b>{{ sloganLines[1] }}</b></span></p>
+	</div>
 
 	<Subheader icon="link">{{ t.about.repositories }}</Subheader>
 	<section>
@@ -83,6 +85,14 @@
 </template>
 
 <style scoped lang="scss">
+	.info {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		align-items: center;
+		margin: 3rem 0;
+	}
+
 	.logo-text {
 		--form: full;
 		zoom: 2;
