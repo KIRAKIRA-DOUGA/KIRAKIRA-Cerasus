@@ -191,7 +191,7 @@ const English: LocaleIdentifiers = {
 			translator: "{0} Translator",
 		},
 		technologies_used: "Technologies Used",
-		slogan: "A cute video site\xa0\nfor your loveliness!",
+		slogan: "A cute site\xa0\nfor cute people!",
 	},
 	acknowledgement: "Acknowledgement",
 	friendly_links: "Friendly Links",
