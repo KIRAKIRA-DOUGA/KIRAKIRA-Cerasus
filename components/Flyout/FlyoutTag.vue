@@ -93,12 +93,12 @@
 											<p class="title">{{ tag }}</p>
 											<p class="count">{{ t(100).video_count(100) }}</p>
 										</div>
-										<div class="trailing">
-											<SoftButton icon="edit" />
+										<div class="trailing-icons">
+											<SoftButton icon="edit" @click.stop />
 										</div>
 									</div>
 									<div v-if="showCreateNew" v-ripple class="list-item create-new" @click="switchTagEditor(true)">
-										<div class="leading">
+										<div class="leading-icons">
 											<Icon name="add" />
 										</div>
 										<div class="content">
@@ -207,7 +207,7 @@
 				color: c(icon-color);
 			}
 
-			.leading {
+			.leading-icons {
 				display: flex;
 
 				.icon {
@@ -215,7 +215,7 @@
 				}
 			}
 
-			&:has(.leading .icon) {
+			&:has(.leading-icons .icon) {
 				padding: 8px 12px;
 
 				&:only-child {
@@ -237,6 +237,10 @@
 
 			&:any-hover {
 				background-color: c(hover-overlay);
+			}
+
+			.soft-button {
+				--ripple-size: 80px;
 			}
 
 			&.v-enter-from,
