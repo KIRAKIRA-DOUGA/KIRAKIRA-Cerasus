@@ -401,7 +401,7 @@ const SChinese = {
 		copied: "已复制！",
 		modification_failed: "修改失败！",
 		failed_to_disable_cookies: "禁用Cookie失败！",
-		duplicate_label: "标签重复！",
+		duplicate_tag: "标签重复！",
 		no_language_selected: "请先选择语言！",
 	},
 	confirm: {
