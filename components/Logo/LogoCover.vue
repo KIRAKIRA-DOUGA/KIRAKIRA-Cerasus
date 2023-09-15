@@ -4,6 +4,8 @@
 		welcome?: boolean;
 		/** 是否**禁用**动画以节省性能？ */
 		noAnimation?: boolean;
+		/** 如是则禁止显示标题。 */
+		noTitle?: boolean;
 	}>();
 </script>
 
@@ -25,7 +27,7 @@
 			</svg>
 		</div>
 		<div class="triangle triangle-2"></div>
-		<div class="titles" :class="{ welcome }">
+		<div v-if="!noTitle" class="titles" :class="{ welcome }">
 			<div class="title welcome">Welcome</div>
 			<LogoText class="title kirakira" />
 		</div>

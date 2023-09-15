@@ -9,12 +9,16 @@ export default defineNuxtRouteMiddleware((to, from) => {
 		console.log("to", to, "\nfrom", from, "\nrouteBaseName", useNuxtApp().$getRouteBaseName());
 
 	const routePath = getRoutePath({ route: to });
-	const routeSlug = getLocaleRouteSlug(to);
+	const routeSlug = getLocaleRouteSlug(to), prevRouteSlug = getLocaleRouteSlug(from);
 	const appSettingsStore = useAppSettingsStore();
 	const settingPageId = currentSettingsPage(routeSlug);
+	if (routeSlug[0] === "settings" && prevRouteSlug[0] !== "settings")
+		appSettingsStore.exitSettingRoute = getRoutePath({ route: from });
 	if (routePath === "settings")
 		return navigate("/settings/" + appSettingsStore.lastSettingPage);
 	if (settingPageId) {
+		if (settingPageId === "exit")
+			return navigate(appSettingsStore.exitSettingRoute);
 		appSettingsStore.lastSettingPage = settingPageId;
 		return;
 	}

@@ -16,7 +16,7 @@ export function getRoutePath({
 	/** 是否移除语言名称前缀。默认为是。 */
 	removeI18nPrefix: boolean;
 }> = {}): string {
-	let path = typeof route === "string" ? route : route.path;
+	let path = typeof route === "string" ? route : route.fullPath;
 	path = path.replace(/^\//, ""); // 移除根节点斜杠。
 	if (removeI18n)
 		path = path.replace(new RegExp(`^(${localeCodes.value.join("|")})\\/?`), ""); // 移除语言前缀。

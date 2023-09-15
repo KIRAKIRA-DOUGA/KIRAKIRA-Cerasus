@@ -121,10 +121,10 @@ const Japanese: LocaleIdentifiers = {
 			_: "非表示",
 			description: "目にしたくないのユーザー、あなたの視点から消えさせます（わざわざ対象のプロフィールにアクセス場合を除く）",
 		},
-		tags: {
+		tag: {
 			description: "タグで目にしたくない投稿を非表示にします",
 		},
-		keywords: {
+		keyword: {
 			description: "キーワードで目にしたくない投稿を非表示にします",
 		},
 		regexp: {
@@ -196,7 +196,7 @@ const Japanese: LocaleIdentifiers = {
 	acknowledgement: "スペシャルサンクス",
 	friendly_links: "相互リンク",
 	regexp: "正規表現",
-	keywords: "キーワード",
+	keyword: "キーワード",
 	email: "メール",
 	email_address: "メールアドレス",
 	authenticator: "オーセンティケーター",
@@ -323,6 +323,7 @@ const Japanese: LocaleIdentifiers = {
 		language: "言語を選んでください",
 	},
 	user: {
+		_: "用户", // NEW
 		name: "ニックネーム",
 		name_requirements: "1~20文字、大小英数字、ひらがな/カタカナ、漢字、特殊記号の｢-｣と｢_｣のみ使用できます。",
 		bio: "自己紹介",
@@ -411,6 +412,7 @@ const Japanese: LocaleIdentifiers = {
 	},
 	current_time: "现在时间", // NEW
 	set_as_default: "Set as Default", // NEW
+	advanced_search: "高级搜索", // NEW
 };
 
 export default Japanese;

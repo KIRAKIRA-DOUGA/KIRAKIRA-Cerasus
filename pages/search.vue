@@ -6,6 +6,10 @@
 	const view = ref<ViewType>("grid");
 	const displayPageCount = ref(6);
 	const videos = ref<Videos200Response>();
+	const searchModes = ["keyword", "tag", "user", "advanced_search"] as const;
+	const searchMode = ref<typeof searchModes[number]>("tag");
+	const searchModesSorted = computed(() => searchModes.toSorted((a, b) =>
+		a === searchMode.value ? -1 : b === searchMode.value ? 1 : 0));
 
 	const data = reactive({
 		selectedTab: "Home",
@@ -64,8 +68,18 @@
 			</div>
 
 			<div class="right">
-				<div class="toolbox-card">
+				<div class="toolbox-card search">
 					<TextBox v-model="data.search" :placeholder="t.search" icon="search" />
+					<div class="tags">
+						<TransitionGroup>
+							<Tag
+								v-for="mode in searchModesSorted"
+								:key="mode"
+								:checked="searchMode === mode"
+								@click="searchMode = mode"
+							>{{ t[mode] }}</Tag>
+						</TransitionGroup>
+					</div>
 				</div>
 
 				<div class="toolbox-card">
@@ -131,5 +145,16 @@
 
 	.toolbox-view {
 		width: 100%;
+	}
+
+	.tags {
+		position: relative;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+
+	.toolbox-card.search {
+		gap: 16px;
 	}
 </style>
