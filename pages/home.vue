@@ -14,16 +14,21 @@
 		page: +(query.page ?? 1),
 	});
 
-	const numberOfItems = ref(0);
-	const numberOfPages = ref(1);
+	const categoryItemCount = ref(0);
+	const pageCount = ref(1);
 	const categoryList = ["Anime", "Music", "Otomad", "Tech", "Design", "Game", "Other"];
 	const categories = ref<Map<string | undefined, number | undefined>>();
+	const previousCategory = ref<string>(); // Last category backup
 	const resultTimestamp = ref(0);
+	const isFetchingData = ref(false);
 
 	/**
 	 * Fetch the videos according to the query.
 	 */
 	async function fetchData() {
+		if (isFetchingData.value) return;
+		isFetchingData.value = true;
+		
 		const api = useApi();
 		const utf8Encoder = new TextEncoder();
 		const encodedContent = utf8Encoder.encode(data.search) as unknown as string;
@@ -31,16 +36,23 @@
 		const encodedCategory = utf8Encoder.encode(cat) as unknown as string;
 		const handleError = (error: unknown) => error && console.error(error);
 
+		// Back up the category, when switch category, the page index will restore to 1.
+		if (previousCategory.value && previousCategory.value !== data.selectedTab) data.page = 1;
+		previousCategory.value = data.selectedTab;
+
 		try {
 			const videosResponse = await api?.videos(encodedContent, data.sortCategory, data.sortDirection, "true", data.page, encodedCategory);
-			numberOfPages.value = Math.ceil(videosResponse.paginationData!.numberOfItems! / 50.0);
-			numberOfItems.value = videosResponse.paginationData!.numberOfItems!;
+			pageCount.value = Math.ceil(videosResponse.paginationData!.numberOfItems! / 50.0);
+			categoryItemCount.value = videosResponse.paginationData!.numberOfItems!;
 			videos.value = videosResponse;
 			resultTimestamp.value = new Date().valueOf();
 			// pepelaugh TODO FIXME
 			if (categories.value === undefined)
 				categories.value = new Map(videosResponse?.categories?.map(cat => [cat.name, cat.cardinality]));
 		} catch (error) { handleError(error); }
+
+		await nextTick();
+		isFetchingData.value = false;
 	}
 	watch(data, fetchData, { deep: true });
 	await fetchData();
@@ -64,7 +76,7 @@
 				{{ t.category[cat.toLowerCase()] }}
 			</TabItem>
 		</TabBar>
-		<Subheader icon="upload" :badge="numberOfItems">{{ t.latest }}</Subheader>
+		<Subheader icon="upload" :badge="categoryItemCount">{{ t.latest }}</Subheader>
 		<Transition :name="transitionName" mode="out-in">
 			<div :key="resultTimestamp" class="videos-grid">
 				<ThumbVideo
@@ -80,7 +92,7 @@
 				>{{ video.title }}</ThumbVideo>
 			</div>
 		</Transition>
-		<Pagination v-model="data.page" :pages="Math.max(1, numberOfPages)" :displayPageCount="12" enableArrowKeyMove />
+		<Pagination v-model="data.page" :pages="Math.max(1, pageCount)" :displayPageCount="12" enableArrowKeyMove />
 	</div>
 </template>
 
