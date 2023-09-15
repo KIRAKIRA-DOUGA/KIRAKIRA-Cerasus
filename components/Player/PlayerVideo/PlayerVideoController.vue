@@ -219,6 +219,7 @@
 		> * {
 			@include flex-center;
 			text-align: center;
+			font-variant-numeric: tabular-nums;
 		}
 
 		.current,
