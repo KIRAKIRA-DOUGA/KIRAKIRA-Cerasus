@@ -121,10 +121,10 @@ const TChinese: LocaleIdentifiers = {
 			_: "隱藏",
 			description: "不想看到的用戶，其將會從你的視角消失（除非你主動進入其個人主頁）。",
 		},
-		tags: {
+		tag: {
 			description: "使用標籤匹配不想看到的內容。",
 		},
-		keywords: {
+		keyword: {
 			description: "使用關鍵字匹配不想看到的內容。",
 		},
 		regexp: {
@@ -196,7 +196,7 @@ const TChinese: LocaleIdentifiers = {
 	acknowledgement: "鳴謝",
 	friendly_links: "友情連結",
 	regexp: "規則運算式",
-	keywords: "關鍵字",
+	keyword: "關鍵字",
 	email: "電子郵件",
 	email_address: "電子郵箱",
 	authenticator: "身份驗證器",
@@ -323,6 +323,7 @@ const TChinese: LocaleIdentifiers = {
 		language: "選擇語言",
 	},
 	user: {
+		_: "用戶",
 		name: "昵稱",
 		name_requirements: "1~20個字元，僅可包含大小寫拉丁字母、數字、常用平/片假名、漢字、特殊符號 ｢-｣ ｢_｣",
 		bio: "個性簽名",
@@ -410,7 +411,8 @@ const TChinese: LocaleIdentifiers = {
 		cancel_upload: "確定要取消本次上傳嗎？",
 	},
 	current_time: "現在時間",
-	set_as_default: "设为默认", // NEW
+	set_as_default: "設為默認",
+	advanced_search: "高級搜索",
 };
 
 export default TChinese;

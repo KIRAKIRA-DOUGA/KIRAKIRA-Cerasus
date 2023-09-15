@@ -104,7 +104,7 @@
 			/// 图标尺寸，建议的值为：18px | 24px。
 			--icon-size: 18px;
 			/// 缓动曲线，可选的值为：ease-in-out | ease-out。
-			--ease: ease-in-out;
+			--ease: ease-out;
 			/// 组件宽度，建议的值为：fit-content | 100%。
 			width: fit-content;
 		}

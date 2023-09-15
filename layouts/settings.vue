@@ -71,13 +71,16 @@
 		<main ref="main">
 			<div class="content padding-end">
 				<header class="title page-header">
-					<div class="show-drawer-wrapper">
+					<div class="show-drawer-wrapper page-title-icon-wrapper">
 						<SoftButton icon="dehaze" @click="showDrawer = true" />
 					</div>
 					<div class="page-title-wrapper">
 						<Transition>
 							<h2 :key="currentSetting">{{ title }}</h2>
 						</Transition>
+					</div>
+					<div class="page-title-icon-wrapper">
+						<SoftButton href="/settings/exit" icon="close" />
 					</div>
 				</header>
 				<slot></slot>
@@ -323,7 +326,7 @@
 		padding-left: $main-padding-x;
 		background-color: c(main-bg, 80%);
 
-		.show-drawer-wrapper {
+		.page-title-icon-wrapper {
 			position: relative;
 			width: 20px;
 			height: 100%;
@@ -333,7 +336,9 @@
 				top: calc((var(--wrapper-size) - 100%) / -2);
 				left: -10px;
 			}
-
+		}
+		
+		.show-drawer-wrapper {
 			@include computer {
 				display: none;
 			}

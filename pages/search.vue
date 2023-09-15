@@ -1,15 +1,19 @@
 <script setup lang="ts">
 	useHead({ title: t.search });
-	const querySearch = useRoute().query.q ?? "";
+	const router = useRouter(), route = useRoute();
+	const querySearch = route.query.q ?? "";
 
 	const view = ref<ViewType>("grid");
 	const displayPageCount = ref(6);
 	const videos = ref<Videos200Response>();
+	const searchModes = ["keyword", "tag", "user", "advanced_search"] as const;
+	const searchMode = ref<typeof searchModes[number]>("tag");
+	const searchModesSorted = computed(() => searchModes.toSorted((a, b) =>
+		a === searchMode.value ? -1 : b === searchMode.value ? 1 : 0));
 
 	const data = reactive({
 		selectedTab: "Home",
-		// search: querySearch, // FIXME: This causes a white screen when rendering on client side.
-		search: "",
+		search: querySearch,
 		sort: ref<SortModel>(["upload_date", "descending"]),
 		page: 1,
 		pages: 99,
@@ -22,7 +26,6 @@
 		const api = useApi();
 		const utf8Encoder = new TextEncoder();
 		const encodedContent = utf8Encoder.encode(data.search !== "" ? data.search : "none") as unknown as string;
-		// useRouter().push({ path: useRoute().path, query: { ...useRoute().query, q: data.search || undefined } });
 		const handleError = (error: unknown) => error && console.error(error);
 
 		const cat = data.selectedTab !== "Home" ? data.selectedTab : "undefined";
@@ -35,6 +38,10 @@
 	}
 	watch(data, fetchData, { deep: true });
 	await fetchData();
+
+	watch(() => data.search, search => {
+		router.push({ path: route.path, query: { ...route.query, q: search || undefined } });
+	});
 </script>
 
 <template>
@@ -55,13 +62,24 @@
 						:date="new Date()"
 						:watchedCount="video.views"
 						:duration="new Duration(0, video.videoDuration ?? 0)"
+						:style="{ '--view': view }"
 					>{{ video.title }}</ThumbVideo>
 				</div>
 			</div>
 
 			<div class="right">
-				<div class="toolbox-card">
+				<div class="toolbox-card search">
 					<TextBox v-model="data.search" :placeholder="t.search" icon="search" />
+					<div class="tags">
+						<TransitionGroup>
+							<Tag
+								v-for="mode in searchModesSorted"
+								:key="mode"
+								:checked="searchMode === mode"
+								@click="searchMode = mode"
+							>{{ t[mode] }}</Tag>
+						</TransitionGroup>
+					</div>
 				</div>
 
 				<div class="toolbox-card">
@@ -90,11 +108,15 @@
 </template>
 
 <style scoped lang="scss">
+	header {
+		margin-bottom: 1rem;
+	}
+
 	.card-container {
 		display: flex;
 		gap: 1rem;
 
-		@include mobile {
+		@include tablet {
 			flex-direction: column-reverse;
 		}
 
@@ -104,9 +126,11 @@
 			gap: 1rem;
 
 			@include computer {
+				$margin-top: 1rem;
 				position: sticky;
-				top: 0;
-				max-height: 100dvh;
+				top: $margin-top;
+				height: fit-content;
+				max-height: calc(100dvh - 2 * $margin-top);
 			}
 		}
 	}
@@ -117,5 +141,20 @@
 
 	.sort {
 		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.toolbox-view {
+		width: 100%;
+	}
+
+	.tags {
+		position: relative;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+
+	.toolbox-card.search {
+		gap: 16px;
 	}
 </style>

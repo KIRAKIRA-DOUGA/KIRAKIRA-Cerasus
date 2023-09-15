@@ -121,10 +121,10 @@ const English: LocaleIdentifiers = {
 			_: "Hide",
 			description: "Users you don't want to see which will be disappeared (unless you enter their user pages directly).",
 		},
-		tags: {
+		tag: {
 			description: "Use tags to hide content you don't want to see.",
 		},
-		keywords: {
+		keyword: {
 			description: "Use keywords to hide content you don't want to see.",
 		},
 		regexp: {
@@ -191,12 +191,12 @@ const English: LocaleIdentifiers = {
 			translator: "{0} Translator",
 		},
 		technologies_used: "Technologies Used",
-		slogan: "A lovely video site\xa0\nfor lovely you!",
+		slogan: "A cute video site\xa0\nfor your loveliness!",
 	},
 	acknowledgement: "Acknowledgement",
 	friendly_links: "Friendly Links",
 	regexp: "Regular Expression",
-	keywords: "Keywords",
+	keyword: "Keyword | Keywords",
 	email: "Email",
 	email_address: "Email",
 	authenticator: "Authenticator",
@@ -323,6 +323,7 @@ const English: LocaleIdentifiers = {
 		language: "Select Language",
 	},
 	user: {
+		_: "User | Users",
 		name: "Name",
 		name_requirements: '1~20 characters, including only upper & lower case Latin letters, numbers, common Hiragana/Katakana, CJK characters, special symbols "-", "_"',
 		bio: "Bio",
@@ -411,6 +412,7 @@ const English: LocaleIdentifiers = {
 	},
 	current_time: "Current Time",
 	set_as_default: "Set as Default",
+	advanced_search: "Advanced Search",
 };
 
 export default English;

@@ -411,7 +411,6 @@
 		padding: 0 $thumb-size-half;
 
 		.segmented {
-			--ease: ease-out;
 			grid-column-end: span 3;
 			width: 100%;
 		}

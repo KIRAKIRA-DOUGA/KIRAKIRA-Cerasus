@@ -119,10 +119,10 @@ const SChinese = {
 			_: "隐藏",
 			description: "不想看到的用户，其将会从你的视角消失（除非你主动进入其个人主页）。",
 		},
-		tags: {
+		tag: {
 			description: "使用标签匹配不想看到的内容。",
 		},
-		keywords: {
+		keyword: {
 			description: "使用关键词匹配不想看到的内容。",
 		},
 		regexp: {
@@ -194,7 +194,7 @@ const SChinese = {
 	acknowledgement: "鸣谢",
 	friendly_links: "友情链接",
 	regexp: "正则表达式",
-	keywords: "关键词",
+	keyword: "关键词",
 	email: "电子邮件",
 	email_address: "电子邮箱",
 	authenticator: "身份验证器",
@@ -321,6 +321,7 @@ const SChinese = {
 		language: "选择语言",
 	},
 	user: {
+		_: "用户",
 		name: "昵称",
 		name_requirements: "1~20个字符，仅可包含大小写拉丁字母、数字、常用平/片假名、汉字、特殊符号 ｢-｣ ｢_｣",
 		bio: "个性签名",
@@ -409,6 +410,7 @@ const SChinese = {
 	},
 	current_time: "现在时间",
 	set_as_default: "设为默认",
+	advanced_search: "高级搜索",
 } as const;
 
 export default SChinese;

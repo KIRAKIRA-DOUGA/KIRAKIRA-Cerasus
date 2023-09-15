@@ -27,7 +27,7 @@
 	<hr />
 
 	<Subheader icon="tag">{{ t(2).tag }}</Subheader>
-	<span>{{ t.blocklist.tags.description }}</span>
+	<span>{{ t.blocklist.tag.description }}</span>
 	<section>
 		<SettingsChipItem :details="t.addition_date + t.colon" trailingIcon="delete" @trailingIconClick="remove">tag</SettingsChipItem>
 	</section>
@@ -36,8 +36,8 @@
 		<Button icon="add">{{ t.step.add }}</Button>
 	</div>
 
-	<Subheader icon="key">{{ t.keywords }}</Subheader>
-	<span>{{ t.blocklist.keywords.description }}</span>
+	<Subheader icon="key">{{ t(2).keyword }}</Subheader>
+	<span>{{ t.blocklist.keyword.description }}</span>
 	<section>
 		<SettingsChipItem :details="t.addition_date + t.colon" trailingIcon="delete" @trailingIconClick="remove">keyword</SettingsChipItem>
 	</section>

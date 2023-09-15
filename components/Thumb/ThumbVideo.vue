@@ -33,9 +33,9 @@
 		duration: undefined,
 	});
 
-	const date = computed(() => props.date ? formatDateWithLocale(props.date) : "----/--/--"); // TODO: 占位符日期应该也要遵循地区格式。
+	const date = computed(() => formatDateWithLocale(props.date ?? null));
 	const watchedCount = computed(() => getCompactDecimal(props.watchedCount));
-	const duration = computed(() => props.duration ?? "--:--");
+	const duration = computed(() => props.duration ?? Duration.placeholder);
 	const link = computed(() => props.videoId !== undefined && props.videoId !== null ?
 		`/video/kv${props.videoId}` : props.link);
 </script>

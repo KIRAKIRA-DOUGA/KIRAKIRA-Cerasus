@@ -139,6 +139,7 @@
 				}));
 		} catch (error) { handleError(error); }
 	}
+	watch(() => props.id, fetchDanmaku, { immediate: true });
 
 	watch(willSendDanmaku, danmaku => {
 		if (danmaku)
@@ -190,8 +191,7 @@
 
 			player.value.attachView(video.value);
 
-			watch(() => props.id, fetchDanmaku);
-			await fetchDanmaku();
+			// BUG: Dash.js will raise an error: [614][FragmentController] TypeError: Cannot read properties of undefined (reading 'append')
 		}
 	});
 

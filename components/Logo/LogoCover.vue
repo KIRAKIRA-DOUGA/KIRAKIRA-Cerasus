@@ -4,6 +4,8 @@
 		welcome?: boolean;
 		/** 是否**禁用**动画以节省性能？ */
 		noAnimation?: boolean;
+		/** 如是则禁止显示标题。 */
+		noTitle?: boolean;
 	}>();
 </script>
 
@@ -25,7 +27,7 @@
 			</svg>
 		</div>
 		<div class="triangle triangle-2"></div>
-		<div class="titles" :class="{ welcome }">
+		<div v-if="!noTitle" class="titles" :class="{ welcome }">
 			<div class="title welcome">Welcome</div>
 			<LogoText class="title kirakira" />
 		</div>
@@ -121,7 +123,7 @@
 			height: var(--line-height);
 			background-color: c(accent, 30%);
 
-			:comp.animation & {
+			:comp.animation :where(&) {
 				animation: movement 4s infinite linear;
 			}
 		}
@@ -129,14 +131,14 @@
 		:nth-child(1) {
 			--line-height: 2rem;
 			top: -2rem;
-			animation-duration: 8s !important;
+			animation-duration: 8s;
 		}
 
 		:nth-child(2) {
 			--line-height: 1rem;
 			--from: 300%;
 			top: 30%;
-			animation-duration: 16s !important;
+			animation-duration: 16s;
 		}
 
 		:nth-child(3) {
@@ -144,7 +146,7 @@
 			--from: 550%;
 			--to: -200%;
 			top: 55%;
-			animation-duration: 32s !important;
+			animation-duration: 32s;
 		}
 
 		:nth-child(4) {
@@ -152,13 +154,13 @@
 			--from: 150%;
 			--to: -150%;
 			top: 58%;
-			animation-duration: 8s !important;
+			animation-duration: 8s;
 		}
 
 		:nth-child(5) {
 			--line-height: 4rem;
 			bottom: 0;
-			animation-duration: 6s !important;
+			animation-duration: 6s;
 		}
 	}
 

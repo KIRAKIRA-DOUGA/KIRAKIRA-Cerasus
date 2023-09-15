@@ -121,10 +121,10 @@ const Vietnamese: LocaleIdentifiers = {
 			_: "Ẩn",
 			description: "Ẩn đi người dùng bạn không muốn thấy (trừ khi truy cập trang cá nhân của họ).",
 		},
-		tags: {
+		tag: {
 			description: "Lọc theo thẻ để ẩn đi nội dung bạn không muốn thấy.",
 		},
-		keywords: {
+		keyword: {
 			description: "Lọc theo từ khóa để ẩn đi nội dung bạn không muốn thấy.",
 		},
 		regexp: {
@@ -196,7 +196,7 @@ const Vietnamese: LocaleIdentifiers = {
 	acknowledgement: "Tuyên bố",
 	friendly_links: "Liên kết ngoài",
 	regexp: "Thuật toán căn bản",
-	keywords: "Từ khóa",
+	keyword: "Từ khóa",
 	email: "Email",
 	email_address: "Email",
 	authenticator: "Bộ xác thực",
@@ -323,6 +323,7 @@ const Vietnamese: LocaleIdentifiers = {
 		language: "Chọn ngôn ngữ",
 	},
 	user: {
+		_: "User", // NEW
 		name: "Tên người dùng",
 		name_requirements: 'Phạm vi từ 1 đến 20 ký tự. Chỉ được bao gồm: chữ số, ký tự Latinh, Hán tự, tiếng Hàn, Hiragana/Katakana và các ký tự đặc biệt "-", "_"',
 		bio: "Giới thiệu",
@@ -411,6 +412,7 @@ const Vietnamese: LocaleIdentifiers = {
 	},
 	current_time: "Thời gian hiện tại",
 	set_as_default: "Đặt về mặc định",
+	advanced_search: "Advanced Search", // NEW
 };
 
 export default Vietnamese;

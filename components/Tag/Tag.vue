@@ -144,6 +144,13 @@
 		* {
 			transition: $fallback-transitions, all $ease-out-expo $duration;
 		}
+		
+		.tags & {
+			&,
+			* {
+				transition-timing-function: $ease-out-expo;
+			}
+		}
 
 		&.editable {
 			cursor: text;
