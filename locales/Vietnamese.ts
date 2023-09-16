@@ -323,7 +323,7 @@ const Vietnamese: LocaleIdentifiers = {
 		language: "Chọn ngôn ngữ",
 	},
 	user: {
-		_: "User", // NEW
+		_: "Người dùng",
 		name: "Tên người dùng",
 		name_requirements: 'Phạm vi từ 1 đến 20 ký tự. Chỉ được bao gồm: chữ số, ký tự Latinh, Hán tự, tiếng Hàn, Hiragana/Katakana và các ký tự đặc biệt "-", "_"',
 		bio: "Giới thiệu",
@@ -412,7 +412,7 @@ const Vietnamese: LocaleIdentifiers = {
 	},
 	current_time: "Thời gian hiện tại",
 	set_as_default: "Đặt về mặc định",
-	advanced_search: "Advanced Search", // NEW
+	advanced_search: "Tìm kiếm nâng cao", 
 };
 
 export default Vietnamese;
