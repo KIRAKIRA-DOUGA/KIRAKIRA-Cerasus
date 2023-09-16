@@ -6,6 +6,7 @@ type ApplicationEvents = {
 	// 在此处定义需要全局使用的事件。
 	"app:requestLogin": void;
 	"app:toast": ToastEvent;
+	"app:clearAllToast": void;
 	"app:showDrawer": void;
 	"component:showTooltip": TooltipEvent;
 	"component:hideTooltip": HTMLElement;

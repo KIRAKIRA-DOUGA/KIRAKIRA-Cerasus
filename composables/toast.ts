@@ -19,3 +19,10 @@ export interface ToastEvent {
 export function useToast(message: string, severity: ToastEvent["severity"] = "success", duration?: number) {
 	useEvent("app:toast", { message, severity, duration });
 }
+
+/**
+ * 清空消息框列表的所有内容。
+ */
+export function clearAllToast() {
+	useEvent("app:clearAllToast");
+}
