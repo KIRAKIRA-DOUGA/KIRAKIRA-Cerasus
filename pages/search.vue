@@ -10,6 +10,7 @@
 	const searchMode = ref<typeof searchModes[number]>("tag");
 	const searchModesSorted = computed(() => searchModes.toSorted((a, b) =>
 		a === searchMode.value ? -1 : b === searchMode.value ? 1 : 0));
+	// 注意：请更新你的 Node.js 版本为 20 及以上才能支持该函数，否则会报错。
 
 	const data = reactive({
 		selectedTab: "Home",
@@ -24,14 +25,14 @@
 	 */
 	async function fetchData() {
 		const api = useApi();
-		const utf8Encoder = new TextEncoder();
-		const encodedContent = utf8Encoder.encode(data.search !== "" ? data.search : "none") as unknown as string;
+
+		const encodedSearch = encodeUtf8(data.search !== "" ? data.search : "none");
+		const cat = data.selectedTab !== "Home" ? data.selectedTab : "undefined";
+		const encodedCategory = encodeUtf8(cat);
 		const handleError = (error: unknown) => error && console.error(error);
 
-		const cat = data.selectedTab !== "Home" ? data.selectedTab : "undefined";
-		const encodedCategory = utf8Encoder.encode(cat) as unknown as string;
 		try {
-			const videosResponse = await api?.videos(encodedContent, data.sort[0], data.sort[1].slice(0, -6), "true", data.page, encodedCategory);
+			const videosResponse = await api?.videos(encodedSearch, data.sort[0], data.sort[1].slice(0, -6), "true", data.page, encodedCategory);
 			data.pages = Math.ceil(videosResponse.paginationData!.numberOfItems! / 50.0);
 			videos.value = videosResponse;
 		} catch (error) { handleError(error); }

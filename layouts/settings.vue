@@ -239,7 +239,7 @@
 				@layer layout {
 					@for $i from 1 through $length {
 						> :nth-child(#{$i}) {
-							animation: float-in 600ms (100ms * ($i - 1)) $ease-out-smooth backwards;
+							animation: float-up 600ms (100ms * ($i - 1)) $ease-out-smooth backwards;
 						}
 					}
 				}
@@ -426,7 +426,7 @@
 		}
 	}
 	
-	@keyframes float-in {
+	@keyframes float-up {
 		from {
 			opacity: 0;
 			translate: 0 1rem;

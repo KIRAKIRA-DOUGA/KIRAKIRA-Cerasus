@@ -101,7 +101,7 @@
 	}, { immediate: true });
 
 	defineExpose({
-		input,
+		input, isInvalid,
 	});
 
 	/**

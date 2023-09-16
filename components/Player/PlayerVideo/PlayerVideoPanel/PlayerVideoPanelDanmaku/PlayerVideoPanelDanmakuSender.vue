@@ -76,8 +76,7 @@
 		// Insert into backend
 		const api = useApi();
 
-		const utf8Encoder = new TextEncoder();
-		const encodedContent = utf8Encoder.encode(text) as unknown as string;
+		const encodedContent = encodeUtf8(text);
 
 		api.createDanmaku(props.videoId, String(props.currentTime), encodedContent, format.mode, format.color.hex, format.fontSize);
 

@@ -93,7 +93,7 @@
 				category: category.value,
 			},
 			onUploadProgress(progressEvent) {
-				if (progressEvent.lengthComputable)
+				if (progressEvent.total)
 					uploadProgress.value = progressEvent.loaded / progressEvent.total * 100;
 			},
 		});

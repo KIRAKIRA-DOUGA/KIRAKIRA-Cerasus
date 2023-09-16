@@ -2,30 +2,27 @@
 	import banner from "assets/images/banner-20220717.png";
 
 	const avatar = "/static/images/avatars/aira.webp";
-	const validChar = /[A-Za-z0-9\-_ぁ-ゖァ-ヺー〇一-鿿㐀-䶿𠀀-𮹊𰀀-𲎯]*/u;
-	const name = ref("艾了个拉");
-	// const test = ref("");
-	const bio = ref("");
-	const genderBasic = ref<"male" | "female" | "custom" | "">("");
-	const genderCustom = ref("");
-	const birthday = ref(formatDateWithLocale(new Date()));
-	const tags = ref([]);
+	const profile = reactive({
+		name: "艾了个拉",
+		bio: "",
+		gender: "female",
+		birthday: new Date(),
+		tags: [] as string[],
+	});
 
 	/**
-	 * Fetch the videos according to the query.
+	 * Update the user profile.
 	 */
 	async function updateProfile() {
 		const api = useApi();
-		const utf8Encoder = new TextEncoder();
 
-		const nameUTF8 = utf8Encoder.encode(name.value) as unknown as string;
-		const genderUTF8 = utf8Encoder.encode(genderBasic.value === "male" || genderBasic.value === "female" ? genderBasic.value : genderCustom.value) as unknown as string;
-		const bioUTF8 = utf8Encoder.encode(bio.value) as unknown as string;
-
+		const encodedName = encodeUtf8(profile.name);
+		const encodedGender = encodeUtf8(profile.gender);
+		const encodedBio = encodeUtf8(profile.bio);
 		const handleError = (error: unknown) => error && console.error(error);
 
 		try {
-			await api?.updateProfile(nameUTF8, genderUTF8, birthday.value, bioUTF8);
+			await api?.updateProfile(encodedName, encodedGender, profile.birthday.toString(), encodedBio);
 		} catch (error) { handleError(error); }
 	}
 </script>
@@ -42,62 +39,7 @@
 	</div>
 
 	<div class="items">
-		<div class="name">
-			<TextBox
-				v-model="name"
-				:placeholder="t.user.name"
-				size="large"
-				icon="person"
-				required
-				:pattern="validChar"
-				:maxLength="20"
-			/>
-			<span>{{ t.user.name_requirements }}</span>
-		</div>
-
-		<!-- <TextBox
-			v-model="test"
-			inputMode="numeric"
-			placeholder="测试：只能输入0到99之间的整数"
-			icon="placeholder"
-			required
-			:min="0"
-			:max="99"
-			:step="1"
-		/> -->
-
-		<TextBox v-model="bio" :placeholder="t.user.bio" icon="edit" />
-
-		<TextBox v-model="birthday" type="date" :placeholder="t.user.birthday" icon="birthday" />
-		<!-- TODO: [艾拉] 这里需要日期选择组件，谁来做一下？ -->
-		<!-- [琪露诺瓦露] 日期选择点击X按钮，再次选择日期后按钮不会出现。 -->
-		<!-- [兰音] 由于日期组件尚未制作，目前仅是一个占位符，暂时不必在意其功能或外观等的问题。 -->
-
-		<div class="gender">
-			<div class="gender-subtitle">
-				<Icon name="gender" class="icon" />
-				<span class="text">{{ t.user.gender }}</span>
-			</div>
-
-			<div class="gender-radio-group">
-				<RadioButton v-model="genderBasic" value="male">{{ t.user.male }}</RadioButton>
-				<RadioButton v-model="genderBasic" value="female">{{ t.user.female }}</RadioButton>
-				<div class="gender-custom">
-					<RadioButton v-model="genderBasic" value="custom">{{ t.custom }}</RadioButton>
-					<Transition>
-						<TextBox v-show="genderBasic === 'custom'" v-model="genderCustom" class="normal" />
-					</Transition>
-				</div>
-			</div>
-		</div>
-		
-		<div class="gender">
-			<div class="gender-subtitle">
-				<Icon name="tag" class="icon" />
-				<span class="text">{{ t(2).tag }}</span>
-			</div>
-			<TagsEditor v-model="tags" />
-		</div>
+		<SettingsUserProfile v-model="profile" />
 	</div>
 
 	<div class="submit">
@@ -175,69 +117,5 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
-
-		.text-box:not(.normal) {
-			--size: large;
-		}
-	}
-
-	.name {
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-
-		span {
-			color: c(icon-color);
-			font-size: 12px;
-			text-align: right;
-		}
-	}
-
-	.gender {
-		display: flex;
-		align-items: center;
-		min-height: 36px;
-		padding: 0 12px;
-		color: c(icon-color);
-		row-gap: 1rem;
-
-		&,
-		* {
-			flex-wrap: wrap;
-		}
-
-		.icon {
-			font-size: 24px;
-		}
-
-		.text {
-			flex-shrink: 0;
-			margin-right: 32px;
-			margin-left: 16px;
-		}
-
-		.gender-subtitle {
-			display: flex;
-			align-items: center;
-		}
-
-		.gender-radio-group {
-			display: flex;
-			gap: 1rem 32px;
-		}
-
-		.gender-custom {
-			display: flex;
-			gap: 1rem;
-		}
-
-		.text-box {
-			width: 200px;
-
-			&.v-enter-from,
-			&.v-leave-to {
-				width: 0;
-			}
-		}
 	}
 </style>

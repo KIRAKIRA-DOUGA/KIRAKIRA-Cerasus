@@ -1,3 +1,7 @@
+<docs>
+	# 响应式布局
+</docs>
+
 <script setup lang="ts">
 	import background from "assets/styles/css-doodles/background.css-doodle";
 	import Settings from "./settings.vue";

@@ -87,7 +87,11 @@
 		setClassEnabled(document.documentElement, "flat", enabled);
 	});
 
-	const layout = ref("responsive-web");
+	const layout = ref<LayoutKey>("responsive");
+	watchRoute(slug => {
+		if (slug[0] === "welcome") layout.value = "immersive";
+		else layout.value = "responsive";
+	}, true);
 
 	// Service Worker
 	if (environment.client)

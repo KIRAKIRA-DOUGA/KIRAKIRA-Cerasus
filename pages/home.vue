@@ -30,10 +30,9 @@
 		isFetchingData.value = true;
 		
 		const api = useApi();
-		const utf8Encoder = new TextEncoder();
-		const encodedContent = utf8Encoder.encode(data.search) as unknown as string;
+		const encodedSearch = encodeUtf8(data.search);
 		const cat = data.selectedTab !== "Home" ? data.selectedTab : "undefined";
-		const encodedCategory = utf8Encoder.encode(cat) as unknown as string;
+		const encodedCategory = encodeUtf8(cat);
 		const handleError = (error: unknown) => error && console.error(error);
 
 		// Back up the category, when switch category, the page index will restore to 1.
@@ -41,7 +40,7 @@
 		previousCategory.value = data.selectedTab;
 
 		try {
-			const videosResponse = await api?.videos(encodedContent, data.sortCategory, data.sortDirection, "true", data.page, encodedCategory);
+			const videosResponse = await api?.videos(encodedSearch, data.sortCategory, data.sortDirection, "true", data.page, encodedCategory);
 			pageCount.value = Math.ceil(videosResponse.paginationData!.numberOfItems! / 50.0);
 			categoryItemCount.value = videosResponse.paginationData!.numberOfItems!;
 			videos.value = videosResponse;
