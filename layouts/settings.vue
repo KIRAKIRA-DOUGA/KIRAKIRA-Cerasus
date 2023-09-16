@@ -236,9 +236,11 @@
 				flex-direction: column;
 				gap: 1rem;
 				
-				@for $i from 1 through $length {
-					> :nth-child(#{$i}) {
-						animation: float-in 600ms (100ms * ($i - 1)) $ease-out-smooth backwards;
+				@layer layout {
+					@for $i from 1 through $length {
+						> :nth-child(#{$i}) {
+							animation: float-in 600ms (100ms * ($i - 1)) $ease-out-smooth backwards;
+						}
 					}
 				}
 			}

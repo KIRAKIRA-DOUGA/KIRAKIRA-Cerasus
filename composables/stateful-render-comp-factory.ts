@@ -93,9 +93,12 @@ export const useReactifySlotItems = <T>() => {
 		props: {
 			vnode: vnodePropType,
 		},
-		// eslint-disable-next-line vue/require-render-return
+		unmounted() {
+			vnode.value = [];
+		},
 		render(props: { vnode: VNode[] }) {
 			vnode.value = props.vnode;
+			return undefined;
 		},
 	});
 	return { vnode, items, RenderComp };

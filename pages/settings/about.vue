@@ -38,10 +38,26 @@
 	];
 
 	const sloganLines = computed(() => t.about.slogan.toString().split("\n"));
+	const remainingClick = ref(4);
+
+	/**
+	 * 连续点击五次 LOGO 即可进入开发者模式或显示彩蛋。
+	 * @param e - 鼠标事件。
+	 */
+	function showDevMode(e: MouseEvent) {
+		replayAnimation(e.currentTarget as HTMLDivElement, "active");
+		if (remainingClick.value) {
+			clearAllToast();
+			useToast(`继续点击${remainingClick.value--}次即可进入开发者模式`, "info");
+			return;
+		}
+		clearAllToast();
+		useToast("你已进入开发者模式！", "success");
+	}
 </script>
 
 <template>
-	<div class="info">
+	<div class="info" @click="showDevMode">
 		<LogoText />
 		<p class="slogan"><span>{{ sloganLines[0] }}</span><span><b>{{ sloganLines[1] }}</b></span></p>
 	</div>
@@ -91,6 +107,20 @@
 		gap: 1rem;
 		align-items: center;
 		margin: 3rem 0;
+
+		> * {
+			animation: inherit;
+
+			@for $i from 1 through 2 {
+				&:nth-child(#{$i}) {
+					animation-delay: 150ms * ($i - 1);
+				}
+			}
+		}
+		
+		&.active {
+			animation: swing 500ms $ease-out-sine;
+		}
 	}
 
 	.logo-text {
@@ -105,9 +135,20 @@
 	.slogan {
 		color: c(accent);
 		font-size: 20px;
+		text-align: center;
 
 		span {
 			display: inline-block;
 		}
+	}
+
+	@keyframes swing {
+		0% { rotate: 0deg; }
+		5% { rotate: -5deg; }
+		20% { rotate: 4deg; }
+		40% { rotate: -3deg; }
+		60% { rotate: 2deg; }
+		80% { rotate: -1deg; }
+		100% { rotate: 0deg; }
 	}
 </style>

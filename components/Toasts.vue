@@ -28,6 +28,10 @@
 		setTimeout(() => arrayRemoveItem(toastList, e), e.duration);
 	});
 
+	useListen("app:clearAllToast", () => {
+		arrayClearAll(toastList);
+	});
+
 	/**
 	 * 在元素被插入到 DOM 之后的下一帧被调用。
 	 * 用这个来开始进入动画。
