@@ -332,7 +332,7 @@
 			}
 
 			& video {
-				max-height: 70dvh;
+				max-height: calc(100dvh - 36px - 26px * 2);
 			}
 		}
 
