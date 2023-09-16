@@ -191,7 +191,7 @@ const Indonesian: LocaleIdentifiers = {
 			translator: "Penerjemah {0}",
 		},
 		technologies_used: "Teknologi yang Digunakan",
-		slogan: "Sebuah web video yang imutch\xa0\nuntuk kencantikanmu",
+		slogan: "Sebuah web yang imutch\xa0\nuntuk kencantikanmu",
 	},
 	acknowledgement: "Pengakuan",
 	friendly_links: "Tautan Ramah",
