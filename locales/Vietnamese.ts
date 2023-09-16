@@ -412,7 +412,7 @@ const Vietnamese: LocaleIdentifiers = {
 	},
 	current_time: "Thời gian hiện tại",
 	set_as_default: "Đặt về mặc định",
-	advanced_search: "Tìm kiếm nâng cao", 
+	advanced_search: "Tìm kiếm nâng cao",
 };
 
 export default Vietnamese;
