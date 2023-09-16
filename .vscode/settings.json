@@ -162,6 +162,7 @@
 		}
 	},
 	"C_Cpp.default.compilerPath": "",
+	"turboConsoleLog.addSemicolonInTheEnd": true,
 	// "vue.codeActions.enabled": false, // 暂时禁用，因为保存时太卡。
 	// "javascript.updateImportsOnFileMove.enabled": "never",
 	// "typescript.updateImportsOnFileMove.enabled": "never",

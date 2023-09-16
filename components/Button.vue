@@ -39,7 +39,7 @@
 			<Transition>
 				<ProgressBar v-if="loading" />
 			</Transition>
-			<LocaleLink v-if="href" :draggable="false" :to="href" class="link lite" />
+			<LocaleLink v-if="href" :draggable="false" :to="href" class="link lite" :tabindex="-1" />
 		</div>
 	</button>
 </template>
@@ -106,6 +106,10 @@
 		button[disabled] > & {
 			background-color: c(accent-disabled) !important;
 			box-shadow: none !important;
+			
+			html.dark & :is(.caption, .icon) {
+				opacity: 0.4;
+			}
 		}
 
 		button:focus > & {

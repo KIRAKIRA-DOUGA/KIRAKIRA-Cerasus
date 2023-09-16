@@ -49,7 +49,6 @@ declare global {
 	type UrlQueryType = string | URLSearchParams | Record<string, Readable>;
 	/** 发射弹幕信息。 */
 	type DanmakuComment = Parameters<Danmaku["emit"]>[0];
-
 	/** 弹幕列表项目。 */
 	interface DanmakuListItem {
 		videoTime: Duration;

@@ -10,13 +10,16 @@ type Route = RouteLocationNormalized | RouteLocationNormalizedLoaded;
 export function getRoutePath({
 	route = useRouter().currentRoute.value,
 	removeI18nPrefix: removeI18n = true, // removeI18nPrefix 和下面的函数重名因而会导致异常。
+	fullPath = false,
 }: Partial<{
 	/** 路由对象。留空时将会自动获取。 */
 	route: Route | string;
-	/** 是否移除语言名称前缀。默认为是。 */
+	/** 是否移除语言名称前缀？默认为是。 */
 	removeI18nPrefix: boolean;
+	/** 是否使用完整的路径？即包括 Hash 和 Search Params 在内。 */
+	fullPath: boolean;
 }> = {}): string {
-	let path = typeof route === "string" ? route : route.fullPath;
+	let path = typeof route === "string" ? route : fullPath ? route.fullPath : route.path;
 	path = path.replace(/^\//, ""); // 移除根节点斜杠。
 	if (removeI18n)
 		path = path.replace(new RegExp(`^(${localeCodes.value.join("|")})\\/?`), ""); // 移除语言前缀。
@@ -35,26 +38,30 @@ export function getLocaleRouteSlug(route?: Route | string) {
 
 /**
  * 传入路由发生变化后的回调函数。
- * @param callback - 回调函数，其参数依次为新值、旧值。
+ * @param callback - 回调函数，其参数依次为新路径数组、旧路径数组、新路径字符串、旧路径字符串。
  * @param immediate - 首次启动不会被调用。
  */
-export function watchRoute(callback: (newValue: string, oldValue: string) => void, immediate?: false): void;
+export function watchRoute(callback: (slug: string[], prevSlug: string[], path: string, prevPath: string) => void, immediate?: false): void;
 /**
  * 传入路由发生变化后的回调函数。
- * @param callback - 回调函数，其参数依次为新值、旧值（首次启动时为 undefined）。
+ * @param callback - 回调函数，其参数依次为新路径数组、旧路径数组（首次启动时为 undefined）、新路径字符串、旧路径字符串（首次启动时为 undefined）。
  * @param immediate - 立即调用一次。
  */
-export function watchRoute(callback: (newValue: string, oldValue: string | undefined) => void, immediate: true): void;
+export function watchRoute(callback: (slug: string[], prevSlug: string[] | undefined, path: string, prevPath: string | undefined) => void, immediate: true): void;
 /**
  * 传入路由发生变化后的回调函数。
- * @param callback - 回调函数，其参数依次为新值、旧值。
+ * @param callback - 回调函数，其参数依次为新路径数组、旧路径数组、新路径字符串、旧路径字符串。
  * @param immediate - 是否立即调用一次。
  */
-export function watchRoute(callback: (newValue: string, oldValue: string) => void, immediate = false): void {
+export function watchRoute(callback: (slug: string[], prevSlug: string[], path: string, prevPath: string) => void, immediate = false): void {
 	const router = useRouter();
 	watch(
 		() => router.currentRoute.value.path,
-		callback,
+		(path, prevPath) => {
+			[path, prevPath] = [removeI18nPrefix(path), removeI18nPrefix(prevPath)];
+			const [slug, prevSlug] = [getLocaleRouteSlug(path), getLocaleRouteSlug(prevPath)];
+			callback(slug, prevSlug, path, prevPath);
+		},
 		{ immediate: immediate as false },
 	);
 }
@@ -108,7 +115,8 @@ export function switchLanguage(lang: string) {
  * @param route - 路由地址。
  * @returns - 移除了语言前缀的路由。
  */
-export function removeI18nPrefix(route: string) {
+export function removeI18nPrefix(route?: string) {
+	if (route === undefined) return undefined!;
 	let result = route.replace(new RegExp(`^\\/?(${localeCodes.value.join("|")})\\/?`), "");
 	if (result === "") result = "/";
 	return result;

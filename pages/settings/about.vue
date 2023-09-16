@@ -30,7 +30,7 @@
 		{ name: "Nuxt", version: nuxt.versions.nuxt || "3", ability: "SSR Framework", icon: "nuxt", link: "https://nuxt.com/" },
 		{ name: "Vue", version: nuxt.versions.vue || "3", ability: "Progressive Frontend Framework", icon: "vue", link: "https://vuejs.org/" },
 		{ name: "TypeScript", version: "5", ability: "Static Type Checker", icon: "typescript", link: "https://www.typescriptlang.org/" },
-		{ name: "Node.js", version: "18", ability: "Server Operation Platform", icon: "nodejs", link: "https://nodejs.org/" },
+		{ name: "Node.js", version: "20", ability: "Server Operation Platform", icon: "nodejs", link: "https://nodejs.org/" },
 		// { name: "Koa", version: "3", ability: "Server Network Framework", icon: "koa", monochrome: true, link: "https://koajs.com/" },
 		{ name: "Go", version: "1.20", ability: "Server Programming Language", icon: "go", link: "https://go.dev/" },
 		{ name: "Vercel", ability: "Website Hosting Services", icon: "vercel", monochrome: true, link: "https://vercel.com/" },
@@ -57,10 +57,12 @@
 </script>
 
 <template>
-	<div class="info" @click="showDevMode">
-		<LogoText />
-		<p class="slogan"><span>{{ sloganLines[0] }}</span><span><b>{{ sloganLines[1] }}</b></span></p>
-	</div>
+	<Fragment>
+		<div class="info" @click="showDevMode">
+			<LogoText />
+			<p class="slogan"><span>{{ sloganLines[0] }}</span><span><b>{{ sloganLines[1] }}</b></span></p>
+		</div>
+	</Fragment>
 
 	<Subheader icon="link">{{ t.about.repositories }}</Subheader>
 	<section>
@@ -107,9 +109,10 @@
 		gap: 1rem;
 		align-items: center;
 		margin: 3rem 0;
+		animation: none;
 
 		> * {
-			animation: inherit;
+			animation: float-up 600ms $ease-out-smooth backwards;
 
 			@for $i from 1 through 2 {
 				&:nth-child(#{$i}) {
@@ -117,7 +120,7 @@
 				}
 			}
 		}
-		
+
 		&.active {
 			animation: swing 500ms $ease-out-sine;
 		}
@@ -139,6 +142,13 @@
 
 		span {
 			display: inline-block;
+		}
+	}
+
+	@keyframes float-up {
+		from {
+			opacity: 0;
+			translate: 0 1rem;
 		}
 	}
 

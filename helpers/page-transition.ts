@@ -12,15 +12,13 @@ export default function usePageTransition() {
 	/** 页面切换引用变量。 */
 	const pageTransition = ref("page-forward");
 
-	watchRoute((route, prevRoute) => {
-		[route, prevRoute] = [removeI18nPrefix(route), removeI18nPrefix(prevRoute)];
-		const [slug, prevSlug] = [getLocaleRouteSlug(route), getLocaleRouteSlug(prevRoute)];
+	watchRoute((slug, prevSlug, path, prevPath) => {
 		pageTransition.value = "page-jump";
-		if (prevRoute.startsWith(route)) pageTransition.value = "page-backward";
-		if (route.startsWith(prevRoute)) pageTransition.value = "page-forward";
-		if (route.startsWith(SETTINGS) !== prevRoute.startsWith(SETTINGS)) pageTransition.value = "";
-		if (prevRoute === route) pageTransition.value = "page-backward";
-		if (route.startsWith(USER) && prevRoute.startsWith(USER)) {
+		if (prevPath.startsWith(path)) pageTransition.value = "page-backward";
+		if (path.startsWith(prevPath)) pageTransition.value = "page-forward";
+		if (path.startsWith(SETTINGS) !== prevPath.startsWith(SETTINGS)) pageTransition.value = "";
+		if (prevPath === path) pageTransition.value = "page-backward";
+		if (path.startsWith(USER) && prevPath.startsWith(USER)) {
 			const [tab, prevTab] = [slug[2] || "", prevSlug[2] || ""];
 			const [index, prevIndex] = [userTabs.indexOf(tab), userTabs.indexOf(prevTab)];
 			pageTransition.value = index > prevIndex ? "right" : index < prevIndex ? "left" : "";

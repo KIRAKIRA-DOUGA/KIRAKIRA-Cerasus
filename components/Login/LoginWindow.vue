@@ -147,7 +147,7 @@
 							<TextBox
 								v-model="email"
 								type="email"
-								:placeholder="t.email"
+								:placeholder="t.email_address"
 								icon="email"
 								:invalid="isInvalidEmail"
 							/>
@@ -189,9 +189,9 @@
 								icon="lock"
 							/>
 						</div>
-						<div class="action margin-left-inset">
+						<div class="action">
 							<Button icon="arrow_left" class="button" @click="currentPage = 'register'">{{ t.step.previous }}</Button>
-							<Button icon="check" class="button" @click="registerUser">{{ t.step.finish }}</Button>
+							<Button icon="arrow_right" class="button icon-behind" @click="registerUser">{{ t.step.next }}</Button>
 						</div>
 					</div>
 
@@ -676,8 +676,8 @@
 
 		.avatar {
 			animation:
-				login-animation-avator 600ms 540ms $ease-out-back forwards,
-				login-animation-avator-mover 600ms 1s $ease-scaler-or-mover forwards;
+				login-animation-avatar 600ms 540ms $ease-out-back forwards,
+				login-animation-avatar-mover 600ms 1s $ease-scaler-or-mover forwards;
 		}
 
 		.welcome {
@@ -761,7 +761,7 @@
 		}
 	}
 
-	@keyframes login-animation-avator {
+	@keyframes login-animation-avatar {
 		from {
 			scale: 0;
 		}
@@ -771,7 +771,7 @@
 		}
 	}
 
-	@keyframes login-animation-avator-mover {
+	@keyframes login-animation-avatar-mover {
 		from {
 			translate: 0;
 		}
