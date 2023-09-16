@@ -191,7 +191,7 @@ const Vietnamese: LocaleIdentifiers = {
 			translator: "Dịch giả {0}",
 		},
 		technologies_used: "Dự án có sử dụng:",
-		slogan: "Trang video nhỏ xinh\xa0\ncho niềm yêu linh đình!",
+		slogan: "Trang nhỏ xinh\xa0\ncho niềm yêu linh đình!",
 	},
 	acknowledgement: "Tuyên bố",
 	friendly_links: "Liên kết ngoài",

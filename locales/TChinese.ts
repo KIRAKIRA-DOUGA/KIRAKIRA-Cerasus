@@ -191,7 +191,7 @@ const TChinese: LocaleIdentifiers = {
 			translator: "{0} 翻譯",
 		},
 		technologies_used: "使用技術",
-		slogan: "一個可愛的視頻網站，\n獻給可愛的你！",
+		slogan: "一個可愛的網站，\n獻給可愛的你！",
 	},
 	acknowledgement: "鳴謝",
 	friendly_links: "友情連結",

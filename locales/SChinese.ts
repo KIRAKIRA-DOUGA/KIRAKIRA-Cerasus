@@ -189,7 +189,7 @@ const SChinese = {
 			translator: "{0} 翻译",
 		},
 		technologies_used: "使用技术",
-		slogan: "一个可爱的视频网站，\n献给可爱的你！",
+		slogan: "一个可爱的网站，\n献给可爱的你！",
 	},
 	acknowledgement: "鸣谢",
 	friendly_links: "友情链接",
