@@ -6,7 +6,7 @@
 	import background from "assets/styles/css-doodles/background.css-doodle";
 	import Settings from "./settings.vue";
 	import UserPage from "./user-page.vue";
-	import usePageTransition from "helpers/page-transition";
+	import { usePageTransition } from "helpers/page-transition";
 
 	const container = ref<HTMLDivElement>();
 	const containerMain = ref<HTMLElement>();

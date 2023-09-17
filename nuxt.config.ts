@@ -229,4 +229,10 @@ export default defineNuxtConfig({
 	lodash: {
 		exclude: ["now"],
 	},
+	app: {
+		pageTransition: {
+			name: "page-jump",
+			mode: "out-in",
+		},
+	},
 } as BroadNuxtConfig);

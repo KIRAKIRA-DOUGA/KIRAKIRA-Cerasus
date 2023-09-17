@@ -160,7 +160,9 @@
 			}
 
 			@media (height < 540px) {
-				margin-top: -100%;
+				@include not-mobile {
+					margin-top: -100%;
+				}
 			}
 
 			/* &.v-enter-from,
@@ -233,7 +235,9 @@
 		gap: $icons-gap;
 
 		@media (height <= 432px) {
-			gap: 0;
+			@include not-mobile {
+				gap: 0;
+			}
 		}
 
 		.soft-button {
