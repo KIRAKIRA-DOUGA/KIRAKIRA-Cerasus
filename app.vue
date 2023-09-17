@@ -1,6 +1,7 @@
 <script setup lang="ts">
 	import "css-doodle";
 	import manifest from "public/manifest.json";
+	import { useDynamicLayout } from "helpers/page-transition";
 
 	const homepage = "https://cerasus.kirakira.moe/";
 	const { locale } = useI18n();
@@ -87,11 +88,7 @@
 		setClassEnabled(document.documentElement, "flat", enabled);
 	});
 
-	const layout = ref<LayoutKey>("responsive");
-	watchRoute(slug => {
-		if (slug[0] === "welcome") layout.value = "immersive";
-		else layout.value = "responsive";
-	}, true);
+	const layout = useDynamicLayout();
 
 	// Service Worker
 	if (environment.client)

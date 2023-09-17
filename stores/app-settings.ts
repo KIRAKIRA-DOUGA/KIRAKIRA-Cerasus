@@ -7,5 +7,12 @@ export const useAppSettingsStore = defineStore("app-settings", {
 		flatAppearanceMode: false,
 		coloredSideBar: false,
 	}),
+	getters: {
+		getExitSettingRoute: state => {
+			let route = state.exitSettingRoute;
+			if (!route.startsWith("/")) route = "/" + route;
+			return route;
+		},
+	},
 	persist: true,
 });

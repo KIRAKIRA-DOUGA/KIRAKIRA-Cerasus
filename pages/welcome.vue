@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 	useHead({ title: "欢迎加入KIRAKIRA☆DOUGA大家庭" });
-	const { next } = useRoute().query;
+	const next = useRoute().query.next || "/";
 	const container = ref<HTMLDivElement>();
 
 	const profile = reactive({
@@ -28,12 +28,11 @@
 		const main = container.value?.parentElement;
 		if (main) {
 			main.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-			await main.animate([{}, { translate: "0 100%", opacity: 0 }], { duration: 1000, easing: eases.easeInMax, fill: "forwards" }).finished;
+			await main.animate([{}, { translate: "0 100%", opacity: 0 }], { duration: 600, easing: eases.easeInMax, fill: "forwards" }).finished;
 			showWelcome.value = true;
 			await delay(1200);
 		}
-		const path = next || "/";
-		navigate(path);
+		navigate(next);
 	}
 
 	/**
@@ -72,7 +71,7 @@
 
 				<SettingsUserProfile v-model="profile" />
 
-				<Checkbox v-model:single="isRead">我已阅读并同意<a href="https://otomad.github.io/cssc/license.htm" target="_blank">《KIRAKIRA☆DOUGA用户协议》</a></Checkbox>
+				<Checkbox v-model:single="isRead">我已阅读并同意<a href="https://otomad.github.io/cssc/license.htm" target="_blank" @click.stop>《KIRAKIRA☆DOUGA用户协议》</a></Checkbox>
 
 				<Button icon="check" :disabled="!validData" @click="finish">开始畅游KIRAKIRA☆DOUGA</Button>
 			</div>
@@ -96,6 +95,7 @@
 
 <style scoped lang="scss">
 	.banner {
+		--i: 0;
 		position: relative;
 
 		.logo-cover {
@@ -137,6 +137,7 @@
 	}
 
 	.container {
+		--i: 1;
 		padding-top: 0;
 		padding-bottom: 0;
 
@@ -195,12 +196,18 @@
 			}
 		}
 	}
+	
+	.banner,
+	.container {
+		animation: float-up 600ms calc(150ms * var(--i)) $ease-out-smooth backwards;
+	}
 
 	.welcome {
 		@include flex-center;
 		position: fixed;
 		gap: 30px;
 		inset: 0;
+		cursor: progress;
 
 		.avatar {
 			position: relative;
@@ -233,6 +240,10 @@
 				$ease-text-move: cubic-bezier(0.1, 0.5, 0, 1);
 				overflow: hidden;
 				white-space: nowrap;
+
+				&:not(.content-visible) {
+					visibility: hidden;
+				}
 
 				&.content-visible {
 					position: absolute;
@@ -282,10 +293,17 @@
 			translate: 0;
 		}
 	}
-	
+
 	@keyframes fade-in {
 		from {
 			opacity: 0;
+		}
+	}
+
+	@keyframes float-up {
+		from {
+			opacity: 0;
+			translate: 0 2rem;
 		}
 	}
 </style>
