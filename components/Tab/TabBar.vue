@@ -87,7 +87,7 @@
 	const children = computed(() => {
 		if (!slotNode.value) return null;
 		const nodes: VNode[] = [];
-		for (const child of slotNode.value.vnode)
+		for (const child of slotNode.value.vnode ?? [])
 			if (typeof child.children === "string") continue;
 			else if (typeof child.type === "symbol") {
 				if (child.type.description === "v-fgt" && Array.isArray(child.children))

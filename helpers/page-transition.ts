@@ -6,9 +6,9 @@ const USER = "/user";
 /**
  * 设定页面切换动画。
  * @param pageTransition - 页面切换引用变量。
- * @returns 路由切换观察回调函数。
+ * @returns 路由切换响应式变量。
  */
-export default function usePageTransition() {
+export function usePageTransition() {
 	/** 页面切换引用变量。 */
 	const pageTransition = ref("page-forward");
 
@@ -26,4 +26,19 @@ export default function usePageTransition() {
 	});
 
 	return pageTransition;
+}
+
+/**
+ * 根据路由动态切换布局。
+ * @returns 路由切换响应式变量。
+ */
+export function useDynamicLayout() {
+	const layout = ref<LayoutKey>("responsive");
+
+	watchRoute(slug => {
+		if (slug[0] === "welcome") layout.value = "immersive";
+		else layout.value = "responsive";
+	}, true);
+
+	return layout;
 }
