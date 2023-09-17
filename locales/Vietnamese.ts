@@ -365,8 +365,8 @@ const Vietnamese: LocaleIdentifiers = {
 		huge: "Cực lớn",
 	},
 	user_page: {
-		_: "Trang người dùng",
-		title_affix: "Trang người dùng của {0}",
+		_: "Trang cá nhân",
+		title_affix: "Trang cá nhân của {0}",
 	},
 	manage_content: "Quản lý nội dung",
 	add_to_blocklist: "Thêm vào danh sách chặn",
