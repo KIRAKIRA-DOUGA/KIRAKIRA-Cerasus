@@ -333,7 +333,7 @@ const Vietnamese: LocaleIdentifiers = {
 		male: "Nam",
 		female: "Nữ",
 		birthday: "Ngày sinh",
-		info: "Thông tin người dùng",
+		info: "Thông tin cá nhân",
 		join_time: "Đã tham gia",
 	},
 	development_test_page: "Trang thử nghiệm cho nhà phát triển",
