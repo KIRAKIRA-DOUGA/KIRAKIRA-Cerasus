@@ -66,7 +66,7 @@ const Vietnamese: LocaleIdentifiers = {
 		new: "Tạo thẻ mới",
 	},
 	all: "Tất cả",
-	video: "Videos",
+	video: "Video",
 	image: "Hình ảnh",
 	series: "Loạt video",
 	audio: "Nhạc",
