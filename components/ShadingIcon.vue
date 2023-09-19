@@ -57,21 +57,11 @@
 		position: absolute;
 
 		&.rotating {
-			animation: rotating linear 30s infinite;
+			animation: rotation linear 30s infinite;
 
 			&.elastic {
 				animation: elastic-rotation $ease-out-expo 16s infinite;
 			}
-		}
-	}
-
-	@keyframes rotating {
-		from {
-			rotate: 0turn;
-		}
-
-		to {
-			rotate: 1turn;
 		}
 	}
 

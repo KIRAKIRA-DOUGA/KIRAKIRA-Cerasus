@@ -265,12 +265,6 @@
 		}
 	}
 
-	@keyframes scale-in {
-		from {
-			scale: 0;
-		}
-	}
-
 	@keyframes avatar-mover {
 		to {
 			grid-template-columns: 1fr;

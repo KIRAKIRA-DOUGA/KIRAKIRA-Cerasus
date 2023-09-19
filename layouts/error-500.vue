@@ -136,18 +136,11 @@
 
 			div:deep {
 				color: c(icon-color);
-				
+
 				> pre > span.stack {
 					display: block;
 				}
 			}
-		}
-	}
-
-	@keyframes intro {
-		from {
-			scale: 1.1;
-			opacity: 0;
 		}
 	}
 

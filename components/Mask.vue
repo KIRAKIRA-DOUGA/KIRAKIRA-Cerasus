@@ -106,14 +106,4 @@
 			}
 		}
 	}
-
-	@keyframes swing {
-		0% { rotate: 0deg; }
-		5% { rotate: -5deg; }
-		20% { rotate: 4deg; }
-		40% { rotate: -3deg; }
-		60% { rotate: 2deg; }
-		80% { rotate: -1deg; }
-		100% { rotate: 0; }
-	}
 </style>
