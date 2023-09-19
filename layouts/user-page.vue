@@ -13,6 +13,7 @@
 
 <script setup lang="ts">
 	import { Users200Response } from "kirakira-backend";
+	import makeFullwidth from "pomsky/fullwidth.pom";
 
 	// TODO nice copy pasta dude
 	const uid = currentUserUid();
@@ -36,7 +37,7 @@
 	const isFollowed = ref(false);
 
 	const actionMenu = ref<FlyoutModel>();
-	const fullwidthRegexp = /[⺀-ㄯ㆐-ㇿ㈠-㉇㊀-㊰㋀-㋋㋐-㍰㍻-㍿㏠-㏾㐀-䶿一-鿿豈-龎︐-︙︰-﹫！-｠￠-￦𚿰-𛅧𠀀-𲎯]/u;
+	const fullwidthRegexp = makeFullwidth();
 	// 验证是否是加上全宽括弧而不是半宽括弧，条件是包含至少一个非谚文的全宽字符。
 	const memoParen = computed(() => {
 		const memo = user.value?.bio ?? "";

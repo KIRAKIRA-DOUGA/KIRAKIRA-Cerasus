@@ -63,6 +63,7 @@ export default defineNuxtConfig({
 		"types",
 		"utils",
 		"worklets",
+		"assets/pomsky",
 	),
 	css: [
 		"styles/global.scss",

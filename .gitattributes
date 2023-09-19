@@ -49,8 +49,12 @@
 *.bat text eol=lf
 *.ts text eol=lf
 *.tsx text eol=lf
+*.cts text eol=lf
+*.mts text eol=lf
 *.jsx text eol=lf linguist-vendored
 *.vue text eol=lf
+*.pom text eol=lf linguist-language=Pomsky
+*.proto text eol=lf
 
 # templates
 *.ejs text eol=lf
