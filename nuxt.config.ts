@@ -234,9 +234,8 @@ export default defineNuxtConfig({
 	lodash: {
 		exclude: ["now"],
 	},
-	sitemap: {
-		hostname: "cerasus.kirakira.moe",
-		gzip: true,
+	site: {
+		url: "https://cerasus.kirakira.moe",
 	},
 	/* app: {
 		pageTransition: {
