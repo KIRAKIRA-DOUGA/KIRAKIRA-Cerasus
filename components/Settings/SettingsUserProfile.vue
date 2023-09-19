@@ -3,8 +3,10 @@
 </docs>
 
 <script setup lang="ts">
+	import makeUsername from "pomsky/username.pom";
+
 	// const test = ref("");
-	const validChar = /[A-Za-z0-9\-_ぁ-ゖァ-ヺー〇一-鿿㐀-䶿𠀀-𮹊𰀀-𲎯]*/u;
+	const validChar = makeUsername();
 	const profile = defineModel<{
 		name: string;
 		nameValid?: boolean;
