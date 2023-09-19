@@ -271,6 +271,7 @@ const Japanese: LocaleIdentifiers = {
 	cover: "サムネイル",
 	select_cover: "サムネイル選択",
 	follow: "フォロー",
+	follow_verb: "フォロー",
 	following: "フォロワー",
 	fans: "ファン",
 	watched: "再生数",

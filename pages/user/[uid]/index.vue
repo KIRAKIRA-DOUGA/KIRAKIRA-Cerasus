@@ -42,19 +42,19 @@
 				<div class="user-counts">
 					<div>
 						<span class="value">{{ 0 }}</span>
-						<p>{{ t.follow }}</p>
+						<p>{{ t(0).follow }}</p>
 					</div>
 					<div>
 						<span class="value">{{ 0 }}</span>
-						<p>{{ t.fans }}</p>
+						<p>{{ t(0).fans }}</p>
 					</div>
 					<div>
 						<span class="value">{{ 0 }}</span>
-						<p>{{ t.watched }}</p>
+						<p>{{ t(0).watched }}</p>
 					</div>
 					<div>
 						<span class="value">{{ 0 }}</span>
-						<p>{{ t.rating }}</p>
+						<p>{{ t(0).rating }}</p>
 					</div>
 				</div>
 			</div>

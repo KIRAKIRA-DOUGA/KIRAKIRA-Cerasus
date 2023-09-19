@@ -271,6 +271,7 @@ const TChinese: LocaleIdentifiers = {
 	cover: "封面",
 	select_cover: "選擇封面",
 	follow: "關注",
+	follow_verb: "關注",
 	following: "已關注",
 	fans: "粉絲",
 	watched: "觀看",

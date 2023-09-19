@@ -269,6 +269,7 @@ const SChinese = {
 	cover: "封面",
 	select_cover: "选择封面",
 	follow: "关注",
+	follow_verb: "关注",
 	following: "已关注",
 	fans: "粉丝",
 	watched: "观看",
@@ -323,7 +324,7 @@ const SChinese = {
 	user: {
 		_: "用户",
 		name: "昵称",
-		name_requirements: "1~20个字符，仅可包含大小写拉丁字母、数字、常用平/片假名、汉字、特殊符号 ｢-｣ ｢_｣",
+		name_requirements: "1~20个字符，仅可包含大小写拉丁字母、数字、常用平/片假名、汉字、特殊符号 ｢-｣ ｢_｣", // 仅可包含数字、大小写拉丁字母、越南语字母、汉字、常用假名、（现代？）谚文音节、特殊字符-_
 		bio: "个性签名",
 		gender: "性别",
 		memo: "备注",

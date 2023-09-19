@@ -33,6 +33,7 @@
 	await fetchData();
 
 	const isSelf = ref(false); // 是否为登录用户本人。
+	const isFollowed = ref(false);
 
 	const actionMenu = ref<FlyoutModel>();
 	const fullwidthRegexp = /[⺀-ㄯ㆐-ㇿ㈠-㉇㊀-㊰㋀-㋋㋐-㍰㍻-㍿㏠-㏾㐀-䶿一-鿿豈-龎︐-︙︰-﹫！-｠￠-￦𚿰-𛅧𠀀-𲎯]/u;
@@ -80,9 +81,9 @@
 						<MenuItem icon="block">{{ t.add_to_blocklist }}</MenuItem>
 					</Menu>
 					<div v-if="!isSelf" class="follow-button">
-						<Button v-if="true">{{ t.follow }}</Button>
+						<Button v-if="!isFollowed" icon="add" @click="isFollowed = true">{{ t.follow_verb }}</Button>
 						<!-- TODO: !user.isFollowed -->
-						<Button v-else disabled>{{ t.following }}</Button>
+						<Button v-else icon="check" @click="isFollowed = false">{{ t.following }}</Button>
 					</div>
 					<Button v-if="isSelf">{{ t.manage_content }}</Button>
 				</div>

@@ -271,6 +271,7 @@ const Indonesian: LocaleIdentifiers = {
 	cover: "Sampul",
 	select_cover: "Pilih Cover",
 	follow: "Ikuti",
+	follow_verb: "Ikuti",
 	following: "Mengikuti",
 	fans: "Penggemar",
 	watched: "Penonton",
