@@ -57,6 +57,7 @@
 		"@nuxtjs/eslint-config-typescript": "^11.0.0",
 		"@nuxtjs/i18n": "^8.0.0-beta.13",
 		"@pinia-plugin-persistedstate/nuxt": "^1.1.1",
+		"@pomsky-lang/unplugin": "^1.2.10",
 		"@types/html-minifier-terser": "^7.0.0",
 		"cross-env": "^7.0.3",
 		"esbuild": "^0.18.12",

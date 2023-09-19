@@ -1,11 +1,140 @@
 @keyframes intro {
 	from {
-		transform: scale(1.05);
+		scale: 1.1;
 		opacity: 0;
 	}
 
 	to {
-		transform: scale(1);
+		scale: 1;
 		opacity: 1;
+	}
+}
+
+@keyframes cut-in {
+	from,
+	to {
+		opacity: 0;
+	}
+}
+
+@keyframes cut-out {
+	from,
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes scale-in {
+	from {
+		scale: 0;
+	}
+	
+	to {
+		scale: 1;
+	}
+}
+
+@keyframes scale-out {
+	from {
+		scale: 1;
+	}
+
+	to {
+		scale: 0;
+	}
+}
+
+@keyframes rotation {
+	from {
+		rotate: 0turn;
+	}
+
+	to {
+		rotate: 1turn;
+	}
+}
+
+// animation: swing 500ms $ease-out-sine;
+@keyframes swing {
+	0% { rotate: 0deg; }
+	5% { rotate: -5deg; }
+	20% { rotate: 4deg; }
+	40% { rotate: -3deg; }
+	60% { rotate: 2deg; }
+	80% { rotate: -1deg; }
+	100% { rotate: 0deg; }
+}
+
+// animation: shake 1s infinite;
+@keyframes shake {
+	0% {
+		transform: translate(1px, 1px) rotate(0);
+	}
+
+	10% {
+		transform: translate(-1px, -2px) rotate(-1deg);
+	}
+
+	20% {
+		transform: translate(-3px) rotate(1deg);
+	}
+
+	30% {
+		transform: translate(3px, 2px) rotate(0);
+	}
+
+	40% {
+		transform: translate(1px, -1px) rotate(1deg);
+	}
+
+	50% {
+		transform: translate(-1px, 2px) rotate(-1deg);
+	}
+
+	60% {
+		transform: translate(-3px, 1px) rotate(0);
+	}
+
+	70% {
+		transform: translate(3px, 1px) rotate(-1deg);
+	}
+
+	80% {
+		transform: translate(-1px, -1px) rotate(1deg);
+	}
+
+	90% {
+		transform: translate(1px, 2px) rotate(0);
+	}
+
+	100% {
+		transform: translate(1px, -2px) rotate(-1deg);
+	}
+}
+
+// animation: headshake 2.5s 1.5s $ease-in-out-sine infinite;
+@keyframes headshake {
+	0% {
+		transform: translateX(0)
+	}
+
+	3.25% {
+		transform: translateX(-6px) rotateY(-9deg)
+	}
+
+	9.25% {
+		transform: translateX(5px) rotateY(7deg)
+	}
+
+	15.75% {
+		transform: translateX(-3px) rotateY(-5deg)
+	}
+
+	21.75% {
+		transform: translateX(2px) rotateY(3deg)
+	}
+
+	25% {
+		transform: translateX(0)
 	}
 }

@@ -31,6 +31,9 @@
 					"classnameTransform": "camelCaseOnly"
 				}
 			}
+		],
+		"types": [
+			"@pomsky-lang/unplugin"
 		]
 	},
 	"vueCompilerOptions": {

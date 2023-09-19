@@ -286,18 +286,4 @@
 			}
 		}
 	}
-
-	@keyframes cut-in {
-		from,
-		to {
-			opacity: 0;
-		}
-	}
-
-	@keyframes cut-out {
-		from,
-		to {
-			opacity: 1;
-		}
-	}
 </style>

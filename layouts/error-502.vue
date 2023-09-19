@@ -77,11 +77,4 @@
 			opacity: 0;
 		}
 	}
-
-	@keyframes intro {
-		from {
-			scale: 1.1;
-			opacity: 0;
-		}
-	}
 </style>
