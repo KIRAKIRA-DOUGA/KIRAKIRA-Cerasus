@@ -146,7 +146,7 @@
 			willInsertDanmaku.value = danmaku.map(e => ({
 				videoTime: new Duration(e.time ?? currentTime.value),
 				content: e.text!,
-				sendTime: new Date(),
+				sendTime: new Date(), // TODO: Get when did the danmaku send.
 			}));
 	});
 

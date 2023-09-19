@@ -12,6 +12,7 @@
 	const sortBy = reactive<[column: "videoTime" | "sendTime", order: SortOrder]>(["videoTime", "ascending"]);
 
 	watch(insertDanmaku, danmaku => {
+		console.log(danmaku);
 		if (!danmaku) return;
 		// damn lmao
 		// FIXME

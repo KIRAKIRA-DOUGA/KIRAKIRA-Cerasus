@@ -20,8 +20,8 @@
 			<div class="username">{{ username }}</div>
 			<div class="fans">{{ fans }} {{ t(fans).fans }}</div>
 		</div>
-		<Button v-if="!isFollowed">{{ t.follow }}</Button>
-		<Button v-else disabled>{{ t.following }}</Button>
+		<Button v-if="!isFollowed" icon="add">{{ t.follow_verb }}</Button>
+		<Button v-else disabled icon="check">{{ t.following }}</Button>
 	</Comp>
 </template>
 

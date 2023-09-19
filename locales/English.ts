@@ -271,6 +271,7 @@ const English: LocaleIdentifiers = {
 	cover: "Cover",
 	select_cover: "Select Cover",
 	follow: "Follow",
+	follow_verb: "Follow",
 	following: "Following",
 	fans: "Fan | Fans",
 	watched: "View | Views",

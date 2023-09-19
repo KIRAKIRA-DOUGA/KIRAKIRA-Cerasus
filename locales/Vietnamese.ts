@@ -271,6 +271,7 @@ const Vietnamese: LocaleIdentifiers = {
 	cover: "Bìa",
 	select_cover: "Chọn bìa",
 	follow: "Người theo dõi",
+	follow_verb: "Theo dõi",
 	following: "Đang theo dõi",
 	fans: "Người hâm mộ",
 	watched: "Lượt xem",
