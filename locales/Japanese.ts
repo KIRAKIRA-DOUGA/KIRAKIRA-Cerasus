@@ -311,8 +311,8 @@ const Japanese: LocaleIdentifiers = {
 		login_to_register: "新規登録",
 		register_to_login: "すでにアカウントをお持ちですか？",
 		forgot_to_login: "パスワードを思い出した",
-		forgot_title: "Forgot", // NEW: 将会显示在标题，不宜过长。
-		reset_title: "Reset", // NEW: 将会显示在标题，不宜过长。
+		forgot_title: "パスワードの再設定", // TODO: 检讨移除实际展示中右侧的装饰英文
+		reset_title: "パスワードの再設定", // TODO: 检讨移除实际展示中右侧的装饰英文
 		register_email_sent_info: "確認コードを送信しました。受け取ったコードを入力してください。\n届いてない場合、コードを再送信することができます。",
 		forgot_info: "アカウントのメールアドレスを入力してください。\nこのアドレス宛にメールを送ります。メールの中のリンクをクリックしてパスワード再設定の手続を続行します。",
 		reset_successful_info: "本人確認ができました！\n新しいパスワードを設定してください。そして忘れないようにしてください。",
@@ -324,7 +324,7 @@ const Japanese: LocaleIdentifiers = {
 		language: "言語を選んでください",
 	},
 	user: {
-		_: "用户", // NEW
+		_: "ユーザー",
 		name: "ニックネーム",
 		name_requirements: "1~20文字、大小英数字、ひらがな/カタカナ、漢字、特殊記号の｢-｣と｢_｣のみ使用できます。",
 		bio: "自己紹介",
@@ -377,7 +377,7 @@ const Japanese: LocaleIdentifiers = {
 		bilibili: "ビリビリ",
 		niconico: "ニコニコ",
 		youtube: "YouTube",
-		otomad_wiki: "音MADウィキ",
+		otomad_wiki: "OtomadWiki",
 		weibo: "微博",
 		discord: "Discord",
 		telegram: "Telegram",
@@ -388,7 +388,7 @@ const Japanese: LocaleIdentifiers = {
 	navigation: {
 		_: "ナビ",
 		back: "戻る",
-		return_to_home: "返回首页", // NEW
+		return_to_home: "ホームに戻る",
 	},
 	other: "その他",
 	color_picker: "カラー選択",
@@ -405,15 +405,15 @@ const Japanese: LocaleIdentifiers = {
 		copied: "コピーしました。",
 		modification_failed: "編集に失敗しました。",
 		failed_to_disable_cookies: "Cookieを無効化できませんでした。",
-		duplicate_tag: "Duplicate tag!", // NEW
-		no_language_selected: "Please select a language first!", // NEW
+		duplicate_tag: "このタグは既に存在しています!",
+		no_language_selected: "言語を先に選んでください！",
 	},
 	confirm: {
 		cancel_upload: "アップロードをキャンセルしますか？",
 	},
-	current_time: "现在时间", // NEW
-	set_as_default: "Set as Default", // NEW
-	advanced_search: "高级搜索", // NEW
+	current_time: "現在時刻",
+	set_as_default: "デフォルトとして設定",
+	advanced_search: "高度な検索",
 };
 
 export default Japanese;
