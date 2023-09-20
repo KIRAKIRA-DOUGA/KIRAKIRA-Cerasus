@@ -68,7 +68,7 @@
 	@keyframes elastic-rotation {
 		$length: 16;
 
-		@for $i from 0 to $length {
+		@for $i from 0 through $length {
 			$progress: calc($i / $length);
 
 			#{$progress * 100%} {
