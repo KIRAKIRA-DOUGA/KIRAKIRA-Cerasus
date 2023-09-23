@@ -8,6 +8,7 @@ Method | HTTP request | Description
 [**comments**](DefaultApi.md#comments) | **GET** /comments/{id} | Get comments for video ID
 [**createDanmaku**](DefaultApi.md#createDanmaku) | **POST** /danmaku | Create new danmaku
 [**deleteComment**](DefaultApi.md#deleteComment) | **POST** /delete_comment | Delete a comment
+[**emailValidation**](DefaultApi.md#emailValidation) | **POST** /email-verification | Create new email validation
 [**follow**](DefaultApi.md#follow) | **POST** /follow/{id} | Upvote a video
 [**followFeed**](DefaultApi.md#followFeed) | **GET** /follow-feed | Upvote a video
 [**getDanmaku**](DefaultApi.md#getDanmaku) | **GET** /danmaku/{id} | Get danmaku for video
@@ -45,7 +46,7 @@ let body:.DefaultApiCommentRequest = {
   // string | comment message
   content: 'YQ==',
   // number | comment\'s video ID
-  videoIDf: 1,
+  videoID: 1,
 };
 
 apiInstance.comment(body).then((data:any) => {
@@ -60,7 +61,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **parent** | [**number**] | parent comment ID | defaults to undefined
  **content** | [**string**] | comment message | defaults to undefined
- **videoIDf** | [**number**] | comment\&#39;s video ID | defaults to undefined
+ **videoID** | [**number**] | comment\&#39;s video ID | defaults to undefined
 
 
 ### Return type
@@ -258,6 +259,60 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Comment deleted |  -  |
+**0** | Unexpected error |  -  |
+
+[[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
+
+# **emailValidation**
+> void emailValidation()
+
+
+### Example
+
+
+```typescript
+import {  } from '';
+import * as fs from 'fs';
+
+const configuration = .createConfiguration();
+const apiInstance = new .DefaultApi(configuration);
+
+let body:.DefaultApiEmailValidationRequest = {
+  // string | email
+  email: "email_example",
+};
+
+apiInstance.emailValidation(body).then((data:any) => {
+  console.log('API called successfully. Returned data: ' + data);
+}).catch((error:any) => console.error(error));
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **email** | [**string**] | email | defaults to undefined
+
+
+### Return type
+
+**void**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Email validation success |  -  |
 **0** | Unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
@@ -597,6 +652,8 @@ let body:.DefaultApiRegisterRequest = {
   password: "password_example",
   // string | sort category
   email: "email_example",
+  // number | verification code
+  verificationCode: 1,
 };
 
 apiInstance.register(body).then((data:any) => {
@@ -612,6 +669,7 @@ Name | Type | Description  | Notes
  **username** | [**string**] | username to register | defaults to undefined
  **password** | [**string**] | sort category | defaults to undefined
  **email** | [**string**] | sort category | defaults to undefined
+ **verificationCode** | [**number**] | verification code | defaults to undefined
 
 
 ### Return type

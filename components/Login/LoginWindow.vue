@@ -67,6 +67,12 @@
 			useToast(t.toast.password_mismatch, "error");
 	}
 
+async function emailAuth() {
+			const oapiClient = useApi();
+			await oapiClient.emailValidation(email.value);
+			currentPage = 'register';
+}
+
 	// DELETE: [Aira] Change passwords should be in settings, not login window.
 	/**
 	 * 重置密码。
