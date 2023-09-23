@@ -70,7 +70,7 @@
 async function emailAuth() {
 			const oapiClient = useApi();
 			await oapiClient.emailValidation(email.value);
-			currentPage = 'register';
+			currentPage = 'register2';
 }
 
 	// DELETE: [Aira] Change passwords should be in settings, not login window.
@@ -172,7 +172,7 @@ async function emailAuth() {
 						</div>
 						<div class="action margin-left-inset">
 							<Button @click="currentPage = 'login'">{{ t.loginwindow.register_to_login }}</Button>
-							<Button icon="arrow_right" class="button icon-behind" @click="currentPage = 'register2'">{{ t.step.next }}</Button>
+							<Button icon="arrow_right" class="button icon-behind" @click="emailAuth">{{ t.step.next }}</Button>
 						</div>
 					</div>
 
