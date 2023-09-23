@@ -476,6 +476,11 @@ export class DefaultApiRequestFactory extends BaseAPIRequestFactory {
         const requestContext = _config.baseServer.makeRequestContext(localVarPath, HttpMethod.POST);
         requestContext.setHeaderParam("Accept", "application/json, */*;q=0.8")
 
+        // Query Params
+        if (verificationCode !== undefined) {
+            requestContext.setQueryParam("VerificationCode", ObjectSerializer.serialize(verificationCode, "number", ""));
+        }
+
         // Header Params
         requestContext.setHeaderParam("username", ObjectSerializer.serialize(username, "string", ""));
 
@@ -484,9 +489,6 @@ export class DefaultApiRequestFactory extends BaseAPIRequestFactory {
 
         // Header Params
         requestContext.setHeaderParam("email", ObjectSerializer.serialize(email, "string", ""));
-
-        // Header Params
-        requestContext.setHeaderParam("verification_code", ObjectSerializer.serialize(verificationCode, "number", ""));
 
 
         

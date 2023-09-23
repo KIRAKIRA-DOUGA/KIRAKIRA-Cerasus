@@ -12,6 +12,7 @@
 	const coverMoveLeft = computed(() => currentPage.value !== "login");
 	const email = ref("");
 	const password = ref("");
+	const username = ref("");
 	const confirmPassword = ref("");
 	const verificationCode = ref("");
 	const passwordHint = ref("");
@@ -60,23 +61,23 @@
 	async function registerUser() {
 		if (password.value === confirmPassword.value) {
 			const oapiClient = useApi();
-			await oapiClient.register("", password.value, email.value);
+			await oapiClient.register(username.value, password.value, email.value, verificationCode.value);
 			isLogining.value = true;
 			open.value = false;
 		} else
 			useToast(t.toast.password_mismatch, "error");
 	}
 
-async function emailAuth() {
-			const oapiClient = useApi();
-			await oapiClient.emailValidation(email.value);
-			currentPage = 'register2';
-}
+	async function emailAuth() {
+		const oapiClient = useApi();
+		await oapiClient.emailValidation(email.value);
+		currentPage.value = "register2";
+	}
 
 	// DELETE: [Aira] Change passwords should be in settings, not login window.
 	/**
 	 * 重置密码。
-	 */
+	*/
 	async function resetPassword() {
 		const oapiClient = useApi();
 		const oldPassword = ""; // Should we get this?
@@ -164,9 +165,9 @@ async function emailAuth() {
 								icon="lock"
 							/>
 							<TextBox
-								v-model="passwordHint"
+								v-model="username"
 								type="text"
-								:placeholder="t.password.hint"
+								:placeholder="t.username"
 								icon="visibility"
 							/>
 						</div>
