@@ -6,7 +6,7 @@
 	const view = ref<ViewType>("grid");
 	const displayPageCount = ref(6);
 	const videos = ref<Videos200Response>();
-	const searchModes = ["keyword", "tag", "user", "advanced_search"] as const;
+	const searchModes = ["video", "tag", "user"] as const;
 	const searchMode = ref<typeof searchModes[number]>("tag");
 	const searchModesSorted = computed(() => searchModes.toSorted((a, b) =>
 		a === searchMode.value ? -1 : b === searchMode.value ? 1 : 0));
@@ -81,6 +81,7 @@
 							>{{ t[mode] }}</Tag>
 						</TransitionGroup>
 					</div>
+					<Button icon="tune">{{ t.advanced_search }}</Button>
 				</div>
 
 				<div class="toolbox-card">
@@ -157,5 +158,9 @@
 
 	.toolbox-card.search {
 		gap: 16px;
+
+		button {
+			--appearance: secondary;
+		}
 	}
 </style>
