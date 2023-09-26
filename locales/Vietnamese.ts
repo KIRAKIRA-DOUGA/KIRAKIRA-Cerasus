@@ -270,7 +270,7 @@ const Vietnamese: LocaleIdentifiers = {
 	push_to_feed: "Dán lên tường",
 	cover: "Bìa",
 	select_cover: "Chọn bìa",
-	follow: "Đang theo dõi",
+	follow: "Theo dõi",
 	follow_verb: "Theo dõi",
 	following: "Đang theo dõi",
 	fans: "Người hâm mộ",
