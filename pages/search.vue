@@ -21,28 +21,10 @@
 	});
 
 	/**
-	 * Fetch the videos according to the query.
-	 */
-	async function fetchData() {
-		const api = useApi();
-
-		const encodedSearch = encodeUtf8(data.search !== "" ? data.search : "none");
-		const cat = data.selectedTab !== "Home" ? data.selectedTab : "undefined";
-		const encodedCategory = encodeUtf8(cat);
-		const handleError = (error: unknown) => error && console.error(error);
-
-		try {
-			const videosResponse = await api?.videos(encodedSearch, data.sort[0], data.sort[1].slice(0, -6), "true", data.page, encodedCategory);
-			data.pages = Math.ceil(videosResponse.paginationData!.numberOfItems! / 50.0);
-			videos.value = videosResponse;
-		} catch (error) { handleError(error); }
-	}
-	watch(data, fetchData, { deep: true });
-	await fetchData();
-
 	watch(() => data.search, search => {
 		router.push({ path: route.path, query: { ...route.query, q: search || undefined } });
 	});
+	 */
 </script>
 
 <template>

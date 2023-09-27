@@ -13,7 +13,7 @@ const TChinese: LocaleIdentifiers = {
 		tech: "科技",
 		design: "設計",
 		game: "遊戲",
-		other: "綜合",
+		misc: "綜合",
 	},
 	content: "內容",
 	search: "搜索",

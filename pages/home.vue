@@ -16,45 +16,9 @@
 
 	const categoryItemCount = ref(0);
 	const pageCount = ref(1);
-	const categoryList = ["Anime", "Music", "Otomad", "Tech", "Design", "Game", "Other"];
+	const categoryList = ["Anime", "Music", "Otomad", "Tech", "Design", "Game", "Misc"];
 	const categories = ref<Map<string | undefined, number | undefined>>();
-	const previousCategory = ref<string>(); // Last category backup
 	const resultTimestamp = ref(0);
-	const isFetchingData = ref(false);
-
-	/**
-	 * Fetch the videos according to the query.
-	 */
-	async function fetchData() {
-		if (isFetchingData.value) return;
-		isFetchingData.value = true;
-		
-		const api = useApi();
-		const encodedSearch = encodeUtf8(data.search);
-		const cat = data.selectedTab !== "Home" ? data.selectedTab : "undefined";
-		const encodedCategory = encodeUtf8(cat);
-		const handleError = (error: unknown) => error && console.error(error);
-
-		// Back up the category, when switch category, the page index will restore to 1.
-		if (previousCategory.value && previousCategory.value !== data.selectedTab) data.page = 1;
-		previousCategory.value = data.selectedTab;
-
-		try {
-			const videosResponse = await api?.videos(encodedSearch, data.sortCategory, data.sortDirection, "true", data.page, encodedCategory);
-			pageCount.value = Math.ceil(videosResponse.paginationData!.numberOfItems! / 50.0);
-			categoryItemCount.value = videosResponse.paginationData!.numberOfItems!;
-			videos.value = videosResponse;
-			resultTimestamp.value = new Date().valueOf();
-			// pepelaugh TODO FIXME
-			if (categories.value === undefined)
-				categories.value = new Map(videosResponse?.categories?.map(cat => [cat.name, cat.cardinality]));
-		} catch (error) { handleError(error); }
-
-		await nextTick();
-		isFetchingData.value = false;
-	}
-	watch(data, fetchData, { deep: true });
-	await fetchData();
 </script>
 
 <template>
