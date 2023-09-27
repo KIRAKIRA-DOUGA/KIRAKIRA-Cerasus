@@ -13,7 +13,7 @@ const Vietnamese: LocaleIdentifiers = {
 		tech: "Công nghệ",
 		design: "Thiết kế",
 		game: "Trò chơi",
-		other: "Khác",
+		misc: "Khác", // NEW
 	},
 	content: "Nội dung",
 	search: "Tìm kiếm",

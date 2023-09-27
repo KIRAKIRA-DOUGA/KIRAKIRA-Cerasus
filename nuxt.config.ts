@@ -1,5 +1,6 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 
+import pomsky from "@pomsky-lang/unplugin";
 import defineAlias from "./helpers/alias";
 import styleResources from "./helpers/style-resources";
 import cssDoodleLoader from "./plugins/vite/css-doodle";
@@ -7,7 +8,6 @@ import docsLoader from "./plugins/vite/docs";
 import vitePluginScssVariables from "./plugins/vite/scss-variables";
 import scssVariablesLoader from "./plugins/vite/scss-variables-loader";
 import { environment } from "./utils/environment";
-import pomsky from "@pomsky-lang/unplugin";
 /* import vueNestedSFC from "vite-plugin-vue-nested-sfc";
 import CopyPlugin from "copy-webpack-plugin";
 const wasmFile = resolve("node_modules/mediainfo.js/dist/MediaInfoModule.wasm"); */
@@ -124,13 +124,6 @@ export default defineNuxtConfig({
 		},
 	},
 	nitro: {
-		devProxy: {
-			"/api": {
-				target: "https://kirakira.dev/api",
-				prependPath: true,
-				changeOrigin: true,
-			},
-		},
 		compressPublicAssets: {
 			brotli: true,
 		},

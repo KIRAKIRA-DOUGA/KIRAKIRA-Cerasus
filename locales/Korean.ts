@@ -13,7 +13,7 @@ const Korean: LocaleIdentifiers = {
 		tech: "Tech",
 		design: "Design",
 		game: "Game",
-		other: "Other",
+		misc: "Misc",
 	},
 	content: "Content",
 	search: "Search",

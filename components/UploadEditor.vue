@@ -172,7 +172,7 @@
 							<ComboBoxItem id="tech">{{ t.category.tech }}</ComboBoxItem>
 							<ComboBoxItem id="design">{{ t.category.design }}</ComboBoxItem>
 							<ComboBoxItem id="game">{{ t.category.game }}</ComboBoxItem>
-							<ComboBoxItem id="other">{{ t.category.other }}</ComboBoxItem>
+							<ComboBoxItem id="misc">{{ t.category.misc }}</ComboBoxItem>
 						</ComboBox>
 					</section>
 
