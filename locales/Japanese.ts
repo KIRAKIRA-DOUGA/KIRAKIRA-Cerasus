@@ -13,7 +13,7 @@ const Japanese: LocaleIdentifiers = {
 		tech: "技術",
 		design: "デザイン",
 		game: "ゲーム",
-		other: "総合",
+		misc: "総合",
 	},
 	content: "コンテンツ",
 	search: "検索",
