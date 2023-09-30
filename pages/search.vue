@@ -76,11 +76,10 @@
 						<Sort v-model="data.sort">
 							<SortItem id="upload_date" preferOrder="descending">{{ t.upload_date }}</SortItem>
 							<SortItem id="views" preferOrder="descending">{{ t.sort.view }}</SortItem>
-							<!-- TODO: OTOMAN WILL IMPLEMENT -->
-							<!-- <SortItem id="danmaku" preferOrder="descending">{{ t.sort.danmaku }}</SortItem>
+							<SortItem id="danmaku" preferOrder="descending">{{ t.sort.danmaku }}</SortItem>
 							<SortItem id="comments" preferOrder="descending">{{ t.sort.comment }}</SortItem>
 							<SortItem id="favorites" preferOrder="descending">{{ t.sort.favorite }}</SortItem>
-							<SortItem id="duration" preferOrder="descending">{{ t.duration }}</SortItem> -->
+							<SortItem id="duration" preferOrder="descending">{{ t.duration }}</SortItem>
 							<SortItem id="rating">{{ t.rating }}</SortItem>
 						</Sort>
 					</section>
