@@ -21,28 +21,10 @@
 	});
 
 	/**
-	 * Fetch the videos according to the query.
-	 */
-	async function fetchData() {
-		const api = useApi();
-
-		const encodedSearch = encodeUtf8(data.search !== "" ? data.search : "none");
-		const cat = data.selectedTab !== "Home" ? data.selectedTab : "undefined";
-		const encodedCategory = encodeUtf8(cat);
-		const handleError = (error: unknown) => error && console.error(error);
-
-		try {
-			const videosResponse = await api?.videos(encodedSearch, data.sort[0], data.sort[1].slice(0, -6), "true", data.page, encodedCategory);
-			data.pages = Math.ceil(videosResponse.paginationData!.numberOfItems! / 50.0);
-			videos.value = videosResponse;
-		} catch (error) { handleError(error); }
-	}
-	watch(data, fetchData, { deep: true });
-	await fetchData();
-
 	watch(() => data.search, search => {
 		router.push({ path: route.path, query: { ...route.query, q: search || undefined } });
 	});
+	 */
 </script>
 
 <template>
@@ -94,11 +76,10 @@
 						<Sort v-model="data.sort">
 							<SortItem id="upload_date" preferOrder="descending">{{ t.upload_date }}</SortItem>
 							<SortItem id="views" preferOrder="descending">{{ t.sort.view }}</SortItem>
-							<!-- TODO: OTOMAN WILL IMPLEMENT -->
-							<!-- <SortItem id="danmaku" preferOrder="descending">{{ t.sort.danmaku }}</SortItem>
+							<SortItem id="danmaku" preferOrder="descending">{{ t.sort.danmaku }}</SortItem>
 							<SortItem id="comments" preferOrder="descending">{{ t.sort.comment }}</SortItem>
 							<SortItem id="favorites" preferOrder="descending">{{ t.sort.favorite }}</SortItem>
-							<SortItem id="duration" preferOrder="descending">{{ t.duration }}</SortItem> -->
+							<SortItem id="duration" preferOrder="descending">{{ t.duration }}</SortItem>
 							<SortItem id="rating">{{ t.rating }}</SortItem>
 						</Sort>
 					</section>

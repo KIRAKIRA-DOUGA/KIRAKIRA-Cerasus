@@ -13,7 +13,7 @@ const Indonesian: LocaleIdentifiers = {
 		tech: "Tech",
 		design: "Desain",
 		game: "Game",
-		other: "Lainnya",
+		misc: "Lainnya", // NEW
 	},
 	content: "Konten",
 	search: "Cari",

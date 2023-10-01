@@ -13,12 +13,11 @@
 	"homepageFallback": [
 		"https://cerasus.kirakira.moe/",
 		"https://kira.calibur.tv/",
-		"https://kirakira-cerasus.vercel.app/",
-		"https://kirakira.dev/"
+		"https://kirakira-cerasus.vercel.app/"
 	],
 	"github": "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus",
 	"bugs": "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus/issues",
-	"license": "BSD 2-Clause",
+	"license": "BSD 3-Clause",
 	"author": "KIRAKIRA Project Team",
 	"scripts": {
 		"build": "nuxt build && nuxt start",
@@ -109,8 +108,6 @@
 		"dashjs": "^4.7.1",
 		"gsap": "^3.11.4",
 		"js-confetti": "^0.11.0",
-		"kirakira-backend": "file:packages/kirakira-backend",
-		"kirakirabackend": "file:packages/kirakira-backend",
 		"lottie-web": "^5.12.2",
 		"mediainfo.js": "^0.1.9",
 		"mitt": "^3.0.0",

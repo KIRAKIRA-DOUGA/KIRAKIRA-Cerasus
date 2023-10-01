@@ -11,7 +11,7 @@ const SChinese = {
 		tech: "科技",
 		design: "设计",
 		game: "游戏",
-		other: "综合",
+		misc: "综合",
 	},
 	content: "内容",
 	search: "搜索",
