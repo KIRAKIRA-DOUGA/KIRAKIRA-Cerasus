@@ -8,9 +8,9 @@
 		sfx.value.play();
 	};
 	const Kbd = ((_, { slots }) => <kbd onClick={playSfx}>{slots.default?.()}</kbd>) as VueJsx;
-	
+
 	type Platform = "Windows" | "macOS" | "Linux";
-	
+
 	const platform = computed<Platform | undefined>(() => {
 		if (environment.server) return;
 		const { platform } = navigator;
@@ -18,8 +18,8 @@
 		else if (/(Linux)/i.test(platform)) return "Linux";
 		else if (/(Win)/i.test(platform)) return "Windows";
 	});
-	
-	const Ctrl = computed(() => platform.value === "macOS" ? "Cmd" : platform.value === "Linux" ? "Control" : "Ctrl");
+
+	const Ctrl = computed(() => platform.value === "macOS" ? "⌘" : platform.value === "Linux" ? "Control" : "Ctrl");
 </script>
 
 <template>
