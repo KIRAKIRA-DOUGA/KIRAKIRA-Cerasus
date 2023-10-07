@@ -141,7 +141,7 @@
 		gap: 16px;
 
 		button {
-			--appearance: secondary;
+			--appearance: tertiary;
 		}
 	}
 </style>
