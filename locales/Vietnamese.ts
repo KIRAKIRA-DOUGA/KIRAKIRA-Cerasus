@@ -13,7 +13,7 @@ const Vietnamese: LocaleIdentifiers = {
 		tech: "Công nghệ",
 		design: "Thiết kế",
 		game: "Trò chơi",
-		misc: "Khác", // NEW
+		misc: "Khác",
 	},
 	content: "Nội dung",
 	search: "Tìm kiếm",
@@ -226,7 +226,7 @@ const Vietnamese: LocaleIdentifiers = {
 	upload: {
 		_: "Tải lên",
 		drag_to_upload: "Kéo vào đây để tải lên video",
-		format_info: "Hỗ trọ các định dạng như MP4, WMV, WEBM",
+		format_info: "Hỗ trợ các định dạng như MP4, WMV, WEBM",
 	},
 	messages: "Tin nhắn",
 	login: "Đăng nhập",
