@@ -1,4 +1,7 @@
 <script setup lang="ts">
+	import { login, registration, userExistsCheck } from "../API/User/UserController";
+	import { UserExistsCheckDataDto, UserLoginDataDto, UserRegistrationDataDto } from "../API/User/UserControllerDto";
+
 	const props = defineProps<{
 		/** 已打开，单向绑定使用。 */
 		open?: boolean;
@@ -24,6 +27,7 @@
 		},
 	});
 	const isTryingLogin = ref(false);
+	const isTryingRegistration = ref(false);
 
 	const open = computed({
 		get: () => !!(model.value ?? props.open),
@@ -41,9 +45,16 @@
 	 */
 	async function loginUser() {
 		isTryingLogin.value = true;
-		const oapiClient = useApi();
+		const passwordHash = password.value; // TODO // WARN 为了保证安全性，这里需要对密码进行一次 Hash
+		const userLoginData: UserLoginDataDto = { username: email.value, passwordHash };
 		try {
-			await oapiClient.login(email.value, password.value);
+			const loginResult = await login(userLoginData);
+			if (loginResult.success) {
+				console.log("token", loginResult.token); // TODO 应当把 token 保存起来（ Cookie 之外的其他选择？） // DELETE ME 应当删除控制台输出，这次仅为测试用
+				isTryingLogin.value = false;
+				open.value = false;
+			} else
+				useToast(t.toast.login_failed, "error");
 		} catch (error) {
 			useToast(t.toast.login_failed, "error");
 			console.error(error);
@@ -51,7 +62,6 @@
 		} finally {
 			isTryingLogin.value = false;
 		}
-		isLogining.value = true;
 	}
 
 	/**
@@ -59,9 +69,22 @@
 	 */
 	async function registerUser() {
 		if (password.value === confirmPassword.value) {
-			const oapiClient = useApi();
-			await oapiClient.register("", password.value, email.value);
-			isLogining.value = true;
+			isTryingRegistration.value = true;
+			const passwordHash = password.value; // TODO // WARN 为了保证安全性，这里需要对密码进行一次 Hash
+			const userRegistrationData: UserRegistrationDataDto = { username: email.value, passwordHash, passwordHint: passwordHint.value };
+			try {
+				const registrationResult = await registration(userRegistrationData);
+				if (registrationResult.success)
+					console.log("token", registrationResult.token);
+				else {
+					useToast("注册失败", "error"); // TODO 使用多语言
+					return;
+				}
+			} catch (error) {
+				useToast("注册失败", "error"); // TODO 使用多语言
+				console.error(error);
+				return;
+			}
 			open.value = false;
 		} else
 			useToast(t.toast.password_mismatch, "error");
@@ -72,7 +95,7 @@
 	 * 重置密码。
 	 */
 	async function resetPassword() {
-		const oapiClient = useApi();
+		const oapiClient = useMap();
 		const oldPassword = ""; // Should we get this?
 		await oapiClient.resetPassword(oldPassword, password.value);
 		open.value = false;
@@ -90,6 +113,22 @@
 		} catch { return; }
 		open.value = false;
 	}
+
+	const userExistsCheckOrJumpNextPage = async () => {
+		if (email.value && password.value) {
+			const userExistsCheckData: UserExistsCheckDataDto = { username: email.value };
+			try {
+				const userExistsCheckResultData = await userExistsCheck(userExistsCheckData);
+				if (userExistsCheckResultData.success && !userExistsCheckResultData.exists)
+					currentPage.value = "register2";
+				else
+					useToast("用户名重复", "error"); // TODO 使用多语言
+			} catch (error) {
+				useToast("注册失败", "error"); // TODO 使用多语言
+			}
+		} else
+			useToast("请输入用户名和密码", "error"); // TODO 使用多语言
+	};
 </script>
 
 <template>
@@ -150,12 +189,14 @@
 								:placeholder="t.email_address"
 								icon="email"
 								:invalid="isInvalidEmail"
+								:required="true"
 							/>
 							<TextBox
 								v-model="password"
 								type="password"
 								:placeholder="t.password"
 								icon="lock"
+								:required="true"
 							/>
 							<TextBox
 								v-model="passwordHint"
@@ -166,7 +207,7 @@
 						</div>
 						<div class="action margin-left-inset">
 							<Button @click="currentPage = 'login'">{{ t.loginwindow.register_to_login }}</Button>
-							<Button icon="arrow_right" class="button icon-behind" @click="currentPage = 'register2'">{{ t.step.next }}</Button>
+							<Button icon="arrow_right" class="button icon-behind" @click="userExistsCheckOrJumpNextPage">{{ t.step.next }}</Button>
 						</div>
 					</div>
 
@@ -180,6 +221,7 @@
 								type="text"
 								:placeholder="t.verification_code"
 								icon="verified"
+								:disabled="true"
 							/>
 							<!-- TODO: [Aira] There should be a resend button on the right of the verification code textbox -->
 							<TextBox
@@ -191,7 +233,7 @@
 						</div>
 						<div class="action">
 							<Button icon="arrow_left" class="button" @click="currentPage = 'register'">{{ t.step.previous }}</Button>
-							<Button icon="arrow_right" class="button icon-behind" @click="registerUser">{{ t.step.next }}</Button>
+							<Button icon="arrow_right" class="button icon-behind" :loading="isTryingRegistration" @click="registerUser">{{ t.step.next }}</Button>
 						</div>
 					</div>
 
