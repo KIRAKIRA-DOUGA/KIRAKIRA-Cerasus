@@ -185,6 +185,11 @@
 
 		.soft-button {
 			--ripple-size: 40px;
+
+			@include mobile {
+				@include square(48px);
+				--ripple-size: 48px;
+			}
 		}
 
 		@include not-mobile {
@@ -234,12 +239,6 @@
 		flex-direction: column;
 		gap: $icons-gap;
 
-		@media (height <= 432px) {
-			@include not-mobile {
-				gap: 0;
-			}
-		}
-
 		.soft-button {
 			&::after {
 				@include oval(left);
@@ -267,8 +266,15 @@
 			}
 		}
 
+		@media (height <= 432px) {
+			@include not-mobile {
+				gap: 0;
+			}
+		}
+
 		@include mobile {
 			flex-direction: row;
+			gap: 0;
 		}
 	}
 
