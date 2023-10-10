@@ -1,6 +1,6 @@
 <script setup lang="ts">
-	import { login, registration, userExistsCheck } from "../API/User/UserController";
-	import { UserExistsCheckDataDto, UserLoginDataDto, UserRegistrationDataDto } from "../API/User/UserControllerDto";
+	import { login, registration, userExistsCheck } from "../../composables/api/User/UserController";
+	import { UserExistsCheckDataDto, UserLoginDataDto, UserRegistrationDataDto } from "../../composables/api/User/UserControllerDto";
 
 	const props = defineProps<{
 		/** 已打开，单向绑定使用。 */
