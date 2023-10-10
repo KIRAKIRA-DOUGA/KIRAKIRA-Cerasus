@@ -98,7 +98,7 @@
 
 	$title-padding-top: 26px;
 	$nav-padding-x: 24px;
-	$mobile-nav-padding-x: 12px;
+	$mobile-nav-padding-x: 16px;
 	$main-padding-x: 48px;
 	$mobile-padding-x: 24px;
 	$show-drawer-duration: 500ms;
