@@ -379,7 +379,7 @@
 		:comp.vertical & {
 			width: $thickness;
 			height: unset;
-			margin-top: 2px;
+			margin-top: 0;
 		}
 	}
 </style>
