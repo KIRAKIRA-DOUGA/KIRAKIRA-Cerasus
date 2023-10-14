@@ -101,7 +101,7 @@
 			@include round-small;
 			justify-content: flex-start;
 			width: 100%;
-			padding: 8px 8px 8px 12px;
+			padding: 9px 8px 9px 12px;
 
 			.icon-wrapper {
 				margin-right: 8px;

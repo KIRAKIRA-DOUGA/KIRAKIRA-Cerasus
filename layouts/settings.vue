@@ -79,7 +79,7 @@
 							<h2 :key="currentSetting">{{ title }}</h2>
 						</Transition>
 					</div>
-					<div class="page-title-icon-wrapper">
+					<div class="close-button-wrapper page-title-icon-wrapper">
 						<SoftButton href="/settings/exit" icon="close" />
 					</div>
 				</header>
@@ -98,6 +98,7 @@
 
 	$title-padding-top: 26px;
 	$nav-padding-x: 24px;
+	$mobile-nav-padding-x: 16px;
 	$main-padding-x: 48px;
 	$mobile-padding-x: 24px;
 	$show-drawer-duration: 500ms;
@@ -153,6 +154,7 @@
 
 			@include mobile {
 				max-height: calc(100dvh - 2 * $sidebar-width);
+				padding: 0 $mobile-nav-padding-x;
 			}
 
 			> * {
@@ -235,7 +237,7 @@
 				display: flex;
 				flex-direction: column;
 				gap: 1rem;
-				
+
 				@layer layout {
 					@for $i from 1 through $length {
 						> :nth-child(#{$i}) {
@@ -261,9 +263,9 @@
 
 	.page-title-wrapper {
 		position: relative;
-		width: 100%;
+		flex-grow: 1;
 		height: 1.5em;
-		margin-top: -0.1em;
+		margin-top: 0.1em;
 		margin-bottom: -0.15em;
 		overflow-y: hidden;
 
@@ -314,35 +316,66 @@
 		h1 {
 			margin-bottom: 10px;
 		}
+
+		@include mobile {
+			margin-right: (-$mobile-nav-padding-x);
+			margin-left: (-$mobile-nav-padding-x);
+			padding-right: $mobile-nav-padding-x;
+			padding-left: $mobile-nav-padding-x;
+		}
 	}
 
 	.page-header {
 		display: flex;
-		gap: 0.75rem;
+		gap: 1rem;
 		align-items: center;
-		margin-right: (-$main-padding-x);
-		margin-bottom: -0.5rem;
-		margin-left: (-$main-padding-x);
-		padding-right: $main-padding-x;
-		padding-bottom: 0.5rem;
-		padding-left: $main-padding-x;
 		background-color: c(main-bg, 80%);
+
+		@include not-mobile {
+			margin-right: (-$main-padding-x);
+			margin-bottom: -0.5rem;
+			margin-left: (-$main-padding-x);
+			padding-right: $main-padding-x;
+			padding-bottom: 0.5rem;
+			padding-left: $main-padding-x;
+		}
+
+		@include mobile {
+			@include sidebar-shadow;
+			height: $mobile-toolbar-height;
+			margin: 0 -24px;
+			padding: 0 4px;
+
+			.soft-button {
+				@include square(48px);
+				--ripple-size: 48px;
+			}
+		}
 
 		.page-title-icon-wrapper {
 			position: relative;
-			width: 20px;
-			height: 100%;
+			display: flex;
+			flex-shrink: 0;
+			align-items: center;
 
-			.soft-button {
-				position: absolute;
-				top: calc((var(--wrapper-size) - 100%) / -2);
-				left: -10px;
+			@include mobile {
+				width: 48px;
 			}
 		}
-		
+
 		.show-drawer-wrapper {
 			@include computer {
 				display: none;
+			}
+
+			@include not-mobile {
+				margin-left: -1rem;
+			}
+		}
+
+		.close-button-wrapper {
+			@include not-mobile {
+				margin-right: -1rem;
 			}
 		}
 	}
@@ -425,7 +458,7 @@
 			backdrop-filter: $backdrop-filter;
 		}
 	}
-	
+
 	@keyframes float-up {
 		from {
 			opacity: 0;

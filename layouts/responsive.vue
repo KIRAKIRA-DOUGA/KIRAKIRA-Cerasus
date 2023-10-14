@@ -117,14 +117,14 @@
 	nav {
 		bottom: 0;
 	}
-	
+
 	aside,
 	nav {
 		position: fixed;
 		left: 0;
 		transition: background-color $ease-out-max 250ms;
 	}
-	
+
 	@include not-mobile {
 		nav {
 			display: none;
@@ -133,21 +133,21 @@
 
 	@include mobile {
 		.container {
-			padding-top: $sidebar-width;
+			padding-top: $mobile-toolbar-height;
 			padding-left: 0;
 		}
 
 		aside,
 		nav {
 			width: 100dvw;
-			height: $sidebar-width;
+			height: $mobile-toolbar-height;
 		}
 
 		.scroll {
-			height: calc(100dvh - 2 * $sidebar-width);
+			height: calc(100dvh - 2 * $mobile-toolbar-height);
 
 			&.container {
-				height: calc(100dvh - $sidebar-width);
+				height: calc(100dvh - $mobile-toolbar-height);
 			}
 		}
 	}
