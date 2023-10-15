@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	import mediainfo from "mediainfo.js";
 	import { MediaPlayerClass, BitrateInfo } from "dashjs";
-	import { GetDanmaku200ResponseInner } from "kirakira-backend";
+	// import { GetDanmaku200ResponseInner } from "kirakira-backend";
 	import { createDanmakuComment } from "./PlayerVideoPanel/PlayerVideoPanelDanmaku/PlayerVideoPanelDanmakuSender.vue";
 
 	const props = defineProps<{
@@ -123,7 +123,7 @@
 	 * Fetch video danmaku
 	 */
 	async function fetchDanmaku() {
-		const api = useApi();
+		/* const api = useApi();
 		const handleError = (e: unknown) => console.error(e);
 		type DanmakuMode = NonNull<DanmakuComment["mode"]>;
 		type DanmakuFontSize = NonNull<DanmakuFormat["fontSize"]>;
@@ -137,7 +137,7 @@
 					enableRainbow: false, // TODO
 					fontSize: e.fontSize as DanmakuFontSize ?? "medium",
 				}));
-		} catch (error) { handleError(error); }
+		} catch (error) { handleError(error); } */
 	}
 	watch(() => props.id, fetchDanmaku, { immediate: true });
 

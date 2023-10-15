@@ -5,17 +5,20 @@
 
 	const route = useRoute();
 	const kvid = +route.params.kvid;
-	const videoDetails = ref<VideoDetail200Response>();
+	// const videoDetails = ref<VideoDetail200Response>();
 	const videoSource = ref<string>();
-	const recommendations = ref<Videos200ResponseVideosInner[]>();
-	const comments = ref<Comments200ResponseInner[]>([]);
-	const title = computed(() => videoDetails.value?.title ?? "");
+	// const recommendations = ref<Videos200ResponseVideosInner[]>();
+	// const comments = ref<Comments200ResponseInner[]>([]);
+	// const title = computed(() => videoDetails.value?.title ?? "");
+	const title = "柴又";
+	const videoDetails = ref();
+	const comments: string[] = [];
 
 	/**
 	 * Fetch video data.
 	 */
 	async function fetchData() {
-		const api = useApi();
+		// const api = useApi();
 		const handleError = (e: unknown) => console.error(e);
 
 		// Invalid video id, show example video
@@ -30,7 +33,11 @@
 			return;
 		}
 
-		// Fetch video details
+		try {
+			await void 0;
+		} catch (error) { handleError(error); }
+
+		/* // Fetch video details
 		try {
 			const video = await api.videoDetail(kvid);
 			videoDetails.value = video;
@@ -50,14 +57,14 @@
 			// for (const comment of commentsResp)
 			// 	comments.value.push(comment);
 			// TODO: Fetch recommendations
-		} catch (error) { handleError(error); }
+		} catch (error) { handleError(error); } */
 	}
 	watch(() => kvid, fetchData);
 	await fetchData();
 
 	useHead({
 		title,
-		meta: [
+		/* meta: [
 			{ property: "og:type", content: "video" },
 			{ property: "og:title", content: title },
 			{ property: "og:description", content: videoDetails.value?.videoDescription },
@@ -67,7 +74,7 @@
 			{ name: "twitter:title", content: title },
 			{ name: "twitter:description", content: videoDetails.value?.videoDescription },
 			{ name: "twitter:image", content: videoDetails.value?.thumbnail },
-		],
+		], */
 	});
 </script>
 
@@ -82,7 +89,7 @@
 		<div class="under-player">
 			<div class="left">
 				<CreationDetail
-					:date="new Date(videoDetails?.uploadDate!)"
+					:date="new Date(/* videoDetails?.uploadDate! */)"
 					category="音MAD"
 					:title="videoDetails?.title ?? ''"
 					:videoId="videoDetails?.videoID ?? NaN"
@@ -110,7 +117,7 @@
 					isFollowed
 				/>
 				
-				<Subheader
+				<!-- <Subheader
 					v-if="(recommendations?.length ?? 0) > 0"
 					class="recommendations-header"
 					icon="movie"
@@ -127,7 +134,7 @@
 					:date="new Date()"
 					:watchedCount="video.views"
 					:duration="new Duration(video.videoDuration ?? 0)"
-				>{{ video.title }}</ThumbVideo>
+				>{{ video.title }}</ThumbVideo> -->
 			</div>
 		</div>
 	</div>
