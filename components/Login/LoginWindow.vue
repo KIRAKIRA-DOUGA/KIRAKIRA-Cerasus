@@ -1,4 +1,7 @@
 <script setup lang="ts">
+	import { login, registration, userExistsCheck } from "../../composables/api/User/UserController";
+	import { UserExistsCheckDataDto, UserLoginDataDto, UserRegistrationDataDto } from "../../composables/api/User/UserControllerDto";
+
 	const props = defineProps<{
 		/** 已打开，单向绑定使用。 */
 		open?: boolean;
@@ -24,6 +27,7 @@
 		},
 	});
 	const isTryingLogin = ref(false);
+	const isTryingRegistration = ref(false);
 
 	const open = computed({
 		get: () => !!(model.value ?? props.open),
@@ -40,18 +44,25 @@
 	 * 登录账户。
 	 */
 	async function loginUser() {
-		isTryingLogin.value = true;
-		const oapiClient = useApi();
-		try {
-			await oapiClient.login(email.value, password.value);
-		} catch (error) {
-			useToast(t.toast.login_failed, "error");
-			console.error(error);
-			return;
-		} finally {
-			isTryingLogin.value = false;
-		}
-		isLogining.value = true;
+		if (password.value && email.value) {
+			const passwordHash = password.value; // TODO // WARN 为了保证安全性，这里需要对密码进行一次 Hash
+			const userLoginData: UserLoginDataDto = { username: email.value, passwordHash };
+			try {
+				isTryingLogin.value = true;
+				const loginResult = await login(userLoginData);
+				isTryingLogin.value = false;
+
+				if (loginResult.success)
+					open.value = false;
+				else
+					useToast(t.toast.login_failed, "error");
+			} catch (error) {
+				useToast(t.toast.login_failed, "error");
+				console.error(error);
+			}
+		} else
+			useToast("用户名和密码不能为空", "error"); // TODO 使用多语言
+		isTryingLogin.value = false;
 	}
 
 	/**
@@ -59,10 +70,22 @@
 	 */
 	async function registerUser() {
 		if (password.value === confirmPassword.value) {
-			const oapiClient = useApi();
-			await oapiClient.register("", password.value, email.value);
-			isLogining.value = true;
-			open.value = false;
+			const passwordHash = password.value; // TODO // WARN 为了保证安全性，这里需要对密码进行一次 Hash
+			const userRegistrationData: UserRegistrationDataDto = { username: email.value, passwordHash, passwordHint: passwordHint.value };
+			try {
+				isTryingRegistration.value = true;
+				const registrationResult = await registration(userRegistrationData);
+				isTryingRegistration.value = false;
+
+				if (registrationResult.success) { // 如果注册成功，则关闭页面，并且回退到登录页面
+					open.value = false;
+					currentPage.value = "login";
+				} else
+					useToast("注册失败", "error"); // TODO 使用多语言
+			} catch (error) {
+				useToast("注册失败", "error"); // TODO 使用多语言
+				console.error("注册失败", error);
+			}
 		} else
 			useToast(t.toast.password_mismatch, "error");
 	}
@@ -72,7 +95,7 @@
 	 * 重置密码。
 	 */
 	async function resetPassword() {
-		const oapiClient = useApi();
+		const oapiClient = useMap();
 		const oldPassword = ""; // Should we get this?
 		await oapiClient.resetPassword(oldPassword, password.value);
 		open.value = false;
@@ -90,6 +113,26 @@
 		} catch { return; }
 		open.value = false;
 	}
+
+	const checkAndJumpNextPage = async () => {
+		if (email.value && password.value) {
+			if (passwordHint.value && passwordHint.value.includes(password.value)) { // 判断密码提示中是否包含密码自身
+				useToast("密码提示中不能包含密码本身", "error"); // TODO 使用多语言
+				return;
+			}
+			const userExistsCheckData: UserExistsCheckDataDto = { username: email.value };
+			try {
+				const userExistsCheckResultData = await userExistsCheck(userExistsCheckData);
+				if (userExistsCheckResultData.success && !userExistsCheckResultData.exists)
+					currentPage.value = "register2";
+				else
+					useToast("用户名重复", "error"); // TODO 使用多语言
+			} catch (error) {
+				useToast("注册失败", "error"); // TODO 使用多语言
+			}
+		} else
+			useToast("请输入用户名和密码", "error"); // TODO 使用多语言
+	};
 </script>
 
 <template>
@@ -150,12 +193,14 @@
 								:placeholder="t.email_address"
 								icon="email"
 								:invalid="isInvalidEmail"
+								:required="true"
 							/>
 							<TextBox
 								v-model="password"
 								type="password"
 								:placeholder="t.password"
 								icon="lock"
+								:required="true"
 							/>
 							<TextBox
 								v-model="passwordHint"
@@ -166,7 +211,7 @@
 						</div>
 						<div class="action margin-left-inset">
 							<Button @click="currentPage = 'login'">{{ t.loginwindow.register_to_login }}</Button>
-							<Button icon="arrow_right" class="button icon-behind" @click="currentPage = 'register2'">{{ t.step.next }}</Button>
+							<Button icon="arrow_right" class="button icon-behind" @click="checkAndJumpNextPage">{{ t.step.next }}</Button>
 						</div>
 					</div>
 
@@ -180,6 +225,7 @@
 								type="text"
 								:placeholder="t.verification_code"
 								icon="verified"
+								:disabled="true"
 							/>
 							<!-- TODO: [Aira] There should be a resend button on the right of the verification code textbox -->
 							<TextBox
@@ -191,7 +237,7 @@
 						</div>
 						<div class="action">
 							<Button icon="arrow_left" class="button" @click="currentPage = 'register'">{{ t.step.previous }}</Button>
-							<Button icon="arrow_right" class="button icon-behind" @click="registerUser">{{ t.step.next }}</Button>
+							<Button icon="arrow_right" class="button icon-behind" :loading="isTryingRegistration" @click="registerUser">{{ t.step.next }}</Button>
 						</div>
 					</div>
 
