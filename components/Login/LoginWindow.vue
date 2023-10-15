@@ -44,24 +44,25 @@
 	 * 登录账户。
 	 */
 	async function loginUser() {
-		isTryingLogin.value = true;
-		const passwordHash = password.value; // TODO // WARN 为了保证安全性，这里需要对密码进行一次 Hash
-		const userLoginData: UserLoginDataDto = { username: email.value, passwordHash };
-		try {
-			const loginResult = await login(userLoginData);
-			if (loginResult.success) {
-				console.log("token", loginResult.token); // TODO 应当把 token 保存起来（ Cookie 之外的其他选择？） // DELETE ME 应当删除控制台输出，这次仅为测试用
+		if (password.value && email.value) {
+			const passwordHash = password.value; // TODO // WARN 为了保证安全性，这里需要对密码进行一次 Hash
+			const userLoginData: UserLoginDataDto = { username: email.value, passwordHash };
+			try {
+				isTryingLogin.value = true;
+				const loginResult = await login(userLoginData);
 				isTryingLogin.value = false;
-				open.value = false;
-			} else
+
+				if (loginResult.success)
+					open.value = false;
+				else
+					useToast(t.toast.login_failed, "error");
+			} catch (error) {
 				useToast(t.toast.login_failed, "error");
-		} catch (error) {
-			useToast(t.toast.login_failed, "error");
-			console.error(error);
-			return;
-		} finally {
-			isTryingLogin.value = false;
-		}
+				console.error(error);
+			}
+		} else
+			useToast("用户名和密码不能为空", "error"); // TODO 使用多语言
+		isTryingLogin.value = false;
 	}
 
 	/**
@@ -69,23 +70,22 @@
 	 */
 	async function registerUser() {
 		if (password.value === confirmPassword.value) {
-			isTryingRegistration.value = true;
 			const passwordHash = password.value; // TODO // WARN 为了保证安全性，这里需要对密码进行一次 Hash
 			const userRegistrationData: UserRegistrationDataDto = { username: email.value, passwordHash, passwordHint: passwordHint.value };
 			try {
+				isTryingRegistration.value = true;
 				const registrationResult = await registration(userRegistrationData);
-				if (registrationResult.success)
-					console.log("token", registrationResult.token);
-				else {
+				isTryingRegistration.value = false;
+
+				if (registrationResult.success) { // 如果注册成功，则关闭页面，并且回退到登录页面
+					open.value = false;
+					currentPage.value = "login";
+				} else
 					useToast("注册失败", "error"); // TODO 使用多语言
-					return;
-				}
 			} catch (error) {
 				useToast("注册失败", "error"); // TODO 使用多语言
-				console.error(error);
-				return;
+				console.error("注册失败", error);
 			}
-			open.value = false;
 		} else
 			useToast(t.toast.password_mismatch, "error");
 	}
@@ -114,8 +114,12 @@
 		open.value = false;
 	}
 
-	const userExistsCheckOrJumpNextPage = async () => {
+	const checkAndJumpNextPage = async () => {
 		if (email.value && password.value) {
+			if (passwordHint.value && passwordHint.value.includes(password.value)) { // 判断密码提示中是否包含密码自身
+				useToast("密码提示中不能包含密码本身", "error"); // TODO 使用多语言
+				return;
+			}
 			const userExistsCheckData: UserExistsCheckDataDto = { username: email.value };
 			try {
 				const userExistsCheckResultData = await userExistsCheck(userExistsCheckData);
@@ -207,7 +211,7 @@
 						</div>
 						<div class="action margin-left-inset">
 							<Button @click="currentPage = 'login'">{{ t.loginwindow.register_to_login }}</Button>
-							<Button icon="arrow_right" class="button icon-behind" @click="userExistsCheckOrJumpNextPage">{{ t.step.next }}</Button>
+							<Button icon="arrow_right" class="button icon-behind" @click="checkAndJumpNextPage">{{ t.step.next }}</Button>
 						</div>
 					</div>
 
