@@ -6,8 +6,7 @@
 	const repositories: { name: string; codeName?: string; link: string; icon?: string }[] = [
 		{ name: t.about.repositories.frontend, codeName: "KIRAKIRA Cerasus", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus" },
 		{ name: t.about.repositories.markdown, codeName: "KIRAKIRA Flavored Markdown", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Flavored-Markdown" },
-		{ name: t.about.repositories.backend, codeName: "KIRAKIRA Golang Backend", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-golang-backend" },
-		// { name: t.about.repositories.backend, codeName: "KIRAKIRA Rosales", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Rosales" },
+		{ name: t.about.repositories.backend, codeName: "KIRAKIRA Rosales", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Rosales" },
 	];
 
 	const team: { name: string; job: string[]; uid: number; avatar?: string }[] = [
@@ -25,12 +24,11 @@
 	];
 
 	const technologies: { name: string; version?: string; ability: string; icon?: string; monochrome?: boolean; link: string }[] = [
-		{ name: "Nuxt", version: nuxt.versions.nuxt || "3", ability: "SSR Framework", icon: "nuxt", link: "https://nuxt.com/" },
-		{ name: "Vue", version: nuxt.versions.vue || "3", ability: "Progressive Frontend Framework", icon: "vue", link: "https://vuejs.org/" },
-		{ name: "TypeScript", version: "5", ability: "Static Type Checker", icon: "typescript", link: "https://www.typescriptlang.org/" },
-		{ name: "Node.js", version: "20", ability: "Server Operation Platform", icon: "nodejs", link: "https://nodejs.org/" },
-		// { name: "Koa", version: "3", ability: "Server Network Framework", icon: "koa", monochrome: true, link: "https://koajs.com/" },
-		{ name: "Go", version: "1.20", ability: "Server Programming Language", icon: "go", link: "https://go.dev/" },
+		{ name: "Nuxt", version: nuxt.versions.nuxt || "3", ability: "Vue Framework for Frontend", icon: "nuxt", link: "https://nuxt.com/" },
+		{ name: "Vue", version: nuxt.versions.vue || "3", ability: "Progressive Framework for Frontend", icon: "vue", link: "https://vuejs.org/" },
+		{ name: "Koa", version: "3", ability: "Web Framework for Backend", icon: "koa", monochrome: true, link: "https://koajs.com/" },
+		{ name: "Node.js", version: "20", ability: "JavaScript Runtime Environment", icon: "nodejs", link: "https://nodejs.org/" },
+		{ name: "TypeScript", version: "5", ability: "JavaScript with Syntax for Types", icon: "typescript", link: "https://www.typescriptlang.org/" },
 		{ name: "Vercel", ability: "Website Hosting Services", icon: "vercel", monochrome: true, link: "https://vercel.com/" },
 		// 基于前端运行时的版本号可以自动识别，后端和编译时的版本号只能委屈你自己手打了。
 	];
