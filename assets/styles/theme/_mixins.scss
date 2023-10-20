@@ -196,7 +196,7 @@
 /// @content 声明强化选择器下的定义。
 /// @output #{$enhanced-selector}
 @mixin enhanced-selector {
-	$enhanced-selector: string-repeat(":not([NONE_EXISTS_ATTR])", 10); // 用于强行提高优先级。
+	$enhanced-selector: string-repeat(":not(#\#)", 10); // 用于强行提高优先级。
 
 	#{$enhanced-selector} {
 		&,
