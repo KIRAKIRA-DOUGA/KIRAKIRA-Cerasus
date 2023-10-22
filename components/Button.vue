@@ -244,12 +244,12 @@
 		width: 100%;
 		border-radius: 0 !important;
 
-		&:deep(*) {
-			.wrapper {
-				translate: -50%;
-				background-color: transparent;
-			}
+		&:deep(.wrapper) {
+			translate: -50%;
+			background-color: transparent;
+		}
 
+		&:deep(*) {
 			button:not([disabled]) & .line {
 				background-color: white;
 			}
