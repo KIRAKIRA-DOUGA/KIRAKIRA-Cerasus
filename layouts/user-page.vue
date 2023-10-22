@@ -12,7 +12,7 @@
 </script>
 
 <script setup lang="ts">
-	import { Users200Response } from "kirakira-backend";
+	// import { Users200Response } from "kirakira-backend";
 	import makeFullwidth from "pomsky/fullwidth.pom";
 
 	// TODO nice copy pasta dude
