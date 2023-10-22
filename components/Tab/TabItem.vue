@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	import TabBar from "./TabBar.vue";
-	import { Property } from "csstype";
+	import type { Property } from "csstype";
 
 	const props = withDefaults(defineProps<{
 		/** 选项卡唯一标识符。 */

@@ -2,7 +2,7 @@
  * 该 PostCSS 插件代码参考自：https://github.com/saulhardman/postcss-hover-media-feature
  */
 
-import { AtRule, Helpers, Rule } from "postcss";
+import { AtRule, Rule, type Helpers } from "postcss";
 
 const ANY_HOVER_REGEXP = /:any-hover(?![-_\w])/g;
 

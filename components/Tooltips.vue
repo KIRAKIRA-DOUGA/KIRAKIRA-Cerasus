@@ -4,7 +4,7 @@
 </docs>
 
 <script setup lang="ts">
-	import { TooltipEvent, getPositionByEvent } from "plugins/vue/tooltip";
+	import { type TooltipEvent, getPositionByEvent } from "plugins/vue/tooltip";
 
 	type TooltipEventWithPosition = TooltipEvent & {
 		position: CSSProperties;

@@ -1,4 +1,4 @@
-import { RemovableRef, useStorage } from "@vueuse/core"; // 根据说明文档必须显式引入 useStorage，以和 nitro 同名变量让位。
+import { useStorage, type RemovableRef } from "@vueuse/core"; // 根据说明文档必须显式引入 useStorage，以和 nitro 同名变量让位。
 import { defaults } from "../app.configs";
 
 type AppConfigDefault = typeof defaults;

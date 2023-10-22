@@ -1,6 +1,6 @@
 import mitt from "mitt";
-import { TooltipEvent, VTooltipBindingValue } from "plugins/vue/tooltip";
-import { ToastEvent } from "./toast";
+import type { TooltipEvent, VTooltipBindingValue } from "plugins/vue/tooltip";
+import type { ToastEvent } from "./toast";
 
 type ApplicationEvents = {
 	// 在此处定义需要全局使用的事件。

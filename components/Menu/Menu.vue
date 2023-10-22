@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	import { ClientOnlyTeleport, Fragment } from "#components";
-	import { FlyoutModelNS } from "types/arguments";
+	import type { FlyoutModelNS } from "types/arguments";
 	import { getLocation } from "components/Flyout/Flyout.vue";
 	import { getPosition } from "plugins/vue/tooltip";
 
