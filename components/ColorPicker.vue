@@ -333,26 +333,28 @@
 		}
 	}
 
-	.slider:deep {
+	.slider {
 		--size: large;
 		margin-top: 16px;
 
-		.passed {
-			display: none;
-		}
+		:deep(*) {
+			.passed {
+				display: none;
+			}
 
-		.track {
-			position: relative;
-			overflow: hidden;
+			.track {
+				position: relative;
+				overflow: hidden;
 
-			&::after {
-				@extend %inner-stroke;
+				&::after {
+					@extend %inner-stroke;
+				}
 			}
 		}
 	}
 
 	@function slider-model($model) {
-		@return ".slider.auxiliary.#{$model}:deep .track";
+		@return ".slider.auxiliary.#{$model}:deep(.track)";
 	}
 
 	#{slider-model(rgb)} {
@@ -375,7 +377,7 @@
 		background: linear-gradient(to right, black, var(--wo-v));
 	}
 
-	.slider.opacity:deep .track,
+	.slider.opacity:deep(.track),
 	.checkerboard {
 		$color: c(gray-40);
 		--checkerboard-size: 8px;
@@ -394,7 +396,7 @@
 		}
 	}
 
-	.slider.opacity:deep .track::before {
+	.slider.opacity:deep(.track::before) {
 		position: absolute;
 		background: linear-gradient(to right, transparent, var(--wo-a));
 		inset: 0;
@@ -444,7 +446,7 @@
 		@include round-large;
 	}
 
-	.slider:deep .thumb,
+	.slider:deep(.thumb),
 	.plane .thumb {
 		z-index: 1;
 		background-color: white;

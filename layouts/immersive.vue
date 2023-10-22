@@ -13,10 +13,10 @@
 </template>
 
 <style scoped lang="scss">
-	main:deep {
+	main {
 		overflow-y: auto;
 
-		> .container {
+		:deep(> .container) {
 			padding: 26px 100px;
 
 			@include tablet {

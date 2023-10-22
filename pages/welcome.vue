@@ -186,17 +186,17 @@
 					margin-left: auto;
 				}
 
-				.checkbox:deep {
+				.checkbox {
 					padding: 0 14px;
 
-					label {
+					:deep(label) {
 						margin-left: 13px;
 					}
 				}
 			}
 		}
 	}
-	
+
 	.banner,
 	.container {
 		animation: float-up 600ms calc(150ms * var(--i)) $ease-out-smooth backwards;

@@ -407,7 +407,7 @@
 		background-color: c(surface-color);
 	}
 
-	:deep {
+	:deep(*) {
 		.chip {
 			@extend %chip;
 		}

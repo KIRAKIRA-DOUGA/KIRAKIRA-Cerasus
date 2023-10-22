@@ -83,7 +83,7 @@
 		transition: $fallback-transitions, width 0s, height 0s;
 
 		@layer layout {
-			> main > div:deep > .container {
+			> main > div:deep(> .container) {
 				padding: 26px 100px;
 
 				@include tablet {

@@ -113,17 +113,17 @@
 </template>
 
 <style scoped lang="scss">
-	.danmaku-container:deep {
+	.danmaku-container {
 		position: absolute;
 		inset: 0;
 		bottom: 36px;
 		pointer-events: none;
 
-		* {
+		:deep(*) {
 			transition: none;
 		}
 
-		.dm {
+		:deep(.dm) {
 			@include round-small;
 
 			&.user-sent {

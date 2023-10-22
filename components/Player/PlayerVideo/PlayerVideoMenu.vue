@@ -133,13 +133,13 @@
 	:comp {
 		position: absolute;
 		width: $width;
-		
+
 		&.v-enter-from,
 		&.v-leave-to {
 			translate: 0 20px;
 			opacity: 0;
 		}
-		
+
 		> :deep(*) {
 			margin-bottom: $margin;
 		}
@@ -152,17 +152,15 @@
 		margin: 0;
 		padding: $menu-padding;
 		background-color: c(acrylic-bg, 75%);
-		
+
 		&:empty {
 			display: none;
 		}
-		
-		&:deep {
-			.toggle-switch {
-				@include round-small;
-				min-height: 36px;
-				padding: 0 8px;
-			}
+
+		&:deep(.toggle-switch) {
+			@include round-small;
+			min-height: 36px;
+			padding: 0 8px;
 		}
 	}
 </style>

@@ -208,7 +208,7 @@
 		--size: big;
 	}
 
-	header:deep ~ .user-center-slot > .container {
+	header:deep(~ .user-center-slot > .container) {
 		display: flex;
 		gap: 20px;
 		align-items: flex-start;

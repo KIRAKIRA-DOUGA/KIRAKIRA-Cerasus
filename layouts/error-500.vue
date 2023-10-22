@@ -134,10 +134,10 @@
 				user-select: text;
 			}
 
-			div:deep {
+			div {
 				color: c(icon-color);
 
-				> pre > span.stack {
+				&:deep(> pre > span.stack) {
 					display: block;
 				}
 			}

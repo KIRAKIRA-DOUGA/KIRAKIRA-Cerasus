@@ -253,11 +253,8 @@
 	.soft-button {
 		--wrapper-size: #{$thickness};
 
-		&.quality-button:deep {
-			&,
-			* {
-				min-width: 55px;
-			}
+		&.quality-button:deep(&, *) {
+			min-width: 55px;
 		}
 	}
 </style>
