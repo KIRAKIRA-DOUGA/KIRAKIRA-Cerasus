@@ -1,5 +1,8 @@
 <script setup lang="ts">
 	import exampleVideoPath from "assets/videos/shibamata.mp4";
+	import { getVideoByKvid } from "~/composables/api/Video/VideoController";
+	import { getVideoByKvidRequestDto } from "~/composables/api/Video/VideoControllerDto";
+
 	// const exampleVideoPath = "https://video_api.kms233.com/bili/av9912788";
 	// 暂时不要用在线视频链接，虽然可以用，但是每次查看视频详细信息我都要等好久。
 
@@ -10,7 +13,7 @@
 	// const recommendations = ref<Videos200ResponseVideosInner[]>();
 	// const comments = ref<Comments200ResponseInner[]>([]);
 	// const title = computed(() => videoDetails.value?.title ?? "");
-	const title = "柴又";
+	const title = ref<string>();
 	const videoDetails = ref();
 	const comments: string[] = [];
 
@@ -21,49 +24,76 @@
 		// const api = useApi();
 		const handleError = (e: unknown) => console.error(e);
 
-		// Invalid video id, show example video
-		if (!Number.isFinite(kvid)) {
-			videoSource.value = exampleVideoPath;
-			videoDetails.value = {
-				title: "柴又",
-				tags: ["233", "天下笨蛋是一家", "艾拉原创出品"],
-				username: "艾了个拉",
-				uploadDate: new Date().toString(),
-			};
-			return;
-		}
+		if (Number.isFinite(kvid)) {
+			const getVideoByKvidRequest: getVideoByKvidRequestDto = { videoId: kvid };
+			const videoDataResponse = await getVideoByKvid(getVideoByKvidRequest);
+			if (videoDataResponse.success) {
+				const videoData = videoDataResponse.video;
+				const videoPartData = videoData?.videoPart?.[0]; // TODO // WARN 因为要做 分P 视频，所以这里暂时取了数组第 0 位，正常情况应该读取数组中的所有视频，并根据 id 排序
+				if (videoData && videoData.title && videoPartData && videoPartData.link) {
+					videoSource.value = videoPartData.link;
+					title.value = videoData.title;
+					videoDetails.value = {
+						title: videoData.title,
+						tags: ["233", "天下笨蛋是一家", "艾拉原创出品"], // TODO TAG 功能还没做好
+						username: videoData.uploader || "unknow",
+						uploadDate: videoData.updateDate,
+					};
+				} else
+					useToast("获取视频失败，结果异常", "error"); // TODO 使用多语言
+			} else
+				useToast("获取视频失败，请求失败", "error"); // TODO 使用多语言
+		} else
+			useToast("未获取到视频 ID", "error"); // TODO 使用多语言
 
+		// NOTE 02：这个地方的 try 的作用是什么？
 		try {
 			await void 0;
 		} catch (error) { handleError(error); }
 
-		/* // Fetch video details
-		try {
-			const video = await api.videoDetail(kvid);
-			videoDetails.value = video;
-			videoSource.value = video.mPDLoc;
-		} catch (error) { handleError(error); }
+		// // Invalid video id, show example video
+		// if (!Number.isFinite(kvid)) {
+		// 	videoSource.value = exampleVideoPath;
+		// 	videoDetails.value = {
+		// 		title: "柴又",
+		// 		tags: ["233", "天下笨蛋是一家", "艾拉原创出品"],
+		// 		username: "艾了个拉",
+		// 		uploadDate: new Date().toString(),
+		// 	};
+		// 	return;
+		// }
 
-		// Fetch comments
-		try {
-			const commentsResp = await api.comments(kvid);
-			for (const comment of commentsResp)
-				comments.value.push(comment);
-		} catch (error) { handleError(error); }
+		// try {
+		// 	await void 0;
+		// } catch (error) { handleError(error); }
 
-		// Fetch recommendations
-		try {
-			// const commentsResp = await api.comments(kvid);
-			// for (const comment of commentsResp)
-			// 	comments.value.push(comment);
-			// TODO: Fetch recommendations
-		} catch (error) { handleError(error); } */
+		// /* // Fetch video details
+		// try {
+		// 	const video = await api.videoDetail(kvid);
+		// 	videoDetails.value = video;
+		// 	videoSource.value = video.mPDLoc;
+		// } catch (error) { handleError(error); }
+
+		// // Fetch comments
+		// try {
+		// 	const commentsResp = await api.comments(kvid);
+		// 	for (const comment of commentsResp)
+		// 		comments.value.push(comment);
+		// } catch (error) { handleError(error); }
+
+		// // Fetch recommendations
+		// try {
+		// 	// const commentsResp = await api.comments(kvid);
+		// 	// for (const comment of commentsResp)
+		// 	// 	comments.value.push(comment);
+		// 	// TODO: Fetch recommendations
+		// } catch (error) { handleError(error); } */
 	}
 	watch(() => kvid, fetchData);
 	await fetchData();
 
 	useHead({
-		title,
+		title: title.value,
 		/* meta: [
 			{ property: "og:type", content: "video" },
 			{ property: "og:title", content: title },
