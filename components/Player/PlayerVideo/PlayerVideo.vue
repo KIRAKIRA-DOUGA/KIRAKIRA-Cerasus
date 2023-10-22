@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	import mediainfo from "mediainfo.js";
-	import { MediaPlayerClass, BitrateInfo } from "dashjs";
+	import { type MediaPlayerClass, BitrateInfo } from "dashjs";
 	// import { GetDanmaku200ResponseInner } from "kirakira-backend";
 	import { createDanmakuComment } from "./PlayerVideoPanel/PlayerVideoPanelDanmaku/PlayerVideoPanelDanmakuSender.vue";
 

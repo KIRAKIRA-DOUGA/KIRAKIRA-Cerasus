@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 	import { getPosition } from "plugins/vue/tooltip";
-	import { FlyoutModelNS } from "types/arguments";
+	import type { FlyoutModelNS } from "types/arguments";
 
 	const props = withDefaults(defineProps<{
 		/** 是否**不**向加内边距？ */
@@ -227,7 +227,7 @@
 		&.padding {
 			padding: $padding;
 		}
-		
+
 		&.moving {
 			transition: $fallback-transitions, left $ease-out-smooth 600ms, top $ease-out-smooth 600ms;
 		}

@@ -1,4 +1,4 @@
-import { ref, Ref, watch } from "vue";
+import { ref, watch, type Ref } from "vue";
 
 interface Range {
 	min?: number;

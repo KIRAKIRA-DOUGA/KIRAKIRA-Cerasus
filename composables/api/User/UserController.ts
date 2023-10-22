@@ -1,5 +1,5 @@
 import { get, post } from "../Common";
-import { UserExistsCheckDataDto, UserExistsCheckResultDto, UserLoginDataDto, UserLoginResultDto, UserRegistrationDataDto, UserRegistrationResultDto } from "./UserControllerDto";
+import type { UserExistsCheckDataDto, UserExistsCheckResultDto, UserLoginDataDto, UserLoginResultDto, UserRegistrationDataDto, UserRegistrationResultDto } from "./UserControllerDto";
 
 const USER_API_URI = "https://localhost:9999/user";
 
