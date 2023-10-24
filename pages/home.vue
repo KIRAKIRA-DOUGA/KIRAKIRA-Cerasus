@@ -54,9 +54,7 @@
 					:uploader="video.uploader ?? ''"
 					:uploaderId="video.uploaderId"
 					:image="video.image"
-					:date="
-						new Date() // TODO // WARN should use: video.date
-					"
+					:date="new Date(video.updateDate || 0)"
 					:watchedCount="video.watchedCount"
 					:duration="new Duration(0, video.duration ?? 0)"
 				>{{ video.title }}</ThumbVideo>

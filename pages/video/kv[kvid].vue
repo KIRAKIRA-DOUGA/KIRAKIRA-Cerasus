@@ -29,7 +29,7 @@
 			const videoDataResponse = await getVideoByKvid(getVideoByKvidRequest);
 			if (videoDataResponse.success) {
 				const videoData = videoDataResponse.video;
-				const videoPartData = videoData?.videoPart?.[0]; // TODO // WARN 因为要做 分P 视频，所以这里暂时取了数组第 0 位，正常情况应该读取数组中的所有视频，并根据 id 排序
+				const videoPartData = videoData?.videoPart?.[0]; // TODO // WARN 因为要做 分P 视频，所以这里获取到的视频是一个数组，这里暂时取了数组第 0 位。应改进为读取数组中的所有视频，并根据 id 排序渲染成 分P 列表
 				if (videoData && videoData.title && videoPartData && videoPartData.link) {
 					videoSource.value = videoPartData.link;
 					title.value = videoData.title;
@@ -43,51 +43,16 @@
 					useToast("获取视频失败，结果异常", "error"); // TODO 使用多语言
 			} else
 				useToast("获取视频失败，请求失败", "error"); // TODO 使用多语言
-		} else
-			useToast("未获取到视频 ID", "error"); // TODO 使用多语言
-
-		// NOTE 02：这个地方的 try 的作用是什么？
-		try {
-			await void 0;
-		} catch (error) { handleError(error); }
-
-		// // Invalid video id, show example video
-		// if (!Number.isFinite(kvid)) {
-		// 	videoSource.value = exampleVideoPath;
-		// 	videoDetails.value = {
-		// 		title: "柴又",
-		// 		tags: ["233", "天下笨蛋是一家", "艾拉原创出品"],
-		// 		username: "艾了个拉",
-		// 		uploadDate: new Date().toString(),
-		// 	};
-		// 	return;
-		// }
-
-		// try {
-		// 	await void 0;
-		// } catch (error) { handleError(error); }
-
-		// /* // Fetch video details
-		// try {
-		// 	const video = await api.videoDetail(kvid);
-		// 	videoDetails.value = video;
-		// 	videoSource.value = video.mPDLoc;
-		// } catch (error) { handleError(error); }
-
-		// // Fetch comments
-		// try {
-		// 	const commentsResp = await api.comments(kvid);
-		// 	for (const comment of commentsResp)
-		// 		comments.value.push(comment);
-		// } catch (error) { handleError(error); }
-
-		// // Fetch recommendations
-		// try {
-		// 	// const commentsResp = await api.comments(kvid);
-		// 	// for (const comment of commentsResp)
-		// 	// 	comments.value.push(comment);
-		// 	// TODO: Fetch recommendations
-		// } catch (error) { handleError(error); } */
+		} else {
+			useToast("未获取到视频 ID，开始使用默认视频", "error"); // TODO 使用多语言
+			videoSource.value = exampleVideoPath;
+			videoDetails.value = {
+				title: "柴又",
+				tags: ["233", "天下笨蛋是一家", "艾拉原创出品"],
+				username: "艾了个拉",
+				uploadDate: new Date().toString(),
+			};
+		}
 	}
 	watch(() => kvid, fetchData);
 	await fetchData();
