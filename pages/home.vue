@@ -1,7 +1,10 @@
 <script setup lang="ts">
+	import { ThumbVideoResponseDto } from "~/composables/api/Video/VideoControllerDto";
+	import { getHomePageThumbVideo } from "../composables/api/Video/VideoController";
+
 	useHead({ title: t.home });
 
-	const videos = ref<Videos200Response>();
+	const videos = ref<ThumbVideoResponseDto>();
 	const route = useRoute();
 	const { query } = route;
 	const transitionName = ref("page-jump");
@@ -13,6 +16,8 @@
 		sortDirection: query.sortDirection!,
 		page: +(query.page ?? 1),
 	});
+
+	videos.value = await getHomePageThumbVideo();
 
 	const categoryItemCount = ref(0);
 	const pageCount = ref(1);
@@ -44,14 +49,14 @@
 			<div :key="resultTimestamp" class="videos-grid">
 				<ThumbVideo
 					v-for="video in videos?.videos"
-					:key="video.videoID"
-					:videoId="video.videoID"
-					:uploader="video.authorName ?? ''"
-					:uploaderId="video.authorID"
-					:image="video.thumbnailLoc"
-					:date="new Date()"
-					:watchedCount="video.views"
-					:duration="new Duration(0, video.videoDuration ?? 0)"
+					:key="video.videoId"
+					:videoId="video.videoId"
+					:uploader="video.uploader ?? ''"
+					:uploaderId="video.uploaderId"
+					:image="video.image"
+					:date="new Date(video.updateDate || 0)"
+					:watchedCount="video.watchedCount"
+					:duration="new Duration(0, video.duration ?? 0)"
 				>{{ video.title }}</ThumbVideo>
 			</div>
 		</Transition>
