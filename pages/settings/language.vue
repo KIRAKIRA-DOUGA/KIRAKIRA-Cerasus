@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { LocaleObject } from "@nuxtjs/i18n/dist/runtime/composables";
+	import type { LocaleObject } from "@nuxtjs/i18n/dist/runtime/composables";
 	import { useNow } from "@vueuse/core"; // 它与 lodash 同名函数冲突，只得显式引入。
 
 	const { locale: currentLocale, locales } = useI18n();

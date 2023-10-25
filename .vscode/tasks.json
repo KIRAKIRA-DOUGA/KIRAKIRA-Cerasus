@@ -65,15 +65,6 @@
 		},
 		{
 			"type": "npm",
-			"script": "build",
-			"path": "packages/kirakira-backend",
-			"group": "build",
-			"problemMatcher": [],
-			"label": "npm: build - kirakira-backend",
-			"detail": "tsc - 构建后端 API 项目"
-		},
-		{
-			"type": "npm",
 			"script": "dev",
 			"path": "locales/editor",
 			"group": "build",

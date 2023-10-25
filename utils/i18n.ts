@@ -1,5 +1,5 @@
-import { I18nArgsFunction, LocaleWithDefaultValue } from "locales/types";
-import { TranslateOptions } from "@intlify/core-base";
+import type { TranslateOptions } from "@intlify/core-base";
+import type { I18nArgsFunction, LocaleWithDefaultValue } from "locales/types";
 
 // 如果需要 <i18n> 块内语言字符串：useI18n({ useScope: "local" })
 

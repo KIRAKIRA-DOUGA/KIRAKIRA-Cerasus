@@ -1,4 +1,4 @@
-import { RouteLocationNormalized, RouteLocationNormalizedLoaded } from "vue-router";
+import type { RouteLocationNormalized, RouteLocationNormalizedLoaded } from "vue-router";
 
 const localeCodes = computed(() => useNuxtApp().$i18n.localeCodes.value);
 type Route = RouteLocationNormalized | RouteLocationNormalizedLoaded;

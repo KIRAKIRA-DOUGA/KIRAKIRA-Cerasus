@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { DirectiveBinding, VNode } from "nuxt/dist/app/compat/capi";
+import type { DirectiveBinding, VNode } from "nuxt/dist/app/compat/capi";
 
 const getSSRProps = (binding: DirectiveBinding, vnode: VNode) => {
 	// you can provide SSR-specific props here

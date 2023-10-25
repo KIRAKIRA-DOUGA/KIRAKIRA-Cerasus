@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	import { login, registration, userExistsCheck } from "../../composables/api/User/UserController";
-	import { UserExistsCheckDataDto, UserLoginDataDto, UserRegistrationDataDto } from "../../composables/api/User/UserControllerDto";
+	import type { UserExistsCheckDataDto, UserLoginDataDto, UserRegistrationDataDto } from "../../composables/api/User/UserControllerDto";
 
 	const props = defineProps<{
 		/** 已打开，单向绑定使用。 */
@@ -511,7 +511,7 @@
 			}
 		}
 	}
-	
+
 	.logo-font {
 		font-family: $english-logo-fonts;
 		font-feature-settings: normal;

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	import animationData from "lotties/spinner-dev1.json";
 	import beepSrc from "assets/audios/NOVA 2022.1 Alert Quick.ogg";
-	import { ToastEvent } from "composables/toast";
+	import type { ToastEvent } from "composables/toast";
 
 	const page = ref(1);
 	const pages = ref(99);
