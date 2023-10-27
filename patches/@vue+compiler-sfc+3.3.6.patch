@@ -1,27 +1,27 @@
 diff --git a/node_modules/@vue/compiler-sfc/dist/compiler-sfc.cjs.js b/node_modules/@vue/compiler-sfc/dist/compiler-sfc.cjs.js
-index de87c23..24c8c05 100644
+index 289ecf7..4b1a757 100644
 --- a/node_modules/@vue/compiler-sfc/dist/compiler-sfc.cjs.js
 +++ b/node_modules/@vue/compiler-sfc/dist/compiler-sfc.cjs.js
-@@ -8088,9 +8088,6 @@ function rewriteSelector(id, selector, selectorRoot, slotted = false) {
+@@ -7864,9 +7864,6 @@ function rewriteSelector(id, selector, selectorRoot, slotted = false) {
            }
            selector.removeChild(n);
          } else {
 -          warn(
--            `::v-deep usage as a combinator has been deprecated. Use :deep(<inner-selector>) instead.`
+-            `${value} usage as a combinator has been deprecated. Use :deep(<inner-selector>) instead of ${value} <inner-selector>.`
 -          );
            const prev = selector.at(selector.index(n) - 1);
            if (prev && isSpaceCombinator(prev)) {
              selector.removeChild(prev);
 diff --git a/node_modules/@vue/compiler-sfc/dist/compiler-sfc.esm-browser.js b/node_modules/@vue/compiler-sfc/dist/compiler-sfc.esm-browser.js
-index 0104f57..46783ec 100644
+index b4ff071..bc070ff 100644
 --- a/node_modules/@vue/compiler-sfc/dist/compiler-sfc.esm-browser.js
 +++ b/node_modules/@vue/compiler-sfc/dist/compiler-sfc.esm-browser.js
-@@ -41938,9 +41938,6 @@ function rewriteSelector(id, selector, selectorRoot, slotted = false) {
+@@ -41304,9 +41304,6 @@ function rewriteSelector(id, selector, selectorRoot, slotted = false) {
            }
            selector.removeChild(n);
          } else {
 -          warn$1(
--            `::v-deep usage as a combinator has been deprecated. Use :deep(<inner-selector>) instead.`
+-            `${value} usage as a combinator has been deprecated. Use :deep(<inner-selector>) instead of ${value} <inner-selector>.`
 -          );
            const prev = selector.at(selector.index(n) - 1);
            if (prev && isSpaceCombinator(prev)) {

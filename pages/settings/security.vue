@@ -65,5 +65,9 @@
 			flex-direction: column;
 			gap: 16px;
 		}
+
+		.text-box {
+			--size: large;
+		}
 	}
 </style>

@@ -3,7 +3,7 @@
 </docs>
 
 <script setup lang="ts">
-	import { ToastEvent } from "composables/toast";
+	import type { ToastEvent } from "composables/toast";
 
 	type ToastEventWithTimestamp = ToastEvent & {
 		timestamp: number;

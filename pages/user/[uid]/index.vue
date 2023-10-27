@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { Users200Response } from "kirakira-backend";
+	// import { Users200Response } from "kirakira-backend";
 
 	const uid = currentUserUid();
 	const user = ref<Users200Response>();

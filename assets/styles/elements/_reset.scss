@@ -28,4 +28,9 @@
 	label {
 		cursor: inherit;
 	}
+
+	// 移除搜索框旁边的叉。
+	input[type="search" i]::-webkit-search-cancel-button {
+		display: none;
+	}
 }

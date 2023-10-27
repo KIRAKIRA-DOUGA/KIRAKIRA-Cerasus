@@ -1,6 +1,6 @@
 import { Theme } from "./composables";
 import script from "./script";
-import { ThemeType, NuxtColorMode, THEME_SET_LIST, PALETTE_LIST } from "./types";
+import { PALETTE_LIST, THEME_SET_LIST, type NuxtColorMode, type ThemeType } from "./types";
 
 const systemDark = () => window.matchMedia("(prefers-color-scheme: dark)");
 const setMetaThemeColor = () => {

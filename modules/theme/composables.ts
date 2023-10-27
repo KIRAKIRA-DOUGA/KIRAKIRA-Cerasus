@@ -1,4 +1,4 @@
-import { PaletteType, ThemeType, ThemeSetType } from "./types";
+import type { PaletteType, ThemeSetType, ThemeType } from "./types";
 
 export const Theme = {
 	/** 设定主题模式（包含自动）。 */

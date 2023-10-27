@@ -1,4 +1,4 @@
-import { NuxtColorMode } from "./types";
+import type { NuxtColorMode } from "./types";
 
 function script(): void;
 function script(autoCall: false): NuxtColorMode;

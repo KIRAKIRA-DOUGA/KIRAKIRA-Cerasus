@@ -1,6 +1,7 @@
 import { get, post } from "../Common";
 import { getCorrectUri } from "../Common/GetCorrectUri";
-import { UserExistsCheckDataDto, UserExistsCheckResultDto, UserLoginDataDto, UserLoginResultDto, UserRegistrationDataDto, UserRegistrationResultDto } from "./UserControllerDto";
+import type { UserExistsCheckDataDto, UserExistsCheckResultDto, UserLoginDataDto, UserLoginResultDto, UserRegistrationDataDto, UserRegistrationResultDto } from "./UserControllerDto";
+
 
 const BACK_END_URL = getCorrectUri();
 const USER_API_URI = `${BACK_END_URL}/user`;
