@@ -1,7 +1,9 @@
 import { get, post } from "../Common";
+import { getCorrectUri } from "../Common/GetCorrectUri";
 import { UserExistsCheckDataDto, UserExistsCheckResultDto, UserLoginDataDto, UserLoginResultDto, UserRegistrationDataDto, UserRegistrationResultDto } from "./UserControllerDto";
 
-const USER_API_URI = "https://localhost:9999/user";
+const BACK_END_URL = getCorrectUri();
+const USER_API_URI = `${BACK_END_URL}/user`;
 
 export const registration = async (userRegistrationData: UserRegistrationDataDto): Promise<UserRegistrationResultDto> => {
 	// TODO use { credentials: "include" } to allow save cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
