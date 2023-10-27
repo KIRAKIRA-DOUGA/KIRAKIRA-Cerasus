@@ -47,6 +47,8 @@ The above link will automatically enable HTTPS support to provide some browser s
 
 When visiting the webpage for the first time, a warning of "unsafe" will pop up. At this time, you can only choose "still access", and there is currently no better solution.
 
+When launched in development mode, localhost will be the address of the backend APIs. In order to continue, you must also launch the [KIRAKIRA-Rosales Back-end Service](https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Rosales).
+
 #### Mobile Webpage Testing
 
 Ensure that the phone/tablet is located on the same WiFi as your computer (if conditions do not allow, turn on the mobile hotspot), and then use the mobile browser to access the IP address of the computer. Generally: [https://192.168.\*.\*:3000/](https://192.168.*.*:3000/)
@@ -62,6 +64,8 @@ npm run dev-http
 ```
 
 Then start the development server on: http://localhost:3000/
+
+Note: The HTTP development server may not include all expected features, or may even cause run-time exceptions!
 
 ### 构建后端 API 项目
 
@@ -98,6 +102,7 @@ npm run build
 ```bash
 npm run preview
 ```
+When running in production mode, the back-end API we connect to is `rosales.kirakira.moe`
 
 Checkout the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
 
