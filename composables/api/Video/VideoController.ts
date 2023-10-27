@@ -1,6 +1,8 @@
+import { getCorrectUri } from "../Common/GetCorrectUri";
 import { GetVideoByKvidResponseDto, ThumbVideoResponseDto, getVideoByKvidRequestDto } from "./VideoControllerDto";
 
-const VIDEO_API_URI = "https://localhost:9999/video";
+const BACK_END_URL = getCorrectUri();
+const VIDEO_API_URI = `${BACK_END_URL}/video`;
 
 export const getHomePageThumbVideo = async (): Promise<ThumbVideoResponseDto> => {
 	const { data: result } = await useFetch<ThumbVideoResponseDto>(`${VIDEO_API_URI}/home`);

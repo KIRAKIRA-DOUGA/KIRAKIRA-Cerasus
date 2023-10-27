@@ -49,6 +49,8 @@ npm run dev
 
 首次进入网页时会弹出“不安全”的警告，此时只能选择“仍然访问”，暂时没有更好的解决方法。
 
+以开发模式运行时，连接的后端服务接口是 `localhost`，为了使用 API 接口，需要额外运行 [KIRAKIRA-Rosales 后端服务](https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Rosales)。
+
 #### 移动端网页测试
 
 确保手机/平板与您的电脑位于同一个无线局域网下（如果条件不允许请开热点），然后使用移动端浏览器访问电脑所属 IP 地址。一般是：[https://192.168.\*.\*:3000/](https://192.168.*.*:3000/)
@@ -64,6 +66,8 @@ npm run dev-http
 ```
 
 然后从此链接启动开发服务器：http://localhost:3000/
+
+注意：HTTP 开发服务器可能不包含所有预期中的功能，甚至会导致运行异常！
 
 ### 构建后端 API 项目
 
@@ -100,6 +104,8 @@ npm run build
 ```bash
 npm run preview
 ```
+
+以生产模式运行时，连接的后端服务接口是 `rosales.kirakira.moe`
 
 有关详细信息，请查看[部署文档](https://nuxt.com/docs/getting-started/deployment)。
 
