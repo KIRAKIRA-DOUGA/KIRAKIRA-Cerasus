@@ -44,7 +44,7 @@ export type UserLoginResponseDto = {
 	email?: string;
 	/** 用户 ID */
 	uid?: number;
-	/** 如果登录成功，则返回一个 token，如果登录失败，则 token 是一个假值（undefined、null 或 ''） */
+	/** 如果登录成功，则返回一个 token，如果登录失败，则 token 是一个假值（undefined、null 或 ""） */
 	token?: string;
 	/** 密码提示 */
 	passwordHint?: string;
@@ -67,7 +67,7 @@ export type UserExistsCheckResponseDto = {
 	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
 	success: boolean;
 	/** 用户存在或者查询失败（悲观）都会返回 true，不存在返回 false */
-	exists: boolean;// WARN 注意：用户已存在或查询失败时都会返回 true
+	exists: boolean; // WARN: 用户已存在或查询失败时都会返回 true
 	/** 附加的文本消息 */
 	message?: string;
 };
