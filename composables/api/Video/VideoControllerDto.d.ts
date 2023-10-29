@@ -79,7 +79,7 @@ export type ThumbVideoResponseDto = {
 };
 
 /**
- * 从视频 ID 获取视频的请求
+ * 从视频 ID 获取视频的请求参数
  */
 export type GetVideoByKvidRequestDto = {
 	/** 视频 ID (KVID) */
