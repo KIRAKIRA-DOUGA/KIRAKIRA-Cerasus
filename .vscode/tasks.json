@@ -19,6 +19,14 @@
 		},
 		{
 			"type": "npm",
+			"script": "dev-localhost",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: dev localhost",
+			"detail": "nuxt dev https localhost - 启动本地开发服务器 (HTTPS)（可能会解决 SSR 错误）"
+		},
+		{
+			"type": "npm",
 			"script": "build",
 			"group": "build",
 			"problemMatcher": [],
