@@ -82,7 +82,7 @@ export type ThumbVideoResponseDto = {
  * 从视频 ID 获取视频的请求
  */
 export type GetVideoByKvidRequestDto = {
-	/** kvid 视频的自增 ID */
+	/** 视频 ID (KVID) */
 	videoId: number;
 };
 
@@ -94,8 +94,6 @@ export type GetVideoByKvidResponseDto = {
 	success: boolean;
 	/** 附加的文本消息 */
 	message?: string;
-	/** 获取到的视频数量，如果没获取到则为 0 */
-	// videosCount: number;
 	/** 请求到的视频的数据 */
 	video?: {
 		/** 视频 ID (KVID) */
