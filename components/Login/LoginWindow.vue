@@ -1,7 +1,4 @@
 <script setup lang="ts">
-	import { login, registration, userExistsCheck } from "../../composables/api/User/UserController";
-	import type { UserExistsCheckDataDto, UserLoginDataDto, UserRegistrationDataDto } from "../../composables/api/User/UserControllerDto";
-
 	const props = defineProps<{
 		/** 已打开，单向绑定使用。 */
 		open?: boolean;
@@ -49,7 +46,7 @@
 			const userLoginData: UserLoginDataDto = { username: email.value, passwordHash };
 			try {
 				isTryingLogin.value = true;
-				const loginResult = await login(userLoginData);
+				const loginResult = await api.user.login(userLoginData);
 				isTryingLogin.value = false;
 
 				if (loginResult.success)
@@ -70,11 +67,11 @@
 	 */
 	async function registerUser() {
 		if (password.value === confirmPassword.value) {
-			const passwordHash = password.value; // TODO // WARN 为了保证安全性，这里需要对密码进行一次 Hash
+			const passwordHash = password.value; // TODO 为了保证安全性，这里需要对密码进行一次 Hash
 			const userRegistrationData: UserRegistrationDataDto = { username: email.value, passwordHash, passwordHint: passwordHint.value };
 			try {
 				isTryingRegistration.value = true;
-				const registrationResult = await registration(userRegistrationData);
+				const registrationResult = await api.user.registration(userRegistrationData);
 				isTryingRegistration.value = false;
 
 				if (registrationResult.success) { // 如果注册成功，则关闭页面，并且回退到登录页面
@@ -122,7 +119,7 @@
 			}
 			const userExistsCheckData: UserExistsCheckDataDto = { username: email.value };
 			try {
-				const userExistsCheckResultData = await userExistsCheck(userExistsCheckData);
+				const userExistsCheckResultData = await api.user.userExistsCheck(userExistsCheckData);
 				if (userExistsCheckResultData.success && !userExistsCheckResultData.exists)
 					currentPage.value = "register2";
 				else

@@ -86,7 +86,7 @@
 				.fix-bug {
 					flex-shrink: 100;
 					margin-bottom: 6px;
-					font-weight: 200;
+					font-weight: 100;
 					font-size: 32px;
 				}
 			}

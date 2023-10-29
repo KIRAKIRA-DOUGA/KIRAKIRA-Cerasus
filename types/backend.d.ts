@@ -1,8 +1,10 @@
-import * as _backend from "kirakira-backend";
+import * as _user from "api/User/UserControllerDto";
+import * as _video from "api/Video/VideoControllerDto";
 
 /*
  * 此处声明与后端 API 相关的全局类型。
  */
 declare global {
-	export { VideoDetail200Response, Comments200ResponseInner, Videos200Response, Videos200ResponseVideosInner, Categories200ResponseInner } from "kirakira-backend";
+	export type { UserExistsCheckDataDto, UserLoginDataDto, UserRegistrationDataDto } from "api/User/UserControllerDto";
+	export type { ThumbVideoResponseDto, GetVideoByKvidRequestDto, GetVideoByKvidResponseDto } from "api/Video/VideoControllerDto";
 }

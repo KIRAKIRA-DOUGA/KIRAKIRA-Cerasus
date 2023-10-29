@@ -1,7 +1,6 @@
 <script setup lang="ts">
 	import mediainfo from "mediainfo.js";
-	import { type MediaPlayerClass, BitrateInfo } from "dashjs";
-	// import { GetDanmaku200ResponseInner } from "kirakira-backend";
+	import type { MediaPlayerClass, BitrateInfo } from "dashjs";
 	import { createDanmakuComment } from "./PlayerVideoPanel/PlayerVideoPanelDanmaku/PlayerVideoPanelDanmakuSender.vue";
 
 	const props = defineProps<{
@@ -158,7 +157,7 @@
 
 		if (props.src.endsWith(".mp4"))
 			video.value.src = props.src;
-		else if (process.client) {
+		else if (environment.client) {
 			const Dash = await import("dashjs"); // 注意看，由于 Dash 无法在服务端下渲染，因此必须动态导入。
 			player.value = Dash.MediaPlayer().create();
 
@@ -278,8 +277,7 @@
 				@click="playing = !playing"
 				@dblclick="toggle"
 				@contextmenu.prevent="e => menu = e"
-			>
-			</video>
+			></video>
 			<PlayerVideoDanmaku v-model="willSendDanmaku" :comments="initialDanmaku" :media="video" :hidden="!showDanmaku" />
 			<PlayerVideoController
 				:key="qualities.length"

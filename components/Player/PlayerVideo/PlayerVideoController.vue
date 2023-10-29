@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { BitrateInfo } from "dashjs";
+	import type { BitrateInfo } from "dashjs";
 
 	const props = withDefaults(defineProps<{
 		/** 速度保持音高？ */

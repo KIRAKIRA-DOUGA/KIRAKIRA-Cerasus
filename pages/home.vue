@@ -1,7 +1,4 @@
 <script setup lang="ts">
-	import type { ThumbVideoResponseDto } from "~/composables/api/Video/VideoControllerDto";
-	import { getHomePageThumbVideo } from "../composables/api/Video/VideoController";
-
 	useHead({ title: t.home });
 
 	const videos = ref<ThumbVideoResponseDto>();
@@ -17,7 +14,7 @@
 		page: +(query.page ?? 1),
 	});
 
-	videos.value = await getHomePageThumbVideo();
+	videos.value = await api.video.getHomePageThumbVideo();
 
 	const categoryItemCount = ref(0);
 	const pageCount = ref(1);
