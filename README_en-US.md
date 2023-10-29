@@ -94,7 +94,7 @@ npm run build
 ```bash
 npm run preview
 ```
-When running in production mode, the back-end API we connect to is `rosales.kirakira.moe`
+When running in production mode, we connect to the back-end API at: https://rosales.kirakira.moe/
 
 Checkout the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
 

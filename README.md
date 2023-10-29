@@ -97,7 +97,7 @@ npm run build
 npm run preview
 ```
 
-以生产模式运行时，连接的后端服务接口是 `rosales.kirakira.moe`
+以生产模式运行时，连接的后端服务接口是：https://rosales.kirakira.moe/
 
 有关详细信息，请查看[部署文档](https://nuxt.com/docs/getting-started/deployment)。
 
