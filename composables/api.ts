@@ -1,11 +1,6 @@
-import { login, registration, userExistsCheck } from "api/User/UserController";
-import { getHomePageThumbVideo, getVideoByKvid } from "api/Video/VideoController";
+import * as user from "api/User/UserController";
+import * as video from "api/Video/VideoController";
 
 export default {
-	user: {
-		login, registration, userExistsCheck,
-	},
-	video: {
-		getHomePageThumbVideo, getVideoByKvid,
-	},
+	user, video,
 };
