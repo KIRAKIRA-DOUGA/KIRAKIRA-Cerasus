@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { ThumbVideoResponseDto } from "~/composables/api/Video/VideoControllerDto";
+	import type { ThumbVideoResponseDto } from "~/composables/api/Video/VideoControllerDto";
 	import { getHomePageThumbVideo } from "../composables/api/Video/VideoController";
 
 	useHead({ title: t.home });

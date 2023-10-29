@@ -38,7 +38,7 @@
 </script>
 
 <template>
-	<NuxtLayout v-if="isStatusCode(404, 233)" name="error-404" :statusCode="error.statusCode" :message="error.message" />
-	<NuxtLayout v-else-if="isStatusCode(502)" name="error-502" :statusCode="error.statusCode" :message="error.message" />
-	<NuxtLayout v-else name="error-500" :statusCode="error.statusCode" :message="error.message" :stack="error.stack ?? ''" />
+	<NuxtLayout v-if="isStatusCode(404, 233)" name="error404" :statusCode="error.statusCode" :message="error.message" />
+	<NuxtLayout v-else-if="isStatusCode(502)" name="error502" :statusCode="error.statusCode" :message="error.message" />
+	<NuxtLayout v-else name="error500" :statusCode="error.statusCode" :message="error.message" :stack="error.stack ?? ''" />
 </template>
