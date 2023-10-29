@@ -43,13 +43,13 @@
 	async function loginUser() {
 		if (password.value && email.value) {
 			const passwordHash = password.value; // TODO // WARN 为了保证安全性，这里需要对密码进行一次 Hash
-			const userLoginData: UserLoginDataDto = { username: email.value, passwordHash };
+			const userLoginRequest: UserLoginRequestDto = { email: email.value, passwordHash };
 			try {
 				isTryingLogin.value = true;
-				const loginResult = await api.user.login(userLoginData);
+				const loginResponse = await api.user.login(userLoginRequest);
 				isTryingLogin.value = false;
 
-				if (loginResult.success)
+				if (loginResponse.success)
 					open.value = false;
 				else
 					useToast(t.toast.login_failed, "error");
@@ -68,13 +68,13 @@
 	async function registerUser() {
 		if (password.value === confirmPassword.value) {
 			const passwordHash = password.value; // TODO 为了保证安全性，这里需要对密码进行一次 Hash
-			const userRegistrationData: UserRegistrationDataDto = { username: email.value, passwordHash, passwordHint: passwordHint.value };
+			const userRegistrationRequest: UserRegistrationRequestDto = { email: email.value, passwordHash, passwordHint: passwordHint.value };
 			try {
 				isTryingRegistration.value = true;
-				const registrationResult = await api.user.registration(userRegistrationData);
+				const registrationResponse = await api.user.registration(userRegistrationRequest);
 				isTryingRegistration.value = false;
 
-				if (registrationResult.success) { // 如果注册成功，则关闭页面，并且回退到登录页面
+				if (registrationResponse.success) { // 如果注册成功，则关闭页面，并且回退到登录页面
 					open.value = false;
 					currentPage.value = "login";
 				} else
@@ -117,10 +117,10 @@
 				useToast("密码提示中不能包含密码本身", "error"); // TODO 使用多语言
 				return;
 			}
-			const userExistsCheckData: UserExistsCheckDataDto = { username: email.value };
+			const userExistsCheckRequest: UserExistsCheckRequestDto = { email: email.value };
 			try {
-				const userExistsCheckResultData = await api.user.userExistsCheck(userExistsCheckData);
-				if (userExistsCheckResultData.success && !userExistsCheckResultData.exists)
+				const userExistsCheckResponse = await api.user.userExistsCheck(userExistsCheckRequest);
+				if (userExistsCheckResponse.success && !userExistsCheckResponse.exists)
 					currentPage.value = "register2";
 				else
 					useToast("用户名重复", "error"); // TODO 使用多语言
