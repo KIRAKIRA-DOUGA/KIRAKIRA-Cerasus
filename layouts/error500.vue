@@ -105,6 +105,7 @@
 				h1 {
 					font-size: 112px;
 					line-height: 1em;
+					font-variant-numeric: oldstyle-nums;
 				}
 
 				p {

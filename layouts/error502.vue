@@ -49,6 +49,7 @@
 				font-family: $english-logo-fonts;
 				line-height: 1;
 				animation: float-down $title-animation-options;
+				font-variant-numeric: oldstyle-nums;
 			}
 
 			h2 {

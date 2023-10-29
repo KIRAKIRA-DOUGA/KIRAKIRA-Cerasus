@@ -86,6 +86,10 @@
 		::after {
 			pointer-events: none !important;
 		}
+
+		:deep(.player-video-controller) {
+			background-color: transparent;
+		}
 	}
 
 	.settings-chip-item {
