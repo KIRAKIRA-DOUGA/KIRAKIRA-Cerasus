@@ -64,6 +64,7 @@ export default defineNuxtConfig({
 		"utils",
 		"worklets",
 		"assets/pomsky",
+		"composables/api",
 	),
 	css: [
 		"styles/global.scss",
