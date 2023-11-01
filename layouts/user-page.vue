@@ -46,7 +46,7 @@
 	});
 	const currentTab = computed({
 		get: () => currentUserTab(),
-		set: async id => { await forceNavigate(`/user/${uid}/${id}`, () => currentTab.value === id); },
+		set: async id => { await navigateTo(`/user/${uid}/${id}`); },
 	});
 
 	useHead({ title: user.value?.username ? t.user_page.title_affix(user.value.username) : undefined });
