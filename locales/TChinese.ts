@@ -222,7 +222,7 @@ const TChinese: LocaleIdentifiers = {
 		move_to: "移動到",
 		multi_select: "批量選擇",
 	},
-	feed: "發現",
+	feed: "關注",
 	upload: {
 		_: "投稿",
 		drag_to_upload: "拖到此處上傳",
@@ -267,7 +267,7 @@ const TChinese: LocaleIdentifiers = {
 	title: "標題",
 	press_enter_to_add: "按回車鍵添加",
 	description: "簡介",
-	push_to_feed: "推送到動態",
+	push_to_feed: "推送給關注的人",
 	cover: "封面",
 	select_cover: "選擇封面",
 	follow: "關注",

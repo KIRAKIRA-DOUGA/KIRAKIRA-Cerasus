@@ -220,7 +220,7 @@ const SChinese = {
 		move_to: "移动到",
 		multi_select: "批量选择",
 	},
-	feed: "动态",
+	feed: "关注",
 	upload: {
 		_: "投稿",
 		drag_to_upload: "拖到此处上传",
@@ -265,7 +265,7 @@ const SChinese = {
 	title: "标题",
 	press_enter_to_add: "按回车键添加",
 	description: "简介",
-	push_to_feed: "推送到动态",
+	push_to_feed: "推送给关注的人",
 	cover: "封面",
 	select_cover: "选择封面",
 	follow: "关注",

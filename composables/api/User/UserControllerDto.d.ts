@@ -118,7 +118,7 @@ export type UpdateOrCreateUserInfoRequestDto = {
 	userBannerImage?: string;
 	/** 用户的个性签名 */
 	signature?: string;
-	/** 用户的性别，男、女和自定义（字符串）v */
+	/** 用户的性别，男、女和自定义（字符串） */
 	gender?: string;
 	/** 用户的个人标签 */
 	label: UserLabelSchema[];
@@ -154,7 +154,7 @@ export type UpdateOrCreateUserInfoResponseDto = {
 		userBannerImage?: string;
 		/** 用户的个性签名 */
 		signature?: string;
-		/** 用户的性别，男、女和自定义（字符串）v */
+		/** 用户的性别，男、女和自定义（字符串） */
 		gender?: string;
 		/** 用户的个人标签 */
 		label?: UserLabelSchema[];
@@ -179,7 +179,7 @@ export type GetUserInfoByUidResponseDto = {
 		userBannerImage?: string;
 		/** 用户的个性签名 */
 		signature?: string;
-		/** 用户的性别，男、女和自定义（字符串）v */
+		/** 用户的性别，男、女和自定义（字符串） */
 		gender?: string;
 		/** 用户的个人标签 */
 		label?: UserLabelSchema[];
