@@ -147,6 +147,14 @@ export default defineNuxtConfig({
 			}),
 		],
 	}, */
+	build: {
+		vendor: [
+			"vue-cropper",
+		],
+		plugins: [
+			{ src: "~/plugins/vue-cropper", ssr: false },
+		],
+	},
 	vue: {
 		compilerOptions: {
 			isCustomElement(tag) {
