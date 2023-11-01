@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	const currentSetting = computed({
 		get: () => currentSettingsPage(),
-		set: async id => { await forceNavigate(`/settings/${id}`, () => currentSetting.value === id); },
+		set: async id => { await navigateTo(`/settings/${id}`); },
 	});
 	const search = ref("");
 	const main = ref<HTMLElement>();
