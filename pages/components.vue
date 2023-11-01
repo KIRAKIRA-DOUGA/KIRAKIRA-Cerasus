@@ -2,6 +2,8 @@
 	import animationData from "lotties/spinner-dev1.json";
 	import beepSrc from "assets/audios/NOVA 2022.1 Alert Quick.ogg";
 	import type { ToastEvent } from "composables/toast";
+	import { VueCropper } from "vue-cropper";
+	import cropTestImage from "assets/images/av820864307.jpg";
 
 	const page = ref(1);
 	const pages = ref(99);
@@ -120,6 +122,24 @@
 		opPage.value = 1;
 		op.value = getRandomOp();
 	}
+
+	const vueCropperOption = reactive({
+		img: cropTestImage,
+		size: 1,
+		full: false,
+		outputType: "png",
+		canMove: true,
+		fixedBox: false,
+		original: false,
+		canMoveBox: true,
+		autoCrop: true,
+		// 只有自动截图开启 宽度高度才生效
+		autoCropWidth: 750,
+		autoCropHeight: 340,
+		centerBox: true,
+		high: true,
+		max: 99999,
+	});
 
 	useHead({ title: t.components_test_page });
 </script>
@@ -300,6 +320,30 @@
 			<hr />
 			<div class="flyout-bg" :style="{ width: '344px' }">
 				<ColorPicker v-model="color" enableAlpha />
+			</div>
+			<hr />
+			<div :style="{ height: '500px' }">
+				<ClientOnly>
+					<VueCropper
+						:img="vueCropperOption.img"
+						:outputSize="vueCropperOption.size"
+						:outputType="vueCropperOption.outputType"
+						:info="true"
+						:full="vueCropperOption.full"
+						:fixed="false"
+						:canMove="vueCropperOption.canMove"
+						:canMoveBox="vueCropperOption.canMoveBox"
+						:fixedBox="vueCropperOption.fixedBox"
+						:original="vueCropperOption.original"
+						:autoCrop="vueCropperOption.autoCrop"
+						:autoCropWidth="vueCropperOption.autoCropWidth"
+						:autoCropHeight="vueCropperOption.autoCropHeight"
+						:centerBox="vueCropperOption.centerBox"
+						:high="vueCropperOption.high"
+						mode="contain"
+						:maxImgSize="vueCropperOption.max"
+					/>
+				</ClientOnly>
 			</div>
 			<hr />
 			<Accordion autoCollapse>
