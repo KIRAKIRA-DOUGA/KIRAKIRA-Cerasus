@@ -71,7 +71,7 @@ export function watchRoute(callback: (slug: string[], prevSlug: string[], path: 
  * @param path - 路由地址。
  */
 export function navigate(path: string) {
-	useRouter().push(useLocalePath()(path));
+	navigateTo(useLocalePath()(path));
 }
 
 /**
