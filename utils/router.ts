@@ -1,4 +1,5 @@
-import type { RouteLocationNormalized, RouteLocationNormalizedLoaded } from "vue-router";
+import type { RouteLocationNormalized, RouteLocationNormalizedLoaded, RouteLocationRaw } from "vue-router";
+import type { NavigateToOptions } from "nuxt/dist/app/composables/router";
 
 const localeCodes = computed(() => useNuxtApp().$i18n.localeCodes.value);
 type Route = RouteLocationNormalized | RouteLocationNormalizedLoaded;
@@ -68,10 +69,11 @@ export function watchRoute(callback: (slug: string[], prevSlug: string[], path: 
 
 /**
  * 导航到页面。
- * @param path - 路由地址。
+ * @param to - 路由地址或路由参数对象。
+ * @param options - 其它选项。
  */
-export function navigate(path: string) {
-	navigateTo(useLocalePath()(path));
+export function navigate(to: RouteLocationRaw, options?: NavigateToOptions) {
+	navigateTo(useLocalePath()(to), options);
 }
 
 /**

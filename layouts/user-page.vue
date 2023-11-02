@@ -12,26 +12,11 @@
 </script>
 
 <script setup lang="ts">
-	// import { Users200Response } from "kirakira-backend";
 	import makeFullwidth from "pomsky/fullwidth.pom";
 
 	// TODO nice copy pasta dude
 	const uid = currentUserUid();
 	const user = ref<Users200Response>();
-
-	const data = reactive({
-		uid,
-	});
-
-	/** fetch the user profile data */
-	async function fetchData() {
-		const api = useApi();
-		try {
-			user.value = await api.users(uid);
-		} catch (error) { console.error(error); }
-	}
-	watch(data, fetchData, { deep: true });
-	await fetchData();
 
 	const isSelf = ref(false); // 是否为登录用户本人。
 	const isFollowed = ref(false);
