@@ -74,6 +74,7 @@
 				</header>
 			</div>
 		</nav>
+		<NuxtLoadingIndicator color="var(--accent)" />
 
 		<div class="card"></div>
 		<main ref="main">
