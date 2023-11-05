@@ -71,9 +71,10 @@ export function watchRoute(callback: (slug: string[], prevSlug: string[], path: 
  * 导航到页面。
  * @param to - 路由地址或路由参数对象。
  * @param options - 其它选项。
+ * @returns 表示导航成功的承诺。
  */
 export function navigate(to: RouteLocationRaw, options?: NavigateToOptions) {
-	navigateTo(useLocalePath()(to), options);
+	return navigateTo(useLocalePath()(to), options);
 }
 
 /**

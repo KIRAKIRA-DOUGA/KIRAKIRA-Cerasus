@@ -56,11 +56,11 @@ export function arrayClearAll<T>(array: T[]): void {
 }
 
 /**
- * 将源数组清空后注入新的数据。
+ * 将源数组清空后重新注入新的数据。
  * @param array - 源数组。
  * @param items - 新的数据。
  */
-export function arrayInject<T>(array: T[], items: Iterable<T>): void {
+export function arrayRelist<T>(array: T[], items: Iterable<T>): void {
 	array.splice(0, Infinity, ...items);
 }
 
@@ -91,7 +91,7 @@ export function randomOne<T>(array: T[], record?: MaybeRef<number[]>): T {
 		if (record.length !== array.length + 1 || record.every((n, i) => !i || n)) {
 			let last = +record[0];
 			if (!Number.isFinite(last)) last = -1;
-			arrayInject(record, Array(array.length + 1).fill(0));
+			arrayRelist(record, Array(array.length + 1).fill(0));
 			record[0] = last;
 		}
 		while (record[index + 1] || index === record[0])

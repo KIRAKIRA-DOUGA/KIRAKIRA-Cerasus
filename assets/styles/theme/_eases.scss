@@ -42,6 +42,7 @@ $ease-in-back: cubic-bezier(0.6, -0.28, 0.735, 0.045);
 /// 将锚点拉到头的缓动 `3t^⅔-2t`。
 $ease-in-max: cubic-bezier(1, 0, 1, 1);
 /// ### 平滑缓入
+/// 由设计师艾拉精心调整的平滑缓动参数。
 $ease-in-smooth: cubic-bezier(0.6, 0, 1, 0.8);
 // #endregion
 
@@ -77,7 +78,11 @@ $ease-out-back: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 /// 将锚点拉到头的缓动 `3t^⅔-2t`。
 $ease-out-max: cubic-bezier(0, 0, 0, 1);
 /// ### 平滑缓出
+/// 由设计师艾拉精心调整的平滑缓动参数。
 $ease-out-smooth: cubic-bezier(0.1, 0.9, 0.2, 1);
+/// ### 流动设计强调用缓出
+/// 微软 Windows 11 Fluent 2 中用于强调用的缓出，如任务栏图标跳动等。
+$ease-out-fluent-back: cubic-bezier(0.13, 1.62, 0, 0.92);
 // #endregion
 
 // #region 缓入缓出
@@ -112,5 +117,9 @@ $ease-in-out-back: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 /// 将锚点拉到头的缓动 `3t^⅔-2t`。
 $ease-in-out-max: cubic-bezier(1, 0, 0, 1);
 /// ### 平滑缓入缓出
+/// 由设计师艾拉精心调整的平滑缓动参数。
 $ease-in-out-smooth: cubic-bezier(0.75, 0, 0, 1);
+/// ### 流动设计点对点缓出
+/// 微软 Windows 11 Fluent 2 中用于点对点的缓出，如窗口最大化、还原等。
+$ease-in-out-fluent: cubic-bezier(0.13, 1.62, 0, 0.92);
 // #endregion

@@ -66,6 +66,7 @@ export type Styles = {
 	easeInMax: string;
 	/**
 	 * ### 平滑缓入
+	 * 由设计师艾拉精心调整的平滑缓动参数。
 	 */
 	easeInSmooth: string;
 	/**
@@ -120,8 +121,14 @@ export type Styles = {
 	easeOutMax: string;
 	/**
 	 * ### 平滑缓出
+	 * 由设计师艾拉精心调整的平滑缓动参数。
 	 */
 	easeOutSmooth: string;
+	/**
+	 * ### 流动设计强调用缓出
+	 * 微软 Windows 11 Fluent 2 中用于强调用的缓出，如任务栏图标跳动等。
+	 */
+	easeOutFluentBack: string;
 	/**
 	 * ### 缓入缓出
 	 * 以慢速开始的过渡效果。
@@ -174,8 +181,14 @@ export type Styles = {
 	easeInOutMax: string;
 	/**
 	 * ### 平滑缓入缓出
+	 * 由设计师艾拉精心调整的平滑缓动参数。
 	 */
 	easeInOutSmooth: string;
+	/**
+	 * ### 流动设计点对点缓出
+	 * 微软 Windows 11 Fluent 2 中用于点对点的缓出，如窗口最大化、还原等。
+	 */
+	easeInOutFluent: string;
 };
 
 export type ClassNames = keyof Styles;
