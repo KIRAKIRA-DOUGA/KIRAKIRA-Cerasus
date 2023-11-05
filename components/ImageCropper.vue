@@ -3,6 +3,7 @@
 	import cropTestImage from "assets/images/av820864307.jpg";
 
 	const props = withDefaults(defineProps<{
+		/** 图片路径。 */
 		image?: string;
 	}>(), {
 		image: cropTestImage,
