@@ -2,7 +2,12 @@
 	// import { Users200Response } from "kirakira-backend";
 
 	const uid = currentUserUid();
-	const user = ref<Users200Response>();
+	// const user = ref<Users200Response>();
+	const userBirthday = ref(0);
+	const userJoinDate = ref(0);
+	const userId = ref<number>();
+
+	const userVideos = ref<ThumbVideoResponseDto>();
 
 	const data = reactive({
 		uid,
@@ -10,30 +15,31 @@
 
 	/** fetch the user profile data */
 	async function fetchData() {
-		const api = useApi();
-		try {
-			user.value = await api.users(uid);
-		} catch (error) { console.error(error); }
+		// TODO 现在获取用户信息的接口还没法获得这些信息
+		const userInfoResult = await api.user.getUserInfo();
+		userBirthday.value = 0; // TODO
+		userJoinDate.value = 0; // TODO
+		userId.value = -1; // TODO
 	}
 	watch(data, fetchData, { deep: true });
-	await fetchData();
 </script>
 
 <template>
 	<div class="container">
 		<div class="toolbox-card center">
 			<div class="videos-grid">
-				<ThumbVideo
-					v-for="video in user?.videos"
-					:key="video.videoID"
-					:videoId="video.videoID"
-					:uploader="video.authorName ?? ''"
-					:uploaderId="video.authorID"
-					:image="video.thumbnailLoc"
-					:date="new Date()"
-					:watchedCount="video.views"
-					:duration="new Duration(0, video.videoDuration ?? 0)"
-				>{{ video.title }}</ThumbVideo>
+				<!-- // TODO 获取这个用户投稿的视频？ -->
+				<!-- <ThumbVideo
+					v-for="video in userVideos?.videos"
+					:key="video.videoId"
+					:videoId="video.videoId"
+					:uploader="video.uploader ?? ''"
+					:uploaderId="video.uploaderId"
+					:image="video.image"
+					:date="new Date(video.updateDate || 0)"
+					:watchedCount="video.watchedCount"
+					:duration="new Duration(0, video.duration ?? 0)"
+				>{{ video.title }}</ThumbVideo> -->
 			</div>
 		</div>
 
@@ -63,19 +69,19 @@
 				<div class="user-info">
 					<h3>{{ t.user.info }}</h3>
 					<div class="items">
-						<div v-if="user?.birthdate" v-tooltip:x="t.user.birthday" class="birthday">
+						<div v-if="userBirthday" v-tooltip:x="t.user.birthday" class="birthday">
 							<Icon name="birthday" />
-							<span>{{ formatDateWithLocale(new Date(user?.birthdate)) }}</span>
+							<span>{{ formatDateWithLocale(new Date(userBirthday)) }}</span>
 						</div>
 
-						<div v-if="user?.joinDate" v-tooltip:x="t.user.join_time" class="join-time">
+						<div v-if="userJoinDate" v-tooltip:x="t.user.join_time" class="join-time">
 							<Icon name="history" />
-							<span>{{ formatDateWithLocale(new Date(user?.joinDate)) }}</span>
+							<span>{{ formatDateWithLocale(new Date(userJoinDate)) }}</span>
 						</div>
 
 						<div v-tooltip:x="'UID'" class="uid">
 							<Icon name="fingerprint" />
-							<span>{{ user?.userID }}</span>
+							<span>{{ userId }}</span>
 						</div>
 					</div>
 					<div class="shading shading-title">

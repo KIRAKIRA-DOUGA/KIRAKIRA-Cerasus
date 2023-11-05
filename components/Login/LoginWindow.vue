@@ -4,6 +4,7 @@
 		open?: boolean;
 	}>();
 
+	const userInfoStore = useUserInfoStore();
 	const model = defineModel<boolean>();
 	const avatar = "/static/images/avatars/aira.webp";
 	type PageType = "login" | "register" | "register2" | "forgot" | "reset";
@@ -31,6 +32,7 @@
 		set: value => {
 			model.value = value;
 			if (isLogining.value) useEvent("user:login", true);
+			if (isLogining.value) userInfoStore.isLogined = true;
 			isLogining.value = false;
 		},
 	});
@@ -49,13 +51,14 @@
 				const loginResponse = await api.user.login(userLoginRequest);
 				isTryingLogin.value = false;
 
-				if (loginResponse.success)
+				if (loginResponse.success && loginResponse.uid) {
 					open.value = false;
-				else
+					userInfoStore.isLogined = true;
+					useEvent("user:login", true);
+				} else
 					useToast(t.toast.login_failed, "error");
 			} catch (error) {
 				useToast(t.toast.login_failed, "error");
-				console.error(error);
 			}
 		} else
 			useToast("用户名和密码不能为空", "error"); // TODO 使用多语言
@@ -81,7 +84,6 @@
 					useToast("注册失败", "error"); // TODO 使用多语言
 			} catch (error) {
 				useToast("注册失败", "error"); // TODO 使用多语言
-				console.error("注册失败", error);
 			}
 		} else
 			useToast(t.toast.password_mismatch, "error");

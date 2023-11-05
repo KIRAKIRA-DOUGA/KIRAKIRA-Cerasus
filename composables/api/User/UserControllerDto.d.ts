@@ -127,7 +127,7 @@ export type UpdateOrCreateUserInfoRequestDto = {
 /**
  * 用户的个人标签
  */
-type UserLabelSchema = {
+export type UserLabelSchema = {
 	/** 标签 ID */
 	id: number;
 	/** 标签名 */
@@ -184,4 +184,26 @@ export type GetUserInfoByUidResponseDto = {
 		/** 用户的个人标签 */
 		label?: UserLabelSchema[];
 	};
+};
+
+/**
+ * 通过 UID 和 TOKEN 校验用户的返回结果
+ */
+export type CheckUserTokenResponseDto = {
+	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
+	success: boolean;
+	/** 附加的文本消息 */
+	message?: string;
+	/** 用户校验结果，用户正常为 true，非法用户为 false */
+	userTokenOk?: boolean;
+};
+
+/**
+ * 用户登出的响应
+ */
+export type UserLogoutResponseDto = {
+	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
+	success: boolean;
+	/** 附加的文本消息 */
+	message?: string;
 };

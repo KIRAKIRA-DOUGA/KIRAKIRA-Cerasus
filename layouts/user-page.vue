@@ -14,27 +14,45 @@
 <script setup lang="ts">
 	import makeFullwidth from "pomsky/fullwidth.pom";
 
+	const userInfoStore = useUserInfoStore();
+
 	// TODO nice copy pasta dude
 	const uid = currentUserUid();
-	const user = ref<Users200Response>();
+	const user = ref<GetUserInfoByUidResponseDto>();
 
-	const isSelf = ref(false); // 是否为登录用户本人。
-	const isFollowed = ref(false);
-
+	const isSelf = ref(false); // TODO 是否为登录用户本人。
+	const isFollowed = ref(false); // TODO
 	const actionMenu = ref<FlyoutModel>();
+
 	const fullwidthRegexp = makeFullwidth();
-	// 验证是否是加上全宽括弧而不是半宽括弧，条件是包含至少一个非谚文的全宽字符。
-	const memoParen = computed(() => {
-		const memo = user.value?.bio ?? "";
-		return !memo.trim() ? "" :
-			fullwidthRegexp.exec(memo) ? "fullwidth" : "halfwidth";
+
+	// TODO
+	// // 验证是否是加上全宽括弧而不是半宽括弧，条件是包含至少一个非谚文的全宽字符。
+	// const memoParen = computed(() => {
+	// 	const memo = user.value?.bio ?? "";
+	// 	return !memo.trim() ? "" :
+	// 		fullwidthRegexp.exec(memo) ? "fullwidth" : "halfwidth";
+	// });
+
+	const data = reactive({
+		uid,
 	});
+
+	/** fetch the user profile data */
+	async function fetchData() {
+		// WARN 现在这个接口就只能获得当前登录用户的信息！
+		user.value = await api.user.getUserInfo();
+	}
+
+	watch(data, fetchData, { deep: true });
+	onMounted(async () => { await fetchData(); });
+
 	const currentTab = computed({
 		get: () => currentUserTab(),
 		set: async id => { await navigate(`/user/${uid}/${id}`); },
 	});
 
-	useHead({ title: user.value?.username ? t.user_page.title_affix(user.value.username) : undefined });
+	useHead({ title: user.value?.result?.username ? t.user_page.title_affix(user.value.result.username) : undefined });
 </script>
 
 <template>
@@ -42,18 +60,18 @@
 		<div>
 			<div class="content">
 				<div class="user">
-					<UserAvatar />
+					<UserAvatar :avatar="user?.result?.avatar || undefined" />
 					<div class="texts">
 						<div class="names">
-							<span class="username">{{ user?.username }}</span>
-							<span v-if="memoParen" class="memo" :class="[memoParen]">{{ user?.bio }}</span>
+							<span class="username">{{ user?.result?.username }}</span>
+							<!-- <span v-if="memoParen" class="memo" :class="[memoParen]">{{ user?.bio }}</span> -->
 							<span class="icons">
-								<Icon v-if="user?.gender === 'male'" name="male" class="male" />
-								<Icon v-else-if="user?.gender === 'female'" name="female" class="female" />
-								<span v-else class="other-gender">{{ user?.gender }}</span>
+								<Icon v-if="user?.result?.gender === 'male'" name="male" class="male" />
+								<Icon v-else-if="user?.result?.gender === 'female'" name="female" class="female" />
+								<span v-else class="other-gender">{{ user?.result?.gender }}</span>
 							</span>
 						</div>
-						<div class="bio">{{ user?.bio }}</div>
+						<div class="bio">{{ user?.result?.signature }}</div>
 					</div>
 				</div>
 				<div class="actions">
