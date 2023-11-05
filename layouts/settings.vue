@@ -1,4 +1,5 @@
 <script setup lang="ts">
+	const userInfoStore = useUserInfoStore();
 	const currentSetting = computed({
 		get: () => currentSettingsPage(),
 		set: async id => { await navigate(`/settings/${id}`); },
@@ -9,7 +10,14 @@
 	const ti = (id: string) => t[new VariableName(id).snake];
 	const title = computed(() => ti(currentSetting.value));
 	const htmlTitle = computed(() => title.value + " - " + t.settings);
-	const logout = () => useEvent("user:login", false);
+	const logout = async () => {
+		const logoutResult = await api.user.userLogout();
+		if (logoutResult) {
+			useToast("用户已登出。", "success"); // TODO 使用多语言
+			useEvent("user:login", false);
+			userInfoStore.isLogined = false;
+		}
+	};
 
 	useEventListener("window", "resize", () => {
 		if (window.innerWidth > 991) showDrawer.value = false;

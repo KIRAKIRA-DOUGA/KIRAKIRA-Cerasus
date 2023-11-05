@@ -5,21 +5,59 @@
 	// const isMobile = computed(() => windowSize.width.value <= numbers.mobileMaxWidth);
 	// 以后使用以上代码可获取在 SCSS 文件中定义的移动端宽度值。
 
-	const avatar = "/static/images/avatars/aira.webp";
+	const userInfoStore = useUserInfoStore();
 	const showLogin = ref(false);
-	const isLogined = ref(false);
 	const isCurrentSettings = computed(() => !!currentSettingsPage());
 	const [DefineAvatar, Avatar] = createReusableTemplate();
 	const scopeId = useParentScopeId()!;
+	const userAvatar = ref("");
+
+	/**
+	 * 判断用户是否合法，或者判断用户是否已经登录
+	 */
+	const checkUser = async (): Promise<boolean> => {
+		const checkUserResult = await api.user.checkUserToken();
+		if (checkUserResult.success && checkUserResult.userTokenOk)
+			return true;
+		else
+			return false;
+	};
+
+	/**
+	 * 根据 cookie 中的 uid 和 token 来获取用户信息（同时具有验证用户 token 的功能）
+	 */
+	const getUserInfo = async () => {
+		const checkUserResult = await checkUser();
+		if (checkUserResult) {
+			const userInfo = await api.user.getUserInfo();
+			if (userInfo.success) {
+				userInfoStore.isLogined = true;
+				userInfoStore.username = userInfo.result?.username || "Unknown Username"; // TODO 使用多语言，为未设置用户名的用户提供国际化的缺省用户名
+				userAvatar.value = userInfo.result?.avatar || "";
+			} else {
+				userInfoStore.isLogined = false;
+				userInfoStore.username = "";
+				userAvatar.value = "";
+				useToast("无法获取用户信息，请尝试重新登录", "error", 7000); // TODO 使用多语言
+			}
+		} else {
+			// TODO 如果用户未登录，要怎样？要引导登录吗？
+		}
+	};
 
 	useListen("app:requestLogin", () => showLogin.value = true);
-	useListen("user:login", value => isLogined.value = value);
+	useListen("user:login", async loginStatus => {
+		if (loginStatus)
+			await getUserInfo();
+	});
+
+	onMounted(async () => { await getUserInfo(); });
 
 	/**
 	 * 点击用户头像事件。未登录时提示登录，已登录时导航到个人主页。
 	 */
 	function onClickUser() {
-		if (!isLogined.value) showLogin.value = true;
+		if (!userInfoStore.isLogined) showLogin.value = true;
 		else navigate("/user");
 	}
 
@@ -34,8 +72,8 @@
 <template>
 	<DefineAvatar>
 		<UserAvatar
-			v-tooltip="isLogined ? '艾草' : t.login"
-			:avatar="isLogined ? avatar : undefined"
+			v-tooltip="userInfoStore.isLogined ? userInfoStore.username : t.login"
+			:avatar="userInfoStore.isLogined ? userAvatar : undefined"
 			@click="onClickUser"
 		/>
 	</DefineAvatar>
