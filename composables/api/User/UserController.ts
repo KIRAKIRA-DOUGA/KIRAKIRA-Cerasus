@@ -31,7 +31,7 @@ export const login = async (userLoginRequest: UserLoginRequestDto): Promise<User
  * @returns 验证用户邮箱是否已经存在的返回参数
  */
 export const userExistsCheck = async (userExistsCheckRequest: UserExistsCheckRequestDto): Promise<UserExistsCheckResponseDto> => {
-	return await get(`${USER_API_URI}/existsCheck?username=${userExistsCheckRequest.email}`) as UserExistsCheckResponseDto;
+	return await get(`${USER_API_URI}/existsCheck?email=${userExistsCheckRequest.email}`) as UserExistsCheckResponseDto;
 };
 
 /**
