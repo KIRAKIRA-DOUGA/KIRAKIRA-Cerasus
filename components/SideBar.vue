@@ -38,7 +38,7 @@
 				userInfoStore.isLogined = false;
 				userInfoStore.username = "";
 				userAvatar.value = "";
-				useToast("无法获取用户信息", "error"); // TODO 使用多语言
+				useToast("无法获取用户信息，请尝试重新登录", "error", 7000); // TODO 使用多语言
 			}
 		} else {
 			// TODO 如果用户未登录，要怎样？要引导登录吗？
