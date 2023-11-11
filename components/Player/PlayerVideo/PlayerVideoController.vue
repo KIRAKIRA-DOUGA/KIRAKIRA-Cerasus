@@ -125,12 +125,12 @@
 		<div class="slider">
 			<Slider v-model="currentPercent" :min="0" :max="1" :buffered="buffered" />
 		</div>
+		<div class="time">
+			<span class="current">{{ currentTime }} </span>
+			<span class="divide">/</span>
+			<span class="duration">{{ duration }}</span>
+		</div>
 		<div class="right">
-			<div class="time">
-				<span class="current">{{ currentTime }} </span>
-				<span class="divide">/</span>
-				<span class="duration">{{ duration }}</span>
-			</div>
 			<SoftButton
 				class="quality-button"
 				:text="quality"
@@ -145,6 +145,7 @@
 			/>
 			<SoftButton
 				:icon="volumeSet >= 0.5 ? 'volume_up' : volumeSet > 0 ? 'volume_down' : 'volume_mute'"
+				class="volume"
 				@click="muted = !muted"
 				@mouseenter="e => volumeMenu = e"
 				@mouseleave="volumeMenu = undefined"
@@ -164,6 +165,7 @@
 
 <style scoped lang="scss">
 	$thickness: 36px;
+	$twin-thickness: 60px;
 
 	:comp {
 		position: relative;
@@ -186,6 +188,11 @@
 			transition: $fallback-transitions, background-color 0s;
 		}
 
+		@include mobile {
+			flex-wrap: wrap;
+			height: $twin-thickness;
+		}
+
 		:where(& > *) {
 			flex-shrink: 0;
 		}
@@ -195,6 +202,11 @@
 		@include flex-center;
 		justify-content: flex-start;
 		height: inherit;
+
+		@include mobile {
+			order: 2;
+			height: $thickness;
+		}
 
 		.play {
 			width: $thickness + 10px;
@@ -206,6 +218,16 @@
 		justify-content: flex-end;
 		height: inherit;
 
+		@include mobile {
+			order: 3;
+			height: $thickness;
+			margin-left: auto;
+
+			.volume {
+				display: none;
+			}
+		}
+
 		button {
 			@include square($thickness);
 		}
@@ -215,6 +237,10 @@
 		@include flex-center;
 		min-width: 90px;
 		margin: 0 4px;
+
+		@include mobile {
+			order: 2;
+		}
 
 		> * {
 			@include flex-center;
@@ -236,6 +262,10 @@
 		flex-grow: 1;
 		flex-shrink: 1;
 		width: 100%;
+
+		@include mobile {
+			order: 1;
+		}
 
 		:deep(.passed) {
 			opacity: 1;
