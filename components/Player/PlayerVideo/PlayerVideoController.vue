@@ -283,6 +283,10 @@
 	.soft-button {
 		--wrapper-size: #{$thickness};
 
+		&:active:deep(.icon) {
+			scale: 0.9;
+		}
+
 		&.quality-button:deep {
 			&,
 			* {
