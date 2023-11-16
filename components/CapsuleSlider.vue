@@ -149,6 +149,7 @@
 		color: c(accent);
 		transition: none;
 		pointer-events: none;
+		font-variant-numeric: tabular-nums;
 
 		html.dark & {
 			color: white;

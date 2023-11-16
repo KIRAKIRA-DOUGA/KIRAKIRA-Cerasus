@@ -34,6 +34,7 @@
 	const steplessRate = defineModel<boolean>("steplessRate", { default: false });
 	const showDanmaku = defineModel<boolean>("showDanmaku", { default: false });
 	const quality = defineModel<string>("quality", { default: "720P" });
+	const hide = defineModel<boolean>("hide", { default: false });
 	const volumeBackup = ref(volume);
 	const volumeSet = computed({
 		get: () => muted.value ? 0 : volume.value,
@@ -118,7 +119,7 @@
 		</PlayerVideoMenu>
 	</div>
 
-	<Comp role="toolbar" :class="{ fullscreen, ...fullscreenColorClass }">
+	<Comp role="toolbar" :class="{ fullscreen, ...fullscreenColorClass, hide }">
 		<div class="left">
 			<SoftButton class="play" :icon="playing ? 'pause' : 'play'" @click="playing = !playing" />
 		</div>
@@ -184,8 +185,14 @@
 			right: 0;
 			bottom: 0;
 			left: 0;
-			background-color: transparent;
+			background-color: c(acrylic-bg, 75%);
+			backdrop-filter: blur(8px);
 			transition: $fallback-transitions, background-color 0s;
+
+			&.hide {
+				translate: 0 100%;
+				visibility: hidden;
+			}
 		}
 
 		@include mobile {
@@ -284,7 +291,11 @@
 		--wrapper-size: #{$thickness};
 
 		&:active:deep(.icon) {
-			scale: 0.9;
+			scale: 0.8;
+		}
+
+		&[aria-label="fullscreen"]:active:deep(.icon) {
+			scale: 1.2;
 		}
 
 		&.quality-button:deep {

@@ -33,6 +33,8 @@
 	const resample = computed({ get: () => !preservesPitch.value, set: value => preservesPitch.value = !value });
 	const menu = ref<MenuModel>();
 	const showDanmaku = ref(true);
+	const hideController = ref(false);
+	const hideControllerTimeout = ref<Timeout>();
 	const willSendDanmaku = ref<DanmakuComment[]>();
 	const willInsertDanmaku = ref<DanmakuListItem[]>();
 	const initialDanmaku = ref<DanmakuComment[]>();
@@ -114,6 +116,7 @@
 			} else {
 				screen.orientation.lock(screenOrientationBeforeFullscreen.value);
 				screen.orientation.unlock();
+				hideController.value = false; // 退出全屏时确保显示播放器控制栏。
 			}
 		} catch { }
 	});
@@ -241,6 +244,18 @@
 			// TODO: 这个只能获取视频缓存的总长度值，当用户手动跳时间时，会导致显示不准确。待优化。
 		} catch { }
 	}
+
+	/**
+	 * 在全屏时自动隐藏控制栏。
+	 */
+	function autoHideController() {
+		hideController.value = false;
+		clearTimeout(hideControllerTimeout.value);
+		hideControllerTimeout.value = setTimeout(() => {
+			if (fullscreen.value)
+				hideController.value = true;
+		}, 3000);
+	}
 </script>
 
 <template>
@@ -264,7 +279,7 @@
 			</Accordion>
 		</Alert>
 
-		<div ref="videoContainer" class="main" :class="{ fullscreen }">
+		<div ref="videoContainer" class="main" :class="{ fullscreen, 'hide-cursor': hideController }">
 			<video
 				ref="video"
 				class="player"
@@ -277,6 +292,7 @@
 				@click="playing = !playing"
 				@dblclick="toggle"
 				@contextmenu.prevent="e => menu = e"
+				@mousemove="autoHideController"
 			></video>
 			<PlayerVideoDanmaku v-model="willSendDanmaku" :comments="initialDanmaku" :media="video" :hidden="!showDanmaku" />
 			<PlayerVideoController
@@ -291,6 +307,7 @@
 				v-model:steplessRate="steplessRate"
 				v-model:showDanmaku="showDanmaku"
 				v-model:quality="quality"
+				v-model:hide="hideController"
 				:duration="duration"
 				:toggleFullscreen="toggle"
 				:buffered="buffered"
@@ -343,6 +360,10 @@
 				width: 100%;
 				height: 100%;
 			}
+		}
+
+		&.hide-cursor {
+			cursor: none;
 		}
 	}
 
