@@ -34,6 +34,7 @@
 	const steplessRate = defineModel<boolean>("steplessRate", { default: false });
 	const showDanmaku = defineModel<boolean>("showDanmaku", { default: false });
 	const quality = defineModel<string>("quality", { default: "720P" });
+	const hide = defineModel<boolean>("hide", { default: false });
 	const volumeBackup = ref(volume);
 	const volumeSet = computed({
 		get: () => muted.value ? 0 : volume.value,
@@ -118,19 +119,19 @@
 		</PlayerVideoMenu>
 	</div>
 
-	<Comp role="toolbar" :class="{ fullscreen, ...fullscreenColorClass }">
+	<Comp role="toolbar" :class="{ fullscreen, ...fullscreenColorClass, hide }">
 		<div class="left">
 			<SoftButton class="play" :icon="playing ? 'pause' : 'play'" @click="playing = !playing" />
 		</div>
 		<div class="slider">
 			<Slider v-model="currentPercent" :min="0" :max="1" :buffered="buffered" />
 		</div>
+		<div class="time">
+			<span class="current">{{ currentTime }} </span>
+			<span class="divide">/</span>
+			<span class="duration">{{ duration }}</span>
+		</div>
 		<div class="right">
-			<div class="time">
-				<span class="current">{{ currentTime }} </span>
-				<span class="divide">/</span>
-				<span class="duration">{{ duration }}</span>
-			</div>
 			<SoftButton
 				class="quality-button"
 				:text="quality"
@@ -145,6 +146,7 @@
 			/>
 			<SoftButton
 				:icon="volumeSet >= 0.5 ? 'volume_up' : volumeSet > 0 ? 'volume_down' : 'volume_mute'"
+				class="volume"
 				@click="muted = !muted"
 				@mouseenter="e => volumeMenu = e"
 				@mouseleave="volumeMenu = undefined"
@@ -164,6 +166,7 @@
 
 <style scoped lang="scss">
 	$thickness: 36px;
+	$twin-thickness: 60px;
 
 	:comp {
 		position: relative;
@@ -182,8 +185,19 @@
 			right: 0;
 			bottom: 0;
 			left: 0;
-			background-color: transparent;
+			background-color: c(acrylic-bg, 75%);
+			backdrop-filter: blur(8px);
 			transition: $fallback-transitions, background-color 0s;
+
+			&.hide {
+				translate: 0 100%;
+				visibility: hidden;
+			}
+		}
+
+		@include mobile {
+			flex-wrap: wrap;
+			height: $twin-thickness;
 		}
 
 		:where(& > *) {
@@ -196,6 +210,11 @@
 		justify-content: flex-start;
 		height: inherit;
 
+		@include mobile {
+			order: 2;
+			height: $thickness;
+		}
+
 		.play {
 			width: $thickness + 10px;
 		}
@@ -206,6 +225,16 @@
 		justify-content: flex-end;
 		height: inherit;
 
+		@include mobile {
+			order: 3;
+			height: $thickness;
+			margin-left: auto;
+
+			.volume {
+				display: none;
+			}
+		}
+
 		button {
 			@include square($thickness);
 		}
@@ -215,6 +244,10 @@
 		@include flex-center;
 		min-width: 90px;
 		margin: 0 4px;
+
+		@include mobile {
+			order: 2;
+		}
 
 		> * {
 			@include flex-center;
@@ -237,6 +270,10 @@
 		flex-shrink: 1;
 		width: 100%;
 
+		@include mobile {
+			order: 1;
+		}
+
 		:deep(.passed) {
 			opacity: 1;
 		}
@@ -252,6 +289,14 @@
 
 	.soft-button {
 		--wrapper-size: #{$thickness};
+
+		&:active:deep(.icon) {
+			scale: 0.8;
+		}
+
+		&[aria-label="fullscreen"]:active:deep(.icon) {
+			scale: 1.2;
+		}
 
 		&.quality-button:deep {
 			&,
