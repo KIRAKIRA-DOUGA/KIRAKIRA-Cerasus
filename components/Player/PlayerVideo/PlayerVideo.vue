@@ -294,7 +294,7 @@
 	whenever(space, () => getAllowShortcutKeys() && (playing.value = !playing.value));
 
 	/** 全屏 */
-	onKeyStroke("f", e => {
+	onKeyStroke(["f", "F"], e => {
 		if (getAllowShortcutKeys()) {
 			e.preventDefault();
 			toggle();
