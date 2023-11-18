@@ -111,12 +111,16 @@
 	watch(fullscreen, fullscreen => {
 		try { // 全屏时请求横屏。在设备不支持或安全问题时有可能会报错。
 			if (fullscreen) {
-				screenOrientationBeforeFullscreen.value = screen.orientation.type;
-				screen.orientation.lock("landscape");
+				if (isMobile()) {
+					screenOrientationBeforeFullscreen.value = screen.orientation.type;
+					screen.orientation.lock("landscape");
+				}
 				autoHideController(); // 进入全屏后自动开始隐藏控制栏计时。
 			} else {
-				screen.orientation.lock(screenOrientationBeforeFullscreen.value);
-				screen.orientation.unlock();
+				if (isMobile()) {
+					screen.orientation.lock(screenOrientationBeforeFullscreen.value);
+					screen.orientation.unlock();
+				}
 				hideController.value = false; // 退出全屏时确保显示播放器控制栏。
 			}
 		} catch { }
