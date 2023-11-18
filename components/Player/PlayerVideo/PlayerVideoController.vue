@@ -285,6 +285,12 @@
 
 	.menus {
 		display: contents;
+
+		@include mobile {
+			& > * {
+				translate: 0 -22px;
+			}
+		}
 	}
 
 	.soft-button {

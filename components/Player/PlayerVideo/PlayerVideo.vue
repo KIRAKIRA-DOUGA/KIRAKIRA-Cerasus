@@ -113,6 +113,7 @@
 			if (fullscreen) {
 				screenOrientationBeforeFullscreen.value = screen.orientation.type;
 				screen.orientation.lock("landscape");
+				autoHideController(); // 进入全屏后自动开始隐藏控制栏计时。
 			} else {
 				screen.orientation.lock(screenOrientationBeforeFullscreen.value);
 				screen.orientation.unlock();
@@ -256,6 +257,57 @@
 				hideController.value = true;
 		}, 3000);
 	}
+
+	/**
+	 * 快捷键。
+	 * useMagicKeys可以防止重复，适合用于操作。
+	 * onKeyStroke是可以按着连续重复的，适合用于调整音量和进度条。
+	 */
+	const { f, d, m } = useMagicKeys();
+
+	/** 全屏 */
+	whenever(f, () => toggle());
+
+	/** 弹幕 */
+	whenever(d, () => showDanmaku.value = !showDanmaku.value);
+
+	/** 静音 */
+	whenever(m, () => muted.value = !muted.value);
+
+	/** 播放/暂停 */
+	const { space } = useMagicKeys({
+		passive: false,
+		onEventFired(e) {
+			if (e.key === " " && e.type === "keydown")
+				e.preventDefault();
+		},
+	});
+
+	whenever(space, () => playing.value = !playing.value);
+
+	/** 音量 + */
+	onKeyStroke("ArrowUp", e => {
+		e.preventDefault();
+		volume.value = clamp(volume.value + 0.1, 0, 1);
+	});
+
+	/** 音量 - */
+	onKeyStroke("ArrowDown", e => {
+		e.preventDefault();
+		volume.value = clamp(volume.value - 0.1, 0, 1);
+	});
+
+	/** 进度条 右 */
+	onKeyStroke("ArrowRight", e => {
+		e.preventDefault();
+		currentTime.value = clamp(currentTime.value + 5, 0, duration.value);
+	});
+
+	/** 进度条 左 */
+	onKeyStroke("ArrowLeft", e => {
+		e.preventDefault();
+		currentTime.value = clamp(currentTime.value - 5, 0, duration.value);
+	});
 </script>
 
 <template>
@@ -324,6 +376,8 @@
 		/>
 		<Menu v-model="menu">
 			<MenuItem icon="info" @click="showInfo">查看视频详细信息</MenuItem>
+			<hr />
+			<MenuItem icon="star" class="version">KIRAKIRA YOZORA PLAYER</MenuItem>
 		</Menu>
 	</Comp>
 </template>
@@ -373,5 +427,9 @@
 
 	.menu-item {
 		color: c(text-color) !important; // 避免黑底视频看不清文字。
+	}
+
+	.version {
+		pointer-events: none;
 	}
 </style>
