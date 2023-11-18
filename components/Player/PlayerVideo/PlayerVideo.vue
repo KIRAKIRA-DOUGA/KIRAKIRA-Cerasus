@@ -274,10 +274,7 @@
 		return shortcutKeysStore.allowShortcutKeys;
 	}
 
-	const { f, d, m } = useMagicKeys();
-
-	/** 全屏 */
-	whenever(f, () => getAllowShortcutKeys() && toggle());
+	const { d, m } = useMagicKeys();
 
 	/** 弹幕 */
 	whenever(d, () => getAllowShortcutKeys() && (showDanmaku.value = !showDanmaku.value));
@@ -295,6 +292,14 @@
 	});
 
 	whenever(space, () => getAllowShortcutKeys() && (playing.value = !playing.value));
+
+	/** 全屏 */
+	onKeyStroke("f", e => {
+		if (getAllowShortcutKeys()) {
+			e.preventDefault();
+			toggle();
+		}
+	});
 
 	/** 音量 + */
 	onKeyStroke("ArrowUp", e => {
