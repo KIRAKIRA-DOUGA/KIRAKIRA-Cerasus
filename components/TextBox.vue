@@ -258,6 +258,8 @@
 			</Transition>
 		);
 	})();
+
+	const shortcutKeysStore = useShortcutKeysStore();
 </script>
 
 <template>
@@ -288,6 +290,8 @@
 					:step="step"
 					:inputmode="inputMode"
 					@input="onInput"
+					@focusin="() => shortcutKeysStore.setAllowShortcutKeys(false)"
+					@focusout="() => shortcutKeysStore.setAllowShortcutKeys(true)"
 				/>
 				<span class="suffix">{{ suffix }}</span>
 				<label>{{ placeholder }}</label>
