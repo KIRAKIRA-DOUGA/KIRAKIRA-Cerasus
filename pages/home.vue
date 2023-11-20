@@ -57,7 +57,7 @@
 				>{{ video.title }}</ThumbVideo>
 			</div>
 		</Transition>
-		<Pagination v-model="data.page" :pages="Math.max(1, pageCount)" :displayPageCount="12" enableArrowKeyMove />
+		<!-- <Pagination v-model="data.page" :pages="Math.max(1, pageCount)" :displayPageCount="12" enableArrowKeyMove /> -->
 	</div>
 </template>
 
