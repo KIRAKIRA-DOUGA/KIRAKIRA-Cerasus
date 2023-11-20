@@ -9,6 +9,7 @@
 	box-sizing: border-box;
 	font-family: $schinese-fonts;
 	// font-feature-settings: "ss02" on, "ss01" on, "liga" on, "rlig" on, "dlig" on, "hlig" on, "onum" on, "kern" on;
+	font-feature-settings: "ss03" on; // 圆形的逗号、引号。
 	font-variant-east-asian: proportional-width;
 	font-variant-ligatures: common-ligatures historical-ligatures contextual;
 	font-variant-numeric: proportional-nums;

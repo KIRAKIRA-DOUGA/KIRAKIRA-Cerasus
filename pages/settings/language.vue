@@ -68,6 +68,7 @@
 
 		> p {
 			margin-bottom: 4px;
+			font-variant-numeric: tabular-nums;
 		}
 	}
 
