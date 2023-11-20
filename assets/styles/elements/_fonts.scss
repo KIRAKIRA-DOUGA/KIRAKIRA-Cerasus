@@ -21,7 +21,7 @@
 		font-family: "Inter Variable";
 		font-style: if($style == 1, normal, italic);
 		font-display: swap;
-		src: url("assets/fonts/Inter/InterVariable#{if($style == 1, '', _Italic)}.woff2?v=4.0") format("woff2-variations");
+		src: url("assets/fonts/Inter/InterVariable#{if($style == 1, '', -Italic)}.woff2?v=4.0") format("woff2-variations");
 	}
 }
 
