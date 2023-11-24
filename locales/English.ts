@@ -63,7 +63,7 @@ const English: LocaleIdentifiers = {
 	tag: {
 		_: "Tag | Tags",
 		search: "Search Tags",
-		new: "Create New Tag",
+		new: "New Tag",
 	},
 	all: "All",
 	video: "Video | Videos",
@@ -319,8 +319,8 @@ const English: LocaleIdentifiers = {
 	},
 	unselected: {
 		combobox: "Select a Item",
-		settings: "Please Select a Setting",
-		tag: "Please Search for Tags",
+		settings: "Please select a setting",
+		tag: "Search Tags",
 		language: "Select Language",
 	},
 	user: {
