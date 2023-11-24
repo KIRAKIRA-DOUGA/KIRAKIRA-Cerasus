@@ -73,14 +73,8 @@
 	.tab-bar {
 		--loose: true;
 
-		:deep(.items) {
-			gap: 0;
-			margin-left: -8px;
-
-			> * {
-				width: 72px;
-				font-weight: 500;
-			}
+		:deep(.items > *) {
+			padding-bottom: 10px;
 		}
 	}
 </style>

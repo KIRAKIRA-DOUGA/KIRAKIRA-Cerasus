@@ -27,44 +27,44 @@
 		@include flex-center;
 		position: relative;
 		color: c(icon-color);
-		
+
 		&:any-hover {
 			color: c(gray-50);
 		}
-		
+
 		> * {
 			position: relative;
 			z-index: 1;
 		}
-		
+
 		.icon {
 			font-size: 24px;
 		}
-		
+
 		label {
 			margin-left: 5px;
 			font-weight: bold;
 			font-size: 16px;
 			white-space: nowrap;
 		}
-			
-		&::before {
-			@include oval;
-			position: absolute;
-			width: 40%;
-			height: 36px;
-			background-color: transparent;
-			transition-duration: 600ms;
-			content: "";
-		}
+
+		// &::before {
+		// 	@include oval;
+		// 	position: absolute;
+		// 	width: 40%;
+		// 	height: 36px;
+		// 	background-color: transparent;
+		// 	transition-duration: 600ms;
+		// 	content: "";
+		// }
 
 		&.router-link-active {
 			color: c(accent);
-			
+
 			.icon {
 				font-size: 28px;
 			}
-			
+
 			&::before {
 				width: 80%;
 				background-color: c(accent-10);

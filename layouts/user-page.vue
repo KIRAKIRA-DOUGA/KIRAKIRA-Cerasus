@@ -209,6 +209,12 @@
 		--clipped: true;
 		--loose: true;
 		--size: big;
+		margin-right: -$padding-x;
+		margin-left: -$padding-x;
+
+		&:deep(.items) {
+			padding-left: $padding-x;
+		}
 	}
 
 	header:deep ~ .user-center-slot > .container {
@@ -272,11 +278,31 @@
 		@include tablet {
 			padding-right: $padding-x-tablet;
 			padding-left: $padding-x-tablet;
+
+			.tab-bar {
+				margin-right: -$padding-x-tablet;
+				margin-left: -$padding-x-tablet;
+
+				&:deep(.items) {
+					padding-right: $padding-x-tablet;
+					padding-left: $padding-x-tablet;
+				}
+			}
 		}
 
 		@include mobile {
 			padding-right: $padding-x-mobile;
 			padding-left: $padding-x-mobile;
+
+			.tab-bar {
+				margin-right: -$padding-x-mobile;
+				margin-left: -$padding-x-mobile;
+
+				&:deep(.items) {
+					padding-right: 0;
+					padding-left: 0;
+				}
+			}
 		}
 	}
 </style>

@@ -41,31 +41,70 @@
 	<Comp
 		v-ripple="vertical"
 		:class="{ active, vertical: direction.includes('vertical') }"
-		:style="{ flexDirection }"
 		role="tab"
 		:aria-selected="active"
 		:aria-current="active"
 		@click="onClick"
 	>
-		<div v-if="icon" class="icon-wrapper">
-			<Icon :name="icon" />
+		<div v-if="!vertical" v-ripple class="horizontal-ripple"></div>
+		<div class="content" :style="{ flexDirection }">
+			<div v-if="icon" class="icon-wrapper">
+				<Icon :name="icon" />
+			</div>
+			<span><slot></slot></span>
+			<Badge class="badge"><slot name="badge">{{ badge }}</slot></Badge>
 		</div>
-		<span><slot></slot></span>
-		<Badge class="badge"><slot name="badge">{{ badge }}</slot></Badge>
 	</Comp>
 </template>
 
 <style scoped lang="scss">
 	:comp {
+		@include round-small;
 		@include flex-center;
+		position: relative;
 		flex-shrink: 0;
-		gap: 4px;
 		color: c(icon-color);
 		cursor: pointer;
+		font-variation-settings: "wght" 400;
+
+		&:any-hover {
+			.horizontal-ripple {
+				background-color: c(hover-overlay);
+			}
+		}
 
 		&.active {
 			color: c(accent);
 			font-weight: bold;
+			font-variation-settings: "wght" 700;
+
+			&:deep(.ripple-circle),
+			.horizontal-ripple:hover {
+				background-color: c(accent-ripple);
+			}
+		}
+
+		.tab-bar:not(.vertical) & {
+			padding: 8px 10px;
+			overflow: visible;
+
+			@container style(--loose: true) {
+				padding: 16px;
+			}
+		}
+
+		.horizontal-ripple {
+			@include circle;
+			position: absolute;
+			width: calc(100% + 16px);
+			content: "";
+			aspect-ratio: 1 / 1;
+		}
+
+		.content {
+			@include flex-center;
+			flex-shrink: 0;
+			gap: 4px;
 		}
 
 		.icon-wrapper {
@@ -95,24 +134,26 @@
 				display: none;
 			}
 		}
-		// TODO: 缺少横向 Tab 的 hover 和 pressed 样式，但不要用水波纹，你用了就知道有多丑了。
 
 		.tab-bar.vertical & {
-			@include round-small;
 			justify-content: flex-start;
 			width: 100%;
-			padding: 9px 8px 9px 12px;
-
-			.icon-wrapper {
-				margin-right: 8px;
-			}
+			padding: 8px 12px;
 
 			&:any-hover {
 				background-color: c(hover-overlay);
 			}
 
 			&.active {
-				background-color: c(hover-overlay);
+				background-color: c(accent-hover-overlay);
+			}
+
+			.icon-wrapper {
+				margin-right: 8px;
+			}
+
+			@include mobile {
+				padding: 10px 8px 10px 12px;
 			}
 		}
 	}

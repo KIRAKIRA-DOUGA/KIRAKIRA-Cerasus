@@ -304,23 +304,15 @@
 
 	.items {
 		display: flex;
-		gap: 1rem;
 		align-items: flex-end;
-		padding-bottom: 9px;
 
 		> :deep(*) {
 			flex-shrink: 0;
 		}
 
-		@container style(--loose: true) {
-			gap: 2em;
-			padding-bottom: 15px;
-		}
-
 		:comp.vertical & {
 			display: flex;
 			flex-direction: column;
-			gap: 2px;
 			align-items: flex-start;
 		}
 	}

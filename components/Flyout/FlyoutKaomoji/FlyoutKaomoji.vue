@@ -43,7 +43,7 @@
 </template>
 
 <style scoped lang="scss">
-	$padding: 0.75rem 1rem;
+	$padding-x: 1rem;
 	$width: 400px;
 	$height: 350px;
 
@@ -53,8 +53,11 @@
 	}
 
 	.tab-bar {
-		padding: $padding;
-		padding-bottom: 1rem;
+		margin-bottom: 6px;
+
+		&:deep(.items) {
+			padding: 0 $padding-x;
+		}
 	}
 
 	.grid {
@@ -63,7 +66,7 @@
 		gap: 6px;
 		align-content: flex-start;
 		height: $height;
-		padding: $padding;
+		padding: 0.75rem $padding-x;
 		padding-top: 0.25rem;
 		overflow-y: auto;
 	}
