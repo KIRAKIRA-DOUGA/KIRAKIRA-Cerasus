@@ -141,10 +141,20 @@
 			padding: 8px 12px;
 
 			&:any-hover {
+				color: c(text-color);
 				background-color: c(hover-overlay);
+
+				>* {
+					translate: 3px 0;
+				}
+			}
+
+			&:not(:any-hover) >* {
+				transition-duration: 1s;
 			}
 
 			&.active {
+				color: c(accent);
 				background-color: c(accent-hover-overlay);
 			}
 
