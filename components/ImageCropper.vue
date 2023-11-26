@@ -1,53 +1,124 @@
+<!-- 基于 vue-cropper 的图片切割组件 -->
 <script setup lang="ts">
 	import { VueCropper } from "vue-cropper";
 	import cropTestImage from "assets/images/av820864307.jpg";
 
 	const props = withDefaults(defineProps<{
-		/** 图片路径。 */
+		/** 裁剪图片的地址 */
 		image?: string;
+		/** 裁剪生成图片的质量, 0.1 ~ 1 */
+		outputSize?: number;
+		/** 裁剪生成图片的格式 */
+		outputType?: "jpeg" | "png" | "webp";
+		/** 裁剪框的大小信息 */
+		info?: boolean;
+		/** 图片是否允许滚轮缩放 */
+		canScale?: boolean;
+		/** 是否默认生成截图框 */
+		autoCrop?: boolean;
+		/** 默认生成截图框宽度 */
+		autoCropWidth?: number;
+		/** 默认生成截图框高度 */
+		autoCropHeight?: number;
+		/** 是否开启截图框宽高固定比例 */
+		fixed?: boolean;
+		/** 截图框的宽高比例, 开启 fixed 才能生效 */
+		fixedNumber?: [number, number];
+		/** 是否输出原图比例的截图 */
+		full?: boolean;
+		/** 固定截图框大小 */
+		fixedBox?: boolean;
+		/** 上传图片是否可以移动 */
+		canMove?: boolean;
+		/** 截图框能否拖动 */
+		canMoveBox?: boolean;
+		/** 上传图片按照原始比例渲染 */
+		original?: boolean;
+		/** 截图框是否被限制在图片里面 */
+		centerBox?: boolean;
+		/** 是否按照设备的 dpr 输出等比例图片 */
+		high?: boolean;
+		/** true 为展示真实输出图片宽高 false 展示看到的截图框宽高 */
+		infoTrue?: boolean;
+		/** 限制图片最大宽度和高度, 0 ~ max */
+		maxImgSize?: number;
+		/** 图片根据截图框输出比例倍数, 0 ~ max (建议不要太大不然会卡死的呢) */
+		enlarge?: number;
+		/** 图片默认渲染方式 */
+		mode?: "contain" | "cover" | string;
+		/** 裁剪框限制最小区域 */
+		limitMinSize?: number | [] | string;
+		/** 导出时背景颜色填充 */
+		fillColor?: string | void;
 	}>(), {
 		image: cropTestImage,
-	});
-
-	const vueCropperOption = reactive({
-		img: props.image,
-		size: 1,
-		full: false,
+		outputSize: 1,
 		outputType: "png",
+		info: true,
+		full: false,
+		fixed: false,
 		canMove: true,
 		fixedBox: false,
 		original: false,
 		canMoveBox: true,
 		autoCrop: true,
-		// 只有自动截图开启 宽度高度才生效
-		autoCropWidth: 750,
-		autoCropHeight: 340,
+		// autoCropWidth: 750, // 只有自动截图开启 宽度高度才生效
+		// autoCropHeight: 340, // 只有自动截图开启 宽度高度才生效
 		centerBox: true,
 		high: true,
-		max: 99999,
+		maxImgSize: 99999,
+		mode: "contain",
+	});
+
+	const cropper = ref();
+	/**
+	 * 获取被裁减的图片结果
+	 * @returns Blob 格式存储的被裁剪后的图片
+	 */
+	const getCropBlobData = (): Promise<Blob> => {
+		return new Promise((resolve, reject) => {
+			if (!cropper.value) {
+				reject(new Error("Cropper is not initialized"));
+				return;
+			}
+
+			cropper.value.getCropBlob((data: unknown) => {
+				const imageBlobData = data as Blob;
+				if (imageBlobData)
+					resolve(imageBlobData);
+				else
+					reject(new Error("No image data found"));
+			});
+		});
+	};
+
+	defineExpose({
+		getCropBlobData,
 	});
 </script>
 
 <template>
 	<ClientOnly>
 		<VueCropper
-			:img="vueCropperOption.img"
-			:outputSize="vueCropperOption.size"
-			:outputType="vueCropperOption.outputType"
-			:info="true"
-			:full="vueCropperOption.full"
-			:fixed="false"
-			:canMove="vueCropperOption.canMove"
-			:canMoveBox="vueCropperOption.canMoveBox"
-			:fixedBox="vueCropperOption.fixedBox"
-			:original="vueCropperOption.original"
-			:autoCrop="vueCropperOption.autoCrop"
-			:autoCropWidth="vueCropperOption.autoCropWidth"
-			:autoCropHeight="vueCropperOption.autoCropHeight"
-			:centerBox="vueCropperOption.centerBox"
-			:high="vueCropperOption.high"
-			mode="contain"
-			:maxImgSize="vueCropperOption.max"
+			ref="cropper"
+			:img="image"
+			:outputSize="outputSize"
+			:outputType="outputType"
+			:info="info"
+			:full="full"
+			:fixed="fixed"
+			:fixedNumber="fixedNumber"
+			:canMove="canMove"
+			:canMoveBox="canMoveBox"
+			:fixedBox="fixedBox"
+			:original="original"
+			:autoCrop="autoCrop"
+			:autoCropWidth="autoCropWidth"
+			:autoCropHeight="autoCropHeight"
+			:centerBox="centerBox"
+			:high="high"
+			:mode="mode"
+			:maxImgSize="maxImgSize"
 		>
 			<template #loading>
 				<ProgressRing />
