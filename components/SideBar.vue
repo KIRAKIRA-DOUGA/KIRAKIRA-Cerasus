@@ -10,7 +10,6 @@
 	const isCurrentSettings = computed(() => !!currentSettingsPage());
 	const [DefineAvatar, Avatar] = createReusableTemplate();
 	const scopeId = useParentScopeId()!;
-	const userAvatar = ref("");
 
 	/**
 	 * 判断用户是否合法，或者判断用户是否已经登录
@@ -24,34 +23,24 @@
 	};
 
 	/**
-	 * 根据 cookie 中的 uid 和 token 来获取用户信息（同时具有验证用户 token 的功能）
+	 * 如果用户已登录，则根据 cookie 中的 uid 和 token 来获取用户信息（同时具有验证用户 token 的功能）
+	 * 如果未登录或验证不成功，则清空全局变量中的用户信息并清空残留 cookie
 	 */
 	const getUserInfo = async () => {
 		const checkUserResult = await checkUser();
-		if (checkUserResult) {
-			const userInfo = await api.user.getUserInfo();
-			if (userInfo.success) {
-				userInfoStore.isLogined = true;
-				userInfoStore.username = userInfo.result?.username || "Unknown Username"; // TODO 使用多语言，为未设置用户名的用户提供国际化的缺省用户名
-				userAvatar.value = userInfo.result?.avatar || "";
-			} else {
-				userInfoStore.isLogined = false;
-				userInfoStore.username = "";
-				userAvatar.value = "";
+		if (checkUserResult)
+			try {
+				await api.user.getUserInfo();
+			} catch (error) {
+				console.error("无法获取用户信息，请尝试重新登录", error);
 				useToast("无法获取用户信息，请尝试重新登录", "error", 7000); // TODO 使用多语言
 			}
-		} else {
+		else {
 			// TODO 如果用户未登录，要怎样？要引导登录吗？
+			api.user.userLogout(); // 如果未登录或验证不成功，则清空全局变量中的用户信息并清空残留 cookie
+			console.warn("WARN", "用户未登录或身份验证失败");
 		}
 	};
-
-	useListen("app:requestLogin", () => showLogin.value = true);
-	useListen("user:login", async loginStatus => {
-		if (loginStatus)
-			await getUserInfo();
-	});
-
-	onMounted(async () => { await getUserInfo(); });
 
 	/**
 	 * 点击用户头像事件。未登录时提示登录，已登录时导航到个人主页。
@@ -67,13 +56,26 @@
 	function onClickDrawer() {
 		useEvent("app:showDrawer");
 	}
+
+	// 事件总线
+	// 发生尝试唤起登录窗口事件，唤起登录窗口
+	useListen("app:requestLogin", () => showLogin.value = true);
+	// 发生用户登录事件时获取用户信息
+	useListen("user:login", async loginStatus => {
+		if (loginStatus)
+			await getUserInfo();
+	});
+
+	// 生命周期钩子
+	// mounted 时获取用户信息
+	onMounted(async () => { await getUserInfo(); });
 </script>
 
 <template>
 	<DefineAvatar>
 		<UserAvatar
 			v-tooltip="userInfoStore.isLogined ? userInfoStore.username : t.login"
-			:avatar="userInfoStore.isLogined ? userAvatar : undefined"
+			:avatar="userInfoStore.isLogined ? userInfoStore.userAvatar : undefined"
 			@click="onClickUser"
 		/>
 	</DefineAvatar>

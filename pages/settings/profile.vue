@@ -1,40 +1,98 @@
 <script setup lang="ts">
 	import banner from "assets/images/banner-20220717.png";
 
-	const avatar = "/static/images/avatars/aira.webp";
-	const profile = reactive({
-		name: "艾了个拉",
-		bio: "",
-		gender: "female",
-		birthday: new Date(),
-		tags: [] as string[],
+	// const avatar = "/static/images/avatars/aira.webp";
+	const userInfoStore = useUserInfoStore();
+
+	const profile = computed(() => ({
+		name: userInfoStore.username,
+		bio: userInfoStore.signature,
+		gender: userInfoStore.gender,
+		birthday: new Date(), // FIXME 注意：这个值是静态的、非响应式的，不会随时间变化
+		tags: userInfoStore.tags?.map(tag => tag.labelName),
+	}));
+
+	const avatarCropperIsOpen = ref(false);
+	const handleOpenAvatarCropper = () => {
+		avatarCropperIsOpen.value = true;
+	};
+
+	const cropper = ref();
+	const isUploadingUserAvatar = ref(false);
+	const handleSubmitAvatarImage = async () => {
+		try {
+			isUploadingUserAvatar.value = true;
+			const blobImageData = await cropper.value.getCropBlobData() as Blob;
+			const userAvatarUploadSignedUrlResult = await api.user.getUserAvatarUploadSignedUrl();
+			const userAvatarUploadSignedUrl = userAvatarUploadSignedUrlResult.userAvatarUploadSignedUrl;
+			if (userAvatarUploadSignedUrlResult.success && userAvatarUploadSignedUrl) {
+				const uploadResult = await api.user.uploadUserAvatar(blobImageData, userAvatarUploadSignedUrl);
+				if (uploadResult) {
+					await api.user.getUserInfo();
+					avatarCropperIsOpen.value = false;
+				}
+				isUploadingUserAvatar.value = false;
+			}
+		} catch (error) {
+			console.error("ERROR", "在上传用户头像时出错");
+			isUploadingUserAvatar.value = false;
+		}
+	};
+
+	/**
+	* 根据 cookie 中的 uid 和 token 来获取用户信息（同时具有验证用户 token 的功能）
+	*/
+	const getUserInfo = async () => {
+		try {
+			await api.user.getUserInfo();
+		} catch (error) {
+			console.error("无法获取用户信息，请尝试重新登录", error);
+		}
+	};
+
+	useListen("user:login", async loginStatus => {
+		if (loginStatus)
+			await getUserInfo();
 	});
+
+	onMounted(async () => { await getUserInfo(); });
 
 	/**
 	 * Update the user profile.
 	 */
 	async function updateProfile() {
-		const api = useApi();
+		// const api = useApi();
 
-		const encodedName = encodeUtf8(profile.name);
-		const encodedGender = encodeUtf8(profile.gender);
-		const encodedBio = encodeUtf8(profile.bio);
-		const handleError = (error: unknown) => error && console.error(error);
+		// const encodedName = encodeUtf8(profile.name);
+		// const encodedGender = encodeUtf8(profile.gender);
+		// const encodedBio = encodeUtf8(profile.bio);
+		// const handleError = (error: unknown) => error && console.error(error);
 
-		try {
-			await api?.updateProfile(encodedName, encodedGender, profile.birthday.toString(), encodedBio);
-		} catch (error) { handleError(error); }
+		// try {
+		// 	await api?.updateProfile(encodedName, encodedGender, profile.birthday.toString(), encodedBio);
+		// } catch (error) { handleError(error); }
 	}
 </script>
 
 <template>
+	<Modal v-model="avatarCropperIsOpen">
+		<div style="width: 20vw; height: 20vw;">
+			<ImageCropper ref="cropper" :fixed="true" :fixedNumber="[1, 1]" />
+		</div>
+		<template #footer-right>
+			<!-- TODO 使用多语言 -->
+			<Button class="secondary" @click="avatarCropperIsOpen = false">取消</Button>
+			<!-- TODO 使用多语言 -->
+			<Button :loading="isUploadingUserAvatar" @click="handleSubmitAvatarImage">更新头像</Button>
+		</template>
+	</Modal>
 	<div v-ripple class="banner">
 		<img :src="banner" alt="banner" draggable="false" />
 		<span>{{ t.profile.edit_banner }}</span>
 	</div>
 
-	<div class="change-avatar">
-		<UserAvatar :avatar="avatar" />
+	<div class="change-avatar" @click="handleOpenAvatarCropper">
+		<UserAvatar :avatar="userInfoStore.userAvatar" />
 		<span>{{ t.profile.edit_avatar }}</span>
 	</div>
 

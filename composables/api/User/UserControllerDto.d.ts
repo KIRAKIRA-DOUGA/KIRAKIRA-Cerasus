@@ -207,3 +207,15 @@ export type UserLogoutResponseDto = {
 	/** 附加的文本消息 */
 	message?: string;
 };
+
+/**
+ * 获取用于用户上传头像的预签名 URL
+ */
+export type GetUserAvatarUploadSignedUrlResultDto = {
+	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
+	success: boolean;
+	/** 用于用户上传头像的预签名 URL */
+	userAvatarUploadSignedUrl?: string;
+	/** 附加的文本消息 */
+	message?: string;
+};

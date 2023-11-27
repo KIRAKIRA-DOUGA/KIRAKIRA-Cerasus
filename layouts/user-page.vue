@@ -18,7 +18,7 @@
 
 	// TODO nice copy pasta dude
 	const uid = currentUserUid();
-	const user = ref<GetUserInfoByUidResponseDto>();
+	// const user = ref<GetUserInfoByUidResponseDto>();
 
 	const isSelf = ref(false); // TODO 是否为登录用户本人。
 	const isFollowed = ref(false); // TODO
@@ -41,7 +41,7 @@
 	/** fetch the user profile data */
 	async function fetchData() {
 		// WARN 现在这个接口就只能获得当前登录用户的信息！
-		user.value = await api.user.getUserInfo();
+		await api.user.getUserInfo();
 	}
 
 	watch(data, fetchData, { deep: true });
@@ -52,7 +52,7 @@
 		set: async id => { await navigate(`/user/${uid}/${id}`); },
 	});
 
-	useHead({ title: user.value?.result?.username ? t.user_page.title_affix(user.value.result.username) : undefined });
+	useHead({ title: userInfoStore.username ? t.user_page.title_affix(userInfoStore.username) : undefined });
 </script>
 
 <template>
@@ -60,18 +60,18 @@
 		<div>
 			<div class="content">
 				<div class="user">
-					<UserAvatar :avatar="user?.result?.avatar || undefined" />
+					<UserAvatar :avatar="userInfoStore.userAvatar || undefined" />
 					<div class="texts">
 						<div class="names">
-							<span class="username">{{ user?.result?.username }}</span>
+							<span class="username">{{ userInfoStore.username }}</span>
 							<!-- <span v-if="memoParen" class="memo" :class="[memoParen]">{{ user?.bio }}</span> -->
 							<span class="icons">
-								<Icon v-if="user?.result?.gender === 'male'" name="male" class="male" />
-								<Icon v-else-if="user?.result?.gender === 'female'" name="female" class="female" />
-								<span v-else class="other-gender">{{ user?.result?.gender }}</span>
+								<Icon v-if="userInfoStore.gender === 'male'" name="male" class="male" />
+								<Icon v-else-if="userInfoStore.gender === 'female'" name="female" class="female" />
+								<span v-else class="other-gender">{{ userInfoStore.gender }}</span>
 							</span>
 						</div>
-						<div class="bio">{{ user?.result?.signature }}</div>
+						<div class="bio">{{ userInfoStore.signature }}</div>
 					</div>
 				</div>
 				<div class="actions">
