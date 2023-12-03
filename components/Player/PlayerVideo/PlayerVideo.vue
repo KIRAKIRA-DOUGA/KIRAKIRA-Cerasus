@@ -126,25 +126,43 @@
 		} catch { }
 	});
 
+	const fontSizes = {
+		small: 14,
+		medium: 20,
+		large: 28,
+	};
+
 	/**
 	 * Fetch video danmaku
 	 */
 	async function fetchDanmaku() {
-		/* const api = useApi();
-		const handleError = (e: unknown) => console.error(e);
-		type DanmakuMode = NonNull<DanmakuComment["mode"]>;
-		type DanmakuFontSize = NonNull<DanmakuFormat["fontSize"]>;
-
 		try {
-			const danmaku = await api.getDanmaku(props.id);
-			willSendDanmaku.value = danmaku.map((e: GetDanmaku200ResponseInner) =>
-				createDanmakuComment(e.message ?? "", +e.timestamp!, {
-					mode: e.type as DanmakuMode,
-					color: Color.fromHex(e.color ?? "fff"),
-					enableRainbow: false, // TODO
-					fontSize: e.fontSize as DanmakuFontSize ?? "medium",
+			const getDanmakuByKvidRequest: GetDanmakuByKvidRequestDto = { videoId: props.id };
+			const danmakuListResult = await api.danmaku.getDanmakuByKvid(getDanmakuByKvidRequest);
+
+			if (danmakuListResult.success && danmakuListResult.danmaku && danmakuListResult.danmaku.length > 0) {
+				// 初始化视频上的弹幕列表
+				initialDanmaku.value = danmakuListResult.danmaku.map(danmaku => ({
+					text: danmaku.text,
+					mode: danmaku.mode,
+					time: danmaku.time,
+					style: {
+						fontSize: `${fontSizes[danmaku.fontSIze]}px`,
+						color: `#${danmaku.color}`,
+						textShadow: "-1px -1px #000, -1px 1px #000, 1px -1px #000, 1px 1px #000",
+					},
 				}));
-		} catch (error) { handleError(error); } */
+				// 初始化视频旁边的弹幕列表
+				willInsertDanmaku.value = danmakuListResult.danmaku.map(danmaku => ({
+					videoTime: new Duration(danmaku.time),
+					content: danmaku.text,
+					sendTime: new Date(danmaku.editDateTime),
+				}));
+			}
+		} catch (error) {
+			useToast("获取弹幕列表失败", "error"); // TODO 使用多语言
+			console.error("ERROR", "获取弹幕列表失败");
+		}
 	}
 	watch(() => props.id, fetchDanmaku, { immediate: true });
 

@@ -50,6 +50,7 @@
 	}
 
 	watch(() => props.media, initDanmaku);
+	watch(() => props.comments, initDanmaku); // 当请求到新的数据时，重载弹幕组件
 
 	onMounted(() => {
 		if (!danmakuContainer.value) return;
