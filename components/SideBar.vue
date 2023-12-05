@@ -76,7 +76,6 @@
 		<UserAvatar
 			v-tooltip="userInfoStore.isLogined ? userInfoStore.username : t.login"
 			:avatar="userInfoStore.isLogined ? userInfoStore.userAvatar : undefined"
-			@click="onClickUser"
 		/>
 	</DefineAvatar>
 
@@ -91,8 +90,10 @@
 		</div>
 
 		<div class="center">
-			<Icon name="dehaze" class="pe decorative-icon" @click="onClickDrawer" />
-			<Avatar class="pe" />
+			<div class="open-offcanvas pe" @click="onClickDrawer">
+				<Icon name="dehaze" class="decorative-icon" />
+				<Avatar />
+			</div>
 			<div class="stripes">
 				<div v-for="i in 2" :key="i" class="stripe"></div>
 			</div>
@@ -100,7 +101,7 @@
 		</div>
 
 		<div class="bottom icons">
-			<Avatar class="pc" />
+			<Avatar class="pc" @click="onClickUser" />
 			<SoftButton v-tooltip="t.messages" icon="email" href="/test-rich-text-editor" />
 			<SoftButton v-tooltip="t.settings" class="pc" icon="settings" href="/settings" :active="isCurrentSettings" />
 			<SoftButton v-tooltip="t.search" class="pe" icon="search" href="/search" />
@@ -320,6 +321,15 @@
 
 	.user-avatar {
 		--size: 40px;
+	}
+
+	.open-offcanvas {
+		@include flex-center;
+		gap: 8px;
+
+		> * {
+			pointer-events: none;
+		}
 	}
 
 	.decorative-icon {

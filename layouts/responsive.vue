@@ -195,7 +195,7 @@
 			@include round-large;
 			position: relative;
 			overflow: hidden;
-			transform: translateX(50dvw) scale(0.8);
+			transform: translateX(60dvw) scale(0.8);
 			transform-origin: left center;
 		}
 

@@ -20,12 +20,26 @@
 		shown.value = false;
 		navigate(route);
 	}
+
+	const userInfoStore = useUserInfoStore();
+
+	/**
+	 * 点击用户头像事件。未登录时提示登录，已登录时导航到个人主页。
+	 */
+	function onClickUser() {
+		if (!userInfoStore.isLogined) useEvent("app:requestLogin");
+		else to("/user");
+	}
 </script>
 
 <template>
 	<Comp>
 		<div class="user">
-			<UserAvatar />
+			<UserAvatar
+				v-tooltip="userInfoStore.isLogined ? userInfoStore.username : t.login"
+				:avatar="userInfoStore.isLogined ? userInfoStore.userAvatar : undefined"
+				@click="onClickUser"
+			/>
 			<p class="username">艾了个拉</p>
 			<p class="bio">Kind and Kawaii, Forever!</p>
 		</div>
@@ -46,7 +60,7 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		width: 50dvw;
+		width: 60dvw;
 		padding: 24px;
 	}
 
@@ -56,7 +70,7 @@
 			font-weight: bold;
 			font-size: 16px;
 		}
-	
+
 		.bio {
 			font-size: 12px;
 		}
