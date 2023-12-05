@@ -69,7 +69,7 @@
 	/**
 	 * 发送弹幕事件。
 	 */
-	async function onSend() {
+	function onSend() {
 		if (!content.value) return;
 
 		const text = content.value;
@@ -85,18 +85,19 @@
 		};
 
 		try {
-			const emitDanmakuResult = await api.danmaku.emitDanmaku(emitDanmakuRequestData);
-			if (emitDanmakuResult.success) {
-				sendDanmaku.value = [createDanmakuComment(text, undefined, format)];
-				content.value = "";
-			} else {
-				useToast("弹幕发送失败", "error"); // TODO 使用多语言
-				console.error("ERROR", "弹幕发送失败");
-			}
+			api.danmaku.emitDanmaku(emitDanmakuRequestData).then(emitDanmakuResult => {
+				if (!emitDanmakuResult.success) {
+					useToast("弹幕发送失败", "error"); // TODO 使用多语言
+					console.error("ERROR", "弹幕发送失败");
+				}
+			});
 		} catch (error) {
 			useToast("弹幕发送失败，请求失败", "error"); // TODO 使用多语言
 			console.error("ERROR", "弹幕发送失败，请求失败：", error);
 		}
+		
+		sendDanmaku.value = [createDanmakuComment(text, undefined, format)];
+		content.value = "";
 	}
 </script>
 
