@@ -25,6 +25,7 @@
 				Object.assign(div.style, {
 					fontSize: fontSizes[format.fontSize] + "px",
 					color: format.color ? format.color.hashHex : undefined,
+					border: "1px solid #337ab7", // 用户刚刚发**射**的弹幕会有一个蓝色框
 				});
 				return div;
 			},
@@ -73,13 +74,28 @@
 
 		const text = content.value;
 
-		// Insert into backend
-		const api = useApi();
+		const emitDanmakuRequestData: EmitDanmakuRequestDto = {
+			videoId: props.videoId,
+			time: props.currentTime,
+			text,
+			color: format.color.hex,
+			fontSIze: format.fontSize,
+			mode: format.mode,
+			enableRainbow: format.enableRainbow,
+		};
 
-		const encodedContent = encodeUtf8(text);
-
-		api.createDanmaku(props.videoId, String(props.currentTime), encodedContent, format.mode, format.color.hex, format.fontSize);
-
+		try {
+			api.danmaku.emitDanmaku(emitDanmakuRequestData).then(emitDanmakuResult => {
+				if (!emitDanmakuResult.success) {
+					useToast("弹幕发送失败", "error"); // TODO 使用多语言
+					console.error("ERROR", "弹幕发送失败");
+				}
+			});
+		} catch (error) {
+			useToast("弹幕发送失败，请求失败", "error"); // TODO 使用多语言
+			console.error("ERROR", "弹幕发送失败，请求失败：", error);
+		}
+		
 		sendDanmaku.value = [createDanmakuComment(text, undefined, format)];
 		content.value = "";
 	}
