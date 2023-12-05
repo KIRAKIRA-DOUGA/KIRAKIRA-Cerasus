@@ -119,16 +119,16 @@ const Japanese: LocaleIdentifiers = {
 		},
 		hide: {
 			_: "非表示",
-			description: "目にしたくないのユーザー、あなたの視点から消えさせます（わざわざ対象のプロフィールにアクセス場合を除く）",
+			description: "見たくないのユーザー、あなたの視点から消えさせます（わざと対象のプロフィールにアクセス場合を除く）",
 		},
 		tag: {
-			description: "タグで目にしたくない投稿を非表示にします",
+			description: "タグで見たくない投稿を非表示にします",
 		},
 		keyword: {
-			description: "キーワードで目にしたくない投稿を非表示にします",
+			description: "キーワードで見たくない投稿を非表示にします",
 		},
 		regexp: {
-			description: "正規表現で目にしたくない投稿を非表示にします",
+			description: "正規表現で見たくない投稿を非表示にします",
 		},
 	},
 	player: {
@@ -190,7 +190,7 @@ const Japanese: LocaleIdentifiers = {
 			backend: "バックエンド",
 			translator: "{0} 翻訳者",
 		},
-		technologies_used: "使用されている技術",
+		technologies_used: "利用している技術",
 		slogan: "かわいいサイトを，\nかわいいあなたに！",
 	},
 	acknowledgement: "スペシャルサンクス",
@@ -394,11 +394,11 @@ const Japanese: LocaleIdentifiers = {
 	color_picker: "カラー選択",
 	video_count: "{0}本の動画",
 	video_recommendations: "おすすめ動画",
-	page_not_found_info: "新しいすぎるページにやってきたみたい。",
+	page_not_found_info: "新しすぎるページにやってきたみたい。",
 	click_to_refresh: "クリックして再読込",
 	toast: {
 		finish: "操作は正常に完了しました",
-		unsupported_file: "このファイル形式はサポートされていません！",
+		unsupported_file: "このファイル形式はサポートされていません。",
 		no_cover: "サムネイルを指定してください！",
 		login_failed: "ログインに失敗しました！ユーザー名またはパスワードが間違っています。",
 		password_mismatch: "パスワードが一致しません。！",
