@@ -162,7 +162,40 @@ export type UpdateOrCreateUserInfoResponseDto = {
 };
 
 /**
- * 通过 UID 获取用户信息的请求结果
+ * 获取当前登录的用户信息的请求响应
+ */
+export type GetSelfUserInfoResponseDto = {
+	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
+	success: boolean;
+	/** 附加的文本消息 */
+	message?: string;
+	/** 请求结果 */
+	result?: {
+		/** 用户名 */
+		username?: string;
+		/** 用户头像的链接 */
+		avatar?: string;
+		/** 用户背景图片的链接 */
+		userBannerImage?: string;
+		/** 用户的个性签名 */
+		signature?: string;
+		/** 用户的性别，男、女和自定义（字符串） */
+		gender?: string;
+		/** 用户的个人标签 */
+		label?: UserLabelSchema[];
+	};
+};
+
+/**
+ * 通过 UID 获取用户信息的请求载荷
+ */
+export type GetUserInfoByUidRequestDto = {
+	/** 目标用户的 UID */
+	uid: number;
+};
+
+/**
+ * 通过 UID 获取用户信息的请求响应
  */
 export type GetUserInfoByUidResponseDto = {
 	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */

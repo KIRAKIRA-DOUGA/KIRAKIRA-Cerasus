@@ -1,6 +1,6 @@
 import { get, post, uploadFile2R2 } from "api/Common";
 import getCorrectUri from "api/Common/getCorrectUri";
-import type { CheckUserTokenResponseDto, GetUserAvatarUploadSignedUrlResultDto, GetUserInfoByUidResponseDto, UpdateUserEmailRequestDto, UserExistsCheckRequestDto, UserExistsCheckResponseDto, UserLoginRequestDto, UserLoginResponseDto, UserRegistrationRequestDto, UserRegistrationResponseDto } from "./UserControllerDto";
+import type { CheckUserTokenResponseDto, GetSelfUserInfoResponseDto, GetUserAvatarUploadSignedUrlResultDto, GetUserInfoByUidResponseDto, UpdateUserEmailRequestDto, UserExistsCheckRequestDto, UserExistsCheckResponseDto, UserLoginRequestDto, UserLoginResponseDto, UserRegistrationRequestDto, UserRegistrationResponseDto } from "./UserControllerDto";
 
 const BACK_END_URL = getCorrectUri();
 const USER_API_URI = `${BACK_END_URL}/user`;
@@ -44,12 +44,12 @@ export const updateUserEmail = async (updateUserEmailRequest: UpdateUserEmailReq
 };
 
 /**
- * 获取用户信息，前提是 token 中包含正确的 uid 和 token，同时丰富全局变量中的用户信息
+ * 获取当前登录的用户信息，前提是 token 中包含正确的 uid 和 token，同时丰富全局变量中的用户信息
  * @returns 用户信息
  */
-export const getUserInfo = async (): Promise<GetUserInfoByUidResponseDto> => {
+export const getUserInfo = async (): Promise<GetSelfUserInfoResponseDto> => {
 	// TODO use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
-	const userInfo = await get(`${USER_API_URI}/info`, { credentials: "include" }) as GetUserInfoByUidResponseDto;
+	const userInfo = await get(`${USER_API_URI}/self`, { credentials: "include" }) as GetUserInfoByUidResponseDto;
 	const userInfoStore = useUserInfoStore();
 	if (userInfo.success) {
 		userInfoStore.isLogined = true;
