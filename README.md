@@ -1,5 +1,3 @@
-## 噢天呐，看在上帝的份上，千万不要用 yarn（纱线）启动它，否则整个程序就会变得和珍妮婶婶做的苹果派一样烂了，真是该死。
-
 ![Cover](cover.svg)
 
 # 项目代号 ｢<ruby>Cerasus<rp>（</rp><rt>[第13都市](https://zh.moegirl.org.cn/zh-hans/DARLING_in_the_FRANXX#cite_ref-10:~:text=%E7%AC%AC13%E9%83%BD%E5%B8%82%EF%BC%88Plantation%EF%BC%89%5B9%5D%E2%80%9C%E6%A8%B1%EF%BC%88Cerasus%EF%BC%89%E2%80%9D)</rt><rp>）</rp></ruby>｣
@@ -8,7 +6,7 @@
 ![License](https://img.shields.io/badge/LICENSE-BSD%203‐Clause-green?style=flat-square)
 ![Commit Activity](https://img.shields.io/github/commit-activity/y/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus?style=flat-square)
 
-前端
+KIRAKIRA 的前端
 
 **简体中文** | [English](README_en-US.md)
 
