@@ -9,8 +9,21 @@ type VideoPartDto = {
 	/** 视频直链 */
 	link: string;
 };
+
 /**
- * 展示视频卡片返回的参数
+ * 视频 TAG 的数据
+ */
+type VideoTagDto = {
+	/** 非空 - 视频的 TAG ID */
+	tagId: number;
+	/** 非空 - 视频 TAG 的名称 */
+	tag: string;
+	/** TAG 描述 */
+	description?: string;
+};
+
+/**
+ * 上传视频的请求参数
  */
 export type UploadVideoRequestDto = {
 	/** 每 P 视频的数据 */
@@ -27,6 +40,12 @@ export type UploadVideoRequestDto = {
 	duration: number;
 	/** 视频描述 */
 	description?: string;
+	/** 视频分区 */
+	videoCategory: string;
+	/** 视频版权 */
+	copyright: string;
+	/** 视频 TAG */
+	videoTags: VideoTagDto[];
 };
 
 /**
@@ -64,7 +83,7 @@ export type ThumbVideoResponseDto = {
 		/** 封面图链接 */
 		image?: string;
 		/** 视频上传的日期，时间戳格式 */
-		updateDate?: number;
+		uploadDate?: number;
 		/** 视频播放量 */
 		watchedCount?: number;
 		/** 视频作者 ID */
@@ -87,6 +106,22 @@ export type GetVideoByKvidRequestDto = {
 };
 
 /**
+ * 上传视频的用户信息
+ */
+type UploaderInfoDto = {
+	/** 用户 ID */
+	uid: number;
+	/** 用户名 */
+	username?: string;
+	/** 用户头像的链接 */
+	avatar?: string;
+	/** 用户背景图片的链接 */
+	userBannerImage?: string;
+	/** 用户的个性签名 */
+	signature?: string;
+};
+
+/**
  * 视频页面需要的响应
  */
 export type GetVideoByKvidResponseDto = {
@@ -105,16 +140,37 @@ export type GetVideoByKvidResponseDto = {
 		/** 封面图链接 */
 		image?: string;
 		/** 视频上传的日期，时间戳格式 */
-		updateDate?: number;
+		uploadDate?: number;
 		/** 视频播放量 */
 		watchedCount?: number;
 		/** 视频作者 ID */
 		uploader?: string;
 		/** 创作者 UID */
 		uploaderId?: number;
+		/** 视频作者信息 */
+		uploaderInfo?: UploaderInfoDto;
 		/** 视频时长，单位 ms */
 		duration?: number;
 		/** 视频描述 */
 		description?: string;
+		/** 视频分区 */
+		videoCategory: string;
+		/** 视频版权 */
+		copyright: string;
+		/** 视频 TAG */
+		videoTags: VideoTagDto[];
 	};
 };
+
+/**
+ * 从 UID 获取视频的请求参数
+ */
+export type GetVideoByUidRequestDto = {
+	/** 用户的 UID */
+	uid: number;
+};
+
+/**
+ * 从 UID 获取视频的请求响应结果
+ */
+export type GetVideoByUidResponseDto = ThumbVideoResponseDto & {};

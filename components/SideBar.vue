@@ -5,7 +5,7 @@
 	// const isMobile = computed(() => windowSize.width.value <= numbers.mobileMaxWidth);
 	// 以后使用以上代码可获取在 SCSS 文件中定义的移动端宽度值。
 
-	const userInfoStore = useUserInfoStore();
+	const selfUserInfoStore = useSelfUserInfoStore();
 	const showLogin = ref(false);
 	const isCurrentSettings = computed(() => !!currentSettingsPage());
 	const [DefineAvatar, Avatar] = createReusableTemplate();
@@ -30,7 +30,7 @@
 		const checkUserResult = await checkUser();
 		if (checkUserResult)
 			try {
-				await api.user.getUserInfo();
+				await api.user.getSelfUserInfo();
 			} catch (error) {
 				console.error("无法获取用户信息，请尝试重新登录", error);
 				useToast("无法获取用户信息，请尝试重新登录", "error", 7000); // TODO 使用多语言
@@ -46,8 +46,8 @@
 	 * 点击用户头像事件。未登录时提示登录，已登录时导航到个人主页。
 	 */
 	function onClickUser() {
-		if (!userInfoStore.isLogined) showLogin.value = true;
-		else navigate("/user");
+		if (!selfUserInfoStore.isLogined) showLogin.value = true;
+		else navigate(`/user/${selfUserInfoStore.uid}`);
 	}
 
 	/**
@@ -74,8 +74,8 @@
 <template>
 	<DefineAvatar>
 		<UserAvatar
-			v-tooltip="userInfoStore.isLogined ? userInfoStore.username : t.login"
-			:avatar="userInfoStore.isLogined ? userInfoStore.userAvatar : undefined"
+			v-tooltip="selfUserInfoStore.isLogined ? selfUserInfoStore.username : t.login"
+			:avatar="selfUserInfoStore.isLogined ? selfUserInfoStore.userAvatar : undefined"
 		/>
 	</DefineAvatar>
 

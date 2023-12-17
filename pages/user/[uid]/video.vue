@@ -3,11 +3,12 @@
 	const sort = ref<SortModel>(["date", "descending"]);
 
 	const route = useRoute();
-	const uid = currentUserUid();
-	const videos = ref<Videos200Response>();
+	const urlUid = computed(currentUserUid);
+	const videos = ref<GetVideoByUidResponseDto>();
 	const { query } = route;
 
 	const data = reactive({
+		uid: urlUid,
 		search: query.search ?? "none",
 		sortCategory: query.sortCategory!,
 		sortDirection: query.sortDirection!,
@@ -18,16 +19,19 @@
 	/**
 	 * fetch the videos according to the query.
 	 */
-	async function fetchData() {
-		const api = useApi();
+	async function fetchUserVideoData() {
 		try {
-			const videoResponse = await api.users(uid);
-			pages.value = Math.ceil(videoResponse.paginationData!.numberOfItems! / 50);
-			videos.value = videoResponse;
+			const getVideoByUidRequest: GetVideoByUidRequestDto = {
+				uid: urlUid.value,
+			};
+			const videosResponse = await api.video.getVideoByUid(getVideoByUidRequest);
+			pages.value = Math.ceil(videosResponse.videosCount / 50);
+			videos.value = videosResponse;
 		} catch (error) { console.error(error); }
 	}
-	watch(data, fetchData, { deep: true });
-	await fetchData();
+	watch(data, fetchUserVideoData, { deep: true });
+	onMounted(fetchUserVideoData);
+	await fetchUserVideoData();
 </script>
 
 <template>
@@ -36,14 +40,14 @@
 			<div class="videos-grid">
 				<ThumbVideo
 					v-for="video in videos?.videos"
-					:key="video.videoID"
-					:videoId="video.videoID"
-					:uploader="video.authorName ?? ''"
-					:uploaderId="video.authorID"
-					:image="video.thumbnailLoc"
+					:key="video.videoId"
+					:videoId="video.videoId"
+					:uploader="video.uploader ?? ''"
+					:uploaderId="video.uploaderId"
+					:image="video.image"
 					:date="new Date()"
-					:watchedCount="video.views"
-					:duration="new Duration(0, video.videoDuration ?? 0)"
+					:watchedCount="video.watchedCount"
+					:duration="new Duration(0, video.duration ?? 0)"
 				>{{ video.title }}</ThumbVideo>
 			</div>
 		</div>

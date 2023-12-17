@@ -1,5 +1,5 @@
 import getCorrectUri from "api/Common/getCorrectUri";
-import type { GetVideoByKvidRequestDto, GetVideoByKvidResponseDto, ThumbVideoResponseDto } from "./VideoControllerDto";
+import type { GetVideoByKvidRequestDto, GetVideoByKvidResponseDto, GetVideoByUidRequestDto, GetVideoByUidResponseDto, ThumbVideoResponseDto } from "./VideoControllerDto";
 
 const BACK_END_URL = getCorrectUri();
 const VIDEO_API_URI = `${BACK_END_URL}/video`;
@@ -17,7 +17,7 @@ export const getHomePageThumbVideo = async (): Promise<ThumbVideoResponseDto> =>
 };
 
 /**
- * 获取视频数据
+ * 根据视频 ID (KVID) 获取视频的数据
  * @param getVideoByKvidRequest 从视频 ID 获取视频的请求参数
  * @returns 视频页面需要的响应
  */
@@ -29,5 +29,21 @@ export const getVideoByKvid = async (getVideoByKvidRequest: GetVideoByKvidReques
 		else
 			return { success: false, message: "获取视频失败" };
 	} else
-		return { success: false, message: "未获取到视频编号" };
+		return { success: false, message: "未提供 KVID" };
+};
+
+/**
+ * 根据 UID 获取该用户上传的视频
+ * @param getVideoByUidRequest 根据 UID 获取该用户上传的视频的请求参数
+ * @returns 根据 UID 获取该用户上传的视频的请求响应结果
+ */
+export const getVideoByUid = async (getVideoByUidRequest: GetVideoByUidRequestDto): Promise<GetVideoByUidResponseDto> => {
+	if (getVideoByUidRequest && getVideoByUidRequest.uid) {
+		const { data: result } = await useFetch<GetVideoByUidResponseDto>(`${VIDEO_API_URI}/user?uid=${getVideoByUidRequest.uid}`);
+		if (result.value)
+			return result.value;
+		else
+			return { success: false, message: "获取用户上传的视频失败", videosCount: 0, videos: [] };
+	} else
+		return { success: false, message: "未提供 UID", videosCount: 0, videos: [] };
 };

@@ -21,13 +21,13 @@
 		navigate(route);
 	}
 
-	const userInfoStore = useUserInfoStore();
+	const selfUserInfoStore = useSelfUserInfoStore();
 
 	/**
 	 * 点击用户头像事件。未登录时提示登录，已登录时导航到个人主页。
 	 */
 	function onClickUser() {
-		if (!userInfoStore.isLogined) useEvent("app:requestLogin");
+		if (!selfUserInfoStore.isLogined) useEvent("app:requestLogin");
 		else to("/user");
 	}
 </script>
@@ -36,8 +36,8 @@
 	<Comp>
 		<div class="user">
 			<UserAvatar
-				v-tooltip="userInfoStore.isLogined ? userInfoStore.username : t.login"
-				:avatar="userInfoStore.isLogined ? userInfoStore.userAvatar : undefined"
+				v-tooltip="selfUserInfoStore.isLogined ? selfUserInfoStore.username : t.login"
+				:avatar="selfUserInfoStore.isLogined ? selfUserInfoStore.userAvatar : undefined"
 				@click="onClickUser"
 			/>
 			<p class="username">艾了个拉</p>

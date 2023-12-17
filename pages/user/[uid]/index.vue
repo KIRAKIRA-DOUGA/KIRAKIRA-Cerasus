@@ -1,45 +1,65 @@
 <script setup lang="ts">
 	// import { Users200Response } from "kirakira-backend";
 
-	const uid = currentUserUid();
+	const urlUid = computed(currentUserUid);
 	// const user = ref<Users200Response>();
 	const userBirthday = ref(0);
 	const userJoinDate = ref(0);
 	const userId = ref<number>();
 
-	const userVideos = ref<ThumbVideoResponseDto>();
+	const userVideos = ref<GetVideoByUidResponseDto>();
 
-	const data = reactive({
-		uid,
-	});
+	/** fetch all data */
+	async function fetchData() {
+		const fetchUserDataPromise = new Promise<void>(resolve => {
+			fetchUserData().then(resolve);
+		});
+		const fetchUserVideoDataPromise = new Promise<void>(resolve => {
+			fetchUserVideoData().then(resolve);
+		});
+		await Promise.allSettled([fetchUserDataPromise, fetchUserVideoDataPromise]);
+	}
 
 	/** fetch the user profile data */
-	async function fetchData() {
+	async function fetchUserData() {
 		// TODO 现在获取用户信息的接口还没法获得这些信息
-		const userInfoResult = await api.user.getUserInfo();
+		// const userInfoResult = await api.user.getSelfUserInfo();
+		await console.log("TODO -> TODO user info index");
 		userBirthday.value = 0; // TODO
 		userJoinDate.value = 0; // TODO
 		userId.value = -1; // TODO
 	}
-	watch(data, fetchData, { deep: true });
+	/**
+	 * fetch the videos according to the query.
+	 */
+	async function fetchUserVideoData() {
+		try {
+			const getVideoByUidRequest: GetVideoByUidRequestDto = {
+				uid: urlUid.value,
+			};
+			const videosResponse = await api.video.getVideoByUid(getVideoByUidRequest);
+			userVideos.value = videosResponse;
+		} catch (error) { console.error(error); }
+	}
+	watch(urlUid, fetchData, { deep: true });
+	fetchData(); // WARN 为什么在此处使用 await 会导致第二次进入用户主页时，Vue 卡死
 </script>
 
 <template>
 	<div class="container">
 		<div class="toolbox-card center">
 			<div class="videos-grid">
-				<!-- // TODO 获取这个用户投稿的视频？ -->
-				<!-- <ThumbVideo
+				<ThumbVideo
 					v-for="video in userVideos?.videos"
 					:key="video.videoId"
 					:videoId="video.videoId"
 					:uploader="video.uploader ?? ''"
 					:uploaderId="video.uploaderId"
 					:image="video.image"
-					:date="new Date(video.updateDate || 0)"
+					:date="new Date(video.uploadDate || 0)"
 					:watchedCount="video.watchedCount"
 					:duration="new Duration(0, video.duration ?? 0)"
-				>{{ video.title }}</ThumbVideo> -->
+				>{{ video.title }}</ThumbVideo>
 			</div>
 		</div>
 

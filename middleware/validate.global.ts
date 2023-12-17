@@ -22,8 +22,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
 		appSettingsStore.lastSettingPage = settingPageId;
 		return;
 	}
-	if (routePath === "user")
-		return navigate("/user/2"); // TODO: 需要改成已登录用户自己的 UID。
 	if (routeSlug[0] === "user" && routeSlug.length >= 3 && !to.name)
 		return navigate(`/user/${routeSlug[1]}`);
 	if (routeSlug.at(-1) === MEDIA_INFO_MODULE_WASM)
