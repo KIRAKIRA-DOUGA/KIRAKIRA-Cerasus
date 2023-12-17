@@ -32,11 +32,15 @@
 				if (videoData?.title && videoPartData?.link) {
 					videoSource.value = videoPartData.link;
 					videoDetails.value = {
+						videoPart: videoData.videoPart,
 						title: videoData.title,
-						tags: ["233", "天下笨蛋是一家", "艾拉原创出品"], // TODO TAG 功能还没做好
-						username: videoData.uploader || "unknown",
-						uploadDate: videoData.updateDate,
+						videoTags: videoData.videoTags,
+						uploaderInfo: videoData.uploaderInfo,
+						uploadDate: videoData.uploadDate,
 						videoId: kvid,
+						videoCategory: videoData.videoCategory,
+						copyright: videoData.copyright,
+						image: videoData.image,
 					};
 				} else
 					handleError("获取视频失败，结果异常！"); // TODO 使用多语言
@@ -46,10 +50,14 @@
 			handleError("未获取到视频 ID，开始使用默认视频！"); // TODO 使用多语言
 			videoSource.value = exampleVideoPath;
 			videoDetails.value = {
+				videoPart: [{ id: 0, videoPartTitle: "柴又", link: exampleVideoPath }],
 				title: "柴又",
-				tags: ["233", "天下笨蛋是一家", "艾拉原创出品"],
-				username: "艾了个拉",
-				uploadDate: new Date().toString(),
+				videoTags: [{ tagId: 1, tag: "233" }, { tagId: 1, tag: "天下笨蛋是一家" }, { tagId: 1, tag: "艾拉原创出品" }],
+				uploaderInfo: { uid: -1, username: "艾了个拉" },
+				uploadDate: new Date().getTime(),
+				videoId: 0,
+				videoCategory: "音MAD",
+				copyright: "repost",
 			};
 		}
 	}
@@ -83,12 +91,12 @@
 		<div class="below-player">
 			<div class="left">
 				<CreationDetail
-					:date="new Date(/* videoDetails?.uploadDate! */)"
-					category="音MAD"
+					:date="new Date(videoDetails?.uploadDate!)"
+					:category="videoDetails?.videoCategory!"
 					:title="videoDetails?.title ?? ''"
 					:videoId="videoDetails?.videoId ?? NaN"
-					copyright="repost"
-					:tags="videoDetails?.tags ?? []"
+					:copyright="(videoDetails?.copyright! as Copyright)"
+					:tags="videoDetails?.videoTags.map(tag => tag.tag) ?? []"
 					:cover="videoDetails?.image"
 				/>
 
@@ -104,9 +112,9 @@
 			</div>
 			<div class="right">
 				<CreationUploader
-					:uid="videoDetails?.uploaderId ?? 0"
-					:avatar="videoDetails?.uploaderPicture"
-					:username="videoDetails?.uploader ?? ''"
+					:uid="videoDetails?.uploaderInfo?.uid ?? 0"
+					:avatar="videoDetails?.uploaderInfo?.avatar"
+					:username="videoDetails?.uploaderInfo?.username ?? ''"
 					:fans="videoDetails?.uploaderSubscribers ?? 0"
 					isFollowed
 				/>
