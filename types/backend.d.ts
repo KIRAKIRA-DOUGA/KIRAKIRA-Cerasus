@@ -7,6 +7,6 @@ import * as _video from "api/Video/VideoControllerDto";
  */
 declare global {
 	export type { EmitDanmakuRequestDto, GetDanmakuByKvidRequestDto } from "api/Danmaku/DanmakuControllerDto";
-	export type { GetUserInfoByUidResponseDto, UserExistsCheckRequestDto, UserLabelSchema, UserLoginRequestDto, UserRegistrationRequestDto } from "api/User/UserControllerDto";
-	export type { GetVideoByKvidRequestDto, GetVideoByKvidResponseDto, ThumbVideoResponseDto } from "api/Video/VideoControllerDto";
+	export type { GetUserInfoByUidRequestDto, GetUserInfoByUidResponseDto, UserExistsCheckRequestDto, UserLabelSchema, UserLoginRequestDto, UserRegistrationRequestDto } from "api/User/UserControllerDto";
+	export type { GetVideoByKvidRequestDto, GetVideoByKvidResponseDto, GetVideoByUidRequestDto, GetVideoByUidResponseDto, ThumbVideoResponseDto } from "api/Video/VideoControllerDto";
 }

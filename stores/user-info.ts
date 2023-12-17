@@ -1,6 +1,8 @@
-export const useUserInfoStore = defineStore("user-info", () => {
+export const useSelfUserInfoStore = defineStore("user-info", () => {
 	/** 是否已经登录？ */
 	const isLogined = ref(false);
+	/** 当前登录的用户的 UID */
+	const uid = ref<number>();
 	/** 当前登录的用户用户名。 */
 	const username = ref("");
 	/** 当前登录的用户的头像 */
@@ -14,5 +16,5 @@ export const useUserInfoStore = defineStore("user-info", () => {
 	/** 当前登录的用户的标签 */
 	const tags = ref<UserLabelSchema[]>([]);
 
-	return { isLogined, username, userAvatar, gender, signature, birthday, tags };
+	return { isLogined, uid, username, userAvatar, gender, signature, birthday, tags };
 });

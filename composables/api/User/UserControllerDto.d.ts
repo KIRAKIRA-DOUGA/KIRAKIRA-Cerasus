@@ -171,6 +171,8 @@ export type GetSelfUserInfoResponseDto = {
 	message?: string;
 	/** 请求结果 */
 	result?: {
+		/** 用户 UID */
+		uid?: number;
 		/** 用户名 */
 		username?: string;
 		/** 用户头像的链接 */

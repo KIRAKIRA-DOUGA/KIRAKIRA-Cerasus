@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	const userInfoStore = useUserInfoStore();
+	const selfUserInfoStore = useSelfUserInfoStore();
 	const tempCurrentSetting = ref("");
 	const currentSetting = computed({
 		get: () => tempCurrentSetting.value || currentSettingsPage(),

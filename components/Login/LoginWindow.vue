@@ -4,7 +4,7 @@
 		open?: boolean;
 	}>();
 
-	const userInfoStore = useUserInfoStore();
+	const selfUserInfoStore = useSelfUserInfoStore();
 	const model = defineModel<boolean>();
 	const avatar = "/static/images/avatars/aira.webp";
 	type PageType = "login" | "register" | "register2" | "forgot" | "reset";
@@ -32,7 +32,7 @@
 		set: value => {
 			model.value = value;
 			if (isLogining.value) useEvent("user:login", true);
-			if (isLogining.value) userInfoStore.isLogined = true;
+			if (isLogining.value) selfUserInfoStore.isLogined = true;
 			isLogining.value = false;
 		},
 	});
@@ -53,7 +53,7 @@
 
 				if (loginResponse.success && loginResponse.uid) {
 					open.value = false;
-					userInfoStore.isLogined = true;
+					selfUserInfoStore.isLogined = true;
 					useEvent("user:login", true);
 				} else
 					useToast(t.toast.login_failed, "error");

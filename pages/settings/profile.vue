@@ -2,14 +2,14 @@
 	import banner from "assets/images/banner-20220717.png";
 
 	// const avatar = "/static/images/avatars/aira.webp";
-	const userInfoStore = useUserInfoStore();
+	const selfUserInfoStore = useSelfUserInfoStore();
 
 	const profile = computed(() => ({
-		name: userInfoStore.username,
-		bio: userInfoStore.signature,
-		gender: userInfoStore.gender,
+		name: selfUserInfoStore.username,
+		bio: selfUserInfoStore.signature,
+		gender: selfUserInfoStore.gender,
 		birthday: new Date(), // FIXME 注意：这个值是静态的、非响应式的，不会随时间变化
-		tags: userInfoStore.tags?.map(tag => tag.labelName),
+		tags: selfUserInfoStore.tags?.map(tag => tag.labelName),
 	}));
 
 	const avatarCropperIsOpen = ref(false);
@@ -28,7 +28,7 @@
 			if (userAvatarUploadSignedUrlResult.success && userAvatarUploadSignedUrl) {
 				const uploadResult = await api.user.uploadUserAvatar(blobImageData, userAvatarUploadSignedUrl);
 				if (uploadResult) {
-					await api.user.getUserInfo();
+					await api.user.getSelfUserInfo();
 					avatarCropperIsOpen.value = false;
 				}
 				isUploadingUserAvatar.value = false;
@@ -44,7 +44,7 @@
 	*/
 	const getUserInfo = async () => {
 		try {
-			await api.user.getUserInfo();
+			await api.user.getSelfUserInfo();
 		} catch (error) {
 			console.error("无法获取用户信息，请尝试重新登录", error);
 		}
@@ -92,7 +92,7 @@
 	</div>
 
 	<div class="change-avatar" @click="handleOpenAvatarCropper">
-		<UserAvatar :avatar="userInfoStore.userAvatar" />
+		<UserAvatar :avatar="selfUserInfoStore.userAvatar" />
 		<span>{{ t.profile.edit_avatar }}</span>
 	</div>
 

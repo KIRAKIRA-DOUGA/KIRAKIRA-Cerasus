@@ -14,15 +14,12 @@
 <script setup lang="ts">
 	import makeFullwidth from "pomsky/fullwidth.pom";
 
-	const userInfoStore = useUserInfoStore();
-
-	// TODO nice copy pasta dude
-	const uid = currentUserUid();
-	// const user = ref<GetUserInfoByUidResponseDto>();
+	const userSelfInfoStore = useSelfUserInfoStore();
 
 	const isSelf = ref(false); // TODO 是否为登录用户本人。
 	const isFollowed = ref(false); // TODO
 	const actionMenu = ref<FlyoutModel>();
+	const userInfo = ref<GetUserInfoByUidResponseDto["result"]>();
 
 	const fullwidthRegexp = makeFullwidth();
 
@@ -34,25 +31,41 @@
 	// 		fullwidthRegexp.exec(memo) ? "fullwidth" : "halfwidth";
 	// });
 
-	const data = reactive({
-		uid,
-	});
-
 	/** fetch the user profile data */
-	async function fetchData() {
-		// WARN 现在这个接口就只能获得当前登录用户的信息！
-		await api.user.getUserInfo();
+	async function fetchUserData() {
+		console.log("fffffffffffffffff", urlUid.value, userSelfInfoStore.uid);
+		if (userSelfInfoStore.isLogined && urlUid.value === userSelfInfoStore.uid) {
+			isSelf.value = true;
+			await api.user.getSelfUserInfo(); // 获取当前登录用户的用户信息
+		} else {
+			isSelf.value = false;
+			const getUserInfoByUidRequest: GetUserInfoByUidRequestDto = {
+				uid: urlUid.value,
+			};
+			const userInfoResult = await api.user.getUserInfo(getUserInfoByUidRequest); // 获取当前 URL 指向的用户的信息
+			if (userInfoResult.success)
+				userInfo.value = userInfoResult.result;
+		}
 	}
 
-	watch(data, fetchData, { deep: true });
-	onMounted(async () => { await fetchData(); });
+	const urlUid = computed(currentUserUid);
+	watch(urlUid, fetchUserData, { deep: false });
+
+	const selfUid = computed(() => userSelfInfoStore.uid);
+	watch(selfUid, fetchUserData, { deep: false });
+
+	await fetchUserData();
 
 	const currentTab = computed({
 		get: () => currentUserTab(),
-		set: async id => { await navigate(`/user/${uid}/${id}`); },
+		set: async id => { await navigate(`/user/${urlUid.value}/${id}`); },
 	});
 
-	useHead({ title: userInfoStore.username ? t.user_page.title_affix(userInfoStore.username) : undefined });
+	const titleUserName = computed(() => isSelf.value ? (userSelfInfoStore.username ? t.user_page.title_affix(userSelfInfoStore.username) : "") : (userInfo.value?.username ? t.user_page.title_affix(userInfo.value?.username) : ""));
+
+	// const titleUserName = computed(() => isSelf.value ? "aaa" : "bbb");
+
+	useHead({ title: titleUserName });
 </script>
 
 <template>
@@ -60,24 +73,24 @@
 		<div>
 			<div class="content">
 				<div class="user">
-					<UserAvatar :avatar="userInfoStore.userAvatar || undefined" />
+					<UserAvatar :avatar="isSelf ? (userSelfInfoStore.userAvatar) : userInfo?.avatar" />
 					<div class="texts">
 						<div class="names">
-							<span class="username">{{ userInfoStore.username }}</span>
+							<span class="username">{{ isSelf ? userSelfInfoStore.username : userInfo?.username }}</span>
 							<!-- <span v-if="memoParen" class="memo" :class="[memoParen]">{{ user?.bio }}</span> -->
 							<span class="icons">
-								<Icon v-if="userInfoStore.gender === 'male'" name="male" class="male" />
-								<Icon v-else-if="userInfoStore.gender === 'female'" name="female" class="female" />
-								<span v-else class="other-gender">{{ userInfoStore.gender }}</span>
+								<Icon v-if="isSelf ? userSelfInfoStore.gender === 'male' : userInfo?.gender === 'male'" name="male" class="male" />
+								<Icon v-else-if="isSelf ? userSelfInfoStore.gender === 'female' : userInfo?.gender === 'female'" name="female" class="female" />
+								<span v-else class="other-gender">{{ isSelf ? userSelfInfoStore.gender : userInfo?.gender }}</span>
 							</span>
 						</div>
-						<div class="bio">{{ userInfoStore.signature }}</div>
+						<div class="bio">{{ isSelf ? userSelfInfoStore.signature : userInfo?.signature }}</div>
 					</div>
 				</div>
 				<div class="actions">
 					<!-- <SoftButton v-tooltip:top="'私信'" icon="email" /> -->
-					<SoftButton v-tooltip:top="t.more" icon="more_vert" @click="e => actionMenu = [e, 'y']" />
-					<Menu v-model="actionMenu">
+					<SoftButton v-if="!isSelf" v-tooltip:top="t.more" icon="more_vert" @click="e => actionMenu = [e, 'y']" />
+					<Menu v-if="!isSelf" v-model="actionMenu">
 						<MenuItem icon="badge">{{ t.modify_memo }}</MenuItem>
 						<MenuItem icon="groups">{{ t.add_to_group }}</MenuItem>
 						<hr />

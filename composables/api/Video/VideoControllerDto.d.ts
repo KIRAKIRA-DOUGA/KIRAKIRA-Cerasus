@@ -118,3 +118,16 @@ export type GetVideoByKvidResponseDto = {
 		description?: string;
 	};
 };
+
+/**
+ * 从 UID 获取视频的请求参数
+ */
+export type GetVideoByUidRequestDto = {
+	/** 用户的 UID */
+	uid: number;
+};
+
+/**
+ * 从 UID 获取视频的请求响应结果
+ */
+export type GetVideoByUidResponseDto = ThumbVideoResponseDto & {};
