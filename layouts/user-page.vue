@@ -33,7 +33,6 @@
 
 	/** fetch the user profile data */
 	async function fetchUserData() {
-		console.log("fffffffffffffffff", urlUid.value, userSelfInfoStore.uid);
 		if (userSelfInfoStore.isLogined && urlUid.value === userSelfInfoStore.uid) {
 			isSelf.value = true;
 			await api.user.getSelfUserInfo(); // 获取当前登录用户的用户信息
