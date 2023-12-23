@@ -1,3 +1,6 @@
+/**
+ * 基础弹幕数据
+ */
 type BasicDanmakuDto = {
 	/** 非空 - KVID 视频 ID */
 	videoId: number;

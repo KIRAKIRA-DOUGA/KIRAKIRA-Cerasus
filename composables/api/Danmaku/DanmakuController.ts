@@ -21,5 +21,5 @@ export const emitDanmaku = async (emitDanmakuRequest: EmitDanmakuRequestDto): Pr
  * @returns 视频的弹幕列表
  */
 export const getDanmakuByKvid = async (getDanmakuByKvidRequest: GetDanmakuByKvidRequestDto): Promise<GetDanmakuByKvidResponseDto> => {
-	return await get(`${USER_API_URI}/?videoId=${getDanmakuByKvidRequest.videoId}`) as GetDanmakuByKvidResponseDto;
+	return await get(`${USER_API_URI}?videoId=${getDanmakuByKvidRequest.videoId}`) as GetDanmakuByKvidResponseDto;
 };
