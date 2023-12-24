@@ -7,7 +7,7 @@
 
 	const props = defineProps<{
 		/** 视频 ID。 */
-		videoId?: number;
+		videoId: number;
 	}>();
 
 	type ActiveType = string | boolean;
@@ -87,16 +87,28 @@
 	/**
 	 * sends comment to the backend.
 	 */
-	function sendComment() {
-		const api = useApi();
-		const content = editor.value?.getText() ?? ""; // Get plain text currently to avoid web attack.
-		const utf8Encode = new TextEncoder();
-		const encodedContent = utf8Encode.encode(content) as unknown as string;
-
-		// TODO: video ID
-		api.comment(0, encodedContent, props.videoId!).then(video => {
-			// TODO
-		}).catch(error => console.error(error));
+	async function sendComment() {
+		try {
+			// TODO // WARN 需要对用户输入的文字进行 Base64 编码
+			const content = editor.value?.getText() ?? ""; // Get plain text currently to avoid web attack.
+			const emitVideoCommentRequest: EmitVideoCommentRequestDto = {
+				videoId: props.videoId,
+				text: content,
+			};
+			// TODO 虽然我很想非阻塞地发送评论，但是楼层号必须在评论成功提交给后端后才会获得。emmmm...
+			const emitVideoCommentResult = await api.videoComment.emitVideoComment(emitVideoCommentRequest);
+			if (emitVideoCommentResult?.success && emitVideoCommentResult.videoComment) {
+				useEvent("videoComment:emitComment", emitVideoCommentResult.videoComment);
+				const messageDuration = 5000;
+				useToast("评论发出去咯~", "success", messageDuration); // TODO 使用多语言
+			} else {
+				useToast("发送评论失败！", "error"); // TODO 使用多语言
+				console.error("ERROR", "发送评论失败：请求未成功");
+			}
+		} catch (error) {
+			useToast("发送评论失败！", "error"); // TODO 使用多语言
+			console.error("ERROR", "发送评论失败！", error);
+		}
 	}
 
 	/**

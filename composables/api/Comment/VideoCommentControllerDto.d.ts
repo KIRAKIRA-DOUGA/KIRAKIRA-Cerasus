@@ -22,7 +22,7 @@ export type EmitVideoCommentResponseDto = {
 	/** 附加的文本消息 */
 	message?: string;
 	/** 发送成功的话，返回发送时的评论的数据 */
-	videoComment?: EmitVideoCommentRequestDto;
+	videoComment?: VideoCommentResult;
 };
 
 /**
@@ -121,6 +121,41 @@ type CommentSenderUserInfo = {
 };
 
 /**
+ * 一条请求到视频评论
+ */
+export type VideoCommentResult = {
+	/** MongoDB 生成的唯一 ID */
+	_id: string;
+	/** 评论的路由 */ /** 如：1.2.3（视频的第一个评论的第二个回复的第三个回复） */
+	commentRoute: string;
+	/** KVID 视频 ID */
+	videoId: number;
+	/** 评论发送者的用户的 UID */
+	uid: number;
+	/** 评论发送者的信息，如 用户名、头像 等 */
+	userInfo?: CommentSenderUserInfo;
+	/** 发送评论的时间 */
+	emitTime: number;
+	/** 评论正文 */
+	text: string;
+	/** 是否已点赞 */
+	isUpvote: boolean;
+	/** 是否已点踩 */
+	isDownvote: boolean;
+	/** 评论点赞数 */
+	upvoteCount: number;
+	/** 评论点踩数 */
+	downvoteCount: number;
+	/** 评论楼层数 */
+	commentIndex: number;
+	/** 子评论 */
+	subComments: VideoCommentIdDto[];
+	/** 该评论的下一级子评论数量 */
+	subCommentsCount: number;
+	/** 系统专用字段-最后编辑时间 */
+	editDateTime: number;
+};
+/**
  * 获取视频评论的响应结果
  */
 export type GetVideoCommentByKvidResponseDto = {
@@ -131,38 +166,7 @@ export type GetVideoCommentByKvidResponseDto = {
 	/** 视频评论总数量 */
 	videoCommentCount: number;
 	/** 视频评论 */
-	videoCommentList: {
-		/** MongoDB 生成的唯一 ID */
-		_id: string;
-		/** 评论的路由 */ /** 如：1.2.3（视频的第一个评论的第二个回复的第三个回复） */
-		commentRoute: string;
-		/** KVID 视频 ID */
-		videoId: number;
-		/** 评论发送者的用户的 UID */
-		uid: number;
-		/** 评论发送者的信息，如 用户名、头像 等 */
-		userInfo?: CommentSenderUserInfo;
-		/** 发送评论的时间 */
-		emitTime: number;
-		/** 评论正文 */
-		text: string;
-		/** 是否已点赞 */
-		isUpvote: boolean;
-		/** 是否已点踩 */
-		isDownvote: boolean;
-		/** 评论点赞数 */
-		upvoteCount: number;
-		/** 评论点踩数 */
-		downvoteCount: number;
-		/** 评论楼层数 */
-		commentIndex: number;
-		/** 子评论 */
-		subComments: VideoCommentIdDto[];
-		/** 该评论的下一级子评论数量 */
-		subCommentsCount: number;
-		/** 系统专用字段-最后编辑时间 */
-		editDateTime: number;
-	}[];
+	videoCommentList: VideoCommentResult[];
 };
 
 /**

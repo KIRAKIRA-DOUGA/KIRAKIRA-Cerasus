@@ -71,6 +71,10 @@
 	watch(() => kvid, fetchData);
 	await fetchData();
 
+	useListen("videoComment:emitComment", videoComment => {
+		comments.value.push(videoComment);
+	});
+
 	useHead({
 		title: title.value,
 		meta: [
