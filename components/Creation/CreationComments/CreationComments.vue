@@ -15,7 +15,7 @@
 
 	const pinned = ref(false);
 	const search = ref("");
-	const pageCount = computed(() => Math.ceil(props.count / 20));
+	const pageCount = computed(() => Math.floor(props.count / 20) + 1);
 </script>
 
 <template>
