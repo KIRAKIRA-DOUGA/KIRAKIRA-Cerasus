@@ -36,6 +36,8 @@
 	const pinned = defineModel("pinned", { default: false });
 	const unpinnedCaption = computed(() => pinned.value ? "unpin" : "pin");
 
+	const voteLock = ref(false);
+
 	const userSelfInfoStore = useSelfUserInfoStore();
 
 	/**
@@ -52,31 +54,57 @@
 		// if (isActive && states[`${another}Clicked`].value && !noNestingDolls) onClickUpvote(another, true);
 
 		if (!props.index) return;
+
+		if (voteLock.value) {
+			useToast("操作过于频繁，请稍后再试", "error"); // TODO 使用多语言
+			return;
+		}
+
 		if (button === "upvote") {
 			const notUpvoted = !isUpvoted.value; // TODO HaHa, 仅用于消除 ESLint 对单行分支语句的报错
 			if (notUpvoted && userSelfInfoStore.isLogined) { // 未登录，或者已经点过赞过不允许再点赞 // TODO 需要取消点赞吗？
 				const emitVideoCommentUpvoteRequest: EmitVideoCommentUpvoteRequestDto = { id: props.commentId, videoId: props.videoId };
 				try {
-					api.videoComment.emitVideoCommentUpvote(emitVideoCommentUpvoteRequest);
+					voteLock.value = true;
+					api.videoComment.emitVideoCommentUpvote(emitVideoCommentUpvoteRequest).then(() => {
+						voteLock.value = false;
+					});
 				} catch (error) {
 					useToast("点赞失败！", "error"); // TODO 使用多语言
 					console.error("ERROR", "点赞失败！", error);
 				}
 				isUpvoted.value = true;
 				upvote.value++;
+				
+				console.log("aaaaaaaa1", isDownvoted.value);
+				if (isDownvoted.value) {
+					console.log("aaaaaaaa");
+					downvote.value--;
+					isDownvoted.value = false;
+				}
 			}
 		} else {
 			const notDownvoted = !isDownvoted.value; // TODO HaHa, 仅用于消除 ESLint 对单行分支语句的报错
 			if (notDownvoted && userSelfInfoStore.isLogined) { // 未登录，或者已经点过踩过不允许再点踩 // TODO 需要取消点踩吗？
 				const emitVideoCommentDownvoteRequest: EmitVideoCommentDownvoteRequestDto = { id: props.commentId, videoId: props.videoId };
 				try {
-					api.videoComment.emitVideoCommentDownvote(emitVideoCommentDownvoteRequest);
+					voteLock.value = true;
+					api.videoComment.emitVideoCommentDownvote(emitVideoCommentDownvoteRequest).then(() => {
+						voteLock.value = false;
+					});
 				} catch (error) {
 					useToast("点踩失败！", "error"); // TODO 使用多语言
 					console.error("ERROR", "点踩失败！", error);
 				}
 				isDownvoted.value = true;
 				downvote.value++;
+				
+				console.log("bbbbbbbbb1", isUpvoted.value);
+				if (isUpvoted.value) {
+					console.log("bbbbbbbbb");
+					upvote.value--;
+					isUpvoted.value = false;
+				}
 			}
 		}
 	}

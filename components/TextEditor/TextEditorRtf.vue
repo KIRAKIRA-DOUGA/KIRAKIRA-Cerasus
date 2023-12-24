@@ -97,8 +97,9 @@
 			};
 			// TODO 虽然我很想非阻塞地发送评论，但是楼层号必须在评论成功提交给后端后才会获得。emmmm...
 			const emitVideoCommentResult = await api.videoComment.emitVideoComment(emitVideoCommentRequest);
-			if (emitVideoCommentResult?.success && emitVideoCommentResult.videoComment) {
-				useEvent("videoComment:emitComment", emitVideoCommentResult.videoComment);
+			const videoComment = emitVideoCommentResult.videoComment;
+			if (emitVideoCommentResult?.success && videoComment) {
+				useEvent("videoComment:emitVideoComment", videoComment);
 				const messageDuration = 5000;
 				useToast("评论发出去咯~", "success", messageDuration); // TODO 使用多语言
 			} else {

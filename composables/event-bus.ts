@@ -15,7 +15,7 @@ type ApplicationEvents = {
 	"component:hideAllPlayerVideoMenu": void;
 	"component:hideAllContextualToolbar": void;
 	"user:login": boolean;
-	"videoComment:emitComment": VideoCommentResult;
+	"videoComment:emitVideoComment": VideoCommentResult;
 };
 
 const emitter = mitt<ApplicationEvents>();
