@@ -1,5 +1,9 @@
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
+		/** 评论唯一 ID */
+		commentId: string;
+		/** 评论所在的视频的 ID */
+		videoId: number;
 		/** 评论发布者头像网址。 */
 		avatar?: string;
 		/** 评论发布者昵称。 */
@@ -32,6 +36,8 @@
 	const pinned = defineModel("pinned", { default: false });
 	const unpinnedCaption = computed(() => pinned.value ? "unpin" : "pin");
 
+	const userSelfInfoStore = useSelfUserInfoStore();
+
 	/**
 	 * 点击加分、减分按钮事件。
 	 * @param button - 点击的按钮是加分还是减分。
@@ -46,15 +52,25 @@
 		// if (isActive && states[`${another}Clicked`].value && !noNestingDolls) onClickUpvote(another, true);
 
 		if (!props.index) return;
-		const api = useApi();
-		const score = button === "upvote" ? 1 : -1;
-		await api.upvote(props.index, score);
-		upvote.value += score;
-		// TODO: We should separate upvote and downvote value!
+		if (button === "upvote") {
+			const notUpvoted = !isUpvoted.value; // TODO HaHa, 仅用于消除 ESLint 对单行分支语句的报错
+			if (notUpvoted && userSelfInfoStore.isLogined) { // 未登录，或者已经点过赞过不允许再点赞 // TODO 需要取消点赞吗？
+				const emitVideoCommentUpvoteRequest: EmitVideoCommentUpvoteRequestDto = { id: props.commentId, videoId: props.videoId };
+				await api.videoComment.emitVideoCommentUpvote(emitVideoCommentUpvoteRequest);
+				upvote.value++;
+			}
+		} else {
+			const notDownvoted = !isDownvoted.value; // TODO HaHa, 仅用于消除 ESLint 对单行分支语句的报错
+			if (notDownvoted && userSelfInfoStore.isLogined) { // 未登录，或者已经点过踩过不允许再点踩 // TODO 需要取消点踩吗？
+				const emitVideoCommentDownvoteRequest: EmitVideoCommentDownvoteRequestDto = { id: props.commentId, videoId: props.videoId };
+				await api.videoComment.emitVideoCommentDownvote(emitVideoCommentDownvoteRequest);
+				downvote.value++;
+			}
+		}
 	}
 
 	/**
-	 * 删除评论。
+	 * // TODO 删除评论。
 	 * @param commentId - 评论 ID。
 	 */
 	async function deleteComment(commentId: number | undefined) {
@@ -181,7 +197,7 @@
 			cursor: pointer;
 
 			&.active .soft-button {
-				color: c(accent);
+				color: c(accent); // FIXME 看起来这些样式并没有被正确绑定到元素上
 			}
 		}
 

@@ -9,7 +9,8 @@
 	const videoSource = ref<string>();
 	const videoDetails = ref<VideoData>();
 	const title = computed(() => videoDetails.value?.title ?? "");
-	const comments = reactive<string[]>([]);
+	const comments = ref<GetVideoCommentByKvidResponseDto["videoCommentList"]>([]);
+	const commentsCount = ref<number>(0);
 	// const recommendations = ref<Videos200ResponseVideosInner[]>();
 	type VideoData = GetVideoByKvidResponseDto["video"];
 
@@ -26,6 +27,8 @@
 		if (Number.isFinite(kvid)) {
 			const getVideoByKvidRequest: GetVideoByKvidRequestDto = { videoId: kvid };
 			const videoDataResponse = await api.video.getVideoByKvid(getVideoByKvidRequest);
+			const getVideoCommentByKvidRequest: GetVideoCommentByKvidRequestDto = { videoId: kvid };
+			const videoCommentsResponse = await api.videoComment.getVideoCommentByKvid(getVideoCommentByKvidRequest);
 			if (videoDataResponse.success) {
 				const videoData = videoDataResponse.video;
 				const videoPartData = videoData?.videoPart?.[0]; // TODO 因为要做 分P 视频，所以这里获取到的视频是一个数组，这里暂时取了数组第 0 位。应改进为读取数组中的所有视频，并根据 id 排序渲染成 分P 列表
@@ -46,6 +49,10 @@
 					handleError("获取视频失败，结果异常！"); // TODO 使用多语言
 			} else
 				handleError("获取视频失败，请求失败！"); // TODO 使用多语言
+			if (videoCommentsResponse.success) {
+				comments.value = videoCommentsResponse.videoCommentList;
+				commentsCount.value = videoCommentsResponse.videoCommentCount;
+			}
 		} else {
 			handleError("未获取到视频 ID，开始使用默认视频！"); // TODO 使用多语言
 			videoSource.value = exampleVideoPath;
@@ -106,7 +113,7 @@
 
 				<CreationComments
 					:videoId="kvid"
-					:count="comments.length"
+					:count="commentsCount"
 					:comments="comments"
 				/>
 			</div>

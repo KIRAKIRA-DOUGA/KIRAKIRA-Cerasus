@@ -1,4 +1,4 @@
-import { post } from "../Common";
+import { get, post } from "../Common";
 import getCorrectUri from "../Common/getCorrectUri";
 import type { EmitVideoCommentDownvoteRequestDto, EmitVideoCommentDownvoteResponseDto, EmitVideoCommentRequestDto, EmitVideoCommentResponseDto, EmitVideoCommentUpvoteRequestDto, EmitVideoCommentUpvoteResponseDto, GetVideoCommentByKvidRequestDto, GetVideoCommentByKvidResponseDto } from "./VideoCommentControllerDto";
 
@@ -21,11 +21,8 @@ export const emitVideoComment = async (emitVideoCommentRequest: EmitVideoComment
  * @returns 视频的视频评论列表
  */
 export const getVideoCommentByKvid = async (getVideoCommentByKvidRequest: GetVideoCommentByKvidRequestDto): Promise<GetVideoCommentByKvidResponseDto> => {
-	const { data: result } = await useFetch<GetVideoCommentByKvidResponseDto>(`${USER_API_URI}?videoId=${getVideoCommentByKvidRequest.videoId}`);
-	if (result.value)
-		return result.value;
-	else
-		return { success: false, message: "获取首页视频失败", videoCommentCount: 0, videoCommentList: [] };
+	// TODO use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	return await get(`${USER_API_URI}?videoId=${getVideoCommentByKvidRequest.videoId}`, { credentials: "include" }) as GetVideoCommentByKvidResponseDto;
 };
 
 /**

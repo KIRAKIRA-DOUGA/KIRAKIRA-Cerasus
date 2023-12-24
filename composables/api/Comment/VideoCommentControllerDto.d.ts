@@ -104,6 +104,25 @@ type VideoCommentIdDto = {
 	commentIndex: number;
 };
 
+/**
+ * 评论发送者的用户信息
+ */
+type CommentSenderUserInfo = {
+	/** 用户名 */
+	username?: string;
+	/** 用户头像的链接 */
+	avatar?: string;
+	/** 用户背景图片的链接 */
+	userBannerImage?: string;
+	/** 用户的个性签名 */
+	signature?: string;
+	/** 用户的性别，男、女和自定义（字符串） */
+	gender?: string;
+};
+
+/**
+ * 获取视频评论的响应结果
+ */
 export type GetVideoCommentByKvidResponseDto = {
 	/** 是否请求成功 */
 	success: boolean;
@@ -121,6 +140,8 @@ export type GetVideoCommentByKvidResponseDto = {
 		videoId: number;
 		/** 评论发送者的用户的 UID */
 		uid: number;
+		/** 评论发送者的信息，如 用户名、头像 等 */
+		userInfo?: CommentSenderUserInfo;
 		/** 发送评论的时间 */
 		emitTime: number;
 		/** 评论正文 */
