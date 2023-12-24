@@ -43,7 +43,7 @@
 	 * @param button - 点击的按钮是加分还是减分。
 	 * @param [noNestingDolls=false] - 禁止套娃，防止递归调用。
 	 */
-	async function onClickVotes(button: "upvote" | "downvote", noNestingDolls: boolean = false) {
+	function onClickVotes(button: "upvote" | "downvote", noNestingDolls: boolean = false) {
 		// const states = { upvote, isUpvoted, downvote, isDownvoted };
 		// const value = states[button], clicked = states[`${button}Clicked`]; // 面向字符串编程。
 		// const another = button === "like" ? "dislike" : "like";
@@ -56,14 +56,26 @@
 			const notUpvoted = !isUpvoted.value; // TODO HaHa, 仅用于消除 ESLint 对单行分支语句的报错
 			if (notUpvoted && userSelfInfoStore.isLogined) { // 未登录，或者已经点过赞过不允许再点赞 // TODO 需要取消点赞吗？
 				const emitVideoCommentUpvoteRequest: EmitVideoCommentUpvoteRequestDto = { id: props.commentId, videoId: props.videoId };
-				await api.videoComment.emitVideoCommentUpvote(emitVideoCommentUpvoteRequest);
+				try {
+					api.videoComment.emitVideoCommentUpvote(emitVideoCommentUpvoteRequest);
+				} catch (error) {
+					useToast("点赞失败！", "error"); // TODO 使用多语言
+					console.error("ERROR", "点赞失败！", error);
+				}
+				isUpvoted.value = true;
 				upvote.value++;
 			}
 		} else {
 			const notDownvoted = !isDownvoted.value; // TODO HaHa, 仅用于消除 ESLint 对单行分支语句的报错
 			if (notDownvoted && userSelfInfoStore.isLogined) { // 未登录，或者已经点过踩过不允许再点踩 // TODO 需要取消点踩吗？
 				const emitVideoCommentDownvoteRequest: EmitVideoCommentDownvoteRequestDto = { id: props.commentId, videoId: props.videoId };
-				await api.videoComment.emitVideoCommentDownvote(emitVideoCommentDownvoteRequest);
+				try {
+					api.videoComment.emitVideoCommentDownvote(emitVideoCommentDownvoteRequest);
+				} catch (error) {
+					useToast("点踩失败！", "error"); // TODO 使用多语言
+					console.error("ERROR", "点踩失败！", error);
+				}
+				isDownvoted.value = true;
 				downvote.value++;
 			}
 		}
