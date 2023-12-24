@@ -75,10 +75,7 @@
 				}
 				isUpvoted.value = true;
 				upvote.value++;
-				
-				console.log("aaaaaaaa1", isDownvoted.value);
 				if (isDownvoted.value) {
-					console.log("aaaaaaaa");
 					downvote.value--;
 					isDownvoted.value = false;
 				}
@@ -98,10 +95,7 @@
 				}
 				isDownvoted.value = true;
 				downvote.value++;
-				
-				console.log("bbbbbbbbb1", isUpvoted.value);
 				if (isUpvoted.value) {
-					console.log("bbbbbbbbb");
 					upvote.value--;
 					isUpvoted.value = false;
 				}
