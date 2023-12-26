@@ -9,14 +9,15 @@
 	const videoSource = ref<string>();
 	const videoDetails = ref<VideoData>();
 	const title = computed(() => videoDetails.value?.title ?? "");
-	const comments = reactive<string[]>([]);
+	const comments = ref<GetVideoCommentByKvidResponseDto["videoCommentList"]>([]);
+	const commentsCount = ref<number>(0);
 	// const recommendations = ref<Videos200ResponseVideosInner[]>();
 	type VideoData = GetVideoByKvidResponseDto["video"];
 
 	/**
 	 * Fetch video data.
 	 */
-	async function fetchData() {
+	async function fetchVideoData() {
 		const handleError = (message: string) => {
 			onMounted(() => {
 				useToast(message, "error");
@@ -61,8 +62,27 @@
 			};
 		}
 	}
-	watch(() => kvid, fetchData);
-	await fetchData();
+
+	/**
+	 * 获取视频的评论数据
+	 */
+	async function fetchVideoCommentData() {
+		const getVideoCommentByKvidRequest: GetVideoCommentByKvidRequestDto = { videoId: kvid };
+		const videoCommentsResponse = await api.videoComment.getVideoCommentByKvid(getVideoCommentByKvidRequest);
+		if (videoCommentsResponse.success) {
+			comments.value = videoCommentsResponse.videoCommentList;
+			commentsCount.value = videoCommentsResponse.videoCommentCount;
+		}
+	}
+
+	watch(() => kvid, fetchVideoData);
+	await fetchVideoData();
+
+	onMounted(fetchVideoCommentData);
+
+	useListen("videoComment:emitVideoComment", videoComment => {
+		comments.value.push(videoComment);
+	});
 
 	useHead({
 		title: title.value,
@@ -106,7 +126,7 @@
 
 				<CreationComments
 					:videoId="kvid"
-					:count="comments.length"
+					:count="commentsCount"
 					:comments="comments"
 				/>
 			</div>

@@ -5,17 +5,17 @@
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
 		/** 评论数目。 */
-		count?: number | string;
-		comments?: Comments200ResponseInner[];
-		videoId?: number;
+		count?: number;
+		comments?: GetVideoCommentByKvidResponseDto["videoCommentList"];
+		videoId: number;
 	}>(), {
 		count: 0,
 		comments: () => [],
-		videoId: undefined,
 	});
 
-	const downvote = ref(0), pinned = ref(false);
+	const pinned = ref(false);
 	const search = ref("");
+	const pageCount = computed(() => Math.floor(props.count / 20) + 1);
 </script>
 
 <template>
@@ -28,27 +28,29 @@
 			</div>
 			<div class="right">
 				<TextBox v-model="search" :placeholder="t.search" icon="search" />
-				<Pagination :current="1" :pages="99" :displayPageCount="7" />
+				<Pagination :current="1" :pages="pageCount" :displayPageCount="7" />
 				<SoftButton icon="deletion_history" />
 			</div>
 		</div>
 		<div class="items">
 			<CreationCommentsItem
 				v-for="comment in comments"
-				:key="comment.id"
+				:key="comment._id"
 				v-model:upvote="comment.upvoteCount"
-				v-model:downvote="downvote"
-				v-model:isUpvoted="comment.userHasUpvoted"
-				v-model:isDownvoted="comment.userHasDownvoted"
+				v-model:downvote="comment.downvoteCount"
+				v-model:isUpvoted="comment.isUpvote"
+				v-model:isDownvoted="comment.isDownvote"
 				v-model:pinned="pinned"
-				:index="comment.id"
-				:username="comment.fullname"
-				:avatar="comment.profilePictureUrl"
-				:date="new Date(comment.created!)"
+				:commentId="comment._id"
+				:videoId="videoId"
+				:index="comment.commentIndex"
+				:username="comment.userInfo?.username"
+				:avatar="comment.userInfo?.avatar"
+				:date="new Date(comment.editDateTime)"
 				:upvote_score="comment.upvoteCount"
 			>
 				<!-- eslint-disable-next-line vue/no-v-html -->
-				<div v-html="comment.content"></div>
+				<div v-html="comment.text"></div>
 			</CreationCommentsItem>
 		</div>
 	</Comp>
