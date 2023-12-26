@@ -155,6 +155,7 @@ export type VideoCommentResult = {
 	/** 系统专用字段-最后编辑时间 */
 	editDateTime: number;
 };
+
 /**
  * 获取视频评论的响应结果
  */
@@ -170,7 +171,7 @@ export type GetVideoCommentByKvidResponseDto = {
 };
 
 /**
- * 为视频点赞的请求的请求参数
+ * 为视频评论点赞的请求的请求参数
  */
 export type EmitVideoCommentUpvoteRequestDto = {
 	/** 评论的唯一 ID */
@@ -180,7 +181,7 @@ export type EmitVideoCommentUpvoteRequestDto = {
 };
 
 /**
-* 为视频点赞的请求的响应结果
+* 为视频评论点赞的请求的响应结果
 */
 export type EmitVideoCommentUpvoteResponseDto = {
 	/** 是否请求成功 */
@@ -190,7 +191,27 @@ export type EmitVideoCommentUpvoteResponseDto = {
 };
 
 /**
- * 为视频点踩的请求的请求参数
+ * 为视频评论点赞的请求的请求参数
+ */
+export type CancelVideoCommentUpvoteRequestDto = {
+	/** 评论的唯一 ID */
+	id: string;
+	/** KVID 视频 ID */
+	videoId: number;
+};
+
+/**
+* 取消视频评论点赞的请求的响应结果
+*/
+export type CancelVideoCommentUpvoteResponseDto = {
+	/** 是否请求成功 */
+	success: boolean;
+	/** 附加的文本消息 */
+	message?: string;
+};
+
+/**
+ * 为视频评论点踩的请求的请求参数
  */
 export type EmitVideoCommentDownvoteRequestDto = {
 	/** 评论的唯一 ID */
@@ -200,9 +221,29 @@ export type EmitVideoCommentDownvoteRequestDto = {
 };
 
 /**
-* 为视频点踩的请求的响应结果
+* 为视频评论点踩的请求的响应结果
 */
 export type EmitVideoCommentDownvoteResponseDto = {
+	/** 是否请求成功 */
+	success: boolean;
+	/** 附加的文本消息 */
+	message?: string;
+};
+
+/**
+ * 为视频评论点踩的请求的请求参数
+ */
+export type CancelVideoCommentDownvoteRequestDto = {
+	/** 评论的唯一 ID */
+	id: string;
+	/** KVID 视频 ID */
+	videoId: number;
+};
+
+/**
+* 取消视频评论点踩的请求的响应结果
+*/
+export type CancelVideoCommentDownvoteResponseDto = {
 	/** 是否请求成功 */
 	success: boolean;
 	/** 附加的文本消息 */

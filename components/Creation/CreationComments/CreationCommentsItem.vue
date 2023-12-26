@@ -53,54 +53,126 @@
 		// value.value += gain;
 		// if (isActive && states[`${another}Clicked`].value && !noNestingDolls) onClickUpvote(another, true);
 
-		if (!props.index) return;
+		const commentId = props.commentId; // 视频评论 ID
+		const videoId = props.videoId; // 视频 ID
 
-		if (voteLock.value) {
-			useToast("操作过于频繁，请稍后再试", "error"); // TODO 使用多语言
+		if (!props.index || !commentId || videoId === undefined || videoId === null) { // 非空验证
+			useToast("出错啦！请刷新页面再试~", "error"); // TODO 使用多语言
 			return;
 		}
 
-		if (button === "upvote") {
-			const notUpvoted = !isUpvoted.value; // TODO HaHa, 仅用于消除 ESLint 对单行分支语句的报错
-			if (notUpvoted && userSelfInfoStore.isLogined) { // 未登录，或者已经点过赞过不允许再点赞 // TODO 需要取消点赞吗？
-				const emitVideoCommentUpvoteRequest: EmitVideoCommentUpvoteRequestDto = { id: props.commentId, videoId: props.videoId };
-				try {
-					voteLock.value = true;
-					api.videoComment.emitVideoCommentUpvote(emitVideoCommentUpvoteRequest).then(() => {
-						voteLock.value = false;
-					});
-				} catch (error) {
-					useToast("点赞失败！", "error"); // TODO 使用多语言
-					console.error("ERROR", "点赞失败！", error);
-				}
-				isUpvoted.value = true;
-				upvote.value++;
-				if (isDownvoted.value) {
-					downvote.value--;
-					isDownvoted.value = false;
-				}
-			}
-		} else {
-			const notDownvoted = !isDownvoted.value; // TODO HaHa, 仅用于消除 ESLint 对单行分支语句的报错
-			if (notDownvoted && userSelfInfoStore.isLogined) { // 未登录，或者已经点过踩过不允许再点踩 // TODO 需要取消点踩吗？
-				const emitVideoCommentDownvoteRequest: EmitVideoCommentDownvoteRequestDto = { id: props.commentId, videoId: props.videoId };
-				try {
-					voteLock.value = true;
-					api.videoComment.emitVideoCommentDownvote(emitVideoCommentDownvoteRequest).then(() => {
-						voteLock.value = false;
-					});
-				} catch (error) {
-					useToast("点踩失败！", "error"); // TODO 使用多语言
-					console.error("ERROR", "点踩失败！", error);
-				}
-				isDownvoted.value = true;
-				downvote.value++;
-				if (isUpvoted.value) {
-					upvote.value--;
-					isUpvoted.value = false;
-				}
-			}
+		if (voteLock.value) { // 如果请求的"悲观锁"处于锁定状态，则弹出错误提示并停止
+			useToast("操作过于频繁，请稍后再试~", "error"); // TODO 使用多语言
+			return;
 		}
+		
+		if (!userSelfInfoStore.isLogined) { // 如果用户未登录，则不允许点赞/点踩
+			useToast("请登录后再操作~", "error"); // TODO 使用多语言
+			return;
+		}
+
+		if (button === "upvote") // 判断是点赞还是点踩
+			if (isUpvoted.value) // 如果被点赞的视频评论此前已经被点赞，则取消点赞，否则点赞
+				// 取消点赞
+				cancelVideoCommentUpvote(commentId, videoId);
+			else
+				// 点赞
+				emitVideoCommentUpvote(commentId, videoId);
+		else
+			if (isDownvoted.value) // 如果被踩的视频评论此前已经被点踩，则取消点踩，否则点踩
+				// 取消点踩
+				cancelVideoCommentDownvote(commentId, videoId);
+			else
+				// 点踩
+				emitVideoCommentDownvote(commentId, videoId);
+	}
+
+	/**
+	 * 点赞视频评论
+	 * @param commentId 视频评论 ID
+	 * @param videoId 视频 ID
+	 */
+	function emitVideoCommentUpvote(commentId: string, videoId: number) {
+		voteLock.value = true; // 请求锁：锁定
+		const emitVideoCommentUpvoteRequest: EmitVideoCommentUpvoteRequestDto = { id: commentId, videoId };
+		api.videoComment.emitVideoCommentUpvote(emitVideoCommentUpvoteRequest).catch(error => {
+			voteLock.value = false; // 请求锁：释放
+			useToast("点赞失败！", "error"); // TODO 使用多语言
+			console.error("ERROR", "点赞失败！", error);
+		}).finally(() => {
+			voteLock.value = false; // 请求锁：释放
+		});
+
+		isUpvoted.value = true; // 设置点赞 ICON 高亮
+		upvote.value++; // 赞数增加
+		if (isDownvoted.value) { // 如果用户在点赞操作前，已经有点踩，则取消点踩的高亮，并减少点踩数量
+			isDownvoted.value = false;
+			downvote.value--;
+		}
+	}
+
+	/**
+	 * 取消视频评论点赞
+	 * @param commentId 视频评论 ID
+	 * @param videoId 视频 ID
+	 */
+	function cancelVideoCommentUpvote(commentId: string, videoId: number) {
+		voteLock.value = true; // 请求锁：锁定
+		const cancelVideoCommentUpvoteRequest: CancelVideoCommentUpvoteRequestDto = { id: commentId, videoId };
+		api.videoComment.cancelVideoCommentUpvote(cancelVideoCommentUpvoteRequest).catch(error => {
+			voteLock.value = false; // 请求锁：释放
+			useToast("取消点赞失败！", "error"); // TODO 使用多语言
+			console.error("ERROR", "取消点赞失败！", error);
+		}).finally(() => {
+			voteLock.value = false; // 请求锁：释放
+		});
+
+		isUpvoted.value = false; // 取消点赞 ICON 高亮
+		upvote.value--; // 赞数减少
+	}
+
+	/**
+	 * 视频评论点踩
+	 * @param commentId 视频评论 ID
+	 * @param videoId 视频 ID
+	 */
+	function emitVideoCommentDownvote(commentId: string, videoId: number) {
+		voteLock.value = true; // 请求锁：锁定
+		const emitVideoCommentDownvoteRequest: EmitVideoCommentDownvoteRequestDto = { id: commentId, videoId };
+		api.videoComment.emitVideoCommentDownvote(emitVideoCommentDownvoteRequest).catch(error => {
+			voteLock.value = false; // 请求锁：释放
+			useToast("点踩失败！", "error"); // TODO 使用多语言
+			console.error("ERROR", "点踩失败！", error);
+		}).finally(() => {
+			voteLock.value = false; // 请求锁：释放
+		});
+
+		isDownvoted.value = true; // 设置点踩 ICON 高亮
+		downvote.value++; // 踩数增加
+		if (isUpvoted.value) { // 如果用户在点踩操作前，已经有点赞，则取消点赞的高亮，并减少点赞数量
+			upvote.value--;
+			isUpvoted.value = false;
+		}
+	}
+
+	/**
+	 * 取消视频评论点踩
+	 * @param commentId 视频评论 ID
+	 * @param videoId 视频 ID
+	 */
+	function cancelVideoCommentDownvote(commentId: string, videoId: number) {
+		voteLock.value = true; // 请求锁：锁定
+		const cancelVideoCommentDownvoteRequest: CancelVideoCommentDownvoteRequestDto = { id: commentId, videoId };
+		api.videoComment.cancelVideoCommentDownvote(cancelVideoCommentDownvoteRequest).catch(error => {
+			voteLock.value = false; // 请求锁：释放
+			useToast("取消点踩失败！", "error"); // TODO 使用多语言
+			console.error("ERROR", "取消点踩失败！", error);
+		}).finally(() => {
+			voteLock.value = false; // 请求锁：释放
+		});
+
+		isDownvoted.value = false; // 取消点踩 ICON 高亮
+		downvote.value--; // 踩数减少
 	}
 
 	/**

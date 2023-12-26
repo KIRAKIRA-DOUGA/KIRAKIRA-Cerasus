@@ -33,7 +33,7 @@ async function fetchWithTimeout(resource: RequestInfo, options: RequestInit = {}
  * @param timeout 请求超时时间（毫秒），默认：30000ms
  * @returns 请取结果
  */
-export async function get(url: string, requestOptions: RequestObject = {}, headerOptions: HeadersObject = {}, timeout?: number): Promise<unknown> {
+export async function GET(url: string, requestOptions: RequestObject = {}, headerOptions: HeadersObject = {}, timeout?: number): Promise<unknown> {
 	try {
 		const response = await fetchWithTimeout(url, {
 			method: "GET",
@@ -42,7 +42,7 @@ export async function get(url: string, requestOptions: RequestObject = {}, heade
 		}, timeout);
 		return response.json();
 	} catch (error) {
-		console.error("ERROR", `something wrong in 'get', URL: ${url}`, error); // TODO Remove Console Output?
+		console.error("ERROR", `something wrong in 'GET', URL: ${url}`, error); // TODO Remove Console Output?
 		throw error;
 	}
 }
@@ -56,7 +56,7 @@ export async function get(url: string, requestOptions: RequestObject = {}, heade
  * @param timeout 请求超时时间（毫秒），默认：30000ms
  * @returns 请求结果
  */
-export async function post(url: string, body: unknown, requestOptions: RequestObject = {}, headerOptions: HeadersObject = {}, timeout?: number): Promise<unknown> {
+export async function POST(url: string, body: unknown, requestOptions: RequestObject = {}, headerOptions: HeadersObject = {}, timeout?: number): Promise<unknown> {
 	try {
 		const response = await fetchWithTimeout(url, {
 			method: "POST",
@@ -69,7 +69,34 @@ export async function post(url: string, body: unknown, requestOptions: RequestOb
 		}, timeout);
 		return response.json();
 	} catch (error) {
-		console.error("ERROR", `something wrong in 'post', URL: ${url}`, error); // TODO Remove Console Output?
+		console.error("ERROR", `something wrong in 'POST', URL: ${url}`, error); // TODO Remove Console Output?
+		throw error;
+	}
+}
+
+/**
+ * 发送 DELETE 请求
+ * @param url 请求的网址
+ * @param body 请求的 body 内容
+ * @param requestOptions 请求携带的请求标头
+ * @param headerOptions 请求携带的 Header 内容
+ * @param timeout 请求超时时间（毫秒），默认：30000ms
+ * @returns 请求结果
+ */
+export async function DELETE(url: string, body: unknown, requestOptions: RequestObject = {}, headerOptions: HeadersObject = {}, timeout?: number): Promise<unknown> {
+	try {
+		const response = await fetchWithTimeout(url, {
+			method: "DELETE",
+			...requestOptions,
+			headers: {
+				"Content-Type": "application/json",
+				...headerOptions,
+			},
+			body: JSON.stringify(body),
+		}, timeout);
+		return response.json();
+	} catch (error) {
+		console.error("ERROR", `something wrong in 'DELETE', URL: ${url}`, error); // TODO Remove Console Output?
 		throw error;
 	}
 }
