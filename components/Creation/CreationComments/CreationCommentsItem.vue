@@ -65,7 +65,7 @@
 			useToast("操作过于频繁，请稍后再试~", "error"); // TODO 使用多语言
 			return;
 		}
-		
+
 		if (!userSelfInfoStore.isLogined) { // 如果用户未登录，则不允许点赞/点踩
 			useToast("请登录后再操作~", "error"); // TODO 使用多语言
 			return;
@@ -303,7 +303,7 @@
 			cursor: pointer;
 
 			&.active .soft-button {
-				color: c(accent); // FIXME 看起来这些样式并没有被正确绑定到元素上
+				--active: true;
 			}
 		}
 
