@@ -55,6 +55,10 @@
 		});
 	}
 
+	const showSettings = ref(false);
+	const horizontalFlip = defineModel<boolean>("horizontalFlip", { default: false });
+	const verticalFlip = defineModel<boolean>("verticalFlip", { default: false });
+
 	const [DefineCountItem, CountItem] = createReusableTemplate<{
 		value: number | string;
 		icon: DeclaredIcons;
@@ -90,11 +94,17 @@
 				<SoftButton v-tooltip:bottom="t.favorite_verb" icon="star" class="button-favorite" @click="favorite" />
 				<SoftButton v-tooltip:bottom="t.share" icon="share" class="button-share" @click="share" />
 				<SoftButton v-tooltip:bottom="t.danmaku.history" icon="history" class="button-history" />
-				<SoftButton v-tooltip:bottom="t.settings" icon="settings" class="button-settings" />
+				<SoftButton v-tooltip:bottom="t.settings" :icon="showSettings ? 'close' : 'settings'" class="button-settings" :active="showSettings" @click="showSettings = !showSettings" />
 			</div>
 		</div>
-		<PlayerVideoPanelDanmakuList v-model="insertDanmaku" />
-		<PlayerVideoPanelDanmakuSender v-model="sendDanmaku" :videoId="props.videoId" :currentTime="currentTime" />
+		<Transition :name="showSettings ? 'page-forward' : 'page-backward'" mode="out-in">
+			<div v-if="!showSettings" class="page-danmaku">
+				<PlayerVideoPanelDanmakuList v-model="insertDanmaku" />
+				<PlayerVideoPanelDanmakuSender v-model="sendDanmaku" :videoId="props.videoId" :currentTime="currentTime" />
+			</div>
+
+			<PlayerVideoPanelSettings v-else v-model:horizontalFlip="horizontalFlip" v-model:verticalFlip="verticalFlip" />
+		</Transition>
 	</Comp>
 </template>
 
@@ -164,5 +174,11 @@
 		justify-content: space-evenly;
 		height: $buttons-height;
 		overflow: hidden;
+	}
+
+	.page-danmaku {
+		display: flex;
+		flex-direction: column;
+		flex-grow: 1;
 	}
 </style>
