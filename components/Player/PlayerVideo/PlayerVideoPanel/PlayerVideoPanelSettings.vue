@@ -1,11 +1,21 @@
 <script setup lang="ts">
 	const horizontalFlip = defineModel<boolean>("horizontalFlip", { default: false });
 	const verticalFlip = defineModel<boolean>("verticalFlip", { default: false });
+	const danmakuOpacity = defineModel<number>("danmakuOpacity", { default: 1 });
 </script>
 
 <template>
 	<Comp>
 		<ShadingIcon icon="settings" position="right bottom" rotating elastic large />
+
+		<p>弹幕</p>
+		<div class="option-wrapper">
+			<Icon name="opacity" />
+			<div class="option-content">
+				<span>不透明度</span>
+				<Slider v-model="danmakuOpacity" :min="0" :max="1" />
+			</div>
+		</div>
 
 		<p>画面</p>
 		<ToggleSwitch v-model="horizontalFlip" v-ripple icon="flip_horizontal">水平翻转</ToggleSwitch>
@@ -36,6 +46,24 @@
 		padding-left: $padding + $icon-size + $gap;
 		color: c(accent);
 		font-weight: 600;
+	}
+
+	.option-wrapper {
+		display: flex;
+		gap: $gap;
+		align-items: center;
+		justify-content: center;
+		height: 72px;
+		padding: 0 $padding;
+
+		.icon {
+			color: c(icon-color);
+			font-size: 24px;
+		}
+
+		.option-content {
+			flex-grow: 1;
+		}
 	}
 
 	.toggle-switch {

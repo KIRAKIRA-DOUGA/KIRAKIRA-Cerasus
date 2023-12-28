@@ -26,6 +26,7 @@
 	const currentQuality = ref("720P");
 	const horizontalFlip = ref(false);
 	const verticalFlip = ref(false);
+	const danmakuOpacity = ref(1);
 
 	const qualities = ref<BitrateInfo[]>([]);
 	const mediaInfos = ref<MediaInfo>();
@@ -395,7 +396,7 @@
 				@contextmenu.prevent="e => menu = e"
 				@mousemove="autoHideController"
 			></video>
-			<PlayerVideoDanmaku v-model="willSendDanmaku" :comments="initialDanmaku" :media="video" :hidden="!showDanmaku" />
+			<PlayerVideoDanmaku v-model="willSendDanmaku" :comments="initialDanmaku" :media="video" :hidden="!showDanmaku" :style="{ opacity: danmakuOpacity }" />
 			<PlayerVideoController
 				:key="qualities.length"
 				v-model:currentTime="currentTime"
@@ -421,6 +422,7 @@
 			v-model:insertDanmaku="willInsertDanmaku"
 			v-model:horizontalFlip="horizontalFlip"
 			v-model:verticalFlip="verticalFlip"
+			v-model:danmakuOpacity="danmakuOpacity"
 			:videoId="id"
 			:currentTime="currentTime"
 			:rating="rating"

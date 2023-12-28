@@ -58,6 +58,7 @@
 	const showSettings = ref(false);
 	const horizontalFlip = defineModel<boolean>("horizontalFlip", { default: false });
 	const verticalFlip = defineModel<boolean>("verticalFlip", { default: false });
+	const danmakuOpacity = defineModel<number>("danmakuOpacity", { default: 1 });
 
 	const [DefineCountItem, CountItem] = createReusableTemplate<{
 		value: number | string;
@@ -103,7 +104,7 @@
 				<PlayerVideoPanelDanmakuSender v-model="sendDanmaku" :videoId="props.videoId" :currentTime="currentTime" />
 			</div>
 
-			<PlayerVideoPanelSettings v-else v-model:horizontalFlip="horizontalFlip" v-model:verticalFlip="verticalFlip" />
+			<PlayerVideoPanelSettings v-else v-model:horizontalFlip="horizontalFlip" v-model:verticalFlip="verticalFlip" v-model:danmakuOpacity="danmakuOpacity" />
 		</Transition>
 	</Comp>
 </template>
