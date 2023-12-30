@@ -206,12 +206,12 @@
 					<div v-if="index !== undefined">#{{ index }}</div>
 					<div>{{ date }}</div>
 					<div class="votes-wrapper">
-						<div class="votes" :class="{ active: isUpvoted }">
-							<SoftButton v-tooltip:bottom="t.upvote" icon="thumb_up" @click="onClickVotes('upvote')" />
+						<div class="votes">
+							<SoftButton v-tooltip:bottom="t.upvote" icon="thumb_up" :active="isUpvoted" @click="onClickVotes('upvote')" />
 							<span v-if="upvote">{{ upvote }}</span>
 						</div>
-						<div class="votes" :class="{ active: isDownvoted }">
-							<SoftButton v-tooltip:bottom="t.downvote" icon="thumb_down" @click="onClickVotes('downvote')" />
+						<div class="votes">
+							<SoftButton v-tooltip:bottom="t.downvote" icon="thumb_down" :active="isDownvoted" @click="onClickVotes('downvote')" />
 							<span v-if="downvote">{{ downvote }}</span>
 						</div>
 					</div>
@@ -301,10 +301,6 @@
 			gap: 11px;
 			align-items: center;
 			cursor: pointer;
-
-			&.active .soft-button {
-				--active: true;
-			}
 		}
 
 		.soft-button {
