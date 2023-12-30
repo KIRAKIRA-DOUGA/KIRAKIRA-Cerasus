@@ -12,14 +12,46 @@
 		tags: selfUserInfoStore.tags?.map(tag => tag.labelName),
 	}));
 
+	const userAvatarFileInput = ref<HTMLElement>();
+	/**
+	 * 点击头像事件，模拟点击文件上传并唤起文件资源管理器
+	 */
+	function handleUploadAvatarImage() {
+		userAvatarFileInput.value?.click();
+	}
+	
+	const userUploadFile = ref<string>();
 	const avatarCropperIsOpen = ref(false);
-	const handleOpenAvatarCropper = () => {
-		avatarCropperIsOpen.value = true;
-	};
+	/**
+	 * 开启图片裁切器事件（用户选择本地文件并上传事件）
+	 * @param e 应为用户上传文件的 input 元素的 change 事件
+	 */
+	function handleOpenAvatarCropper(e: Event) {
+		const fileInput = e?.target as HTMLInputElement;
+		if (fileInput.files && fileInput.files?.[0]) {
+			const image = fileInput.files[0];
+			if (!/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(fileInput.value)) {
+				useToast("必须上传图片文件！", "error"); // TODO 使用多语言
+				console.error("ERROR", "上传的头像文件格式不合法！");
+				return;
+			}
+			const reader = new FileReader();
+			reader.onload = (fileReaderEvent: ProgressEvent<FileReader>) => {
+				if (fileReaderEvent?.target?.result) {
+					userUploadFile.value = window.URL.createObjectURL(new Blob([fileReaderEvent.target.result]));
+					avatarCropperIsOpen.value = true;
+				}
+			};
+			reader.readAsArrayBuffer(image);
+		}
+	}
 
 	const cropper = ref();
 	const isUploadingUserAvatar = ref(false);
-	const handleSubmitAvatarImage = async () => {
+	/**
+	 * 修改头像事件，向服务器提交新的图片
+	 */
+	async function handleSubmitAvatarImage() {
 		try {
 			isUploadingUserAvatar.value = true;
 			const blobImageData = await cropper.value.getCropBlobData() as Blob;
@@ -34,10 +66,11 @@
 				isUploadingUserAvatar.value = false;
 			}
 		} catch (error) {
+			useToast("头像上传失败", "error"); // TODO 使用多语言
 			console.error("ERROR", "在上传用户头像时出错");
 			isUploadingUserAvatar.value = false;
 		}
-	};
+	}
 
 	/**
 	* 根据 cookie 中的 uid 和 token 来获取用户信息（同时具有验证用户 token 的功能）
@@ -57,6 +90,18 @@
 
 	onMounted(async () => { await getUserInfo(); });
 
+	onMounted(() => {
+		if (userAvatarFileInput.value)
+			userAvatarFileInput.value.addEventListener("change", handleOpenAvatarCropper);
+	});
+	onBeforeUnmount(() => {
+		// 释放内存和事件监听
+		if (userUploadFile.value)
+			URL.revokeObjectURL(userUploadFile.value);
+		if (userAvatarFileInput.value)
+			userAvatarFileInput.value.removeEventListener("change", handleOpenAvatarCropper);
+	});
+
 	/**
 	 * Update the user profile.
 	 */
@@ -75,9 +120,9 @@
 </script>
 
 <template>
-	<Modal v-model="avatarCropperIsOpen">
+	<Modal v-model="avatarCropperIsOpen" title="更新头像">
 		<div style="width: 20vw; height: 20vw;">
-			<ImageCropper ref="cropper" :fixed="true" :fixedNumber="[1, 1]" />
+			<ImageCropper ref="cropper" :image="userUploadFile" :fixed="true" :fixedNumber="[1, 1]" />
 		</div>
 		<template #footer-right>
 			<!-- TODO 使用多语言 -->
@@ -91,9 +136,15 @@
 		<span>{{ t.profile.edit_banner }}</span>
 	</div>
 
-	<div class="change-avatar" @click="handleOpenAvatarCropper">
+	<div class="change-avatar" @click="handleUploadAvatarImage">
 		<UserAvatar :avatar="selfUserInfoStore.userAvatar" />
 		<span>{{ t.profile.edit_avatar }}</span>
+		<input
+			ref="userAvatarFileInput"
+			type="file"
+			accept="image/*"
+			style="display:none"
+		/>
 	</div>
 
 	<div class="items">
