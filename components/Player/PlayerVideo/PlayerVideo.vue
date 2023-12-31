@@ -24,6 +24,9 @@
 	const isTimeUpdating = ref(false);
 	const showMediaInfo = ref(false);
 	const currentQuality = ref("720P");
+	const horizontalFlip = ref(false);
+	const verticalFlip = ref(false);
+	const danmakuOpacity = ref(1);
 
 	const qualities = ref<BitrateInfo[]>([]);
 	const mediaInfos = ref<MediaInfo>();
@@ -381,6 +384,7 @@
 			<video
 				ref="video"
 				class="player"
+				:class="{ 'horizontal-flip': horizontalFlip, 'vertical-flip': verticalFlip }"
 				@play="playing = true"
 				@pause="playing = false"
 				@ratechange="e => playbackRate = (e.target as HTMLVideoElement).playbackRate"
@@ -392,7 +396,7 @@
 				@contextmenu.prevent="e => menu = e"
 				@mousemove="autoHideController"
 			></video>
-			<PlayerVideoDanmaku v-model="willSendDanmaku" :comments="initialDanmaku" :media="video" :hidden="!showDanmaku" />
+			<PlayerVideoDanmaku v-model="willSendDanmaku" :comments="initialDanmaku" :media="video" :hidden="!showDanmaku" :style="{ opacity: danmakuOpacity }" />
 			<PlayerVideoController
 				:key="qualities.length"
 				v-model:currentTime="currentTime"
@@ -416,6 +420,9 @@
 		<PlayerVideoPanel
 			v-model:sendDanmaku="willSendDanmaku"
 			v-model:insertDanmaku="willInsertDanmaku"
+			v-model:horizontalFlip="horizontalFlip"
+			v-model:verticalFlip="verticalFlip"
+			v-model:danmakuOpacity="danmakuOpacity"
 			:videoId="id"
 			:currentTime="currentTime"
 			:rating="rating"
@@ -439,6 +446,18 @@
 	.main {
 		position: relative;
 		background-color: black;
+
+		video {
+			transition: none;
+
+			&.horizontal-flip {
+				transform: scaleX(-100%);
+			}
+
+			&.vertical-flip {
+				transform: scaleY(-100%);
+			}
+		}
 
 		&:not(.fullscreen) {
 			&,
