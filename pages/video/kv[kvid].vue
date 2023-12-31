@@ -33,13 +33,13 @@
 				if (videoData?.title && videoPartData?.link) {
 					videoSource.value = videoPartData.link;
 					videoDetails.value = {
-						videoPart: videoData.videoPart,
-						title: videoData.title,
-						videoTags: videoData.videoTags,
+						videoPart: videoData.videoPart ?? [],
+						title: videoData.title ?? "",
+						videoTags: videoData.videoTags ?? [],
 						uploaderInfo: videoData.uploaderInfo,
 						uploadDate: videoData.uploadDate,
 						videoId: kvid,
-						videoCategory: videoData.videoCategory,
+						videoCategory: videoData.videoCategory ?? "",
 						copyright: videoData.copyright,
 						image: videoData.image,
 					};
@@ -70,8 +70,8 @@
 		const getVideoCommentByKvidRequest: GetVideoCommentByKvidRequestDto = { videoId: kvid };
 		const videoCommentsResponse = await api.videoComment.getVideoCommentByKvid(getVideoCommentByKvidRequest);
 		if (videoCommentsResponse.success) {
-			comments.value = videoCommentsResponse.videoCommentList;
-			commentsCount.value = videoCommentsResponse.videoCommentCount;
+			comments.value = videoCommentsResponse.videoCommentList ?? [];
+			commentsCount.value = videoCommentsResponse.videoCommentCount ?? 0;
 		}
 	}
 
