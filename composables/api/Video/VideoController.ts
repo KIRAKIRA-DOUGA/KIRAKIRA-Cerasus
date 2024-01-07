@@ -47,3 +47,19 @@ export const getVideoByUid = async (getVideoByUidRequest: GetVideoByUidRequestDt
 	} else
 		return { success: false, message: "未提供 UID", videosCount: 0, videos: [] };
 };
+
+/**
+ * 根据关键字搜索视频
+ * @param searchVideoByKeywordRequest 根据关键字搜索视频的请求参数
+ * @returns 根据关键字搜索视频的请求响应结果
+ */
+export const searchVideoByKeyword = async (searchVideoByKeywordRequest: SearchVideoByKeywordRequestDto): Promise<SearchVideoByKeywordResponseDto> => {
+	if (searchVideoByKeywordRequest && searchVideoByKeywordRequest.keyword) {
+		const { data: result } = await useFetch<SearchVideoByKeywordResponseDto>(`${VIDEO_API_URI}/search?keyword=${searchVideoByKeywordRequest.keyword}`);
+		if (result.value)
+			return result.value;
+		else
+			return { success: false, message: "根据关键字搜索视频失败", videosCount: 0, videos: [] };
+	} else
+		return { success: false, message: "未提供关键字", videosCount: 0, videos: [] };
+};
