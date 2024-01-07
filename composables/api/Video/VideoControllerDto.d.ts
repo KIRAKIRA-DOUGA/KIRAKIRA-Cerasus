@@ -171,6 +171,18 @@ export type GetVideoByUidRequestDto = {
 };
 
 /**
- * 从 UID 获取视频的请求响应结果
+ * 从 UID 获取视频的请求的响应结果
  */
 export type GetVideoByUidResponseDto = ThumbVideoResponseDto & {};
+
+/**
+ * 根据关键字搜索视频的请求参数
+ */
+export type SearchVideoByKeywordRequestDto = {
+	keyword: string;
+};
+
+/**
+ * 根据关键字搜索视频的响应结果
+ */
+export type SearchVideoByKeywordResponseDto = ThumbVideoResponseDto & {};

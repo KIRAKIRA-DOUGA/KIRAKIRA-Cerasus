@@ -1,30 +1,102 @@
 <script setup lang="ts">
 	useHead({ title: t.search });
 	const router = useRouter(), route = useRoute();
-	const querySearch = route.query.q ?? "";
+	const querySearch = computed(() => route.query.query ?? "");
 
 	const view = ref<ViewType>("grid");
 	const displayPageCount = ref(6);
-	const videos = ref<Videos200Response>();
+	const videos = ref<SearchVideoByKeywordResponseDto | ThumbVideoResponseDto>();
 	const searchModes = ["keyword", "tag", "user", "advanced_search"] as const;
-	const searchMode = ref<typeof searchModes[number]>("tag");
+	const querySearchMode = route.query.mode as typeof searchModes[number] ?? "tag";
+	const searchMode = ref<typeof searchModes[number]>(querySearchMode);
 	const searchModesSorted = computed(() => searchModes.toSorted((a, b) =>
 		a === searchMode.value ? -1 : b === searchMode.value ? 1 : 0));
-	// 注意：请更新你的 Node.js 版本为 20 及以上才能支持该函数，否则会报错。
+	// 注意：请更新你的 Node.js 版本为 20 及以上才能支持该函数，否则会报错。 // 02: 确实！
 
 	const data = reactive({
 		selectedTab: "Home",
-		search: querySearch,
+		search: querySearch.value,
 		sort: ref<SortModel>(["upload_date", "descending"]),
 		page: 1,
 		pages: 99,
 	});
 
 	/**
-	watch(() => data.search, search => {
-		router.push({ path: route.path, query: { ...route.query, q: search || undefined } });
-	});
+	 * 通过关键字搜索视频，并赋值给 video
+	 * @param keyword 关键字
 	 */
+	async function searchVideoByKeyword(keyword: string) {
+		const searchVideoByKeywordRequest: SearchVideoByKeywordRequestDto = { keyword };
+		const videoResult = await api.video.searchVideoByKeyword(searchVideoByKeywordRequest);
+		if (videoResult && videoResult.success) {
+			videos.value = videoResult;
+			data.pages = Math.floor(videoResult.videosCount / 50) + 1;
+		}
+	}
+
+	/**
+	 * 像首页一样获取视频，并赋值给 video
+	 */
+	async function getHomeVideo() {
+		const videoResult = await api.video.getHomePageThumbVideo();
+		if (videoResult && videoResult.success) {
+			videos.value = videoResult;
+			data.pages = Math.floor(videoResult.videosCount / 50) + 1;
+		}
+	}
+
+	/**
+	 * 搜索视频数据
+	 */
+	async function searchVideo() {
+		const query = querySearch.value;
+		if (query)
+			switch (searchMode.value) {
+				case "keyword": {
+					await searchVideoByKeyword(query);
+					break;
+				}
+
+				case "tag": {
+					useToast("暂时不支持这种搜索方法，请使用关键字搜索", "error", 10000); // TODO 使用多语言
+					console.warn("no support search mode: tag");
+					await getHomeVideo();
+					break;
+				}
+
+				case "user": {
+					useToast("暂时不支持这种搜索方法，请使用关键字搜索", "error", 10000); // TODO 使用多语言
+					console.warn("no support search mode: user");
+					await getHomeVideo();
+					break;
+				}
+
+				case "advanced_search": {
+					useToast("暂时不支持这种搜索方法，请使用关键字搜索", "error", 10000); // TODO 使用多语言
+					console.warn("no support search mode: advanced_search");
+					await getHomeVideo();
+					break;
+				}
+
+				default:
+					console.log("do nothing");
+					break;
+			}
+		else
+			await getHomeVideo();
+	}
+
+	await searchVideo();
+
+	// 向路由中更新搜索的关键字
+	watch(() => data.search, search => {
+		router.push({ path: route.path, query: { ...route.query, query: search || undefined } });
+	});
+
+	// 向路由中更新当前的搜索模式
+	watch(() => searchMode.value, searchMode => {
+		router.push({ path: route.path, query: { ...route.query, mode: searchMode || undefined } });
+	});
 </script>
 
 <template>
@@ -37,14 +109,14 @@
 				<div class="videos-grid">
 					<ThumbVideo
 						v-for="video in videos?.videos"
-						:key="video.videoID"
-						:videoId="video.videoID"
-						:uploader="video.authorName ?? ''"
-						:uploaderId="video.authorID"
-						:image="video.thumbnailLoc"
-						:date="new Date()"
-						:watchedCount="video.views"
-						:duration="new Duration(0, video.videoDuration ?? 0)"
+						:key="video.videoId"
+						:videoId="video.videoId"
+						:uploader="video.uploader ?? ''"
+						:uploaderId="video.uploaderId"
+						:image="video.image"
+						:date="new Date(video.uploadDate || 0)"
+						:watchedCount="video.watchedCount"
+						:duration="new Duration(0, video.duration ?? 0)"
 						:style="{ '--view': view }"
 					>{{ video.title }}</ThumbVideo>
 				</div>
@@ -52,7 +124,7 @@
 
 			<div class="right">
 				<div class="toolbox-card search">
-					<TextBox v-model="data.search" :placeholder="t.search" icon="search" />
+					<TextBox v-model="data.search" :placeholder="t.search" icon="search" @keyup.enter="searchVideo" />
 					<div class="tags">
 						<TransitionGroup>
 							<Tag
