@@ -88,9 +88,12 @@
 
 	await searchVideo();
 
+	// 向路由中更新搜索的关键字
 	watch(() => data.search, search => {
 		router.push({ path: route.path, query: { ...route.query, query: search || undefined } });
 	});
+
+	// 向路由中更新当前的搜索模式
 	watch(() => searchMode.value, searchMode => {
 		router.push({ path: route.path, query: { ...route.query, mode: searchMode || undefined } });
 	});
@@ -111,7 +114,7 @@
 						:uploader="video.uploader ?? ''"
 						:uploaderId="video.uploaderId"
 						:image="video.image"
-						:date="new Date()"
+						:date="new Date(video.uploadDate ? video.uploadDate : 0)"
 						:watchedCount="video.watchedCount"
 						:duration="new Duration(0, video.duration ?? 0)"
 						:style="{ '--view': view }"
