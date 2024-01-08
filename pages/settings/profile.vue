@@ -61,9 +61,9 @@
 				if (userAvatarUploadSignedUrlResult.success && userAvatarUploadSignedUrl) {
 					const uploadResult = await api.user.uploadUserAvatar(blobImageData, userAvatarUploadSignedUrl);
 					if (uploadResult) {
-						clearBlobUrl(); // 释放内存
 						await api.user.getSelfUserInfo();
 						avatarCropperIsOpen.value = false;
+						clearBlobUrl(); // 释放内存
 					}
 					isUploadingUserAvatar.value = false;
 				}
@@ -129,7 +129,7 @@
 <template>
 	<!-- // TODO 使用多语言 -->
 	<Modal v-model="avatarCropperIsOpen" title="更新头像">
-		<div style="width: 20vw; height: 20vw;">
+		<div class="avatar-cropper">
 			<ImageCropper ref="cropper" :image="userUploadFile" :fixed="true" :fixedNumber="[1, 1]" />
 		</div>
 		<template #footer-right>
@@ -234,5 +234,15 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
+	}
+
+	.avatar-cropper {
+		--avatar-cropper-side-length: 350px;
+		width: var(--avatar-cropper-side-length);
+		height: var(--avatar-cropper-side-length);
+
+		@media (width <= 450px) {
+			--avatar-cropper-side-length: 80dvw; /// 对于图片切割器，不建议使用响应式，因为切割器内部被切割的图片不会随之改变尺寸，但考虑到极端小尺寸的适配问题，且只有极少数场景会改变浏览器宽度
+		}
 	}
 </style>
