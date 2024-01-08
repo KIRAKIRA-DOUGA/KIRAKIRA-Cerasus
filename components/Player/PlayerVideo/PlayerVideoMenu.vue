@@ -13,7 +13,7 @@
 		hide: [];
 	}>();
 
-	const model = defineModel<MenuModel>();
+	const model = defineModel<MenuModel | number>();
 	const shown = ref(false);
 	const locationStyle = ref<CSSProperties>({});
 	/** 指定在鼠标移出区域多久后自动隐藏。 */
@@ -25,6 +25,7 @@
 	const isMouseEnter = ref(false);
 	const isMouseDown = ref(false);
 	const { width: menuWidth, margin } = useScssVariables().numbers;
+	const isFixed = ref(false);
 
 	/**
 	 * 隐藏菜单。
@@ -58,24 +59,35 @@
 		isMouseEnter.value = true;
 	}
 
+	const CONTROLLER_HEIGHT = 36;
+
 	/**
 	 * 显示菜单。
-	 * @param e - 如有鼠标事件则为上下文菜单，否则没有否则。
+	 * @param e - 如有鼠标事件则为上下文菜单，否则显示在屏幕正下方。
 	 */
-	function show(e: NonNull<MenuModel>) {
+	function show(e: MenuModel | number) {
 		if (preventShowing.value) return;
 		hideExceptMe.value = true;
 		useEvent("component:hideAllPlayerVideoMenu");
 		hideExceptMe.value = false;
-		const relativeEl = getPath(e).find(element => getComputedStyle(element).position === "relative");
-		if (!relativeEl) return;
-		reshow();
-		const { right: relativeRight, bottom: relativeBottom } = relativeEl.getBoundingClientRect();
-		const el = e.currentTarget as HTMLElement;
-		const { right: targetRight, top: targetTop, width: targetWidth } = el.getBoundingClientRect();
-		const bottom = relativeBottom - targetTop;
-		const right = Math.max(relativeRight - targetRight - (menuWidth - targetWidth) / 2, margin);
-		locationStyle.value = { right: right + "px", bottom: bottom + "px" };
+		if (e && typeof e === "object") {
+			const relativeEl = getPath(e).find(element => getComputedStyle(element).position === "relative");
+			if (!relativeEl) return;
+			isFixed.value = false;
+			reshow();
+			const { right: relativeRight, bottom: relativeBottom } = relativeEl.getBoundingClientRect();
+			const el = e.currentTarget as HTMLElement;
+			const { right: targetRight, top: targetTop, width: targetWidth } = el.getBoundingClientRect();
+			const bottom = relativeBottom - targetTop;
+			const right = Math.max(relativeRight - targetRight - (menuWidth - targetWidth) / 2, margin);
+			locationStyle.value = { right: right + "px", bottom: Math.max(bottom, CONTROLLER_HEIGHT) + "px" };
+		} else {
+			isFixed.value = true;
+			reshow();
+			const left = (window.innerWidth - menuWidth) / 2;
+			locationStyle.value = { left: left + "px", bottom: CONTROLLER_HEIGHT + "px" };
+			moveOut();
+		}
 		shown.value = true;
 		isMouseEnter.value = true;
 		emits("show");
@@ -103,7 +115,7 @@
 	});
 
 	watch(model, e => {
-		if (!e) moveOut();
+		if (e === undefined) moveOut();
 		else show(e);
 	}, { immediate: true });
 </script>
@@ -113,6 +125,7 @@
 		<Comp
 			v-if="shown"
 			role="menu"
+			:class="{ fixed: isFixed }"
 			:style="locationStyle"
 			@mouseenter="reshow"
 			@mouseleave="moveOut"
@@ -142,6 +155,10 @@
 
 		> :deep(*) {
 			margin-bottom: $margin;
+		}
+
+		&.fixed {
+			position: fixed;
 		}
 	}
 

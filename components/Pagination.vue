@@ -170,8 +170,8 @@
 	function onArrowKeyDown(e: KeyboardEvent) {
 		if (!props.enableArrowKeyMove || document.activeElement === pageEdit.value) return;
 		const movement =
-			e.key === "ArrowLeft" ? -1 :
-			e.key === "ArrowRight" ? 1 : 0;
+			e.code === "ArrowLeft" ? -1 :
+			e.code === "ArrowRight" ? 1 : 0;
 		if (movement) movePage(movement);
 	}
 	/**
@@ -221,7 +221,7 @@
 	 * @param e - 键盘事件。
 	 */
 	function onEnterEdited(e: KeyboardEvent) {
-		if (e.key === "Enter") {
+		if (e.code === "Enter") {
 			if (currentEdited.value.trim() !== "")
 				changePage(parseInt(currentEdited.value, 10));
 			(e.target as HTMLDivElement).blur();

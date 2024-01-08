@@ -91,8 +91,76 @@
 		playbackRate.value = newRate;
 	}
 
+	/**
+	 * 使用方向改变速度。
+	 * @param increment - 增量方向，快放为 1，慢放为 -1。
+	 */
+	function switchSpeedByDirection(increment: 1 | -1) {
+		showMenuByKeyboard(rateMenu);
+		const rate = playbackRate.value;
+		const rates = stepedPlaybackRates.slice();
+		if (!rates.includes(rate)) {
+			rates.push(rate);
+			rates.sort();
+		}
+		const newRate = rates[rates.indexOf(rate) + increment];
+		if (newRate === undefined) return;
+		playbackRate.value = newRate;
+	}
+
+	/**
+	 * 键盘控制显示浮窗菜单。
+	 * @param menu - 菜单。
+	 */
+	function showMenuByKeyboard(menu: Ref<MenuModel | number | undefined>) {
+		if (!isObject(menu.value))
+			menu.value = new Date().valueOf();
+	}
+
 	const playbackRateText = (rate: number) => (2 ** rate).toFixed(2).replace(/\.?0+$/, "") + "×";
 	const volumeText = (volume: number) => Math.round(volume * 100) + "%";
+
+	useEventListener("window", "keydown", e => {
+		const VOLUME_TICK = 0.1, TIME_TICK = 5;
+		switch (e.code) {
+			case "ArrowUp": // 音量 +
+				showMenuByKeyboard(volumeMenu);
+				volume.value = clamp(volume.value + VOLUME_TICK, 0, 1);
+				e.preventDefault();
+				break;
+			case "ArrowDown": // 音量 −
+				showMenuByKeyboard(volumeMenu);
+				volume.value = clamp(volume.value - VOLUME_TICK, 0, 1);
+				e.preventDefault();
+				break;
+			case "ArrowRight":
+				if (e.ctrlKey) // 加速
+					switchSpeedByDirection(1);
+				else // 进度条 →
+					model.value = clamp(model.value + TIME_TICK, 0, props.duration);
+				e.preventDefault();
+				break;
+			case "ArrowLeft":
+				if (e.ctrlKey) // 减速
+					switchSpeedByDirection(-1);
+				else // 进度条 ←
+					model.value = clamp(model.value - TIME_TICK, 0, props.duration);
+				e.preventDefault();
+				break;
+			case "Space": /* 播放/暂停 解决冲突 */ e.preventDefault(); break;
+			default: break;
+		}
+	});
+
+	useEventListener("window", "keyup", e => {
+		switch (e.code) {
+			case "KeyD": /* 弹幕 */ showDanmaku.value = !showDanmaku.value; break;
+			case "KeyM": /* 静音 */ muted.value = !muted.value; showMenuByKeyboard(volumeMenu); break;
+			case "KeyF": /* 全屏 */ fullscreen.value = !fullscreen.value; break;
+			case "Space": /* 播放/暂停 */ playing.value = !playing.value; break;
+			default: break;
+		}
+	});
 </script>
 
 <template>

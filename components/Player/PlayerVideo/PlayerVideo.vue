@@ -292,61 +292,6 @@
 	}
 
 	useEventListener("window", "mouseup", () => playerVideoControllerMouseDown.value = false);
-
-	/**
-	 * 快捷键。
-	 * useMagicKeys可以防止重复，适合用于操作。
-	 * onKeyStroke是可以按着连续重复的，适合用于调整音量和进度条。
-	 */
-
-	const { d, m } = useMagicKeys();
-
-	/** 弹幕 */
-	whenever(d, () => showDanmaku.value = !showDanmaku.value);
-
-	/** 静音 */
-	whenever(m, () => muted.value = !muted.value);
-
-	/** 播放/暂停 */
-	const { space } = useMagicKeys({
-		passive: false,
-		onEventFired(e) {
-			if (e.key === " " && e.type === "keydown")
-				e.preventDefault();
-		},
-	});
-
-	whenever(space, () => playing.value = !playing.value);
-
-	/** 全屏 */
-	onKeyStroke(["f", "F"], e => {
-		e.preventDefault();
-		toggle();
-	});
-
-	/** 音量 + */
-	onKeyStroke("ArrowUp", e => {
-		e.preventDefault();
-		volume.value = clamp(volume.value + 0.1, 0, 1);
-	});
-
-	/** 音量 - */
-	onKeyStroke("ArrowDown", e => {
-		e.preventDefault();
-		volume.value = clamp(volume.value - 0.1, 0, 1);
-	});
-
-	/** 进度条 右 */
-	onKeyStroke("ArrowRight", e => {
-		e.preventDefault();
-		currentTime.value = clamp(currentTime.value + 5, 0, duration.value);
-	});
-
-	/** 进度条 左 */
-	onKeyStroke("ArrowLeft", e => {
-		e.preventDefault();
-		currentTime.value = clamp(currentTime.value - 5, 0, duration.value);
-	});
 </script>
 
 <template>
