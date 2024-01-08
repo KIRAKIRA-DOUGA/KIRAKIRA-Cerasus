@@ -34,6 +34,25 @@
 
 		<p>{{ t.shortcut_key.exit_fullscreen }}</p>
 		<p><Kbd>Esc</Kbd></p>
+
+		<!-- TODO: 使用多语言 -->
+		<p>全屏</p>
+		<p><Kbd>F</Kbd> <Kbd>F11</Kbd></p>
+		
+		<p>弹幕</p>
+		<p><Kbd>D</Kbd></p>
+		
+		<p>静音</p>
+		<p><Kbd>M</Kbd></p>
+		
+		<p>音量</p>
+		<p><Kbd>↑</Kbd> <Kbd>↓</Kbd></p>
+		
+		<p>快退 / 快进</p>
+		<p><Kbd>←</Kbd> <Kbd>→</Kbd></p>
+		
+		<p>慢放 / 快放</p>
+		<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>←</Kbd> <Kbd>→</Kbd></p>
 		<!-- #endregion -->
 
 		<!-- #region 分页器 -->

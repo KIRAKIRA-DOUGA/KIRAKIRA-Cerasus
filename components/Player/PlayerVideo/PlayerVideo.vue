@@ -279,8 +279,8 @@
 	 */
 	function autoHideController(e?: MouseEvent) {
 		const BOTTOM = 36;
-		if (!fullscreen.value || !e || playerVideoControllerMouseDown.value ||
-			window.outerHeight - e.pageY <= BOTTOM)
+		if (e && (!fullscreen.value || playerVideoControllerMouseDown.value ||
+			window.outerHeight - e.pageY <= BOTTOM))
 			hideController.value = false;
 		else
 			hideController.value = true;

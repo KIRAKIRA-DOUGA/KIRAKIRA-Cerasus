@@ -56,6 +56,7 @@
 			playbackRate.value = value;
 		},
 	});
+	const countdown = ref(false);
 
 	const volumeMenu = ref<MenuModel>();
 	const rateMenu = ref<MenuModel>();
@@ -77,6 +78,7 @@
 	const currentTime = computed(() => new Duration(model.value).toString());
 	const duration = computed(() => new Duration(props.duration).toString());
 	const buffered = computed(() => props.buffered / props.duration);
+	const countdownTime = computed(() => new Duration(model.value - props.duration).toString());
 
 	/**
 	 * 点击速度按钮时，在速度中循环。
@@ -147,7 +149,7 @@
 					model.value = clamp(model.value - TIME_TICK, 0, props.duration);
 				e.preventDefault();
 				break;
-			case "Space": /* 播放/暂停 解决冲突 */ e.preventDefault(); break;
+			case "Space": case "F11": /* 解决冲突 */ e.preventDefault(); break;
 			default: break;
 		}
 	});
@@ -156,7 +158,7 @@
 		switch (e.code) {
 			case "KeyD": /* 弹幕 */ showDanmaku.value = !showDanmaku.value; break;
 			case "KeyM": /* 静音 */ muted.value = !muted.value; showMenuByKeyboard(volumeMenu); break;
-			case "KeyF": /* 全屏 */ fullscreen.value = !fullscreen.value; break;
+			case "KeyF": case "F11": /* 全屏 */ props.toggleFullscreen?.(); break;
 			case "Space": /* 播放/暂停 */ playing.value = !playing.value; break;
 			default: break;
 		}
@@ -194,8 +196,8 @@
 		<div class="slider">
 			<Slider v-model="currentPercent" :min="0" :max="1" :buffered="buffered" />
 		</div>
-		<div class="time">
-			<span class="current">{{ currentTime }} </span>
+		<div class="time" @click="countdown = !countdown">
+			<span class="current">{{ countdown ? countdownTime : currentTime }} </span>
 			<span class="divide">/</span>
 			<span class="duration">{{ duration }}</span>
 		</div>

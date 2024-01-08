@@ -48,14 +48,20 @@ export class Duration {
 	 * @returns 对象的字符串表示形式。
 	 */
 	toString() {
-		if (!Number.isFinite(this.seconds))
+		let negative = false, value = this.seconds;
+		if (value < 0) {
+			negative = true;
+			value = -value;
+		}
+		if (!Number.isFinite(value))
 			return Duration.placeholder; // 当没有时间数据时显示占位符字符串。
-		const seconds = this.seconds % 60 | 0;
-		const minutes = this.seconds / 60 % 60 | 0;
-		const hours = this.seconds / 60 / 60 % 60 | 0;
+		const seconds = value % 60 | 0;
+		const minutes = value / 60 % 60 | 0;
+		const hours = value / 60 / 60 % 60 | 0;
 		const padStart = (n: number) => String(n).padStart(2, "0");
 		let result = `${padStart(minutes)}${Duration.colon}${padStart(seconds)}`;
 		if (hours) result = `${padStart(hours)}:${result}`;
+		if (negative) result = "-" + result;
 		return result;
 	}
 
