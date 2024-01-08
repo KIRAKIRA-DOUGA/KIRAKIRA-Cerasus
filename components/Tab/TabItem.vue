@@ -11,10 +11,14 @@
 		badge?: Readable;
 		/** 图标，可选。 */
 		icon?: DeclaredIcons;
+		/** 仅内部使用！是否是垂直选项卡？ */
+		// eslint-disable-next-line vue/prop-name-casing
+		_internalIsVertical?: boolean;
 	}>(), {
 		direction: "horizontal",
 		badge: undefined,
 		icon: undefined,
+		_internalIsVertical: undefined,
 	});
 
 	const emits = defineEmits<{
@@ -25,7 +29,8 @@
 	const active = computed(() => parent?.props.modelValue === props.id);
 	const flexDirection = computed(() => props.direction === "horizontal" ? undefined :
 		props.direction.replace("horizontal", "row").replace("vertical", "column") as Property.FlexDirection);
-	const vertical = computed(() => !!parent?.props.vertical);
+	const vertical = computed(() => props._internalIsVertical !== undefined ? props._internalIsVertical :
+		!!parent?.props.vertical);
 
 	/**
 	 * 单击切换选项卡事件。
@@ -46,7 +51,7 @@
 		:aria-current="active"
 		@click="onClick"
 	>
-		<div v-if="!vertical" v-ripple class="horizontal-ripple"></div>
+		<!-- <div v-if="!vertical" v-ripple class="horizontal-ripple"></div> -->
 		<div class="content" :style="{ flexDirection }">
 			<div v-if="icon" class="icon-wrapper">
 				<Icon :name="icon" />

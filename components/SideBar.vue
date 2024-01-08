@@ -343,6 +343,7 @@
 	.open-offcanvas {
 		@include flex-center;
 		gap: 8px;
+		cursor: pointer;
 
 		> * {
 			pointer-events: none;

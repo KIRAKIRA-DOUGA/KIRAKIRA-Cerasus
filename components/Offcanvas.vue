@@ -50,7 +50,7 @@
 			</div>
 		</div>
 		<div class="tab-bar vertical"><!-- 假装是 TabBar -->
-			<TabItem id="settings" v-ripple icon="settings" @click="to('/settings')">{{ t.settings }}</TabItem>
+			<TabItem id="settings" v-ripple icon="settings" _internalIsVertical @click="to('/settings')">{{ t.settings }}</TabItem>
 		</div>
 	</Comp>
 </template>
@@ -75,17 +75,17 @@
 			font-size: 12px;
 		}
 	}
-	
+
 	.tab-bar {
 		margin: 0 -14px;
 	}
-	
+
 	.grid {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
 		gap: 8px;
 		margin: 12px 0;
-		
+
 		.drawer-item {
 			@include round-large;
 			@include card-in-card-shadow;
@@ -97,15 +97,15 @@
 			color: c(icon-color);
 			font-size: 13px;
 			background-color: c(main-bg, 50%);
-			
+
 			.icon {
 				font-size: 32px;
 			}
-			
+
 			&:any-hover {
 				@include chip-shadow;
 			}
-			
+
 			&:active {
 				@include button-scale-pressed;
 			}
