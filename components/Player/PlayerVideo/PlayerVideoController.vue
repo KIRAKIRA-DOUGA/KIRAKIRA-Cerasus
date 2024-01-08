@@ -93,8 +93,6 @@
 
 	const playbackRateText = (rate: number) => (2 ** rate).toFixed(2).replace(/\.?0+$/, "") + "×";
 	const volumeText = (volume: number) => Math.round(volume * 100) + "%";
-
-	defineExpose({ abc: 123 });
 </script>
 
 <template>

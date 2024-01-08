@@ -43,7 +43,6 @@
 	const willInsertDanmaku = ref<DanmakuListItem[]>();
 	const initialDanmaku = ref<DanmakuComment[]>();
 	const screenOrientationBeforeFullscreen = ref<OrientationType>("portrait-primary");
-	const playerVideoController = ref<InstanceType<typeof PlayerVideoController>>();
 	const playerVideoControllerMouseDown = ref(false);
 	type MediaInfo = Record<string, Record<string, unknown>>;
 
@@ -274,14 +273,6 @@
 		} catch { }
 	}
 
-	const playerVideoControllerElements = computed(() => {
-		const textNode = playerVideoController.value?.$el as Text | null;
-		const elements: Element[] = [];
-		while (textNode?.nextElementSibling)
-			elements.push(textNode.nextElementSibling);
-		return elements;
-	});
-
 	/**
 	 * 在全屏时自动隐藏控制栏。
 	 * @param e - 鼠标移动事件。
@@ -397,7 +388,6 @@
 			></video>
 			<PlayerVideoDanmaku v-model="willSendDanmaku" :comments="initialDanmaku" :media="video" :hidden="!showDanmaku" :style="{ opacity: danmakuOpacity }" />
 			<PlayerVideoController
-				ref="playerVideoController"
 				:key="qualities.length"
 				v-model:currentTime="currentTime"
 				v-model:playing="playing"
