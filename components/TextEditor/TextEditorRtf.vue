@@ -15,7 +15,6 @@
 	const flyoutKaomoji = ref<FlyoutModel>();
 	const flyoutKaomojiMini = ref<FlyoutModel>();
 	const textLength = ref(0);
-	const shortcutKeysStore = useShortcutKeysStore();
 
 	const editor = useEditor({
 		extensions: [
@@ -34,11 +33,8 @@
 		onUpdate(props) {
 			textLength.value = props.editor.getText().length;
 		},
-		onFocus() {
-			shortcutKeysStore.setAllowShortcutKeys(false);
-		},
-		onBlur() {
-			shortcutKeysStore.setAllowShortcutKeys(true);
+		onCreate({ editor }) {
+			editor.view.dom.addEventListener("keydown", e => e.stopPropagation());
 		},
 	});
 

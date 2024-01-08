@@ -37,7 +37,7 @@
 	const menu = ref<MenuModel>();
 	const showDanmaku = ref(true);
 	const hideController = ref(false);
-	const hideControllerTimeout = ref<Timeout>();
+	const hideControllerTimeoutId = ref<Timeout>();
 	const willSendDanmaku = ref<DanmakuComment[]>();
 	const willInsertDanmaku = ref<DanmakuListItem[]>();
 	const initialDanmaku = ref<DanmakuComment[]>();
@@ -273,14 +273,16 @@
 
 	/**
 	 * 在全屏时自动隐藏控制栏。
+	 * @param e - 鼠标移动事件。
 	 */
-	function autoHideController() {
+	function autoHideController(e?: MouseEvent) {
 		hideController.value = false;
-		clearTimeout(hideControllerTimeout.value);
-		hideControllerTimeout.value = setTimeout(() => {
-			if (fullscreen.value)
-				hideController.value = true;
-		}, 3000);
+		clearTimeout(hideControllerTimeoutId.value);
+		if (fullscreen.value)
+			hideControllerTimeoutId.value = setTimeout(() => {
+				if (fullscreen.value)
+					hideController.value = true;
+			}, 3000);
 	}
 
 	/**
@@ -289,73 +291,53 @@
 	 * onKeyStroke是可以按着连续重复的，适合用于调整音量和进度条。
 	 */
 
-	const shortcutKeysStore = useShortcutKeysStore();
-
-	/**
-	 * 获取是否允许使用快捷键。
-	 * @return boolean - 是否允许使用快捷键。
-	 */
-	function getAllowShortcutKeys() {
-		return shortcutKeysStore.allowShortcutKeys;
-	}
-
 	const { d, m } = useMagicKeys();
 
 	/** 弹幕 */
-	whenever(d, () => getAllowShortcutKeys() && (showDanmaku.value = !showDanmaku.value));
+	whenever(d, () => showDanmaku.value = !showDanmaku.value);
 
 	/** 静音 */
-	whenever(m, () => getAllowShortcutKeys() && (muted.value = !muted.value));
+	whenever(m, () => muted.value = !muted.value);
 
 	/** 播放/暂停 */
 	const { space } = useMagicKeys({
 		passive: false,
 		onEventFired(e) {
-			if (getAllowShortcutKeys() && e.key === " " && e.type === "keydown")
+			if (e.key === " " && e.type === "keydown")
 				e.preventDefault();
 		},
 	});
 
-	whenever(space, () => getAllowShortcutKeys() && (playing.value = !playing.value));
+	whenever(space, () => playing.value = !playing.value);
 
 	/** 全屏 */
 	onKeyStroke(["f", "F"], e => {
-		if (getAllowShortcutKeys()) {
-			e.preventDefault();
-			toggle();
-		}
+		e.preventDefault();
+		toggle();
 	});
 
 	/** 音量 + */
 	onKeyStroke("ArrowUp", e => {
-		if (getAllowShortcutKeys()) {
-			e.preventDefault();
-			volume.value = clamp(volume.value + 0.1, 0, 1);
-		}
+		e.preventDefault();
+		volume.value = clamp(volume.value + 0.1, 0, 1);
 	});
 
 	/** 音量 - */
 	onKeyStroke("ArrowDown", e => {
-		if (getAllowShortcutKeys()) {
-			e.preventDefault();
-			volume.value = clamp(volume.value - 0.1, 0, 1);
-		}
+		e.preventDefault();
+		volume.value = clamp(volume.value - 0.1, 0, 1);
 	});
 
 	/** 进度条 右 */
 	onKeyStroke("ArrowRight", e => {
-		if (getAllowShortcutKeys()) {
-			e.preventDefault();
-			currentTime.value = clamp(currentTime.value + 5, 0, duration.value);
-		}
+		e.preventDefault();
+		currentTime.value = clamp(currentTime.value + 5, 0, duration.value);
 	});
 
 	/** 进度条 左 */
 	onKeyStroke("ArrowLeft", e => {
-		if (getAllowShortcutKeys()) {
-			e.preventDefault();
-			currentTime.value = clamp(currentTime.value - 5, 0, duration.value);
-		}
+		e.preventDefault();
+		currentTime.value = clamp(currentTime.value - 5, 0, duration.value);
 	});
 </script>
 
