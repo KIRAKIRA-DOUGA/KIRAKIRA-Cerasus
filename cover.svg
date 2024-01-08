@@ -4,7 +4,7 @@
 		<path d="M0 0H793L0 493V0Z" fill="#F06E8E" />
 		<path d="M1920 1080L1127 1080L1920 587L1920 1080Z" fill="#F06E8E" />
 		<mask id="mask0_602_1701" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="345" y="696" width="236" height="236">
-			<circle cx="463" cy="814" r="118" fill="#F06E7E" />
+			<circle cx="463" cy="814" r="118" fill="#F06E8E" />
 		</mask>
 		<g mask="url(#mask0_602_1701)">
 			<line x1="345.252" y1="667.636" x2="625.122" y2="742.627" stroke="#F06E8E" stroke-width="4" />
