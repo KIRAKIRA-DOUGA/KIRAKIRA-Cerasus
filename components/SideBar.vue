@@ -79,7 +79,16 @@
 		/>
 	</DefineAvatar>
 
-	<aside :class="{ colored: useAppSettingsStore().coloredSideBar }" :[scopeId]="''" role="toolbar" aria-label="side bar" aria-orientation="vertical">
+	<aside
+		:class="{
+			colored: useAppSettingsStore().coloredSideBar,
+			'hide-topbar': isCurrentSettings,
+		}"
+		:[scopeId]="''"
+		role="toolbar"
+		aria-label="side bar"
+		aria-orientation="vertical"
+	>
 		<div class="top icons">
 			<SoftButton v-tooltip="t.home" icon="home" href="/" />
 			<SoftButton v-tooltip="t.search" icon="search" href="/search" />
@@ -271,6 +280,14 @@
 
 			.user-avatar {
 				margin-right: 4px;
+			}
+
+			&.hide-topbar {
+				display: none;
+
+				~ :deep(.container) {
+					padding-top: 0;
+				}
 			}
 		}
 	}
