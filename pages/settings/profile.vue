@@ -41,6 +41,7 @@
 			if (image) {
 				userUploadFile.value = fileToBlob(image);
 				avatarCropperIsOpen.value = true;
+				fileInput.value = ""; // 读取完用户上传的文件后，需要清空 input，以免用户在下次上传同一个文件时无法触发 change 事件
 			}
 		}
 	}
