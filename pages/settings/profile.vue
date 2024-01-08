@@ -27,7 +27,7 @@
 	 * 如果有上传图片，则开启图片裁切器（即：用户选择了本地文件的事件）
 	 * @param e 应为用户上传文件的 input 元素的 change 事件
 	 */
-	function handleOpenAvatarCropper(e: Event | undefined) {
+	function handleOpenAvatarCropper(e?: Event) {
 		const fileInput = e?.target as HTMLInputElement | undefined;
 		if (fileInput?.files?.[0]) {
 			const image = fileInput.files[0];
