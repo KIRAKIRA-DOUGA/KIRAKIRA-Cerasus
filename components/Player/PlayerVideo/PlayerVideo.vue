@@ -37,11 +37,14 @@
 	const menu = ref<MenuModel>();
 	const showDanmaku = ref(true);
 	const hideController = ref(false);
-	const hideControllerTimeoutId = ref<Timeout>();
+	const hideCursor = ref(false);
+	const hideCursorTimeoutId = ref<Timeout>();
 	const willSendDanmaku = ref<DanmakuComment[]>();
 	const willInsertDanmaku = ref<DanmakuListItem[]>();
 	const initialDanmaku = ref<DanmakuComment[]>();
 	const screenOrientationBeforeFullscreen = ref<OrientationType>("portrait-primary");
+	const playerVideoController = ref<InstanceType<typeof PlayerVideoController>>();
+	const playerVideoControllerMouseDown = ref(false);
 	type MediaInfo = Record<string, Record<string, unknown>>;
 
 	/**
@@ -271,19 +274,33 @@
 		} catch { }
 	}
 
+	const playerVideoControllerElements = computed(() => {
+		const textNode = playerVideoController.value?.$el as Text | null;
+		const elements: Element[] = [];
+		while (textNode?.nextElementSibling)
+			elements.push(textNode.nextElementSibling);
+		return elements;
+	});
+
 	/**
 	 * 在全屏时自动隐藏控制栏。
 	 * @param e - 鼠标移动事件。
 	 */
 	function autoHideController(e?: MouseEvent) {
-		hideController.value = false;
-		clearTimeout(hideControllerTimeoutId.value);
-		if (fullscreen.value)
-			hideControllerTimeoutId.value = setTimeout(() => {
-				if (fullscreen.value)
-					hideController.value = true;
-			}, 3000);
+		const BOTTOM = 36;
+		if (!fullscreen.value || !e || playerVideoControllerMouseDown.value ||
+			window.outerHeight - e.pageY <= BOTTOM)
+			hideController.value = false;
+		else
+			hideController.value = true;
+
+		hideCursor.value = false;
+		clearTimeout(hideCursorTimeoutId.value);
+		if (fullscreen.value && hideController.value)
+			hideCursorTimeoutId.value = setTimeout(() => fullscreen.value && (hideCursor.value = true), 1000);
 	}
+
+	useEventListener("window", "mouseup", () => playerVideoControllerMouseDown.value = false);
 
 	/**
 	 * 快捷键。
@@ -362,7 +379,7 @@
 			</Accordion>
 		</Alert>
 
-		<div ref="videoContainer" class="main" :class="{ fullscreen, 'hide-cursor': hideController }">
+		<div ref="videoContainer" class="main" :class="{ fullscreen, 'hide-cursor': hideCursor }">
 			<video
 				ref="video"
 				class="player"
@@ -380,6 +397,7 @@
 			></video>
 			<PlayerVideoDanmaku v-model="willSendDanmaku" :comments="initialDanmaku" :media="video" :hidden="!showDanmaku" :style="{ opacity: danmakuOpacity }" />
 			<PlayerVideoController
+				ref="playerVideoController"
 				:key="qualities.length"
 				v-model:currentTime="currentTime"
 				v-model:playing="playing"
@@ -396,6 +414,7 @@
 				:toggleFullscreen="toggle"
 				:buffered="buffered"
 				:qualities="qualities"
+				@mousedown="playerVideoControllerMouseDown = true"
 			/>
 		</div>
 

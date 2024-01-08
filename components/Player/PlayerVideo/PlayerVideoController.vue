@@ -93,10 +93,12 @@
 
 	const playbackRateText = (rate: number) => (2 ** rate).toFixed(2).replace(/\.?0+$/, "") + "×";
 	const volumeText = (volume: number) => Math.round(volume * 100) + "%";
+
+	defineExpose({ abc: 123 });
 </script>
 
 <template>
-	<div class="menus" :class="{ ...fullscreenColorClass }">
+	<div class="menus" :class="{ ...fullscreenColorClass }" v-bind="$attrs">
 		<PlayerVideoMenu v-model="volumeMenu">
 			<template #slider>
 				<CapsuleSlider v-model="volumeSet" :min="0" :max="1" :displayValue="volumeText" :defaultValue="1" />
@@ -119,7 +121,7 @@
 		</PlayerVideoMenu>
 	</div>
 
-	<Comp role="toolbar" :class="{ fullscreen, ...fullscreenColorClass, hide }">
+	<Comp role="toolbar" :class="{ fullscreen, ...fullscreenColorClass, hide }" v-bind="$attrs">
 		<div class="left">
 			<SoftButton class="play" :icon="playing ? 'pause' : 'play'" @click="playing = !playing" />
 		</div>
