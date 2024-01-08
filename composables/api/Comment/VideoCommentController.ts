@@ -11,7 +11,7 @@ const USER_API_URI = `${BACK_END_URL}/video/comment`;
  * @returns 用户发送视频评论的结果
  */
 export const emitVideoComment = async (emitVideoCommentRequest: EmitVideoCommentRequestDto): Promise<EmitVideoCommentResponseDto> => {
-	// TODO use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	return await POST(`${USER_API_URI}/emit`, emitVideoCommentRequest, { credentials: "include" }) as EmitVideoCommentResponseDto;
 };
 
@@ -21,7 +21,7 @@ export const emitVideoComment = async (emitVideoCommentRequest: EmitVideoComment
  * @returns 视频的视频评论列表
  */
 export const getVideoCommentByKvid = async (getVideoCommentByKvidRequest: GetVideoCommentByKvidRequestDto): Promise<GetVideoCommentByKvidResponseDto> => {
-	// TODO use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	return await GET(`${USER_API_URI}?videoId=${getVideoCommentByKvidRequest.videoId}`, { credentials: "include" }) as GetVideoCommentByKvidResponseDto;
 };
 
@@ -31,7 +31,7 @@ export const getVideoCommentByKvid = async (getVideoCommentByKvidRequest: GetVid
  * @returns 用户为视频评论点赞的结果
  */
 export const emitVideoCommentUpvote = async (emitVideoCommentUpvoteRequest: EmitVideoCommentUpvoteRequestDto): Promise<EmitVideoCommentUpvoteResponseDto> => {
-	// TODO use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	return await POST(`${USER_API_URI}/upvote`, emitVideoCommentUpvoteRequest, { credentials: "include" }) as EmitVideoCommentUpvoteResponseDto;
 };
 
@@ -41,7 +41,7 @@ export const emitVideoCommentUpvote = async (emitVideoCommentUpvoteRequest: Emit
  * @returns 用户为视频评论点踩的结果
  */
 export const emitVideoCommentDownvote = async (emitVideoCommentDownvoteRequest: EmitVideoCommentDownvoteRequestDto): Promise<EmitVideoCommentDownvoteResponseDto> => {
-	// TODO use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	return await POST(`${USER_API_URI}/downvote`, emitVideoCommentDownvoteRequest, { credentials: "include" }) as EmitVideoCommentDownvoteResponseDto;
 };
 
@@ -51,7 +51,7 @@ export const emitVideoCommentDownvote = async (emitVideoCommentDownvoteRequest: 
  * @returns 用户取消一个视频评论的点赞的结果
  */
 export const cancelVideoCommentUpvote = async (cancelVideoCommentUpvoteRequest: CancelVideoCommentUpvoteRequestDto): Promise<EmitVideoCommentUpvoteResponseDto> => {
-	// TODO use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	return await DELETE(`${USER_API_URI}/upvote/cancel`, cancelVideoCommentUpvoteRequest, { credentials: "include" }) as EmitVideoCommentUpvoteResponseDto;
 };
 
@@ -61,6 +61,6 @@ export const cancelVideoCommentUpvote = async (cancelVideoCommentUpvoteRequest: 
  * @returns 用户取消一个视频评论的点踩的结果
  */
 export const cancelVideoCommentDownvote = async (cancelVideoCommentDownvoteRequest: CancelVideoCommentDownvoteRequestDto): Promise<EmitVideoCommentDownvoteResponseDto> => {
-	// TODO use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	return await DELETE(`${USER_API_URI}/downvote/cancel`, cancelVideoCommentDownvoteRequest, { credentials: "include" }) as EmitVideoCommentDownvoteResponseDto;
 };

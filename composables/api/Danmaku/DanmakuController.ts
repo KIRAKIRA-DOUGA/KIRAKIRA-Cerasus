@@ -11,7 +11,7 @@ const USER_API_URI = `${BACK_END_URL}/video/danmaku`;
  * @returns 用户发送弹幕的结果
  */
 export const emitDanmaku = async (emitDanmakuRequest: EmitDanmakuRequestDto): Promise<EmitDanmakuResponseDto> => {
-	// TODO use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	return await POST(`${USER_API_URI}/emit`, emitDanmakuRequest, { credentials: "include" }) as EmitDanmakuResponseDto;
 };
 

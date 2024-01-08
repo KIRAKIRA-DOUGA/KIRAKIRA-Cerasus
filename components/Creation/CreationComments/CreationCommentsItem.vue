@@ -57,17 +57,17 @@
 		const videoId = props.videoId; // 视频 ID
 
 		if (!props.index || !commentId || videoId === undefined || videoId === null) { // 非空验证
-			useToast("出错啦！请刷新页面再试~", "error"); // TODO 使用多语言
+			useToast("出错啦！请刷新页面再试~", "error"); // TODO: 使用多语言
 			return;
 		}
 
 		if (voteLock.value) { // 如果请求的"悲观锁"处于锁定状态，则弹出错误提示并停止
-			useToast("操作过于频繁，请稍后再试~", "error"); // TODO 使用多语言
+			useToast("操作过于频繁，请稍后再试~", "error"); // TODO: 使用多语言
 			return;
 		}
 
 		if (!userSelfInfoStore.isLogined) { // 如果用户未登录，则不允许点赞/点踩
-			useToast("请登录后再操作~", "error"); // TODO 使用多语言
+			useToast("请登录后再操作~", "error"); // TODO: 使用多语言
 			return;
 		}
 
@@ -97,7 +97,7 @@
 		const emitVideoCommentUpvoteRequest: EmitVideoCommentUpvoteRequestDto = { id: commentId, videoId };
 		api.videoComment.emitVideoCommentUpvote(emitVideoCommentUpvoteRequest).catch(error => {
 			voteLock.value = false; // 请求锁：释放
-			useToast("点赞失败！", "error"); // TODO 使用多语言
+			useToast("点赞失败！", "error"); // TODO: 使用多语言
 			console.error("ERROR", "点赞失败！", error);
 		}).finally(() => {
 			voteLock.value = false; // 请求锁：释放
@@ -121,7 +121,7 @@
 		const cancelVideoCommentUpvoteRequest: CancelVideoCommentUpvoteRequestDto = { id: commentId, videoId };
 		api.videoComment.cancelVideoCommentUpvote(cancelVideoCommentUpvoteRequest).catch(error => {
 			voteLock.value = false; // 请求锁：释放
-			useToast("取消点赞失败！", "error"); // TODO 使用多语言
+			useToast("取消点赞失败！", "error"); // TODO: 使用多语言
 			console.error("ERROR", "取消点赞失败！", error);
 		}).finally(() => {
 			voteLock.value = false; // 请求锁：释放
@@ -141,7 +141,7 @@
 		const emitVideoCommentDownvoteRequest: EmitVideoCommentDownvoteRequestDto = { id: commentId, videoId };
 		api.videoComment.emitVideoCommentDownvote(emitVideoCommentDownvoteRequest).catch(error => {
 			voteLock.value = false; // 请求锁：释放
-			useToast("点踩失败！", "error"); // TODO 使用多语言
+			useToast("点踩失败！", "error"); // TODO: 使用多语言
 			console.error("ERROR", "点踩失败！", error);
 		}).finally(() => {
 			voteLock.value = false; // 请求锁：释放
@@ -165,7 +165,7 @@
 		const cancelVideoCommentDownvoteRequest: CancelVideoCommentDownvoteRequestDto = { id: commentId, videoId };
 		api.videoComment.cancelVideoCommentDownvote(cancelVideoCommentDownvoteRequest).catch(error => {
 			voteLock.value = false; // 请求锁：释放
-			useToast("取消点踩失败！", "error"); // TODO 使用多语言
+			useToast("取消点踩失败！", "error"); // TODO: 使用多语言
 			console.error("ERROR", "取消点踩失败！", error);
 		}).finally(() => {
 			voteLock.value = false; // 请求锁：释放
@@ -176,7 +176,7 @@
 	}
 
 	/**
-	 * // TODO 删除评论。
+	 * // TODO: 删除评论。
 	 * @param commentId - 评论 ID。
 	 */
 	async function deleteComment(commentId: number | undefined) {

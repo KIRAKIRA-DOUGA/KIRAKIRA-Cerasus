@@ -16,7 +16,7 @@
 
 	const userSelfInfoStore = useSelfUserInfoStore();
 
-	const isSelf = ref(false); // TODO 是否为登录用户本人。
+	const isSelf = ref(false); // TODO: 是否为登录用户本人。
 	const isFollowed = ref(false); // TODO
 	const actionMenu = ref<FlyoutModel>();
 	const userInfo = ref<GetUserInfoByUidResponseDto["result"]>();

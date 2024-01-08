@@ -44,7 +44,7 @@
 	 */
 	async function loginUser() {
 		if (password.value && email.value) {
-			const passwordHash = password.value; // TODO // WARN 为了保证安全性，这里需要对密码进行一次 Hash
+			const passwordHash = password.value; // TODO: // WARN 为了保证安全性，这里需要对密码进行一次 Hash
 			const userLoginRequest: UserLoginRequestDto = { email: email.value, passwordHash };
 			try {
 				isTryingLogin.value = true;
@@ -61,7 +61,7 @@
 				useToast(t.toast.login_failed, "error");
 			}
 		} else
-			useToast("用户名和密码不能为空", "error"); // TODO 使用多语言
+			useToast("用户名和密码不能为空", "error"); // TODO: 使用多语言
 		isTryingLogin.value = false;
 	}
 
@@ -70,7 +70,7 @@
 	 */
 	async function registerUser() {
 		if (password.value === confirmPassword.value) {
-			const passwordHash = password.value; // TODO 为了保证安全性，这里需要对密码进行一次 Hash
+			const passwordHash = password.value; // TODO: 为了保证安全性，这里需要对密码进行一次 Hash
 			const userRegistrationRequest: UserRegistrationRequestDto = { email: email.value, passwordHash, passwordHint: passwordHint.value };
 			try {
 				isTryingRegistration.value = true;
@@ -81,9 +81,9 @@
 					open.value = false;
 					currentPage.value = "login";
 				} else
-					useToast("注册失败", "error"); // TODO 使用多语言
+					useToast("注册失败", "error"); // TODO: 使用多语言
 			} catch (error) {
-				useToast("注册失败", "error"); // TODO 使用多语言
+				useToast("注册失败", "error"); // TODO: 使用多语言
 			}
 		} else
 			useToast(t.toast.password_mismatch, "error");
@@ -116,7 +116,7 @@
 	const checkAndJumpNextPage = async () => {
 		if (email.value && password.value) {
 			if (passwordHint.value && passwordHint.value.includes(password.value)) { // 判断密码提示中是否包含密码自身
-				useToast("密码提示中不能包含密码本身", "error"); // TODO 使用多语言
+				useToast("密码提示中不能包含密码本身", "error"); // TODO: 使用多语言
 				return;
 			}
 			const userExistsCheckRequest: UserExistsCheckRequestDto = { email: email.value };
@@ -125,12 +125,12 @@
 				if (userExistsCheckResponse.success && !userExistsCheckResponse.exists)
 					currentPage.value = "register2";
 				else
-					useToast("用户名重复", "error"); // TODO 使用多语言
+					useToast("用户名重复", "error"); // TODO: 使用多语言
 			} catch (error) {
-				useToast("注册失败", "error"); // TODO 使用多语言
+				useToast("注册失败", "error"); // TODO: 使用多语言
 			}
 		} else
-			useToast("请输入用户名和密码", "error"); // TODO 使用多语言
+			useToast("请输入用户名和密码", "error"); // TODO: 使用多语言
 	};
 </script>
 

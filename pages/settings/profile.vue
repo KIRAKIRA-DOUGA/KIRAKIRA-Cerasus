@@ -8,7 +8,7 @@
 		name: selfUserInfoStore.username,
 		bio: selfUserInfoStore.signature,
 		gender: selfUserInfoStore.gender,
-		birthday: new Date(), // FIXME 注意：这个值是静态的、非响应式的，不会随时间变化
+		birthday: new Date(), // FIXME: 注意：这个值是静态的、非响应式的，不会随时间变化
 		tags: selfUserInfoStore.tags?.map(tag => tag.labelName),
 	}));
 
@@ -19,30 +19,31 @@
 	function handleUploadAvatarImage() {
 		userAvatarFileInput.value?.click();
 	}
-	
+
 	const userUploadFile = ref<string | undefined>();
 	const avatarCropperIsOpen = ref(false);
 
 	/**
-	 * 如果有上传图片，则开启图片裁切器（即：用户选择了本地文件的事件）
-	 * @param e 应为用户上传文件的 input 元素的 change 事件
+	 * 如果有上传图片，则开启图片裁切器。
+	 *
+	 * 即：用户选择了本地文件的事件。
+	 * @param e - 应为用户上传文件的 `<input>` 元素的 change 事件。
 	 */
 	function handleOpenAvatarCropper(e?: Event) {
 		const fileInput = e?.target as HTMLInputElement | undefined;
-		if (fileInput?.files?.[0]) {
-			const image = fileInput.files[0];
+		const image = fileInput?.files?.[0];
 
-			if (!/\.(a?png|gif|jpe?g|webp|svg)$/i.test(fileInput.value)) {
-				useToast("只能上传图片文件！", "error"); // TODO 使用多语言
-				console.error("ERROR", "上传的头像文件格式不合法！");
+		if (image) {
+			if (!/\.(a?png|jpe?g|jfif|pjp(eg)?|gif|svg|webp)$/i.test(fileInput.value)) {
+				useToast("只能上传图片文件！", "error"); // TODO: 使用多语言
+				console.error("ERROR", "不支持所选头像图片格式！");
 				return;
 			}
 
-			if (image) {
-				userUploadFile.value = fileToBlob(image);
-				avatarCropperIsOpen.value = true;
-				fileInput.value = ""; // 读取完用户上传的文件后，需要清空 input，以免用户在下次上传同一个文件时无法触发 change 事件
-			}
+			userUploadFile.value = fileToBlob(image);
+			avatarCropperIsOpen.value = true;
+			fileInput.value = "";
+			// 读取完用户上传的文件后，需要清空 input，以免用户在下次上传同一个文件时无法触发 change 事件。
 		}
 	}
 
@@ -50,7 +51,7 @@
 	const isUploadingUserAvatar = ref(false);
 
 	/**
-	 * 修改头像事件，向服务器提交新的图片
+	 * 修改头像事件，向服务器提交新的图片。
 	 */
 	async function handleSubmitAvatarImage() {
 		try {
@@ -69,19 +70,21 @@
 					isUploadingUserAvatar.value = false;
 				}
 			} else {
-				useToast("无法获取裁切后的图片", "error"); // TODO 使用多语言
+				useToast("无法获取裁切后的图片！", "error"); // TODO: 使用多语言
 				console.error("ERROR", "无法获取裁切后的图片");
 			}
 		} catch (error) {
-			useToast("头像上传失败", "error"); // TODO 使用多语言
+			useToast("头像上传失败！", "error"); // TODO: 使用多语言
 			console.error("ERROR", "在上传用户头像时出错");
 			isUploadingUserAvatar.value = false;
 		}
 	}
 
 	/**
-	* 根据 cookie 中的 uid 和 token 来获取用户信息（同时具有验证用户 token 的功能）
-	*/
+	 * 根据 cookie 中的 uid 和 token 来获取用户信息。
+	 *
+	 * 同时具有验证用户 token 的功能。
+	 */
 	async function getUserInfo() {
 		try {
 			await api.user.getSelfUserInfo();
@@ -91,7 +94,7 @@
 	}
 
 	/**
-	 * 清除已经上传完成的图片，释放内存
+	 * 清除已经上传完成的图片，释放内存。
 	 */
 	function clearBlobUrl() {
 		if (userUploadFile.value) {
@@ -128,15 +131,15 @@
 </script>
 
 <template>
-	<!-- // TODO 使用多语言 -->
+	<!-- TODO: 使用多语言 -->
 	<Modal v-model="avatarCropperIsOpen" title="更新头像">
 		<div class="avatar-cropper">
 			<ImageCropper ref="cropper" :image="userUploadFile" :fixed="true" :fixedNumber="[1, 1]" />
 		</div>
 		<template #footer-right>
-			<!-- // TODO 使用多语言 -->
+			<!-- TODO: 使用多语言 -->
 			<Button class="secondary" @click="avatarCropperIsOpen = false">取消</Button>
-			<!-- // TODO 使用多语言 -->
+			<!-- TODO: 使用多语言 -->
 			<Button :loading="isUploadingUserAvatar" @click="handleSubmitAvatarImage">更新头像</Button>
 		</template>
 	</Modal>

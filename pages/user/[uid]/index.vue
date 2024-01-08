@@ -22,7 +22,7 @@
 
 	/** fetch the user profile data */
 	async function fetchUserData() {
-		// TODO 现在获取用户信息的接口还没法获得这些信息
+		// TODO: 现在获取用户信息的接口还没法获得这些信息
 		// const userInfoResult = await api.user.getSelfUserInfo();
 		await console.log("TODO -> TODO user info index");
 		userBirthday.value = 0; // TODO

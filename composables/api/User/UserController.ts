@@ -11,7 +11,7 @@ const USER_API_URI = `${BACK_END_URL}/user`;
  * @returns 用户注册的返回参数
  */
 export const registration = async (userRegistrationData: UserRegistrationRequestDto): Promise<UserRegistrationResponseDto> => {
-	// TODO use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	return await POST(`${USER_API_URI}/registering`, userRegistrationData, { credentials: "include" }) as UserRegistrationResponseDto;
 };
 
@@ -21,7 +21,7 @@ export const registration = async (userRegistrationData: UserRegistrationRequest
  * @returns 用户登录的返回参数
  */
 export const login = async (userLoginRequest: UserLoginRequestDto): Promise<UserLoginResponseDto> => {
-	// TODO use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	return await POST(`${USER_API_URI}/login`, userLoginRequest, { credentials: "include" }) as UserLoginResponseDto;
 };
 
@@ -48,14 +48,14 @@ export const updateUserEmail = async (updateUserEmailRequest: UpdateUserEmailReq
  * @returns 用户信息
  */
 export const getSelfUserInfo = async (): Promise<GetSelfUserInfoResponseDto> => {
-	// TODO use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	const selfUserInfo = await GET(`${USER_API_URI}/self`, { credentials: "include" }) as GetSelfUserInfoResponseDto;
 	const selfUserInfoStore = useSelfUserInfoStore();
 	if (selfUserInfo.success) {
 		selfUserInfoStore.isLogined = true;
 		selfUserInfoStore.uid = selfUserInfo.result?.uid;
 		selfUserInfoStore.userAvatar = selfUserInfo.result?.avatar || "";
-		selfUserInfoStore.username = selfUserInfo.result?.username || "User"; // TODO 使用多语言，为未设置用户名的用户提供国际化的缺省用户名
+		selfUserInfoStore.username = selfUserInfo.result?.username || "User"; // TODO: 使用多语言，为未设置用户名的用户提供国际化的缺省用户名
 		selfUserInfoStore.gender = selfUserInfo.result?.gender || "";
 		selfUserInfoStore.signature = selfUserInfo.result?.signature || "";
 		selfUserInfoStore.tags = selfUserInfo.result?.label || [];
@@ -77,7 +77,7 @@ export const getUserInfo = async (getUserInfoByUidRequest: GetUserInfoByUidReque
  * @returns 用户信息
  */
 export const checkUserToken = async (): Promise<CheckUserTokenResponseDto> => {
-	// TODO use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	return await GET(`${USER_API_URI}/check`, { credentials: "include" }) as CheckUserTokenResponseDto;
 };
 
@@ -86,7 +86,7 @@ export const checkUserToken = async (): Promise<CheckUserTokenResponseDto> => {
  * @returns 什么也不返回，但是会携带立即清除的 cookie 并覆盖原本的 cookie，同时将全局变量中的用户信息置空
  */
 export const userLogout = async (): Promise<undefined> => {
-	// TODO use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	await GET(`${USER_API_URI}/logout`, { credentials: "include" }) as undefined;
 	const selfUserInfoStore = useSelfUserInfoStore();
 	selfUserInfoStore.isLogined = false;

@@ -14,7 +14,7 @@
 	const logout = async () => {
 		const logoutResult = await api.user.userLogout();
 		if (logoutResult) {
-			useToast("用户已登出。", "success"); // TODO 使用多语言
+			useToast("用户已登出。", "success"); // TODO: 使用多语言
 			useEvent("user:login", false);
 		}
 	};

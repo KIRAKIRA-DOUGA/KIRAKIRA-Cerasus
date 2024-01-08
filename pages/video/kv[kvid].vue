@@ -29,7 +29,7 @@
 			const videoDataResponse = await api.video.getVideoByKvid(getVideoByKvidRequest);
 			if (videoDataResponse.success) {
 				const videoData = videoDataResponse.video;
-				const videoPartData = videoData?.videoPart?.[0]; // TODO 因为要做 分P 视频，所以这里获取到的视频是一个数组，这里暂时取了数组第 0 位。应改进为读取数组中的所有视频，并根据 id 排序渲染成 分P 列表
+				const videoPartData = videoData?.videoPart?.[0]; // TODO: 因为要做 分P 视频，所以这里获取到的视频是一个数组，这里暂时取了数组第 0 位。应改进为读取数组中的所有视频，并根据 id 排序渲染成 分P 列表
 				if (videoData?.title && videoPartData?.link) {
 					videoSource.value = videoPartData.link;
 					videoDetails.value = {
@@ -44,11 +44,11 @@
 						image: videoData.image,
 					};
 				} else
-					handleError("获取视频失败，结果异常！"); // TODO 使用多语言
+					handleError("获取视频失败，结果异常！"); // TODO: 使用多语言
 			} else
-				handleError("获取视频失败，请求失败！"); // TODO 使用多语言
+				handleError("获取视频失败，请求失败！"); // TODO: 使用多语言
 		} else {
-			handleError("未获取到视频 ID，开始使用默认视频！"); // TODO 使用多语言
+			handleError("未获取到视频 ID，开始使用默认视频！"); // TODO: 使用多语言
 			videoSource.value = exampleVideoPath;
 			videoDetails.value = {
 				videoPart: [{ id: 0, videoPartTitle: "柴又", link: exampleVideoPath }],

@@ -163,7 +163,7 @@
 				}));
 			}
 		} catch (error) {
-			useToast("获取弹幕列表失败", "error"); // TODO 使用多语言
+			useToast("获取弹幕列表失败", "error"); // TODO: 使用多语言
 			console.error("ERROR", "获取弹幕列表失败");
 		}
 	}
@@ -239,7 +239,7 @@
 	const quality = computed({
 		get: () => currentQuality.value,
 		set: quality => {
-			// TODO CRINGE ALERT COPY PASTA
+			// TODO: CRINGE ALERT COPY PASTA
 			const qualityList = qualities.value.map(qual => qual.height + "P");
 			const index = qualityList.findIndex(qual => qual === quality);
 			player.value?.setQualityFor("video", index);

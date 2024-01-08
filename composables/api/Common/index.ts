@@ -42,7 +42,7 @@ export async function GET(url: string, requestOptions: RequestObject = {}, heade
 		}, timeout);
 		return response.json();
 	} catch (error) {
-		console.error("ERROR", `something wrong in 'GET', URL: ${url}`, error); // TODO Remove Console Output?
+		console.error("ERROR", `something wrong in 'GET', URL: ${url}`, error); // TODO: Remove Console Output?
 		throw error;
 	}
 }
@@ -69,7 +69,7 @@ export async function POST(url: string, body: unknown, requestOptions: RequestOb
 		}, timeout);
 		return response.json();
 	} catch (error) {
-		console.error("ERROR", `something wrong in 'POST', URL: ${url}`, error); // TODO Remove Console Output?
+		console.error("ERROR", `something wrong in 'POST', URL: ${url}`, error); // TODO: Remove Console Output?
 		throw error;
 	}
 }
@@ -96,7 +96,7 @@ export async function DELETE(url: string, body: unknown, requestOptions: Request
 		}, timeout);
 		return response.json();
 	} catch (error) {
-		console.error("ERROR", `something wrong in 'DELETE', URL: ${url}`, error); // TODO Remove Console Output?
+		console.error("ERROR", `something wrong in 'DELETE', URL: ${url}`, error); // TODO: Remove Console Output?
 		throw error;
 	}
 }
@@ -121,7 +121,7 @@ export async function uploadFile2R2(signedUrl: string, body: Blob, contentType: 
 			body,
 		}, timeout);
 	} catch (error) {
-		console.error("ERROR", `something wrong in 'uploadFile2R2', URL: ${signedUrl}`, error); // TODO Remove Console Output?
+		console.error("ERROR", `something wrong in 'uploadFile2R2', URL: ${signedUrl}`, error); // TODO: Remove Console Output?
 		throw error;
 	}
 }

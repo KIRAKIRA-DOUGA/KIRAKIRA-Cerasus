@@ -58,21 +58,21 @@
 				}
 
 				case "tag": {
-					useToast("暂时不支持这种搜索方法，请使用关键字搜索", "error", 10000); // TODO 使用多语言
+					useToast("暂时不支持这种搜索方法，请使用关键字搜索", "error", 10000); // TODO: 使用多语言
 					console.warn("no support search mode: tag");
 					await getHomeVideo();
 					break;
 				}
 
 				case "user": {
-					useToast("暂时不支持这种搜索方法，请使用关键字搜索", "error", 10000); // TODO 使用多语言
+					useToast("暂时不支持这种搜索方法，请使用关键字搜索", "error", 10000); // TODO: 使用多语言
 					console.warn("no support search mode: user");
 					await getHomeVideo();
 					break;
 				}
 
 				case "advanced_search": {
-					useToast("暂时不支持这种搜索方法，请使用关键字搜索", "error", 10000); // TODO 使用多语言
+					useToast("暂时不支持这种搜索方法，请使用关键字搜索", "error", 10000); // TODO: 使用多语言
 					console.warn("no support search mode: advanced_search");
 					await getHomeVideo();
 					break;

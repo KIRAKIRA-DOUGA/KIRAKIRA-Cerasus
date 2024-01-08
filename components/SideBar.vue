@@ -33,10 +33,10 @@
 				await api.user.getSelfUserInfo();
 			} catch (error) {
 				console.error("无法获取用户信息，请尝试重新登录", error);
-				useToast("无法获取用户信息，请尝试重新登录", "error", 7000); // TODO 使用多语言
+				useToast("无法获取用户信息，请尝试重新登录", "error", 7000); // TODO: 使用多语言
 			}
 		else {
-			// TODO 如果用户未登录，要怎样？要引导登录吗？
+			// TODO: 如果用户未登录，要怎样？要引导登录吗？
 			api.user.userLogout(); // 如果未登录或验证不成功，则清空全局变量中的用户信息并清空残留 cookie
 			console.warn("WARN", "用户未登录或身份验证失败");
 		}
