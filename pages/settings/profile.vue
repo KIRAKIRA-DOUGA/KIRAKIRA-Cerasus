@@ -241,12 +241,11 @@
 	}
 
 	.avatar-cropper {
-		--avatar-cropper-side-length: 350px;
-		width: var(--avatar-cropper-side-length);
-		height: var(--avatar-cropper-side-length);
+		@include square(350px, true);
 
 		@media (width <= 450px) {
-			--avatar-cropper-side-length: 80dvw; /// 对于图片切割器，不建议使用响应式，因为切割器内部被切割的图片不会随之改变尺寸，但考虑到极端小尺寸的适配问题，且只有极少数场景会改变浏览器宽度
+			--size: 80dvw;
+			// 对于图片切割器，不建议使用响应式，因为切割器内部被切割的图片不会随之改变尺寸，但考虑到极端小尺寸的适配问题，且只有极少数场景会改变浏览器宽度。
 		}
 	}
 </style>

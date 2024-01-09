@@ -367,7 +367,7 @@
 		--wrapper-size: #{$thickness};
 
 		&:active:deep(.icon) {
-			scale: 0.8;
+			scale: 0.9;
 		}
 
 		&[aria-label="fullscreen"]:active:deep(.icon) {

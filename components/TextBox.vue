@@ -289,6 +289,7 @@
 					:inputmode="inputMode"
 					@input="onInput"
 					@keydown.stop
+					@keyup.stop
 				/>
 				<span class="suffix">{{ suffix }}</span>
 				<label>{{ placeholder }}</label>

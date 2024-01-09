@@ -34,7 +34,8 @@
 			textLength.value = props.editor.getText().length;
 		},
 		onCreate({ editor }) {
-			editor.view.dom.addEventListener("keydown", e => e.stopPropagation());
+			const proseMirror = editor.view.dom;
+			addEventListeners(proseMirror, "keydown", "keyup", e => e.stopPropagation());
 		},
 	});
 
