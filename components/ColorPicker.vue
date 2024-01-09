@@ -258,7 +258,7 @@
 	$thumb-size-half: calc($thumb-size / 2);
 
 	.subheader {
-		margin: 0 $thumb-size-half 16px;
+		margin-bottom: 16px;
 	}
 
 	:comp > :not(:last-child) {
@@ -408,7 +408,6 @@
 		gap: 12px 6px;
 		width: 100%;
 		margin-bottom: 4px;
-		padding: 0 $thumb-size-half;
 
 		.segmented {
 			grid-column-end: span 3;

@@ -193,7 +193,7 @@
 		<div class="left">
 			<SoftButton class="play" :icon="playing ? 'pause' : 'play'" @click="playing = !playing" />
 		</div>
-		<div class="slider">
+		<div class="slider-wrapper">
 			<Slider v-model="currentPercent" :min="0" :max="1" :buffered="buffered" />
 		</div>
 		<div class="time" @click="countdown = !countdown">
@@ -335,13 +335,18 @@
 		}
 	}
 
-	.slider {
+	.slider-wrapper {
 		flex-grow: 1;
 		flex-shrink: 1;
 		width: 100%;
 
+		@include computer {
+			padding-right: 8px;
+		}
+
 		@include mobile {
 			order: 1;
+			padding: 0 8px;
 		}
 
 		:deep(.passed) {

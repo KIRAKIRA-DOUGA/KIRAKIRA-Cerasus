@@ -41,7 +41,7 @@
 </script>
 
 <template>
-	<Flyout ref="flyout" v-model="flyoutFormat" @hide="showColorPicker = false" @beforeShow="p => placement = p">
+	<Flyout ref="flyout" v-model="flyoutFormat" @hide="showColorPicker = false" @before-show="p => placement = p">
 		<Comp ref="styleContainer" :class="[placement]">
 			<Transition :name="showColorPicker ? 'page-forward' : 'page-backward'" mode="out-in" @enter="onSwitchPageEnter">
 				<div v-if="!showColorPicker" class="page-style">
@@ -190,12 +190,11 @@
 	.page-color {
 		$margin: 12px;
 		min-width: $format-width + 12px * 2;
-		margin: 0 (-$margin);
 
 		.back {
 			display: flex;
 			gap: 5px;
-			margin: 0 $margin 10px;
+			margin-bottom: 10px;
 			color: c(accent);
 			cursor: pointer;
 
