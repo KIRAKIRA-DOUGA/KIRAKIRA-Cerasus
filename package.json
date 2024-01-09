@@ -51,7 +51,7 @@
 	},
 	"devDependencies": {
 		"@nuxt/content": "^2.4.3",
-		"@nuxt/kit": "^3.8.0",
+		"@nuxt/kit": "^3.9.1",
 		"@nuxtjs/eslint-config": "^11.0.0",
 		"@nuxtjs/eslint-config-typescript": "^11.0.0",
 		"@nuxtjs/i18n": "^8.0.0-beta.13",
@@ -64,7 +64,7 @@
 		"eslint-plugin-nuxt": "^4.0.0",
 		"eslint-plugin-vue": "^9.17.0",
 		"html-minifier-terser": "^7.2.0",
-		"nuxt": "^3.8.2",
+		"nuxt": "^3.9.1",
 		"nuxt-lodash": "^2.4.1",
 		"nuxt-simple-sitemap": "^1.0.6",
 		"nuxt-typed-router": "^1.2.3",
