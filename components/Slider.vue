@@ -60,7 +60,7 @@
 		const { left, width: max } = track.getBoundingClientRect();
 		const x = triggerByTrack ? 0 : e.pageX - left - thumb.offsetLeft;
 		const pointerMove = useDebounce((e: PointerEvent) => {
-			const position = clamp(e.pageX - left - x, 0, max);
+			const position = clamp(e.pageX - left - x, 0, max - thumbSize);
 			const value = map(position, 0, max - thumbSize, props.min, props.max);
 			model.value = value;
 			emits("changing", value);

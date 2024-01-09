@@ -110,6 +110,10 @@
 		@include flex-center;
 		@include square(var(--wrapper-size));
 		@include circle;
+
+		@layer components {
+			color: c(icon-color);
+		}
 	}
 
 	@mixin router-link-active {
@@ -134,7 +138,7 @@
 	:comp > div {
 		@include flex-center;
 		@include ripple-clickable-only-inside(var(--wrapper-size));
-		color: c(icon-color);
+		color: inherit;
 		touch-action: manipulation;
 
 		@container style(--white: true) {
