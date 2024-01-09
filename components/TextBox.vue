@@ -288,8 +288,8 @@
 					:step="step"
 					:inputmode="inputMode"
 					@input="onInput"
-					@keydown.stop
-					@keyup.stop
+					@keydown="e => stopPropagationExceptKey(e, 'F11')"
+					@keyup="e => stopPropagationExceptKey(e, 'F11')"
 				/>
 				<span class="suffix">{{ suffix }}</span>
 				<label>{{ placeholder }}</label>

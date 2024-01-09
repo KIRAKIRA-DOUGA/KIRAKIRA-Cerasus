@@ -61,7 +61,7 @@
 	 * 当键盘按下空格键时不要下滑页面。
 	 * @param e - 键盘事件。
 	 */
-	function onKeyDown(e: KeyboardEvent) {
+	function onKeydown(e: KeyboardEvent) {
 		if (e.code === "Space") {
 			stopEvent(e);
 			return;
@@ -92,7 +92,7 @@
 		role="checkbox"
 		:aria-checked="isChecked"
 		@click="onChange"
-		@keydown="onKeyDown"
+		@keydown="onKeydown"
 		@keyup.space.prevent="onChange"
 	>
 		<input
@@ -153,7 +153,7 @@
 		border-radius: $roundness;
 		box-shadow: inset 0 0 0 $border-size c(icon-color);
 		animation: outer-border-change-back $duration-half $duration-half $ease-in-expo reverse backwards;
-		
+
 		@media (prefers-reduced-motion: reduce) {
 			animation: outer-border-change-back 0s $ease-in-expo reverse backwards;
 		}
@@ -185,7 +185,7 @@
 				check-symbol-resize $duration-half $duration-half $ease-out-max backwards,
 				cut-in $duration-half step-start;
 			translate: 0 -1px;
-			
+
 			@media (prefers-reduced-motion: reduce) {
 				animation: check-symbol-resize 0s $ease-out-max backwards;
 			}
@@ -199,7 +199,7 @@
 			animation:
 				indeterminate-symbol-resize $duration-half $duration-half $ease-out-max backwards,
 				cut-in $duration-half step-start;
-				
+
 			@media (prefers-reduced-motion: reduce) {
 				animation: indeterminate-symbol-resize 0s $ease-out-max backwards;
 			}

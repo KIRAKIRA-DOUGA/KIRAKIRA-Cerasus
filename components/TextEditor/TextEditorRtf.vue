@@ -35,7 +35,7 @@
 		},
 		onCreate({ editor }) {
 			const proseMirror = editor.view.dom;
-			addEventListeners(proseMirror, "keydown", "keyup", e => e.stopPropagation());
+			addEventListeners(proseMirror, "keydown", "keyup", e => stopPropagationExceptKey(e, "F11", "Ctrl + KeyM"));
 		},
 	});
 

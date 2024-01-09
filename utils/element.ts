@@ -88,6 +88,24 @@ export function stopEvent(event: Event) {
 }
 
 /**
+ * 阻止键盘按下事件冒泡除非指定的按键。
+ * @param event - 键盘按下事件。
+ * @param keyCodes - 按键名称 `event.code`。
+ */
+export function stopPropagationExceptKey(event: KeyboardEvent, ...keyCodes: string[]) {
+	const code = event.code.toLowerCase();
+	for (let keyCode of keyCodes) {
+		keyCode = keyCode.toLowerCase();
+		if (keyCode.includes("ctrl") !== event.ctrlKey) continue;
+		if (keyCode.includes("alt") !== event.altKey) continue;
+		if (keyCode.includes("shift") !== event.shiftKey) continue;
+		keyCode = keyCode.replaceAll(/ctrl|alt|shift|[\s+]/gi, "");
+		if (code === keyCode) return;
+	}
+	event.stopPropagation();
+}
+
+/**
  * 控制元素的 display 是否为 none，来决定其是否可见。
  *
  * 该函数强制操作 DOM，不受 Vue 控制，用以解决某些 Vue 虚拟 DOM 和真实 DOM 数值不一致的问题。

@@ -10,7 +10,7 @@
 	font-family: $schinese-fonts;
 	// font-feature-settings: "ss02" on, "ss01" on, "liga" on, "rlig" on, "dlig" on, "hlig" on, "onum" on, "kern" on;
 	font-feature-settings: "ss03" on; // 圆形的逗号、引号。
-	font-variant-east-asian: proportional-width;
+	// font-variant-east-asian: proportional-width; // 苹方会将全角逗号、冒号、分号等错误变成半角，但句号和顿号却不变。
 	font-variant-ligatures: common-ligatures historical-ligatures contextual;
 	font-variant-numeric: proportional-nums;
 	font-kerning: normal;

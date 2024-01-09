@@ -137,11 +137,11 @@
 	});
 
 	onMounted(() => {
-		document.addEventListener("keydown", onArrowKeyDown);
+		document.addEventListener("keydown", onArrowKeydown);
 	});
 
 	onBeforeUnmount(() => {
-		document.removeEventListener("keydown", onArrowKeyDown);
+		document.removeEventListener("keydown", onArrowKeydown);
 	});
 
 	/**
@@ -167,7 +167,7 @@
 	 * 当按下键盘按键左右键时翻页。
 	 * @param e - 键盘按下事件。
 	 */
-	function onArrowKeyDown(e: KeyboardEvent) {
+	function onArrowKeydown(e: KeyboardEvent) {
 		if (!props.enableArrowKeyMove || document.activeElement === pageEdit.value) return;
 		const movement =
 			e.code === "ArrowLeft" ? -1 :

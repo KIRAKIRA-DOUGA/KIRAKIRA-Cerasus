@@ -60,9 +60,11 @@
 				break;
 			case "ArrowRight":
 				moveSelectedPosition(1);
+				stopEvent(e);
 				break;
 			case "ArrowLeft":
 				moveSelectedPosition(-1);
+				stopEvent(e);
 				break;
 			// 我没有 case "Enter" 哦，它直接就可以用。
 			default:

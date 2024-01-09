@@ -159,6 +159,7 @@
 
 		&.fixed {
 			position: fixed;
+			z-index: 90;
 		}
 	}
 
