@@ -352,7 +352,7 @@
 						<Button @click="e => showFlyout(e)">全方向缺省</Button>
 						<br />
 						<Button @click="e => flyoutKaomoji = [e, 'top']">向上展开颜文字</Button>
-						<Button @click="e => flyoutKaomoji = [e, 'bottom']">向下颜文字浮窗</Button>
+						<Button @click="e => flyoutKaomoji = [e, 'bottom']">向下展开颜文字</Button>
 					</div>
 				</AccordionItem>
 				<AccordionItem title="分页器测试">
