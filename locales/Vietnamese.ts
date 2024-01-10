@@ -303,7 +303,7 @@ const Vietnamese: LocaleIdentifiers = {
 		save: "Lưu",
 		add: "Thêm",
 		apply: "Áp dụng",
-		reset: "Cài lại",
+		reset: "Đặt lại",
 	},
 	loginwindow: {
 		login_welcome: "Chào mừng trở lại",
