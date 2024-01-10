@@ -162,7 +162,10 @@
 </script>
 
 <template>
-	<Subheader icon="palette">{{ t.color_picker }}</Subheader>
+	<div class="title">
+		<slot name="navigation-back"></slot>
+		<Subheader icon="palette">{{ t.color_picker }}</Subheader>
+	</div>
 	<Comp
 		:class="{
 			'dark-thumb': darkThumb,
@@ -256,9 +259,11 @@
 <style scoped lang="scss">
 	$thumb-size: 24px;
 	$thumb-size-half: calc($thumb-size / 2);
-
-	.subheader {
-		margin-bottom: 16px;
+	
+	.title {
+		display: flex;
+		gap: 2px;
+		align-items: center;
 	}
 
 	:comp > :not(:last-child) {
