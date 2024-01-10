@@ -75,10 +75,11 @@
 		},
 	});
 
-	const currentTime = computed(() => new Duration(model.value).toString());
+	const smoothedModel = useSmoothValue(model, 0.5);
+	const currentTime = computed(() => new Duration(smoothedModel.value).toString());
+	const countdownTime = computed(() => new Duration(smoothedModel.value - props.duration).toString());
 	const duration = computed(() => new Duration(props.duration).toString());
 	const buffered = computed(() => props.buffered / props.duration);
-	const countdownTime = computed(() => new Duration(model.value - props.duration).toString());
 
 	/**
 	 * 点击速度按钮时，在速度中循环。
@@ -314,6 +315,7 @@
 		@include flex-center;
 		min-width: 90px;
 		margin: 0 4px;
+		cursor: pointer;
 
 		@include mobile {
 			order: 2;
