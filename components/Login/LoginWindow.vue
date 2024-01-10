@@ -327,13 +327,13 @@
 		@include dropdown-flyouts;
 		@include round-large;
 		@include set-max-size;
+		@include acrylic-background;
 		--avatar-center: #{calc($width / 2) - $avatar-movement} 50%;
 		display: flex;
 		justify-content: space-between;
 		width: $width;
 		height: $height;
 		overflow: hidden;
-		background-color: c(acrylic-bg, 75%);
 		transition: all $transition-ease $enter-duration;
 		clip-path: circle(100% at var(--avatar-center));
 

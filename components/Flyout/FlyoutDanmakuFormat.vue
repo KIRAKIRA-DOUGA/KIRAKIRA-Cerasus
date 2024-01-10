@@ -41,7 +41,7 @@
 </script>
 
 <template>
-	<Flyout ref="flyout" v-model="flyoutFormat" @hide="showColorPicker = false" @before-show="p => placement = p">
+	<Flyout ref="flyout" v-model="flyoutFormat" @hide="showColorPicker = false" @beforeShow="p => placement = p">
 		<Comp ref="styleContainer" :class="[placement]">
 			<Transition :name="showColorPicker ? 'page-forward' : 'page-backward'" mode="out-in" @enter="onSwitchPageEnter">
 				<div v-if="!showColorPicker" class="page-style">
@@ -90,8 +90,11 @@
 					</Segmented>
 				</div>
 				<div v-else class="page-color">
-					<p class="back" @click="showColorPicker = false"><Icon name="arrow_left" />返回</p>
-					<ColorPicker v-model="format.color" v-model:model="colorModel" />
+					<ColorPicker v-model="format.color" v-model:model="colorModel">
+						<template #navigation-back>
+							<SoftButton class="back" icon="arrow_left" @click="showColorPicker = false" />
+						</template>
+					</ColorPicker>
 				</div>
 			</Transition>
 		</Comp>
@@ -192,7 +195,10 @@
 		min-width: $format-width + 12px * 2;
 
 		.back {
-			display: flex;
+			--icon-size: 20px;
+			--ripple-size: 52px;
+			
+			/* display: flex;
 			gap: 5px;
 			margin-bottom: 10px;
 			color: c(accent);
@@ -205,7 +211,7 @@
 
 			.icon {
 				font-size: 18px;
-			}
+			} */
 		}
 	}
 

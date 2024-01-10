@@ -12,6 +12,8 @@
 		toggleFullscreen?: () => void;
 		/** 视频质量列表。 */
 		qualities?: BitrateInfo[];
+		/** 是否隐藏？ */
+		hidden?: boolean;
 	}>(), {
 		duration: NaN,
 		buffered: 0,
@@ -34,7 +36,6 @@
 	const steplessRate = defineModel<boolean>("steplessRate", { default: false });
 	const showDanmaku = defineModel<boolean>("showDanmaku", { default: false });
 	const quality = defineModel<string>("quality", { default: "720P" });
-	const hide = defineModel<boolean>("hide", { default: false });
 	const volumeBackup = ref(volume);
 	const volumeSet = computed({
 		get: () => muted.value ? 0 : volume.value,
@@ -76,9 +77,9 @@
 	});
 
 	const currentTime = computed(() => new Duration(model.value).toString());
+	const countdownTime = computed(() => new Duration(model.value - props.duration).toString());
 	const duration = computed(() => new Duration(props.duration).toString());
 	const buffered = computed(() => props.buffered / props.duration);
-	const countdownTime = computed(() => new Duration(model.value - props.duration).toString());
 
 	/**
 	 * 点击速度按钮时，在速度中循环。
@@ -189,7 +190,7 @@
 		</PlayerVideoMenu>
 	</div>
 
-	<Comp role="toolbar" :class="{ fullscreen, ...fullscreenColorClass, hide }" v-bind="$attrs">
+	<Comp role="toolbar" :class="{ fullscreen, ...fullscreenColorClass, hidden }" v-bind="$attrs">
 		<div class="left">
 			<SoftButton class="play" :icon="playing ? 'pause' : 'play'" @click="playing = !playing" />
 		</div>
@@ -251,15 +252,15 @@
 		background-color: c(main-bg);
 
 		&.fullscreen {
+			@include acrylic-background;
 			position: fixed;
 			right: 0;
 			bottom: 0;
 			left: 0;
-			background-color: c(acrylic-bg, 75%);
 			backdrop-filter: blur(8px);
 			transition: $fallback-transitions, background-color 0s;
 
-			&.hide {
+			&.hidden {
 				translate: 0 100%;
 				visibility: hidden;
 			}
@@ -314,6 +315,7 @@
 		@include flex-center;
 		min-width: 90px;
 		margin: 0 4px;
+		cursor: pointer;
 
 		@include mobile {
 			order: 2;

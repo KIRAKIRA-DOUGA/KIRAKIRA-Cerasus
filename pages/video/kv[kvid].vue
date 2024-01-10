@@ -18,9 +18,9 @@
 	 * Fetch video data.
 	 */
 	async function fetchVideoData() {
-		const handleError = (message: string) => {
+		const handleError = (message: string, severity: Parameters<typeof useToast>[1] = "error") => {
 			onMounted(() => {
-				useToast(message, "error");
+				useToast(message, severity);
 			});
 		};
 
@@ -48,7 +48,7 @@
 			} else
 				handleError("获取视频失败，请求失败！"); // TODO: 使用多语言
 		} else {
-			handleError("未获取到视频 ID，开始使用默认视频！"); // TODO: 使用多语言
+			handleError("未获取到视频 ID，开始使用默认视频！", "warning"); // TODO: 使用多语言
 			videoSource.value = exampleVideoPath;
 			videoDetails.value = {
 				videoPart: [{ id: 0, videoPartTitle: "柴又", link: exampleVideoPath }],
@@ -107,6 +107,7 @@
 			:id="videoDetails?.videoId ?? 0"
 			:src="videoSource"
 			:rating="videoDetails?.rating ?? 0"
+			:title="title"
 		/>
 		<div class="below-player">
 			<div class="left">

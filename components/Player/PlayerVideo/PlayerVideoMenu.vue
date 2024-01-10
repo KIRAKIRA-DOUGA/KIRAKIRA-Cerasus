@@ -166,10 +166,9 @@
 	menu {
 		@include round-large;
 		@include dropdown-flyouts;
+		@include acrylic-background;
 		z-index: 70;
-		margin: 0;
 		padding: $menu-padding;
-		background-color: c(acrylic-bg, 75%);
 
 		&:empty {
 			display: none;

@@ -104,13 +104,13 @@
 		.tooltip {
 			@include round-small;
 			@include dropdown-flyouts;
+			@include acrylic-background;
 			flex-shrink: 0;
 			max-width: 50dvw;
 			padding: 8px 10px;
 			color: c(text-color);
 			word-wrap: break-word; // 尽量保持单词完整，一行都展示不下这个单词就会换行。
 			overflow-wrap: break-word; // word-wrap 别名，CSS3 属性，都写上，万一以后 word-wrap 去掉了呢。
-			background-color: c(acrylic-bg, 75%);
 		}
 
 		&.v-enter-active {

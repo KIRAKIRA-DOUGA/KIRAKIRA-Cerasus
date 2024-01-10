@@ -18,7 +18,7 @@ export function currentSettingsPage(routeSlug?: string[]) {
  */
 export function currentUserUid() {
 	const routeSlug = getLocaleRouteSlug();
-	return routeSlug[0] === "user" ? +routeSlug[1] ?? 0 : -1;
+	return routeSlug[0] === "user" ? +routeSlug[1] : -1;
 }
 
 /**
@@ -36,5 +36,5 @@ export function currentUserTab() {
  */
 export function currentVideoKvid() {
 	const routeSlug = getLocaleRouteSlug();
-	return routeSlug[0].match(/^videos?$/) ? +routeSlug[1] ?? 0 : -1;
+	return routeSlug[0].match(/^videos?$/) ? +routeSlug[1] : -1;
 }

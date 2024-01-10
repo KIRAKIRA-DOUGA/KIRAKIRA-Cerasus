@@ -114,6 +114,10 @@
 @mixin color-palette-stroke {
 	box-shadow: 0 0 0 2px c(color-palette-stroke) inset;
 }
+
+@mixin acrylic-background {
+	background-color: c(acrylic-bg, 75%);
+}
 // #endregion
 
 // #region 主要主题色
