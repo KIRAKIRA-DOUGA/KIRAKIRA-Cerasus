@@ -1,6 +1,7 @@
 import type Danmaku from "danmaku";
 import * as themeTypes from "modules/theme/types";
 import { AcceptedPlugin } from "postcss";
+import { useDrag } from "@vueuse/gesture";
 
 export namespace FlyoutModelNS {
 	export type Target = MaybeRef<MouseEvent | PointerEvent | TwoD | HTMLElement | EventTarget | DOMRect | undefined | null>;
@@ -64,6 +65,8 @@ declare global {
 		mode: DanmakuMode;
 		enableRainbow: boolean;
 	}
+	/** 手势拖动事件。 */
+	type GestureDragEvent = Parameters<Parameters<typeof useDrag<PointerEvent>>[0]>[0];
 
 	type FlyoutModel = FlyoutModelNS.Tuple | FlyoutModelNS.Object;
 	type MenuModel = MouseEvent | PointerEvent | null;

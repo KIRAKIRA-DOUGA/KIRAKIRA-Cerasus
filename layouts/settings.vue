@@ -23,6 +23,15 @@
 		if (window.innerWidth > 991) showDrawer.value = false;
 	});
 
+	/**
+	 * 手势滑动事件。左右滑动即可收起/展开导航菜单。
+	 */
+	function onSwipe({ dragging, direction, distance, axis }: GestureDragEvent) {
+		const MIN_DISTANCE = 100;
+		if (!dragging && axis === "x" && distance >= MIN_DISTANCE)
+			showDrawer.value = direction[0] > 0;
+	}
+
 	const settings = {
 		personal: [
 			{ id: "dashboard", icon: "dashboard" },
@@ -50,7 +59,7 @@
 </script>
 
 <template>
-	<div v-bind="$attrs" class="settings" :class="{ transparent: useAppSettingsStore().showCssDoodle }">
+	<div v-drag="onSwipe" v-bind="$attrs" class="settings" :class="{ transparent: useAppSettingsStore().showCssDoodle }">
 		<ShadingIcon icon="settings" position="right top" rotating elastic />
 
 		<nav :class="{ show: showDrawer }">
