@@ -484,7 +484,7 @@
 		@include dropdown-flyouts;
 		@include round-large;
 		@include set-max-size;
+		@include acrylic-background;
 		padding: 0.75rem 1rem;
-		background-color: c(acrylic-bg, 75%);
 	}
 </style>

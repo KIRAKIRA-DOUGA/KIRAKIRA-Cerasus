@@ -139,7 +139,7 @@
 
 		@include tablet {
 			@include system-card;
-			background-color: c(acrylic-bg, 75%);
+			@include acrylic-background;
 			transition-duration: $show-drawer-duration;
 
 			&:not(.show) {

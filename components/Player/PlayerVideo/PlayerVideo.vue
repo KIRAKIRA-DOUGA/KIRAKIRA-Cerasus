@@ -10,6 +10,8 @@
 		id: number;
 		/** 视频评分。 */
 		rating: number;
+		/** 视频标题。 */
+		title: string;
 	}>();
 
 	const playing = ref(false);
@@ -72,7 +74,7 @@
 				reader.readAsArrayBuffer(file.slice(offset, offset + chunkSize));
 			}));
 		if (typeof result === "string") return; // 仅在会报错时 result 取值为空字符串，如报错在此之前已会报错，忽略之。
-		const tracks = result.media.track;
+		const tracks = result.media?.track ?? [];
 		mediaInfos.value = {};
 		for (const track of tracks) {
 			const { "@type": type, ...info } = track;
@@ -331,7 +333,14 @@
 				@contextmenu.prevent="e => menu = e"
 				@mousemove="autoHideController"
 			></video>
-			<PlayerVideoDanmaku v-model="willSendDanmaku" :comments="initialDanmaku" :media="video" :hidden="!showDanmaku" :style="{ opacity: danmakuOpacity }" />
+			<PlayerVideoTitle v-if="fullscreen" :title="title" :hidden="hideController" />
+			<PlayerVideoDanmaku
+				v-model="willSendDanmaku"
+				:comments="initialDanmaku"
+				:media="video"
+				:hidden="!showDanmaku"
+				:style="{ opacity: danmakuOpacity }"
+			/>
 			<PlayerVideoController
 				:key="qualities.length"
 				v-model:currentTime="currentTime"
@@ -344,11 +353,11 @@
 				v-model:steplessRate="steplessRate"
 				v-model:showDanmaku="showDanmaku"
 				v-model:quality="quality"
-				v-model:hide="hideController"
 				:duration="duration"
 				:toggleFullscreen="toggle"
 				:buffered="buffered"
 				:qualities="qualities"
+				:hidden="hideController"
 				@mousedown="playerVideoControllerMouseDown = true"
 			/>
 		</div>

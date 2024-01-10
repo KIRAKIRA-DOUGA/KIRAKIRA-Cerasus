@@ -92,11 +92,11 @@
 		.toast {
 			@include round-small;
 			@include toast-shadow(accent);
+			@include acrylic-background;
 			--duration: 2000;
 			position: relative;
 			margin-top: 12px;
 			overflow: hidden;
-			background-color: c(acrylic-bg, 75%);
 
 			.content {
 				@include flex-center;

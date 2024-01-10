@@ -98,12 +98,12 @@
 	// stylelint-disable-next-line no-duplicate-selectors
 	:comp {
 		@include dropdown-flyouts;
+		@include acrylic-background;
 		width: 100dvw;
 		max-width: $max-width;
 		max-height: 100dvh;
 		margin: 0 auto;
 		overflow: hidden;
-		background-color: c(acrylic-bg, 75%);
 
 		@media (width >= $max-width) {
 			@include round-large;

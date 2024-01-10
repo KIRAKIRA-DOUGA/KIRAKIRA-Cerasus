@@ -126,12 +126,12 @@
 	.track {
 		@include round-large;
 		@include dropdown-flyouts;
+		@include acrylic-background;
 		position: relative;
 		width: 100%;
 		height: $track-thickness;
 		margin: 0;
 		overflow: hidden;
-		background-color: c(acrylic-bg, 75%);
 		cursor: pointer;
 	}
 

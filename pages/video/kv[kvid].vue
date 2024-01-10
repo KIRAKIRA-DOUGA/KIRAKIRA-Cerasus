@@ -107,6 +107,7 @@
 			:id="videoDetails?.videoId ?? 0"
 			:src="videoSource"
 			:rating="videoDetails?.rating ?? 0"
+			:title="title"
 		/>
 		<div class="below-player">
 			<div class="left">

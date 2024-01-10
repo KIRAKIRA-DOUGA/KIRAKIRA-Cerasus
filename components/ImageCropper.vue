@@ -266,6 +266,7 @@
 		.crop-info {
 			@include round-small;
 			@include dropdown-flyouts;
+			@include acrylic-background;
 			top: unset !important;
 			bottom: -8px;
 			left: 50%;
@@ -273,7 +274,6 @@
 			color: c(text-color);
 			font-size: 14px;
 			white-space: nowrap;
-			background-color: c(acrylic-bg, 75%);
 			translate: -50% 44px;
 			font-variant-numeric: tabular-nums;
 		}

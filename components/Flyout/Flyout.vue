@@ -217,7 +217,7 @@
 		@include dropdown-flyouts;
 		@include round-large;
 		@include set-max-size;
-		background-color: c(acrylic-bg, 75%);
+		@include acrylic-background;
 		transition: $fallback-transitions, left 0s, top 0s;
 
 		&.cropping {
