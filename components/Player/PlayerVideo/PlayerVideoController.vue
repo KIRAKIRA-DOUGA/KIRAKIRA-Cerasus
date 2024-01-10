@@ -341,10 +341,7 @@
 		flex-grow: 1;
 		flex-shrink: 1;
 		width: 100%;
-
-		@include computer {
-			padding-right: 8px;
-		}
+		padding-right: 8px;
 
 		@include mobile {
 			order: 1;
