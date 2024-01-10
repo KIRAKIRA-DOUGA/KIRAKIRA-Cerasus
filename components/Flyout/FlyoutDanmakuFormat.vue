@@ -41,7 +41,7 @@
 </script>
 
 <template>
-	<Flyout ref="flyout" v-model="flyoutFormat" @hide="showColorPicker = false" @before-show="p => placement = p">
+	<Flyout ref="flyout" v-model="flyoutFormat" @hide="showColorPicker = false" @beforeShow="p => placement = p">
 		<Comp ref="styleContainer" :class="[placement]">
 			<Transition :name="showColorPicker ? 'page-forward' : 'page-backward'" mode="out-in" @enter="onSwitchPageEnter">
 				<div v-if="!showColorPicker" class="page-style">
