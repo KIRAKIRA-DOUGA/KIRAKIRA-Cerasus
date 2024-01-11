@@ -67,6 +67,25 @@ declare global {
 	}
 	/** 手势拖动事件。 */
 	type GestureDragEvent = Parameters<Parameters<typeof useDrag<PointerEvent>>[0]>[0];
+	/** 视频播放器设置。 */
+	type PlayerVideoSettings = {
+		danmaku: {
+			fontSizeScale: number;
+			opacity: number;
+		};
+		filter: {
+			horizontalFlip: boolean;
+			verticalFlip: boolean;
+			rotation: 0 | 90 | 180 | 270;
+			grayscale: boolean;
+			invert: boolean;
+			sepia: boolean;
+			brightness: number;
+			contrast: number;
+			saturate: number;
+			hue: number;
+		};
+	};
 
 	type FlyoutModel = FlyoutModelNS.Tuple | FlyoutModelNS.Object;
 	type MenuModel = MouseEvent | PointerEvent | null;

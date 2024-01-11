@@ -1,5 +1,6 @@
 <script setup lang="ts">
 	import exampleVideoPath from "assets/videos/shibamata.mp4";
+	import defaultThumbnail from "assets/images/av820864307.jpg";
 
 	// const exampleVideoPath = "https://video_api.kms233.com/bili/av9912788";
 	// 暂时不要用在线视频链接，虽然可以用，但是每次查看视频详细信息我都要等好久。
@@ -9,6 +10,7 @@
 	const videoSource = ref<string>();
 	const videoDetails = ref<VideoData>();
 	const title = computed(() => videoDetails.value?.title ?? "");
+	const thumbnail = computed(() => videoDetails.value?.image || defaultThumbnail);
 	const comments = ref<GetVideoCommentByKvidResponseDto["videoCommentList"]>([]);
 	const commentsCount = ref<number>(0);
 	// const recommendations = ref<Videos200ResponseVideosInner[]>();
@@ -108,6 +110,7 @@
 			:src="videoSource"
 			:rating="videoDetails?.rating ?? 0"
 			:title="title"
+			:thumbnail="thumbnail"
 		/>
 		<div class="below-player">
 			<div class="left">

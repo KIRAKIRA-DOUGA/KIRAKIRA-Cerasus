@@ -6,6 +6,12 @@
 		rating: number;
 		/** 当前视频时间。 */
 		currentTime: number;
+		/** 视频是否正在播放？ */
+		playing: boolean;
+		/** 视频封面地址。 */
+		thumbnail: string;
+		/** 视频播放器设置。 */
+		settings: PlayerVideoSettings;
 	}>();
 
 	const sendDanmaku = defineModel<DanmakuComment[]>("sendDanmaku");
@@ -29,18 +35,18 @@
 	/**
 	 * 为当前视频加分。
 	 */
-	async function upvote() {
-		const oapiClient = useApi();
-		await oapiClient.upvoteVideo(props.videoId, 1);
+	function upvote() {
+		// const oapiClient = useApi();
+		// await oapiClient.upvoteVideo(props.videoId, 1);
 		counts.rating++;
 	}
 
 	/**
 	 * 为当前视频减分。
 	 */
-	async function downvote() {
-		const oapiClient = useApi();
-		await oapiClient.upvoteVideo(props.videoId, -1);
+	function downvote() {
+		// const oapiClient = useApi();
+		// await oapiClient.upvoteVideo(props.videoId, -1);
 		counts.rating--;
 	}
 
@@ -56,9 +62,6 @@
 	}
 
 	const showSettings = ref(false);
-	const horizontalFlip = defineModel<boolean>("horizontalFlip", { default: false });
-	const verticalFlip = defineModel<boolean>("verticalFlip", { default: false });
-	const danmakuOpacity = defineModel<number>("danmakuOpacity", { default: 1 });
 
 	const [DefineCountItem, CountItem] = createReusableTemplate<{
 		value: number | string;
@@ -104,7 +107,12 @@
 				<PlayerVideoPanelDanmakuSender v-model="sendDanmaku" :videoId="props.videoId" :currentTime="currentTime" />
 			</div>
 
-			<PlayerVideoPanelSettings v-else v-model:horizontalFlip="horizontalFlip" v-model:verticalFlip="verticalFlip" v-model:danmakuOpacity="danmakuOpacity" />
+			<PlayerVideoPanelSettings
+				v-else
+				:playing="playing"
+				:thumbnail="thumbnail"
+				:settings="settings"
+			/>
 		</Transition>
 	</Comp>
 </template>

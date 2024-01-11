@@ -274,7 +274,7 @@ module.exports = {
 		"vue/no-multiple-template-root": "off",
 		"vue/multiline-html-element-content-newline": "off",
 		"vue/no-template-shadow": "off",
-		"vue/no-mutating-props": ["error", { "shallowOnly": false }],
+		"vue/no-mutating-props": ["off", { "shallowOnly": false }],
 		"vue/no-deprecated-filter": "off", // 我要按位或，不是要什么过滤器。
 		"vue/no-dupe-keys": "off",
 		"vue/no-v-for-template-key": "off", // 官方说明：它会和 vue/no-v-for-template-key-on-child 规则打架。

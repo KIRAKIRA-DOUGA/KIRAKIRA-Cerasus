@@ -21,11 +21,7 @@
 	}).format(now.value));
 
 	const { charging, level, isSupported: hasBattery } = useBattery();
-	const battery = computed(() => {
-		let text = Math.round(level.value * 100) + "%";
-		if (charging.value) text += "(充电中)"; // TODO: 应该改成电池和充电的图标。
-		return text;
-	});
+	const battery = computed(() => Math.round(level.value * 100) + "%");
 </script>
 
 <template>
@@ -34,6 +30,7 @@
 			<h3 class="title">{{ title }}</h3>
 		</div>
 		<div class="right">
+			<Icon v-if="hasBattery && charging" name="charger" />
 			<p v-if="hasBattery" class="battery">{{ battery }}</p>
 			<p class="time">{{ time }}</p>
 		</div>
@@ -68,7 +65,11 @@
 	.right {
 		display: flex;
 		gap: 0.75em;
-		align-items: baseline;
+		align-items: center;
+		
+		.icon {
+			font-size: 18px;
+		}
 
 		.time,
 		.battery {

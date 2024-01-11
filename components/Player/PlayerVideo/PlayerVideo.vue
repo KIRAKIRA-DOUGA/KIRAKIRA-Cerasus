@@ -12,6 +12,8 @@
 		rating: number;
 		/** 视频标题。 */
 		title: string;
+		/** 视频封面地址。 */
+		thumbnail: string;
 	}>();
 
 	const playing = ref(false);
@@ -26,9 +28,24 @@
 	const isTimeUpdating = ref(false);
 	const showMediaInfo = ref(false);
 	const currentQuality = ref("720P");
-	const horizontalFlip = ref(false);
-	const verticalFlip = ref(false);
-	const danmakuOpacity = ref(1);
+	const settings = reactive<PlayerVideoSettings>({
+		danmaku: {
+			fontSizeScale: 1,
+			opacity: 1,
+		},
+		filter: {
+			horizontalFlip: false,
+			verticalFlip: false,
+			rotation: 0,
+			grayscale: false,
+			invert: false,
+			sepia: false,
+			brightness: 1,
+			contrast: 1,
+			saturate: 1,
+			hue: 0,
+		},
+	});
 
 	const qualities = ref<BitrateInfo[]>([]);
 	const mediaInfos = ref<MediaInfo>();
@@ -321,7 +338,6 @@
 			<video
 				ref="video"
 				class="player"
-				:class="{ 'horizontal-flip': horizontalFlip, 'vertical-flip': verticalFlip }"
 				@play="playing = true"
 				@pause="playing = false"
 				@ratechange="e => playbackRate = (e.target as HTMLVideoElement).playbackRate"
@@ -333,14 +349,14 @@
 				@contextmenu.prevent="e => menu = e"
 				@mousemove="autoHideController"
 			></video>
-			<PlayerVideoTitle v-if="fullscreen" :title="title" :hidden="hideController" />
 			<PlayerVideoDanmaku
 				v-model="willSendDanmaku"
 				:comments="initialDanmaku"
 				:media="video"
 				:hidden="!showDanmaku"
-				:style="{ opacity: danmakuOpacity }"
+				:style="{ opacity: settings.danmaku.opacity }"
 			/>
+			<PlayerVideoTitle :title="title" :hidden="hideController" />
 			<PlayerVideoController
 				:key="qualities.length"
 				v-model:currentTime="currentTime"
@@ -365,12 +381,12 @@
 		<PlayerVideoPanel
 			v-model:sendDanmaku="willSendDanmaku"
 			v-model:insertDanmaku="willInsertDanmaku"
-			v-model:horizontalFlip="horizontalFlip"
-			v-model:verticalFlip="verticalFlip"
-			v-model:danmakuOpacity="danmakuOpacity"
 			:videoId="id"
 			:currentTime="currentTime"
 			:rating="rating"
+			:playing="playing"
+			:thumbnail="thumbnail"
+			:settings="settings"
 		/>
 		<Menu v-model="menu">
 			<MenuItem icon="info" @click="showInfo">查看视频详细信息</MenuItem>
@@ -394,14 +410,6 @@
 
 		video {
 			transition: none;
-
-			&.horizontal-flip {
-				transform: scaleX(-100%);
-			}
-
-			&.vertical-flip {
-				transform: scaleY(-100%);
-			}
 		}
 
 		&:not(.fullscreen) {
