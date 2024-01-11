@@ -8,6 +8,8 @@
 		icon?: DeclaredIcons;
 		/** 详细信息。 */
 		details?: Readable;
+		/** 只读？ */
+		readonly?: boolean;
 	}>(), {
 		disabled: false,
 		icon: undefined,
@@ -18,6 +20,7 @@
 	const on = withOneWayProp(model, () => props.on);
 	const isDraging = ref(false);
 	const toggleSwitch = refComp();
+	const hasLabel = hasContentInDefaultSlot() || !!props.details;
 
 	/**
 	 * 拖拽滑块逻辑处理。
@@ -70,7 +73,7 @@
 	<Comp
 		ref="toggleSwitch"
 		:class="{ on, disabled }"
-		:tabindex="disabled ? -1 : 0"
+		:tabindex="!disabled && !props.readonly ? 0 : -1"
 		role="switch"
 		:aria-checked="on"
 		@click="onClick"
@@ -79,7 +82,7 @@
 		@keyup.enter.prevent="onClick"
 	>
 		<Icon v-if="icon" :name="icon" />
-		<div class="content">
+		<div v-if="hasLabel" class="content">
 			<label class="title"><slot></slot></label>
 			<label class="details"><slot name="details">{{ details }}</slot></label>
 		</div>

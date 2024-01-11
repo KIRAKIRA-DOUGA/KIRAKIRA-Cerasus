@@ -8,6 +8,8 @@
 		checked?: boolean;
 		/** 详细信息。 */
 		details?: Readable;
+		/** 只读？ */
+		readonly?: boolean;
 	}>(), {
 		value: undefined,
 		details: undefined,
@@ -26,6 +28,7 @@
 	});
 	const radio = ref<HTMLInputElement>();
 	const isAnimating = ref(false);
+	const hasLabel = hasContentInDefaultSlot() || !!props.details;
 
 	/**
 	 * 数据改变事件。
@@ -85,7 +88,7 @@
 
 <template>
 	<Comp
-		:tabindex="isChecked && !disabled ? 0 : -1"
+		:tabindex="isChecked && !disabled && !props.readonly ? 0 : -1"
 		role="radio"
 		:aria-checked="isChecked"
 		@click="onChange"
@@ -104,7 +107,7 @@
 				<div class="radio" :class="{ 'is-animating': isAnimating }"></div>
 			</div>
 		</div>
-		<div>
+		<div v-if="hasLabel">
 			<label><slot></slot></label>
 			<label class="details"><slot name="details">{{ details }}</slot></label>
 		</div>

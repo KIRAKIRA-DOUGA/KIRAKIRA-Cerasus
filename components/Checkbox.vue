@@ -8,6 +8,8 @@
 		checkState?: CheckState;
 		/** 详细信息。 */
 		details?: Readable;
+		/** 只读？ */
+		readonly?: boolean;
 	}>(), {
 		checkState: "unchecked",
 		value: undefined,
@@ -30,6 +32,7 @@
 	});
 	const isIndeterminate = computed(() => props.checkState === "indeterminate");
 	const checkbox = ref<HTMLInputElement>();
+	const hasLabel = hasContentInDefaultSlot() || !!props.details;
 
 	/**
 	 * 数据改变事件。
@@ -88,7 +91,7 @@
 
 <template>
 	<Comp
-		:tabindex="!disabled ? 0 : -1"
+		:tabindex="!disabled && !props.readonly ? 0 : -1"
 		role="checkbox"
 		:aria-checked="isChecked"
 		@click="onChange"
@@ -111,7 +114,7 @@
 				</div>
 			</div>
 		</div>
-		<div>
+		<div v-if="hasLabel">
 			<label><slot></slot></label>
 			<label class="details"><slot name="details">{{ details }}</slot></label>
 		</div>

@@ -30,6 +30,7 @@
 		>不透明度</SettingsSlider>
 
 		<p>滤镜</p>
+		<CheckCard v-model="settings.filter.horizontalFlip">水平翻转</CheckCard>
 		<ToggleSwitch v-model="settings.filter.horizontalFlip" v-ripple icon="flip_horizontal">水平翻转</ToggleSwitch>
 		<ToggleSwitch v-model="settings.filter.verticalFlip" v-ripple icon="flip_vertical">垂直翻转</ToggleSwitch>
 

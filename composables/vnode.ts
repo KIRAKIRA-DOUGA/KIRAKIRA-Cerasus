@@ -162,3 +162,11 @@ export function getSlotItems<
 		});
 	}).filter(item => item) ?? [];
 }
+
+/**
+ * 判断默认插槽中是否有内容。
+ * @returns 默认插槽中是否有内容？
+ */
+export function hasContentInDefaultSlot() {
+	return !!useSlots().default?.()?.length;
+}

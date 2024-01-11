@@ -356,7 +356,7 @@
 				:hidden="!showDanmaku"
 				:style="{ opacity: settings.danmaku.opacity }"
 			/>
-			<PlayerVideoTitle :title="title" :hidden="hideController" />
+			<PlayerVideoTitle v-if="fullscreen" :title="title" :hidden="hideController" />
 			<PlayerVideoController
 				:key="qualities.length"
 				v-model:currentTime="currentTime"
