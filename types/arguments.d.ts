@@ -80,10 +80,10 @@ declare global {
 			grayscale: boolean;
 			invert: boolean;
 			sepia: boolean;
-			brightness: number;
-			contrast: number;
-			saturate: number;
 			hue: number;
+			saturate: number;
+			contrast: number;
+			brightness: number;
 		};
 	};
 

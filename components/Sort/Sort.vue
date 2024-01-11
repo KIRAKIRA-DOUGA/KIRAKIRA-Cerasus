@@ -77,6 +77,8 @@
 		}
 
 		&.active {
+			@include accent-ripple;
+
 			.caption {
 				color: c(accent);
 				font-weight: bold;
@@ -88,10 +90,6 @@
 
 			&:active::before {
 				height: 10px;
-			}
-
-			:deep(.ripple-circle) {
-				background-color: c(accent-ripple);
 			}
 
 			&:any-hover,

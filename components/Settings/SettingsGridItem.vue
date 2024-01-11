@@ -125,10 +125,7 @@
 
 		:comp.active & {
 			@include chip-shadow-checked;
-
-			:deep(.ripple-circle) {
-				background-color: c(accent-ripple);
-			}
+			@include accent-ripple;
 		}
 
 		:comp.active:any-hover & {

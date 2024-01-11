@@ -134,12 +134,10 @@
 			}
 
 			html:not(.dark) & {
+				@include accent-ripple;
+
 				.right :deep(.soft-button) {
 					--active: true;
-				}
-
-				:deep(.ripple-circle) {
-					background-color: c(accent-ripple);
 				}
 			}
 		}

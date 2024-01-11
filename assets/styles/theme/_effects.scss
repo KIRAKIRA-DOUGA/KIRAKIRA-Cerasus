@@ -118,6 +118,12 @@
 @mixin acrylic-background {
 	background-color: c(acrylic-bg, 75%);
 }
+
+@mixin accent-ripple {
+	:deep(.ripple-circle) {
+		background-color: c(accent-ripple);
+	}
+}
 // #endregion
 
 // #region 主要主题色

@@ -40,11 +40,33 @@
 			grayscale: false,
 			invert: false,
 			sepia: false,
-			brightness: 1,
-			contrast: 1,
-			saturate: 1,
 			hue: 0,
+			saturate: 1,
+			contrast: 1,
+			brightness: 1,
 		},
+	});
+
+	const videoFilterStyle = computed(() => {
+		const { filter } = settings;
+		const style: CSSProperties = {};
+		if (filter.horizontalFlip || filter.verticalFlip) {
+			const scale: TwoD = [1, 1];
+			if (filter.horizontalFlip) scale[0] = -1;
+			if (filter.verticalFlip) scale[1] = -1;
+			style.scale = scale.join(" ");
+		}
+		if (filter.rotation) style.rotate = filter.rotation + "deg";
+		const filters: string[] = [];
+		if (filter.grayscale) filters.push("grayscale(1)");
+		if (filter.invert) filters.push("invert(1)");
+		if (filter.sepia) filters.push("sepia(1)");
+		if (filter.hue % 360 !== 0) filters.push(`hue-rotate(${filter.hue}deg)`);
+		if (filter.saturate !== 1) filters.push(`saturate(${filter.saturate})`);
+		if (filter.contrast !== 1) filters.push(`contrast(${filter.contrast})`);
+		if (filter.brightness !== 1) filters.push(`brightness(${filter.brightness})`);
+		if (filters.length) style.filter = filters.join(" ");
+		return style;
 	});
 
 	const qualities = ref<BitrateInfo[]>([]);
@@ -338,6 +360,7 @@
 			<video
 				ref="video"
 				class="player"
+				:style="videoFilterStyle"
 				@play="playing = true"
 				@pause="playing = false"
 				@ratechange="e => playbackRate = (e.target as HTMLVideoElement).playbackRate"

@@ -117,16 +117,14 @@
 	}
 
 	@mixin router-link-active {
+		@include accent-ripple;
+
 		> * {
 			color: c(accent) !important;
 
 			@container style(--white: true) {
 				color: c(white) !important;
 			}
-		}
-
-		:deep(.ripple-circle) {
-			background-color: c(accent-ripple);
 		}
 
 		&:any-hover,

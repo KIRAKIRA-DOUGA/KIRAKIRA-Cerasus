@@ -39,6 +39,7 @@
 		}
 
 		&.active {
+			@include accent-ripple;
 			color: c(accent);
 			font-weight: bold;
 			background-color: c(accent-hover-overlay);
@@ -57,10 +58,6 @@
 
 			&:active:hover::before {
 				height: 10px;
-			}
-
-			&:deep(.ripple-circle) {
-				background-color: c(accent-ripple);
 			}
 		}
 	}

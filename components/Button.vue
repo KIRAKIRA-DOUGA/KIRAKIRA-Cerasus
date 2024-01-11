@@ -106,7 +106,7 @@
 		button[disabled] > & {
 			background-color: c(accent-disabled) !important;
 			box-shadow: none !important;
-			
+
 			html.dark & :is(.caption, .icon) {
 				opacity: 0.4;
 			}
@@ -136,13 +136,10 @@
 				color: inherit;
 			}
 		}
-		
-		@container style(--appearance: secondary) {
-			color: c(accent);
 
-			:deep(.ripple-circle) {
-				background-color: c(accent-ripple);
-			}
+		@container style(--appearance: secondary) {
+			@include accent-ripple;
+			color: c(accent);
 
 			button:any-hover > &,
 			button:active > & {
@@ -161,7 +158,7 @@
 
 		@container style(--appearance: tertiary) {
 			color: c(icon-color);
-			
+
 			button:any-hover > &,
 			button:active > & {
 				background-color: c(hover-overlay);
@@ -237,7 +234,7 @@
 	button.icon-behind {
 		--icon-behind: true;
 	}
-	
+
 	.progress-bar:deep {
 		position: absolute !important;
 		bottom: 0;
@@ -248,11 +245,11 @@
 			translate: -50%;
 			background-color: transparent;
 		}
-		
+
 		button:not([disabled]) & .line {
 			background-color: white;
 		}
-		
+
 		&.v-enter-from,
 		&.v-leave-to {
 			height: 0;

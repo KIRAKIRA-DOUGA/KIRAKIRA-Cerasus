@@ -131,6 +131,12 @@ module.exports = {
 		"default-case-last": "off",
 		"no-useless-constructor": "off", // private constructor() { } 你跟我说无用？
 		"no-multiple-empty-lines": ["error", { max: 1, maxEOF: 0, maxBOF: 0 }],
+		"no-unused-expressions": ["error", {
+			allowShortCircuit: true,
+			allowTernary: true,
+			allowTaggedTemplates: true,
+			enforceForJSX: true,
+		}],
 		"import/order": "off", // 与 VSCode 内置导入排序特性打架。
 		"import/first": "off", // 与 Vue 特性冲突。
 		"import/named": "off", // 与 TypeScript 特性冲突。
