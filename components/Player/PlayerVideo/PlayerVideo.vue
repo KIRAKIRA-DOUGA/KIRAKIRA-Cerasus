@@ -402,6 +402,10 @@
 			&.vertical-flip {
 				transform: scaleY(-100%);
 			}
+
+			&.horizontal-flip.vertical-flip {
+				transform: scale(-100%);
+			}
 		}
 
 		&:not(.fullscreen) {
