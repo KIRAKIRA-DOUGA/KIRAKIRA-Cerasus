@@ -29,6 +29,7 @@
 		["组件测试页", "/components"],
 		["示例视频", "/video/kvtest"],
 		["示例音频", "/audio"],
+		["示例相簿", "/photo"],
 		["富文本测试页", "/test-rich-text-editor"],
 		["API 测试页", "/test-api"],
 		["动态图标测试页", "/test-lottie"],

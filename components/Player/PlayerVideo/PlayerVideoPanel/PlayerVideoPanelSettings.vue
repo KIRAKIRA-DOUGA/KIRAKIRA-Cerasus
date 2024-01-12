@@ -25,10 +25,10 @@
 		brightness: ["调整亮度", { filter: "brightness(2)" }],
 	};
 
-	const filterBooleanProxy = new Proxy({}, {
-		get(_target, prop: Filters) {
+	const filterBooleanProxy = new Proxy(props.settings.filter, {
+		get(target, prop: Filters) {
 			const propOriginal = (prop.startsWith("rotation") ? "rotation" : prop) as keyof PlayerVideoSettings["filter"];
-			const value = props.settings.filter[propOriginal];
+			const value = target[propOriginal];
 			return ({
 				rotation90: value === 90,
 				rotation180: value === 180,
@@ -39,26 +39,25 @@
 				brightness: value !== 1,
 			} as Record<Filters, boolean>)[prop] ?? value as boolean;
 		},
-		set(_target, prop: Filters, newValue: boolean) {
-			const { filter } = props.settings;
+		set(target, prop: Filters, newValue: boolean) {
 			if (prop.startsWith("rotation")) {
-				if (!newValue) filter.rotation = 0;
+				if (!newValue) target.rotation = 0;
 				else {
 					const rotation = +prop.match(/\d+$/)![0];
-					filter.rotation = rotation as never;
+					target.rotation = rotation as never;
 				}
 				return true;
 			}
 			/* eslint-disable indent */
-			prop === "hue" ? (filter.hue = newValue ? 180 : 0) :
-			prop === "saturate" ? (filter.saturate = newValue ? 5 : 1) :
-			prop === "contrast" ? (filter.contrast = newValue ? 5 : 1) :
-			prop === "brightness" ? (filter.brightness = newValue ? 2 : 1) :
-			filter[prop as never] = newValue as never;
+			prop === "hue" ? (target.hue = newValue ? 180 : 0) :
+			prop === "saturate" ? (target.saturate = newValue ? 5 : 1) :
+			prop === "contrast" ? (target.contrast = newValue ? 5 : 1) :
+			prop === "brightness" ? (target.brightness = newValue ? 2 : 1) :
+			target[prop as never] = newValue as never;
 			/* eslint-enable indent */
 			return true;
 		},
-	}) as Record<Filters, boolean>;
+	}) as unknown as Record<Filters, boolean>;
 </script>
 
 <template>
