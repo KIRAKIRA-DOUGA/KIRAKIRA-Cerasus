@@ -19,6 +19,7 @@
 	onMounted(() => {
 		if (!player.value) return;
 		player.value.preservesPitch = false;
+		player.value.play();
 	});
 
 	/**
@@ -33,7 +34,7 @@
 <template>
 	<div class="container">
 		<h2>测试音频与频谱功能</h2>
-		<audio ref="player" :src="audio" controls />
+		<audio ref="player" :src="audio" controls loop />
 		<Slider v-model="pitch" :min="-24" :max="24" :defaultValue="0" @changing="onSliding" />
 		<canvas ref="canvas" />
 	</div>

@@ -139,6 +139,7 @@ AUTHORS text eol=lf
 *.ape binary
 *.flac binary
 *.webm binary
+*.vtt text eol=lf
 
 # zips
 *.gz binary
@@ -157,4 +158,3 @@ AUTHORS text eol=lf
 
 # other
 *.pdf binary
-

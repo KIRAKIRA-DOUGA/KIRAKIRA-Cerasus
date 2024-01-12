@@ -125,6 +125,9 @@ export default defineNuxtConfig({
 				localsConvention: "camelCaseOnly",
 			},
 		},
+		assetsInclude: [
+			"**/*.vtt",
+		],
 	},
 	nitro: {
 		compressPublicAssets: {
