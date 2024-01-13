@@ -71,7 +71,7 @@
 			<p class="pitch">{{ currentPitch }}</p>
 			<audio ref="audio" loop controls>
 				<source :src="shibamata" />
-				<track default kind="captions" :src="metadata" @cuechange="onCueChange" />
+				<track default kind="metadata" :src="metadata" @cuechange="onCueChange" />
 			</audio>
 			<input
 				ref="photoInput"
@@ -82,7 +82,7 @@
 			/>
 		</div>
 		<div class="right" @click="onClickPhoto">
-			<img :src="photo" alt="photo" :class="{ front: flipped === false, back: flipped }" />
+			<img :src="photo" alt="photo" :class="{ front: flipped === false, back: flipped }" :tabindex="0" />
 		</div>
 	</div>
 </template>
@@ -110,12 +110,16 @@
 		.pitch {
 			font-size: 54px;
 			text-align: center;
+
+			&:empty::after {
+				content: "\a0"; // 当无内容时，依然保持高度占位防止布局跳动。
+			}
 		}
 
 		video,
 		audio {
 			margin-top: auto;
-			
+
 			@include mobile {
 				width: 100%;
 			}
@@ -145,6 +149,10 @@
 
 			&.back {
 				animation-name: flip-back;
+			}
+			
+			&:focus-visible {
+				filter: invert(1);
 			}
 		}
 	}
