@@ -10,7 +10,7 @@
 	const showDrawer = ref(false);
 	const ti = (id: string) => t[new VariableName(id).snake];
 	const title = computed(() => ti(currentSetting.value));
-	const htmlTitle = computed(() => title.value + " - " + t.settings);
+	const htmlTitle = computed(() => title.value + " - " + t.settings); // BUG: Nuxt 在 3.9（或 @nuxtjs/i18n：8.0.0）开始 SSR 阶段无法渲染 `t.settings` （即“设置”字符串）致使报错，现通过如无法获取 Nuxt 对象时返回空字符串数据暂时修复，亟待正确的方法解决。
 	const logout = async () => {
 		const logoutResult = await api.user.userLogout();
 		if (logoutResult) {
