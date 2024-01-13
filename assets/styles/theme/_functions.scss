@@ -36,14 +36,12 @@
 /// @param {Number | null} $alpha [null] - Alpha 值，可以是百分比值或零到一之间的小数，推荐用百分比值，如果留空表示不透明色。
 /// @return {Color} 返回由 var 调用的自定义属性纯色，或 rgba 封装的透明色。
 @function c($css-var-name, $alpha: null) {
-	@if $css-var-name == white or $css-var-name == black {
-		@return if(not $alpha, $css-var-name, color.change($color: $css-var-name, $alpha: calc($alpha / 100%)));
-	}
+	$color: if($css-var-name == white or $css-var-name == black, $css-var-name, var(--#{$css-var-name}));
 
 	@if not $alpha {
-		@return var(--#{$css-var-name});
+		@return $color;
 	} @else {
-		@return rgba(var(--#{$css-var-name}-rgb), $alpha);
+		@return rgb(from $color r g b / $alpha);
 	}
 }
 
