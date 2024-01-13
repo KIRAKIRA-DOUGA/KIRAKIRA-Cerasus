@@ -8,6 +8,8 @@
 		title: string;
 		/** 是否隐藏？ */
 		hidden?: boolean;
+		/** 进入全屏后强制深色的样式类声明。 */
+		fullscreenColorClass: Record<string, boolean>;
 	}>();
 
 	import { useNow, useBattery } from "@vueuse/core";
@@ -25,7 +27,7 @@
 </script>
 
 <template>
-	<Comp :class="{ hidden }">
+	<Comp :class="{ hidden, ...fullscreenColorClass }">
 		<div class="left">
 			<h3 class="title">{{ title }}</h3>
 		</div>
@@ -47,13 +49,14 @@
 		justify-content: space-between;
 		width: 100%;
 		padding: 8px 20px;
+		color: c(icon-color);
 		backdrop-filter: blur(8px);
 		transition: $fallback-transitions, background-color 0s;
 		pointer-events: none;
 
 		&.hidden {
-			translate: 0 -100%;
 			visibility: hidden;
+			translate: 0 -100%;
 		}
 	}
 
@@ -66,7 +69,7 @@
 		display: flex;
 		gap: 0.75em;
 		align-items: center;
-		
+
 		.icon {
 			font-size: 18px;
 		}

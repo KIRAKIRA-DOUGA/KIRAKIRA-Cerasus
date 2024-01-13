@@ -14,6 +14,8 @@
 		qualities?: BitrateInfo[];
 		/** 是否隐藏？ */
 		hidden?: boolean;
+		/** 进入全屏后强制深色的样式类声明。 */
+		fullscreenColorClass: Record<string, boolean>;
 	}>(), {
 		duration: NaN,
 		buffered: 0,
@@ -62,7 +64,6 @@
 	const volumeMenu = ref<MenuModel>();
 	const rateMenu = ref<MenuModel>();
 	const qualityMenu = ref<MenuModel>();
-	const fullscreenColorClass = computed(() => ({ [`force-color dark ${Theme.palette.value}`]: fullscreen.value }));
 	const qualities = computed(() => props.qualities.map(quality => quality.height + "P").sort().reverse());
 
 	const currentPercent = computed({

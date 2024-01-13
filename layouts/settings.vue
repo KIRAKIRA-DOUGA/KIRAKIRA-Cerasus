@@ -362,10 +362,10 @@
 
 		@include mobile {
 			@include sidebar-shadow;
+			align-items: center;
 			height: $mobile-toolbar-height;
 			margin: 0 -24px;
 			padding: 0 4px;
-			align-items: center;
 
 			.soft-button {
 				@include square(48px);
@@ -401,11 +401,11 @@
 				margin-right: -1rem;
 			}
 		}
-		
+
 		@include mobile {
 			&.colored {
 				background-color: c(accent, 80%);
-			
+
 				:deep(*) {
 					color: white;
 				}

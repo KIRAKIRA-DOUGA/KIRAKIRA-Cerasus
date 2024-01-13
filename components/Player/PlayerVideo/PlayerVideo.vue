@@ -85,6 +85,7 @@
 	const initialDanmaku = ref<DanmakuComment[]>();
 	const screenOrientationBeforeFullscreen = ref<OrientationType>("portrait-primary");
 	const playerVideoControllerMouseDown = ref(false);
+	const fullscreenColorClass = computed(() => ({ [`force-color dark ${Theme.palette.value}`]: fullscreen.value }));
 	type MediaInfo = Record<string, Record<string, unknown>>;
 
 	/**
@@ -379,7 +380,12 @@
 				:hidden="!showDanmaku"
 				:style="{ opacity: settings.danmaku.opacity }"
 			/>
-			<PlayerVideoTitle v-if="fullscreen" :title="title" :hidden="hideController" />
+			<PlayerVideoTitle
+				v-if="fullscreen"
+				:title="title"
+				:hidden="hideController"
+				:fullscreenColorClass="fullscreenColorClass"
+			/>
 			<PlayerVideoController
 				:key="qualities.length"
 				v-model:currentTime="currentTime"
@@ -397,6 +403,7 @@
 				:buffered="buffered"
 				:qualities="qualities"
 				:hidden="hideController"
+				:fullscreenColorClass="fullscreenColorClass"
 				@mousedown="playerVideoControllerMouseDown = true"
 			/>
 		</div>
