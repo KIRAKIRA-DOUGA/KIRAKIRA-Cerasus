@@ -66,14 +66,11 @@
 
 	<Subheader icon="wallpaper">{{ t.background }}</Subheader>
 	<section list>
-		<ToggleSwitch v-model="useAppSettingsStore().showCssDoodle" v-ripple icon="wallpaper">{{ t.background.animated }}</ToggleSwitch>
 		<SettingsChipItem icon="wallpaper" trailingIcon="edit">{{ t.background.custom }}</SettingsChipItem>
 	</section>
 
 	<Subheader icon="more_horiz">{{ t(2).other }}</Subheader>
 	<section list>
-		<ToggleSwitch v-model="useAppSettingsStore().sharpAppearanceMode" v-ripple icon="square">{{ t.appearance.sharp_mode }}</ToggleSwitch>
-		<ToggleSwitch v-model="useAppSettingsStore().flatAppearanceMode" v-ripple icon="layers">{{ t.appearance.flat_mode }}</ToggleSwitch>
 		<ToggleSwitch v-model="useAppSettingsStore().coloredSideBar" v-ripple icon="dehaze">{{ t.appearance.colorful_navbar }}</ToggleSwitch>
 	</section>
 </template>
