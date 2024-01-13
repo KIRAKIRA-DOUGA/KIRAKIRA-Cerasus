@@ -15,7 +15,7 @@
 	function otomading() {
 		if (!audio.value) return;
 		const { paused } = audio.value;
-		if (paused) audio.value.play();
+		if (paused) audio.value.play().catch(() => { });
 		else {
 			audio.value.pause();
 			currentPitch.value = "";

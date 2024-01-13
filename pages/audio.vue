@@ -19,7 +19,7 @@
 	onMounted(() => {
 		if (!player.value) return;
 		player.value.preservesPitch = false;
-		player.value.play();
+		player.value.play().catch(() => { });
 	});
 
 	/**
