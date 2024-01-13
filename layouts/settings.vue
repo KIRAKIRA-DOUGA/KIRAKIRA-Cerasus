@@ -348,7 +348,7 @@
 	.page-header {
 		display: flex;
 		gap: 1rem;
-		align-items: center;
+		align-items: flex-start;
 		background-color: c(main-bg, 80%);
 
 		@include not-mobile {
@@ -365,6 +365,7 @@
 			height: $mobile-toolbar-height;
 			margin: 0 -24px;
 			padding: 0 4px;
+			align-items: center;
 
 			.soft-button {
 				@include square(48px);
@@ -377,6 +378,8 @@
 			display: flex;
 			flex-shrink: 0;
 			align-items: center;
+			margin-top: -4px;
+			margin-bottom: -4px;
 
 			@include mobile {
 				width: 48px;

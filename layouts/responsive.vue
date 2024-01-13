@@ -125,6 +125,25 @@
 		transition: background-color $ease-out-max 250ms;
 	}
 
+	.background {
+		opacity: 0.3;
+
+		&.v-enter-from,
+		&.v-leave-to {
+			opacity: 0;
+		}
+	}
+
+	.scroll {
+		height: 100dvh;
+		overflow: hidden overlay;
+		// scrollbar-gutter: stable; // WARN: Chromium 114 开始，overflow 的 overlay 成了 auto 的别名，因此只能提前占位显示来确保不晃动。目前甚至 Chromium 自己的设置页都在依赖于 overlay，太荒谬了。https://bugs.chromium.org/p/chromium/issues/detail?id=1450927
+
+		&.toggle-settings {
+			overflow: hidden;
+		}
+	}
+
 	@include not-mobile {
 		nav {
 			display: none;
@@ -149,25 +168,6 @@
 			&.container {
 				height: calc(100dvh - $mobile-toolbar-height);
 			}
-		}
-	}
-
-	.background {
-		opacity: 0.3;
-
-		&.v-enter-from,
-		&.v-leave-to {
-			opacity: 0;
-		}
-	}
-
-	.scroll {
-		height: 100dvh;
-		overflow: hidden overlay;
-		// scrollbar-gutter: stable; // WARN: Chromium 114 开始，overflow 的 overlay 成了 auto 的别名，因此只能提前占位显示来确保不晃动。目前甚至 Chromium 自己的设置页都在依赖于 overlay，太荒谬了。https://bugs.chromium.org/p/chromium/issues/detail?id=1450927
-
-		&.toggle-settings {
-			overflow: hidden;
 		}
 	}
 
