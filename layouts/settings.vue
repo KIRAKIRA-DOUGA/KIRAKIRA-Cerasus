@@ -88,7 +88,7 @@
 		<div class="card"></div>
 		<main ref="main">
 			<div class="content padding-end">
-				<header class="title page-header">
+				<header class="title page-header" :class="{ colored: useAppSettingsStore().coloredSideBar }">
 					<div class="show-drawer-wrapper page-title-icon-wrapper">
 						<SoftButton icon="dehaze" @click="showDrawer = true" />
 					</div>
@@ -257,9 +257,11 @@
 				gap: 1rem;
 
 				@layer layout {
-					@for $i from 1 through $length {
-						> :nth-child(#{$i}) {
-							animation: float-up 600ms (100ms * ($i - 1)) $ease-out-smooth backwards;
+					@media not (prefers-reduced-motion: reduce) {
+						@for $i from 1 through $length {
+							> :nth-child(#{$i}) {
+								animation: float-up 600ms (100ms * ($i - 1)) $ease-out-smooth backwards;
+							}
 						}
 					}
 				}
@@ -394,6 +396,16 @@
 		.close-button-wrapper {
 			@include not-mobile {
 				margin-right: -1rem;
+			}
+		}
+		
+		@include mobile {
+			&.colored {
+				background-color: c(accent, 80%);
+			
+				:deep(*) {
+					color: white;
+				}
 			}
 		}
 	}
