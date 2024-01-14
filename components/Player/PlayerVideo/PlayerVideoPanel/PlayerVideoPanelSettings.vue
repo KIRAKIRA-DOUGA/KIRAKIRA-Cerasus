@@ -17,7 +17,7 @@
 		rotation180: ["旋转180°", { rotate: "180deg" }],
 		rotation270: ["旋转270°", { rotate: "270deg" }],
 		grayscale: ["黑白", { filter: "grayscale(1)" }],
-		invert: ["反转", { filter: "invert(1)" }],
+		invert: ["反色", { filter: "invert(1)" }],
 		sepia: ["怀旧", { filter: "sepia(1)" }],
 		hue: ["调整色相", { filter: "hue-rotate(180deg)" }],
 		saturate: ["调整饱和度", { filter: "saturate(5)" }],
