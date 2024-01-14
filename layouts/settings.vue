@@ -1,9 +1,8 @@
 <script setup lang="ts">
 	const selfUserInfoStore = useSelfUserInfoStore();
-	const tempCurrentSetting = ref("");
 	const currentSetting = computed({
-		get: () => tempCurrentSetting.value || currentSettingsPage(),
-		set: async id => { tempCurrentSetting.value = id; await navigate(`/settings/${id}`); },
+		get: () => currentSettingsPage(),
+		set: async id => { await navigate(`/settings/${id}`); },
 	});
 	const search = ref("");
 	const main = ref<HTMLElement>();
