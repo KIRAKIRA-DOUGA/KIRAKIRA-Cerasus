@@ -382,6 +382,7 @@ const TChinese: LocaleIdentifiers = {
 		discord: "Discord",
 		telegram: "Telegram",
 		midishow: "MidiShow",
+		github: "GitHub",
 	},
 	modify_memo: "修改備註",
 	add_to_group: "加入分組",

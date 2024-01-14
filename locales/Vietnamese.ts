@@ -382,6 +382,7 @@ const Vietnamese: LocaleIdentifiers = {
 		discord: "Discord",
 		telegram: "Telegram",
 		midishow: "MidiShow",
+		github: "GitHub",
 	},
 	modify_memo: "Sửa đổi phụ chú",
 	add_to_group: "Thêm vào nhóm",

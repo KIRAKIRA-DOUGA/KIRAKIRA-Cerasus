@@ -382,6 +382,7 @@ const Korean: LocaleIdentifiers = {
 		discord: "Discord",
 		telegram: "Telegram",
 		midishow: "MidiShow",
+		github: "GitHub",
 	},
 	modify_memo: "Modify Memo",
 	add_to_group: "Add to Group",

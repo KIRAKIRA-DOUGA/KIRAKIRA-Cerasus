@@ -382,6 +382,7 @@ const Indonesian: LocaleIdentifiers = {
 		discord: "Discord",
 		telegram: "Telegram",
 		midishow: "MidiShow",
+		github: "GitHub",
 	},
 	modify_memo: "Ubah Memo",
 	add_to_group: "Tambah Ke Grup",

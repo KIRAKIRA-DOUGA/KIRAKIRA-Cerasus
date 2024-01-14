@@ -380,6 +380,7 @@ const SChinese = {
 		discord: "Discord",
 		telegram: "Telegram",
 		midishow: "MidiShow",
+		github: "GitHub",
 	},
 	modify_memo: "修改备注",
 	add_to_group: "加入分组",

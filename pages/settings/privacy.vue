@@ -15,6 +15,7 @@
 		{ name: t.platform.discord, logo: "discord", privacy: "public" },
 		{ name: t.platform.telegram, logo: "telegram", privacy: "public" },
 		{ name: t.platform.midishow, logo: "midi", privacy: "public" },
+		{ name: t.platform.github, logo: "github", privacy: "public" },
 		// { name: "电话号码", icon: "phone", privacy: "private" },
 	]);
 

@@ -382,6 +382,7 @@ const Japanese: LocaleIdentifiers = {
 		discord: "Discord",
 		telegram: "Telegram",
 		midishow: "MidiShow",
+		github: "GitHub",
 	},
 	modify_memo: "メモの編集",
 	add_to_group: "グループに追加",
