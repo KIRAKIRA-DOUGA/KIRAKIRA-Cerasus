@@ -1,19 +1,38 @@
 <script setup lang="ts">
+	import startSound from "assets/audios/StartSnd.ogg";
+	const startSoundAudio = ref<HTMLAudioElement>();
+
+	const props = defineProps<{
+		/** 视频是否正在播放？ */
+		playing?: boolean;
+	}>();
+
 	/** 是否显示？ */
 	const shown = defineModel<boolean>();
+
+	/**
+	 * 播放启动音。
+	 */
+	function playStartSound() {
+		if (startSoundAudio.value) {
+			startSoundAudio.value.currentTime = 0;
+			startSoundAudio.value.play();
+		}
+	}
 </script>
 
 <template>
 	<Transition>
-		<Comp v-if="shown" @click="shown = false">
+		<Comp v-if="shown" :class="{ playing }" @click="shown = false">
 			<LogoText />
 			<div class="center">
 				<Icon class="logo" name="yozora_big" />
 				<div class="right-wrapper">
-					<p class="name">YOZORA PLAYER</p>
+					<p class="name" @animationend="playStartSound">YOZORA PLAYER</p>
 				</div>
 			</div>
 			<p class="powered-by">POWERED BY OPEN SOURCE</p>
+			<audio ref="startSoundAudio" :src="startSound"></audio>
 		</Comp>
 	</Transition>
 </template>
@@ -48,6 +67,10 @@
 	.center {
 		@include flex-center;
 		z-index: 3;
+
+		:comp.playing:not(.v-enter-active, .v-leave-active) & {
+			animation: fluttering 1s $ease-out-max infinite;
+		}
 	}
 
 	.right-wrapper {
@@ -143,6 +166,20 @@
 		from {
 			translate: 0 200%;
 			opacity: 0;
+		}
+	}
+
+	@keyframes fluttering {
+		0%,
+		100% {
+			scale: 1;
+			translate: 0;
+			animation-timing-function: $ease-in-smooth;
+		}
+
+		75% {
+			scale: 0.9;
+			translate: 0 0.75rem;
 		}
 	}
 </style>
