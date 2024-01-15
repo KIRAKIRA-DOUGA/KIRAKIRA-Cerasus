@@ -335,6 +335,25 @@
 	}
 
 	useEventListener("window", "mouseup", () => playerVideoControllerMouseDown.value = false);
+
+	/**
+	* 给视频截个图。
+	* @param scale - 截图缩放比率，默认为 1。
+	* @returns 截图后的图片元素。
+	*/
+	async function getScreenshot(scale: number = 1) {
+		if (!video.value) return;
+
+		const canvas = document.createElement("canvas");
+		canvas.width = video.value.clientWidth * scale;
+		canvas.height = video.value.clientHeight * scale;
+		canvas.getContext("2d")!.drawImage(video.value, 0, 0, canvas.width, canvas.height);
+
+		const image = new Image();
+		const blob = await new Promise<Blob>(resolve => canvas.toBlob(resolve as never));
+		downloadFile(blob, `${props.title} (kv${props.id}) - ${new Duration(currentTime.value).toString()}`);
+		return image;
+	}
 </script>
 
 <template>
@@ -421,8 +440,7 @@
 			:settings="settings"
 		/>
 		<Menu v-model="menu">
-			<!-- TODO: 截取当前画面并保存图片。 -->
-			<MenuItem icon="camera">截取当前画面</MenuItem>
+			<MenuItem icon="camera" @click="() => getScreenshot()">截取当前画面</MenuItem>
 			<!-- TODO: 使用其他方式而非下载完整视频后获取信息，B站是怎么做的呢？ -->
 			<MenuItem icon="info" @click="showInfo">查看视频详细信息</MenuItem>
 			<hr />

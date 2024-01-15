@@ -61,6 +61,7 @@
 				videoId: 0,
 				videoCategory: "音MAD",
 				copyright: "repost",
+				image: defaultThumbnail,
 			};
 		}
 	}
