@@ -66,7 +66,7 @@
 				<header class="title content padding-end">
 					<header class="title nav-header">
 						<h1>{{ t.settings }}</h1>
-						<TextBox v-model="search" type="search" :placeholder="t.settings.search" icon="search" />
+						<TextBox v-model="search" type="search" :placeholder="t.settings.search" icon="search" autoComplete="off" />
 					</header>
 					<TabBar v-model="currentSetting" vertical>
 						<Subheader icon="person">{{ t.settings.user }}</Subheader>
