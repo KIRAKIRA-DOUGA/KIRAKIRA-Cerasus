@@ -142,7 +142,7 @@
 	<div class="container">
 		<div class="links">
 			<LocaleLink to="/">{{ t.home }}</LocaleLink>
-			<LocaleLink to="video">{{ t.video }}</LocaleLink>
+			<LocaleLink to="/video/kvtest">{{ t.video }}</LocaleLink>
 			<LocaleLink to="/hello">{{ t.content }}</LocaleLink>
 			<LocaleLink to="/search">{{ t.search }}</LocaleLink>
 		</div>
