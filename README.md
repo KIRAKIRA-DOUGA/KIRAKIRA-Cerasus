@@ -16,7 +16,7 @@ KIRAKIRA 的前端
 
 首先，Nuxt 读作 **/nʌkst/**（
 
-查看 [Nuxt 3 文档](https://nuxt.com/)以了解更多信息。
+查看 [Nuxt 3 文档](https://nuxt.com/) 以了解更多信息。
 
 ### 安装
 
