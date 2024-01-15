@@ -387,10 +387,7 @@
 				:hidden="hideController"
 				:fullscreenColorClass="fullscreenColorClass"
 			/>
-			<PlayerVideoAbout
-				v-if="showAboutPlayer"
-				@click="showAboutPlayer = false"
-			/>
+			<PlayerVideoAbout v-model="showAboutPlayer" />
 			<PlayerVideoController
 				:key="qualities.length"
 				v-model:currentTime="currentTime"

@@ -1,17 +1,26 @@
+<script setup lang="ts">
+	/** 是否显示？ */
+	const shown = defineModel<boolean>();
+</script>
+
 <template>
-	<Comp>
-		<LogoText />
-		<div class="center">
-			<Icon name="yozora_big" />
-			<div class="right-wrapper">
-				<p class="name">YOZORA PLAYER</p>
+	<Transition>
+		<Comp v-if="shown" @click="shown = false">
+			<LogoText />
+			<div class="center">
+				<Icon class="logo" name="yozora_big" />
+				<div class="right-wrapper">
+					<p class="name">YOZORA PLAYER</p>
+				</div>
 			</div>
-		</div>
-		<p class="powered-by">POWERED BY OPEN SOURCE</p>
-	</Comp>
+			<p class="powered-by">POWERED BY OPEN SOURCE</p>
+		</Comp>
+	</Transition>
 </template>
 
 <style scoped lang="scss">
+	$animation-wait-shown: 250ms;
+
 	:comp {
 		@include flex-center;
 		flex-direction: column;
@@ -19,7 +28,12 @@
 		color: c(accent);
 		background-color: c(main-bg, 75%);
 		backdrop-filter: blur(16px);
-		animation: background-intro 3s backwards;
+		transition-duration: 500ms;
+
+		&.v-enter-from,
+		&.v-leave-to {
+			opacity: 0;
+		}
 	}
 
 	.logo-text {
@@ -27,11 +41,13 @@
 		position: absolute;
 		top: 16px;
 		right: 16px;
-		animation: float-left 1s 0.2s $ease-out-smooth backwards;
+		z-index: 2;
+		animation: float-left 1s 200ms + $animation-wait-shown $ease-out-smooth backwards;
 	}
 
 	.center {
 		@include flex-center;
+		z-index: 3;
 	}
 
 	.right-wrapper {
@@ -41,10 +57,12 @@
 		max-width: 100%;
 	}
 
-	.icon {
+	.logo {
 		margin-right: -0.2em;
 		font-size: 12dvw;
-		animation: icon 1s $ease-out-smooth backwards;
+		animation:
+			logo-in 1s $animation-wait-shown $ease-out-smooth,
+			cut-in $animation-wait-shown backwards;
 
 		@include mobile {
 			font-size: 20dvw;
@@ -56,7 +74,7 @@
 		font-size: 4dvw;
 		font-family: $english-logo-fonts;
 		white-space: nowrap;
-		animation: float-right 1s $ease-out-smooth backwards;
+		animation: float-right 1s $animation-wait-shown $ease-out-smooth backwards;
 
 		@include mobile {
 			font-size: 8dvw;
@@ -66,12 +84,41 @@
 	.powered-by {
 		position: absolute;
 		bottom: 16px;
+		z-index: 1;
 		color: c(icon-color);
 		font-family: $english-logo-fonts;
-		animation: float-up 1s $ease-out-smooth backwards;
+		animation: float-up 1s $animation-wait-shown $ease-out-smooth backwards;
 	}
 
-	@keyframes icon {
+	:comp.v-leave-to {
+		&,
+		* {
+			transition-timing-function: $ease-in-smooth;
+			transition-duration: 250ms;
+		}
+
+		.logo-text {
+			translate: 100%;
+			opacity: 0;
+		}
+
+		.powered-by {
+			translate: 0 200%;
+			opacity: 0;
+		}
+
+		.name {
+			translate: -50%;
+			opacity: 0;
+		}
+
+		.logo {
+			rotate: -90deg;
+			scale: 4;
+		}
+	}
+
+	@keyframes logo-in {
 		from {
 			rotate: -1turn;
 			scale: 10;
@@ -80,14 +127,14 @@
 
 	@keyframes float-left {
 		from {
-			translate: 100% 0;
+			translate: 100%;
 			opacity: 0;
 		}
 	}
 
 	@keyframes float-right {
 		from {
-			translate: -100% 0;
+			translate: -100%;
 			opacity: 0;
 		}
 	}

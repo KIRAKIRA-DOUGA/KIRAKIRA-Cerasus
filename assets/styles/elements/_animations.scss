@@ -28,7 +28,7 @@
 	from {
 		scale: 0;
 	}
-	
+
 	to {
 		scale: 1;
 	}
@@ -51,6 +51,18 @@
 
 	to {
 		rotate: 1turn;
+	}
+}
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+	}
+}
+
+@keyframes fade-out {
+	to {
+		opacity: 0;
 	}
 }
 
