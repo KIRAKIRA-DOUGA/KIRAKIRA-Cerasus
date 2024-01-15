@@ -31,7 +31,7 @@
 					<p class="name" @animationend="playStartSound">YOZORA PLAYER</p>
 				</div>
 			</div>
-			<p class="powered-by">POWERED BY OPEN SOURCE</p>
+			<p class="powered-by">POWERED BY OPEN SOURCES</p>
 			<audio ref="startSoundAudio" :src="startSound"></audio>
 		</Comp>
 	</Transition>
