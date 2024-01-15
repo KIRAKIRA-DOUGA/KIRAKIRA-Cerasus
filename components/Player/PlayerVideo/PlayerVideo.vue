@@ -27,6 +27,7 @@
 	const buffered = ref(0);
 	const isTimeUpdating = ref(false);
 	const showMediaInfo = ref(false);
+	const showAboutPlayer = ref(false);
 	const currentQuality = ref("720P");
 	const settings = reactive<PlayerVideoSettings>({
 		danmaku: {
@@ -338,7 +339,7 @@
 
 <template>
 	<Comp>
-		<Alert v-model="showMediaInfo" title="视频详细信息">
+		<Modal v-model="showMediaInfo" title="视频详细信息">
 			<Accordion>
 				<AccordionItem v-for="(info, type) in mediaInfos" :key="type" :title="type" noPadding>
 					<table>
@@ -355,7 +356,7 @@
 					</table>
 				</AccordionItem>
 			</Accordion>
-		</Alert>
+		</Modal>
 
 		<div ref="videoContainer" class="main" :class="{ fullscreen, 'hide-cursor': hideCursor }">
 			<video
@@ -385,6 +386,10 @@
 				:title="title"
 				:hidden="hideController"
 				:fullscreenColorClass="fullscreenColorClass"
+			/>
+			<PlayerVideoAbout
+				v-if="showAboutPlayer"
+				@click="showAboutPlayer = false"
 			/>
 			<PlayerVideoController
 				:key="qualities.length"
@@ -419,9 +424,12 @@
 			:settings="settings"
 		/>
 		<Menu v-model="menu">
+			<!-- TODO: 截取当前画面并保存图片。 -->
+			<MenuItem icon="camera">截取当前画面</MenuItem>
+			<!-- TODO: 使用其他方式而非下载完整视频后获取信息，B站是怎么做的呢？ -->
 			<MenuItem icon="info" @click="showInfo">查看视频详细信息</MenuItem>
 			<hr />
-			<MenuItem icon="star" class="version">KIRAKIRA YOZORA PLAYER</MenuItem>
+			<MenuItem icon="yozora" class="version" @click="showAboutPlayer = true">YOZORA PLAYER</MenuItem>
 		</Menu>
 	</Comp>
 </template>
@@ -477,7 +485,14 @@
 		color: c(text-color) !important; // 避免黑底视频看不清文字。
 	}
 
-	.version {
-		pointer-events: none;
+	.player-video-about {
+		position: absolute;
+		inset: 0;
+		bottom: 36px;
+		cursor: pointer;
+
+		@include mobile {
+			bottom: 60px;
+		}
 	}
 </style>
