@@ -84,10 +84,10 @@
 
 		@layer layout {
 			> main > div:deep > .container {
-				padding: 26px 100px;
+				padding: 26px 5%;
 
 				@include tablet {
-					padding: 26px 40px;
+					padding: 26px 24px;
 				}
 
 				@include mobile {
