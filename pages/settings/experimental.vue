@@ -1,6 +1,12 @@
 <template>
 	<Subheader icon="error" class="danger">
-		这里的选项都是实验性且不保证稳定运行的，<s>甚至可能是开发组做着玩的，</s>请尝试使用的同时注意安全！<s>如由此遇到的设备损坏或人身伤害 KIRAKIRA 不承担任何责任。</s>
+		下列设置项皆为实验性功能，不保证稳定运行。在尝试使用的同时，请务必注意安全！
+		<br />
+		开启本页面任意一设置项，则代表你已阅读、充分理解并同意以下附加条款：
+		<br />
+		“我自愿开启实验性功能，对于因其造成的财产损失或人身损伤，KIRAKIRA 无需承担任何责任。”
+
+		<!-- TODO 使用多语言 -->
 	</Subheader>
 	<Subheader icon="palette">{{ t.appearance }}</Subheader>
 	<section list>
