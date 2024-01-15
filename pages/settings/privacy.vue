@@ -7,14 +7,22 @@
 		{ name: t.favorites, icon: "star", privacy: "public" },
 		{ name: t.platform.twitter, logo: "twitter", privacy: "public" },
 		{ name: t.platform.qq, logo: "qq", privacy: "public" },
+		{ name: t.platform.wechat, logo: "wechat", privacy: "public" },
 		{ name: t.platform.bilibili, logo: "bilibili", privacy: "public" },
 		{ name: t.platform.niconico, logo: "niconico", privacy: "public" },
 		{ name: t.platform.youtube, logo: "youtube", privacy: "public" },
 		{ name: t.platform.otomad_wiki, logo: "otomadwiki", privacy: "public" },
 		{ name: t.platform.weibo, logo: "weibo", privacy: "public" },
+		{ name: t.platform.tieba, logo: "tieba", privacy: "public" },
+		{ name: t.platform.cloudmusic, logo: "cloudmusic", privacy: "public" },
 		{ name: t.platform.discord, logo: "discord", privacy: "public" },
 		{ name: t.platform.telegram, logo: "telegram", privacy: "public" },
 		{ name: t.platform.midishow, logo: "midi", privacy: "public" },
+		{ name: t.platform.linkedin, logo: "linkedin", privacy: "public" },
+		{ name: t.platform.facebook, logo: "facebook", privacy: "public" },
+		{ name: t.platform.instagram, logo: "instagram", privacy: "public" },
+		{ name: t.platform.tiktok, logo: "tiktok", privacy: "public" },
+		{ name: t.platform.pixiv, logo: "pixiv", privacy: "public" },
 		{ name: t.platform.github, logo: "github", privacy: "public" },
 		// { name: "电话号码", icon: "phone", privacy: "private" },
 	]);
@@ -75,8 +83,8 @@
 
 	.options {
 		display: flex;
-		gap: 12px;
+		gap: 8px;
 		justify-content: flex-end;
-		margin-right: 11px;
+		margin-right: 10px;
 	}
 </style>
