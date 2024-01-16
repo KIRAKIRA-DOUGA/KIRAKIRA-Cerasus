@@ -163,12 +163,14 @@
 								:placeholder="t.email_address"
 								icon="email"
 								:invalid="isInvalidEmail"
+								autoComplete="username"
 							/>
 							<TextBox
 								v-model="password"
 								type="password"
 								:placeholder="t.password"
 								icon="lock"
+								autoComplete="current-password"
 							/>
 							<div class="button login-button-placeholder">
 								<Button class="button login-button button-block" :loading="isTryingLogin" :disabled="isTryingLogin" @click="loginUser">Link Start!</Button>
@@ -193,6 +195,7 @@
 								icon="email"
 								:invalid="isInvalidEmail"
 								:required="true"
+								autoComplete="email"
 							/>
 							<TextBox
 								v-model="password"
@@ -200,6 +203,7 @@
 								:placeholder="t.password"
 								icon="lock"
 								:required="true"
+								autoComplete="new-password"
 							/>
 							<TextBox
 								v-model="passwordHint"
@@ -225,6 +229,7 @@
 								:placeholder="t.verification_code"
 								icon="verified"
 								:disabled="true"
+								autoComplete="one-time-code"
 							/>
 							<!-- TODO: [Aira] There should be a resend button on the right of the verification code textbox -->
 							<TextBox
@@ -232,6 +237,7 @@
 								type="password"
 								:placeholder="t.password.retype"
 								icon="lock"
+								autoComplete="current-password"
 							/>
 						</div>
 						<div class="action">
