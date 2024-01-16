@@ -41,7 +41,7 @@
 			<div>
 				<TextBox v-model="oldPassword" type="password" icon="lock" :placeholder="t.password.current" />
 				<TextBox v-model="confirmNewPassword" type="password" icon="lock" :placeholder="t.password.new" />
-				<TextBox v-model="newPassword" type="password" icon="lock" :placeholder="t.password.new_retype" />
+				<TextBox v-model="newPassword" type="password" icon="lock" :placeholder="t.password.new_retype" autoComplete="new-password" />
 			</div>
 		</div>
 		<template #footer-right>

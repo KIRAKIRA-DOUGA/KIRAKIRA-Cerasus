@@ -60,7 +60,7 @@
 		size: "normal",
 		type: "text",
 		placeholder: "",
-		autoComplete: undefined,
+		autoComplete: "off",
 		form: undefined,
 		list: undefined,
 		max: undefined,
