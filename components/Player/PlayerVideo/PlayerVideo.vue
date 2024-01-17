@@ -358,7 +358,7 @@
 
 <template>
 	<Comp>
-		<Modal v-model="showMediaInfo" title="视频详细信息">
+		<Modal v-model="showMediaInfo" icon="info" title="视频详细信息">
 			<Accordion>
 				<AccordionItem v-for="(info, type) in mediaInfos" :key="type" :title="type" noPadding>
 					<table>

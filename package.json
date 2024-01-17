@@ -110,7 +110,7 @@
 		"gsap": "^3.11.4",
 		"js-confetti": "^0.12.0",
 		"lottie-web": "^5.12.2",
-		"mediainfo.js": "^0.2.1",
+		"mediainfo.js": "^0.1.9",
 		"mitt": "^3.0.0",
 		"nuxt-icons": "^3.2.1",
 		"pinia": "^2.1.3",
