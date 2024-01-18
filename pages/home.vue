@@ -43,7 +43,7 @@
 		</TabBar>
 		<Subheader icon="upload" :badge="categoryItemCount">{{ t.latest }}</Subheader>
 		<Transition :name="transitionName" mode="out-in">
-			<div :key="resultTimestamp" class="videos-grid">
+			<ThumbGrid :key="resultTimestamp">
 				<ThumbVideo
 					v-for="video in videos?.videos"
 					:key="video.videoId"
@@ -55,7 +55,7 @@
 					:watchedCount="video.watchedCount"
 					:duration="new Duration(0, video.duration ?? 0)"
 				>{{ video.title }}</ThumbVideo>
-			</div>
+			</ThumbGrid>
 		</Transition>
 		<!-- <Pagination v-model="data.page" :pages="Math.max(1, pageCount)" :displayPageCount="12" enableArrowKeyMove /> -->
 	</div>

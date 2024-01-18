@@ -106,7 +106,7 @@
 
 		<div class="card-container">
 			<div class="center">
-				<div class="videos-grid">
+				<ThumbGrid :view="view">
 					<ThumbVideo
 						v-for="video in videos?.videos"
 						:key="video.videoId"
@@ -117,9 +117,8 @@
 						:date="new Date(video.uploadDate || 0)"
 						:watchedCount="video.watchedCount"
 						:duration="new Duration(0, video.duration ?? 0)"
-						:style="{ '--view': view }"
 					>{{ video.title }}</ThumbVideo>
-				</div>
+				</ThumbGrid>
 			</div>
 
 			<div class="right">

@@ -112,8 +112,8 @@
 </template>
 
 <style scoped lang="scss">
-	$padding-x: 100px;
-	$padding-x-tablet: 40px;
+	$padding-x: 5%;
+	$padding-x-tablet: 24px;
 	$padding-x-mobile: 16px;
 	$header-height: 134px;
 	$main-margin-top: 32px;
@@ -125,6 +125,14 @@
 		z-index: 4;
 		padding: 0 $padding-x;
 		background-color: c(main-bg);
+
+		@include tablet {
+			padding: 0 $padding-x-tablet;
+		}
+
+		@include mobile {
+			padding: 0 $padding-x-mobile;
+		}
 	}
 
 	.content {
@@ -237,10 +245,15 @@
 
 		@include tablet {
 			flex-direction: column-reverse;
+			padding: $padding-x-tablet;
 
 			.toolbox-card {
 				width: 100%;
 			}
+		}
+
+		@include mobile {
+			padding: $padding-x-mobile;
 		}
 
 		> .left,

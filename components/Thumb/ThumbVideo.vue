@@ -76,17 +76,11 @@
 </template>
 
 <style scoped lang="scss">
-	@layer props {
-		a:comp {
-			/// 视图，可选的值为: grid | tile | list。
-			--view: grid;
-		}
-	}
-
 	a:comp {
 		@include round-large;
 		position: relative;
 		display: inline-block;
+		min-width: 0;
 		color: c(text-color);
 
 		&:any-hover:not(:active) {
@@ -94,9 +88,9 @@
 
 			.card {
 				@include system-card;
-				translate: 0 -6px;
 				background-color: c(surface-color);
-				backdrop-filter: none; // WARN: WTF Chromium? Again? https://bugs.chromium.org/p/chromium/issues/detail?id=1422867
+				backdrop-filter: none;
+				translate: 0 -6px;
 			}
 		}
 
@@ -107,23 +101,19 @@
 		&:active {
 			@include button-scale-pressed;
 		}
-
-		@container style(--view: list) {
-			width: 100%;
-		}
 	}
 
 	.card {
 		@include round-large;
 		padding: 8px 9px;
 
-		@container style(--view: tile) {
+		.tile & {
 			display: flex;
 			gap: 8px;
 			align-items: center;
 		}
 
-		@container style(--view: list) {
+		.list & {
 			display: flex;
 			gap: 16px;
 			align-items: center;
@@ -143,18 +133,16 @@
 			object-fit: cover;
 		}
 
-		@container style(--view: list) or style(--view: tile) {
+		.list &,
+		.tile & {
 			width: 135px;
 			margin-bottom: 0;
 		}
 	}
 
 	.text-wrapper {
+		flex-grow: 1;
 		overflow: hidden;
-
-		@container style(--view: list) {
-			width: 100%;
-		}
 	}
 
 	.title {
@@ -189,13 +177,19 @@
 		color: c(icon-color);
 		font-size: 12px;
 
+		.list & {
+			flex-direction: row;
+			gap: 14px;
+			justify-content: flex-start;
+		}
+
 		.line {
 			display: flex;
 			gap: 8px;
 			justify-content: space-between;
 
-			@container style(--view: list) {
-				flex-direction: column;
+			.list & {
+				gap: 14px;
 			}
 		}
 

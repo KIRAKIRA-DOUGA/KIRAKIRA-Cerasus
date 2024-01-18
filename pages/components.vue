@@ -198,10 +198,10 @@
 			<Checkbox disabled checkState="unchecked">鼠鼠我呀最讨厌了</Checkbox>
 			<Checkbox disabled checkState="checked">欢迎白嫖</Checkbox>
 			<hr />
-			<div class="videos-grid">
+			<ThumbGrid>
 				<SettingsGridItem id="a" v-model="settingsGridItemSelect" title="a" />
 				<SettingsGridItem id="b" v-model="settingsGridItemSelect" title="b" />
-			</div>
+			</ThumbGrid>
 			<hr />
 			<TextBox v-model="inputValue" placeholder="小小的软软的香香的" :style="{ '--size': 'small' }" />
 			<TextBox v-model="inputValue" type="email" required placeholder="请输入正确的邮箱" />

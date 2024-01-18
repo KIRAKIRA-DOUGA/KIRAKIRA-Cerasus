@@ -76,7 +76,7 @@
 				</div>
 			</div>
 			<main>
-				<div class="videos-grid">
+				<ThumbGrid>
 					<ThumbVideo
 						v-for="i in 5"
 						:key="i"
@@ -86,7 +86,7 @@
 						:watchedCount="233_0000"
 						:duration="new Duration(2, 33)"
 					>{{ "测试视频".repeat(10) }}</ThumbVideo>
-				</div>
+				</ThumbGrid>
 			</main>
 		</div>
 

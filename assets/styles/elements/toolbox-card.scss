@@ -37,7 +37,7 @@
 	}
 }
 
-@mixin videos-grid {
+@mixin settings-grid {
 	$min-width: 226px;
 	$gap: 12px;
 
@@ -46,7 +46,7 @@
 	grid-template-columns: repeat(auto-fill, minmax($min-width, 1fr));
 	align-items: start;
 	justify-content: space-between;
-	container: videos-grid / inline-size;
+	container: settings-grid / inline-size;
 
 	&:has(.settings-grid-item) {
 		gap: $gap;
@@ -55,16 +55,12 @@
 	> * {
 		--column: multi;
 
-		@container videos-grid (width < #{$min-width * 2 + $gap}) {
+		@container settings-grid (width < #{$min-width * 2 + $gap}) {
 			--column: single;
 		}
 
-		@container videos-grid (width < #{$min-width * 2}) {
+		@container settings-grid (width < #{$min-width * 2}) {
 			--view: list;
 		}
 	}
-}
-
-.videos-grid {
-	@include videos-grid;
 }

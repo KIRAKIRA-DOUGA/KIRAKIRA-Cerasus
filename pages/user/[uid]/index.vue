@@ -48,7 +48,7 @@
 <template>
 	<div class="container">
 		<div class="toolbox-card center">
-			<div class="videos-grid">
+			<ThumbGrid>
 				<ThumbVideo
 					v-for="video in userVideos?.videos"
 					:key="video.videoId"
@@ -60,7 +60,7 @@
 					:watchedCount="video.watchedCount"
 					:duration="new Duration(0, video.duration ?? 0)"
 				>{{ video.title }}</ThumbVideo>
-			</div>
+			</ThumbGrid>
 		</div>
 
 		<div class="right">

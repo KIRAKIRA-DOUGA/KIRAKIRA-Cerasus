@@ -470,7 +470,7 @@
 			}
 
 			&[grid] {
-				@include videos-grid;
+				@include settings-grid;
 				padding: 20px;
 			}
 		}
