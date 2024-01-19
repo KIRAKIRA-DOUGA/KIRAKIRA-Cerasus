@@ -112,7 +112,7 @@
 </template>
 
 <style scoped lang="scss">
-	$padding-x: 5%;
+	$padding-x: 5dvw;
 	$padding-x-tablet: 24px;
 	$padding-x-mobile: 16px;
 	$header-height: 134px;
@@ -222,6 +222,10 @@
 			align-items: center;
 			justify-content: flex-end;
 			margin-left: auto;
+
+			.soft-button {
+				--ripple-size: var(--wrapper-size);
+			}
 		}
 	}
 
@@ -229,11 +233,10 @@
 		--clipped: true;
 		--loose: true;
 		--size: big;
-		margin-right: -$padding-x;
-		margin-left: -$padding-x;
+		margin: 0 (-$padding-x);
 
 		&:deep(.items) {
-			padding-left: $padding-x;
+			padding: 0 $padding-x;
 		}
 	}
 
@@ -301,31 +304,25 @@
 	header,
 	main {
 		@include tablet {
-			padding-right: $padding-x-tablet;
-			padding-left: $padding-x-tablet;
+			padding: 0 $padding-x-tablet;
 
 			.tab-bar {
-				margin-right: -$padding-x-tablet;
-				margin-left: -$padding-x-tablet;
+				margin: 0 (-$padding-x-tablet);
 
 				&:deep(.items) {
-					padding-right: $padding-x-tablet;
-					padding-left: $padding-x-tablet;
+					padding: 0 $padding-x-tablet;
 				}
 			}
 		}
 
 		@include mobile {
-			padding-right: $padding-x-mobile;
-			padding-left: $padding-x-mobile;
+			padding: 0 $padding-x-mobile;
 
 			.tab-bar {
-				margin-right: -$padding-x-mobile;
-				margin-left: -$padding-x-mobile;
+				margin: 0 (-$padding-x-mobile);
 
 				&:deep(.items) {
-					padding-right: 0;
-					padding-left: 0;
+					padding: 0 calc($padding-x-mobile / 2);
 				}
 			}
 		}
