@@ -124,7 +124,7 @@
 
 	:comp {
 		display: flex;
-		gap: 0.5rem;
+		gap: 8px;
 		align-items: center;
 		cursor: pointer;
 	}

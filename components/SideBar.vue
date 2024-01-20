@@ -92,7 +92,7 @@
 		<div class="top icons">
 			<SoftButton v-tooltip="t.home" icon="home" href="/" />
 			<SoftButton v-tooltip="t.search" icon="search" href="/search" />
-			<SoftButton v-tooltip="t.history" icon="history" />
+			<SoftButton v-tooltip="t.history" icon="history" href="/history" />
 			<SoftButton v-tooltip="t.favorites" icon="star" />
 			<SoftButton v-tooltip="t.feed" icon="feed" />
 			<SoftButton v-tooltip="t.upload" icon="upload" href="/upload" />

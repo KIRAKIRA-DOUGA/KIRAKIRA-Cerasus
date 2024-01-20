@@ -217,7 +217,7 @@
 				flex-shrink: 0;
 				min-width: 60px;
 				height: $item-height;
-				padding: 0.25rem 0.75rem;
+				padding: 4px 12px;
 				padding-right: 0;
 				overflow: hidden;
 				white-space: nowrap;

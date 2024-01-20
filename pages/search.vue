@@ -167,7 +167,7 @@
 
 	.card-container {
 		display: flex;
-		gap: 1rem;
+		gap: 16px;
 
 		@include tablet {
 			flex-direction: column-reverse;

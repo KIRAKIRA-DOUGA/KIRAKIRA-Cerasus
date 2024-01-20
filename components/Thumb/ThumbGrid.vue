@@ -19,6 +19,7 @@
 		grid-template-columns: repeat(auto-fill, minmax(226px, 1fr));
 		align-items: start;
 		justify-content: space-between;
+		margin: 0 -8px;
 
 		@include mobile {
 			grid-template-columns: 1fr 1fr;

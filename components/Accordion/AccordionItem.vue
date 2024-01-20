@@ -55,7 +55,7 @@
 </template>
 
 <style scoped lang="scss">
-	$padding: 0.75rem 1rem;
+	$padding: 12px 16px;
 
 	:comp {
 		@include round-large;

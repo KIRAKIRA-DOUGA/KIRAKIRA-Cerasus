@@ -43,7 +43,7 @@
 </template>
 
 <style scoped lang="scss">
-	$padding-x: 1rem;
+	$padding-x: 16px;
 	$width: 400px;
 	$height: 350px;
 
@@ -66,7 +66,7 @@
 		gap: 6px;
 		align-content: flex-start;
 		height: $height;
-		padding: 0.75rem $padding-x;
+		padding: 12px $padding-x;
 		padding-top: 0.25rem;
 		overflow-y: auto;
 	}

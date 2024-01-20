@@ -63,11 +63,10 @@
 
 <style scoped lang="scss">
 	.container {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
 		padding-top: 0 !important;
-
-		> * {
-			margin: 26px 0;
-		}
 	}
 
 	.tab-bar {

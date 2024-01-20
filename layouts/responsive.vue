@@ -84,7 +84,7 @@
 
 		@layer layout {
 			> main > div:deep > .container {
-				padding: 26px 5%;
+				padding: 26px 5dvw;
 
 				@include tablet {
 					padding: 26px 24px;
