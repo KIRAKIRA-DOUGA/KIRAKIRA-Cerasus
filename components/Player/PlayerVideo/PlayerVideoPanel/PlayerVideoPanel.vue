@@ -137,6 +137,7 @@
 
 	.top {
 		@include card-in-card-shadow;
+		z-index: 2;
 	}
 
 	.info {
