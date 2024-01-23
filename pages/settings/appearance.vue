@@ -16,6 +16,17 @@
 	] as const;
 	const paletteSection = ref<HTMLElement>();
 
+	/**
+	 * // TODO 当设置值发送改变时，发送后端请求
+	 */
+	function updateColoredSideBarSetting() {
+		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
+			coloredSideBar: useAppSettingsStore().coloredSideBar,
+		};
+		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
+	}
+	watch(() => useAppSettingsStore().coloredSideBar, updateColoredSideBarSetting);
+
 	onMounted(() => {
 		if (paletteSection.value)
 			for (const item of paletteSection.value.children) {

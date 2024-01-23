@@ -31,7 +31,7 @@
 			{ "http-equiv": "X-UA-Compatible", content: "IE=Edge,chrome=1" },
 			{ name: "viewport", content: "width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" },
 			{ name: "renderer", content: "webkit" },
-			{ name: "theme-color", content: computed(() => appSettings.coloredSideBar && Theme.actualPalette.value) },
+			{ name: "theme-color", content: computed(() => appSettings.coloredSideBar /* && Theme.actualPalette.value */) }, // FIXME Theme 在服务端渲染时会报错。之前未发现可能是因为 appSettings.coloredSideBar 总是返回假值导致 && 中断。错误内容为 -> [nuxt] A composable that requires access to the Nuxt instance was called outside of a plugin, Nuxt hook, Nuxt middleware, or Vue setup function. This is probably not a Nuxt bug. Find out more at `https://nuxt.com/docs/guide/concepts/auto-imports#vue-and-nuxt-composables`.
 			{ name: "description", content: manifest.description },
 			{ name: "keywords", content: "视频,弹幕,字幕,音频,歌词,相簿,相册,照片,视频网站,弹幕视频,二次元,动漫,动画,音乐,动漫音乐,音MAD,AMV,MAD,ANIME,ACG,NOVA" },
 			// 以下内容为各种苹果私有属性。

@@ -1,3 +1,38 @@
+<script setup lang="ts">
+	/**
+	 * // TODO 当设置值发送改变时，发送后端请求
+	 */
+	function updateShowCssDoodleUserSetting() {
+		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
+			showCssDoodle: useAppSettingsStore().showCssDoodle,
+		};
+		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
+	}
+	watch(() => useAppSettingsStore().showCssDoodle, updateShowCssDoodleUserSetting);
+
+	/**
+	 * // TODO 当设置值发送改变时，发送后端请求
+	 */
+	function updateSharpAppearanceModeUserSetting() {
+		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
+			sharpAppearanceMode: useAppSettingsStore().sharpAppearanceMode,
+		};
+		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
+	}
+	watch(() => useAppSettingsStore().sharpAppearanceMode, updateSharpAppearanceModeUserSetting);
+
+	/**
+	 * // TODO 当设置值发送改变时，发送后端请求
+	 */
+	function updateFlatAppearanceModeUserSetting() {
+		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
+			flatAppearanceMode: useAppSettingsStore().flatAppearanceMode,
+		};
+		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
+	}
+	watch(() => useAppSettingsStore().flatAppearanceMode, updateFlatAppearanceModeUserSetting);
+</script>
+
 <template>
 	<Subheader icon="error" class="danger">
 		下列设置项皆为实验性功能，不保证稳定运行。在尝试使用的同时，请务必注意安全！

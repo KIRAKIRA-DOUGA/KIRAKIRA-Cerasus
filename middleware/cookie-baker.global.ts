@@ -1,28 +1,59 @@
 export default defineNuxtRouteMiddleware(async (to, from) => {
 	try {
+		const appSettingsStore = useAppSettingsStore();
+
+		const uidCookieKey = "uid";
+		const tokenCookieKey = "token";
+		const showCssDoodleCookieKey = "show-css-doodle";
+		const sharpAppearanceModeCookieKey = "sharp-appearance-mode";
+		const flatAppearanceModeCookieKey = "flat-appearance-mode";
+		const coloredSideBarCookieKey = "colored-side-bar";
+
 		if (process.server) {
 			// TODO 服务端渲染，通过 cookie 中的用户信息获取用户设置并影响服务端渲染结果，如果没有设置则直接使用 cookie 中的设置
 
-			// ↓ 下方的测试是从获取客户端 cookie，然后通过 cookie 异步请求用户信息/设置，并将用户信息存放至 pinia 并在服务端渲染时直接使用 pinia 中的值
-			const uid = useCookie("uid");
-			const token = useCookie("token");
-			const userAuthToken: GetSelfUserInfoRequestDto | GetUserSettingsRequestDto = {
-				uid: uid.value ? parseInt(uid.value, 10) : -1,
-				token: token.value || "",
-			};
-			const userInfo = await api.user.getSelfUserInfo(userAuthToken);
-			const userSettings = await api.user.getUserSettings(userAuthToken);
+			const cookieUid = useCookie(uidCookieKey, { sameSite: true });
+			const cookieToken = useCookie(tokenCookieKey, { sameSite: true });
+			const cookieShowCssDoodle = useCookie(showCssDoodleCookieKey, { expires: new Date("9999/9/9"), sameSite: true });
+			const cookieSharpAppearanceMode = useCookie(sharpAppearanceModeCookieKey, { expires: new Date("9999/9/9"), sameSite: true });
+			const cookieFlatAppearanceMode = useCookie(flatAppearanceModeCookieKey, { expires: new Date("9999/9/9"), sameSite: true });
+			const cookieColoredSideBar = useCookie(coloredSideBarCookieKey, { expires: new Date("9999/9/9"), sameSite: true });
+			
+			if (cookieUid !== null && cookieUid !== undefined && cookieToken) {
+				const userAuthToken: GetSelfUserInfoRequestDto | GetUserSettingsRequestDto = {
+					uid: cookieUid.value ? parseInt(cookieUid.value, 10) : -1,
+					token: cookieToken.value || "",
+				};
+				const seltUserInfo = await api.user.getSelfUserInfo(userAuthToken);
+				const userSettings = await api.user.getUserSettings(userAuthToken);
 
-			// ↓ 下方的测试是从 Nuxt 服务端主动设置 cookie 到客户端
-			const testSettingCookie = useCookie("test");
-			testSettingCookie.value = `${testSettingCookie.value !== null && testSettingCookie.value !== undefined ? parseInt(testSettingCookie.value, 10) + 1 : 100}`;
+				cookieShowCssDoodle.value = `${userSettings?.userSettings?.showCssDoodle}`;
+				cookieSharpAppearanceMode.value = `${userSettings?.userSettings?.sharpAppearanceMode}`;
+				cookieFlatAppearanceMode.value = `${userSettings?.userSettings?.flatAppearanceMode}`;
+				cookieColoredSideBar.value = `${userSettings?.userSettings?.coloredSideBar}`;
+			} else {
+				// TODO
+				appSettingsStore.showCssDoodle = typeof cookieShowCssDoodle.value === "boolean" ? cookieShowCssDoodle.value : cookieShowCssDoodle.value === "true";
+				appSettingsStore.sharpAppearanceMode = typeof cookieSharpAppearanceMode.value === "boolean" ? cookieSharpAppearanceMode.value : cookieSharpAppearanceMode.value === "true";
+				appSettingsStore.flatAppearanceMode = typeof cookieFlatAppearanceMode.value === "boolean" ? cookieFlatAppearanceMode.value : cookieFlatAppearanceMode.value === "true";
+				appSettingsStore.coloredSideBar = typeof cookieColoredSideBar.value === "boolean" ? cookieColoredSideBar.value : cookieColoredSideBar.value === "true";
+			}
 		} else {
 			// TODO 客户端渲染
+			
+			const cookieShowCssDoodle = useCookie(showCssDoodleCookieKey, { expires: new Date("9999/9/9"), sameSite: true });
+			const cookieSharpAppearanceMode = useCookie(sharpAppearanceModeCookieKey, { expires: new Date("9999/9/9"), sameSite: true });
+			const cookieFlatAppearanceMode = useCookie(flatAppearanceModeCookieKey, { expires: new Date("9999/9/9"), sameSite: true });
+			const cookieColoredSideBar = useCookie(coloredSideBarCookieKey, { expires: new Date("9999/9/9"), sameSite: true });
+			
+			appSettingsStore.showCssDoodle = typeof cookieShowCssDoodle.value === "boolean" ? cookieShowCssDoodle.value : cookieShowCssDoodle.value === "true";
+			appSettingsStore.sharpAppearanceMode = typeof cookieSharpAppearanceMode.value === "boolean" ? cookieSharpAppearanceMode.value : cookieSharpAppearanceMode.value === "true";
+			appSettingsStore.flatAppearanceMode = typeof cookieFlatAppearanceMode.value === "boolean" ? cookieFlatAppearanceMode.value : cookieFlatAppearanceMode.value === "true";
+			appSettingsStore.coloredSideBar = typeof cookieColoredSideBar.value === "boolean" ? cookieColoredSideBar.value : cookieColoredSideBar.value === "true";
 		}
 	} catch (error) {
-		if (from.path !== "/") {
-			console.error("ERROR", "烘焙网络曲奇☆时发生了意料外的错误：", error);
+		console.error("ERROR", "烘焙网络曲奇☆时发生了意料外的错误：", error);
+		if (from.path !== "/")
 			navigateTo("/");
-		}
 	}
 });
