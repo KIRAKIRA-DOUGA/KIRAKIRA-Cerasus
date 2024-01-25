@@ -38,11 +38,11 @@
 
 	<Modal v-model="showChangePassword" :title="t.password.change" icon="password">
 		<div class="change-password-modal">
-			<div>
+			<form>
 				<TextBox v-model="oldPassword" type="password" icon="lock" :placeholder="t.password.current" autoComplete="current-password" />
 				<TextBox v-model="newPassword" type="password" icon="lock" :placeholder="t.password.new" autoComplete="new-password" />
 				<TextBox v-model="confirmNewPassword" type="password" icon="lock" :placeholder="t.password.new_retype" autoComplete="new-password" />
-			</div>
+			</form>
 		</div>
 		<template #footer-right>
 			<Button class="secondary" @click="showChangePassword = false">{{ t.step.cancel }}</Button>
@@ -60,7 +60,7 @@
 		gap: 24px;
 		width: 300px;
 
-		> div {
+		> form {
 			display: flex;
 			flex-direction: column;
 			gap: 16px;

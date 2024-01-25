@@ -1,5 +1,6 @@
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
+		/** 视图。 */
 		view?: string;
 	}>(), {
 		view: "grid",
@@ -20,9 +21,10 @@
 		align-items: start;
 		justify-content: space-between;
 		margin: 0 -8px;
+		container: thumb-grid / inline-size;
 
 		@include mobile {
-			grid-template-columns: 1fr 1fr;
+			grid-template-columns: repeat(2, 1fr);
 		}
 
 		&.list {
