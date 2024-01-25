@@ -18,10 +18,10 @@
 </script>
 
 <template>
-	<span class="icon" :class="{ filled }" role="img" :aria-label="new VariableName(name).words">
+	<i class="icon" :class="{ filled }" role="img" :aria-label="new VariableName(name).words">
 		<SvgIcon v-if="environment.production" :name="name" />
 		<NuxtIcon v-else :name="name" :filled="filled" />
-	</span>
+	</i>
 </template>
 
 <style scoped lang="scss">
