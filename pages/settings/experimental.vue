@@ -6,6 +6,8 @@
 		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
 			showCssDoodle: useAppSettingsStore().showCssDoodle,
 		};
+		const showCssDoodleCookieKey = "show-css-doodle";
+		useCookie(showCssDoodleCookieKey, { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false }).value = `${useAppSettingsStore().showCssDoodle}`;
 		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
 	}
 	watch(() => useAppSettingsStore().showCssDoodle, updateShowCssDoodleUserSetting);
@@ -17,6 +19,8 @@
 		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
 			sharpAppearanceMode: useAppSettingsStore().sharpAppearanceMode,
 		};
+		const sharpAppearanceModeCookieKey = "sharp-appearance-mode";
+		useCookie(sharpAppearanceModeCookieKey, { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false }).value = `${useAppSettingsStore().sharpAppearanceMode}`;
 		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
 	}
 	watch(() => useAppSettingsStore().sharpAppearanceMode, updateSharpAppearanceModeUserSetting);
@@ -28,6 +32,8 @@
 		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
 			flatAppearanceMode: useAppSettingsStore().flatAppearanceMode,
 		};
+		const flatAppearanceModeCookieKey = "flat-appearance-mode";
+		useCookie(flatAppearanceModeCookieKey, { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false }).value = `${useAppSettingsStore().flatAppearanceMode}`;
 		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
 	}
 	watch(() => useAppSettingsStore().flatAppearanceMode, updateFlatAppearanceModeUserSetting);

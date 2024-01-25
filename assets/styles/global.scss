@@ -225,14 +225,14 @@ label {
 }
 
 // 直角样式
-html.sharp {
+.root-node.sharp {
 	@include enhanced-selector {
 		border-radius: 0 !important;
 	}
 }
 
 // 扁平样式
-html.flat {
+ .root-node.flat {
 	@include enhanced-selector {
 		box-shadow: none !important;
 	}

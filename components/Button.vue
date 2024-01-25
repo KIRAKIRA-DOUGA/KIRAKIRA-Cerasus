@@ -107,7 +107,7 @@
 			background-color: c(accent-disabled) !important;
 			box-shadow: none !important;
 
-			html.dark & :is(.caption, .icon) {
+			 .root-node.dark & :is(.caption, .icon) {
 				opacity: 0.4;
 			}
 		}

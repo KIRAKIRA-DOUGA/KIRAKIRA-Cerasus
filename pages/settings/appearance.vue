@@ -23,6 +23,8 @@
 		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
 			coloredSideBar: useAppSettingsStore().coloredSideBar,
 		};
+		const coloredSideBarCookieKey = "colored-side-bar";
+		useCookie(coloredSideBarCookieKey, { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false }).value = `${useAppSettingsStore().coloredSideBar}`;
 		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
 	}
 	watch(() => useAppSettingsStore().coloredSideBar, updateColoredSideBarSetting);
@@ -160,7 +162,7 @@
 				background-color: c(accent);
 				mix-blend-mode: color;
 
-				html.dark & {
+				 .root-node.dark & {
 					mix-blend-mode: hue;
 				}
 			}
@@ -169,7 +171,7 @@
 				background-color: white;
 				opacity: 0.7;
 
-				html.dark & {
+				 .root-node.dark & {
 					background-color: black;
 				}
 			}

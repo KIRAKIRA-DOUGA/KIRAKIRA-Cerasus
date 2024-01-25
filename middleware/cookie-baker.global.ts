@@ -14,12 +14,12 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
 			const cookieUid = useCookie(uidCookieKey, { sameSite: true });
 			const cookieToken = useCookie(tokenCookieKey, { sameSite: true });
-			const cookieShowCssDoodle = useCookie(showCssDoodleCookieKey, { expires: new Date("9999/9/9"), sameSite: true });
-			const cookieSharpAppearanceMode = useCookie(sharpAppearanceModeCookieKey, { expires: new Date("9999/9/9"), sameSite: true });
-			const cookieFlatAppearanceMode = useCookie(flatAppearanceModeCookieKey, { expires: new Date("9999/9/9"), sameSite: true });
-			const cookieColoredSideBar = useCookie(coloredSideBarCookieKey, { expires: new Date("9999/9/9"), sameSite: true });
+			const cookieShowCssDoodle = useCookie(showCssDoodleCookieKey, { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false });
+			const cookieSharpAppearanceMode = useCookie(sharpAppearanceModeCookieKey, { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false });
+			const cookieFlatAppearanceMode = useCookie(flatAppearanceModeCookieKey, { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false });
+			const cookieColoredSideBar = useCookie(coloredSideBarCookieKey, { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false });
 			
-			if (cookieUid !== null && cookieUid !== undefined && cookieToken) {
+			if (cookieUid.value !== null && cookieUid.value !== undefined && cookieUid.value !== "" && cookieToken.value) {
 				const userAuthToken: GetSelfUserInfoRequestDto | GetUserSettingsRequestDto = {
 					uid: cookieUid.value ? parseInt(cookieUid.value, 10) : -1,
 					token: cookieToken.value || "",
@@ -41,10 +41,13 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 		} else {
 			// TODO 客户端渲染
 			
-			const cookieShowCssDoodle = useCookie(showCssDoodleCookieKey, { expires: new Date("9999/9/9"), sameSite: true });
-			const cookieSharpAppearanceMode = useCookie(sharpAppearanceModeCookieKey, { expires: new Date("9999/9/9"), sameSite: true });
-			const cookieFlatAppearanceMode = useCookie(flatAppearanceModeCookieKey, { expires: new Date("9999/9/9"), sameSite: true });
-			const cookieColoredSideBar = useCookie(coloredSideBarCookieKey, { expires: new Date("9999/9/9"), sameSite: true });
+			const cookieShowCssDoodle = useCookie(showCssDoodleCookieKey, { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false });
+			const cookieSharpAppearanceMode = useCookie(sharpAppearanceModeCookieKey, { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false });
+			const cookieFlatAppearanceMode = useCookie(flatAppearanceModeCookieKey, { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false });
+			const cookieColoredSideBar = useCookie(coloredSideBarCookieKey, { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false });
+
+			// console.log("cookieShowCssDoodle", cookieShowCssDoodle, cookieShowCssDoodle.value, typeof cookieShowCssDoodle.value);
+			// console.log("cookieSharpAppearanceMode", cookieSharpAppearanceMode, cookieSharpAppearanceMode.value, typeof cookieSharpAppearanceMode.value);
 			
 			appSettingsStore.showCssDoodle = typeof cookieShowCssDoodle.value === "boolean" ? cookieShowCssDoodle.value : cookieShowCssDoodle.value === "true";
 			appSettingsStore.sharpAppearanceMode = typeof cookieSharpAppearanceMode.value === "boolean" ? cookieSharpAppearanceMode.value : cookieSharpAppearanceMode.value === "true";
@@ -52,7 +55,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 			appSettingsStore.coloredSideBar = typeof cookieColoredSideBar.value === "boolean" ? cookieColoredSideBar.value : cookieColoredSideBar.value === "true";
 		}
 	} catch (error) {
-		console.error("ERROR", "烘焙网络曲奇☆时发生了意料外的错误：", error);
+		console.error("ERROR", "在烘焙 网络曲奇☆ 时发生了意料外的错误：", error);
 		if (from.path !== "/")
 			navigateTo("/");
 	}

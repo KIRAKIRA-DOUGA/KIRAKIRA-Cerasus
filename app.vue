@@ -81,13 +81,6 @@
 		],
 	});
 
-	watch(() => appSettings.sharpAppearanceMode, enabled => {
-		setClassEnabled(document.documentElement, "sharp", enabled);
-	});
-	watch(() => appSettings.flatAppearanceMode, enabled => {
-		setClassEnabled(document.documentElement, "flat", enabled);
-	});
-
 	const layout = useDynamicLayout();
 
 	// Service Worker
@@ -105,15 +98,7 @@
 </script>
 
 <template>
-	<!-- <NuxtLayout :name="layout">
-		<NuxtPage />
-	</NuxtLayout>
-	<Fragment id="teleports">
-		<Toasts />
-		<Tooltips />
-	</Fragment> -->
-
-	<div style="font-size: 50px;">
+	<div class="root-node" :class="{ sharp: appSettings.sharpAppearanceMode, flat: appSettings.flatAppearanceMode }">
 		<NuxtLayout :name="layout">
 			<NuxtPage />
 		</NuxtLayout>

@@ -116,7 +116,7 @@
 			color: c(accent);
 			background-color: c(accent-10);
 
-			html.dark & {
+			 .root-node.dark & {
 				color: c(icon-color);
 			}
 

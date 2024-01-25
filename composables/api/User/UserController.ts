@@ -124,7 +124,7 @@ export const uploadUserAvatar = async (avatarBlobData: Blob, signedUrl: string):
 };
 
 // TODO // WARN 实验性：在服务端或客户端获取用户设置信息用以正确渲染页面，施工中
-export const getUserSettings = async (getUserSettingsRequest: GetUserSettingsRequestDto): Promise<GetUserSettingsResponseDto> => {
+export const getUserSettings = async (getUserSettingsRequest?: GetUserSettingsRequestDto): Promise<GetUserSettingsResponseDto> => {
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	const userSettings = await POST(`${USER_API_URI}/settings`, getUserSettingsRequest, { credentials: "include" }) as GetUserSettingsResponseDto;
 	if (userSettings.success) {

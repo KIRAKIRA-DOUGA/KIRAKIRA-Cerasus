@@ -54,6 +54,7 @@
 				if (loginResponse.success && loginResponse.uid) {
 					open.value = false;
 					selfUserInfoStore.isLogined = true;
+					api.user.getUserSettings();
 					useEvent("user:login", true);
 				} else
 					useToast(t.toast.login_failed, "error");
