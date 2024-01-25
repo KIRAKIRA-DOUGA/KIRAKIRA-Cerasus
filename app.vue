@@ -105,11 +105,21 @@
 </script>
 
 <template>
-	<NuxtLayout :name="layout">
+	<!-- <NuxtLayout :name="layout">
 		<NuxtPage />
 	</NuxtLayout>
 	<Fragment id="teleports">
 		<Toasts />
 		<Tooltips />
-	</Fragment>
+	</Fragment> -->
+
+	<div style="font-size: 50px;">
+		<NuxtLayout :name="layout">
+			<NuxtPage />
+		</NuxtLayout>
+		<Fragment id="teleports">
+			<Toasts />
+			<Tooltips />
+		</Fragment>
+	</div>
 </template>
