@@ -189,7 +189,7 @@
 				@include control-ball-shadow-off-disabled;
 				background-color: c(white);
 
-				 .root-node.dark & {
+				.root-node.dark & {
 					background-color: c(gray-40);
 				}
 			}

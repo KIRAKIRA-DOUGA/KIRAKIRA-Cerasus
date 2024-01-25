@@ -232,7 +232,7 @@ label {
 }
 
 // 扁平样式
- .root-node.flat {
+.root-node.flat {
 	@include enhanced-selector {
 		box-shadow: none !important;
 	}

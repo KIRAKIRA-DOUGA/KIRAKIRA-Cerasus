@@ -17,7 +17,7 @@ kbd {
 	background-color: c(gray-5);
 	border-radius: 4px;
 	
-	 .root-node.dark & {
+	.root-node.dark & {
 		@include set-box-shadow(gray-10, gray-5);
 		background-color: c(gray-20);
 	}
@@ -28,7 +28,7 @@ kbd {
 		translate: 0 3.2px;
 		background-color: c(gray-20);
 		
-		 .root-node.dark & {
+		.root-node.dark & {
 			@include set-box-shadow(gray-5, gray-5, true);
 			color: c(gray-40);
 			background-color: c(gray-10);

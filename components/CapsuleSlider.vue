@@ -151,7 +151,7 @@
 		pointer-events: none;
 		font-variant-numeric: tabular-nums;
 
-		 .root-node.dark & {
+		.root-node.dark & {
 			color: white;
 		}
 	}

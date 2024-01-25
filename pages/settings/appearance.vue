@@ -162,7 +162,7 @@
 				background-color: c(accent);
 				mix-blend-mode: color;
 
-				 .root-node.dark & {
+				.root-node.dark & {
 					mix-blend-mode: hue;
 				}
 			}
@@ -171,7 +171,7 @@
 				background-color: white;
 				opacity: 0.7;
 
-				 .root-node.dark & {
+				.root-node.dark & {
 					background-color: black;
 				}
 			}
