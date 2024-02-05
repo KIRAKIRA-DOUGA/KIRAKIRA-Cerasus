@@ -98,6 +98,11 @@
 			}
 		}
 
+		@container style(--full: true) {
+			flex-basis: 0;
+			flex-grow: 1;
+		}
+
 		.horizontal-ripple {
 			@include circle;
 			position: absolute;

@@ -287,6 +287,8 @@
 			--clipped: false;
 			/// 是否使用较大间距？
 			--loose: false;
+			/// 是否占满宽度并平均分布？
+			--full: false;
 		}
 	}
 
@@ -320,6 +322,10 @@
 	.inline {
 		position: relative;
 		display: inline-block;
+
+		@container style(--full: true) {
+			width: 100%;
+		}
 
 		:comp.vertical & {
 			width: 100%;
