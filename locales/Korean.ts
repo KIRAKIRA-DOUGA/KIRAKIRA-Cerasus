@@ -139,7 +139,7 @@ const Korean: LocaleIdentifiers = {
 		},
 	},
 	danmaku: {
-		_: "Danmaku | Danmakus",
+		_: "Danmaku",
 		send: "Send Danmaku",
 		history: "Danmaku History",
 		format: {
@@ -152,7 +152,7 @@ const Korean: LocaleIdentifiers = {
 			send_as_creator: "Creator's Gradient",
 		},
 		list: {
-			loading: "Loading Danmakus…",
+			loading: "Loading Danmaku…",
 			thead: {
 				time: "Time",
 				content: "Content",
