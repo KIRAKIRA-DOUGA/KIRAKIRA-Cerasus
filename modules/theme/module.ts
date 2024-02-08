@@ -2,7 +2,7 @@ import { addImports, addPlugin, addTemplate, createResolver, defineNuxtModule } 
 import { dirname } from "path";
 import { PREFERENTIAL_BASE_URL, PREFERENTIAL_ROUTE, PREFERENTIAL_TEMPLATE_PATH } from "../shared/constants";
 import { minifyJavaScript } from "../shared/encode";
-import { cookieBander } from "./cookieBinding";
+import { cookieBinding } from "./cookieBinding";
 
 const COOKIE_BANDER_SCRIPT_TEMPLATE_NAME = "cookie-binding.js";
 export const COOKIE_BANDER_SCRIPT_ROUTE = PREFERENTIAL_ROUTE + COOKIE_BANDER_SCRIPT_TEMPLATE_NAME;
@@ -28,7 +28,7 @@ export default defineNuxtModule({
 		addPlugin(resolve("plugin"));
 		addImports({ name: "Theme", as: "Theme", from: resolve("composables")/* .replaceAll("\\", "/") */ });
 
-		let cookieBanderContent = `(function (autoCall = true) {${getFunctionBody(cookieBander, false)}})();`;
+		let cookieBanderContent = `(function (autoCall = true) {${getFunctionBody(cookieBinding, false)}})();`;
 		cookieBanderContent = await minifyJavaScript(cookieBanderContent);
 		const cookieBanderTemplate = addTemplate({
 			filename: PREFERENTIAL_TEMPLATE_PATH + COOKIE_BANDER_SCRIPT_TEMPLATE_NAME,

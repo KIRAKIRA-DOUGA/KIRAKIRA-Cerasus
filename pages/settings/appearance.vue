@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { cookieBander } from "~/modules/theme/cookieBander";
+	import { cookieBinding } from "~/modules/theme/cookieBinding";
 
 	const getPaletteImage = (name: string) => {
 		const palettes = import.meta.glob<typeof import("*.webp")>("/assets/images/palettes/*", { eager: true });
@@ -25,7 +25,7 @@
 	const cookieThemeType = useCookie<"light" | "dark" | "system">(themeTypeCookieKey, { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false });
 	watch(cookieThemeType, () => {
 		updateThemeTypeSetting();
-		if (process.client) cookieBander();
+		if (process.client) cookieBinding();
 	});
 	/**
 	 * 当设置值发送改变时，发送后端请求
@@ -40,7 +40,7 @@
 	const cookieThemeColor = useCookie<string>(themeColorCookieKey, { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false });
 	watch(cookieThemeColor, () => {
 		updateThemeColorSetting();
-		if (process.client) cookieBander();
+		if (process.client) cookieBinding();
 	});
 	/**
 	 * 当设置值发送改变时，发送后端请求
@@ -57,7 +57,7 @@
 	const cookieColoredSidebar = useCookie<boolean>(coloredSidebarCookieKey, { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false });
 	watch(cookieColoredSidebar, () => {
 		updateColoredSideBarSetting();
-		if (process.client) cookieBander();
+		if (process.client) cookieBinding();
 	});
 	/**
 	 * 当设置值发送改变时，发送后端请求

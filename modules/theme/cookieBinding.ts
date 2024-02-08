@@ -2,7 +2,7 @@
  * 在 DOM 加载之前执行的脚本。
  * @param autoCall - 是否自启动？
  */
-export function cookieBander() {
+export function cookieBinding() {
 	/**
 	 * 用原始的方式获取 cookie
 	 * @param cookieName key
