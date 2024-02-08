@@ -5,6 +5,10 @@ export const useAppSettingsStore = defineStore("app-settings", {
 		exitSettingRoute: "/",
 		sharpAppearanceMode: false,
 		flatAppearanceMode: false,
+
+		themeType: "system",
+		themeColor: "pink",
+		customerThemeColor: "",
 		coloredSideBar: false,
 	}),
 	getters: {

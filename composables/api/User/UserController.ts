@@ -1,6 +1,7 @@
 import { GET, POST, uploadFile2R2 } from "api/Common";
 import getCorrectUri from "api/Common/getCorrectUri";
-import type { CheckUserTokenResponseDto, GetSelfUserInfoResponseDto, GetUserAvatarUploadSignedUrlResultDto, GetUserInfoByUidRequestDto, GetUserInfoByUidResponseDto, UpdateUserEmailRequestDto, UserExistsCheckRequestDto, UserExistsCheckResponseDto, UserLoginRequestDto, UserLoginResponseDto, UserRegistrationRequestDto, UserRegistrationResponseDto } from "./UserControllerDto";
+import { PALETTE_LIST } from "~/modules/theme/types";
+import type { CheckUserTokenResponseDto, GetSelfUserInfoRequestDto, GetSelfUserInfoResponseDto, GetUserAvatarUploadSignedUrlResultDto, GetUserInfoByUidRequestDto, GetUserInfoByUidResponseDto, GetUserSettingsRequestDto, GetUserSettingsResponseDto, UpdateOrCreateUserSettingsRequestDto, UpdateOrCreateUserSettingsResponseDto, UpdateUserEmailRequestDto, UserExistsCheckRequestDto, UserExistsCheckResponseDto, UserLoginRequestDto, UserLoginResponseDto, UserRegistrationRequestDto, UserRegistrationResponseDto } from "./UserControllerDto";
 
 const BACK_END_URL = getCorrectUri();
 const USER_API_URI = `${BACK_END_URL}/user`;
@@ -45,13 +46,15 @@ export const updateUserEmail = async (updateUserEmailRequest: UpdateUserEmailReq
 
 /**
  * 获取当前登录的用户信息，前提是 token 中包含正确的 uid 和 token，同时丰富全局变量中的用户信息
+ * @param getSelfUserInfoRequest 获取当前登录的用户信息的请求参数
+ * @param pinia pinia
  * @returns 用户信息
  */
-export const getSelfUserInfo = async (): Promise<GetSelfUserInfoResponseDto> => {
+export const getSelfUserInfo = async (getSelfUserInfoRequest?: GetSelfUserInfoRequestDto): Promise<GetSelfUserInfoResponseDto> => {
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
-	const selfUserInfo = await GET(`${USER_API_URI}/self`, { credentials: "include" }) as GetSelfUserInfoResponseDto;
-	const selfUserInfoStore = useSelfUserInfoStore();
+	const selfUserInfo = await POST(`${USER_API_URI}/self`, getSelfUserInfoRequest, { credentials: "include" }) as GetSelfUserInfoResponseDto;
 	if (selfUserInfo.success) {
+		const selfUserInfoStore = useSelfUserInfoStore();
 		selfUserInfoStore.isLogined = true;
 		selfUserInfoStore.uid = selfUserInfo.result?.uid;
 		selfUserInfoStore.userAvatar = selfUserInfo.result?.avatar || "";
@@ -119,4 +122,28 @@ export const uploadUserAvatar = async (avatarBlobData: Blob, signedUrl: string):
 		console.error("用户头像上传失败，错误信息：", error, { avatarBlobData, signedUrl });
 		return false;
 	}
+};
+
+// TODO // WARN 实验性：在服务端或客户端获取用户设置信息用以正确渲染页面，施工中
+export const getUserSettings = async (getUserSettingsRequest?: GetUserSettingsRequestDto): Promise<GetUserSettingsResponseDto> => {
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	const userSettings = await POST(`${USER_API_URI}/settings`, getUserSettingsRequest, { credentials: "include" }) as GetUserSettingsResponseDto;
+	if (userSettings.success) {
+		const appSettingsStore = useAppSettingsStore();
+		appSettingsStore.showCssDoodle = userSettings?.userSettings?.showCssDoodle || false;
+		appSettingsStore.sharpAppearanceMode = userSettings?.userSettings?.sharpAppearanceMode || false;
+		appSettingsStore.flatAppearanceMode = userSettings?.userSettings?.flatAppearanceMode || false;
+
+		appSettingsStore.themeType = userSettings?.userSettings?.themeType || "";
+		appSettingsStore.themeColor = userSettings?.userSettings?.themeColor ? (PALETTE_LIST as unknown as string[]).includes(userSettings.userSettings.themeColor) ? userSettings.userSettings.themeColor : "customer" : "pink";
+		appSettingsStore.customerThemeColor = userSettings?.userSettings?.themeColor || "";
+		appSettingsStore.coloredSideBar = userSettings?.userSettings?.coloredSideBar || false;
+	}
+	return userSettings;
+};
+
+// TODO // WARN 实验性：在服务端或客户端获取用户设置信息用以正确渲染页面，施工中
+export const updateUserSettings = async (updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto): Promise<UpdateOrCreateUserSettingsResponseDto> => {
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	return await POST(`${USER_API_URI}/settings/update`, updateOrCreateUserSettingsRequest, { credentials: "include" }) as UpdateOrCreateUserSettingsResponseDto;
 };

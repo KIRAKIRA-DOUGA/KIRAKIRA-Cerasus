@@ -1,4 +1,6 @@
 <script setup lang="ts">
+	import { cookieBander } from "~/modules/theme/cookieBander";
+
 	const getPaletteImage = (name: string) => {
 		const palettes = import.meta.glob<typeof import("*.webp")>("/assets/images/palettes/*", { eager: true });
 		return palettes[`/assets/images/palettes/${name}.webp`].default;
@@ -15,6 +17,57 @@
 		{ color: "green", subtitle: "Ujimatsu Chiya" },
 	] as const;
 	const paletteSection = ref<HTMLElement>();
+
+	const themeTypeCookieKey = "theme-type";
+	const themeColorCookieKey = "theme-color";
+	const coloredSidebarCookieKey = "colored-side-bar";
+
+	const cookieThemeType = useCookie<"light" | "dark" | "system">(themeTypeCookieKey, { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false });
+	watch(cookieThemeType, () => {
+		updateThemeTypeSetting();
+		if (process.client) cookieBander();
+	});
+	/**
+	 * 当设置值发送改变时，发送后端请求
+	 */
+	function updateThemeTypeSetting() {
+		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
+			themeType: cookieThemeType.value as "light" | "dark" | "system",
+		};
+		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
+	}
+
+	const cookieThemeColor = useCookie<string>(themeColorCookieKey, { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false });
+	watch(cookieThemeColor, () => {
+		updateThemeColorSetting();
+		if (process.client) cookieBander();
+	});
+	/**
+	 * 当设置值发送改变时，发送后端请求
+	 */
+	function updateThemeColorSetting() {
+		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
+			themeColor: cookieThemeColor.value,
+		};
+		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
+	}
+
+	// TODO 自定义主题色
+
+	const cookieColoredSidebar = useCookie<boolean>(coloredSidebarCookieKey, { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false });
+	watch(cookieColoredSidebar, () => {
+		updateColoredSideBarSetting();
+		if (process.client) cookieBander();
+	});
+	/**
+	 * 当设置值发送改变时，发送后端请求
+	 */
+	function updateColoredSideBarSetting() {
+		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
+			coloredSideBar: cookieColoredSidebar.value,
+		};
+		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
+	}
 
 	onMounted(() => {
 		if (paletteSection.value)
@@ -35,7 +88,7 @@
 			v-for="item in themeList"
 			:id="item"
 			:key="item"
-			v-model="theme"
+			v-model="cookieThemeType"
 			:title="t.scheme[item]"
 		>
 			<LogoThemePreview :theme="item" :accent="palette" />
@@ -48,7 +101,7 @@
 			v-for="item in paletteList"
 			:id="item.color"
 			:key="item.color"
-			v-model="palette"
+			v-model="cookieThemeColor"
 			:title="t.palette[item.color]"
 			class="force-color"
 			:class="[item.color, actualTheme]"
@@ -71,7 +124,7 @@
 
 	<Subheader icon="more_horiz">{{ t(2).other }}</Subheader>
 	<section list>
-		<ToggleSwitch v-model="useAppSettingsStore().coloredSideBar" v-ripple icon="dehaze">{{ t.appearance.colorful_navbar }}</ToggleSwitch>
+		<ToggleSwitch v-model="cookieColoredSidebar" v-ripple icon="dehaze">{{ t.appearance.colorful_navbar }}</ToggleSwitch>
 	</section>
 </template>
 
@@ -175,3 +228,4 @@
 		}
 	}
 </style>
+~/modules/theme/cookieBinding

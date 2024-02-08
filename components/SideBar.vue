@@ -142,7 +142,7 @@
 		overflow: hidden;
 		background-color: c(main-bg);
 
-		&.colored {
+		:root.colored-sidebar & {
 			@include sidebar-shadow-colored;
 			--color: white;
 			background-color: c(accent);
