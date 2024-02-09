@@ -82,7 +82,7 @@ export function cookieBinding() {
 			rootNode.classList.add(themeColor);
 		if (isColoredSidebar) rootNode.classList.add("colored-sidebar");
 
-		// TODO // FIXME 在用户未登录或未开启多端同步的状态下存在问题：虽然 cookie 被设为 404 后，正确地从 localStorage 中获取值并渲染了，但 cookie 此时仍为 404，而 loackStorage 中则被设为 404，在下次渲染时会把 404 发送到服务端，然后出错
+		// TODO // FIXME 在用户未登录或未开启多端同步的状态下存在问题：虽然 cookie 被设为 404 后，正确地从 localStorage 中获取值并渲染了，但 cookie 此时仍为 404，而 localStorage 中则被设为 404，在下次渲染时会把 404 发送到服务端，然后出错
 		// 将最新的 cookie 存储回 localStorage
 		if (currentThemeType) window.localStorage.setItem(themeTypeCookieKey, currentThemeType);
 		if (themeColor) window.localStorage.setItem(themeColorCookieKey, themeColor);
