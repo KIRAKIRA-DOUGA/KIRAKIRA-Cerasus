@@ -1,5 +1,6 @@
 import { GET, POST, uploadFile2R2 } from "api/Common";
 import getCorrectUri from "api/Common/getCorrectUri";
+import { CUSTOMER_THEME_COLOR, DEFAULT_THEME_COLOR, SYSTEM_THEME } from "~/modules/theme/cookieBinding";
 import { PALETTE_LIST } from "~/modules/theme/types";
 import type { CheckUserTokenResponseDto, GetSelfUserInfoRequestDto, GetSelfUserInfoResponseDto, GetUserAvatarUploadSignedUrlResultDto, GetUserInfoByUidRequestDto, GetUserInfoByUidResponseDto, GetUserSettingsRequestDto, GetUserSettingsResponseDto, UpdateOrCreateUserSettingsRequestDto, UpdateOrCreateUserSettingsResponseDto, UpdateUserEmailRequestDto, UserExistsCheckRequestDto, UserExistsCheckResponseDto, UserLoginRequestDto, UserLoginResponseDto, UserRegistrationRequestDto, UserRegistrationResponseDto } from "./UserControllerDto";
 
@@ -134,8 +135,8 @@ export const getUserSettings = async (getUserSettingsRequest?: GetUserSettingsRe
 		appSettingsStore.sharpAppearanceMode = userSettings?.userSettings?.sharpAppearanceMode || false;
 		appSettingsStore.flatAppearanceMode = userSettings?.userSettings?.flatAppearanceMode || false;
 
-		appSettingsStore.themeType = userSettings?.userSettings?.themeType || "";
-		appSettingsStore.themeColor = userSettings?.userSettings?.themeColor ? (PALETTE_LIST as unknown as string[]).includes(userSettings.userSettings.themeColor) ? userSettings.userSettings.themeColor : "customer" : "pink";
+		appSettingsStore.themeType = userSettings?.userSettings?.themeType || SYSTEM_THEME;
+		appSettingsStore.themeColor = userSettings?.userSettings?.themeColor ? (PALETTE_LIST as unknown as string[]).includes(userSettings.userSettings.themeColor) ? userSettings.userSettings.themeColor : CUSTOMER_THEME_COLOR : DEFAULT_THEME_COLOR;
 		appSettingsStore.customerThemeColor = userSettings?.userSettings?.themeColor || "";
 		appSettingsStore.coloredSideBar = userSettings?.userSettings?.coloredSideBar || false;
 	}
