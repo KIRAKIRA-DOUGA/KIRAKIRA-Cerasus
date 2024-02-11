@@ -58,34 +58,42 @@
 			return true;
 		},
 	}) as unknown as Record<Filters, boolean>;
+
+	const selectedSettingsTab = defineModel<string>("selectedSettingsTab", { default: "player" });
+	const blockWordsToggle = ref(false);
+	const blockWordsSelectedTab = ref("block-keywords");
+	const transitionName = defineModel<string>("transitionName", { default: "page-jump" });
 </script>
 
 <template>
 	<div class="wrapper">
 		<Comp>
-			<p>弹幕</p>
-			<SettingsSlider
-				v-model="settings.danmaku.fontSizeScale"
-				:min="0"
-				:max="2"
-				:defaultValue="1"
-				icon="font_size"
-			>字号缩放</SettingsSlider>
-			<SettingsSlider
-				v-model="settings.danmaku.opacity"
-				:min="0"
-				:max="1"
-				:defaultValue="1"
-				icon="opacity"
-			>不透明度</SettingsSlider>
+			<Transition :name="transitionName" mode="out-in">
+				<div v-if="selectedSettingsTab === 'player' " class="page-player">
+					<p>弹幕</p>
+					<SettingsSlider
+						v-model="settings.danmaku.fontSizeScale"
+						:min="0"
+						:max="2"
+						:defaultValue="1"
+						icon="font_size"
+					>字号缩放</SettingsSlider>
+					<SettingsSlider
+						v-model="settings.danmaku.opacity"
+						:min="0"
+						:max="1"
+						:defaultValue="1"
+						icon="opacity"
+					>不透明度</SettingsSlider>
+				</div>
 
-			<p>滤镜</p>
-			<div class="grid">
-				<CheckCard v-for="([filter, style], key) in filters" :key="key" v-model="filterBooleanProxy[key]">
-					{{ filter }}
-					<template #image><img :src="thumbnail" alt="preview" :style="style" /></template>
-				</CheckCard>
-				<!-- <CheckCard v-model="settings.filter.horizontalFlip">
+				<div v-else-if="selectedSettingsTab === 'filters'">
+					<div class="grid">
+						<CheckCard v-for="([filter, style], key) in filters" :key="key" v-model="filterBooleanProxy[key]">
+							{{ filter }}
+							<template #image><img :src="thumbnail" alt="preview" :style="style" /></template>
+						</CheckCard>
+					<!-- <CheckCard v-model="settings.filter.horizontalFlip">
 					水平翻转
 					<template #image><img :src="thumbnail" alt="preview" /></template>
 				</CheckCard>
@@ -93,7 +101,19 @@
 					垂直翻转
 					<template #image><img :src="thumbnail" alt="preview" /></template>
 				</CheckCard> -->
-			</div>
+					</div>
+				</div>
+
+				<div v-else-if="selectedSettingsTab === 'block-words'">
+					<ToggleSwitch v-model="blockWordsToggle" v-ripple icon="visibility_off">开启屏蔽</ToggleSwitch>
+
+					<TabBar v-model="blockWordsSelectedTab">
+						<TabItem id="block-keywords">屏蔽文本</TabItem>
+						<TabItem id="block-regex">屏蔽正则</TabItem>
+						<TabItem id="block-users">屏蔽用户</TabItem>
+					</TabBar>
+				</div>
+			</Transition>
 		</Comp>
 		<ShadingIcon icon="settings" position="right bottom" rotating :elastic="playing" large />
 	</div>
@@ -108,14 +128,21 @@
 		position: relative;
 		flex-grow: 1;
 		height: 100%;
-		padding-top: 8px;
 		contain: strict;
 		overflow: hidden auto;
 	}
-	
+
 	.wrapper {
 		@include square(100%);
 		position: relative;
+	}
+
+	.page-player {
+		padding-top: 8px;
+	}
+
+	.tab-bar {
+		--full: true;
 	}
 
 	.shading-icon {

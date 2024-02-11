@@ -454,7 +454,6 @@
 		@include player-shadow;
 		display: flex;
 		flex-direction: row;
-		background-color: c(surface-color);
 	}
 
 	.main {
