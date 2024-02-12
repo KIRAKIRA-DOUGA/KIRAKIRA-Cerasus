@@ -112,7 +112,7 @@
 		<div class="bottom icons">
 			<Avatar class="pc" @click="onClickUser" />
 			<SoftButton v-tooltip="t.messages" icon="email" href="/test-rich-text-editor" />
-			<SoftButton v-tooltip="t.settings" class="pc" icon="settings" href="/settings" :active="isCurrentSettings" />
+			<SoftButton v-tooltip="t.settings" class="pc settings" icon="settings" href="/settings" :active="isCurrentSettings" />
 			<SoftButton v-tooltip="t.search" class="pe" icon="search" href="/search" />
 		</div>
 
@@ -239,6 +239,16 @@
 			@include mobile {
 				@include square(48px);
 				--ripple-size: 48px;
+			}
+
+			&.settings {
+				&:deep(i) {
+					transition: $fallback-transitions, rotate 1s $ease-out-smooth;
+				}
+
+				&:deep(.router-link-active i) {
+					rotate: 120deg;
+				}
 			}
 		}
 
