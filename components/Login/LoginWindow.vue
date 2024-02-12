@@ -59,8 +59,8 @@
 					selfUserInfoStore.isLogined = true;
 
 					const userSettings = await api.user.getUserSettings();
+					
 					// 将最新的 localStorage 存储回 cookie
-
 					const currentThemeType = userSettings?.userSettings?.themeType || SYSTEM_THEME;
 					const themeColor = userSettings?.userSettings?.themeColor ? (PALETTE_LIST as unknown as string[]).includes(userSettings.userSettings.themeColor) ? userSettings.userSettings.themeColor : CUSTOMER_THEME_COLOR : DEFAULT_THEME_COLOR;
 					const customerThemeColor = userSettings?.userSettings?.themeColor || "";
@@ -72,9 +72,7 @@
 					if (customerThemeColor) document.cookie = `${customerThemeColorCookieKey}=${customerThemeColor}${userSettingsCookieBasicOption}`;
 					if (isColoredSidebar !== undefined || isColoredSidebar !== null) document.cookie = `${coloredSidebarCookieKey}=${isColoredSidebar}${userSettingsCookieBasicOption}`;
 
-					console.log("aaaaaaaaaa", currentThemeType, themeColor);
 					cookieBinding();
-
 					useEvent("user:login", true);
 				} else
 					useToast(t.toast.login_failed, "error");

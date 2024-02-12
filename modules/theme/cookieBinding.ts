@@ -1,4 +1,4 @@
-// theme 关键字
+// theme 关键字，请和下方局部变量中的一致
 export const SYSTEM_THEME = "system";
 export const DEFAULT_THEME_COLOR = "pink";
 export const CUSTOMER_THEME_COLOR = "customer";
@@ -6,7 +6,7 @@ export const DEFAULT_CUSTOMER_THEME_COLOR = "66CCFF"; // TODO 设置默认自定
 export const THEME_DARK = "dark";
 export const THEME_LIGHT = "light";
 
-// Cookie 键 - 用户样式设置
+// Cookie 键 - 用户样式设置，请和下方局部变量中的一致
 export const themeTypeCookieKey = "theme-type";
 export const themeColorCookieKey = "theme-color";
 export const customerThemeColorCookieKey = "customer-theme-color";
