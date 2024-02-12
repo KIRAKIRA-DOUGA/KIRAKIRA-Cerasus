@@ -9,12 +9,7 @@ const getProxy = (options: TranslateOptions | typeof targetFunction) =>
 			if (rootName === "__v_isRef" || typeof rootName === "symbol") return; // Vuex 干的好事。
 			if (typeof target === "function") target = {};
 			const getParentsPrefix = (...prefixes: string[]) => prefixes.length ? prefixes.join(".") : "";
-			try {
-				// eslint-disable-next-line no-var
-				var i18n = useNuxtApp().$i18n;
-			} catch (error) {
-				return "";
-			}
+			const i18n = useNuxtApp().$i18n;
 			const getDeclarationInfo = (...keys: string[]) => {
 				const key = getParentsPrefix(...keys);
 				const raw = i18n.tm(key) as string | object;
