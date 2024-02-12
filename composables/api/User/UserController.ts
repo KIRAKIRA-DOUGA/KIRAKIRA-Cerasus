@@ -125,25 +125,22 @@ export const uploadUserAvatar = async (avatarBlobData: Blob, signedUrl: string):
 	}
 };
 
-// TODO // WARN 实验性：在服务端或客户端获取用户设置信息用以正确渲染页面，施工中
+/**
+ * 获取用户设置，如果传入了 getUserSettingsRequest 且为提供 cookie（uid, token），则使用 getUserSettingsRequest 中的参数
+ * @param getUserSettingsRequest 用户令牌
+ * @returns 用户设置
+ */
 export const getUserSettings = async (getUserSettingsRequest?: GetUserSettingsRequestDto): Promise<GetUserSettingsResponseDto> => {
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	const userSettings = await POST(`${USER_API_URI}/settings`, getUserSettingsRequest, { credentials: "include" }) as GetUserSettingsResponseDto;
-	if (userSettings.success) {
-		const appSettingsStore = useAppSettingsStore();
-		appSettingsStore.showCssDoodle = userSettings?.userSettings?.showCssDoodle || false;
-		appSettingsStore.sharpAppearanceMode = userSettings?.userSettings?.sharpAppearanceMode || false;
-		appSettingsStore.flatAppearanceMode = userSettings?.userSettings?.flatAppearanceMode || false;
-
-		appSettingsStore.themeType = userSettings?.userSettings?.themeType || SYSTEM_THEME;
-		appSettingsStore.themeColor = userSettings?.userSettings?.themeColor ? (PALETTE_LIST as unknown as string[]).includes(userSettings.userSettings.themeColor) ? userSettings.userSettings.themeColor : CUSTOMER_THEME_COLOR : DEFAULT_THEME_COLOR;
-		appSettingsStore.customerThemeColor = userSettings?.userSettings?.themeColor || "";
-		appSettingsStore.coloredSideBar = userSettings?.userSettings?.coloredSideBar || false;
-	}
 	return userSettings;
 };
 
-// TODO // WARN 实验性：在服务端或客户端获取用户设置信息用以正确渲染页面，施工中
+/**
+ * 更新用户设置
+ * @param updateOrCreateUserSettingsRequest 更新的设置项
+ * @returns 用户设置，同时更新的设置项会产生一个 set-cookie 的响应头
+ */
 export const updateUserSettings = async (updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto): Promise<UpdateOrCreateUserSettingsResponseDto> => {
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	return await POST(`${USER_API_URI}/settings/update`, updateOrCreateUserSettingsRequest, { credentials: "include" }) as UpdateOrCreateUserSettingsResponseDto;

@@ -49,8 +49,6 @@ export function cookieBinding() {
 	};
 
 	try {
-		const isOfflineSettings = !getCookie(isOfflineSettingsCookieKey) || getCookie(isOfflineSettingsCookieKey) === "true";
-
 		const systemThemeType = window.matchMedia("(prefers-color-scheme: dark)").matches ? THEME_DARK : THEME_LIGHT; // 获取系统主题类型（当 themeType 的值为 system 时才应该依据该值渲染）
 
 		let currentThemeType;
@@ -58,32 +56,33 @@ export function cookieBinding() {
 		let customerThemeColor;
 		let isColoredSidebar;
 
+		const isOfflineSettings = !getCookie(isOfflineSettingsCookieKey) || getCookie(isOfflineSettingsCookieKey) === "true";
 		if (isOfflineSettings) { // 离线样式，从 localStorage 中获取样式并拷贝到 cookie 中
 			// 获取 localStorage 中的用户样式设置
 
-			currentThemeType = window.localStorage.getItem(themeTypeCookieKey); // localStorage 中存储的系统主题类型，如果没有，则使用 systemThemeType
+			currentThemeType = !window.localStorage.getItem(themeTypeCookieKey) || window.localStorage.getItem(themeTypeCookieKey) === "system" ? systemThemeType : window.localStorage.getItem(themeTypeCookieKey); // localStorage 中存储的系统主题类型，如果没有或值为 system，则使用 systemThemeType
 			themeColor = window.localStorage.getItem(themeColorCookieKey); // localStorage 中存储的系统主题色
 			customerThemeColor = window.localStorage.getItem(customerThemeColorCookieKey); // localStorage 中存储的自定义系统主题色（当 themeColor 的值为 CUSTOMER_THEME_COLOR 时才应该依据该值渲染）
 			isColoredSidebar = window.localStorage.getItem(coloredSidebarCookieKey); // localStorage 中存储的是否启用彩色侧边栏
 
 			// 将最新的 localStorage 存储回 cookie
-			const userSettingsCookieBasicOption = document.cookie = `; expires=${new Date("9999/9/9").toUTCString()}; path=/; SameSite=Strict`;
+			const userSettingsCookieBasicOption = `; expires=${new Date("9999/9/9").toUTCString()}; path=/; SameSite=Strict`;
 			if (currentThemeType) document.cookie = `${themeTypeCookieKey}=${currentThemeType}${userSettingsCookieBasicOption}`;
 			if (themeColor) document.cookie = `${themeColorCookieKey}=${themeColor}${userSettingsCookieBasicOption}`;
 			if (customerThemeColor) document.cookie = `${customerThemeColorCookieKey}=${customerThemeColor}${userSettingsCookieBasicOption}`;
-			if (isColoredSidebar) document.cookie = `${coloredSidebarCookieKey}=${isColoredSidebar}${userSettingsCookieBasicOption}`;
+			if (isColoredSidebar !== undefined || isColoredSidebar !== null) document.cookie = `${coloredSidebarCookieKey}=${isColoredSidebar}${userSettingsCookieBasicOption}`;
 		} else {
 			// 获取 cookie 中的用户样式设置
-			currentThemeType = (getCookie(themeTypeCookieKey) || systemThemeType) as ThemeSetType; // 客户端中存储的系统主题类型，如果没有，则使用 systemThemeType
-			themeColor = (getCookie(themeColorCookieKey) || DEFAULT_THEME_COLOR) as PaletteType; // 客户端中存储的系统主题色
-			customerThemeColor = getCookie(customerThemeColorCookieKey) as string; // 客户端中存储的自定义系统主题色（当 themeColor 的值为 CUSTOMER_THEME_COLOR 时才应该依据该值渲染）
-			isColoredSidebar = getCookie(coloredSidebarCookieKey) === "true"; // 客户端中存储的是否启用彩色侧边栏
+			currentThemeType = (!getCookie(themeTypeCookieKey) && getCookie(themeTypeCookieKey) === "system" ? systemThemeType : getCookie(themeTypeCookieKey)) as ThemeSetType; // cookie 中存储的系统主题类型，如果没有，则使用 systemThemeType
+			themeColor = (getCookie(themeColorCookieKey) || DEFAULT_THEME_COLOR) as PaletteType; // cookie 中存储的系统主题色
+			customerThemeColor = getCookie(customerThemeColorCookieKey) as string; // cookie 中存储的自定义系统主题色（当 themeColor 的值为 CUSTOMER_THEME_COLOR 时才应该依据该值渲染）
+			isColoredSidebar = getCookie(coloredSidebarCookieKey) === "true"; // cookie 中存储的是否启用彩色侧边栏
 
 			// 将最新的 cookie 存储回 localStorage
 			if (currentThemeType) window.localStorage.setItem(themeTypeCookieKey, currentThemeType);
 			if (themeColor) window.localStorage.setItem(themeColorCookieKey, themeColor);
 			if (customerThemeColor) window.localStorage.setItem(customerThemeColorCookieKey, customerThemeColor);
-			if (isColoredSidebar) window.localStorage.setItem(coloredSidebarCookieKey, `${isColoredSidebar}`);
+			if (isColoredSidebar !== undefined || isColoredSidebar !== null) window.localStorage.setItem(coloredSidebarCookieKey, `${isColoredSidebar}`);
 		}
 
 		// 绑定样式
@@ -95,7 +94,7 @@ export function cookieBinding() {
 			console.log("themeCustomerColor", customerThemeColor);
 		else if (themeColor)
 			rootNode.classList.add(themeColor);
-		if (isColoredSidebar) rootNode.classList.add("colored-sidebar");
+		if (`${isColoredSidebar}` === "true") rootNode.classList.add("colored-sidebar");
 	} catch (error) {
 		console.error("ERROR", "ERROR IN cookieBander", error);
 		try {

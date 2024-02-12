@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { cookieBinding } from "~/modules/theme/cookieBinding";
+	import { coloredSidebarCookieKey, cookieBinding, themeColorCookieKey, themeTypeCookieKey } from "~/modules/theme/cookieBinding";
 
 	const getPaletteImage = (name: string) => {
 		const palettes = import.meta.glob<typeof import("*.webp")>("/assets/images/palettes/*", { eager: true });
@@ -18,12 +18,11 @@
 	] as const;
 	const paletteSection = ref<HTMLElement>();
 
-	const themeTypeCookieKey = "theme-type";
-	const themeColorCookieKey = "theme-color";
-	const coloredSidebarCookieKey = "colored-side-bar";
+	const userSettingsCookieBasicOption = { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false, watch: true };
 
-	const cookieThemeType = useCookie<"light" | "dark" | "system">(themeTypeCookieKey, { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false });
-	watch(cookieThemeType, () => {
+	const cookieThemeType = useCookie<ThemeSetType>(themeTypeCookieKey, userSettingsCookieBasicOption);
+	watch(cookieThemeType, themeType => {
+		window.localStorage.setItem(themeTypeCookieKey, themeType); // WARN useStorage 更新数据会导致 cookieBinding 中获取到的 localStorage 数据不是最新数据，可能是 vue 响应式延迟
 		updateThemeTypeSetting();
 		if (process.client) cookieBinding();
 	});
@@ -32,13 +31,14 @@
 	 */
 	function updateThemeTypeSetting() {
 		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
-			themeType: cookieThemeType.value as "light" | "dark" | "system",
+			themeType: cookieThemeType.value as ThemeSetType,
 		};
 		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
 	}
 
-	const cookieThemeColor = useCookie<string>(themeColorCookieKey, { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false });
-	watch(cookieThemeColor, () => {
+	const cookieThemeColor = useCookie<string>(themeColorCookieKey, userSettingsCookieBasicOption);
+	watch(cookieThemeColor, themeColor => {
+		window.localStorage.setItem(themeColorCookieKey, themeColor); // WARN useStorage 更新数据会导致 cookieBinding 中获取到的 localStorage 数据不是最新数据，可能是 vue 响应式延迟
 		updateThemeColorSetting();
 		if (process.client) cookieBinding();
 	});
@@ -54,8 +54,9 @@
 
 	// TODO 自定义主题色
 
-	const cookieColoredSidebar = useCookie<boolean>(coloredSidebarCookieKey, { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false });
-	watch(cookieColoredSidebar, () => {
+	const cookieColoredSidebar = useCookie<boolean>(coloredSidebarCookieKey, userSettingsCookieBasicOption);
+	watch(cookieColoredSidebar, coloredSidebar => {
+		window.localStorage.setItem(coloredSidebarCookieKey, `${coloredSidebar}`); // WARN useStorage 更新数据会导致 cookieBinding 中获取到的 localStorage 数据不是最新数据，可能是 vue 响应式延迟
 		updateColoredSideBarSetting();
 		if (process.client) cookieBinding();
 	});
@@ -75,6 +76,12 @@
 				item.classList.remove("light", "dark");
 				item.classList.add(actualTheme.value);
 			}
+	});
+
+	useListen("user:login", () => {
+		cookieThemeType.value = useCookie<ThemeSetType>(themeTypeCookieKey, userSettingsCookieBasicOption).value;
+		cookieThemeColor.value = useCookie<string>(themeColorCookieKey, userSettingsCookieBasicOption).value;
+		cookieColoredSidebar.value = useCookie<boolean>(coloredSidebarCookieKey, userSettingsCookieBasicOption).value;
 	});
 </script>
 
