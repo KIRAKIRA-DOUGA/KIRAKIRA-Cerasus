@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { CUSTOMER_THEME_COLOR, DEFAULT_THEME_COLOR, SYSTEM_THEME, coloredSidebarCookieKey, customThemeColorCookieKey, themeColorCookieKey, themeTypeCookieKey, cookieBinding } from "~/modules/theme/cookieBinding";
+	import { CUSTOM_THEME_COLOR, DEFAULT_THEME_COLOR, SYSTEM_THEME, coloredSidebarCookieKey, customThemeColorCookieKey, themeColorCookieKey, themeTypeCookieKey, cookieBinding, isOfflineSettingsCookieKey } from "~/modules/theme/cookieBinding";
 	import { PALETTE_LIST } from "~/modules/theme/types";
 
 	const props = defineProps<{
@@ -62,15 +62,16 @@
 					
 					// 登陆后，将用户设置存储到 cookie
 					const currentThemeType = userSettings?.userSettings?.themeType || SYSTEM_THEME;
-					const themeColor = userSettings?.userSettings?.themeColor ? (PALETTE_LIST as unknown as string[]).includes(userSettings.userSettings.themeColor) ? userSettings.userSettings.themeColor : CUSTOMER_THEME_COLOR : DEFAULT_THEME_COLOR;
+					const themeColor = userSettings?.userSettings?.themeColor ? (PALETTE_LIST as unknown as string[]).includes(userSettings.userSettings.themeColor) ? userSettings.userSettings.themeColor : CUSTOM_THEME_COLOR : DEFAULT_THEME_COLOR;
 					const customerThemeColor = userSettings?.userSettings?.themeColor || "";
 					const isColoredSidebar = userSettings?.userSettings?.coloredSideBar || false;
 
 					const userSettingsCookieBasicOption = `; expires=${new Date("9999/9/9").toUTCString()}; path=/; SameSite=Strict`;
+					document.cookie = `${isOfflineSettingsCookieKey}=false${userSettingsCookieBasicOption}`;
 					if (currentThemeType) document.cookie = `${themeTypeCookieKey}=${currentThemeType}${userSettingsCookieBasicOption}`;
 					if (themeColor) document.cookie = `${themeColorCookieKey}=${themeColor}${userSettingsCookieBasicOption}`;
 					if (customerThemeColor) document.cookie = `${customThemeColorCookieKey}=${customerThemeColor}${userSettingsCookieBasicOption}`;
-					if (isColoredSidebar !== undefined || isColoredSidebar !== null) document.cookie = `${coloredSidebarCookieKey}=${isColoredSidebar}${userSettingsCookieBasicOption}`;
+					if (isColoredSidebar !== undefined && isColoredSidebar !== null) document.cookie = `${coloredSidebarCookieKey}=${isColoredSidebar}${userSettingsCookieBasicOption}`;
 
 					cookieBinding();
 					useEvent("user:login", true);

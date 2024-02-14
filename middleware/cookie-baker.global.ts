@@ -1,4 +1,4 @@
-import { CUSTOMER_THEME_COLOR, DEFAULT_THEME_COLOR, SYSTEM_THEME, coloredSidebarCookieKey, customThemeColorCookieKey, isOfflineSettingsCookieKey, themeColorCookieKey, themeTypeCookieKey } from "~/modules/theme/cookieBinding";
+import { CUSTOM_THEME_COLOR, DEFAULT_THEME_COLOR, SYSTEM_THEME, coloredSidebarCookieKey, customThemeColorCookieKey, isOfflineSettingsCookieKey, themeColorCookieKey, themeTypeCookieKey } from "~/modules/theme/cookieBinding";
 import { PALETTE_LIST } from "~/modules/theme/types";
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
@@ -35,7 +35,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 				const userSettings = await api.user.getUserSettings(userAuthToken);
 
 				cookieThemeType.value = userSettings?.userSettings?.themeType || SYSTEM_THEME;
-				cookieThemeColor.value = userSettings?.userSettings?.themeColor ? (PALETTE_LIST as unknown as string[]).includes(userSettings.userSettings.themeColor) ? userSettings.userSettings.themeColor : CUSTOMER_THEME_COLOR : DEFAULT_THEME_COLOR;
+				cookieThemeColor.value = userSettings?.userSettings?.themeColor ? (PALETTE_LIST as unknown as string[]).includes(userSettings.userSettings.themeColor) ? userSettings.userSettings.themeColor : CUSTOM_THEME_COLOR : DEFAULT_THEME_COLOR;
 				cookieCustomerThemeColor.value = userSettings?.userSettings?.themeColor || "";
 				cookieColoredSidebar.value = `${userSettings?.userSettings?.coloredSideBar}`;
 

@@ -20,4 +20,4 @@ export const useSelfUserInfoStore = defineStore("user-info", () => {
 	const isAllowSyncThemeSettings = ref(false);
 
 	return { isLogined, uid, username, userAvatar, gender, signature, birthday, tags, isAllowSyncThemeSettings };
-});
+}, { persist: true });
