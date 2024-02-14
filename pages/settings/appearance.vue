@@ -32,7 +32,7 @@
 		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
 	}
 	
-	// WARN 15 请参照此部分 ↓ ↓ ↓
+	// HACK 15 请参照此部分 ↓ ↓ ↓
 	// 主题
 	const cookieThemeType = useCookie<ThemeSetType>(themeTypeCookieKey, userSettingsCookieBasicOption);
 	watch(cookieThemeType, themeType => { // 当设置值发送改变时，发送后端请求，并触发 cookieBinding 更新页面样式
@@ -47,7 +47,7 @@
 			cookieBinding();
 		}
 	});
-	// WARN 15 请参照此部分 ↑ ↑ ↑
+	// HACK 15 请参照此部分 ↑ ↑ ↑
 
 	// 个性色
 	const cookieThemeColor = useCookie<string>(themeColorCookieKey, userSettingsCookieBasicOption);
