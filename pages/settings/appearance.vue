@@ -24,55 +24,60 @@
 	const appSettingsStore = useAppSettingsStore();
 	const isAllowSyncThemeSettings = computed(() => appSettingsStore.isAllowSyncThemeSettings && selfUserInfoStore.isLogined);
 
+	/**
+	 * 发送后端请求，更新用户设置
+	 * @param updateOrCreateUserSettingsRequest 用户发生修改的设置
+	 */
+	function updateUserSetting(updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto) {
+		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
+	}
+
+	// 主题
 	const cookieThemeType = useCookie<ThemeSetType>(themeTypeCookieKey, userSettingsCookieBasicOption);
-	watch(cookieThemeType, themeType => {
-		window.localStorage.setItem(themeTypeCookieKey, themeType); // WARN useStorage 更新数据会导致 cookieBinding 中获取到的 localStorage 数据不是最新数据，可能是 vue 响应式延迟
-		isAllowSyncThemeSettings.value && updateThemeTypeSetting();
-		if (process.client) cookieBinding();
+	watch(cookieThemeType, themeType => { // 当设置值发送改变时，发送后端请求，并触发 cookieBinding 更新页面样式
+		if (process.client) {
+			window.localStorage.setItem(themeTypeCookieKey, themeType); // WARN useStorage 更新数据会导致 cookieBinding 中获取到的 localStorage 数据不是最新数据，可能是 vue 响应式延迟
+			if (isAllowSyncThemeSettings.value) { // 如果允许同步样式设置，则发送后端请求，非阻塞
+				const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
+					themeType: cookieThemeType.value as ThemeSetType,
+				};
+				updateUserSetting(updateOrCreateUserSettingsRequest);
+			}
+			cookieBinding();
+		}
 	});
-	/**
-	 * 当设置值发送改变时，发送后端请求
-	 */
-	function updateThemeTypeSetting() {
-		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
-			themeType: cookieThemeType.value as ThemeSetType,
-		};
-		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
-	}
 
+	// 个性色
 	const cookieThemeColor = useCookie<string>(themeColorCookieKey, userSettingsCookieBasicOption);
-	watch(cookieThemeColor, themeColor => {
-		window.localStorage.setItem(themeColorCookieKey, themeColor); // WARN useStorage 更新数据会导致 cookieBinding 中获取到的 localStorage 数据不是最新数据，可能是 vue 响应式延迟
-		isAllowSyncThemeSettings.value && updateThemeColorSetting();
-		if (process.client) cookieBinding();
+	watch(cookieThemeColor, themeColor => { // 当设置值发送改变时，发送后端请求，并触发 cookieBinding 更新页面样式
+		if (process.client) {
+			window.localStorage.setItem(themeColorCookieKey, themeColor); // WARN useStorage 更新数据会导致 cookieBinding 中获取到的 localStorage 数据不是最新数据，可能是 vue 响应式延迟
+			if (isAllowSyncThemeSettings.value) { // 如果允许同步样式设置，则发送后端请求，非阻塞
+				const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
+					themeColor: cookieThemeColor.value,
+				};
+				updateUserSetting(updateOrCreateUserSettingsRequest);
+			}
+			cookieBinding();
+		}
 	});
-	/**
-	 * 当设置值发送改变时，发送后端请求
-	 */
-	function updateThemeColorSetting() {
-		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
-			themeColor: cookieThemeColor.value,
-		};
-		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
-	}
 
-	// TODO 自定义主题色
+	// TODO 自定义个性色
 
+	// 彩色侧边栏
 	const cookieColoredSidebar = useCookie<boolean>(coloredSidebarCookieKey, userSettingsCookieBasicOption);
-	watch(cookieColoredSidebar, coloredSidebar => {
-		window.localStorage.setItem(coloredSidebarCookieKey, `${coloredSidebar}`); // WARN useStorage 更新数据会导致 cookieBinding 中获取到的 localStorage 数据不是最新数据，可能是 vue 响应式延迟
-		isAllowSyncThemeSettings.value && updateColoredSideBarSetting();
-		if (process.client) cookieBinding();
+	watch(cookieColoredSidebar, coloredSidebar => { // 当设置值发送改变时，发送后端请求，并触发 cookieBinding 更新页面样式
+		if (process.client) {
+			window.localStorage.setItem(coloredSidebarCookieKey, `${coloredSidebar}`); // WARN useStorage 更新数据会导致 cookieBinding 中获取到的 localStorage 数据不是最新数据，可能是 vue 响应式延迟
+			if (isAllowSyncThemeSettings.value) { // 如果允许同步样式设置，则发送后端请求，非阻塞
+				const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
+					coloredSideBar: cookieColoredSidebar.value,
+				};
+				updateUserSetting(updateOrCreateUserSettingsRequest);
+			}
+			cookieBinding();
+		}
 	});
-	/**
-	 * 当设置值发送改变时，发送后端请求
-	 */
-	function updateColoredSideBarSetting() {
-		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
-			coloredSideBar: cookieColoredSidebar.value,
-		};
-		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
-	}
 
 	onMounted(() => {
 		if (paletteSection.value)
@@ -82,6 +87,7 @@
 			}
 	});
 
+	// 发生用户登录事件时，要手动触发 cookie 更新（cookie 更新会触发 cookieBinding 更新页面样式）
 	useListen("user:login", () => {
 		cookieThemeType.value = useCookie<ThemeSetType>(themeTypeCookieKey, userSettingsCookieBasicOption).value;
 		cookieThemeColor.value = useCookie<string>(themeColorCookieKey, userSettingsCookieBasicOption).value;

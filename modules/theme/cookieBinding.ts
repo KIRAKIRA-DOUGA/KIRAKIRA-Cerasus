@@ -72,27 +72,26 @@ export function cookieBinding() {
 			if (themeColor) document.cookie = `${themeColorCookieKey}=${themeColor}${userSettingsCookieBasicOption}`;
 			if (customerThemeColor) document.cookie = `${customThemeColorCookieKey}=${customerThemeColor}${userSettingsCookieBasicOption}`;
 			if (isColoredSidebar !== undefined && isColoredSidebar !== null) document.cookie = `${coloredSidebarCookieKey}=${isColoredSidebar}${userSettingsCookieBasicOption}`;
-		} else {
+		} else { // 在线（远程同步）样式，从 cookie 中获取样式并拷贝到 localStorage 中
 			// 获取 cookie 中的用户样式设置
 			currentThemeType = ((getCookie(themeTypeCookieKey) && getCookie(themeTypeCookieKey) === "system") ? systemThemeType : getCookie(themeTypeCookieKey)) as ThemeSetType; // cookie 中存储的系统主题类型，如果没有，则使用 systemThemeType
 			themeColor = (getCookie(themeColorCookieKey) || DEFAULT_THEME_COLOR) as PaletteType; // cookie 中存储的系统主题色
 			customerThemeColor = (getCookie(customThemeColorCookieKey) || DEFAULT_THEME_COLOR) as string; // cookie 中存储的自定义系统主题色（当 themeColor 的值为 CUSTOM_THEME_COLOR 时才应该依据该值渲染）
 			isColoredSidebar = (getCookie(coloredSidebarCookieKey) || NO_COLORED_SIDEBAR); // cookie 中存储的是否启用彩色侧边栏
 
-			// 将最新的 cookie 存储回 localStorage
+			// 将最新的 cookie 存储回 localStorage（以备以后用户登出后使用）
 			if (currentThemeType) window.localStorage.setItem(themeTypeCookieKey, currentThemeType); else window.localStorage.setItem(themeTypeCookieKey, THEME_LIGHT);
 			if (themeColor) window.localStorage.setItem(themeColorCookieKey, themeColor); else window.localStorage.setItem(themeColorCookieKey, DEFAULT_THEME_COLOR);
 			if (customerThemeColor) window.localStorage.setItem(customThemeColorCookieKey, customerThemeColor); else window.localStorage.setItem(customThemeColorCookieKey, DEFAULT_THEME_COLOR);
 			if (isColoredSidebar !== undefined && isColoredSidebar !== null) window.localStorage.setItem(coloredSidebarCookieKey, `${isColoredSidebar}`); else window.localStorage.setItem(coloredSidebarCookieKey, NO_COLORED_SIDEBAR);
 		}
 
-		// 绑定样式
+		// 绑定 cookie 中的样式到 html
 		const rootNode = document.documentElement;
 		rootNode.className = "kirakira";
 		if (currentThemeType) rootNode.classList.add(currentThemeType);
 		if (themeColor && themeColor === CUSTOM_THEME_COLOR && customerThemeColor)
-			// TODO 设置自定义主题色
-			console.log("themeCustomerColor", customerThemeColor);
+			console.log("themeCustomerColor", customerThemeColor); // TODO 设置自定义主题色
 		else if (themeColor)
 			rootNode.classList.add(themeColor);
 		if (`${isColoredSidebar}` === "true") rootNode.classList.add("colored-sidebar");
