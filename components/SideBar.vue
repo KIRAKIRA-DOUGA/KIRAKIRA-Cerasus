@@ -242,6 +242,10 @@
 			}
 
 			&.settings {
+				&:active:deep(i) {
+					rotate: 30deg;
+				}
+
 				&:deep(i) {
 					transition: $fallback-transitions, rotate 1s $ease-out-smooth;
 				}
