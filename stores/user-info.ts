@@ -16,5 +16,8 @@ export const useSelfUserInfoStore = defineStore("user-info", () => {
 	/** 当前登录的用户的标签 */
 	const tags = ref<UserLabelSchema[]>([]);
 
-	return { isLogined, uid, username, userAvatar, gender, signature, birthday, tags };
+	/** 已登录用户是否允许在多设备上同步主题设置 */
+	const isAllowSyncThemeSettings = ref(false);
+
+	return { isLogined, uid, username, userAvatar, gender, signature, birthday, tags, isAllowSyncThemeSettings };
 });

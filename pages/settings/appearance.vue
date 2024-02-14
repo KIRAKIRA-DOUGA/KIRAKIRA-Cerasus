@@ -20,10 +20,13 @@
 
 	const userSettingsCookieBasicOption = { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false, watch: true };
 
+	const selfUserInfoStore = useSelfUserInfoStore();
+	const isAllowSyncThemeSettings = selfUserInfoStore.isAllowSyncThemeSettings && selfUserInfoStore.isLogined;
+
 	const cookieThemeType = useCookie<ThemeSetType>(themeTypeCookieKey, userSettingsCookieBasicOption);
 	watch(cookieThemeType, themeType => {
 		window.localStorage.setItem(themeTypeCookieKey, themeType); // WARN useStorage 更新数据会导致 cookieBinding 中获取到的 localStorage 数据不是最新数据，可能是 vue 响应式延迟
-		updateThemeTypeSetting();
+		isAllowSyncThemeSettings && updateThemeTypeSetting();
 		if (process.client) cookieBinding();
 	});
 	/**
@@ -39,7 +42,7 @@
 	const cookieThemeColor = useCookie<string>(themeColorCookieKey, userSettingsCookieBasicOption);
 	watch(cookieThemeColor, themeColor => {
 		window.localStorage.setItem(themeColorCookieKey, themeColor); // WARN useStorage 更新数据会导致 cookieBinding 中获取到的 localStorage 数据不是最新数据，可能是 vue 响应式延迟
-		updateThemeColorSetting();
+		isAllowSyncThemeSettings && updateThemeColorSetting();
 		if (process.client) cookieBinding();
 	});
 	/**
@@ -57,7 +60,7 @@
 	const cookieColoredSidebar = useCookie<boolean>(coloredSidebarCookieKey, userSettingsCookieBasicOption);
 	watch(cookieColoredSidebar, coloredSidebar => {
 		window.localStorage.setItem(coloredSidebarCookieKey, `${coloredSidebar}`); // WARN useStorage 更新数据会导致 cookieBinding 中获取到的 localStorage 数据不是最新数据，可能是 vue 响应式延迟
-		updateColoredSideBarSetting();
+		isAllowSyncThemeSettings && updateColoredSideBarSetting();
 		if (process.client) cookieBinding();
 	});
 	/**
