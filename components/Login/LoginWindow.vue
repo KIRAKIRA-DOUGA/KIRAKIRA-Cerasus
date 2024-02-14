@@ -65,6 +65,7 @@
 					const themeColor = userSettings?.userSettings?.themeColor ? (PALETTE_LIST as unknown as string[]).includes(userSettings.userSettings.themeColor) ? userSettings.userSettings.themeColor : CUSTOM_THEME_COLOR : DEFAULT_THEME_COLOR;
 					const customerThemeColor = userSettings?.userSettings?.themeColor || "";
 					const isColoredSidebar = userSettings?.userSettings?.coloredSideBar || false;
+					// WARN 7 在此处添加
 
 					const userSettingsCookieBasicOption = `; expires=${new Date("9999/9/9").toUTCString()}; path=/; SameSite=Strict`;
 					document.cookie = `${isOfflineSettingsCookieKey}=false${userSettingsCookieBasicOption}`;
@@ -72,6 +73,7 @@
 					if (themeColor) document.cookie = `${themeColorCookieKey}=${themeColor}${userSettingsCookieBasicOption}`;
 					if (customerThemeColor) document.cookie = `${customThemeColorCookieKey}=${customerThemeColor}${userSettingsCookieBasicOption}`;
 					if (isColoredSidebar !== undefined && isColoredSidebar !== null) document.cookie = `${coloredSidebarCookieKey}=${isColoredSidebar}${userSettingsCookieBasicOption}`;
+					// WARN 8 在此处添加
 
 					cookieBinding();
 					useEvent("user:login", true);

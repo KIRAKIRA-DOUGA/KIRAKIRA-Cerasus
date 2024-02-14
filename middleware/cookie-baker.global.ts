@@ -18,6 +18,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 			const cookieThemeColor = useCookie(themeColorCookieKey, userSettingsCookieBasicOption);
 			const cookieCustomerThemeColor = useCookie(customThemeColorCookieKey, userSettingsCookieBasicOption);
 			const cookieColoredSidebar = useCookie(coloredSidebarCookieKey, userSettingsCookieBasicOption);
+			// WARN 5 在此处添加
 
 			// nuxt cookie 对象 - 是否使用离线样式设置
 			const cookieIsLocalStorage = useCookie(isOfflineSettingsCookieKey, userSettingsCookieBasicOption);
@@ -38,6 +39,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 				cookieThemeColor.value = userSettings?.userSettings?.themeColor ? (PALETTE_LIST as unknown as string[]).includes(userSettings.userSettings.themeColor) ? userSettings.userSettings.themeColor : CUSTOM_THEME_COLOR : DEFAULT_THEME_COLOR;
 				cookieCustomerThemeColor.value = userSettings?.userSettings?.themeColor || "";
 				cookieColoredSidebar.value = `${userSettings?.userSettings?.coloredSideBar}`;
+				// WARN 6 在此处添加
 
 				cookieIsLocalStorage.value = "false";
 			} else

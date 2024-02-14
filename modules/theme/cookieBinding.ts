@@ -6,6 +6,7 @@ export const DEFAULT_CUSTOM_THEME_COLOR = "66CCFF"; // TODO 设置默认自定�
 export const THEME_DARK = "dark";
 export const THEME_LIGHT = "light";
 export const NO_COLORED_SIDEBAR = "false";
+// WARN 1 在此处添加
 
 // Cookie 键 - 用户样式设置，请和下方局部变量中的一致
 export const themeTypeCookieKey = "theme-type";
@@ -13,6 +14,7 @@ export const themeColorCookieKey = "theme-color";
 export const customThemeColorCookieKey = "custom-theme-color";
 export const coloredSidebarCookieKey = "colored-side-bar";
 export const isOfflineSettingsCookieKey = "is-offline-settings";
+// WARN 2 在此处添加
 
 /**
  * 在 DOM 加载之前执行的脚本。
@@ -27,6 +29,7 @@ export function cookieBinding() {
 	const THEME_DARK = "dark";
 	const THEME_LIGHT = "light";
 	const NO_COLORED_SIDEBAR = "false";
+	// WARN 3 在此处添加
 
 	// Cookie 键 - 用户样式设置，请和上方全局变量中的一致
 	const themeTypeCookieKey = "theme-type";
@@ -34,6 +37,7 @@ export function cookieBinding() {
 	const customThemeColorCookieKey = "custom-theme-color";
 	const coloredSidebarCookieKey = "colored-side-bar";
 	const isOfflineSettingsCookieKey = "is-offline-settings";
+	// WARN 4 在此处添加
 
 	/**
 	 * 用原始的方式获取 cookie
@@ -57,6 +61,7 @@ export function cookieBinding() {
 		let themeColor;
 		let customerThemeColor;
 		let isColoredSidebar;
+		// WARN 9 在此处添加
 
 		const isOfflineSettings = !getCookie(isOfflineSettingsCookieKey) || getCookie(isOfflineSettingsCookieKey) === "true";
 		if (isOfflineSettings) { // 离线样式，从 localStorage 中获取样式并拷贝到 cookie 中
@@ -65,6 +70,7 @@ export function cookieBinding() {
 			themeColor = window.localStorage.getItem(themeColorCookieKey) || DEFAULT_THEME_COLOR; // localStorage 中存储的系统主题色
 			customerThemeColor = window.localStorage.getItem(customThemeColorCookieKey) || DEFAULT_THEME_COLOR; // localStorage 中存储的自定义系统主题色（当 themeColor 的值为 CUSTOM_THEME_COLOR 时才应该依据该值渲染）
 			isColoredSidebar = window.localStorage.getItem(coloredSidebarCookieKey) || NO_COLORED_SIDEBAR; // localStorage 中存储的是否启用彩色侧边栏
+			// WARN 10 在此处添加
 
 			// 将最新的 localStorage 存储回 cookie
 			const userSettingsCookieBasicOption = `; expires=${new Date("9999/9/9").toUTCString()}; path=/; SameSite=Strict`;
@@ -72,18 +78,21 @@ export function cookieBinding() {
 			if (themeColor) document.cookie = `${themeColorCookieKey}=${themeColor}${userSettingsCookieBasicOption}`;
 			if (customerThemeColor) document.cookie = `${customThemeColorCookieKey}=${customerThemeColor}${userSettingsCookieBasicOption}`;
 			if (isColoredSidebar !== undefined && isColoredSidebar !== null) document.cookie = `${coloredSidebarCookieKey}=${isColoredSidebar}${userSettingsCookieBasicOption}`;
+			// WARN 11 在此处添加
 		} else { // 在线（远程同步）样式，从 cookie 中获取样式并拷贝到 localStorage 中
 			// 获取 cookie 中的用户样式设置
 			currentThemeType = ((getCookie(themeTypeCookieKey) && getCookie(themeTypeCookieKey) === "system") ? systemThemeType : getCookie(themeTypeCookieKey)) as ThemeSetType; // cookie 中存储的系统主题类型，如果没有，则使用 systemThemeType
 			themeColor = (getCookie(themeColorCookieKey) || DEFAULT_THEME_COLOR) as PaletteType; // cookie 中存储的系统主题色
 			customerThemeColor = (getCookie(customThemeColorCookieKey) || DEFAULT_THEME_COLOR) as string; // cookie 中存储的自定义系统主题色（当 themeColor 的值为 CUSTOM_THEME_COLOR 时才应该依据该值渲染）
 			isColoredSidebar = (getCookie(coloredSidebarCookieKey) || NO_COLORED_SIDEBAR); // cookie 中存储的是否启用彩色侧边栏
+			// WARN 12 在此处添加
 
 			// 将最新的 cookie 存储回 localStorage（以备以后用户登出后使用）
 			if (currentThemeType) window.localStorage.setItem(themeTypeCookieKey, currentThemeType); else window.localStorage.setItem(themeTypeCookieKey, THEME_LIGHT);
 			if (themeColor) window.localStorage.setItem(themeColorCookieKey, themeColor); else window.localStorage.setItem(themeColorCookieKey, DEFAULT_THEME_COLOR);
 			if (customerThemeColor) window.localStorage.setItem(customThemeColorCookieKey, customerThemeColor); else window.localStorage.setItem(customThemeColorCookieKey, DEFAULT_THEME_COLOR);
 			if (isColoredSidebar !== undefined && isColoredSidebar !== null) window.localStorage.setItem(coloredSidebarCookieKey, `${isColoredSidebar}`); else window.localStorage.setItem(coloredSidebarCookieKey, NO_COLORED_SIDEBAR);
+			// WARN 13 在此处添加
 		}
 
 		// 绑定 cookie 中的样式到 html
@@ -95,6 +104,7 @@ export function cookieBinding() {
 		else if (themeColor)
 			rootNode.classList.add(themeColor);
 		if (`${isColoredSidebar}` === "true") rootNode.classList.add("colored-sidebar");
+		// WARN 14 在此处添加
 	} catch (error) {
 		console.error("ERROR", "ERROR IN cookieBander", error);
 		try {
