@@ -61,7 +61,11 @@
 		});
 	}
 
+	const showTabBar = ref(false);
 	const showSettings = ref(false);
+	const selectedTab = ref("danmaku-list");
+	const selectedSettingsTab = ref("player");
+	const transitionName = ref("page-jump");
 
 	const [DefineCountItem, CountItem] = createReusableTemplate<{
 		value: number | string;
@@ -100,20 +104,50 @@
 				<SoftButton v-tooltip:bottom="t.danmaku.history" icon="history" class="button-history" />
 				<SoftButton v-tooltip:bottom="t.settings" :icon="showSettings ? 'close' : 'settings'" class="button-settings" :active="showSettings" @click="showSettings = !showSettings" />
 			</div>
+			<Transition>
+				<div v-if="showTabBar || showSettings" class="tab-wrapper">
+					<Transition name="page-jump">
+						<TabBar v-if="showTabBar && !showSettings" v-model="selectedTab" @movingForTransition="name => transitionName = name">
+							<TabItem id="danmaku-list">弹幕列表</TabItem>
+							<TabItem id="chapters">分段章节</TabItem>
+							<TabItem id="playlist">播放列表「」</TabItem>
+						</TabBar>
+						<TabBar v-else-if="showSettings" v-model="selectedSettingsTab" @movingForTransition="name => transitionName = name">
+							<TabItem id="player">播放器</TabItem>
+							<TabItem id="filters">滤镜</TabItem>
+							<TabItem id="block-words">屏蔽词</TabItem>
+						</TabBar>
+					</Transition>
+				</div>
+			</Transition>
 		</div>
-		<Transition :name="showSettings ? 'page-forward' : 'page-backward'" mode="out-in">
-			<div v-if="!showSettings" class="page-danmaku">
-				<PlayerVideoPanelDanmakuList v-model="insertDanmaku" />
-				<PlayerVideoPanelDanmakuSender v-model="sendDanmaku" :videoId="props.videoId" :currentTime="currentTime" />
-			</div>
+		<div class="content">
+			<Transition name="page-jump">
+				<div v-if="!showSettings" class="pages-wrapper">
+					<Transition :name="transitionName" mode="out-in">
+						<div v-if="selectedTab === 'danmaku-list'" key="danmaku-list">
+							<PlayerVideoPanelDanmakuList v-model="insertDanmaku" />
+							<PlayerVideoPanelDanmakuSender v-model="sendDanmaku" :videoId="props.videoId" :currentTime="currentTime" />
+						</div>
 
-			<PlayerVideoPanelSettings
-				v-else
-				:playing="playing"
-				:thumbnail="thumbnail"
-				:settings="settings"
-			/>
-		</Transition>
+						<div v-else-if="selectedTab === 'chapters'" key="chapters">
+						</div>
+
+						<div v-else-if="selectedTab === 'playlist'" key="playlist">
+						</div>
+					</Transition>
+				</div>
+
+				<PlayerVideoPanelSettings
+					v-else
+					:playing="playing"
+					:thumbnail="thumbnail"
+					:settings="settings"
+					:selectedSettingsTab="selectedSettingsTab"
+					:transitionName="transitionName"
+				/>
+			</Transition>
+		</div>
 	</Comp>
 </template>
 
@@ -138,6 +172,27 @@
 	.top {
 		@include card-in-card-shadow;
 		z-index: 2;
+		background-color: c(surface-color);
+
+		.tab-wrapper {
+			height: 36px;
+			overflow: hidden;
+
+			&.v-enter-active,
+			&.v-leave-active {
+				transition: all $ease-out-smooth 600ms;
+			}
+
+			&.v-enter-from,
+			&.v-leave-to {
+				height: 0;
+			}
+		}
+
+		.tab-bar {
+			--full: true;
+			--clipped: true;
+		}
 	}
 
 	.info {
@@ -186,7 +241,16 @@
 		overflow: hidden;
 	}
 
-	.page-danmaku {
+	.content {
+		@include square(100%);
+	}
+
+	.pages-wrapper {
+		@include square(100%);
+		display: flex;
+	}
+
+	.pages-wrapper > * {
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
