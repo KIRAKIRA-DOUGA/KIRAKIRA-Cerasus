@@ -1,4 +1,4 @@
-import { CUSTOMER_THEME_COLOR, DEFAULT_THEME_COLOR, SYSTEM_THEME, coloredSidebarCookieKey, customerThemeColorCookieKey, isOfflineSettingsCookieKey, themeColorCookieKey, themeTypeCookieKey } from "~/modules/theme/cookieBinding";
+import { CUSTOMER_THEME_COLOR, DEFAULT_THEME_COLOR, SYSTEM_THEME, coloredSidebarCookieKey, customThemeColorCookieKey, isOfflineSettingsCookieKey, themeColorCookieKey, themeTypeCookieKey } from "~/modules/theme/cookieBinding";
 import { PALETTE_LIST } from "~/modules/theme/types";
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
@@ -16,7 +16,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 			// Nuxt cookie 对象 - 用户样式设置
 			const cookieThemeType = useCookie(themeTypeCookieKey, userSettingsCookieBasicOption);
 			const cookieThemeColor = useCookie(themeColorCookieKey, userSettingsCookieBasicOption);
-			const cookieCustomerThemeColor = useCookie(customerThemeColorCookieKey, userSettingsCookieBasicOption);
+			const cookieCustomerThemeColor = useCookie(customThemeColorCookieKey, userSettingsCookieBasicOption);
 			const cookieColoredSidebar = useCookie(coloredSidebarCookieKey, userSettingsCookieBasicOption);
 
 			// nuxt cookie 对象 - 是否使用离线样式设置

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { CUSTOMER_THEME_COLOR, DEFAULT_THEME_COLOR, SYSTEM_THEME, coloredSidebarCookieKey, customerThemeColorCookieKey, themeColorCookieKey, themeTypeCookieKey, cookieBinding } from "~/modules/theme/cookieBinding";
+	import { CUSTOMER_THEME_COLOR, DEFAULT_THEME_COLOR, SYSTEM_THEME, coloredSidebarCookieKey, customThemeColorCookieKey, themeColorCookieKey, themeTypeCookieKey, cookieBinding } from "~/modules/theme/cookieBinding";
 	import { PALETTE_LIST } from "~/modules/theme/types";
 
 	const props = defineProps<{
@@ -60,7 +60,7 @@
 
 					const userSettings = await api.user.getUserSettings();
 					
-					// 将最新的 localStorage 存储回 cookie
+					// 登陆后，将用户设置存储到 cookie
 					const currentThemeType = userSettings?.userSettings?.themeType || SYSTEM_THEME;
 					const themeColor = userSettings?.userSettings?.themeColor ? (PALETTE_LIST as unknown as string[]).includes(userSettings.userSettings.themeColor) ? userSettings.userSettings.themeColor : CUSTOMER_THEME_COLOR : DEFAULT_THEME_COLOR;
 					const customerThemeColor = userSettings?.userSettings?.themeColor || "";
@@ -69,7 +69,7 @@
 					const userSettingsCookieBasicOption = `; expires=${new Date("9999/9/9").toUTCString()}; path=/; SameSite=Strict`;
 					if (currentThemeType) document.cookie = `${themeTypeCookieKey}=${currentThemeType}${userSettingsCookieBasicOption}`;
 					if (themeColor) document.cookie = `${themeColorCookieKey}=${themeColor}${userSettingsCookieBasicOption}`;
-					if (customerThemeColor) document.cookie = `${customerThemeColorCookieKey}=${customerThemeColor}${userSettingsCookieBasicOption}`;
+					if (customerThemeColor) document.cookie = `${customThemeColorCookieKey}=${customerThemeColor}${userSettingsCookieBasicOption}`;
 					if (isColoredSidebar !== undefined || isColoredSidebar !== null) document.cookie = `${coloredSidebarCookieKey}=${isColoredSidebar}${userSettingsCookieBasicOption}`;
 
 					cookieBinding();
