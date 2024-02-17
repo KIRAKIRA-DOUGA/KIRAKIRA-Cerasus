@@ -1,11 +1,9 @@
 import { addImports, addPlugin, addTemplate, createResolver, defineNuxtModule } from "@nuxt/kit";
 import { dirname } from "path";
-import { PREFERENTIAL_BASE_URL, PREFERENTIAL_ROUTE, PREFERENTIAL_TEMPLATE_PATH } from "../shared/constants";
+import { PREFERENTIAL_BASE_URL, PREFERENTIAL_TEMPLATE_PATH } from "../shared/constants";
+import { TEMPLATE_NAME } from "./constants";
 import { minifyJavaScript } from "../shared/encode";
 import script from "./script";
-
-const TEMPLATE_NAME = "theme.script.js";
-export const SCRIPT_ROUTE = PREFERENTIAL_ROUTE + TEMPLATE_NAME;
 
 /**
  * 获取函数体内容。

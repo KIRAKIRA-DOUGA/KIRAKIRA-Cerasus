@@ -49,7 +49,8 @@
 		}
 		try {
 			const iconsImport = import.meta.glob<string>("assets/lotties/**/**.json", {
-				as: "raw",
+				query: "?raw",
+				import: "default",
 				eager: true,
 			});
 			const rawIcon = iconsImport[`/assets/lotties/${props.name}.json`];
@@ -59,7 +60,7 @@
 			console.error(`Lottie file '${props.name}' doesn't exist in 'assets/lotties'`, e);
 		}
 	}
-	
+
 	/**
 	 * 点击图标交互事件。
 	 */
@@ -67,35 +68,35 @@
 		if (!anim.value) return;
 		emits("click", anim.value);
 	}
-	
+
 	/**
 	 * 停止动画。
 	 */
 	function stop() {
 		anim.value?.stop();
 	}
-	
+
 	/**
 	 * 播放动画。
 	 */
 	function play() {
 		anim.value?.play();
 	}
-	
+
 	/**
 	 * 暂停动画。
 	 */
 	function pause() {
 		anim.value?.pause();
 	}
-	
+
 	/**
 	 * 控制播放速度。
 	 */
 	function onSpeedChange() {
 		anim.value?.setSpeed(props.speed);
 	}
-	
+
 	/**
 	 * 控制状态信息。
 	 */
@@ -123,7 +124,7 @@
 				else ani.goToAndPlay(marker, true);
 		}
 	}
-	
+
 	/**
 	 * 当 Lottie 动画完成加载后调用，用于获取 anim 对象。
 	 * @param animated - anim 对象。
@@ -178,7 +179,7 @@
 		.lottie {
 			@include square(1em);
 			cursor: pointer;
-			
+
 			&:not(.filled) :deep(*) {
 				fill: currentColor;
 			}

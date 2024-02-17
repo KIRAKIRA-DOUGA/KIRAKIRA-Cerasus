@@ -1,4 +1,4 @@
-import { SCRIPT_ROUTE } from "./module";
+import { SCRIPT_ROUTE } from "./constants";
 
 export default defineNitroPlugin(nitro => {
 	nitro.hooks.hook("render:html", html => {
