@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { CUSTOM_THEME_COLOR, DEFAULT_THEME_COLOR, SYSTEM_THEME, coloredSidebarCookieKey, customThemeColorCookieKey, themeColorCookieKey, themeTypeCookieKey, cookieBinding, isOfflineSettingsCookieKey } from "~/modules/theme/cookieBinding";
+	import { CUSTOM_THEME_COLOR, DEFAULT_THEME_COLOR, SYSTEM_THEME, coloredSidebarCookieKey, customThemeColorCookieKey, themeColorCookieKey, themeTypeCookieKey, cookieBinding, isOfflineSettingsCookieKey, sharpAppearanceModeCookieKey, flatAppearanceModeCookieKey } from "~/modules/theme/cookieBinding";
 	import { PALETTE_LIST } from "~/modules/theme/types";
 
 	const props = defineProps<{
@@ -65,6 +65,8 @@
 					const themeColor = userSettings?.userSettings?.themeColor ? (PALETTE_LIST as unknown as string[]).includes(userSettings.userSettings.themeColor) ? userSettings.userSettings.themeColor : CUSTOM_THEME_COLOR : DEFAULT_THEME_COLOR;
 					const customerThemeColor = userSettings?.userSettings?.themeColor || "";
 					const isColoredSidebar = userSettings?.userSettings?.coloredSideBar || false;
+					const isSharpAppearanceMode = userSettings?.userSettings?.sharpAppearanceMode || false;
+					const isFlatAppearanceMode = userSettings?.userSettings?.flatAppearanceMode || false;
 					// HACK 7 在此处添加
 
 					const userSettingsCookieBasicOption = `; expires=${new Date("9999/9/9").toUTCString()}; path=/; SameSite=Strict`;
@@ -73,6 +75,8 @@
 					if (themeColor) document.cookie = `${themeColorCookieKey}=${themeColor}${userSettingsCookieBasicOption}`;
 					if (customerThemeColor) document.cookie = `${customThemeColorCookieKey}=${customerThemeColor}${userSettingsCookieBasicOption}`;
 					if (isColoredSidebar !== undefined && isColoredSidebar !== null) document.cookie = `${coloredSidebarCookieKey}=${isColoredSidebar}${userSettingsCookieBasicOption}`;
+					if (isSharpAppearanceMode !== undefined && isSharpAppearanceMode !== null) document.cookie = `${sharpAppearanceModeCookieKey}=${isSharpAppearanceMode}${userSettingsCookieBasicOption}`;
+					if (isFlatAppearanceMode !== undefined && isFlatAppearanceMode !== null) document.cookie = `${flatAppearanceModeCookieKey}=${isFlatAppearanceMode}${userSettingsCookieBasicOption}`;
 					// HACK 8 在此处添加
 
 					cookieBinding();

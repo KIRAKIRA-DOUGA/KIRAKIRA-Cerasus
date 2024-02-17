@@ -1,4 +1,4 @@
-import { CUSTOM_THEME_COLOR, DEFAULT_THEME_COLOR, SYSTEM_THEME, coloredSidebarCookieKey, customThemeColorCookieKey, isOfflineSettingsCookieKey, themeColorCookieKey, themeTypeCookieKey } from "~/modules/theme/cookieBinding";
+import { CUSTOM_THEME_COLOR, DEFAULT_THEME_COLOR, SYSTEM_THEME, coloredSidebarCookieKey, customThemeColorCookieKey, flatAppearanceModeCookieKey, isOfflineSettingsCookieKey, sharpAppearanceModeCookieKey, themeColorCookieKey, themeTypeCookieKey } from "~/modules/theme/cookieBinding";
 import { PALETTE_LIST } from "~/modules/theme/types";
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
@@ -18,6 +18,8 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 			const cookieThemeColor = useCookie(themeColorCookieKey, userSettingsCookieBasicOption);
 			const cookieCustomerThemeColor = useCookie(customThemeColorCookieKey, userSettingsCookieBasicOption);
 			const cookieColoredSidebar = useCookie(coloredSidebarCookieKey, userSettingsCookieBasicOption);
+			const cookieSharpAppearanceMode = useCookie(sharpAppearanceModeCookieKey, userSettingsCookieBasicOption);
+			const cookieFlatAppearanceMode = useCookie(flatAppearanceModeCookieKey, userSettingsCookieBasicOption);
 			// HACK 5 在此处添加
 
 			// nuxt cookie 对象 - 是否使用离线样式设置
@@ -37,8 +39,10 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
 				cookieThemeType.value = userSettings?.userSettings?.themeType || SYSTEM_THEME;
 				cookieThemeColor.value = userSettings?.userSettings?.themeColor ? (PALETTE_LIST as unknown as string[]).includes(userSettings.userSettings.themeColor) ? userSettings.userSettings.themeColor : CUSTOM_THEME_COLOR : DEFAULT_THEME_COLOR;
-				cookieCustomerThemeColor.value = userSettings?.userSettings?.themeColor || "";
-				cookieColoredSidebar.value = `${userSettings?.userSettings?.coloredSideBar}`;
+				cookieCustomerThemeColor.value = userSettings?.userSettings?.themeColor || DEFAULT_THEME_COLOR;
+				cookieColoredSidebar.value = `${userSettings?.userSettings?.coloredSideBar === true}`;
+				cookieSharpAppearanceMode.value = `${userSettings?.userSettings?.sharpAppearanceMode === true}`;
+				cookieFlatAppearanceMode.value = `${userSettings?.userSettings?.flatAppearanceMode === true}`;
 				// HACK 6 在此处添加
 
 				cookieIsLocalStorage.value = "false";

@@ -1,3 +1,51 @@
+<script setup lang="ts">
+	import { sharpAppearanceModeCookieKey, cookieBinding, flatAppearanceModeCookieKey } from "~/modules/theme/cookieBinding";
+
+	const userSettingsCookieBasicOption = { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false, watch: true };
+
+	const selfUserInfoStore = useSelfUserInfoStore();
+	const appSettingsStore = useAppSettingsStore();
+	const isAllowSyncThemeSettings = computed(() => appSettingsStore.isAllowSyncThemeSettings && selfUserInfoStore.isLogined);
+
+	/**
+	 * 发送后端请求，更新用户设置
+	 * @param updateOrCreateUserSettingsRequest 用户发生修改的设置
+	 */
+	function updateUserSetting(updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto) {
+		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
+	}
+
+	// 直角模式
+	const cookieSharpAppearanceMode = useCookie<boolean>(sharpAppearanceModeCookieKey, userSettingsCookieBasicOption);
+	watch(cookieSharpAppearanceMode, sharpAppearanceMode => { // 当设置值发送改变时，发送后端请求，并触发 cookieBinding 更新页面样式
+		if (process.client) {
+			window.localStorage.setItem(sharpAppearanceModeCookieKey, `${sharpAppearanceMode}`); // WARN useStorage 更新数据会导致 cookieBinding 中获取到的 localStorage 数据不是最新数据，可能是 vue 响应式延迟
+			if (isAllowSyncThemeSettings.value) { // 如果允许同步样式设置，则发送后端请求，非阻塞
+				const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
+					coloredSideBar: cookieSharpAppearanceMode.value,
+				};
+				updateUserSetting(updateOrCreateUserSettingsRequest);
+			}
+			cookieBinding();
+		}
+	});
+
+	// 扁平模式
+	const cookieFlatAppearanceMode = useCookie<boolean>(flatAppearanceModeCookieKey, userSettingsCookieBasicOption);
+	watch(cookieFlatAppearanceMode, flatAppearanceMode => { // 当设置值发送改变时，发送后端请求，并触发 cookieBinding 更新页面样式
+		if (process.client) {
+			window.localStorage.setItem(flatAppearanceModeCookieKey, `${flatAppearanceMode}`); // WARN useStorage 更新数据会导致 cookieBinding 中获取到的 localStorage 数据不是最新数据，可能是 vue 响应式延迟
+			if (isAllowSyncThemeSettings.value) { // 如果允许同步样式设置，则发送后端请求，非阻塞
+				const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
+					coloredSideBar: cookieFlatAppearanceMode.value,
+				};
+				updateUserSetting(updateOrCreateUserSettingsRequest);
+			}
+			cookieBinding();
+		}
+	});
+</script>
+
 <template>
 	<Subheader icon="error" class="danger">
 		下列设置项皆为实验性功能，不保证稳定运行。在尝试使用的同时，请务必注意安全！
@@ -11,8 +59,8 @@
 	<Subheader icon="palette">{{ t.appearance }}</Subheader>
 	<section list>
 		<ToggleSwitch v-model="useAppSettingsStore().showCssDoodle" v-ripple icon="wallpaper">{{ t.background.animated }}</ToggleSwitch>
-		<ToggleSwitch v-model="useAppSettingsStore().sharpAppearanceMode" v-ripple icon="square">{{ t.appearance.sharp_mode }}</ToggleSwitch>
-		<ToggleSwitch v-model="useAppSettingsStore().flatAppearanceMode" v-ripple icon="layers">{{ t.appearance.flat_mode }}</ToggleSwitch>
+		<ToggleSwitch v-model="cookieSharpAppearanceMode" v-ripple icon="square">{{ t.appearance.sharp_mode }}</ToggleSwitch>
+		<ToggleSwitch v-model="cookieFlatAppearanceMode" v-ripple icon="layers">{{ t.appearance.flat_mode }}</ToggleSwitch>
 	</section>
 </template>
 
