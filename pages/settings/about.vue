@@ -53,12 +53,12 @@
 </script>
 
 <template>
-	<Fragment>
+	<Contents>
 		<div class="info" @click="showDevMode">
 			<LogoText />
 			<p class="slogan"><span>{{ sloganLines[0] }}</span><span><b>{{ sloganLines[1] }}</b></span></p>
 		</div>
-	</Fragment>
+	</Contents>
 
 	<Subheader icon="link">{{ t.about.repositories }}</Subheader>
 	<section>

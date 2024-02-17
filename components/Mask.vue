@@ -32,7 +32,7 @@
 
 <template>
 	<ClientOnlyTeleport to="#popovers">
-		<Fragment :style="{ '--z-index': zIndex }">
+		<Contents :style="{ '--z-index': zIndex }">
 			<Transition>
 				<div
 					v-if="shown"
@@ -43,7 +43,7 @@
 				></div>
 			</Transition>
 			<slot><div></div></slot>
-		</Fragment>
+		</Contents>
 	</ClientOnlyTeleport>
 </template>
 

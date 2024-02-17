@@ -113,12 +113,12 @@
 		:aria-valuemax="max"
 		aria-orientation="horizontal"
 	>
-		<Fragment>
+		<Contents>
 			<div ref="trackEl" class="track" @pointerdown="onTrackDown" @contextmenu="onLongPress"></div>
 			<div v-show="Number.isFinite(buffered)" class="buffered"></div>
 			<div class="passed"></div>
 			<div ref="thumbEl" class="thumb" @pointerdown="onThumbDown" @contextmenu="onLongPress"></div>
-		</Fragment>
+		</Contents>
 	</Comp>
 </template>
 

@@ -293,7 +293,7 @@
 				/>
 				<span class="suffix">{{ suffix }}</span>
 				<label>{{ placeholder }}</label>
-				<Fragment class="trailing-icons">
+				<Contents class="trailing-icons">
 					<TrailingIcon
 						:shown="showClearAll"
 						icon="close"
@@ -311,7 +311,7 @@
 						icon="error"
 					/>
 					<slot name="actions"></slot>
-				</Fragment>
+				</Contents>
 			</div>
 			<div class="stripe large-stripe"></div>
 			<div class="stripe focus-stripe"></div>
