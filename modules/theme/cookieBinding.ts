@@ -1,4 +1,7 @@
-// WARN 在开始编写本文件之前，请参考：modules\theme\README.md
+// WARN 在开始编写本文件之前，请参阅：modules\theme\README.md
+
+// 默认 cookie 设置，该设置在 useCookie 时传入
+export const DEFAULT_COOKIE_OPTION = { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false };
 
 // theme 关键字，请和下方局部变量中的一致
 export const SYSTEM_THEME = "system";

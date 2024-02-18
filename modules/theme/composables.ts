@@ -1,5 +1,5 @@
 import type { CookieRef } from "nuxt/app";
-import { CUSTOM_THEME_COLOR, DEFAULT_THEME_COLOR, SYSTEM_THEME, coloredSidebarCookieKey, cookieBinding, customThemeColorCookieKey, flatAppearanceModeCookieKey, isOfflineSettingsCookieKey, sharpAppearanceModeCookieKey, themeColorCookieKey, themeTypeCookieKey } from "./cookieBinding";
+import { CUSTOM_THEME_COLOR, DEFAULT_COOKIE_OPTION, DEFAULT_THEME_COLOR, SYSTEM_THEME, coloredSidebarCookieKey, cookieBinding, customThemeColorCookieKey, flatAppearanceModeCookieKey, isOfflineSettingsCookieKey, sharpAppearanceModeCookieKey, themeColorCookieKey, themeTypeCookieKey } from "./cookieBinding";
 import { PALETTE_LIST } from "./types";
 
 /**
@@ -17,22 +17,22 @@ export async function cookieBaker() {
 		const cookieUid = useCookie(uidCookieKey, { sameSite: true });
 		const cookieToken = useCookie(tokenCookieKey, { sameSite: true });
 
-		const userSettingsCookieBasicOption = { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false };
 		// Nuxt cookie 对象 - 用户样式设置
-		const cookieThemeType = useCookie(themeTypeCookieKey, userSettingsCookieBasicOption);
-		const cookieThemeColor = useCookie(themeColorCookieKey, userSettingsCookieBasicOption);
-		const cookieCustomerThemeColor = useCookie(customThemeColorCookieKey, userSettingsCookieBasicOption);
-		const cookieColoredSidebar = useCookie(coloredSidebarCookieKey, userSettingsCookieBasicOption);
-		const cookieSharpAppearanceMode = useCookie(sharpAppearanceModeCookieKey, userSettingsCookieBasicOption);
-		const cookieFlatAppearanceMode = useCookie(flatAppearanceModeCookieKey, userSettingsCookieBasicOption);
+		const cookieThemeType = useCookie(themeTypeCookieKey, DEFAULT_COOKIE_OPTION);
+		const cookieThemeColor = useCookie(themeColorCookieKey, DEFAULT_COOKIE_OPTION);
+		const cookieCustomerThemeColor = useCookie(customThemeColorCookieKey, DEFAULT_COOKIE_OPTION);
+		const cookieColoredSidebar = useCookie(coloredSidebarCookieKey, DEFAULT_COOKIE_OPTION);
+		const cookieSharpAppearanceMode = useCookie(sharpAppearanceModeCookieKey, DEFAULT_COOKIE_OPTION);
+		const cookieFlatAppearanceMode = useCookie(flatAppearanceModeCookieKey, DEFAULT_COOKIE_OPTION);
 		// HACK 5 在此处添加
 
 		// nuxt cookie 对象 - 是否使用离线样式设置
-		const cookieIsLocalStorage = useCookie(isOfflineSettingsCookieKey, userSettingsCookieBasicOption);
+		const cookieIsLocalStorage = useCookie(isOfflineSettingsCookieKey, DEFAULT_COOKIE_OPTION);
 
 		const uid = cookieUid.value;
 		const token = cookieToken.value;
 
+		let userSettings;
 		if (uid !== null && uid !== undefined && token) {
 			// 如果用户认证 cookie 存在，则通过认证 cookie 获取数据库中存储的用户样式设置，并将获取到的设置信息存储至 cookie
 			const userAuthToken: GetSelfUserInfoRequestDto | GetUserSettingsRequestDto = {
@@ -40,7 +40,7 @@ export async function cookieBaker() {
 				token: token || "",
 			};
 			await api.user.getSelfUserInfo(userAuthToken);
-			const userSettings = await api.user.getUserSettings(userAuthToken);
+			userSettings = await api.user.getUserSettings(userAuthToken);
 
 			cookieThemeType.value = userSettings?.userSettings?.themeType || SYSTEM_THEME;
 			cookieThemeColor.value = userSettings?.userSettings?.themeColor ? (PALETTE_LIST as unknown as string[]).includes(userSettings.userSettings.themeColor) ? userSettings.userSettings.themeColor : CUSTOM_THEME_COLOR : DEFAULT_THEME_COLOR;
@@ -53,6 +53,7 @@ export async function cookieBaker() {
 			cookieIsLocalStorage.value = "false";
 		} else
 			cookieIsLocalStorage.value = "true";
+		return userSettings;
 	}
 }
 

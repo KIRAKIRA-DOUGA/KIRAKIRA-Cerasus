@@ -2,6 +2,7 @@
 	import "css-doodle";
 	import manifest from "public/manifest.json";
 	import { useDynamicLayout } from "helpers/page-transition";
+	import { DEFAULT_COOKIE_OPTION, DEFAULT_THEME_COLOR, themeColorCookieKey } from "./modules/theme/cookieBinding";
 
 	const homepage = "https://cerasus.kirakira.moe/";
 	const { locale } = useI18n();
@@ -21,13 +22,7 @@
 		return langs[locale.value as keyof typeof langs] ?? locale.value;
 	});
 
-	/** 是否启用彩色侧边栏 */
-	const coloredSideBar = computed(() => {
-		return (
-			appSettings.coloredSideBar
-			// && Theme.actualPalette.value // FIXME 不知道为什么 Theme.actualPalette.value 在 SSR 的时候会报错？
-		);
-	});
+	const cookieThemeColor = useCookie(themeColorCookieKey, DEFAULT_COOKIE_OPTION) || DEFAULT_THEME_COLOR; // 主题颜色
 
 	useHead({
 		htmlAttrs: {
@@ -39,7 +34,7 @@
 			{ "http-equiv": "X-UA-Compatible", content: "IE=Edge,chrome=1" },
 			{ name: "viewport", content: "width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" },
 			{ name: "renderer", content: "webkit" },
-			{ name: "theme-color", content: coloredSideBar },
+			{ name: "theme-color", content: cookieThemeColor.value },
 			{ name: "description", content: manifest.description },
 			{ name: "keywords", content: "视频,弹幕,字幕,音频,歌词,相簿,相册,照片,视频网站,弹幕视频,二次元,动漫,动画,音乐,动漫音乐,音MAD,AMV,MAD,ANIME,ACG,NOVA" },
 			// 以下内容为各种苹果私有属性。
