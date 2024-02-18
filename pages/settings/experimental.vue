@@ -44,6 +44,12 @@
 			cookieBinding();
 		}
 	});
+
+	// 发生用户登录事件时，要手动触发 cookie 更新（cookie 更新会触发 cookieBinding 更新页面样式，并且 nuxt 响应式 cookie 也绑定到一些开关上，此处也会在用户登录后更改开关的状态）
+	useListen("user:login", () => {
+		cookieSharpAppearanceMode.value = useCookie<boolean>(sharpAppearanceModeCookieKey, userSettingsCookieBasicOption).value; // TODO: nuxt 3.10 以后可以使用 refreshCookie 方法刷新 cookie
+		cookieFlatAppearanceMode.value = useCookie<boolean>(flatAppearanceModeCookieKey, userSettingsCookieBasicOption).value; // TODO: nuxt 3.10 以后可以使用 refreshCookie 方法刷新 cookie
+	});
 </script>
 
 <template>
@@ -54,7 +60,7 @@
 		<br />
 		“我自愿开启实验性功能，对于因其造成的财产损失或人身损伤，KIRAKIRA 无需承担任何责任。”
 
-		<!-- TODO 使用多语言 -->
+		<!-- TODO: 使用多语言 -->
 	</Subheader>
 	<Subheader icon="palette">{{ t.appearance }}</Subheader>
 	<section list>

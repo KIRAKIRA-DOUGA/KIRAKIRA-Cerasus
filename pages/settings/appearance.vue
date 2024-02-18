@@ -18,6 +18,7 @@
 	] as const;
 	const paletteSection = ref<HTMLElement>();
 
+	// HACK 15 请参照此部分 ↓ ↓ ↓
 	const userSettingsCookieBasicOption = { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false, watch: true };
 
 	const selfUserInfoStore = useSelfUserInfoStore();
@@ -32,7 +33,6 @@
 		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
 	}
 	
-	// HACK 15 请参照此部分 ↓ ↓ ↓
 	// 主题
 	const cookieThemeType = useCookie<ThemeSetType>(themeTypeCookieKey, userSettingsCookieBasicOption);
 	watch(cookieThemeType, themeType => { // 当设置值发送改变时，发送后端请求，并触发 cookieBinding 更新页面样式
@@ -89,12 +89,14 @@
 			}
 	});
 
-	// 发生用户登录事件时，要手动触发 cookie 更新（cookie 更新会触发 cookieBinding 更新页面样式）
+	// HACK 16 请参照此部分 ↓ ↓ ↓
+	// 发生用户登录事件时，要手动触发 cookie 更新（cookie 更新会触发 cookieBinding 更新页面样式，并且 nuxt 响应式 cookie 也绑定到一些开关上，此处也会在用户登录后更改开关的状态）
 	useListen("user:login", () => {
-		cookieThemeType.value = useCookie<ThemeSetType>(themeTypeCookieKey, userSettingsCookieBasicOption).value;
-		cookieThemeColor.value = useCookie<string>(themeColorCookieKey, userSettingsCookieBasicOption).value;
-		cookieColoredSidebar.value = useCookie<boolean>(coloredSidebarCookieKey, userSettingsCookieBasicOption).value;
+		cookieThemeType.value = useCookie<ThemeSetType>(themeTypeCookieKey, userSettingsCookieBasicOption).value; // TODO: nuxt 3.10 以后可以使用 refreshCookie 方法刷新 cookie
+		cookieThemeColor.value = useCookie<string>(themeColorCookieKey, userSettingsCookieBasicOption).value; // TODO: nuxt 3.10 以后可以使用 refreshCookie 方法刷新 cookie
+		cookieColoredSidebar.value = useCookie<boolean>(coloredSidebarCookieKey, userSettingsCookieBasicOption).value; // TODO: nuxt 3.10 以后可以使用 refreshCookie 方法刷新 cookie
 	});
+	// HACK 16 请参照此部分 ↑ ↑ ↑
 </script>
 
 <template>

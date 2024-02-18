@@ -36,5 +36,6 @@ KIRAKIRA 的主题配色模式模块基于官方 Nuxt Color Mode 模块修改而
 13. 在 `modules\theme\cookieBinding.ts` 中标有 `HACK 13 在此处添加` 的注释前创建空行，并编写一个将变量添加到 localStorage 的代码，不要忘记非空验证
 14. 在 `modules\theme\cookieBinding.ts` 中标有 `HACK 14 在此处添加` 的注释前创建空行，并编写一个根据变量值，将正确样式绑定到正确位置的代码
 15. 参照 `pages\settings\appearance.vue` 中标有 `HACK 15 请参照此部分 ↓ ↓ ↓` 和 `HACK 15 请参照此部分 ↑ ↑ ↑` 的注释中间的代码，在你想要添加的设置所在的 vue 模板中编写一个获取 nuxt 响应式 cookie 对象然后添加监听逻辑的代码，并将 nuxt 响应式 cookie 对象绑定到 vue 模板上。
+16. 参照 `pages\settings\appearance.vue` 中标有 `HACK 16 请参照此部分 ↓ ↓ ↓` 和 `HACK 16 请参照此部分 ↑ ↑ ↑` 的注释中间的代码，为 nuxt cookie 对象对 user:login 事件绑定正确的处理。
 
 
