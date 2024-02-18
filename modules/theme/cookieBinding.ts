@@ -80,7 +80,8 @@ export function cookieBinding() {
 		const isOfflineSettings = !getCookie(isOfflineSettingsCookieKey) || getCookie(isOfflineSettingsCookieKey) === "true";
 		if (isOfflineSettings) { // 离线样式，从 localStorage 中获取样式并拷贝到 cookie 中
 			// 获取 localStorage 中的用户样式设置
-			currentThemeType = (window.localStorage.getItem(themeTypeCookieKey) && window.localStorage.getItem(themeTypeCookieKey) === "system") ? systemThemeType : window.localStorage.getItem(themeTypeCookieKey); // localStorage 中存储的系统主题类型，如果没有或值为 system，则使用 systemThemeType
+			console.log("aaaaa", window.localStorage.getItem(themeTypeCookieKey), (window.localStorage.getItem(themeTypeCookieKey) && window.localStorage.getItem(themeTypeCookieKey) === "system"), window.localStorage.getItem(themeTypeCookieKey));
+			currentThemeType = (window.localStorage.getItem(themeTypeCookieKey) && window.localStorage.getItem(themeTypeCookieKey) === "system") ? systemThemeType : (window.localStorage.getItem(themeTypeCookieKey) || THEME_LIGHT); // localStorage 中存储的系统主题类型，如果没有或值为 system，则使用 systemThemeType
 			themeColor = window.localStorage.getItem(themeColorCookieKey) || DEFAULT_THEME_COLOR; // localStorage 中存储的系统主题色
 			customerThemeColor = window.localStorage.getItem(customThemeColorCookieKey) || DEFAULT_THEME_COLOR; // localStorage 中存储的自定义系统主题色（当 themeColor 的值为 CUSTOM_THEME_COLOR 时才应该依据该值渲染）
 			isColoredSidebar = window.localStorage.getItem(coloredSidebarCookieKey) || NO_COLORED_SIDEBAR; // localStorage 中存储的是否启用彩色侧边栏
@@ -99,7 +100,7 @@ export function cookieBinding() {
 			// HACK 11 在此处添加
 		} else { // 在线（远程同步）样式，从 cookie 中获取样式并拷贝到 localStorage 中
 			// 获取 cookie 中的用户样式设置
-			currentThemeType = ((getCookie(themeTypeCookieKey) && getCookie(themeTypeCookieKey) === "system") ? systemThemeType : getCookie(themeTypeCookieKey)) as ThemeSetType; // cookie 中存储的系统主题类型，如果没有，则使用 systemThemeType
+			currentThemeType = ((getCookie(themeTypeCookieKey) && getCookie(themeTypeCookieKey) === "system") ? systemThemeType : (getCookie(themeTypeCookieKey)) || THEME_LIGHT) as ThemeSetType; // cookie 中存储的系统主题类型，如果没有，则使用 systemThemeType
 			themeColor = (getCookie(themeColorCookieKey) || DEFAULT_THEME_COLOR) as PaletteType; // cookie 中存储的系统主题色
 			customerThemeColor = (getCookie(customThemeColorCookieKey) || DEFAULT_THEME_COLOR) as string; // cookie 中存储的自定义系统主题色（当 themeColor 的值为 CUSTOM_THEME_COLOR 时才应该依据该值渲染）
 			isColoredSidebar = (getCookie(coloredSidebarCookieKey) || NO_COLORED_SIDEBAR); // cookie 中存储的是否启用彩色侧边栏
