@@ -1,3 +1,7 @@
+<docs>
+	# 视频播放器控制条
+</docs>
+
 <script setup lang="ts">
 	import type { BitrateInfo } from "dashjs";
 
@@ -14,13 +18,18 @@
 		qualities?: BitrateInfo[];
 		/** 是否隐藏？ */
 		hidden?: boolean;
-		/** 进入全屏后强制深色的样式类声明。 */
-		fullscreenColorClass: Record<string, boolean>;
+		/**
+		 * 进入全屏后强制深色的样式类声明。
+		 *
+		 * 注意：仅在设置页外观的示例控制条中，本属性可以为空。
+		 */
+		fullscreenColorClass?: Record<string, boolean>;
 	}>(), {
 		duration: NaN,
 		buffered: 0,
 		toggleFullscreen: undefined,
 		qualities: () => [],
+		fullscreenColorClass: () => ({}),
 	});
 
 	/** 常用速度列表。 */
