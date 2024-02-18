@@ -9,7 +9,8 @@
 	const showDrawer = ref(false);
 	const ti = (id: string) => t[new VariableName(id).snake];
 	const title = computed(() => ti(currentSetting.value));
-	const htmlTitle = computed(() => title.value + " - " + t.settings);
+	const settingsString = t.settings;
+	const htmlTitle = computed(() => title.value + " - " + settingsString);
 	const logout = async () => {
 		const logoutResult = await api.user.userLogout();
 		if (logoutResult) {
