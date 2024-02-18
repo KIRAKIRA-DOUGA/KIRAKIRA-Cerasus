@@ -116,8 +116,8 @@
 	<NuxtLayout :name="layout">
 		<NuxtPage />
 	</NuxtLayout>
-	<Fragment id="teleports">
+	<Contents id="teleports">
 		<Toasts />
 		<Tooltips />
-	</Fragment>
+	</Contents>
 </template>

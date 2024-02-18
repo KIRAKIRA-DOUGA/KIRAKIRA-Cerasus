@@ -1,11 +1,9 @@
 import { addImports, addPlugin, addTemplate, createResolver, defineNuxtModule } from "@nuxt/kit";
 import { dirname } from "path";
-import { PREFERENTIAL_BASE_URL, PREFERENTIAL_ROUTE, PREFERENTIAL_TEMPLATE_PATH } from "../shared/constants";
+import { PREFERENTIAL_BASE_URL, PREFERENTIAL_TEMPLATE_PATH } from "../shared/constants";
 import { minifyJavaScript } from "../shared/encode";
+import { TEMPLATE_NAME } from "./constants";
 import { cookieBinding } from "./cookieBinding";
-
-const COOKIE_BANDER_SCRIPT_TEMPLATE_NAME = "cookie-binding.js";
-export const COOKIE_BANDER_SCRIPT_ROUTE = PREFERENTIAL_ROUTE + COOKIE_BANDER_SCRIPT_TEMPLATE_NAME;
 
 /**
  * 将传入的函数的函数体部分序列化为一个字面量字符串。

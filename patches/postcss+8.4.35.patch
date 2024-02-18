@@ -1,8 +1,8 @@
 diff --git a/node_modules/postcss/lib/container.js b/node_modules/postcss/lib/container.js
-index 3ec40a9..05a4741 100644
+index 462e3f0..f43b141 100644
 --- a/node_modules/postcss/lib/container.js
 +++ b/node_modules/postcss/lib/container.js
-@@ -306,7 +306,6 @@ class Container extends Node {
+@@ -298,7 +298,6 @@ class Container extends Node {
        try {
          result = callback(child, i)
        } catch (e) {
@@ -11,7 +11,7 @@ index 3ec40a9..05a4741 100644
        if (result !== false && child.walk) {
          result = child.walk(callback)
 diff --git a/node_modules/postcss/lib/node.js b/node_modules/postcss/lib/node.js
-index 6aa0eb3..d661062 100644
+index d79dd56..80502a8 100644
 --- a/node_modules/postcss/lib/node.js
 +++ b/node_modules/postcss/lib/node.js
 @@ -55,7 +55,6 @@ class Node {

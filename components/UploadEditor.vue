@@ -129,7 +129,7 @@
 					<SegmentedItem id="repost" icon="local_shipping">{{ t.repost }}</SegmentedItem>
 				</Segmented>
 
-				<Fragment class="repost-options">
+				<Contents class="repost-options">
 					<Transition mode="out-in" @enter="onContentEnter" @leave="onContentLeave">
 						<div v-if="copyright === 'original'">
 							<section>
@@ -148,7 +148,7 @@
 							</section>
 						</div>
 					</Transition>
-				</Fragment>
+				</Contents>
 			</div>
 
 			<div class="center">

@@ -1,4 +1,4 @@
-import { COOKIE_BANDER_SCRIPT_ROUTE } from "./module";
+import { COOKIE_BANDER_SCRIPT_ROUTE } from "./constants";
 
 export default defineNitroPlugin(nitro => {
 	nitro.hooks.hook("render:html", html => {

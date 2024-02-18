@@ -1,11 +1,11 @@
 <template>
-	<div class="fragment">
+	<div class="contents">
 		<slot></slot>
 	</div>
 </template>
 
 <style scoped lang="scss">
-	.fragment {
+	.contents {
 		display: contents;
 	}
 </style>
