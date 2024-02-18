@@ -1,12 +1,12 @@
 <script setup lang="ts">
-	import { coloredSidebarCookieKey, cookieBinding, themeColorCookieKey, themeTypeCookieKey } from "~/modules/theme/cookieBinding";
+	import { coloredSidebarCookieKey, themeColorCookieKey, themeTypeCookieKey } from "modules/theme/cookieBinding";
+	import { useKiraCookie } from "modules/theme/composables";
 
 	const getPaletteImage = (name: string) => {
 		const palettes = import.meta.glob<typeof import("*.webp")>("/assets/images/palettes/*", { eager: true });
 		return palettes[`/assets/images/palettes/${name}.webp`].default;
 	};
 
-	const { theme, palette, actualTheme } = Theme;
 	const themeList = ["light", "dark", "system"] as const;
 	const paletteList = [
 		{ color: "pink", subtitle: "Kawaii Forever" },
@@ -19,84 +19,55 @@
 	const paletteSection = ref<HTMLElement>();
 
 	// HACK 15 请参照此部分 ↓ ↓ ↓
-	const userSettingsCookieBasicOption = { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false, watch: true };
-
-	const selfUserInfoStore = useSelfUserInfoStore();
-	const appSettingsStore = useAppSettingsStore();
-	const isAllowSyncThemeSettings = computed(() => appSettingsStore.isAllowSyncThemeSettings && selfUserInfoStore.isLogined);
-
+	// 主题
+	const cookieThemeType = useKiraCookie<ThemeSetType>(themeTypeCookieKey, updateOrCreateUserThemeTypeSetting, true, true);
 	/**
-	 * 发送后端请求，更新用户设置
-	 * @param updateOrCreateUserSettingsRequest 用户发生修改的设置
+	 * 发送更新用户的 ThemeType 设置的请求
+	 * @param cookieValue ThemeType 的新的值
 	 */
-	function updateUserSetting(updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto) {
+	function updateOrCreateUserThemeTypeSetting(cookieValue: ThemeSetType) {
+		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
+			themeType: cookieValue as ThemeSetType,
+		};
 		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
 	}
-	
-	// 主题
-	const cookieThemeType = useCookie<ThemeSetType>(themeTypeCookieKey, userSettingsCookieBasicOption);
-	watch(cookieThemeType, themeType => { // 当设置值发送改变时，发送后端请求，并触发 cookieBinding 更新页面样式
-		if (process.client) {
-			window.localStorage.setItem(themeTypeCookieKey, themeType); // WARN useStorage 更新数据会导致 cookieBinding 中获取到的 localStorage 数据不是最新数据，可能是 vue 响应式延迟
-			if (isAllowSyncThemeSettings.value) { // 如果允许同步样式设置，则发送后端请求，非阻塞
-				const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
-					themeType: cookieThemeType.value as ThemeSetType,
-				};
-				updateUserSetting(updateOrCreateUserSettingsRequest);
-			}
-			cookieBinding();
-		}
-	});
 	// HACK 15 请参照此部分 ↑ ↑ ↑
 
 	// 个性色
-	const cookieThemeColor = useCookie<string>(themeColorCookieKey, userSettingsCookieBasicOption);
-	watch(cookieThemeColor, themeColor => { // 当设置值发送改变时，发送后端请求，并触发 cookieBinding 更新页面样式
-		if (process.client) {
-			window.localStorage.setItem(themeColorCookieKey, themeColor); // WARN useStorage 更新数据会导致 cookieBinding 中获取到的 localStorage 数据不是最新数据，可能是 vue 响应式延迟
-			if (isAllowSyncThemeSettings.value) { // 如果允许同步样式设置，则发送后端请求，非阻塞
-				const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
-					themeColor: cookieThemeColor.value,
-				};
-				updateUserSetting(updateOrCreateUserSettingsRequest);
-			}
-			cookieBinding();
-		}
-	});
+	const cookieThemeColor = useKiraCookie<string>(themeColorCookieKey, updateOrCreateUserThemeColorSetting, true, true);
+	/**
+	 * 发送更新用户的 ThemeColor 设置的请求
+	 * @param cookieValue ThemeColor 的新的值
+	 */
+	function updateOrCreateUserThemeColorSetting(cookieValue: string) {
+		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
+			themeColor: cookieValue,
+		};
+		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
+	}
 
 	// TODO 自定义个性色
 
 	// 彩色侧边栏
-	const cookieColoredSidebar = useCookie<boolean>(coloredSidebarCookieKey, userSettingsCookieBasicOption);
-	watch(cookieColoredSidebar, coloredSidebar => { // 当设置值发送改变时，发送后端请求，并触发 cookieBinding 更新页面样式
-		if (process.client) {
-			window.localStorage.setItem(coloredSidebarCookieKey, `${coloredSidebar}`); // WARN useStorage 更新数据会导致 cookieBinding 中获取到的 localStorage 数据不是最新数据，可能是 vue 响应式延迟
-			if (isAllowSyncThemeSettings.value) { // 如果允许同步样式设置，则发送后端请求，非阻塞
-				const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
-					coloredSideBar: cookieColoredSidebar.value,
-				};
-				updateUserSetting(updateOrCreateUserSettingsRequest);
-			}
-			cookieBinding();
-		}
-	});
+	const cookieColoredSidebar = useKiraCookie<boolean>(coloredSidebarCookieKey, updateOrCreateUserColoredSidebarSetting, true, true);
+	/**
+	 * 发送更新用户的 ColoredSidebar 设置的请求
+	 * @param cookieValue ColoredSidebar 的新的值
+	 */
+	function updateOrCreateUserColoredSidebarSetting(cookieValue: boolean) {
+		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
+			coloredSideBar: cookieValue,
+		};
+		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
+	}
 
 	onMounted(() => {
 		if (paletteSection.value)
 			for (const item of paletteSection.value.children) {
 				item.classList.remove("light", "dark");
-				item.classList.add(actualTheme.value);
+				item.classList.add(cookieThemeType.value);
 			}
 	});
-
-	// HACK 16 请参照此部分 ↓ ↓ ↓
-	// 发生用户登录事件时，要手动触发 cookie 更新（cookie 更新会触发 cookieBinding 更新页面样式，并且 nuxt 响应式 cookie 也绑定到一些开关上，此处也会在用户登录后更改开关的状态）
-	useListen("user:login", () => {
-		cookieThemeType.value = useCookie<ThemeSetType>(themeTypeCookieKey, userSettingsCookieBasicOption).value; // TODO: nuxt 3.10 以后可以使用 refreshCookie 方法刷新 cookie
-		cookieThemeColor.value = useCookie<string>(themeColorCookieKey, userSettingsCookieBasicOption).value; // TODO: nuxt 3.10 以后可以使用 refreshCookie 方法刷新 cookie
-		cookieColoredSidebar.value = useCookie<boolean>(coloredSidebarCookieKey, userSettingsCookieBasicOption).value; // TODO: nuxt 3.10 以后可以使用 refreshCookie 方法刷新 cookie
-	});
-	// HACK 16 请参照此部分 ↑ ↑ ↑
 </script>
 
 <template>
@@ -112,7 +83,7 @@
 			v-model="cookieThemeType"
 			:title="t.scheme[item]"
 		>
-			<LogoThemePreview :theme="item" :accent="palette" />
+			<LogoThemePreview :theme="item" :accent="cookieThemeColor" />
 		</SettingsGridItem>
 	</section>
 
@@ -125,7 +96,7 @@
 			v-model="cookieThemeColor"
 			:title="t.palette[item.color]"
 			class="force-color"
-			:class="[item.color, actualTheme]"
+			:class="[item.color, cookieThemeType]"
 		>
 			<div class="content">
 				<img :src="getPaletteImage(item.color)" alt="Is the Order a Rabbit?" />

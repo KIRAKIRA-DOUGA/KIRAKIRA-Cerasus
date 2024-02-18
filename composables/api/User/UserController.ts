@@ -1,7 +1,5 @@
 import { GET, POST, uploadFile2R2 } from "api/Common";
 import getCorrectUri from "api/Common/getCorrectUri";
-import { CUSTOM_THEME_COLOR, DEFAULT_THEME_COLOR, SYSTEM_THEME } from "~/modules/theme/cookieBinding";
-import { PALETTE_LIST } from "~/modules/theme/types";
 import type { CheckUserTokenResponseDto, GetSelfUserInfoRequestDto, GetSelfUserInfoResponseDto, GetUserAvatarUploadSignedUrlResultDto, GetUserInfoByUidRequestDto, GetUserInfoByUidResponseDto, GetUserSettingsRequestDto, GetUserSettingsResponseDto, UpdateOrCreateUserSettingsRequestDto, UpdateOrCreateUserSettingsResponseDto, UpdateUserEmailRequestDto, UserExistsCheckRequestDto, UserExistsCheckResponseDto, UserLoginRequestDto, UserLoginResponseDto, UserRegistrationRequestDto, UserRegistrationResponseDto } from "./UserControllerDto";
 
 const BACK_END_URL = getCorrectUri();

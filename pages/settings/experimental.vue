@@ -1,55 +1,32 @@
 <script setup lang="ts">
-	import { sharpAppearanceModeCookieKey, cookieBinding, flatAppearanceModeCookieKey } from "~/modules/theme/cookieBinding";
+	import { sharpAppearanceModeCookieKey, flatAppearanceModeCookieKey } from "modules/theme/cookieBinding";
+	import { useKiraCookie } from "modules/theme/composables";
 
-	const userSettingsCookieBasicOption = { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false, watch: true };
-
-	const selfUserInfoStore = useSelfUserInfoStore();
-	const appSettingsStore = useAppSettingsStore();
-	const isAllowSyncThemeSettings = computed(() => appSettingsStore.isAllowSyncThemeSettings && selfUserInfoStore.isLogined);
-
+	// 直角模式
+	const cookieSharpAppearanceMode = useKiraCookie<boolean>(sharpAppearanceModeCookieKey, updateOrCreateUserSharpAppearanceModeSetting, true, true);
 	/**
-	 * 发送后端请求，更新用户设置
-	 * @param updateOrCreateUserSettingsRequest 用户发生修改的设置
+	 * 发送更新用户的 SharpAppearanceMode 设置的请求
+	 * @param cookieValue SharpAppearanceMode 的新的值
 	 */
-	function updateUserSetting(updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto) {
+	function updateOrCreateUserSharpAppearanceModeSetting(cookieValue: boolean) {
+		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
+			sharpAppearanceMode: cookieValue,
+		};
 		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
 	}
 
-	// 直角模式
-	const cookieSharpAppearanceMode = useCookie<boolean>(sharpAppearanceModeCookieKey, userSettingsCookieBasicOption);
-	watch(cookieSharpAppearanceMode, sharpAppearanceMode => { // 当设置值发送改变时，发送后端请求，并触发 cookieBinding 更新页面样式
-		if (process.client) {
-			window.localStorage.setItem(sharpAppearanceModeCookieKey, `${sharpAppearanceMode}`); // WARN useStorage 更新数据会导致 cookieBinding 中获取到的 localStorage 数据不是最新数据，可能是 vue 响应式延迟
-			if (isAllowSyncThemeSettings.value) { // 如果允许同步样式设置，则发送后端请求，非阻塞
-				const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
-					coloredSideBar: cookieSharpAppearanceMode.value,
-				};
-				updateUserSetting(updateOrCreateUserSettingsRequest);
-			}
-			cookieBinding();
-		}
-	});
-
 	// 扁平模式
-	const cookieFlatAppearanceMode = useCookie<boolean>(flatAppearanceModeCookieKey, userSettingsCookieBasicOption);
-	watch(cookieFlatAppearanceMode, flatAppearanceMode => { // 当设置值发送改变时，发送后端请求，并触发 cookieBinding 更新页面样式
-		if (process.client) {
-			window.localStorage.setItem(flatAppearanceModeCookieKey, `${flatAppearanceMode}`); // WARN useStorage 更新数据会导致 cookieBinding 中获取到的 localStorage 数据不是最新数据，可能是 vue 响应式延迟
-			if (isAllowSyncThemeSettings.value) { // 如果允许同步样式设置，则发送后端请求，非阻塞
-				const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
-					coloredSideBar: cookieFlatAppearanceMode.value,
-				};
-				updateUserSetting(updateOrCreateUserSettingsRequest);
-			}
-			cookieBinding();
-		}
-	});
-
-	// 发生用户登录事件时，要手动触发 cookie 更新（cookie 更新会触发 cookieBinding 更新页面样式，并且 nuxt 响应式 cookie 也绑定到一些开关上，此处也会在用户登录后更改开关的状态）
-	useListen("user:login", () => {
-		cookieSharpAppearanceMode.value = useCookie<boolean>(sharpAppearanceModeCookieKey, userSettingsCookieBasicOption).value; // TODO: nuxt 3.10 以后可以使用 refreshCookie 方法刷新 cookie
-		cookieFlatAppearanceMode.value = useCookie<boolean>(flatAppearanceModeCookieKey, userSettingsCookieBasicOption).value; // TODO: nuxt 3.10 以后可以使用 refreshCookie 方法刷新 cookie
-	});
+	const cookieFlatAppearanceMode = useKiraCookie<boolean>(flatAppearanceModeCookieKey, updateOrCreateUserFlatAppearanceModeSetting, true, true);
+	/**
+	 * 发送更新用户的 FlatAppearanceMode 设置的请求
+	 * @param cookieValue FlatAppearanceMode 的新的值
+	 */
+	function updateOrCreateUserFlatAppearanceModeSetting(cookieValue: boolean) {
+		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
+			sharpAppearanceMode: cookieValue,
+		};
+		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
+	}
 </script>
 
 <template>

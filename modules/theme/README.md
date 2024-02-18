@@ -25,10 +25,10 @@ KIRAKIRA 的主题配色模式模块基于官方 Nuxt Color Mode 模块修改而
 2. 在 `modules\theme\cookieBinding.ts` 中标有 `HACK 2 在此处添加` 的注释前创建空行，并添加全局变量，变量名和值需要和 `HACK 4 在此处添加` 位置添加的局部变量一致
 3. 在 `modules\theme\cookieBinding.ts` 中标有 `HACK 3 在此处添加` 的注释前创建空行，并添加局部变量，变量名和值需要和 `HACK 1 在此处添加` 位置添加的全局变量一致
 4. 在 `modules\theme\cookieBinding.ts` 中标有 `HACK 4 在此处添加` 的注释前创建空行，并添加局部变量，变量名和值需要和 `HACK 2 在此处添加` 位置添加的全局变量一致
-5. 在 `middleware\cookie-baker.global.ts` 中标有 `HACK 5 在此处添加` 的注释前创建空行，并编写一个获取 nuxt 响应式 cookie 对象的代码
-6. 在 `middleware\cookie-baker.global.ts` 中标有 `HACK 6 在此处添加` 的注释前创建空行，并编写一个把后端请求结果赋值给 nuxt 响应式 cookie 对象的代码
-7. 在 `components\Login\LoginWindow.vue` 中标有 `HACK 7 在此处添加` 的注释前创建空行，并编写一个后端请求结果赋值的代码，别忘记设置默认值
-8. 在 `components\Login\LoginWindow.vue` 中标有 `HACK 8 在此处添加` 的注释前创建空行，并编写一个把后端请求结果存放到 cookie 中的代码
+5. 在 `modules\theme\composables.ts` 中标有 `HACK 5 在此处添加` 的注释前创建空行，并编写一个获取 nuxt 响应式 cookie 对象的代码
+6. 在 `modules\theme\composables.ts` 中标有 `HACK 6 在此处添加` 的注释前创建空行，并编写一个把后端请求结果赋值给 nuxt 响应式 cookie 对象的代码
+7. 在 `modules\theme\composables.ts` 中标有 `HACK 7 在此处添加` 的注释前创建空行，并编写一个后端请求结果赋值的代码，别忘记设置默认值
+8. 在 `modules\theme\composables.ts` 中标有 `HACK 8 在此处添加` 的注释前创建空行，并编写一个把后端请求结果存放到 cookie 中的代码
 9. 在 `modules\theme\cookieBinding.ts` 中标有 `HACK 9 在此处添加` 的注释前创建空行，并定义一个正确的变量名
 10. 在 `modules\theme\cookieBinding.ts` 中标有 `HACK 10 在此处添加` 的注释前创建空行，并编写一个从 localStorage 中获取用户设置的代码，并赋值给变量，不要忘记默认值
 11. 在 `modules\theme\cookieBinding.ts` 中标有 `HACK 11 在此处添加` 的注释前创建空行，并编写一个将变量添加到 cookie 的代码，不要忘记非空验证

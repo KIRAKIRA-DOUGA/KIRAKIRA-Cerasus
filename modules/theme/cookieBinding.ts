@@ -80,7 +80,6 @@ export function cookieBinding() {
 		const isOfflineSettings = !getCookie(isOfflineSettingsCookieKey) || getCookie(isOfflineSettingsCookieKey) === "true";
 		if (isOfflineSettings) { // 离线样式，从 localStorage 中获取样式并拷贝到 cookie 中
 			// 获取 localStorage 中的用户样式设置
-			console.log("aaaaa", window.localStorage.getItem(themeTypeCookieKey), (window.localStorage.getItem(themeTypeCookieKey) && window.localStorage.getItem(themeTypeCookieKey) === "system"), window.localStorage.getItem(themeTypeCookieKey));
 			currentThemeType = (window.localStorage.getItem(themeTypeCookieKey) && window.localStorage.getItem(themeTypeCookieKey) === "system") ? systemThemeType : (window.localStorage.getItem(themeTypeCookieKey) || THEME_LIGHT); // localStorage 中存储的系统主题类型，如果没有或值为 system，则使用 systemThemeType
 			themeColor = window.localStorage.getItem(themeColorCookieKey) || DEFAULT_THEME_COLOR; // localStorage 中存储的系统主题色
 			customerThemeColor = window.localStorage.getItem(customThemeColorCookieKey) || DEFAULT_THEME_COLOR; // localStorage 中存储的自定义系统主题色（当 themeColor 的值为 CUSTOM_THEME_COLOR 时才应该依据该值渲染）
