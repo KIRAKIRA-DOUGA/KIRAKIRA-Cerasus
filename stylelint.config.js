@@ -1,4 +1,5 @@
-module.exports = {
+/** @type {import("stylelint").Config} */
+export default {
 	defaultSeverity: "error",
 	extends: [
 		"stylelint-config-standard",
@@ -76,7 +77,6 @@ module.exports = {
 			"ignore": ["between-comments", "stylelint-commands"],
 			"severity": "warning",
 		}],
-		"scss/double-slash-comment-empty-line-before": null,
 		"scss/at-extend-no-missing-placeholder": null, // 可继承一般的类名。
 		/* "scss/dollar-variable-first-in-block": [true, {
 			"ignore": ["comments", "imports"],

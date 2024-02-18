@@ -53,6 +53,12 @@
 	},
 	"vue.complete.casing.props": "camel",
 	"vue.complete.casing.tags": "pascal",
+	"eslint.validate": [
+		"javascript",
+		"typescript",
+		"vue"
+	],
+	"eslint.experimental.useFlatConfig": true,
 	"todo-tree.general.tags": [
 		"TODO",
 		"HACK",
