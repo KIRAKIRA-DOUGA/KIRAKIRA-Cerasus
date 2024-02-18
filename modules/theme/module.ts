@@ -2,7 +2,7 @@ import { addImports, addPlugin, addTemplate, createResolver, defineNuxtModule } 
 import { dirname } from "path";
 import { PREFERENTIAL_BASE_URL, PREFERENTIAL_TEMPLATE_PATH } from "../shared/constants";
 import { minifyJavaScript } from "../shared/encode";
-import { TEMPLATE_NAME } from "./constants";
+import { COOKIE_BANDER_SCRIPT_TEMPLATE_NAME } from "./constants";
 import { cookieBinding } from "./cookieBinding";
 
 /**

@@ -1,4 +1,4 @@
 import { PREFERENTIAL_ROUTE } from "../shared/constants";
 
-const COOKIE_BANDER_SCRIPT_TEMPLATE_NAME = "cookie-binding.js";
+export const COOKIE_BANDER_SCRIPT_TEMPLATE_NAME = "cookie-binding.js";
 export const COOKIE_BANDER_SCRIPT_ROUTE = PREFERENTIAL_ROUTE + COOKIE_BANDER_SCRIPT_TEMPLATE_NAME;
