@@ -14,5 +14,9 @@ export const useAppSettingsStore = defineStore("app-settings", {
 			return route;
 		},
 	},
-	persist: true,
+	persist: {
+		storage: persistedState.cookiesWithOptions({
+			sameSite: "strict",
+		}),
+	},
 });

@@ -23,6 +23,8 @@
 				item.classList.add(actualTheme.value);
 			}
 	});
+
+	console.log("useAppSettingsStore().coloredSideBar", useAppSettingsStore().coloredSideBar);
 </script>
 
 <template>
