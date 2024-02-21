@@ -3,6 +3,11 @@
 	import beepSrc from "assets/audios/NOVA 2022.1 Alert Quick.ogg";
 	import type { ToastEvent } from "composables/toast";
 
+	// 主题
+	const cookieThemeType = useKiraCookie<ThemeSetType>(COOKIE_KEY.themeTypeCookieKey, SyncUserSettings.updateOrCreateUserThemeTypeSetting, true, true);
+	// 个性色
+	const cookieThemeColor = useKiraCookie<string>(COOKIE_KEY.themeColorCookieKey, SyncUserSettings.updateOrCreateUserThemeColorSetting, true, true);
+
 	const page = ref(1);
 	const pages = ref(99);
 	const opPage = ref(1);
@@ -11,8 +16,8 @@
 	const displayPageCount = ref(7);
 	const toggle = ref(false);
 	const isClicked = ref(false);
-	const theme = Theme.theme;
-	const palette = Theme.palette;
+	const theme = cookieThemeType;
+	const palette = cookieThemeColor;
 	const timeoutId = ref<Timeout>();
 	const isTagChecked = ref(false);
 	const tagInput = ref<string>("输入标签名称");

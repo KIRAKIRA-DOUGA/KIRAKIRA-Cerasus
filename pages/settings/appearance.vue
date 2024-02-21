@@ -1,7 +1,4 @@
 <script setup lang="ts">
-	import { coloredSidebarCookieKey, themeColorCookieKey, themeTypeCookieKey } from "modules/theme/cookieBinding";
-	import { useKiraCookie } from "modules/theme/composables";
-
 	const getPaletteImage = (name: string) => {
 		const palettes = import.meta.glob<typeof import("*.webp")>("/assets/images/palettes/*", { eager: true });
 		return palettes[`/assets/images/palettes/${name}.webp`].default;
@@ -18,48 +15,18 @@
 	] as const;
 	const paletteSection = ref<HTMLElement>();
 
-	// HACK 15 请参照此部分 ↓ ↓ ↓
+	// HACK 16 请参照此部分 ↓ ↓ ↓
+
 	// 主题
-	const cookieThemeType = useKiraCookie<ThemeSetType>(themeTypeCookieKey, updateOrCreateUserThemeTypeSetting, true, true);
-	/**
-	 * 发送更新用户的 ThemeType 设置的请求
-	 * @param cookieValue ThemeType 的新的值
-	 */
-	function updateOrCreateUserThemeTypeSetting(cookieValue: ThemeSetType) {
-		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
-			themeType: cookieValue as ThemeSetType,
-		};
-		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
-	}
-	// HACK 15 请参照此部分 ↑ ↑ ↑
-
+	const cookieThemeType = useKiraCookie<ThemeSetType>(COOKIE_KEY.themeTypeCookieKey, SyncUserSettings.updateOrCreateUserThemeTypeSetting, true, true);
 	// 个性色
-	const cookieThemeColor = useKiraCookie<string>(themeColorCookieKey, updateOrCreateUserThemeColorSetting, true, true);
-	/**
-	 * 发送更新用户的 ThemeColor 设置的请求
-	 * @param cookieValue ThemeColor 的新的值
-	 */
-	function updateOrCreateUserThemeColorSetting(cookieValue: string) {
-		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
-			themeColor: cookieValue,
-		};
-		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
-	}
-
-	// TODO 自定义个性色
-
+	const cookieThemeColor = useKiraCookie<string>(COOKIE_KEY.themeColorCookieKey, SyncUserSettings.updateOrCreateUserThemeColorSetting, true, true);
+	// // TODO 自定义个性色
+	// const cookieColoredSidebar = useKiraCookie<string>( // TODO )
 	// 彩色侧边栏
-	const cookieColoredSidebar = useKiraCookie<boolean>(coloredSidebarCookieKey, updateOrCreateUserColoredSidebarSetting, true, true);
-	/**
-	 * 发送更新用户的 ColoredSidebar 设置的请求
-	 * @param cookieValue ColoredSidebar 的新的值
-	 */
-	function updateOrCreateUserColoredSidebarSetting(cookieValue: boolean) {
-		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
-			coloredSideBar: cookieValue,
-		};
-		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
-	}
+	const cookieColoredSidebar = useKiraCookie<boolean>(COOKIE_KEY.coloredSidebarCookieKey, SyncUserSettings.updateOrCreateUserColoredSidebarSetting, true, true);
+
+	// HACK 16 请参照此部分 ↑ ↑ ↑
 
 	onMounted(() => {
 		if (paletteSection.value)
@@ -220,4 +187,3 @@
 		}
 	}
 </style>
-~/modules/theme/cookieBinding

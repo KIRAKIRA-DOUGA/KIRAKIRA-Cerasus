@@ -1,7 +1,4 @@
 <script setup lang="ts">
-	import { cookieBinding } from "modules/theme/cookieBinding";
-	import { saveUserSetting2BrowserCookie } from "modules/theme/composables";
-
 	const props = defineProps<{
 		/** 已打开，单向绑定使用。 */
 		open?: boolean;
@@ -60,7 +57,7 @@
 
 					// 登陆后，将用户设置存储到 cookie，然后调用 cookieBinding 从 cookie 中获取样式设置并追加到 dom 根节点
 					const userSettings = await api.user.getUserSettings();
-					saveUserSetting2BrowserCookie(userSettings);
+					saveUserSetting2BrowserCookieStore(userSettings);
 					cookieBinding();
 
 					// 触发用户登录事件

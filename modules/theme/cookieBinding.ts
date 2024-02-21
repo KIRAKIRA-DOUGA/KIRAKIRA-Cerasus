@@ -3,36 +3,39 @@
 // 默认 cookie 设置，该设置在 useCookie 时传入
 export const DEFAULT_COOKIE_OPTION = { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false };
 
-// theme 关键字，请和下方局部变量中的一致
-export const SYSTEM_THEME = "system";
-export const DEFAULT_THEME_COLOR = "pink";
-export const CUSTOM_THEME_COLOR = "customer";
-// export const DEFAULT_CUSTOM_THEME_COLOR = "66CCFF"; // TODO 设置默认自定义主题色
-export const THEME_DARK = "dark";
-export const THEME_LIGHT = "light";
-export const NO_COLORED_SIDEBAR = "false";
-export const NO_SHARP_APPEARANCE_MODE = "false";
-export const NO_FLAT_APPEARANCE_MODE = "false";
-// HACK 1 在此处添加
+// theme 默认值，请保持和下方 cookieBinding 函数中的局部变量的值一致
+export const THEME_ENV = {
+	SYSTEM_THEME: "system",
+	DEFAULT_THEME_COLOR: "pink",
+	CUSTOM_THEME_COLOR: "customer",
+	// DEFAULT_CUSTOM_THEME_COLOR: "66CCFF", // TODO 设置默认自定义主题色
+	THEME_DARK: "dark",
+	THEME_LIGHT: "light",
+	NO_COLORED_SIDEBAR: "false",
+	NO_SHARP_APPEARANCE_MODE: "false",
+	NO_FLAT_APPEARANCE_MODE: "false",
+	// HACK 1 在此处添加
+};
 
-// Cookie 键 - 用户样式设置，请和下方局部变量中的一致
-export const isOfflineSettingsCookieKey = "is-offline-settings";
-export const themeTypeCookieKey = "theme-type";
-export const themeColorCookieKey = "theme-color";
-export const customThemeColorCookieKey = "custom-theme-color";
-export const coloredSidebarCookieKey = "colored-side-bar";
-export const sharpAppearanceModeCookieKey = "sharp-appearance-mode";
-export const flatAppearanceModeCookieKey = "flat-appearance-mode";
-// HACK 2 在此处添加
+// Cookie 键 - 用户样式设置，请保持和下方 cookieBinding 函数中的局部变量的值一致
+export const COOKIE_KEY = {
+	isOfflineSettingsCookieKey: "is-offline-settings",
+	themeTypeCookieKey: "theme-type",
+	themeColorCookieKey: "theme-color",
+	customThemeColorCookieKey: "custom-theme-color",
+	coloredSidebarCookieKey: "colored-side-bar",
+	sharpAppearanceModeCookieKey: "sharp-appearance-mode",
+	flatAppearanceModeCookieKey: "flat-appearance-mode",
+	// HACK 2 在此处添加
+};
 
 /**
  * 在 DOM 加载之前执行的脚本。
- * @param autoCall - 是否自启动？
  */
 export function cookieBinding() {
 	// WARN 在开始编写本文件之前，请参考：modules\theme\README.md
 
-	// theme 关键字，请和上方全局变量中的一致
+	// theme 默认值，请保持和上方 THEME_ENV 全局变量的值一致
 	const SYSTEM_THEME = "system";
 	const DEFAULT_THEME_COLOR = "pink";
 	const CUSTOM_THEME_COLOR = "customer";
@@ -44,7 +47,7 @@ export function cookieBinding() {
 	const NO_FLAT_APPEARANCE_MODE = "false";
 	// HACK 3 在此处添加
 
-	// Cookie 键 - 用户样式设置，请和上方全局变量中的一致
+	// Cookie 键 - 用户样式设置，请保持和上方 COOKIE_KEY 全局变量的值一致
 	const isOfflineSettingsCookieKey = "is-offline-settings";
 	const themeTypeCookieKey = "theme-type";
 	const themeColorCookieKey = "theme-color";

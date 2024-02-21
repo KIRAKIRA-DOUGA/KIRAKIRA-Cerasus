@@ -1,32 +1,8 @@
 <script setup lang="ts">
-	import { sharpAppearanceModeCookieKey, flatAppearanceModeCookieKey } from "modules/theme/cookieBinding";
-	import { useKiraCookie } from "modules/theme/composables";
-
 	// 直角模式
-	const cookieSharpAppearanceMode = useKiraCookie<boolean>(sharpAppearanceModeCookieKey, updateOrCreateUserSharpAppearanceModeSetting, true, true);
-	/**
-	 * 发送更新用户的 SharpAppearanceMode 设置的请求
-	 * @param cookieValue SharpAppearanceMode 的新的值
-	 */
-	function updateOrCreateUserSharpAppearanceModeSetting(cookieValue: boolean) {
-		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
-			sharpAppearanceMode: cookieValue,
-		};
-		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
-	}
-
+	const cookieSharpAppearanceMode = useKiraCookie<boolean>(COOKIE_KEY.sharpAppearanceModeCookieKey, SyncUserSettings.updateOrCreateUserSharpAppearanceModeSetting, true, true);
 	// 扁平模式
-	const cookieFlatAppearanceMode = useKiraCookie<boolean>(flatAppearanceModeCookieKey, updateOrCreateUserFlatAppearanceModeSetting, true, true);
-	/**
-	 * 发送更新用户的 FlatAppearanceMode 设置的请求
-	 * @param cookieValue FlatAppearanceMode 的新的值
-	 */
-	function updateOrCreateUserFlatAppearanceModeSetting(cookieValue: boolean) {
-		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
-			sharpAppearanceMode: cookieValue,
-		};
-		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
-	}
+	const cookieFlatAppearanceMode = useKiraCookie<boolean>(COOKIE_KEY.flatAppearanceModeCookieKey, SyncUserSettings.updateOrCreateUserFlatAppearanceModeSetting, true, true);
 </script>
 
 <template>

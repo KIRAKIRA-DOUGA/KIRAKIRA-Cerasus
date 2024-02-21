@@ -24,7 +24,16 @@ export default defineNuxtModule({
 		const { resolve } = createResolver(import.meta.url);
 
 		addPlugin(resolve("plugin"));
-		addImports({ name: "Theme", as: "Theme", from: resolve("composables")/* .replaceAll("\\", "/") */ });
+		const composablesRoute = resolve("composables");
+		addImports({ name: "cookieBaker", as: "cookieBaker", from: composablesRoute });
+		addImports({ name: "saveUserSetting2BrowserCookieStore", as: "saveUserSetting2BrowserCookieStore", from: composablesRoute });
+		addImports({ name: "useKiraCookie", as: "useKiraCookie", from: composablesRoute });
+		addImports({ name: "SyncUserSettings", as: "SyncUserSettings", from: composablesRoute });
+		const cookieBindingRoute = resolve("cookieBinding");
+		addImports({ name: "DEFAULT_COOKIE_OPTION", as: "DEFAULT_COOKIE_OPTION", from: cookieBindingRoute });
+		addImports({ name: "THEME_ENV", as: "THEME_ENV", from: cookieBindingRoute });
+		addImports({ name: "COOKIE_KEY", as: "COOKIE_KEY", from: cookieBindingRoute });
+		addImports({ name: "cookieBinding", as: "cookieBinding", from: cookieBindingRoute });
 
 		let cookieBanderContent = `(function (autoCall = true) {${getFunctionBody(cookieBinding, false)}})();`;
 		cookieBanderContent = await minifyJavaScript(cookieBanderContent);

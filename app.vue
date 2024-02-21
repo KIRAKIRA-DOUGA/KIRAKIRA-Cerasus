@@ -2,7 +2,6 @@
 	import "css-doodle";
 	import manifest from "public/manifest.json";
 	import { useDynamicLayout } from "helpers/page-transition";
-	import { DEFAULT_COOKIE_OPTION, DEFAULT_THEME_COLOR, themeColorCookieKey } from "./modules/theme/cookieBinding";
 
 	const homepage = "https://cerasus.kirakira.moe/";
 	const { locale } = useI18n();
@@ -22,7 +21,7 @@
 		return langs[locale.value as keyof typeof langs] ?? locale.value;
 	});
 
-	const cookieThemeColor = useCookie(themeColorCookieKey, DEFAULT_COOKIE_OPTION) || DEFAULT_THEME_COLOR; // 主题颜色
+	const cookieThemeColor = computed(() => useCookie(COOKIE_KEY.themeColorCookieKey, DEFAULT_COOKIE_OPTION).value || THEME_ENV.DEFAULT_THEME_COLOR); // 主题颜色
 
 	useHead({
 		htmlAttrs: {

@@ -1,5 +1,3 @@
-import { cookieBaker } from "modules/theme/composables";
-
 export default defineNuxtRouteMiddleware(async (to, from) => {
 	try {
 		await cookieBaker();
