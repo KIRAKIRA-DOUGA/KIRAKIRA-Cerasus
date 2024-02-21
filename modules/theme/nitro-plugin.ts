@@ -7,6 +7,6 @@ export default defineNitroPlugin(nitro => {
 		// 不要用 <script type="module">，否则会有延迟。
 		html.head.push(`<script src="${COOKIE_BANDER_SCRIPT_ROUTE}"></script>`);
 		// 接下来在此处定义与本模块无关的其它需要直接修改 HTML 模板的部分。
-		html.bodyAppend.push('<div id="popovers"></div>');
+		// html.bodyAppend.push('<div id="popovers"></div>');
 	});
 });

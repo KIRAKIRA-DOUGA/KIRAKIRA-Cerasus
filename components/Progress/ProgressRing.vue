@@ -68,6 +68,8 @@
 			--size: 28px;
 			/// 进度环边缘线条粗细。
 			--thickness: 3px;
+			/// 颜色。
+			color: c(accent);
 		}
 	}
 
@@ -88,26 +90,26 @@
 			--thickness: 0px !important; // 如果去掉 px 则会行为异常。
 		}
 	}
-	
+
 	@media (prefers-reduced-motion: reduce) {
 		.layer-wrapper {
 			display: none;
-			
+
 			+ .icon {
 				display: block;
 			}
 		}
 	}
-	
+
 	.layer-wrapper {
 		@include square(100%);
 		animation: spinner 1568ms linear infinite;
-		
+
 		+ .icon {
 			display: none;
-			color: c(accent);
+			color: currentColor;
 			scale: 1.5;
-			
+
 			&,
 			:deep(*) {
 				@include square(100%);
@@ -118,7 +120,7 @@
 	.layer {
 		@include square(100%);
 		position: absolute;
-		border-color: c(accent);
+		border-color: currentColor;
 		opacity: 1;
 		animation: layer-fill-unfill-rotate 5332ms $layer-animation-options;
 	}
@@ -207,13 +209,13 @@
 			cy: var(--center);
 			r: var(--radius);
 			fill: transparent;
-			stroke: c(accent);
+			stroke: currentColor;
 			stroke-width: var(--thickness);
 			stroke-linecap: round;
 			stroke-dasharray: var(--dash-array);
 			stroke-dashoffset: calc(var(--dash-array) * (1 - var(--progress)));
 		}
-		
+
 		&.to-determinate circle {
 			animation: to-determinate-scale 250ms $ease-out-smooth;
 		}
@@ -309,7 +311,7 @@
 			rotate: 5deg;
 		}
 	}
-	
+
 	@keyframes to-determinate-scale {
 		from {
 			stroke-dashoffset: 0;

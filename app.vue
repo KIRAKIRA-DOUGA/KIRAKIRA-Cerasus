@@ -110,7 +110,7 @@
 	<NuxtLayout :name="layout">
 		<NuxtPage />
 	</NuxtLayout>
-	<Contents id="teleports">
+	<Contents id="popovers">
 		<Toasts />
 		<Tooltips />
 	</Contents>
