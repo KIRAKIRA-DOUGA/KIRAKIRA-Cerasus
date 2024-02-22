@@ -115,9 +115,6 @@
 
 <style scoped lang="scss">
 	.danmaku-container:deep {
-		position: absolute;
-		inset: 0;
-		bottom: 36px;
 		pointer-events: none;
 
 		* {

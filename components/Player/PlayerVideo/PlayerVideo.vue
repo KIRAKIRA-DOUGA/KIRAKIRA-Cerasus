@@ -1,3 +1,8 @@
+<docs>
+	# YOZORA PLAYER
+	视频播放器。
+</docs>
+
 <script setup lang="ts">
 	import mediainfo from "mediainfo.js";
 	import type { MediaPlayerClass, BitrateInfo } from "dashjs";
@@ -26,6 +31,8 @@
 	const duration = ref(NaN);
 	const buffered = ref(0);
 	const isTimeUpdating = ref(false);
+	const ended = ref(false);
+	const waiting = ref(true);
 	const showMediaInfo = ref(false);
 	const showAboutPlayer = ref(false);
 	const currentQuality = ref("720P");
@@ -73,6 +80,7 @@
 	const qualities = ref<BitrateInfo[]>([]);
 	const mediaInfos = ref<MediaInfo>();
 	const videoContainer = ref<HTMLDivElement>();
+	const popovers = ref<HTMLDivElement>();
 	const video = ref<HTMLVideoElement>();
 	const { isFullscreen: fullscreen, toggle } = useFullscreen(videoContainer);
 	const resample = computed({ get: () => !preservesPitch.value, set: value => preservesPitch.value = !value });
@@ -279,6 +287,7 @@
 		currentTime.value = video.currentTime;
 		duration.value = video.duration;
 		video.preservesPitch = preservesPitch.value;
+		waiting.value = false;
 	}
 
 	const quality = computed({
@@ -302,6 +311,7 @@
 		currentTime.value = video.currentTime;
 		await nextTick();
 		isTimeUpdating.value = false;
+		ended.value = false;
 	}
 
 	/**
@@ -378,35 +388,43 @@
 		</Modal>
 
 		<div ref="videoContainer" class="main" :class="{ fullscreen, 'hide-cursor': hideCursor }">
-			<video
-				ref="video"
-				class="player"
-				:style="videoFilterStyle"
-				@play="playing = true"
-				@pause="playing = false"
-				@ratechange="e => playbackRate = (e.target as HTMLVideoElement).playbackRate"
-				@timeupdate="onTimeUpdate"
-				@canplay="onCanPlay"
-				@progress="onProgress"
-				@click="playing = !playing"
-				@dblclick="toggle"
-				@contextmenu.prevent="e => menu = e"
-				@mousemove="autoHideController"
-			></video>
-			<PlayerVideoDanmaku
-				v-model="willSendDanmaku"
-				:comments="initialDanmaku"
-				:media="video"
-				:hidden="!showDanmaku"
-				:style="{ opacity: settings.danmaku.opacity }"
-			/>
-			<PlayerVideoTitle
-				v-if="fullscreen"
-				:title="title"
-				:hidden="hideController"
-				:fullscreenColorClass="fullscreenColorClass"
-			/>
-			<PlayerVideoAbout v-model="showAboutPlayer" :playing="playing" />
+			<div class="screen">
+				<video
+					ref="video"
+					class="player"
+					:style="videoFilterStyle"
+					@play="playing = true"
+					@pause="playing = false"
+					@ratechange="e => playbackRate = (e.target as HTMLVideoElement).playbackRate"
+					@timeupdate="onTimeUpdate"
+					@canplay="onCanPlay"
+					@progress="onProgress"
+					@ended="ended = true"
+					@waiting="waiting = true"
+					@click="playing = !playing"
+					@dblclick="toggle"
+					@contextmenu.prevent="e => menu = e"
+					@mousemove="autoHideController"
+				></video>
+				<Contents>
+					<PlayerVideoDanmaku
+						v-model="willSendDanmaku"
+						:comments="initialDanmaku"
+						:media="video"
+						:hidden="!showDanmaku"
+						:style="{ opacity: settings.danmaku.opacity }"
+					/>
+					<!-- TODO: ProgressRing 改成卡住（开屏加载不包含在内）一秒后再显示，防止出现过于频繁。 -->
+					<ProgressRing v-if="waiting" class="waiting" />
+					<PlayerVideoAbout v-model="showAboutPlayer" :playing="playing" />
+				</Contents>
+				<PlayerVideoTitle
+					v-if="fullscreen"
+					:title="title"
+					:hidden="hideController"
+					:fullscreenColorClass="fullscreenColorClass"
+				/>
+			</div>
 			<PlayerVideoController
 				:key="qualities.length"
 				v-model:currentTime="currentTime"
@@ -419,6 +437,8 @@
 				v-model:steplessRate="steplessRate"
 				v-model:showDanmaku="showDanmaku"
 				v-model:quality="quality"
+				v-model:waiting="waiting"
+				v-model:ended="ended"
 				:duration="duration"
 				:toggleFullscreen="toggle"
 				:buffered="buffered"
@@ -480,6 +500,10 @@
 			flex-direction: column;
 			height: 100dvh;
 
+			.screen {
+				height: 100dvh;
+			}
+
 			video {
 				width: 100%;
 				height: 100%;
@@ -499,14 +523,27 @@
 		color: c(text-color) !important; // 避免黑底视频看不清文字。
 	}
 
-	.player-video-about {
-		position: absolute;
-		inset: 0;
-		bottom: 36px;
-		cursor: pointer;
+	.screen {
+		position: relative;
 
-		@include mobile {
-			bottom: 60px;
+		.contents {
+			> * {
+				position: absolute;
+				inset: 0;
+			}
+
+			.waiting {
+				position: absolute;
+				inset: unset;
+				bottom: 8px;
+				left: 8px;
+				color: c(gray-20);
+				pointer-events: none;
+			}
 		}
+	}
+
+	.player-video-about {
+		cursor: pointer;
 	}
 </style>

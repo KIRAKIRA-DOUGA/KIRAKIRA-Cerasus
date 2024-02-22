@@ -8,11 +8,16 @@
 		defaultValue?: number;
 		/** 媒体缓冲加载进度值。 */
 		buffered?: number;
+		/** 加载中。 */
+		waiting?: boolean;
+		/** 显示工具提示。 */
+		tooltip?: boolean;
 	}>(), {
 		min: 0,
 		max: 100,
 		defaultValue: undefined,
 		buffered: undefined,
+		waiting: false,
 	});
 
 	const emits = defineEmits<{
@@ -36,6 +41,16 @@
 	const smoothValue = useSmoothValue(value, 0.5); // 修改这个参数可以调整滑动条的平滑移动值。
 	const buffered = computed(() => restrict(props.buffered, NaN));
 	const thumbEl = ref<HTMLDivElement>(), trackEl = ref<HTMLDivElement>();
+
+	const dragging = ref(false);
+	const pendingValue = ref(0);
+	const { elementX, elementWidth, isOutside } = useMouseInElement(trackEl); // elementX: 鼠标在元素上的位置，elementWidth：元素宽度，isOutside：鼠标是否在元素外
+	watch([elementX], () => {
+		const thumb = thumbEl.value!;
+		const thumbSizeHalf = thumb.offsetWidth / 2;
+		pendingValue.value = clamp(props.min, map(elementX.value, thumbSizeHalf, elementWidth.value - thumbSizeHalf, props.min, props.max), props.max); // FIXME: 与Click事件（第103行）的运算结果不一致。
+		console.log("Tooltip: " + pendingValue.value); // TODO: 调试用，修复问题后移除。
+	});
 
 	/**
 	 * 重置默认值。
@@ -64,11 +79,13 @@
 			const value = map(position, 0, max - thumbSize, props.min, props.max);
 			model.value = value;
 			emits("changing", value);
+			dragging.value = true;
 		});
 		const pointerUp = () => {
 			document.removeEventListener("pointermove", pointerMove);
 			document.removeEventListener("pointerup", pointerUp);
 			emits("changed", model.value);
+			dragging.value = false;
 		};
 		document.addEventListener("pointermove", pointerMove);
 		document.addEventListener("pointerup", pointerUp);
@@ -83,8 +100,9 @@
 		const thumb = thumbEl.value!, track = trackEl.value!;
 		const thumbSizeHalf = thumb.offsetWidth / 2;
 		const { width } = track.getBoundingClientRect();
-		const value = map(e.offsetX, thumbSizeHalf, width - thumbSizeHalf, props.min, props.max);
+		const value = clamp(props.min, map(e.offsetX, thumbSizeHalf, width - thumbSizeHalf, props.min, props.max), props.max);
 		model.value = value;
+		console.log("Click: " + value); // TODO: 调试用，修复问题后移除。
 		emits("changing", value);
 		await nextTick();
 		onThumbDown(e, true); // 再去调用拖拽滑块的事件。
@@ -115,9 +133,17 @@
 	>
 		<Contents>
 			<div ref="trackEl" class="track" @pointerdown="onTrackDown" @contextmenu="onLongPress"></div>
+			<div class="bg"></div>
 			<div v-show="Number.isFinite(buffered)" class="buffered"></div>
 			<div class="passed"></div>
-			<div ref="thumbEl" class="thumb" @pointerdown="onThumbDown" @contextmenu="onLongPress"></div>
+			<div ref="thumbEl" class="thumb" :class="{ waiting }" @pointerdown="onThumbDown" @contextmenu="onLongPress"></div>
+			<Transition>
+				<div v-if="tooltip" v-show="!isOutside || dragging" class="tooltip" :style="{ left: Math.max(0, Math.min(elementX, elementWidth)) + 'px' }">
+					<slot :pendingValue="pendingValue">
+						{{ pendingValue }}
+					</slot>
+				</div>
+			</Transition>
 		</Contents>
 	</Comp>
 </template>
@@ -154,7 +180,15 @@
 		}
 	}
 
-	.track,
+	.track { // 实际可点击区域
+		position: absolute;
+		width: 100%;
+		height: 36px;
+		cursor: pointer;
+		translate: 0 calc(-50% + $track-thickness * 0.5);
+	}
+
+	.bg,
 	.passed,
 	.buffered {
 		@include oval;
@@ -162,9 +196,8 @@
 		margin: $thumb-size-half 0;
 	}
 
-	.track {
+	.bg {
 		background-color: c(gray-20);
-		cursor: pointer;
 	}
 
 	.passed,
@@ -222,9 +255,23 @@
 			scale: 0.7;
 		}
 
-		.track:active ~ &::after,
+		.bg:active ~ &::after,
 		&:active::after {
 			scale: 0.4 !important;
+		}
+
+		@keyframes breath {
+			from {
+				opacity: 1;
+			}
+
+			to {
+				opacity: 0.5;
+			}
+		}
+
+		&.waiting::after {
+			animation: breath 666.5ms linear alternate infinite; // 这里呼吸动画的速度对应了 ProgressRing。
 		}
 
 		@container style(--size: large) {
@@ -239,6 +286,48 @@
 
 		:comp:focus & {
 			@include large-shadow-focus;
+		}
+	}
+
+	.tooltip {
+		@include round-small;
+		position: absolute;
+		bottom: 24px;
+		padding: 8px;
+		color: white;
+		font-weight: 500;
+		letter-spacing: 0.5px;
+		background-color: c(accent);
+		transform-origin: center calc(100% + 8px);
+		cursor: pointer;
+		filter: drop-shadow(0 1px 6px c(accent, 80%));
+		transition: none;
+		translate: -50% 0;
+
+		&::after { // 底部三角
+			@include square(16px);
+			position: absolute;
+			bottom: -4px;
+			left: 50%;
+			z-index: -1;
+			background-color: inherit;
+			border-radius: 2px;
+			content: "";
+			rotate: 45deg;
+			translate: -50% 0;
+		}
+
+		&.v-enter-active {
+			transition: scale $ease-out-expo 250ms !important;
+		}
+
+		&.v-leave-active {
+			transition: scale $ease-in-expo 250ms !important;
+		}
+
+		&.v-enter-from,
+		&.v-leave-to {
+			scale: 0;
 		}
 	}
 </style>

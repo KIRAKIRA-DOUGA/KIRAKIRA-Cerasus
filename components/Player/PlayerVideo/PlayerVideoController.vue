@@ -46,6 +46,8 @@
 	const resample = defineModel<boolean>("resample", { default: true });
 	const steplessRate = defineModel<boolean>("steplessRate", { default: false });
 	const showDanmaku = defineModel<boolean>("showDanmaku", { default: false });
+	const waiting = defineModel<boolean>("waiting", { default: false });
+	const ended = defineModel<boolean>("ended", { default: false });
 	const quality = defineModel<string>("quality", { default: "720P" });
 	const volumeBackup = ref(volume);
 	const volumeSet = computed({
@@ -202,10 +204,20 @@
 
 	<Comp role="toolbar" :class="{ fullscreen, ...fullscreenColorClass, hidden }" v-bind="$attrs">
 		<div class="left">
-			<SoftButton class="play" :icon="playing ? 'pause' : 'play'" @click="playing = !playing" />
+			<SoftButton class="play" :icon="ended ? 'replay' : playing ? 'pause' : 'play'" @click="playing = !playing" />
 		</div>
 		<div class="slider-wrapper">
-			<Slider v-model="currentPercent" :min="0" :max="1" :buffered="buffered" />
+			<Slider
+				v-slot="slotProps"
+				v-model="currentPercent"
+				tooltip
+				:min="0"
+				:max="1"
+				:buffered="buffered"
+				:waiting="waiting"
+			>
+				{{ new Duration(slotProps.pendingValue * props.duration) }}
+			</Slider>
 		</div>
 		<div class="time" @click="countdown = !countdown">
 			<span class="current">{{ countdown ? countdownTime : currentTime }} </span>
@@ -226,7 +238,7 @@
 				@mouseleave="rateMenu = undefined"
 			/>
 			<SoftButton
-				:icon="volumeSet >= 0.5 ? 'volume_up' : volumeSet > 0 ? 'volume_down' : 'volume_mute'"
+				:icon="muted ? 'volume_mute' : volumeSet >= 0.5 ? 'volume_up' : volumeSet > 0 ? 'volume_down' : 'volume_none'"
 				class="volume"
 				@click="muted = !muted"
 				@mouseenter="e => volumeMenu = e"
@@ -255,7 +267,7 @@
 		display: flex;
 		align-items: center;
 		height: $thickness;
-		overflow: hidden;
+		// overflow: hidden; // FIXME: Slider的Tooltip是在Slider内的，打开overflow: hidden会导致显示不出来。
 		color: c(icon-color);
 		font-weight: 600;
 		font-size: 14px;
@@ -271,8 +283,8 @@
 			transition: $fallback-transitions, background-color 0s;
 
 			&.hidden {
-				translate: 0 100%;
 				visibility: hidden;
+				translate: 0 100%;
 			}
 		}
 
