@@ -54,12 +54,6 @@
 	const showPendingState = ref<"" | "hovering" | "dragging">("");
 	const pendingValue = ref(0);
 	const smoothPendingValue = useSmoothValue(pendingValue, 0.5);
-	/* const { elementX, elementWidth, isOutside } = useMouseInElement(trackEl); // elementX: 鼠标在元素上的位置，elementWidth：元素宽度，isOutside：鼠标是否在元素外
-	watch([elementX], () => {
-		const thumb = thumbEl.value!;
-		const thumbSizeHalf = thumb.offsetWidth / 2;
-		pendingValue.value = clamp(props.min, map(elementX.value, thumbSizeHalf, elementWidth.value - thumbSizeHalf, props.min, props.max), props.max); // FIXME: 与Click事件（第103行）的运算结果不一致。
-	}); */
 
 	/**
 	 * 重置默认值。
@@ -321,7 +315,7 @@
 			scale: 0.7;
 		}
 
-		.base:active ~ &::after,
+		.track:active ~ &::after,
 		&:active::after {
 			scale: 0.4 !important;
 		}
@@ -360,6 +354,7 @@
 		filter: drop-shadow(0 1px 6px c(accent, 80%));
 		transition: none;
 		translate: -50% 0;
+		pointer-events: none;
 
 		/// 底部三角
 		&::after {
