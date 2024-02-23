@@ -8,7 +8,7 @@
 
 <template>
 	<div class="slider-test">
-		{{ value }}
+		<p>{{ value }}</p>
 		<div class="slider-wrapper">
 			<Slider v-model="value" :min="0" :max="1" tooltip />
 		</div>
@@ -19,6 +19,7 @@
 	.slider-test {
 		@include flex-center;
 		flex-direction: column;
+		align-items: Flex-Start;
 		height: 100dvh;
 		margin: 0 10px;
 	}

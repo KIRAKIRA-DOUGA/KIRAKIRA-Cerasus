@@ -73,7 +73,7 @@
 		const thumb = thumbEl.value!, track = trackEl.value!;
 		const thumbSize = thumb.offsetWidth;
 		const { left, width: max } = track.getBoundingClientRect();
-		const x = triggerByTrack ? 0 : e.pageX - left - thumb.offsetLeft;
+		const x = triggerByTrack ? thumbSize / 2 : e.pageX - left - thumb.offsetLeft;
 		const pointerMove = useDebounce((e: PointerEvent) => {
 			const position = clamp(e.pageX - left - x, 0, max - thumbSize);
 			const value = map(position, 0, max - thumbSize, props.min, props.max);
