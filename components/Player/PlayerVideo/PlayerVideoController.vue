@@ -208,16 +208,14 @@
 		</div>
 		<div class="slider-wrapper">
 			<Slider
-				v-slot="slotProps"
 				v-model="currentPercent"
-				tooltip
 				:min="0"
 				:max="1"
 				:buffered="buffered"
 				:waiting="waiting"
-			>
-				{{ new Duration(slotProps.pendingValue * props.duration) }}
-			</Slider>
+				pending="cursor"
+				:displayValue="pending => new Duration(pending * props.duration).toString()"
+			/>
 		</div>
 		<div class="time" @click="countdown = !countdown">
 			<span class="current">{{ countdown ? countdownTime : currentTime }} </span>

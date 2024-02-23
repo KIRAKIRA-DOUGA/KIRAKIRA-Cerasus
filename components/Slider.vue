@@ -10,14 +10,23 @@
 		buffered?: number;
 		/** 加载中。 */
 		waiting?: boolean;
-		/** 显示工具提示。 */
-		tooltip?: boolean;
+		/**
+		 * 显示待定值工具提示。
+		 * - 如留空表示不显示。
+		 * - 如为 `current` 表示显示滑块当前值。
+		 * - 如为 `cursor` 表示显示光标所在位置的值。
+		 */
+		pending?: false | "current" | "cursor";
+		/** 待定值工具提示的显示值，或将数值转换为显示值的函数。 */
+		displayValue?: ((value: number) => Readable) | Readable;
 	}>(), {
 		min: 0,
 		max: 100,
 		defaultValue: undefined,
 		buffered: undefined,
 		waiting: false,
+		pending: false,
+		displayValue: undefined,
 	});
 
 	const emits = defineEmits<{
@@ -42,21 +51,21 @@
 	const buffered = computed(() => restrict(props.buffered, NaN));
 	const thumbEl = ref<HTMLDivElement>(), trackEl = ref<HTMLDivElement>();
 
-	const dragging = ref(false);
+	const showPendingState = ref<"" | "hovering" | "dragging">("");
 	const pendingValue = ref(0);
-	const { elementX, elementWidth, isOutside } = useMouseInElement(trackEl); // elementX: 鼠标在元素上的位置，elementWidth：元素宽度，isOutside：鼠标是否在元素外
+	const smoothPendingValue = useSmoothValue(pendingValue, 0.5);
+	/* const { elementX, elementWidth, isOutside } = useMouseInElement(trackEl); // elementX: 鼠标在元素上的位置，elementWidth：元素宽度，isOutside：鼠标是否在元素外
 	watch([elementX], () => {
 		const thumb = thumbEl.value!;
 		const thumbSizeHalf = thumb.offsetWidth / 2;
 		pendingValue.value = clamp(props.min, map(elementX.value, thumbSizeHalf, elementWidth.value - thumbSizeHalf, props.min, props.max), props.max); // FIXME: 与Click事件（第103行）的运算结果不一致。
-		console.log("Tooltip: " + pendingValue.value); // TODO: 调试用，修复问题后移除。
-	});
+	}); */
 
 	/**
 	 * 重置默认值。
 	 * @param e - 指针事件（包括鼠标和触摸）。
 	 */
-	function resetDefault(e: PointerEvent | MouseEvent) {
+	function resetToDefault(e: PointerEvent | MouseEvent) {
 		e.preventDefault();
 		if (props.defaultValue !== undefined && Number.isFinite(props.defaultValue))
 			for (const event of ["update:modelValue", "changing", "changed"] as const)
@@ -69,26 +78,40 @@
 	 * @param triggerByTrack - 是否是由点击轨道而转移过来调用的。
 	 */
 	function onThumbDown(e: PointerEvent, triggerByTrack: boolean = false) {
-		if (e.button === 1) { resetDefault(e); return; }
+		if (e.button === 1) { resetToDefault(e); return; }
 		const thumb = thumbEl.value!, track = trackEl.value!;
 		const thumbSize = thumb.offsetWidth;
 		const { left, width: max } = track.getBoundingClientRect();
 		const x = triggerByTrack ? thumbSize / 2 : e.pageX - left - thumb.offsetLeft;
+		pendingValue.value = value.value;
+		showPendingState.value = "dragging";
 		const pointerMove = useDebounce((e: PointerEvent) => {
 			const position = clamp(e.pageX - left - x, 0, max - thumbSize);
 			const value = map(position, 0, max - thumbSize, props.min, props.max);
 			model.value = value;
+			pendingValue.value = value;
 			emits("changing", value);
-			dragging.value = true;
 		});
-		const pointerUp = () => {
+		const pointerUp = (e: PointerEvent) => {
 			document.removeEventListener("pointermove", pointerMove);
 			document.removeEventListener("pointerup", pointerUp);
+			showPendingState.value = isInPath(e, track.parentElement) ? "hovering" : "";
 			emits("changed", model.value);
-			dragging.value = false;
 		};
 		document.addEventListener("pointermove", pointerMove);
 		document.addEventListener("pointerup", pointerUp);
+	}
+
+	/**
+	 * 获取指针在轨道上的值，供点击轨道和悬浮轨道一起使用。
+	 * @param e - 指针事件（包括鼠标和触摸）。
+	 * @returns 指针在轨道上的值。
+	 */
+	function getPointerOnTrackValue(e: PointerEvent) {
+		const thumb = thumbEl.value!, track = trackEl.value!;
+		const thumbSizeHalf = thumb.offsetWidth / 2;
+		const { width } = track.getBoundingClientRect();
+		return clamp(props.min, map(e.offsetX, thumbSizeHalf, width - thumbSizeHalf, props.min, props.max), props.max);
 	}
 
 	/**
@@ -96,16 +119,43 @@
 	 * @param e - 指针事件（包括鼠标和触摸）。
 	 */
 	async function onTrackDown(e: PointerEvent) {
-		if (e.button === 1) { resetDefault(e); return; }
-		const thumb = thumbEl.value!, track = trackEl.value!;
-		const thumbSizeHalf = thumb.offsetWidth / 2;
-		const { width } = track.getBoundingClientRect();
-		const value = clamp(props.min, map(e.offsetX, thumbSizeHalf, width - thumbSizeHalf, props.min, props.max), props.max);
+		if (e.button === 1) { resetToDefault(e); return; }
+		const value = getPointerOnTrackValue(e);
 		model.value = value;
-		console.log("Click: " + value); // TODO: 调试用，修复问题后移除。
 		emits("changing", value);
 		await nextTick();
 		onThumbDown(e, true); // 再去调用拖拽滑块的事件。
+	}
+
+	/**
+	 * 悬浮轨道逻辑处理。
+	 * @param e - 指针事件（包括鼠标和触摸）。
+	 */
+	function onTrackMove(e: PointerEvent) {
+		if (showPendingState.value === "")
+			showPendingState.value = "hovering";
+		if (showPendingState.value === "hovering")
+			pendingValue.value = props.pending === "cursor" ? getPointerOnTrackValue(e) : value.value;
+	}
+
+	/**
+	 * 离开轨道逻辑处理。
+	 * @param _e - 指针事件（包括鼠标和触摸）。
+	 */
+	function onTrackLeave(_e: PointerEvent) {
+		if (showPendingState.value === "hovering")
+			showPendingState.value = ""; // TODO: 如果鼠标悬浮在滑块上，则会识别为离开轨道，视觉体验会有一个缩放的跳动，效果略差待修复。
+	}
+
+	/**
+	 * 进入滑块逻辑处理。
+	 * @param e - 指针事件（包括鼠标和触摸）。
+	 */
+	function onThumbEnter() {
+		if (showPendingState.value === "") {
+			showPendingState.value = "hovering";
+			pendingValue.value = value.value;
+		}
 	}
 
 	/**
@@ -114,8 +164,12 @@
 	 */
 	function onLongPress(e: MouseEvent) {
 		if (!isMobile()) return; // 电脑端则忽略。
-		resetDefault(e);
+		resetToDefault(e);
 	}
+
+	const displayValue = computed(() =>
+		(typeof props.displayValue === "function" ? props.displayValue(pendingValue.value) : props.displayValue)
+		?? pendingValue.value);
 </script>
 
 <template>
@@ -124,6 +178,7 @@
 		:style="{
 			'--value': smoothValue,
 			'--buffered': buffered,
+			'--pending': smoothPendingValue,
 		}"
 		role="slider"
 		:aria-valuenow="value"
@@ -131,20 +186,28 @@
 		:aria-valuemax="max"
 		aria-orientation="horizontal"
 	>
-		<Contents>
-			<div ref="trackEl" class="track" @pointerdown="onTrackDown" @contextmenu="onLongPress"></div>
-			<div class="bg"></div>
-			<div v-show="Number.isFinite(buffered)" class="buffered"></div>
-			<div class="passed"></div>
-			<div ref="thumbEl" class="thumb" :class="{ waiting }" @pointerdown="onThumbDown" @contextmenu="onLongPress"></div>
-			<Transition>
-				<div v-if="tooltip" v-show="!isOutside || dragging" class="tooltip" :style="{ left: Math.max(0, Math.min(elementX, elementWidth)) + 'px' }">
-					<slot :pendingValue="pendingValue">
-						{{ pendingValue }}
-					</slot>
-				</div>
-			</Transition>
-		</Contents>
+		<div
+			ref="trackEl"
+			class="track"
+			@pointerdown="onTrackDown"
+			@contextmenu="onLongPress"
+			@pointermove="onTrackMove"
+			@pointerleave="onTrackLeave"
+		></div>
+		<div class="base"></div>
+		<div v-show="Number.isFinite(buffered)" class="buffered"></div>
+		<div class="passed"></div>
+		<div
+			ref="thumbEl"
+			class="thumb"
+			:class="{ waiting }"
+			@pointerdown="onThumbDown"
+			@contextmenu="onLongPress"
+			@pointerenter="onThumbEnter"
+		></div>
+		<Transition v-if="pending">
+			<div v-show="showPendingState" class="tooltip">{{ displayValue }}</div>
+		</Transition>
 	</Comp>
 </template>
 
@@ -154,6 +217,7 @@
 	$track-thickness: 6px;
 	$value: calc(var(--value) * (100% - var(--thumb-size)));
 	$buffered: calc(var(--buffered) * (100% - var(--thumb-size)));
+	$pending: calc(var(--pending) * (100% - var(--thumb-size)) + var(--thumb-size) / 2);
 
 	$large-track-thickness: 16px;
 	$large-thumb-size: 24px;
@@ -166,6 +230,7 @@
 	:comp {
 		--value: 0;
 		--buffered: 0;
+		--pending: -10086;
 		position: relative;
 		touch-action: none;
 
@@ -180,7 +245,8 @@
 		}
 	}
 
-	.track { // 实际可点击区域
+	/// 实际可点击区域
+	.track {
 		position: absolute;
 		width: 100%;
 		height: 36px;
@@ -188,7 +254,7 @@
 		translate: 0 calc(-50% + $track-thickness * 0.5);
 	}
 
-	.bg,
+	.base,
 	.passed,
 	.buffered {
 		@include oval;
@@ -196,7 +262,7 @@
 		margin: $thumb-size-half 0;
 	}
 
-	.bg {
+	.base {
 		background-color: c(gray-20);
 	}
 
@@ -232,7 +298,7 @@
 		cursor: pointer;
 		transition: $fallback-transitions, left 0s;
 
-		@include tablet { // 增加移动端大小以便拖拽。
+		@include tablet { // 增大移动端大小以便拖拽。
 			&::before {
 				@include square(36px);
 				@include circle;
@@ -255,23 +321,13 @@
 			scale: 0.7;
 		}
 
-		.bg:active ~ &::after,
+		.base:active ~ &::after,
 		&:active::after {
 			scale: 0.4 !important;
 		}
 
-		@keyframes breath {
-			from {
-				opacity: 1;
-			}
-
-			to {
-				opacity: 0.5;
-			}
-		}
-
 		&.waiting::after {
-			animation: breath 666.5ms linear alternate infinite; // 这里呼吸动画的速度对应了 ProgressRing。
+			animation: breath calc(2s / 3) linear alternate infinite; // 这里呼吸动画的速度对应了 ProgressRing。
 		}
 
 		@container style(--size: large) {
@@ -293,6 +349,7 @@
 		@include round-small;
 		position: absolute;
 		bottom: 24px;
+		left: $pending;
 		padding: 8px;
 		color: white;
 		font-weight: 500;
@@ -304,7 +361,8 @@
 		transition: none;
 		translate: -50% 0;
 
-		&::after { // 底部三角
+		/// 底部三角
+		&::after {
 			@include square(16px);
 			position: absolute;
 			bottom: -4px;
@@ -318,16 +376,26 @@
 		}
 
 		&.v-enter-active {
-			transition: scale $ease-out-expo 250ms !important;
+			transition: scale $ease-out-expo 250ms;
 		}
 
 		&.v-leave-active {
-			transition: scale $ease-in-expo 250ms !important;
+			transition: scale $ease-in-expo 250ms;
 		}
 
 		&.v-enter-from,
 		&.v-leave-to {
 			scale: 0;
+		}
+	}
+
+	@keyframes breath {
+		from {
+			opacity: 1;
+		}
+
+		to {
+			opacity: 0.5;
 		}
 	}
 </style>
