@@ -47,4 +47,8 @@
 			flex-grow: 1;
 		}
 	}
+
+	.slider {
+		margin-bottom: -10px;
+	}
 </style>

@@ -259,15 +259,11 @@
 <style scoped lang="scss">
 	$thumb-size: 24px;
 	$thumb-size-half: calc($thumb-size / 2);
-	
+
 	.title {
 		display: flex;
 		gap: 2px;
 		align-items: center;
-	}
-
-	:comp > :not(:last-child) {
-		margin-bottom: 16px;
 	}
 
 	%inner-stroke {
@@ -338,15 +334,22 @@
 		}
 	}
 
+	.slider {
+		margin-bottom: 0;
+
+		&:last-of-type {
+			margin-bottom: 16px;
+		}
+	}
+
 	.slider:deep {
 		--size: large;
-		margin-top: 16px;
 
 		.passed {
 			display: none;
 		}
 
-		.track {
+		.base {
 			position: relative;
 			overflow: hidden;
 
@@ -357,7 +360,7 @@
 	}
 
 	@function slider-model($model) {
-		@return ".slider.auxiliary.#{$model}:deep .track";
+		@return ".slider.auxiliary.#{$model}:deep .base";
 	}
 
 	#{slider-model(rgb)} {
@@ -380,7 +383,7 @@
 		background: linear-gradient(to right, black, var(--wo-v));
 	}
 
-	.slider.opacity:deep .track,
+	.slider.opacity:deep .base,
 	.checkerboard {
 		$color: c(gray-40);
 		--checkerboard-size: 8px;
@@ -399,7 +402,7 @@
 		}
 	}
 
-	.slider.opacity:deep .track::before {
+	.slider.opacity:deep .base::before {
 		position: absolute;
 		background: linear-gradient(to right, transparent, var(--wo-a));
 		inset: 0;

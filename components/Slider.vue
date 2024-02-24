@@ -230,7 +230,9 @@
 		--value: 0;
 		--buffered: 0;
 		--pending: -10086;
+		--track-hit-thickness: #{$track-hit-thickness};
 		position: relative;
+		height: var(--track-hit-thickness);
 		touch-action: none;
 
 		> * {
@@ -247,27 +249,29 @@
 	/// 实际可点击区域
 	.track {
 		position: absolute;
+		display: flex;
+		align-items: center;
 		width: 100%;
+		height: 100%;
 		cursor: pointer;
-		translate: 0 calc(-50% + $track-thickness * 0.5);
 	}
 
 	.base,
 	.passed,
 	.buffered {
 		@include oval;
+		position: absolute;
 		height: var(--track-thickness);
 		margin: $thumb-size-half 0;
 	}
 
 	.base {
+		width: 100%;
 		background-color: c(gray-20);
 	}
 
 	.passed,
 	.buffered {
-		position: absolute;
-		top: 0;
 		transition: none;
 		pointer-events: none;
 	}
@@ -289,7 +293,7 @@
 		@include flex-center;
 		@include control-ball-shadow;
 		position: absolute;
-		top: calc(var(--track-thickness) / 2);
+		top: calc(var(--track-thickness) / 2 + var(--thumb-size-half));
 		left: $value;
 		background-color: c(main-bg);
 		cursor: pointer;
@@ -297,7 +301,7 @@
 
 		@include tablet { // 增大移动端大小以便拖拽。
 			&::before {
-				@include square(36px);
+				@include square(var(--track-hit-thickness));
 				@include circle;
 				position: absolute;
 				content: "";
@@ -345,7 +349,7 @@
 	.tooltip {
 		@include round-small;
 		position: absolute;
-		bottom: 24px;
+		top: -100%;
 		left: $pending;
 		padding: 8px;
 		color: white;
