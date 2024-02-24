@@ -2,8 +2,8 @@ import { addImports, addPlugin, addTemplate, createResolver, defineNuxtModule } 
 import { dirname } from "path";
 import { PREFERENTIAL_BASE_URL, PREFERENTIAL_TEMPLATE_PATH } from "../shared/constants";
 import { minifyJavaScript } from "../shared/encode";
-import { COOKIE_BANDER_SCRIPT_TEMPLATE_NAME } from "./constants";
-import { cookieBinding } from "./cookieBinding";
+import { THEME_COOKIE_BANDER_SCRIPT_TEMPLATE_NAME } from "./constants";
+import { cookieBinding } from "./theme-cookie-binding";
 
 /**
  * 将传入的函数的函数体部分序列化为一个字面量字符串。
@@ -29,7 +29,7 @@ export default defineNuxtModule({
 		addImports({ name: "saveUserSetting2BrowserCookieStore", as: "saveUserSetting2BrowserCookieStore", from: composablesRoute });
 		addImports({ name: "useKiraCookie", as: "useKiraCookie", from: composablesRoute });
 		addImports({ name: "SyncUserSettings", as: "SyncUserSettings", from: composablesRoute });
-		const cookieBindingRoute = resolve("cookieBinding");
+		const cookieBindingRoute = resolve("theme-cookie-binding");
 		addImports({ name: "DEFAULT_COOKIE_OPTION", as: "DEFAULT_COOKIE_OPTION", from: cookieBindingRoute });
 		addImports({ name: "THEME_ENV", as: "THEME_ENV", from: cookieBindingRoute });
 		addImports({ name: "COOKIE_KEY", as: "COOKIE_KEY", from: cookieBindingRoute });
@@ -38,7 +38,7 @@ export default defineNuxtModule({
 		let cookieBanderContent = `(function (autoCall = true) {${getFunctionBody(cookieBinding, false)}})();`;
 		cookieBanderContent = await minifyJavaScript(cookieBanderContent);
 		const cookieBanderTemplate = addTemplate({
-			filename: PREFERENTIAL_TEMPLATE_PATH + COOKIE_BANDER_SCRIPT_TEMPLATE_NAME,
+			filename: PREFERENTIAL_TEMPLATE_PATH + THEME_COOKIE_BANDER_SCRIPT_TEMPLATE_NAME,
 			write: true,
 			getContents: () => cookieBanderContent,
 		});
