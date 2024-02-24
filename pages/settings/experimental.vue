@@ -1,8 +1,10 @@
 <script setup lang="ts">
+	// 允许同步的 kira cookie 设置
+	const useLocalKiraCookieOptions = { isWatchCookieRef: true, isSyncSettings: false, isListenLoginEvent: false };
 	// 直角模式
-	const cookieSharpAppearanceMode = useKiraCookie<boolean>(COOKIE_KEY.sharpAppearanceModeCookieKey, SyncUserSettings.updateOrCreateUserSharpAppearanceModeSetting);
+	const cookieSharpAppearanceMode = useKiraCookie<boolean>(COOKIE_KEY.sharpAppearanceModeCookieKey, SyncUserSettings.updateOrCreateUserSharpAppearanceModeSetting, useLocalKiraCookieOptions);
 	// 扁平模式
-	const cookieFlatAppearanceMode = useKiraCookie<boolean>(COOKIE_KEY.flatAppearanceModeCookieKey, SyncUserSettings.updateOrCreateUserFlatAppearanceModeSetting);
+	const cookieFlatAppearanceMode = useKiraCookie<boolean>(COOKIE_KEY.flatAppearanceModeCookieKey, SyncUserSettings.updateOrCreateUserFlatAppearanceModeSetting, useLocalKiraCookieOptions);
 </script>
 
 <template>

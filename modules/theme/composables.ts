@@ -83,21 +83,40 @@ export function saveUserSetting2BrowserCookieStore(userSettings: GetUserSettings
 }
 
 /**
+ * useKiraCookie 函数的选项
+ */
+export type UseKiraCookieOptions = {
+	/** 是否监听 cookie 的响应式变化并调用 callback，默认不开启以免重复监听，请仅在需要监听时显式手动开启 */
+	isWatchCookieRef?: boolean;
+	/** 值为 true 时，如果 cookie 有响应式变化，并且用户开启了多端同步，则发送网络请求到后端，值为 false 时则不发送，默认为 true */
+	isSyncSettings?: boolean;
+	/**
+	 * 是否监听用户 login（完成）事件，并在 login（完成）后，从 cookie 中同步最新的 cookie 值，默认不开启以免重复监听，请仅在需要监听时显式手动开启 // WARN 注意：开启此项会同时开启 isWatchCookieRef
+	 */
+	isListenLoginEvent?: boolean;
+};
+/**
  * 通过 useCookie 创建并返回一个 nuxt 响应式 cookie 对象，并在该响应式 cookie 的值被更新后调用 callback 方法 // TODO 目前只支持监听在程序代码中显式更新的 cookie，比如通过 cookie.value 为 cookie 重新赋值，而不支持在客户端浏览器中更新的 cookie，或许 nuxt 3.10 之后有办法解决
  * @param cookieKey cookie 的 key
  * @param callback cookie 被显示更新后调用的 callback
- * @param isWatchCookieRef 是否监听 cookie 的响应式变化并调用 callback，默认不开启以免重复监听，请仅在需要监听时显式手动开启
- * @param isListenLoginEvent 是否监听用户 login（完成）事件，并在 login（完成）后，从 cookie 中同步最新的 cookie 值，默认不开启以免重复监听，请仅在需要监听时显式手动开启 // WARN 注意：开启此项会同时开启 isWatchCookieRef
+ * @param options 设置，详见 UseKiraCookieOptions
  * @returns nuxt 响应式 cookie 对象
  */
-export function useKiraCookie<T>(cookieKey: string, callback: (setting: T) => void, isWatchCookieRef: boolean = false, isListenLoginEvent: boolean = false): CookieRef<T> {
+export function useKiraCookie<T>(
+	cookieKey: string,
+	callback: (setting: T) => void,
+	{
+		isWatchCookieRef = false,
+		isSyncSettings = true,
+		isListenLoginEvent = false,
+	}: UseKiraCookieOptions = {}): CookieRef<T> {
 	const userSettingsCookieBasicOption = { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false, watch: true };
 	const cookie = useCookie<T>(cookieKey, userSettingsCookieBasicOption);
 
 	try {
 		const selfUserInfoStore = useSelfUserInfoStore();
 		const appSettingsStore = useAppSettingsStore();
-		const isAllowSyncThemeSettings = computed(() => appSettingsStore.isAllowSyncThemeSettings && selfUserInfoStore.isLogined);
+		const isAllowSyncThemeSettings = computed(() => appSettingsStore.isAllowSyncThemeSettings && selfUserInfoStore.isLogined && isSyncSettings);
 
 		if (isWatchCookieRef || isListenLoginEvent)
 			watch(cookie, cookieValue => { // 当设置值发送改变时，发送后端请求，并触发 cookieBinding 更新页面样式
