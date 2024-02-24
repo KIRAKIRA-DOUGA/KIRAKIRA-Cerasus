@@ -61,9 +61,12 @@
 	 */
 	function resetToDefault(e: PointerEvent | MouseEvent) {
 		e.preventDefault();
-		if (props.defaultValue !== undefined && Number.isFinite(props.defaultValue))
+		if (props.defaultValue !== undefined && Number.isFinite(props.defaultValue)) {
 			for (const event of ["update:modelValue", "changing", "changed"] as const)
 				emits(event as "changing", props.defaultValue);
+			if (props.pending === "current")
+				pendingValue.value = props.defaultValue;
+		}
 	}
 
 	/**

@@ -16,7 +16,7 @@
 		</Segmented>
 		<p>{{ value }}</p>
 		<div class="slider-wrapper">
-			<Slider v-model="value" :min="0" :max="1" :pending="pending" />
+			<Slider v-model="value" :min="0" :max="1" :pending="pending" :defaultValue="0.5" />
 		</div>
 	</div>
 </template>
