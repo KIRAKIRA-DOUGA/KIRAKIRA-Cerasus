@@ -126,6 +126,7 @@
 	 * @param e - 指针事件（包括鼠标和触摸）。
 	 */
 	function onTrackMove(e: PointerEvent) {
+		if (isInPath(e, thumbEl)) return;
 		if (showPendingState.value === "")
 			showPendingState.value = "hovering";
 		if (showPendingState.value === "hovering")
@@ -143,13 +144,12 @@
 
 	/**
 	 * 进入滑块逻辑处理。
-	 * @param e - 指针事件（包括鼠标和触摸）。
+	 * @param _e - 指针事件（包括鼠标和触摸）。
 	 */
-	function onThumbEnter() {
-		if (showPendingState.value === "") {
+	function onThumbEnter(_e: PointerEvent) {
+		if (showPendingState.value === "")
 			showPendingState.value = "hovering";
-			pendingValue.value = value.value;
-		}
+		pendingValue.value = value.value;
 	}
 
 	/**
@@ -187,18 +187,19 @@
 			@contextmenu="onLongPress"
 			@pointermove="onTrackMove"
 			@pointerleave="onTrackLeave"
-		></div>
-		<div class="base"></div>
-		<div v-show="Number.isFinite(buffered)" class="buffered"></div>
-		<div class="passed"></div>
-		<div
-			ref="thumbEl"
-			class="thumb"
-			:class="{ waiting }"
-			@pointerdown="onThumbDown"
-			@contextmenu="onLongPress"
-			@pointerenter="onThumbEnter"
-		></div>
+		>
+			<div class="base"></div>
+			<div v-show="Number.isFinite(buffered)" class="buffered"></div>
+			<div class="passed"></div>
+			<div
+				ref="thumbEl"
+				class="thumb"
+				:class="{ waiting }"
+				@pointerdown.stop="onThumbDown"
+				@contextmenu="onLongPress"
+				@pointerenter="onThumbEnter"
+			></div>
+		</div>
 		<Transition v-if="pending">
 			<div v-show="showPendingState" class="tooltip">{{ displayValue }}</div>
 		</Transition>
@@ -209,6 +210,7 @@
 	$thumb-size: 16px;
 	$thumb-size-half: calc(var(--thumb-size) / 2);
 	$track-thickness: 6px;
+	$track-hit-thickness: 36px; // 反应区
 	$value: calc(var(--value) * (100% - var(--thumb-size)));
 	$buffered: calc(var(--buffered) * (100% - var(--thumb-size)));
 	$pending: calc(var(--pending) * (100% - var(--thumb-size)) + var(--thumb-size) / 2);
@@ -243,7 +245,6 @@
 	.track {
 		position: absolute;
 		width: 100%;
-		height: 36px;
 		cursor: pointer;
 		translate: 0 calc(-50% + $track-thickness * 0.5);
 	}
@@ -264,7 +265,6 @@
 	.buffered {
 		position: absolute;
 		top: 0;
-		margin-top: 0;
 		transition: none;
 		pointer-events: none;
 	}
@@ -286,7 +286,7 @@
 		@include flex-center;
 		@include control-ball-shadow;
 		position: absolute;
-		top: calc(var(--track-thickness) / 2 - $thumb-size-half);
+		top: calc(var(--track-thickness) / 2);
 		left: $value;
 		background-color: c(main-bg);
 		cursor: pointer;
