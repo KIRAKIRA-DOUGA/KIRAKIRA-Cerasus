@@ -1,13 +1,13 @@
 <script setup lang="ts">
 	// 直角模式
-	const cookieSharpAppearanceMode = useKiraCookie<boolean>(COOKIE_KEY.sharpAppearanceModeCookieKey, SyncUserSettings.updateOrCreateUserSharpAppearanceModeSetting, true, true);
+	const cookieSharpAppearanceMode = useKiraCookie<boolean>(COOKIE_KEY.sharpAppearanceModeCookieKey, SyncUserSettings.updateOrCreateUserSharpAppearanceModeSetting);
 	// 扁平模式
-	const cookieFlatAppearanceMode = useKiraCookie<boolean>(COOKIE_KEY.flatAppearanceModeCookieKey, SyncUserSettings.updateOrCreateUserFlatAppearanceModeSetting, true, true);
+	const cookieFlatAppearanceMode = useKiraCookie<boolean>(COOKIE_KEY.flatAppearanceModeCookieKey, SyncUserSettings.updateOrCreateUserFlatAppearanceModeSetting);
 </script>
 
 <template>
 	<Subheader icon="error" class="danger">
-		下列设置项皆为实验性功能，不保证稳定运行。在尝试使用的同时，请务必注意安全！
+		下列设置项皆为实验性功能，不保证稳定运行，不会多端同步。在尝试使用的同时，请务必注意安全！
 		<br />
 		开启本页面任意一设置项，则代表你已阅读、充分理解并同意以下附加条款：
 		<br />
