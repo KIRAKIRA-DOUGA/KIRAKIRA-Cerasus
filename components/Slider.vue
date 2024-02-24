@@ -52,7 +52,6 @@
 	const thumbEl = ref<HTMLDivElement>(), trackEl = ref<HTMLDivElement>();
 
 	const showPendingState = ref<"" | "hovering" | "dragging">("");
-	const hoveringThumb = ref(false);
 	const pendingValue = ref(0);
 	const smoothPendingValue = useSmoothValue(pendingValue, 0.5);
 
@@ -129,9 +128,7 @@
 	function onTrackMove(e: PointerEvent) {
 		if (showPendingState.value === "")
 			showPendingState.value = "hovering";
-		if (hoveringThumb.value === true)
-			pendingValue.value = value.value;
-		else if (showPendingState.value === "hovering")
+		if (showPendingState.value === "hovering")
 			pendingValue.value = props.pending === "cursor" ? getPointerOnTrackValue(e) : value.value;
 	}
 
@@ -141,7 +138,7 @@
 	 */
 	function onTrackLeave(_e: PointerEvent) {
 		if (showPendingState.value === "hovering")
-			showPendingState.value = "";
+			showPendingState.value = ""; // TODO: 如果鼠标悬浮在滑块上，则会识别为离开轨道，视觉体验会有一个缩放的跳动，效果略差待修复。
 	}
 
 	/**
@@ -149,15 +146,10 @@
 	 * @param e - 指针事件（包括鼠标和触摸）。
 	 */
 	function onThumbEnter() {
-		hoveringThumb.value = true;
-	}
-
-	/**
-	 * 离开滑块逻辑处理。
-	 * @param e - 指针事件（包括鼠标和触摸）。
-	 */
-	function onThumbLeave() {
-		hoveringThumb.value = false;
+		if (showPendingState.value === "") {
+			showPendingState.value = "hovering";
+			pendingValue.value = value.value;
+		}
 	}
 
 	/**
@@ -188,9 +180,6 @@
 		:aria-valuemax="max"
 		aria-orientation="horizontal"
 	>
-		<div class="base"></div>
-		<div v-show="Number.isFinite(buffered)" class="buffered"></div>
-		<div class="passed"></div>
 		<div
 			ref="trackEl"
 			class="track"
@@ -198,17 +187,18 @@
 			@contextmenu="onLongPress"
 			@pointermove="onTrackMove"
 			@pointerleave="onTrackLeave"
-		>
-			<div
-				ref="thumbEl"
-				class="thumb"
-				:class="{ waiting }"
-				@pointerdown="onThumbDown"
-				@contextmenu="onLongPress"
-				@pointerenter="onThumbEnter"
-				@pointerleave="onThumbLeave"
-			></div>
-		</div>
+		></div>
+		<div class="base"></div>
+		<div v-show="Number.isFinite(buffered)" class="buffered"></div>
+		<div class="passed"></div>
+		<div
+			ref="thumbEl"
+			class="thumb"
+			:class="{ waiting }"
+			@pointerdown="onThumbDown"
+			@contextmenu="onLongPress"
+			@pointerenter="onThumbEnter"
+		></div>
 		<Transition v-if="pending">
 			<div v-show="showPendingState" class="tooltip">{{ displayValue }}</div>
 		</Transition>
@@ -219,7 +209,6 @@
 	$thumb-size: 16px;
 	$thumb-size-half: calc(var(--thumb-size) / 2);
 	$track-thickness: 6px;
-	$track-wrapper-thickness: 36px;
 	$value: calc(var(--value) * (100% - var(--thumb-size)));
 	$buffered: calc(var(--buffered) * (100% - var(--thumb-size)));
 	$pending: calc(var(--pending) * (100% - var(--thumb-size)) + var(--thumb-size) / 2);
@@ -253,9 +242,8 @@
 	/// 实际可点击区域
 	.track {
 		position: absolute;
-		top: 0;
 		width: 100%;
-		height: $track-wrapper-thickness;
+		height: 36px;
 		cursor: pointer;
 		translate: 0 calc(-50% + $track-thickness * 0.5);
 	}
@@ -298,7 +286,7 @@
 		@include flex-center;
 		@include control-ball-shadow;
 		position: absolute;
-		top: calc($track-wrapper-thickness / 2 - $thumb-size-half);
+		top: calc(var(--track-thickness) / 2 - $thumb-size-half);
 		left: $value;
 		background-color: c(main-bg);
 		cursor: pointer;
@@ -306,7 +294,7 @@
 
 		@include tablet { // 增大移动端大小以便拖拽。
 			&::before {
-				@include square($track-wrapper-thickness);
+				@include square(36px);
 				@include circle;
 				position: absolute;
 				content: "";
