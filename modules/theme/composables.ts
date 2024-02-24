@@ -88,7 +88,7 @@ export function saveUserSetting2BrowserCookieStore(userSettings: GetUserSettings
 export type UseKiraCookieOptions = {
 	/** 是否监听 cookie 的响应式变化并调用 callback，默认不开启以免重复监听，请仅在需要监听时显式手动开启 */
 	isWatchCookieRef?: boolean;
-	/** 值为 true 时，如果 cookie 有响应式变化，并且用户开启了多端同步，则发送网络请求到后端，值为 false 时则不发送，默认为 true */
+	/** 在已开启 isWatchCookieRef 的前提下，isSyncSettings 的值为 true 时，如果 cookie 发生响应式变化，并且用户开启了多端同步，则发送网络请求到后端，值为 false 时则一律不发送，默认为 true */
 	isSyncSettings?: boolean;
 	/**
 	 * 是否监听用户 login（完成）事件，并在 login（完成）后，从 cookie 中同步最新的 cookie 值，默认不开启以免重复监听，请仅在需要监听时显式手动开启 // WARN 注意：开启此项会同时开启 isWatchCookieRef
