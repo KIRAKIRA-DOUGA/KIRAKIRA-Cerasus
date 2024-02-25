@@ -238,6 +238,32 @@ html.flat {
 	}
 }
 
+// #region 主题过渡
+::view-transition-old(root),
+::view-transition-new(root) {
+	mix-blend-mode: normal;
+	transition: none !important;
+	animation: none !important;
+}
+
+::view-transition-old(*),
+::view-transition-new(*),
+::view-transition-old(*::before),
+::view-transition-new(*::after) {
+	transition: none !important;
+}
+
+::view-transition-old(root),
+.dark.changing-theme::view-transition-new(root) {
+	z-index: 1;
+}
+
+::view-transition-new(root),
+.dark.changing-theme::view-transition-old(root) {
+	z-index: 2147483646;
+}
+// #endregion
+
 // #region 页面过渡
 .page-forward-enter-active,
 .page-backward-enter-active,

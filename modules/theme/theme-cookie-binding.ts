@@ -12,7 +12,7 @@ export const THEME_ENV = {
 	THEME_DARK: "dark",
 	THEME_LIGHT: "light",
 	NO_COLORED_SIDEBAR: "false",
-	NO_SHARP_APPEARANCE_MODE: "false",
+	NO_SHARP_APPEARANCE_MODE: "false", // FIXME: 不是已经没有实验性数据了吗！
 	NO_FLAT_APPEARANCE_MODE: "false",
 	// HACK 1 在此处添加
 };
@@ -29,6 +29,10 @@ export const COOKIE_KEY = {
 	// HACK 2 在此处添加
 };
 
+let lastClickMouseEvent: MouseEvent | undefined;
+if (process.client)
+	document.addEventListener("click", e => lastClickMouseEvent = e, true);
+
 /**
  * 在 DOM 加载之前执行的脚本。
  */
@@ -38,7 +42,7 @@ export function cookieBinding() {
 	// theme 默认值，请保持和上方 THEME_ENV 全局变量的值一致
 	const SYSTEM_THEME = "system";
 	const DEFAULT_THEME_COLOR = "pink";
-	const CUSTOM_THEME_COLOR = "customer";
+	const CUSTOM_THEME_COLOR = "customer"; // FIXME: 请改为 "custom"！
 	// const DEFAULT_CUSTOM_THEME_COLOR = "66CCFF"; // TODO 设置默认自定义主题色
 	const THEME_DARK = "dark";
 	const THEME_LIGHT = "light";
@@ -75,7 +79,7 @@ export function cookieBinding() {
 	try {
 		let currentThemeType;
 		let themeColor;
-		let customerThemeColor;
+		let customerThemeColor; // FIXME: "customThemeColor"
 		let isColoredSidebar;
 		let isSharpAppearanceMode;
 		let isFlatAppearanceMode;
@@ -125,15 +129,42 @@ export function cookieBinding() {
 
 		// 绑定 cookie 中的样式到 html
 		const rootNode = document.documentElement;
+		const isPreviousDark = rootNode.classList.contains("dark");
 		rootNode.className = "kirakira";
-		if (currentThemeType && currentThemeType !== "system") rootNode.classList.add(currentThemeType); else if (currentThemeType && currentThemeType === "system") rootNode.classList.add(systemThemeType);
-		if (themeColor && themeColor === CUSTOM_THEME_COLOR && customerThemeColor)
-			console.log("themeCustomerColor", customerThemeColor); // TODO 设置自定义主题色
-		else if (themeColor)
-			rootNode.classList.add(themeColor);
 		if (`${isColoredSidebar}` === "true") rootNode.classList.add("colored-sidebar");
 		if (`${isSharpAppearanceMode}` === "true") rootNode.classList.add("sharp");
 		if (`${isFlatAppearanceMode}` === "true") rootNode.classList.add("flat");
+		if (themeColor && themeColor === CUSTOM_THEME_COLOR && customerThemeColor)
+			console.log("themeCustomerColor", customerThemeColor); // FIXME: "themeCustomColor" // TODO 设置自定义主题色
+		else if (themeColor)
+			rootNode.classList.add(themeColor);
+		if (currentThemeType) {
+			const actualThemeType = currentThemeType === "system" ? systemThemeType : currentThemeType;
+			const isDark = actualThemeType === "dark";
+			const updateThemeSettings = () => rootNode.classList.toggle("dark", isDark);
+
+			if (!lastClickMouseEvent) updateThemeSettings();
+			else if (isPreviousDark !== isDark) {
+				if (isPreviousDark) rootNode.classList.add("dark");
+				const { x, y } = lastClickMouseEvent;
+				const endRadius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+				const clipPath = [
+					`circle(0px at ${x}px ${y}px)`,
+					`circle(${endRadius}px at ${x}px ${y}px)`,
+				];
+				const CHANGING_THEME_CLASS = "changing-theme";
+				rootNode.classList.add(CHANGING_THEME_CLASS);
+				startViewTransition(updateThemeSettings, {
+					clipPath: actualThemeType === "light" ? clipPath : clipPath.toReversed(),
+				}, {
+					duration: 300,
+					easing: eases.easeInOutSmooth,
+					pseudoElement: actualThemeType === "light" ? "::view-transition-new(root)" : "::view-transition-old(root)",
+				}).then(() => {
+					rootNode.classList.remove(CHANGING_THEME_CLASS);
+				});
+			}
+		}
 		// HACK 14 在此处添加
 	} catch (error) {
 		console.error("ERROR", "ERROR IN cookieBander", error);

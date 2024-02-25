@@ -243,3 +243,44 @@ export function simpleAnimateSize(specified: "width" | "height" = "height", dura
 
 	return [onEnter, onLeave];
 }
+
+/**
+ * 为整个页面添加视图过渡动画。
+ * @param changeFunc - 使页面变化的回调函数。
+ * @param keyframes - 动画关键帧。
+ * @param options - 动画选项。
+ * @returns 在动画播放完成之后可执行析构函数。
+ */
+export async function startViewTransition(changeFunc: () => MaybePromise<void | unknown>, keyframes: Keyframe[] | PropertyIndexedKeyframes, options: KeyframeAnimationOptions = {}) {
+	if (!("startViewTransition" in document)) {
+		await changeFunc();
+		return;
+	}
+
+	const style = document.createElement("style");
+	style.textContent = `
+		*,
+		*::before,
+		*::after {
+			-webkit-transition: none !important;
+			-moz-transition: none !important;
+			-o-transition: none !important;
+			-ms-transition: none !important;
+			transition: none !important;
+			will-change: background;
+		}
+	`;
+	document.head.appendChild(style);
+
+	options.duration ??= 300;
+	options.easing ??= eases.easeInOutSmooth;
+	options.pseudoElement ??= "::view-transition-new(root)";
+
+	// @ts-expect-error: Transition API
+	const transition = document.startViewTransition(changeFunc);
+	await transition.ready;
+
+	const animation = document.documentElement.animate(keyframes, options);
+	await animation.finished;
+	document.head.removeChild(style);
+}
