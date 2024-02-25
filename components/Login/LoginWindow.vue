@@ -54,6 +54,13 @@
 				if (loginResponse.success && loginResponse.uid) {
 					open.value = false;
 					selfUserInfoStore.isLogined = true;
+
+					// 登陆后，将用户设置存储到 cookie，然后调用 cookieBinding 从 cookie 中获取样式设置并追加到 dom 根节点
+					const userSettings = await api.user.getUserSettings();
+					saveUserSetting2BrowserCookieStore(userSettings);
+					cookieBinding();
+
+					// 触发用户登录事件
 					useEvent("user:login", true);
 				} else
 					useToast(t.toast.login_failed, "error");

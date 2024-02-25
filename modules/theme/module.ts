@@ -1,14 +1,14 @@
 import { addImports, addPlugin, addTemplate, createResolver, defineNuxtModule } from "@nuxt/kit";
 import { dirname } from "path";
 import { PREFERENTIAL_BASE_URL, PREFERENTIAL_TEMPLATE_PATH } from "../shared/constants";
-import { TEMPLATE_NAME } from "./constants";
 import { minifyJavaScript } from "../shared/encode";
-import script from "./script";
+import { THEME_COOKIE_BANDER_SCRIPT_TEMPLATE_NAME } from "./constants";
+import { cookieBinding } from "./theme-cookie-binding";
 
 /**
- * 获取函数体内容。
+ * 将传入的函数的函数体部分序列化为一个字面量字符串。
  * @param func - 函数。
- * @param compressed - 是否压缩代码？
+ * @param compressed - 是否丑化（压缩）代码？
  * @returns 函数的内容字符串。
  */
 export function getFunctionBody(func: Function, compressed: boolean) {
@@ -24,21 +24,29 @@ export default defineNuxtModule({
 		const { resolve } = createResolver(import.meta.url);
 
 		addPlugin(resolve("plugin"));
-		addImports({ name: "Theme", as: "Theme", from: resolve("composables")/* .replaceAll("\\", "/") */ });
+		const composablesRoute = resolve("composables");
+		addImports({ name: "cookieBaker", as: "cookieBaker", from: composablesRoute });
+		addImports({ name: "saveUserSetting2BrowserCookieStore", as: "saveUserSetting2BrowserCookieStore", from: composablesRoute });
+		addImports({ name: "useKiraCookie", as: "useKiraCookie", from: composablesRoute });
+		addImports({ name: "SyncUserSettings", as: "SyncUserSettings", from: composablesRoute });
+		const cookieBindingRoute = resolve("theme-cookie-binding");
+		addImports({ name: "DEFAULT_COOKIE_OPTION", as: "DEFAULT_COOKIE_OPTION", from: cookieBindingRoute });
+		addImports({ name: "THEME_ENV", as: "THEME_ENV", from: cookieBindingRoute });
+		addImports({ name: "COOKIE_KEY", as: "COOKIE_KEY", from: cookieBindingRoute });
+		addImports({ name: "cookieBinding", as: "cookieBinding", from: cookieBindingRoute });
 
-		let scriptContent = `(function (autoCall = true) {${getFunctionBody(script, false)}})();`;
-		scriptContent = await minifyJavaScript(scriptContent);
-		const template = addTemplate({
-			filename: PREFERENTIAL_TEMPLATE_PATH + TEMPLATE_NAME,
+		let cookieBanderContent = `(function (autoCall = true) {${getFunctionBody(cookieBinding, false)}})();`;
+		cookieBanderContent = await minifyJavaScript(cookieBanderContent);
+		const cookieBanderTemplate = addTemplate({
+			filename: PREFERENTIAL_TEMPLATE_PATH + THEME_COOKIE_BANDER_SCRIPT_TEMPLATE_NAME,
 			write: true,
-			getContents: () => scriptContent,
+			getContents: () => cookieBanderContent,
 		});
-
 		// 参考自：https://github.com/nuxt/nuxt/discussions/17691
 		nuxt.options.nitro.publicAssets = nuxt.options.nitro.publicAssets || [];
 		nuxt.options.nitro.publicAssets.push({
 			baseURL: PREFERENTIAL_BASE_URL,
-			dir: dirname(template.dst),
+			dir: dirname(cookieBanderTemplate.dst),
 		});
 
 		nuxt.hook("nitro:config", nitro => {

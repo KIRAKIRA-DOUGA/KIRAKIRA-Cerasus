@@ -4,7 +4,6 @@
 		return palettes[`/assets/images/palettes/${name}.webp`].default;
 	};
 
-	const { theme, palette, actualTheme } = Theme;
 	const themeList = ["light", "dark", "system"] as const;
 	const paletteList = [
 		{ color: "pink", subtitle: "Kawaii Forever" },
@@ -16,11 +15,27 @@
 	] as const;
 	const paletteSection = ref<HTMLElement>();
 
+	// HACK 16 请参照此部分 ↓ ↓ ↓
+
+	// 允许同步的 kira cookie 设置
+	const useSyncKiraCookieOptions = { isWatchCookieRef: true, isSyncSettings: true, isListenLoginEvent: true };
+
+	// 主题
+	const cookieThemeType = useKiraCookie<ThemeSetType>(COOKIE_KEY.themeTypeCookieKey, SyncUserSettings.updateOrCreateUserThemeTypeSetting, useSyncKiraCookieOptions);
+	// 个性色
+	const cookieThemeColor = useKiraCookie<string>(COOKIE_KEY.themeColorCookieKey, SyncUserSettings.updateOrCreateUserThemeColorSetting, useSyncKiraCookieOptions);
+	// // TODO 自定义个性色
+	// const cookieColoredSidebar = useKiraCookie<string>( // TODO )
+	// 彩色侧边栏
+	const cookieColoredSidebar = useKiraCookie<boolean>(COOKIE_KEY.coloredSidebarCookieKey, SyncUserSettings.updateOrCreateUserColoredSidebarSetting, useSyncKiraCookieOptions);
+
+	// HACK 16 请参照此部分 ↑ ↑ ↑
+
 	onMounted(() => {
 		if (paletteSection.value)
 			for (const item of paletteSection.value.children) {
 				item.classList.remove("light", "dark");
-				item.classList.add(actualTheme.value);
+				item.classList.add(cookieThemeType.value);
 			}
 	});
 </script>
@@ -35,10 +50,10 @@
 			v-for="item in themeList"
 			:id="item"
 			:key="item"
-			v-model="theme"
+			v-model="cookieThemeType"
 			:title="t.scheme[item]"
 		>
-			<LogoThemePreview :theme="item" :accent="palette" />
+			<LogoThemePreview :theme="item" :accent="cookieThemeColor" />
 		</SettingsGridItem>
 	</section>
 
@@ -48,10 +63,10 @@
 			v-for="item in paletteList"
 			:id="item.color"
 			:key="item.color"
-			v-model="palette"
+			v-model="cookieThemeColor"
 			:title="t.palette[item.color]"
 			class="force-color"
-			:class="[item.color, actualTheme]"
+			:class="[item.color, cookieThemeType]"
 		>
 			<div class="content">
 				<img :src="getPaletteImage(item.color)" alt="Is the Order a Rabbit?" />
@@ -71,7 +86,7 @@
 
 	<Subheader icon="more_horiz">{{ t(2).other }}</Subheader>
 	<section list>
-		<ToggleSwitch v-model="useAppSettingsStore().coloredSideBar" v-ripple icon="dehaze">{{ t.appearance.colorful_navbar }}</ToggleSwitch>
+		<ToggleSwitch v-model="cookieColoredSidebar" v-ripple icon="dehaze">{{ t.appearance.colorful_navbar }}</ToggleSwitch>
 	</section>
 </template>
 

@@ -94,7 +94,7 @@
 	const initialDanmaku = ref<DanmakuComment[]>();
 	const screenOrientationBeforeFullscreen = ref<OrientationType>("portrait-primary");
 	const playerVideoControllerMouseDown = ref(false);
-	const fullscreenColorClass = computed(() => ({ [`force-color dark ${Theme.palette.value}`]: fullscreen.value }));
+	const fullscreenColorClass = computed(() => ({ [`force-color dark ${useCookie(COOKIE_KEY.themeColorCookieKey, DEFAULT_COOKIE_OPTION) || THEME_ENV.DEFAULT_THEME_COLOR}`]: fullscreen.value }));
 	type MediaInfo = Record<string, Record<string, unknown>>;
 
 	/**

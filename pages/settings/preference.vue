@@ -7,6 +7,9 @@
 		noViewHistory: false,
 	});
 	const openInNewWindow = ref(false);
+
+	const selfUserInfoStore = useSelfUserInfoStore();
+	const appSettingsStore = useAppSettingsStore();
 </script>
 
 <template>
@@ -33,5 +36,18 @@
 	<Subheader icon="placeholder">新窗口</Subheader>
 	<section list>
 		<ToggleSwitch v-model="openInNewWindow" icon="placeholder">在新窗口打开视频</ToggleSwitch>
+	</section>
+
+	<Subheader icon="placeholder">多设备<!-- TODO: 使用多语言 --></Subheader>
+	<section list>
+		<ToggleSwitch
+			v-model="appSettingsStore.isAllowSyncThemeSettings"
+			v-ripple
+			:disabled="!selfUserInfoStore.isLogined"
+			icon="palette"
+			details="已登录用户在开启此选项后，除实验性设置外，用户对外观，如：主题、个性色等设置做出的修改，会同步到其他设备。"
+		>
+			同步外观样式<!-- TODO: 使用多语言 -->
+		</ToggleSwitch>
 	</section>
 </template>
