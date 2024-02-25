@@ -1,6 +1,4 @@
 <script setup lang="ts">
-	import testBackground from "assets/images/test-background.png";
-
 	const props = withDefaults(defineProps<{
 		/**
 		 * 最终视频链接。
@@ -26,7 +24,7 @@
 	}>(), {
 		link: "#",
 		videoId: undefined,
-		image: testBackground,
+		image: undefined,
 		date: undefined,
 		watchedCount: 0,
 		uploaderId: undefined,
@@ -44,7 +42,7 @@
 	<LocaleLink class="thumb-video lite" :to="link" :blank="blank">
 		<div class="card">
 			<div class="cover-wrapper">
-				<img :src="image" alt="cover" class="cover" :draggable="false" />
+				<img v-if="image" :src="image" alt="cover" class="cover" :draggable="false" />
 			</div>
 			<div class="text-wrapper">
 				<div class="title"><slot>视频标题</slot></div>
