@@ -5,5 +5,5 @@
 export default function getCorrectUri() {
 	// URI 必须包含协议头，不建议在结尾添加斜线 '/'
 	// eg. https://localhost:9999
-	return environment.production ? "https://rosales.kirakira.moe" : "https://localhost:9999";
+	return environment.production ? "https://rosales.kirakira.moe" : "https://localhost:3000/api";
 }

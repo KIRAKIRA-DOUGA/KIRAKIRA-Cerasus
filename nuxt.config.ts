@@ -8,9 +8,7 @@ import docsLoader from "./plugins/vite/docs";
 import vitePluginScssVariables from "./plugins/vite/scss-variables";
 import scssVariablesLoader from "./plugins/vite/scss-variables-loader";
 import { environment } from "./utils/environment";
-/* import vueNestedSFC from "vite-plugin-vue-nested-sfc";
-import CopyPlugin from "copy-webpack-plugin";
-const wasmFile = resolve("node_modules/mediainfo.js/dist/MediaInfoModule.wasm"); */
+/* import vueNestedSFC from "vite-plugin-vue-nested-sfc"; */
 type OriginalNuxtConfig = Parameters<typeof defineNuxtConfig>[0];
 type BroadNuxtConfig = OriginalNuxtConfig & Record<Exclude<string, keyof OriginalNuxtConfig>, object | string>; // 还敢报错吗？
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; // 支持 HTTPS。
@@ -130,6 +128,13 @@ export default defineNuxtConfig({
 		],
 	},
 	nitro: {
+		devProxy: {
+			"/api": {
+				target: "https://rosales.kirakira.moe",
+				prependPath: true,
+				changeOrigin: true,
+			},
+		},
 		compressPublicAssets: {
 			brotli: true,
 		},
@@ -139,19 +144,6 @@ export default defineNuxtConfig({
 			},
 		},
 	},
-	/* build: {
-		plugins: [
-			new CopyPlugin({
-				patterns: [{
-					from: wasmFile,
-					to: ".",
-				}, {
-					from: "CNAME",
-					to: ".",
-				}],
-			}),
-		],
-	}, */
 	build: {
 		vendor: [
 			"vue-cropper",
