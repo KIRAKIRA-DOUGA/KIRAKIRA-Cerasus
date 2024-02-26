@@ -365,7 +365,12 @@
 
 		@include mobile {
 			order: 1;
+
 			padding: 0 8px;
+
+			.slider {
+				height: 24px;
+			}
 		}
 
 		:deep(.passed) {
