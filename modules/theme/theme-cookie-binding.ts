@@ -130,6 +130,7 @@ export function cookieBinding() {
 		// 绑定 cookie 中的样式到 html
 		const rootNode = document.documentElement;
 		const isPreviousDark = rootNode.classList.contains("dark");
+		rootNode.className = "kirakira";
 		if (`${isColoredSidebar}` === "true") rootNode.classList.add("colored-sidebar");
 		if (`${isSharpAppearanceMode}` === "true") rootNode.classList.add("sharp");
 		if (`${isFlatAppearanceMode}` === "true") rootNode.classList.add("flat");
@@ -140,11 +141,14 @@ export function cookieBinding() {
 		if (currentThemeType) {
 			const actualThemeType = currentThemeType === "system" ? systemThemeType : currentThemeType;
 			const isDark = actualThemeType === "dark";
-			const updateThemeSettings = () => rootNode.classList.toggle("dark", isDark);
+			const updateThemeSettings = () => {
+				rootNode.classList.toggle("dark", isDark);
+				rootNode.classList.toggle("light", !isDark);
+			};
 
-			if (typeof lastClickMouseEvent === "undefined" || !lastClickMouseEvent) updateThemeSettings(); // 使用 typeof foo === "undefined" 方式判断 lastClickMouseEvent 是否被声明
-			else if (isPreviousDark !== isDark) {
+			if (typeof lastClickMouseEvent !== "undefined" && lastClickMouseEvent && isPreviousDark !== isDark) {
 				if (isPreviousDark) rootNode.classList.add("dark");
+				else rootNode.classList.add("light");
 				const { x, y } = lastClickMouseEvent;
 				const endRadius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
 				const clipPath = [
@@ -162,7 +166,7 @@ export function cookieBinding() {
 				}).then(() => {
 					rootNode.classList.remove(CHANGING_THEME_CLASS);
 				});
-			}
+			} else updateThemeSettings();
 		}
 		// HACK 14 在此处添加
 	} catch (error) {
