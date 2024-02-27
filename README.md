@@ -1,6 +1,6 @@
 ![Cover](cover.svg)
 
-# 项目代号 ｢<ruby>Cerasus<rp>（</rp><rt>[第13都市](https://zh.moegirl.org.cn/zh-hans/DARLING_in_the_FRANXX#cite_ref-10:~:text=%E7%AC%AC13%E9%83%BD%E5%B8%82%EF%BC%88Plantation%EF%BC%89%5B9%5D%E2%80%9C%E6%A8%B1%EF%BC%88Cerasus%EF%BC%89%E2%80%9D)</rt><rp>）</rp></ruby>｣
+# 项目代号 ｢<ruby>Cerasus<rp>（</rp><rt>[第 13 都市](https://zh.moegirl.org.cn/zh-hans/DARLING_in_the_FRANXX#cite_ref-10:~:text=%E7%AC%AC13%E9%83%BD%E5%B8%82%EF%BC%88Plantation%EF%BC%89%5B9%5D%E2%80%9C%E6%A8%B1%EF%BC%88Cerasus%EF%BC%89%E2%80%9D)</rt><rp>）</rp></ruby>｣
 ![State](https://img.shields.io/badge/STATE-ALPHA-red?style=flat-square)
 ![Tag](https://img.shields.io/badge/TAG-0.0.0-orange?style=flat-square)
 ![License](https://img.shields.io/badge/LICENSE-BSD%203‐Clause-green?style=flat-square)
@@ -16,7 +16,7 @@ KIRAKIRA 的前端
 
 首先，Nuxt 读作 **/nʌkst/**（
 
-查看 [Nuxt 3 文档](https://nuxt.com/) 以了解更多信息。
+查看 [Nuxt 3 文档](https://nuxt.com/)以了解更多信息。
 
 ### 安装
 
@@ -36,9 +36,9 @@ KIRAKIRA Cerasus 支持多种模式的开发服务器，请选择您需要的方
 
 启动一个带有 HTTPS 支持的开发服务器，并使用**线上**后端 API。  
 
-在 Visual Studio Code 中，按下 <kbd>F5</kbd> 键即可启动，如需停止服务器可以按下 <kbd>Shift</kbd> + <kbd>F5</kbd>。
+在 Visual Studio Code 中，按下 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>，然后选择 `npm: dev` 来启动。  
 
-或者，按下 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>，然后选择 `npm: dev` 来启动。  
+或者，按下 <kbd>F5</kbd> 键即可启动，如需停止服务器可以按下 <kbd>Shift</kbd> + <kbd>F5</kbd>。
 
 您也可以在程序根目录中执行以下命令来启动：
 ```bash
@@ -48,29 +48,34 @@ npm run dev
 启动后，您应该能够在这个地址访问：https://localhost:3000/
 
 以上方式会开启 HTTPS，以便浏览器提供 HTTPS 特有的功能及安全性。  
-在首次访问时会弹出“此站点不安全”的警告，这是正常现象，选择“仍然访问” 即可。
+在首次访问时会弹出“此站点不安全”的警告，这是正常现象，选择“仍然访问”即可。
 
-> [!Important]  
+> [!WARNING]  
+> 如果您的端口号 3000 已被其它应用程序或设备等占用了，此时会自动调整为端口号 3001，以此类推。请务必仔细观察开发服务器控制台声明的正确网址。
+
+> [!IMPORTANT]  
 > 通过此方式启动的开发服务器，连接的是线上的后端 API。您仍然在与线上环境交互。  
 > 这和通过我们的官方网站或 APP 使用 KIRAKIRA 服务没有区别，在这种情况下 KIRAKIRA 用户协议及免责条款仍然适用。
 
 #### HTTPS 本地开发模式
 
-启动一个带有 HTTPS 支持的开发服务器，并使用**本地**后端 API
+启动一个带有 HTTPS 支持的开发服务器，并使用**本地**后端 API。
 
-在程序根目录中执行以下命令来启动：
+请按下键盘按键 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>，然后选择 `npm: dev local`。  
+
+您也可以在程序根目录中执行以下命令来启动：
 ```bash
-npm run dev-localhost
+npm run dev-local
 ```
 
 启动后，您应该能够在这个地址访问：https://localhost:3000/
 
 以上方式会开启 HTTPS，以便浏览器提供 HTTPS 特有的功能及安全性。  
-在首次访问时会弹出“此站点不安全”的警告，这是正常现象，选择“仍然访问” 即可。
+在首次访问时会弹出“此站点不安全”的警告，这是正常现象，选择“仍然访问”即可。
 
-> [!Important]  
+> [!IMPORTANT]  
 > 通过此方式启动的开发服务器，连接的是本地的后端 API。您与您本地的环境交互，数据将由您本地运行的后端程序管理，与 KIRAKIRA 无关。  
-> 您需要额外运行 [KIRAKIRA-Rosales 后端服务](https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Rosales)，否则程序将不会如预期工作。
+> 您需要额外运行 [KIRAKIRA-Rosales 后端服务](https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Rosales)，否则程序将不会如期工作。
 
 #### HTTP 本地开发模式
 
@@ -87,12 +92,13 @@ npm run dev-http
 启动后，您应该能够在这个地址访问：http://localhost:3000/
 
 > [!WARNING]  
-> 该模式未经任何测试！  
-> HTTP 开发服务器可能不包含预期中的功能。使用该模式运行开发服务器导致的任何后果由您自负。
+> HTTP 开发服务器模式已经过测试，它一定不包含您预期中的某些功能。使用该模式运行开发服务器导致的任何后果对您没有任何好处。除非您已知晓您确实要使用该模式的意义所在之外，如无必要，任何情况下均不应使用该模式。
 
-#### 在移动端网页测试 & 预览
+#### 在移动端网页测试和预览
 
-确保手机/平板与您的电脑位于同一个无线局域网下（如果条件不允许请开热点），然后使用移动端浏览器访问电脑所属 IP 地址。一般是：[https://192.168.\*.\*:3000/](https://192.168.*.*:3000/)
+确保手机/平板与您的电脑位于同一个无线局域网下（如果条件不允许请开热点），然后使用您移动设备中的二维码扫描器扫描控制台中显示的二维码即可访问。
+
+您也可以使用移动端浏览器访问电脑所属 IP 地址。一般是：[https://192.168.\*.\*:3000/](https://192.168.*.*:3000/) 。这会在启动开发服务器时的一开始将网址显示在控制台上。
 
 > [!NOTE]  
 > **查询电脑 IP 的方法：**<wbr />按 <kbd>Win</kbd> + <kbd>R</kbd>，输入 `cmd` 打开命令提示符，输入 `ipconfig` 即可查询当前电脑的 IP 地址。
@@ -126,12 +132,12 @@ npm run build
 npm run preview
 ```
 
-> [!Important]  
+> [!IMPORTANT]  
 > 以生产模式运行时，连接的后端服务接口是：https://rosales.kirakira.moe/   
-> 此时您与线上环境交互。  
+> 此时您将与线上环境交互。  
 > 这和通过我们的官方网站或 APP 使用 KIRAKIRA 服务没有区别，在这种情况下 KIRAKIRA 用户协议及免责条款仍然适用。
 
-有关详细信息，请查看 [部署文档](https://nuxt.com/docs/getting-started/deployment)。
+有关更多详细信息，请参阅[部署文档](https://nuxt.com/docs/getting-started/deployment)。
 
 ## 其它脚本功能
 
@@ -218,8 +224,8 @@ Compact SVG
 
 ### 本地化
 
-如果您想要为本项目贡献本地化，请发布一个 [Issue](https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus/issues) 来通知我们，非常感谢。  
-Please post an [Issue](https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus/issues) to let us know you would like to contribute localization to this project, thank you.
+如果您想要为本项目的本地化提供建议，请发布一个[议题](https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus/issues)来通知我们；如果您想要为本项目贡献本地化，请发布一个[拉取请求](https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus/pulls)。非常感谢！  
+Please post an [Issue](https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus/issues) to let us know you would like to provide some localization suggestions to this project; Please post an [Pull Request](https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus/pulls) to contribute localization to this project. Thank you!
 
 项目强化了 Vue-i18n 的原生翻译函数，使其使用起来更方便。
 
