@@ -42,7 +42,15 @@
 	<LocaleLink class="thumb-video lite" :to="link" :blank="blank">
 		<div class="card">
 			<div class="cover-wrapper">
-				<NuxtImg v-if="image" :src="image" alt="cover" class="cover" :draggable="false" />
+				<NuxtImg
+					v-if="image"
+					:src="image"
+					width="320"
+					height="180"
+					alt="cover"
+					class="cover"
+					:draggable="false"
+				/>
 			</div>
 			<div class="text-wrapper">
 				<div class="title"><slot>视频标题</slot></div>
