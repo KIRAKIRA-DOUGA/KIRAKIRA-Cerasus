@@ -32,7 +32,7 @@ npm install
 ### Development Server
 KIRAKIRA Cerasus supports multiple modes of development servers, please choose the method you need and start.
 
-#### HTTPS Develop Mode (Default)
+#### HTTPS Development Mode (Default)
 
 Start a development server with HTTPS and use the **Product** back-end API.
 
@@ -53,7 +53,7 @@ When you visit for the first time, you can see a warning "This site is not secur
 > The development server started in this way is connected to the product back-end API. You are still online.  
 > This is no different from using KIRAKIRA services through our official website or APPs, in which case the KIRAKIRA User Agreement or ToS remains in effect.
 
-#### HTTPS Localhost Develop Mode
+#### HTTPS Localhost Development Mode
 <details>
   <summary>
      Check the details
@@ -75,7 +75,7 @@ When you visit for the first time, you can see a warning "This site is not secur
 > You need to run the [KIRAKIRA-Rosales backend service](https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Rosales) additionally, otherwise the program will not work as expected.
 </details>
 
-#### HTTP Localhost Develop Mode
+#### HTTP Localhost Development Mode
 <details>
   <summary>
      Check the details
