@@ -1,12 +1,11 @@
 <script setup lang="ts">
-	import testPhoto from "assets/images/palettes/pink.webp";
 	import shibamata from "assets/audios/shibamata.mp3";
 	import metadata from "assets/audios/shibamata.vtt";
 	const audio = ref<HTMLAudioElement>();
 	const currentPitch = ref("");
 	const flipped = ref<boolean>();
 	const photoInput = ref<HTMLInputElement>();
-	const photo = ref(testPhoto);
+	const photo = ref();
 	const cueChangeTimeoutId = ref<Timeout>();
 
 	/**
@@ -150,7 +149,7 @@
 			&.back {
 				animation-name: flip-back;
 			}
-			
+
 			&:focus-visible {
 				filter: invert(1);
 			}

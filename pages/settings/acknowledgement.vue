@@ -5,7 +5,7 @@
 <template>
 	<Subheader icon="link">{{ t.friendly_links }}</Subheader>
 	<div class="links lite-links">
-		<a href="https://otomad.wiki/"><img src="/static/images/links/otomadwiki.svg" alt="Otomad Wiki" /></a>
+		<a href="https://otomad.wiki/"><NuxtImg src="/static/images/links/otomadwiki.svg" alt="Otomad Wiki" /></a>
 	</div>
 </template>
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import banner from "assets/images/banner-20220717.png";
+	const banner = "static/images/banner-20220717.png";
 
 	// const avatar = "/static/images/avatars/aira.webp";
 	const selfUserInfoStore = useSelfUserInfoStore();
@@ -144,7 +144,7 @@
 		</template>
 	</Modal>
 	<div v-ripple class="banner">
-		<img :src="banner" alt="banner" draggable="false" />
+		<NuxtImg :src="banner" alt="banner" draggable="false" />
 		<span>{{ t.profile.edit_banner }}</span>
 	</div>
 

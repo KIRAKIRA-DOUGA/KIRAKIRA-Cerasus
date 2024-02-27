@@ -64,7 +64,7 @@
 		"eslint-plugin-nuxt": "^4.0.0",
 		"eslint-plugin-vue": "^9.17.0",
 		"html-minifier-terser": "^7.2.0",
-		"nuxt": "^3.10.2",
+		"nuxt": "^3.10.3",
 		"nuxt-lodash": "^2.4.1",
 		"nuxt-simple-sitemap": "^1.0.6",
 		"nuxt-typed-router": "^1.2.3",
@@ -89,6 +89,7 @@
 	},
 	"dependencies": {
 		"@kirakira/path-browserify": "file:packages/path-browserify",
+		"@nuxt/image": "^1.3.0",
 		"@nuxtjs/color-mode": "^3.2.0",
 		"@nuxtjs/robots": "^3.0.0",
 		"@nuxtjs/svg-sprite": "^1.0.2",

@@ -8,7 +8,7 @@
 <template>
 	<div class="user-profile" @click="navigate('/settings/profile')">
 		<div v-ripple class="avatar">
-			<img :src="avatar" alt="avatar" draggable="false" />
+			<NuxtImg :src="avatar" alt="avatar" draggable="false" />
 		</div>
 		<div class="text">
 			<div class="username">艾了个拉</div>

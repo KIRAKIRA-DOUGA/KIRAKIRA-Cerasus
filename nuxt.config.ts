@@ -15,6 +15,9 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; // 支持 HTTPS。
 const dev = environment.development;
 
 export default defineNuxtConfig({
+	devtools: {
+		enabled: false,
+	},
 	plugins: [
 		"plugins/vue/ripple.ts",
 		"plugins/vue/css-var-i.ts",
@@ -25,6 +28,7 @@ export default defineNuxtConfig({
 		// "@nuxt/devtools",
 		"@nuxtjs/i18n",
 		"@nuxt/content",
+		"@nuxt/image",
 		dev && "nuxt-icons",
 		!dev && "@nuxtjs/svg-sprite",
 		"@vueuse/nuxt",
@@ -198,6 +202,10 @@ export default defineNuxtConfig({
 				sepia: "monokai",
 			},
 		},
+	},
+	image: {
+		quality: 90,
+		format: ["avif", "webp"],
 	},
 	piniaPersistedstate: {
 		cookieOptions: {

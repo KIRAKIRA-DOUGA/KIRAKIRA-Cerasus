@@ -1,8 +1,5 @@
 <script setup lang="ts">
-	const getPaletteImage = (name: string) => {
-		const palettes = import.meta.glob<typeof import("*.webp")>("/assets/images/palettes/*", { eager: true });
-		return palettes[`/assets/images/palettes/${name}.webp`].default;
-	};
+	const getPaletteImage = (name: string) => `/static/images/palettes/${name}.webp`;
 
 	const themeList = ["light", "dark", "system"] as const;
 	const paletteList = [
@@ -69,7 +66,7 @@
 			:class="[item.color, cookieThemeType]"
 		>
 			<div class="content">
-				<img :src="getPaletteImage(item.color)" alt="Is the Order a Rabbit?" />
+				<NuxtImg :src="getPaletteImage(item.color)" alt="Is the Order a Rabbit?" />
 				<div class="overlay light"></div>
 				<div class="overlay color"></div>
 				<Icon name="palette" />

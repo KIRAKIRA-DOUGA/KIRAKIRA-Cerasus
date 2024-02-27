@@ -21,7 +21,7 @@
 	<Comp v-ripple role="listitem">
 		<div :class="{ pictorial: image || icon }">
 			<div v-if="image" class="image">
-				<img :src="image" alt="image" draggable="false" />
+				<NuxtImg :src="image" alt="image" draggable="false" />
 			</div>
 			<Icon v-else-if="icon" :name="icon" :filled="filled" class="item-icon" />
 			<div class="text">

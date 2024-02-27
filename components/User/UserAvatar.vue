@@ -23,7 +23,7 @@
 
 <template>
 	<Comp v-ripple>
-		<img v-if="avatar" :src="avatar" alt="avatar" draggable="false" />
+		<NuxtImg v-if="avatar" :src="avatar" alt="avatar" draggable="false" />
 		<Icon v-else name="person" />
 		<LocaleLink v-if="userLink" :to="userLink" :draggable="false" class="lite" />
 	</Comp>
@@ -63,11 +63,11 @@
 				transition-duration: 1s;
 			}
 		}
-		
+
 		&:any-hover {
 			background-color: c(gray-30);
 		}
-		
+
 		a {
 			@include square(100%);
 			position: absolute;

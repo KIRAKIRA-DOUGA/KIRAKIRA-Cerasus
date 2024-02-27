@@ -315,7 +315,7 @@
 						<div class="line"></div>
 					</div>
 					<div class="avatar">
-						<img :src="avatar" alt="avatar" />
+						<NuxtImg :src="avatar" alt="avatar" />
 					</div>
 					<div class="welcome">{{ t.loginwindow.login_welcome }}</div>
 					<div class="name">艾了个拉</div> <!-- TODO: user name here -->

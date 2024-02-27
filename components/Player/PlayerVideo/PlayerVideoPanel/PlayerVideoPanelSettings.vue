@@ -91,15 +91,15 @@
 					<div class="grid">
 						<CheckCard v-for="([filter, style], key) in filters" :key="key" v-model="filterBooleanProxy[key]">
 							{{ filter }}
-							<template #image><img :src="thumbnail" alt="preview" :style="style" /></template>
+							<template #image><NuxtImg :src="thumbnail" alt="preview" :style="style" /></template>
 						</CheckCard>
 					<!-- <CheckCard v-model="settings.filter.horizontalFlip">
 					水平翻转
-					<template #image><img :src="thumbnail" alt="preview" /></template>
+					<template #image><NuxtImg :src="thumbnail" alt="preview" /></template>
 				</CheckCard>
 				<CheckCard v-model="settings.filter.verticalFlip">
 					垂直翻转
-					<template #image><img :src="thumbnail" alt="preview" /></template>
+					<template #image><NuxtImg :src="thumbnail" alt="preview" /></template>
 				</CheckCard> -->
 					</div>
 				</div>
