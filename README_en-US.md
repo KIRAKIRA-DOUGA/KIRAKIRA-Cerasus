@@ -54,10 +54,7 @@ When you visit for the first time, you can see a warning "This site is not secur
 > This is no different from using KIRAKIRA services through our official website or APPs, in which case the KIRAKIRA User Agreement or ToS remains in effect.
 
 #### HTTPS Localhost Development Mode
-<details>
-  <summary>
-     Check the details
-  </summary>
+
 Start a development server with HTTPS and use the **Local** back-end API.
 
 Run the following command in the root directory to start:
@@ -73,13 +70,9 @@ When you visit for the first time, you can see a warning "This site is not secur
 > [!Important]  
 > The development server started in this way connects to the local back-end API. You interact with your local environment and the data will be managed by your locally running back-end program, independent of KIRAKIRA.  
 > You need to run the [KIRAKIRA-Rosales backend service](https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Rosales) additionally, otherwise the program will not work as expected.
-</details>
 
 #### HTTP Localhost Development Mode
-<details>
-  <summary>
-     Check the details
-  </summary>
+
 Try to start a development server only with HTTP and use the **Local** back-end API.
 
 Press the keyboard keys <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>, and then select `npm: dev http`.
@@ -95,18 +88,13 @@ After it started, you should be able to preview at this URL: http://localhost:30
 > [!WARNING] 
 > This mode has not been tested in any way!  
 > The HTTP development server may not contain the expected functionality. Any consequences of running a development server in this mode are at your own risk.
-</details>
 
 #### Mobile Webpage Testing & Preview
-<details>
-  <summary>
-     Check the details
-  </summary>
+
 Ensure that the phone/tablet is located on the same WiFi as your computer (if conditions do not allow, turn on the mobile hotspot), and then use the mobile browser to access the IP address of the computer. Generally: [https://192.168.\*.\*:3000/](https://192.168.*.*:3000/)
 
 > [!NOTE]  
 > **How to query the computer IP:** Press <kbd>Win</kbd> + <kbd>R</kbd>, enter `cmd` to open a command prompt, and enter `ipconfig` to query the current IP address of the computer.
-</details>
 
 ### Production
 

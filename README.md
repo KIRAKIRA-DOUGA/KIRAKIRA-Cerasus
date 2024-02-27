@@ -55,10 +55,6 @@ npm run dev
 
 #### HTTPS 本地开发模式
 
-<details>
-  <summary>
-     点击查看详情
-  </summary>
 启动一个带有 HTTPS 支持的开发服务器，并使用**本地**后端 API
 
 在程序根目录中执行以下命令来启动：
@@ -74,13 +70,9 @@ npm run dev-localhost
 > [!Important]  
 > 通过此方式启动的开发服务器，连接的是本地的后端 API。您与您本地的环境交互，数据将由您本地运行的后端程序管理，与 KIRAKIRA 无关。  
 > 您需要额外运行 [KIRAKIRA-Rosales 后端服务](https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Rosales)，否则程序将不会如预期工作。
-</details>
 
 #### HTTP 本地开发模式
-<details>
-  <summary>
-     点击查看详情
-  </summary>
+
 尝试使用 HTTP 开发服务器，并连接本地后端 API
 
 请按下键盘按键 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>，然后选择 `npm: dev http`。  
@@ -96,18 +88,13 @@ npm run dev-http
 > [!WARNING]  
 > 该模式未经任何测试！  
 > HTTP 开发服务器可能不包含预期中的功能。使用该模式运行开发服务器导致的任何后果由您自负。
-</details>
 
 #### 在移动端网页测试 & 预览
-<details>
-  <summary>
-     点击查看详情
-  </summary>
+
 确保手机/平板与您的电脑位于同一个无线局域网下（如果条件不允许请开热点），然后使用移动端浏览器访问电脑所属 IP 地址。一般是：[https://192.168.\*.\*:3000/](https://192.168.*.*:3000/)
 
 > [!NOTE]  
 > **查询电脑 IP 的方法：**<wbr />按 <kbd>Win</kbd> + <kbd>R</kbd>，输入 `cmd` 打开命令提示符，输入 `ipconfig` 即可查询当前电脑的 IP 地址。
-</details>
 
 
 ### 生产
