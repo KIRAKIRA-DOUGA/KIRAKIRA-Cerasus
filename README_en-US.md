@@ -32,11 +32,11 @@ npm install
 ### Development Server
 KIRAKIRA Cerasus supports multiple modes of development servers, please choose the method you need and start.
 
-#### HTTPS (Default)
+#### HTTPS Develop Mode (Default)
 
-Start a development server with HTTPS support and use the **Product** back-end API.
+Start a development server with HTTPS and use the **Product** back-end API.
 
-Press <kbd>F5</kbd> in Visual Studio Code, and you can stop the server using <kbd>Shift</kbd> + <kbd>F5</kbd>.  
+Press <kbd>F5</kbd> in Visual Studio Code, and you can stop the server by press <kbd>Shift</kbd> + <kbd>F5</kbd>.  
 Or press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>, and then select `npm: dev`.  
 
 You can also run the following command in the root directory to start:
@@ -44,42 +44,43 @@ You can also run the following command in the root directory to start:
 npm run dev
 ```
 
-Once started, you should be able to preview at this URL: https://localhost:3000/  
+After it started, you should be able to preview at this URL: https://localhost:3000/  
 
 The above ways will enable HTTPS so that the browser can provide HTTPS-specific functions and security.  
-When you visit for the first time, you can see a warning "This site is not secure". Well, Just select "Visit Anyway".  
+When you visit for the first time, you can see a warning "This site is not secure". Well, Just click "Visit Anyway".  
 
 > [!Important]  
-> The development server started in this way is connected to the product back-end API. You are still online .  
+> The development server started in this way is connected to the product back-end API. You are still online.  
 > This is no different from using KIRAKIRA services through our official website or APPs, in which case the KIRAKIRA User Agreement or ToS remains in effect.
 
-#### HTTPS Localhost Develop
-
-Start a development server with HTTPS support and use the **Local** back-end API.
+#### HTTPS Localhost Develop Mode
+<details>
+  <summary>
+     Check the details
+  </summary>
+Start a development server with HTTPS and use the **Local** back-end API.
 
 Run the following command in the root directory to start:
 ```bash
 npm run dev-localhost
 ```
 
-Once started, you should be able to preview at this URL: https://localhost:3000/  
+After it started, you should be able to preview at this URL: https://localhost:3000/  
 
 It will enable HTTPS so that the browser can provide HTTPS-specific functions and security.  
-When you visit for the first time, you can see a warning "This site is not secure". Well, Just select "Visit Anyway".  
+When you visit for the first time, you can see a warning "This site is not secure". Well, Just click "Visit Anyway".  
 
 > [!Important]  
-> The development server started in this way connects to the local back-end API. You interact with your local environment and the data will be managed by your locally running back-end program, independent of KIRAKIRA.
+> The development server started in this way connects to the local back-end API. You interact with your local environment and the data will be managed by your locally running back-end program, independent of KIRAKIRA.  
 > You need to run the [KIRAKIRA-Rosales backend service](https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Rosales) additionally, otherwise the program will not work as expected.
+</details>
 
-#### Mobile Webpage Testing
-
-Ensure that the phone/tablet is located on the same WiFi as your computer (if conditions do not allow, turn on the mobile hotspot), and then use the mobile browser to access the IP address of the computer. Generally: [https://192.168.\*.\*:3000/](https://192.168.*.*:3000/)
-
-**How to query the computer IP:** Press <kbd>Win</kbd> + <kbd>R</kbd>, enter `cmd` to open a command prompt, and enter `ipconfig` to query the current IP address of the computer.
-
-#### HTTP
-
-Try to start a development server with HTTP-only and use the **Local** back-end API.
+#### HTTP Localhost Develop Mode
+<details>
+  <summary>
+     Check the details
+  </summary>
+Try to start a development server only with HTTP and use the **Local** back-end API.
 
 Press the keyboard keys <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>, and then select `npm: dev http`.
 
@@ -89,11 +90,23 @@ You can also run the following command in the root directory to start:
 npm run dev-http
 ```
 
-Once started, you should be able to preview at this URL: http://localhost:3000/  
+After it started, you should be able to preview at this URL: http://localhost:3000/  
 
 > [!WARNING] 
-> This mode has not been tested in any way!
+> This mode has not been tested in any way!  
 > The HTTP development server may not contain the expected functionality. Any consequences of running a development server in this mode are at your own risk.
+</details>
+
+#### Mobile Webpage Testing & Preview
+<details>
+  <summary>
+     Check the details
+  </summary>
+Ensure that the phone/tablet is located on the same WiFi as your computer (if conditions do not allow, turn on the mobile hotspot), and then use the mobile browser to access the IP address of the computer. Generally: [https://192.168.\*.\*:3000/](https://192.168.*.*:3000/)
+
+> [!NOTE]  
+> **How to query the computer IP:** Press <kbd>Win</kbd> + <kbd>R</kbd>, enter `cmd` to open a command prompt, and enter `ipconfig` to query the current IP address of the computer.
+</details>
 
 ### Production
 
@@ -122,8 +135,10 @@ npm run build
 ```bash
 npm run preview
 ```
-> [!NOTE]  
-> When running in production mode, we connect to the back-end API at: https://rosales.kirakira.moe/
+> [!Important]  
+> When running in production mode, we connect to the back-end API at: https://rosales.kirakira.moe/   
+> You are online.  
+> This is no different from using KIRAKIRA services through our official website or APPs, in which case the KIRAKIRA User Agreement or ToS remains in effect.
 
 Checkout the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
 
@@ -212,7 +227,7 @@ Compact SVG
 
 ### Localization
 
-Please post an [issue](https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus/issues) to let us know you would like to contribute localization to this project, thank you.
+Please post an [Issue](https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus/issues) to let us know you would like to contribute localization to this project, thank you.
 
 项目强化了 Vue-i18n 的原生翻译函数，使其使用起来更方便。
 
