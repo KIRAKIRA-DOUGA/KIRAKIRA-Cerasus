@@ -202,10 +202,10 @@
 				@contextmenu="onLongPress"
 				@pointerenter="onThumbEnter"
 			></div>
+			<Transition v-if="pending">
+				<div v-show="showPendingState" class="tooltip">{{ displayValue }}</div>
+			</Transition>
 		</div>
-		<Transition v-if="pending">
-			<div v-show="showPendingState" class="tooltip">{{ displayValue }}</div>
-		</Transition>
 	</Comp>
 </template>
 
@@ -349,8 +349,8 @@
 	.tooltip {
 		@include round-small;
 		position: absolute;
-		top: -100%;
 		left: $pending;
+		flex-shrink: 0;
 		padding: 8px;
 		color: white;
 		font-weight: 500;
@@ -360,8 +360,8 @@
 		cursor: pointer;
 		filter: drop-shadow(0 1px 6px c(accent, 80%));
 		transition: none;
-		translate: -50% 0;
 		pointer-events: none;
+		translate: -50% calc(-100% - 4px);
 
 		/// 底部三角
 		&::after {
