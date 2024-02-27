@@ -36,7 +36,8 @@ KIRAKIRA Cerasus 支持多种模式的开发服务器，请选择您需要的方
 
 启动一个带有 HTTPS 支持的开发服务器，并使用**线上**后端 API。  
 
-在 Visual Studio Code 中，按下 <kbd>F5</kbd> 键即可启动，如需停止服务器可以按下 <kbd>Shift</kbd> + <kbd>F5</kbd>。  
+在 Visual Studio Code 中，按下 <kbd>F5</kbd> 键即可启动，如需停止服务器可以按下 <kbd>Shift</kbd> + <kbd>F5</kbd>。
+
 或者，按下 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>，然后选择 `npm: dev` 来启动。  
 
 您也可以在程序根目录中执行以下命令来启动：
