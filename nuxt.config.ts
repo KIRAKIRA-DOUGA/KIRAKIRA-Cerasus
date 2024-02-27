@@ -205,7 +205,7 @@ export default defineNuxtConfig({
 	},
 	image: {
 		quality: 90,
-		format: ["avif", "webp"],
+		format: ["avif"],
 		domains: ["pub-775a6c441125474f829bfede278c8822.r2.dev", "kirafile.com"],
 	},
 	piniaPersistedstate: {
