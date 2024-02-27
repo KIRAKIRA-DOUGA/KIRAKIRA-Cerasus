@@ -45,11 +45,13 @@
 				<NuxtImg
 					v-if="image"
 					:src="image"
+					format="avif"
 					width="320"
 					height="180"
 					alt="cover"
 					class="cover"
 					:draggable="false"
+					placeholder
 				/>
 			</div>
 			<div class="text-wrapper">
