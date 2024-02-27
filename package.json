@@ -22,8 +22,9 @@
 	"scripts": {
 		"build": "nuxt build && nuxt start",
 		"dev": "cross-env nuxt dev --host --https --ssl-cert server/server.cer --ssl-key server/server.key",
-		"dev-localhost": "cross-env nuxt dev --host localhost --https --ssl-cert server/server.cer --ssl-key server/server.key",
-		"dev-http": "cross-env HOST=0.0.0.0 nuxt dev",
+		"dev-localhost": "cross-env VITE_BACK_END_PROVIDER_AND_DO_NOT_USE_THIS_ENV_IF_YOU_DO_NOT_KNOW_IT=localhost nuxt dev --host --https --ssl-cert server/server.cer --ssl-key server/server.key",
+		"local": "cross-env VITE_BACK_END_PROVIDER_AND_DO_NOT_USE_THIS_ENV_IF_YOU_DO_NOT_KNOW_IT=localhost nuxt dev --host --https --ssl-cert server/server.cer --ssl-key server/server.key",
+		"dev-http": "cross-env VITE_BACK_END_PROVIDER_AND_DO_NOT_USE_THIS_ENV_IF_YOU_DO_NOT_KNOW_IT=localhost HOST=0.0.0.0 nuxt dev",
 		"generate": "nuxt generate",
 		"preview": "nuxt preview",
 		"postinstall": "node postinstall.js",

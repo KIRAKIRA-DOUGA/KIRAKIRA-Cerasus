@@ -30,24 +30,46 @@ npm install
 **只准用 <ruby>NPM<rp>（</rp><rt>你怕吗</rt><rp>）</rp></ruby>！！！**
 
 ### 开发服务器
+KIRAKIRA Cerasus 支持多种模式的开发服务器，请选择您需要的方式启动。
 
 #### HTTPS（默认）
 
-在 Visual Studio Code 中按下 <kbd>F5</kbd> 即可启动，停止服务器可以按下 <kbd>Shift</kbd> + <kbd>F5</kbd>。
+启动一个带有 HTTPS 支持的开发服务器，并使用**线上**后端 API。  
 
-或者，按下 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>，然后选择 `npm: dev`。
+在 Visual Studio Code 中，按下 <kbd>F5</kbd> 即可启动，如需停止服务器可以按下 <kbd>Shift</kbd> + <kbd>F5</kbd>。  
+或者，按下 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>，然后选择 `npm: dev` 来启动。  
 
+您也可以在程序根目录中执行以下命令来启动：
 ```bash
 npm run dev
 ```
 
-然后从此链接启动开发服务器：https://localhost:3000/
+启动后，您应该能够在这个地址访问：https://localhost:3000/
 
-以上链接会自动开启 HTTPS 支持，以便提供部分浏览器针对 HTTPS 独有支持的功能。
+以上方式会开启 HTTPS，以便浏览器提供 HTTPS 特有的功能及安全性。  
+在首次访问时会弹出“此站点不安全”的警告，这是正常现象，选择“仍然访问” 即可。
 
-首次进入网页时会弹出“不安全”的警告，此时只能选择“仍然访问”，暂时没有更好的解决方法。
+> [!Important]  
+> 通过此方式启动的开发服务器，连接的是线上的后端 API。您仍然在与线上环境交互。  
+> 这和通过我们的官方网站或 APP 使用 KIRAKIRA 服务没有区别，在这种情况下 KIRAKIRA 用户协议及免责条款仍然适用。
 
-以开发模式运行时，连接的后端服务接口是 `localhost`，为了使用 API 接口，需要额外运行 [KIRAKIRA-Rosales 后端服务](https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Rosales)。
+#### HTTPS 本地开发
+
+启动一个带有 HTTPS 支持的开发服务器，并使用**本地**后端 API
+
+在程序根目录中执行以下命令来启动：
+```bash
+npm run dev-localhost
+```
+
+启动后，您应该能够在这个地址访问：https://localhost:3000/
+
+以上方式会开启 HTTPS，以便浏览器提供 HTTPS 特有的功能及安全性。  
+在首次访问时会弹出“此站点不安全”的警告，这是正常现象，选择“仍然访问” 即可。
+
+> [!Important]  
+> 通过此方式启动的开发服务器，连接的是本地的后端 API。您与您本地的环境交互，数据将由您本地运行的后端程序管理，与 KIRAKIRA 无关。  
+> 您需要额外运行 [KIRAKIRA-Rosales 后端服务](https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Rosales)，否则程序将不会如预期工作。
 
 #### 移动端网页测试
 
@@ -57,15 +79,21 @@ npm run dev
 
 #### HTTP
 
-如果你非要使用 HTTP 开发服务器，请按下键盘按键 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>，然后选择 `npm: dev http`。
+尝试使用 HTTP 开发服务器，并连接本地后端 API
+
+请按下键盘按键 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>，然后选择 `npm: dev http`。  
+
+您也可以在程序根目录中执行以下命令来启动：
 
 ```bash
 npm run dev-http
 ```
 
-然后从此链接启动开发服务器：http://localhost:3000/
+启动后，您应该能够在这个地址访问：http://localhost:3000/
 
-**注意：**<wbr />HTTP 开发服务器可能不包含所有预期中的功能，甚至会导致运行异常！
+> [!WARNING]  
+> 该模式未经任何测试！  
+> HTTP 开发服务器可能不包含预期中的功能。使用该模式运行开发服务器导致的任何后果由您自负。
 
 ### 生产
 
@@ -95,9 +123,10 @@ npm run build
 npm run preview
 ```
 
-以生产模式运行时，连接的后端服务接口是：https://rosales.kirakira.moe/
+> [!NOTE]  
+> 以生产模式运行时，连接的后端服务接口是：https://rosales.kirakira.moe/
 
-有关详细信息，请查看[部署文档](https://nuxt.com/docs/getting-started/deployment)。
+有关详细信息，请查看 [部署文档](https://nuxt.com/docs/getting-started/deployment)。
 
 ## 其它脚本功能
 
@@ -182,10 +211,14 @@ Compact SVG
 }">
 ```
 
-### 翻译
+### 本地化
+
+如果您想要为本项目贡献本地化，请发布一个 [issue](https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus/issues) 来通知我们，非常感谢。  
+Please post an [issue](https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus/issues) to let us know you would like to contribute localization to this project, thank you.
 
 项目强化了 Vue-i18n 的原生翻译函数，使其使用起来更方便。
 
+> [!NOTE]  
 > **注意：**<wbr />翻译字典文件的每个标识符均应使用蛇形命名法（下划线命名法）；且多门语言若任意一门语言比其它语言多或少字符串声明，均会报错，这意味着必须为这些语言同时指定完整的字符串声明，以防遗漏。
 
 <table>
