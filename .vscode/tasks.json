@@ -7,7 +7,15 @@
 			"group": "build",
 			"problemMatcher": [],
 			"label": "npm: dev",
-			"detail": "nuxt dev https - 启动开发服务器 (HTTPS)"
+			"detail": "nuxt dev https - 启动 HTTPS 开发服务器"
+		},
+		{
+			"type": "npm",
+			"script": "dev-local",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: dev local",
+			"detail": "nuxt dev https local - 启动 HTTPS 本地后端开发服务器"
 		},
 		{
 			"type": "npm",
@@ -15,7 +23,15 @@
 			"group": "build",
 			"problemMatcher": [],
 			"label": "npm: dev http",
-			"detail": "nuxt dev http - 启动开发服务器 (HTTP)"
+			"detail": "nuxt dev http - 启动 HTTP 开发服务器"
+		},
+		{
+			"type": "npm",
+			"script": "dev-http-local",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: dev http local",
+			"detail": "nuxt dev http local - 启动 HTTP 本地后端开发服务器"
 		},
 		{
 			"type": "npm",
@@ -23,7 +39,31 @@
 			"group": "build",
 			"problemMatcher": [],
 			"label": "npm: dev localhost",
-			"detail": "nuxt dev https localhost - 启动本地开发服务器 (HTTPS)（可能会解决 SSR 错误）"
+			"detail": "nuxt dev https localhost - 启动 HTTPS 仅本地访问开发服务器（可能会解决 SSR 错误）"
+		},
+		{
+			"type": "npm",
+			"script": "dev-local-localhost",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: dev local localhost",
+			"detail": "nuxt dev https local localhost - 启动 HTTPS 仅本地访问本地后端开发服务器（可能会解决 SSR 错误）"
+		},
+		{
+			"type": "npm",
+			"script": "dev-http-localhost",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: dev http localhost",
+			"detail": "nuxt dev http localhost - 启动 HTTP 仅本地访问开发服务器（可能会解决 SSR 错误）"
+		},
+		{
+			"type": "npm",
+			"script": "dev-http-local-localhost",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: dev http local localhost",
+			"detail": "nuxt dev http local localhost - 启动 HTTP 仅本地访问本地后端开发服务器（可能会解决 SSR 错误）"
 		},
 		{
 			"type": "npm",

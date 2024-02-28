@@ -10,12 +10,12 @@ export const environment = {
 	get production() { return process.env.NODE_ENV === "production"; },
 	/** 是否是开发环境下？ */
 	get development() { return process.env.NODE_ENV === "development"; },
-	/** 是否使用本地运行的后端环境进行开发 */
-	get useLocalBackEnd() {
+	/** 是否使用本地运行的后端环境进行开发？ */
+	get localBackend() {
 		try {
-			return import.meta.env.VITE_BACK_END_PROVIDER_AND_DO_NOT_USE_THIS_ENV_IF_YOU_DO_NOT_KNOW_IT === "localhost";
+			return import.meta.env.VITE_BACKEND_PROVIDER === "localhost";
 		} catch (error) {
-			console.error("ERROR", "ERROR in environment.useLocalBackEnd: ", error);
+			console.error("ERROR", "ERROR in environment.localBackend: ", error);
 			return false;
 		}
 	},
