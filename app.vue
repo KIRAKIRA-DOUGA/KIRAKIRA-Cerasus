@@ -27,7 +27,9 @@
 		htmlAttrs: {
 			lang: langTag,
 		},
-		titleTemplate: "%s - KIRAKIRA☆DOUGA",
+		titleTemplate: titleChunk => {
+			return titleChunk ? `${titleChunk} - KIRAKIRA☆DOUGA` : "KIRAKIRA☆DOUGA";
+		},
 		meta: [
 			{ "http-equiv": "Content-Type", content: "text/html;charset=UTF-8" },
 			{ "http-equiv": "X-UA-Compatible", content: "IE=Edge,chrome=1" },
