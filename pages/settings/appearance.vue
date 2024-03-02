@@ -66,7 +66,13 @@
 			:class="[item.color, cookieThemeType]"
 		>
 			<div class="content">
-				<NuxtImg :src="getPaletteImage(item.color)" alt="Is the Order a Rabbit?" />
+				<NuxtImg
+					:src="getPaletteImage(item.color)"
+					alt="Is the Order a Rabbit?"
+					format="avif"
+					width="320px"
+					height="180px"
+				/>
 				<div class="overlay light"></div>
 				<div class="overlay color"></div>
 				<Icon name="palette" />
@@ -144,10 +150,11 @@
 
 		img,
 		.overlay {
+			@include square(100%);
 			position: absolute;
 			top: 0;
 			left: 0;
-			width: 100%;
+			object-fit: cover;
 		}
 
 		img {

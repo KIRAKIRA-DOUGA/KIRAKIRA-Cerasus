@@ -144,7 +144,7 @@
 		</template>
 	</Modal>
 	<div v-ripple class="banner">
-		<NuxtImg :src="banner" alt="banner" draggable="false" />
+		<NuxtImg :src="banner" alt="banner" draggable="false" format="avif" placeholder />
 		<span>{{ t.profile.edit_banner }}</span>
 	</div>
 

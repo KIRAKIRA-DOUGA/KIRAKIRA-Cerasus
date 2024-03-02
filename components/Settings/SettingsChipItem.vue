@@ -21,7 +21,15 @@
 	<Comp v-ripple role="listitem">
 		<div :class="{ pictorial: image || icon }">
 			<div v-if="image" class="image">
-				<NuxtImg :src="image" alt="image" draggable="false" />
+				<NuxtImg
+					:src="image"
+					alt="image"
+					draggable="false"
+					format="avif"
+					width="64px"
+					height="64px"
+					placeholder
+				/>
 			</div>
 			<Icon v-else-if="icon" :name="icon" :filled="filled" class="item-icon" />
 			<div class="text">
@@ -65,10 +73,9 @@
 			overflow: hidden;
 
 			> img {
+				@include square(100%);
 				z-index: 1;
-				width: 100%;
 				object-fit: cover;
-				aspect-ratio: 1 / 1;
 			}
 		}
 
