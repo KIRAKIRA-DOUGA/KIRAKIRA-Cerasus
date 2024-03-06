@@ -37,8 +37,9 @@
 	const link = computed(() => props.videoId !== undefined && props.videoId !== null ?
 		`/video/kv${props.videoId}` : props.link);
 
-	const miniImage = computed(() => `${props.image}/w=200,blur=10`); // 视频卡片封面图没加载完成前的占位符小图片
-	const smallImage = computed(() => `${props.image}/w=1000`); // 视频卡片封面图
+	const img = useImage();
+	const miniImage = computed(() => `${props.image}/w=50`); // 视频卡片封面图没加载完成前的占位符迷你图片
+	const ThumbImage = computed(() => `${props.image}/w=700`); // 视频卡片封面图
 </script>
 
 <template>
@@ -47,14 +48,14 @@
 			<div class="cover-wrapper">
 				<NuxtImg
 					v-if="image"
-					:src="smallImage"
+					:src="ThumbImage"
 					alt="cover"
 					class="cover"
 					:draggable="false"
 					format="avif"
 					width="320"
 					height="180"
-					:placeholder="miniImage"
+					:placeholder="img(miniImage, { blur: 2 })"
 				/>
 			</div>
 			<div class="text-wrapper">
