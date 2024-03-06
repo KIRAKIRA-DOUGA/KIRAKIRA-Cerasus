@@ -39,7 +39,7 @@
 
 	const img = useImage();
 	const miniImage = computed(() => `${props.image}/w=50`); // 视频卡片封面图没加载完成前的占位符迷你图片
-	const ThumbImage = computed(() => `${props.image}/w=700`); // 视频卡片封面图
+	const thumbImage = computed(() => `${props.image}/w=700`); // 视频卡片封面图
 </script>
 
 <template>
@@ -48,7 +48,7 @@
 			<div class="cover-wrapper">
 				<NuxtImg
 					v-if="image"
-					:src="ThumbImage"
+					:src="thumbImage"
 					alt="cover"
 					class="cover"
 					:draggable="false"
