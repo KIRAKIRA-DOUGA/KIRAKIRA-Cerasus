@@ -206,7 +206,7 @@ export default defineNuxtConfig({
 	image: {
 		format: ["avif", "webp"], // 只适用于 <NuxtPicture>，对 <NuxtImg> 无效。
 		domains: ["kirafile.com", "imagedelivery.net"],
-
+		provider: "ipx",
 	},
 	piniaPersistedstate: {
 		cookieOptions: {
