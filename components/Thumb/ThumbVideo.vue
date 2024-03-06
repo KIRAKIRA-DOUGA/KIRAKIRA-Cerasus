@@ -36,6 +36,9 @@
 	const duration = computed(() => props.duration ?? Duration.placeholder);
 	const link = computed(() => props.videoId !== undefined && props.videoId !== null ?
 		`/video/kv${props.videoId}` : props.link);
+
+	const miniImage = computed(() => `${props.image}/w=200,blur=10`); // 视频卡片封面图没加载完成前的占位符小图片
+	const smallImage = computed(() => `${props.image}/w=1000`); // 视频卡片封面图
 </script>
 
 <template>
@@ -44,15 +47,14 @@
 			<div class="cover-wrapper">
 				<NuxtImg
 					v-if="image"
-					:src="image"
+					:src="smallImage"
 					alt="cover"
 					class="cover"
 					:draggable="false"
-					loading="lazy"
 					format="avif"
 					width="320"
 					height="180"
-					placeholder
+					:placeholder="miniImage"
 				/>
 			</div>
 			<div class="text-wrapper">
