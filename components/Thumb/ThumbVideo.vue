@@ -55,7 +55,7 @@
 					format="avif"
 					width="320"
 					height="180"
-					:placeholder="img(miniImage, { blur: 2 })"
+					placeholder
 				/>
 			</div>
 			<div class="text-wrapper">
