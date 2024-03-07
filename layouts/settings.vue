@@ -9,7 +9,7 @@
 	const showDrawer = ref(false);
 	const ti = (id: string) => t[new VariableName(id).snake];
 	const title = computed(() => ti(currentSetting.value));
-	const settingsString = t.settings;
+	const settingsString = t.settings; // HACK: Bypass "A composable that requires access to the Nuxt instance was called outside of a plugin."
 	const htmlTitle = computed(() => title.value + " - " + settingsString);
 	const logout = async () => {
 		const logoutResult = await api.user.userLogout();
