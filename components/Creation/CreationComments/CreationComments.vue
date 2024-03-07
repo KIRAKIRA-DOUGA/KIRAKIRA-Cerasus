@@ -20,8 +20,8 @@
 
 <template>
 	<Comp>
-		<HeadingComments :count="count" />
-		<TextEditorRtf :videoId="videoId" />
+		<HeadingComments :count />
+		<TextEditorRtf :videoId />
 		<div class="toolbar">
 			<div class="left">
 
@@ -42,7 +42,7 @@
 				v-model:isDownvoted="comment.isDownvote"
 				v-model:pinned="pinned"
 				:commentId="comment._id"
-				:videoId="videoId"
+				:videoId
 				:index="comment.commentIndex"
 				:username="comment.userInfo?.username"
 				:avatar="comment.userInfo?.avatar"

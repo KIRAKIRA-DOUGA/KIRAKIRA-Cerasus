@@ -15,7 +15,7 @@
 
 <template>
 	<Comp>
-		<UserAvatar :avatar="avatar" :uid="uid" />
+		<UserAvatar :avatar :uid />
 		<div class="text">
 			<div class="username">{{ username }}</div>
 			<div class="fans">{{ fans }} {{ t(fans).fans }}</div>

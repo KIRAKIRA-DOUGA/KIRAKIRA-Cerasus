@@ -43,7 +43,7 @@
 </script>
 
 <template>
-	<LocaleLink class="thumb-video lite" :to="link" :blank="blank">
+	<LocaleLink class="thumb-video lite" :to="link" :blank>
 		<div class="card">
 			<div class="cover-wrapper">
 				<NuxtImg
@@ -72,7 +72,7 @@
 						</div>
 					</div>
 					<div class="line">
-						<LocaleLink class="item uploader" :to="`/user/${uploaderId ?? ''}`" linkInLink :blank="blank">
+						<LocaleLink class="item uploader" :to="`/user/${uploaderId ?? ''}`" linkInLink :blank>
 							<Icon name="person" />
 							<div>{{ uploader }}</div>
 						</LocaleLink>

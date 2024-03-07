@@ -106,7 +106,7 @@
 
 		<div class="card-container">
 			<div class="center">
-				<ThumbGrid :view="view">
+				<ThumbGrid :view>
 					<ThumbVideo
 						v-for="video in videos?.videos"
 						:key="video.videoId"
@@ -153,7 +153,7 @@
 							<SortItem id="rating">{{ t.rating }}</SortItem>
 						</Sort>
 					</section>
-					<Pagination v-model="data.page" :pages="data.pages" :displayPageCount="displayPageCount" enableArrowKeyMove />
+					<Pagination v-model="data.page" :pages="data.pages" :displayPageCount enableArrowKeyMove />
 				</div>
 			</div>
 		</div>

@@ -102,23 +102,23 @@
 		<VueCropper
 			ref="cropper"
 			:img="image"
-			:outputSize="outputSize"
-			:outputType="outputType"
-			:info="info"
-			:full="full"
-			:fixed="fixed"
-			:fixedNumber="fixedNumber"
-			:canMove="canMove"
-			:canMoveBox="canMoveBox"
-			:fixedBox="fixedBox"
-			:original="original"
-			:autoCrop="autoCrop"
-			:autoCropWidth="autoCropWidth"
-			:autoCropHeight="autoCropHeight"
-			:centerBox="centerBox"
-			:high="high"
-			:mode="mode"
-			:maxImgSize="maxImgSize"
+			:outputSize
+			:outputType
+			:info
+			:full
+			:fixed
+			:fixedNumber
+			:canMove
+			:canMoveBox
+			:fixedBox
+			:original
+			:autoCrop
+			:autoCropWidth
+			:autoCropHeight
+			:centerBox
+			:high
+			:mode
+			:maxImgSize
 		>
 			<template #loading>
 				<ProgressRing />

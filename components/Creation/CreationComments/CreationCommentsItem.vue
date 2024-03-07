@@ -189,7 +189,7 @@
 
 <template>
 	<Comp>
-		<UserAvatar :avatar="avatar" :uid="uid" />
+		<UserAvatar :avatar :uid />
 		<div class="content">
 			<div class="header">
 				<Icon v-if="pinned" name="pin" class="pin" />

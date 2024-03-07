@@ -15,7 +15,7 @@
 	<div class="container">
 		<AnimatedIcon
 			name="visibility"
-			:state="state"
+			:state
 			@press="state = [`${visibleText} pressed`]"
 			@lift="state = [`${visibleText} lifted`]"
 			@click="onClick"

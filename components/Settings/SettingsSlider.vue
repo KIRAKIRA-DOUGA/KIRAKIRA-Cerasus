@@ -20,7 +20,7 @@
 		<Icon :name="icon" />
 		<div class="option-content">
 			<span><slot></slot></span>
-			<Slider v-model="value" :min="min" :max="max" :defaultValue="defaultValue" :tooltip="tooltip" />
+			<Slider v-model="value" :min :max :defaultValue :tooltip />
 		</div>
 	</Comp>
 </template>

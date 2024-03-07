@@ -56,7 +56,7 @@
 		class="tag lite"
 		:class="{ checked: isChecked, editable }"
 		:to="link"
-		:query="query"
+		:query
 		draggable="false"
 		tabindex="0"
 		role="checkbox"
@@ -144,7 +144,7 @@
 		* {
 			transition: $fallback-transitions, all $ease-out-expo $duration;
 		}
-		
+
 		.tags & {
 			&,
 			* {

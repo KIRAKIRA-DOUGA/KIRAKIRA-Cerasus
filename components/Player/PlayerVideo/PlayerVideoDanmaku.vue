@@ -110,7 +110,7 @@
 </script>
 
 <template>
-	<div ref="danmakuContainer" class="danmaku-container" :hidden="hidden"></div>
+	<div ref="danmakuContainer" class="danmaku-container" :hidden></div>
 </template>
 
 <style scoped lang="scss">

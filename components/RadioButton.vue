@@ -98,9 +98,9 @@
 		<input
 			ref="radio"
 			type="radio"
-			:value="value"
+			:value
 			:checked="isChecked"
-			:disabled="disabled"
+			:disabled
 		/>
 		<div class="radio-focus">
 			<div class="radio-shadow">

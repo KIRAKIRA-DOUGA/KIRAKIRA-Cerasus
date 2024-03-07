@@ -154,7 +154,7 @@
 			<LocaleLink to="/search">{{ t.search }}</LocaleLink>
 		</div>
 		<div class="component-test">
-			<Pagination v-model="page" :pages="pages" :displayPageCount="displayPageCount" enableArrowKeyMove />
+			<Pagination v-model="page" :pages :displayPageCount enableArrowKeyMove />
 			<Pagination v-model="opPage" :pages="op" :displayPageCount="isMobile() ? 9 : 15" enableArrowKeyMove />
 			<Segmented v-model="selectedSegmented" :style="{ '--ease': 'ease-in-out' }">
 				<SegmentedItem id="list" icon="list">列表</SegmentedItem>

@@ -127,7 +127,7 @@
 					<Transition :name="transitionName" mode="out-in">
 						<div v-if="selectedTab === 'danmaku-list'" key="danmaku-list">
 							<PlayerVideoPanelDanmakuList v-model="insertDanmaku" />
-							<PlayerVideoPanelDanmakuSender v-model="sendDanmaku" :videoId="props.videoId" :currentTime="currentTime" />
+							<PlayerVideoPanelDanmakuSender v-model="sendDanmaku" :videoId="props.videoId" :currentTime />
 						</div>
 
 						<div v-else-if="selectedTab === 'chapters'" key="chapters">
@@ -140,11 +140,11 @@
 
 				<PlayerVideoPanelSettings
 					v-else
-					:playing="playing"
-					:thumbnail="thumbnail"
-					:settings="settings"
-					:selectedSettingsTab="selectedSettingsTab"
-					:transitionName="transitionName"
+					:playing
+					:thumbnail
+					:settings
+					:selectedSettingsTab
+					:transitionName
 				/>
 			</Transition>
 		</div>

@@ -19,8 +19,8 @@
 
 <template>
 	<i class="icon" :class="{ filled }" role="img" :aria-label="new VariableName(name).words">
-		<SvgIcon v-if="environment.production" :name="name" />
-		<NuxtIcon v-else :name="name" :filled="filled" />
+		<SvgIcon v-if="environment.production" :name />
+		<NuxtIcon v-else :name :filled />
 	</i>
 </template>
 
@@ -32,11 +32,11 @@
 		&:not(.filled) :deep(svg) {
 			fill: currentColor;
 		}
-		
+
 		:deep(svg) {
 			@include square(1em);
 		}
-		
+
 		> .nuxt-icon {
 			@include square(1em);
 			display: inline-flex;

@@ -211,8 +211,8 @@
 				v-model="currentPercent"
 				:min="0"
 				:max="1"
-				:buffered="buffered"
-				:waiting="waiting"
+				:buffered
+				:waiting
 				pending="cursor"
 				:displayValue="pending => new Duration(pending * props.duration).toString()"
 			/>

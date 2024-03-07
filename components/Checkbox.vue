@@ -101,9 +101,9 @@
 		<input
 			ref="checkbox"
 			type="checkbox"
-			:value="value"
+			:value
 			:checked="isChecked"
-			:disabled="disabled"
+			:disabled
 			:indeterminate="isIndeterminate"
 		/>
 		<div class="check-focus">

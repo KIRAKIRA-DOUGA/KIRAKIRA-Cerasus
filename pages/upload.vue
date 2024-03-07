@@ -117,7 +117,7 @@
 				</div>
 			</div>
 
-			<UploadEditor v-else :files="files" />
+			<UploadEditor v-else :files />
 		</Transition>
 	</div>
 </template>

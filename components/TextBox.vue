@@ -269,23 +269,23 @@
 				<input
 					ref="input"
 					:value="value ?? ''"
-					:type="type"
+					:type
 					:placeholder="placeholder.toString()"
 					:autocomplete="autoComplete"
 					:autofocus="autoFocus"
-					:disabled="disabled"
-					:form="form"
-					:list="list"
-					:max="max"
+					:disabled
+					:form
+					:list
+					:max
 					:maxlength="maxLength"
-					:min="min"
+					:min
 					:minlength="minLength"
-					:multiple="multiple"
-					:name="name"
+					:multiple
+					:name
 					:pattern="pattern?.source"
-					:readonly="readonly"
-					:required="required"
-					:step="step"
+					:readonly
+					:required
+					:step
 					:inputmode="inputMode"
 					@input="onInput"
 					@keydown="e => stopPropagationExceptKey(e, 'F11')"

@@ -31,7 +31,7 @@
 					placeholder
 				/>
 			</div>
-			<Icon v-else-if="icon" :name="icon" :filled="filled" class="item-icon" />
+			<Icon v-else-if="icon" :name="icon" :filled class="item-icon" />
 			<div class="text">
 				<label class="title"><slot></slot></label>
 				<label class="details"><slot name="details">{{ details }}</slot></label>
@@ -40,7 +40,7 @@
 				<Icon v-if="!onTrailingIconClick" class="trailing-icon" :name="trailingIcon" />
 				<SoftButton v-else :icon="trailingIcon" class="trailing-icon" @click.stop="onTrailingIconClick" />
 			</template>
-			<a v-if="href" draggable="false" :href="href" target="_blank" class="link lite"></a>
+			<a v-if="href" draggable="false" :href target="_blank" class="link lite"></a>
 		</div>
 	</Comp>
 </template>

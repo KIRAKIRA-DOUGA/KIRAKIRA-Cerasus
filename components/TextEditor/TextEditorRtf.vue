@@ -150,7 +150,7 @@
 
 	<Comp ref="rtfEditor" @keyup.stop.ctrl.m="showRecentKaomojis">
 		<ClientOnly>
-			<EditorContent :editor="editor" />
+			<EditorContent :editor />
 		</ClientOnly>
 		<div class="toolbar">
 			<div class="left">

@@ -416,13 +416,13 @@
 					/>
 					<!-- TODO: ProgressRing 改成卡住（开屏加载不包含在内）一秒后再显示，防止出现过于频繁。 -->
 					<ProgressRing v-if="waiting" class="waiting" />
-					<PlayerVideoAbout v-model="showAboutPlayer" :playing="playing" />
+					<PlayerVideoAbout v-model="showAboutPlayer" :playing />
 				</Contents>
 				<PlayerVideoTitle
 					v-if="fullscreen"
-					:title="title"
+					:title
 					:hidden="hideController"
-					:fullscreenColorClass="fullscreenColorClass"
+					:fullscreenColorClass
 				/>
 			</div>
 			<PlayerVideoController
@@ -439,12 +439,12 @@
 				v-model:quality="quality"
 				v-model:waiting="waiting"
 				v-model:ended="ended"
-				:duration="duration"
+				:duration
 				:toggleFullscreen="toggle"
-				:buffered="buffered"
-				:qualities="qualities"
+				:buffered
+				:qualities
 				:hidden="hideController"
-				:fullscreenColorClass="fullscreenColorClass"
+				:fullscreenColorClass
 				@mousedown="playerVideoControllerMouseDown = true"
 			/>
 		</div>
@@ -453,11 +453,11 @@
 			v-model:sendDanmaku="willSendDanmaku"
 			v-model:insertDanmaku="willInsertDanmaku"
 			:videoId="id"
-			:currentTime="currentTime"
-			:rating="rating"
-			:playing="playing"
-			:thumbnail="thumbnail"
-			:settings="settings"
+			:currentTime
+			:rating
+			:playing
+			:thumbnail
+			:settings
 		/>
 		<Menu v-model="menu">
 			<MenuItem icon="camera" @click="() => getScreenshot()">截取当前画面</MenuItem>

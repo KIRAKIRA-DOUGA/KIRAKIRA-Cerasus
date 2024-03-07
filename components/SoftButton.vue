@@ -70,7 +70,7 @@
 				@click="(e: MouseEvent) => emits('click', e)"
 			>
 				<Icon v-if="icon" :name="icon" />
-				<AnimatedIcon v-if="animatedIcon" :name="animatedIcon" :state="state" />
+				<AnimatedIcon v-if="animatedIcon" :name="animatedIcon" :state />
 				<span v-if="text"><span>{{ text }}</span></span>
 			</component>
 		</div>
