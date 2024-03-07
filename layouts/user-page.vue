@@ -145,7 +145,7 @@
 
 		.user {
 			display: flex;
-			gap: 10px;
+			gap: 16px;
 			align-items: center;
 
 			.names {

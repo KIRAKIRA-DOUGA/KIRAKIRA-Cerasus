@@ -23,7 +23,15 @@
 
 <template>
 	<Comp v-ripple>
-		<NuxtImg v-if="avatar" :src="avatar" alt="avatar" draggable="false" />
+		<NuxtImg
+			v-if="avatar"
+			:src="avatar"
+			alt="avatar"
+			draggable="false"
+			format="avif"
+			width="64"
+			height="64"
+		/>
 		<Icon v-else name="person" />
 		<LocaleLink v-if="userLink" :to="userLink" :draggable="false" class="lite" />
 	</Comp>
@@ -48,10 +56,9 @@
 		cursor: pointer;
 
 		> img {
+			@include square(100%);
 			z-index: 1;
-			width: 100%;
 			object-fit: cover;
-			aspect-ratio: 1 / 1;
 
 			&:any-hover,
 			&:has(~ a:any-hover) {

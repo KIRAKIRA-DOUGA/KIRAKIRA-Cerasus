@@ -1,18 +1,17 @@
 <script setup lang="ts">
-	const avatar = "/static/images/avatars/aira.webp";
 	const registerDate = ref(new Date());
 	const registerDateDisplay = computed(() => formatDateWithLocale(registerDate.value));
-	const uid = ref<bigint>(2n);
+	const selfUserInfoStore = useSelfUserInfoStore();
 </script>
 
 <template>
 	<div class="user-profile" @click="navigate('/settings/profile')">
-		<div v-ripple class="avatar">
-			<NuxtImg :src="avatar" alt="avatar" draggable="false" />
+		<div class="avatar">
+			<UserAvatar :avatar="selfUserInfoStore.isLogined ? selfUserInfoStore.userAvatar : undefined" />
 		</div>
 		<div class="text">
-			<div class="username">艾了个拉</div>
-			<div class="bio">Kind and Kawaii, Forever! </div>
+			<div class="username">{{ selfUserInfoStore.username }}</div>
+			<div class="bio">TODO: Bio here</div>
 		</div>
 	</div>
 
@@ -38,36 +37,19 @@
 	<div class="user-info chip">
 		<SettingsChipItem icon="birthday" :details="registerDateDisplay">{{ t.user.birthday }}</SettingsChipItem>
 		<SettingsChipItem icon="history" :details="registerDateDisplay">{{ t.user.join_time }}</SettingsChipItem>
-		<SettingsChipItem icon="fingerprint" :details="uid">UID</SettingsChipItem>
+		<SettingsChipItem icon="fingerprint" :details="selfUserInfoStore.isLogined ? selfUserInfoStore.uid : undefined">UID</SettingsChipItem>
 	</div>
 </template>
 
 <style scoped lang="scss">
 	.user-profile {
 		display: flex;
-		gap: 15px;
+		gap: 16px;
+		width: fit-content;
 		cursor: pointer;
 
-		&:any-hover .avatar > img {
-			scale: 125%;
-		}
-
-		&:not(:any-hover) .avatar > img {
-			transition-duration: 1s;
-		}
-
-		.avatar {
+		.user-avatar {
 			@include square(64px);
-			@include circle;
-			overflow: hidden;
-			background-color: c(gray-20);
-
-			> img {
-				z-index: 1;
-				width: 100%;
-				object-fit: cover;
-				aspect-ratio: 1 / 1;
-			}
 		}
 
 		.text {
