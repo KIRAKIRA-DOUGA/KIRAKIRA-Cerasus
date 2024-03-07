@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	const getPaletteImage = (name: string) => `/static/images/palettes/${name}.webp`;
+	const getPaletteImage = (name: string) => `static/images/palettes/${name}.webp`;
 
 	const themeList = ["light", "dark", "system"] as const;
 	const paletteList = [
