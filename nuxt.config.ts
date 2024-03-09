@@ -42,7 +42,7 @@ export default defineNuxtConfig({
 		"modules/unsupported-browsers/module.ts",
 		dev && "modules/components-globalized/module.ts",
 		"@nuxtjs/robots",
-		"nuxt-simple-sitemap",
+		"@nuxtjs/sitemap",
 		// "@nuxtjs/color-mode", // 这个已经重写了，不用开启。
 	],
 	alias: defineAlias(__dirname,
