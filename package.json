@@ -73,8 +73,8 @@
 		"nuxt-lodash": "^2.4.1",
 		"nuxt-simple-sitemap": "^1.0.6",
 		"nuxt-typed-router": "^1.2.3",
-		"patch-package": "^7.0.0",
 		"pbjs": "^0.0.14",
+		"postcss": "^8.4.35",
 		"postcss-combine-media-query": "^1.0.1",
 		"postcss-html": "^1.5.0",
 		"protobufjs": "^7.2.5",
@@ -110,7 +110,7 @@
 		"@vueuse/head": "^2.0.0",
 		"@vueuse/nuxt": "^10.7.1",
 		"axios": "^1.5.0",
-		"css-doodle": "^0.38.3",
+		"css-doodle": "0.38.3",
 		"danmaku": "^2.0.6",
 		"dashjs": "^4.7.1",
 		"gsap": "^3.11.4",
@@ -156,5 +156,15 @@
 		"nova",
 		"dango",
 		"calibur"
-	]
+	],
+	"pnpm": {
+		"patchedDependencies": {
+			"@vue/compiler-sfc@3.4.21": "patches/@vue__compiler-sfc@3.4.21.patch",
+			"@vue/runtime-core@3.4.21": "patches/@vue__runtime-core@3.4.21.patch",
+			"lottie-web@5.12.2": "patches/lottie-web@5.12.2.patch",
+			"vue-router@4.3.0": "patches/vue-router@4.3.0.patch",
+			"postcss-selector-parser@6.0.15": "patches/postcss-selector-parser@6.0.15.patch",
+			"postcss@8.4.35": "patches/postcss@8.4.35.patch"
+		}
+	}
 }
