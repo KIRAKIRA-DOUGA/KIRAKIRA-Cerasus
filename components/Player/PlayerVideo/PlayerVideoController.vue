@@ -300,6 +300,8 @@
 		@include flex-center;
 		justify-content: flex-start;
 		height: inherit;
+		padding-right: calc(($thickness * (64px / 40px) - $thickness) / 2);
+		overflow: hidden;
 
 		@include mobile {
 			order: 2;
@@ -315,6 +317,7 @@
 		@include flex-center;
 		justify-content: flex-end;
 		height: inherit;
+		overflow: hidden;
 
 		@include mobile {
 			order: 3;
@@ -361,6 +364,7 @@
 		flex-grow: 1;
 		flex-shrink: 1;
 		width: 100%;
+		margin-left: calc(($thickness * (64px / 40px) - $thickness) / -2);
 		padding-right: 8px;
 
 		@include mobile {
