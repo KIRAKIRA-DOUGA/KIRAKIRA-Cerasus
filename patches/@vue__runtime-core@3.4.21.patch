@@ -1,7 +1,7 @@
-diff --git a/node_modules/@vue/runtime-core/dist/runtime-core.d.ts b/node_modules/@vue/runtime-core/dist/runtime-core.d.ts
-index f6fc614..0636107 100644
---- a/node_modules/@vue/runtime-core/dist/runtime-core.d.ts
-+++ b/node_modules/@vue/runtime-core/dist/runtime-core.d.ts
+diff --git a/dist/runtime-core.d.ts b/dist/runtime-core.d.ts
+index 99fab8b74c336b6f14ac3e832d793478c0a4b374..5433f943565dbb8072b81221410ed26e8366dd36 100644
+--- a/dist/runtime-core.d.ts
++++ b/dist/runtime-core.d.ts
 @@ -111,13 +111,14 @@ type ComponentPublicInstanceConstructor<T extends ComponentPublicInstance<Props,
      new (...args: any[]): T;
  };

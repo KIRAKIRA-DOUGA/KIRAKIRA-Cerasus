@@ -1,7 +1,7 @@
-diff --git a/node_modules/postcss/lib/container.js b/node_modules/postcss/lib/container.js
-index 462e3f0..f43b141 100644
---- a/node_modules/postcss/lib/container.js
-+++ b/node_modules/postcss/lib/container.js
+diff --git a/lib/container.js b/lib/container.js
+index 462e3f0d3944ed56d37403d95b229c2942f9e731..f43b141639c0c929d4fb236d3cc794689c867821 100644
+--- a/lib/container.js
++++ b/lib/container.js
 @@ -298,7 +298,6 @@ class Container extends Node {
        try {
          result = callback(child, i)
@@ -10,10 +10,10 @@ index 462e3f0..f43b141 100644
        }
        if (result !== false && child.walk) {
          result = child.walk(callback)
-diff --git a/node_modules/postcss/lib/node.js b/node_modules/postcss/lib/node.js
-index d79dd56..80502a8 100644
---- a/node_modules/postcss/lib/node.js
-+++ b/node_modules/postcss/lib/node.js
+diff --git a/lib/node.js b/lib/node.js
+index d79dd56e54d544bb906ab0b5b67ff252155b3068..80502a8b7cc40961129f6471b692bbf8f5d43778 100644
+--- a/lib/node.js
++++ b/lib/node.js
 @@ -55,7 +55,6 @@ class Node {
    }
  
