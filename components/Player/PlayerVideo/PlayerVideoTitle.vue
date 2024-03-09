@@ -32,8 +32,10 @@
 			<h3 class="title">{{ title }}</h3>
 		</div>
 		<div class="right">
-			<Icon v-if="hasBattery && charging" name="charger" />
-			<p v-if="hasBattery" class="battery">{{ battery }}</p>
+			<div class="battery">
+				<p v-if="hasBattery" class="battery-text">{{ battery }}</p>
+				<IconBattery v-if="hasBattery" :value="level" :charging />
+			</div>
 			<p class="time">{{ time }}</p>
 		</div>
 	</Comp>
@@ -75,8 +77,15 @@
 		}
 
 		.time,
-		.battery {
+		.battery-text {
 			font-variant-numeric: tabular-nums;
+			font-weight: 500;
+		}
+
+		.battery {
+			display: flex;
+			gap: 2px;
+			align-items: center;
 		}
 	}
 </style>
