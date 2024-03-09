@@ -23,11 +23,9 @@ KIRAKIRA 的前端
 确保安装依赖项：
 
 ```bash
-# npm
-npm install
+# pnpm
+pnpm install
 ```
-
-**只准用 <ruby>NPM<rp>（</rp><rt>你怕吗</rt><rp>）</rp></ruby>！！！**
 
 ### 开发服务器
 KIRAKIRA Cerasus 支持多种模式的开发服务器，请选择您需要的方式启动。
@@ -42,7 +40,7 @@ KIRAKIRA Cerasus 支持多种模式的开发服务器，请选择您需要的方
 
 您也可以在程序根目录中执行以下命令来启动：
 ```bash
-npm run dev
+pnpm dev
 ```
 
 启动后，您应该能够在这个地址访问：https://localhost:3000/
@@ -67,7 +65,7 @@ npm run dev
 您也可以在程序根目录中执行以下命令来启动：
 
 ```bash
-npm run dev-local
+pnpm dev-local
 ```
 
 启动后，您应该能够在这个地址访问：https://localhost:3000/
@@ -89,7 +87,7 @@ npm run dev-local
 您也可以在程序根目录中执行以下命令来启动：
 
 ```bash
-npm run dev-http
+pnpm dev-http
 ```
 
 启动后，您应该能够在这个地址访问：http://localhost:3000/
@@ -106,7 +104,7 @@ npm run dev-http
 您也可以在程序根目录中执行以下命令来启动：
 
 ```bash
-npm run dev-http-local
+pnpm dev-http-local
 ```
 
 启动后，您应该能够在这个地址访问：http://localhost:3000/
@@ -134,7 +132,7 @@ npm run dev-http-local
 您也可以在程序根目录中执行以下命令来启动：
 
 ```bash
-npm run dev-localhost
+pnpm dev-localhost
 ```
 
 启动后，您应该能够在这个地址访问：https://localhost:3000/
@@ -152,7 +150,7 @@ npm run dev-localhost
 您也可以在程序根目录中执行以下命令来启动：
 
 ```bash
-npm run dev-local-localhost
+pnpm dev-local-localhost
 ```
 
 启动后，您应该能够在这个地址访问：https://localhost:3000/
@@ -170,7 +168,7 @@ npm run dev-local-localhost
 您也可以在程序根目录中执行以下命令来启动：
 
 ```bash
-npm run dev-http-localhost
+pnpm dev-http-localhost
 ```
 
 启动后，您应该能够在这个地址访问：http://localhost:3000/
@@ -187,7 +185,7 @@ npm run dev-http-localhost
 您也可以在程序根目录中执行以下命令来启动：
 
 ```bash
-npm run dev-http-local-localhost
+pnpm dev-http-local-localhost
 ```
 
 启动后，您应该能够在这个地址访问：http://localhost:3000/
@@ -204,7 +202,7 @@ npm run dev-http-local-localhost
 按下键盘按键 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>，然后选择 `npm: generate`。
 
 ```bash
-npm run generate
+pnpm generate
 ```
 
 #### 为生产构建应用程序
@@ -214,13 +212,13 @@ npm run generate
 按下键盘按键 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>，然后选择 `npm: build`。
 
 ```bash
-npm run build
+pnpm build
 ```
 
 #### 本地预览生产版本
 
 ```bash
-npm run preview
+pnpm preview
 ```
 
 > [!IMPORTANT]  
