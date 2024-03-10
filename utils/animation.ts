@@ -253,8 +253,8 @@ export const STOP_TRANSITION_ID = "stop-transition";
  * @param options - 动画选项。
  * @returns 在动画播放完成之后可执行析构函数。
  */
-export async function startViewTransition(changeFunc: () => MaybePromise<void>, keyframes: Keyframe[] | PropertyIndexedKeyframes, options: KeyframeAnimationOptions = {}) {
-	if (!("startViewTransition" in document)) {
+export async function startColorViewTransition(changeFunc: () => MaybePromise<void>, keyframes: Keyframe[] | PropertyIndexedKeyframes, options: KeyframeAnimationOptions = {}) {
+	if (!document.startViewTransition) {
 		await changeFunc();
 		return;
 	}
@@ -270,7 +270,20 @@ export async function startViewTransition(changeFunc: () => MaybePromise<void>, 
 			-o-transition: none !important;
 			-ms-transition: none !important;
 			transition: none !important;
-			will-change: background;
+		}
+
+		::view-transition-old(root),
+		::view-transition-new(root) {
+			mix-blend-mode: normal;
+			transition: none !important;
+			animation: none !important;
+		}
+
+		::view-transition-old(*),
+		::view-transition-new(*),
+		::view-transition-old(*::before),
+		::view-transition-new(*::after) {
+			transition: none !important;
 		}
 	`;
 	document.head.appendChild(style);

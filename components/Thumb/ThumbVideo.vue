@@ -31,7 +31,6 @@
 		duration: undefined,
 	});
 
-	const date = computed(() => formatDateWithLocale(props.date ?? null));
 	const watchedCount = computed(() => getCompactDecimal(props.watchedCount));
 	const duration = computed(() => props.duration ?? Duration.placeholder);
 	const link = computed(() => props.videoId !== undefined && props.videoId !== null ?
@@ -78,7 +77,7 @@
 						</LocaleLink>
 						<div class="item">
 							<Icon name="calendar" />
-							<div>{{ date }}</div>
+							<div><DateTime :dateTime="date ?? null" /></div>
 						</div>
 					</div>
 				</div>

@@ -119,6 +119,16 @@
 		"vue-cropper": "^1.1.1",
 		"vue-virtual-scroller": "^2.0.0-beta.8"
 	},
+	"pnpm": {
+		"patchedDependencies": {
+			"@vue/compiler-sfc@3.4.21": "patches/@vue__compiler-sfc@3.4.21.patch",
+			"@vue/runtime-core@3.4.21": "patches/@vue__runtime-core@3.4.21.patch",
+			"lottie-web@5.12.2": "patches/lottie-web@5.12.2.patch",
+			"vue-router@4.3.0": "patches/vue-router@4.3.0.patch",
+			"postcss-selector-parser@6.0.15": "patches/postcss-selector-parser@6.0.15.patch",
+			"postcss@8.4.35": "patches/postcss@8.4.35.patch"
+		}
+	},
 	"keywords": [
 		"kirakira",
 		"component",
@@ -151,15 +161,5 @@
 		"nova",
 		"dango",
 		"calibur"
-	],
-	"pnpm": {
-		"patchedDependencies": {
-			"@vue/compiler-sfc@3.4.21": "patches/@vue__compiler-sfc@3.4.21.patch",
-			"@vue/runtime-core@3.4.21": "patches/@vue__runtime-core@3.4.21.patch",
-			"lottie-web@5.12.2": "patches/lottie-web@5.12.2.patch",
-			"vue-router@4.3.0": "patches/vue-router@4.3.0.patch",
-			"postcss-selector-parser@6.0.15": "patches/postcss-selector-parser@6.0.15.patch",
-			"postcss@8.4.35": "patches/postcss@8.4.35.patch"
-		}
-	}
+	]
 }

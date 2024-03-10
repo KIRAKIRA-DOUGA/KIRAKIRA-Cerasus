@@ -36,5 +36,9 @@
 		.english-after {
 			font-feature-settings: normal;
 		}
+
+		.count {
+			font-variant-numeric: oldstyle-nums;
+		}
 	}
 </style>

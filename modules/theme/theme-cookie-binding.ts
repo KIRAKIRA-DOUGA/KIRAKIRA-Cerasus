@@ -157,7 +157,7 @@ export function cookieBinding() {
 				];
 				const CHANGING_THEME_CLASS = "changing-theme";
 				rootNode.classList.add(CHANGING_THEME_CLASS);
-				startViewTransition(updateThemeSettings, {
+				startColorViewTransition(updateThemeSettings, {
 					clipPath: actualThemeType === "light" ? clipPath : clipPath.toReversed(),
 				}, {
 					duration: 300,
