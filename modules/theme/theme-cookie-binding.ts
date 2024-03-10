@@ -62,6 +62,26 @@ export function cookieBinding() {
 	// HACK 4 在此处添加
 
 	/**
+	 * 创建或更新一个 meta 标签
+	 * @param name meta 标签的 name
+	 * @param content meta 标签的 content
+	 */
+	function updateOrCreateMetaTag(name: string, content: string) {
+		// 尝试找到已存在的 meta 标签
+		let metaTag = document.querySelector(`meta[name="${name}"]`);
+
+		if (metaTag) // 如果标签已存在，更新它的内容
+			metaTag.setAttribute("content", content);
+		else {
+			// 如果标签不存在，创建一个新的标签并设置其属性
+			metaTag = document.createElement("meta");
+			metaTag.setAttribute("name", name);
+			metaTag.setAttribute("content", content);
+			document.getElementsByTagName("head")[0].appendChild(metaTag);
+		}
+	}
+
+	/**
 	 * 用原始的方式获取 cookie
 	 * @param cookieName key
 	 * @returns cookie
@@ -138,6 +158,11 @@ export function cookieBinding() {
 			console.log("customThemeColor", customThemeColor); // TODO 设置自定义主题色
 		else if (themeColor)
 			rootNode.classList.add(themeColor);
+			const themeColorMetaTagName = "theme-color";
+			const themeColorCssVariableName = "--accent";
+			const themeColorHex = getComputedStyle(rootNode).getPropertyValue(themeColorCssVariableName).trim();
+			updateOrCreateMetaTag(themeColorMetaTagName, themeColorHex);
+		}
 		if (currentThemeType) {
 			const actualThemeType = currentThemeType === "system" ? systemThemeType : currentThemeType;
 			const isDark = actualThemeType === "dark";
