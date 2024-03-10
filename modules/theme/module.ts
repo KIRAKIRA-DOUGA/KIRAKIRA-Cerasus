@@ -34,6 +34,7 @@ export default defineNuxtModule({
 		addImports({ name: "THEME_ENV", as: "THEME_ENV", from: cookieBindingRoute });
 		addImports({ name: "COOKIE_KEY", as: "COOKIE_KEY", from: cookieBindingRoute });
 		addImports({ name: "cookieBinding", as: "cookieBinding", from: cookieBindingRoute });
+		addImports({ name: "mappingThemeColorHex", as: "mappingThemeColorHex", from: cookieBindingRoute });
 
 		let cookieBanderContent = `(function (autoCall = true) {${getFunctionBody(cookieBinding, false)}})();`;
 		cookieBanderContent = await minifyJavaScript(cookieBanderContent);

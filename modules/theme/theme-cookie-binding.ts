@@ -14,6 +14,14 @@ export const THEME_ENV = {
 	NO_COLORED_SIDEBAR: "false",
 	NO_SHARP_APPEARANCE_MODE: "false",
 	NO_FLAT_APPEARANCE_MODE: "false",
+	THEME_COLOR_HAX_MAPPER: {
+		pink: "#f06e8e",
+		sky: "#45b3e1",
+		blue: "#4581e1",
+		orange: "#f9a400",
+		purple: "#bb35ea",
+		green: "#4bb530",
+	},
 	// HACK 1 在此处添加
 };
 
@@ -28,6 +36,18 @@ export const COOKIE_KEY = {
 	flatAppearanceModeCookieKey: "flat-appearance-mode",
 	// HACK 2 在此处添加
 };
+
+/**
+ * 将语义主题颜色字符串转换为 Hex 主题颜色，例如 "pink" 会转为 "#f06e8e"，请保持该 mappingThemeColorHex 函数定义（除 THEME_COLOR_HAX_MAPPER 变量引用外）和下方 cookieBinding 函数中的 mappingThemeColorHex 函数一致
+ * @param colorString 具有语义的主题颜色字符串
+ * @returns string Hex 主题颜色
+ */
+export function mappingThemeColorHex(colorString: string) {
+	const themeColorMapper = THEME_ENV.THEME_COLOR_HAX_MAPPER;
+	if (colorString in themeColorMapper)
+		return themeColorMapper[colorString as keyof typeof themeColorMapper];
+	else return "#f06e8e"; // pink
+}
 
 let lastClickMouseEvent: MouseEvent | undefined;
 if (process.client)
@@ -49,6 +69,14 @@ export function cookieBinding() {
 	const NO_COLORED_SIDEBAR = "false";
 	const NO_SHARP_APPEARANCE_MODE = "false";
 	const NO_FLAT_APPEARANCE_MODE = "false";
+	const THEME_COLOR_HAX_MAPPER = {
+		pink: "#f06e8e",
+		sky: "#45b3e1",
+		blue: "#4581e1",
+		orange: "#f9a400",
+		purple: "#bb35ea",
+		green: "#4bb530",
+	};
 	// HACK 3 在此处添加
 
 	// Cookie 键 - 用户样式设置，请保持和上方 COOKIE_KEY 全局变量的值一致
@@ -60,6 +88,18 @@ export function cookieBinding() {
 	const sharpAppearanceModeCookieKey = "sharp-appearance-mode";
 	const flatAppearanceModeCookieKey = "flat-appearance-mode";
 	// HACK 4 在此处添加
+
+	/**
+	 * 将语义主题颜色字符串转换为 Hex 主题颜色，例如 "pink" 会转为 "#f06e8e"，请保持该 mappingThemeColorHex 函数定义（除 THEME_COLOR_HAX_MAPPER 变量引用外）和上方的 mappingThemeColorHex 函数一致
+	 * @param colorString 具有语义的主题颜色字符串
+	 * @returns string Hex 主题颜色
+	 */
+	function mappingThemeColorHex(colorString: string) {
+		const themeColorMapper = THEME_COLOR_HAX_MAPPER;
+		if (colorString in themeColorMapper)
+			return themeColorMapper[colorString as keyof typeof themeColorMapper];
+		else return "#f06e8e"; // pink
+	}
 
 	/**
 	 * 用原始的方式获取 cookie
@@ -129,6 +169,7 @@ export function cookieBinding() {
 
 		// 绑定 cookie 中的样式到 html
 		const rootNode = document.documentElement;
+		const headDom = document.head;
 		const isPreviousDark = rootNode.classList.contains("dark");
 		rootNode.className = "kirakira";
 		if (`${isColoredSidebar}` === "true") rootNode.classList.add("colored-sidebar");
@@ -136,8 +177,12 @@ export function cookieBinding() {
 		if (`${isFlatAppearanceMode}` === "true") rootNode.classList.add("flat");
 		if (themeColor && themeColor === CUSTOM_THEME_COLOR && customThemeColor)
 			console.log("customThemeColor", customThemeColor); // TODO 设置自定义主题色
-		else if (themeColor)
+		else if (themeColor) {
 			rootNode.classList.add(themeColor);
+			const themeMetaTagKey = "meta[name='theme-color']";
+			const themeColorMateTag = headDom?.querySelector<HTMLMetaElement>(themeMetaTagKey);
+			if (themeColorMateTag) themeColorMateTag.content = mappingThemeColorHex(themeColor);
+		}
 		if (currentThemeType) {
 			const actualThemeType = currentThemeType === "system" ? systemThemeType : currentThemeType;
 			const isDark = actualThemeType === "dark";
@@ -172,7 +217,7 @@ export function cookieBinding() {
 	} catch (error) {
 		console.error("ERROR", "ERROR IN cookieBinding", error);
 		try {
-			document.documentElement.classList.add(SYSTEM_THEME, THEME_LIGHT);
+			document.documentElement.classList.add(SYSTEM_THEME, THEME_LIGHT); // 出错时尝试设置默认主题
 		} catch (error) {
 			console.error("ERROR", "ERROR IN cookieBinding -> catch", error);
 		}
