@@ -156,7 +156,7 @@ export function cookieBinding() {
 		if (`${isFlatAppearanceMode}` === "true") rootNode.classList.add("flat");
 		if (themeColor && themeColor === CUSTOM_THEME_COLOR && customThemeColor)
 			console.log("customThemeColor", customThemeColor); // TODO 设置自定义主题色
-		else if (themeColor)
+		else if (themeColor) {
 			rootNode.classList.add(themeColor);
 			const themeColorMetaTagName = "theme-color";
 			const themeColorCssVariableName = "--accent";
