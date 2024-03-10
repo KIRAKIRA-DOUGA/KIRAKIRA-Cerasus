@@ -126,7 +126,7 @@
 	}
 
 	.right {
-		overflow: hidden;
+		overflow: clip;
 		cursor: pointer;
 
 		&.swing {

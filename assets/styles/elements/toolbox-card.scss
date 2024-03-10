@@ -8,7 +8,7 @@
 	flex-direction: column;
 	gap: 24px;
 	padding: 16px;
-	overflow: hidden;
+	overflow: clip;
 	background-color: c(main-bg);
 
 	@each $pos in left, right {

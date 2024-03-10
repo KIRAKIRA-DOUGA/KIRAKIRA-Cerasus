@@ -265,7 +265,7 @@
 		display: flex;
 		align-items: center;
 		height: $thickness;
-		// overflow: hidden; // FIXME: Slider的Tooltip是在Slider内的，打开overflow: hidden会导致显示不出来。
+		// overflow: clip; // FIXME: Slider 的 Tooltip 是在 Slider 内的，打开 overflow: clip 会导致显示不出来。
 		color: c(icon-color);
 		font-weight: 600;
 		font-size: 14px;
@@ -301,7 +301,7 @@
 		justify-content: flex-start;
 		height: inherit;
 		padding-right: calc(($thickness * (64px / 40px) - $thickness) / 2);
-		overflow: hidden;
+		overflow: clip;
 
 		@include mobile {
 			order: 2;
@@ -317,7 +317,7 @@
 		@include flex-center;
 		justify-content: flex-end;
 		height: inherit;
-		overflow: hidden;
+		overflow: clip;
 
 		@include mobile {
 			order: 3;

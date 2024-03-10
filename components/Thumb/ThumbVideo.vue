@@ -135,7 +135,7 @@
 		@include round-large;
 		flex-shrink: 0;
 		margin-bottom: 8px;
-		overflow: hidden;
+		overflow: clip;
 		aspect-ratio: 16 / 9;
 
 		img.cover {
@@ -153,11 +153,11 @@
 
 	.text-wrapper {
 		flex-grow: 1;
-		overflow: hidden;
+		overflow: clip;
 	}
 
 	.title {
-		overflow: hidden;
+		overflow: clip;
 		font-weight: 500;
 		white-space: nowrap;
 		text-align: justify;
@@ -221,7 +221,7 @@
 			text-decoration: none;
 
 			> div {
-				overflow: hidden;
+				overflow: clip;
 				white-space: nowrap;
 				text-overflow: ellipsis;
 			}

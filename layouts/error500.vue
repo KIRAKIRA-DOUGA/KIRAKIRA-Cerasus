@@ -49,7 +49,7 @@
 		flex-direction: column;
 		justify-content: space-between;
 		height: 100%;
-		overflow: hidden;
+		overflow: clip;
 		animation: intro 600ms $ease-out-smooth;
 
 		> * {

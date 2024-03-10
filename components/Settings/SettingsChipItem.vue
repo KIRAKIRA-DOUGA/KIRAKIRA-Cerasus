@@ -70,7 +70,7 @@
 		.image {
 			@include square(42px);
 			@include circle;
-			overflow: hidden;
+			overflow: clip;
 
 			> img {
 				@include square(100%);

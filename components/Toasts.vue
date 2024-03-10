@@ -96,7 +96,7 @@
 			--duration: 2000;
 			position: relative;
 			margin-top: 12px;
-			overflow: hidden;
+			overflow: clip;
 
 			.content {
 				@include flex-center;

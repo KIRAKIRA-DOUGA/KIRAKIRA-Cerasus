@@ -91,8 +91,8 @@ type AnimateSizeOptions = Partial<{
 	removeGlitchFrame: boolean;
 	/** 动画播放的同时附加其它动画，并使用与之相同的时长与缓动值。 */
 	attachAnimations: [Element, Keyframes][] | false;
-	/** 不要 `overflow: hidden;`？ */
-	noCropping: boolean;
+	/** 不要 `overflow: clip;`？ */
+	noClipping: boolean;
 }>;
 
 /**
@@ -122,7 +122,7 @@ export async function* animateSizeGenerator(
 		endChildTranslate,
 		removeGlitchFrame,
 		attachAnimations,
-		noCropping = false,
+		noClipping = false,
 	}: AnimateSizeOptions = {},
 ): AsyncGenerator<void, Animation | void, boolean> {
 	element = toValue(element);
@@ -167,9 +167,9 @@ export async function* animateSizeGenerator(
 	Object.assign(keyframes[1], endStyle);
 	const animationOptions = { duration, easing };
 	const htmlElement = element as HTMLElement;
-	if (!noCropping) htmlElement.style.overflow = "hidden";
+	if (!noClipping) htmlElement.style.overflow = "clip";
 	const result = element.animate(keyframes, animationOptions);
-	if (!noCropping) result.addEventListener("finish", () => htmlElement.style.removeProperty("overflow"));
+	if (!noClipping) result.addEventListener("finish", () => htmlElement.style.removeProperty("overflow"));
 	if (startChildTranslate || endChildTranslate || attachAnimations) {
 		const onlyChild = element.children[0]; // 只取唯一一个子元素。
 		if (onlyChild && element instanceof HTMLElement && removeGlitchFrame) {

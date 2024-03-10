@@ -13,7 +13,7 @@
 	const showColorPicker = computed({
 		get: () => _showColorPicker.value,
 		set: async value => {
-			showColorPickerAnimationGenerator.value = animateSizeGenerator(styleContainer, { duration: 600, noCropping: true });
+			showColorPickerAnimationGenerator.value = animateSizeGenerator(styleContainer, { duration: 600, noClipping: true });
 			await showColorPickerAnimationGenerator.value.next();
 			_showColorPicker.value = value;
 		},
@@ -151,7 +151,7 @@
 
 					&.custom-color {
 						position: relative;
-						overflow: hidden;
+						overflow: clip;
 						border: none;
 
 						* {
@@ -197,7 +197,7 @@
 		.back {
 			--icon-size: 20px;
 			--ripple-size: 52px;
-			
+
 			/* display: flex;
 			gap: 5px;
 			margin-bottom: 10px;

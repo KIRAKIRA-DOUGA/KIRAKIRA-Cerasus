@@ -43,7 +43,7 @@
 	:comp {
 		@include flex-center;
 		flex-direction: column;
-		overflow: hidden;
+		overflow: clip;
 		color: c(accent);
 		background-color: c(main-bg, 75%);
 		backdrop-filter: blur(16px);

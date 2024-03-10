@@ -47,7 +47,7 @@
 
 		.text {
 			margin-left: 4px;
-			overflow: hidden;
+			overflow: clip;
 			white-space: nowrap;
 		}
 

@@ -2,14 +2,14 @@
 	position: relative;
 
 	&.ripple-button-cut {
-		overflow: hidden;
+		overflow: clip;
 	}
 
 	.ripple-wrapper {
 		position: absolute;
 		inset: 0;
 		z-index: 2;
-		overflow: hidden;
+		overflow: clip;
 		border-radius: inherit;
 		pointer-events: none;
 	}

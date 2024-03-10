@@ -131,7 +131,7 @@
 		left: 45%;
 		width: 10%;
 		height: 100%;
-		overflow: hidden;
+		overflow: clip;
 		border-color: inherit;
 
 		.circle {
@@ -148,7 +148,7 @@
 		display: inline-block;
 		width: 50%;
 		height: 100%;
-		overflow: hidden;
+		overflow: clip;
 		border-color: inherit;
 
 		.circle {

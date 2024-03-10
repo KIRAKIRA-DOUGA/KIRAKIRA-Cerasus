@@ -5,7 +5,7 @@ table:not(.lite) {
 	@include round-large;
 	@include chip-shadow;
 	$border-bottom: c(gray-40) 1px solid;
-	overflow: hidden;
+	overflow: clip;
 	text-align: left;
 	border-bottom: $border-bottom;
 	border-spacing: 0;

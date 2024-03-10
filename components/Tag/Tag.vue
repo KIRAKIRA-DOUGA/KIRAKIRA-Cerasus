@@ -98,7 +98,7 @@
 		position: relative;
 		display: inline-flex;
 		padding: $padding;
-		overflow: hidden;
+		overflow: clip;
 		color: inherit;
 		font-size: inherit;
 		line-height: 1rem;
@@ -161,7 +161,7 @@
 		display: inline;
 		width: $check-icon-size;
 		height: $check-icon-size;
-		overflow: hidden;
+		overflow: clip;
 
 		&.v-enter-from,
 		&.v-leave-to {
