@@ -4,6 +4,7 @@
 	"description": "KIRAKIRA-Cerasus, The PC/PE Front-end Created by Nuxt3.",
 	"private": true,
 	"type": "module",
+	"packageManager": "pnpm@8.15.4",
 	"module": "esnext",
 	"repository": {
 		"type": "git",
