@@ -1,3 +1,4 @@
 {
+	"build_command": "pnpm exec nuxi build",
 	"cache_dependencies": false
 }
