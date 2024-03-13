@@ -63,6 +63,13 @@
 	const blockWordsToggle = ref(false);
 	const blockWordsSelectedTab = ref("block-keywords");
 	const transitionName = defineModel<string>("transitionName", { default: "page-jump" });
+
+	let thumbnailImage = computed(() => props.thumbnail);
+	let miniThumbnailImage: ComputedRef<string>;
+	if (props.thumbnail && !isLocalStaticAssetUrl(props.thumbnail)) {
+		thumbnailImage = computed(() => `${props.thumbnail}/w=300`); // 视频卡片封面图
+		miniThumbnailImage = computed(() => `${props.thumbnail}/w=50,blur=5`); // 视频卡片封面图没加载完成前的占位符迷你图片
+	}
 </script>
 
 <template>
@@ -91,7 +98,15 @@
 					<div class="grid">
 						<CheckCard v-for="([filter, style], key) in filters" :key="key" v-model="filterBooleanProxy[key]">
 							{{ filter }}
-							<template #image><NuxtImg :src="thumbnail" alt="preview" :style="style" /></template>
+							<template #image>
+								<NuxtImg
+									:src="thumbnailImage"
+									:style="style"
+									alt="preview"
+									draggable="false"
+									:placeholder="miniThumbnailImage"
+								/>
+							</template>
 						</CheckCard>
 					<!-- <CheckCard v-model="settings.filter.horizontalFlip">
 					水平翻转

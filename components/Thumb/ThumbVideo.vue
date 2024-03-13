@@ -36,9 +36,12 @@
 	const link = computed(() => props.videoId !== undefined && props.videoId !== null ?
 		`/video/kv${props.videoId}` : props.link);
 
-	const img = useImage();
-	const miniImage = computed(() => `${props.image}/w=50`); // 视频卡片封面图没加载完成前的占位符迷你图片
-	const thumbImage = computed(() => `${props.image}/w=700`); // 视频卡片封面图
+	let thumbImage = computed(() => props.image);
+	let miniThumbImage: ComputedRef<string>;
+	if (props.image && !isLocalStaticAssetUrl(props.image)) {
+		thumbImage = computed(() => `${props.image}/w=500`); // 视频卡片封面图
+		miniThumbImage = computed(() => `${props.image}/w=50,blur=5`); // 视频卡片封面图没加载完成前的占位符迷你图片
+	}
 </script>
 
 <template>
@@ -50,11 +53,8 @@
 					:src="thumbImage"
 					alt="cover"
 					class="cover"
-					:draggable="false"
-					format="avif"
-					width="320"
-					height="180"
-					:placeholder="img(miniImage, { blur: 2 })"
+					draggable="false"
+					:placeholder="miniThumbImage"
 				/>
 			</div>
 			<div class="text-wrapper">

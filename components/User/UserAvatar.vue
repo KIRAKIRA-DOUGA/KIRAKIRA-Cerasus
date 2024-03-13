@@ -15,6 +15,13 @@
 		uid?: Readable;
 	}>();
 
+	let avatarImage = props.avatar;
+	let miniAvatarImage: string;
+	if (props.avatar && !isLocalStaticAssetUrl(props.avatar)) {
+		avatarImage = `${props.avatar}/w=100`; // 用户头像
+		miniAvatarImage = `${props.avatar}/w=50,blur=5`; // 用户头像缩略图
+	}
+
 	const userLink = computed(() => {
 		const uid = props.uid === undefined ? NaN : Number(props.uid); // 不要用一元加号运算符！
 		return Number.isFinite(uid) ? `/user/${uid}` : props.link;
@@ -25,12 +32,10 @@
 	<Comp v-ripple>
 		<NuxtImg
 			v-if="avatar"
-			:src="avatar"
+			:src="avatarImage"
 			alt="avatar"
 			draggable="false"
-			format="avif"
-			width="64"
-			height="64"
+			:placeholder="miniAvatarImage"
 		/>
 		<Icon v-else name="person" />
 		<LocaleLink v-if="userLink" :to="userLink" :draggable="false" class="lite" />

@@ -8,7 +8,7 @@
 		name: selfUserInfoStore.username,
 		bio: selfUserInfoStore.signature,
 		gender: selfUserInfoStore.gender,
-		birthday: new Date(), // FIXME: 注意：这个值是静态的、非响应式的，不会随时间变化
+		birthday: new Date(), // FIXME: 注意：占位符，当前生日是静态的、非响应式的，不会随时间变化
 		tags: selfUserInfoStore.tags?.map(tag => tag.labelName),
 	}));
 

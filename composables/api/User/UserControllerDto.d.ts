@@ -148,6 +148,8 @@ export type UserWebsite = {
 export type UpdateOrCreateUserInfoRequestDto = {
 	/** 用户名 */
 	username?: string;
+	/** 用户昵称 */
+	userNickname?: string;
 	/** 用户头像的链接 */
 	avatar?: string;
 	/** 用户背景图片的链接 */

@@ -6,9 +6,18 @@
 	const props = withDefaults(defineProps<{
 		/** 图片。 */
 		image?: string;
+		alt?: string;
 	}>(), {
 		image: undefined,
+		alt: "Asset Loading Failed", // TODO: 使用多语言
 	});
+
+	let thumbImage = computed(() => props.image);
+	let miniThumbImage: ComputedRef<string>;
+	if (props.image && !isLocalStaticAssetUrl(props.image)) {
+		thumbImage = computed(() => `${props.image}/w=500`); // 视频卡片封面图
+		miniThumbImage = computed(() => `${props.image}/w=50,blur=5`); // 视频卡片封面图没加载完成前的占位符迷你图片
+	}
 
 	const checked = defineModel<boolean>({ default: false });
 </script>
@@ -16,7 +25,14 @@
 <template>
 	<Comp role="checkbox" :aria-checked="checked" :class="{ checked }" :tabindex="0" @click="checked = !checked">
 		<div v-ripple class="card">
-			<slot name="image"><NuxtImg :src="image" /></slot>
+			<slot name="image">
+				<NuxtImg
+					:src="thumbImage"
+					:alt="alt"
+					draggable="false"
+					:placeholder="miniThumbImage"
+				/>
+			</slot>
 			<div class="overlay"></div>
 			<div class="float">
 				<Checkbox v-model:single="checked" readonly />
