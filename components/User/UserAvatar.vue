@@ -25,12 +25,14 @@
 	<Comp v-ripple>
 		<NuxtImg
 			v-if="avatar"
+			provider="kirakira"
 			:src="avatar"
 			alt="avatar"
 			draggable="false"
 			format="avif"
 			width="64"
 			height="64"
+			:placeholder="[20, 20, 100, 2]"
 		/>
 		<Icon v-else name="person" />
 		<LocaleLink v-if="userLink" :to="userLink" :draggable="false" class="lite" />

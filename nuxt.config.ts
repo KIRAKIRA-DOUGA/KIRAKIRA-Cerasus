@@ -205,8 +205,18 @@ export default defineNuxtConfig({
 	},
 	image: {
 		format: ["avif", "webp"], // 只适用于 <NuxtPicture>，对 <NuxtImg> 无效。
-		domains: ["kirafile.com", "imagedelivery.net"],
 		provider: "ipx",
+		providers: {
+			kirakira: {
+				name: "kirakira", // optional value to overrider provider name
+				provider: "./NuxtImage/providers/KirakiraImage.ts", // Path to custom provider
+				options: {
+					// ... provider options
+					baseURL: "https://kirafile.com",
+					accountHash: "Gyz90amG54C4b_dtJiRpYg",
+				},
+			},
+		},
 	},
 	piniaPersistedstate: {
 		cookieOptions: {
