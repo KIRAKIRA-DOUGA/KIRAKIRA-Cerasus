@@ -407,7 +407,7 @@
 			</Accordion>
 		</Modal>
 
-		<div ref="videoContainer" class="main" :class="{ fullscreen, 'hide-cursor': hideCursor }">
+		<div ref="videoContainer" class="main" :class="{ fullscreen, 'hide-cursor': hideCursor }" @touchstart="autoHideControllerTouch">
 			<div class="screen">
 				<video
 					ref="video"
@@ -425,7 +425,6 @@
 					@contextmenu.prevent="e => menu = e"
 					@pointerdown="onVideoClick"
 					@pointermove="autoHideController"
-					@touchstart="autoHideControllerTouch"
 				></video>
 				<Contents>
 					<PlayerVideoDanmaku
