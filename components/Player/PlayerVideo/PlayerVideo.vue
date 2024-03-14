@@ -87,6 +87,7 @@
 	const menu = ref<MenuModel>();
 	const showDanmaku = ref(true);
 	const hideController = ref(false);
+	const hideControllerTimeoutId = ref<Timeout>();
 	const hideCursor = ref(false);
 	const hideCursorTimeoutId = ref<Timeout>();
 	const willSendDanmaku = ref<DanmakuComment[]>();
@@ -328,14 +329,14 @@
 
 	/**
 	 * 在全屏时自动隐藏控制栏。
-	 * @param e - 鼠标移动事件。
+	 * @param e - 指针移动事件。
 	 */
-	function autoHideController(e?: MouseEvent) {
+	function autoHideController(e?: PointerEvent) {
 		const BOTTOM = 36;
 		if (e && (!fullscreen.value || playerVideoControllerMouseDown.value ||
 			window.outerHeight - e.pageY <= BOTTOM))
 			hideController.value = false;
-		else
+		else if (!e || e && e.pointerType !== "touch")
 			hideController.value = true;
 
 		hideCursor.value = false;
@@ -345,6 +346,25 @@
 	}
 
 	useEventListener("window", "mouseup", () => playerVideoControllerMouseDown.value = false);
+
+	/**
+	 * 在全屏时自动隐藏控制栏（触摸屏差分）。
+	 */
+	function autoHideControllerTouch() {
+		hideController.value = false;
+		clearTimeout(hideControllerTimeoutId.value);
+		if (fullscreen.value && hideController.value === false)
+			hideControllerTimeoutId.value = setTimeout(() => fullscreen.value && (hideController.value = true), 3000);
+	}
+
+	/**
+	 * <video>点击事件。
+	 * @param e - 指针点击事件。
+	 */
+	function onVideoClick(e: PointerEvent) {
+		if (e && e.pointerType !== "touch")
+			playing.value = !playing.value;
+	}
 
 	/**
 	* 给视频截个图。
@@ -401,10 +421,11 @@
 					@progress="onProgress"
 					@ended="ended = true"
 					@waiting="waiting = true"
-					@click="playing = !playing"
 					@dblclick="toggle"
 					@contextmenu.prevent="e => menu = e"
-					@mousemove="autoHideController"
+					@pointerdown="onVideoClick"
+					@pointermove="autoHideController"
+					@touchstart="autoHideControllerTouch"
 				></video>
 				<Contents>
 					<PlayerVideoDanmaku

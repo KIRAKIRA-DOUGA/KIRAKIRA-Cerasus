@@ -300,7 +300,7 @@
 		@include flex-center;
 		justify-content: flex-start;
 		height: inherit;
-		padding-right: calc(($thickness * (64px / 40px) - $thickness) / 2);
+		padding-right: calc(($thickness * (64px / 40px) - $thickness) / 2); // 修复水波纹被切割。
 		overflow: clip;
 
 		@include mobile {
@@ -364,7 +364,6 @@
 		flex-grow: 1;
 		flex-shrink: 1;
 		width: 100%;
-		margin-left: calc(($thickness * (64px / 40px) - $thickness) / -2);
 		padding-right: 8px;
 
 		@include mobile {
@@ -375,6 +374,10 @@
 			.slider {
 				height: 24px;
 			}
+		}
+
+		@include not-mobile {
+			margin-left: calc(($thickness * (64px / 40px) - $thickness) / -2); // 修复水波纹被切割。
 		}
 
 		:deep(.passed) {
