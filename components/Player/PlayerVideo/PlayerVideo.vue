@@ -336,7 +336,7 @@
 		if (e && (!fullscreen.value || playerVideoControllerMouseDown.value ||
 			window.outerHeight - e.pageY <= BOTTOM))
 			hideController.value = false;
-		else if (!e || e && e.pointerType !== "touch")
+		else if (e?.pointerType !== "touch")
 			hideController.value = true;
 
 		hideCursor.value = false;
@@ -423,7 +423,7 @@
 					@waiting="waiting = true"
 					@dblclick="toggle"
 					@contextmenu.prevent="e => menu = e"
-					@pointerdown="onVideoClick"
+					@pointerup="onVideoClick"
 					@pointermove="autoHideController"
 				></video>
 				<Contents>

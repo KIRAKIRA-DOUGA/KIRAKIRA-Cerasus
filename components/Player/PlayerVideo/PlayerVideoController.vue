@@ -132,6 +132,15 @@
 			menu.value = new Date().valueOf();
 	}
 
+	/**
+	 * 音量按钮点击事件。
+	 * @param e - 指针点击事件。
+	 */
+	function onVolumeButtonClick(e: PointerEvent) {
+		if (e.pointerType !== "touch")
+			muted.value = !muted.value;
+	}
+
 	const playbackRateText = (rate: number) => (2 ** rate).toFixed(2).replace(/\.?0+$/, "") + "×";
 	const volumeText = (volume: number) => Math.round(volume * 100) + "%";
 
@@ -202,7 +211,7 @@
 		</PlayerVideoMenu>
 	</div>
 
-	<Comp role="toolbar" :class="{ fullscreen, ...fullscreenColorClass, hidden }" v-bind="$attrs">
+	<Comp role="toolbar" :class="{ fullscreen, ...fullscreenColorClass, mobile: isMobile(), hidden }" v-bind="$attrs">
 		<div class="left">
 			<SoftButton class="play" :icon="ended ? 'replay' : playing ? 'pause' : 'play'" @click="playing = !playing" />
 		</div>
@@ -231,16 +240,16 @@
 			/>
 			<SoftButton
 				icon="speed_outline"
-				@click="switchSpeed"
 				@mouseenter="e => rateMenu = e"
 				@mouseleave="rateMenu = undefined"
+				@pointerup="e => isMouse(e) && switchSpeed()"
 			/>
 			<SoftButton
 				:icon="muted ? 'volume_mute' : volumeSet >= 0.5 ? 'volume_up' : volumeSet > 0 ? 'volume_down' : 'volume_none'"
 				class="volume"
-				@click="muted = !muted"
 				@mouseenter="e => volumeMenu = e"
 				@mouseleave="volumeMenu = undefined"
+				@pointerup="onVolumeButtonClick"
 			/>
 			<!-- TODO: 音量图标需要修改为三根弧线，并且使用动画切换，参考 Windows 11 / i(Pad)OS 的动画。 -->
 			<SoftButton
@@ -258,6 +267,8 @@
 <style scoped lang="scss">
 	$thickness: 36px;
 	$twin-thickness: 60px;
+	$ripple-fix-padding: calc(($thickness * (64px / 40px) - $thickness) / 2); // 修复水波纹切割，用于padding。
+	$ripple-fix-margin: calc(($thickness * (64px / 40px) - $thickness) / -2); // 修复水波纹切割，用于margin。
 
 	:comp {
 		position: relative;
@@ -280,6 +291,10 @@
 			backdrop-filter: blur(8px);
 			transition: $fallback-transitions, background-color 0s;
 
+			&.mobile {
+				padding: 0 16px;
+			}
+
 			&.hidden {
 				visibility: hidden;
 				translate: 0 100%;
@@ -300,12 +315,18 @@
 		@include flex-center;
 		justify-content: flex-start;
 		height: inherit;
-		padding-right: calc(($thickness * (64px / 40px) - $thickness) / 2); // 修复水波纹被切割。
+		padding-right: $ripple-fix-padding;
+
 		overflow: clip;
 
 		@include mobile {
 			order: 2;
 			height: $thickness;
+		}
+
+		.fullscreen & {
+			margin-left: $ripple-fix-margin;
+			padding-left: $ripple-fix-padding;
 		}
 
 		.play {
@@ -323,10 +344,16 @@
 			order: 3;
 			height: $thickness;
 			margin-left: auto;
+			padding-left: $ripple-fix-padding;
 
 			.volume {
 				display: none;
 			}
+		}
+
+		.fullscreen & {
+			margin-right: $ripple-fix-margin;
+			padding-right: $ripple-fix-padding;
 		}
 
 		button {
@@ -342,6 +369,7 @@
 
 		@include mobile {
 			order: 2;
+			margin-left: $ripple-fix-margin;
 		}
 
 		> * {
@@ -377,7 +405,7 @@
 		}
 
 		@include not-mobile {
-			margin-left: calc(($thickness * (64px / 40px) - $thickness) / -2); // 修复水波纹被切割。
+			margin-left: $ripple-fix-margin;
 		}
 
 		:deep(.passed) {
