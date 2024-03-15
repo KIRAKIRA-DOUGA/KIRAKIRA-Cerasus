@@ -132,15 +132,6 @@
 			menu.value = new Date().valueOf();
 	}
 
-	/**
-	 * 音量按钮点击事件。
-	 * @param e - 指针点击事件。
-	 */
-	function onVolumeButtonClick(e: PointerEvent) {
-		if (e.pointerType !== "touch")
-			muted.value = !muted.value;
-	}
-
 	const playbackRateText = (rate: number) => (2 ** rate).toFixed(2).replace(/\.?0+$/, "") + "×";
 	const volumeText = (volume: number) => Math.round(volume * 100) + "%";
 
@@ -183,6 +174,15 @@
 			case "KeyF": case "F11": /* 全屏 */ props.toggleFullscreen?.(); break;
 			case "Space": /* 播放/暂停 */ playing.value = !playing.value; break;
 			default: break;
+		}
+	});
+
+	/** 隐藏控制栏时隐藏菜单，用于触摸屏。 */
+	watch(() => props.hidden, () => {
+		if (props.hidden) {
+			volumeMenu.value = undefined;
+			rateMenu.value = undefined;
+			qualityMenu.value = undefined;
 		}
 	});
 </script>
@@ -249,7 +249,7 @@
 				class="volume"
 				@mouseenter="e => volumeMenu = e"
 				@mouseleave="volumeMenu = undefined"
-				@pointerup="onVolumeButtonClick"
+				@pointerup="e => isMouse(e) && (muted = !muted)"
 			/>
 			<!-- TODO: 音量图标需要修改为三根弧线，并且使用动画切换，参考 Windows 11 / i(Pad)OS 的动画。 -->
 			<SoftButton

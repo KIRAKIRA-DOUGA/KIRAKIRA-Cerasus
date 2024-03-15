@@ -358,15 +358,6 @@
 	}
 
 	/**
-	 * <video>点击事件。
-	 * @param e - 指针点击事件。
-	 */
-	function onVideoClick(e: PointerEvent) {
-		if (e && e.pointerType !== "touch")
-			playing.value = !playing.value;
-	}
-
-	/**
 	* 给视频截个图。
 	* @param scale - 截图缩放比率，默认为 1。
 	* @returns 截图后的图片元素。
@@ -423,7 +414,7 @@
 					@waiting="waiting = true"
 					@dblclick="toggle"
 					@contextmenu.prevent="e => menu = e"
-					@pointerup="onVideoClick"
+					@pointerup="e => isMouse(e) && (playing = !playing)"
 					@pointermove="autoHideController"
 				></video>
 				<Contents>
