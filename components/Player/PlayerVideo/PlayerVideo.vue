@@ -414,7 +414,7 @@
 					@waiting="waiting = true"
 					@dblclick="toggle"
 					@contextmenu.prevent="e => menu = e"
-					@pointerup="e => isMouse(e) && (playing = !playing)"
+					@pointerup="e => isMouse(e) && (e.button === 0) && (playing = !playing)"
 					@pointermove="autoHideController"
 				></video>
 				<Contents>

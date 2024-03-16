@@ -178,12 +178,11 @@
 	});
 
 	/** 隐藏控制栏时隐藏菜单，用于触摸屏。 */
-	watch(() => props.hidden, () => {
-		if (props.hidden) {
-			volumeMenu.value = undefined;
-			rateMenu.value = undefined;
-			qualityMenu.value = undefined;
-		}
+	watch(() => props.hidden, hidden => {
+		if (!hidden) return;
+		volumeMenu.value = undefined;
+		rateMenu.value = undefined;
+		qualityMenu.value = undefined;
 	});
 </script>
 
