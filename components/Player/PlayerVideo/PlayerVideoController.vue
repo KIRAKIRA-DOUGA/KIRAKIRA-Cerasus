@@ -149,14 +149,14 @@
 				e.preventDefault();
 				break;
 			case "ArrowRight":
-				if (e.ctrlKey) // 加速
+				if (e.ctrlKey || e.metaKey) // 加速
 					switchSpeedByDirection(1);
 				else // 进度条 →
 					model.value = clamp(model.value + TIME_TICK, 0, props.duration);
 				e.preventDefault();
 				break;
 			case "ArrowLeft":
-				if (e.ctrlKey) // 减速
+				if (e.ctrlKey || e.metaKey) // 减速
 					switchSpeedByDirection(-1);
 				else // 进度条 ←
 					model.value = clamp(model.value - TIME_TICK, 0, props.duration);
