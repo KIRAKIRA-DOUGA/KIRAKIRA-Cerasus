@@ -3,7 +3,7 @@
 	"version": "0.0.0-alpha",
 	"description": "KIRAKIRA-Cerasus, The PC/PE Front-end Created by Nuxt3.",
 	"engines": {
-		"node": "20"
+		"node": ">=20.9.0"
 	},
 	"private": true,
 	"type": "module",
@@ -71,7 +71,7 @@
 		"cross-env": "^7.0.3",
 		"eslint": "^8.43.0",
 		"eslint-plugin-nuxt": "^4.0.0",
-		"eslint-plugin-vue": "^9.17.0",
+		"eslint-plugin-vue": "^9.23.0",
 		"html-minifier-terser": "^7.2.0",
 		"nuxt": "^3.10.3",
 		"nuxt-lodash": "^2.4.1",
@@ -81,7 +81,7 @@
 		"postcss-combine-media-query": "^1.0.1",
 		"postcss-html": "^1.5.0",
 		"protobufjs": "^7.2.5",
-		"sass": "^1.56.1",
+		"sass": "^1.72.0",
 		"stylelint": "^15.8.0",
 		"stylelint-config-rational-order": "^0.1.2",
 		"stylelint-config-standard": "^33.0.0",

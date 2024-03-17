@@ -97,9 +97,10 @@ export function stopPropagationExceptKey(event: KeyboardEvent, ...keyCodes: stri
 	for (let keyCode of keyCodes) {
 		keyCode = keyCode.toLowerCase();
 		if (keyCode.includes("ctrl") !== event.ctrlKey) continue;
+		if (keyCode.includes("meta") !== event.metaKey) continue;
 		if (keyCode.includes("alt") !== event.altKey) continue;
 		if (keyCode.includes("shift") !== event.shiftKey) continue;
-		keyCode = keyCode.replaceAll(/ctrl|alt|shift|[\s+]/gi, "");
+		keyCode = keyCode.replaceAll(/ctrl|meta|alt|shift|[\s+]/gi, "");
 		if (code === keyCode) return;
 	}
 	event.stopPropagation();
