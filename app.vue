@@ -62,7 +62,6 @@
 		],
 		link: [
 			{ rel: "icon", type: "image/vnd.microsoft.icon", href: "/favicon.ico" },
-			{ rel: "shortcut icon", type: "image/x-icon", href: "/favicon.ico" },
 			{ rel: "apple-touch-icon", href: "/public/static/images/touch/48.png" },
 			{ rel: "manifest", href: "/manifest.json" },
 			{ rel: "alternate", href: homepage, hreflang: "x-default" },

@@ -173,7 +173,7 @@
 	.banner {
 		@include round-large;
 		position: relative;
-		overflow: hidden;
+		overflow: clip;
 		background-color: c(gray-5);
 
 		> img {

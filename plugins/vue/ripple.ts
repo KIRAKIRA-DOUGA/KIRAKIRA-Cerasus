@@ -39,7 +39,7 @@ export default defineNuxtPlugin(nuxt => {
 	
 	const updated: EffectHook = (element, binding) => {
 		const isOverlay = getIsOverlay(binding);
-		// 当指定参数为 overlay 时，不会给元素加 overflow: hidden，以保证元素内的子元素可以正常超出该元素范围。
+		// 当指定参数为 overlay 时，不会给元素加 overflow: clip，以保证元素内的子元素可以正常超出该元素范围。
 		// 但是如果给所有水波纹默认使用此模式，在另外一些情况下又会出现其它异常，如圆角等的问题。
 		element.classList.add(rippleClass);
 		if (!isOverlay) element.classList.add(cutClass);

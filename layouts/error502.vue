@@ -28,7 +28,7 @@
 		justify-content: space-between;
 		height: calc(100dvh - 2 * $margin-y);
 		margin: $margin-y 2.5rem 0;
-		overflow: hidden;
+		overflow: clip;
 		animation: intro 600ms $ease-out-smooth;
 
 		.content {

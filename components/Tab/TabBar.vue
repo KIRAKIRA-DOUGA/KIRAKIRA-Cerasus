@@ -297,7 +297,7 @@
 	}
 
 	.scroll-area {
-		overflow: hidden;
+		overflow: clip;
 
 		@media (hover: none) { // 触摸屏允许直接左右滑动翻页。
 			overflow-x: auto;

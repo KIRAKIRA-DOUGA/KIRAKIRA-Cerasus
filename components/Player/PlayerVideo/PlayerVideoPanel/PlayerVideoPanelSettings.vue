@@ -129,7 +129,7 @@
 		flex-grow: 1;
 		height: 100%;
 		contain: strict;
-		overflow: hidden auto;
+		overflow: clip auto;
 	}
 
 	.wrapper {

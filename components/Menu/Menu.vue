@@ -138,7 +138,7 @@
 		width: fit-content;
 		margin: 0;
 		padding: $menu-padding 0;
-		overflow: hidden;
+		overflow: clip;
 		background-color: c(main-bg, 50%);
 		transition: $transition;
 

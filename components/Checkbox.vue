@@ -152,7 +152,7 @@
 	.check {
 		@include square($size);
 		position: relative;
-		overflow: hidden;
+		overflow: clip;
 		border-radius: $roundness;
 		box-shadow: inset 0 0 0 $border-size c(icon-color);
 		animation: outer-border-change-back $duration-half $duration-half $ease-in-expo reverse backwards;

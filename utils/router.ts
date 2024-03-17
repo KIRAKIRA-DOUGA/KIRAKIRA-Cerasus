@@ -94,13 +94,13 @@ export function switchLanguage(lang: string) {
 		const element = document.querySelector(".settings") ?? document.body;
 		const routerView = element.querySelector(".router-view");
 		routerView?.classList.add("stop-animation");
-		if (!("startViewTransition" in document))
+		if (!document.startViewTransition)
 			element.animate([
 				{ filter: "blur(10px)" },
 				{ filter: "blur(0)" },
 			], { duration: 500, easing: eases.easeOutSmooth });
 		else
-			startViewTransition(() => {
+			startColorViewTransition(() => {
 				useRouter().push(lang + getRoutePath());
 			}, {
 				clipPath: ["inset(0 0 100%)", "inset(0)"],

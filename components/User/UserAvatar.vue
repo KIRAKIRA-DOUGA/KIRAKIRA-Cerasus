@@ -50,7 +50,7 @@
 		@include flex-center;
 		position: relative;
 		flex-shrink: 0;
-		overflow: hidden;
+		overflow: clip;
 		color: c(icon-color);
 		background-color: c(gray-20);
 		cursor: pointer;

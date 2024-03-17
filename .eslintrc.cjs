@@ -285,6 +285,7 @@ module.exports = {
 		"vue/no-dupe-keys": "off",
 		"vue/no-v-for-template-key": "off", // 官方说明：它会和 vue/no-v-for-template-key-on-child 规则打架。
 		"vue/v-on-event-hyphenation": ["error", "never", { "autofix": true }],
+		"vue/require-prop-types": "off", // 我用 TS 你跟我谈类型？
 		"no-restricted-properties": ["error", {
 			object: "arguments",
 			property: "callee",

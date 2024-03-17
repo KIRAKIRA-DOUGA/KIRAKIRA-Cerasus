@@ -54,7 +54,7 @@
 	:comp {
 		@include oval;
 		height: 4px;
-		overflow: hidden;
+		overflow: clip;
 
 		&.v-enter-from,
 		&.v-leave-to {

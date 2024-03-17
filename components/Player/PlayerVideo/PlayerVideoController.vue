@@ -149,14 +149,14 @@
 				e.preventDefault();
 				break;
 			case "ArrowRight":
-				if (e.ctrlKey) // 加速
+				if (e.ctrlKey || e.metaKey) // 加速
 					switchSpeedByDirection(1);
 				else // 进度条 →
 					model.value = clamp(model.value + TIME_TICK, 0, props.duration);
 				e.preventDefault();
 				break;
 			case "ArrowLeft":
-				if (e.ctrlKey) // 减速
+				if (e.ctrlKey || e.metaKey) // 减速
 					switchSpeedByDirection(-1);
 				else // 进度条 ←
 					model.value = clamp(model.value - TIME_TICK, 0, props.duration);
@@ -175,6 +175,14 @@
 			case "Space": /* 播放/暂停 */ playing.value = !playing.value; break;
 			default: break;
 		}
+	});
+
+	/** 隐藏控制栏时隐藏菜单，用于触摸屏。 */
+	watch(() => props.hidden, hidden => {
+		if (!hidden) return;
+		volumeMenu.value = undefined;
+		rateMenu.value = undefined;
+		qualityMenu.value = undefined;
 	});
 </script>
 
@@ -202,7 +210,7 @@
 		</PlayerVideoMenu>
 	</div>
 
-	<Comp role="toolbar" :class="{ fullscreen, ...fullscreenColorClass, hidden }" v-bind="$attrs">
+	<Comp role="toolbar" :class="{ fullscreen, ...fullscreenColorClass, mobile: isMobile(), hidden }" v-bind="$attrs">
 		<div class="left">
 			<SoftButton class="play" :icon="ended ? 'replay' : playing ? 'pause' : 'play'" @click="playing = !playing" />
 		</div>
@@ -231,16 +239,16 @@
 			/>
 			<SoftButton
 				icon="speed_outline"
-				@click="switchSpeed"
 				@mouseenter="e => rateMenu = e"
 				@mouseleave="rateMenu = undefined"
+				@pointerup="e => isMouse(e) && switchSpeed()"
 			/>
 			<SoftButton
 				:icon="muted ? 'volume_mute' : volumeSet >= 0.5 ? 'volume_up' : volumeSet > 0 ? 'volume_down' : 'volume_none'"
 				class="volume"
-				@click="muted = !muted"
 				@mouseenter="e => volumeMenu = e"
 				@mouseleave="volumeMenu = undefined"
+				@pointerup="e => isMouse(e) && (muted = !muted)"
 			/>
 			<!-- TODO: 音量图标需要修改为三根弧线，并且使用动画切换，参考 Windows 11 / i(Pad)OS 的动画。 -->
 			<SoftButton
@@ -258,6 +266,8 @@
 <style scoped lang="scss">
 	$thickness: 36px;
 	$twin-thickness: 60px;
+	$ripple-fix-padding: calc(($thickness * (64px / 40px) - $thickness) / 2); // 修复水波纹切割，用于padding。
+	$ripple-fix-margin: calc(($thickness * (64px / 40px) - $thickness) / -2); // 修复水波纹切割，用于margin。
 
 	:comp {
 		position: relative;
@@ -265,7 +275,7 @@
 		display: flex;
 		align-items: center;
 		height: $thickness;
-		// overflow: hidden; // FIXME: Slider的Tooltip是在Slider内的，打开overflow: hidden会导致显示不出来。
+		// overflow: clip; // FIXME: Slider 的 Tooltip 是在 Slider 内的，打开 overflow: clip 会导致显示不出来。
 		color: c(icon-color);
 		font-weight: 600;
 		font-size: 14px;
@@ -279,6 +289,10 @@
 			left: 0;
 			backdrop-filter: blur(8px);
 			transition: $fallback-transitions, background-color 0s;
+
+			&.mobile {
+				padding: 0 16px;
+			}
 
 			&.hidden {
 				visibility: hidden;
@@ -300,12 +314,18 @@
 		@include flex-center;
 		justify-content: flex-start;
 		height: inherit;
-		padding-right: calc(($thickness * (64px / 40px) - $thickness) / 2);
-		overflow: hidden;
+		padding-right: $ripple-fix-padding;
+
+		overflow: clip;
 
 		@include mobile {
 			order: 2;
 			height: $thickness;
+		}
+
+		.fullscreen & {
+			margin-left: $ripple-fix-margin;
+			padding-left: $ripple-fix-padding;
 		}
 
 		.play {
@@ -317,16 +337,22 @@
 		@include flex-center;
 		justify-content: flex-end;
 		height: inherit;
-		overflow: hidden;
+		overflow: clip;
 
 		@include mobile {
 			order: 3;
 			height: $thickness;
 			margin-left: auto;
+			padding-left: $ripple-fix-padding;
 
 			.volume {
 				display: none;
 			}
+		}
+
+		.fullscreen & {
+			margin-right: $ripple-fix-margin;
+			padding-right: $ripple-fix-padding;
 		}
 
 		button {
@@ -342,6 +368,7 @@
 
 		@include mobile {
 			order: 2;
+			margin-left: $ripple-fix-margin;
 		}
 
 		> * {
@@ -364,7 +391,6 @@
 		flex-grow: 1;
 		flex-shrink: 1;
 		width: 100%;
-		margin-left: calc(($thickness * (64px / 40px) - $thickness) / -2);
 		padding-right: 8px;
 
 		@include mobile {
@@ -375,6 +401,10 @@
 			.slider {
 				height: 24px;
 			}
+		}
+
+		@include not-mobile {
+			margin-left: $ripple-fix-margin;
 		}
 
 		:deep(.passed) {

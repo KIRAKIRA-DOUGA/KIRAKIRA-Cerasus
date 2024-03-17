@@ -326,7 +326,7 @@
 		position: relative;
 		display: flex;
 		width: fit-content;
-		overflow: hidden;
+		overflow: clip;
 		background-color: c(inset-bg);
 
 		.soft-button {
@@ -342,7 +342,7 @@
 		}
 
 		.texts {
-			overflow: hidden;
+			overflow: clip;
 			pointer-events: none;
 
 			> * > * {
@@ -374,7 +374,7 @@
 		top: 0;
 		left: calc(v-bind(thumbPosition) * $size);
 		z-index: 3;
-		overflow: hidden;
+		overflow: clip;
 		color: white;
 		font-weight: bold;
 		line-height: $size;

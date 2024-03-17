@@ -346,7 +346,7 @@
 		--height: #{$normal-height};
 		position: relative;
 		height: $normal-height;
-		overflow: hidden;
+		overflow: clip;
 		background-color: c(inset-bg);
 		border: 0;
 

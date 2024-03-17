@@ -436,7 +436,7 @@
 	%chip {
 		@include chip-shadow;
 		@include round-large;
-		overflow: hidden;
+		overflow: clip;
 		background-color: c(surface-color);
 	}
 
@@ -454,7 +454,7 @@
 				overflow: visible;
 
 				&:has(.ripple-circle) {
-					overflow: hidden;
+					overflow: clip;
 				}
 
 				&:first-child {

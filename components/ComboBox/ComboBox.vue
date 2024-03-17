@@ -206,7 +206,7 @@
 		width: calc(100% + 2 * $menu-padding);
 		margin: (-$menu-padding) (-$menu-padding);
 		padding: $menu-padding 0;
-		overflow: hidden;
+		overflow: clip;
 		color: c(text-color);
 		background-color: c(main-bg);
 
