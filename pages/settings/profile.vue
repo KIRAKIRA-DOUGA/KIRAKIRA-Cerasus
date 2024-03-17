@@ -60,8 +60,9 @@
 			if (blobImageData) {
 				const userAvatarUploadSignedUrlResult = await api.user.getUserAvatarUploadSignedUrl();
 				const userAvatarUploadSignedUrl = userAvatarUploadSignedUrlResult.userAvatarUploadSignedUrl;
-				if (userAvatarUploadSignedUrlResult.success && userAvatarUploadSignedUrl) {
-					const uploadResult = await api.user.uploadUserAvatar(blobImageData, userAvatarUploadSignedUrl);
+				const userAvatarUploadFilename = userAvatarUploadSignedUrlResult.userAvatarFilename;
+				if (userAvatarUploadSignedUrlResult.success && userAvatarUploadSignedUrl && userAvatarUploadFilename) {
+					const uploadResult = await api.user.uploadUserAvatar(userAvatarUploadFilename, blobImageData, userAvatarUploadSignedUrl);
 					if (uploadResult) {
 						await api.user.getSelfUserInfo();
 						avatarCropperIsOpen.value = false;
@@ -75,7 +76,7 @@
 			}
 		} catch (error) {
 			useToast("头像上传失败！", "error"); // TODO: 使用多语言
-			console.error("ERROR", "在上传用户头像时出错");
+			console.error("ERROR", "在上传用户头像时出错", error);
 			isUploadingUserAvatar.value = false;
 		}
 	}

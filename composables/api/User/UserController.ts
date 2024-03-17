@@ -1,4 +1,4 @@
-import { GET, POST, uploadFile2R2 } from "api/Common";
+import { GET, POST, uploadFile2CloudflareImage } from "api/Common";
 import getCorrectUri from "api/Common/getCorrectUri";
 import type { CheckUserTokenResponseDto, GetSelfUserInfoRequestDto, GetSelfUserInfoResponseDto, GetUserAvatarUploadSignedUrlResultDto, GetUserInfoByUidRequestDto, GetUserInfoByUidResponseDto, GetUserSettingsRequestDto, GetUserSettingsResponseDto, UpdateOrCreateUserSettingsRequestDto, UpdateOrCreateUserSettingsResponseDto, UpdateUserEmailRequestDto, UserExistsCheckRequestDto, UserExistsCheckResponseDto, UserLoginRequestDto, UserLoginResponseDto, UserRegistrationRequestDto, UserRegistrationResponseDto } from "./UserControllerDto";
 
@@ -109,13 +109,14 @@ export const getUserAvatarUploadSignedUrl = async (): Promise<GetUserAvatarUploa
 
 /**
  * 根据预签名 URL 上传用户头像
+ * @param fileName 头像文件名
  * @param avatarBlobData 用 Blob 编码的用户头像文件
  * @param signedUrl 预签名 URL
  * @returns 是否上传成功，成功返回 true，失败返回 false
  */
-export const uploadUserAvatar = async (avatarBlobData: Blob, signedUrl: string): Promise<boolean> => {
+export const uploadUserAvatar = async (fileName: string, avatarBlobData: Blob, signedUrl: string): Promise<boolean> => {
 	try {
-		await uploadFile2R2(signedUrl, avatarBlobData, "image/png", 60000);
+		await uploadFile2CloudflareImage(fileName, signedUrl, avatarBlobData, 60000);
 		return true;
 	} catch (error) {
 		console.error("用户头像上传失败，错误信息：", error, { avatarBlobData, signedUrl });

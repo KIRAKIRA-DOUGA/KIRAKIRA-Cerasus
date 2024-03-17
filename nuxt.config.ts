@@ -209,7 +209,7 @@ export default defineNuxtConfig({
 		providers: {
 			kirakira: {
 				name: "kirakira", // optional value to overrider provider name
-				provider: "./NuxtImage/providers/KirakiraImage.ts", // Path to custom provider
+				provider: "./providers/nuxt-image/KirakiraImage.ts", // Path to custom provider
 				options: {
 					// ... provider options
 					baseURL: "https://kirafile.com",

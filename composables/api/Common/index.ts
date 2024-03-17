@@ -102,14 +102,14 @@ export async function DELETE(url: string, body: unknown, requestOptions: Request
 }
 
 /**
- * 发送 PUT 请求向 R2 上传文件
+ * 发送 PUT 请求向 Cloudflare R2 上传文件
  * @param signedUrl R2 用于上传文件的预编译 URL
  * @param body 上传的文件的 Blob
  * @param contentType 请求负载的数据的媒体类型，例如：'application/json', 'image/png' 等。详细的 Content-Type 请参照本文件最下方的注释
  * @param timeout 请求超时时间（毫秒），默认：30000ms
  * @returns 请求结果，上传成功 true，否则 false
  */
-export async function uploadFile2R2(signedUrl: string, body: Blob, contentType: string, timeout?: number): Promise<void> {
+export async function uploadFile2R2(signedUrl: string, body: Blob, contentType: string, timeout: number = 30000): Promise<void> {
 	try {
 		await fetchWithTimeout(signedUrl, {
 			method: "PUT",
@@ -156,3 +156,30 @@ export async function uploadFile2R2(signedUrl: string, body: Blob, contentType: 
 // 其他格式:
 // application/octet-stream: 任意的二进制数据。
 // multipart/form-data: 用于表单数据，尤其是包含文件上传时。
+
+/**
+ * 发送 POST 请求向 Cloudflare Image 上传文件
+ * @param fileName 上传的文件名
+ * @param signedUrl R2 用于上传文件的预编译 URL
+ * @param body 上传的文件的 Blob
+ * @param timeout 请求超时时间（毫秒），默认：30000ms
+ * @returns 请求结果，上传成功 true，否则 false
+ */
+export async function uploadFile2CloudflareImage(fileName: string, signedUrl: string, body: Blob, timeout: number = 30000): Promise<void> {
+	try {
+		const formData = new FormData();
+		formData.append("file", body);
+		await fetchWithTimeout(signedUrl, {
+			method: "POST",
+			mode: "cors",
+			headers: {
+				"Access-Control-Allow-Origin": "*",
+			},
+			body: formData,
+		}, timeout);
+		console.log("signedUrl4", signedUrl);
+	} catch (error) {
+		console.error("ERROR", `something wrong in 'uploadFile2CloudflareImage', URL: ${signedUrl}`, error); // TODO: Remove Console Output?
+		throw error;
+	}
+}
