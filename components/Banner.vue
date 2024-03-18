@@ -18,7 +18,7 @@
 		@include flex-center;
 		position: relative;
 		width: 100%;
-		overflow: hidden;
+		overflow: clip;
 
 		> .logo-cover {
 			--width: 100dvw;

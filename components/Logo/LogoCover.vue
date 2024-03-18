@@ -64,7 +64,7 @@
 		position: relative;
 		width: 100%;
 		height: 70px;
-		overflow: hidden;
+		overflow: clip;
 
 		:comp.animation & {
 			animation: blinking 2s infinite ease-in alternate;
@@ -95,7 +95,7 @@
 		position: relative;
 		width: var(--width);
 		height: var(--height);
-		overflow: hidden;
+		overflow: clip;
 		color: c(accent);
 		user-select: none !important;
 
@@ -219,7 +219,7 @@
 	.circle {
 		@include square(8rem);
 		@include circle;
-		overflow: hidden;
+		overflow: clip;
 	}
 
 	.circle-1 {

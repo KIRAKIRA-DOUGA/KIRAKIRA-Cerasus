@@ -155,7 +155,7 @@
 			width: 100%;
 			height: $box-height;
 			max-height: 100%;
-			overflow: hidden;
+			overflow: clip;
 			color: $color;
 			text-align: center;
 			cursor: pointer;

@@ -139,7 +139,7 @@
 		flex-direction: column;
 		justify-content: space-between;
 		padding: $icons-gap 0;
-		overflow: hidden;
+		overflow: clip;
 		background-color: c(main-bg);
 
 		:root.colored-sidebar & {
@@ -388,7 +388,7 @@
 		@include sidebar-shadow;
 		z-index: 30;
 		padding: $icons-gap 0;
-		overflow: hidden;
+		overflow: clip;
 		background-color: c(main-bg);
 
 		.icons {

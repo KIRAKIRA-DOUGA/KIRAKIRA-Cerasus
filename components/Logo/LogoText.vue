@@ -62,7 +62,7 @@
 			position: relative;
 			width: 0;
 			height: $height;
-			overflow: hidden;
+			overflow: clip;
 
 			svg {
 				position: absolute;

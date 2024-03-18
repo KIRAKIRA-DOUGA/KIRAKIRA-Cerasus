@@ -37,7 +37,7 @@
 		},
 	});
 	const loginWindow = refComp();
-	const isInvalidEmail = computed(() => !!email.value && !email.value.match(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/));
+	const isInvalidEmail = computed(() => !!email.value && !email.value.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]{2,}$/));
 
 	/**
 	 * 登录账户。
@@ -346,7 +346,7 @@
 		justify-content: space-between;
 		width: $width;
 		height: $height;
-		overflow: hidden;
+		overflow: clip;
 		transition: all $transition-ease $enter-duration;
 		clip-path: circle(100% at var(--avatar-center));
 
@@ -405,7 +405,7 @@
 	.main {
 		position: relative;
 		height: 100%;
-		overflow: hidden;
+		overflow: clip;
 
 		.logining > & {
 			overflow: visible;
@@ -557,7 +557,7 @@
 		position: absolute;
 		left: $narrow-width;
 		width: 400px;
-		overflow: hidden;
+		overflow: clip;
 
 		@media #{$narrow-screen} {
 			width: 0;
@@ -635,7 +635,7 @@
 		@include circle;
 		@include absolute-center-sized;
 		position: absolute;
-		overflow: hidden;
+		overflow: clip;
 		background-color: c(accent-20);
 		scale: 0;
 

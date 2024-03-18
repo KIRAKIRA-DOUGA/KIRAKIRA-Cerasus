@@ -57,7 +57,7 @@
 		position: relative;
 		width: 1024px;
 		height: 600px;
-		overflow: hidden;
+		overflow: clip;
 		background-color: c(white, 75%);
 		animation: intro $animation-options;
 

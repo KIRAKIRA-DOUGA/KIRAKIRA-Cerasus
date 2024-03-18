@@ -31,7 +31,6 @@
 		duration: undefined,
 	});
 
-	const date = computed(() => formatDateWithLocale(props.date ?? null));
 	const watchedCount = computed(() => getCompactDecimal(props.watchedCount));
 	const duration = computed(() => props.duration ?? Duration.placeholder);
 	const link = computed(() => props.videoId !== undefined && props.videoId !== null ?
@@ -78,7 +77,7 @@
 						</LocaleLink>
 						<div class="item">
 							<Icon name="calendar" />
-							<div>{{ date }}</div>
+							<div><DateTime :dateTime="date ?? null" /></div>
 						</div>
 					</div>
 				</div>
@@ -136,7 +135,7 @@
 		@include round-large;
 		flex-shrink: 0;
 		margin-bottom: 8px;
-		overflow: hidden;
+		overflow: clip;
 		aspect-ratio: 16 / 9;
 
 		img.cover {
@@ -154,11 +153,11 @@
 
 	.text-wrapper {
 		flex-grow: 1;
-		overflow: hidden;
+		overflow: clip;
 	}
 
 	.title {
-		overflow: hidden;
+		overflow: clip;
 		font-weight: 500;
 		white-space: nowrap;
 		text-align: justify;
@@ -222,7 +221,7 @@
 			text-decoration: none;
 
 			> div {
-				overflow: hidden;
+				overflow: clip;
 				white-space: nowrap;
 				text-overflow: ellipsis;
 			}

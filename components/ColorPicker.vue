@@ -159,6 +159,8 @@
 			isUpdating[param] = false;
 		};
 	}
+
+	// TODO: 方形区域滑块在外面，但滑轨区域滑块又在里面，很丑，需要统一样式。
 </script>
 
 <template>
@@ -351,7 +353,7 @@
 
 		.base {
 			position: relative;
-			overflow: hidden;
+			overflow: clip;
 
 			&::after {
 				@extend %inner-stroke;
@@ -429,7 +431,7 @@
 
 	.view-color {
 		position: relative;
-		overflow: hidden;
+		overflow: clip;
 
 		* {
 			position: absolute;

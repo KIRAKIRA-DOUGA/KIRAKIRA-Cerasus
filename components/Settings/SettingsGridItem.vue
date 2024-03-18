@@ -63,7 +63,7 @@
 		position: relative;
 
 		.title {
-			overflow: hidden;
+			overflow: clip;
 			color: c(icon-color);
 			white-space: nowrap;
 			text-align: justify;
@@ -98,7 +98,7 @@
 		width: 100%;
 		aspect-ratio: 16 / 9;
 		object-fit: cover;
-		overflow: hidden;
+		overflow: clip;
 		container: card / inline-size;
 		cursor: pointer;
 		transition: $fallback-transitions, scale $ease-out-back 500ms !important;

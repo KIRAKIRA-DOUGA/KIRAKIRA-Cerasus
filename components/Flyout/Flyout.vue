@@ -26,8 +26,8 @@
 		noPadding?: boolean;
 		/** 是否在按下 `Esc` 按键时**不要**关闭浮窗？ */
 		doNotCloseOnEsc?: boolean;
-		/** 是否**不** `overflow: hidden;`？ */
-		noCropping?: boolean;
+		/** 是否**不** `overflow: clip;`？ */
+		noClipping?: boolean;
 		/** 在点击元素外围时，如其包含以下类名的元素，则不会触发自动关闭。 */
 		ignoreOutsideElementClasses?: string[];
 	}>(), {
@@ -56,7 +56,7 @@
 	/** 定义在关闭浮窗后的至少多少毫秒内不得再次打开浮窗，以免用户连续点击时浮窗有快速闪烁的动画。 */
 	const QUICK_CLICK_DURATION = 200;
 	const suppressShowing = ref(false);
-	const cropping = ref(!props.noCropping); // 修正在要求 noCropping 的同时开/关浮窗动画时显示错误的问题。
+	const clipping = ref(!props.noClipping); // 修正在要求 noClipping 的同时开/关浮窗动画时显示错误的问题。
 	const moving = ref(false);
 
 	useEventListener("window", "keydown", e => {
@@ -155,7 +155,7 @@
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
 	async function onFlyoutEnter(el: Element, done: () => void) {
-		cropping.value = true;
+		clipping.value = true;
 		await animateSize(el, null, {
 			[isWidthAnimation.value ? "startWidth" : "startHeight"]: 0,
 			startReverseSlideIn: isReverseSlide.value,
@@ -164,7 +164,7 @@
 			startChildTranslate: isReverseSlide.value ? undefined : placementForAnimation.value === "bottom" ? "0 -100%" : "-100% 0",
 		});
 		done();
-		cropping.value = !props.noCropping;
+		clipping.value = !props.noClipping;
 	}
 
 	/**
@@ -174,7 +174,7 @@
 	 * @param done - 调用回调函数 done 表示过渡结束。
 	 */
 	async function onFlyoutLeave(el: Element, done: () => void) {
-		cropping.value = true;
+		clipping.value = true;
 		await animateSize(el, null, {
 			[isWidthAnimation.value ? "endWidth" : "endHeight"]: 0,
 			endReverseSlideIn: isReverseSlide.value,
@@ -194,20 +194,20 @@
 </script>
 
 <template>
-	<ClientOnlyTeleport to="#popovers">
+	<Teleport to="#popovers">
 		<Transition :css="false" @enter="onFlyoutEnter" @leave="onFlyoutLeave">
 			<Comp
 				v-if="shown"
 				ref="flyout"
 				v-bind="$attrs"
 				:[scopeId]="''"
-				:class="{ padding: !noPadding, cropping, moving }"
+				:class="{ padding: !noPadding, clipping, moving }"
 				:style="locationStyle"
 			>
 				<slot></slot>
 			</Comp>
 		</Transition>
-	</ClientOnlyTeleport>
+	</Teleport>
 </template>
 
 <style scoped lang="scss">
@@ -220,8 +220,8 @@
 		@include acrylic-background;
 		transition: $fallback-transitions, left 0s, top 0s;
 
-		&.cropping {
-			overflow: hidden;
+		&.clipping {
+			overflow: clip;
 		}
 
 		&.padding {

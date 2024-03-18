@@ -242,15 +242,7 @@ html.flat {
 ::view-transition-old(root),
 ::view-transition-new(root) {
 	mix-blend-mode: normal;
-	transition: none !important;
-	animation: none !important;
-}
-
-::view-transition-old(*),
-::view-transition-new(*),
-::view-transition-old(*::before),
-::view-transition-new(*::after) {
-	transition: none !important;
+	animation: none;
 }
 
 ::view-transition-old(root),
@@ -260,7 +252,7 @@ html.flat {
 
 ::view-transition-new(root),
 .dark.changing-theme::view-transition-old(root) {
-	z-index: 2147483646;
+	z-index: calc(infinity);
 }
 // #endregion
 
@@ -286,7 +278,7 @@ html.flat {
 .settings-enter-active,
 .settings-leave-active {
 	max-height: 100dvh;
-	overflow: hidden;
+	overflow: clip;
 }
 
 .page-forward-enter-from,

@@ -172,9 +172,9 @@ export default defineNuxtConfig({
 	},
 	i18n: {
 		locales: [
-			{ code: "zhs", name: "简体中文" },
-			{ code: "zht", name: "繁體中文" },
-			{ code: "en", name: "English" },
+			{ code: "zhs", iso: "zh-CN", name: "简体中文" },
+			{ code: "zht", iso: "zh-TW", name: "繁體中文" },
+			{ code: "en", iso: "en-US", name: "English" },
 			{ code: "ja", name: "日本語" },
 			{ code: "ko", name: "한국어" },
 			{ code: "vi", name: "Tiếng Việt" },
@@ -245,10 +245,12 @@ export default defineNuxtConfig({
 	site: {
 		url: "https://cerasus.kirakira.moe",
 	},
-	/* app: {
-		pageTransition: {
+	app: {
+		/* pageTransition: {
 			name: "page-jump",
 			mode: "out-in",
-		},
-	}, */
+		}, */
+		rootId: "root",
+		teleportId: "popovers",
+	},
 } as BroadNuxtConfig);

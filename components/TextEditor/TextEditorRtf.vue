@@ -174,7 +174,7 @@
 	:comp {
 		@include round-large;
 		@include control-inner-shadow;
-		overflow: hidden;
+		overflow: clip;
 		background-color: c(inset-bg);
 
 		> :first-child {
@@ -192,7 +192,7 @@
 			justify-content: space-between;
 			height: $height;
 			padding: 0 8px;
-			overflow: hidden;
+			overflow: clip;
 
 			> * {
 				display: flex;

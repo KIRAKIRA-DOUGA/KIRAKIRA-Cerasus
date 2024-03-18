@@ -308,7 +308,7 @@
 
 		&.v-enter-active,
 		&.v-leave-active {
-			overflow: hidden;
+			overflow: clip;
 		}
 	}
 

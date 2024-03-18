@@ -56,7 +56,7 @@
 </script>
 
 <template>
-	<ClientOnlyTeleport to="#popovers">
+	<Teleport to="#popovers">
 		<Comp role="none">
 			<TransitionGroup :css="false" appear @enter="onToastEnter" @leave="onToastLeave">
 				<div
@@ -76,7 +76,7 @@
 				</div>
 			</TransitionGroup>
 		</Comp>
-	</ClientOnlyTeleport>
+	</Teleport>
 </template>
 
 <style scoped lang="scss">
@@ -96,7 +96,7 @@
 			--duration: 2000;
 			position: relative;
 			margin-top: 12px;
-			overflow: hidden;
+			overflow: clip;
 
 			.content {
 				@include flex-center;

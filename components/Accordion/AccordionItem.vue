@@ -81,7 +81,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		overflow: hidden;
+		overflow: clip;
 		font-weight: normal;
 		font-size: inherit;
 		cursor: pointer;
@@ -145,7 +145,7 @@
 
 	.content {
 		@include animated-auto-size(height);
-		overflow: hidden;
+		overflow: clip;
 		transition-duration: 500ms;
 
 		&.no-padding {

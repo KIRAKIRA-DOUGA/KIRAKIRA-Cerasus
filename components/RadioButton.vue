@@ -143,7 +143,7 @@
 		@include circle;
 		$transition: $fallback-transitions, all $ease-in-out-max $duration, background-color $ease-out-max $duration-half;
 		position: relative;
-		overflow: hidden;
+		overflow: clip;
 		box-shadow: inset 0 0 0 $border-size c(icon-color);
 		transition: $transition, box-shadow $ease-out-max $duration-half;
 		animation: outer-border-change-back $duration-half $duration-half $ease-in-max reverse;
