@@ -268,7 +268,7 @@ export type GetUserAvatarUploadSignedUrlResultDto = {
 	success: boolean;
 	/** 用于用户上传头像的预签名 URL */
 	userAvatarUploadSignedUrl?: string;
-	/** 用于用户上传头像文件名 */
+	/** 用户上传的头像文件名 */
 	userAvatarFilename?: string;
 	/** 附加的文本消息 */
 	message?: string;

@@ -165,7 +165,7 @@ export async function uploadFile2R2(signedUrl: string, body: Blob, contentType: 
  * @param timeout 请求超时时间（毫秒），默认：30000ms
  * @returns 请求结果，上传成功 true，否则 false
  */
-export async function uploadFile2CloudflareImage(fileName: string, signedUrl: string, body: Blob, timeout: number = 30000): Promise<void> {
+export async function uploadFile2CloudflareImages(fileName: string, signedUrl: string, body: Blob, timeout: number = 30000): Promise<void> {
 	try {
 		const formData = new FormData();
 		formData.append("file", body);
