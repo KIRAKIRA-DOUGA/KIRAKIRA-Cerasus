@@ -177,7 +177,6 @@ export async function uploadFile2CloudflareImage(fileName: string, signedUrl: st
 			},
 			body: formData,
 		}, timeout);
-		console.log("signedUrl4", signedUrl);
 	} catch (error) {
 		console.error("ERROR", `something wrong in 'uploadFile2CloudflareImage', URL: ${signedUrl}`, error); // TODO: Remove Console Output?
 		throw error;
