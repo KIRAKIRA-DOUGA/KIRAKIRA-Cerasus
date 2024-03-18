@@ -50,7 +50,7 @@
 					width="12"
 					height="18"
 					transform-origin="50% calc(100% - 2px)"
-					:transform="`scaleY(${value})`"
+					:transform="`scale(1 ${value})`"
 				/>
 			</g>
 		</g>

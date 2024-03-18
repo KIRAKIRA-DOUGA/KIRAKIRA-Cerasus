@@ -225,12 +225,12 @@
 				:displayValue="pending => new Duration(pending * props.duration).toString()"
 			/>
 		</div>
-		<div class="time" @click="countdown = !countdown">
-			<span class="current">{{ countdown ? countdownTime : currentTime }} </span>
-			<span class="divide">/</span>
-			<span class="duration">{{ duration }}</span>
-		</div>
 		<div class="right">
+			<div class="time" @click="countdown = !countdown">
+				<span class="current">{{ countdown ? countdownTime : currentTime }} </span>
+				<span class="divide">/</span>
+				<span class="duration">{{ duration }}</span>
+			</div>
 			<SoftButton
 				class="quality-button"
 				:text="quality"
