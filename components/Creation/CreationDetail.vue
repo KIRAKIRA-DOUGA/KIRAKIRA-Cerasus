@@ -26,7 +26,7 @@
 	 */
 	function downloadCover() {
 		if (!props.cover) return;
-		window.open(`${props.cover}/w=999999`, "_blank"); // TODO: 暂时改为在新标签页中直接打开图片链接
+		window.open(`https://kirafile.com/cdn-cgi/imagedelivery/Gyz90amG54C4b_dtJiRpYg/${props.cover}/w=999999`, "_blank"); // TODO: 暂时改为在新标签页中直接打开图片链接
 		// downloadFile(props.cover, `${props.title} (kv${props.videoId})`);
 	}
 </script>
