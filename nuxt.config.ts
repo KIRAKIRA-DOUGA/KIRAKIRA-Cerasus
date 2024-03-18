@@ -245,10 +245,11 @@ export default defineNuxtConfig({
 	site: {
 		url: "https://cerasus.kirakira.moe",
 	},
-	/* app: {
-		pageTransition: {
+	app: {
+		/* pageTransition: {
 			name: "page-jump",
 			mode: "out-in",
-		},
-	}, */
+		}, */
+		teleportId: "popovers",
+	},
 } as BroadNuxtConfig);

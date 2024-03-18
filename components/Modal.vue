@@ -71,7 +71,7 @@
 </script>
 
 <template>
-	<ClientOnlyTeleport to="#popovers">
+	<Teleport to="#popovers">
 		<Transition>
 			<Comp
 				v-if="open"
@@ -108,7 +108,7 @@
 				</div>
 			</Comp>
 		</Transition>
-	</ClientOnlyTeleport>
+	</Teleport>
 </template>
 
 <style scoped lang="scss">

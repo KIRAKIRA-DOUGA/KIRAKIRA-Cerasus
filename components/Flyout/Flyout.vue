@@ -194,7 +194,7 @@
 </script>
 
 <template>
-	<ClientOnlyTeleport to="#popovers">
+	<Teleport to="#popovers">
 		<Transition :css="false" @enter="onFlyoutEnter" @leave="onFlyoutLeave">
 			<Comp
 				v-if="shown"
@@ -207,7 +207,7 @@
 				<slot></slot>
 			</Comp>
 		</Transition>
-	</ClientOnlyTeleport>
+	</Teleport>
 </template>
 
 <style scoped lang="scss">

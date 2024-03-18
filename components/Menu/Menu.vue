@@ -1,5 +1,6 @@
 <script setup lang="ts">
-	import { ClientOnlyTeleport, Contents } from "#components";
+	import { Contents } from "#components";
+	import { Teleport } from "vue";
 	import type { FlyoutModelNS } from "types/arguments";
 	import { getLocation } from "components/Flyout/Flyout.vue";
 	import { getPosition } from "plugins/vue/tooltip";
@@ -111,7 +112,7 @@
 </script>
 
 <template>
-	<component :is="isContextMenu ? ClientOnlyTeleport : Contents" to="#popovers">
+	<component :is="isContextMenu ? Teleport : Contents" to="#popovers">
 		<Transition :css="false" @enter="onMenuEnter" @leave="onMenuLeave">
 			<menu
 				v-if="shown"

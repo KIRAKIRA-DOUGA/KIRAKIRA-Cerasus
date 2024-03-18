@@ -80,7 +80,6 @@
 	const qualities = ref<BitrateInfo[]>([]);
 	const mediaInfos = ref<MediaInfo>();
 	const videoContainer = ref<HTMLDivElement>();
-	const popovers = ref<HTMLDivElement>();
 	const video = ref<HTMLVideoElement>();
 	const { isFullscreen: fullscreen, toggle } = useFullscreen(videoContainer);
 	const resample = computed({ get: () => !preservesPitch.value, set: value => preservesPitch.value = !value });
