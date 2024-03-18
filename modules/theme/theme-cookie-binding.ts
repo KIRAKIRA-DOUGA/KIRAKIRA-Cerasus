@@ -62,6 +62,25 @@ export function cookieBinding() {
 	// HACK: 4 在此处添加
 
 	/**
+	 * 创建或更新一个 meta 标签
+	 * @param name meta 标签的 name
+	 * @param content meta 标签的 content
+	 */
+	function updateOrCreateMetaTag(name: string, content: string) {
+		// 尝试找到已存在的 meta 标签
+		let meta = document.querySelector<HTMLMetaElement>(`meta[name="${name}"]`);
+
+		if (meta) // 如果标签已存在，更新它的内容
+			meta.content = content;
+		else { // 如果标签不存在，创建一个新的标签并设置其属性
+			meta = document.createElement("meta");
+			meta.name = name;
+			meta.content = content;
+			document.head.appendChild(meta);
+		}
+	}
+
+	/**
 	 * 用原始的方式获取 Cookie。
 	 * @param cookieKey - Cookie 的键名。
 	 * @returns Cookie 的值。
@@ -150,10 +169,16 @@ export function cookieBinding() {
 		if (isColoredSidebar === "true") rootNode.classList.add("colored-sidebar");
 		if (isSharpAppearanceMode === "true") rootNode.classList.add("sharp");
 		if (isFlatAppearanceMode === "true") rootNode.classList.add("flat");
-		if (themeColor === CUSTOM_THEME_COLOR && customThemeColor)
-			console.log("customThemeColor", customThemeColor); // TODO: 设置自定义主题色
-		else if (themeColor)
-			rootNode.classList.add(themeColor);
+		if (themeColor) {
+			if (themeColor === CUSTOM_THEME_COLOR && customThemeColor)
+				console.log("customThemeColor", customThemeColor); // TODO: 设置自定义主题色
+			else
+				rootNode.classList.add(themeColor);
+			const themeColorMetaTagName = "theme-color";
+			const themeColorCssPropertyName = "--accent";
+			const themeColorHex = getComputedStyle(rootNode).getPropertyValue(themeColorCssPropertyName).trim();
+			updateOrCreateMetaTag(themeColorMetaTagName, themeColorHex);
+		}
 		if (currentThemeType) {
 			const actualThemeType = currentThemeType === "system" ? systemThemeType : currentThemeType;
 			const isDark = actualThemeType === "dark";

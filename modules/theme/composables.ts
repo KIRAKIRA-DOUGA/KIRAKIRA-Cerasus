@@ -118,8 +118,6 @@ export function useKiraCookie<T>(
 		const appSettingsStore = useAppSettingsStore();
 		const isAllowSyncThemeSettings = computed(() => appSettingsStore.isAllowSyncThemeSettings && selfUserInfoStore.isLogined && isSyncSettings);
 
-		if (cookieKey === COOKIE_KEY.themeColorCookieKey) setThemeColorHex();
-
 		if (isWatchCookieRef || isListenLoginEvent)
 			watch(cookie, cookieValue => { // 当设置值发送改变时，发送后端请求，并触发 cookieBinding 更新页面样式
 				if (process.client) {
@@ -141,23 +139,6 @@ export function useKiraCookie<T>(
 	}
 
 	return cookie;
-}
-
-export const useThemeColorHex = () => useState("theme-color-hex", () => "#f06e8e");
-
-function setThemeColorHex() {
-	let themeColorHex: string;
-	if (process.server) {
-		const THEME_COLOR_HEX_KEY = "theme-color-hex";
-		themeColorHex = localStorage.getItem(THEME_COLOR_HEX_KEY);
-		if (!themeColorHex) return;
-	} else {
-		const THEME_COLOR_CSS_PROPERTY_NAME = "--accent";
-		themeColorHex = getComputedStyle(document.documentElement).getPropertyValue(THEME_COLOR_CSS_PROPERTY_NAME).trim();
-	}
-	useThemeColorHex().value = themeColorHex;
-	if (process.client)
-		localStorage.setItem(THEME_COLOR_HEX_KEY, themeColorHex);
 }
 
 /**

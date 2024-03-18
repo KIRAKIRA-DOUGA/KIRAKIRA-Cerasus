@@ -29,7 +29,6 @@ export default defineNuxtModule({
 		addImports({ name: "saveUserSetting2BrowserCookieStore", as: "saveUserSetting2BrowserCookieStore", from: composablesRoute });
 		addImports({ name: "useKiraCookie", as: "useKiraCookie", from: composablesRoute });
 		addImports({ name: "SyncUserSettings", as: "SyncUserSettings", from: composablesRoute });
-		addImports({ name: "useThemeColorHex", as: "useThemeColorHex", from: composablesRoute });
 		const cookieBindingRoute = resolve("theme-cookie-binding");
 		addImports({ name: "DEFAULT_COOKIE_OPTION", as: "DEFAULT_COOKIE_OPTION", from: cookieBindingRoute });
 		addImports({ name: "THEME_ENV", as: "THEME_ENV", from: cookieBindingRoute });

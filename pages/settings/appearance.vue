@@ -21,7 +21,7 @@
 	const cookieThemeType = useKiraCookie<ThemeSetType>(COOKIE_KEY.themeTypeCookieKey, SyncUserSettings.updateOrCreateUserThemeTypeSetting, useSyncKiraCookieOptions);
 	// 个性色
 	const cookieThemeColor = useKiraCookie<string>(COOKIE_KEY.themeColorCookieKey, SyncUserSettings.updateOrCreateUserThemeColorSetting, useSyncKiraCookieOptions);
-	// // TODO: 自定义个性色
+	// TODO: 自定义个性色
 	// const cookieColoredSidebar = useKiraCookie<string>( // TODO )
 	// 彩色侧边栏
 	const cookieColoredSidebar = useKiraCookie<boolean>(COOKIE_KEY.coloredSidebarCookieKey, SyncUserSettings.updateOrCreateUserColoredSidebarSetting, useSyncKiraCookieOptions);

@@ -33,7 +33,6 @@
 			{ "http-equiv": "X-UA-Compatible", content: "IE=Edge,chrome=1" },
 			{ name: "viewport", content: "width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" },
 			{ name: "renderer", content: "webkit" },
-			{ name: "theme-color", content: useThemeColorHex() },
 			{ name: "description", content: manifest.description },
 			{ name: "keywords", content: "视频,弹幕,字幕,音频,歌词,相簿,相册,照片,视频网站,弹幕视频,二次元,动漫,动画,音乐,动漫音乐,音MAD,AMV,MAD,ANIME,ACG,NOVA" },
 			// 以下内容为各种苹果私有属性。
