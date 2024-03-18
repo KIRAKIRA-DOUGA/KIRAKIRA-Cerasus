@@ -234,20 +234,20 @@
 			<SoftButton
 				class="quality-button"
 				:text="quality"
-				@mouseenter="e => qualityMenu = e"
-				@mouseleave="qualityMenu = undefined"
+				@pointerenter="e => qualityMenu = e"
+				@pointerleave="qualityMenu = undefined"
 			/>
 			<SoftButton
 				icon="speed_outline"
-				@mouseenter="e => rateMenu = e"
-				@mouseleave="rateMenu = undefined"
+				@pointerenter="e => rateMenu = e"
+				@pointerleave="rateMenu = undefined"
 				@pointerup="e => isMouse(e) && switchSpeed()"
 			/>
 			<SoftButton
 				:icon="muted ? 'volume_mute' : volumeSet >= 0.5 ? 'volume_up' : volumeSet > 0 ? 'volume_down' : 'volume_none'"
 				class="volume"
-				@mouseenter="e => volumeMenu = e"
-				@mouseleave="volumeMenu = undefined"
+				@pointerenter="e => volumeMenu = e"
+				@pointerleave="volumeMenu = undefined"
 				@pointerup="e => isMouse(e) && (muted = !muted)"
 			/>
 			<!-- TODO: 音量图标需要修改为三根弧线，并且使用动画切换，参考 Windows 11 / i(Pad)OS 的动画。 -->
