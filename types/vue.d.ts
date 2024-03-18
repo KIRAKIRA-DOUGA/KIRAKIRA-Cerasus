@@ -38,7 +38,7 @@ declare module "vue" {
 		lang?: string;
 		title?: Readable;
 		tabindex?: Numberish;
-		hidden?: Boolish;
+		hidden?: Booleanish;
 		// onClick?: (payload: MouseEvent) => void;
 	}
 }

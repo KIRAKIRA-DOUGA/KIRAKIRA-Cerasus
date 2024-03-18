@@ -13,7 +13,7 @@
 
 /// 变成正方形。长宽均相等。
 /// @param {Number} $size - 长度。
-/// @param {Boolean} $with-size-var [false] - 是否生成一个名为 `--size` 的 CSS 自定义属性以使其它组件更方便的修改尺寸？
+/// @param {Boolean} $with-size-var [false] - 是否生成一个名为 `--size` 的 CSS 自定义属性以使其它组件更方便地修改尺寸？
 /// @output width, height
 @mixin square($size, $with-size-var: false) {
 	@if not $with-size-var {
@@ -31,7 +31,7 @@
 /// @param {String} $position [full] - 圆角的位置。
 /// @output border-radius
 @mixin oval($position: full) {
-	@include set-border-radius(9999rem, $position);
+	@include set-border-radius(calc(infinity * 1px), $position);
 }
 
 /// 变成圆形。
