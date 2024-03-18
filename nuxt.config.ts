@@ -250,6 +250,7 @@ export default defineNuxtConfig({
 			name: "page-jump",
 			mode: "out-in",
 		}, */
+		rootId: "root",
 		teleportId: "popovers",
 	},
 } as BroadNuxtConfig);

@@ -1,5 +1,5 @@
 <docs>
-	电池图标。
+	# 电池图标
 </docs>
 
 <script setup lang="ts">
@@ -14,8 +14,7 @@
 <template>
 	<svg class="icon icon-battery" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 		<mask id="mask_battery_charging">
-			<rect v-if="charging" fill="white" width="24" height="24" />
-			<rect v-else fill="white" width="24" height="24" />
+			<rect fill="white" width="24" height="24" />
 			<Transition name="charging">
 				<path
 					v-if="charging"
@@ -27,12 +26,12 @@
 		</mask>
 		<g mask="url(#mask_battery_charging)">
 			<path
-				:opacity="props.value >= 1 ? 1 : 0.3"
+				:opacity="value >= 1 ? 1 : 0.3"
 				d="M9 4.00004V2.00002L15 2.00002V4.00004H16C17.1046 4.00004 18 4.89547 18 6.00004V20C18 21.1046 17.1046 22 16 22H8C6.89543 22 6 21.1046 6 20V6.00004C6 4.89547 6.89543 4.00004 8 4.00004H9Z"
 			/>
 			<mask
 				id="mask_battery_percent"
-				style="mask-type:alpha"
+				mask-type="alpha"
 				maskUnits="userSpaceOnUse"
 				x="6"
 				y="2"
@@ -51,7 +50,7 @@
 					width="12"
 					height="18"
 					transform-origin="50% calc(100% - 2px)"
-					:style="{ transform: 'scaleY(' + value + ')' }"
+					:transform="`scaleY(${value})`"
 				/>
 			</g>
 		</g>
