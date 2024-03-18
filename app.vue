@@ -111,8 +111,7 @@
 	<NuxtLayout :name="layout">
 		<NuxtPage />
 	</NuxtLayout>
-	<Contents id="popovers">
-		<Toasts />
-		<Tooltips />
-	</Contents>
+
+	<Toasts />
+	<Tooltips />
 </template>
