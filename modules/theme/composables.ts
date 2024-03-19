@@ -23,7 +23,7 @@ export async function cookieBaker() {
 		const cookieColoredSidebar = useCookie(COOKIE_KEY.coloredSidebarCookieKey, DEFAULT_COOKIE_OPTION);
 		const cookieSharpAppearanceMode = useCookie(COOKIE_KEY.sharpAppearanceModeCookieKey, DEFAULT_COOKIE_OPTION);
 		const cookieFlatAppearanceMode = useCookie(COOKIE_KEY.flatAppearanceModeCookieKey, DEFAULT_COOKIE_OPTION);
-		// HACK 5 在此处添加
+		// HACK: 5 在此处添加
 
 		// nuxt cookie 对象 - 是否使用离线样式设置
 		const cookieIsLocalStorage = useCookie(COOKIE_KEY.isOfflineSettingsCookieKey, DEFAULT_COOKIE_OPTION);
@@ -47,7 +47,7 @@ export async function cookieBaker() {
 			cookieColoredSidebar.value = `${userSettings?.userSettings?.coloredSideBar === true}`;
 			cookieSharpAppearanceMode.value = `${userSettings?.userSettings?.sharpAppearanceMode === true}`;
 			cookieFlatAppearanceMode.value = `${userSettings?.userSettings?.flatAppearanceMode === true}`;
-			// HACK 6 在此处添加
+			// HACK: 6 在此处添加
 
 			cookieIsLocalStorage.value = "false";
 		} else
@@ -68,7 +68,7 @@ export function saveUserSetting2BrowserCookieStore(userSettings: GetUserSettings
 		const isColoredSidebar = userSettings?.userSettings?.coloredSideBar || false;
 		const isSharpAppearanceMode = userSettings?.userSettings?.sharpAppearanceMode || false;
 		const isFlatAppearanceMode = userSettings?.userSettings?.flatAppearanceMode || false;
-		// HACK 7 在此处添加
+		// HACK: 7 在此处添加
 
 		const userSettingsCookieBasicOption = `; expires=${new Date("9999/9/9").toUTCString()}; path=/; SameSite=Strict`;
 		document.cookie = `${COOKIE_KEY.isOfflineSettingsCookieKey}=false${userSettingsCookieBasicOption}`;
@@ -78,7 +78,7 @@ export function saveUserSetting2BrowserCookieStore(userSettings: GetUserSettings
 		if (isColoredSidebar !== undefined && isColoredSidebar !== null) document.cookie = `${COOKIE_KEY.coloredSidebarCookieKey}=${isColoredSidebar}${userSettingsCookieBasicOption}`;
 		if (isSharpAppearanceMode !== undefined && isSharpAppearanceMode !== null) document.cookie = `${COOKIE_KEY.sharpAppearanceModeCookieKey}=${isSharpAppearanceMode}${userSettingsCookieBasicOption}`;
 		if (isFlatAppearanceMode !== undefined && isFlatAppearanceMode !== null) document.cookie = `${COOKIE_KEY.flatAppearanceModeCookieKey}=${isFlatAppearanceMode}${userSettingsCookieBasicOption}`;
-		// HACK 8 在此处添加
+		// HACK: 8 在此处添加
 	}
 }
 
@@ -91,12 +91,12 @@ export type UseKiraCookieOptions = {
 	/** 在已开启 isWatchCookieRef 的前提下，isSyncSettings 的值为 true 时，如果 cookie 发生响应式变化，并且用户开启了多端同步，则发送网络请求到后端，值为 false 时则一律不发送，默认为 true */
 	isSyncSettings?: boolean;
 	/**
-	 * 是否监听用户 login（完成）事件，并在 login（完成）后，从 cookie 中同步最新的 cookie 值，默认不开启以免重复监听，请仅在需要监听时显式手动开启 // WARN 注意：开启此项会同时开启 isWatchCookieRef
+	 * 是否监听用户 login（完成）事件，并在 login（完成）后，从 cookie 中同步最新的 cookie 值，默认不开启以免重复监听，请仅在需要监听时显式手动开启 // WARN: 注意：开启此项会同时开启 isWatchCookieRef
 	 */
 	isListenLoginEvent?: boolean;
 };
 /**
- * 通过 useCookie 创建并返回一个 nuxt 响应式 cookie 对象，并在该响应式 cookie 的值被更新后调用 callback 方法 // TODO 目前只支持监听在程序代码中显式更新的 cookie，比如通过 cookie.value 为 cookie 重新赋值，而不支持在客户端浏览器中更新的 cookie，或许 nuxt 3.10 之后有办法解决
+ * 通过 useCookie 创建并返回一个 nuxt 响应式 cookie 对象，并在该响应式 cookie 的值被更新后调用 callback 方法 // TODO: 目前只支持监听在程序代码中显式更新的 cookie，比如通过 cookie.value 为 cookie 重新赋值，而不支持在客户端浏览器中更新的 cookie，或许 nuxt 3.10 之后有办法解决
  * @param cookieKey cookie 的 key
  * @param callback cookie 被显示更新后调用的 callback
  * @param options 设置，详见 UseKiraCookieOptions
@@ -121,7 +121,7 @@ export function useKiraCookie<T>(
 		if (isWatchCookieRef || isListenLoginEvent)
 			watch(cookie, cookieValue => { // 当设置值发送改变时，发送后端请求，并触发 cookieBinding 更新页面样式
 				if (process.client) {
-					window.localStorage.setItem(cookieKey, `${cookieValue}`); // WARN 使用 useStorage 函数更新数据会导致 cookieBinding 中获取到的 localStorage 数据不是最新数据，可能是 vue 响应式延迟，所以此处使用原始的 window.localStorage 对象
+					localStorage.setItem(cookieKey, `${cookieValue}`); // WARN: 使用 useStorage 函数更新数据会导致 cookieBinding 中获取到的 localStorage 数据不是最新数据，可能是 vue 响应式延迟，所以此处使用原始的 localStorage 对象
 					if (isAllowSyncThemeSettings.value) // 如果允许同步样式设置，则发送后端请求，非阻塞
 						callback(cookieValue);
 					cookieBinding();
@@ -135,7 +135,7 @@ export function useKiraCookie<T>(
 				// cookie.value = useCookie<T>(cookieKey, userSettingsCookieBasicOption).value; // TODO: nuxt 3.10 以后可以使用 refreshCookie 方法刷新 cookie，此行语句是否可以移除？
 			});
 	} catch (error) {
-		console.error("ERROR", "ERROR in useKiraCookie");
+		console.error("ERROR", "Error in useKiraCookie");
 	}
 
 	return cookie;
@@ -145,7 +145,7 @@ export function useKiraCookie<T>(
  * 存放向后端同步用户设置的方法的类
  */
 export class SyncUserSettings {
-	// HACK 15 请参照此部分 ↓ ↓ ↓
+	// HACK: 15 请参照此部分 ↓ ↓ ↓
 
 	/**
 	 * 发送更新用户的 ThemeType 设置的请求
@@ -158,7 +158,7 @@ export class SyncUserSettings {
 		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
 	}
 
-	// HACK 15 请参照此部分 ↑ ↑ ↑
+	// HACK: 15 请参照此部分 ↑ ↑ ↑
 
 	/**
 	 * 发送更新用户的 ThemeColor 设置的请求
@@ -204,5 +204,5 @@ export class SyncUserSettings {
 		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
 	}
 
-	// HACK 15 在此处添加
+	// HACK: 15 在此处添加
 }

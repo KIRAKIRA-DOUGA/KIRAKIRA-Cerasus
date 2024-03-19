@@ -252,7 +252,7 @@ html.flat {
 
 ::view-transition-new(root),
 .dark.changing-theme::view-transition-old(root) {
-	z-index: 2147483646;
+	z-index: calc(infinity);
 }
 // #endregion
 

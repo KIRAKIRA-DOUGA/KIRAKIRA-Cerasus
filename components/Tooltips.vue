@@ -67,7 +67,7 @@
 </script>
 
 <template>
-	<ClientOnlyTeleport to="#popovers">
+	<Teleport to="#popovers">
 		<Comp role="none">
 			<TransitionGroup appear>
 				<div
@@ -86,7 +86,7 @@
 				</div>
 			</TransitionGroup>
 		</Comp>
-	</ClientOnlyTeleport>
+	</Teleport>
 </template>
 
 <style scoped lang="scss">

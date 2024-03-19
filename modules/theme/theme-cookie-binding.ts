@@ -8,13 +8,13 @@ export const THEME_ENV = {
 	SYSTEM_THEME: "system",
 	DEFAULT_THEME_COLOR: "pink",
 	CUSTOM_THEME_COLOR: "custom",
-	// DEFAULT_CUSTOM_THEME_COLOR: "66CCFF", // TODO 设置默认自定义主题色
+	// DEFAULT_CUSTOM_THEME_COLOR: "#66ccff", // TODO: 设置默认自定义主题色
 	THEME_DARK: "dark",
 	THEME_LIGHT: "light",
 	NO_COLORED_SIDEBAR: "false",
 	NO_SHARP_APPEARANCE_MODE: "false",
 	NO_FLAT_APPEARANCE_MODE: "false",
-	// HACK 1 在此处添加
+	// HACK: 1 在此处添加
 };
 
 // Cookie 键 - 用户样式设置，请保持和下方 cookieBinding 函数中的局部变量的值一致
@@ -26,7 +26,7 @@ export const COOKIE_KEY = {
 	coloredSidebarCookieKey: "colored-side-bar",
 	sharpAppearanceModeCookieKey: "sharp-appearance-mode",
 	flatAppearanceModeCookieKey: "flat-appearance-mode",
-	// HACK 2 在此处添加
+	// HACK: 2 在此处添加
 };
 
 let lastClickMouseEvent: MouseEvent | undefined;
@@ -37,19 +37,19 @@ if (process.client)
  * 在 DOM 加载之前执行的脚本。
  */
 export function cookieBinding() {
-	// WARN 在开始编写本文件之前，请参考：modules\theme\README.md
+	// WARN: 在开始编写本文件之前，请参考：modules\theme\README.md
 
 	// theme 默认值，请保持和上方 THEME_ENV 全局变量的值一致
 	const SYSTEM_THEME = "system";
 	const DEFAULT_THEME_COLOR = "pink";
 	const CUSTOM_THEME_COLOR = "custom";
-	// const DEFAULT_CUSTOM_THEME_COLOR = "66CCFF"; // TODO 设置默认自定义主题色
+	// const DEFAULT_CUSTOM_THEME_COLOR = "#66ccff"; // TODO: 设置默认自定义主题色
 	const THEME_DARK = "dark";
 	const THEME_LIGHT = "light";
 	const NO_COLORED_SIDEBAR = "false";
 	const NO_SHARP_APPEARANCE_MODE = "false";
 	const NO_FLAT_APPEARANCE_MODE = "false";
-	// HACK 3 在此处添加
+	// HACK: 3 在此处添加
 
 	// Cookie 键 - 用户样式设置，请保持和上方 COOKIE_KEY 全局变量的值一致
 	const isOfflineSettingsCookieKey = "is-offline-settings";
@@ -59,70 +59,105 @@ export function cookieBinding() {
 	const coloredSidebarCookieKey = "colored-side-bar";
 	const sharpAppearanceModeCookieKey = "sharp-appearance-mode";
 	const flatAppearanceModeCookieKey = "flat-appearance-mode";
-	// HACK 4 在此处添加
+	// HACK: 4 在此处添加
 
 	/**
-	 * 用原始的方式获取 cookie
-	 * @param cookieName key
-	 * @returns cookie
+	 * 创建或更新一个 meta 标签
+	 * @param name meta 标签的 name
+	 * @param content meta 标签的 content
 	 */
-	const getCookie = (cookieName: string): string => {
+	function updateOrCreateMetaTag(name: string, content: string) {
+		// 尝试找到已存在的 meta 标签
+		let meta = document.querySelector<HTMLMetaElement>(`meta[name="${name}"]`);
+
+		if (meta) // 如果标签已存在，更新它的内容
+			meta.content = content;
+		else { // 如果标签不存在，创建一个新的标签并设置其属性
+			meta = document.createElement("meta");
+			meta.name = name;
+			meta.content = content;
+			document.head.appendChild(meta);
+		}
+	}
+
+	/**
+	 * 用原始的方式获取 Cookie。
+	 * @param cookieKey - Cookie 的键名。
+	 * @returns Cookie 的值。
+	 */
+	function getCookie(cookieKey: string) {
 		const cookies = document.cookie.split("; ");
-		for (let i = 0; i < cookies.length; i++) {
-			const parts = cookies[i].split("=");
-			if (parts[0] === cookieName)
-				return parts[1];
+		for (const cookie of cookies) {
+			const [key, value] = cookie.split("=");
+			if (key === cookieKey)
+				return value;
 		}
 		return ""; // 如果没有找到指定的 cookie，返回 "" 空字符串
-	};
+	}
+
 
 	try {
-		let currentThemeType; // 主题（浅色/深色）
-		let themeColor; // 个性色
-		let customThemeColor; // 用户自定义个性色
-		let isColoredSidebar; // 是否启用彩色侧边栏
-		let isSharpAppearanceMode; // 是否启用直角模式
-		let isFlatAppearanceMode; // 是否启用扁平模式
-		// HACK 9 在此处添加
+		let currentThemeType: ThemeSetType | undefined; // 主题（浅色/深色）
+		let themeColor: PaletteType | undefined; // 个性色
+		let customThemeColor: string | undefined; // 用户自定义个性色
+		let isColoredSidebar: BooleanString | undefined; // 是否启用彩色侧边栏
+		let isSharpAppearanceMode: BooleanString | undefined; // 是否启用直角模式
+		let isFlatAppearanceMode: BooleanString | undefined; // 是否启用扁平模式
+		// HACK: 9 在此处添加
 
 		const isOfflineSettings = !getCookie(isOfflineSettingsCookieKey) || getCookie(isOfflineSettingsCookieKey) === "true";
 		if (isOfflineSettings) { // 离线样式，从 localStorage 中获取样式并拷贝到 cookie 中
 			// 获取 localStorage 中的用户样式设置
-			currentThemeType = window.localStorage.getItem(themeTypeCookieKey) || THEME_LIGHT; // localStorage 中存储的系统主题类型，如果没有或值为 system，则使用 systemThemeType
-			themeColor = window.localStorage.getItem(themeColorCookieKey) || DEFAULT_THEME_COLOR; // localStorage 中存储的系统主题色
-			customThemeColor = window.localStorage.getItem(customThemeColorCookieKey) || DEFAULT_THEME_COLOR; // localStorage 中存储的自定义系统主题色（当 themeColor 的值为 CUSTOM_THEME_COLOR 时才应该依据该值渲染）
-			isColoredSidebar = window.localStorage.getItem(coloredSidebarCookieKey) || NO_COLORED_SIDEBAR; // localStorage 中存储的是否启用彩色侧边栏
-			isSharpAppearanceMode = window.localStorage.getItem(sharpAppearanceModeCookieKey) || NO_SHARP_APPEARANCE_MODE; // localStorage 中存储的是否启用直角模式
-			isFlatAppearanceMode = window.localStorage.getItem(flatAppearanceModeCookieKey) || NO_FLAT_APPEARANCE_MODE; // localStorage 中存储的是否启用扁平模式
-			// HACK 10 在此处添加
+			// localStorage 中存储的系统主题类型，如果没有或值为 system，则使用 systemThemeType
+			currentThemeType = localStorage.getItem(themeTypeCookieKey) as ThemeSetType || THEME_LIGHT;
+			// localStorage 中存储的系统主题色
+			themeColor = localStorage.getItem(themeColorCookieKey) as PaletteType || DEFAULT_THEME_COLOR;
+			// localStorage 中存储的自定义系统主题色（当 themeColor 的值为 CUSTOM_THEME_COLOR 时才应该依据该值渲染）
+			customThemeColor = localStorage.getItem(customThemeColorCookieKey) || DEFAULT_THEME_COLOR;
+			// localStorage 中存储的是否启用彩色侧边栏
+			isColoredSidebar = localStorage.getItem(coloredSidebarCookieKey) as BooleanString || NO_COLORED_SIDEBAR;
+			// localStorage 中存储的是否启用直角模式
+			isSharpAppearanceMode = localStorage.getItem(sharpAppearanceModeCookieKey) as BooleanString || NO_SHARP_APPEARANCE_MODE;
+			// localStorage 中存储的是否启用扁平模式
+			isFlatAppearanceMode = localStorage.getItem(flatAppearanceModeCookieKey) as BooleanString || NO_FLAT_APPEARANCE_MODE;
+			// HACK: 10 在此处添加
 
 			// 将最新的 localStorage 存储回 cookie
-			const userSettingsCookieBasicOption = `; expires=${new Date("9999/9/9").toUTCString()}; path=/; SameSite=Strict`;
-			if (currentThemeType) document.cookie = `${themeTypeCookieKey}=${currentThemeType}${userSettingsCookieBasicOption}`;
-			if (themeColor) document.cookie = `${themeColorCookieKey}=${themeColor}${userSettingsCookieBasicOption}`;
-			if (customThemeColor) document.cookie = `${customThemeColorCookieKey}=${customThemeColor}${userSettingsCookieBasicOption}`;
-			if (isColoredSidebar !== undefined && isColoredSidebar !== null) document.cookie = `${coloredSidebarCookieKey}=${isColoredSidebar}${userSettingsCookieBasicOption}`;
-			if (isSharpAppearanceMode !== undefined && isSharpAppearanceMode !== null) document.cookie = `${sharpAppearanceModeCookieKey}=${isSharpAppearanceMode}${userSettingsCookieBasicOption}`;
-			if (isFlatAppearanceMode !== undefined && isFlatAppearanceMode !== null) document.cookie = `${flatAppearanceModeCookieKey}=${isFlatAppearanceMode}${userSettingsCookieBasicOption}`;
-			// HACK 11 在此处添加
+			const setIfCookie = (key: string, value: string) => {
+				const userSettingsCookieBasicOption = `; expires=${new Date("9999/9/9").toUTCString()}; path=/; SameSite=Strict`;
+				if (value) document.cookie = `${key}=${value}${userSettingsCookieBasicOption}`;
+			}
+			setIfCookie(themeTypeCookieKey, currentThemeType);
+			setIfCookie(themeColorCookieKey, themeColor);
+			setIfCookie(customThemeColorCookieKey, customThemeColor);
+			setIfCookie(coloredSidebarCookieKey, isColoredSidebar);
+			setIfCookie(sharpAppearanceModeCookieKey, isSharpAppearanceMode);
+			setIfCookie(flatAppearanceModeCookieKey, isFlatAppearanceMode);
+			// HACK: 11 在此处添加
 		} else { // 在线（远程同步）样式，从 cookie 中获取样式并拷贝到 localStorage 中
 			// 获取 cookie 中的用户样式设置
-			currentThemeType = (getCookie(themeTypeCookieKey) || THEME_LIGHT) as ThemeSetType; // cookie 中存储的系统主题类型，如果没有，则使用 systemThemeType
-			themeColor = (getCookie(themeColorCookieKey) || DEFAULT_THEME_COLOR) as PaletteType; // cookie 中存储的系统主题色
-			customThemeColor = (getCookie(customThemeColorCookieKey) || DEFAULT_THEME_COLOR) as string; // cookie 中存储的自定义系统主题色（当 themeColor 的值为 CUSTOM_THEME_COLOR 时才应该依据该值渲染）
-			isColoredSidebar = (getCookie(coloredSidebarCookieKey) || NO_COLORED_SIDEBAR); // cookie 中存储的是否启用彩色侧边栏
-			isSharpAppearanceMode = (getCookie(sharpAppearanceModeCookieKey) || NO_SHARP_APPEARANCE_MODE); // cookie 中存储的是否启用直角模式
-			isFlatAppearanceMode = (getCookie(flatAppearanceModeCookieKey) || NO_FLAT_APPEARANCE_MODE); // cookie 中存储的是否启用扁平模式
-			// HACK 12 在此处添加
+			// cookie 中存储的系统主题类型，如果没有，则使用 systemThemeType
+			currentThemeType = getCookie(themeTypeCookieKey) as ThemeSetType || THEME_LIGHT;
+			// cookie 中存储的系统主题色
+			themeColor = getCookie(themeColorCookieKey) as PaletteType || DEFAULT_THEME_COLOR;
+			// cookie 中存储的自定义系统主题色（当 themeColor 的值为 CUSTOM_THEME_COLOR 时才应该依据该值渲染）
+			customThemeColor = getCookie(customThemeColorCookieKey) || DEFAULT_THEME_COLOR;
+			// cookie 中存储的是否启用彩色侧边栏
+			isColoredSidebar = getCookie(coloredSidebarCookieKey) as BooleanString || NO_COLORED_SIDEBAR;
+			// cookie 中存储的是否启用直角模式
+			isSharpAppearanceMode = getCookie(sharpAppearanceModeCookieKey) as BooleanString || NO_SHARP_APPEARANCE_MODE;
+			// cookie 中存储的是否启用扁平模式
+			isFlatAppearanceMode = getCookie(flatAppearanceModeCookieKey) as BooleanString || NO_FLAT_APPEARANCE_MODE;
+			// HACK: 12 在此处添加
 
 			// 将最新的 cookie 存储回 localStorage（以备以后用户登出后使用）
-			if (currentThemeType) window.localStorage.setItem(themeTypeCookieKey, currentThemeType); else window.localStorage.setItem(themeTypeCookieKey, THEME_LIGHT);
-			if (themeColor) window.localStorage.setItem(themeColorCookieKey, themeColor); else window.localStorage.setItem(themeColorCookieKey, DEFAULT_THEME_COLOR);
-			if (customThemeColor) window.localStorage.setItem(customThemeColorCookieKey, customThemeColor); else window.localStorage.setItem(customThemeColorCookieKey, DEFAULT_THEME_COLOR);
-			if (isColoredSidebar !== undefined && isColoredSidebar !== null) window.localStorage.setItem(coloredSidebarCookieKey, `${isColoredSidebar}`); else window.localStorage.setItem(coloredSidebarCookieKey, NO_COLORED_SIDEBAR);
-			if (isSharpAppearanceMode !== undefined && isSharpAppearanceMode !== null) window.localStorage.setItem(sharpAppearanceModeCookieKey, `${isSharpAppearanceMode}`); else window.localStorage.setItem(sharpAppearanceModeCookieKey, NO_SHARP_APPEARANCE_MODE);
-			if (isFlatAppearanceMode !== undefined && isFlatAppearanceMode !== null) window.localStorage.setItem(flatAppearanceModeCookieKey, `${isFlatAppearanceMode}`); else window.localStorage.setItem(flatAppearanceModeCookieKey, NO_FLAT_APPEARANCE_MODE);
-			// HACK 13 在此处添加
+			localStorage.setItem(themeTypeCookieKey, currentThemeType || THEME_LIGHT);
+			localStorage.setItem(themeColorCookieKey, themeColor || DEFAULT_THEME_COLOR);
+			localStorage.setItem(customThemeColorCookieKey, customThemeColor || DEFAULT_THEME_COLOR);
+			localStorage.setItem(coloredSidebarCookieKey, isColoredSidebar || NO_COLORED_SIDEBAR);
+			localStorage.setItem(sharpAppearanceModeCookieKey, isSharpAppearanceMode || NO_SHARP_APPEARANCE_MODE);
+			localStorage.setItem(flatAppearanceModeCookieKey, isFlatAppearanceMode || NO_FLAT_APPEARANCE_MODE);
+			// HACK: 13 在此处添加
 		}
 
 		const systemThemeType = window.matchMedia("(prefers-color-scheme: dark)").matches ? THEME_DARK : THEME_LIGHT; // 获取系统主题类型（当 themeType 的值为 system 时才应该依据该值渲染）
@@ -130,14 +165,20 @@ export function cookieBinding() {
 		// 绑定 cookie 中的样式到 html
 		const rootNode = document.documentElement;
 		const isPreviousDark = rootNode.classList.contains("dark");
-		rootNode.className = "kirakira";
-		if (`${isColoredSidebar}` === "true") rootNode.classList.add("colored-sidebar");
-		if (`${isSharpAppearanceMode}` === "true") rootNode.classList.add("sharp");
-		if (`${isFlatAppearanceMode}` === "true") rootNode.classList.add("flat");
-		if (themeColor && themeColor === CUSTOM_THEME_COLOR && customThemeColor)
-			console.log("customThemeColor", customThemeColor); // TODO 设置自定义主题色
-		else if (themeColor)
-			rootNode.classList.add(themeColor);
+		rootNode.className = "";
+		if (isColoredSidebar === "true") rootNode.classList.add("colored-sidebar");
+		if (isSharpAppearanceMode === "true") rootNode.classList.add("sharp");
+		if (isFlatAppearanceMode === "true") rootNode.classList.add("flat");
+		if (themeColor) {
+			if (themeColor === CUSTOM_THEME_COLOR && customThemeColor)
+				console.log("customThemeColor", customThemeColor); // TODO: 设置自定义主题色
+			else
+				rootNode.classList.add(themeColor);
+			const themeColorMetaTagName = "theme-color";
+			const themeColorCssPropertyName = "--accent";
+			const themeColorHex = getComputedStyle(rootNode).getPropertyValue(themeColorCssPropertyName).trim();
+			updateOrCreateMetaTag(themeColorMetaTagName, themeColorHex);
+		}
 		if (currentThemeType) {
 			const actualThemeType = currentThemeType === "system" ? systemThemeType : currentThemeType;
 			const isDark = actualThemeType === "dark";
@@ -146,7 +187,7 @@ export function cookieBinding() {
 				rootNode.classList.toggle("light", !isDark);
 			};
 
-			if (typeof lastClickMouseEvent !== "undefined" && lastClickMouseEvent && isPreviousDark !== isDark) {
+			if (typeof lastClickMouseEvent !== "undefined" && isPreviousDark !== isDark) {
 				if (isPreviousDark) rootNode.classList.add("dark");
 				else rootNode.classList.add("light");
 				const { x, y } = lastClickMouseEvent;
@@ -168,13 +209,13 @@ export function cookieBinding() {
 				});
 			} else updateThemeSettings();
 		}
-		// HACK 14 在此处添加
+		// HACK: 14 在此处添加
 	} catch (error) {
-		console.error("ERROR", "ERROR IN cookieBinding", error);
+		console.error("ERROR", "Error in cookieBinding", error);
 		try {
 			document.documentElement.classList.add(SYSTEM_THEME, THEME_LIGHT);
 		} catch (error) {
-			console.error("ERROR", "ERROR IN cookieBinding -> catch", error);
+			console.error("ERROR", "Error in cookieBinding -> catch", error);
 		}
 	}
 }

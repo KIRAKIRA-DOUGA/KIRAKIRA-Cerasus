@@ -31,7 +31,7 @@
 </script>
 
 <template>
-	<ClientOnlyTeleport to="#popovers">
+	<Teleport to="#popovers">
 		<Contents :style="{ '--z-index': zIndex }">
 			<Transition>
 				<div
@@ -44,7 +44,7 @@
 			</Transition>
 			<slot><div></div></slot>
 		</Contents>
-	</ClientOnlyTeleport>
+	</Teleport>
 </template>
 
 <style scoped lang="scss">

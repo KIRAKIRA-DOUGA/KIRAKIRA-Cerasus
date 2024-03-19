@@ -32,11 +32,11 @@
 			<h3 class="title">{{ title }}</h3>
 		</div>
 		<div class="right">
-			<div class="battery">
-				<p v-if="hasBattery" class="battery-text">{{ battery }}</p>
-				<IconBattery v-if="hasBattery" :value="level" :charging />
+			<div v-if="hasBattery" class="battery">
+				<p class="battery-text">{{ battery }}</p>
+				<LogoBattery :value="level" :charging />
 			</div>
-			<p class="time">{{ time }}</p>
+			<time :datetime="now.toISOString()">{{ time }}</time>
 		</div>
 	</Comp>
 </template>
@@ -76,7 +76,7 @@
 			font-size: 18px;
 		}
 
-		.time,
+		time,
 		.battery-text {
 			font-variant-numeric: tabular-nums;
 			font-weight: 500;

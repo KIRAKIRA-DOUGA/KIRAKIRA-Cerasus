@@ -80,7 +80,6 @@
 	const qualities = ref<BitrateInfo[]>([]);
 	const mediaInfos = ref<MediaInfo>();
 	const videoContainer = ref<HTMLDivElement>();
-	const popovers = ref<HTMLDivElement>();
 	const video = ref<HTMLVideoElement>();
 	const { isFullscreen: fullscreen, toggle } = useFullscreen(videoContainer);
 	const resample = computed({ get: () => !preservesPitch.value, set: value => preservesPitch.value = !value });
@@ -414,7 +413,7 @@
 					@waiting="waiting = true"
 					@dblclick="toggle"
 					@contextmenu.prevent="e => menu = e"
-					@pointerup="e => isMouse(e) && (e.button === 0) && (playing = !playing)"
+					@pointerup.left="e => isMouse(e) && (playing = !playing)"
 					@pointermove="autoHideController"
 				></video>
 				<Contents>

@@ -9,7 +9,11 @@ declare global {
 	/**
 	 * 布尔型及其字符串形式。
 	 */
-	type Booleanish = boolean | "true" | "false";
+	type Booleanish = boolean | BooleanString;
+	/**
+	 * 布尔型的字符串形式。
+	 */
+	type BooleanString = "true" | "false";
 	/**
 	 * 数字及其字符串形式。
 	 */
