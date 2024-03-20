@@ -18,18 +18,11 @@
 		qualities?: BitrateInfo[];
 		/** 是否隐藏？ */
 		hidden?: boolean;
-		/**
-		 * 进入全屏后强制深色的样式类声明。
-		 *
-		 * 注意：仅在设置页外观的示例控制条中，本属性可以为空。
-		 */
-		fullscreenColorClass?: Record<string, boolean>;
 	}>(), {
 		duration: NaN,
 		buffered: 0,
 		toggleFullscreen: undefined,
 		qualities: () => [],
-		fullscreenColorClass: () => ({}),
 	});
 
 	/** 常用速度列表。 */
@@ -132,6 +125,31 @@
 			menu.value = new Date().valueOf();
 	}
 
+	const showFullbrowserBtn = ref(false);
+	const fullbrowserHideTimeout = ref<Timeout>();
+	/**
+	 * 指针移出 fullscreen 或 fullbrowser 按钮。
+	 * @param e - 指针移出事件。
+	 */
+	function leaveFullscreenBtn() {
+		fullbrowserHideTimeout.value = setTimeout(() => {
+			showFullbrowserBtn.value = false;
+		}, 100);
+	}
+
+	/**
+	 * 指针移入 fullscreen 或 fullbrowser 按钮。
+	 * @param e - 指针移入事件。
+	 */
+	function enterFullscreenBtn() {
+		if (!fullscreen.value) {
+			clearTimeout(fullbrowserHideTimeout.value);
+			fullbrowserHideTimeout.value = undefined;
+			showFullbrowserBtn.value = true;
+		} else
+			showFullbrowserBtn.value = false;
+	}
+
 	const playbackRateText = (rate: number) => (2 ** rate).toFixed(2).replace(/\.?0+$/, "") + "×";
 	const volumeText = (volume: number) => Math.round(volume * 100) + "%";
 
@@ -187,7 +205,7 @@
 </script>
 
 <template>
-	<div class="menus" :class="{ ...fullscreenColorClass }" v-bind="$attrs">
+	<div class="menus" v-bind="$attrs">
 		<PlayerVideoMenu v-model="volumeMenu">
 			<template #slider>
 				<CapsuleSlider v-model="volumeSet" :min="0" :max="1" :displayValue="volumeText" :defaultValue="1" />
@@ -208,9 +226,19 @@
 				@click="quality = qual"
 			>{{ qual }}</RadioOption>
 		</PlayerVideoMenu>
+		<Transition v-if="!fullscreen">
+			<div
+				v-show="showFullbrowserBtn"
+				class="fullbrowser"
+				@pointerenter="e => isMouse(e) && enterFullscreenBtn()"
+				@pointerleave="e => isMouse(e) && leaveFullscreenBtn()"
+			>
+				<SoftButton icon="fullscreen_browser" @click="fullscreen = !fullscreen" />
+			</div>
+		</Transition>
 	</div>
 
-	<Comp role="toolbar" :class="{ fullscreen, ...fullscreenColorClass, mobile: isMobile(), hidden }" v-bind="$attrs">
+	<Comp role="toolbar" :class="{ mobile: isMobile(), hidden }" v-bind="$attrs">
 		<div class="left">
 			<SoftButton class="play" :icon="ended ? 'replay' : playing ? 'pause' : 'play'" @click="playing = !playing" />
 		</div>
@@ -241,14 +269,14 @@
 				icon="speed_outline"
 				@pointerenter="e => rateMenu = e"
 				@pointerleave="rateMenu = undefined"
-				@pointerup="e => isMouse(e) && switchSpeed()"
+				@pointerup.left="e => isMouse(e) && switchSpeed()"
 			/>
 			<SoftButton
 				:icon="muted ? 'volume_mute' : volumeSet >= 0.5 ? 'volume_up' : volumeSet > 0 ? 'volume_down' : 'volume_none'"
 				class="volume"
 				@pointerenter="e => volumeMenu = e"
 				@pointerleave="volumeMenu = undefined"
-				@pointerup="e => isMouse(e) && (muted = !muted)"
+				@pointerup.left="e => isMouse(e) && (muted = !muted)"
 			/>
 			<!-- TODO: 音量图标需要修改为三根弧线，并且使用动画切换，参考 Windows 11 / i(Pad)OS 的动画。 -->
 			<SoftButton
@@ -257,7 +285,9 @@
 			/>
 			<SoftButton
 				:icon="fullscreen ? 'fullscreen_exit' : 'fullscreen'"
-				@click="toggleFullscreen"
+				@pointerenter="e => isMouse(e) && enterFullscreenBtn()"
+				@pointerleave="e => isMouse(e) && leaveFullscreenBtn()"
+				@click="toggleFullscreen?.()"
 			/>
 		</div>
 	</Comp>
@@ -275,13 +305,12 @@
 		display: flex;
 		align-items: center;
 		height: $thickness;
-		// overflow: clip; // FIXME: Slider 的 Tooltip 是在 Slider 内的，打开 overflow: clip 会导致显示不出来。
 		color: c(icon-color);
 		font-weight: 600;
 		font-size: 14px;
 		background-color: c(main-bg);
 
-		&.fullscreen {
+		.fullscreen & {
 			@include acrylic-background;
 			position: fixed;
 			right: 0;
@@ -340,10 +369,10 @@
 		overflow: clip;
 
 		@include mobile {
+			flex-grow: 1;
 			order: 3;
 			height: $thickness;
-			margin-left: auto;
-			padding-left: $ripple-fix-padding;
+			margin-left: $ripple-fix-margin;
 
 			.volume {
 				display: none;
@@ -367,8 +396,7 @@
 		cursor: pointer;
 
 		@include mobile {
-			order: 2;
-			margin-left: $ripple-fix-margin;
+			margin-right: auto;
 		}
 
 		> * {
@@ -424,6 +452,20 @@
 				translate: 0 -22px;
 			}
 		}
+
+		.fullbrowser {
+			@include round-small(top-left);
+			position: absolute;
+			right: 0;
+			bottom: $thickness;
+			overflow: clip;
+			background-color: c(main-bg);
+
+			&.v-enter-from,
+			&.v-leave-to {
+				translate: 0 100%;
+			}
+		}
 	}
 
 	.soft-button {
@@ -433,7 +475,8 @@
 			scale: 0.9;
 		}
 
-		&[aria-label="fullscreen"]:active:deep(.icon) {
+		&[aria-label="fullscreen"]:active:deep(.icon),
+		&[aria-label="fullscreen_browser"]:active:deep(.icon) {
 			scale: 1.2;
 		}
 

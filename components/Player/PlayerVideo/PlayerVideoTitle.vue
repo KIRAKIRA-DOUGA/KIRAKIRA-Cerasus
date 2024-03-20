@@ -8,8 +8,6 @@
 		title: string;
 		/** 是否隐藏？ */
 		hidden?: boolean;
-		/** 进入全屏后强制深色的样式类声明。 */
-		fullscreenColorClass: Record<string, boolean>;
 	}>();
 
 	import { useNow, useBattery } from "@vueuse/core";
@@ -27,7 +25,7 @@
 </script>
 
 <template>
-	<Comp :class="{ hidden, ...fullscreenColorClass }">
+	<Comp :class="{ hidden }">
 		<div class="left">
 			<h3 class="title">{{ title }}</h3>
 		</div>

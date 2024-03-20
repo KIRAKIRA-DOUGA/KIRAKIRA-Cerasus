@@ -79,9 +79,9 @@
 
 	const qualities = ref<BitrateInfo[]>([]);
 	const mediaInfos = ref<MediaInfo>();
-	const videoContainer = ref<HTMLDivElement>();
 	const video = ref<HTMLVideoElement>();
-	const { isFullscreen: fullscreen, toggle } = useFullscreen(videoContainer);
+	const { exit: exitFullscreen, enter: enterFullscreen } = useFullscreen();
+	const fullscreen = ref(false); // 是否独占整个浏览器画面？
 	const resample = computed({ get: () => !preservesPitch.value, set: value => preservesPitch.value = !value });
 	const menu = ref<MenuModel>();
 	const showDanmaku = ref(true);
@@ -333,7 +333,7 @@
 	function autoHideController(e?: PointerEvent) {
 		const BOTTOM = 36;
 		if (e && (!fullscreen.value || playerVideoControllerMouseDown.value ||
-			window.outerHeight - e.pageY <= BOTTOM))
+			window.innerHeight - e.pageY <= BOTTOM))
 			hideController.value = false;
 		else if (e?.pointerType !== "touch")
 			hideController.value = true;
@@ -357,6 +357,19 @@
 	}
 
 	/**
+	 * 切换全屏。
+	 */
+	function toggleFullscreen() {
+		if (fullscreen.value) {
+			fullscreen.value = false;
+			exitFullscreen();
+		} else {
+			fullscreen.value = true;
+			enterFullscreen();
+		}
+	}
+
+	/**
 	* 给视频截个图。
 	* @param scale - 截图缩放比率，默认为 1。
 	* @returns 截图后的图片元素。
@@ -377,7 +390,7 @@
 </script>
 
 <template>
-	<Comp>
+	<Comp :class="{ fullscreen, ...fullscreenColorClass }">
 		<Modal v-model="showMediaInfo" icon="info" title="视频详细信息">
 			<Accordion>
 				<AccordionItem v-for="(info, type) in mediaInfos" :key="type" :title="type" noPadding>
@@ -397,7 +410,7 @@
 			</Accordion>
 		</Modal>
 
-		<div ref="videoContainer" class="main" :class="{ fullscreen, 'hide-cursor': hideCursor }" @touchstart="autoHideControllerTouch">
+		<div class="main" :class="{ 'hide-cursor': hideCursor }" @touchstart="autoHideControllerTouch">
 			<div class="screen">
 				<video
 					ref="video"
@@ -411,7 +424,7 @@
 					@progress="onProgress"
 					@ended="ended = true"
 					@waiting="waiting = true"
-					@dblclick="toggle"
+					@dblclick="toggleFullscreen()"
 					@contextmenu.prevent="e => menu = e"
 					@pointerup.left="e => isMouse(e) && (playing = !playing)"
 					@pointermove="autoHideController"
@@ -432,7 +445,6 @@
 					v-if="fullscreen"
 					:title
 					:hidden="hideController"
-					:fullscreenColorClass
 				/>
 			</div>
 			<PlayerVideoController
@@ -450,16 +462,16 @@
 				v-model:waiting="waiting"
 				v-model:ended="ended"
 				:duration
-				:toggleFullscreen="toggle"
+				:toggleFullscreen
 				:buffered
 				:qualities
 				:hidden="hideController"
-				:fullscreenColorClass
 				@mousedown="playerVideoControllerMouseDown = true"
 			/>
 		</div>
 
 		<PlayerVideoPanel
+			v-if="!fullscreen"
 			v-model:sendDanmaku="willSendDanmaku"
 			v-model:insertDanmaku="willInsertDanmaku"
 			:videoId="id"
@@ -484,6 +496,12 @@
 		@include player-shadow;
 		display: flex;
 		flex-direction: row;
+
+		&.fullscreen {
+			position: fixed;
+			z-index: 32;
+			inset: 0;
+		}
 	}
 
 	.main {
@@ -494,7 +512,7 @@
 			transition: none;
 		}
 
-		&:not(.fullscreen) {
+		:comp:not(.fullscreen) & {
 			&,
 			& video {
 				width: 100%;
@@ -505,18 +523,17 @@
 			}
 		}
 
-		&.fullscreen {
+		.fullscreen & {
+			@include square(100%);
 			display: flex;
 			flex-direction: column;
-			height: 100dvh;
 
 			.screen {
 				height: 100dvh;
 			}
 
 			video {
-				width: 100%;
-				height: 100%;
+				@include square(100%);
 			}
 		}
 

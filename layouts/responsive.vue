@@ -78,7 +78,6 @@
 <style scoped lang="scss">
 	.container {
 		position: relative;
-		z-index: 1;
 		padding-left: $sidebar-width;
 		transition: $fallback-transitions, width 0s, height 0s;
 
