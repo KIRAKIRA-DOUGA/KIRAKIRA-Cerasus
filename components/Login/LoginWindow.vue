@@ -51,7 +51,7 @@
 				const loginResponse = await api.user.login(userLoginRequest);
 				isTryingLogin.value = false;
 
-				if (loginResponse.success && loginResponse.uid) {
+				if (loginResponse.success && loginResponse.uid && loginResponse.token) {
 					open.value = false;
 					selfUserInfoStore.isLogined = true;
 
@@ -62,8 +62,10 @@
 
 					// 触发用户登录事件
 					useEvent("user:login", true);
-				} else
-					useToast(t.toast.login_failed, "error");
+				} else {
+					useToast(t.toast.login_failed, "error", 5000);
+					if (loginResponse.passwordHint) useToast(`${t.password.hint}: ${loginResponse.passwordHint}`, "info", 10000);
+				}
 			} catch (error) {
 				useToast(t.toast.login_failed, "error");
 			}
@@ -88,9 +90,9 @@
 					open.value = false;
 					currentPage.value = "login";
 				} else
-					useToast("注册失败", "error"); // TODO: 使用多语言
+					useToast("注册失败，请稍后再试", "error"); // TODO: 使用多语言
 			} catch (error) {
-				useToast("注册失败", "error"); // TODO: 使用多语言
+				useToast("注册失败，请稍后再试", "error"); // TODO: 使用多语言
 			}
 		} else
 			useToast(t.toast.password_mismatch, "error");
@@ -120,10 +122,11 @@
 		open.value = false;
 	}
 
+	const PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD = "密码提示中不允许包含密码本身"; // TODO: 使用多语言
 	const checkAndJumpNextPage = async () => {
 		if (email.value && password.value) {
 			if (passwordHint.value && passwordHint.value.includes(password.value)) { // 判断密码提示中是否包含密码自身
-				useToast("密码提示中不能包含密码本身", "error"); // TODO: 使用多语言
+				useToast(PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD, "error");
 				return;
 			}
 			const userExistsCheckRequest: UserExistsCheckRequestDto = { email: email.value };
@@ -139,6 +142,21 @@
 		} else
 			useToast("请输入用户名和密码", "error"); // TODO: 使用多语言
 	};
+
+	const passwordHintInvalidText = ref<string>();
+
+	/**
+	 * 校验密码提示中是否包含密码自身
+	 * @param e 用户输入事件
+	 */
+	function checkPasswordHintIncludesPassword(e: InputEvent) {
+		const targe = e.target as HTMLInputElement;
+		const inputValue = targe.value;
+		if (inputValue?.includes(password.value))
+			passwordHintInvalidText.value = PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD;
+		else
+			passwordHintInvalidText.value = undefined;
+	}
 </script>
 
 <template>
@@ -217,6 +235,8 @@
 								type="text"
 								:placeholder="t.password.hint"
 								icon="visibility"
+								:invalid="passwordHintInvalidText"
+								@input="checkPasswordHintIncludesPassword"
 							/>
 						</div>
 						<div class="action margin-left-inset">

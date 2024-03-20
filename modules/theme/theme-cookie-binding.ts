@@ -95,7 +95,6 @@ export function cookieBinding() {
 		return ""; // 如果没有找到指定的 cookie，返回 "" 空字符串
 	}
 
-
 	try {
 		let currentThemeType: ThemeSetType | undefined; // 主题（浅色/深色）
 		let themeColor: PaletteType | undefined; // 个性色
@@ -126,7 +125,8 @@ export function cookieBinding() {
 			const setIfCookie = (key: string, value: string) => {
 				const userSettingsCookieBasicOption = `; expires=${new Date("9999/9/9").toUTCString()}; path=/; SameSite=Strict`;
 				if (value) document.cookie = `${key}=${value}${userSettingsCookieBasicOption}`;
-			}
+			};
+
 			setIfCookie(themeTypeCookieKey, currentThemeType);
 			setIfCookie(themeColorCookieKey, themeColor);
 			setIfCookie(customThemeColorCookieKey, customThemeColor);
