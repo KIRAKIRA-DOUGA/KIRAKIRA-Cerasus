@@ -143,7 +143,7 @@
 			useToast("请输入用户名和密码", "error"); // TODO: 使用多语言
 	};
 
-	const passwordHintInvalidText = ref<string>();
+	const passwordHintInvalidText = ref<string | boolean>();
 
 	/**
 	 * 校验密码提示中是否包含密码自身
@@ -155,7 +155,7 @@
 		if (password.value && inputValue?.includes(password.value))
 			passwordHintInvalidText.value = PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD;
 		else
-			passwordHintInvalidText.value = undefined;
+			passwordHintInvalidText.value = false;
 	}
 </script>
 
