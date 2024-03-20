@@ -125,7 +125,7 @@
 	const PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD = "密码提示中不允许包含密码本身"; // TODO: 使用多语言
 	const checkAndJumpNextPage = async () => {
 		if (email.value && password.value) {
-			if (passwordHint.value && passwordHint.value.includes(password.value)) { // 判断密码提示中是否包含密码自身
+			if (password.value && passwordHint.value && passwordHint.value.includes(password.value)) { // 判断密码提示中是否包含密码自身
 				useToast(PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD, "error");
 				return;
 			}
@@ -152,7 +152,7 @@
 	function checkPasswordHintIncludesPassword(e: InputEvent) {
 		const targe = e.target as HTMLInputElement;
 		const inputValue = targe.value;
-		if (inputValue?.includes(password.value))
+		if (password.value && inputValue?.includes(password.value))
 			passwordHintInvalidText.value = PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD;
 		else
 			passwordHintInvalidText.value = undefined;
