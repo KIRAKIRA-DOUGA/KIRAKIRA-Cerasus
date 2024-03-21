@@ -44,7 +44,7 @@
 	 */
 	async function loginUser() {
 		if (password.value && email.value) {
-			const passwordHash = password.value; // TODO: // WARN 为了保证安全性，这里需要对密码进行一次 Hash
+			const passwordHash = await generateHash(password.value);
 			const userLoginRequest: UserLoginRequestDto = { email: email.value, passwordHash };
 			try {
 				isTryingLogin.value = true;
@@ -75,11 +75,11 @@
 	}
 
 	/**
-	 * 注册账户。
+	 * 用户注册，其二。
 	 */
 	async function registerUser() {
 		if (password.value === confirmPassword.value) {
-			const passwordHash = password.value; // TODO: 为了保证安全性，这里需要对密码进行一次 Hash
+			const passwordHash = await generateHash(password.value);
 			const userRegistrationRequest: UserRegistrationRequestDto = { email: email.value, passwordHash, passwordHint: passwordHint.value };
 			try {
 				isTryingRegistration.value = true;
@@ -122,6 +122,9 @@
 		open.value = false;
 	}
 
+	/**
+	 * 用户注册，其一
+	 */
 	const PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD = "密码提示中不允许包含密码本身"; // TODO: 使用多语言
 	const checkAndJumpNextPage = async () => {
 		if (email.value && password.value) {
@@ -135,7 +138,7 @@
 				if (userExistsCheckResponse.success && !userExistsCheckResponse.exists)
 					currentPage.value = "register2";
 				else
-					useToast("用户名重复", "error"); // TODO: 使用多语言
+					useToast("该邮箱已注册，请更换", "error", 5000); // TODO: 使用多语言
 			} catch (error) {
 				useToast("注册失败", "error"); // TODO: 使用多语言
 			}
