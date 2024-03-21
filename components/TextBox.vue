@@ -234,7 +234,7 @@
 		invalid.value = isInvalid();
 	});
 
-	const TrailingIcon = (() => {
+	const TrailingIcon = ((textBoxProps: typeof props) => {
 		interface Props {
 			shown?: boolean;
 			onClick?: (payload: MouseEvent) => void;
@@ -252,12 +252,13 @@
 						animatedState={props.animatedState}
 						nonclickable={!props.onClick}
 						appearance="textbox-trailingicon"
+						disabled={textBoxProps.disabled}
 						onClick={props.onClick}
 					/>
 				}
 			</Transition>
 		);
-	})();
+	})(props);
 </script>
 
 <template>
@@ -391,6 +392,12 @@
 				color: c(accent);
 			}
 		}
+
+		&:has(input[disabled]) {
+			background-color: c(main-fg, 4%);
+			cursor: not-allowed;
+			opacity: 0.5;
+		}
 	}
 
 	.stripe {
@@ -511,6 +518,10 @@
 
 		&:invalid::selection {
 			background-color: c(red); // WARN: Chromium 111 开始在 `::selection` 设定 `var()` 都会失效。包括 GitHub 和 Edge 的开发工具在内都有这种显示问题。https://bugs.chromium.org/p/chromium/issues/detail?id=1429546
+		}
+
+		&[disabled] {
+			cursor: inherit;
 		}
 	}
 
