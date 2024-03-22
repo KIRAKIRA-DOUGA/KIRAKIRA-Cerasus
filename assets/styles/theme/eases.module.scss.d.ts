@@ -91,7 +91,7 @@ export type Styles = {
 	easeInBounce: string;
 	/**
 	 * ### 弹跳缓入
-	 * 如简谐运动般的缓动 `2⁻¹⁰ᵗsin[120°(10t-0.75)]+1`。
+	 * 如阻尼谐波运动般的缓动 `2⁻¹⁰ᵗsin[120°(10t-0.75)]+1`。
 	 */
 	easeInElastic: string;
 	/**
@@ -181,7 +181,7 @@ export type Styles = {
 	easeOutBounce: string;
 	/**
 	 * ### 弹跳缓出
-	 * 如简谐运动般的缓动 `2⁻¹⁰ᵗsin[120°(10t-0.75)]+1`。
+	 * 如阻尼谐波运动般的缓动 `2⁻¹⁰ᵗsin[120°(10t-0.75)]+1`。
 	 */
 	easeOutElastic: string;
 	/**
@@ -196,7 +196,7 @@ export type Styles = {
 	easeOutBounceElasticized: string;
 	/**
 	 * ### 反弹化的弹跳缓出
-	 * 如简谐运动般的缓动 `2⁻¹⁰ᵗsin[120°(10t-0.75)]+1`，但是反弹化。
+	 * 如阻尼谐波运动般的缓动 `2⁻¹⁰ᵗsin[120°(10t-0.75)]+1`，但是反弹化。
 	 */
 	easeOutElasticBouncized: string;
 	/**
@@ -281,7 +281,7 @@ export type Styles = {
 	easeInOutBounce: string;
 	/**
 	 * ### 弹跳缓入缓出
-	 * 如简谐运动般的缓动 `2⁻¹⁰ᵗsin[120°(10t-0.75)]+1`。
+	 * 如阻尼谐波运动般的缓动 `2⁻¹⁰ᵗsin[120°(10t-0.75)]+1`。
 	 */
 	easeInOutElastic: string;
 };
