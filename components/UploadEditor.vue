@@ -103,7 +103,19 @@
 		}
 		const uid = useSelfUserInfoStore().uid;
 		if (!uid) {
-			useToast("用户未登录", "error"); // TODO: 使用多语言
+			useToast("未登录用户不能上传", "error"); // TODO: 使用多语言
+			return;
+		}
+		if (!title.value) {
+			useToast("必须填写标题", "error"); // TODO: 使用多语言
+			return;
+		}
+		if (!description.value) {
+			useToast("必须填写简介", "error"); // TODO: 使用多语言
+			return;
+		}
+		if (!category.value) {
+			useToast("必须选择分区", "error"); // TODO: 使用多语言
 			return;
 		}
 
