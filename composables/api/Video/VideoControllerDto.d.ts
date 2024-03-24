@@ -8,7 +8,7 @@ type VideoPartDto = {
 	videoPartTitle: string;
 	/** 视频直链 */
 	link: string;
-};
+}
 
 /**
  * 视频 TAG 的数据
@@ -20,7 +20,7 @@ type VideoTagDto = {
 	tag: string;
 	/** TAG 描述 */
 	description?: string;
-};
+}
 
 /**
  * 上传视频的请求参数
@@ -32,8 +32,6 @@ export type UploadVideoRequestDto = {
 	title: string;
 	/** 封面图链接 */
 	image: string;
-	/** 视频作者 ID */
-	uploader: string;
 	/** 创作者 UID */
 	uploaderId: number;
 	/** 视频时长，单位 ms */
@@ -46,7 +44,7 @@ export type UploadVideoRequestDto = {
 	copyright: string;
 	/** 视频 TAG */
 	videoTags: VideoTagDto[];
-};
+}
 
 /**
  * 视频上传的返回的参数
@@ -58,7 +56,7 @@ export type UploadVideoResponseDto = {
 	message?: string;
 	/** 视频 ID */
 	videoId?: number;
-};
+}
 
 // export type ThumbVideoRequestDto = {
 // 	username: string;
@@ -95,7 +93,7 @@ export type ThumbVideoResponseDto = {
 		/** 视频描述 */
 		description?: string;
 	}[];
-};
+}
 
 /**
  * 从视频 ID 获取视频的请求参数
@@ -103,7 +101,7 @@ export type ThumbVideoResponseDto = {
 export type GetVideoByKvidRequestDto = {
 	/** 视频 ID (KVID) */
 	videoId: number;
-};
+}
 
 /**
  * 上传视频的用户信息
@@ -119,7 +117,7 @@ type UploaderInfoDto = {
 	userBannerImage?: string;
 	/** 用户的个性签名 */
 	signature?: string;
-};
+}
 
 /**
  * 视频页面需要的响应
@@ -160,7 +158,7 @@ export type GetVideoByKvidResponseDto = {
 		/** 视频 TAG */
 		videoTags: VideoTagDto[];
 	};
-};
+}
 
 /**
  * 从 UID 获取视频的请求参数
@@ -168,21 +166,33 @@ export type GetVideoByKvidResponseDto = {
 export type GetVideoByUidRequestDto = {
 	/** 用户的 UID */
 	uid: number;
-};
+}
 
 /**
  * 从 UID 获取视频的请求的响应结果
  */
-export type GetVideoByUidResponseDto = ThumbVideoResponseDto & {};
+export type GetVideoByUidResponseDto = ThumbVideoResponseDto & {}
+
 
 /**
  * 根据关键字搜索视频的请求参数
  */
 export type SearchVideoByKeywordRequestDto = {
 	keyword: string;
-};
+}
 
 /**
  * 根据关键字搜索视频的响应结果
  */
-export type SearchVideoByKeywordResponseDto = ThumbVideoResponseDto & {};
+export type SearchVideoByKeywordResponseDto = ThumbVideoResponseDto & {}
+
+
+/**
+ * 获取视频文件 TUS 上传端点请求参数
+ */
+export type GetVideoFileTusEndpointRequestDto = {
+	/** 视频上传分片大小，Cloudflare 只支持 256KiB 的倍数，最小 5242880 子节，最大 209715200 子节，建议 52428800 子节 */
+	uploadLength: number;
+	/** 视频元数据 */
+	uploadMetadata: string;
+}

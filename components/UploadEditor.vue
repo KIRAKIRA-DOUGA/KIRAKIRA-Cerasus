@@ -5,19 +5,20 @@
 		files: File[];
 	}>();
 
-	const copyright = ref<Copyright>("original");
-	const title = ref("");
-	const category = ref("");
-	const originalAuthor = ref("");
-	const originalLink = ref("");
-	const pushToFeed = ref(true);
-	const ensureOriginal = ref(false);
-	const thumbnail = ref<File>();
-	const thumbnailBlob = ref<string>();
+	const copyright = ref<Copyright>("original"); // 视频版权
+	const title = ref(""); // 视频标题
+	const category = ref(""); // 视频分类
+	const originalAuthor = ref(""); // 原作者
+	const originalLink = ref(""); // 原视频链接
+	const pushToFeed = ref(true); // 是否发布到动态
+	const ensureOriginal = ref(false); // 声明为原创
+	const thumbnail = ref<File>(); // 封面图
+	const thumbnailBlob = ref<string>("../public/static/images/thumbnail.png"); // 封面图 Blob // FIXME: Nuxt Image 的 src 为 undefined 或 "" 时会出错，见 https://github.com/nuxt/image/issues/1299
 	const thumbnailInput = ref<HTMLInputElement>();
-	const tags = ref<string[]>([]);
-	const description = ref("");
-	const uploadProgress = ref(0);
+	const tags = ref<string[]>([]); // 视频标签
+	const description = ref(""); // 视频简介
+	const uploadProgress = ref(0); // 视频上传进度
+	const cloudflareVideoId = ref<string>(); // Cloudflare 视频 ID
 
 	/**
 	 * 上传文件无效。
@@ -61,43 +62,109 @@
 	}
 
 	/**
-	 * 上传文件。
+	 * TUS 上传视频文件
 	 * @param files - 文件列表。
 	 */
-	function upload(files: File[]) {
-		if (!thumbnail.value) {
-			useToast(t.toast.no_cover, "error");
+	function tusUpload(files: File[]) {
+		if (!files || files.length < 1) {
+			useToast("无法上传：未找到视频文件", "error"); // TODO: 使用多语言
+			return;
+		}
+		api.video.tusFile(files[0], uploadProgress)?.then((videoId: string) => {
+			cloudflareVideoId.value = videoId;
+			useToast("上传完成", "success"); // TODO: 使用多语言
+		}).catch(error => {
+			useToast("上传失败", "error"); // TODO: 使用多语言
+			console.error("ERROR", "上传失败：", error);
+		});
+	}
+
+	/**
+	 * 组件加载后等待三秒开始上传视频
+	 */
+	onMounted(() => setTimeout(() => {
+		tusUpload(props.files);
+	}, 3000));
+
+	/**
+	 * 提交视频
+	 */
+	async function commitVideo() {
+		console.log("TODO", "commit video"); // DELETE ME
+
+		// TODO: 视频封面
+		// if (!thumbnail.value) {
+		// 	useToast(t.toast.no_cover, "error");
+		// 	return;
+		// }
+		if (!cloudflareVideoId.value) {
+			useToast("视频没有上传完成", "error"); // TODO: 使用多语言
+			return;
+		}
+		const uid = useSelfUserInfoStore().uid;
+		if (!uid) {
+			useToast("用户未登录", "error"); // TODO: 使用多语言
 			return;
 		}
 
-		// severe bug in openapi around multiple file uploads using form-data
-
-		const formData = new FormData();
-		files.forEach((file, index) => {
-			formData.append(`filename[${index}]`, file);
-		});
-
-		// oh no no no NO!!!
-		formData.append("filename[1]", thumbnail.value);
-
-		axios({
-			method: "POST",
-			// TODO
-			url: "https://localhost:3000/api/upload",
-			data: formData,
-			headers: {
-				"Content-Type": "multipart/form-data",
-				title: title.value,
-				tags: tags.value.filter(tag => tag).toString(),
-				description: description.value,
-				category: category.value,
-			},
-			onUploadProgress(progressEvent) {
-				if (progressEvent.total)
-					uploadProgress.value = progressEvent.loaded / progressEvent.total * 100;
-			},
-		});
+		const uploadVideoRequest: UploadVideoRequestDto = {
+			videoPart: [
+				{
+					id: 0,
+					videoPartTitle: props.files[0].name,
+					link: `https://customer-yvgxn6arnuae3q89.cloudflarestream.com/${cloudflareVideoId.value}/manifest/video.mpd`,
+				},
+			],
+			title: title.value,
+			image: "f907a7bd-3247-4415-1f5e-a67a5d3ea100", // TODO: 视频封面
+			uploaderId: uid,
+			duration: 300, // TODO: 视频时长
+			description: description.value,
+			videoCategory: category.value,
+			copyright: copyright.value,
+			videoTags: [], // TODO: 视频标签
+		};
+		await api.video.commitVideo(uploadVideoRequest);
 	}
+
+	/**
+	 * 上传文件。
+	 * @param files - 文件列表。
+	 */
+	// function upload(files: File[]) {
+	// 	if (!thumbnail.value) {
+	// 		useToast(t.toast.no_cover, "error");
+	// 		return;
+	// 	}
+
+	// 	// severe bug in openapi around multiple file uploads using form-data
+
+	// 	const formData = new FormData();
+	// 	files.forEach((file, index) => {
+	// 		formData.append(`filename[${index}]`, file);
+	// 	});
+
+	// 	// oh no no no NO!!!
+	// 	formData.append("filename[1]", thumbnail.value);
+
+	// 	axios({
+	// 		method: "POST",
+	// 		// TODO
+	// 		url: "https://localhost:3000/api/upload",
+	// 		data: formData,
+	// 		headers: {
+	// 			"Content-Type": "multipart/form-data",
+	// 			title: title.value,
+	// 			tags: tags.value.filter(tag => tag).toString(),
+	// 			description: description.value,
+	// 			category: category.value,
+	// 		},
+	// 		onUploadProgress(progressEvent) {
+	// 			if (progressEvent.total)
+	// 				uploadProgress.value = progressEvent.loaded / progressEvent.total * 100;
+	// 		},
+	// 	});
+	// }
 
 	const [onContentEnter, onContentLeave] = simpleAnimateSize("height", 500, eases.easeInOutSmooth);
 
@@ -107,19 +174,13 @@
 <template>
 	<div class="container">
 		<div class="card-container">
-			<input
-				ref="thumbnailInput"
-				hidden
-				type="file"
-				accept="image/*"
-				@change="onChangeThumbnail"
-			/>
+			<input ref="thumbnailInput" hidden type="file" accept="image/*" @change="onChangeThumbnail" />
 
 			<div class="toolbox-card left">
 				<div v-ripple class="cover" @click="thumbnailInput?.click()">
-					<!-- 选择封面，裁剪器可以先不做 -->
+					<!-- 选择封面，裁剪器可以先不做 // TODO: 图片裁剪 -->
 					<div class="mask">{{ t.select_cover }}</div>
-					<NuxtImg :src="thumbnailBlob" alt="thumbnail" :draggable="false" />
+					<NuxtImg v-if="thumbnailBlob" :src="thumbnailBlob" alt="thumbnail" :draggable="false" />
 				</div>
 
 				<Button icon="disambig">{{ t.associate_existing }}</Button>
@@ -179,12 +240,10 @@
 					<section>
 						<Subheader icon="tag">{{ t(2).tag }}</Subheader>
 						<div class="tags">
-							<Tag
-								v-for="tag in tags"
-								:key="tag"
-								:query="{ q: tag }"
-							>{{ tag }}</Tag>
-							<Tag class="add-tag" @click="e => flyoutTag = [e, 'y']"><Icon name="add" /></Tag>
+							<Tag v-for="tag in tags" :key="tag" :query="{ q: tag }">{{ tag }}</Tag>
+							<Tag class="add-tag" @click="e => flyoutTag = [e, 'y']">
+								<Icon name="add" />
+							</Tag>
 						</div>
 					</section>
 
@@ -199,7 +258,7 @@
 					<ToggleSwitch v-model="pushToFeed" icon="feed">{{ t.push_to_feed }}</ToggleSwitch>
 
 					<div class="submit">
-						<Button icon="send" @click="upload(files)">{{ t.upload }}</Button>
+						<Button icon="send" :disabled="!cloudflareVideoId" :loading="!cloudflareVideoId" @click="commitVideo">{{ t.upload }}</Button>
 					</div>
 				</div>
 			</div>
