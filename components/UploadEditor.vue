@@ -1,6 +1,4 @@
 <script setup lang="ts">
-	import axios from "axios";
-
 	const props = defineProps<{
 		files: File[];
 	}>();
@@ -19,6 +17,17 @@
 	const description = ref(""); // 视频简介
 	const uploadProgress = ref(0); // 视频上传进度
 	const cloudflareVideoId = ref<string>(); // Cloudflare 视频 ID
+	const isCommitButtonLoading = ref<boolean>(false); // 投稿按钮是否在 loading 状态
+
+	const VIDEO_CATEGORY = new Map([
+		["anime", t.category.anime],
+		["music", t.category.music],
+		["otomad", t.category.otomad],
+		["tech", t.category.tech],
+		["design", t.category.design],
+		["game", t.category.game],
+		["misc", t.category.misc],
+	]);
 
 	/**
 	 * 上传文件无效。
@@ -87,12 +96,10 @@
 	}, 3000));
 
 	/**
-	 * 提交视频
+	 * 提交视频（确认投稿）
 	 */
 	async function commitVideo() {
-		console.log("TODO", "commit video"); // DELETE ME
-
-		// TODO: 视频封面
+		// TODO: 视频封面校验
 		// if (!thumbnail.value) {
 		// 	useToast(t.toast.no_cover, "error");
 		// 	return;
@@ -134,9 +141,23 @@
 			description: description.value,
 			videoCategory: category.value,
 			copyright: copyright.value,
+			originalAuthor: originalAuthor.value,
+			originalLink: originalLink.value,
+			pushToFeed: pushToFeed.value,
+			ensureOriginal: ensureOriginal.value,
 			videoTags: [], // TODO: 视频标签
 		};
-		await api.video.commitVideo(uploadVideoRequest);
+		isCommitButtonLoading.value = true;
+		const commitVideoResult = await api.video.commitVideo(uploadVideoRequest);
+		const videoId = commitVideoResult?.videoId;
+		if (commitVideoResult.success && videoId) { // TODO: 视频投稿成功后要做的操作（TODO: 暂时是等待 1 秒后显示纸屑然后跳转到视频页，以后可能需要修改）
+			console.log("INFO", `视频投稿成功, KVID: ${videoId}`);
+			setTimeout(() => {
+				isCommitButtonLoading.value = false;
+				showConfetti(); // 显示五彩纸屑。
+				navigate(`/video/kv${videoId}`);
+			}, 1000);
+		}
 	}
 
 	/**
@@ -177,6 +198,20 @@
 	// 		},
 	// 	});
 	// }
+
+	/**
+	 * 用户在修改版权选项时，清理其反向对应的版权设置的相关信息。例如，用户在选择为「原创」时，清理“原作者名”和“原视频地址”数据，用户在选择为「搬运」时，将“我声明为原创”取消勾选
+	 * @param copyright 版权选项
+	 */
+	function clearCopyrightData(copyright: Copyright) {
+		if (copyright === "original") {
+			originalAuthor.value = "";
+			originalLink.value = "";
+		} else
+			ensureOriginal.value = false;
+	}
+
+	watch(copyright, copyright => clearCopyrightData(copyright));
 
 	const [onContentEnter, onContentLeave] = simpleAnimateSize("height", 500, eases.easeInOutSmooth);
 
@@ -239,13 +274,9 @@
 					<section>
 						<Subheader icon="category">{{ t.category }}</Subheader>
 						<ComboBox v-model="category">
-							<ComboBoxItem id="anime">{{ t.category.anime }}</ComboBoxItem>
-							<ComboBoxItem id="music">{{ t.category.music }}</ComboBoxItem>
-							<ComboBoxItem id="otomad">{{ t.category.otomad }}</ComboBoxItem>
-							<ComboBoxItem id="tech">{{ t.category.tech }}</ComboBoxItem>
-							<ComboBoxItem id="design">{{ t.category.design }}</ComboBoxItem>
-							<ComboBoxItem id="game">{{ t.category.game }}</ComboBoxItem>
-							<ComboBoxItem id="misc">{{ t.category.misc }}</ComboBoxItem>
+							<ComboBoxItem v-for="CATEGORY in VIDEO_CATEGORY" :id="CATEGORY[0]" :key="CATEGORY[0]">
+								{{ CATEGORY[1] }}
+							</ComboBoxItem>
 						</ComboBox>
 					</section>
 
@@ -270,7 +301,14 @@
 					<ToggleSwitch v-model="pushToFeed" icon="feed">{{ t.push_to_feed }}</ToggleSwitch>
 
 					<div class="submit">
-						<Button icon="send" :disabled="!cloudflareVideoId" :loading="!cloudflareVideoId" @click="commitVideo">{{ t.upload }}</Button>
+						<Button
+							icon="send"
+							:disabled="!cloudflareVideoId || isCommitButtonLoading"
+							:loading="!cloudflareVideoId || isCommitButtonLoading"
+							@click="commitVideo"
+						>
+							{{ t.upload }}
+						</Button>
 					</div>
 				</div>
 			</div>

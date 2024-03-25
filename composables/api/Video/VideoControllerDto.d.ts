@@ -8,7 +8,7 @@ type VideoPartDto = {
 	videoPartTitle: string;
 	/** 视频直链 */
 	link: string;
-}
+};
 
 /**
  * 视频 TAG 的数据
@@ -20,7 +20,7 @@ type VideoTagDto = {
 	tag: string;
 	/** TAG 描述 */
 	description?: string;
-}
+};
 
 /**
  * 上传视频的请求参数
@@ -42,9 +42,17 @@ export type UploadVideoRequestDto = {
 	videoCategory: string;
 	/** 视频版权 */
 	copyright: string;
+	/** 原作者 */
+	originalAuthor?: string;
+	/** 原视频链接 */
+	originalLink?: string;
+	/** 是否发布到动态 */
+	pushToFeed: boolean;
+	/** 声明为原创 */
+	ensureOriginal: boolean;
 	/** 视频 TAG */
 	videoTags: VideoTagDto[];
-}
+};
 
 /**
  * 视频上传的返回的参数
@@ -56,11 +64,11 @@ export type UploadVideoResponseDto = {
 	message?: string;
 	/** 视频 ID */
 	videoId?: number;
-}
+};
 
 // export type ThumbVideoRequestDto = {
 // 	username: string;
-// }
+// };
 
 /**
  * 展示视频卡片需要的返回参数
@@ -93,7 +101,7 @@ export type ThumbVideoResponseDto = {
 		/** 视频描述 */
 		description?: string;
 	}[];
-}
+};
 
 /**
  * 从视频 ID 获取视频的请求参数
@@ -101,7 +109,7 @@ export type ThumbVideoResponseDto = {
 export type GetVideoByKvidRequestDto = {
 	/** 视频 ID (KVID) */
 	videoId: number;
-}
+};
 
 /**
  * 上传视频的用户信息
@@ -117,7 +125,7 @@ type UploaderInfoDto = {
 	userBannerImage?: string;
 	/** 用户的个性签名 */
 	signature?: string;
-}
+};
 
 /**
  * 视频页面需要的响应
@@ -158,7 +166,7 @@ export type GetVideoByKvidResponseDto = {
 		/** 视频 TAG */
 		videoTags: VideoTagDto[];
 	};
-}
+};
 
 /**
  * 从 UID 获取视频的请求参数
@@ -166,12 +174,12 @@ export type GetVideoByKvidResponseDto = {
 export type GetVideoByUidRequestDto = {
 	/** 用户的 UID */
 	uid: number;
-}
+};
 
 /**
  * 从 UID 获取视频的请求的响应结果
  */
-export type GetVideoByUidResponseDto = ThumbVideoResponseDto & {}
+export type GetVideoByUidResponseDto = ThumbVideoResponseDto & {};
 
 
 /**
@@ -179,12 +187,12 @@ export type GetVideoByUidResponseDto = ThumbVideoResponseDto & {}
  */
 export type SearchVideoByKeywordRequestDto = {
 	keyword: string;
-}
+};
 
 /**
  * 根据关键字搜索视频的响应结果
  */
-export type SearchVideoByKeywordResponseDto = ThumbVideoResponseDto & {}
+export type SearchVideoByKeywordResponseDto = ThumbVideoResponseDto & {};
 
 
 /**
@@ -195,4 +203,4 @@ export type GetVideoFileTusEndpointRequestDto = {
 	uploadLength: number;
 	/** 视频元数据 */
 	uploadMetadata: string;
-}
+};
