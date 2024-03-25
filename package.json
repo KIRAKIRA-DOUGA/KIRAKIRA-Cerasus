@@ -95,7 +95,6 @@
 	"dependencies": {
 		"@kirakira/path-browserify": "file:packages/path-browserify",
 		"@nuxt/image": "^1.4.0",
-		"@nuxtjs/color-mode": "^3.3.2",
 		"@nuxtjs/robots": "^3.0.0",
 		"@nuxtjs/svg-sprite": "^1.0.2",
 		"@pinia/nuxt": "^0.5.1",
