@@ -19,7 +19,7 @@
 	const cssDoodle = refComp();
 	const showCssDoodle = computed(() => useAppSettingsStore().showCssDoodle);
 	const isToggleSettings = ref(false);
-	const scrollToTop = () => [container, containerMain].forEach(c => c.value?.scrollTo(0, 0));
+	const scrollToTop = () => [container, containerMain].forEach(c => c.value?.scrollTo({ top: 0, left: 0, behavior: "instant" }));
 	const transitionProps = (aboutSettings: boolean) => {
 		const attrs: AnyObject = { mode: "out-in", onBeforeEnter: scrollToTop };
 		if (aboutSettings)
@@ -135,11 +135,11 @@
 
 	.scroll {
 		height: 100dvh;
-		overflow: clip overlay;
+		overflow: hidden overlay;
 		// scrollbar-gutter: stable; // WARN: Chromium 114 开始，overflow 的 overlay 成了 auto 的别名，因此只能提前占位显示来确保不晃动。目前甚至 Chromium 自己的设置页都在依赖于 overlay，太荒谬了。https://bugs.chromium.org/p/chromium/issues/detail?id=1450927
 
 		&.toggle-settings {
-			overflow: clip;
+			overflow: hidden;
 		}
 	}
 

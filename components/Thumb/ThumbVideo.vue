@@ -157,8 +157,9 @@
 		overflow: clip;
 		font-weight: 500;
 		white-space: nowrap;
-		text-align: justify;
+		text-align: left;
 		text-overflow: ellipsis;
+		hyphens: auto;
 
 		&:lang(zh, ja) {
 			text-overflow: "⋯⋯";
