@@ -70,7 +70,6 @@
 		flex-shrink: 0;
 		color: c(icon-color);
 		cursor: pointer;
-		font-variation-settings: "wght" 400;
 
 		&:any-hover {
 			.horizontal-ripple {
@@ -81,7 +80,6 @@
 		&.active {
 			color: c(accent);
 			font-weight: bold;
-			font-variation-settings: "wght" 700;
 
 			&:deep(.ripple-circle),
 			.horizontal-ripple:hover {
