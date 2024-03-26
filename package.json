@@ -39,7 +39,8 @@
 		"lint:css": "stylelint **/*.{html,vue,css,sass,scss}",
 		"typed-scss-modules": "typed-scss-modules assets/styles/*.module.scss --exportType default",
 		"update-eases": "tsx scripts/update-eases.ts",
-		"compact-svg": "tsx scripts/compact-svg.ts"
+		"compact-svg": "tsx scripts/compact-svg.ts",
+		"delete-node-modules": "npx rimraf --glob ./node_modules || npx rimraf --glob ./.nuxt"
 	},
 	"lint-staged": {
 		"*.{html,vue,css,sass,scss}": [
@@ -93,7 +94,7 @@
 		"typescript-plugin-css-modules": "^5.1.0"
 	},
 	"dependencies": {
-		"@kirakira/path-browserify": "file:packages/path-browserify",
+		"@kirakira/path-browserify": "file:packages\\path-browserify",
 		"@nuxt/image": "^1.4.0",
 		"@nuxtjs/robots": "^3.0.0",
 		"@nuxtjs/svg-sprite": "^1.0.2",
@@ -112,6 +113,7 @@
 		"danmaku": "^2.0.6",
 		"dashjs": "^4.7.4",
 		"gsap": "^3.12.5",
+		"ipx": "^3.0.1",
 		"js-confetti": "^0.12.0",
 		"lottie-web": "^5.12.2",
 		"mediainfo.js": "^0.1.9",

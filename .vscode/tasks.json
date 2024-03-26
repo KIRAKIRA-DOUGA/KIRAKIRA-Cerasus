@@ -120,5 +120,12 @@
 			"label": "npm: dev - i18n-editor",
 			"detail": "dev - 启动多语言编辑器服务器"
 		},
+		{
+			"type": "npm",
+			"script": "delete-node-modules",
+			"problemMatcher": [],
+			"label": "Delete node_modules",
+			"detail": "Delete node_modules and .nuxt - 删除 node_modules 和 .nuxt 文件夹",
+		},
 	]
 }
