@@ -24,7 +24,7 @@
 	const playing = ref(false);
 	const playbackRate = ref(1);
 	const preservesPitch = ref(false);
-	const steplessRate = ref(false);
+	const continuousRateControl = ref(false);
 	const volume = ref(1);
 	const muted = ref(false);
 	const currentTime = ref(NaN);
@@ -96,6 +96,7 @@
 	const playerVideoControllerMouseDown = ref(false);
 	const fullscreenColorClass = computed(() => ({ [`force-color dark ${useCookie(COOKIE_KEY.themeColorCookieKey, DEFAULT_COOKIE_OPTION).value || THEME_ENV.DEFAULT_THEME_COLOR}`]: fullscreen.value }));
 	type MediaInfo = Record<string, Record<string, unknown>>;
+	const playerConfig = useAppSettingsStore().player;
 
 	/**
 	 * 显示视频详细信息。
@@ -147,6 +148,11 @@
 	watch(preservesPitch, preservesPitch => {
 		if (!video.value) return;
 		video.value.preservesPitch = preservesPitch;
+		playerConfig.rate.preservesPitch = preservesPitch;
+	});
+
+	watch(continuousRateControl, continuousRateControl => {
+		playerConfig.rate.continuousControl = continuousRateControl;
 	});
 
 	watch(playbackRate, playbackRate => {
@@ -157,11 +163,21 @@
 	watch(volume, volume => {
 		if (!video.value) return;
 		video.value.volume = volume ** 2; // 使用对数音量。
+		playerConfig.audio.volume = volume;
 	});
 
 	watch(muted, muted => {
 		if (!video.value) return;
 		video.value.muted = muted;
+		playerConfig.audio.muted = muted;
+	});
+
+	watch(() => settings.danmaku.opacity, opacity => {
+		playerConfig.danmaku.opacity = opacity;
+	});
+
+	watch(() => settings.danmaku.fontSizeScale, size => {
+		playerConfig.danmaku.fontSizeScale = size;
 	});
 
 	watch(fullscreen, fullscreen => {
@@ -274,6 +290,14 @@
 
 			// BUG: Dash.js will raise an error: [614][FragmentController] TypeError: Cannot read properties of undefined (reading 'append')
 		}
+
+		// 从 Pinia 中取出保存的设置。
+		volume.value = playerConfig.audio.volume;
+		muted.value = playerConfig.audio.muted;
+		preservesPitch.value = playerConfig.rate.preservesPitch;
+		continuousRateControl.value = playerConfig.rate.continuousControl;
+		settings.danmaku.opacity = playerConfig.danmaku.opacity;
+		settings.danmaku.fontSizeScale = playerConfig.danmaku.fontSizeScale;
 	});
 
 	/**
@@ -438,7 +462,9 @@
 						:style="{ opacity: settings.danmaku.opacity }"
 					/>
 					<!-- TODO: ProgressRing 改成卡住（开屏加载不包含在内）一秒后再显示，防止出现过于频繁。 -->
-					<ProgressRing v-if="waiting" class="waiting" />
+					<div v-if="waiting" class="waiting">
+						<ProgressRing class="force-color light" />
+					</div>
 					<PlayerVideoAbout v-model="showAboutPlayer" :playing />
 				</Contents>
 				<PlayerVideoTitle
@@ -456,7 +482,7 @@
 				v-model:volume="volume"
 				v-model:muted="muted"
 				v-model:resample="resample"
-				v-model:steplessRate="steplessRate"
+				v-model:continuousRateControl="continuousRateControl"
 				v-model:showDanmaku="showDanmaku"
 				v-model:quality="quality"
 				v-model:waiting="waiting"
@@ -560,12 +586,13 @@
 			}
 
 			.waiting {
-				position: absolute;
-				inset: unset;
-				bottom: 8px;
-				left: 8px;
-				color: c(gray-20);
+				@include flex-center;
 				pointer-events: none;
+
+				.progress-ring {
+					--size: 56px;
+					--thickness: 6px;
+				}
 			}
 		}
 	}
