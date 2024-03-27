@@ -299,3 +299,12 @@ export async function startColorViewTransition(changeFunc: () => MaybePromise<vo
 	await animation.finished;
 	document.head.removeChild(style);
 }
+
+/**
+ * 如果浏览器支持 `document.startViewTransition` 则调用它，否则直接执行回调函数。
+ * @param callback - 触发页面过渡的回调函数。
+ */
+export async function startViewTransition(callback: () => MaybePromise<void>) {
+	if (document.startViewTransition) await document.startViewTransition(callback).finished;
+	else await callback();
+}

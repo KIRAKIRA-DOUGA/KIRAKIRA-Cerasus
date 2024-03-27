@@ -12,8 +12,10 @@
 		duration?: number;
 		/** 缓冲加载进度值。 */
 		buffered?: number;
+		/** 是否全屏？ */
+		fullscreen?: boolean;
 		/** 切换全屏函数。 */
-		toggleFullscreen?: () => void;
+		toggleFullscreen?: (isFullbrowser?: boolean) => void;
 		/** 视频质量列表。 */
 		qualities?: BitrateInfo[];
 		/** 是否隐藏？ */
@@ -21,6 +23,7 @@
 	}>(), {
 		duration: NaN,
 		buffered: 0,
+		fullscreen: false,
 		toggleFullscreen: undefined,
 		qualities: () => [],
 	});
@@ -35,7 +38,6 @@
 	const volume = defineModel<number>("volume", { default: 1 });
 	const muted = defineModel<boolean>("muted", { default: false });
 	const model = defineModel<number>("currentTime", { default: NaN });
-	const fullscreen = defineModel<boolean>("fullscreen", { default: false });
 	const resample = defineModel<boolean>("resample", { default: true });
 	const continuousRateControl = defineModel<boolean>("continuousRateControl", { default: false });
 	const showDanmaku = defineModel<boolean>("showDanmaku", { default: false });
@@ -143,7 +145,7 @@
 	function onFullscreenBtnEnter() {
 		clearTimeout(hideFullbrowserTimeout.value);
 		useEvent("component:hideAllPlayerVideoMenu");
-		showFullbrowserBtn.value = !fullscreen.value;
+		showFullbrowserBtn.value = !props.fullscreen;
 	}
 
 	const playbackRateText = (rate: number) => (2 ** rate).toFixed(2).replace(/\.?0+$/, "") + "×";
@@ -174,6 +176,11 @@
 					switchSpeedByDirection(-1);
 				else // 进度条 ←
 					model.value = clamp(model.value - TIME_TICK, 0, props.duration);
+				e.preventDefault();
+				break;
+			case "Escape":
+				if (props.fullscreen)
+					props.toggleFullscreen?.();
 				e.preventDefault();
 				break;
 			case "Space": case "F11": /* 解决冲突 */ e.preventDefault(); break;
@@ -229,7 +236,7 @@
 				@pointerenter="e => isMouse(e) && onFullscreenBtnEnter()"
 				@pointerleave="e => isMouse(e) && onFullscreenBtnLeave()"
 			>
-				<SoftButton icon="fullscreen_browser" @click="fullscreen = !fullscreen" />
+				<SoftButton icon="fullscreen_browser" @click="toggleFullscreen?.(true)" />
 			</div>
 		</Transition>
 	</div>
@@ -471,8 +478,7 @@
 			scale: 0.9;
 		}
 
-		&[aria-label="fullscreen"]:active:deep(.icon),
-		&[aria-label="fullscreen_browser"]:active:deep(.icon) {
+		&[aria-label^="fullscreen"]:active:deep(.icon) {
 			scale: 1.2;
 		}
 

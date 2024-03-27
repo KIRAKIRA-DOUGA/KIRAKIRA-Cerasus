@@ -80,6 +80,7 @@
 	const qualities = ref<BitrateInfo[]>([]);
 	const mediaInfos = ref<MediaInfo>();
 	const video = ref<HTMLVideoElement>();
+	const playerVideoMain = ref<HTMLDivElement>();
 	const { exit: exitFullscreen, enter: enterFullscreen } = useFullscreen();
 	const fullscreen = ref(false); // 是否独占整个浏览器画面？
 	const resample = computed({ get: () => !preservesPitch.value, set: value => preservesPitch.value = !value });
@@ -357,7 +358,7 @@
 	function autoHideController(e?: PointerEvent) {
 		const BOTTOM = 36;
 		if (e && (!fullscreen.value || playerVideoControllerMouseDown.value ||
-			window.innerHeight - e.pageY <= BOTTOM))
+			window.innerHeight - e.pageY <= BOTTOM || e.pageY <= BOTTOM))
 			hideController.value = false;
 		else if (e?.pointerType !== "touch")
 			hideController.value = true;
@@ -376,21 +377,45 @@
 	function autoHideControllerTouch() {
 		hideController.value = false;
 		clearTimeout(hideControllerTimeoutId.value);
-		if (fullscreen.value && hideController.value === false)
+		if (fullscreen.value && !hideController.value)
 			hideControllerTimeoutId.value = setTimeout(() => fullscreen.value && (hideController.value = true), 3000);
 	}
 
 	/**
 	 * 切换全屏。
+	 * @param isFullbrowser - 是否是网页全屏？
 	 */
-	function toggleFullscreen() {
-		if (fullscreen.value) {
-			fullscreen.value = false;
-			exitFullscreen();
-		} else {
-			fullscreen.value = true;
-			enterFullscreen();
-		}
+	async function toggleFullscreen(isFullbrowser: boolean = false) {
+		// 触发全屏 API
+		if (fullscreen.value)
+			await exitFullscreen();
+		else if (!isFullbrowser)
+			await enterFullscreen();
+		
+		// 处理 tab 失能问题（不然全屏状态下按 tab 键甚至会聚焦到评论区去）
+		if (playerVideoMain.value)
+			for (const element of document.getElementById("root")?.querySelectorAll("*") ?? []) {
+				if (!(element instanceof HTMLElement) || playerVideoMain.value.contains(element)) continue;
+				if (!fullscreen.value) {
+					if (element.tabIndex === -1) continue;
+					if (!element.getAttribute("tabIndex")) element.dataset.defaultTabIndex = "true";
+					element.dataset.tabIndex = String(element.tabIndex);
+					element.tabIndex = -1;
+				} else {
+					if (element.dataset.tabIndex === undefined) continue;
+					if (!element.dataset.defaultTabIndex)
+						element.tabIndex = parseInt(element.dataset.tabIndex, 10);
+					else
+						element.removeAttribute("tabIndex");
+					delete element.dataset.tabIndex;
+					delete element.dataset.defaultTabIndex;
+				}
+			}
+		
+		// 启动视图过渡动画
+		startViewTransition(() => {
+			fullscreen.value = !fullscreen.value;
+		});
 	}
 
 	/**
@@ -434,7 +459,7 @@
 			</Accordion>
 		</Modal>
 
-		<div class="main" :class="{ 'hide-cursor': hideCursor }" @touchstart="autoHideControllerTouch">
+		<div ref="playerVideoMain" class="main" :class="{ 'hide-cursor': hideCursor, fullscreen }" @touchstart="autoHideControllerTouch">
 			<div class="screen">
 				<video
 					ref="video"
@@ -477,7 +502,6 @@
 				:key="qualities.length"
 				v-model:currentTime="currentTime"
 				v-model:playing="playing"
-				v-model:fullscreen="fullscreen"
 				v-model:playbackRate="playbackRate"
 				v-model:volume="volume"
 				v-model:muted="muted"
@@ -488,11 +512,14 @@
 				v-model:waiting="waiting"
 				v-model:ended="ended"
 				:duration
+				:fullscreen="fullscreen"
 				:toggleFullscreen
 				:buffered
 				:qualities
 				:hidden="hideController"
 				@mousedown="playerVideoControllerMouseDown = true"
+				@focusin="hideController = false"
+				@focusout="hideController = true"
 			/>
 		</div>
 
@@ -533,6 +560,8 @@
 	.main {
 		position: relative;
 		background-color: black;
+		pointer-events: auto !important;
+		view-transition-name: player-video-main;
 
 		video {
 			transition: none;
@@ -599,5 +628,20 @@
 
 	.player-video-about {
 		cursor: pointer;
+	}
+</style>
+
+<style lang="scss">
+	::view-transition-old(player-video-main),
+	::view-transition-new(player-video-main) {
+		height: 100%;
+		object-fit: cover;
+		overflow: clip;
+		animation-duration: 250ms;
+	}
+
+	::view-transition-group(player-video-main) {
+		animation-duration: 500ms;
+		animation-timing-function: $ease-in-out-material-emphasized;
 	}
 </style>
