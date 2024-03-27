@@ -43,7 +43,6 @@ export default defineNuxtConfig({
 		dev && "modules/components-globalized/module.ts",
 		"@nuxtjs/robots",
 		"@nuxtjs/sitemap",
-		// "@nuxtjs/color-mode", // 这个已经重写了，不用开启。
 	],
 	alias: defineAlias(__dirname,
 		"assets/styles",

@@ -39,7 +39,8 @@
 		"lint:css": "stylelint **/*.{html,vue,css,sass,scss}",
 		"typed-scss-modules": "typed-scss-modules assets/styles/*.module.scss --exportType default",
 		"update-eases": "tsx scripts/update-eases.ts",
-		"compact-svg": "tsx scripts/compact-svg.ts"
+		"compact-svg": "tsx scripts/compact-svg.ts",
+		"delete-node-modules": "npx rimraf --glob ./node_modules || npx rimraf --glob ./.nuxt"
 	},
 	"lint-staged": {
 		"*.{html,vue,css,sass,scss}": [
@@ -60,7 +61,7 @@
 	},
 	"devDependencies": {
 		"@nuxt/content": "^2.12.1",
-		"@nuxt/kit": "^3.11.0",
+		"@nuxt/kit": "^3.11.1",
 		"@nuxtjs/eslint-config": "^12.0.0",
 		"@nuxtjs/eslint-config-typescript": "^12.1.0",
 		"@nuxtjs/i18n": "8.1.1",
@@ -73,11 +74,11 @@
 		"eslint-plugin-nuxt": "^4.0.0",
 		"eslint-plugin-vue": "^9.23.0",
 		"html-minifier-terser": "^7.2.0",
-		"nuxt": "^3.11.0",
+		"nuxt": "^3.11.1",
 		"nuxt-lodash": "^2.5.3",
 		"nuxt-typed-router": "^3.6.1",
 		"pbjs": "^0.0.14",
-		"postcss": "^8.4.36",
+		"postcss": "^8.4.38",
 		"postcss-combine-media-query": "^1.0.1",
 		"postcss-html": "^1.6.0",
 		"protobufjs": "^7.2.6",
@@ -89,13 +90,12 @@
 		"stylelint-order": "^6.0.4",
 		"stylelint-scss": "^5.3.2",
 		"tsx": "^4.7.1",
-		"typescript": "^5.4.2",
+		"typescript": "^5.4.3",
 		"typescript-plugin-css-modules": "^5.1.0"
 	},
 	"dependencies": {
-		"@kirakira/path-browserify": "file:packages/path-browserify",
+		"@kirakira/path-browserify": "file:packages\\path-browserify",
 		"@nuxt/image": "^1.4.0",
-		"@nuxtjs/color-mode": "^3.3.2",
 		"@nuxtjs/robots": "^3.0.0",
 		"@nuxtjs/svg-sprite": "^1.0.2",
 		"@pinia/nuxt": "^0.5.1",
@@ -113,6 +113,7 @@
 		"danmaku": "^2.0.6",
 		"dashjs": "^4.7.4",
 		"gsap": "^3.12.5",
+		"ipx": "^3.0.1",
 		"js-confetti": "^0.12.0",
 		"lottie-web": "^5.12.2",
 		"mediainfo.js": "^0.1.9",
@@ -131,7 +132,7 @@
 			"lottie-web@5.12.2": "patches/lottie-web@5.12.2.patch",
 			"vue-router@4.3.0": "patches/vue-router@4.3.0.patch",
 			"postcss-selector-parser@6.0.16": "patches/postcss-selector-parser@6.0.16.patch",
-			"postcss@8.4.36": "patches/postcss@8.4.36.patch"
+			"postcss@8.4.38": "patches/postcss@8.4.38.patch"
 		}
 	},
 	"keywords": [

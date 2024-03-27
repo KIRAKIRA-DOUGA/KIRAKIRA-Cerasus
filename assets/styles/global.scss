@@ -207,6 +207,13 @@ label {
 	}
 }
 
+img {
+	display: block;
+	user-select: none;
+	-webkit-user-drag: none;
+	user-drag: none;
+}
+
 @layer base {
 	#popovers > * {
 		position: fixed;

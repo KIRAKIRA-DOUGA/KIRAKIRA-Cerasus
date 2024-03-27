@@ -13,6 +13,20 @@ export const useAppSettingsStore = defineStore("app-settings", {
 
 		/** 已登录用户是否允许在多设备上同步主题设置 */
 		isAllowSyncThemeSettings: false,
+		player: {
+			audio: {
+				volume: 1,
+				muted: false,
+			},
+			rate: {
+				preservesPitch: false,
+				continuousControl: false,
+			},
+			danmaku: {
+				opacity: 1,
+				fontSizeScale: 1,
+			},
+		},
 	}),
 	getters: {
 		getExitSettingRoute: state => {

@@ -37,7 +37,7 @@
 	const model = defineModel<number>("currentTime", { default: NaN });
 	const fullscreen = defineModel<boolean>("fullscreen", { default: false });
 	const resample = defineModel<boolean>("resample", { default: true });
-	const steplessRate = defineModel<boolean>("steplessRate", { default: false });
+	const continuousRateControl = defineModel<boolean>("continuousRateControl", { default: false });
 	const showDanmaku = defineModel<boolean>("showDanmaku", { default: false });
 	const waiting = defineModel<boolean>("waiting", { default: false });
 	const ended = defineModel<boolean>("ended", { default: false });
@@ -55,7 +55,7 @@
 		get: () => Math.log2(playbackRate.value),
 		set: value => {
 			value = 2 ** value;
-			if (!steplessRate.value) {
+			if (!continuousRateControl.value) {
 				const variances = stepedPlaybackRates.map(rate => (value - rate) ** 2);
 				const minimum = Math.min(...variances);
 				value = stepedPlaybackRates[variances.indexOf(minimum)];
@@ -213,7 +213,7 @@
 		</PlayerVideoMenu>
 		<PlayerVideoMenu v-model="rateMenu">
 			<ToggleSwitch v-model="resample" v-ripple.overlay icon="tunning">{{ t.player.speed.resample }}</ToggleSwitch>
-			<ToggleSwitch v-model="steplessRate" v-ripple.overlay icon="speed">{{ t.player.speed.continuous }}</ToggleSwitch>
+			<ToggleSwitch v-model="continuousRateControl" v-ripple.overlay icon="speed">{{ t.player.speed.continuous }}</ToggleSwitch>
 			<template #slider>
 				<CapsuleSlider v-model="playbackRateLinear" :min="-2" :max="2" :displayValue="playbackRateText" :defaultValue="0" />
 			</template>
