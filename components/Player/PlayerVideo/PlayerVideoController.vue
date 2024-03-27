@@ -126,28 +126,24 @@
 	}
 
 	const showFullbrowserBtn = ref(false);
-	const fullbrowserHideTimeout = ref<Timeout>();
+	const hideFullbrowserTimeout = ref<Timeout>();
+
 	/**
-	 * 指针移出 fullscreen 或 fullbrowser 按钮。
-	 * @param e - 指针移出事件。
+	 * 当指针移出全屏或网页全屏按钮时的事件。
 	 */
-	function leaveFullscreenBtn() {
-		fullbrowserHideTimeout.value = setTimeout(() => {
+	function onFullscreenBtnLeave() {
+		hideFullbrowserTimeout.value = setTimeout(() => {
 			showFullbrowserBtn.value = false;
 		}, 100);
 	}
 
 	/**
-	 * 指针移入 fullscreen 或 fullbrowser 按钮。
-	 * @param e - 指针移入事件。
+	 * 当指针移入全屏或网页全屏按钮时的事件。
 	 */
-	function enterFullscreenBtn() {
-		if (!fullscreen.value) {
-			clearTimeout(fullbrowserHideTimeout.value);
-			fullbrowserHideTimeout.value = undefined;
-			showFullbrowserBtn.value = true;
-		} else
-			showFullbrowserBtn.value = false;
+	function onFullscreenBtnEnter() {
+		clearTimeout(hideFullbrowserTimeout.value);
+		useEvent("component:hideAllPlayerVideoMenu");
+		showFullbrowserBtn.value = !fullscreen.value;
 	}
 
 	const playbackRateText = (rate: number) => (2 ** rate).toFixed(2).replace(/\.?0+$/, "") + "×";
@@ -230,8 +226,8 @@
 			<div
 				v-show="showFullbrowserBtn"
 				class="fullbrowser"
-				@pointerenter="e => isMouse(e) && enterFullscreenBtn()"
-				@pointerleave="e => isMouse(e) && leaveFullscreenBtn()"
+				@pointerenter="e => isMouse(e) && onFullscreenBtnEnter()"
+				@pointerleave="e => isMouse(e) && onFullscreenBtnLeave()"
 			>
 				<SoftButton icon="fullscreen_browser" @click="fullscreen = !fullscreen" />
 			</div>
@@ -285,8 +281,8 @@
 			/>
 			<SoftButton
 				:icon="fullscreen ? 'fullscreen_exit' : 'fullscreen'"
-				@pointerenter="e => isMouse(e) && enterFullscreenBtn()"
-				@pointerleave="e => isMouse(e) && leaveFullscreenBtn()"
+				@pointerenter="e => isMouse(e) && onFullscreenBtnEnter()"
+				@pointerleave="e => isMouse(e) && onFullscreenBtnLeave()"
 				@click="toggleFullscreen?.()"
 			/>
 		</div>
