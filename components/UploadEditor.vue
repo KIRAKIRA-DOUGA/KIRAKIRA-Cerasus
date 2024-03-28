@@ -11,13 +11,17 @@
 	const pushToFeed = ref(true); // 是否发布到动态
 	const ensureOriginal = ref(false); // 声明为原创
 	const thumbnail = ref<File>(); // 封面图
-	const thumbnailBlob = ref<string>("../public/static/images/thumbnail.png"); // 封面图 Blob // FIXME: Nuxt Image 的 src 为 undefined 或 "" 时会出错，见 https://github.com/nuxt/image/issues/1299
+	const thumbnailBlob = ref<string>(); // 封面图 Blob // FIXME: Nuxt Image 的 src 为 undefined 或 "" 时会出错，见 https://github.com/nuxt/image/issues/1299
+	const thumbnailUrl = ref<string>("../public/static/images/thumbnail.png"); // 封面图 Blob // FIXME: Nuxt Image 的 src 为 undefined 或 "" 时会出错，见 https://github.com/nuxt/image/issues/1299
 	const thumbnailInput = ref<HTMLInputElement>();
 	const tags = ref<string[]>([]); // 视频标签
 	const description = ref(""); // 视频简介
 	const uploadProgress = ref(0); // 视频上传进度
 	const cloudflareVideoId = ref<string>(); // Cloudflare 视频 ID
 	const isCommitButtonLoading = ref<boolean>(false); // 投稿按钮是否在 loading 状态
+	const isCoverCropperOpen = ref<boolean>(false); // 封面图裁剪器是否开启状态
+	const isUploadingCover = ref<boolean>(false); // 是否正在上传封面图
+	const cropper = ref();
 
 	const VIDEO_CATEGORY = new Map([
 		["anime", t.category.anime],
@@ -64,10 +68,24 @@
 	function onChangeThumbnail(e: Event) {
 		const input = e.target as HTMLInputElement;
 		const thumbnails = getValidFiles(input.files);
-		if (thumbnails.length)
+		if (thumbnails.length) {
 			thumbnailBlob.value = fileToBlob(thumbnail.value = thumbnails[0]);
-		else if (input.files?.length)
+			isCoverCropperOpen.value = true;
+		} else if (input.files?.length)
 			invalidUploaded();
+	}
+
+	/**
+	 * 上传封面图
+	 */
+	async function handleSubmitCoverImage() {
+		await console.log("aaaaaaaaa");
+		const blobImageData = await cropper.value?.getCropBlobData();
+		console.log("image", blobImageData);
+		const newTab = window.open();
+		newTab!.document.body.innerHTML = `<img src="${fileToBlob(blobImageData as File)}"></img>`;
+
+		// thumbnailUrl.value = fileToBlob(blobImageData as File);
 	}
 
 	/**
@@ -91,9 +109,9 @@
 	/**
 	 * 组件加载后等待三秒开始上传视频
 	 */
-	onMounted(() => setTimeout(() => {
-		tusUpload(props.files);
-	}, 3000));
+	// onMounted(() => setTimeout(() => {
+	// 	tusUpload(props.files);
+	// }, 3000));
 
 	/**
 	 * 提交视频（确认投稿）
@@ -135,7 +153,7 @@
 				},
 			],
 			title: title.value,
-			image: "f907a7bd-3247-4415-1f5e-a67a5d3ea100", // TODO: 视频封面
+			image: thumbnailUrl.value, // TODO: 视频封面
 			uploaderId: uid,
 			duration: 300, // TODO: 视频时长
 			description: description.value,
@@ -220,6 +238,30 @@
 
 <template>
 	<div class="container">
+		<!-- TODO: 使用多语言 -->
+		<Modal v-model="isCoverCropperOpen" title="上传封面">
+			<div class="cover-cropper">
+				<ImageCropper
+					ref="cropper"
+					:image="thumbnailBlob"
+					:autoCropWidth="480"
+					:autoCropHeight="270"
+					:fixed="true"
+					:fixedNumber="[16, 9]"
+					:full="true"
+					:centerBox="true"
+					:infoTrue="true"
+					:mode="'cover'"
+				/>
+			</div>
+			<template #footer-right>
+				<!-- TODO: 使用多语言 -->
+				<Button class="secondary" @click="isCoverCropperOpen = false">取消</Button>
+				<!-- TODO: 使用多语言 -->
+				<Button :loading="isUploadingCover" @click="handleSubmitCoverImage">上传</Button>
+			</template>
+		</Modal>
+
 		<div class="card-container">
 			<input ref="thumbnailInput" hidden type="file" accept="image/*" @change="onChangeThumbnail" />
 
@@ -227,7 +269,7 @@
 				<div v-ripple class="cover" @click="thumbnailInput?.click()">
 					<!-- 选择封面，裁剪器可以先不做 // TODO: 图片裁剪 -->
 					<div class="mask">{{ t.select_cover }}</div>
-					<NuxtImg v-if="thumbnailBlob" :src="thumbnailBlob" alt="thumbnail" :draggable="false" />
+					<NuxtImg v-if="thumbnailUrl" :src="thumbnailUrl" alt="thumbnail" :draggable="false" />
 				</div>
 
 				<Button icon="disambig">{{ t.associate_existing }}</Button>
@@ -409,7 +451,7 @@
 		}
 	}
 
-	.repost-options > * {
+	.repost-options>* {
 		display: flex;
 		flex-direction: column;
 		gap: $section-gap;
@@ -421,8 +463,8 @@
 		}
 	}
 
-	.left > *,
-	.left > .left-1> * {
+	.left>*,
+	.left>.left-1>* {
 		width: 100%;
 	}
 
@@ -447,5 +489,16 @@
 	.submit {
 		display: flex;
 		justify-content: right;
+	}
+
+	.cover-cropper {
+		width: 520px;
+		height: 350px;
+		// @include square(350px, true);
+
+		@media (width <=450px) {
+			--size: 80dvw;
+			// 对于图片切割器，不建议使用响应式，因为切割器内部被切割的图片不会随之改变尺寸，但考虑到极端小尺寸的适配问题，且只有极少数场景会改变浏览器宽度。
+		}
 	}
 </style>

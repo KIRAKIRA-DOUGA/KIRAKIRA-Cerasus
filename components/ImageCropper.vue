@@ -10,7 +10,7 @@
 		outputSize?: number;
 		/** 裁剪生成图片的格式 */
 		outputType?: "jpeg" | "png" | "webp";
-		/** 裁剪框的大小信息 */
+		/** 是否显示裁剪框的尺寸信息 */
 		info?: boolean;
 		/** 图片是否允许滚轮缩放 */
 		canScale?: boolean;
@@ -26,7 +26,7 @@
 		fixedNumber?: [number, number];
 		/** 是否输出原图比例的截图 */
 		full?: boolean;
-		/** 固定截图框大小 */
+		/** 固定截图框大小，true 时截图框无法改变尺寸，false 时可以改变尺寸 */
 		fixedBox?: boolean;
 		/** 上传图片是否可以移动 */
 		canMove?: boolean;
@@ -55,19 +55,25 @@
 		outputSize: 1,
 		outputType: "png",
 		info: true,
-		full: false,
-		fixed: false,
-		canMove: true,
-		fixedBox: false,
-		original: false,
-		canMoveBox: true,
+		canScale: true,
 		autoCrop: true,
-		// autoCropWidth: 750, // 只有自动截图开启 宽度高度才生效
-		// autoCropHeight: 340, // 只有自动截图开启 宽度高度才生效
-		centerBox: true,
+		autoCropWidth: undefined,
+		autoCropHeight: undefined,
+		fixed: false,
+		fixedNumber: () => [1, 1],
+		full: false,
+		fixedBox: false,
+		canMove: true,
+		canMoveBox: true,
+		original: false,
+		centerBox: false,
 		high: true,
+		infoTrue: false,
 		maxImgSize: 99999,
+		enlarge: 1,
 		mode: "contain",
+		limitMinSize: 10,
+		fillColor: undefined,
 	});
 
 	const cropper = ref();
@@ -105,20 +111,25 @@
 			:outputSize
 			:outputType
 			:info
-			:full
-			:fixed
-			:fixedNumber
-			:canMove
-			:canMoveBox
-			:fixedBox
-			:original
+			:canScale
 			:autoCrop
 			:autoCropWidth
 			:autoCropHeight
+			:fixed
+			:fixedNumber
+			:full
+			:fixedBox
+			:canMove
+			:canMoveBox
+			:original
 			:centerBox
 			:high
-			:mode
+			:infoTrue
 			:maxImgSize
+			:enlarge
+			:mode
+			:limitMinSize
+			:fillColor
 		>
 			<template #loading>
 				<ProgressRing />
