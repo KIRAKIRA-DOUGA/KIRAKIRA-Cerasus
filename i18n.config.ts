@@ -18,4 +18,8 @@ export default defineI18nConfig(() => ({
 		vi,
 		id,
 	},
+	fallbackLocale: {
+		zht: ["zhs"],
+		default: ["en", "zhs", "zht", "ja"],
+	},
 }));

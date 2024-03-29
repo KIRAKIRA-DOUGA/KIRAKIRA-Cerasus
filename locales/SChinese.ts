@@ -314,6 +314,7 @@ const SChinese = {
 		register_email_sent_info: "我们已向您的邮箱中发送了验证码，请在此输入验证码。\n如未收到，您可以重新发送。",
 		forgot_info: "请在此输入您的邮箱，\n我们将会给您的邮箱发送一封邮件，请点击邮件中的链接重置密码。",
 		reset_successful_info: "验证成功！\n请输入并务必牢记您的新密码。",
+		alpha_notice: "当前站点是给开发人员使用的Alpha测试，当前所做的任何修改都随时可能会被删除！\n普通用户请耐心等待Beta测试。",
 	},
 	unselected: {
 		combobox: "请选择一项",
