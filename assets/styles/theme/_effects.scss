@@ -225,6 +225,10 @@
 	box-shadow: 0 2px 4px c(accent-shadow, 30%);
 }
 
+@mixin chip-shadow-colored($color) {
+	box-shadow: 0 2px 4px c($color, 30%);
+}
+
 @mixin chip-shadow-checked {
 	box-shadow: 0 2px 4px c(accent-shadow, 30%), 0 0 0 2px c(accent);
 }
