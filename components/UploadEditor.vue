@@ -10,8 +10,7 @@
 	const originalLink = ref(""); // 原视频链接
 	const pushToFeed = ref(true); // 是否发布到动态
 	const ensureOriginal = ref(false); // 声明为原创
-	const thumbnail = ref<File>(); // 封面图
-	const thumbnailBlob = ref<string>(); // 封面图 Blob // FIXME: Nuxt Image 的 src 为 undefined 或 "" 时会出错，见 https://github.com/nuxt/image/issues/1299
+	const thumbnailBlob = ref<string>(); // 封面图 Blob
 	const thumbnailUrl = ref<string>("../public/static/images/thumbnail.png"); // 封面图 Blob // FIXME: Nuxt Image 的 src 为 undefined 或 "" 时会出错，见 https://github.com/nuxt/image/issues/1299
 	const thumbnailInput = ref<HTMLInputElement>();
 	const tags = ref<string[]>([]); // 视频标签
@@ -21,8 +20,10 @@
 	const isCommitButtonLoading = ref<boolean>(false); // 投稿按钮是否在 loading 状态
 	const isCoverCropperOpen = ref<boolean>(false); // 封面图裁剪器是否开启状态
 	const isUploadingCover = ref<boolean>(false); // 是否正在上传封面图
-	const cropper = ref();
-
+	const cropper = ref(); // 图片裁剪器对象
+	const isNetworkImage = computed(() => thumbnailUrl.value === "../public/static/images/thumbnail.png"); // 封面图是静态资源图片还是网图，即用户是否已经上传完成封面图
+	const provider = computed(() => isNetworkImage.value ? undefined : "kirakira"); // 根据 isNetworkImage 的值判断是否使用 kirakira 作为 Nuxt Image 提供商
+	// 视频分类
 	const VIDEO_CATEGORY = new Map([
 		["anime", t.category.anime],
 		["music", t.category.music],
@@ -68,24 +69,50 @@
 	function onChangeThumbnail(e: Event) {
 		const input = e.target as HTMLInputElement;
 		const thumbnails = getValidFiles(input.files);
+
 		if (thumbnails.length) {
-			thumbnailBlob.value = fileToBlob(thumbnail.value = thumbnails[0]);
+			thumbnailBlob.value = fileToBlob(thumbnails[0]);
 			isCoverCropperOpen.value = true;
+			input.value = ""; // 读取完用户上传的文件后，需要清空 input，以免用户在下次上传同一个文件时无法触发 change 事件。
 		} else if (input.files?.length)
 			invalidUploaded();
+	}
+
+	/**
+	 * 清除已经上传完成的图片，释放内存。
+	 */
+	function clearBlobUrl() {
+		if (thumbnailBlob.value) {
+			URL.revokeObjectURL(thumbnailBlob.value);
+			thumbnailBlob.value = undefined;
+		}
 	}
 
 	/**
 	 * 上传封面图
 	 */
 	async function handleSubmitCoverImage() {
-		await console.log("aaaaaaaaa");
+		isUploadingCover.value = true;
 		const blobImageData = await cropper.value?.getCropBlobData();
-		console.log("image", blobImageData);
-		const newTab = window.open();
-		newTab!.document.body.innerHTML = `<img src="${fileToBlob(blobImageData as File)}"></img>`;
-
-		// thumbnailUrl.value = fileToBlob(blobImageData as File);
+		const coverUploadSignedUrlResult = await api.video.getVideoCoverUploadSignedUrl();
+		const filename = coverUploadSignedUrlResult?.result?.fileName;
+		const signedUrl = coverUploadSignedUrlResult?.result?.signedUrl;
+		if (coverUploadSignedUrlResult?.success && filename && signedUrl) {
+			const uploadVideoCoverResult = await api.video.uploadVideoCover(filename, blobImageData, signedUrl);
+			if (uploadVideoCoverResult) {
+				thumbnailUrl.value = filename;
+				isUploadingCover.value = false;
+				isCoverCropperOpen.value = false;
+				clearBlobUrl(); // 释放内存
+			} else {
+				useToast("封面图上传失败，请重试", "error"); // TODO: 使用多语言
+				isUploadingCover.value = false;
+			}
+		} else {
+			useToast("封面图上传失败，请重试", "error"); // TODO: 使用多语言
+			isUploadingCover.value = false;
+			isCoverCropperOpen.value = false;
+		}
 	}
 
 	/**
@@ -107,21 +134,9 @@
 	}
 
 	/**
-	 * 组件加载后等待三秒开始上传视频
-	 */
-	// onMounted(() => setTimeout(() => {
-	// 	tusUpload(props.files);
-	// }, 3000));
-
-	/**
 	 * 提交视频（确认投稿）
 	 */
 	async function commitVideo() {
-		// TODO: 视频封面校验
-		// if (!thumbnail.value) {
-		// 	useToast(t.toast.no_cover, "error");
-		// 	return;
-		// }
 		if (!cloudflareVideoId.value) {
 			useToast("视频没有上传完成", "error"); // TODO: 使用多语言
 			return;
@@ -153,7 +168,7 @@
 				},
 			],
 			title: title.value,
-			image: thumbnailUrl.value, // TODO: 视频封面
+			image: isNetworkImage ? thumbnailUrl.value : "f907a7bd-3247-4415-1f5e-a67a5d3ea100", // 没上传封面时使用默认封面图 // TODO: 获取视频截图作为封面
 			uploaderId: uid,
 			duration: 300, // TODO: 视频时长
 			description: description.value,
@@ -179,45 +194,6 @@
 	}
 
 	/**
-	 * 上传文件。
-	 * @param files - 文件列表。
-	 */
-	// function upload(files: File[]) {
-	// 	if (!thumbnail.value) {
-	// 		useToast(t.toast.no_cover, "error");
-	// 		return;
-	// 	}
-
-	// 	// severe bug in openapi around multiple file uploads using form-data
-
-	// 	const formData = new FormData();
-	// 	files.forEach((file, index) => {
-	// 		formData.append(`filename[${index}]`, file);
-	// 	});
-
-	// 	// oh no no no NO!!!
-	// 	formData.append("filename[1]", thumbnail.value);
-
-	// 	axios({
-	// 		method: "POST",
-	// 		// TODO
-	// 		url: "https://localhost:3000/api/upload",
-	// 		data: formData,
-	// 		headers: {
-	// 			"Content-Type": "multipart/form-data",
-	// 			title: title.value,
-	// 			tags: tags.value.filter(tag => tag).toString(),
-	// 			description: description.value,
-	// 			category: category.value,
-	// 		},
-	// 		onUploadProgress(progressEvent) {
-	// 			if (progressEvent.total)
-	// 				uploadProgress.value = progressEvent.loaded / progressEvent.total * 100;
-	// 		},
-	// 	});
-	// }
-
-	/**
 	 * 用户在修改版权选项时，清理其反向对应的版权设置的相关信息。例如，用户在选择为「原创」时，清理“原作者名”和“原视频地址”数据，用户在选择为「搬运」时，将“我声明为原创”取消勾选
 	 * @param copyright 版权选项
 	 */
@@ -231,8 +207,14 @@
 
 	watch(copyright, copyright => clearCopyrightData(copyright));
 
-	const [onContentEnter, onContentLeave] = simpleAnimateSize("height", 500, eases.easeInOutSmooth);
+	/**
+	 * 组件加载后等待三秒开始上传视频
+	 */
+	onMounted(() => setTimeout(() => {
+		tusUpload(props.files);
+	}, 3000));
 
+	const [onContentEnter, onContentLeave] = simpleAnimateSize("height", 500, eases.easeInOutSmooth);
 	const flyoutTag = ref<FlyoutModel>();
 </script>
 
@@ -258,7 +240,7 @@
 				<!-- TODO: 使用多语言 -->
 				<Button class="secondary" @click="isCoverCropperOpen = false">取消</Button>
 				<!-- TODO: 使用多语言 -->
-				<Button :loading="isUploadingCover" @click="handleSubmitCoverImage">上传</Button>
+				<Button :loading="isUploadingCover" :disabled="isUploadingCover" @click="handleSubmitCoverImage">上传</Button>
 			</template>
 		</Modal>
 
@@ -267,9 +249,15 @@
 
 			<div class="toolbox-card left">
 				<div v-ripple class="cover" @click="thumbnailInput?.click()">
-					<!-- 选择封面，裁剪器可以先不做 // TODO: 图片裁剪 -->
 					<div class="mask">{{ t.select_cover }}</div>
-					<NuxtImg v-if="thumbnailUrl" :src="thumbnailUrl" alt="thumbnail" :draggable="false" />
+					<NuxtImg
+						v-if="thumbnailUrl"
+						:provider
+						:src="thumbnailUrl"
+						:width="350"
+						alt="thumbnail"
+						:draggable="false"
+					/>
 				</div>
 
 				<Button icon="disambig">{{ t.associate_existing }}</Button>
@@ -498,7 +486,7 @@
 
 		@media (width <=450px) {
 			--size: 80dvw;
-			// 对于图片切割器，不建议使用响应式，因为切割器内部被切割的图片不会随之改变尺寸，但考虑到极端小尺寸的适配问题，且只有极少数场景会改变浏览器宽度。
+			// 对于图片切割器，不建议使用响应式，因为切割器内部被切割的图片不会随之改变尺寸，但考虑到极端小尺寸的适配问题，且在上传图片时浏览器宽度发生剧烈变化的概率较小，故保留本功能。
 		}
 	}
 </style>

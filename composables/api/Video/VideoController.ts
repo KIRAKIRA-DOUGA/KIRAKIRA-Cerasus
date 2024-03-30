@@ -1,7 +1,7 @@
 import getCorrectUri from "api/Common/getCorrectUri";
-import type { GetVideoByKvidRequestDto, GetVideoByKvidResponseDto, GetVideoByUidRequestDto, GetVideoByUidResponseDto, ThumbVideoResponseDto, UploadVideoRequestDto, UploadVideoResponseDto } from "./VideoControllerDto";
+import type { GetVideoByKvidRequestDto, GetVideoByKvidResponseDto, GetVideoByUidRequestDto, GetVideoByUidResponseDto, GetVideoCoverUploadSignedUrlResponseDto, ThumbVideoResponseDto, UploadVideoRequestDto, UploadVideoResponseDto } from "./VideoControllerDto";
 import * as tus from "tus-js-client";
-import { POST } from "../Common";
+import { GET, POST, uploadFile2CloudflareImages } from "../Common";
 
 const BACK_END_URL = getCorrectUri();
 const VIDEO_API_URI = `${BACK_END_URL}/video`;
@@ -134,6 +134,31 @@ export function tusFile(file: File, progress: Ref<number>) {
 			upload.start();
 		});
 	});
+}
+
+/**
+ * 获取用于上传视频封面图的预签名 URL, 上传限时 60 秒
+ * @returns 用于上传视频封面图的预签名 URL 请求响应
+ */
+export async function getVideoCoverUploadSignedUrl(): Promise<GetVideoCoverUploadSignedUrlResponseDto> {
+	return (await GET(`${VIDEO_API_URI}/cover/preUpload`, { credentials: "include" })) as GetVideoCoverUploadSignedUrlResponseDto;
+}
+
+/**
+ * 通过预签名 URL 上传视频封面图
+ * @param fileName 头像文件名
+ * @param videoCoverBlobData 用 Blob 编码的用户头像文件
+ * @param signedUrl 预签名 URL
+ * @returns boolean 上传结果
+ */
+export async function uploadVideoCover(fileName: string, videoCoverBlobData: Blob, signedUrl: string): Promise<boolean> {
+	try {
+		await uploadFile2CloudflareImages(fileName, signedUrl, videoCoverBlobData, 60000);
+		return true;
+	} catch (error) {
+		console.error("视频封面上传失败，错误信息：", error, { videoCoverBlobData, signedUrl });
+		return false;
+	}
 }
 
 /**
