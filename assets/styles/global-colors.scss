@@ -9,8 +9,8 @@
 	$force-color: force-color;
 	$selector: if(
 		$is-light,
-		":root, .#{$force-color}, :root.light, .#{$force-color}.light",
-		":root.dark, .#{$force-color}.dark"
+		":root, .#{$force-color}, :root.light, :root.light .#{$force-color}, .light-theme-selector",
+		":root.dark, :root.dark .#{$force-color}, .dark-theme-selector"
 	);
 
 	#{$selector} {

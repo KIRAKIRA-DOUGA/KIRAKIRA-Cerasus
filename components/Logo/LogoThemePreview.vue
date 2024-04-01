@@ -14,7 +14,10 @@
 <template>
 	<!-- eslint-disable vue/max-attributes-per-line -->
 	<div class="wrapper">
-		<svg v-for="(klass, index) in classes" :key="index" class="force-color" :class="[klass, accent]" width="208" height="117" viewBox="0 0 208 117" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<svg
+			v-for="(klass, index) in classes" :key="index" :class="[`${klass}-theme-selector`, accent]" width="208"
+			height="117" viewBox="0 0 208 117" fill="none" xmlns="http://www.w3.org/2000/svg"
+		>
 			<g>
 				<g class="sidebar-filter">
 					<rect width="14" height="117" class="main-bg" />
@@ -25,8 +28,14 @@
 					<circle cx="7.5" cy="99.5" r="2.5" class="icon-color" />
 					<circle cx="7.5" cy="27.5" r="2.5" class="icon-color" />
 					<circle cx="7.5" cy="109.5" r="2.5" class="icon-color" />
-					<rect width="22.631" height="2.39989" transform="matrix(0.838672 -0.544636 0.544642 0.838669 -5 61.3262)" class="accent" />
-					<rect width="22.631" height="2.39989" transform="matrix(0.838672 -0.544636 0.544642 0.838669 -1.73145 66.3579)" class="accent" />
+					<rect
+						width="22.631" height="2.39989" transform="matrix(0.838672 -0.544636 0.544642 0.838669 -5 61.3262)"
+						class="accent"
+					/>
+					<rect
+						width="22.631" height="2.39989"
+						transform="matrix(0.838672 -0.544636 0.544642 0.838669 -1.73145 66.3579)" class="accent"
+					/>
 				</g>
 				<g class="toolbox-filter">
 					<g clip-path="url(#toolbox-clip)">
@@ -69,10 +78,16 @@
 				<circle cx="149.5" cy="73.5" r="6.5" class="gray-40" />
 			</g>
 			<defs>
-				<filter id="textbox-filter" x="145" y="10" width="53" height="14" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+				<filter
+					id="textbox-filter" x="145" y="10" width="53" height="14" filterUnits="userSpaceOnUse"
+					color-interpolation-filters="sRGB"
+				>
 					<feFlood flood-opacity="0" result="BackgroundImageFix" />
 					<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-					<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+					<feColorMatrix
+						in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+						result="hardAlpha"
+					/>
 					<feOffset dy="4" />
 					<feGaussianBlur stdDeviation="2" />
 					<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
@@ -95,37 +110,37 @@
 
 <style scoped lang="scss">
 	$colors: icon-color, text-color, surface-color, main-bg, inset-bg, accent, accent-20, gray-20, gray-30, gray-40;
-	
+
 	.wrapper {
 		@include square(100%);
 		position: relative;
 	}
-	
+
 	svg {
 		@include square(100%);
 		background-color: c(main-bg);
 	}
-	
+
 	svg:not(:first-child) {
 		position: absolute;
 		left: 0;
 		clip-path: polygon(0 0, 0 100%, 25% 100%, 75% 0);
 	}
-	
+
 	@each $color in $colors {
 		.#{$color} {
 			fill: c($color);
 		}
 	}
-	
+
 	.sidebar-filter {
 		filter: drop-shadow(0 0 4px c(accent, 30%));
 	}
-	
+
 	.toolbox-filter {
 		filter: drop-shadow(0 1px 3px c(accent-shadow, 30%));
 	}
-	
+
 	.player-filter {
 		filter: drop-shadow(0 1px 2px c(accent-shadow, 20%));
 	}

@@ -95,7 +95,7 @@
 	const initialDanmaku = ref<DanmakuComment[]>();
 	const screenOrientationBeforeFullscreen = ref<OrientationType>("portrait-primary");
 	const playerVideoControllerMouseDown = ref(false);
-	const fullscreenColorClass = computed(() => ({ [`force-color dark ${useCookie(COOKIE_KEY.themeColorCookieKey, DEFAULT_COOKIE_OPTION).value || THEME_ENV.DEFAULT_THEME_COLOR}`]: fullscreen.value }));
+	const fullscreenColorClass = computed(() => ({ "dark-theme-selector": fullscreen.value }));
 	type MediaInfo = Record<string, Record<string, unknown>>;
 	const playerConfig = useAppSettingsStore().player;
 
@@ -391,7 +391,7 @@
 			await exitFullscreen();
 		else if (!isFullbrowser)
 			await enterFullscreen();
-		
+
 		// 处理 tab 失能问题（不然全屏状态下按 tab 键甚至会聚焦到评论区去）
 		if (playerVideoMain.value)
 			for (const element of document.getElementById("root")?.querySelectorAll("*") ?? []) {
@@ -411,7 +411,7 @@
 					delete element.dataset.defaultTabIndex;
 				}
 			}
-		
+
 		// 启动视图过渡动画
 		startViewTransition(() => {
 			fullscreen.value = !fullscreen.value;
