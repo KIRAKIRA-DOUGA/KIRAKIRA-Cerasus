@@ -1,0 +1,3 @@
+files:
+  - source: /locales/English.*
+    translation: /locales/%language%.ts
