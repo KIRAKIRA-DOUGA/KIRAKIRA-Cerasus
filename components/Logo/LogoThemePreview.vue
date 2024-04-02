@@ -2,8 +2,6 @@
 	const props = defineProps<{
 		/** 指定主题。 */
 		theme?: ThemeSetType;
-		/** 强调色。未定义情况下貌似有 bug。 */
-		accent?: string;
 	}>();
 
 	const classes = computed(() =>
@@ -14,7 +12,7 @@
 <template>
 	<!-- eslint-disable vue/max-attributes-per-line -->
 	<div class="wrapper">
-		<svg v-for="(klass, index) in classes" :key="index" class="force-color" :class="[klass, accent]" width="208" height="117" viewBox="0 0 208 117" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<svg v-for="(klass, index) in classes" :key="index" :class="[klass]" width="208" height="117" viewBox="0 0 208 117" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<g>
 				<g class="sidebar-filter">
 					<rect width="14" height="117" class="main-bg" />
@@ -95,37 +93,37 @@
 
 <style scoped lang="scss">
 	$colors: icon-color, text-color, surface-color, main-bg, inset-bg, accent, accent-20, gray-20, gray-30, gray-40;
-	
+
 	.wrapper {
 		@include square(100%);
 		position: relative;
 	}
-	
+
 	svg {
 		@include square(100%);
 		background-color: c(main-bg);
 	}
-	
+
 	svg:not(:first-child) {
 		position: absolute;
 		left: 0;
 		clip-path: polygon(0 0, 0 100%, 25% 100%, 75% 0);
 	}
-	
+
 	@each $color in $colors {
 		.#{$color} {
 			fill: c($color);
 		}
 	}
-	
+
 	.sidebar-filter {
 		filter: drop-shadow(0 0 4px c(accent, 30%));
 	}
-	
+
 	.toolbox-filter {
 		filter: drop-shadow(0 1px 3px c(accent-shadow, 30%));
 	}
-	
+
 	.player-filter {
 		filter: drop-shadow(0 1px 2px c(accent-shadow, 20%));
 	}

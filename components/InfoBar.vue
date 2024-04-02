@@ -14,7 +14,7 @@
 </script>
 
 <template>
-	<Comp :class="type">
+	<Comp :class="{ 'force-color yellow': type === 'warning' }">
 		<Icon :name="icon" />
 		<div class="content">
 			<p v-if="title" class="title">{{ title }}</p>
@@ -31,15 +31,7 @@
 		gap: 8px;
 		padding: 16px;
 		color: white;
-
-		&.info {
-			background-color: c(accent);
-		}
-
-		&.warning {
-			@include chip-shadow-colored(yellow);
-			background-color: c(yellow);
-		}
+		background-color: c(accent);
 	}
 
 	.content {

@@ -41,7 +41,7 @@
 	@if not $alpha {
 		@return $color;
 	} @else {
-		@return rgb(from $color r g b / $alpha);
+		@return color-mix(in oklab, $color, transparent (100 - $alpha));
 	}
 }
 

@@ -42,7 +42,7 @@
 	<div class="chip sample">
 		<PlayerVideoController :currentTime="30" :duration="110" :buffered="60" />
 	</div>
-	<section grid>
+	<section grid class="theme-type">
 		<SettingsGridItem
 			v-for="item in themeList"
 			:id="item"
@@ -50,7 +50,7 @@
 			v-model="cookieThemeType"
 			:title="t.scheme[item]"
 		>
-			<LogoThemePreview :theme="item" :accent="cookieThemeColor" />
+			<LogoThemePreview :theme="item" />
 		</SettingsGridItem>
 	</section>
 
@@ -63,7 +63,7 @@
 			v-model="cookieThemeColor"
 			:title="t.palette[item.color]"
 			class="force-color"
-			:class="[item.color, cookieThemeType]"
+			:class="[item.color]"
 		>
 			<div class="content">
 				<NuxtImg
