@@ -3,7 +3,7 @@
 </docs>
 
 <script lang="ts">
-	import checkerboard from "worklets/paint/checkerboard?url";
+	import checkerboard from "workers/paint/checkerboard?url";
 	if (environment.client)
 		CSS.paintWorklet?.addModule(checkerboard);
 </script>

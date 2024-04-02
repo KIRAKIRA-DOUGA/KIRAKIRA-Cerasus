@@ -64,7 +64,7 @@ export default defineNuxtConfig({
 		"api",
 		"types",
 		"utils",
-		"worklets",
+		"workers",
 		"assets/pomsky",
 		"composables/api",
 	),
