@@ -2,7 +2,6 @@
 @use "theme/internal" as *;
 
 // 下面的内容是根据 Sass 映射自动转换为 CSS 属性的逻辑代码，不用动。
-// TODO: [兰音] 即将支持相对颜色（Relative colors / rgb(from ...)）来实现改变颜色透明度的功能，然而截至目前除了 Safari 没有浏览器正式支持该功能。
 
 @for $i from 1 through 2 {
 	$is-light: $i == 1;
@@ -15,8 +14,9 @@
 
 	#{$selector} {
 		color-scheme: if($is-light, light, dark);
+		accent-color: var(--accent);
 
-		@each $colors in $neutral-colors, $secondary-colors, $grayscale-colors {
+		@each $colors in $neutral-colors, $grayscale-colors {
 			@each $key, $color in $colors {
 				@include hex-or-rgb-color($key, $color, $is-light);
 			}
@@ -32,15 +32,26 @@
 			}
 		}
 
-		@each $palette, $accents in $primary-colors {
-			&.#{"" + $palette} {
-				accent-color: themed-color(map.get($secondary-colors, $palette), $is-light);
+		@each $palette, $color in $secondary-colors {
+			--#{"" + $palette}: #{$color};
 
-				@each $key, $color in $accents {
-					@include hex-or-rgb-color($key, $color, $is-light);
-					@include wave-link($key, $color, $is-light);
+			&.#{"" + $palette} {
+				--accent-50: #{$color};
+			}
+		}
+
+		@each $state, $colors in $mixed-colors {
+			@if list.length($colors) >= 2 {
+				$mixed-color: list.nth($colors, $i);
+
+				@if list.length($mixed-color) == 1 {
+					--#{$state}: #{$mixed-color};
+				} @else {
+					--#{$state}: color-mix(in oklab, var(--accent-50), #{$mixed-color});
 				}
 			}
 		}
+
+		// @include wave-link($key, $color, $is-light);
 	}
 }
