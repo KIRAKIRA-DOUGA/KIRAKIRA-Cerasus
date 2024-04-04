@@ -4,7 +4,7 @@
 	"prettier.vueIndentScriptAndStyle": true,
 	"editor.insertSpaces": false,
 	"editor.detectIndentation": false,
-	"editor.formatOnPaste": true,
+	"editor.formatOnPaste": false,
 	"editor.formatOnType": true,
 	"less.lint.unknownAtRules": "ignore",
 	"scss.lint.unknownAtRules": "ignore",
