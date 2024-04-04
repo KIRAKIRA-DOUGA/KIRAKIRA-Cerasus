@@ -12,6 +12,11 @@
 	] as const;
 	const paletteSection = ref<HTMLElement>();
 
+	// TODO: 当使用自定义颜色时，使用 style="--accent: #000" 的格式将颜色放置在根元素上，并将内容存储且允许同步。
+	const customColor = ref(Color.fromHex("#f06e8e"));
+	const colorPickerFlyout = ref<FlyoutModel>();
+	const showColorPicker = (e: MouseEvent, placement?: Placement) => colorPickerFlyout.value = [e, placement];
+
 	// HACK: 16 请参照此部分 ↓ ↓ ↓
 
 	// 允许同步的 kira cookie 设置
@@ -38,6 +43,10 @@
 </script>
 
 <template>
+	<Flyout v-model="colorPickerFlyout" class="color-picker-flyout">
+		<ColorPicker v-model="customColor" />
+	</Flyout>
+
 	<Subheader icon="brightness_medium">{{ t.scheme }}</Subheader>
 	<div class="chip sample">
 		<PlayerVideoController :currentTime="30" :duration="110" :buffered="60" />
@@ -49,6 +58,7 @@
 			:key="item"
 			v-model="cookieThemeType"
 			:title="t.scheme[item]"
+			:ripple="false"
 		>
 			<LogoThemePreview :theme="item" />
 		</SettingsGridItem>
@@ -78,6 +88,20 @@
 				<Icon name="palette" />
 				<h3>{{ t.palette[item.color] }}</h3>
 				<p>{{ item.subtitle }}</p>
+			</div>
+		</SettingsGridItem>
+		<SettingsGridItem
+			id="custom"
+			key="custom"
+			v-model="cookieThemeColor"
+			:title="t.custom"
+			class="custom-color"
+			@click="showColorPicker"
+		>
+			<div class="content">
+				<div class="hue-gradient"></div>
+				<Icon name="edit" />
+				<h3>{{ t.custom }}</h3>
 			</div>
 		</SettingsGridItem>
 	</section>
@@ -123,6 +147,10 @@
 		padding: 18px 20px;
 		color: c(accent);
 
+		.custom-color & {
+			color: inherit;
+		}
+
 		> * {
 			position: relative;
 		}
@@ -149,7 +177,8 @@
 		}
 
 		img,
-		.overlay {
+		.overlay,
+		.hue-gradient {
 			@include square(100%);
 			position: absolute;
 			top: 0;
@@ -183,6 +212,11 @@
 			}
 		}
 
+		.hue-gradient {
+			background-image: $hue-radial;
+			opacity: 0.3;
+		}
+
 		@container style(--column: single) {
 			p {
 				display: none;
@@ -192,5 +226,9 @@
 				margin-top: -0.25em;
 			}
 		}
+	}
+
+	.color-picker-flyout {
+		width: 300px;
 	}
 </style>

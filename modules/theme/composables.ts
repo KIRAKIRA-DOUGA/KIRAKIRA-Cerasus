@@ -19,7 +19,7 @@ export async function cookieBaker() {
 		// Nuxt cookie 对象 - 用户样式设置
 		const cookieThemeType = useCookie(COOKIE_KEY.themeTypeCookieKey, DEFAULT_COOKIE_OPTION);
 		const cookieThemeColor = useCookie(COOKIE_KEY.themeColorCookieKey, DEFAULT_COOKIE_OPTION);
-		const cookieCustomerThemeColor = useCookie(COOKIE_KEY.customThemeColorCookieKey, DEFAULT_COOKIE_OPTION);
+		const cookieCustomThemeColor = useCookie(COOKIE_KEY.customThemeColorCookieKey, DEFAULT_COOKIE_OPTION);
 		const cookieColoredSidebar = useCookie(COOKIE_KEY.coloredSidebarCookieKey, DEFAULT_COOKIE_OPTION);
 		const cookieSharpAppearanceMode = useCookie(COOKIE_KEY.sharpAppearanceModeCookieKey, DEFAULT_COOKIE_OPTION);
 		const cookieFlatAppearanceMode = useCookie(COOKIE_KEY.flatAppearanceModeCookieKey, DEFAULT_COOKIE_OPTION);
@@ -43,7 +43,7 @@ export async function cookieBaker() {
 
 			cookieThemeType.value = userSettings?.userSettings?.themeType || THEME_ENV.SYSTEM_THEME;
 			cookieThemeColor.value = userSettings?.userSettings?.themeColor ? (PALETTE_LIST as unknown as string[]).includes(userSettings.userSettings.themeColor) ? userSettings.userSettings.themeColor : THEME_ENV.CUSTOM_THEME_COLOR : THEME_ENV.DEFAULT_THEME_COLOR;
-			cookieCustomerThemeColor.value = userSettings?.userSettings?.themeColor || THEME_ENV.DEFAULT_THEME_COLOR;
+			cookieCustomThemeColor.value = userSettings?.userSettings?.themeColor || THEME_ENV.DEFAULT_THEME_COLOR;
 			cookieColoredSidebar.value = `${userSettings?.userSettings?.coloredSideBar === true}`;
 			cookieSharpAppearanceMode.value = `${userSettings?.userSettings?.sharpAppearanceMode === true}`;
 			cookieFlatAppearanceMode.value = `${userSettings?.userSettings?.flatAppearanceMode === true}`;
@@ -64,7 +64,7 @@ export function saveUserSetting2BrowserCookieStore(userSettings: GetUserSettings
 	if (process.client) {
 		const currentThemeType = userSettings?.userSettings?.themeType || THEME_ENV.SYSTEM_THEME;
 		const themeColor = userSettings?.userSettings?.themeColor ? (PALETTE_LIST as unknown as string[]).includes(userSettings.userSettings.themeColor) ? userSettings.userSettings.themeColor : THEME_ENV.CUSTOM_THEME_COLOR : THEME_ENV.DEFAULT_THEME_COLOR;
-		const customerThemeColor = userSettings?.userSettings?.themeColor || "";
+		const customThemeColor = userSettings?.userSettings?.themeColor || "";
 		const isColoredSidebar = userSettings?.userSettings?.coloredSideBar || false;
 		const isSharpAppearanceMode = userSettings?.userSettings?.sharpAppearanceMode || false;
 		const isFlatAppearanceMode = userSettings?.userSettings?.flatAppearanceMode || false;
@@ -74,7 +74,7 @@ export function saveUserSetting2BrowserCookieStore(userSettings: GetUserSettings
 		document.cookie = `${COOKIE_KEY.isOfflineSettingsCookieKey}=false${userSettingsCookieBasicOption}`;
 		if (currentThemeType) document.cookie = `${COOKIE_KEY.themeTypeCookieKey}=${currentThemeType}${userSettingsCookieBasicOption}`;
 		if (themeColor) document.cookie = `${COOKIE_KEY.themeColorCookieKey}=${themeColor}${userSettingsCookieBasicOption}`;
-		if (customerThemeColor) document.cookie = `${COOKIE_KEY.customThemeColorCookieKey}=${customerThemeColor}${userSettingsCookieBasicOption}`;
+		if (customThemeColor) document.cookie = `${COOKIE_KEY.customThemeColorCookieKey}=${customThemeColor}${userSettingsCookieBasicOption}`;
 		if (isColoredSidebar !== undefined && isColoredSidebar !== null) document.cookie = `${COOKIE_KEY.coloredSidebarCookieKey}=${isColoredSidebar}${userSettingsCookieBasicOption}`;
 		if (isSharpAppearanceMode !== undefined && isSharpAppearanceMode !== null) document.cookie = `${COOKIE_KEY.sharpAppearanceModeCookieKey}=${isSharpAppearanceMode}${userSettingsCookieBasicOption}`;
 		if (isFlatAppearanceMode !== undefined && isFlatAppearanceMode !== null) document.cookie = `${COOKIE_KEY.flatAppearanceModeCookieKey}=${isFlatAppearanceMode}${userSettingsCookieBasicOption}`;
