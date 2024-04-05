@@ -36,10 +36,8 @@
 
 	onMounted(() => {
 		if (paletteSection.value)
-			for (const item of paletteSection.value.children) {
+			for (const item of paletteSection.value.children)
 				item.classList.remove("light", "dark");
-				item.classList.add(cookieThemeType.value);
-			}
 	});
 </script>
 
