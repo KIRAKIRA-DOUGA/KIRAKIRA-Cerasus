@@ -171,13 +171,13 @@ export function cookieBinding() {
 		if (isFlatAppearanceMode === "true") rootNode.classList.add("flat");
 		if (themeColor) {
 			if (themeColor === THEME_COLOR_CUSTOM && themeColorCustom) // 如果 themeColor 的值是 custom 且 themeColorCustom 为真值，则使用自定义主题色。
-				rootNode.style.setProperty("--accent", `#${themeColorCustom}`);
+				rootNode.style.setProperty("--accent-50", `#${themeColorCustom}`);
 			else { // 否则移除一定义主题色并设置官方主题色。
-				rootNode.style.removeProperty("--accent");
+				rootNode.style.removeProperty("--accent-50");
 				rootNode.classList.add(themeColor);
 			}
 			const themeColorMetaTagName = "theme-color";
-			const themeColorCssPropertyName = "--accent";
+			const themeColorCssPropertyName = "--accent-50";
 			const themeColorHex = getComputedStyle(rootNode).getPropertyValue(themeColorCssPropertyName).trim();
 			updateOrCreateMetaTag(themeColorMetaTagName, themeColorHex);
 		}
