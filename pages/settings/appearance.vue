@@ -30,8 +30,7 @@
 
 	// 当使用自定义颜色时，使用 style="--accent: #000" 的格式将颜色放置在根元素上，并将内容存储且允许同步。
 	const customColor = reactive(Color.fromHex(`#${cookieThemeCustomColor.value}`));
-	const colorPickerFlyout = ref<FlyoutModel>();
-	const showColorPicker = (e: MouseEvent, placement?: Placement) => colorPickerFlyout.value = [e, placement];
+	const flyoutColorPicker = ref<FlyoutModel>();
 	watch(customColor, customColor => cookieThemeCustomColor.value = customColor.hex);
 
 	onMounted(() => {
@@ -42,8 +41,10 @@
 </script>
 
 <template>
-	<Flyout v-model="colorPickerFlyout" class="color-picker-flyout">
-		<ColorPicker v-model="customColor" />
+	<Flyout v-model="flyoutColorPicker" class="color-picker-flyout">
+		<div class="color-picker-wrapper">
+			<ColorPicker v-model="customColor" />
+		</div>
 	</Flyout>
 
 	<Subheader icon="brightness_medium">{{ t.scheme }}</Subheader>
@@ -95,7 +96,7 @@
 			v-model="cookieThemeColor"
 			:title="t.custom"
 			class="custom-color"
-			@click="showColorPicker"
+			@click="e => flyoutColorPicker = [e]"
 		>
 			<div class="content">
 				<div class="hue-gradient"></div>
@@ -227,7 +228,7 @@
 		}
 	}
 
-	.color-picker-flyout {
-		width: 300px;
+	.color-picker-wrapper {
+		min-width: 300px;
 	}
 </style>
