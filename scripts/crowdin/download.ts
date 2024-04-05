@@ -84,7 +84,7 @@ const filePath = resolve(tmpdir(), "l10n.zip");
 await downloadFile(downloadUrl, filePath);
 const extractedPath = resolve(tmpdir(), "l10n");
 await extractZip(filePath, extractedPath);
-await moveLocaleFiles(extractedPath, "Web");
+await moveLocaleFiles(extractedPath, "locales");
 const remove = (path: string) => rm(path, { recursive: true, force: true });
 await Promise.all([
 	remove(filePath),

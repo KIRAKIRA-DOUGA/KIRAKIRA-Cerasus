@@ -1,4 +1,4 @@
-import SChinese from "./SChinese";
+import SChinese from "./Simplified Chinese";
 
 // type FunctionPrototypeKeys = "apply" | "bind" | "call" | "toString" | "Symbol";
 export type I18nArgsFunction<R extends string = string> = {

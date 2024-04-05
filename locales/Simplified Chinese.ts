@@ -1,4 +1,4 @@
-const SChinese = {
+export default {
 	colon: "：",
 	semicolon: "；",
 	caesura: "、",
@@ -426,5 +426,3 @@ const SChinese = {
 	set_as_default: "设为默认",
 	advanced_search: "高级搜索",
 } as const;
-
-export default SChinese;

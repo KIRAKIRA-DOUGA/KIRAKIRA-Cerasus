@@ -1,8 +1,8 @@
 /* eslint-disable require-jsdoc */
 
 const langs = [
-	{ file: "SChinese", name: "简体中文", lang: "zh-Hans-CN" },
-	{ file: "TChinese", name: "繁體中文", lang: "zh-Hant-TW" },
+	{ file: "Simplified Chinese", name: "简体中文", lang: "zh-Hans-CN" },
+	{ file: "Traditional Chinese", name: "繁體中文", lang: "zh-Hant-TW" },
 	{ file: "English", name: "English", lang: "en" },
 	{ file: "Japanese", name: "日本語", lang: "ja" },
 	{ file: "Korean", name: "한국인", lang: "ko" },
@@ -45,7 +45,7 @@ function putDataToTable(data: NestedLocaleData) {
 		th.lang = lang;
 		thead.append(th);
 	}
-	const schinese = "SChinese";
+	const schinese = "Simplified Chinese";
 	const schineseLang = langs.find(lang => lang.file === schinese)!.lang;
 	for (const [key, value] of Object.entries(data[schinese])) {
 		if (typeof value !== "string") continue;

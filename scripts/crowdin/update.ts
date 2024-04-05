@@ -5,7 +5,7 @@ import { sourceFilesApi, uploadStorageApi } from "./crowdin";
 import { projectId } from "./token";
 
 const __dirname = import.meta.dirname;
-const SOURCE_LANGUAGE = "English";
+const SOURCE_LANGUAGE = "Simplified Chinese";
 
 async function updateFile(projectId: number, fileName: string, fileContent: string) {
 	const filesResponse = await sourceFilesApi.listProjectFiles(projectId);
@@ -25,10 +25,10 @@ const file = await (async () => {
 	while (true) {
 		const files = await readdir(path);
 		if (path === resolve(path, "/")) throw new Error("Could not find project path");
-		if (files.includes("src")) break;
+		if (files.includes("locales")) break;
 		path = resolve(path, "..");
 	}
-	return resolve(path, `src/locales/${SOURCE_LANGUAGE}.ts`);
+	return resolve(path, `locales/${SOURCE_LANGUAGE}.ts`);
 })();
 const fileContent = await readFile(file, "utf-8");
 
