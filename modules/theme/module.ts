@@ -23,6 +23,7 @@ export default defineNuxtModule({
 	async setup(_options, nuxt) {
 		const { resolve } = createResolver(import.meta.url);
 
+		// 主题同步相关的全局导出
 		addPlugin(resolve("plugin"));
 		const composablesRoute = resolve("composables");
 		addImports({ name: "cookieBaker", as: "cookieBaker", from: composablesRoute });

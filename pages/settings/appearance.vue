@@ -12,11 +12,6 @@
 	] as const;
 	const paletteSection = ref<HTMLElement>();
 
-	// TODO: 当使用自定义颜色时，使用 style="--accent: #000" 的格式将颜色放置在根元素上，并将内容存储且允许同步。
-	const customColor = ref(Color.fromHex("#f06e8e"));
-	const colorPickerFlyout = ref<FlyoutModel>();
-	const showColorPicker = (e: MouseEvent, placement?: Placement) => colorPickerFlyout.value = [e, placement];
-
 	// HACK: 16 请参照此部分 ↓ ↓ ↓
 
 	// 允许同步的 kira cookie 设置
@@ -26,12 +21,18 @@
 	const cookieThemeType = useKiraCookie<ThemeSetType>(COOKIE_KEY.themeTypeCookieKey, SyncUserSettings.updateOrCreateUserThemeTypeSetting, useSyncKiraCookieOptions);
 	// 个性色
 	const cookieThemeColor = useKiraCookie<string>(COOKIE_KEY.themeColorCookieKey, SyncUserSettings.updateOrCreateUserThemeColorSetting, useSyncKiraCookieOptions);
-	// TODO: 自定义个性色
-	// const cookieColoredSidebar = useKiraCookie<string>( // TODO )
+	// 自定义个性色
+	const cookieThemeCustomColor = useKiraCookie<string>(COOKIE_KEY.themeColorCustomCookieKey, SyncUserSettings.updateOrCreateUserThemeColorCustomSetting, { ...useSyncKiraCookieOptions, debounceWait: 500 }); // 自定义颜色增加了防抖
 	// 彩色侧边栏
 	const cookieColoredSidebar = useKiraCookie<boolean>(COOKIE_KEY.coloredSidebarCookieKey, SyncUserSettings.updateOrCreateUserColoredSidebarSetting, useSyncKiraCookieOptions);
 
 	// HACK: 16 请参照此部分 ↑ ↑ ↑
+
+	// 当使用自定义颜色时，使用 style="--accent: #000" 的格式将颜色放置在根元素上，并将内容存储且允许同步。
+	const customColor = reactive(Color.fromHex(`#${cookieThemeCustomColor.value}`));
+	const colorPickerFlyout = ref<FlyoutModel>();
+	const showColorPicker = (e: MouseEvent, placement?: Placement) => colorPickerFlyout.value = [e, placement];
+	watch(customColor, customColor => cookieThemeCustomColor.value = customColor.hex);
 
 	onMounted(() => {
 		if (paletteSection.value)
