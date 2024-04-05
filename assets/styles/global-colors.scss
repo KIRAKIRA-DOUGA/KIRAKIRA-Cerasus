@@ -1,28 +1,25 @@
 @use "theme/colors" as *;
 @use "theme/internal" as *;
 
+// 下面的内容是根据 Sass 映射自动转换为 CSS 属性的逻辑代码，不用动。
+
 // 将所有预设颜色放在根元素下以便调用，不与下方 class 合并是为了输出时只包含一个 :root。
 :root {
-	@each $colors in $primary-colors, $secondary-colors {
-		@each $name, $color in $colors {
-			--#{"" + $name}: #{$color};
-		}
+	@each $palette, $color in $secondary-colors {
+		--#{"" + $palette}: #{$color};
 	}
 }
 
 // 使预设颜色可以直接通过 class 使用。
-@each $colors in $primary-colors, $secondary-colors {
-	@each $name, $color in $colors {
-		.#{"" + $name} {
-			--accent: var(--#{$name});
-		}
+@each $palette, $color in $secondary-colors {
+	.#{"" + $palette} {
+		--accent-50: #{$color};
 	}
 }
 
 // force-color 用于强制指定某个元素的强调色以不跟随全局。
 // 它的存在是为了应对 CSS 变量的特性，不加这些在元素内直接覆盖 --accent 无法修改差分。
 // 此问答可供参考：https://segmentfault.com/q/1010000044508638
-
 @for $i from 1 through 2 {
 	$is-light: $i == 1;
 	$selector: if(
@@ -42,20 +39,6 @@
 			}
 		}
 
-		// 混合色（--accent 的差分）
-		@each $state, $colors in $mix-colors {
-			@if list.length($colors) >= 2 {
-				$mix-color: list.nth($colors, $i);
-
-				@if list.length($mix-color) == 1 {
-					--#{$state}: #{$mix-color};
-				} @else {
-					--#{$state}: color-mix(in oklab, var(--accent), #{$mix-color});
-				}
-			}
-		}
-
-		// 各状态所用颜色
 		@each $state, $color in $state-colors {
 			@if type-of($color) != list {
 				--#{$state}: #{c($color)};
@@ -63,5 +46,20 @@
 				--#{$state}: #{c(list.nth($color, 1), list.nth($color, 2))};
 			}
 		}
+
+		// 混合色（--accent 的差分）
+		@each $state, $colors in $mixed-colors {
+			@if list.length($colors) >= 2 {
+				$mixed-color: list.nth($colors, $i);
+
+				@if list.length($mixed-color) == 1 {
+					--#{$state}: #{$mixed-color};
+				} @else {
+					--#{$state}: color-mix(in oklab, var(--accent-50), #{$mixed-color});
+				}
+			}
+		}
+
+		// @include wave-link($key, $color, $is-light); // TODO: 波浪链接颜色样式暂时搁置。
 	}
 }

@@ -4,11 +4,14 @@
 	const themeList = ["light", "dark", "system"] as const;
 	const paletteList = [
 		{ color: "pink", subtitle: "Kawaii Forever" },
+		{ color: "rose", subtitle: "" },
 		{ color: "sky", subtitle: "Jouga Maya" },
 		{ color: "blue", subtitle: "Kafuu Chino" },
 		{ color: "orange", subtitle: "Hoto Kokoa" },
 		{ color: "purple", subtitle: "Tedeza Rize" },
 		{ color: "green", subtitle: "Ujimatsu Chiya" },
+		{ color: "yellow", subtitle: "" },
+		{ color: "red", subtitle: "" },
 	] as const;
 	const paletteSection = ref<HTMLElement>();
 
@@ -28,7 +31,7 @@
 
 	// HACK: 16 请参照此部分 ↑ ↑ ↑
 
-	// 当使用自定义颜色时，使用 style="--accent: #000" 的格式将颜色放置在根元素上，并将内容存储且允许同步。
+	// 当使用自定义颜色时，使用 style="--accent-50: #000" 的格式将颜色放置在根元素上，并将内容存储且允许同步。
 	const customColor = reactive(Color.fromHex(`#${cookieThemeCustomColor.value}`));
 	const flyoutColorPicker = ref<FlyoutModel>();
 	watch(customColor, customColor => cookieThemeCustomColor.value = customColor.hex);
@@ -102,6 +105,7 @@
 				<div class="hue-gradient"></div>
 				<Icon name="edit" />
 				<h3>{{ t.custom }}</h3>
+				<p>Try Yourself</p>
 			</div>
 		</SettingsGridItem>
 	</section>

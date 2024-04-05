@@ -11,7 +11,17 @@ $accent-colors: accent-10;
 $state-colors: accent, accent-rgb, accent-shadow-rgb, accent-hover, accent-focus, accent-focus-rgb, accent-pressed;
 $neutral-colors: main-bg-rgb;
 
-$pink: map.get(colors.$primary-colors, pink);
+$pink: (
+	accent-80: #a23b57 #ffd3de,
+	accent-70: #b64561 #f8afc1,
+	accent-60: #cc5775 #f390a9, // pressed
+	accent-50: #f06e8e #f06e8e, // normal
+	accent-40: #f390a9 #cc5775, // hover
+	accent-30: #f8afc1 #b64561, // focus
+	accent-20: #ffd3de #802f45, // disabled
+	accent-10: #ffedf2 #752b3f,
+	neutral-10: #c19fa8 black, // card-shadow
+); // TODO: 这里目前先将就一下。
 
 @function get-key($tkey) {
 	$suffix-index: string.index($tkey, -rgb);
