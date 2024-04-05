@@ -8,7 +8,7 @@ export const THEME_ENV = {
 	SYSTEM_THEME: "system",
 	DEFAULT_THEME_COLOR: "pink",
 	CUSTOM_THEME_COLOR: "custom",
-	DEFAULT_CUSTOM_THEME_COLOR: "#f06e8e",
+	DEFAULT_CUSTOM_THEME_COLOR: "f06e8e",
 	THEME_DARK: "dark",
 	THEME_LIGHT: "light",
 	NO_COLORED_SIDEBAR: "false",
@@ -43,7 +43,7 @@ export function cookieBinding() {
 	const SYSTEM_THEME = "system";
 	const DEFAULT_THEME_COLOR = "pink";
 	const THEME_COLOR_CUSTOM = "custom";
-	const DEFAULT_CUSTOM_THEME_COLOR = "#f06e8e";
+	const DEFAULT_CUSTOM_THEME_COLOR = "f06e8e";
 	const THEME_DARK = "dark";
 	const THEME_LIGHT = "light";
 	const NO_COLORED_SIDEBAR = "false";
