@@ -1,5 +1,5 @@
-import zhs from "locales/Simplified Chinese";
-import zht from "locales/Traditional Chinese";
+import zhs from "locales/Chinese Simplified";
+import zht from "locales/Chinese Traditional";
 import en from "locales/English";
 import ja from "locales/Japanese";
 import ko from "locales/Korean";

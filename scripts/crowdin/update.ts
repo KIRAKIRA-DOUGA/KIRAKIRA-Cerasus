@@ -5,7 +5,7 @@ import { sourceFilesApi, uploadStorageApi } from "./crowdin";
 import { projectId } from "./token";
 
 const __dirname = import.meta.dirname;
-const SOURCE_LANGUAGE = "Simplified Chinese";
+const SOURCE_LANGUAGE = "Chinese Simplified";
 
 async function updateFile(projectId: number, fileName: string, fileContent: string) {
 	const filesResponse = await sourceFilesApi.listProjectFiles(projectId);
