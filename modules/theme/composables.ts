@@ -124,8 +124,8 @@ export function useKiraCookie<T>(
 		let correctCallback = callback;
 		let correctCookieBinding = cookieBinding;
 		if (debounceWait && debounceWait > 0) { // 如果正确设置了防抖时间，则以防抖方式调用，否则直接调用
-			correctCallback = debounce(callback, debounceWait);
-			correctCookieBinding = debounce(cookieBinding, debounceWait);
+			correctCallback = useDebounce(callback, debounceWait);
+			correctCookieBinding = useDebounce(cookieBinding, debounceWait);
 		}
 		if (isWatchCookieRef || isListenLoginEvent)
 			watch(cookie, cookieValue => { // 当设置值发送改变时，发送后端请求，并触发 cookieBinding 更新页面样式
