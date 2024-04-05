@@ -38,7 +38,7 @@ export default defineNuxtConfig({
 		}],
 		"@pinia-plugin-persistedstate/nuxt",
 		"modules/theme/module.ts",
-		// "modules/noscript/module.ts",
+		"modules/noscript/module.ts",
 		"modules/unsupported-browsers/module.ts",
 		dev && "modules/components-globalized/module.ts",
 		"@nuxtjs/robots",

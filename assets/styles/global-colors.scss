@@ -1,5 +1,7 @@
+@use "sass:list" as -list; // 修复在 noscript 模块中导入时触发未定义 bug
 @use "theme/colors" as *;
 @use "theme/internal" as *;
+@use "theme/functions" as *;
 
 // 下面的内容是根据 Sass 映射自动转换为 CSS 属性的逻辑代码，不用动。
 
@@ -20,11 +22,12 @@
 // force-color 用于强制指定某个元素的强调色以不跟随全局。
 // 它的存在是为了应对 CSS 变量的特性，不加这些在元素内直接覆盖 --accent 无法修改差分。
 // 此问答可供参考：https://segmentfault.com/q/1010000044508638
+// 在 light 情况下包含 :root 的原因是，防止在 html 标签没有指定任何主题时（如 JavaScript 被禁用时），颜色完全消失的问题。
 @for $i from 1 through 2 {
 	$is-light: $i == 1;
 	$selector: if(
 		$is-light,
-		".light, .light .force-color",
+		".light, .light .force-color, :root:not(.dark)",
 		".dark, .dark .force-color"
 	);
 
@@ -43,16 +46,16 @@
 			@if type-of($color) != list {
 				--#{$state}: #{c($color)};
 			} @else {
-				--#{$state}: #{c(list.nth($color, 1), list.nth($color, 2))};
+				--#{$state}: #{c(-list.nth($color, 1), -list.nth($color, 2))};
 			}
 		}
 
 		// 混合色（--accent 的差分）
 		@each $state, $colors in $mixed-colors {
-			@if list.length($colors) >= 2 {
-				$mixed-color: list.nth($colors, $i);
+			@if -list.length($colors) >= 2 {
+				$mixed-color: -list.nth($colors, $i);
 
-				@if list.length($mixed-color) == 1 {
+				@if -list.length($mixed-color) == 1 {
 					--#{$state}: #{$mixed-color};
 				} @else {
 					--#{$state}: color-mix(in oklab, var(--accent-50), #{$mixed-color});
