@@ -60,7 +60,7 @@
 					saveUserSetting2BrowserCookieStore(userSettings);
 					cookieBinding();
 
-					// 触发用户登录事件
+					// NOTE: 触发用户登录事件，应当放在最后，等待上方的一系列业务逻辑执行完成之后在发送事件
 					useEvent("user:login", true);
 				} else {
 					useToast(t.toast.login_failed, "error", 5000);

@@ -95,7 +95,6 @@
 	const initialDanmaku = ref<DanmakuComment[]>();
 	const screenOrientationBeforeFullscreen = ref<OrientationType>("portrait-primary");
 	const playerVideoControllerMouseDown = ref(false);
-	const fullscreenColorClass = computed(() => ({ [`force-color dark ${useCookie(COOKIE_KEY.themeColorCookieKey, DEFAULT_COOKIE_OPTION).value || THEME_ENV.DEFAULT_THEME_COLOR}`]: fullscreen.value }));
 	type MediaInfo = Record<string, Record<string, unknown>>;
 	const playerConfig = useAppSettingsStore().player;
 
@@ -391,7 +390,7 @@
 			await exitFullscreen();
 		else if (!isFullbrowser)
 			await enterFullscreen();
-		
+
 		// 处理 tab 失能问题（不然全屏状态下按 tab 键甚至会聚焦到评论区去）
 		if (playerVideoMain.value)
 			for (const element of document.getElementById("root")?.querySelectorAll("*") ?? []) {
@@ -411,7 +410,7 @@
 					delete element.dataset.defaultTabIndex;
 				}
 			}
-		
+
 		// 启动视图过渡动画
 		startViewTransition(() => {
 			fullscreen.value = !fullscreen.value;
@@ -439,7 +438,7 @@
 </script>
 
 <template>
-	<Comp :class="{ fullscreen, ...fullscreenColorClass }">
+	<Comp :class="{ fullscreen, dark: fullscreen }">
 		<Modal v-model="showMediaInfo" icon="info" title="视频详细信息">
 			<Accordion>
 				<AccordionItem v-for="(info, type) in mediaInfos" :key="type" :title="type" noPadding>
@@ -488,7 +487,7 @@
 					/>
 					<!-- TODO: ProgressRing 改成卡住（开屏加载不包含在内）一秒后再显示，防止出现过于频繁。 -->
 					<div v-if="waiting" class="waiting">
-						<ProgressRing class="force-color light" />
+						<ProgressRing />
 					</div>
 					<PlayerVideoAbout v-model="showAboutPlayer" :playing />
 				</Contents>
