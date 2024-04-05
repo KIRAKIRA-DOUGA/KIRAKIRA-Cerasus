@@ -2,8 +2,10 @@
 	const props = withDefaults(defineProps<{
 		title?: string;
 		id: string;
+		ripple?: boolean;
 	}>(), {
 		title: "",
+		ripple: true,
 	});
 
 	const radio = refComp();
@@ -47,7 +49,7 @@
 		@keyup.enter.prevent="onCheck"
 	>
 		<div>
-			<div v-ripple class="thumbnail">
+			<div v-ripple="ripple" class="thumbnail">
 				<slot></slot>
 			</div>
 			<div class="caption">

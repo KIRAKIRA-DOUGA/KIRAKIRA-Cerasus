@@ -1,15 +1,17 @@
 export const useAppSettingsStore = defineStore("app-settings", {
 	state: () => ({
 		showCssDoodle: false,
-		lastSettingPage: "appearance",
-		exitSettingRoute: "/",
 		sharpAppearanceMode: false,
 		flatAppearanceMode: false,
 
-		themeType: "system",
-		themeColor: "pink",
-		customerThemeColor: "",
-		coloredSideBar: false,
+		lastSettingPage: "appearance",
+		exitSettingRoute: "/",
+
+		// DELETE: 以下内容已搬迁至 /modules/theme/theme-cookie-binding.ts，不再使用 pinia 储存。
+		// themeType: "system",
+		// themeColor: "pink",
+		// customThemeColor: "",
+		// coloredSideBar: false,
 
 		/** 已登录用户是否允许在多设备上同步主题设置 */
 		isAllowSyncThemeSettings: false,

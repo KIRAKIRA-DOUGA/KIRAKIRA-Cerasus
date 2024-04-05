@@ -25,11 +25,14 @@ const SChinese = {
 	palette: {
 		_: "个性色",
 		pink: "萌妹粉",
+		rose: "玫瑰红",
 		sky: "天空蓝",
 		blue: "智乃蓝",
 		green: "千夜绿",
 		orange: "心爱橙",
 		purple: "理世紫",
+		yellow: "黄色",
+		red: "红色",
 	},
 	language: {
 		_: "语言",

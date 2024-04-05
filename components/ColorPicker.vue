@@ -266,6 +266,10 @@
 		display: flex;
 		gap: 2px;
 		align-items: center;
+
+		.subheader {
+			flex-shrink: 0;
+		}
 	}
 
 	%inner-stroke {
@@ -278,7 +282,7 @@
 
 	.plane {
 		position: relative;
-		margin: $thumb-size-half;
+		margin: $thumb-size-half 0;
 		aspect-ratio: 1 / 1;
 		cursor: pointer;
 		touch-action: pinch-zoom;
@@ -415,7 +419,7 @@
 	.controls {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
-		gap: 12px 6px;
+		gap: 8px;
 		width: 100%;
 		margin-bottom: 4px;
 
