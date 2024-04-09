@@ -135,7 +135,8 @@
 			"lottie-web@5.12.2": "patches/lottie-web@5.12.2.patch",
 			"vue-router@4.3.0": "patches/vue-router@4.3.0.patch",
 			"postcss-selector-parser@6.0.16": "patches/postcss-selector-parser@6.0.16.patch",
-			"postcss@8.4.38": "patches/postcss@8.4.38.patch"
+			"postcss@8.4.38": "patches/postcss@8.4.38.patch",
+			"nuxt@3.11.1": "patches/nuxt@3.11.1.patch"
 		}
 	},
 	"keywords": [

@@ -1,0 +1,15 @@
+diff --git a/dist/app/components/nuxt-link.js b/dist/app/components/nuxt-link.js
+index 3f26cbc4f05f4cd1805f442b3c7473502024511d..9a1ce33038da431a2ba0adf2d558a504f46b0544 100644
+--- a/dist/app/components/nuxt-link.js
++++ b/dist/app/components/nuxt-link.js
+@@ -179,9 +179,7 @@ export function defineNuxtLink(options) {
+       }
+       if (import.meta.dev && import.meta.server && !props.custom) {
+         const isNuxtLinkChild = inject(NuxtLinkDevKeySymbol, false);
+-        if (isNuxtLinkChild) {
+-          console.log("[nuxt] [NuxtLink] You can't nest one <a> inside another <a>. This will cause a hydration error on client-side. You can pass the `custom` prop to take full control of the markup.");
+-        } else {
++        if (!isNuxtLinkChild) {
+           provide(NuxtLinkDevKeySymbol, true);
+         }
+       }
