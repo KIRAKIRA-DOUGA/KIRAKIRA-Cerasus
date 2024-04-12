@@ -1,4 +1,4 @@
-const SChinese = {
+export default {
 	colon: "：",
 	semicolon: "；",
 	caesura: "、",
@@ -25,11 +25,14 @@ const SChinese = {
 	palette: {
 		_: "个性色",
 		pink: "萌妹粉",
+		rose: "玫瑰红",
 		sky: "天空蓝",
 		blue: "智乃蓝",
 		green: "千夜绿",
 		orange: "心爱橙",
 		purple: "理世紫",
+		yellow: "黄色",
+		red: "红色",
 	},
 	language: {
 		_: "语言",
@@ -423,5 +426,3 @@ const SChinese = {
 	set_as_default: "设为默认",
 	advanced_search: "高级搜索",
 } as const;
-
-export default SChinese;

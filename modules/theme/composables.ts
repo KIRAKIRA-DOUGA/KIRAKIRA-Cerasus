@@ -19,7 +19,7 @@ export async function cookieBaker() {
 		// Nuxt cookie 对象 - 用户样式设置
 		const cookieThemeType = useCookie(COOKIE_KEY.themeTypeCookieKey, DEFAULT_COOKIE_OPTION);
 		const cookieThemeColor = useCookie(COOKIE_KEY.themeColorCookieKey, DEFAULT_COOKIE_OPTION);
-		const cookieCustomerThemeColor = useCookie(COOKIE_KEY.customThemeColorCookieKey, DEFAULT_COOKIE_OPTION);
+		const cookieThemeColorCustom = useCookie(COOKIE_KEY.themeColorCustomCookieKey, DEFAULT_COOKIE_OPTION);
 		const cookieColoredSidebar = useCookie(COOKIE_KEY.coloredSidebarCookieKey, DEFAULT_COOKIE_OPTION);
 		const cookieSharpAppearanceMode = useCookie(COOKIE_KEY.sharpAppearanceModeCookieKey, DEFAULT_COOKIE_OPTION);
 		const cookieFlatAppearanceMode = useCookie(COOKIE_KEY.flatAppearanceModeCookieKey, DEFAULT_COOKIE_OPTION);
@@ -43,7 +43,7 @@ export async function cookieBaker() {
 
 			cookieThemeType.value = userSettings?.userSettings?.themeType || THEME_ENV.SYSTEM_THEME;
 			cookieThemeColor.value = userSettings?.userSettings?.themeColor ? (PALETTE_LIST as unknown as string[]).includes(userSettings.userSettings.themeColor) ? userSettings.userSettings.themeColor : THEME_ENV.CUSTOM_THEME_COLOR : THEME_ENV.DEFAULT_THEME_COLOR;
-			cookieCustomerThemeColor.value = userSettings?.userSettings?.themeColor || THEME_ENV.DEFAULT_THEME_COLOR;
+			cookieThemeColorCustom.value = userSettings?.userSettings?.themeColorCustom || THEME_ENV.DEFAULT_CUSTOM_THEME_COLOR;
 			cookieColoredSidebar.value = `${userSettings?.userSettings?.coloredSideBar === true}`;
 			cookieSharpAppearanceMode.value = `${userSettings?.userSettings?.sharpAppearanceMode === true}`;
 			cookieFlatAppearanceMode.value = `${userSettings?.userSettings?.flatAppearanceMode === true}`;
@@ -64,7 +64,7 @@ export function saveUserSetting2BrowserCookieStore(userSettings: GetUserSettings
 	if (process.client) {
 		const currentThemeType = userSettings?.userSettings?.themeType || THEME_ENV.SYSTEM_THEME;
 		const themeColor = userSettings?.userSettings?.themeColor ? (PALETTE_LIST as unknown as string[]).includes(userSettings.userSettings.themeColor) ? userSettings.userSettings.themeColor : THEME_ENV.CUSTOM_THEME_COLOR : THEME_ENV.DEFAULT_THEME_COLOR;
-		const customerThemeColor = userSettings?.userSettings?.themeColor || "";
+		const themeColorCustom = userSettings?.userSettings?.themeColorCustom || "";
 		const isColoredSidebar = userSettings?.userSettings?.coloredSideBar || false;
 		const isSharpAppearanceMode = userSettings?.userSettings?.sharpAppearanceMode || false;
 		const isFlatAppearanceMode = userSettings?.userSettings?.flatAppearanceMode || false;
@@ -74,7 +74,7 @@ export function saveUserSetting2BrowserCookieStore(userSettings: GetUserSettings
 		document.cookie = `${COOKIE_KEY.isOfflineSettingsCookieKey}=false${userSettingsCookieBasicOption}`;
 		if (currentThemeType) document.cookie = `${COOKIE_KEY.themeTypeCookieKey}=${currentThemeType}${userSettingsCookieBasicOption}`;
 		if (themeColor) document.cookie = `${COOKIE_KEY.themeColorCookieKey}=${themeColor}${userSettingsCookieBasicOption}`;
-		if (customerThemeColor) document.cookie = `${COOKIE_KEY.customThemeColorCookieKey}=${customerThemeColor}${userSettingsCookieBasicOption}`;
+		if (themeColorCustom) document.cookie = `${COOKIE_KEY.themeColorCustomCookieKey}=${themeColorCustom}${userSettingsCookieBasicOption}`;
 		if (isColoredSidebar !== undefined && isColoredSidebar !== null) document.cookie = `${COOKIE_KEY.coloredSidebarCookieKey}=${isColoredSidebar}${userSettingsCookieBasicOption}`;
 		if (isSharpAppearanceMode !== undefined && isSharpAppearanceMode !== null) document.cookie = `${COOKIE_KEY.sharpAppearanceModeCookieKey}=${isSharpAppearanceMode}${userSettingsCookieBasicOption}`;
 		if (isFlatAppearanceMode !== undefined && isFlatAppearanceMode !== null) document.cookie = `${COOKIE_KEY.flatAppearanceModeCookieKey}=${isFlatAppearanceMode}${userSettingsCookieBasicOption}`;
@@ -94,6 +94,8 @@ export type UseKiraCookieOptions = {
 	 * 是否监听用户 login（完成）事件，并在 login（完成）后，从 cookie 中同步最新的 cookie 值，默认不开启以免重复监听，请仅在需要监听时显式手动开启 // WARN: 注意：开启此项会同时开启 isWatchCookieRef
 	 */
 	isListenLoginEvent?: boolean;
+	/** 如果不为假值，则防抖更新数据以及向后端同步数据，防抖的等待时间为该参数的值（单位：毫秒），默认为 undefined 不开启防抖 */
+	debounceWait?: number;
 };
 /**
  * 通过 useCookie 创建并返回一个 nuxt 响应式 cookie 对象，并在该响应式 cookie 的值被更新后调用 callback 方法 // TODO: 目前只支持监听在程序代码中显式更新的 cookie，比如通过 cookie.value 为 cookie 重新赋值，而不支持在客户端浏览器中更新的 cookie，或许 nuxt 3.10 之后有办法解决
@@ -109,6 +111,7 @@ export function useKiraCookie<T>(
 		isWatchCookieRef = false,
 		isSyncSettings = true,
 		isListenLoginEvent = false,
+		debounceWait = undefined,
 	}: UseKiraCookieOptions = {}): CookieRef<T> {
 	const userSettingsCookieBasicOption = { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false, watch: true };
 	const cookie = useCookie<T>(cookieKey, userSettingsCookieBasicOption);
@@ -118,13 +121,19 @@ export function useKiraCookie<T>(
 		const appSettingsStore = useAppSettingsStore();
 		const isAllowSyncThemeSettings = computed(() => appSettingsStore.isAllowSyncThemeSettings && selfUserInfoStore.isLogined && isSyncSettings);
 
+		let correctCallback = callback;
+		let correctCookieBinding = cookieBinding;
+		if (debounceWait && debounceWait > 0) { // 如果正确设置了防抖时间，则以防抖方式调用，否则直接调用
+			correctCallback = useDebounce(callback, debounceWait);
+			correctCookieBinding = useDebounce(cookieBinding, debounceWait);
+		}
 		if (isWatchCookieRef || isListenLoginEvent)
 			watch(cookie, cookieValue => { // 当设置值发送改变时，发送后端请求，并触发 cookieBinding 更新页面样式
 				if (process.client) {
 					localStorage.setItem(cookieKey, `${cookieValue}`); // WARN: 使用 useStorage 函数更新数据会导致 cookieBinding 中获取到的 localStorage 数据不是最新数据，可能是 vue 响应式延迟，所以此处使用原始的 localStorage 对象
 					if (isAllowSyncThemeSettings.value) // 如果允许同步样式设置，则发送后端请求，非阻塞
-						callback(cookieValue);
-					cookieBinding();
+						correctCallback(cookieValue);
+					correctCookieBinding();
 				}
 			});
 
@@ -135,7 +144,7 @@ export function useKiraCookie<T>(
 				// cookie.value = useCookie<T>(cookieKey, userSettingsCookieBasicOption).value; // TODO: nuxt 3.10 以后可以使用 refreshCookie 方法刷新 cookie，此行语句是否可以移除？
 			});
 	} catch (error) {
-		console.error("ERROR", "Error in useKiraCookie");
+		console.error("ERROR", "Error in useKiraCookie", error);
 	}
 
 	return cookie;
@@ -167,6 +176,17 @@ export class SyncUserSettings {
 	public static updateOrCreateUserThemeColorSetting(cookieValue: string) {
 		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
 			themeColor: cookieValue,
+		};
+		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
+	}
+
+	/**
+	 * 发送更新用户的 ThemeColorCustom 设置的请求
+	 * @param cookieValue ThemeColor 的新的值
+	 */
+	public static updateOrCreateUserThemeColorCustomSetting(cookieValue: string) {
+		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
+			themeColorCustom: cookieValue,
 		};
 		api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
 	}

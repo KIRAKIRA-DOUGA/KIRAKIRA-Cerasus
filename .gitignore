@@ -33,3 +33,6 @@ desktop.ini
 # Real-time generated files
 types/components-globalized.d.ts
 types/icons.d.ts
+
+# Env tokens
+scripts/crowdin/token.ts

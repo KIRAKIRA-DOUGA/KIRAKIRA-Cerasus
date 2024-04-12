@@ -27,11 +27,14 @@ const English: LocaleIdentifiers = {
 	palette: {
 		_: "Palette",
 		pink: "Kawaii Pink",
+		rose: "Rose Red",
 		sky: "Sky Blue",
 		blue: "Chino Blue",
 		green: "Chiya Green",
 		orange: "Cocoa Orange",
 		purple: "Rize Purple",
+		yellow: "Yellow",
+		red: "Red",
 	},
 	language: {
 		_: "Language",

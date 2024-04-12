@@ -6,6 +6,7 @@
 		"stylelint.vscode-stylelint",
 		"somewhatstationery.some-sass",
 		"mrmlnc.vscode-json5",
-		"gruntfuggly.todo-tree"
+		"gruntfuggly.todo-tree",
+		"usernamehw.errorlens"
 	]
 }

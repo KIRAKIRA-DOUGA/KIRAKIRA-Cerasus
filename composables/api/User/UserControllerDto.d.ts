@@ -296,11 +296,13 @@ export type BasicUserSettingsDto = {
 	themeType?: 'light' | 'dark' | 'system';
 	/** 主题颜色 - 字符串，颜色字符串 */
 	themeColor?: string;
+	/** 用户自定义主题颜色 - 字符串，HAX 颜色字符串，不包含井号 */
+	themeColorCustom?: string;
 	/** 壁纸（背景图 URL） - 字符串 */
 	wallpaper?: string;
 	/** 是否启用彩色导航栏 - 布尔 */
 	coloredSideBar?: boolean;
-	/** 节流模式 - 字符串，{standard: 标准, limit: 节流模式, preview: 超前加载}; */
+	/** 流量使用偏好 - 字符串，{standard: 标准, limit: 节省网络流量模式, preview: 超前加载} */
 	dataSaverMode?: 'standard' | 'limit' | 'preview';
 	/** 禁用搜索推荐 - 布尔 */
 	noSearchRecommendations?: boolean;
