@@ -41,8 +41,8 @@
 		"update-eases": "tsx scripts/update-eases.ts",
 		"compact-svg": "tsx scripts/compact-svg.ts",
 		"delete-node-modules": "npx rimraf --glob ./node_modules || npx rimraf --glob ./.nuxt",
-		"crowdin-update": "tsx scripts/crowdin/update.ts",
-		"crowdin-download": "tsx scripts/crowdin/download.ts"
+		"crowdin:update": "tsx scripts/crowdin/update.ts",
+		"crowdin:download": "tsx scripts/crowdin/download.ts"
 	},
 	"lint-staged": {
 		"*.{html,vue,css,sass,scss}": [
