@@ -2,7 +2,6 @@ import { createResolver, defineNuxtModule } from "@nuxt/kit";
 import { lstat, readFile, readdir, writeFile } from "fs/promises";
 import { throttle } from "lodash-es";
 import { parse, basename } from "path";
-import { enumerate } from "../../utils/array";
 import { environment } from "../../utils/environment";
 
 type WatchEvent = "update" | "remove";
@@ -14,7 +13,7 @@ export default defineNuxtModule({
 		if (environment.production) return;
 		const { resolve: localResolve } = createResolver(import.meta.url);
 		const { resolve } = createResolver(localResolve("../../.nuxt"));
-		
+
 		const registered = {
 			components: [] as string[],
 			classes: [] as string[],
@@ -43,8 +42,8 @@ export default defineNuxtModule({
 			registered.classes = classes.slice();
 			await writeFile(resolve("../types/", D_TS_NAME), (() => {
 				let result = "";
-				for (const [index, klass] of enumerate(classes, 1))
-					result += `import * as _${index} from "../classes/${klass}";\n`;
+				for (const [index, klass] of classes.entries())
+					result += `import * as _${index + 1} from "../classes/${klass}";\n`;
 				result += "\ndeclare global {\n";
 				result += "\t// components\n";
 				for (const component of components)
