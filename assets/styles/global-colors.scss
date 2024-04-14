@@ -3,19 +3,17 @@
 @use "theme/internal" as *;
 @use "theme/functions" as *;
 
-// 下面的内容是根据 Sass 映射自动转换为 CSS 属性的逻辑代码，不用动。
-
 // 将所有预设颜色放在根元素下以便调用，不与下方 class 合并是为了输出时只包含一个 :root。
 :root {
-	@each $palette, $color in $secondary-colors {
+	@each $palette, $color in $palette {
 		--#{"" + $palette}: #{$color};
 	}
 }
 
 // 使预设颜色可以直接通过 class 使用。
-@each $palette, $color in $secondary-colors {
+@each $palette, $color in $palette {
 	.#{"" + $palette} {
-		--accent-50: #{$color};
+		--accent-50: var(--#{$palette});
 	}
 }
 

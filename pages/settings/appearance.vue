@@ -3,15 +3,13 @@
 
 	const themeList = ["light", "dark", "system"] as const;
 	const paletteList = [
-		{ color: "pink", subtitle: "Kawaii Forever" },
-		{ color: "rose", subtitle: "" },
-		{ color: "sky", subtitle: "Jouga Maya" },
+		{ color: "pink", subtitle: "Hoto Kokoa" },
 		{ color: "blue", subtitle: "Kafuu Chino" },
-		{ color: "orange", subtitle: "Hoto Kokoa" },
 		{ color: "purple", subtitle: "Tedeza Rize" },
+		{ color: "yellow", subtitle: "Kirima Sharo" },
 		{ color: "green", subtitle: "Ujimatsu Chiya" },
-		{ color: "yellow", subtitle: "" },
-		{ color: "red", subtitle: "" },
+		{ color: "cyan", subtitle: "Joga Maya" },
+		{ color: "red", subtitle: "Natsu Megumi" },
 	] as const;
 	const paletteSection = ref<HTMLElement>();
 

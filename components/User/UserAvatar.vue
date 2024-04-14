@@ -57,6 +57,18 @@
 		background-color: c(gray-20);
 		cursor: pointer;
 
+		.colored-sidebar & {
+			background-color: c(main-bg, 20%);
+
+			&:any-hover {
+				background-color: c(main-bg, 40%);
+			}
+
+			.icon {
+				color: white;
+			}
+		}
+
 		> img {
 			@include square(100%);
 			z-index: 1;
