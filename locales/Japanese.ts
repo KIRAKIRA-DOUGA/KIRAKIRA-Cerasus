@@ -26,12 +26,13 @@ const Japanese: LocaleIdentifiers = {
 	},
 	palette: {
 		_: "色",
-		pink: "カワイイ ピンク",
-		sky: "空色",
+		pink: "ココア ピンク",
 		blue: "チノ 青",
-		green: "千夜 緑",
-		orange: "ココア オレンジ",
 		purple: "リゼ 紫",
+		yellow: "シャロ 黄",
+		green: "千夜 緑",
+		cyan: "マヤ シアン",
+		red: "メグ 赤",
 	},
 	language: {
 		_: "言語",

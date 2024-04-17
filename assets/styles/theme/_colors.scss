@@ -53,18 +53,16 @@ $mixed-colors: (
 	neutral-50: (#666 93%, #eee 93%), // icon-color
 );
 
-// 次要主题色
+// 预设颜色
 // 此处的颜色各主题色均保持固定不变。
-$secondary-colors: (
+$palette: (
 	pink: #f06e8e,
-	rose: #f06e7e,
-	sky: #45b3e1,
 	blue: #4581e1,
-	green: #4bb530,
-	orange: #f9a400,
-	purple: #bb35ea,
-	red: #dd1818,
+	purple: #b044b0,
 	yellow: #f98d00,
+	green: #4bb530,
+	cyan: #199bb6,
+	red: #dd1818,
 );
 
 // 各状态所用颜色值

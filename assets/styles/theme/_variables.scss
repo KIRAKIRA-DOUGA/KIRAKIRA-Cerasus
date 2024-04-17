@@ -13,7 +13,7 @@ $fallback-transitions: all $ease-out-expo 250ms, color $ease-out-expo 100ms, fil
 $pan-unicode-fonts: TH-Times, "TH-Tshyn-P0", "TH-Tshyn-P1", "TH-Tshyn-P2", "TH-Tshyn-P16", "Arial Unicode MS", Unifont, "Unifont Upper";
 $emoji-fonts: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", emoji;
 $fallback-fonts: "Microsoft YaHei", "Microsoft JhengHei", SimHei, sans-serif, $emoji-fonts, $pan-unicode-fonts;
-$english-fonts: "Inter Variable", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", "Roboto Flex", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", Tahoma, Geneva, Verdana, "Helvetica Neue", Helvetica, Arial/* , Monu */;
+$english-fonts: -apple-system, BlinkMacSystemFont, "Inter Variable", "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", "Roboto Flex", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", Tahoma, Geneva, Verdana, "Helvetica Neue", Helvetica, Arial/* , Monu */;
 $schinese-fonts: $english-fonts, "PingFang SC", "HarmonyOS Sans SC", MiSans, "Noto Sans CJK SC", "Source Han Sans SC", $fallback-fonts;
 $tchinese-fonts: $english-fonts, "PingFang TC", "Noto Sans CJK TC", "Source Han Sans TC", "Microsoft JhengHei", $fallback-fonts;
 $japanese-fonts: $english-fonts, "Yu Gothic UI", "Hiragino Kaku Gothic ProN", "Hiragino Kaku Gothic Pro W3", "Meiryo UI", "MS UI Gothic", "Noto Sans CJK JP", "Source Han Sans", $fallback-fonts;

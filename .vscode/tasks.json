@@ -129,16 +129,16 @@
 		},
 		{
 			"type": "npm",
-			"script": "crowdin-update",
+			"script": "crowdin:update",
 			"problemMatcher": [],
-			"label": "Crowdin/Update",
+			"label": "Crowdin: Update",
 			"detail": "Update source language file to Crowdin - 将源语言文件更新到 Crowdin",
 		},
 		{
 			"type": "npm",
-			"script": "crowdin-download",
+			"script": "crowdin:download",
 			"problemMatcher": [],
-			"label": "Crowdin/Download",
+			"label": "Crowdin: Download",
 			"detail": "Download translated language file from Crowdin - 从 Crowdin 下载翻译好的语言文件",
 		},
 	]

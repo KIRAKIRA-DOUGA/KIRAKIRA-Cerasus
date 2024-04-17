@@ -124,18 +124,6 @@ export function arrayMapObject<T, K extends ObjectKey, U>(array: T[], callbackFn
 }
 
 /**
- * 类似于 Python 的 `enumerate` 函数。
- *
- * `enumerate()` 函数用于将一个可遍历的数据对象（如列表、元组或字符串）组合为一个索引序列，同时列出数据和数据下标，一般用在 for...of 循环当中。
- * @param array - 一个序列、迭代器或其他支持迭代对象。
- * @param start - 下标起始位置的值，默认为 0。
- * @returns 返回依次包含索引值、元素值、源数组的元组。
- */
-export function enumerate<T>(array: T[], start: number = 0) {
-	return array.map((value, index, array) => [index + start, value, array] as const);
-}
-
-/**
  * 数组去重。
  * @param array - 数组。
  * @returns 注意是会返回一个新的数组。
