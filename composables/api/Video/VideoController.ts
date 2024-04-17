@@ -167,5 +167,5 @@ export async function uploadVideoCover(fileName: string, videoCoverBlobData: Blo
  * @returns 上传视频的请求响应
  */
 export async function commitVideo(uploadVideoRequest: UploadVideoRequestDto): Promise<UploadVideoResponseDto> {
-	return await POST(`${VIDEO_API_URI}/upload`, uploadVideoRequest) as UploadVideoResponseDto;
+	return await POST(`${VIDEO_API_URI}/upload`, uploadVideoRequest, { credentials: "include" }) as UploadVideoResponseDto;
 }

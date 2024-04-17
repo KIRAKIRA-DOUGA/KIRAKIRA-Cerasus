@@ -37,7 +37,7 @@
 					videoDetails.value = {
 						videoPart: videoData.videoPart ?? [],
 						title: videoData.title ?? "",
-						videoTags: videoData.videoTags ?? [],
+						videoTagList: videoData.videoTagList ?? [],
 						uploaderInfo: videoData.uploaderInfo,
 						uploadDate: videoData.uploadDate,
 						videoId: kvid,
@@ -55,7 +55,7 @@
 			videoDetails.value = {
 				videoPart: [{ id: 0, videoPartTitle: "柴又", link: exampleVideoPath }],
 				title: "柴又",
-				videoTags: [{ tagId: 1, tag: "233" }, { tagId: 1, tag: "天下笨蛋是一家" }, { tagId: 1, tag: "艾拉原创出品" }],
+				videoTagList: [{ tagId: -1, tagNameList: [{ lang: "default", tagName: "233" }] }, { tagId: -1, tagNameList: [{ lang: "default", tagName: "天下笨蛋是一家" }] }, { tagId: -1, tagNameList: [{ lang: "default", tagName: "艾拉原创出品" }] }],
 				uploaderInfo: { uid: -1, username: "艾了个拉" },
 				uploadDate: new Date().getTime(),
 				videoId: 0,
@@ -121,7 +121,7 @@
 					:title="videoDetails?.title ?? ''"
 					:videoId="videoDetails?.videoId ?? NaN"
 					:copyright="(videoDetails?.copyright! as Copyright)"
-					:tags="videoDetails?.videoTags.map(tag => tag.tag) ?? []"
+					:tags="videoDetails?.videoTagList.map(tag => tag.tagNameList?.[0].tagName) ?? []"
 					:cover="videoDetails?.image"
 				/>
 

@@ -1,3 +1,5 @@
+import { VideoTag } from './VideoTagControllerDto.js'
+
 /**
  * 单个视频分 P 数据参数
  */
@@ -8,18 +10,6 @@ type VideoPartDto = {
 	videoPartTitle: string;
 	/** 视频直链 */
 	link: string;
-};
-
-/**
- * 视频 TAG 的数据
- */
-type VideoTagDto = {
-	/** 非空 - 视频的 TAG ID */
-	tagId: number;
-	/** 非空 - 视频 TAG 的名称 */
-	tag: string;
-	/** TAG 描述 */
-	description?: string;
 };
 
 /**
@@ -51,7 +41,7 @@ export type UploadVideoRequestDto = {
 	/** 声明为原创 */
 	ensureOriginal: boolean;
 	/** 视频 TAG */
-	videoTags: VideoTagDto[];
+	videoTagList: VideoTag[];
 };
 
 /**
@@ -119,6 +109,8 @@ type UploaderInfoDto = {
 	uid: number;
 	/** 用户名 */
 	username?: string;
+	/** 用户昵称 */
+	userNickname?: string;
 	/** 用户头像的链接 */
 	avatar?: string;
 	/** 用户背景图片的链接 */
@@ -164,7 +156,7 @@ export type GetVideoByKvidResponseDto = {
 		/** 视频版权 */
 		copyright: string;
 		/** 视频 TAG */
-		videoTags: VideoTagDto[];
+		videoTagList: VideoTag[];
 	};
 };
 

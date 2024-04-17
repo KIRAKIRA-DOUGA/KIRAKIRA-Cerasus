@@ -178,7 +178,7 @@
 			originalLink: originalLink.value,
 			pushToFeed: pushToFeed.value,
 			ensureOriginal: ensureOriginal.value,
-			videoTags: [], // TODO: 视频标签
+			videoTagList: [], // TODO: 视频标签
 		};
 		isCommitButtonLoading.value = true;
 		const commitVideoResult = await api.video.commitVideo(uploadVideoRequest);
@@ -208,11 +208,11 @@
 	watch(copyright, copyright => clearCopyrightData(copyright));
 
 	/**
-	 * 组件加载后等待三秒开始上传视频
+	 * 组件加载后等待三秒开始上传视频文件
 	 */
-	onMounted(() => setTimeout(() => {
-		tusUpload(props.files);
-	}, 3000));
+	// onMounted(() => setTimeout(() => {
+	// 	tusUpload(props.files);
+	// }, 3000));
 
 	const [onContentEnter, onContentLeave] = simpleAnimateSize("height", 500, eases.easeInOutSmooth);
 	const flyoutTag = ref<FlyoutModel>();
@@ -325,7 +325,7 @@
 					<section>
 						<Subheader icon="details">{{ t.description }}</Subheader>
 						<TextBox v-model="description" required />
-						<!-- 这里放简介，需要富文本编辑器 -->
+						<!-- TODO: 这里放简介，需要富文本编辑器 -->
 					</section>
 
 					<ToggleSwitch v-model="pushToFeed" icon="feed">{{ t.push_to_feed }}</ToggleSwitch>

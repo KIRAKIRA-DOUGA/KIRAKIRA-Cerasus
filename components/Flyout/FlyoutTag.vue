@@ -7,9 +7,20 @@
 	const matchedTags = ref<string[]>([]);
 	const showCreateNew = ref(false);
 	const showTagEditor = ref(false);
-	const languages = ["简体中文", "英语", "日语", "繁体中文", "韩语", "越南语", "印尼语", "阿拉伯语", "西班牙语", "葡萄牙语", "其它"] as const;
+	const languages = [
+		{ langId: "zhs", langName: t.language.zhs },
+		{ langId: "en", langName: t.language.en },
+		{ langId: "ja", langName: t.language.ja },
+		{ langId: "zht", langName: t.language.zht },
+		{ langId: "ko", langName: t.language.ko },
+		{ langId: "vi", langName: t.language.vi },
+		{ langId: "id", langName: t.language.id },
+		{ langId: "ar", langName: "阿拉伯语" }, // TODO: 使用多语言
+		{ langId: "other", langName: "其它" }, // TODO: 使用多语言
+	] as const;
 	type LanguageList = typeof languages[number];
-	const editor = reactive<{ language: LanguageList | ""; values: string[]; default: string | null }[]>([]);
+	type EditorType = { language: LanguageList | { langId: ""; langName: "" }; values: string[]; default: string | null }[];
+	const editor = reactive<EditorType>([]);
 	const availableLanguages = ref<LanguageList[][]>([]);
 
 	/**
@@ -27,18 +38,89 @@
 	}
 
 	/**
+	 * TAG 编辑器生成的数据转换为适用于后端存储的格式
+	 * @param editor TAG 编辑器数据
+	 * @returns 适于存储的 TAG 数据
+	 *
+	 * @example
+	 * 假设有如下数据：
+	 * const foo = [
+	 *		{
+	 *			default: "StarCitizen",
+	 *			language: {
+	 *				langId: "en",
+	 *				langName: "",
+	 *			},
+	 *			value: ["StarCitizen", "SC"],
+	 *		}, {
+	 *			default: null,
+	 *			language: {
+	 *				langId: "zhs",
+	 *				langName: "",
+	 *			},
+	 *			value: ["星际公民"],
+	 *		},
+	 *	]
+	 *
+	 * 执行 editorData2Dto(foo), 结果为：
+	 *	{
+	 *		tagNameList: [
+	 *			{
+	 *				lang: "en",
+	 *				tagName: [
+	 *					{
+	 *						name: "StarCitizen",
+	 *						isDefault: true,
+	 *						isOriginalTagName: false,
+	 *					}, {
+	 *						name: "SC",
+	 *						isDefault: false,
+	 *						isOriginalTagName: false,
+	 *					},
+	 *				],
+	 *			}, {
+	 *				lang: "zhs",
+	 *				tagName: [
+	 *					{
+	 *						name: "星际公民",
+	 *						isDefault: false,
+	 *						isOriginalTagName: false,
+	 *					},
+	 *				],
+	 *			},
+	 *		],
+	 *	}
+	 */
+	function editorData2Dto(editor: EditorType): CreateVideoTagRequestDto {
+		const tagNameList = editor.filter(tag => !!tag.language.langId || !!tag.values?.[0]).map(filteredTag => {
+			return {
+				lang: filteredTag.language.langId,
+				tagName: filteredTag.values.map(tagName => {
+					return {
+						name: tagName,
+						isDefault: tagName === filteredTag.default, // TODO: 如果没有指定默认 TAG 怎么办？
+						isOriginalTagName: false, // TODO: 是否为原始 TAG
+					};
+				}),
+			};
+		});
+		return { tagNameList };
+	}
+
+	/**
 	 * 切换标签编辑器。
 	 * @param shown - 是否显示？
 	 */
-	function switchTagEditor(shown: true | "ok" | "cancel") {
+	async function switchTagEditor(shown: true | "ok" | "cancel") {
 		if (shown === "ok") {
+			const result = await api.videoTag.createVideoTag(editorData2Dto(editor));
 			flyout.value = undefined;
 			onFlyoutHide();
 		} else if (shown === "cancel") showTagEditor.value = false;
 		else {
 			const text = search.value.trim().replaceAll(/\s+/g, " ");
 			arrayClearAll(editor);
-			editor.push({ language: "", values: [text], default: null }); // 正式上线时把下面的范例 tag 去掉，然后把这行代码取消注释。
+			editor.push({ language: { langId: "", langName: "" }, values: [text], default: null }); // 正式上线时把下面的范例 tag 去掉，然后把这行代码取消注释。
 			/* editor.push(
 				{ language: "英语", values: ["Minecraft", "MC"], default: "Minecraft" },
 				{ language: "简体中文", values: ["我的世界", "当个创世神"], default: "我的世界" },
@@ -49,18 +131,18 @@
 	}
 
 	watch(editor, editor => {
-		if (editor.at(-1)?.language !== "")
-			editor.push({ language: "", values: [], default: null });
+		if (editor.at(-1)?.language.langId !== "")
+			editor.push({ language: { langId: "", langName: "" }, values: [], default: null });
 		availableLanguages.value = [];
-		const allComboBoxLanguages = editor.map(item => item.language);
+		const allComboBoxLanguages = editor.map(item => item.language.langId);
 		editor.forEach(({ language, default: def }, index) => {
 			if (!language && def) {
 				editor[index].default = null;
 				useToast(t.toast.no_language_selected, "warning");
 			}
 			availableLanguages.value[index] = languages.filter(lang => {
-				if (lang === language) return true;
-				else if (allComboBoxLanguages.includes(lang)) return false;
+				if (lang.langId === language.langId) return true;
+				else if (allComboBoxLanguages.includes(lang.langId)) return false;
 				else return true;
 			});
 		});
@@ -115,8 +197,8 @@
 					<div class="list-wrapper">
 						<div class="list">
 							<template v-for="(item, index) in editor" :key="index">
-								<ComboBox v-model="item.language" :placeholder="t.unselected.language">
-									<ComboBoxItem v-for="lang in availableLanguages[index]" :id="lang" :key="lang">{{ lang }}</ComboBoxItem>
+								<ComboBox v-model="item.language.langId" :placeholder="t.unselected.language">
+									<ComboBoxItem v-for="lang in availableLanguages[index]" :id="lang.langId" :key="lang.langId">{{ lang.langName }}</ComboBoxItem>
 								</ComboBox>
 								<TagsEditor v-model="item.values" v-model:default="item.default" />
 							</template>
@@ -263,8 +345,7 @@
 		.list-wrapper {
 			position: relative;
 			height: 100%;
-			overflow-x: hidden;
-			overflow-y: auto; // FIXME: 开启页面滚动，但是会导致打开下拉菜单时，元素溢出到外面。
+			overflow: hidden auto; // FIXME: 开启页面滚动，但是会导致打开下拉菜单时，元素溢出到外面。
 		}
 
 		.list {

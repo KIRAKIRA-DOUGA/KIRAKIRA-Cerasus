@@ -62,7 +62,6 @@
 		role="checkbox"
 		:aria-checked="isChecked"
 		aria-label="tag"
-		@click="model = !model"
 	>
 		<div class="circle"></div>
 		<div class="content">
