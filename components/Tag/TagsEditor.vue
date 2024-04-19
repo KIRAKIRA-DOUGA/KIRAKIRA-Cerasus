@@ -187,6 +187,7 @@
 				:key="key"
 				v-model:input="tagsWithKeyProxy[key]"
 				:placeholder="t.press_enter_to_add"
+				:checkable="def === tag"
 				:checked="def === tag"
 				@change="updateTags(key)"
 				@mouseenter="e => showContextualToolbar(key, tag, e)"

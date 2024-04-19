@@ -314,7 +314,7 @@
 						<Subheader icon="tag">{{ t(2).tag }}</Subheader>
 						<div class="tags">
 							<Tag v-for="tag in tags" :key="tag" :query="{ q: tag }">{{ tag }}</Tag>
-							<Tag class="add-tag" @click="e => flyoutTag = [e, 'y']">
+							<Tag class="add-tag" :checkable="false" @click="e => flyoutTag = [e, 'y']">
 								<Icon name="add" />
 							</Tag>
 						</div>
