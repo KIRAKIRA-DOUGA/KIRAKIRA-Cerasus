@@ -22,7 +22,7 @@
 		change: [value: string];
 	}>();
 
-	const model = defineModel<boolean>();
+	const model = defineModel<boolean>({ default: undefined });
 	const input = defineModel<string>("input");
 	const editable = computed(() => input.value !== undefined);
 	const isChecked = withOneWayProp(model, () => props.checked);
@@ -62,7 +62,7 @@
 		role="checkbox"
 		:aria-checked="isChecked"
 		aria-label="tag"
-		@click="model = !model"
+		@click="model != null && (model = !model)"
 	>
 		<div class="circle"></div>
 		<div class="content">
