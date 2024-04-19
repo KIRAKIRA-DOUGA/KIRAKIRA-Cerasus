@@ -71,6 +71,18 @@
 			font-family: inherit;
 			font-feature-settings: inherit;
 		}
+
+		&.secondary {
+			--appearance: secondary;
+		}
+
+		&.tertiary {
+			--appearance: tertiary;
+		}
+
+		&.icon-behind {
+			--icon-behind: true;
+		}
 	}
 
 	.button-content {
@@ -116,7 +128,8 @@
 			@include button-shadow-focus;
 		}
 
-		button:any-hover > & { // 在触摸屏上不要支持 hover 样式。
+		button:any-hover > & {
+			// 在触摸屏上不要支持 hover 样式。
 			@include button-shadow-hover;
 			background-color: c(accent-hover);
 		}
@@ -153,6 +166,7 @@
 
 			button[disabled] > & {
 				color: c(accent-disabled);
+				background-color: transparent !important;
 			}
 		}
 
@@ -171,6 +185,7 @@
 
 			button[disabled] > & {
 				color: c(gray-40);
+				background-color: transparent !important;
 			}
 		}
 	}
@@ -225,14 +240,6 @@
 	.link {
 		@include square(100%);
 		position: absolute !important;
-	}
-
-	button.secondary {
-		--appearance: secondary;
-	}
-
-	button.icon-behind {
-		--icon-behind: true;
 	}
 
 	.progress-bar:deep {
