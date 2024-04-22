@@ -156,7 +156,6 @@
 	 * @param tag 用户点击的 TAG 数据。
 	 */
 	function addTag(tag: VideoTag) {
-		console.log("tttttttttttttt", tag);
 		if (tag.tagId) tags.value?.set(tag.tagId, tag);
 	}
 
