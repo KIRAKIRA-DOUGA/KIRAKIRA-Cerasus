@@ -11,7 +11,7 @@
 		/** 视频 ID。 */
 		videoId: number;
 		/** 标签们。 */
-		tags?: string[];
+		tags?: DisplayVideoTagType[];
 		/** 封面地址 */
 		cover?: string;
 	}>(), {
@@ -53,10 +53,16 @@
 		<div class="tags">
 			<Tag
 				v-for="tag in tags"
-				:key="tag"
+				:key="tag.tagId"
 				link="/search"
-				:query="{ q: tag }"
-			>{{ tag }}</Tag>
+				:query="{ q: tag.tagId }"
+			>
+				<div v-if="tag.tagNameList[0]" class="display-tag">
+					<div v-if="tag.defaultTagName">{{ tag.defaultTagName }}</div>
+					<div v-if="tag.originTagName">{{ tag.originTagName }}</div>
+					<div v-if="tag.tagNameList[0]" class="tag-name">{{ tag.tagNameList[0] }}</div>
+				</div>
+			</Tag>
 			<Tag class="add-tag" @click="e => flyoutTag = [e, 'y']"><Icon name="add" /></Tag>
 		</div>
 		<FlyoutTag v-model="flyoutTag" />
@@ -98,6 +104,16 @@
 			color: c(icon-color);
 			font-size: 18px;
 			aspect-ratio: 1 / 1;
+		}
+	}
+
+	.display-tag {
+		display: flex;
+		flex-direction: row;
+
+		.tag-name {
+			padding-left: 0.5em;
+			color: c(gray-50)
 		}
 	}
 </style>

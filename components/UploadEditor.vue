@@ -13,7 +13,8 @@
 	const thumbnailBlob = ref<string>(); // 封面图 Blob
 	const thumbnailUrl = ref<string>("../public/static/images/thumbnail.png"); // 封面图 Blob // FIXME: Nuxt Image 的 src 为 undefined 或 "" 时会出错，见 https://github.com/nuxt/image/issues/1299
 	const thumbnailInput = ref<HTMLInputElement>();
-	const tags = ref<string[]>([]); // 视频标签
+	const tags = reactive< Map<VideoTag["tagId"], VideoTag> >(new Map()); // 视频标签
+	const currentLanguage = computed(getCurrentLocale); // 当前用户的语言
 	const description = ref(""); // 视频简介
 	const uploadProgress = ref(0); // 视频上传进度
 	const cloudflareVideoId = ref<string>(); // Cloudflare 视频 ID
@@ -178,18 +179,24 @@
 			originalLink: originalLink.value,
 			pushToFeed: pushToFeed.value,
 			ensureOriginal: ensureOriginal.value,
-			videoTagList: [], // TODO: 视频标签
+			videoTagList: tags ? [...tags.values()] : [],
 		};
 		isCommitButtonLoading.value = true;
-		const commitVideoResult = await api.video.commitVideo(uploadVideoRequest);
-		const videoId = commitVideoResult?.videoId;
-		if (commitVideoResult.success && videoId) { // TODO: 视频投稿成功后要做的操作（TODO: 暂时是等待 1 秒后显示纸屑然后跳转到视频页，以后可能需要修改）
-			console.log("INFO", `视频投稿成功, KVID: ${videoId}`);
-			setTimeout(() => {
-				isCommitButtonLoading.value = false;
-				showConfetti(); // 显示五彩纸屑。
-				navigate(`/video/kv${videoId}`);
-			}, 1000);
+		try {
+			const commitVideoResult = await api.video.commitVideo(uploadVideoRequest);
+			const videoId = commitVideoResult?.videoId;
+			if (commitVideoResult.success && videoId) { // TODO: 视频投稿成功后要做的操作（TODO: 暂时是等待 1 秒后显示纸屑然后跳转到视频页，以后可能需要修改）
+				console.log("INFO", `视频投稿成功, KVID: ${videoId}`);
+				setTimeout(() => {
+					isCommitButtonLoading.value = false;
+					showConfetti(); // 显示五彩纸屑。
+					navigate(`/video/kv${videoId}`);
+				}, 1000);
+			}
+		} catch (error) {
+			isCommitButtonLoading.value = false;
+			useToast("视频上传失败", "error"); // TODO: 使用多语言
+			console.error("ERROR", "视频提交失败：", error);
 		}
 	}
 
@@ -210,9 +217,9 @@
 	/**
 	 * 组件加载后等待三秒开始上传视频文件
 	 */
-	// onMounted(() => setTimeout(() => {
-	// 	tusUpload(props.files);
-	// }, 3000));
+	onMounted(() => setTimeout(() => {
+		tusUpload(props.files);
+	}, 3000));
 
 	const [onContentEnter, onContentLeave] = simpleAnimateSize("height", 500, eases.easeInOutSmooth);
 	const flyoutTag = ref<FlyoutModel>();
@@ -313,14 +320,14 @@
 					<section>
 						<Subheader icon="tag">{{ t(2).tag }}</Subheader>
 						<div class="tags">
-							<Tag v-for="tag in tags" :key="tag" :query="{ q: tag }">{{ tag }}</Tag>
+							<Tag v-for="tag in tags" :key="tag[1].tagId" :query="{ q: tag[1].tagId }">{{ getVideoTagNaveWithCurrentLanguage(currentLanguage, tag[1])?.tagNameList[0] }}</Tag>
 							<Tag class="add-tag" :checkable="false" @click="e => flyoutTag = [e, 'y']">
 								<Icon name="add" />
 							</Tag>
 						</div>
 					</section>
 
-					<FlyoutTag v-model="flyoutTag" />
+					<FlyoutTag v-model="flyoutTag" v-model:tags="tags" />
 
 					<section>
 						<Subheader icon="details">{{ t.description }}</Subheader>

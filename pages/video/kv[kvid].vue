@@ -13,6 +13,7 @@
 	const thumbnail = computed(() => videoDetails.value?.image || defaultThumbnail);
 	const comments = ref<GetVideoCommentByKvidResponseDto["videoCommentList"]>([]);
 	const commentsCount = ref<number>(0);
+	const currentLanguage = computed(getCurrentLocale); // 当前用户的语言
 	// const recommendations = ref<Videos200ResponseVideosInner[]>();
 	type VideoData = GetVideoByKvidResponseDto["video"];
 
@@ -121,7 +122,7 @@
 					:title="videoDetails?.title ?? ''"
 					:videoId="videoDetails?.videoId ?? NaN"
 					:copyright="(videoDetails?.copyright! as Copyright)"
-					:tags="videoDetails?.videoTagList.map(tag => tag.tagNameList?.[0].tagName) ?? []"
+					:tags="videoDetails?.videoTagList.map(tag => getVideoTagNaveWithCurrentLanguage(currentLanguage, tag)) ?? []"
 					:cover="videoDetails?.image"
 				/>
 

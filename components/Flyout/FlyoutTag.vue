@@ -1,12 +1,12 @@
 <script setup lang="ts">
 	const flyout = defineModel<FlyoutModel>();
-
+	const tags = defineModel< Map<VideoTag["tagId"], VideoTag> >("tags"); // TAG 数据
 	const search = ref("");
 	const isSearched = computed(() => !!search.value.trim());
-	const allTags = ["Minecraft", "音MAD", "OS", "NOVA", "UTAU", "Vocaloid", "2号", "niconico", "House Music", "EDM"];
-	const matchedTags = ref<string[]>([]);
-	const showCreateNew = ref(false);
-	const showTagEditor = ref(false);
+	const matchedTags = ref<VideoTag[]>([]);
+	const showCreateNew = ref(false); // 是否显示 “创建 TAG” 按钮
+	const showTagEditor = ref(false); // 是否显示 TAG（创建）编辑器
+	const isCreatingTag = ref(false); // 是否正在创建 TAG
 	const languages = [
 		{ langId: "zhs", langName: t.language.zhs },
 		{ langId: "en", langName: t.language.en },
@@ -17,24 +17,36 @@
 		{ langId: "id", langName: t.language.id },
 		{ langId: "ar", langName: "阿拉伯语" }, // TODO: 使用多语言
 		{ langId: "other", langName: "其它" }, // TODO: 使用多语言
-	] as const;
+	] as const; // 可选语言列表
 	type LanguageList = typeof languages[number];
 	type EditorType = { language: LanguageList | { langId: ""; langName: "" }; values: string[]; default: string | null }[];
-	const editor = reactive<EditorType>([]);
-	const availableLanguages = ref<LanguageList[][]>([]);
+	const editor = reactive<EditorType>([]); // TAG 编辑器实例
+	const availableLanguages = ref<LanguageList[][]>([]); // 除去用户已经选择的语言之外的其他语言
+	const currentLanguage = computed(getCurrentLocale); // 当前用户的语言
+
+	/**
+	 * 搜索视频 TAG
+	 */
+	async function searchVideoTag() {
+		showCreateNew.value = true;
+		const text = halfwidth(search.value.trim().replaceAll(/\s+/g, " ").toLowerCase());
+		if (text) {
+			const result = await api.videoTag.searchVideoTag({ tagNameSearchKey: text });
+			if (result?.success && result.result && result.result.length > 0) {
+				matchedTags.value = result.result;
+				const hasSameWithInput = result.result.some(tag => tag.tagNameList.some(tagNameList => tagNameList.tagName.some(tagName => halfwidth(tagName.name.trim().replaceAll(/\s+/g, " ").toLowerCase()) === text)));
+				if (hasSameWithInput) showCreateNew.value = false;
+				else showCreateNew.value = true;
+			} else showCreateNew.value = true;
+		}
+	}
+	const debounceVideoTagSearcher = useDebounce(searchVideoTag, 500);
 
 	/**
 	 * 用户在搜索框内输入文本时的事件。
 	 */
-	function onInput() {
-		let hasSame = false;
-		const text = halfwidth(search.value.trim().replaceAll(/\s+/g, " ").toLowerCase());
-		matchedTags.value = allTags.filter(tag => {
-			const normalizedTag = halfwidth(tag.toLowerCase());
-			if (normalizedTag === text) hasSame = true;
-			return normalizedTag.includes(text);
-		});
-		showCreateNew.value = !hasSame;
+	async function onInput() {
+		await debounceVideoTagSearcher();
 	}
 
 	/**
@@ -91,7 +103,7 @@
 	 *		],
 	 *	}
 	 */
-	function editorData2Dto(editor: EditorType): CreateVideoTagRequestDto {
+	function editorData2TagDto(editor: EditorType): CreateVideoTagRequestDto {
 		const tagNameList = editor.filter(tag => !!tag.language.langId || !!tag.values?.[0]).map(filteredTag => {
 			return {
 				lang: filteredTag.language.langId,
@@ -108,26 +120,44 @@
 	}
 
 	/**
+	 * 检查 TAG 数据是否合法
+	 * @param createVideoTagRequest TAG 数据
+	 * @returns boolean 合法返回 true, 不合法返回 false
+	 */
+	function checkTagData(createVideoTagRequest: CreateVideoTagRequestDto): boolean {
+		return createVideoTagRequest.tagNameList.filter(tag => !!tag.lang && tag.tagName.length > 0).length > 0;
+	}
+
+	/**
 	 * 切换标签编辑器。
 	 * @param shown - 是否显示？
 	 */
 	async function switchTagEditor(shown: true | "ok" | "cancel") {
 		if (shown === "ok") {
-			const result = await api.videoTag.createVideoTag(editorData2Dto(editor));
-			flyout.value = undefined;
-			onFlyoutHide();
+			const tagData = editorData2TagDto(editor);
+			if (checkTagData(tagData)) {
+				isCreatingTag.value = true;
+				const result = await api.videoTag.createVideoTag(tagData);
+				if (result.result?.tagId) tags.value?.set(result.result.tagId, result.result);
+				isCreatingTag.value = false;
+				onFlyoutHide();
+			} else useToast(t.toast.no_language_selected, "warning");
 		} else if (shown === "cancel") showTagEditor.value = false;
 		else {
 			const text = search.value.trim().replaceAll(/\s+/g, " ");
 			arrayClearAll(editor);
-			editor.push({ language: { langId: "", langName: "" }, values: [text], default: null }); // 正式上线时把下面的范例 tag 去掉，然后把这行代码取消注释。
-			/* editor.push(
-				{ language: "英语", values: ["Minecraft", "MC"], default: "Minecraft" },
-				{ language: "简体中文", values: ["我的世界", "当个创世神"], default: "我的世界" },
-				{ language: "日语", values: ["マインクラフト", "マイクラ"], default: "マインクラフト" },
-			); */
+			editor.push({ language: { langId: "", langName: "" }, values: [text], default: null });
 			showTagEditor.value = true;
 		}
+	}
+
+	/**
+	 * 用户点击一个搜索到的 TAG，将其添加到视频 TAG 列表中。
+	 * @param tag 用户点击的 TAG 数据。
+	 */
+	function addTag(tag: VideoTag) {
+		console.log("tttttttttttttt", tag);
+		if (tag.tagId) tags.value?.set(tag.tagId, tag);
 	}
 
 	watch(editor, editor => {
@@ -170,9 +200,9 @@
 							</div>
 							<div v-else class="list">
 								<TransitionGroup>
-									<div v-for="tag in matchedTags" :key="tag" v-ripple class="list-item">
-										<div class="content">
-											<p class="title">{{ tag }}</p>
+									<div v-for="tag in matchedTags" :key="tag.tagId" v-ripple class="list-item">
+										<div class="content" @click="addTag(tag)">
+											<p class="title">{{ getVideoTagNaveWithCurrentLanguage(currentLanguage, tag)?.tagNameList[0] }}</p>
 											<p class="count">{{ t(100).video_count(100) }}</p>
 										</div>
 										<div class="trailing-icons">
@@ -205,8 +235,8 @@
 						</div>
 					</div>
 					<div class="submit">
-						<Button class="secondary" @click="switchTagEditor('cancel')">{{ t.step.cancel }}</Button>
-						<Button @click="switchTagEditor('ok')">{{ t.step.ok }}</Button>
+						<Button class="secondary" :disabled="isCreatingTag" @click="switchTagEditor('cancel')">{{ t.step.cancel }}</Button>
+						<Button :disabled="isCreatingTag" :loading="isCreatingTag" @click="switchTagEditor('ok')">{{ t.step.ok }}</Button>
 					</div>
 				</div>
 			</Transition>
