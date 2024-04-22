@@ -7,7 +7,6 @@
 	},
 	"private": true,
 	"type": "module",
-	"packageManager": "pnpm@*",
 	"module": "esnext",
 	"repository": {
 		"type": "git",
