@@ -86,6 +86,12 @@
 			await getHomeVideo();
 	}
 
+	/** 创建防抖视频搜索 */
+	const debounceVideoSearcher = useDebounce(searchVideo, 500);
+
+	/** 监听路由中的关键词，如果发生变化，则防抖搜索视频 */
+	watch(querySearch, debounceVideoSearcher);
+
 	await searchVideo();
 
 	// 向路由中更新搜索的关键字
@@ -123,7 +129,7 @@
 
 			<div class="right">
 				<div class="toolbox-card search">
-					<TextBox v-model="data.search" :placeholder="t.search" icon="search" @keyup.enter="searchVideo" />
+					<TextBox v-model="data.search" :placeholder="t.search" icon="search" />
 					<div class="tags">
 						<TransitionGroup>
 							<Tag
