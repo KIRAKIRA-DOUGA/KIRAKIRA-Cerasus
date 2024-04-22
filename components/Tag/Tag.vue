@@ -2,8 +2,6 @@
 	import { LocaleLink } from "#components";
 
 	const props = withDefaults(defineProps<{
-		/** 能否被勾选。 */
-		checkable?: boolean;
 		/** 勾选，单向绑定使用。 */
 		checked?: boolean;
 		/** 禁用。 */
@@ -27,7 +25,7 @@
 	const model = defineModel<boolean>({ default: undefined });
 	const input = defineModel<string>("input");
 	const editable = computed(() => input.value !== undefined);
-	const isChecked = computed(() => !!props.checkable && withOneWayProp(model, () => props.checked).value);
+	const isChecked = computed(() => withOneWayProp(model, () => props.checked).value);
 
 	/**
 	 * 键盘在标签输入框中输入文本时的更新事件。
