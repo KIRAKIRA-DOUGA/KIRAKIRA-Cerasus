@@ -113,7 +113,7 @@
 
 		.tag-name {
 			padding-left: 0.5em;
-			color: c(gray-50)
+			color: c(text-color, 50%);
 		}
 	}
 </style>

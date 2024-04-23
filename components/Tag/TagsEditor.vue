@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 	/** 指定默认的标签值，如为 null 表示未设定默认值，如为 undefined 表示当前组件不适用默认值。 */
-	const def = defineModel<string | null | undefined>("default");
+	const def = defineModel<[number, string] | null | undefined>("default");
 	const tags = defineModel<string[]>({ default: [] });
 	const tagsWithKey = reactive<Map<number, string>>(new Map());
 	const tagsWithKeyProxy = new Proxy({}, {
@@ -20,9 +20,6 @@
 			return true;
 		},
 	}) as Record<number, string>;
-	const tagsWithKeySorted = computed(() =>
-		[...tagsWithKey.entries()].sort((a, b) =>
-			a[1] === def.value ? -1 : b[1] === def.value ? 1 : a[0] - b[0]));
 	const isUpdatingTags = ref(false);
 	const maxIndex = computed(() => {
 		let maxIndex = Math.max(...tagsWithKey.keys());
@@ -51,6 +48,7 @@
 	 * @param value - 可在此直接设值。
 	 */
 	async function updateTags(index: number, value?: string) {
+		console.log("update", new Date().getTime());
 		if (index === undefined) return;
 		isUpdatingTags.value = true;
 		const tag = value ?? tagsWithKey.get(index);
@@ -131,9 +129,9 @@
 	 * 将某个标签设为默认值（如果允许）。
 	 */
 	function setToDefault() {
-		const tag = hoveredTagContent.value?.[1];
-		if (def.value === undefined || !tag) return;
-		def.value = tag;
+		const tag = hoveredTagContent.value;
+		if (tag?.[0] === undefined || tag?.[0] === null || tag[0] < 0 || !tag?.[1]) return;
+		def.value = [tag[0], tag[1]];
 		contextualToolbar.value = undefined;
 	}
 
@@ -173,6 +171,16 @@
 		clearTimeout(hideTimeoutId.value);
 	}
 
+	/**
+	 * 判断一个 TAG 是否为默认 TAG 并高亮
+	 * @param def 默认 TAG
+	 * @param tag TAG
+	 * @returns 是默认返回 true, 否则返回 false
+	 */
+	function isDefaultTag(def: [number, string] | null | undefined, tag: [number, string]): boolean {
+		return !!(def && tag && def[0] === tag[0] && def[1] === tag[1]);
+	}
+
 	useListen("component:hideAllContextualToolbar", () => {
 		if (hideExceptMe.value) return;
 		contextualToolbar.value = undefined;
@@ -183,12 +191,11 @@
 	<Comp class="tags">
 		<TransitionGroup @leave="onTagLeave">
 			<Tag
-				v-for="[key, tag] in tagsWithKeySorted"
+				v-for="[key, tag] in tagsWithKey"
 				:key="key"
 				v-model:input="tagsWithKeyProxy[key]"
 				:placeholder="t.press_enter_to_add"
-				:checkable="def === tag"
-				:checked="def === tag"
+				:checked="isDefaultTag(def, [key, tag])"
 				@change="updateTags(key)"
 				@mouseenter="e => showContextualToolbar(key, tag, e)"
 				@mouseleave="hideContextualToolbar"
@@ -204,7 +211,7 @@
 			@mouseenter="reshowContextualToolbar"
 			@mouseleave="hideContextualToolbar"
 		>
-			<Button v-if="hoveredTagContent?.[1] !== def" icon="check" @click="setToDefault()">{{ t.set_as_default }}</Button>
+			<Button v-if="hoveredTagContent?.[1] !== def?.[1]" icon="check" @click="setToDefault()">{{ t.set_as_default }}</Button>
 			<Button icon="close" @click="updateTags(hoveredTagContent![0], '')">{{ t.delete }}</Button>
 		</Flyout>
 	</Comp>

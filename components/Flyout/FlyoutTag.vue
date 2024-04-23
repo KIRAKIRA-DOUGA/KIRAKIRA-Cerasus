@@ -19,7 +19,7 @@
 		{ langId: "other", langName: "其它" }, // TODO: 使用多语言
 	] as const; // 可选语言列表
 	type LanguageList = typeof languages[number];
-	type EditorType = { language: LanguageList | { langId: ""; langName: "" }; values: string[]; default: string | null }[];
+	type EditorType = { language: LanguageList | { langId: ""; langName: "" }; values: string[]; default: [number, string] | null }[];
 	const editor = reactive<EditorType>([]); // TAG 编辑器实例
 	const availableLanguages = ref<LanguageList[][]>([]); // 除去用户已经选择的语言之外的其他语言
 	const currentLanguage = computed(getCurrentLocale); // 当前用户的语言
@@ -110,7 +110,7 @@
 				tagName: filteredTag.values.map(tagName => {
 					return {
 						name: tagName,
-						isDefault: tagName === filteredTag.default, // TODO: 如果没有指定默认 TAG 怎么办？
+						isDefault: tagName === filteredTag.default?.[1], // TODO: 如果没有指定默认 TAG 怎么办？
 						isOriginalTagName: false, // TODO: 是否为原始 TAG
 					};
 				}),
