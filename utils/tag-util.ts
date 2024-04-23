@@ -47,3 +47,13 @@ export function getVideoTagNaveWithCurrentLanguage(language: string, tagData?: V
 		return { tagId, tagNameList, defaultTagName, originTagName };
 	} else return { tagId: -1, tagNameList: [""], defaultTagName: "", originTagName: "" };
 }
+
+/**
+ * 在搜索结果中检查当前输入的 TAG 是否重复
+ * @param inputTagName 用户输入的 TAG
+ * @param tagListSearchResult 搜索到的 TAG
+ * @returns 有重复返回 true, 没重复返回 false
+ */
+export function checkTagUnique(inputTagName: string, tagListSearchResult: VideoTag[]): boolean {
+	return tagListSearchResult.some(tag => tag.tagNameList.some(tagNameList => tagNameList.tagName.some(tagName => halfwidth(tagName.name.trim().replaceAll(/\s+/g, " ").toLowerCase()) === halfwidth(inputTagName.trim().replaceAll(/\s+/g, " ").toLowerCase()))));
+}

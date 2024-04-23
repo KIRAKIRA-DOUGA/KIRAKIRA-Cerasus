@@ -48,7 +48,7 @@
 	 * @param value - 可在此直接设值。
 	 */
 	async function updateTags(index: number, value?: string) {
-		console.log("update", new Date().getTime());
+		appendEmptyTag();
 		if (index === undefined) return;
 		isUpdatingTags.value = true;
 		const tag = value ?? tagsWithKey.get(index);
@@ -68,9 +68,26 @@
 			}
 			if (!duplicated) tagsWithKey.set(index, normalizedTag);
 			else tagsWithKey.delete(index);
+
+			const text = halfwidth(normalizedTag);
+			try {
+				const result = await api.videoTag.searchVideoTag({ tagNameSearchKey: text });
+				if (result?.success && result.result && result.result.length > 0) {
+					const hasSameWithInput = checkTagUnique(text, result.result);
+					if (hasSameWithInput) {
+						useToast("不允许 TAG 名重复，请更换。", "warning"); // TODO: 使用多语言
+						console.warn("WARN", "WARNING", "查找到重复的 TAG 名");
+						tagsWithKey.delete(index);
+						return;
+					}
+				}
+			} catch (error) {
+				useToast("查找重复 TAG 失败", "error"); // TODO: 使用多语言
+				console.error("ERROR", "查找重复 TAG 时出错：", error);
+				return;
+			}
 		}
 		tags.value = normalizeTags();
-		appendEmptyTag();
 		contextualToolbar.value = undefined;
 		await nextTick();
 		isUpdatingTags.value = false;

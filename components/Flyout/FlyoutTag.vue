@@ -30,15 +30,19 @@
 	async function searchVideoTag() {
 		showCreateNew.value = true;
 		const text = halfwidth(search.value.trim().replaceAll(/\s+/g, " ").toLowerCase());
-		if (text) {
-			const result = await api.videoTag.searchVideoTag({ tagNameSearchKey: text });
-			if (result?.success && result.result && result.result.length > 0) {
-				matchedTags.value = result.result;
-				const hasSameWithInput = result.result.some(tag => tag.tagNameList.some(tagNameList => tagNameList.tagName.some(tagName => halfwidth(tagName.name.trim().replaceAll(/\s+/g, " ").toLowerCase()) === text)));
-				if (hasSameWithInput) showCreateNew.value = false;
-				else showCreateNew.value = true;
-			} else showCreateNew.value = true;
-		}
+		if (text)
+			try {
+				const result = await api.videoTag.searchVideoTag({ tagNameSearchKey: text });
+				if (result?.success && result.result && result.result.length > 0) {
+					matchedTags.value = result.result;
+					const hasSameWithInput = checkTagUnique(text, result.result);
+					if (hasSameWithInput) showCreateNew.value = false;
+					else showCreateNew.value = true;
+				} else showCreateNew.value = true;
+			} catch (error) {
+				console.error("ERROR", "搜索 TAG 时出错：", error);
+				useToast("搜索 TAG 失败", "error"); // TODO: 使用多语言
+			}
 	}
 	const debounceVideoTagSearcher = useDebounce(searchVideoTag, 500);
 
@@ -138,7 +142,7 @@
 			if (checkTagData(tagData)) {
 				isCreatingTag.value = true;
 				const result = await api.videoTag.createVideoTag(tagData);
-				if (result.result?.tagId) tags.value?.set(result.result.tagId, result.result);
+				if (result.result?.tagId !== null && result.result?.tagId !== undefined) tags.value?.set(result.result.tagId, result.result);
 				isCreatingTag.value = false;
 				onFlyoutHide();
 			} else useToast(t.toast.no_language_selected, "warning");
