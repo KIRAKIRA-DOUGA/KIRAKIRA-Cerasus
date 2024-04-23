@@ -205,14 +205,14 @@
 								<TransitionGroup>
 									<div v-for="tag in matchedTags" :key="tag.tagId" v-ripple class="list-item">
 										<div class="content" @click="addTag(tag)">
-											<p class="title">{{ getVideoTagNaveWithCurrentLanguage(currentLanguage, tag)?.tagNameList[0] }}</p>
+											<p class="title">{{ getVideoTagNameWithCurrentLanguage(currentLanguage, tag)?.tagNameList[0] }}</p>
 											<p class="count">{{ t(100).video_count(100) }}</p>
 										</div>
 										<div class="trailing-icons">
 											<SoftButton icon="edit" @click.stop />
 										</div>
 									</div>
-									<div v-if="showCreateNew" v-ripple class="list-item create-new" @click="switchTagEditor(true)">
+									<div v-if="showCreateNew" key="add-tag" v-ripple class="list-item create-new" @click="switchTagEditor(true)">
 										<div class="leading-icons">
 											<Icon name="add" />
 										</div>

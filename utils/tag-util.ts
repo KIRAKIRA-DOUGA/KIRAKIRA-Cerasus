@@ -14,7 +14,7 @@ export type DisplayVideoTagType = {
  * @param tagData 获取到的 TAG 数据
  * @returns TAG 数据
  */
-export function getVideoTagNaveWithCurrentLanguage(language: string, tagData?: VideoTag): DisplayVideoTagType {
+export function getVideoTagNameWithCurrentLanguage(language: string, tagData?: VideoTag): DisplayVideoTagType {
 	if (tagData) {
 		const { tagId, tagNameList: sourceTagNameList } = tagData;
 
