@@ -4,6 +4,8 @@
 	const props = withDefaults(defineProps<{
 		/** 勾选，单向绑定使用。 */
 		checked?: boolean;
+		/** 是否为原名 TAG */
+		original?: boolean;
 		/** 禁用。 */
 		disabled?: boolean;
 		/** 链接。 */
@@ -68,7 +70,12 @@
 		<div class="content">
 			<Transition>
 				<div v-if="isChecked" class="check-wrapper">
-					<Icon name="check" class="check" />
+					<slot name="checked-icon"><Icon name="check" class="check" /></slot>
+				</div>
+			</Transition>
+			<Transition>
+				<div v-if="original" class="original-wrapper">
+					<slot name="original-icon"><Icon name="star" class="original" /></slot>
 				</div>
 			</Transition>
 			<div
@@ -157,7 +164,7 @@
 		}
 	}
 
-	.check-wrapper {
+	.check-wrapper, .original-wrapper {
 		display: inline;
 		width: $check-icon-size;
 		height: $check-icon-size;
@@ -169,7 +176,7 @@
 			scale: 0;
 		}
 
-		.check {
+		.check, .original {
 			color: white;
 			font-size: $check-icon-size;
 		}

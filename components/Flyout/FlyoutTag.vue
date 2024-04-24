@@ -1,6 +1,7 @@
 <script setup lang="ts">
 	const flyout = defineModel<FlyoutModel>();
-	const tags = defineModel< Map<VideoTag["tagId"], VideoTag> >("tags"); // TAG 数据
+	const tags = defineModel<Map<VideoTag["tagId"], VideoTag>>("tags"); // TAG 数据
+	const original = ref<[number, string] | undefined>();
 	const search = ref("");
 	const isSearched = computed(() => !!search.value.trim());
 	const matchedTags = ref<VideoTag[]>([]);
@@ -19,7 +20,7 @@
 		{ langId: "other", langName: "其它" }, // TODO: 使用多语言
 	] as const; // 可选语言列表
 	type LanguageList = typeof languages[number];
-	type EditorType = { language: LanguageList | { langId: ""; langName: "" }; values: string[]; default: [number, string] | null }[];
+	type EditorType = { language: LanguageList | { langId: ""; langName: "" }; values: string[]; default: [number, string] | null; original: [number, string] | null }[];
 	const editor = reactive<EditorType>([]); // TAG 编辑器实例
 	const availableLanguages = ref<LanguageList[][]>([]); // 除去用户已经选择的语言之外的其他语言
 	const currentLanguage = computed(getCurrentLocale); // 当前用户的语言
@@ -87,7 +88,7 @@
 	 *					{
 	 *						name: "StarCitizen",
 	 *						isDefault: true,
-	 *						isOriginalTagName: false,
+	 *						isOriginalTagName: true,
 	 *					}, {
 	 *						name: "SC",
 	 *						isDefault: false,
@@ -115,7 +116,7 @@
 					return {
 						name: tagName,
 						isDefault: tagName === filteredTag.default?.[1], // TODO: 如果没有指定默认 TAG 怎么办？
-						isOriginalTagName: false, // TODO: 是否为原始 TAG
+						isOriginalTagName: tagName === filteredTag.default?.[1] && tagName === filteredTag.original?.[1],
 					};
 				}),
 			};
@@ -150,7 +151,7 @@
 		else {
 			const text = search.value.trim().replaceAll(/\s+/g, " ");
 			arrayClearAll(editor);
-			editor.push({ language: { langId: "", langName: "" }, values: [text], default: null });
+			editor.push({ language: { langId: "", langName: "" }, values: [text], default: null, original: null });
 			showTagEditor.value = true;
 		}
 	}
@@ -160,12 +161,12 @@
 	 * @param tag 用户点击的 TAG 数据。
 	 */
 	function addTag(tag: VideoTag) {
-		if (tag.tagId) tags.value?.set(tag.tagId, tag);
+		if (tag.tagId !== undefined && tag.tagId !== null && tag.tagId >= 0) tags.value?.set(tag.tagId, tag);
 	}
 
 	watch(editor, editor => {
 		if (editor.at(-1)?.language.langId !== "")
-			editor.push({ language: { langId: "", langName: "" }, values: [], default: null });
+			editor.push({ language: { langId: "", langName: "" }, values: [], default: null, original: null });
 		availableLanguages.value = [];
 		const allComboBoxLanguages = editor.map(item => item.language.langId);
 		editor.forEach(({ language, default: def }, index) => {
@@ -205,14 +206,23 @@
 								<TransitionGroup>
 									<div v-for="tag in matchedTags" :key="tag.tagId" v-ripple class="list-item">
 										<div class="content" @click="addTag(tag)">
-											<p class="title">{{ getVideoTagNameWithCurrentLanguage(currentLanguage, tag)?.tagNameList[0] }}</p>
+											<div class="tag-name">
+												<div v-if="getSearchHit(search, currentLanguage, tag)" class="hit-tag">{{ getSearchHit(search, currentLanguage, tag) }}</div>
+												<div>{{ getDisplayVideoTagWithCurrentLanguage(currentLanguage, tag).mainTagName }}</div>
+												<div
+													v-if="getSearchHit(search, currentLanguage, tag) !== getDisplayVideoTagWithCurrentLanguage(currentLanguage, tag).originTagName && getDisplayVideoTagWithCurrentLanguage(currentLanguage, tag).mainTagName !== getDisplayVideoTagWithCurrentLanguage(currentLanguage, tag).originTagName"
+													class="original-tag"
+												>
+													{{ getDisplayVideoTagWithCurrentLanguage(currentLanguage, tag).originTagName }}
+												</div>
+											</div>
 											<p class="count">{{ t(100).video_count(100) }}</p>
 										</div>
 										<div class="trailing-icons">
 											<SoftButton icon="edit" @click.stop />
 										</div>
 									</div>
-									<div v-if="showCreateNew" key="add-tag" v-ripple class="list-item create-new" @click="switchTagEditor(true)">
+									<div v-if="showCreateNew" key="add-tag-button" v-ripple class="list-item create-new" @click="switchTagEditor(true)">
 										<div class="leading-icons">
 											<Icon name="add" />
 										</div>
@@ -233,7 +243,7 @@
 								<ComboBox v-model="item.language.langId" :placeholder="t.unselected.language">
 									<ComboBoxItem v-for="lang in availableLanguages[index]" :id="lang.langId" :key="lang.langId">{{ lang.langName }}</ComboBoxItem>
 								</ComboBox>
-								<TagsEditor v-model="item.values" v-model:default="item.default" />
+								<TagsEditor v-model="item.values" v-model:default="item.default" v-model:editor-original="item.original" v-model:original="original" />
 							</template>
 						</div>
 					</div>
@@ -342,8 +352,18 @@
 				flex-grow: 1;
 			}
 
-			.title {
+			.tag-name {
+				display: flex;
+				flex-direction: row;
+			}
+
+			.hit-tag {
+				padding-right: 0.5em;
 				font-weight: bold;
+			}
+
+			.original-tag {
+				padding-left: 0.5em;
 			}
 
 			.count {

@@ -122,7 +122,7 @@
 					:title="videoDetails?.title ?? ''"
 					:videoId="videoDetails?.videoId ?? NaN"
 					:copyright="(videoDetails?.copyright! as Copyright)"
-					:tags="videoDetails?.videoTagList.map(tag => getVideoTagNameWithCurrentLanguage(currentLanguage, tag)) ?? []"
+					:tags="videoDetails?.videoTagList.map(tag => getDisplayVideoTagWithCurrentLanguage(currentLanguage, tag)) ?? []"
 					:cover="videoDetails?.image"
 				/>
 

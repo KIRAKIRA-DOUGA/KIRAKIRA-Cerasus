@@ -13,8 +13,9 @@
 	const thumbnailBlob = ref<string>(); // 封面图 Blob
 	const thumbnailUrl = ref<string>("../public/static/images/thumbnail.png"); // 封面图 Blob // FIXME: Nuxt Image 的 src 为 undefined 或 "" 时会出错，见 https://github.com/nuxt/image/issues/1299
 	const thumbnailInput = ref<HTMLInputElement>();
-	const tags = reactive< Map<VideoTag["tagId"], VideoTag> >(new Map()); // 视频标签
 	const currentLanguage = computed(getCurrentLocale); // 当前用户的语言
+	const tags = reactive<Map<VideoTag["tagId"], VideoTag>>(new Map()); // 视频标签
+	const displayTags = computed<DisplayVideoTag[]>(() => [...tags.values()].map(tagName => getDisplayVideoTagWithCurrentLanguage(currentLanguage.value, tagName))); // 用于显示的 TAG，相较于上方的 tags 数据结构更简单。
 	const description = ref(""); // 视频简介
 	const uploadProgress = ref(0); // 视频上传进度
 	const cloudflareVideoId = ref<string>(); // Cloudflare 视频 ID
@@ -186,7 +187,7 @@
 			const commitVideoResult = await api.video.commitVideo(uploadVideoRequest);
 			const videoId = commitVideoResult?.videoId;
 			if (commitVideoResult.success && videoId) { // TODO: 视频投稿成功后要做的操作（TODO: 暂时是等待 1 秒后显示纸屑然后跳转到视频页，以后可能需要修改）
-				console.log("INFO", `视频投稿成功, KVID: ${videoId}`);
+				console.info("INFO", `视频投稿成功, KVID: ${videoId}`);
 				setTimeout(() => {
 					isCommitButtonLoading.value = false;
 					showConfetti(); // 显示五彩纸屑。
@@ -320,7 +321,12 @@
 					<section>
 						<Subheader icon="tag">{{ t(2).tag }}</Subheader>
 						<div class="tags">
-							<Tag v-for="tag in tags" :key="tag[1].tagId" :query="{ q: tag[1].tagId }">{{ getVideoTagNaveWithCurrentLanguage(currentLanguage, tag[1])?.tagNameList[0] }}</Tag>
+							<Tag v-for="tag in displayTags" :key="tag.tagId" :query="{ q: tag.tagId }">
+								<div v-if="tag.tagId >= 0" class="display-tag">
+									<div v-if="tag.mainTagName">{{ tag.mainTagName }}</div>
+									<div v-if="tag.originTagName" class="original-tag-name">{{ tag.originTagName }}</div>
+								</div>
+							</Tag>
 							<Tag class="add-tag" :checkable="false" @click="e => flyoutTag = [e, 'y']">
 								<Icon name="add" />
 							</Tag>
@@ -494,6 +500,16 @@
 		@media (width <=450px) {
 			--size: 80dvw;
 			// 对于图片切割器，不建议使用响应式，因为切割器内部被切割的图片不会随之改变尺寸，但考虑到极端小尺寸的适配问题，且在上传图片时浏览器宽度发生剧烈变化的概率较小，故保留本功能。
+		}
+	}
+
+	.display-tag {
+		display: flex;
+		flex-direction: row;
+
+		.original-tag-name {
+			padding-left: 0.5em;
+			color: c(text-color, 50%);
 		}
 	}
 </style>
