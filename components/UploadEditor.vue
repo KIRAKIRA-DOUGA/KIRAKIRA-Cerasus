@@ -35,6 +35,10 @@
 		["game", t.category.game],
 		["misc", t.category.misc],
 	]);
+	const contextualToolbar = ref<FlyoutModel>(); // TAG 的工具烂浮窗
+	const hoveredTagContent = ref<[number, string]>();
+	const hideExceptMe = ref(false);
+	const hideTimeoutId = ref<Timeout>(); //
 
 	/**
 	 * 上传文件无效。
@@ -213,6 +217,51 @@
 			ensureOriginal.value = false;
 	}
 
+	const a = ref();
+	/**
+	 * 显示标签的上下文工具栏。
+	 * @param key - 标签键名。
+	 * @param tag - 标签内容。
+	 * @param e - 鼠标事件。
+	 */
+	function showContextualToolbar(key: number, tag: string, e: MouseEvent) {
+		if (!tag) return;
+		if ((e.currentTarget as HTMLSpanElement).querySelector(".text-box:focus")) return;
+		reshowContextualToolbar();
+		if (hoveredTagContent.value?.[0] === key && hoveredTagContent.value?.[1] === tag) return;
+		hoveredTagContent.value = [key, tag];
+		hideExceptMe.value = true;
+		useEvent("component:hideAllContextualToolbar");
+		hideExceptMe.value = false;
+		contextualToolbar.value = [e, "top", 0];
+	}
+
+	/**
+	 * 隐藏标签的上下文工具栏。
+	 */
+	function hideContextualToolbar() {
+		hideTimeoutId.value = setTimeout(() => {
+			contextualToolbar.value = undefined;
+			hoveredTagContent.value = undefined;
+		}, 100);
+	}
+
+	/**
+	 * 鼠标移入区域，取消自动隐藏。
+	 */
+	function reshowContextualToolbar() {
+		clearTimeout(hideTimeoutId.value);
+	}
+
+	/**
+	 * 从视频 TAG 列表中移除一个 TAG（注意，此时 TAG 列表没有传递给后端数据库存储）
+	 * @param tagId TAG 编号
+	 */
+	function removeTag(tagId: number) {
+		if (tagId !== undefined || tagId !== null) tags.delete(tagId);
+		hideContextualToolbar();
+	}
+
 	watch(copyright, copyright => clearCopyrightData(copyright));
 
 	/**
@@ -321,19 +370,36 @@
 					<section>
 						<Subheader icon="tag">{{ t(2).tag }}</Subheader>
 						<div class="tags">
-							<Tag v-for="tag in displayTags" :key="tag.tagId" :query="{ q: tag.tagId }">
+							<Tag
+								v-for="tag in displayTags"
+								:key="tag.tagId"
+								:query="{ q: tag.tagId }"
+								@mouseenter="e => showContextualToolbar(tag.tagId, tag.mainTagName, e)"
+								@mouseleave="hideContextualToolbar"
+							>
 								<div v-if="tag.tagId >= 0" class="display-tag">
 									<div v-if="tag.mainTagName">{{ tag.mainTagName }}</div>
 									<div v-if="tag.originTagName" class="original-tag-name">{{ tag.originTagName }}</div>
 								</div>
 							</Tag>
-							<Tag class="add-tag" :checkable="false" @click="e => flyoutTag = [e, 'y']">
+							<Tag key="add-tag-button" class="add-tag" :checkable="false" @click="e => flyoutTag = [e, 'y']">
 								<Icon name="add" />
 							</Tag>
 						</div>
 					</section>
 
 					<FlyoutTag v-model="flyoutTag" v-model:tags="tags" />
+
+					<Flyout
+						ref="a"
+						v-model="contextualToolbar"
+						noPadding
+						class="contextual-toolbar"
+						@mouseenter="reshowContextualToolbar"
+						@mouseleave="hideContextualToolbar"
+					>
+						<Button icon="close" @click="removeTag(hoveredTagContent![0])">{{ t.delete }}</Button>
+					</Flyout>
 
 					<section>
 						<Subheader icon="details">{{ t.description }}</Subheader>
@@ -510,6 +576,12 @@
 		.original-tag-name {
 			padding-left: 0.5em;
 			color: c(text-color, 50%);
+		}
+	}
+
+	.contextual-toolbar {
+		button {
+			--appearance: tertiary;
 		}
 	}
 </style>
