@@ -73,8 +73,8 @@
 		&.v-leave-to {
 			$scale: 1.05;
 			$scale-reciprocal: calc(1 / $scale);
-			opacity: 0;
 			scale: $scale;
+			opacity: 0;
 
 			.body {
 				translate: 0 (-$padding);
