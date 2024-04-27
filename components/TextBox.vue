@@ -79,6 +79,8 @@
 
 	const emits = defineEmits<{
 		input: [e: InputEvent];
+		keydown: [e: KeyboardEvent];
+		keyup: [e: KeyboardEvent];
 	}>();
 
 	const value = defineModel<string | number>({ required: true });
@@ -136,7 +138,7 @@
 
 	/**
 	 * 输入框文本输入和改变事件。
-	 * @param _e - 输入事件。但是池沼 Vue 不会自动缩小类型，因此只能用普通事件代替。
+	 * @param _e - 该类型默认为 Event 而并非 InputEvent 是预期行为，参见：https://github.com/microsoft/TypeScript-DOM-lib-generator/issues/1174
 	 */
 	function onInput(_e: Event) {
 		const e = _e as InputEvent;
@@ -289,8 +291,8 @@
 					:step
 					:inputmode="inputMode"
 					@input="onInput"
-					@keydown="e => stopPropagationExceptKey(e, 'F11')"
-					@keyup="e => stopPropagationExceptKey(e, 'F11')"
+					@keydown="e => { stopPropagationExceptKey(e, 'F11'); emits('keydown', e) }"
+					@keyup="e => { stopPropagationExceptKey(e, 'F11'); emits('keyup', e) }"
 				/>
 				<span class="suffix">{{ suffix }}</span>
 				<label>{{ placeholder }}</label>
