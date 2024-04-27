@@ -79,6 +79,8 @@
 
 	const emits = defineEmits<{
 		input: [e: InputEvent];
+		keydown: [e: KeyboardEvent];
+		keyup: [e: KeyboardEvent];
 	}>();
 
 	const value = defineModel<string | number>({ required: true });
@@ -136,7 +138,7 @@
 
 	/**
 	 * 输入框文本输入和改变事件。
-	 * @param _e - 输入事件。但是池沼 Vue 不会自动缩小类型，因此只能用普通事件代替。
+	 * @param _e - 该类型默认为 Event 而并非 InputEvent 是预期行为，参见：https://github.com/microsoft/TypeScript-DOM-lib-generator/issues/1174
 	 */
 	function onInput(_e: Event) {
 		const e = _e as InputEvent;
@@ -234,7 +236,7 @@
 		invalid.value = isInvalid();
 	});
 
-	const TrailingIcon = (() => {
+	const TrailingIcon = ((textBoxProps: typeof props) => {
 		interface Props {
 			shown?: boolean;
 			onClick?: (payload: MouseEvent) => void;
@@ -252,12 +254,13 @@
 						animatedState={props.animatedState}
 						nonclickable={!props.onClick}
 						appearance="textbox-trailingicon"
+						disabled={textBoxProps.disabled}
 						onClick={props.onClick}
 					/>
 				}
 			</Transition>
 		);
-	})();
+	})(props);
 </script>
 
 <template>
@@ -269,27 +272,27 @@
 				<input
 					ref="input"
 					:value="value ?? ''"
-					:type="type"
+					:type
 					:placeholder="placeholder.toString()"
 					:autocomplete="autoComplete"
 					:autofocus="autoFocus"
-					:disabled="disabled"
-					:form="form"
-					:list="list"
-					:max="max"
+					:disabled
+					:form
+					:list
+					:max
 					:maxlength="maxLength"
-					:min="min"
+					:min
 					:minlength="minLength"
-					:multiple="multiple"
-					:name="name"
+					:multiple
+					:name
 					:pattern="pattern?.source"
-					:readonly="readonly"
-					:required="required"
-					:step="step"
+					:readonly
+					:required
+					:step
 					:inputmode="inputMode"
 					@input="onInput"
-					@keydown="e => stopPropagationExceptKey(e, 'F11')"
-					@keyup="e => stopPropagationExceptKey(e, 'F11')"
+					@keydown="e => { stopPropagationExceptKey(e, 'F11'); emits('keydown', e) }"
+					@keyup="e => { stopPropagationExceptKey(e, 'F11'); emits('keyup', e) }"
 				/>
 				<span class="suffix">{{ suffix }}</span>
 				<label>{{ placeholder }}</label>
@@ -346,7 +349,7 @@
 		--height: #{$normal-height};
 		position: relative;
 		height: $normal-height;
-		overflow: hidden;
+		overflow: clip;
 		background-color: c(inset-bg);
 		border: 0;
 
@@ -390,6 +393,12 @@
 			.leading-icon {
 				color: c(accent);
 			}
+		}
+
+		&:has(input[disabled]) {
+			background-color: c(main-fg, 4%);
+			cursor: not-allowed;
+			opacity: 0.5;
 		}
 	}
 
@@ -511,6 +520,10 @@
 
 		&:invalid::selection {
 			background-color: c(red); // WARN: Chromium 111 开始在 `::selection` 设定 `var()` 都会失效。包括 GitHub 和 Edge 的开发工具在内都有这种显示问题。https://bugs.chromium.org/p/chromium/issues/detail?id=1429546
+		}
+
+		&[disabled] {
+			cursor: inherit;
 		}
 	}
 

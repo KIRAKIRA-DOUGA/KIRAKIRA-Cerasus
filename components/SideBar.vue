@@ -112,7 +112,7 @@
 		<div class="bottom icons">
 			<Avatar class="pc" @click="onClickUser" />
 			<SoftButton v-tooltip="t.messages" icon="email" href="/test-rich-text-editor" />
-			<SoftButton v-tooltip="t.settings" class="pc settings" icon="settings" href="/settings" :active="isCurrentSettings" />
+			<SoftButton v-tooltip="t.settings" class="pc icon-settings" icon="settings" href="/settings" :active="isCurrentSettings" />
 			<SoftButton v-tooltip="t.search" class="pe" icon="search" href="/search" />
 		</div>
 
@@ -139,10 +139,10 @@
 		flex-direction: column;
 		justify-content: space-between;
 		padding: $icons-gap 0;
-		overflow: hidden;
+		overflow: clip;
 		background-color: c(main-bg);
 
-		&.colored {
+		:root.colored-sidebar & {
 			@include sidebar-shadow-colored;
 			--color: white;
 			background-color: c(accent);
@@ -241,16 +241,20 @@
 				--ripple-size: 48px;
 			}
 
-			&.settings {
-				&:active:deep(i) {
-					rotate: 30deg;
+			&.icon-settings:deep {
+				&:active i {
+					rotate: -30deg;
 				}
 
-				&:deep(i) {
+				i {
 					transition: $fallback-transitions, rotate 1s $ease-out-smooth;
 				}
 
-				&:deep(.router-link-active i) {
+				&:active .router-link-active i {
+					rotate: 90deg;
+				}
+
+				.router-link-active i {
 					rotate: 120deg;
 				}
 			}
@@ -384,7 +388,7 @@
 		@include sidebar-shadow;
 		z-index: 30;
 		padding: $icons-gap 0;
-		overflow: hidden;
+		overflow: clip;
 		background-color: c(main-bg);
 
 		.icons {

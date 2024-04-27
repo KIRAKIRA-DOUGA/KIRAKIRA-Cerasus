@@ -1,3 +1,8 @@
+<docs>
+	# YOZORA PLAYER
+	视频播放器。
+</docs>
+
 <script setup lang="ts">
 	import mediainfo from "mediainfo.js";
 	import type { MediaPlayerClass, BitrateInfo } from "dashjs";
@@ -19,13 +24,15 @@
 	const playing = ref(false);
 	const playbackRate = ref(1);
 	const preservesPitch = ref(false);
-	const steplessRate = ref(false);
+	const continuousRateControl = ref(false);
 	const volume = ref(1);
 	const muted = ref(false);
 	const currentTime = ref(NaN);
 	const duration = ref(NaN);
 	const buffered = ref(0);
 	const isTimeUpdating = ref(false);
+	const ended = ref(false);
+	const waiting = ref(true);
 	const showMediaInfo = ref(false);
 	const showAboutPlayer = ref(false);
 	const currentQuality = ref("720P");
@@ -72,13 +79,15 @@
 
 	const qualities = ref<BitrateInfo[]>([]);
 	const mediaInfos = ref<MediaInfo>();
-	const videoContainer = ref<HTMLDivElement>();
 	const video = ref<HTMLVideoElement>();
-	const { isFullscreen: fullscreen, toggle } = useFullscreen(videoContainer);
+	const playerVideoMain = ref<HTMLDivElement>();
+	const { exit: exitFullscreen, enter: enterFullscreen } = useFullscreen();
+	const fullscreen = ref(false); // 是否独占整个浏览器画面？
 	const resample = computed({ get: () => !preservesPitch.value, set: value => preservesPitch.value = !value });
 	const menu = ref<MenuModel>();
 	const showDanmaku = ref(true);
 	const hideController = ref(false);
+	const hideControllerTimeoutId = ref<Timeout>();
 	const hideCursor = ref(false);
 	const hideCursorTimeoutId = ref<Timeout>();
 	const willSendDanmaku = ref<DanmakuComment[]>();
@@ -86,8 +95,8 @@
 	const initialDanmaku = ref<DanmakuComment[]>();
 	const screenOrientationBeforeFullscreen = ref<OrientationType>("portrait-primary");
 	const playerVideoControllerMouseDown = ref(false);
-	const fullscreenColorClass = computed(() => ({ [`force-color dark ${Theme.palette.value}`]: fullscreen.value }));
 	type MediaInfo = Record<string, Record<string, unknown>>;
+	const playerConfig = useAppSettingsStore().player;
 
 	/**
 	 * 显示视频详细信息。
@@ -139,6 +148,11 @@
 	watch(preservesPitch, preservesPitch => {
 		if (!video.value) return;
 		video.value.preservesPitch = preservesPitch;
+		playerConfig.rate.preservesPitch = preservesPitch;
+	});
+
+	watch(continuousRateControl, continuousRateControl => {
+		playerConfig.rate.continuousControl = continuousRateControl;
 	});
 
 	watch(playbackRate, playbackRate => {
@@ -149,11 +163,21 @@
 	watch(volume, volume => {
 		if (!video.value) return;
 		video.value.volume = volume ** 2; // 使用对数音量。
+		playerConfig.audio.volume = volume;
 	});
 
 	watch(muted, muted => {
 		if (!video.value) return;
 		video.value.muted = muted;
+		playerConfig.audio.muted = muted;
+	});
+
+	watch(() => settings.danmaku.opacity, opacity => {
+		playerConfig.danmaku.opacity = opacity;
+	});
+
+	watch(() => settings.danmaku.fontSizeScale, size => {
+		playerConfig.danmaku.fontSizeScale = size;
 	});
 
 	watch(fullscreen, fullscreen => {
@@ -266,6 +290,14 @@
 
 			// BUG: Dash.js will raise an error: [614][FragmentController] TypeError: Cannot read properties of undefined (reading 'append')
 		}
+
+		// 从 Pinia 中取出保存的设置。
+		volume.value = playerConfig.audio.volume;
+		muted.value = playerConfig.audio.muted;
+		preservesPitch.value = playerConfig.rate.preservesPitch;
+		continuousRateControl.value = playerConfig.rate.continuousControl;
+		settings.danmaku.opacity = playerConfig.danmaku.opacity;
+		settings.danmaku.fontSizeScale = playerConfig.danmaku.fontSizeScale;
 	});
 
 	/**
@@ -279,6 +311,7 @@
 		currentTime.value = video.currentTime;
 		duration.value = video.duration;
 		video.preservesPitch = preservesPitch.value;
+		waiting.value = false;
 	}
 
 	const quality = computed({
@@ -302,6 +335,7 @@
 		currentTime.value = video.currentTime;
 		await nextTick();
 		isTimeUpdating.value = false;
+		ended.value = false;
 	}
 
 	/**
@@ -318,14 +352,14 @@
 
 	/**
 	 * 在全屏时自动隐藏控制栏。
-	 * @param e - 鼠标移动事件。
+	 * @param e - 指针移动事件。
 	 */
-	function autoHideController(e?: MouseEvent) {
+	function autoHideController(e?: PointerEvent) {
 		const BOTTOM = 36;
 		if (e && (!fullscreen.value || playerVideoControllerMouseDown.value ||
-			window.outerHeight - e.pageY <= BOTTOM))
+			window.innerHeight - e.pageY <= BOTTOM || e.pageY <= BOTTOM))
 			hideController.value = false;
-		else
+		else if (e?.pointerType !== "touch")
 			hideController.value = true;
 
 		hideCursor.value = false;
@@ -335,6 +369,53 @@
 	}
 
 	useEventListener("window", "mouseup", () => playerVideoControllerMouseDown.value = false);
+
+	/**
+	 * 在全屏时自动隐藏控制栏（触摸屏差分）。
+	 */
+	function autoHideControllerTouch() {
+		hideController.value = false;
+		clearTimeout(hideControllerTimeoutId.value);
+		if (fullscreen.value && !hideController.value)
+			hideControllerTimeoutId.value = setTimeout(() => fullscreen.value && (hideController.value = true), 3000);
+	}
+
+	/**
+	 * 切换全屏。
+	 * @param isFullbrowser - 是否是网页全屏？
+	 */
+	async function toggleFullscreen(isFullbrowser: boolean = false) {
+		// 触发全屏 API
+		if (fullscreen.value)
+			await exitFullscreen();
+		else if (!isFullbrowser)
+			await enterFullscreen();
+
+		// 处理 tab 失能问题（不然全屏状态下按 tab 键甚至会聚焦到评论区去）
+		if (playerVideoMain.value)
+			for (const element of document.getElementById("root")?.querySelectorAll("*") ?? []) {
+				if (!(element instanceof HTMLElement) || playerVideoMain.value.contains(element)) continue;
+				if (!fullscreen.value) {
+					if (element.tabIndex === -1) continue;
+					if (!element.getAttribute("tabIndex")) element.dataset.defaultTabIndex = "true";
+					element.dataset.tabIndex = String(element.tabIndex);
+					element.tabIndex = -1;
+				} else {
+					if (element.dataset.tabIndex === undefined) continue;
+					if (!element.dataset.defaultTabIndex)
+						element.tabIndex = parseInt(element.dataset.tabIndex, 10);
+					else
+						element.removeAttribute("tabIndex");
+					delete element.dataset.tabIndex;
+					delete element.dataset.defaultTabIndex;
+				}
+			}
+
+		// 启动视图过渡动画
+		startViewTransition(() => {
+			fullscreen.value = !fullscreen.value;
+		});
+	}
 
 	/**
 	* 给视频截个图。
@@ -357,7 +438,7 @@
 </script>
 
 <template>
-	<Comp>
+	<Comp :class="{ fullscreen, dark: fullscreen }">
 		<Modal v-model="showMediaInfo" icon="info" title="视频详细信息">
 			<Accordion>
 				<AccordionItem v-for="(info, type) in mediaInfos" :key="type" :title="type" noPadding>
@@ -377,67 +458,80 @@
 			</Accordion>
 		</Modal>
 
-		<div ref="videoContainer" class="main" :class="{ fullscreen, 'hide-cursor': hideCursor }">
-			<video
-				ref="video"
-				class="player"
-				:style="videoFilterStyle"
-				@play="playing = true"
-				@pause="playing = false"
-				@ratechange="e => playbackRate = (e.target as HTMLVideoElement).playbackRate"
-				@timeupdate="onTimeUpdate"
-				@canplay="onCanPlay"
-				@progress="onProgress"
-				@click="playing = !playing"
-				@dblclick="toggle"
-				@contextmenu.prevent="e => menu = e"
-				@mousemove="autoHideController"
-			></video>
-			<PlayerVideoDanmaku
-				v-model="willSendDanmaku"
-				:comments="initialDanmaku"
-				:media="video"
-				:hidden="!showDanmaku"
-				:style="{ opacity: settings.danmaku.opacity }"
-			/>
-			<PlayerVideoTitle
-				v-if="fullscreen"
-				:title="title"
-				:hidden="hideController"
-				:fullscreenColorClass="fullscreenColorClass"
-			/>
-			<PlayerVideoAbout v-model="showAboutPlayer" :playing="playing" />
+		<div ref="playerVideoMain" class="main" :class="{ 'hide-cursor': hideCursor, fullscreen }" @touchstart="autoHideControllerTouch">
+			<div class="screen">
+				<video
+					ref="video"
+					class="player"
+					:style="videoFilterStyle"
+					@play="playing = true"
+					@pause="playing = false"
+					@ratechange="e => playbackRate = (e.target as HTMLVideoElement).playbackRate"
+					@timeupdate="onTimeUpdate"
+					@canplay="onCanPlay"
+					@progress="onProgress"
+					@ended="ended = true"
+					@waiting="waiting = true"
+					@dblclick="toggleFullscreen()"
+					@contextmenu.prevent="e => menu = e"
+					@pointerup.left="e => isMouse(e) && (playing = !playing)"
+					@pointermove="autoHideController"
+				></video>
+				<Contents>
+					<PlayerVideoDanmaku
+						v-model="willSendDanmaku"
+						:comments="initialDanmaku"
+						:media="video"
+						:hidden="!showDanmaku"
+						:style="{ opacity: settings.danmaku.opacity }"
+					/>
+					<!-- TODO: ProgressRing 改成卡住（开屏加载不包含在内）一秒后再显示，防止出现过于频繁。 -->
+					<div v-if="waiting" class="waiting">
+						<ProgressRing />
+					</div>
+					<PlayerVideoAbout v-model="showAboutPlayer" :playing />
+				</Contents>
+				<PlayerVideoTitle
+					v-if="fullscreen"
+					:title
+					:hidden="hideController"
+				/>
+			</div>
 			<PlayerVideoController
 				:key="qualities.length"
 				v-model:currentTime="currentTime"
 				v-model:playing="playing"
-				v-model:fullscreen="fullscreen"
 				v-model:playbackRate="playbackRate"
 				v-model:volume="volume"
 				v-model:muted="muted"
 				v-model:resample="resample"
-				v-model:steplessRate="steplessRate"
+				v-model:continuousRateControl="continuousRateControl"
 				v-model:showDanmaku="showDanmaku"
 				v-model:quality="quality"
-				:duration="duration"
-				:toggleFullscreen="toggle"
-				:buffered="buffered"
-				:qualities="qualities"
+				v-model:waiting="waiting"
+				v-model:ended="ended"
+				:duration
+				:fullscreen="fullscreen"
+				:toggleFullscreen
+				:buffered
+				:qualities
 				:hidden="hideController"
-				:fullscreenColorClass="fullscreenColorClass"
 				@mousedown="playerVideoControllerMouseDown = true"
+				@focusin="hideController = false"
+				@focusout="hideController = true"
 			/>
 		</div>
 
 		<PlayerVideoPanel
+			v-if="!fullscreen"
 			v-model:sendDanmaku="willSendDanmaku"
 			v-model:insertDanmaku="willInsertDanmaku"
 			:videoId="id"
-			:currentTime="currentTime"
-			:rating="rating"
-			:playing="playing"
-			:thumbnail="thumbnail"
-			:settings="settings"
+			:currentTime
+			:rating
+			:playing
+			:thumbnail
+			:settings
 		/>
 		<Menu v-model="menu">
 			<MenuItem icon="camera" @click="() => getScreenshot()">截取当前画面</MenuItem>
@@ -454,17 +548,25 @@
 		@include player-shadow;
 		display: flex;
 		flex-direction: row;
+
+		&.fullscreen {
+			position: fixed;
+			z-index: 32;
+			inset: 0;
+		}
 	}
 
 	.main {
 		position: relative;
 		background-color: black;
+		pointer-events: auto !important;
+		view-transition-name: player-video-main;
 
 		video {
 			transition: none;
 		}
 
-		&:not(.fullscreen) {
+		:comp:not(.fullscreen) & {
 			&,
 			& video {
 				width: 100%;
@@ -475,14 +577,17 @@
 			}
 		}
 
-		&.fullscreen {
+		.fullscreen & {
+			@include square(100%);
 			display: flex;
 			flex-direction: column;
-			height: 100dvh;
+
+			.screen {
+				height: 100dvh;
+			}
 
 			video {
-				width: 100%;
-				height: 100%;
+				@include square(100%);
 			}
 		}
 
@@ -499,14 +604,43 @@
 		color: c(text-color) !important; // 避免黑底视频看不清文字。
 	}
 
-	.player-video-about {
-		position: absolute;
-		inset: 0;
-		bottom: 36px;
-		cursor: pointer;
+	.screen {
+		position: relative;
 
-		@include mobile {
-			bottom: 60px;
+		.contents {
+			> * {
+				position: absolute;
+				inset: 0;
+			}
+
+			.waiting {
+				@include flex-center;
+				pointer-events: none;
+
+				.progress-ring {
+					--size: 56px;
+					--thickness: 6px;
+				}
+			}
 		}
+	}
+
+	.player-video-about {
+		cursor: pointer;
+	}
+</style>
+
+<style lang="scss">
+	::view-transition-old(player-video-main),
+	::view-transition-new(player-video-main) {
+		height: 100%;
+		object-fit: cover;
+		overflow: clip;
+		animation-duration: 250ms;
+	}
+
+	::view-transition-group(player-video-main) {
+		animation-duration: 500ms;
+		animation-timing-function: $ease-in-out-material-emphasized;
 	}
 </style>

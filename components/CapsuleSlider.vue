@@ -131,7 +131,7 @@
 		width: 100%;
 		height: $track-thickness;
 		margin: 0;
-		overflow: hidden;
+		overflow: clip;
 		cursor: pointer;
 	}
 

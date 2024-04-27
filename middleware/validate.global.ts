@@ -3,10 +3,12 @@ import { httpResponseStatusCodes } from "helpers/http-status";
 const MEDIA_INFO_MODULE_WASM = "MediaInfoModule.wasm";
 const navigate = (path: string) => navigateTo(useLocalePath()(path));
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default defineNuxtRouteMiddleware((to, from) => {
 	if (environment.client && environment.development)
 		console.log("to", to, "\nfrom", from, "\nrouteBaseName", useNuxtApp().$getRouteBaseName());
+
+	if (environment.client)
+		document.getElementById(STOP_TRANSITION_ID)?.remove();
 
 	const routePath = getRoutePath({ route: to });
 	const routeSlug = getLocaleRouteSlug(to), prevRouteSlug = getLocaleRouteSlug(from);

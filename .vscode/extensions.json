@@ -1,12 +1,14 @@
 {
 	"recommendations": [
 		"vue.volar",
-		"vue.vscode-typescript-vue-plugin",
 		"dbaeumer.vscode-eslint",
 		"editorconfig.editorconfig",
 		"stylelint.vscode-stylelint",
 		"somewhatstationery.some-sass",
 		"mrmlnc.vscode-json5",
-		"gruntfuggly.todo-tree"
+		"gruntfuggly.todo-tree",
+		"usernamehw.errorlens",
+		"tabnine.tabnine-vscode",
+		"streetsidesoftware.code-spell-checker"
 	]
 }

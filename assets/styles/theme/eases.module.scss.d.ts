@@ -55,10 +55,15 @@ export type Styles = {
 	 */
 	easeInCirc: string;
 	/**
-	 * ### 反弹缓入
+	 * ### 急促回弹缓入
 	 * 超过范围的三次方缓动 `(s+1)t³-st²`。
 	 */
 	easeInBack: string;
+	/**
+	 * ### 平稳回弹缓入
+	 * 超过范围后平稳结束的缓动 `(s+1)(t-1)³+s(t-1)²+1`。
+	 */
+	easeInBackSmooth: string;
 	/**
 	 * ### 最大缓入
 	 * 将锚点拉到头的缓动 `3t^⅔-2t`。
@@ -69,6 +74,26 @@ export type Styles = {
 	 * 由设计师艾拉精心调整的平滑缓动参数。
 	 */
 	easeInSmooth: string;
+	/**
+	 * ### 质感设计强调缓入
+	 * 谷歌 Material Design 3 强调缓动，它捕捉了 Material Design 3 的表现风格。
+	 */
+	easeInMaterialEmphasized: string;
+	/**
+	 * ### 质感设计标准缓入
+	 * 谷歌 Material Design 3 标准缓动，用于简单、小型或以实用性为中心的过渡。
+	 */
+	easeInMaterialStandard: string;
+	/**
+	 * ### 反弹缓入
+	 * 如撞击地面时反弹般的缓动。
+	 */
+	easeInBounce: string;
+	/**
+	 * ### 弹跳缓入
+	 * 如阻尼谐波运动般的缓动 `2⁻¹⁰ᵗsin[120°(10t-0.75)]+1`。
+	 */
+	easeInElastic: string;
 	/**
 	 * ### 缓出
 	 * 以慢速开始的过渡效果。
@@ -110,10 +135,15 @@ export type Styles = {
 	 */
 	easeOutCirc: string;
 	/**
-	 * ### 反弹缓出
+	 * ### 急促回弹缓出
 	 * 超过范围的三次方缓动 `(s+1)t³-st²`。
 	 */
 	easeOutBack: string;
+	/**
+	 * ### 平稳回弹缓出
+	 * 超过范围后平稳结束的缓动 `(s+1)(t-1)³+s(t-1)²+1`。
+	 */
+	easeOutBackSmooth: string;
 	/**
 	 * ### 最大缓出
 	 * 将锚点拉到头的缓动 `3t^⅔-2t`。
@@ -125,10 +155,50 @@ export type Styles = {
 	 */
 	easeOutSmooth: string;
 	/**
-	 * ### 流动设计强调用缓出
-	 * 微软 Windows 11 Fluent 2 中用于强调用的缓出，如任务栏图标跳动等。
+	 * ### 流动设计强调缓出
+	 * 微软 Windows 11 Fluent 2 中用于强调的缓动，如任务栏图标跳动等。
 	 */
 	easeOutFluentBack: string;
+	/**
+	 * ### 质感设计强调缓出
+	 * 谷歌 Material Design 3 强调缓动，它捕捉了 Material Design 3 的表现风格。
+	 */
+	easeOutMaterialEmphasized: string;
+	/**
+	 * ### 质感设计标准缓出
+	 * 谷歌 Material Design 3 标准缓动，用于简单、小型或以实用性为中心的过渡。
+	 */
+	easeOutMaterialStandard: string;
+	/**
+	 * ### 弹簧缓出
+	 * 如弹簧般的缓动。
+	 */
+	easeOutSpring: string;
+	/**
+	 * ### 反弹缓出
+	 * 如撞击地面时反弹般的缓动。
+	 */
+	easeOutBounce: string;
+	/**
+	 * ### 弹跳缓出
+	 * 如阻尼谐波运动般的缓动 `2⁻¹⁰ᵗsin[120°(10t-0.75)]+1`。
+	 */
+	easeOutElastic: string;
+	/**
+	 * ### 反弹化的弹簧缓出
+	 * 如弹簧般的缓动，但是反弹化。
+	 */
+	easeOutSpringBouncized: string;
+	/**
+	 * ### 弹跳化的反弹缓出
+	 * 如撞击地面时反弹般的缓动，但是弹跳化。
+	 */
+	easeOutBounceElasticized: string;
+	/**
+	 * ### 反弹化的弹跳缓出
+	 * 如阻尼谐波运动般的缓动 `2⁻¹⁰ᵗsin[120°(10t-0.75)]+1`，但是反弹化。
+	 */
+	easeOutElasticBouncized: string;
 	/**
 	 * ### 缓入缓出
 	 * 以慢速开始的过渡效果。
@@ -170,10 +240,15 @@ export type Styles = {
 	 */
 	easeInOutCirc: string;
 	/**
-	 * ### 反弹缓入缓出
+	 * ### 急促回弹缓入缓出
 	 * 超过范围的三次方缓动 `(s+1)t³-st²`。
 	 */
 	easeInOutBack: string;
+	/**
+	 * ### 平稳回弹缓入缓出
+	 * 超过范围后平稳结束的缓动 `(s+1)(t-1)³+s(t-1)²+1`。
+	 */
+	easeInOutBackSmooth: string;
 	/**
 	 * ### 最大缓入缓出
 	 * 将锚点拉到头的缓动 `3t^⅔-2t`。
@@ -185,10 +260,30 @@ export type Styles = {
 	 */
 	easeInOutSmooth: string;
 	/**
-	 * ### 流动设计点对点缓出
-	 * 微软 Windows 11 Fluent 2 中用于点对点的缓出，如窗口最大化、还原等。
+	 * ### 流动设计点对点缓入缓出
+	 * 微软 Windows 11 Fluent 2 中用于点对点的缓动，如窗口最大化、还原等。
 	 */
 	easeInOutFluent: string;
+	/**
+	 * ### 质感设计强调缓入缓出
+	 * 谷歌 Material Design 3 强调缓动，它捕捉了 Material Design 3 的表现风格。
+	 */
+	easeInOutMaterialEmphasized: string;
+	/**
+	 * ### 质感设计标准缓入缓出
+	 * 谷歌 Material Design 3 标准缓动，用于简单、小型或以实用性为中心的过渡。
+	 */
+	easeInOutMaterialStandard: string;
+	/**
+	 * ### 反弹缓入缓出
+	 * 如撞击地面时反弹般的缓动。
+	 */
+	easeInOutBounce: string;
+	/**
+	 * ### 弹跳缓入缓出
+	 * 如阻尼谐波运动般的缓动 `2⁻¹⁰ᵗsin[120°(10t-0.75)]+1`。
+	 */
+	easeInOutElastic: string;
 };
 
 export type ClassNames = keyof Styles;

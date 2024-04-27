@@ -91,15 +91,27 @@
 					<div class="grid">
 						<CheckCard v-for="([filter, style], key) in filters" :key="key" v-model="filterBooleanProxy[key]">
 							{{ filter }}
-							<template #image><img :src="thumbnail" alt="preview" :style="style" /></template>
+							<template #image>
+								<NuxtImg
+									:style
+									provider="kirakira"
+									:src="thumbnail"
+									:alt="`preview-${filter}`"
+									:draggable="false"
+									format="avif"
+									width="200"
+									height="200"
+									:placeholder="[20, 20, 100, 2]"
+								/>
+							</template>
 						</CheckCard>
 					<!-- <CheckCard v-model="settings.filter.horizontalFlip">
 					水平翻转
-					<template #image><img :src="thumbnail" alt="preview" /></template>
+					<template #image><NuxtImg :src="thumbnail" alt="preview" /></template>
 				</CheckCard>
 				<CheckCard v-model="settings.filter.verticalFlip">
 					垂直翻转
-					<template #image><img :src="thumbnail" alt="preview" /></template>
+					<template #image><NuxtImg :src="thumbnail" alt="preview" /></template>
 				</CheckCard> -->
 					</div>
 				</div>
@@ -129,7 +141,7 @@
 		flex-grow: 1;
 		height: 100%;
 		contain: strict;
-		overflow: hidden auto;
+		overflow: clip auto;
 	}
 
 	.wrapper {

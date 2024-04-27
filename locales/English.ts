@@ -26,12 +26,13 @@ const English: LocaleIdentifiers = {
 	},
 	palette: {
 		_: "Palette",
-		pink: "Kawaii Pink",
-		sky: "Sky Blue",
+		pink: "Cocoa Pink",
 		blue: "Chino Blue",
-		green: "Chiya Green",
-		orange: "Cocoa Orange",
 		purple: "Rize Purple",
+		yellow: "Sharo Yellow",
+		green: "Chiya Green",
+		cyan: "Maya Cyan",
+		red: "Megumi Red",
 	},
 	language: {
 		_: "Language",
@@ -316,6 +317,7 @@ const English: LocaleIdentifiers = {
 		register_email_sent_info: "We have sent a verification code to your email, please enter the code here.\nIf you did not receive it, you can resend.",
 		forgot_info: "Please enter your email.\nWe will send a verification code to your email.",
 		reset_successful_info: "Verification successful!\nPlease enter and remember your new password.",
+		alpha_notice: "The current site you are visiting is an Alpha test for developers, and any modifications currently made may be deleted at any time!\nIf you are not a developer, please be patient and wait for the beta test.",
 	},
 	unselected: {
 		combobox: "Select a Item",

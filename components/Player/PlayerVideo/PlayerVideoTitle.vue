@@ -8,8 +8,6 @@
 		title: string;
 		/** 是否隐藏？ */
 		hidden?: boolean;
-		/** 进入全屏后强制深色的样式类声明。 */
-		fullscreenColorClass: Record<string, boolean>;
 	}>();
 
 	import { useNow, useBattery } from "@vueuse/core";
@@ -27,14 +25,16 @@
 </script>
 
 <template>
-	<Comp :class="{ hidden, ...fullscreenColorClass }">
+	<Comp :class="{ hidden }">
 		<div class="left">
 			<h3 class="title">{{ title }}</h3>
 		</div>
 		<div class="right">
-			<Icon v-if="hasBattery && charging" name="charger" />
-			<p v-if="hasBattery" class="battery">{{ battery }}</p>
-			<p class="time">{{ time }}</p>
+			<div v-if="hasBattery" class="battery">
+				<p class="battery-text">{{ battery }}</p>
+				<LogoBattery :value="level" :charging />
+			</div>
+			<time :datetime="now.toISOString()">{{ time }}</time>
 		</div>
 	</Comp>
 </template>
@@ -74,9 +74,16 @@
 			font-size: 18px;
 		}
 
-		.time,
-		.battery {
+		time,
+		.battery-text {
 			font-variant-numeric: tabular-nums;
+			font-weight: 500;
+		}
+
+		.battery {
+			display: flex;
+			gap: 2px;
+			align-items: center;
 		}
 	}
 </style>

@@ -64,7 +64,7 @@
 		position: relative;
 		width: 100%;
 		height: 70px;
-		overflow: hidden;
+		overflow: clip;
 
 		:comp.animation & {
 			animation: blinking 2s infinite ease-in alternate;
@@ -95,7 +95,7 @@
 		position: relative;
 		width: var(--width);
 		height: var(--height);
-		overflow: hidden;
+		overflow: clip;
 		color: c(accent);
 		user-select: none !important;
 
@@ -192,7 +192,7 @@
 		clip-path: polygon(0 0, 100% 50%, 0 100%);
 
 		:comp.animation & {
-			animation: triangle-movement 4s cubic-bezier(0, 0.5, 1, 0.5) infinite, triangle-blinking 2s cubic-bezier(0, 0, 0, 1) infinite alternate;
+			animation: movement 4s cubic-bezier(0, 0.5, 1, 0.5) infinite, triangle-blinking 2s cubic-bezier(0, 0, 0, 1) infinite alternate;
 		}
 	}
 
@@ -208,18 +208,28 @@
 			stroke: c(accent);
 			stroke-width: 2px;
 		}
+
+		:comp.animation & {
+			--from: -5rem;
+			--to: 20rem;
+		}
 	}
 
 	.triangle-2 {
 		--length: 2rem;
 		right: 4rem;
 		bottom: 36%;
+
+		:comp.animation & {
+			--from: -5rem;
+			--to: 5rem;
+		}
 	}
 
 	.circle {
 		@include square(8rem);
 		@include circle;
-		overflow: hidden;
+		overflow: clip;
 	}
 
 	.circle-1 {
@@ -280,16 +290,6 @@
 		50%,
 		100% {
 			transform: rotateY(0);
-		}
-	}
-
-	@keyframes triangle-movement {
-		from {
-			transform: translate(-5rem);
-		}
-
-		to {
-			transform: translate(5rem);
 		}
 	}
 

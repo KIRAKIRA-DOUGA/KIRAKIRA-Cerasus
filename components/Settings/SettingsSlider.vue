@@ -8,6 +8,8 @@
 		defaultValue?: number;
 		/** 图标。 */
 		icon: DeclaredIcons;
+		/** 显示工具提示。 */
+		tooltip?: boolean;
 	}>();
 
 	const value = defineModel<number>({ required: true });
@@ -18,7 +20,7 @@
 		<Icon :name="icon" />
 		<div class="option-content">
 			<span><slot></slot></span>
-			<Slider v-model="value" :min="min" :max="max" :defaultValue="defaultValue" />
+			<Slider v-model="value" :min :max :defaultValue :tooltip />
 		</div>
 	</Comp>
 </template>
@@ -44,5 +46,9 @@
 		.option-content {
 			flex-grow: 1;
 		}
+	}
+
+	.slider {
+		margin-bottom: -10px;
 	}
 </style>

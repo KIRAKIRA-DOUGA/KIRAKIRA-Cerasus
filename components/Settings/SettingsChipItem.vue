@@ -21,9 +21,17 @@
 	<Comp v-ripple role="listitem">
 		<div :class="{ pictorial: image || icon }">
 			<div v-if="image" class="image">
-				<img :src="image" alt="image" draggable="false" />
+				<NuxtImg
+					:src="image"
+					alt="image"
+					draggable="false"
+					format="avif"
+					width="64px"
+					height="64px"
+					placeholder
+				/>
 			</div>
-			<Icon v-else-if="icon" :name="icon" :filled="filled" class="item-icon" />
+			<Icon v-else-if="icon" :name="icon" :filled class="item-icon" />
 			<div class="text">
 				<label class="title"><slot></slot></label>
 				<label class="details"><slot name="details">{{ details }}</slot></label>
@@ -32,7 +40,7 @@
 				<Icon v-if="!onTrailingIconClick" class="trailing-icon" :name="trailingIcon" />
 				<SoftButton v-else :icon="trailingIcon" class="trailing-icon" @click.stop="onTrailingIconClick" />
 			</template>
-			<a v-if="href" draggable="false" :href="href" target="_blank" class="link lite"></a>
+			<a v-if="href" draggable="false" :href target="_blank" class="link lite"></a>
 		</div>
 	</Comp>
 </template>
@@ -62,13 +70,12 @@
 		.image {
 			@include square(42px);
 			@include circle;
-			overflow: hidden;
+			overflow: clip;
 
 			> img {
+				@include square(100%);
 				z-index: 1;
-				width: 100%;
 				object-fit: cover;
-				aspect-ratio: 1 / 1;
 			}
 		}
 

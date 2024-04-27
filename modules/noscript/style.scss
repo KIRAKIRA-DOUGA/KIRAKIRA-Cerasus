@@ -1,12 +1,14 @@
 // stylelint-disable property-no-vendor-prefix
 
 @use "sass:map";
+@use "sass:list";
+@use "sass:color";
 @use "../../assets/styles/theme/functions" as *;
 @use "../../assets/styles/theme/eases" as *;
 @use "../../assets/styles/theme/mixins" as *;
 @use "../../assets/styles/theme/effects" as *;
 @use "../../assets/styles/theme/variables" as *;
-@import "./global-colors";
+@import "../../assets/styles/global-colors";
 @import "../../assets/styles/elements/hyperlink";
 @import "../../assets/styles/elements/reset";
 @import "../../assets/styles/elements/animations";
@@ -30,7 +32,8 @@ span {
 	display: none;
 }
 
-html:lang(zh) span:lang(zh),
+html:lang(zh-Hans) span:lang(zh-Hans),
+html:lang(zh-Hant) span:lang(zh-Hant),
 html:lang(en) span:lang(en),
 html:lang(ja) span:lang(ja),
 html:lang(ko) span:lang(ko),
@@ -58,7 +61,7 @@ html:lang(id) span:lang(id) {
 	position: relative;
 	width: 1024px;
 	height: 600px;
-	overflow: hidden;
+	overflow: clip;
 	background-color: c(white, 75%);
 	animation: intro $animation-options;
 

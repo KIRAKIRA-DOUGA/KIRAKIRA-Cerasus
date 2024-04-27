@@ -219,7 +219,7 @@
 				height: $item-height;
 				padding: 4px 12px;
 				padding-right: 0;
-				overflow: hidden;
+				overflow: clip;
 				white-space: nowrap;
 				text-align: left;
 				text-overflow: ellipsis;

@@ -25,9 +25,12 @@
 	 * 下载封面。
 	 */
 	function downloadCover() {
-		if (!props.cover) return;
-		window.open(props.cover, "_blank"); // TODO: 暂时改为在新标签页中直接打开图片链接
-		// downloadFile(props.cover, `${props.title} (kv${props.videoId})`);
+		if (props.cover) {
+			const image = useImage();
+			const IMAGE_MAX_WIDTH = 999999, KIRAKIRA_IMAGE_PROVIDER = "kirakira";
+			window.open(image(props.cover, { width: IMAGE_MAX_WIDTH }, { provider: KIRAKIRA_IMAGE_PROVIDER }), "_blank"); // TODO: 先暂时改为在新标签页中直接打开图片的样式，而非下载图片
+			// downloadFile(props.cover, `${props.title} (kv${props.videoId})`);
+		} else useToast("无法查看封面!", "error"); // TODO 使用多语言
 	}
 </script>
 
@@ -35,7 +38,7 @@
 	<Comp role="contentinfo">
 		<div class="info">
 			<div class="data">
-				<CreationDetailItem icon="calendar">{{ formatDateWithLocale(date, { time: true }) }}</CreationDetailItem>
+				<CreationDetailItem icon="calendar"><DateTime :dateTime="date" showTime /></CreationDetailItem>
 				<CreationDetailItem icon="category">{{ category }}</CreationDetailItem>
 				<CreationDetailItem v-if="copyright === 'original'" icon="fact_check">{{ t.original }}</CreationDetailItem>
 				<CreationDetailItem v-if="copyright === 'authorized-repost'" icon="local_shipping">{{ t.authorized_repost }}</CreationDetailItem>

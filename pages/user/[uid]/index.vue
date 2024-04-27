@@ -91,12 +91,12 @@
 					<div class="items">
 						<div v-if="userBirthday" v-tooltip:x="t.user.birthday" class="birthday">
 							<Icon name="birthday" />
-							<span>{{ formatDateWithLocale(new Date(userBirthday)) }}</span>
+							<DateTime :dateTime="userBirthday" />
 						</div>
 
 						<div v-if="userJoinDate" v-tooltip:x="t.user.join_time" class="join-time">
 							<Icon name="history" />
-							<span>{{ formatDateWithLocale(new Date(userJoinDate)) }}</span>
+							<DateTime :dateTime="userJoinDate" />
 						</div>
 
 						<div v-tooltip:x="'UID'" class="uid">

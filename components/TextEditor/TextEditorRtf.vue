@@ -10,6 +10,12 @@
 		videoId: number;
 	}>();
 
+	const emits = defineEmits<{
+		input: [e: InputEvent];
+		keydown: [e: KeyboardEvent];
+		keyup: [e: KeyboardEvent];
+	}>();
+
 	type ActiveType = string | boolean;
 	const rtfEditor = refComp();
 	const flyoutKaomoji = ref<FlyoutModel>();
@@ -36,6 +42,9 @@
 		onCreate({ editor }) {
 			const proseMirror = editor.view.dom;
 			addEventListeners(proseMirror, "keydown", "keyup", e => stopPropagationExceptKey(e, "F11", "Ctrl + KeyM"));
+			proseMirror.addEventListener("input", e => emits("input", e as InputEvent)); // e 的类型默认为 Event 而并非 InputEvent 是预期行为，参见：https://github.com/microsoft/TypeScript-DOM-lib-generator/issues/1174
+			proseMirror.addEventListener("keydown", e => emits("keydown", e));
+			proseMirror.addEventListener("keyup", e => emits("keyup", e));
 		},
 	});
 
@@ -150,7 +159,7 @@
 
 	<Comp ref="rtfEditor" @keyup.stop.ctrl.m="showRecentKaomojis">
 		<ClientOnly>
-			<EditorContent :editor="editor" />
+			<EditorContent :editor />
 		</ClientOnly>
 		<div class="toolbar">
 			<div class="left">
@@ -174,7 +183,7 @@
 	:comp {
 		@include round-large;
 		@include control-inner-shadow;
-		overflow: hidden;
+		overflow: clip;
 		background-color: c(inset-bg);
 
 		> :first-child {
@@ -192,7 +201,7 @@
 			justify-content: space-between;
 			height: $height;
 			padding: 0 8px;
-			overflow: hidden;
+			overflow: clip;
 
 			> * {
 				display: flex;

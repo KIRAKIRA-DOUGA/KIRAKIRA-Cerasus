@@ -49,7 +49,7 @@
 
 	:comp {
 		width: $width;
-		overflow: hidden;
+		overflow: clip;
 	}
 
 	.tab-bar {
@@ -65,6 +65,7 @@
 		grid-template-columns: repeat(3, 1fr);
 		gap: 6px;
 		align-content: flex-start;
+		align-items: baseline;
 		height: $height;
 		padding: 12px $padding-x;
 		padding-top: 0.25rem;

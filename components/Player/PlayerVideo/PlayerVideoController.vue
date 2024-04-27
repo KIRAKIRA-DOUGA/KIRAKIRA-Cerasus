@@ -12,24 +12,20 @@
 		duration?: number;
 		/** 缓冲加载进度值。 */
 		buffered?: number;
+		/** 是否全屏？ */
+		fullscreen?: boolean;
 		/** 切换全屏函数。 */
-		toggleFullscreen?: () => void;
+		toggleFullscreen?: (isFullbrowser?: boolean) => void;
 		/** 视频质量列表。 */
 		qualities?: BitrateInfo[];
 		/** 是否隐藏？ */
 		hidden?: boolean;
-		/**
-		 * 进入全屏后强制深色的样式类声明。
-		 *
-		 * 注意：仅在设置页外观的示例控制条中，本属性可以为空。
-		 */
-		fullscreenColorClass?: Record<string, boolean>;
 	}>(), {
 		duration: NaN,
 		buffered: 0,
+		fullscreen: false,
 		toggleFullscreen: undefined,
 		qualities: () => [],
-		fullscreenColorClass: () => ({}),
 	});
 
 	/** 常用速度列表。 */
@@ -42,10 +38,11 @@
 	const volume = defineModel<number>("volume", { default: 1 });
 	const muted = defineModel<boolean>("muted", { default: false });
 	const model = defineModel<number>("currentTime", { default: NaN });
-	const fullscreen = defineModel<boolean>("fullscreen", { default: false });
 	const resample = defineModel<boolean>("resample", { default: true });
-	const steplessRate = defineModel<boolean>("steplessRate", { default: false });
+	const continuousRateControl = defineModel<boolean>("continuousRateControl", { default: false });
 	const showDanmaku = defineModel<boolean>("showDanmaku", { default: false });
+	const waiting = defineModel<boolean>("waiting", { default: false });
+	const ended = defineModel<boolean>("ended", { default: false });
 	const quality = defineModel<string>("quality", { default: "720P" });
 	const volumeBackup = ref(volume);
 	const volumeSet = computed({
@@ -60,7 +57,7 @@
 		get: () => Math.log2(playbackRate.value),
 		set: value => {
 			value = 2 ** value;
-			if (!steplessRate.value) {
+			if (!continuousRateControl.value) {
 				const variances = stepedPlaybackRates.map(rate => (value - rate) ** 2);
 				const minimum = Math.min(...variances);
 				value = stepedPlaybackRates[variances.indexOf(minimum)];
@@ -130,6 +127,27 @@
 			menu.value = new Date().valueOf();
 	}
 
+	const showFullbrowserBtn = ref(false);
+	const hideFullbrowserTimeout = ref<Timeout>();
+
+	/**
+	 * 当指针移出全屏或网页全屏按钮时的事件。
+	 */
+	function onFullscreenBtnLeave() {
+		hideFullbrowserTimeout.value = setTimeout(() => {
+			showFullbrowserBtn.value = false;
+		}, 100);
+	}
+
+	/**
+	 * 当指针移入全屏或网页全屏按钮时的事件。
+	 */
+	function onFullscreenBtnEnter() {
+		clearTimeout(hideFullbrowserTimeout.value);
+		useEvent("component:hideAllPlayerVideoMenu");
+		showFullbrowserBtn.value = !props.fullscreen;
+	}
+
 	const playbackRateText = (rate: number) => (2 ** rate).toFixed(2).replace(/\.?0+$/, "") + "×";
 	const volumeText = (volume: number) => Math.round(volume * 100) + "%";
 
@@ -147,17 +165,22 @@
 				e.preventDefault();
 				break;
 			case "ArrowRight":
-				if (e.ctrlKey) // 加速
+				if (e.ctrlKey || e.metaKey) // 加速
 					switchSpeedByDirection(1);
 				else // 进度条 →
 					model.value = clamp(model.value + TIME_TICK, 0, props.duration);
 				e.preventDefault();
 				break;
 			case "ArrowLeft":
-				if (e.ctrlKey) // 减速
+				if (e.ctrlKey || e.metaKey) // 减速
 					switchSpeedByDirection(-1);
 				else // 进度条 ←
 					model.value = clamp(model.value - TIME_TICK, 0, props.duration);
+				e.preventDefault();
+				break;
+			case "Escape":
+				if (props.fullscreen)
+					props.toggleFullscreen?.();
 				e.preventDefault();
 				break;
 			case "Space": case "F11": /* 解决冲突 */ e.preventDefault(); break;
@@ -174,10 +197,18 @@
 			default: break;
 		}
 	});
+
+	/** 隐藏控制栏时隐藏菜单，用于触摸屏。 */
+	watch(() => props.hidden, hidden => {
+		if (!hidden) return;
+		volumeMenu.value = undefined;
+		rateMenu.value = undefined;
+		qualityMenu.value = undefined;
+	});
 </script>
 
 <template>
-	<div class="menus" :class="{ ...fullscreenColorClass }" v-bind="$attrs">
+	<div class="menus" v-bind="$attrs">
 		<PlayerVideoMenu v-model="volumeMenu">
 			<template #slider>
 				<CapsuleSlider v-model="volumeSet" :min="0" :max="1" :displayValue="volumeText" :defaultValue="1" />
@@ -185,7 +216,7 @@
 		</PlayerVideoMenu>
 		<PlayerVideoMenu v-model="rateMenu">
 			<ToggleSwitch v-model="resample" v-ripple.overlay icon="tunning">{{ t.player.speed.resample }}</ToggleSwitch>
-			<ToggleSwitch v-model="steplessRate" v-ripple.overlay icon="speed">{{ t.player.speed.continuous }}</ToggleSwitch>
+			<ToggleSwitch v-model="continuousRateControl" v-ripple.overlay icon="speed">{{ t.player.speed.continuous }}</ToggleSwitch>
 			<template #slider>
 				<CapsuleSlider v-model="playbackRateLinear" :min="-2" :max="2" :displayValue="playbackRateText" :defaultValue="0" />
 			</template>
@@ -198,39 +229,57 @@
 				@click="quality = qual"
 			>{{ qual }}</RadioOption>
 		</PlayerVideoMenu>
+		<Transition v-if="!fullscreen">
+			<div
+				v-show="showFullbrowserBtn"
+				class="fullbrowser"
+				@pointerenter="e => isMouse(e) && onFullscreenBtnEnter()"
+				@pointerleave="e => isMouse(e) && onFullscreenBtnLeave()"
+			>
+				<SoftButton icon="fullscreen_browser" @click="toggleFullscreen?.(true)" />
+			</div>
+		</Transition>
 	</div>
 
-	<Comp role="toolbar" :class="{ fullscreen, ...fullscreenColorClass, hidden }" v-bind="$attrs">
+	<Comp role="toolbar" :class="{ mobile: isMobile(), hidden }" v-bind="$attrs">
 		<div class="left">
-			<SoftButton class="play" :icon="playing ? 'pause' : 'play'" @click="playing = !playing" />
+			<SoftButton class="play" :icon="ended ? 'replay' : playing ? 'pause' : 'play'" @click="playing = !playing" />
 		</div>
 		<div class="slider-wrapper">
-			<Slider v-model="currentPercent" :min="0" :max="1" :buffered="buffered" />
-		</div>
-		<div class="time" @click="countdown = !countdown">
-			<span class="current">{{ countdown ? countdownTime : currentTime }} </span>
-			<span class="divide">/</span>
-			<span class="duration">{{ duration }}</span>
+			<Slider
+				v-model="currentPercent"
+				:min="0"
+				:max="1"
+				:buffered
+				:waiting
+				pending="cursor"
+				:displayValue="pending => new Duration(pending * props.duration).toString()"
+			/>
 		</div>
 		<div class="right">
+			<div class="time" @click="countdown = !countdown">
+				<span class="current">{{ countdown ? countdownTime : currentTime }} </span>
+				<span class="divide">/</span>
+				<span class="duration">{{ duration }}</span>
+			</div>
 			<SoftButton
 				class="quality-button"
 				:text="quality"
-				@mouseenter="e => qualityMenu = e"
-				@mouseleave="qualityMenu = undefined"
+				@pointerenter="e => qualityMenu = e"
+				@pointerleave="qualityMenu = undefined"
 			/>
 			<SoftButton
 				icon="speed_outline"
-				@click="switchSpeed"
-				@mouseenter="e => rateMenu = e"
-				@mouseleave="rateMenu = undefined"
+				@pointerenter="e => rateMenu = e"
+				@pointerleave="rateMenu = undefined"
+				@pointerup.left="e => isMouse(e) && switchSpeed()"
 			/>
 			<SoftButton
-				:icon="volumeSet >= 0.5 ? 'volume_up' : volumeSet > 0 ? 'volume_down' : 'volume_mute'"
+				:icon="muted ? 'volume_mute' : volumeSet >= 0.5 ? 'volume_up' : volumeSet > 0 ? 'volume_down' : 'volume_none'"
 				class="volume"
-				@click="muted = !muted"
-				@mouseenter="e => volumeMenu = e"
-				@mouseleave="volumeMenu = undefined"
+				@pointerenter="e => volumeMenu = e"
+				@pointerleave="volumeMenu = undefined"
+				@pointerup.left="e => isMouse(e) && (muted = !muted)"
 			/>
 			<!-- TODO: 音量图标需要修改为三根弧线，并且使用动画切换，参考 Windows 11 / i(Pad)OS 的动画。 -->
 			<SoftButton
@@ -239,7 +288,9 @@
 			/>
 			<SoftButton
 				:icon="fullscreen ? 'fullscreen_exit' : 'fullscreen'"
-				@click="toggleFullscreen"
+				@pointerenter="e => isMouse(e) && onFullscreenBtnEnter()"
+				@pointerleave="e => isMouse(e) && onFullscreenBtnLeave()"
+				@click="toggleFullscreen?.()"
 			/>
 		</div>
 	</Comp>
@@ -248,6 +299,8 @@
 <style scoped lang="scss">
 	$thickness: 36px;
 	$twin-thickness: 60px;
+	$ripple-fix-padding: calc(($thickness * (64px / 40px) - $thickness) / 2); // 修复水波纹切割，用于padding。
+	$ripple-fix-margin: calc(($thickness * (64px / 40px) - $thickness) / -2); // 修复水波纹切割，用于margin。
 
 	:comp {
 		position: relative;
@@ -255,13 +308,12 @@
 		display: flex;
 		align-items: center;
 		height: $thickness;
-		overflow: hidden;
 		color: c(icon-color);
 		font-weight: 600;
 		font-size: 14px;
 		background-color: c(main-bg);
 
-		&.fullscreen {
+		.fullscreen & {
 			@include acrylic-background;
 			position: fixed;
 			right: 0;
@@ -270,9 +322,13 @@
 			backdrop-filter: blur(8px);
 			transition: $fallback-transitions, background-color 0s;
 
+			&.mobile {
+				padding: 0 16px;
+			}
+
 			&.hidden {
-				translate: 0 100%;
 				visibility: hidden;
+				translate: 0 100%;
 			}
 		}
 
@@ -290,10 +346,18 @@
 		@include flex-center;
 		justify-content: flex-start;
 		height: inherit;
+		padding-right: $ripple-fix-padding;
+
+		overflow: clip;
 
 		@include mobile {
 			order: 2;
 			height: $thickness;
+		}
+
+		.fullscreen & {
+			margin-left: $ripple-fix-margin;
+			padding-left: $ripple-fix-padding;
 		}
 
 		.play {
@@ -305,15 +369,22 @@
 		@include flex-center;
 		justify-content: flex-end;
 		height: inherit;
+		overflow: clip;
 
 		@include mobile {
+			flex-grow: 1;
 			order: 3;
 			height: $thickness;
-			margin-left: auto;
+			margin-left: $ripple-fix-margin;
 
 			.volume {
 				display: none;
 			}
+		}
+
+		.fullscreen & {
+			margin-right: $ripple-fix-margin;
+			padding-right: $ripple-fix-padding;
 		}
 
 		button {
@@ -328,7 +399,7 @@
 		cursor: pointer;
 
 		@include mobile {
-			order: 2;
+			margin-right: auto;
 		}
 
 		> * {
@@ -355,7 +426,16 @@
 
 		@include mobile {
 			order: 1;
+
 			padding: 0 8px;
+
+			.slider {
+				height: 24px;
+			}
+		}
+
+		@include not-mobile {
+			margin-left: $ripple-fix-margin;
 		}
 
 		:deep(.passed) {
@@ -375,6 +455,20 @@
 				translate: 0 -22px;
 			}
 		}
+
+		.fullbrowser {
+			@include round-small(top-left);
+			position: absolute;
+			right: 0;
+			bottom: $thickness;
+			overflow: clip;
+			background-color: c(main-bg);
+
+			&.v-enter-from,
+			&.v-leave-to {
+				translate: 0 100%;
+			}
+		}
 	}
 
 	.soft-button {
@@ -384,7 +478,7 @@
 			scale: 0.9;
 		}
 
-		&[aria-label="fullscreen"]:active:deep(.icon) {
+		&[aria-label^="fullscreen"]:active:deep(.icon) {
 			scale: 1.2;
 		}
 

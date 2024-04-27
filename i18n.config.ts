@@ -1,5 +1,5 @@
-import zhs from "locales/SChinese";
-import zht from "locales/TChinese";
+import zhs from "locales/Chinese Simplified";
+import zht from "locales/Chinese Traditional";
 import en from "locales/English";
 import ja from "locales/Japanese";
 import ko from "locales/Korean";
@@ -17,5 +17,9 @@ export default defineI18nConfig(() => ({
 		ko,
 		vi,
 		id,
+	},
+	fallbackLocale: {
+		zht: ["zhs"],
+		default: ["en", "zhs", "zht", "ja"],
 	},
 }));

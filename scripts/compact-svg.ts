@@ -1,6 +1,7 @@
 import { readFile, writeFile } from "fs/promises";
 
-const svgPath = process.argv[2];
+let svgPath = process.argv[2];
+if (svgPath === "--") svgPath = process.argv[3];
 if (!svgPath) throw new ReferenceError("未指定 SVG 文件。");
 let svg = await readFile(svgPath, "utf-8");
 

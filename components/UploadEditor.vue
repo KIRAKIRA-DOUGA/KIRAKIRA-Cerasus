@@ -119,7 +119,7 @@
 				<div v-ripple class="cover" @click="thumbnailInput?.click()">
 					<!-- 选择封面，裁剪器可以先不做 -->
 					<div class="mask">{{ t.select_cover }}</div>
-					<img :src="thumbnailBlob" alt="thumbnail" :draggable="false" />
+					<NuxtImg :src="thumbnailBlob" alt="thumbnail" :draggable="false" />
 				</div>
 
 				<Button icon="disambig">{{ t.associate_existing }}</Button>
@@ -308,7 +308,7 @@
 
 		&.v-enter-active,
 		&.v-leave-active {
-			overflow: hidden;
+			overflow: clip;
 		}
 	}
 

@@ -25,13 +25,14 @@
 		htmlAttrs: {
 			lang: langTag,
 		},
-		titleTemplate: "%s - KIRAKIRA☆DOUGA",
+		titleTemplate: titleChunk => {
+			return titleChunk ? `${titleChunk} - KIRAKIRA☆DOUGA` : "KIRAKIRA☆DOUGA";
+		},
 		meta: [
 			{ "http-equiv": "Content-Type", content: "text/html;charset=UTF-8" },
 			{ "http-equiv": "X-UA-Compatible", content: "IE=Edge,chrome=1" },
 			{ name: "viewport", content: "width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" },
 			{ name: "renderer", content: "webkit" },
-			{ name: "theme-color", content: computed(() => appSettings.coloredSideBar && Theme.actualPalette.value) },
 			{ name: "description", content: manifest.description },
 			{ name: "keywords", content: "视频,弹幕,字幕,音频,歌词,相簿,相册,照片,视频网站,弹幕视频,二次元,动漫,动画,音乐,动漫音乐,音MAD,AMV,MAD,ANIME,ACG,NOVA" },
 			// 以下内容为各种苹果私有属性。
@@ -61,7 +62,6 @@
 		],
 		link: [
 			{ rel: "icon", type: "image/vnd.microsoft.icon", href: "/favicon.ico" },
-			{ rel: "shortcut icon", type: "image/x-icon", href: "/favicon.ico" },
 			{ rel: "apple-touch-icon", href: "/public/static/images/touch/48.png" },
 			{ rel: "manifest", href: "/manifest.json" },
 			{ rel: "alternate", href: homepage, hreflang: "x-default" },
@@ -108,8 +108,7 @@
 	<NuxtLayout :name="layout">
 		<NuxtPage />
 	</NuxtLayout>
-	<Contents id="popovers">
-		<Toasts />
-		<Tooltips />
-	</Contents>
+
+	<Toasts />
+	<Tooltips />
 </template>

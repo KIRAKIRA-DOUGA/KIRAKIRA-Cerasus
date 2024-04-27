@@ -8,15 +8,16 @@ import docsLoader from "./plugins/vite/docs";
 import vitePluginScssVariables from "./plugins/vite/scss-variables";
 import scssVariablesLoader from "./plugins/vite/scss-variables-loader";
 import { environment } from "./utils/environment";
-/* import vueNestedSFC from "vite-plugin-vue-nested-sfc";
-import CopyPlugin from "copy-webpack-plugin";
-const wasmFile = resolve("node_modules/mediainfo.js/dist/MediaInfoModule.wasm"); */
+/* import vueNestedSFC from "vite-plugin-vue-nested-sfc"; */
 type OriginalNuxtConfig = Parameters<typeof defineNuxtConfig>[0];
 type BroadNuxtConfig = OriginalNuxtConfig & Record<Exclude<string, keyof OriginalNuxtConfig>, object | string>; // 还敢报错吗？
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; // 支持 HTTPS。
 const dev = environment.development;
 
 export default defineNuxtConfig({
+	devtools: {
+		enabled: false,
+	},
 	plugins: [
 		"plugins/vue/ripple.ts",
 		"plugins/vue/css-var-i.ts",
@@ -27,6 +28,7 @@ export default defineNuxtConfig({
 		// "@nuxt/devtools",
 		"@nuxtjs/i18n",
 		"@nuxt/content",
+		"@nuxt/image",
 		dev && "nuxt-icons",
 		!dev && "@nuxtjs/svg-sprite",
 		"@vueuse/nuxt",
@@ -40,8 +42,7 @@ export default defineNuxtConfig({
 		"modules/unsupported-browsers/module.ts",
 		dev && "modules/components-globalized/module.ts",
 		"@nuxtjs/robots",
-		"nuxt-simple-sitemap",
-		// "@nuxtjs/color-mode", // 这个已经重写了，不用开启。
+		"@nuxtjs/sitemap",
 	],
 	alias: defineAlias(__dirname,
 		"assets/styles",
@@ -63,7 +64,7 @@ export default defineNuxtConfig({
 		"api",
 		"types",
 		"utils",
-		"worklets",
+		"workers",
 		"assets/pomsky",
 		"composables/api",
 	),
@@ -130,6 +131,13 @@ export default defineNuxtConfig({
 		],
 	},
 	nitro: {
+		devProxy: {
+			"/api": {
+				target: "https://rosales.kirakira.moe",
+				prependPath: true,
+				changeOrigin: true,
+			},
+		},
 		compressPublicAssets: {
 			brotli: true,
 		},
@@ -139,19 +147,6 @@ export default defineNuxtConfig({
 			},
 		},
 	},
-	/* build: {
-		plugins: [
-			new CopyPlugin({
-				patterns: [{
-					from: wasmFile,
-					to: ".",
-				}, {
-					from: "CNAME",
-					to: ".",
-				}],
-			}),
-		],
-	}, */
 	build: {
 		vendor: [
 			"vue-cropper",
@@ -176,9 +171,9 @@ export default defineNuxtConfig({
 	},
 	i18n: {
 		locales: [
-			{ code: "zhs", name: "简体中文" },
-			{ code: "zht", name: "繁體中文" },
-			{ code: "en", name: "English" },
+			{ code: "zhs", iso: "zh-CN", name: "简体中文" },
+			{ code: "zht", iso: "zh-TW", name: "繁體中文" },
+			{ code: "en", iso: "en-US", name: "English" },
 			{ code: "ja", name: "日本語" },
 			{ code: "ko", name: "한국어" },
 			{ code: "vi", name: "Tiếng Việt" },
@@ -204,6 +199,20 @@ export default defineNuxtConfig({
 				default: "github-light",
 				dark: "github-dark",
 				sepia: "monokai",
+			},
+		},
+	},
+	image: {
+		format: ["avif", "webp"], // 只适用于 <NuxtPicture>，对 <NuxtImg> 无效。
+		providers: {
+			kirakira: {
+				name: "kirakira", // optional value to overrider provider name
+				provider: "./providers/nuxt-image/kirakira-image.ts", // Path to custom provider
+				options: {
+					// ... provider options
+					baseURL: "https://kirafile.com",
+					accountHash: "Gyz90amG54C4b_dtJiRpYg",
+				},
 			},
 		},
 	},
@@ -244,10 +253,12 @@ export default defineNuxtConfig({
 	site: {
 		url: "https://cerasus.kirakira.moe",
 	},
-	/* app: {
-		pageTransition: {
+	app: {
+		/* pageTransition: {
 			name: "page-jump",
 			mode: "out-in",
-		},
-	}, */
+		}, */
+		rootId: "root",
+		teleportId: "popovers",
+	},
 } as BroadNuxtConfig);

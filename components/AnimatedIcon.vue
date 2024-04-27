@@ -155,10 +155,10 @@
 		>
 			<Lottie
 				:class="{ filled }"
-				:loop="loop"
-				:autoplay="autoplay"
+				:loop
+				:autoplay
 				:animationData="animationData!"
-				:hidden="hidden"
+				:hidden
 				@animCreated="onAnimationCreated"
 			/>
 		</div>

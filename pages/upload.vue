@@ -117,7 +117,7 @@
 				</div>
 			</div>
 
-			<UploadEditor v-else :files="files" />
+			<UploadEditor v-else :files />
 		</Transition>
 	</div>
 </template>
@@ -155,7 +155,7 @@
 			width: 100%;
 			height: $box-height;
 			max-height: 100%;
-			overflow: hidden;
+			overflow: clip;
 			color: $color;
 			text-align: center;
 			cursor: pointer;

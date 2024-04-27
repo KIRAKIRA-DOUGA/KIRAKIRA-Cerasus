@@ -23,7 +23,17 @@
 
 <template>
 	<Comp v-ripple>
-		<img v-if="avatar" :src="avatar" alt="avatar" draggable="false" />
+		<NuxtImg
+			v-if="avatar"
+			provider="kirakira"
+			:src="avatar"
+			alt="avatar"
+			draggable="false"
+			format="avif"
+			width="100"
+			height="100"
+			:placeholder="[20, 20, 100, 2]"
+		/>
 		<Icon v-else name="person" />
 		<LocaleLink v-if="userLink" :to="userLink" :draggable="false" class="lite" />
 	</Comp>
@@ -42,16 +52,27 @@
 		@include flex-center;
 		position: relative;
 		flex-shrink: 0;
-		overflow: hidden;
+		overflow: clip;
 		color: c(icon-color);
 		background-color: c(gray-20);
 		cursor: pointer;
 
+		.colored-sidebar & {
+			background-color: c(main-bg, 20%);
+
+			&:any-hover {
+				background-color: c(main-bg, 40%);
+			}
+
+			.icon {
+				color: white;
+			}
+		}
+
 		> img {
+			@include square(100%);
 			z-index: 1;
-			width: 100%;
 			object-fit: cover;
-			aspect-ratio: 1 / 1;
 
 			&:any-hover,
 			&:has(~ a:any-hover) {
@@ -63,11 +84,11 @@
 				transition-duration: 1s;
 			}
 		}
-		
+
 		&:any-hover {
 			background-color: c(gray-30);
 		}
-		
+
 		a {
 			@include square(100%);
 			position: absolute;

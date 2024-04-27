@@ -41,11 +41,11 @@
 	@if not $alpha {
 		@return $color;
 	} @else {
-		@return rgb(from $color r g b / $alpha);
+		@return color-mix(in oklab, $color, transparent (100 - $alpha));
 	}
 }
 
-/// 不准温度计
+/// #### 不准温度计
 /// 即将一个数值从一个标度单位转移到另一个标度单位，新旧单位成线性关系，且不一定成正比关系，比如说摄氏度和华氏度的关系，返回对应的新值。
 /// 比如说，将一个取值范围为 0 ~ 255 的颜色值转到 0 ~ 100 的值。
 /// @param {Number} $x - 待转换的原标度数值。

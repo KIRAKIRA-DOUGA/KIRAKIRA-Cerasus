@@ -3,6 +3,13 @@
 	import beepSrc from "assets/audios/NOVA 2022.1 Alert Quick.ogg";
 	import type { ToastEvent } from "composables/toast";
 
+	const useSyncKiraCookieOptions = { isWatchCookieRef: true, isSyncSettings: true, isListenLoginEvent: true };
+
+	// 主题
+	const cookieThemeType = useKiraCookie<ThemeSetType>(COOKIE_KEY.themeTypeCookieKey, SyncUserSettings.updateOrCreateUserThemeTypeSetting, useSyncKiraCookieOptions);
+	// 个性色
+	const cookieThemeColor = useKiraCookie<string>(COOKIE_KEY.themeColorCookieKey, SyncUserSettings.updateOrCreateUserThemeColorSetting, useSyncKiraCookieOptions);
+
 	const page = ref(1);
 	const pages = ref(99);
 	const opPage = ref(1);
@@ -11,8 +18,8 @@
 	const displayPageCount = ref(7);
 	const toggle = ref(false);
 	const isClicked = ref(false);
-	const theme = Theme.theme;
-	const palette = Theme.palette;
+	const theme = cookieThemeType;
+	const palette = cookieThemeColor;
 	const timeoutId = ref<Timeout>();
 	const isTagChecked = ref(false);
 	const tagInput = ref<string>("输入标签名称");
@@ -99,7 +106,9 @@
 			"你说得对，但是《Linux》是由Linus自主研发的一款全新开放源代码操作系统内核。使用该内核的系统运行在一个被称作「ext4」的文件系统，在这里被Kernel选中的人将被授予「Terminal simulator」，引导Shell的力量。你将扮演一位名为「Root」的神秘用户，在自由的使用中邂逅不同开源协议、各有千秋独特的桌面环境和各种软件们，和它们一起服务器运维，找回丢失的软件包⸺同时，逐步发掘「/dev/null」的真相。",
 			"你说得对，但是《解锁原神风格的自己》是由哔哩哔哩和米哈游联合研发的一款全自动开盒活动。活动发生在一个被称作「B站」的幻想世界，在这里，被李旎选中的人将被免费授予「开盒视频」，导引开盒能力。你将扮演一位名为「仙驱」的神秘角色，在自由的原神风格视频中邂逅形形色色的开盒照片们，和他们一起泄漏隐私，公开自己的大头照⸺同时，逐步发掘「B站黑产」的真相。",
 			"你说得对，但是《感觉不如O神》是由AGC GAMES自主研发的一款全新恋爱模拟视觉小说。游戏发生在一个被称作「提亚马特」的幻想世界，在这里，被神选中的人将被授予「免费开玩」，导引玩梗之力。你将扮演一位名为「主角」的神秘角色在自由的旅行中邂逅性格各异、能力独特的同伴们，和他们一起击败强敌，找回失散的亲妈⸺同时，逐步发掘「O神」的真相。",
-			"你说得对，但原神内鬼吧是由猫尾草领导🐒组成的开放族谱冒险贴吧，节奏发生在这个被称为原神内鬼吧的友爱贴吧。在这里，被🐒选中的人将成为「仙家军」，导引孝敬米爹之力。你将扮演一位名为“米孝子”的神秘角色，在不自由的发帖中邂逅性格魔怔、能力逆天的吧友们，并帮他们找回失散的亲人⸺同时逐渐挖掘「内鬼吧」的真相。",
+			"你说得对，但是《原神内鬼吧》是由猫尾草领导🐒组成的开放族谱冒险贴吧，节奏发生在这个被称为「原神内鬼吧」的友爱贴吧。在这里，被🐒选中的人将成为「仙家军」，导引孝敬米爹之力。你将扮演一位名为「米孝子」的神秘角色，在不自由的发帖中邂逅性格魔怔、能力逆天的吧友们，并帮他们找回失散的亲人⸺同时逐渐挖掘「内鬼吧」的真相。",
+			"你说得对，但是《林尼》是由米哈游自主制作的一位五星级火系弓箭角色。游戏发生在一个被称作「提瓦特」的幻想世界，在这里，被神选中的人将被授予「黑色吊带丝袜」，导引烧0之力。你将扮演一位名为「神父」的神秘角色，在自由的旅行中邂逅性格各异、服装独特的小男孩们，和他们一起击败阿宅们，找回失散的厕妹⸺同时挖掘「GAYSHIT」的真相。",
+			"你说得对，但是《Gayshit》是由乙哈游自主研发的一款全新「女性向」开放世界冒险游戏。游戏发生在一个被称作「B站二世」的幻想世界，在这里，被叔叔二世选中的人将被授予「切割宅男」，导引仙女之力。你将扮演一位名为「xxn」的神秘角色，在自由的旅行中邂逅性格各异、能力独特的小男孩（特别是风系），和他们一起击败宅男，找回失散的「核心用户」⸺同时，逐步挖掘「女性向」的真相。",
 			EMOJI_START + "👇️🗣️🉐️✅️‍️，🥚💩️《⭕⛩️️》💩️🈶️🍚🐸️‍️⛽🚲🐷👁️💈💦️1️⃣️💴👊️❤️▶️‍️🔍🌏️🎩🧵️‍️🎮️。🎮🥜📥️1️⃣️🈹️🛏️🆗️‍️⬅️「🎻🚂」💦️😇🐘️🌏️，️‍📥️‍️🌤️💪️，🛏️🈸️☑️🀄️💦️👤️‍️🥇️🛏️✋🌧️「🈸️🈯️👁️」，🗾️☯️⭕🔜🈯️💪️。👇️🥇️🍝️👁️1️⃣️‍️🥀️️‍️🎯🥀️「️🟩⭐🌤️」💦️🈸️㊙️🦶️🔞，️‍📥️🚲🈶️💦️🟩⭐️🀄️✍️🐵️🌟️🈹️🈹️1️⃣️、️🌱💪️☠️™️💦️🌈🍝️🚪，️👘👉🚪1️⃣️7️⃣️🐔️🏳️🔫️💦️，️📸🌠️💩️3️⃣️💦️😚️👤️‍️⸺🌈💩️，㊗️👣💈🤏「️⭕⛩️」💦️💉️🐘️。️",
 			"You're right, but Genshin Impact is an open-world adventure RPG. Set forth on a journey across a fantasy world called Teyvat. In this vast world, explore seven nations, meet a diverse cast of characters with unique personalities and abilities and fight powerful enemies together with them, all on the way during your quest to find your lost sibling.",
 			"おっしゃるとおりですが、『原神』はオープンワールドのアドベンチャーRPG。「テイワット」と呼ばれる幻想世界を横断する旅に出よう。この広大な世界で、あなたは7つの国を巡り、ユニークな個性と能力を備えた多様なキャラクターと出会い、彼らと共に強敵と戦いながら、生き別れた兄妹との再会を目指す。",
@@ -147,7 +156,7 @@
 			<LocaleLink to="/search">{{ t.search }}</LocaleLink>
 		</div>
 		<div class="component-test">
-			<Pagination v-model="page" :pages="pages" :displayPageCount="displayPageCount" enableArrowKeyMove />
+			<Pagination v-model="page" :pages :displayPageCount enableArrowKeyMove />
 			<Pagination v-model="opPage" :pages="op" :displayPageCount="isMobile() ? 9 : 15" enableArrowKeyMove />
 			<Segmented v-model="selectedSegmented" :style="{ '--ease': 'ease-in-out' }">
 				<SegmentedItem id="list" icon="list">列表</SegmentedItem>
@@ -155,8 +164,8 @@
 				<SegmentedItem id="tile" icon="tile">磁贴</SegmentedItem>
 			</Segmented>
 			<div class="buttons">
-				<Button class="test-button" @click="onClickButton">{{ isClicked ? "我被单击了 呜呜呜~" : "按钮" }}</Button>
-				<Button disabled>按钮被禁用</Button>
+				<Button class="test-button" @click="onClickButton">{{ isClicked ? "我被单击了 呜呜呜~" : "主要按钮" }}</Button>
+				<Button disabled>主要按钮被禁用</Button>
 				<Button @click="showConfetti">{{ t.confetti }}</Button>
 				<Button icon="send">{{ t.send }}</Button>
 				<Button @click="reGacha">你说得不对</Button>
@@ -164,6 +173,10 @@
 				<Button @click="showModal = true">显示模态框</Button>
 				<Button @click="showFlyout">显示浮窗</Button>
 				<Button @click="e => flyoutKaomoji = [e, 'y']">显示颜文字浮窗</Button>
+				<Button class="secondary">次要按钮</Button>
+				<Button class="secondary" disabled>次要按钮被禁用</Button>
+				<Button class="tertiary">从要按钮</Button>
+				<Button class="tertiary" disabled>从要按钮被禁用</Button>
 			</div>
 			<Alert v-model="showAlert" static />
 			<Modal v-model="showModal" title="标题栏">

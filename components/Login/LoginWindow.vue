@@ -37,26 +37,35 @@
 		},
 	});
 	const loginWindow = refComp();
-	const isInvalidEmail = computed(() => !!email.value && !email.value.match(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/));
+	const isInvalidEmail = computed(() => !!email.value && !email.value.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]{2,}$/));
 
 	/**
 	 * 登录账户。
 	 */
 	async function loginUser() {
 		if (password.value && email.value) {
-			const passwordHash = password.value; // TODO: // WARN 为了保证安全性，这里需要对密码进行一次 Hash
+			const passwordHash = await generateHash(password.value);
 			const userLoginRequest: UserLoginRequestDto = { email: email.value, passwordHash };
 			try {
 				isTryingLogin.value = true;
 				const loginResponse = await api.user.login(userLoginRequest);
 				isTryingLogin.value = false;
 
-				if (loginResponse.success && loginResponse.uid) {
+				if (loginResponse.success && loginResponse.uid && loginResponse.token) {
 					open.value = false;
 					selfUserInfoStore.isLogined = true;
+
+					// 登陆后，将用户设置存储到 cookie，然后调用 cookieBinding 从 cookie 中获取样式设置并追加到 dom 根节点
+					const userSettings = await api.user.getUserSettings();
+					saveUserSetting2BrowserCookieStore(userSettings);
+					cookieBinding();
+
+					// NOTE: 触发用户登录事件，应当放在最后，等待上方的一系列业务逻辑执行完成之后在发送事件
 					useEvent("user:login", true);
-				} else
-					useToast(t.toast.login_failed, "error");
+				} else {
+					useToast(t.toast.login_failed, "error", 5000);
+					if (loginResponse.passwordHint) useToast(`${t.password.hint}: ${loginResponse.passwordHint}`, "info", 10000);
+				}
 			} catch (error) {
 				useToast(t.toast.login_failed, "error");
 			}
@@ -66,11 +75,11 @@
 	}
 
 	/**
-	 * 注册账户。
+	 * 用户注册，其二。
 	 */
 	async function registerUser() {
 		if (password.value === confirmPassword.value) {
-			const passwordHash = password.value; // TODO: 为了保证安全性，这里需要对密码进行一次 Hash
+			const passwordHash = await generateHash(password.value);
 			const userRegistrationRequest: UserRegistrationRequestDto = { email: email.value, passwordHash, passwordHint: passwordHint.value };
 			try {
 				isTryingRegistration.value = true;
@@ -81,9 +90,9 @@
 					open.value = false;
 					currentPage.value = "login";
 				} else
-					useToast("注册失败", "error"); // TODO: 使用多语言
+					useToast("注册失败，请稍后再试", "error"); // TODO: 使用多语言
 			} catch (error) {
-				useToast("注册失败", "error"); // TODO: 使用多语言
+				useToast("注册失败，请稍后再试", "error"); // TODO: 使用多语言
 			}
 		} else
 			useToast(t.toast.password_mismatch, "error");
@@ -113,10 +122,14 @@
 		open.value = false;
 	}
 
+	/**
+	 * 用户注册，其一
+	 */
+	const PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD = "密码提示中不允许包含密码本身"; // TODO: 使用多语言
 	const checkAndJumpNextPage = async () => {
 		if (email.value && password.value) {
-			if (passwordHint.value && passwordHint.value.includes(password.value)) { // 判断密码提示中是否包含密码自身
-				useToast("密码提示中不能包含密码本身", "error"); // TODO: 使用多语言
+			if (password.value && passwordHint.value && passwordHint.value.includes(password.value)) { // 判断密码提示中是否包含密码自身
+				useToast(PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD, "error");
 				return;
 			}
 			const userExistsCheckRequest: UserExistsCheckRequestDto = { email: email.value };
@@ -125,13 +138,28 @@
 				if (userExistsCheckResponse.success && !userExistsCheckResponse.exists)
 					currentPage.value = "register2";
 				else
-					useToast("用户名重复", "error"); // TODO: 使用多语言
+					useToast("该邮箱已注册，请更换", "error", 5000); // TODO: 使用多语言
 			} catch (error) {
 				useToast("注册失败", "error"); // TODO: 使用多语言
 			}
 		} else
 			useToast("请输入用户名和密码", "error"); // TODO: 使用多语言
 	};
+
+	const passwordHintInvalidText = ref<string | boolean>();
+
+	/**
+	 * 校验密码提示中是否包含密码自身
+	 * @param e 用户输入事件
+	 */
+	function checkPasswordHintIncludesPassword(e: InputEvent) {
+		const targe = e.target as HTMLInputElement;
+		const inputValue = targe.value;
+		if (password.value && inputValue?.includes(password.value))
+			passwordHintInvalidText.value = PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD;
+		else
+			passwordHintInvalidText.value = false;
+	}
 </script>
 
 <template>
@@ -210,6 +238,8 @@
 								type="text"
 								:placeholder="t.password.hint"
 								icon="visibility"
+								:invalid="passwordHintInvalidText"
+								@input="checkPasswordHintIncludesPassword"
 							/>
 						</div>
 						<div class="action margin-left-inset">
@@ -295,6 +325,7 @@
 
 				<div class="cover-wrapper">
 					<LogoCover :welcome="isWelcome" />
+					<InfoBar><preserves>{{ t.loginwindow.alpha_notice }}</preserves></InfoBar>
 				</div>
 
 				<!-- 登录动画 Login Animation -->
@@ -308,7 +339,7 @@
 						<div class="line"></div>
 					</div>
 					<div class="avatar">
-						<img :src="avatar" alt="avatar" />
+						<NuxtImg :src="avatar" alt="avatar" />
 					</div>
 					<div class="welcome">{{ t.loginwindow.login_welcome }}</div>
 					<div class="name">艾了个拉</div> <!-- TODO: user name here -->
@@ -339,7 +370,7 @@
 		justify-content: space-between;
 		width: $width;
 		height: $height;
-		overflow: hidden;
+		overflow: clip;
 		transition: all $transition-ease $enter-duration;
 		clip-path: circle(100% at var(--avatar-center));
 
@@ -398,7 +429,7 @@
 	.main {
 		position: relative;
 		height: 100%;
-		overflow: hidden;
+		overflow: clip;
 
 		.logining > & {
 			overflow: visible;
@@ -550,7 +581,7 @@
 		position: absolute;
 		left: $narrow-width;
 		width: 400px;
-		overflow: hidden;
+		overflow: clip;
 
 		@media #{$narrow-screen} {
 			width: 0;
@@ -571,6 +602,13 @@
 		.v-enter-from &,
 		.v-leave-to & {
 			translate: 6rem 0;
+		}
+
+		.info-bar {
+			position: absolute;
+			inset: 0;
+			bottom: auto;
+			margin: 8px;
 		}
 	}
 
@@ -628,7 +666,7 @@
 		@include circle;
 		@include absolute-center-sized;
 		position: absolute;
-		overflow: hidden;
+		overflow: clip;
 		background-color: c(accent-20);
 		scale: 0;
 

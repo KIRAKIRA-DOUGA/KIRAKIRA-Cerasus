@@ -16,7 +16,7 @@
 <template>
 	<Comp role="checkbox" :aria-checked="checked" :class="{ checked }" :tabindex="0" @click="checked = !checked">
 		<div v-ripple class="card">
-			<slot name="image"><img :src="image" /></slot>
+			<slot name="image"><NuxtImg :src="image" /></slot>
 			<div class="overlay"></div>
 			<div class="float">
 				<Checkbox v-model:single="checked" readonly />
@@ -94,11 +94,11 @@
 				opacity: 0;
 			}
 		}
-		
+
 		&:deep(.ripple-circle) {
 			z-index: 4;
 		}
-		
+
 		> :deep(img) {
 			@include square(100%);
 			object-fit: cover;

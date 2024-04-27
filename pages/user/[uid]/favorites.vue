@@ -103,7 +103,7 @@
 					<SortItem id="rating">{{ t.rating }}</SortItem>
 				</Sort>
 			</section>
-			<Pagination v-model="page" :pages="pages" :displayPageCount="displayPageCount" enableArrowKeyMove />
+			<Pagination v-model="page" :pages :displayPageCount enableArrowKeyMove />
 		</div>
 	</div>
 </template>

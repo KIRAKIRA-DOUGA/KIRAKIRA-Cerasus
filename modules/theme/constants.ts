@@ -1,4 +1,4 @@
 import { PREFERENTIAL_ROUTE } from "../shared/constants";
 
-export const TEMPLATE_NAME = "theme.script.js";
-export const SCRIPT_ROUTE = PREFERENTIAL_ROUTE + TEMPLATE_NAME;
+export const THEME_COOKIE_BANDER_SCRIPT_TEMPLATE_NAME = "theme-cookie-binding.js";
+export const THEME_COOKIE_BANDER_SCRIPT_ROUTE = PREFERENTIAL_ROUTE + THEME_COOKIE_BANDER_SCRIPT_TEMPLATE_NAME;

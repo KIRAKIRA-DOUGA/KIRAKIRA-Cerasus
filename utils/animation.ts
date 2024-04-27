@@ -91,8 +91,8 @@ type AnimateSizeOptions = Partial<{
 	removeGlitchFrame: boolean;
 	/** 动画播放的同时附加其它动画，并使用与之相同的时长与缓动值。 */
 	attachAnimations: [Element, Keyframes][] | false;
-	/** 不要 `overflow: hidden;`？ */
-	noCropping: boolean;
+	/** 不要 `overflow: clip;`？ */
+	noClipping: boolean;
 }>;
 
 /**
@@ -122,7 +122,7 @@ export async function* animateSizeGenerator(
 		endChildTranslate,
 		removeGlitchFrame,
 		attachAnimations,
-		noCropping = false,
+		noClipping = false,
 	}: AnimateSizeOptions = {},
 ): AsyncGenerator<void, Animation | void, boolean> {
 	element = toValue(element);
@@ -167,9 +167,9 @@ export async function* animateSizeGenerator(
 	Object.assign(keyframes[1], endStyle);
 	const animationOptions = { duration, easing };
 	const htmlElement = element as HTMLElement;
-	if (!noCropping) htmlElement.style.overflow = "hidden";
+	if (!noClipping) htmlElement.style.overflow = "clip";
 	const result = element.animate(keyframes, animationOptions);
-	if (!noCropping) result.addEventListener("finish", () => htmlElement.style.removeProperty("overflow"));
+	if (!noClipping) result.addEventListener("finish", () => htmlElement.style.removeProperty("overflow"));
 	if (startChildTranslate || endChildTranslate || attachAnimations) {
 		const onlyChild = element.children[0]; // 只取唯一一个子元素。
 		if (onlyChild && element instanceof HTMLElement && removeGlitchFrame) {
@@ -242,4 +242,69 @@ export function simpleAnimateSize(specified: "width" | "height" = "height", dura
 	};
 
 	return [onEnter, onLeave];
+}
+
+export const STOP_TRANSITION_ID = "stop-transition";
+
+/**
+ * 为整个页面添加视图过渡动画。
+ * @param changeFunc - 使页面变化的回调函数。
+ * @param keyframes - 动画关键帧。
+ * @param options - 动画选项。
+ * @returns 在动画播放完成之后可执行析构函数。
+ */
+export async function startColorViewTransition(changeFunc: () => MaybePromise<void>, keyframes: Keyframe[] | PropertyIndexedKeyframes, options: KeyframeAnimationOptions = {}) {
+	if (!document.startViewTransition) {
+		await changeFunc();
+		return;
+	}
+
+	const style = document.createElement("style");
+	style.id = STOP_TRANSITION_ID;
+	style.textContent = `
+		*,
+		*::before,
+		*::after {
+			-webkit-transition: none !important;
+			-moz-transition: none !important;
+			-o-transition: none !important;
+			-ms-transition: none !important;
+			transition: none !important;
+		}
+
+		::view-transition-old(root),
+		::view-transition-new(root) {
+			mix-blend-mode: normal;
+			transition: none !important;
+			animation: none !important;
+		}
+
+		::view-transition-old(*),
+		::view-transition-new(*),
+		::view-transition-old(*::before),
+		::view-transition-new(*::after) {
+			transition: none !important;
+		}
+	`;
+	document.head.appendChild(style);
+
+	options.duration ??= 300;
+	options.easing ??= eases.easeInOutSmooth;
+	options.pseudoElement ??= "::view-transition-new(root)";
+
+	const transition = document.startViewTransition(changeFunc);
+	await transition.ready;
+
+	const animation = document.documentElement.animate(keyframes, options);
+	await animation.finished;
+	document.head.removeChild(style);
+}
+
+/**
+ * 如果浏览器支持 `document.startViewTransition` 则调用它，否则直接执行回调函数。
+ * @param callback - 触发页面过渡的回调函数。
+ */
+export async function startViewTransition(callback: () => MaybePromise<void>) {
+	if (document.startViewTransition) await document.startViewTransition(callback).finished;
+	else await callback();
 }

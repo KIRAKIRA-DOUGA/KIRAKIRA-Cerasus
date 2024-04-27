@@ -22,7 +22,7 @@
 		change: [value: string];
 	}>();
 
-	const model = defineModel<boolean>();
+	const model = defineModel<boolean>({ default: undefined });
 	const input = defineModel<string>("input");
 	const editable = computed(() => input.value !== undefined);
 	const isChecked = withOneWayProp(model, () => props.checked);
@@ -56,13 +56,13 @@
 		class="tag lite"
 		:class="{ checked: isChecked, editable }"
 		:to="link"
-		:query="query"
+		:query
 		draggable="false"
 		tabindex="0"
 		role="checkbox"
 		:aria-checked="isChecked"
 		aria-label="tag"
-		@click="model = !model"
+		@click="model != null && (model = !model)"
 	>
 		<div class="circle"></div>
 		<div class="content">
@@ -98,7 +98,7 @@
 		position: relative;
 		display: inline-flex;
 		padding: $padding;
-		overflow: hidden;
+		overflow: clip;
 		color: inherit;
 		font-size: inherit;
 		line-height: 1rem;
@@ -144,7 +144,7 @@
 		* {
 			transition: $fallback-transitions, all $ease-out-expo $duration;
 		}
-		
+
 		.tags & {
 			&,
 			* {
@@ -161,7 +161,7 @@
 		display: inline;
 		width: $check-icon-size;
 		height: $check-icon-size;
-		overflow: hidden;
+		overflow: clip;
 
 		&.v-enter-from,
 		&.v-leave-to {

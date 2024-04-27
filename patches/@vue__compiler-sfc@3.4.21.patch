@@ -1,0 +1,28 @@
+diff --git a/dist/compiler-sfc.cjs.js b/dist/compiler-sfc.cjs.js
+index 205748c6253bf7beafe35565060e3aaede919f72..3064393adb283e0726f00c0b336282164ca089c9 100644
+--- a/dist/compiler-sfc.cjs.js
++++ b/dist/compiler-sfc.cjs.js
+@@ -7906,9 +7906,6 @@ function rewriteSelector(id, selector, selectorRoot, slotted = false) {
+           }
+           selector.removeChild(n);
+         } else {
+-          warn(
+-            `${value} usage as a combinator has been deprecated. Use :deep(<inner-selector>) instead of ${value} <inner-selector>.`
+-          );
+           const prev = selector.at(selector.index(n) - 1);
+           if (prev && isSpaceCombinator(prev)) {
+             selector.removeChild(prev);
+diff --git a/dist/compiler-sfc.esm-browser.js b/dist/compiler-sfc.esm-browser.js
+index 8ce77b30c7bbad766ecbc09c37d23d39293183d2..b4dfdec662ee326d0148778ee939164d7fd5bdfb 100644
+--- a/dist/compiler-sfc.esm-browser.js
++++ b/dist/compiler-sfc.esm-browser.js
+@@ -40221,9 +40221,6 @@ function rewriteSelector(id, selector, selectorRoot, slotted = false) {
+           }
+           selector.removeChild(n);
+         } else {
+-          warn(
+-            `${value} usage as a combinator has been deprecated. Use :deep(<inner-selector>) instead of ${value} <inner-selector>.`
+-          );
+           const prev = selector.at(selector.index(n) - 1);
+           if (prev && isSpaceCombinator(prev)) {
+             selector.removeChild(prev);

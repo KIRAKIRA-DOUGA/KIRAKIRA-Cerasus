@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import banner from "assets/images/banner-20220717.png";
+	const banner = "static/images/banner-20220717.png";
 
 	// const avatar = "/static/images/avatars/aira.webp";
 	const selfUserInfoStore = useSelfUserInfoStore();
@@ -60,8 +60,9 @@
 			if (blobImageData) {
 				const userAvatarUploadSignedUrlResult = await api.user.getUserAvatarUploadSignedUrl();
 				const userAvatarUploadSignedUrl = userAvatarUploadSignedUrlResult.userAvatarUploadSignedUrl;
-				if (userAvatarUploadSignedUrlResult.success && userAvatarUploadSignedUrl) {
-					const uploadResult = await api.user.uploadUserAvatar(blobImageData, userAvatarUploadSignedUrl);
+				const userAvatarUploadFilename = userAvatarUploadSignedUrlResult.userAvatarFilename;
+				if (userAvatarUploadSignedUrlResult.success && userAvatarUploadSignedUrl && userAvatarUploadFilename) {
+					const uploadResult = await api.user.uploadUserAvatar(userAvatarUploadFilename, blobImageData, userAvatarUploadSignedUrl);
 					if (uploadResult) {
 						await api.user.getSelfUserInfo();
 						avatarCropperIsOpen.value = false;
@@ -75,7 +76,7 @@
 			}
 		} catch (error) {
 			useToast("头像上传失败！", "error"); // TODO: 使用多语言
-			console.error("ERROR", "在上传用户头像时出错");
+			console.error("ERROR", "在上传用户头像时出错", error);
 			isUploadingUserAvatar.value = false;
 		}
 	}
@@ -144,7 +145,7 @@
 		</template>
 	</Modal>
 	<div v-ripple class="banner">
-		<img :src="banner" alt="banner" draggable="false" />
+		<NuxtImg :src="banner" alt="banner" draggable="false" format="avif" placeholder />
 		<span>{{ t.profile.edit_banner }}</span>
 	</div>
 
@@ -173,7 +174,7 @@
 	.banner {
 		@include round-large;
 		position: relative;
-		overflow: hidden;
+		overflow: clip;
 		background-color: c(gray-5);
 
 		> img {

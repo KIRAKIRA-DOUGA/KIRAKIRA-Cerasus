@@ -183,7 +183,7 @@
 		z-index: 3;
 		width: var(--width);
 		height: 100%;
-		overflow: hidden;
+		overflow: clip;
 		font-weight: bold;
 		background-color: c(accent);
 		cursor: grab;

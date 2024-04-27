@@ -19,7 +19,7 @@
 <template>
 	<div class="date-time">
 		<Subheader icon="time">{{ t.current_time }}</Subheader>
-		<p>{{ formatDateWithLocale(date, { time: true }) }}</p>
+		<p><DateTime :dateTime="date" showTime /></p>
 	</div>
 	<section grid>
 		<SettingsGridItem

@@ -88,15 +88,25 @@ export function switchLanguage(lang: string) {
 	// useRouter().push(switchLocalePath(value)); // 旧方法，不推荐使用。
 	if (lang === "zhs") lang = "/";
 	else lang = `/${lang}/`;
-	useRouter().push(lang + getRoutePath());
-	if (environment.client) { // 切换语言动画。
+	const update = () => useRouter().push(lang + getRoutePath());
+	if (environment.server) update();
+	else { // 切换语言动画。
 		const element = document.querySelector(".settings") ?? document.body;
 		const routerView = element.querySelector(".router-view");
 		routerView?.classList.add("stop-animation");
-		element.animate([
-			{ filter: "blur(10px)" },
-			{ filter: "blur(0)" },
-		], { duration: 500, easing: eases.easeOutSmooth });
+		if (!document.startViewTransition)
+			element.animate([
+				{ filter: "blur(10px)" },
+				{ filter: "blur(0)" },
+			], { duration: 500, easing: eases.easeOutSmooth });
+		else
+			startColorViewTransition(() => {
+				useRouter().push(lang + getRoutePath());
+			}, {
+				clipPath: ["inset(0 0 100%)", "inset(0)"],
+			}, {
+				duration: 500,
+			});
 		// nextTick(() => routerView?.classList.add("stop-animation"));
 	}
 }

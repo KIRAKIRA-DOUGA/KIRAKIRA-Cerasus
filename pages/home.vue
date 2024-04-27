@@ -1,6 +1,4 @@
 <script setup lang="ts">
-	useHead({ title: t.home });
-
 	const videos = ref<ThumbVideoResponseDto>();
 	const route = useRoute();
 	const { query } = route;

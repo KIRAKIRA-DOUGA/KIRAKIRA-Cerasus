@@ -110,14 +110,11 @@
 </script>
 
 <template>
-	<div ref="danmakuContainer" class="danmaku-container" :hidden="hidden"></div>
+	<div ref="danmakuContainer" class="danmaku-container" :hidden></div>
 </template>
 
 <style scoped lang="scss">
 	.danmaku-container:deep {
-		position: absolute;
-		inset: 0;
-		bottom: 36px;
 		pointer-events: none;
 
 		* {

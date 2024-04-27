@@ -1,9 +1,9 @@
 {
 	"editor.fontLigatures": "'ss03', 'ss20'",
 	"prettier.useTabs": true,
+	"prettier.vueIndentScriptAndStyle": true,
 	"editor.insertSpaces": false,
 	"editor.detectIndentation": false,
-	"editor.formatOnPaste": true,
 	"editor.formatOnType": true,
 	"less.lint.unknownAtRules": "ignore",
 	"scss.lint.unknownAtRules": "ignore",
@@ -29,6 +29,18 @@
 		"json": true,
 		"jsonc": true,
 	},
+	"vue.server.additionalExtensions": [
+		"html",
+		"css",
+		"js",
+		"ts",
+		"scss",
+		"less",
+		"jsx",
+		"tsx",
+		"json",
+		"jsonc"
+	],
 	"stylelint.snippet": [
 		"css",
 		"less",
@@ -49,10 +61,13 @@
 	"typescript.tsdk": "node_modules\\typescript\\lib",
 	"editor.codeActionsOnSave": {
 		"source.fixAll": "explicit",
-		"source.sortImports": "explicit"
+		// "source.sortImports": "explicit" // BUG: 开启后保存时缩进会出现问题。
 	},
 	"vue.complete.casing.props": "camel",
 	"vue.complete.casing.tags": "pascal",
+	"vue.format.script.initialIndent": true,
+	"vue.format.style.initialIndent": true,
+	"vue.format.template.initialIndent": true,
 	"eslint.validate": [
 		"javascript",
 		"typescript",

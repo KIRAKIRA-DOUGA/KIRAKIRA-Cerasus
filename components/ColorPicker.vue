@@ -3,7 +3,7 @@
 </docs>
 
 <script lang="ts">
-	import checkerboard from "worklets/paint/checkerboard?url";
+	import checkerboard from "workers/paint/checkerboard?url";
 	if (environment.client)
 		CSS.paintWorklet?.addModule(checkerboard);
 </script>
@@ -159,6 +159,8 @@
 			isUpdating[param] = false;
 		};
 	}
+
+	// TODO: 方形区域滑块在外面，但滑轨区域滑块又在里面，很丑，需要统一样式。
 </script>
 
 <template>
@@ -259,15 +261,15 @@
 <style scoped lang="scss">
 	$thumb-size: 24px;
 	$thumb-size-half: calc($thumb-size / 2);
-	
+
 	.title {
 		display: flex;
 		gap: 2px;
 		align-items: center;
-	}
 
-	:comp > :not(:last-child) {
-		margin-bottom: 16px;
+		.subheader {
+			flex-shrink: 0;
+		}
 	}
 
 	%inner-stroke {
@@ -280,7 +282,7 @@
 
 	.plane {
 		position: relative;
-		margin: $thumb-size-half;
+		margin: $thumb-size-half 0;
 		aspect-ratio: 1 / 1;
 		cursor: pointer;
 		touch-action: pinch-zoom;
@@ -338,17 +340,24 @@
 		}
 	}
 
+	.slider {
+		margin-bottom: 0;
+
+		&:last-of-type {
+			margin-bottom: 16px;
+		}
+	}
+
 	.slider:deep {
 		--size: large;
-		margin-top: 16px;
 
 		.passed {
 			display: none;
 		}
 
-		.track {
+		.base {
 			position: relative;
-			overflow: hidden;
+			overflow: clip;
 
 			&::after {
 				@extend %inner-stroke;
@@ -357,7 +366,7 @@
 	}
 
 	@function slider-model($model) {
-		@return ".slider.auxiliary.#{$model}:deep .track";
+		@return ".slider.auxiliary.#{$model}:deep .base";
 	}
 
 	#{slider-model(rgb)} {
@@ -380,7 +389,7 @@
 		background: linear-gradient(to right, black, var(--wo-v));
 	}
 
-	.slider.opacity:deep .track,
+	.slider.opacity:deep .base,
 	.checkerboard {
 		$color: c(gray-40);
 		--checkerboard-size: 8px;
@@ -399,7 +408,7 @@
 		}
 	}
 
-	.slider.opacity:deep .track::before {
+	.slider.opacity:deep .base::before {
 		position: absolute;
 		background: linear-gradient(to right, transparent, var(--wo-a));
 		inset: 0;
@@ -410,7 +419,7 @@
 	.controls {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
-		gap: 12px 6px;
+		gap: 8px;
 		width: 100%;
 		margin-bottom: 4px;
 
@@ -426,7 +435,7 @@
 
 	.view-color {
 		position: relative;
-		overflow: hidden;
+		overflow: clip;
 
 		* {
 			position: absolute;

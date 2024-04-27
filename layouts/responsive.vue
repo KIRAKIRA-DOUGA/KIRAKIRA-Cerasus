@@ -19,7 +19,7 @@
 	const cssDoodle = refComp();
 	const showCssDoodle = computed(() => useAppSettingsStore().showCssDoodle);
 	const isToggleSettings = ref(false);
-	const scrollToTop = () => [container, containerMain].forEach(c => c.value?.scrollTo(0, 0));
+	const scrollToTop = () => [container, containerMain].forEach(c => c.value?.scrollTo({ top: 0, left: 0, behavior: "instant" }));
 	const transitionProps = (aboutSettings: boolean) => {
 		const attrs: AnyObject = { mode: "out-in", onBeforeEnter: scrollToTop };
 		if (aboutSettings)
@@ -78,7 +78,6 @@
 <style scoped lang="scss">
 	.container {
 		position: relative;
-		z-index: 1;
 		padding-left: $sidebar-width;
 		transition: $fallback-transitions, width 0s, height 0s;
 
@@ -194,7 +193,7 @@
 			@include system-card;
 			@include round-large;
 			position: relative;
-			overflow: hidden;
+			overflow: clip;
 			transform: translateX(60dvw) scale(0.8);
 			transform-origin: left center;
 		}

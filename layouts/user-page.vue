@@ -60,7 +60,9 @@
 		set: async id => { await navigate(`/user/${urlUid.value}/${id}`); },
 	});
 
-	const titleUserName = computed(() => isSelf.value ? (userSelfInfoStore.username ? t.user_page.title_affix(userSelfInfoStore.username) : "") : (userInfo.value?.username ? t.user_page.title_affix(userInfo.value?.username) : ""));
+	const titleAffixString = t.user_page.title_affix; // HACK: Bypass "A composable that requires access to the Nuxt instance was called outside of a plugin."
+
+	const titleUserName = computed(() => isSelf.value ? (userSelfInfoStore.username ? titleAffixString(userSelfInfoStore.username) : "") : (userInfo.value?.username ? titleAffixString(userInfo.value?.username) : ""));
 
 	// const titleUserName = computed(() => isSelf.value ? "aaa" : "bbb");
 
@@ -145,7 +147,7 @@
 
 		.user {
 			display: flex;
-			gap: 10px;
+			gap: 16px;
 			align-items: center;
 
 			.names {

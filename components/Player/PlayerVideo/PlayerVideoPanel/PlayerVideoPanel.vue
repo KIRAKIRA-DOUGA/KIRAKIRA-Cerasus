@@ -127,7 +127,7 @@
 					<Transition :name="transitionName" mode="out-in">
 						<div v-if="selectedTab === 'danmaku-list'" key="danmaku-list">
 							<PlayerVideoPanelDanmakuList v-model="insertDanmaku" />
-							<PlayerVideoPanelDanmakuSender v-model="sendDanmaku" :videoId="props.videoId" :currentTime="currentTime" />
+							<PlayerVideoPanelDanmakuSender v-model="sendDanmaku" :videoId="props.videoId" :currentTime />
 						</div>
 
 						<div v-else-if="selectedTab === 'chapters'" key="chapters">
@@ -140,11 +140,11 @@
 
 				<PlayerVideoPanelSettings
 					v-else
-					:playing="playing"
-					:thumbnail="thumbnail"
-					:settings="settings"
-					:selectedSettingsTab="selectedSettingsTab"
-					:transitionName="transitionName"
+					:playing
+					:thumbnail
+					:settings
+					:selectedSettingsTab
+					:transitionName
 				/>
 			</Transition>
 		</div>
@@ -162,7 +162,7 @@
 		flex-shrink: 0;
 		width: $panel-width;
 		height: inherit;
-		overflow: hidden;
+		overflow: clip;
 
 		@include tablet {
 			display: none;
@@ -176,7 +176,7 @@
 
 		.tab-wrapper {
 			height: 36px;
-			overflow: hidden;
+			overflow: clip;
 
 			&.v-enter-active,
 			&.v-leave-active {
@@ -238,7 +238,7 @@
 		@include flex-center;
 		justify-content: space-evenly;
 		height: $buttons-height;
-		overflow: hidden;
+		overflow: clip;
 	}
 
 	.content {

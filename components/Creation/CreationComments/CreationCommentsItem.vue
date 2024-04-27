@@ -30,7 +30,6 @@
 	const downvote = defineModel("downvote", { default: 0 });
 	/** 是否已点击减分？ */
 	const isDownvoted = defineModel("isDownvoted", { default: false });
-	const date = computed(() => formatDateWithLocale(props.date, { time: true }));
 	const menu = ref<FlyoutModel>();
 	/** 是否已置顶？ */
 	const pinned = defineModel("pinned", { default: false });
@@ -61,34 +60,34 @@
 			return;
 		}
 
-		if (voteLock.value) { // 如果请求的"悲观锁"处于锁定状态，则弹出错误提示并停止
+		if (voteLock.value) { // 如果请求的“悲观锁”处于锁定状态，则弹出错误提示并停止
 			useToast("操作过于频繁，请稍后再试~", "error"); // TODO: 使用多语言
 			return;
 		}
 
-		if (!userSelfInfoStore.isLogined) { // 如果用户未登录，则不允许点赞/点踩
+		if (!userSelfInfoStore.isLogined) { // 如果用户未登录，则不允许加分/减分
 			useToast("请登录后再操作~", "error"); // TODO: 使用多语言
 			return;
 		}
 
-		if (button === "upvote") // 判断是点赞还是点踩
-			if (isUpvoted.value) // 如果被点赞的视频评论此前已经被点赞，则取消点赞，否则点赞
-				// 取消点赞
+		if (button === "upvote") // 判断是加分还是减分
+			if (isUpvoted.value) // 如果被加分的视频评论此前已经被加分，则取消加分，否则加分
+				// 取消加分
 				cancelVideoCommentUpvote(commentId, videoId);
 			else
-				// 点赞
+				// 加分
 				emitVideoCommentUpvote(commentId, videoId);
 		else
-			if (isDownvoted.value) // 如果被踩的视频评论此前已经被点踩，则取消点踩，否则点踩
-				// 取消点踩
+			if (isDownvoted.value) // 如果被减分的视频评论此前已经被减分，则取消减分，否则减分
+				// 取消减分
 				cancelVideoCommentDownvote(commentId, videoId);
 			else
-				// 点踩
+				// 减分
 				emitVideoCommentDownvote(commentId, videoId);
 	}
 
 	/**
-	 * 点赞视频评论
+	 * 视频评论加分
 	 * @param commentId 视频评论 ID
 	 * @param videoId 视频 ID
 	 */
@@ -97,22 +96,22 @@
 		const emitVideoCommentUpvoteRequest: EmitVideoCommentUpvoteRequestDto = { id: commentId, videoId };
 		api.videoComment.emitVideoCommentUpvote(emitVideoCommentUpvoteRequest).catch(error => {
 			voteLock.value = false; // 请求锁：释放
-			useToast("点赞失败！", "error"); // TODO: 使用多语言
-			console.error("ERROR", "点赞失败！", error);
+			useToast("加分失败！", "error"); // TODO: 使用多语言
+			console.error("ERROR", "加分失败！", error);
 		}).finally(() => {
 			voteLock.value = false; // 请求锁：释放
 		});
 
-		isUpvoted.value = true; // 设置点赞 ICON 高亮
-		upvote.value++; // 赞数增加
-		if (isDownvoted.value) { // 如果用户在点赞操作前，已经有点踩，则取消点踩的高亮，并减少点踩数量
+		isUpvoted.value = true; // 设置加分图标高亮
+		upvote.value++; // 加分数增加
+		if (isDownvoted.value) { // 如果用户在加分操作前，已经有减分，则取消减分的高亮，并减少减分数量
 			isDownvoted.value = false;
 			downvote.value--;
 		}
 	}
 
 	/**
-	 * 取消视频评论点赞
+	 * 取消视频评论加分
 	 * @param commentId 视频评论 ID
 	 * @param videoId 视频 ID
 	 */
@@ -121,18 +120,18 @@
 		const cancelVideoCommentUpvoteRequest: CancelVideoCommentUpvoteRequestDto = { id: commentId, videoId };
 		api.videoComment.cancelVideoCommentUpvote(cancelVideoCommentUpvoteRequest).catch(error => {
 			voteLock.value = false; // 请求锁：释放
-			useToast("取消点赞失败！", "error"); // TODO: 使用多语言
-			console.error("ERROR", "取消点赞失败！", error);
+			useToast("取消加分失败！", "error"); // TODO: 使用多语言
+			console.error("ERROR", "取消加分失败！", error);
 		}).finally(() => {
 			voteLock.value = false; // 请求锁：释放
 		});
 
-		isUpvoted.value = false; // 取消点赞 ICON 高亮
-		upvote.value--; // 赞数减少
+		isUpvoted.value = false; // 取消加分图标高亮
+		upvote.value--; // 加分数减少
 	}
 
 	/**
-	 * 视频评论点踩
+	 * 视频评论减分
 	 * @param commentId 视频评论 ID
 	 * @param videoId 视频 ID
 	 */
@@ -141,22 +140,22 @@
 		const emitVideoCommentDownvoteRequest: EmitVideoCommentDownvoteRequestDto = { id: commentId, videoId };
 		api.videoComment.emitVideoCommentDownvote(emitVideoCommentDownvoteRequest).catch(error => {
 			voteLock.value = false; // 请求锁：释放
-			useToast("点踩失败！", "error"); // TODO: 使用多语言
-			console.error("ERROR", "点踩失败！", error);
+			useToast("减分失败！", "error"); // TODO: 使用多语言
+			console.error("ERROR", "减分失败！", error);
 		}).finally(() => {
 			voteLock.value = false; // 请求锁：释放
 		});
 
-		isDownvoted.value = true; // 设置点踩 ICON 高亮
-		downvote.value++; // 踩数增加
-		if (isUpvoted.value) { // 如果用户在点踩操作前，已经有点赞，则取消点赞的高亮，并减少点赞数量
+		isDownvoted.value = true; // 设置减分图标高亮
+		downvote.value++; // 减分数增加
+		if (isUpvoted.value) { // 如果用户在减分操作前，已经有加分，则取消加分的高亮，并减少加分数量
 			upvote.value--;
 			isUpvoted.value = false;
 		}
 	}
 
 	/**
-	 * 取消视频评论点踩
+	 * 取消视频评论减分
 	 * @param commentId 视频评论 ID
 	 * @param videoId 视频 ID
 	 */
@@ -165,14 +164,14 @@
 		const cancelVideoCommentDownvoteRequest: CancelVideoCommentDownvoteRequestDto = { id: commentId, videoId };
 		api.videoComment.cancelVideoCommentDownvote(cancelVideoCommentDownvoteRequest).catch(error => {
 			voteLock.value = false; // 请求锁：释放
-			useToast("取消点踩失败！", "error"); // TODO: 使用多语言
-			console.error("ERROR", "取消点踩失败！", error);
+			useToast("取消减分失败！", "error"); // TODO: 使用多语言
+			console.error("ERROR", "取消减分失败！", error);
 		}).finally(() => {
 			voteLock.value = false; // 请求锁：释放
 		});
 
-		isDownvoted.value = false; // 取消点踩 ICON 高亮
-		downvote.value--; // 踩数减少
+		isDownvoted.value = false; // 取消减分图标高亮
+		downvote.value--; // 减分数减少
 	}
 
 	/**
@@ -189,7 +188,7 @@
 
 <template>
 	<Comp>
-		<UserAvatar :avatar="avatar" :uid="uid" />
+		<UserAvatar :avatar :uid />
 		<div class="content">
 			<div class="header">
 				<Icon v-if="pinned" name="pin" class="pin" />
@@ -204,7 +203,7 @@
 			<div class="footer">
 				<div class="left">
 					<div v-if="index !== undefined">#{{ index }}</div>
-					<div>{{ date }}</div>
+					<div><DateTime :dateTime="date" showTime /></div>
 					<div class="votes-wrapper">
 						<div class="votes">
 							<SoftButton v-tooltip:bottom="t.upvote" icon="thumb_up" :active="isUpvoted" @click="onClickVotes('upvote')" />

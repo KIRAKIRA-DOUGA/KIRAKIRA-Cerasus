@@ -2,8 +2,10 @@
 	const props = withDefaults(defineProps<{
 		title?: string;
 		id: string;
+		ripple?: boolean;
 	}>(), {
 		title: "",
+		ripple: true,
 	});
 
 	const radio = refComp();
@@ -47,7 +49,7 @@
 		@keyup.enter.prevent="onCheck"
 	>
 		<div>
-			<div v-ripple class="thumbnail">
+			<div v-ripple="ripple" class="thumbnail">
 				<slot></slot>
 			</div>
 			<div class="caption">
@@ -63,7 +65,7 @@
 		position: relative;
 
 		.title {
-			overflow: hidden;
+			overflow: clip;
 			color: c(icon-color);
 			white-space: nowrap;
 			text-align: justify;
@@ -98,7 +100,7 @@
 		width: 100%;
 		aspect-ratio: 16 / 9;
 		object-fit: cover;
-		overflow: hidden;
+		overflow: clip;
 		container: card / inline-size;
 		cursor: pointer;
 		transition: $fallback-transitions, scale $ease-out-back 500ms !important;

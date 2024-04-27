@@ -1,7 +1,7 @@
-diff --git a/node_modules/lottie-web/index.d.ts b/node_modules/lottie-web/index.d.ts
-index a018fbc..d8d72ba 100644
---- a/node_modules/lottie-web/index.d.ts
-+++ b/node_modules/lottie-web/index.d.ts
+diff --git a/index.d.ts b/index.d.ts
+index a018fbc7abf0fd51402cd70bd7bdb88a3fa7c866..d8d72bab7762b0c83e7c0440d00f02dde89a22e7 100644
+--- a/index.d.ts
++++ b/index.d.ts
 @@ -72,6 +72,13 @@ export type AnimationItem = {
      segmentPos: number;
      isSubframeEnabled: boolean;

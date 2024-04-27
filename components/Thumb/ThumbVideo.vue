@@ -1,6 +1,4 @@
 <script setup lang="ts">
-	import testBackground from "assets/images/test-background.png";
-
 	const props = withDefaults(defineProps<{
 		/**
 		 * 最终视频链接。
@@ -26,14 +24,13 @@
 	}>(), {
 		link: "#",
 		videoId: undefined,
-		image: testBackground,
+		image: undefined,
 		date: undefined,
 		watchedCount: 0,
 		uploaderId: undefined,
 		duration: undefined,
 	});
 
-	const date = computed(() => formatDateWithLocale(props.date ?? null));
 	const watchedCount = computed(() => getCompactDecimal(props.watchedCount));
 	const duration = computed(() => props.duration ?? Duration.placeholder);
 	const link = computed(() => props.videoId !== undefined && props.videoId !== null ?
@@ -41,10 +38,21 @@
 </script>
 
 <template>
-	<LocaleLink class="thumb-video lite" :to="link" :blank="blank">
+	<LocaleLink class="thumb-video lite" :to="link" :blank>
 		<div class="card">
 			<div class="cover-wrapper">
-				<img :src="image" alt="cover" class="cover" :draggable="false" />
+				<NuxtImg
+					v-if="image"
+					provider="kirakira"
+					:src="image"
+					alt="cover"
+					class="cover"
+					:draggable="false"
+					format="avif"
+					width="320"
+					height="180"
+					:placeholder="[50, 50, 100, 5]"
+				/>
 			</div>
 			<div class="text-wrapper">
 				<div class="title"><slot>视频标题</slot></div>
@@ -60,13 +68,13 @@
 						</div>
 					</div>
 					<div class="line">
-						<LocaleLink class="item uploader" :to="`/user/${uploaderId ?? ''}`" linkInLink :blank="blank">
+						<LocaleLink class="item uploader" :to="`/user/${uploaderId ?? ''}`" linkInLink :blank>
 							<Icon name="person" />
 							<div>{{ uploader }}</div>
 						</LocaleLink>
 						<div class="item">
 							<Icon name="calendar" />
-							<div>{{ date }}</div>
+							<div><DateTime :dateTime="date ?? null" /></div>
 						</div>
 					</div>
 				</div>
@@ -124,7 +132,7 @@
 		@include round-large;
 		flex-shrink: 0;
 		margin-bottom: 8px;
-		overflow: hidden;
+		overflow: clip;
 		aspect-ratio: 16 / 9;
 
 		img.cover {
@@ -142,15 +150,16 @@
 
 	.text-wrapper {
 		flex-grow: 1;
-		overflow: hidden;
+		overflow: clip;
 	}
 
 	.title {
-		overflow: hidden;
+		overflow: clip;
 		font-weight: 500;
 		white-space: nowrap;
-		text-align: justify;
+		text-align: left;
 		text-overflow: ellipsis;
+		hyphens: auto;
 
 		&:lang(zh, ja) {
 			text-overflow: "⋯⋯";
@@ -210,7 +219,7 @@
 			text-decoration: none;
 
 			> div {
-				overflow: hidden;
+				overflow: clip;
 				white-space: nowrap;
 				text-overflow: ellipsis;
 			}

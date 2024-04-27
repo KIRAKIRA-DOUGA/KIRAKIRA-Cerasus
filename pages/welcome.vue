@@ -238,7 +238,7 @@
 
 			.content {
 				$ease-text-move: cubic-bezier(0.1, 0.5, 0, 1);
-				overflow: hidden;
+				overflow: clip;
 				white-space: nowrap;
 
 				&:not(.content-visible) {

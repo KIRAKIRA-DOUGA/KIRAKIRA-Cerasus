@@ -14,7 +14,7 @@
 		<component :is="'style'" v-if="styles" scoped>
 			{{ styles }}
 		</component>
-		<css-doodle :use="use" :class="{ fullscreen }">
+		<css-doodle :use :class="{ fullscreen }">
 			{{ rule }}
 		</css-doodle>
 	</Comp>
