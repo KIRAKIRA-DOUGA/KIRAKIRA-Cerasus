@@ -170,11 +170,11 @@
 				{
 					id: 0,
 					videoPartTitle: props.files[0].name,
-					link: `https://customer-yvgxn6arnuae3q89.cloudflarestream.com/${cloudflareVideoId.value}/manifest/video.mpd`,
+					link: getCloudflareMpdVideoUrl(cloudflareVideoId.value),
 				},
 			],
 			title: title.value,
-			image: isNetworkImage ? thumbnailUrl.value : "f907a7bd-3247-4415-1f5e-a67a5d3ea100", // 没上传封面时使用默认封面图 // TODO: 获取视频截图作为封面
+			image: isNetworkImage ? thumbnailUrl.value : "f907a7bd-3247-4415-1f5e-a67a5d3ea100", // 没上传封面时使用默认封面图 // TODO: 自动获取视频截图作为封面
 			uploaderId: uid,
 			duration: 300, // TODO: 视频时长
 			description: description.value,

@@ -261,4 +261,10 @@ export default defineNuxtConfig({
 		rootId: "root",
 		teleportId: "popovers",
 	},
+	runtimeConfig: {
+		public: {
+			/** Cloudflare MPD 视频清单 URL 模板，其中 "{videoId}" 部分将会被替换为真实的视频 ID */
+			cloudflareMpdVideoUrlTemplate: "https://customer-yvgxn6arnuae3q89.cloudflarestream.com/{videoId}/manifest/video.mpd",
+		},
+	},
 } as BroadNuxtConfig);
