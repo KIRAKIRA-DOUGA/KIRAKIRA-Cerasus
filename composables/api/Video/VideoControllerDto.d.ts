@@ -1,3 +1,5 @@
+import { VideoTag } from './VideoTagControllerDto.js'
+
 /**
  * 单个视频分 P 数据参数
  */
@@ -11,18 +13,6 @@ type VideoPartDto = {
 };
 
 /**
- * 视频 TAG 的数据
- */
-type VideoTagDto = {
-	/** 非空 - 视频的 TAG ID */
-	tagId: number;
-	/** 非空 - 视频 TAG 的名称 */
-	tag: string;
-	/** TAG 描述 */
-	description?: string;
-};
-
-/**
  * 上传视频的请求参数
  */
 export type UploadVideoRequestDto = {
@@ -32,8 +22,6 @@ export type UploadVideoRequestDto = {
 	title: string;
 	/** 封面图链接 */
 	image: string;
-	/** 视频作者 ID */
-	uploader: string;
 	/** 创作者 UID */
 	uploaderId: number;
 	/** 视频时长，单位 ms */
@@ -44,8 +32,16 @@ export type UploadVideoRequestDto = {
 	videoCategory: string;
 	/** 视频版权 */
 	copyright: string;
+	/** 原作者 */
+	originalAuthor?: string;
+	/** 原视频链接 */
+	originalLink?: string;
+	/** 是否发布到动态 */
+	pushToFeed: boolean;
+	/** 声明为原创 */
+	ensureOriginal: boolean;
 	/** 视频 TAG */
-	videoTags: VideoTagDto[];
+	videoTagList: VideoTag[];
 };
 
 /**
@@ -62,7 +58,7 @@ export type UploadVideoResponseDto = {
 
 // export type ThumbVideoRequestDto = {
 // 	username: string;
-// }
+// };
 
 /**
  * 展示视频卡片需要的返回参数
@@ -113,6 +109,8 @@ type UploaderInfoDto = {
 	uid: number;
 	/** 用户名 */
 	username?: string;
+	/** 用户昵称 */
+	userNickname?: string;
 	/** 用户头像的链接 */
 	avatar?: string;
 	/** 用户背景图片的链接 */
@@ -158,7 +156,7 @@ export type GetVideoByKvidResponseDto = {
 		/** 视频版权 */
 		copyright: string;
 		/** 视频 TAG */
-		videoTags: VideoTagDto[];
+		videoTagList: VideoTag[];
 	};
 };
 
@@ -175,6 +173,7 @@ export type GetVideoByUidRequestDto = {
  */
 export type GetVideoByUidResponseDto = ThumbVideoResponseDto & {};
 
+
 /**
  * 根据关键字搜索视频的请求参数
  */
@@ -186,3 +185,31 @@ export type SearchVideoByKeywordRequestDto = {
  * 根据关键字搜索视频的响应结果
  */
 export type SearchVideoByKeywordResponseDto = ThumbVideoResponseDto & {};
+
+
+/**
+ * 获取视频文件 TUS 上传端点请求参数
+ */
+export type GetVideoFileTusEndpointRequestDto = {
+	/** 视频上传分片大小，Cloudflare 只支持 256KiB 的倍数，最小 5242880 子节，最大 209715200 子节，建议 52428800 子节 */
+	uploadLength: number;
+	/** 视频元数据 */
+	uploadMetadata: string;
+};
+
+/**
+ * 获取用于上传视频封面图的预签名 URL 的响应结果
+ */
+export type GetVideoCoverUploadSignedUrlResponseDto = {
+	/** 请求是否成功，成功返回 true，否则返回 false */
+	success: boolean;
+	/** 附加的文本消息 */
+	message?: string;
+	/** 请求到的视频封面图上传预签名 URL 数据 */
+	result?: {
+		/** 预签名 URL */
+		signedUrl: string;
+		/** 文件名 */
+		fileName: string;
+	};
+};

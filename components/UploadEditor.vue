@@ -1,23 +1,44 @@
 <script setup lang="ts">
-	import axios from "axios";
-
 	const props = defineProps<{
 		files: File[];
 	}>();
 
-	const copyright = ref<Copyright>("original");
-	const title = ref("");
-	const category = ref("");
-	const originalAuthor = ref("");
-	const originalLink = ref("");
-	const pushToFeed = ref(true);
-	const ensureOriginal = ref(false);
-	const thumbnail = ref<File>();
-	const thumbnailBlob = ref<string>();
+	const copyright = ref<Copyright>("original"); // 视频版权
+	const title = ref(""); // 视频标题
+	const category = ref(""); // 视频分类
+	const originalAuthor = ref(""); // 原作者
+	const originalLink = ref(""); // 原视频链接
+	const pushToFeed = ref(true); // 是否发布到动态
+	const ensureOriginal = ref(false); // 声明为原创
+	const thumbnailBlob = ref<string>(); // 封面图 Blob
+	const thumbnailUrl = ref<string>("../public/static/images/thumbnail.png"); // 封面图 Blob // FIXME: Nuxt Image 的 src 为 undefined 或 "" 时会出错，见 https://github.com/nuxt/image/issues/1299
 	const thumbnailInput = ref<HTMLInputElement>();
-	const tags = ref<string[]>([]);
-	const description = ref("");
-	const uploadProgress = ref(0);
+	const currentLanguage = computed(getCurrentLocale); // 当前用户的语言
+	const tags = reactive<Map<VideoTag["tagId"], VideoTag>>(new Map()); // 视频标签
+	const displayTags = computed<DisplayVideoTag[]>(() => [...tags.values()].map(tagName => getDisplayVideoTagWithCurrentLanguage(currentLanguage.value, tagName))); // 用于显示的 TAG，相较于上方的 tags 数据结构更简单。
+	const description = ref(""); // 视频简介
+	const uploadProgress = ref(0); // 视频上传进度
+	const cloudflareVideoId = ref<string>(); // Cloudflare 视频 ID
+	const isCommitButtonLoading = ref<boolean>(false); // 投稿按钮是否在 loading 状态
+	const isCoverCropperOpen = ref<boolean>(false); // 封面图裁剪器是否开启状态
+	const isUploadingCover = ref<boolean>(false); // 是否正在上传封面图
+	const cropper = ref(); // 图片裁剪器对象
+	const isNetworkImage = computed(() => thumbnailUrl.value === "../public/static/images/thumbnail.png"); // 封面图是静态资源图片还是网图，即用户是否已经上传完成封面图
+	const provider = computed(() => isNetworkImage.value ? undefined : "kirakira"); // 根据 isNetworkImage 的值判断是否使用 kirakira 作为 Nuxt Image 提供商
+	// 视频分类
+	const VIDEO_CATEGORY = new Map([
+		["anime", t.category.anime],
+		["music", t.category.music],
+		["otomad", t.category.otomad],
+		["tech", t.category.tech],
+		["design", t.category.design],
+		["game", t.category.game],
+		["misc", t.category.misc],
+	]);
+	const contextualToolbar = ref<FlyoutModel>(); // TAG 的工具烂浮窗
+	const hoveredTagContent = ref<[number, string]>();
+	const hideExceptMe = ref(false);
+	const hideTimeoutId = ref<Timeout>(); //
 
 	/**
 	 * 上传文件无效。
@@ -54,72 +75,246 @@
 	function onChangeThumbnail(e: Event) {
 		const input = e.target as HTMLInputElement;
 		const thumbnails = getValidFiles(input.files);
-		if (thumbnails.length)
-			thumbnailBlob.value = fileToBlob(thumbnail.value = thumbnails[0]);
-		else if (input.files?.length)
+
+		if (thumbnails.length) {
+			thumbnailBlob.value = fileToBlob(thumbnails[0]);
+			isCoverCropperOpen.value = true;
+			input.value = ""; // 读取完用户上传的文件后，需要清空 input，以免用户在下次上传同一个文件时无法触发 change 事件。
+		} else if (input.files?.length)
 			invalidUploaded();
 	}
 
 	/**
-	 * 上传文件。
+	 * 清除已经上传完成的图片，释放内存。
+	 */
+	function clearBlobUrl() {
+		if (thumbnailBlob.value) {
+			URL.revokeObjectURL(thumbnailBlob.value);
+			thumbnailBlob.value = undefined;
+		}
+	}
+
+	/**
+	 * 上传封面图
+	 */
+	async function handleSubmitCoverImage() {
+		isUploadingCover.value = true;
+		const blobImageData = await cropper.value?.getCropBlobData();
+		const coverUploadSignedUrlResult = await api.video.getVideoCoverUploadSignedUrl();
+		const filename = coverUploadSignedUrlResult?.result?.fileName;
+		const signedUrl = coverUploadSignedUrlResult?.result?.signedUrl;
+		if (coverUploadSignedUrlResult?.success && filename && signedUrl) {
+			const uploadVideoCoverResult = await api.video.uploadVideoCover(filename, blobImageData, signedUrl);
+			if (uploadVideoCoverResult) {
+				thumbnailUrl.value = filename;
+				isUploadingCover.value = false;
+				isCoverCropperOpen.value = false;
+				clearBlobUrl(); // 释放内存
+			} else {
+				useToast("封面图上传失败，请重试", "error"); // TODO: 使用多语言
+				isUploadingCover.value = false;
+			}
+		} else {
+			useToast("封面图上传失败，请重试", "error"); // TODO: 使用多语言
+			isUploadingCover.value = false;
+			isCoverCropperOpen.value = false;
+		}
+	}
+
+	/**
+	 * TUS 上传视频文件
 	 * @param files - 文件列表。
 	 */
-	function upload(files: File[]) {
-		if (!thumbnail.value) {
-			useToast(t.toast.no_cover, "error");
+	function tusUpload(files: File[]) {
+		if (!files || files.length < 1) {
+			useToast("无法上传：未找到视频文件", "error"); // TODO: 使用多语言
 			return;
 		}
-
-		// severe bug in openapi around multiple file uploads using form-data
-
-		const formData = new FormData();
-		files.forEach((file, index) => {
-			formData.append(`filename[${index}]`, file);
-		});
-
-		// oh no no no NO!!!
-		formData.append("filename[1]", thumbnail.value);
-
-		axios({
-			method: "POST",
-			// TODO
-			url: "https://localhost:3000/api/upload",
-			data: formData,
-			headers: {
-				"Content-Type": "multipart/form-data",
-				title: title.value,
-				tags: tags.value.filter(tag => tag).toString(),
-				description: description.value,
-				category: category.value,
-			},
-			onUploadProgress(progressEvent) {
-				if (progressEvent.total)
-					uploadProgress.value = progressEvent.loaded / progressEvent.total * 100;
-			},
+		api.video.tusFile(files[0], uploadProgress)?.then((videoId: string) => {
+			cloudflareVideoId.value = videoId;
+			useToast("上传完成", "success"); // TODO: 使用多语言
+		}).catch(error => {
+			useToast("上传失败", "error"); // TODO: 使用多语言
+			console.error("ERROR", "上传失败：", error);
 		});
 	}
 
-	const [onContentEnter, onContentLeave] = simpleAnimateSize("height", 500, eases.easeInOutSmooth);
+	/**
+	 * 提交视频（确认投稿）
+	 */
+	async function commitVideo() {
+		if (!cloudflareVideoId.value) {
+			useToast("视频没有上传完成", "error"); // TODO: 使用多语言
+			return;
+		}
+		const uid = useSelfUserInfoStore().uid;
+		if (!uid) {
+			useToast("未登录用户不能上传", "error"); // TODO: 使用多语言
+			return;
+		}
+		if (!title.value) {
+			useToast("必须填写标题", "error"); // TODO: 使用多语言
+			return;
+		}
+		if (!description.value) {
+			useToast("必须填写简介", "error"); // TODO: 使用多语言
+			return;
+		}
+		if (!category.value) {
+			useToast("必须选择分区", "error"); // TODO: 使用多语言
+			return;
+		}
 
+		const uploadVideoRequest: UploadVideoRequestDto = {
+			videoPart: [
+				{
+					id: 0,
+					videoPartTitle: props.files[0].name,
+					link: getCloudflareMpdVideoUrl(cloudflareVideoId.value),
+				},
+			],
+			title: title.value,
+			image: isNetworkImage ? thumbnailUrl.value : "f907a7bd-3247-4415-1f5e-a67a5d3ea100", // 没上传封面时使用默认封面图 // TODO: 自动获取视频截图作为封面
+			uploaderId: uid,
+			duration: 300, // TODO: 视频时长
+			description: description.value,
+			videoCategory: category.value,
+			copyright: copyright.value,
+			originalAuthor: originalAuthor.value,
+			originalLink: originalLink.value,
+			pushToFeed: pushToFeed.value,
+			ensureOriginal: ensureOriginal.value,
+			videoTagList: tags ? [...tags.values()] : [],
+		};
+		isCommitButtonLoading.value = true;
+		try {
+			const commitVideoResult = await api.video.commitVideo(uploadVideoRequest);
+			const videoId = commitVideoResult?.videoId;
+			if (commitVideoResult.success && videoId) { // TODO: 视频投稿成功后要做的操作（TODO: 暂时是等待 1 秒后显示纸屑然后跳转到视频页，以后可能需要修改）
+				console.info("INFO", `视频投稿成功, KVID: ${videoId}`);
+				setTimeout(() => {
+					isCommitButtonLoading.value = false;
+					showConfetti(); // 显示五彩纸屑。
+					navigate(`/video/kv${videoId}`);
+				}, 1000);
+			}
+		} catch (error) {
+			isCommitButtonLoading.value = false;
+			useToast("视频上传失败", "error"); // TODO: 使用多语言
+			console.error("ERROR", "视频提交失败：", error);
+		}
+	}
+
+	/**
+	 * 用户在修改版权选项时，清理其反向对应的版权设置的相关信息。例如，用户在选择为「原创」时，清理“原作者名”和“原视频地址”数据，用户在选择为「搬运」时，将“我声明为原创”取消勾选
+	 * @param copyright 版权选项
+	 */
+	function clearCopyrightData(copyright: Copyright) {
+		if (copyright === "original") {
+			originalAuthor.value = "";
+			originalLink.value = "";
+		} else
+			ensureOriginal.value = false;
+	}
+
+	const a = ref();
+	/**
+	 * 显示标签的上下文工具栏。
+	 * @param key - 标签键名。
+	 * @param tag - 标签内容。
+	 * @param e - 鼠标事件。
+	 */
+	function showContextualToolbar(key: number, tag: string, e: MouseEvent) {
+		if (!tag) return;
+		if ((e.currentTarget as HTMLSpanElement).querySelector(".text-box:focus")) return;
+		reshowContextualToolbar();
+		if (hoveredTagContent.value?.[0] === key && hoveredTagContent.value?.[1] === tag) return;
+		hoveredTagContent.value = [key, tag];
+		hideExceptMe.value = true;
+		useEvent("component:hideAllContextualToolbar");
+		hideExceptMe.value = false;
+		contextualToolbar.value = [e, "top", 0];
+	}
+
+	/**
+	 * 隐藏标签的上下文工具栏。
+	 */
+	function hideContextualToolbar() {
+		hideTimeoutId.value = setTimeout(() => {
+			contextualToolbar.value = undefined;
+			hoveredTagContent.value = undefined;
+		}, 100);
+	}
+
+	/**
+	 * 鼠标移入区域，取消自动隐藏。
+	 */
+	function reshowContextualToolbar() {
+		clearTimeout(hideTimeoutId.value);
+	}
+
+	/**
+	 * 从视频 TAG 列表中移除一个 TAG（注意，此时 TAG 列表没有传递给后端数据库存储）
+	 * @param tagId TAG 编号
+	 */
+	function removeTag(tagId: number) {
+		if (tagId !== undefined || tagId !== null) tags.delete(tagId);
+		hideContextualToolbar();
+	}
+
+	watch(copyright, copyright => clearCopyrightData(copyright));
+
+	/**
+	 * 组件加载后等待三秒开始上传视频文件
+	 */
+	onMounted(() => setTimeout(() => {
+		tusUpload(props.files);
+	}, 3000));
+
+	const [onContentEnter, onContentLeave] = simpleAnimateSize("height", 500, eases.easeInOutSmooth);
 	const flyoutTag = ref<FlyoutModel>();
 </script>
 
 <template>
 	<div class="container">
+		<!-- TODO: 使用多语言 -->
+		<Modal v-model="isCoverCropperOpen" title="上传封面">
+			<div class="cover-cropper">
+				<ImageCropper
+					ref="cropper"
+					:image="thumbnailBlob"
+					:autoCropWidth="480"
+					:autoCropHeight="270"
+					:fixed="true"
+					:fixedNumber="[16, 9]"
+					:full="true"
+					:centerBox="true"
+					:infoTrue="true"
+					:mode="'cover'"
+				/>
+			</div>
+			<template #footer-right>
+				<!-- TODO: 使用多语言 -->
+				<Button class="secondary" @click="isCoverCropperOpen = false">取消</Button>
+				<!-- TODO: 使用多语言 -->
+				<Button :loading="isUploadingCover" :disabled="isUploadingCover" @click="handleSubmitCoverImage">上传</Button>
+			</template>
+		</Modal>
+
 		<div class="card-container">
-			<input
-				ref="thumbnailInput"
-				hidden
-				type="file"
-				accept="image/*"
-				@change="onChangeThumbnail"
-			/>
+			<input ref="thumbnailInput" hidden type="file" accept="image/*" @change="onChangeThumbnail" />
 
 			<div class="toolbox-card left">
 				<div v-ripple class="cover" @click="thumbnailInput?.click()">
-					<!-- 选择封面，裁剪器可以先不做 -->
 					<div class="mask">{{ t.select_cover }}</div>
-					<NuxtImg :src="thumbnailBlob" alt="thumbnail" :draggable="false" />
+					<NuxtImg
+						v-if="thumbnailUrl"
+						:provider
+						:src="thumbnailUrl"
+						:width="350"
+						alt="thumbnail"
+						:draggable="false"
+					/>
 				</div>
 
 				<Button icon="disambig">{{ t.associate_existing }}</Button>
@@ -166,13 +361,9 @@
 					<section>
 						<Subheader icon="category">{{ t.category }}</Subheader>
 						<ComboBox v-model="category">
-							<ComboBoxItem id="anime">{{ t.category.anime }}</ComboBoxItem>
-							<ComboBoxItem id="music">{{ t.category.music }}</ComboBoxItem>
-							<ComboBoxItem id="otomad">{{ t.category.otomad }}</ComboBoxItem>
-							<ComboBoxItem id="tech">{{ t.category.tech }}</ComboBoxItem>
-							<ComboBoxItem id="design">{{ t.category.design }}</ComboBoxItem>
-							<ComboBoxItem id="game">{{ t.category.game }}</ComboBoxItem>
-							<ComboBoxItem id="misc">{{ t.category.misc }}</ComboBoxItem>
+							<ComboBoxItem v-for="CATEGORY in VIDEO_CATEGORY" :id="CATEGORY[0]" :key="CATEGORY[0]">
+								{{ CATEGORY[1] }}
+							</ComboBoxItem>
 						</ComboBox>
 					</section>
 
@@ -180,26 +371,53 @@
 						<Subheader icon="tag">{{ t(2).tag }}</Subheader>
 						<div class="tags">
 							<Tag
-								v-for="tag in tags"
-								:key="tag"
-								:query="{ q: tag }"
-							>{{ tag }}</Tag>
-							<Tag class="add-tag" @click="e => flyoutTag = [e, 'y']"><Icon name="add" /></Tag>
+								v-for="tag in displayTags"
+								:key="tag.tagId"
+								:query="{ q: tag.tagId }"
+								@mouseenter="e => showContextualToolbar(tag.tagId, tag.mainTagName, e)"
+								@mouseleave="hideContextualToolbar"
+							>
+								<div v-if="tag.tagId >= 0" class="display-tag">
+									<div v-if="tag.mainTagName">{{ tag.mainTagName }}</div>
+									<div v-if="tag.originTagName" class="original-tag-name">{{ tag.originTagName }}</div>
+								</div>
+							</Tag>
+							<Tag key="add-tag-button" class="add-tag" :checkable="false" @click="e => flyoutTag = [e, 'y']">
+								<Icon name="add" />
+							</Tag>
 						</div>
 					</section>
 
-					<FlyoutTag v-model="flyoutTag" />
+					<FlyoutTag v-model="flyoutTag" v-model:tags="tags" />
+
+					<Flyout
+						ref="a"
+						v-model="contextualToolbar"
+						noPadding
+						class="contextual-toolbar"
+						@mouseenter="reshowContextualToolbar"
+						@mouseleave="hideContextualToolbar"
+					>
+						<Button icon="close" @click="removeTag(hoveredTagContent![0])">{{ t.delete }}</Button>
+					</Flyout>
 
 					<section>
 						<Subheader icon="details">{{ t.description }}</Subheader>
 						<TextBox v-model="description" required />
-						<!-- 这里放简介，需要富文本编辑器 -->
+						<!-- TODO: 这里放简介，需要富文本编辑器 -->
 					</section>
 
 					<ToggleSwitch v-model="pushToFeed" icon="feed">{{ t.push_to_feed }}</ToggleSwitch>
 
 					<div class="submit">
-						<Button icon="send" @click="upload(files)">{{ t.upload }}</Button>
+						<Button
+							icon="send"
+							:disabled="!cloudflareVideoId || isCommitButtonLoading"
+							:loading="!cloudflareVideoId || isCommitButtonLoading"
+							@click="commitVideo"
+						>
+							{{ t.upload }}
+						</Button>
 					</div>
 				</div>
 			</div>
@@ -300,7 +518,7 @@
 		}
 	}
 
-	.repost-options > * {
+	.repost-options>* {
 		display: flex;
 		flex-direction: column;
 		gap: $section-gap;
@@ -312,8 +530,8 @@
 		}
 	}
 
-	.left > *,
-	.left > .left-1> * {
+	.left>*,
+	.left>.left-1>* {
 		width: 100%;
 	}
 
@@ -338,5 +556,32 @@
 	.submit {
 		display: flex;
 		justify-content: right;
+	}
+
+	.cover-cropper {
+		width: 520px;
+		height: 350px;
+		// @include square(350px, true);
+
+		@media (width <=450px) {
+			--size: 80dvw;
+			// 对于图片切割器，不建议使用响应式，因为切割器内部被切割的图片不会随之改变尺寸，但考虑到极端小尺寸的适配问题，且在上传图片时浏览器宽度发生剧烈变化的概率较小，故保留本功能。
+		}
+	}
+
+	.display-tag {
+		display: flex;
+		flex-direction: row;
+
+		.original-tag-name {
+			padding-left: 0.5em;
+			color: c(text-color, 50%);
+		}
+	}
+
+	.contextual-toolbar {
+		button {
+			--appearance: tertiary;
+		}
 	}
 </style>

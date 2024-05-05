@@ -4,7 +4,11 @@
 
 <script setup lang="ts">
 	/** 指定默认的标签值，如为 null 表示未设定默认值，如为 undefined 表示当前组件不适用默认值。 */
-	const def = defineModel<string | null | undefined>("default");
+	const def = defineModel<[number, string] | null | undefined>("default");
+	/** 指定标签值的原文，如为 null 表示未设定原文，如为 undefined 表示当前组件不适用原文。 */
+	const editorOriginal = defineModel<[number, string] | null | undefined>("editor-original");
+	/** 所有 TAG 编辑器之间共享的原文 */
+	const original = defineModel<[number, string] | undefined>("original");
 	const tags = defineModel<string[]>({ default: [] });
 	const tagsWithKey = reactive<Map<number, string>>(new Map());
 	const tagsWithKeyProxy = new Proxy({}, {
@@ -20,9 +24,6 @@
 			return true;
 		},
 	}) as Record<number, string>;
-	const tagsWithKeySorted = computed(() =>
-		[...tagsWithKey.entries()].sort((a, b) =>
-			a[1] === def.value ? -1 : b[1] === def.value ? 1 : a[0] - b[0]));
 	const isUpdatingTags = ref(false);
 	const maxIndex = computed(() => {
 		let maxIndex = Math.max(...tagsWithKey.keys());
@@ -51,12 +52,19 @@
 	 * @param value - 可在此直接设值。
 	 */
 	async function updateTags(index: number, value?: string) {
+		appendEmptyTag();
 		if (index === undefined) return;
 		isUpdatingTags.value = true;
 		const tag = value ?? tagsWithKey.get(index);
-		if (!tag) {
-			if (index !== maxIndex.value)
+		if (!tag) { // 删除 TAG
+			if (index !== maxIndex.value) {
 				tagsWithKey.delete(index);
+				if (hoveredTagContent.value && isDefaultTag(def.value, hoveredTagContent.value)) def.value = null;
+				if (hoveredTagContent.value && isOriginalTag(original.value, hoveredTagContent.value)) {
+					original.value = undefined;
+					editorOriginal.value = null;
+				}
+			}
 		} else {
 			const normalizedTag = normalizeTag(tag);
 			let duplicated = false;
@@ -70,9 +78,26 @@
 			}
 			if (!duplicated) tagsWithKey.set(index, normalizedTag);
 			else tagsWithKey.delete(index);
+
+			const text = halfwidth(normalizedTag);
+			try {
+				const result = await api.videoTag.searchVideoTag({ tagNameSearchKey: text });
+				if (result?.success && result.result && result.result.length > 0) {
+					const hasSameWithInput = checkTagUnique(text, result.result);
+					if (hasSameWithInput) {
+						useToast("不允许 TAG 名重复，请更换。", "warning"); // TODO: 使用多语言
+						console.warn("WARN", "WARNING", "查找到重复的 TAG 名");
+						tagsWithKey.delete(index);
+						return;
+					}
+				}
+			} catch (error) {
+				useToast("查找重复 TAG 失败", "error"); // TODO: 使用多语言
+				console.error("ERROR", "查找重复 TAG 时出错：", error);
+				return;
+			}
 		}
 		tags.value = normalizeTags();
-		appendEmptyTag();
 		contextualToolbar.value = undefined;
 		await nextTick();
 		isUpdatingTags.value = false;
@@ -131,9 +156,37 @@
 	 * 将某个标签设为默认值（如果允许）。
 	 */
 	function setToDefault() {
-		const tag = hoveredTagContent.value?.[1];
-		if (def.value === undefined || !tag) return;
-		def.value = tag;
+		const tag = hoveredTagContent.value;
+		if (tag?.[0] === undefined || tag?.[0] === null || tag[0] < 0 || !tag?.[1]) return;
+		def.value = [tag[0], tag[1]];
+		contextualToolbar.value = undefined;
+	}
+
+	/**
+	 * 将某个标签取消默认值。
+	 */
+	function clearDefault() {
+		def.value = null;
+		contextualToolbar.value = undefined;
+	}
+
+	/**
+	 * 将某个标签设为原文。
+	 */
+	function setToOriginal() {
+		const tag = hoveredTagContent.value;
+		if (tag?.[0] === undefined || tag?.[0] === null || tag[0] < 0 || !tag?.[1] || original.value) return;
+		editorOriginal.value = [tag[0], tag[1]];
+		original.value = [tag[0], tag[1]];
+		contextualToolbar.value = undefined;
+	}
+
+	/**
+	 * 将某个标签取消设为原文。
+	 */
+	function clearOriginal() {
+		editorOriginal.value = null;
+		original.value = undefined;
 		contextualToolbar.value = undefined;
 	}
 
@@ -173,6 +226,26 @@
 		clearTimeout(hideTimeoutId.value);
 	}
 
+	/**
+	 * 判断一个 TAG 是否为默认 TAG 并高亮。
+	 * @param def 默认 TAG
+	 * @param tag TAG
+	 * @returns 是默认返回 true, 否则返回 false
+	 */
+	function isDefaultTag(def: [number, string] | null | undefined, tag: [number, string]): boolean {
+		return !!(def && tag && def[0] === tag[0] && def[1] === tag[1]);
+	}
+
+	/**
+	 * 判断一个 TAG 是否为 TAG 原文。
+	 * @param original 原文 TAG
+	 * @param tag TAG
+	 * @returns 是默认返回 true, 否则返回 false
+	 */
+	function isOriginalTag(original: [number, string] | null | undefined, tag: [number, string]): boolean {
+		return !!(original && tag && original[0] === tag[0] && original[1] === tag[1]);
+	}
+
 	useListen("component:hideAllContextualToolbar", () => {
 		if (hideExceptMe.value) return;
 		contextualToolbar.value = undefined;
@@ -183,11 +256,12 @@
 	<Comp class="tags">
 		<TransitionGroup @leave="onTagLeave">
 			<Tag
-				v-for="[key, tag] in tagsWithKeySorted"
+				v-for="[key, tag] in tagsWithKey"
 				:key="key"
 				v-model:input="tagsWithKeyProxy[key]"
 				:placeholder="t.press_enter_to_add"
-				:checked="def === tag"
+				:checked="isDefaultTag(def, [key, tag])"
+				:original="isOriginalTag(original, [key, tag])"
 				@change="updateTags(key)"
 				@mouseenter="e => showContextualToolbar(key, tag, e)"
 				@mouseleave="hideContextualToolbar"
@@ -195,7 +269,6 @@
 		</TransitionGroup>
 
 		<Flyout
-			v-if="def !== undefined"
 			ref="a"
 			v-model="contextualToolbar"
 			noPadding
@@ -203,7 +276,13 @@
 			@mouseenter="reshowContextualToolbar"
 			@mouseleave="hideContextualToolbar"
 		>
-			<Button v-if="hoveredTagContent?.[1] !== def" icon="check" @click="setToDefault()">{{ t.set_as_default }}</Button>
+			<Button v-if="def !== undefined && hoveredTagContent && !isDefaultTag(def, hoveredTagContent) && !original && !isOriginalTag(editorOriginal, hoveredTagContent)" icon="check" @click="setToDefault()">{{ t.set_as_default }}</Button>
+			<!-- TODO: 使用多语言 -->
+			<Button v-if="hoveredTagContent && !isOriginalTag(editorOriginal, hoveredTagContent) && isDefaultTag(def, hoveredTagContent)" icon="close" @click="clearDefault()">取消默认</Button>
+			<!-- TODO: 使用多语言 -->
+			<Button v-if="!original && hoveredTagContent && isDefaultTag(def, hoveredTagContent) && !isOriginalTag(editorOriginal, hoveredTagContent)" icon="star" @click="setToOriginal()">设为原文</Button>
+			<!-- TODO: 使用多语言 -->
+			<Button v-if="hoveredTagContent && isDefaultTag(def, hoveredTagContent) && isOriginalTag(editorOriginal, hoveredTagContent)" icon="close" @click="clearOriginal()">取消原文</Button>
 			<Button icon="close" @click="updateTags(hoveredTagContent![0], '')">{{ t.delete }}</Button>
 		</Flyout>
 	</Comp>

@@ -21,7 +21,7 @@
 	}
 
 	const userUploadFile = ref<string | undefined>();
-	const avatarCropperIsOpen = ref(false);
+	const isAvatarCropperOpen = ref(false);
 
 	/**
 	 * 如果有上传图片，则开启图片裁切器。
@@ -41,9 +41,8 @@
 			}
 
 			userUploadFile.value = fileToBlob(image);
-			avatarCropperIsOpen.value = true;
-			fileInput.value = "";
-			// 读取完用户上传的文件后，需要清空 input，以免用户在下次上传同一个文件时无法触发 change 事件。
+			isAvatarCropperOpen.value = true;
+			fileInput.value = ""; // 读取完用户上传的文件后，需要清空 input，以免用户在下次上传同一个文件时无法触发 change 事件。
 		}
 	}
 
@@ -65,7 +64,7 @@
 					const uploadResult = await api.user.uploadUserAvatar(userAvatarUploadFilename, blobImageData, userAvatarUploadSignedUrl);
 					if (uploadResult) {
 						await api.user.getSelfUserInfo();
-						avatarCropperIsOpen.value = false;
+						isAvatarCropperOpen.value = false;
 						clearBlobUrl(); // 释放内存
 					}
 					isUploadingUserAvatar.value = false;
@@ -133,13 +132,22 @@
 
 <template>
 	<!-- TODO: 使用多语言 -->
-	<Modal v-model="avatarCropperIsOpen" title="更新头像">
+	<Modal v-model="isAvatarCropperOpen" title="更新头像">
 		<div class="avatar-cropper">
-			<ImageCropper ref="cropper" :image="userUploadFile" :fixed="true" :fixedNumber="[1, 1]" />
+			<ImageCropper
+				ref="cropper"
+				:image="userUploadFile"
+				:fixed="true"
+				:fixedNumber="[1, 1]"
+				:full="true"
+				:centerBox="true"
+				:infoTrue="true"
+				:mode="'contain '"
+			/>
 		</div>
 		<template #footer-right>
 			<!-- TODO: 使用多语言 -->
-			<Button class="secondary" @click="avatarCropperIsOpen = false">取消</Button>
+			<Button class="secondary" @click="isAvatarCropperOpen = false">取消</Button>
 			<!-- TODO: 使用多语言 -->
 			<Button :loading="isUploadingUserAvatar" @click="handleSubmitAvatarImage">更新头像</Button>
 		</template>
@@ -152,12 +160,7 @@
 	<div class="change-avatar" @click="handleUploadAvatarImage">
 		<UserAvatar :avatar="selfUserInfoStore.userAvatar" />
 		<span>{{ t.profile.edit_avatar }}</span>
-		<input
-			ref="userAvatarFileInput"
-			type="file"
-			accept="image/*"
-			hidden
-		/>
+		<input ref="userAvatarFileInput" type="file" accept="image/*" hidden />
 	</div>
 
 	<div class="items">
@@ -177,7 +180,7 @@
 		overflow: clip;
 		background-color: c(gray-5);
 
-		> img {
+		>img {
 			z-index: 1;
 			width: 100%;
 			height: 150px;
@@ -188,7 +191,7 @@
 				filter: brightness(0.75) blur(2px);
 				scale: 105%;
 
-				& + span {
+				&+span {
 					opacity: 1;
 				}
 			}
@@ -223,7 +226,7 @@
 			--size: 64px;
 			pointer-events: auto;
 
-			&:any-hover + span {
+			&:any-hover+span {
 				opacity: 1;
 			}
 		}
@@ -244,9 +247,9 @@
 	.avatar-cropper {
 		@include square(350px, true);
 
-		@media (width <= 450px) {
+		@media (width <=450px) {
 			--size: 80dvw;
-			// 对于图片切割器，不建议使用响应式，因为切割器内部被切割的图片不会随之改变尺寸，但考虑到极端小尺寸的适配问题，且只有极少数场景会改变浏览器宽度。
+			// 对于图片切割器，不建议使用响应式，因为切割器内部被切割的图片不会随之改变尺寸，但考虑到极端小尺寸的适配问题，且在上传图片时浏览器宽度发生剧烈变化的概率较小，故保留本功能。
 		}
 	}
 </style>

@@ -1,66 +1,182 @@
 <script setup lang="ts">
 	const flyout = defineModel<FlyoutModel>();
-
+	const tags = defineModel<Map<VideoTag["tagId"], VideoTag>>("tags"); // TAG 数据
+	const original = ref<[number, string] | undefined>();
 	const search = ref("");
 	const isSearched = computed(() => !!search.value.trim());
-	const allTags = ["Minecraft", "音MAD", "OS", "NOVA", "UTAU", "Vocaloid", "2号", "niconico", "House Music", "EDM"];
-	const matchedTags = ref<string[]>([]);
-	const showCreateNew = ref(false);
-	const showTagEditor = ref(false);
-	const languages = ["简体中文", "英语", "日语", "繁体中文", "韩语", "越南语", "印尼语", "阿拉伯语", "西班牙语", "葡萄牙语", "其它"] as const;
+	const matchedTags = ref<VideoTag[]>([]);
+	const showCreateNew = ref(false); // 是否显示 “创建 TAG” 按钮
+	const showTagEditor = ref(false); // 是否显示 TAG（创建）编辑器
+	const isCreatingTag = ref(false); // 是否正在创建 TAG
+	const languages = [
+		{ langId: "zhs", langName: t.language.zhs },
+		{ langId: "en", langName: t.language.en },
+		{ langId: "ja", langName: t.language.ja },
+		{ langId: "zht", langName: t.language.zht },
+		{ langId: "ko", langName: t.language.ko },
+		{ langId: "vi", langName: t.language.vi },
+		{ langId: "id", langName: t.language.id },
+		{ langId: "ar", langName: "阿拉伯语" }, // TODO: 使用多语言
+		{ langId: "other", langName: "其它" }, // TODO: 使用多语言
+	] as const; // 可选语言列表
 	type LanguageList = typeof languages[number];
-	const editor = reactive<{ language: LanguageList | ""; values: string[]; default: string | null }[]>([]);
-	const availableLanguages = ref<LanguageList[][]>([]);
+	type EditorType = { language: LanguageList | { langId: ""; langName: "" }; values: string[]; default: [number, string] | null; original: [number, string] | null }[];
+	const editor = reactive<EditorType>([]); // TAG 编辑器实例
+	const availableLanguages = ref<LanguageList[][]>([]); // 除去用户已经选择的语言之外的其他语言
+	const currentLanguage = computed(getCurrentLocale); // 当前用户的语言
+
+	/**
+	 * 搜索视频 TAG
+	 */
+	async function searchVideoTag() {
+		showCreateNew.value = true;
+		const text = halfwidth(search.value.trim().replaceAll(/\s+/g, " ").toLowerCase());
+		if (text)
+			try {
+				const result = await api.videoTag.searchVideoTag({ tagNameSearchKey: text });
+				if (result?.success && result.result && result.result.length > 0) {
+					matchedTags.value = result.result;
+					const hasSameWithInput = checkTagUnique(text, result.result);
+					if (hasSameWithInput) showCreateNew.value = false;
+					else showCreateNew.value = true;
+				} else showCreateNew.value = true;
+			} catch (error) {
+				console.error("ERROR", "搜索 TAG 时出错：", error);
+				useToast("搜索 TAG 失败", "error"); // TODO: 使用多语言
+			}
+	}
+	const debounceVideoTagSearcher = useDebounce(searchVideoTag, 500);
 
 	/**
 	 * 用户在搜索框内输入文本时的事件。
 	 */
-	function onInput() {
-		let hasSame = false;
-		const text = halfwidth(search.value.trim().replaceAll(/\s+/g, " ").toLowerCase());
-		matchedTags.value = allTags.filter(tag => {
-			const normalizedTag = halfwidth(tag.toLowerCase());
-			if (normalizedTag === text) hasSame = true;
-			return normalizedTag.includes(text);
+	async function onInput() {
+		await debounceVideoTagSearcher();
+	}
+
+	/**
+	 * TAG 编辑器生成的数据转换为适用于后端存储的格式
+	 * @param editor TAG 编辑器数据
+	 * @returns 适于存储的 TAG 数据
+	 *
+	 * @example
+	 * 假设有如下数据：
+	 * const foo = [
+	 *		{
+	 *			default: "StarCitizen",
+	 *			language: {
+	 *				langId: "en",
+	 *				langName: "",
+	 *			},
+	 *			value: ["StarCitizen", "SC"],
+	 *		}, {
+	 *			default: null,
+	 *			language: {
+	 *				langId: "zhs",
+	 *				langName: "",
+	 *			},
+	 *			value: ["星际公民"],
+	 *		},
+	 *	]
+	 *
+	 * 执行 editorData2Dto(foo), 结果为：
+	 *	{
+	 *		tagNameList: [
+	 *			{
+	 *				lang: "en",
+	 *				tagName: [
+	 *					{
+	 *						name: "StarCitizen",
+	 *						isDefault: true,
+	 *						isOriginalTagName: true,
+	 *					}, {
+	 *						name: "SC",
+	 *						isDefault: false,
+	 *						isOriginalTagName: false,
+	 *					},
+	 *				],
+	 *			}, {
+	 *				lang: "zhs",
+	 *				tagName: [
+	 *					{
+	 *						name: "星际公民",
+	 *						isDefault: false,
+	 *						isOriginalTagName: false,
+	 *					},
+	 *				],
+	 *			},
+	 *		],
+	 *	}
+	 */
+	function editorData2TagDto(editor: EditorType): CreateVideoTagRequestDto {
+		const tagNameList = editor.filter(tag => !!tag.language.langId || !!tag.values?.[0]).map(filteredTag => {
+			return {
+				lang: filteredTag.language.langId,
+				tagName: filteredTag.values.map(tagName => {
+					return {
+						name: tagName,
+						isDefault: tagName === filteredTag.default?.[1], // TODO: 如果没有指定默认 TAG 怎么办？
+						isOriginalTagName: tagName === filteredTag.default?.[1] && tagName === filteredTag.original?.[1],
+					};
+				}),
+			};
 		});
-		showCreateNew.value = !hasSame;
+		return { tagNameList };
+	}
+
+	/**
+	 * 检查 TAG 数据是否合法
+	 * @param createVideoTagRequest TAG 数据
+	 * @returns boolean 合法返回 true, 不合法返回 false
+	 */
+	function checkTagData(createVideoTagRequest: CreateVideoTagRequestDto): boolean {
+		return createVideoTagRequest.tagNameList.filter(tag => !!tag.lang && tag.tagName.length > 0).length > 0;
 	}
 
 	/**
 	 * 切换标签编辑器。
 	 * @param shown - 是否显示？
 	 */
-	function switchTagEditor(shown: true | "ok" | "cancel") {
+	async function switchTagEditor(shown: true | "ok" | "cancel") {
 		if (shown === "ok") {
-			flyout.value = undefined;
-			onFlyoutHide();
+			const tagData = editorData2TagDto(editor);
+			if (checkTagData(tagData)) {
+				isCreatingTag.value = true;
+				const result = await api.videoTag.createVideoTag(tagData);
+				if (result.result?.tagId !== null && result.result?.tagId !== undefined) tags.value?.set(result.result.tagId, result.result);
+				isCreatingTag.value = false;
+				onFlyoutHide();
+			} else useToast(t.toast.no_language_selected, "warning");
 		} else if (shown === "cancel") showTagEditor.value = false;
 		else {
 			const text = search.value.trim().replaceAll(/\s+/g, " ");
 			arrayClearAll(editor);
-			editor.push({ language: "", values: [text], default: null }); // 正式上线时把下面的范例 tag 去掉，然后把这行代码取消注释。
-			/* editor.push(
-				{ language: "英语", values: ["Minecraft", "MC"], default: "Minecraft" },
-				{ language: "简体中文", values: ["我的世界", "当个创世神"], default: "我的世界" },
-				{ language: "日语", values: ["マインクラフト", "マイクラ"], default: "マインクラフト" },
-			); */
+			editor.push({ language: { langId: "", langName: "" }, values: [text], default: null, original: null });
 			showTagEditor.value = true;
 		}
 	}
 
+	/**
+	 * 用户点击一个搜索到的 TAG，将其添加到视频 TAG 列表中。
+	 * @param tag 用户点击的 TAG 数据。
+	 */
+	function addTag(tag: VideoTag) {
+		if (tag.tagId !== undefined && tag.tagId !== null && tag.tagId >= 0) tags.value?.set(tag.tagId, tag);
+	}
+
 	watch(editor, editor => {
-		if (editor.at(-1)?.language !== "")
-			editor.push({ language: "", values: [], default: null });
+		if (editor.at(-1)?.language.langId !== "")
+			editor.push({ language: { langId: "", langName: "" }, values: [], default: null, original: null });
 		availableLanguages.value = [];
-		const allComboBoxLanguages = editor.map(item => item.language);
+		const allComboBoxLanguages = editor.map(item => item.language.langId);
 		editor.forEach(({ language, default: def }, index) => {
 			if (!language && def) {
 				editor[index].default = null;
 				useToast(t.toast.no_language_selected, "warning");
 			}
 			availableLanguages.value[index] = languages.filter(lang => {
-				if (lang === language) return true;
-				else if (allComboBoxLanguages.includes(lang)) return false;
+				if (lang.langId === language.langId) return true;
+				else if (allComboBoxLanguages.includes(lang.langId)) return false;
 				else return true;
 			});
 		});
@@ -88,16 +204,25 @@
 							</div>
 							<div v-else class="list">
 								<TransitionGroup>
-									<div v-for="tag in matchedTags" :key="tag" v-ripple class="list-item">
-										<div class="content">
-											<p class="title">{{ tag }}</p>
+									<div v-for="tag in matchedTags" :key="tag.tagId" v-ripple class="list-item">
+										<div class="content" @click="addTag(tag)">
+											<div class="tag-name">
+												<div v-if="getSearchHit(search, currentLanguage, tag)" class="hit-tag">{{ getSearchHit(search, currentLanguage, tag) }}</div>
+												<div>{{ getDisplayVideoTagWithCurrentLanguage(currentLanguage, tag).mainTagName }}</div>
+												<div
+													v-if="getSearchHit(search, currentLanguage, tag) !== getDisplayVideoTagWithCurrentLanguage(currentLanguage, tag).originTagName && getDisplayVideoTagWithCurrentLanguage(currentLanguage, tag).mainTagName !== getDisplayVideoTagWithCurrentLanguage(currentLanguage, tag).originTagName"
+													class="original-tag"
+												>
+													{{ getDisplayVideoTagWithCurrentLanguage(currentLanguage, tag).originTagName }}
+												</div>
+											</div>
 											<p class="count">{{ t(100).video_count(100) }}</p>
 										</div>
 										<div class="trailing-icons">
 											<SoftButton icon="edit" @click.stop />
 										</div>
 									</div>
-									<div v-if="showCreateNew" v-ripple class="list-item create-new" @click="switchTagEditor(true)">
+									<div v-if="showCreateNew" key="add-tag-button" v-ripple class="list-item create-new" @click="switchTagEditor(true)">
 										<div class="leading-icons">
 											<Icon name="add" />
 										</div>
@@ -115,16 +240,16 @@
 					<div class="list-wrapper">
 						<div class="list">
 							<template v-for="(item, index) in editor" :key="index">
-								<ComboBox v-model="item.language" :placeholder="t.unselected.language">
-									<ComboBoxItem v-for="lang in availableLanguages[index]" :id="lang" :key="lang">{{ lang }}</ComboBoxItem>
+								<ComboBox v-model="item.language.langId" :placeholder="t.unselected.language">
+									<ComboBoxItem v-for="lang in availableLanguages[index]" :id="lang.langId" :key="lang.langId">{{ lang.langName }}</ComboBoxItem>
 								</ComboBox>
-								<TagsEditor v-model="item.values" v-model:default="item.default" />
+								<TagsEditor v-model="item.values" v-model:default="item.default" v-model:editor-original="item.original" v-model:original="original" />
 							</template>
 						</div>
 					</div>
 					<div class="submit">
-						<Button class="secondary" @click="switchTagEditor('cancel')">{{ t.step.cancel }}</Button>
-						<Button @click="switchTagEditor('ok')">{{ t.step.ok }}</Button>
+						<Button class="secondary" :disabled="isCreatingTag" @click="switchTagEditor('cancel')">{{ t.step.cancel }}</Button>
+						<Button :disabled="isCreatingTag" :loading="isCreatingTag" @click="switchTagEditor('ok')">{{ t.step.ok }}</Button>
 					</div>
 				</div>
 			</Transition>
@@ -227,8 +352,18 @@
 				flex-grow: 1;
 			}
 
-			.title {
+			.tag-name {
+				display: flex;
+				flex-direction: row;
+			}
+
+			.hit-tag {
+				padding-right: 0.5em;
 				font-weight: bold;
+			}
+
+			.original-tag {
+				padding-left: 0.5em;
 			}
 
 			.count {
@@ -263,8 +398,7 @@
 		.list-wrapper {
 			position: relative;
 			height: 100%;
-			overflow-x: hidden;
-			overflow-y: auto; // FIXME: 开启页面滚动，但是会导致打开下拉菜单时，元素溢出到外面。
+			overflow: hidden auto; // FIXME: 开启页面滚动，但是会导致打开下拉菜单时，元素溢出到外面。
 		}
 
 		.list {
