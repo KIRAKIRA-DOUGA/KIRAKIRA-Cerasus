@@ -68,6 +68,12 @@
 	"vue.format.script.initialIndent": true,
 	"vue.format.style.initialIndent": true,
 	"vue.format.template.initialIndent": true,
+	"eslint.validate": [
+		"javascript",
+		"typescript",
+		"vue"
+	],
+	"eslint.experimental.useFlatConfig": true,
 	"todo-tree.general.tags": [
 		"TODO",
 		"HACK",

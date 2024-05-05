@@ -10,6 +10,12 @@
 		videoId: number;
 	}>();
 
+	const emits = defineEmits<{
+		input: [e: InputEvent];
+		keydown: [e: KeyboardEvent];
+		keyup: [e: KeyboardEvent];
+	}>();
+
 	type ActiveType = string | boolean;
 	const rtfEditor = refComp();
 	const flyoutKaomoji = ref<FlyoutModel>();
@@ -36,6 +42,9 @@
 		onCreate({ editor }) {
 			const proseMirror = editor.view.dom;
 			addEventListeners(proseMirror, "keydown", "keyup", e => stopPropagationExceptKey(e, "F11", "Ctrl + KeyM"));
+			proseMirror.addEventListener("input", e => emits("input", e as InputEvent)); // e 的类型默认为 Event 而并非 InputEvent 是预期行为，参见：https://github.com/microsoft/TypeScript-DOM-lib-generator/issues/1174
+			proseMirror.addEventListener("keydown", e => emits("keydown", e));
+			proseMirror.addEventListener("keyup", e => emits("keyup", e));
 		},
 	});
 

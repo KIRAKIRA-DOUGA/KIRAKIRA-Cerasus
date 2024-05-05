@@ -1,7 +1,7 @@
 /**
- * 使用 crypto 异步生成一个不加盐的十六进制 SHA-256 Hash
- * @param input 原字符串
- * @returns Hash 结果
+ * 使用 crypto 异步生成一个不加盐的十六进制 SHA-256 Hash。
+ * @param input - 原字符串。
+ * @returns Hash 结果。
  */
 export async function generateHash(input: string): Promise<string> {
 	const encoder = new TextEncoder();
