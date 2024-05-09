@@ -3,6 +3,8 @@
 		files: File[];
 	}>();
 
+	const BASE_THUMBNAIL_URL = "static/images/thumbnail.png"; // FIXME: Nuxt Image 的 src 为 undefined 或 "" 时会出错，见 https://github.com/nuxt/image/issues/1299
+
 	const copyright = ref<Copyright>("original"); // 视频版权
 	const title = ref(""); // 视频标题
 	const category = ref(""); // 视频分类
@@ -11,7 +13,7 @@
 	const pushToFeed = ref(true); // 是否发布到动态
 	const ensureOriginal = ref(false); // 声明为原创
 	const thumbnailBlob = ref<string>(); // 封面图 Blob
-	const thumbnailUrl = ref<string>("../public/static/images/thumbnail.png"); // 封面图 Blob // FIXME: Nuxt Image 的 src 为 undefined 或 "" 时会出错，见 https://github.com/nuxt/image/issues/1299
+	const thumbnailUrl = ref<string>(BASE_THUMBNAIL_URL); // 封面图 Blob 或 URL
 	const thumbnailInput = ref<HTMLInputElement>();
 	const currentLanguage = computed(getCurrentLocale); // 当前用户的语言
 	const tags = reactive<Map<VideoTag["tagId"], VideoTag>>(new Map()); // 视频标签
@@ -23,7 +25,7 @@
 	const isCoverCropperOpen = ref<boolean>(false); // 封面图裁剪器是否开启状态
 	const isUploadingCover = ref<boolean>(false); // 是否正在上传封面图
 	const cropper = ref(); // 图片裁剪器对象
-	const isNetworkImage = computed(() => thumbnailUrl.value === "../public/static/images/thumbnail.png"); // 封面图是静态资源图片还是网图，即用户是否已经上传完成封面图
+	const isNetworkImage = computed(() => thumbnailUrl.value === BASE_THUMBNAIL_URL); // 封面图是静态资源图片还是网图，即用户是否已经完成封面图上传
 	const provider = computed(() => isNetworkImage.value ? undefined : "kirakira"); // 根据 isNetworkImage 的值判断是否使用 kirakira 作为 Nuxt Image 提供商
 	// 视频分类
 	const VIDEO_CATEGORY = new Map([
