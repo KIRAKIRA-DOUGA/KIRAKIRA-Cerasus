@@ -130,7 +130,12 @@
 	 * @returns boolean 合法返回 true, 不合法返回 false
 	 */
 	function checkTagData(createVideoTagRequest: CreateVideoTagRequestDto): boolean {
-		return createVideoTagRequest.tagNameList.filter(tag => !!tag.lang && tag.tagName.length > 0).length > 0;
+		const isAllTagItemNotNull = createVideoTagRequest?.tagNameList?.every(tag => tag && tag.lang && tag.tagName?.length > 0 && tag.tagName.every(tagName => !!tagName.name));
+
+		return (
+			createVideoTagRequest && createVideoTagRequest?.tagNameList?.length > 0
+			&& isAllTagItemNotNull
+		);
 	}
 
 	/**
@@ -146,7 +151,9 @@
 				if (result.result?.tagId !== null && result.result?.tagId !== undefined) tags.value?.set(result.result.tagId, result.result);
 				isCreatingTag.value = false;
 				onFlyoutHide();
-			} else useToast(t.toast.no_language_selected, "warning");
+			} else
+				// useToast(t.toast.no_language_selected, "warning");
+				useToast("TAG 未正确填写！ ", "warning"); // TODO: 使用多语言
 		} else if (shown === "cancel") showTagEditor.value = false;
 		else {
 			const text = search.value.trim().replaceAll(/\s+/g, " ");
@@ -291,8 +298,8 @@
 
 			&.v-enter-from,
 			&.v-leave-to {
-				opacity: 0;
 				translate: 0 (-$translate);
+				opacity: 0;
 			}
 		}
 
@@ -304,8 +311,8 @@
 			.list {
 				&.v-enter-from,
 				&.v-leave-to {
-					opacity: 0;
 					translate: 0 $translate;
+					opacity: 0;
 				}
 			}
 		}
@@ -380,8 +387,8 @@
 
 			&.v-enter-from,
 			&.v-leave-to {
-				opacity: 0;
 				translate: 0 $translate;
+				opacity: 0;
 			}
 
 			&.v-leave-active {

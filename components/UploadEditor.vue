@@ -38,7 +38,7 @@
 	const contextualToolbar = ref<FlyoutModel>(); // TAG 的工具烂浮窗
 	const hoveredTagContent = ref<[number, string]>();
 	const hideExceptMe = ref(false);
-	const hideTimeoutId = ref<Timeout>(); //
+	const hideTimeoutId = ref<Timeout>();
 
 	/**
 	 * 上传文件无效。
@@ -494,8 +494,8 @@
 			}
 
 			img {
-				filter: brightness(0.75) blur(2px);
 				scale: 115%;
+				filter: brightness(0.75) blur(2px);
 			}
 		}
 
@@ -541,10 +541,10 @@
 		gap: 8px;
 
 		.add-tag {
+			aspect-ratio: 1 / 1;
 			padding: 6px;
 			color: c(icon-color);
 			font-size: 18px;
-			aspect-ratio: 1 / 1;
 		}
 	}
 
