@@ -70,7 +70,7 @@ export function getDisplayVideoTagWithCurrentLanguage(language: string, tagData?
 	const tagName = getVideoTagNameWithCurrentLanguage(language, tagData);
 	if (tagName && tagName.tagId >= 0) {
 		const tagId = tagName.tagId;
-		const mainTagName = tagName.defaultTagName ?? tagName.tagNameList?.find(name => !!name)?.[0] ?? "";
+		const mainTagName = tagName.defaultTagName ?? tagName.tagNameList?.find(name => !!name) ?? "";
 		const originTagName = tagName.originTagName !== mainTagName ? tagName.originTagName : undefined;
 		return { tagId, mainTagName, originTagName };
 	} else return { tagId: -1, mainTagName: "" };
