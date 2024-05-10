@@ -62,7 +62,7 @@
 
 	const titleAffixString = t.user_page.title_affix; // HACK: Bypass "A composable that requires access to the Nuxt instance was called outside of a plugin."
 
-	const titleUserName = computed(() => isSelf.value ? (userSelfInfoStore.username ? titleAffixString(userSelfInfoStore.username) : "") : (userInfo.value?.username ? titleAffixString(userInfo.value?.username) : ""));
+	const titleUserName = computed(() => isSelf.value ? userSelfInfoStore.username ? titleAffixString(userSelfInfoStore.username) : "" : userInfo.value?.username ? titleAffixString(userInfo.value?.username) : "");
 
 	// const titleUserName = computed(() => isSelf.value ? "aaa" : "bbb");
 
@@ -114,9 +114,6 @@
 </template>
 
 <style scoped lang="scss">
-	$padding-x: 5dvw;
-	$padding-x-tablet: 24px;
-	$padding-x-mobile: 16px;
 	$header-height: 134px;
 	$main-margin-top: 32px;
 
@@ -125,15 +122,15 @@
 		position: sticky;
 		top: 0;
 		z-index: 4;
-		padding: 0 $padding-x;
+		padding: 0 $page-padding-x;
 		background-color: c(main-bg);
 
 		@include tablet {
-			padding: 0 $padding-x-tablet;
+			padding: 0 $page-padding-x-tablet;
 		}
 
 		@include mobile {
-			padding: 0 $padding-x-mobile;
+			padding: 0 $page-padding-x-mobile;
 		}
 	}
 
@@ -141,8 +138,8 @@
 		display: flex;
 		flex-wrap: wrap;
 		gap: 12px;
-		align-items: center;
 		justify-content: space-between;
+		align-items: center;
 		padding: 24px 0;
 
 		.user {
@@ -221,8 +218,8 @@
 		.actions {
 			display: flex;
 			gap: 16px;
-			align-items: center;
 			justify-content: flex-end;
+			align-items: center;
 			margin-left: auto;
 
 			.soft-button {
@@ -235,10 +232,10 @@
 		--clipped: true;
 		--loose: true;
 		--size: big;
-		margin: 0 (-$padding-x);
+		margin: 0 (-$page-padding-x);
 
 		&:deep(.items) {
-			padding: 0 $padding-x;
+			padding: 0 $page-padding-x;
 		}
 	}
 
@@ -246,11 +243,11 @@
 		display: flex;
 		gap: 20px;
 		align-items: flex-start;
-		padding: $main-margin-top $padding-x;
+		padding: $main-margin-top $page-padding-x;
 
 		@include tablet {
 			flex-direction: column-reverse;
-			padding: $padding-x-tablet;
+			padding: $page-padding-x-tablet;
 
 			.toolbox-card {
 				width: 100%;
@@ -258,7 +255,7 @@
 		}
 
 		@include mobile {
-			padding: $padding-x-mobile;
+			padding: $page-padding-x-mobile;
 		}
 
 		> .left,
@@ -306,25 +303,25 @@
 	header,
 	main {
 		@include tablet {
-			padding: 0 $padding-x-tablet;
+			padding: 0 $page-padding-x-tablet;
 
 			.tab-bar {
-				margin: 0 (-$padding-x-tablet);
+				margin: 0 (-$page-padding-x-tablet);
 
 				&:deep(.items) {
-					padding: 0 $padding-x-tablet;
+					padding: 0 $page-padding-x-tablet;
 				}
 			}
 		}
 
 		@include mobile {
-			padding: 0 $padding-x-mobile;
+			padding: 0 $page-padding-x-mobile;
 
 			.tab-bar {
-				margin: 0 (-$padding-x-mobile);
+				margin: 0 (-$page-padding-x-mobile);
 
 				&:deep(.items) {
-					padding: 0 calc($padding-x-mobile / 2);
+					padding: 0 calc($page-padding-x-mobile / 2);
 				}
 			}
 		}

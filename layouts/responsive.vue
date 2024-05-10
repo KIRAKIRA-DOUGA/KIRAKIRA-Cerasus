@@ -10,7 +10,6 @@
 
 	const container = ref<HTMLDivElement>();
 	const containerMain = ref<HTMLElement>();
-	const showBanner = ref(false);
 	const localedRoute = computed(() => getRoutePath());
 	const SETTINGS = "settings";
 	const pageTransition = usePageTransition();
@@ -30,10 +29,6 @@
 	const showDrawer = ref(false);
 
 	useListen("app:showDrawer", () => showDrawer.value = true);
-
-	watchRoute(() => {
-		showBanner.value = localedRoute.value === "" || localedRoute.value.startsWith("user");
-	}, true);
 
 	onMounted(() => {
 		setDisplayVisible(cssDoodle.value, showCssDoodle.value);
@@ -59,7 +54,7 @@
 					</Transition>
 				</Settings>
 				<main v-else ref="containerMain" class="scroll">
-					<Banner :collapsed="!showBanner" />
+					<Banner />
 					<Transition :css="false" @enter="onContentEnter" @leave="onContentLeave">
 						<UserPage v-if="isUserPage" />
 					</Transition>
@@ -83,14 +78,14 @@
 
 		@layer layout {
 			> main > div:deep > .container {
-				padding: 26px 5dvw;
+				padding: 26px $page-padding-x;
 
 				@include tablet {
-					padding: 26px 24px;
+					padding: 26px $page-padding-x-tablet;
 				}
 
 				@include mobile {
-					padding: 16px;
+					padding: $page-padding-x-mobile;
 				}
 			}
 		}
@@ -208,8 +203,8 @@
 
 		&.v-enter-from,
 		&.v-leave-to {
-			opacity: 0;
 			scale: 0.8;
+			opacity: 0;
 		}
 	}
 

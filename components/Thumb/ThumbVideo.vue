@@ -16,7 +16,7 @@
 		/** 创作者名称。 */
 		uploader: string;
 		/** 创作者编号 UID。 */
-		uploaderId: number;
+		uploaderId?: number;
 		/** 视频时长。 */
 		duration?: Duration;
 		/** 在新窗口打开视频？ */
@@ -97,8 +97,8 @@
 			.card {
 				@include system-card;
 				background-color: c(surface-color);
-				backdrop-filter: none;
 				translate: 0 -6px;
+				backdrop-filter: none;
 			}
 		}
 
@@ -131,9 +131,9 @@
 	.cover-wrapper {
 		@include round-large;
 		flex-shrink: 0;
+		aspect-ratio: 16 / 9;
 		margin-bottom: 8px;
 		overflow: clip;
-		aspect-ratio: 16 / 9;
 
 		img.cover {
 			width: 100%;
@@ -171,8 +171,8 @@
 			display: -webkit-box;
 			height: $title-line-height * 2;
 			line-height: $title-line-height;
-			white-space: normal;
 			-webkit-line-clamp: 2;
+			white-space: normal;
 			-webkit-box-orient: vertical;
 		}
 	}

@@ -17,10 +17,10 @@
 		overflow-y: auto;
 
 		> .container {
-			padding: 26px 5dvw;
+			padding: 26px $page-padding-x;
 
 			@include tablet {
-				padding: 26px 24px;
+				padding: 26px $page-padding-x-tablet;
 			}
 
 			@include mobile {

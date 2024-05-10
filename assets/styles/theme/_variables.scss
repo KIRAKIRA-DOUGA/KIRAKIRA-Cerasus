@@ -32,5 +32,11 @@ $hue-linear: linear-gradient(to right, red 0%, yellow $-sixth, lime $-sixth * 2,
 /// 侧边栏宽度。
 $sidebar-width: 48px;
 $mobile-toolbar-height: 56px;
+/// Banner（横幅）高度
+$banner-height: 10rem;
 /// 菜单边距。
 $menu-padding: 6px;
+/// 页面 X 轴边距。
+$page-padding-x: 5dvw;
+$page-padding-x-tablet: 24px;
+$page-padding-x-mobile: 16px;
