@@ -107,9 +107,6 @@
 
 <template>
 	<div class="container">
-		<ShadingIcon icon="search" position="right top" />
-		<HeadingGroup :name="t.search" englishName="Search" />
-
 		<div class="card-container">
 			<div class="center">
 				<ThumbGrid :view>
@@ -167,10 +164,6 @@
 </template>
 
 <style scoped lang="scss">
-	header {
-		margin-bottom: 1rem;
-	}
-
 	.card-container {
 		display: flex;
 		gap: 16px;

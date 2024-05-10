@@ -4,9 +4,6 @@
 
 <template>
 	<div class="container">
-		<ShadingIcon icon="history" position="right top" />
-		<HeadingGroup :name="t.history" englishName="History" />
-
 		<div class="wrapper">
 			<div class="line"></div>
 			<section>
@@ -48,19 +45,15 @@
 	$line-size: 6px;
 	$ball-size: 24px;
 
-	header {
-		margin-bottom: 1rem;
-	}
-
 	.container {
 		position: relative;
 	}
 
 	.line {
-		@include oval;
+		@include oval(top);
 		position: absolute;
-		top: 100px;
-		bottom: -$line-size;
+		top: 38px;
+		bottom: 0;
 		width: $line-size;
 		background-color: c(accent);
 
@@ -118,9 +111,9 @@
 				&.today::after {
 					@include square(100%);
 					@include circle;
+					content: "";
 					display: block;
 					background-color: c(accent);
-					content: "";
 					scale: 0.5;
 				}
 			}

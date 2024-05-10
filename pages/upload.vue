@@ -83,8 +83,8 @@
 
 <template>
 	<div class="container" :class="{ 'no-scroll': !showEditor }">
-		<ShadingIcon icon="upload" position="right top" />
-		<HeadingGroup :name="t.upload" englishName="Upload" :class="{ clickable: showEditor }" @click="cancelUpdate" />
+		<!-- TODO: 临时 SoftButton，之后请在 UploadEditor 的 Submit 按钮左边放一个取消。 -->
+		<SoftButton icon="close" v-if="showEditor" @click="cancelUpdate" />
 		<input
 			ref="fileInput"
 			hidden
@@ -128,11 +128,7 @@
 	.container {
 		display: flex;
 		flex-direction: column;
-		height: 100dvh;
-	}
-
-	.clickable {
-		cursor: pointer !important;
+		height: calc(100dvh - $banner-height);
 	}
 
 	@property --rotation {
@@ -224,13 +220,13 @@
 		}
 
 		50% {
-			scale: 1;
 			translate: 0;
+			scale: 1;
 		}
 
 		100% {
-			scale: 1;
 			translate: 0 calc((-100% - $box-height) / 2);
+			scale: 1;
 		}
 	}
 </style>
