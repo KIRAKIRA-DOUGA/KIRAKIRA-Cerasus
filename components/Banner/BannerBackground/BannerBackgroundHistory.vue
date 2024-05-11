@@ -1,27 +1,18 @@
 <template>
-	<Transition :duration="{ enter: 550, leave: 100 }">
-		<Comp>
-			<Icon name="time" />
-			<Icon name="time" />
-			<Icon name="time" />
-			<svg width="16" height="19" viewBox="0 0 16 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<path d="M-4.5897e-07 9.5L15.75 0.406734L15.75 18.5933L-4.5897e-07 9.5Z" fill="var(--accent)" />
-			</svg>
-			<svg width="31" height="37" viewBox="0 0 31 37" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<path d="M30.25 35.3875L0.999999 18.5L30.25 1.61251L30.25 35.3875Z" stroke="var(--accent)" />
-			</svg>
-		</Comp>
-	</Transition>
+	<Comp>
+		<Icon name="time" />
+		<Icon name="time" />
+		<Icon name="time" />
+		<svg width="16" height="19" viewBox="0 0 16 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M-4.5897e-07 9.5L15.75 0.406734L15.75 18.5933L-4.5897e-07 9.5Z" fill="var(--accent)" />
+		</svg>
+		<svg width="31" height="37" viewBox="0 0 31 37" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M30.25 35.3875L0.999999 18.5L30.25 1.61251L30.25 35.3875Z" stroke="var(--accent)" />
+		</svg>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
-	:comp {
-		.v-enter-from &,
-		.v-leave-to & {
-			opacity: 0;
-		}
-	}
-
 	.v-enter-active * {
 		transition: 1s $ease-out-smooth;
 	}
@@ -32,7 +23,7 @@
 
 	.icon {
 		position: absolute;
-		color: c(accent, 15%);
+		color: c(accent, 10%);
 
 		.v-enter-from &,
 		.v-leave-to & {
@@ -42,7 +33,7 @@
 
 		&:nth-of-type(1) {
 			top: -160px;
-			left: -100px;
+			left: -120px;
 			font-size: 256px;
 			transform: rotate(32deg);
 
