@@ -83,7 +83,7 @@ export function tusFile(file: File, progress: Ref<number>) {
 		// Create a new tus upload
 		const upload = new tus.Upload(file, {
 			endpoint: `${VIDEO_API_URI}/tus`,
-			onBeforeRequest: function (req) {
+			onBeforeRequest(req) {
 				const url = req.getURL();
 				if (!url?.includes("https://upload.videodelivery.net/tus")) { // 仅在请求后端 API 获取上传目的地 URL 时设置允许跨域传递 cookie，
 					const xhr = req.getUnderlyingObject();
@@ -99,23 +99,23 @@ export function tusFile(file: File, progress: Ref<number>) {
 				maxDurationSeconds: "1800", // 最大视频长度，1800 秒（30 分钟）
 				expiry: getCloudflareRFC3339ExpiryDateTime(3600), // 最大上传耗时，3600 秒（1 小时）
 			},
-			onError: function (error) {
+			onError(error) {
 				console.error("ERROR", "Upload error: ", error);
 				reject(error);
 			},
-			onProgress: function (bytesUploaded, bytesTotal) {
-				const percentage = (bytesUploaded / bytesTotal) * 100;
+			onProgress(bytesUploaded, bytesTotal) {
+				const percentage = bytesUploaded / bytesTotal * 100;
 				progress.value = percentage;
 				console.log(bytesUploaded, bytesTotal, percentage.toFixed(2) + "%"); // DELETE ME
 			},
-			onSuccess: function () {
+			onSuccess() {
 				console.log("Download %s from %s", (upload.file as File)?.name, upload.url); // DELETE ME
 				if (videoId)
 					resolve(videoId);
 				else
 					reject(new Error("Can not find the video ID"));
 			},
-			onAfterResponse: function (req, res) {
+			onAfterResponse(req, res) {
 				if (req.getURL().includes("https://upload.videodelivery.net/tus")) {
 					const headerVideoId = res?.getHeader("stream-media-id");
 					if (headerVideoId)
