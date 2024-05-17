@@ -110,8 +110,6 @@ export type BeforeHashPasswordDataType = {
 	passwordHash: string;
 };
 
-
-
 /**
  * 用户的个人标签
  */
@@ -170,7 +168,6 @@ export type UpdateOrCreateUserInfoRequestDto = {
 	userWebsite?: UserWebsite;
 };
 
-
 /**
  * 更新或创建用户信息的请求结果
  */
@@ -182,8 +179,6 @@ export type UpdateOrCreateUserInfoResponseDto = {
 	/** 请求结果 */
 	result?: {} & UpdateOrCreateUserInfoRequestDto;
 };
-
-
 
 /**
  * 获取当前登录的用户信息的请求参数
@@ -282,8 +277,8 @@ export type GetUserAvatarUploadSignedUrlResponseDto = {
 type UserLinkAccountsPrivacySettingDto = {
 	/** 关联账户类型 - 非空 - 例："X" */
 	accountType: string;
-	/** 显示方式 - 非空 - 允许的值有：{public: 公开, following: 仅关注, private: 隐藏}; */
-	privacyType: 'public' | 'following' | 'private';
+	/** 显示方式 - 非空 - 允许的值有：{public: 公开, following: 仅关注, private: 隐藏} */
+	privacyType: "public" | "following" | "private";
 };
 
 /**
@@ -292,8 +287,8 @@ type UserLinkAccountsPrivacySettingDto = {
 export type BasicUserSettingsDto = {
 	/** 是否启用 Cookie - 布尔 */
 	enableCookie?: boolean;
-	/** 主题外观设置（主题类型） - 可选的值：{light: 浅色, dark: 深色, system: 跟随系统}; */
-	themeType?: 'light' | 'dark' | 'system';
+	/** 主题外观设置（主题类型） - 可选的值：{light: 浅色, dark: 深色, system: 跟随系统} */
+	themeType?: "light" | "dark" | "system";
 	/** 主题颜色 - 字符串，颜色字符串 */
 	themeColor?: string;
 	/** 用户自定义主题颜色 - 字符串，HAX 颜色字符串，不包含井号 */
@@ -303,7 +298,7 @@ export type BasicUserSettingsDto = {
 	/** 是否启用彩色导航栏 - 布尔 */
 	coloredSideBar?: boolean;
 	/** 流量使用偏好 - 字符串，{standard: 标准, limit: 节省网络流量模式, preview: 超前加载} */
-	dataSaverMode?: 'standard' | 'limit' | 'preview';
+	dataSaverMode?: "standard" | "limit" | "preview";
 	/** 禁用搜索推荐 - 布尔 */
 	noSearchRecommendations?: boolean;
 	/** 禁用相关视频推荐 - 布尔 */
@@ -328,8 +323,8 @@ export type BasicUserSettingsDto = {
 	sharpAppearanceMode?: boolean;
 	/** 实验性：启用扁平模式 - 布尔 */
 	flatAppearanceMode?: boolean;
-	/** 用户关联网站的隐私设置 - 允许的值有：{public: 公开, following: 仅关注, private: 隐藏}; */
-	userWebsitePrivacySetting?: 'public' | 'following' | 'private';
+	/** 用户关联网站的隐私设置 - 允许的值有：{public: 公开, following: 仅关注, private: 隐藏} */
+	userWebsitePrivacySetting?: "public" | "following" | "private";
 	/** 用户关联账户的隐私设置 */
 	userLinkAccountsPrivacySetting?: UserLinkAccountsPrivacySettingDto[];
 };
@@ -337,7 +332,7 @@ export type BasicUserSettingsDto = {
 /**
  * 获取用于渲染页面的用户设定的请求参数
  */
-export type GetUserSettingsRequestDto = {} & GetSelfUserInfoRequestDto
+export type GetUserSettingsRequestDto = {} & GetSelfUserInfoRequestDto;
 
 /**
  * 获取用于渲染页面的用户设定的请求响应
@@ -351,11 +346,10 @@ export type GetUserSettingsResponseDto = {
 	message?: string;
 };
 
-
 /**
  * 更新或创建用户设定的请求参数
  */
-export type UpdateOrCreateUserSettingsRequestDto = {} & BasicUserSettingsDto
+export type UpdateOrCreateUserSettingsRequestDto = {} & BasicUserSettingsDto;
 
 /**
  * 更新或创建用户设定的请求响应

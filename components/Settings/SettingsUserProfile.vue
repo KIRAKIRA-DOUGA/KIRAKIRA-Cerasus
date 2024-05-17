@@ -9,6 +9,7 @@
 	const validChar = makeUsername();
 	const profile = defineModel<{
 		name: string;
+		nickname: string;
 		nameValid?: boolean;
 		bio: string;
 		gender: string;
@@ -48,13 +49,30 @@
 
 <template>
 	<div class="name">
+		<!-- TODO: 使用多语言 -->
+		<!-- FIXME: t.user.name 应为“用户名”而非“昵称” -->
 		<TextBox
 			ref="nameTextBox"
 			v-model="profile.name"
-			:placeholder="t.user.name"
+			placeholder="用户名"
 			size="large"
 			icon="person"
 			required
+			:pattern="validChar"
+			:maxLength="20"
+		/>
+		<!-- TODO: 使用多语言 -->
+		<span>1~20个字符，不允许重名，仅可包含数字、大小写拉丁字母、越南语字母、汉字、常用平/片假名、现代谚文音节、特殊符号 ｢-｣ ｢_｣</span>
+	</div>
+
+	<div class="nickname">
+		<!-- TODO: 使用多语言 -->
+		<TextBox
+			ref="nameTextBox"
+			v-model="profile.nickname"
+			placeholder="昵称"
+			size="large"
+			icon="person"
 			:pattern="validChar"
 			:maxLength="20"
 		/>
@@ -96,12 +114,13 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="gender">
 		<div class="gender-subtitle">
 			<Icon name="tag" class="icon" />
 			<span class="text">{{ t(profile.tags.length).tag }}</span>
 		</div>
+		<!-- TODO: 需要改成和投稿页面一致的 TAG 创建逻辑 -->
 		<TagsEditor v-model="profile.tags" />
 	</div>
 </template>
@@ -110,8 +129,8 @@
 	.text-box:not(.normal) {
 		--size: large;
 	}
-	
-	.name {
+
+	.name, .nickname {
 		display: flex;
 		flex-direction: column;
 		gap: 8px;
@@ -125,11 +144,11 @@
 
 	.gender {
 		display: flex;
+		row-gap: 1rem;
 		align-items: center;
 		min-height: 36px;
 		padding: 0 12px;
 		color: c(icon-color);
-		row-gap: 1rem;
 
 		&,
 		* {

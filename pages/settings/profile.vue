@@ -4,24 +4,30 @@
 	// const avatar = "/static/images/avatars/aira.webp";
 	const selfUserInfoStore = useSelfUserInfoStore();
 
-	const profile = computed(() => ({
+	const newAvatar = ref<string>(); // 新上传的头像
+	const correctAvatar = computed(() => newAvatar.value ?? selfUserInfoStore.userAvatar); // 正确显示的头像（如果用户没有新上传头像，则使用全局变量中的旧头像）
+	const userAvatarUploadFile = ref<string | undefined>(); // 用户上传的头像文件 Blob
+	const isAvatarCropperOpen = ref(false); // 用户头像图片裁剪器是否开启
+	const userAvatarFileInput = ref<HTMLInputElement>(); // 隐藏的图片上传 Input 元素
+	const isUpdateUserInfo = ref<boolean>(false); // 是否正在上传用户信息
+	const isResetUserInfo = ref<boolean>(false); // 是否正在重置用户信息
+	const profile = reactive({
 		name: selfUserInfoStore.username,
+		nickname: selfUserInfoStore.userNickname,
 		bio: selfUserInfoStore.signature,
 		gender: selfUserInfoStore.gender,
-		birthday: new Date(), // FIXME: 注意：这个值是静态的、非响应式的，不会随时间变化
-		tags: selfUserInfoStore.tags?.map(tag => tag.labelName),
-	}));
+		birthday: new Date(), // TODO: 日期选择器 // FIXME: 注意：这个值是静态的、非响应式的，不会随时间变化
+		tags: selfUserInfoStore.tags,
+	});
+	const cropper = ref<InstanceType<typeof ImageCropper>>(); // 图片裁剪器实例
+	const isUploadingUserAvatar = ref(false); // 是否正在上传头像
 
-	const userAvatarFileInput = ref<HTMLInputElement>();
 	/**
 	 * 点击头像事件，模拟点击文件上传并唤起文件资源管理器
 	 */
 	function handleUploadAvatarImage() {
 		userAvatarFileInput.value?.click();
 	}
-
-	const userUploadFile = ref<string | undefined>();
-	const isAvatarCropperOpen = ref(false);
 
 	/**
 	 * 如果有上传图片，则开启图片裁切器。
@@ -30,6 +36,7 @@
 	 * @param e - 应为用户上传文件的 `<input>` 元素的 change 事件。
 	 */
 	function handleOpenAvatarCropper(e?: Event) {
+		e?.stopPropagation();
 		const fileInput = e?.target as HTMLInputElement | undefined;
 		const image = fileInput?.files?.[0];
 
@@ -40,14 +47,11 @@
 				return;
 			}
 
-			userUploadFile.value = fileToBlob(image);
+			userAvatarUploadFile.value = fileToBlob(image);
 			isAvatarCropperOpen.value = true;
 			fileInput.value = ""; // 读取完用户上传的文件后，需要清空 input，以免用户在下次上传同一个文件时无法触发 change 事件。
 		}
 	}
-
-	const cropper = ref<InstanceType<typeof ImageCropper>>();
-	const isUploadingUserAvatar = ref(false);
 
 	/**
 	 * 修改头像事件，向服务器提交新的图片。
@@ -63,7 +67,7 @@
 				if (userAvatarUploadSignedUrlResult.success && userAvatarUploadSignedUrl && userAvatarUploadFilename) {
 					const uploadResult = await api.user.uploadUserAvatar(userAvatarUploadFilename, blobImageData, userAvatarUploadSignedUrl);
 					if (uploadResult) {
-						await api.user.getSelfUserInfo();
+						newAvatar.value = userAvatarUploadFilename;
 						isAvatarCropperOpen.value = false;
 						clearBlobUrl(); // 释放内存
 					}
@@ -97,37 +101,87 @@
 	 * 清除已经上传完成的图片，释放内存。
 	 */
 	function clearBlobUrl() {
-		if (userUploadFile.value) {
-			URL.revokeObjectURL(userUploadFile.value);
-			userUploadFile.value = undefined;
+		if (userAvatarUploadFile.value) {
+			URL.revokeObjectURL(userAvatarUploadFile.value);
+			userAvatarUploadFile.value = undefined;
 		}
 	}
-
-	useListen("user:login", async loginStatus => {
-		if (loginStatus)
-			await getUserInfo();
-	});
 
 	/**
 	 * Update the user profile.
 	 */
 	async function updateProfile() {
-		// const api = useApi();
-
-		// const encodedName = encodeUtf8(profile.name);
-		// const encodedGender = encodeUtf8(profile.gender);
-		// const encodedBio = encodeUtf8(profile.bio);
-		// const handleError = (error: unknown) => error && console.error(error);
-
-		// try {
-		// 	await api?.updateProfile(encodedName, encodedGender, profile.birthday.toString(), encodedBio);
-		// } catch (error) { handleError(error); }
+		isUpdateUserInfo.value = true;
+		const updateOrCreateUserInfoRequest: UpdateOrCreateUserInfoRequestDto = {
+			avatar: correctAvatar.value,
+			username: profile.name,
+			userNickname: profile.nickname,
+			signature: profile.bio,
+			gender: profile.gender,
+			userBirthday: new Date().getTime(), // TODO: 日期选择器 // FIXME: 注意：这个值是静态的、非响应式的，不会随时间变化
+			label: profile.tags.map((tag, index) => ({ id: index, labelName: tag })),
+		};
+		try {
+			const updateOrCreateUserInfoResult = await api.user.updateOrCreateUserInfo(updateOrCreateUserInfoRequest);
+			if (updateOrCreateUserInfoResult.success) {
+				await api.user.getSelfUserInfo();
+				isUpdateUserInfo.value = false;
+			}
+		} catch (error) {
+			isUpdateUserInfo.value = false;
+			useToast("用户信息更新失败！", "error"); // TODO: 使用多语言
+			console.error("用户信息更新失败！", error);
+		}
 	}
 
-	// 监听头像文件变化事件
-	useEventListener(userAvatarFileInput, "change", handleOpenAvatarCropper);
-	onMounted(async () => { await getUserInfo(); });
+	/**
+	 * reset all user info.
+	 * 重置用户设置
+	 * 请求旧用户信息，并修改 Pinia 中的用户数据，然后触发上方的监听
+	 */
+	async function reset() {
+		isResetUserInfo.value = true;
+		const updateOrCreateUserInfoRequest: UpdateOrCreateUserInfoRequestDto = {
+			avatar: "",
+			username: "",
+			userNickname: "",
+			signature: "",
+			gender: "",
+			userBirthday: undefined,
+			label: [],
+		};
+		try {
+			const updateOrCreateUserInfoResult = await api.user.updateOrCreateUserInfo(updateOrCreateUserInfoRequest);
+			if (updateOrCreateUserInfoResult.success) {
+				await api.user.getSelfUserInfo();
+				isResetUserInfo.value = false;
+			}
+		} catch (error) {
+			isResetUserInfo.value = false;
+			useToast("未能清空用户信息！", "error"); // TODO: 使用多语言
+			console.error("未能清空用户信息！", error);
+		}
+	}
+
+	/**
+	 * 将 Pinia 中的用户数据拷贝到当前组件的响应式变量 "profile" 中
+	 */
+	function copyPiniaUserInfo2Profile() {
+		profile.name = selfUserInfoStore.username;
+		profile.nickname = selfUserInfoStore.userNickname;
+		profile.bio = selfUserInfoStore.signature;
+		profile.gender = selfUserInfoStore.gender;
+		profile.tags = selfUserInfoStore.tags;
+	}
+
+	useEventListener(userAvatarFileInput, "change", handleOpenAvatarCropper); // 监听头像文件变化事件
+	onMounted(async () => { await api.user.getSelfUserInfo(); });
 	onBeforeUnmount(clearBlobUrl); // 释放内存
+	watch(selfUserInfoStore, copyPiniaUserInfo2Profile); // 监听 Pinia 中的用户数据，一定发生改变，则拷贝到当前组件的响应式变量 "profile" 中
+	useListen("user:login", async loginStatus => { // 发生用户登录事件，请求最新用户信息，并修改 Pinia 中的用户数据，然后触发上方的监听
+		if (loginStatus)
+			await api.user.getSelfUserInfo();
+	});
 </script>
 
 <template>
@@ -136,7 +190,7 @@
 		<div class="avatar-cropper">
 			<ImageCropper
 				ref="cropper"
-				:image="userUploadFile"
+				:image="userAvatarUploadFile"
 				:fixed="true"
 				:fixedNumber="[1, 1]"
 				:full="true"
@@ -152,13 +206,14 @@
 			<Button :loading="isUploadingUserAvatar" @click="handleSubmitAvatarImage">更新头像</Button>
 		</template>
 	</Modal>
+
 	<div v-ripple class="banner">
 		<NuxtImg :src="banner" alt="banner" draggable="false" format="avif" placeholder />
 		<span>{{ t.profile.edit_banner }}</span>
 	</div>
 
 	<div class="change-avatar" @click="handleUploadAvatarImage">
-		<UserAvatar :avatar="selfUserInfoStore.userAvatar" />
+		<UserAvatar :avatar="correctAvatar" />
 		<span>{{ t.profile.edit_avatar }}</span>
 		<input ref="userAvatarFileInput" type="file" accept="image/*" hidden />
 	</div>
@@ -168,8 +223,8 @@
 	</div>
 
 	<div class="submit">
-		<Button icon="reset" class="secondary">{{ t.step.reset }}</Button>
-		<Button icon="check" @click="updateProfile">{{ t.step.save }}</Button>
+		<Button icon="delete" class="secondary" @click="reset" :loading="isResetUserInfo" :disabled="isUpdateUserInfo || isResetUserInfo">{{ t.step.reset }}</Button>
+		<Button icon="check" @click="updateProfile" :loading="isUpdateUserInfo" :disabled="isUpdateUserInfo || isResetUserInfo">{{ t.step.save }}</Button>
 	</div>
 </template>
 
@@ -188,8 +243,8 @@
 			cursor: pointer;
 
 			&:any-hover {
-				filter: brightness(0.75) blur(2px);
 				scale: 105%;
+				filter: brightness(0.75) blur(2px);
 
 				&+span {
 					opacity: 1;

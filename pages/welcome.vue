@@ -10,21 +10,49 @@
 	const profile = reactive({
 		name: "",
 		nameValid: false,
+		nickname: "",
 		bio: "",
 		gender: "",
 		birthday: new Date(),
 		tags: [] as string[],
 	});
 	const isRead = ref(false);
-	const validData = computed(() => isRead.value && profile.nameValid && profile.gender);
 	const showWelcome = ref(false);
-	const avatarBlob = ref<string>();
-	const avatarInput = ref<HTMLInputElement>();
+	const avatarBlob = ref<string>(); // 头像文件
+	const cropper = ref<InstanceType<typeof ImageCropper>>(); // 图片裁剪器实例
+	const isAvatarCropperOpen = ref(false); // 用户头像图片裁剪器是否开启
+	const isUploadingUserAvatar = ref(false); // 是否正在上传头像
+	const userAvatarUploadFile = ref<string | undefined>(); // 用户上传的头像文件 Blob
+	const userAvatarFileInput = ref<HTMLInputElement>(); // 隐藏的图片上传 Input 元素
+	const isUpdateUserInfo = ref<boolean>(false); // 是否正在上传用户信息
+	const validData = computed(() => isRead.value && profile.nameValid && profile.gender);
 
 	/**
 	 * 完成注册。
 	 */
 	async function finish() {
+		isUpdateUserInfo.value = true;
+		const updateOrCreateUserInfoRequest: UpdateOrCreateUserInfoRequestDto = {
+			avatar: avatarBlob.value,
+			username: profile.name,
+			userNickname: profile.nickname,
+			signature: profile.bio,
+			gender: profile.gender,
+			userBirthday: new Date().getTime(), // TODO: 日期选择器 // FIXME: 注意：这个值是静态的、非响应式的，不会随时间变化
+			label: profile.tags.map((tag, index) => ({ id: index, labelName: tag })),
+		};
+		try {
+			const updateOrCreateUserInfoResult = await api.user.updateOrCreateUserInfo(updateOrCreateUserInfoRequest);
+			if (updateOrCreateUserInfoResult.success) {
+				await api.user.getSelfUserInfo();
+				isUpdateUserInfo.value = false;
+			}
+		} catch (error) {
+			isUpdateUserInfo.value = false;
+			useToast("用户信息更新失败！", "error"); // TODO: 使用多语言
+			console.error("用户信息更新失败！", error);
+		}
+
 		const main = container.value?.parentElement;
 		if (main) {
 			main.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -36,18 +64,103 @@
 	}
 
 	/**
-	 * 更换头像。
-	 * @param e - 普通事件。
+	 * 修改头像事件，向服务器提交新的图片。
 	 */
-	function onChangeAvatar(e: Event) {
-		const input = e.target as HTMLInputElement;
-		const file = input.files?.[0];
-		if (!file) return;
-		avatarBlob.value = fileToBlob(file);
+	async function handleSubmitAvatarImage() {
+		try {
+			isUploadingUserAvatar.value = true;
+			const blobImageData = await cropper.value?.getCropBlobData();
+			if (blobImageData) {
+				const userAvatarUploadSignedUrlResult = await api.user.getUserAvatarUploadSignedUrl();
+				const userAvatarUploadSignedUrl = userAvatarUploadSignedUrlResult.userAvatarUploadSignedUrl;
+				const userAvatarUploadFilename = userAvatarUploadSignedUrlResult.userAvatarFilename;
+				if (userAvatarUploadSignedUrlResult.success && userAvatarUploadSignedUrl && userAvatarUploadFilename) {
+					const uploadResult = await api.user.uploadUserAvatar(userAvatarUploadFilename, blobImageData, userAvatarUploadSignedUrl);
+					if (uploadResult) {
+						avatarBlob.value = userAvatarUploadFilename;
+						isAvatarCropperOpen.value = false;
+						clearBlobUrl(); // 释放内存
+					}
+					isUploadingUserAvatar.value = false;
+				}
+			} else {
+				useToast("无法获取裁切后的图片！", "error"); // TODO: 使用多语言
+				console.error("ERROR", "无法获取裁切后的图片");
+			}
+		} catch (error) {
+			useToast("头像上传失败！", "error"); // TODO: 使用多语言
+			console.error("ERROR", "在上传用户头像时出错", error);
+			isUploadingUserAvatar.value = false;
+		}
 	}
+
+	/**
+	 * 点击头像事件，模拟点击文件上传并唤起文件资源管理器
+	 */
+	function handleUploadAvatarImage() {
+		userAvatarFileInput.value?.click();
+	}
+
+	/**
+	 * 如果有上传图片，则开启图片裁切器。
+	 *
+	 * 即：用户选择了本地文件的事件。
+	 * @param e - 应为用户上传文件的 `<input>` 元素的 change 事件。
+	 */
+	function handleOpenAvatarCropper(e?: Event) {
+		e?.stopPropagation();
+		const fileInput = e?.target as HTMLInputElement | undefined;
+		const image = fileInput?.files?.[0];
+
+		if (image) {
+			if (!/\.(a?png|jpe?g|jfif|pjp(eg)?|gif|svg|webp)$/i.test(fileInput.value)) {
+				useToast("只能上传图片文件！", "error"); // TODO: 使用多语言
+				console.error("ERROR", "不支持所选头像图片格式！");
+				return;
+			}
+
+			userAvatarUploadFile.value = fileToBlob(image);
+			isAvatarCropperOpen.value = true;
+			fileInput.value = ""; // 读取完用户上传的文件后，需要清空 input，以免用户在下次上传同一个文件时无法触发 change 事件。
+		}
+	}
+
+	/**
+	 * 清除已经上传完成的图片，释放内存。
+	 */
+	function clearBlobUrl() {
+		if (userAvatarUploadFile.value) {
+			URL.revokeObjectURL(userAvatarUploadFile.value);
+			userAvatarUploadFile.value = undefined;
+		}
+	}
+
+	useEventListener(userAvatarFileInput, "change", handleOpenAvatarCropper); // 监听头像文件变化事件
 </script>
 
 <template>
+	<!-- TODO: 使用多语言 -->
+	<Modal v-model="isAvatarCropperOpen" title="更新头像">
+		<div class="avatar-cropper">
+			<ImageCropper
+				ref="cropper"
+				:image="userAvatarUploadFile"
+				:fixed="true"
+				:fixedNumber="[1, 1]"
+				:full="true"
+				:centerBox="true"
+				:infoTrue="true"
+				:mode="'contain '"
+			/>
+		</div>
+		<template #footer-right>
+			<!-- TODO: 使用多语言 -->
+			<Button class="secondary" @click="isAvatarCropperOpen = false">取消</Button>
+			<!-- TODO: 使用多语言 -->
+			<Button :loading="isUploadingUserAvatar" @click="handleSubmitAvatarImage">更新头像</Button>
+		</template>
+	</Modal>
+
 	<div class="banner">
 		<LogoCover noAnimation noTitle />
 		<h1>欢迎加入<LogoText />大家庭</h1>
@@ -58,22 +171,16 @@
 			<h2>完善个人信息</h2>
 			<div class="items">
 				<div class="avatar">
-					<UserAvatar :avatar="avatarBlob" @click="avatarInput?.click()" />
+					<UserAvatar :avatar="avatarBlob" @click="handleUploadAvatarImage" />
 					<span>上传头像</span>
-					<input
-						ref="avatarInput"
-						hidden
-						type="file"
-						accept="image/*"
-						@change="onChangeAvatar"
-					/>
+					<input ref="userAvatarFileInput" type="file" accept="image/*" hidden />
 				</div>
 
 				<SettingsUserProfile v-model="profile" />
 
 				<Checkbox v-model:single="isRead">我已阅读并同意<a href="https://otomad.github.io/cssc/license.htm" target="_blank" @click.stop>《KIRAKIRA☆DOUGA用户协议》</a></Checkbox>
 
-				<Button icon="check" :disabled="!validData" @click="finish">开始畅游KIRAKIRA☆DOUGA</Button>
+				<Button icon="check" :disabled="!validData || isUpdateUserInfo" :loading="isUpdateUserInfo" @click="finish">开始畅游KIRAKIRA☆DOUGA</Button>
 			</div>
 		</div>
 	</div>
@@ -104,8 +211,8 @@
 			--full-logo: true;
 			position: absolute;
 			top: 0;
-			mask-image: linear-gradient(white, transparent);
 			pointer-events: none;
+			mask-image: linear-gradient(white, transparent);
 		}
 
 		h1 {
@@ -196,7 +303,7 @@
 			}
 		}
 	}
-	
+
 	.banner,
 	.container {
 		animation: float-up 600ms calc(150ms * var(--i)) $ease-out-smooth backwards;
@@ -205,8 +312,8 @@
 	.welcome {
 		@include flex-center;
 		position: fixed;
-		gap: 30px;
 		inset: 0;
+		gap: 30px;
 		cursor: progress;
 
 		.avatar {
@@ -257,8 +364,8 @@
 				}
 
 				.name {
-					font-weight: bold;
 					font-size: 38px;
+					font-weight: bold;
 					animation: name-move 700ms 500ms $ease-text-move both;
 				}
 			}
@@ -273,18 +380,18 @@
 
 	@keyframes name-move {
 		0% {
-			opacity: 0;
 			translate: 200px;
+			opacity: 0;
 		}
 
 		1% {
-			opacity: 1;
 			translate: 200px;
+			opacity: 1;
 		}
 
 		100% {
-			opacity: 1;
 			translate: 0;
+			opacity: 1;
 		}
 	}
 
@@ -296,8 +403,17 @@
 
 	@keyframes float-up {
 		from {
-			opacity: 0;
 			translate: 0 2rem;
+			opacity: 0;
+		}
+	}
+
+	.avatar-cropper {
+		@include square(350px, true);
+
+		@media (width <=450px) {
+			--size: 80dvw;
+			// 对于图片切割器，不建议使用响应式，因为切割器内部被切割的图片不会随之改变尺寸，但考虑到极端小尺寸的适配问题，且在上传图片时浏览器宽度发生剧烈变化的概率较小，故保留本功能。
 		}
 	}
 </style>

@@ -1,6 +1,6 @@
 import { GET, POST, uploadFile2CloudflareImages } from "api/Common";
 import getCorrectUri from "api/Common/getCorrectUri";
-import type { CheckUserTokenResponseDto, GetSelfUserInfoRequestDto, GetSelfUserInfoResponseDto, GetUserAvatarUploadSignedUrlResponseDto, GetUserInfoByUidRequestDto, GetUserInfoByUidResponseDto, GetUserSettingsRequestDto, GetUserSettingsResponseDto, UpdateOrCreateUserSettingsRequestDto, UpdateOrCreateUserSettingsResponseDto, UpdateUserEmailRequestDto, UserExistsCheckRequestDto, UserExistsCheckResponseDto, UserLoginRequestDto, UserLoginResponseDto, UserRegistrationRequestDto, UserRegistrationResponseDto } from "./UserControllerDto";
+import type { CheckUserTokenResponseDto, GetSelfUserInfoRequestDto, GetSelfUserInfoResponseDto, GetUserAvatarUploadSignedUrlResponseDto, GetUserInfoByUidRequestDto, GetUserInfoByUidResponseDto, GetUserSettingsRequestDto, GetUserSettingsResponseDto, UpdateOrCreateUserInfoResponseDto, UpdateOrCreateUserSettingsRequestDto, UpdateOrCreateUserSettingsResponseDto, UpdateUserEmailRequestDto, UpdateUserEmailResponseDto, UserExistsCheckRequestDto, UserExistsCheckResponseDto, UserLoginRequestDto, UserLoginResponseDto, UserRegistrationRequestDto, UserRegistrationResponseDto } from "./UserControllerDto";
 
 const BACK_END_URL = getCorrectUri();
 const USER_API_URI = `${BACK_END_URL}/user`;
@@ -36,11 +36,20 @@ export const userExistsCheck = async (userExistsCheckRequest: UserExistsCheckReq
 
 /**
  * 用户更改邮箱
- * @param updateUserEmailRequest 用户更改邮箱的请求的参数
+ * @param updateUserEmailRequest 用户更改邮箱的请求的请求载荷
  * @returns 用户更改邮箱返回的参数
  */
-export const updateUserEmail = async (updateUserEmailRequest: UpdateUserEmailRequestDto): Promise<UserLoginResponseDto> => {
-	return await POST(`${USER_API_URI}/update/email`, updateUserEmailRequest) as UserLoginResponseDto;
+export const updateUserEmail = async (updateUserEmailRequest: UpdateUserEmailRequestDto): Promise<UpdateUserEmailResponseDto> => {
+	return await POST(`${USER_API_URI}/update/email`, updateUserEmailRequest, { credentials: "include" }) as UpdateUserEmailResponseDto;
+};
+
+/**
+ * 创建或更新用户信息
+ * @param updateOrCreateUserInfoRequest 创建或更新用户信息的请求载荷
+ * @returns 创建或更新用户信息的响应结果
+ */
+export const updateOrCreateUserInfo = async (updateOrCreateUserInfoRequest: UpdateOrCreateUserInfoRequestDto): Promise<UpdateOrCreateUserInfoResponseDto> => {
+	return await POST(`${USER_API_URI}/update/info`, updateOrCreateUserInfoRequest, { credentials: "include" }) as UpdateOrCreateUserInfoResponseDto;
 };
 
 /**
@@ -52,15 +61,17 @@ export const updateUserEmail = async (updateUserEmailRequest: UpdateUserEmailReq
 export const getSelfUserInfo = async (getSelfUserInfoRequest?: GetSelfUserInfoRequestDto): Promise<GetSelfUserInfoResponseDto> => {
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	const selfUserInfo = await POST(`${USER_API_URI}/self`, getSelfUserInfoRequest, { credentials: "include" }) as GetSelfUserInfoResponseDto;
-	if (selfUserInfo.success) {
+	const selfUserInfoResult = selfUserInfo.result;
+	if (selfUserInfo.success && selfUserInfoResult) {
 		const selfUserInfoStore = useSelfUserInfoStore();
 		selfUserInfoStore.isLogined = true;
-		selfUserInfoStore.uid = selfUserInfo.result?.uid;
-		selfUserInfoStore.userAvatar = selfUserInfo.result?.avatar || "";
-		selfUserInfoStore.username = selfUserInfo.result?.username || "User"; // TODO: 使用多语言，为未设置用户名的用户提供国际化的缺省用户名
-		selfUserInfoStore.gender = selfUserInfo.result?.gender || "";
-		selfUserInfoStore.signature = selfUserInfo.result?.signature || "";
-		selfUserInfoStore.tags = selfUserInfo.result?.label || [];
+		selfUserInfoStore.uid = selfUserInfoResult.uid;
+		selfUserInfoStore.userAvatar = selfUserInfoResult.avatar || "";
+		selfUserInfoStore.username = selfUserInfoResult.username || "Anonymous"; // TODO: 使用多语言，为未设置用户名的用户提供国际化的缺省用户名
+		selfUserInfoStore.userNickname = selfUserInfoResult.userNickname || "Anonymous"; // TODO: 使用多语言，为未设置用户昵称的用户提供国际化的缺省用户昵称
+		selfUserInfoStore.gender = selfUserInfoResult.gender || "";
+		selfUserInfoStore.signature = selfUserInfoResult.signature || "";
+		selfUserInfoStore.tags = selfUserInfoResult.label?.map(label => label.labelName) || [];
 	}
 	return selfUserInfo;
 };
@@ -95,6 +106,7 @@ export const userLogout = async (): Promise<undefined> => {
 	selfUserInfoStore.uid = undefined;
 	selfUserInfoStore.userAvatar = "";
 	selfUserInfoStore.username = "";
+	selfUserInfoStore.userNickname = "";
 	selfUserInfoStore.gender = "";
 	selfUserInfoStore.signature = "";
 	selfUserInfoStore.tags = [];
