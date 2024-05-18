@@ -21,14 +21,16 @@
 		transition: 100ms $ease-in-max;
 	}
 
-	.icon {
+	:comp > * {
 		position: absolute;
+	}
+
+	.icon {
 		color: c(accent, 10%);
 
 		.v-enter-from &,
 		.v-leave-to & {
 			translate: 0 -100%;
-			opacity: 0;
 		}
 
 		&:nth-of-type(1) {
@@ -84,19 +86,12 @@
 	}
 
 	svg {
-		position: absolute;
-
 		@include mobile {
 			display: none;
 		}
 
-		.v-enter-from &,
-		.v-leave-to & {
-			opacity: 0;
-		}
-
 		&:nth-of-type(1) {
-			top: 45px;
+			top: 42px;
 			right: 40%;
 
 			.v-enter-from & {

@@ -18,6 +18,8 @@
 		else if (localedRoute.value.startsWith("user")) page.value = "user";
 		else if (localedRoute.value.startsWith("search")) page.value = "search";
 		else if (localedRoute.value.startsWith("history")) page.value = "history";
+		else if (localedRoute.value.startsWith("favorite")) page.value = "favorite";
+		else if (localedRoute.value.startsWith("feed")) page.value = "feed";
 		else if (localedRoute.value.startsWith("upload")) page.value = "upload";
 		else page.value = "other";
 	}, true);
@@ -31,6 +33,7 @@
 			<div class="bg">
 				<Transition :duration="{ enter: 1000, leave: 100 }">
 					<BannerBackgroundHistory v-if="page === 'history'" />
+					<BannerBackgroundFavorite v-else-if="page === 'favorite'" />
 				</Transition>
 			</div>
 			<Transition name="page-jump">
@@ -104,6 +107,13 @@
 		&,
 		* {
 			transition: all $ease-out-smooth 600ms;
+		}
+
+		.bg > {
+			.v-enter-from,
+			.v-leave-to {
+				opacity: 0;
+			}
 		}
 	}
 </style>
