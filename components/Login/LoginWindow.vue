@@ -75,54 +75,6 @@
 	}
 
 	/**
-	 * 用户注册，其二。
-	 */
-	async function registerUser() {
-		if (password.value === confirmPassword.value) {
-			const passwordHash = await generateHash(password.value);
-			const userRegistrationRequest: UserRegistrationRequestDto = { email: email.value, passwordHash, passwordHint: passwordHint.value };
-			try {
-				isTryingRegistration.value = true;
-				const registrationResponse = await api.user.registration(userRegistrationRequest);
-				isTryingRegistration.value = false;
-
-				if (registrationResponse.success) { // 如果注册成功，则关闭页面，并且回退到登录页面
-					open.value = false;
-					currentPage.value = "login";
-				} else
-					useToast("注册失败，请稍后再试", "error"); // TODO: 使用多语言
-			} catch (error) {
-				useToast("注册失败，请稍后再试", "error"); // TODO: 使用多语言
-			}
-		} else
-			useToast(t.toast.password_mismatch, "error");
-	}
-
-	// DELETE: [Aira] Change passwords should be in settings, not login window.
-	/**
-	 * 重置密码。
-	 */
-	async function resetPassword() {
-		const oapiClient = useMap();
-		const oldPassword = ""; // Should we get this?
-		await oapiClient.resetPassword(oldPassword, password.value);
-		open.value = false;
-	}
-
-	/**
-	 * 稍后关闭。
-	 */
-	async function closeLater() {
-		await nextTick();
-		if (!loginWindow.value) return;
-		const finishes = loginWindow.value.getAnimations().map(animation => animation.finished);
-		try {
-			await Promise.all(finishes);
-		} catch { return; }
-		open.value = false;
-	}
-
-	/**
 	 * 用户注册，其一
 	 */
 	const PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD = "密码提示中不允许包含密码本身"; // TODO: 使用多语言
@@ -145,6 +97,57 @@
 		} else
 			useToast("请输入用户名和密码", "error"); // TODO: 使用多语言
 	};
+
+	/**
+	 * 用户注册，其二。
+	 */
+	async function registerUser() {
+		if (password.value === confirmPassword.value) {
+			const passwordHash = await generateHash(password.value);
+			const userRegistrationRequest: UserRegistrationRequestDto = { email: email.value, passwordHash, passwordHint: passwordHint.value };
+			try {
+				isTryingRegistration.value = true;
+				const registrationResponse = await api.user.registration(userRegistrationRequest);
+
+				if (registrationResponse.success) { // 如果注册成功
+					await api.user.getSelfUserInfo(); // 根据获取到的用户 UID 和 Token 获取用户数据，相当于自动登录
+					open.value = false; // 关闭登录页
+					currentPage.value = "login"; // 将登录页设为登录窗口默认页
+					navigate("/welcome"); // 跳转到欢迎页面
+				} else
+					useToast("注册失败，请稍后再试", "error"); // TODO: 使用多语言
+
+				isTryingRegistration.value = false; // 停止注册按钮加载动画
+			} catch (error) {
+				useToast("注册失败，请稍后再试", "error"); // TODO: 使用多语言
+			}
+		} else
+			useToast(t.toast.password_mismatch, "error");
+	}
+
+	// DELETE: [Aira] Change passwords should be in settings, not login window.
+	/**
+	 * 重置密码。
+	 */
+	async function resetPassword() {
+		// const oapiClient = useMap();
+		// const oldPassword = ""; // Should we get this?
+		// await oapiClient.resetPassword(oldPassword, password.value);
+		// open.value = false;
+	}
+
+	/**
+	 * 稍后关闭。
+	 */
+	async function closeLater() {
+		await nextTick();
+		if (!loginWindow.value) return;
+		const finishes = loginWindow.value.getAnimations().map(animation => animation.finished);
+		try {
+			await Promise.all(finishes);
+		} catch { return; }
+		open.value = false;
+	}
 
 	const passwordHintInvalidText = ref<string | boolean>();
 
@@ -201,7 +204,7 @@
 								autoComplete="current-password"
 							/>
 							<div class="button login-button-placeholder">
-								<Button class="button login-button button-block" :loading="isTryingLogin" :disabled="isTryingLogin" @click="loginUser">Link Start!</Button>
+								<Button class="button login-button button-block" :loading="isTryingLogin" :disabled="isTryingLogin || selfUserInfoStore.isLogined" @click="loginUser">Link Start!</Button>
 							</div>
 						</div>
 						<div class="action margin-left-inset margin-right-inset">
@@ -371,8 +374,8 @@
 		width: $width;
 		height: $height;
 		overflow: clip;
-		transition: all $transition-ease $enter-duration;
 		clip-path: circle(100% at var(--avatar-center));
+		transition: all $transition-ease $enter-duration;
 
 		* {
 			transition: all $transition-ease $enter-duration;
@@ -389,8 +392,8 @@
 
 		&.v-enter-from,
 		&.v-leave-to {
-			opacity: 0;
 			translate: 0 6rem;
+			opacity: 0;
 		}
 
 		@media #{$narrow-screen} {
@@ -410,11 +413,11 @@
 
 		#{$parent-selector} &#{$specified-page} {
 			$move-distance: $width * 0.5;
+			translate: if($direction == left, -$move-distance, $move-distance);
 			opacity: 0;
+			pointer-events: none;
 			transition: all $transition-ease $enter-duration;
 			animation: none !important;
-			pointer-events: none;
-			translate: if($direction == left, -$move-distance, $move-distance);
 		}
 	}
 
@@ -469,9 +472,9 @@
 
 				> * {
 					left: 0;
+					translate: $width * -0.25 0;
 					opacity: 0;
 					pointer-events: none;
-					translate: $width * -0.25 0;
 
 					@media #{$narrow-screen} {
 						translate: $width * -0.5 0;
@@ -643,6 +646,7 @@
 		@include absolute-center-sized;
 		$thickness: 1px; // 加号符号粗细的一半。
 		background-color: c(main-bg);
+		scale: 0;
 		clip-path:
 			polygon(
 				calc(50% - $thickness) 0,
@@ -658,7 +662,6 @@
 				calc(50% + $thickness) calc(50% - $thickness),
 				calc(50% + $thickness) 0
 			);
-		scale: 0;
 	}
 
 	.avatar {
@@ -690,8 +693,8 @@
 		top: 50%;
 		left: 48%;
 		display: none;
-		font-weight: bold;
 		font-size: 38px;
+		font-weight: bold;
 	}
 
 	.burst {
@@ -705,8 +708,8 @@
 	}
 
 	.stripes {
-		rotate: -33deg;
 		translate: 0 180px;
+		rotate: -33deg;
 
 		.line {
 			@include oval;
@@ -714,8 +717,8 @@
 			width: 872px;
 			height: 40px;
 			background-color: c(accent-20);
-			opacity: 0;
 			translate: 913px;
+			opacity: 0;
 
 			&:nth-child(1) {
 				margin-top: -110px;
@@ -745,8 +748,8 @@
 		}
 
 		.login-button {
-			animation: login-animation-button 600ms $ease-login-button forwards;
 			pointer-events: none;
+			animation: login-animation-button 600ms $ease-login-button forwards;
 
 			@media #{$narrow-screen} {
 				animation-name: login-animation-button-narrow;
@@ -872,18 +875,18 @@
 
 	@keyframes name-move {
 		0% {
-			opacity: 0;
 			translate: 200px;
+			opacity: 0;
 		}
 
 		1% {
-			opacity: 1;
 			translate: 200px;
+			opacity: 1;
 		}
 
 		100% {
-			opacity: 1;
 			translate: 0;
+			opacity: 1;
 		}
 	}
 
@@ -906,13 +909,13 @@
 
 	@keyframes stripes {
 		from {
-			opacity: 1;
 			translate: 913px;
+			opacity: 1;
 		}
 
 		to {
-			opacity: 1;
 			translate: -670px;
+			opacity: 1;
 		}
 	}
 
@@ -931,8 +934,8 @@
 
 	@keyframes move-avatar-to-corner {
 		to {
-			scale: calc(40px / $avatar-size);
 			translate: calc(59px - 50dvw) var(--corner-y);
+			scale: calc(40px / $avatar-size);
 		}
 	}
 </style>

@@ -14,6 +14,7 @@
 		settings: PlayerVideoSettings;
 	}>();
 
+	const selfUserInfoStore = useSelfUserInfoStore();
 	const sendDanmaku = defineModel<DanmakuComment[]>("sendDanmaku");
 	const insertDanmaku = defineModel<DanmakuListItem[]>("insertDanmaku");
 
@@ -29,7 +30,10 @@
 	 * 收藏视频。
 	 */
 	function favorite() {
-		useEvent("app:requestLogin");
+		if (selfUserInfoStore.isLogined)
+			useToast("抱歉，收藏功能正在制作中，请稍等~", "warning", 5000); // TODO: 使用多语言 // DELETE 请在收藏功能完成后删除该提示
+		else
+			useEvent("app:requestLogin");
 	}
 
 	/**
@@ -228,8 +232,8 @@
 			grid-row: 1 / -1;
 
 			.watching-number {
-				font-weight: 500;
 				font-size: 24px;
+				font-weight: 500;
 			}
 		}
 	}
