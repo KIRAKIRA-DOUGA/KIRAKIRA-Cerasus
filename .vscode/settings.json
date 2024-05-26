@@ -189,4 +189,7 @@
 	// "typescript.updateImportsOnFileMove.enabled": "never",
 	// "vue.features.updateImportsOnFileMove.enabled": false,
 	// "vue.features.autoCompleteRefs": false,
+	"workbench.colorCustomizations": {
+		"statusBar.background": "#00c16a1f",
+	},
 }
