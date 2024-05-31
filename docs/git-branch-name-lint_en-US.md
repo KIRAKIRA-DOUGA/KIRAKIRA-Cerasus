@@ -1,6 +1,6 @@
 ## Git Branch Name Lint
 
-> **develop** - main dev branch / test branch  
+> **develop** - main dev branch / test branch\
 > **deployment** - deployment / release branch
 
 #### Normal Bug Fix - **bugfix**
@@ -41,7 +41,7 @@ locale-<Language>
 
 The format is `yyyyMMddrr`, with a total of 8 digits.
 
-Where  
+Where\
 `y` - Year; `M` - Month; `d` - Date; `r` - The revision number of the day, starting with 1.
 
 ##### Modified / Fixed Content Abbreviation Name

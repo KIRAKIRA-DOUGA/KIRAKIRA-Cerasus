@@ -6,15 +6,15 @@
 1. **使用类型系统：**<wbr>TypeScript
 1. **Vue 服务器渲染工具：**<wbr>Nuxt 3
 1. **Vue 路由：**<wbr>Vue Router
-1. **打包工具：**<wbr>Webpack
-1. **代码混淆工具：**<wbr>terser
+1. **打包工具：**<wbr>Vite
+1. **代码混淆工具：**<wbr>terser、esbuild
 1. **代码规范工具：**<wbr>ESLint、Stylelint
-1. **CSS 预处理器：**<wbr>SCSS  
+1. **CSS 预处理器：**<wbr>SCSS\
 注：如不会 SCSS，可照常写纯 CSS，但是声明为 SCSS 格式。即可以按需使用 SCSS 的功能。
 1. **ECMAScript 标准：**<wbr>ESNext，即使用最新的标准。如果不会可使用旧标准。
 1. **模块化规范：**<wbr>ES Module。即使用 import 而不是 require 或其它来导入模块。
 1. **包管理器：**<wbr>NPM（**NEVER USE Yarn!**）
-1. **协议：**<wbr>MIT
+1. **协议：**<wbr>BSD 3‐Clause
 1. **不需要 Babel！**
 ## Vue 文件模板
 所有内容均缩进一个层级。
@@ -22,12 +22,15 @@
 <script lang="ts">
 	// 本段 script 标签仅在需要时
 </script>
+
 <script setup lang="ts">
 	//
 </script>
+
 <template>
 	<!-- -->
 </template>
+
 <style scoped lang="scss">
 	/* */
 </style>
@@ -134,7 +137,7 @@ kirakira-douga               # 项目名称
 	<!-- good -->
 	<input type="text" />
 	```
-1. `<html lang="zh-cmn-Hans-CN">`  
+1. `<html lang="zh-cmn-Hans-CN">`\
 为了保证兼容性，应该写完整。其中 zh 表示中文，cmn 表示普通话，Hans 表示简体字，CN 表示大陆地区。
 
 1. 自定义 Vue 组件应该以大驼峰形式命名，以和 HTML 内置标签区分开。HTML 内置标签应当全部小写。
@@ -174,7 +177,7 @@ kirakira-douga               # 项目名称
 		$size: 100px;
 		width: $size;
 		height: $size;
-		
+
 		$color: red;
 		color: red;
 		&:hover {
@@ -208,7 +211,7 @@ kirakira-douga               # 项目名称
 	```
 
 1. 不要使用 `@import` 导入外部 CSS 文件，但是可以导入 SCSS 文件。前者将会额外产生异步网络获取开销，而后者会在编译时自动打包在一起。
-1. 对于数值 0，不要在其后写任何单位。反例：0px、0rem、0ms。
+1. 对于数值 0，不要在其后写任何单位。反例：0px、0rem。例外：0s、0ms。
 1. 不要使用空规则集，这会在 VSCode 中抛出一个警告。如果非要使用，请改用如下 good 形式。
 	```scss
 	// bad
@@ -235,7 +238,7 @@ kirakira-douga               # 项目名称
 		// good
 		color: #fefefe;
 		color: #fefefef5;
-		
+
 		// bad
 		color: #4488cc;
 		color: #4488ccff;
@@ -252,7 +255,7 @@ kirakira-douga               # 项目名称
 	// 对象，使用 reactive()
 	const user = reactive({
 		name: "Aira",
-		age: 20,
+		age: new Date().getFullYear() - 2003,
 	});
 
 	// 原始类型，使用 ref()
@@ -318,7 +321,7 @@ kirakira-douga               # 项目名称
 	```html
 	<script setup lang="ts">
 		import MyComponent from "./MyComponent.vue";
-		
+
 		const myDiv = ref<HTMLDivElement>();
 		// 变量名与 ref 名称一致。
 		const myComponent = ref<InstanceType<typeof MyModal>>();
@@ -359,7 +362,7 @@ kirakira-douga               # 项目名称
 			break; // case 缩进一层，里面的内容再缩进一层。
 		case 80: { // 如果需要在 case 顶层定义变量，用花括号将内容括起来。
 			const foo = "bar";
-			break; // 尽量不要 switch 穿透，如有必要，有一个 tslint 标记。
+			break; // 尽量不要 switch 穿透，如有必要，有一个 eslint 标记。
 		}
 		default: // 不要省略 default。
 			break;
@@ -388,7 +391,7 @@ kirakira-douga               # 项目名称
 		c = 0;
 	```
 
-1. 行尾形式：LF（Linux）。  
+1. 行尾形式：LF（Linux）。\
 ~~理由就是正则表达式匹配行尾时得写成 \r\n，很烦。~~
 1. **引号：优先双引号。**<wbr>仅在 HTML attr 的双引号中或字符串仅包含双引号时改为单引号。仅在需要在字符串中包含变量时使用模板字符串（反单引号）。如果需要包含多行字符串，不要使用模板字符串，一是字符串前的缩进需要去除以免包含在结果中且影响美观，二是会对代码压缩工具造成麻烦。
 	```typescript
@@ -523,9 +526,9 @@ kirakira-douga               # 项目名称
 	#! 这个只在文件开头能用。
 	```
 
-1. 不要使用 var，使用 let 和 const 代替之。  
+1. 不要使用 var，使用 let 和 const 代替之。\
 究竟是用 let 还是 const？**一律用 const**，仅在需要对变量重新赋值时（使用 const 发现会报错时）才用 let。
-1. 不要使用 any 类型，不要写 AnyScript，就像不要做「音 MIDI」。  
+1. 不要使用 any 类型，不要写 AnyScript，就像不要做「音 MIDI」。\
 永远使用 TypeScript 正确推断出类型，可以适当断言。
 1. 不要创建空的块作用域（花括号）。
 1. 禁止在判断条件中使用常量值，循环除外。

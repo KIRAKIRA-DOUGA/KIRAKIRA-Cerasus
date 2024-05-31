@@ -152,4 +152,3 @@ TensorFlow coding style.
 *   Tests should follow the
     [testing best practices](https://www.tensorflow.org/community/contribute/tests)
     guide.
-    

@@ -54,18 +54,18 @@
 
 如果缺失以下状态标记，则会自动回退到指定的状态。
 
-- NormalToSelected  
+- NormalToSelected\
   依次播放 NormalToPressed、PressedToNormal
-- PressedSelectedToNormal  
+- PressedSelectedToNormal\
   依次播放 PressedSelectedToSelected、SelectedToNormal
-- SelectedToNormal  
+- SelectedToNormal\
   依次播放 SelectedToPressedSelected、PressedSelectedToNormal
 
 以下状态几乎不可能会出现。除非在审查元素中强制设置元素状态，则有可能会出现这些状态。
 
-- PressedToPressedSelected  
+- PressedToPressedSelected\
   无动画强行切到 PressedSelected 所在帧
-- PressedSelectedToPressed   
+- PressedSelectedToPressed\
   无动画强行切到 Pressed 所在帧
 
 ## 时长规范
@@ -96,7 +96,7 @@
 
 ### 命名
 
-使用 JSON 格式。  
+使用 JSON 格式。\
 换行、缩进、空格等均无所谓，不过建议换行。
 
 ```json
