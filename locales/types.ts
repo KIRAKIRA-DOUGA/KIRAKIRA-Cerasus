@@ -1,4 +1,4 @@
-import SChinese from "./Chinese Simplified";
+import English from "./English";
 
 // type FunctionPrototypeKeys = "apply" | "bind" | "call" | "toString" | "Symbol";
 export type I18nArgsFunction<R extends string = string> = {
@@ -20,5 +20,5 @@ type DiscardConstString<L> = {
 	[key in keyof L]: L[key] extends object ? DiscardConstString<L[key]> : string;
 };
 
-export type LocaleWithDefaultValue = NestLocaleWithDefaultValue<typeof SChinese>;
-export type LocaleIdentifiers = DiscardConstString<typeof SChinese>;
+export type LocaleWithDefaultValue = NestLocaleWithDefaultValue<typeof English>;
+export type LocaleIdentifiers = DiscardConstString<typeof English>;

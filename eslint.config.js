@@ -47,7 +47,11 @@ export default [
 			"@stylistic/indent": ["error", "tab", {
 				SwitchCase: 1,
 				flatTernaryExpressions: true,
-				ignoredNodes: ["Program > .body"],
+				ignoredNodes: [
+					"Program > .body",
+					"TSFunctionType *", // stylistic typescript indent bug
+					"TSMappedType *", // stylistic typescript indent bug
+				],
 				ignoreComments: true,
 			}],
 			"@stylistic/linebreak-style": ["error", "unix"],

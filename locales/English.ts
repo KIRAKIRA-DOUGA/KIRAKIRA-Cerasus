@@ -1,6 +1,4 @@
-import type { LocaleIdentifiers } from "./types";
-
-const English: LocaleIdentifiers = {
+export default {
 	colon: ": ",
 	semicolon: "; ",
 	caesura: ", ",
@@ -425,6 +423,4 @@ const English: LocaleIdentifiers = {
 	current_time: "Current Time",
 	set_as_default: "Set as Default",
 	advanced_search: "Advanced Search",
-};
-
-export default English;
+} as const;
