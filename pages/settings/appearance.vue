@@ -1,15 +1,15 @@
 <script setup lang="ts">
-	const getPaletteImage = (name: string) => `/static/images/palettes/${name}.webp`;
+	const getPaletteImage = (name: string) => `/static/images/palettes/${name}.png`;
 
 	const themeList = ["light", "dark", "system"] as const;
 	const paletteList = [
-		{ color: "pink", subtitle: "Hoto Kokoa" },
-		{ color: "blue", subtitle: "Kafuu Chino" },
-		{ color: "purple", subtitle: "Tedeza Rize" },
-		{ color: "yellow", subtitle: "Kirima Sharo" },
-		{ color: "green", subtitle: "Ujimatsu Chiya" },
-		{ color: "cyan", subtitle: "Joga Maya" },
-		{ color: "red", subtitle: "Natsu Megumi" },
+		{ color: "pink", subtitle: "保登心愛" },
+		{ color: "blue", subtitle: "香風智乃" },
+		{ color: "purple", subtitle: "天々座理世" },
+		{ color: "green", subtitle: "宇治松千夜" },
+		{ color: "yellow", subtitle: "桐間紗路" },
+		{ color: "cyan", subtitle: "条河麻耶" },
+		{ color: "red", subtitle: "奈津恵" },
 	] as const;
 	const paletteSection = ref<HTMLElement>();
 
@@ -83,12 +83,13 @@
 					format="avif"
 					width="320px"
 					height="180px"
+					fit="outside"
 				/>
 				<div class="overlay light"></div>
 				<div class="overlay color"></div>
 				<Icon name="palette" />
 				<h3>{{ t.palette[item.color] }}</h3>
-				<p>{{ item.subtitle }}</p>
+				<p lang="ja">{{ item.subtitle }}</p>
 			</div>
 		</SettingsGridItem>
 		<SettingsGridItem
@@ -189,6 +190,7 @@
 		}
 
 		img {
+			object-position: 50% 8%;
 			opacity: 0.6;
 		}
 
@@ -197,6 +199,7 @@
 
 			&.color {
 				background-color: c(accent);
+				opacity: 0.6;
 				mix-blend-mode: color;
 
 				html.dark & {
