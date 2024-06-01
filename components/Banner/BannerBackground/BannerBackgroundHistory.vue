@@ -21,7 +21,7 @@
 		transition: 100ms $ease-in-max;
 	}
 
-	:comp > * {
+	* {
 		position: absolute;
 	}
 
