@@ -1,5 +1,5 @@
 <template>
-	<Comp>
+	<div class="wrapper">
 		<Icon name="time" class="clock-1" />
 		<Icon name="time" class="clock-2" />
 		<Icon name="time" class="clock-3" />
@@ -9,7 +9,7 @@
 		<svg width="31" height="37" viewBox="0 0 31 37" fill="none" xmlns="http://www.w3.org/2000/svg" class="triangle-2">
 			<path d="M30.25 35.3875L0.999999 18.5L30.25 1.61251L30.25 35.3875Z" stroke="var(--accent)" />
 		</svg>
-	</Comp>
+	</div>
 </template>
 
 <style scoped lang="scss">
@@ -21,7 +21,7 @@
 		transition: 100ms $ease-in-max;
 	}
 
-	* {
+	.wrapper > * {
 		position: absolute;
 	}
 

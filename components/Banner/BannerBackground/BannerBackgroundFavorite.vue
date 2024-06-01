@@ -1,5 +1,5 @@
 <template>
-	<Comp>
+	<div class="wrapper">
 		<div class="circle circle-1"></div>
 		<div class="circle circle-2"></div>
 		<Icon name="star" class="star-1" />
@@ -13,7 +13,7 @@
 				d="M23 1.12978L29.6051 14.5131L29.7214 14.7488L29.9815 14.7866L44.7509 16.9327L34.0637 27.3502L33.8754 27.5336L33.9199 27.7927L36.4428 42.5024L23.2327 35.5574L23 35.4351L22.7673 35.5574L9.55722 42.5024L12.0801 27.7927L12.1246 27.5336L11.9363 27.3502L1.24913 16.9327L16.0185 14.7866L16.2786 14.7488L16.3949 14.5131L23 1.12978Z"
 				stroke="var(--accent)" />
 		</svg>
-	</Comp>
+	</div>
 </template>
 
 <style scoped lang="scss">
@@ -25,7 +25,7 @@
 		transition: 100ms $ease-in-max;
 	}
 
-	* {
+	.wrapper > * {
 		position: absolute;
 	}
 
