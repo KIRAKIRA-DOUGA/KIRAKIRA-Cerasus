@@ -28,9 +28,11 @@ export default {
 	},
 	palette: {
 		_: "Giao diện màu",
+		pink: "Cocoa Hồng",
 		blue: "Chino Xanh",
 		purple: "Rize Tím",
 		green: "Chiya Lục",
+		cyan: "Maya Xanh Dương",
 	},
 	language: {
 		_: "Ngôn ngữ",
@@ -315,6 +317,7 @@ export default {
 		register_email_sent_info: "Vui lòng nhập mã xác nhận chúng tôi vừa gửi vào email của bạn.\nHãy yêu cầu gửi lại trong trường hợp chưa nhận được mã.",
 		forgot_info: "Hãy nhập email.\nChúng tôi sẽ gửi một mã xác nhận vào email.",
 		reset_successful_info: "Xác nhận thành công!\nHãy nhập và ghi nhớ mật khẩu.",
+		alpha_notice: "Trang bạn đang ghé thăm là một bản thử nghiệm Alpha dành cho nhà phát triển, và mọi sửa đổi hiện đang được thực hiện có thể bị xóa bất kỳ lúc nào!\nNếu bạn không phải nhà phát triển, vui lòng kiên nhẫn và chờ đợi bản thử nghiệm Beta.",
 	},
 	unselected: {
 		combobox: "Chọn mục",
@@ -348,7 +351,6 @@ export default {
 		italic: "Nghiêng",
 		underline: "Gạch dưới",
 		strikethrough: "Gạch ngang",
-		at_person: "Gửi đến",
 	},
 	text: {
 		_: "Văn bản",

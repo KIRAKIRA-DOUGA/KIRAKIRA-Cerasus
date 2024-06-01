@@ -167,7 +167,7 @@
 				<ToolItem :tooltip="t.format.italic" icon="italic" active="italic" @click="toggleItalic" />
 				<ToolItem :tooltip="t.format.underline" icon="underline" active="underline" @click="toggleUnderline" />
 				<ToolItem :tooltip="t.format.strikethrough" icon="strikethrough" active="strike" @click="toggleStrike" />
-				<ToolItem :tooltip="t.format.at_person" icon="at" @click="showAtList" />
+				<ToolItem :tooltip="t.mention" icon="at" @click="showAtList" />
 				<ToolItem :tooltip="t.kaomoji" icon="kaomoji" :active="!!flyoutKaomoji" @click="e => flyoutKaomoji = [e, 'y', -3]" />
 				<ToolItem :tooltip="t.image" icon="photo" @click="addVueComponents" />
 			</div>
@@ -197,8 +197,8 @@
 			@include card-in-card-shadow;
 			$height: 36px;
 			display: flex;
-			align-items: center;
 			justify-content: space-between;
+			align-items: center;
 			height: $height;
 			padding: 0 8px;
 			overflow: clip;

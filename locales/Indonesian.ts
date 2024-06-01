@@ -343,7 +343,6 @@ export default {
 		italic: "Italic",
 		underline: "Menggarisbawahi",
 		strikethrough: "Dicoret",
-		at_person: "Di",
 	},
 	text: {
 		_: "Teks",
