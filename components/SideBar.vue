@@ -10,6 +10,7 @@
 	const isCurrentSettings = computed(() => !!currentSettingsPage());
 	const [DefineAvatar, Avatar] = createReusableTemplate();
 	const scopeId = useParentScopeId()!;
+	const flyoutNotification = ref<FlyoutModel>();
 
 	/**
 	 * 判断用户是否合法，或者判断用户是否已经登录
@@ -79,6 +80,8 @@
 		/>
 	</DefineAvatar>
 
+	<FlyoutNotification v-model="flyoutNotification" />
+
 	<aside
 		:class="{
 			colored: useAppSettingsStore().coloredSideBar,
@@ -93,8 +96,8 @@
 			<SoftButton v-tooltip="t.home" icon="home" href="/" />
 			<SoftButton v-tooltip="t.search" icon="search" href="/search" />
 			<SoftButton v-tooltip="t.history" icon="history" href="/history" />
-			<SoftButton v-tooltip="t.favorites" icon="star" />
-			<SoftButton v-tooltip="t.feed" icon="feed" />
+			<SoftButton v-tooltip="t.favorites" icon="star" href="/favorite" />
+			<SoftButton v-tooltip="t.feed" icon="feed" href="/feed" />
 			<SoftButton v-tooltip="t.upload" icon="upload" href="/upload" />
 		</div>
 
@@ -111,7 +114,7 @@
 
 		<div class="bottom icons">
 			<Avatar class="pc" @click="onClickUser" />
-			<SoftButton v-tooltip="t.messages" icon="email" href="/test-rich-text-editor" />
+			<SoftButton v-tooltip="t.notification" icon="notification" :active="!!flyoutNotification" @click="e => flyoutNotification = [e]" />
 			<SoftButton v-tooltip="t.settings" class="pc icon-settings" icon="settings" href="/settings" :active="isCurrentSettings" />
 			<SoftButton v-tooltip="t.search" class="pe" icon="search" href="/search" />
 		</div>
@@ -279,9 +282,9 @@
 			}
 
 			.center {
-				rotate: 0deg;
 				gap: 8px;
 				padding-left: 4px;
+				rotate: 0deg;
 
 				.stripes {
 					display: none;
@@ -318,15 +321,15 @@
 		.soft-button {
 			&::after {
 				@include oval(left);
+				content: "";
 				position: absolute;
 				right: 0;
 				z-index: 3;
 				display: block;
 				width: 3px;
 				height: 24px;
-				scale: 1 0;
 				background-color: var(--color);
-				content: "";
+				scale: 1 0;
 
 				@include mobile {
 					display: none;
