@@ -6,8 +6,8 @@
 	const shown = defineModel<boolean>({ default: false });
 
 	const drawerItems: { name: string; icon: DeclaredIcons; route?: string }[] = [
-		{ name: t.history, icon: "history" },
-		{ name: t.favorite, icon: "star" },
+		{ name: t.history, icon: "history", route: "/history" },
+		{ name: t.favorite, icon: "star", route: "/favorite" },
 		{ name: t.upload, icon: "upload", route: "/upload" },
 	];
 
@@ -67,8 +67,8 @@
 	.user {
 		.username {
 			margin: 16px 0 8px;
-			font-weight: bold;
 			font-size: 16px;
+			font-weight: bold;
 		}
 
 		.bio {
