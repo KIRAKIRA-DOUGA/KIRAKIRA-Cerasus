@@ -114,7 +114,7 @@
 
 		<div class="bottom icons">
 			<Avatar class="pc" @click="onClickUser" />
-			<SoftButton v-tooltip="t.notification" icon="notification" :active="!!flyoutNotification" @click="e => flyoutNotification = [e]" />
+			<SoftButton v-tooltip="t.notification" icon="notifications" :active="!!flyoutNotification" @click="e => flyoutNotification = [e]" />
 			<SoftButton v-tooltip="t.settings" class="pc icon-settings" icon="settings" href="/settings" :active="isCurrentSettings" />
 			<SoftButton v-tooltip="t.search" class="pe" icon="search" href="/search" />
 		</div>

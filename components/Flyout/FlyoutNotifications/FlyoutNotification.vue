@@ -9,7 +9,6 @@
 	const pages: { name: string; id: PageType; icon: DeclaredIcons }[] = [
 		{ name: t.reply, id: "reply", icon: "reply" },
 		{ name: t.mention, id: "mention", icon: "at" },
-		{ name: t.system, id: "system", icon: "email" },
 	];
 </script>
 
@@ -36,6 +35,7 @@
 	:comp {
 		display: flex;
 		flex-direction: column;
+		width: 500px;
 		min-height: 400px;
 
 		.tab-bar {
