@@ -8,7 +8,7 @@ type VideoTagNameSchema = {
 	isDefault: boolean;
 	/** 是否为 TAG 原名 - 非空 */
 	isOriginalTagName: boolean;
-}
+};
 
 /**
  * 不同语言所对应的 TAG 名
@@ -18,7 +18,7 @@ type MultilingualVideoTagNameSchema = {
 	lang: string;
 	/** 不同语言所对应的 TAG 名 */
 	tagName: VideoTagNameSchema[];
-}
+};
 
 /**
  * 创建视频 TAG 的请求载荷
@@ -26,7 +26,7 @@ type MultilingualVideoTagNameSchema = {
 export type CreateVideoTagRequestDto = {
 	/** 不同语言所对应的 TAG 名 */
 	tagNameList: MultilingualVideoTagNameSchema[];
-}
+};
 
 /**
  * 视频 TAG 类型
@@ -36,7 +36,7 @@ export type VideoTag = {
 	tagId: number;
 	/** 不同语言所对应的 TAG 名 */
 	tagNameList: MultilingualVideoTagNameSchema[];
-}
+};
 
 /**
  * 创建视频 TAG 的请求响应
@@ -48,8 +48,7 @@ export type CreateVideoTagResponseDto = {
 	message?: string;
 	/** 如果成功，返回创建的这个 TAG 的信息 */
 	result?: VideoTag;
-}
-
+};
 
 /**
  * 搜索视频 TAG 的请求载荷
@@ -57,7 +56,7 @@ export type CreateVideoTagResponseDto = {
 export type SearchVideoTagRequestDto = {
 	/** TAG 名搜索关键词 */
 	tagNameSearchKey: string;
-}
+};
 
 /**
  * 搜索视频 TAG 的请求响应
@@ -69,4 +68,15 @@ export type SearchVideoTagResponseDto = {
 	message?: string;
 	/** 如果成功，返回匹配到的 TAG 信息 */
 	result?: VideoTag[];
-}
+};
+
+/**
+ * 根据视频 TAG ID 搜索视频的请求载荷
+ */
+export type GetVideoTagByTagIdRequestDto = {
+	/** TAG ID */
+	tagId: number[];
+};
+
+/** 通过视频 TAG ID 获取视频的请求响应 */
+export type GetVideoTagByTagIdResponseDto = SearchVideoTagResponseDto & {};

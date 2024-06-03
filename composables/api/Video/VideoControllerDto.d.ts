@@ -1,4 +1,4 @@
-import { VideoTag } from './VideoTagControllerDto.js'
+import { VideoTag } from "./VideoTagControllerDto.js";
 
 /**
  * 单个视频分 P 数据参数
@@ -58,7 +58,7 @@ export type UploadVideoResponseDto = {
 
 // export type ThumbVideoRequestDto = {
 // 	username: string;
-// };
+// }
 
 /**
  * 展示视频卡片需要的返回参数
@@ -173,7 +173,6 @@ export type GetVideoByUidRequestDto = {
  */
 export type GetVideoByUidResponseDto = ThumbVideoResponseDto & {};
 
-
 /**
  * 根据关键字搜索视频的请求参数
  */
@@ -185,7 +184,6 @@ export type SearchVideoByKeywordRequestDto = {
  * 根据关键字搜索视频的响应结果
  */
 export type SearchVideoByKeywordResponseDto = ThumbVideoResponseDto & {};
-
 
 /**
  * 获取视频文件 TUS 上传端点请求参数
@@ -213,3 +211,14 @@ export type GetVideoCoverUploadSignedUrlResponseDto = {
 		fileName: string;
 	};
 };
+
+/**
+ * 根据视频 TAG ID 搜索视频的请求载荷
+ */
+export type SearchVideoByVideoTagIdRequestDto = {
+	/** TAG ID */
+	tagId: UploadVideoRequestDto["videoTagList"][number]["tagId"][];
+};
+
+/** 通过视频 TAG ID 获取视频的请求响应 */
+export type SearchVideoByVideoTagIdResponseDto = ThumbVideoResponseDto & {};

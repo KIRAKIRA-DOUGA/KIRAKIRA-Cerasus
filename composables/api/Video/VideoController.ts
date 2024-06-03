@@ -1,5 +1,5 @@
 import getCorrectUri from "api/Common/getCorrectUri";
-import type { GetVideoByKvidRequestDto, GetVideoByKvidResponseDto, GetVideoByUidRequestDto, GetVideoByUidResponseDto, GetVideoCoverUploadSignedUrlResponseDto, ThumbVideoResponseDto, UploadVideoRequestDto, UploadVideoResponseDto } from "./VideoControllerDto";
+import type { GetVideoByKvidRequestDto, GetVideoByKvidResponseDto, GetVideoByUidRequestDto, GetVideoByUidResponseDto, GetVideoCoverUploadSignedUrlResponseDto, SearchVideoByVideoTagIdRequestDto, SearchVideoByVideoTagIdResponseDto, ThumbVideoResponseDto, UploadVideoRequestDto, UploadVideoResponseDto } from "./VideoControllerDto";
 import * as tus from "tus-js-client";
 import { GET, POST, uploadFile2CloudflareImages } from "../Common";
 
@@ -64,6 +64,25 @@ export const searchVideoByKeyword = async (searchVideoByKeywordRequest: SearchVi
 			return { success: false, message: "根据关键字搜索视频失败", videosCount: 0, videos: [] };
 	} else
 		return { success: false, message: "未提供关键字", videosCount: 0, videos: [] };
+};
+
+/**
+ * 根据 TAG ID 列表搜索视频
+ * @param searchVideoByVideoTagIdRequest 根据 TAG ID 列表搜索视频的请求参数
+ * @returns 根据 TAG ID 列表搜索视频的请求响应结果
+ */
+export const searchVideoByTagIds = async (searchVideoByVideoTagIdRequest: SearchVideoByVideoTagIdRequestDto): Promise<SearchVideoByVideoTagIdResponseDto> => {
+	if (searchVideoByVideoTagIdRequest && searchVideoByVideoTagIdRequest.tagId) {
+		const { data: result } = await useFetch<SearchVideoByVideoTagIdResponseDto>(`${VIDEO_API_URI}/search/tag`, {
+			method: "POST",
+			body: { tagId: searchVideoByVideoTagIdRequest.tagId },
+		});
+		if (result.value)
+			return result.value;
+		else
+			return { success: false, message: "根据 TAG ID 搜索视频失败", videosCount: 0, videos: [] };
+	} else
+		return { success: false, message: "未提供 TAG ID", videosCount: 0, videos: [] };
 };
 
 /**

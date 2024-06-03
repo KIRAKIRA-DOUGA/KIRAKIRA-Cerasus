@@ -38,7 +38,7 @@
 		["misc", t.category.misc],
 	]);
 	const contextualToolbar = ref<FlyoutModel>(); // TAG 的工具烂浮窗
-	const hoveredTagContent = ref<[number, string]>();
+	const hoveredTagContent = ref<[number, string]>(); // 鼠标 hover 的 TAG
 	const hideExceptMe = ref(false);
 	const hideTimeoutId = ref<Timeout>();
 
@@ -219,7 +219,6 @@
 			ensureOriginal.value = false;
 	}
 
-	const a = ref();
 	/**
 	 * 显示标签的上下文工具栏。
 	 * @param key - 标签键名。
@@ -393,7 +392,6 @@
 					<FlyoutTag v-model="flyoutTag" v-model:tags="tags" />
 
 					<Flyout
-						ref="a"
 						v-model="contextualToolbar"
 						noPadding
 						class="contextual-toolbar"
@@ -573,10 +571,10 @@
 
 	.display-tag {
 		display: flex;
-		flex-direction: row;
+		flex-flow: row wrap;
+		gap: 0.5em;
 
 		.original-tag-name {
-			padding-left: 0.5em;
 			color: c(text-color, 50%);
 		}
 	}
