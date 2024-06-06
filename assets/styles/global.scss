@@ -7,35 +7,35 @@
 ::before,
 ::after {
 	box-sizing: border-box;
-	font-family: $schinese-fonts;
-	// font-feature-settings: "ss02" on, "ss01" on, "liga" on, "rlig" on, "dlig" on, "hlig" on, "onum" on, "kern" on;
-	font-feature-settings: "ss03" on; // 圆形的逗号、引号。
-	// font-variant-east-asian: proportional-width; // 苹方会将全角逗号、冒号、分号等错误变成半角，但句号和顿号却不变。
-	font-variant-ligatures: common-ligatures historical-ligatures contextual;
-	font-variant-numeric: proportional-nums;
-	font-kerning: normal;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	text-rendering: optimizeLegibility;
-	tab-size: 4;
-	transition: $fallback-transitions;
-	user-select: none;
-	// -webkit-tap-highlight-color: c(accent, 30%); // 我还是觉得这个触摸样式很丑。
-	-webkit-tap-highlight-color: transparent;
 	margin-block: 0 0;
 	margin-inline: 0 0;
+	scroll-behavior: smooth;
+	font-family: $simplified-chinese-fonts;
+	// font-feature-settings: "ss02" on, "ss01" on, "liga" on, "rlig" on, "dlig" on, "hlig" on, "onum" on, "kern" on; // 开多了有点过分了。
+	font-feature-settings: "ss03" on; // 圆形的逗号、引号。
+	font-kerning: normal;
+	// font-variant-east-asian: proportional-width; // 苹方会恶意将全角逗号、冒号、分号等错误地变成半宽，但句号和顿号却莫名其妙地保持不变。
+	font-variant-ligatures: common-ligatures historical-ligatures contextual;
+	font-variant-numeric: proportional-nums;
 	white-space-collapse: collapse;
 	white-space-collapse: discard;
 	text-space-collapse: discard;
 	text-spacing: normal;
-	scroll-behavior: smooth;
+	text-rendering: optimizeLegibility;
+	tab-size: 4;
+	user-select: none;
+	transition: $fallback-transitions;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	// -webkit-tap-highlight-color: c(accent, 30%); // 我还是觉得这个触摸样式很丑。
+	-webkit-tap-highlight-color: transparent;
 }
 
 :lang(zh-Hant) {
 	&,
 	&::before,
 	&::after {
-		font-family: $tchinese-fonts;
+		font-family: $traditional-chinese-taiwan-fonts;
 	}
 }
 
@@ -55,11 +55,12 @@
 	}
 }
 
-kbd,
 code,
 pre,
+kbd,
 samp,
-tt {
+tt,
+xmp {
 	&,
 	* {
 		font-family: $monospace-fonts !important;
@@ -119,9 +120,9 @@ iframe.noscript-mask {
 			background-color: c(accent);
 
 			&::after {
+				content: "↻";
 				display: block;
 				animation: noscript-refresh-rotation 1s linear infinite paused;
-				content: "↻";
 			}
 
 			&:any-hover {
@@ -290,24 +291,24 @@ html.flat {
 
 .page-forward-enter-from,
 .page-backward-leave-to {
-	opacity: 0;
 	translate: 8rem;
+	opacity: 0;
 }
 
 .page-forward-leave-to,
 .page-backward-enter-from {
-	opacity: 0;
 	translate: -2rem;
+	opacity: 0;
 }
 
 .page-jump-enter-from {
-	opacity: 0;
 	translate: 0 8rem;
+	opacity: 0;
 }
 
 .page-jump-leave-to {
-	opacity: 0;
 	translate: 0 -2rem;
+	opacity: 0;
 }
 
 .settings-leave-to,
@@ -327,14 +328,14 @@ html.flat {
 
 .right-enter-from,
 .left-leave-to {
-	opacity: 0;
 	translate: 2rem;
+	opacity: 0;
 }
 
 .right-leave-to,
 .left-enter-from {
-	opacity: 0;
 	translate: -2rem;
+	opacity: 0;
 }
 
 .fade-enter-active,

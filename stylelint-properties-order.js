@@ -279,6 +279,7 @@ export default [
 	"text-overflow-mode",
 	"text-orientation",
 	"text-shadow",
+	"text-space-collapse",
 	"text-spacing",
 	"text-spacing-trim",
 	"text-autospace",
