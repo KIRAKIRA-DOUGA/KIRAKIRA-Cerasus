@@ -1,4 +1,5 @@
 @use "eases" as *;
+@use "sass:map";
 
 // #region 响应式布局
 $mobile-max-width: 639px;
