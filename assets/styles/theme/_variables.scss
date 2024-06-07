@@ -21,7 +21,7 @@ $source-han-sans-fonts: (
 	japanese: ("Source Han Sans VF", "Source Han Sans JP VF", "Source Han Sans", "Source Han Sans JP", "Noto Sans CJK JP"),
 	korean: ("Source Han Sans K VF", "Source Han Sans KR VF", "Source Han Sans K", "Source Han Sans KR", "Noto Sans CJK KR"),
 );
-$source-han-sans-fonts-merged: map.set($source-han-sans-fonts, merged, map.values($source-han-sans-fonts));
+$source-han-sans-fonts: map.set($source-han-sans-fonts, merged, map.values($source-han-sans-fonts));
 /// 绘文字字体：苹果、安卓、火狐、视窗、视窗 8.1 及以下兼容（仅限基本区）。
 $emoji-fonts: "Apple Color Emoji", "Noto Color Emoji", "Twemoji Mozilla", "Segoe UI Emoji", "Segoe UI Symbol", emoji;
 /// 泛统一码字体：小米兰亭、汉仪中黑、天珩全字库、花园明朝、字云、巴贝斯通汉、宋体扩展字符集、细明体扩展字符集、全字库正宋体、点阵黑。
