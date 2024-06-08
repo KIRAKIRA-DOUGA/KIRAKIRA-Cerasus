@@ -59,6 +59,16 @@
 	const smoothPendingValue = useSmoothValue(pendingValue, 0.5);
 
 	/**
+	 * 根据步长取整值。
+	 * @param value - 要取整的值。
+	 * @param step - 步长。
+	 * @returns 根据步长取整后的值。
+	 */
+	function roundToStep(value: number, step: number | undefined): number {
+		return step ? Math.round(value / step) * step : value;
+	}
+
+	/**
 	 * 重置默认值。
 	 * @param e - 指针事件（包括鼠标和触摸）。
 	 */
@@ -88,7 +98,7 @@
 		const pointerMove = useDebounce((e: PointerEvent) => {
 			const position = clamp(e.pageX - left - x, 0, max - thumbSize);
 			const value = map(position, 0, max - thumbSize, props.min, props.max);
-			const steppedValue = props.step ? Math.round(value / props.step) * props.step : value;
+			const steppedValue = roundToStep(value, props.step);
 			model.value = steppedValue;
 			pendingValue.value = steppedValue;
 			emits("changing", value);
@@ -122,7 +132,7 @@
 	async function onTrackDown(e: PointerEvent) {
 		if (e.button === 1) { resetToDefault(e); return; }
 		const value = getPointerOnTrackValue(e);
-		const steppedValue = props.step ? Math.round(value / props.step) * props.step : value;
+		const steppedValue = roundToStep(value, props.step);
 		model.value = steppedValue;
 		emits("changing", steppedValue);
 		await nextTick();
