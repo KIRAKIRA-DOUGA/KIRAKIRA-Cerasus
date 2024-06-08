@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	useHead({ title: "Font Test" });
-	const size = ref("24");
-	const weight = ref("400");
+	const size = ref(24);
+	const weight = ref(400);
 	const lang = ref("zh-Hans-CN");
 	const isForceFontFamily = ref(false);
 	const forceFontFamily = ref("sans-serif");
@@ -40,12 +40,12 @@
 		<section>
 			<span>大小</span>
 			<TextBox v-model="size" type="number" :min="0" :max="128" />
-			<input type="range" min="0" max="128" step="1" v-model="size" />
+			<Slider v-model="size" :min="0" :max="128" :step="1" :defaultValue="24" />
 		</section>
 		<section>
 			<span>字重</span>
 			<TextBox v-model="weight" type="number" :min="1" :max="1000" />
-			<input type="range" min="1" max="1000" step="1" v-model="weight" />
+			<Slider v-model="weight" :min="1" :max="1000" :step="1" :defaultValue="400" />
 		</section>
 		<section>
 			<ToggleSwitch v-model="isForceFontFamily">强制font-family</ToggleSwitch>

@@ -10,6 +10,8 @@
 		buffered?: number;
 		/** 加载中。 */
 		waiting?: boolean;
+		/** 步长。 */
+		step?: number;
 		/**
 		 * 显示待定值工具提示。
 		 * - 如留空表示不显示。
@@ -25,6 +27,7 @@
 		defaultValue: undefined,
 		buffered: undefined,
 		waiting: false,
+		step: undefined,
 		pending: false,
 		displayValue: undefined,
 	});
@@ -85,8 +88,9 @@
 		const pointerMove = useDebounce((e: PointerEvent) => {
 			const position = clamp(e.pageX - left - x, 0, max - thumbSize);
 			const value = map(position, 0, max - thumbSize, props.min, props.max);
-			model.value = value;
-			pendingValue.value = value;
+			const steppedValue = props.step ? Math.round(value / props.step) * props.step : value;
+			model.value = steppedValue;
+			pendingValue.value = steppedValue;
 			emits("changing", value);
 		});
 		const pointerUp = (e: PointerEvent) => {
@@ -118,8 +122,9 @@
 	async function onTrackDown(e: PointerEvent) {
 		if (e.button === 1) { resetToDefault(e); return; }
 		const value = getPointerOnTrackValue(e);
-		model.value = value;
-		emits("changing", value);
+		const steppedValue = props.step ? Math.round(value / props.step) * props.step : value;
+		model.value = steppedValue;
+		emits("changing", steppedValue);
 		await nextTick();
 		onThumbDown(e, true); // 再去调用拖拽滑块的事件。
 	}
@@ -272,8 +277,8 @@
 
 	.passed,
 	.buffered {
-		transition: none;
 		pointer-events: none;
+		transition: none;
 	}
 
 	.passed {
@@ -303,19 +308,19 @@
 			&::before {
 				@include square(var(--track-hit-thickness));
 				@include circle;
-				position: absolute;
 				content: "";
+				position: absolute;
 			}
 		}
 
 		&::after {
 			@include square(100%);
 			@include circle;
+			content: "";
 			display: block;
 			background-color: c(accent);
-			transition: $fallback-transitions, scale $ease-out-back 250ms;
-			content: "";
 			scale: 0.5;
+			transition: $fallback-transitions, scale $ease-out-back 250ms;
 		}
 
 		&:any-hover::after {
@@ -357,24 +362,24 @@
 		letter-spacing: 0.5px;
 		background-color: c(accent);
 		transform-origin: center calc(100% + 8px);
-		cursor: pointer;
-		filter: drop-shadow(0 1px 6px c(accent, 80%));
-		transition: none;
-		pointer-events: none;
 		translate: -50% calc(-100% - 4px);
+		filter: drop-shadow(0 1px 6px c(accent, 80%));
+		cursor: pointer;
+		pointer-events: none;
+		transition: none;
 
 		/// 底部三角
 		&::after {
 			@include square(16px);
+			content: "";
 			position: absolute;
 			bottom: -4px;
 			left: 50%;
 			z-index: -1;
 			background-color: inherit;
 			border-radius: 2px;
-			content: "";
-			rotate: 45deg;
 			translate: -50% 0;
+			rotate: 45deg;
 		}
 
 		&.v-enter-active {
