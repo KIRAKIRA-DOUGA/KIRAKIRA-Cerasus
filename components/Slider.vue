@@ -62,7 +62,7 @@
 	 * 根据步长取整值。
 	 * @param value - 要取整的值。
 	 * @param step - 步长。
-	 * @returns 根据步长取整后的值。
+	 * @returns 如已指定步长则返回根据步长取整后的值，反之则返回原值。
 	 */
 	function roundToStep(value: number, step: number | undefined): number {
 		return step ? Math.round(value / step) * step : value;
