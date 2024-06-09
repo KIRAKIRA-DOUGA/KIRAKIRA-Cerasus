@@ -1,5 +1,5 @@
 <template>
-	<div class="wrapper">
+	<div class="container">
 		<div class="circle circle-1"></div>
 		<div class="circle circle-2"></div>
 		<Icon name="star" class="star-1" />
@@ -25,7 +25,7 @@
 		transition: 100ms $ease-in-max;
 	}
 
-	.wrapper > * {
+	.container > * {
 		position: absolute;
 	}
 

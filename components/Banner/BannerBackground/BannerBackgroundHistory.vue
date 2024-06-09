@@ -1,5 +1,5 @@
 <template>
-	<div class="wrapper">
+	<div class="container">
 		<Icon name="time" class="clock-1" />
 		<Icon name="time" class="clock-2" />
 		<Icon name="time" class="clock-3" />
@@ -21,7 +21,7 @@
 		transition: 100ms $ease-in-max;
 	}
 
-	.wrapper > * {
+	.container > * {
 		position: absolute;
 	}
 
