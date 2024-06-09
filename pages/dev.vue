@@ -33,6 +33,7 @@
 		["富文本测试页", "/test-rich-text-editor"],
 		["API 测试页", "/test-api"],
 		["动态图标测试页", "/test-lottie"],
+		["字体测试页", "/test-font"],
 		["搜索", "/search"],
 		["投稿", "/upload"],
 		["稿件编辑", "/upload/edit"],
