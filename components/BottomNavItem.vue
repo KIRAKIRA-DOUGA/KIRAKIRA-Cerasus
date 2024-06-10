@@ -12,29 +12,53 @@
 </script>
 
 <template>
-	<LocaleLink ref="localeLink" v-ripple activable :to="href || '#'" class="bottom-nav-item lite">
-		<Icon :name="icon" />
-		<Transition @enter="onLabelEnter" @leave="onLabelLeave">
-			<label v-if="active"><slot></slot></label>
-		</Transition>
+	<LocaleLink ref="localeLink" activable :to="href || '#'" class="bottom-nav-item lite">
+		<div>
+			<div v-ripple>
+				<Icon :name="icon" />
+				<Transition @enter="onLabelEnter" @leave="onLabelLeave">
+					<label v-if="active"><slot></slot></label>
+				</Transition>
+			</div>
+		</div>
 	</LocaleLink>
 </template>
 
 <style scoped lang="scss">
+	$wrapper-size: 128px;
+	$ripple-ratio: calc(64px / 58px);
+	$ripple-size: calc(var(--wrapper-size) * $ripple-ratio);
+
+	@layer props {
+		a:comp {
+			--wrapper-size: #{$wrapper-size};
+			--ripple-size: #{$ripple-size};
+		}
+	}
+
 	a:comp {
-		@include square(128px);
-		@include circle;
 		@include flex-center;
-		position: relative;
+		@include square(var(--wrapper-size));
+		@include circle;
+		min-width: 0;
 		color: c(icon-color);
 
-		&:any-hover {
-			color: c(gray-50);
-		}
+		> div {
+			@include flex-center;
+			@include ripple-clickable-only-inside(var(--wrapper-size));
+			@include circle;
+			touch-action: manipulation;
 
-		> * {
-			position: relative;
-			z-index: 1;
+			> div {
+				@include flex-center;
+				@include square(var(--ripple-size));
+				@include circle;
+				flex-shrink: 0;
+			}
+
+			&:any-hover {
+				background-color: c(hover-overlay);
+			}
 		}
 
 		.icon {
@@ -43,22 +67,14 @@
 
 		label {
 			margin-left: 5px;
-			font-weight: bold;
+			overflow: clip;
 			font-size: 16px;
+			font-weight: bold;
 			white-space: nowrap;
 		}
 
-		// &::before {
-		// 	@include oval;
-		// 	position: absolute;
-		// 	width: 40%;
-		// 	height: 36px;
-		// 	background-color: transparent;
-		// 	transition-duration: 600ms;
-		// 	content: "";
-		// }
-
 		&.router-link-active {
+			@include accent-ripple;
 			color: c(accent);
 
 			.icon {
