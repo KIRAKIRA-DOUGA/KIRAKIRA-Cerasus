@@ -551,8 +551,8 @@
 
 		&.fullscreen {
 			position: fixed;
-			z-index: 32;
 			inset: 0;
+			z-index: 32;
 		}
 	}
 
@@ -631,6 +631,8 @@
 </style>
 
 <style lang="scss">
+	$transition-duration: 500ms;
+
 	::view-transition-old(player-video-main),
 	::view-transition-new(player-video-main) {
 		height: 100%;
@@ -639,8 +641,28 @@
 		animation-duration: 250ms;
 	}
 
+	:has(:comp)::view-transition-group(root) {
+		animation: fade-from-black $transition-duration $ease-in-material-emphasized;
+	}
+
+	:has(:comp.fullscreen)::view-transition-group(root) {
+		animation: fade-to-black $transition-duration $ease-in-out-material-emphasized;
+	}
+
 	::view-transition-group(player-video-main) {
-		animation-duration: 500ms;
+		animation-duration: $transition-duration;
 		animation-timing-function: $ease-in-out-material-emphasized;
+	}
+
+	@keyframes fade-to-black {
+		to {
+			filter: brightness(0);
+		}
+	}
+
+	@keyframes fade-from-black {
+		from {
+			filter: brightness(0);
+		}
 	}
 </style>
