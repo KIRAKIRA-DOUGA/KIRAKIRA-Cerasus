@@ -4,7 +4,7 @@ import { exec as originalExec } from "child_process";
 
 const commands = [
 	"nuxi prepare",
-	"npm --prefix ./locales/editor run build",
+	// "npm --prefix ./locales/editor run build",
 ];
 
 /**
