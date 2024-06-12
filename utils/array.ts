@@ -119,7 +119,7 @@ export function arrayMapObjectConst<const T extends string, U>(array: T[], callb
  * @param callbackFn - 生成作为对象的键值对元组。
  * @returns 映射的对象。
  */
-export function arrayMapObject<T, K extends ObjectKey, U>(array: T[], callbackFn: (value: T, index: number, array: T[]) => [K, U]) {
+export function arrayMapObject<T, K extends PropertyKey, U>(array: T[], callbackFn: (value: T, index: number, array: T[]) => [K, U]) {
 	return Object.fromEntries(array.map((value, index, array) => callbackFn(value, index, array))) as Record<K, U>;
 }
 

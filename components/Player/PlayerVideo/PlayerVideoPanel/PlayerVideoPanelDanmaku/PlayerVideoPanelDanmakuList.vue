@@ -7,7 +7,7 @@
 	const { copy } = useClipboard();
 	const headers = { videoTime: t.danmaku.list.thead.time, content: t.danmaku.list.thead.content, sendTime: t.danmaku.list.thead.sending_time };
 	const colWidths = reactive([60, 150, 100]);
-	const danmakuList = ref<Array<{ item: DanmakuListItem; key: ObjectKey }>>([]);
+	const danmakuList = ref<Array<{ item: DanmakuListItem; key: PropertyKey }>>([]);
 	const danmakuListKey = ref(0); // FIXME: 理论上 vue-virtual-scroller 会自动监测弹幕数组更新，但是目前不知道为什么不生效，暂时只能用这种方法解决。
 	const sortBy = reactive<[column: "videoTime" | "sendTime", order: SortOrder]>(["videoTime", "ascending"]);
 
@@ -179,10 +179,10 @@
 					.icon {
 						$transition: $fallback-transitions, rotate $ease-out-smooth 500ms;
 						font-size: 16px;
-						rotate: x 100grad;
 						vertical-align: text-top;
 						transform-style: preserve-3d;
 						perspective: 250px;
+						rotate: x 100grad;
 
 						&.ascending {
 							rotate: x 0grad;
@@ -259,18 +259,18 @@
 				z-index: 10;
 				width: $click-width;
 				height: 100%;
+				translate: calc(($click-width - 1px) / 2);
 				opacity: 0;
-				transition-duration: 1s;
 				pointer-events: auto;
 				touch-action: pan-y pinch-zoom;
-				translate: calc(($click-width - 1px) / 2);
+				transition-duration: 1s;
 
 				&::after {
+					content: "";
 					display: block;
 					width: 1px;
 					height: 100%;
 					background-color: c(divider, 10%);
-					content: "";
 				}
 
 				&:hover {

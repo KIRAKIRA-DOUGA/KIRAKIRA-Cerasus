@@ -8,7 +8,7 @@ export function delay(ms: number): Promise<void> {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-const isb = new Int32Array(new SharedArrayBuffer(4));
+const isb = new Int32Array(typeof SharedArrayBuffer !== "undefined" ? new SharedArrayBuffer(4) : 1 as unknown as ArrayBufferLike);
 /**
  * 睡眠函数。\
  * 这将会阻塞线程。

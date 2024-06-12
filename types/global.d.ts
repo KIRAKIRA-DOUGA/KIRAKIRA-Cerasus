@@ -23,22 +23,18 @@ declare global {
 	 */
 	type Readable = string | number | bigint;
 	/**
-	 * 任何可作为 JavaScript 对象键名的类型，包括字符串、数字、符号。
-	 */
-	type ObjectKey = string | number | symbol;
-	/**
 	 * 听说你想绕过警告使用 any？
 	 */
 	type Any = Parameters<typeof alert>[0];
 	/**
 	 * 管它是啥反正是对象就是了。
 	 */
-	type AnyObject = Record<ObjectKey, Any>;
+	type AnyObject = Record<PropertyKey, Any>;
 	/**
 	 * 为什么 Record 还需要手动指定键的类型？多此一举。
 	 * @template T - 值的类型。
 	 */
-	type RecordValue<T> = Record<ObjectKey, T>;
+	type RecordValue<T> = Record<PropertyKey, T>;
 	/**
 	 * 表示二维点的元组。
 	 */
