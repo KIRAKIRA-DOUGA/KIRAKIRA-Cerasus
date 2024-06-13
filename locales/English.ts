@@ -138,8 +138,8 @@ export default {
 		},
 	},
 	danmaku: {
-		_: "Danmaku",
-		send: "Send Danmaku",
+		_: "Danmaku | Danmakus",
+		send: "Send a Danmaku",
 		history: "Danmaku History",
 		format: {
 			mode: {
@@ -151,7 +151,7 @@ export default {
 			send_as_creator: "Creator's Gradient",
 		},
 		list: {
-			loading: "Loading Danmaku…",
+			loading: "Loading Danmakus…",
 			thead: {
 				time: "Time",
 				content: "Content",
