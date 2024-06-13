@@ -172,7 +172,7 @@ export function cookieBinding() {
 		if (themeColor) {
 			if (themeColor === THEME_COLOR_CUSTOM && themeColorCustom) // 如果 themeColor 的值是 custom 且 themeColorCustom 为真值，则使用自定义主题色。
 				rootNode.style.setProperty("--accent-50", `#${themeColorCustom}`);
-			else { // 否则移除自定义主题色并设置官方主题色。
+			else { // 否则移除自定义主题色并将主题设置为用户选中的官方主题色。
 				rootNode.style.removeProperty("--accent-50");
 				rootNode.classList.add(themeColor);
 			}
