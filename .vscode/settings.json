@@ -17,28 +17,18 @@
 	"css.validate": false,
 	"less.validate": false,
 	"scss.validate": false,
-	"volar.format.initialIndent": {
-		"html": true,
-		"css": true,
-		"javascript": true,
-		"typescript": true,
-		"scss": true,
-		"less": true,
-		"javascriptreact": true,
-		"typescriptreact": true,
-		"json": true,
-		"jsonc": true,
-	},
-	"vue.server.additionalExtensions": [
+	"vue.server.includeLanguages": [
+		"vue",
 		"html",
 		"css",
-		"js",
-		"ts",
+		"javascript",
+		"typescript",
 		"scss",
 		"less",
-		"jsx",
-		"tsx",
+		"javascriptreact",
+		"typescriptreact",
 		"json",
+		"json5",
 		"jsonc"
 	],
 	"stylelint.snippet": [
@@ -61,7 +51,7 @@
 	"typescript.tsdk": "node_modules\\typescript\\lib",
 	"editor.codeActionsOnSave": {
 		"source.fixAll": "explicit",
-		// "source.sortImports": "explicit" // BUG: 开启后保存时缩进会出现问题。
+		"source.sortImports": "explicit"
 	},
 	"vue.complete.casing.props": "camel",
 	"vue.complete.casing.tags": "pascal",
@@ -73,7 +63,7 @@
 		"typescript",
 		"vue"
 	],
-	"eslint.experimental.useFlatConfig": true,
+	"eslint.useFlatConfig": true,
 	"todo-tree.general.tags": [
 		"TODO",
 		"HACK",
