@@ -1,6 +1,6 @@
 <script setup lang="tsx">
-	import { Transition } from "vue";
 	import { Icon, SoftButton } from "#components";
+	import { Transition } from "vue";
 
 	const props = withDefaults(defineProps<{
 		/** 内容占位符。 */
@@ -81,6 +81,7 @@
 		input: [e: InputEvent];
 		keydown: [e: KeyboardEvent];
 		keyup: [e: KeyboardEvent];
+		clear: void;
 	}>();
 
 	const value = defineModel<string | number>({ required: true });
@@ -195,6 +196,7 @@
 	function clearAll() {
 		value.value = "";
 		input.value?.focus();
+		emits('clear');
 	}
 
 	/**
@@ -397,8 +399,8 @@
 
 		&:has(input[disabled]) {
 			background-color: c(main-fg, 4%);
-			cursor: not-allowed;
 			opacity: 0.5;
+			cursor: not-allowed;
 		}
 	}
 
@@ -453,9 +455,9 @@
 		width: 100%;
 		margin-left: $start-indent;
 		color: c(icon-color);
-		scale: 1;
-		translate: 0;
 		transform-origin: left;
+		translate: 0;
+		scale: 1;
 		pointer-events: none;
 
 		@include is-large-size {
