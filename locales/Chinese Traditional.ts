@@ -58,7 +58,7 @@ export default {
 		colorful_navbar: "彩色巡覽列",
 	},
 	confetti: "五彩紙屑",
-	send: "發送",
+	send: "傳送",
 	query: "查詢",
 	on: "開",
 	off: "關",
@@ -84,7 +84,7 @@ export default {
 		app: "應用設置",
 	},
 	dashboard: "數據",
-	account: "帳號",
+	account: "帳戶",
 	profile: {
 		_: "資料",
 		edit_banner: "點擊更換封面",
@@ -143,7 +143,7 @@ export default {
 	},
 	danmaku: {
 		_: "彈幕",
-		send: "發送彈幕",
+		send: "傳送彈幕",
 		history: "彈幕歷史",
 		format: {
 			mode: {
@@ -155,7 +155,7 @@ export default {
 			send_as_creator: "創作者專屬漸變",
 		},
 		list: {
-			loading: "彈幕裝填中⋯⋯",
+			loading: "裝填彈幕中……",
 			thead: {
 				time: "時間",
 				content: "內容",
@@ -314,7 +314,7 @@ export default {
 		login_welcome: "歡迎回家",
 		login_to_forgot: "我忘記了密碼",
 		login_to_register: "我沒有帳號？註冊",
-		register_to_login: "我已有帳號？登入",
+		register_to_login: "我已有帳戶？登入",
 		forgot_to_login: "我想起來密碼了",
 		forgot_title: "忘記密碼",
 		reset_title: "重設密碼",

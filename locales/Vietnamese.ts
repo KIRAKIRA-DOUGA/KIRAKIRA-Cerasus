@@ -142,8 +142,8 @@ export default {
 		},
 	},
 	danmaku: {
-		_: "Đạn Mạc",
-		send: "Gửi Đạn Mạc",
+		_: "Đạn mạc",
+		send: "Gửi một Đạn mạc",
 		history: "Nhật ký Đạn Mạc",
 		format: {
 			mode: {
@@ -155,7 +155,7 @@ export default {
 			send_as_creator: "Gửi với tư cách người đăng tải",
 		},
 		list: {
-			loading: "Đang nạp Đạn Mạc…",
+			loading: "Đang tải Đạn mạc... đợi chút nhé ｡⁠◕⁠‿⁠◕⁠｡",
 			thead: {
 				time: "Mốc thời gian",
 				content: "Nội dung",
