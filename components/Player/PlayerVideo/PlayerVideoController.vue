@@ -309,8 +309,8 @@
 		align-items: center;
 		height: $thickness;
 		color: c(icon-color);
-		font-weight: 600;
 		font-size: 14px;
+		font-weight: 600;
 		background-color: c(main-bg);
 
 		.fullscreen & {
@@ -327,8 +327,8 @@
 			}
 
 			&.hidden {
-				visibility: hidden;
 				translate: 0 100%;
+				visibility: hidden;
 			}
 		}
 
@@ -404,8 +404,8 @@
 
 		> * {
 			@include flex-center;
-			text-align: center;
 			font-variant-numeric: tabular-nums;
+			text-align: center;
 		}
 
 		.current,
@@ -474,11 +474,7 @@
 	.soft-button {
 		--wrapper-size: #{$thickness};
 
-		&:active:deep(.icon) {
-			scale: 0.9;
-		}
-
-		&[aria-label^="fullscreen"]:active:deep(.icon) {
+		&[aria-label="fullscreen"]:active:deep(.icon) {
 			scale: 1.2;
 		}
 
