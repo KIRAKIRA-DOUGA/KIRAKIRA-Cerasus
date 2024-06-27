@@ -270,6 +270,7 @@
 			/>
 			<SoftButton
 				icon="speed_outline"
+				:active="playbackRate !== 1"
 				@pointerenter="e => rateMenu = e"
 				@pointerleave="rateMenu = undefined"
 				@pointerup.left="e => isMouse(e) && switchSpeed()"
