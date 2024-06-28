@@ -27,7 +27,7 @@ $emoji-fonts: "Apple Color Emoji", "Noto Color Emoji", "Twemoji Mozilla", "Segoe
 /// 泛统一码字体。
 /// 等线体：小米兰亭、汉仪中黑。
 /// 衬线体：天珩全字库、花园明朝、字云、巴贝斯通汉、宋体扩展字符集、细明体扩展字符集、全字库正宋体。
-/// 伪点阵体：点阵黑。
+/// 伪光栅体：点阵黑。
 $pan-unicode-fonts: "MiSans L3", "HYZhongHei L3", "HYZhongHeiTi-ExtBCDEFG", TH-Times, "TH-Tshyn-P0", "TH-Tshyn-P1", "TH-Tshyn-P2", "TH-Tshyn-P16", HanaMinA, HanaMinB, Jigmo, Jigmo2, Jigmo3, "BabelStone Han", SimSun-ExtB, PMingLiU-ExtB, MingLiU-ExtB, MingLiU_HKSCS-ExtB, TW-Sung, TW-Sung-Ext-B, TW-Sung-Plus, Unifont, "Unifont Upper";
 /// 回退字体顺序：英语字体、中/日/韩字体、微软正黑（为日/韩扩充中文字形）、无衬线体通用字体族、绘文字字体、泛统一码字体。
 $fallback-fonts: "Microsoft JhengHei", sans-serif, $emoji-fonts, $pan-unicode-fonts;
