@@ -227,9 +227,10 @@ Compact SVG
 
 Please post an [Issue](https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus/issues) to let us know you would like to contribute localization to this project, thank you.
 
-项目强化了 Vue-i18n 的原生翻译函数，使其使用起来更方便。
-
+> [!IMPORTANT]\
 > **注意：**<wbr />翻译字典文件的每个标识符均应使用蛇形命名法（下划线命名法）；且多门语言若任意一门语言比其它语言多或少字符串声明，均会报错，这意味着必须为这些语言同时指定完整的字符串声明，以防遗漏。
+
+项目强化了 Vue-i18n 的原生翻译函数，使其使用起来更方便。
 
 <table>
 <thead>
@@ -302,6 +303,23 @@ t.welcome({ foo: "hello", bar: "world" })
 
 ```typescript
 $t("welcome", { foo: "hello", bar: "world" })
+```
+
+</td>
+</tr>
+<tr>
+<td>复数</td>
+<td>
+
+```typescript
+t(2).car
+```
+
+</td>
+<td>
+
+```typescript
+$tc("car", 2)
 ```
 
 </td>
