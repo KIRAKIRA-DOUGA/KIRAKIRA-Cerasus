@@ -111,7 +111,7 @@
 	.icon {
 		&.v-enter-from,
 		&.v-leave-to {
-			scale: 0;
+			transform: scale(0.2);
 			opacity: 0;
 		}
 
