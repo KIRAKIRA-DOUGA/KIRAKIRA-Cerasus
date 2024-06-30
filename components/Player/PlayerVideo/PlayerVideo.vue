@@ -351,6 +351,15 @@
 	}
 
 	/**
+	 * 视频指针松开事件。
+	 * @param e - 指针事件。
+	 */
+	function onVideoPointerUp(e: PointerEvent) {
+		if (isMouse(e)) playing.value = !playing.value;
+		useEvent("component:hideAllPlayerVideoMenu");
+	}
+
+	/**
 	 * 在全屏时自动隐藏控制栏。
 	 * @param e - 指针移动事件。
 	 */
@@ -474,7 +483,7 @@
 					@waiting="waiting = true"
 					@dblclick="toggleFullscreen()"
 					@contextmenu.prevent="e => menu = e"
-					@pointerup.left="e => isMouse(e) && (playing = !playing)"
+					@pointerup.left="onVideoPointerUp"
 					@pointermove="autoHideController"
 				></video>
 				<Contents>
