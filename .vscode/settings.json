@@ -50,8 +50,8 @@
 	],
 	"typescript.tsdk": "node_modules\\typescript\\lib",
 	"editor.codeActionsOnSave": {
-		"source.fixAll": "explicit",
-		"source.sortImports": "explicit"
+		"source.fixAll": "explicit"
+		// "source.sortImports": "explicit" // BUG: 开启后保存时缩进会出现问题。
 	},
 	"vue.complete.casing.props": "camel",
 	"vue.complete.casing.tags": "pascal",

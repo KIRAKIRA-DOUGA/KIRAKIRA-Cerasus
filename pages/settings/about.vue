@@ -16,7 +16,7 @@
 		{ name: "鸣", job: [t.about.staff.frontend], uid: NaN, avatar: avatar("Mingeax.jpg") },
 		{ name: "冲锋的小卡卡", job: [t.about.staff.backend], uid: NaN, avatar: avatar("ZERO_TWO.jpg") },
 		{ name: "琪露诺瓦露", job: [t.about.staff.translator(t.language.ja)], uid: NaN, avatar: avatar("Cirnoire.png") },
-		{ name: "韩琦Mica", job: [t.about.staff.translator(t.language.zht)], uid: NaN, avatar: avatar("HanceyMica.png") },
+		{ name: "HanceyMica", job: [t.about.staff.translator(t.language.zht)], uid: NaN, avatar: avatar("HanceyMica.png") },
 		{ name: "Cyahega", job: [t.about.staff.translator(t.language.vi)], uid: NaN, avatar: avatar("Cyahega.jpg") },
 		{ name: "Remagtacrepus", job: [t.about.staff.translator(t.language.vi)], uid: NaN, avatar: avatar("remagtacrepus.png") },
 		{ name: "Ade Edogawa", job: [t.about.staff.translator(t.language.id)], uid: NaN, avatar: avatar("AdeEdogawa.jpg") },
@@ -143,8 +143,8 @@
 
 	@keyframes float-up {
 		from {
-			opacity: 0;
 			translate: 0 1rem;
+			opacity: 0;
 		}
 	}
 </style>

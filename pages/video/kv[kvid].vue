@@ -170,7 +170,7 @@
 
 <style scoped lang="scss">
 	@include mobile {
-		.player-video {
+		.player-video:not(.fullscreen) {
 			margin: -16px -16px 0;
 		}
 	}

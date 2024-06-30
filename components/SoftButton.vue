@@ -69,7 +69,9 @@
 				:class="{ 'router-link-active': active, disabled }"
 				@click="(e: MouseEvent) => emits('click', e)"
 			>
-				<Icon v-if="icon" :name="icon" />
+				<Transition mode="out-in">
+					<Icon v-if="icon" :name="icon" :key="icon" />
+				</Transition>
 				<AnimatedIcon v-if="animatedIcon" :name="animatedIcon" :state />
 				<span v-if="text"><span>{{ text }}</span></span>
 			</component>
@@ -104,6 +106,22 @@
 	.icon,
 	.animated-icon {
 		font-size: var(--icon-size);
+	}
+
+	.icon {
+		&.v-enter-from,
+		&.v-leave-to {
+			transform: scale(0.2);
+			opacity: 0;
+		}
+
+		&.v-enter-active {
+			transition: 500ms $ease-out-spring;
+		}
+
+		&.v-leave-active {
+			transition: 100ms $ease-in-max;
+		}
 	}
 
 	:comp {
@@ -158,6 +176,10 @@
 			&:any-hover,
 			&:active {
 				background-color: c(hover-overlay);
+			}
+
+			&:active .icon {
+				scale: 0.9;
 			}
 
 			&:is(:hover, :active, :has(> .ripple-circle)):not(:focus-visible) {

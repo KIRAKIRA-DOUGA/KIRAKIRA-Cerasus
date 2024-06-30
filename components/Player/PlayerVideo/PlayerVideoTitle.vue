@@ -45,24 +45,31 @@
 		position: absolute;
 		top: 0;
 		display: flex;
-		align-items: center;
 		justify-content: space-between;
+		align-items: center;
 		width: 100%;
 		padding: 8px 20px;
 		color: c(icon-color);
 		backdrop-filter: blur(8px);
-		transition: $fallback-transitions, background-color 0s;
 		pointer-events: none;
+		transition: $fallback-transitions, background-color 0s;
 
 		&.hidden {
-			visibility: hidden;
 			translate: 0 -100%;
+			visibility: hidden;
 		}
 	}
 
+	.left {
+		min-width: 0;
+	}
+
 	.title {
-		font-weight: bold;
+		overflow: clip;
 		font-size: 16px;
+		font-weight: bold;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 	}
 
 	.right {
@@ -76,8 +83,8 @@
 
 		time,
 		.battery-text {
-			font-variant-numeric: tabular-nums;
 			font-weight: 500;
+			font-variant-numeric: tabular-nums;
 		}
 
 		.battery {

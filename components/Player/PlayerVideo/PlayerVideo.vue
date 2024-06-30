@@ -518,7 +518,6 @@
 				:hidden="hideController"
 				@mousedown="playerVideoControllerMouseDown = true"
 				@focusin="hideController = false"
-				@focusout="hideController = true"
 			/>
 		</div>
 
