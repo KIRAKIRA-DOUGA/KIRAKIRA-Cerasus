@@ -4,14 +4,14 @@ import { GET, POST, uploadFile2CloudflareImages } from "../Common";
 import type { GetVideoByKvidRequestDto, GetVideoByKvidResponseDto, GetVideoByUidRequestDto, GetVideoByUidResponseDto, GetVideoCoverUploadSignedUrlResponseDto, SearchVideoByVideoTagIdRequestDto, SearchVideoByVideoTagIdResponseDto, ThumbVideoResponseDto, UploadVideoRequestDto, UploadVideoResponseDto } from "./VideoControllerDto";
 
 const BACK_END_URL = getCorrectUri();
-const VIDEO_API_URI = `${BACK_END_URL}/video`;
+const VIDEO_API_URL = `${BACK_END_URL}/video`;
 
 /**
  * 获取主页中显示的视频
  * @returns 展示视频卡片需要的返回参数
  */
 export const getHomePageThumbVideo = async (): Promise<ThumbVideoResponseDto> => {
-	const { data: result } = await useFetch<ThumbVideoResponseDto>(`${VIDEO_API_URI}/home`);
+	const { data: result } = await useFetch<ThumbVideoResponseDto>(`${VIDEO_API_URL}/home`);
 	if (result.value)
 		return result.value;
 	else
@@ -25,7 +25,7 @@ export const getHomePageThumbVideo = async (): Promise<ThumbVideoResponseDto> =>
  */
 export const getVideoByKvid = async (getVideoByKvidRequest: GetVideoByKvidRequestDto): Promise<GetVideoByKvidResponseDto> => {
 	if (getVideoByKvidRequest && getVideoByKvidRequest.videoId) {
-		const { data: result } = await useFetch<GetVideoByKvidResponseDto>(`${VIDEO_API_URI}?videoId=${getVideoByKvidRequest.videoId}`, { credentials: "include" });
+		const { data: result } = await useFetch<GetVideoByKvidResponseDto>(`${VIDEO_API_URL}?videoId=${getVideoByKvidRequest.videoId}`, { credentials: "include" });
 		if (result.value)
 			return result.value;
 		else
@@ -41,7 +41,7 @@ export const getVideoByKvid = async (getVideoByKvidRequest: GetVideoByKvidReques
  */
 export const getVideoByUid = async (getVideoByUidRequest: GetVideoByUidRequestDto): Promise<GetVideoByUidResponseDto> => {
 	if (getVideoByUidRequest && getVideoByUidRequest.uid) {
-		const { data: result } = await useFetch<GetVideoByUidResponseDto>(`${VIDEO_API_URI}/user?uid=${getVideoByUidRequest.uid}`);
+		const { data: result } = await useFetch<GetVideoByUidResponseDto>(`${VIDEO_API_URL}/user?uid=${getVideoByUidRequest.uid}`);
 		if (result.value)
 			return result.value;
 		else
@@ -57,7 +57,7 @@ export const getVideoByUid = async (getVideoByUidRequest: GetVideoByUidRequestDt
  */
 export const searchVideoByKeyword = async (searchVideoByKeywordRequest: SearchVideoByKeywordRequestDto): Promise<SearchVideoByKeywordResponseDto> => {
 	if (searchVideoByKeywordRequest && searchVideoByKeywordRequest.keyword) {
-		const { data: result } = await useFetch<SearchVideoByKeywordResponseDto>(`${VIDEO_API_URI}/search?keyword=${searchVideoByKeywordRequest.keyword}`);
+		const { data: result } = await useFetch<SearchVideoByKeywordResponseDto>(`${VIDEO_API_URL}/search?keyword=${searchVideoByKeywordRequest.keyword}`);
 		if (result.value)
 			return result.value;
 		else
@@ -73,7 +73,7 @@ export const searchVideoByKeyword = async (searchVideoByKeywordRequest: SearchVi
  */
 export const searchVideoByTagIds = async (searchVideoByVideoTagIdRequest: SearchVideoByVideoTagIdRequestDto): Promise<SearchVideoByVideoTagIdResponseDto> => {
 	if (searchVideoByVideoTagIdRequest && searchVideoByVideoTagIdRequest.tagId) {
-		const { data: result } = await useFetch<SearchVideoByVideoTagIdResponseDto>(`${VIDEO_API_URI}/search/tag`, {
+		const { data: result } = await useFetch<SearchVideoByVideoTagIdResponseDto>(`${VIDEO_API_URL}/search/tag`, {
 			method: "POST",
 			body: { tagId: searchVideoByVideoTagIdRequest.tagId },
 		});
@@ -101,7 +101,7 @@ export function tusFile(file: File, progress: Ref<number>) {
 		let videoId = "";
 		// Create a new tus upload
 		const upload = new tus.Upload(file, {
-			endpoint: `${VIDEO_API_URI}/tus`,
+			endpoint: `${VIDEO_API_URL}/tus`,
 			onBeforeRequest(req) {
 				const url = req.getURL();
 				if (!url?.includes("https://upload.videodelivery.net/tus")) { // 仅在请求后端 API 获取上传目的地 URL 时设置允许跨域传递 cookie，
@@ -160,7 +160,7 @@ export function tusFile(file: File, progress: Ref<number>) {
  * @returns 用于上传视频封面图的预签名 URL 请求响应
  */
 export async function getVideoCoverUploadSignedUrl(): Promise<GetVideoCoverUploadSignedUrlResponseDto> {
-	return (await GET(`${VIDEO_API_URI}/cover/preUpload`, { credentials: "include" })) as GetVideoCoverUploadSignedUrlResponseDto;
+	return (await GET(`${VIDEO_API_URL}/cover/preUpload`, { credentials: "include" })) as GetVideoCoverUploadSignedUrlResponseDto;
 }
 
 /**
@@ -186,5 +186,5 @@ export async function uploadVideoCover(fileName: string, videoCoverBlobData: Blo
  * @returns 上传视频的请求响应
  */
 export async function commitVideo(uploadVideoRequest: UploadVideoRequestDto): Promise<UploadVideoResponseDto> {
-	return await POST(`${VIDEO_API_URI}/upload`, uploadVideoRequest, { credentials: "include" }) as UploadVideoResponseDto;
+	return await POST(`${VIDEO_API_URL}/upload`, uploadVideoRequest, { credentials: "include" }) as UploadVideoResponseDto;
 }

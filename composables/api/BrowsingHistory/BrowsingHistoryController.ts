@@ -2,7 +2,7 @@ import getCorrectUri from "../Common/getCorrectUri";
 import type { GetUserBrowsingHistoryWithFilterRequestDto, GetUserBrowsingHistoryWithFilterResponseDto } from "./BrowsingHistoryControllerDto";
 
 const BACK_END_URL = getCorrectUri();
-const BROWSING_HISTORY_API_URI = `${BACK_END_URL}/history`;
+const BROWSING_HISTORY_API_URL = `${BACK_END_URL}/history`;
 
 /**
  * 获取全部或过滤后的用户浏览历史，按对某一内容的最后访问时间降序排序
@@ -11,7 +11,7 @@ const BROWSING_HISTORY_API_URI = `${BACK_END_URL}/history`;
  * @returns 获取全部或过滤后的用户浏览历史的请求响应结果
  */
 export const getUserBrowsingHistoryWithFilter = async (getUserBrowsingHistoryWithFilterRequest: GetUserBrowsingHistoryWithFilterRequestDto, headerCookie: { cookie?: string | undefined }): Promise<GetUserBrowsingHistoryWithFilterResponseDto> => {
-	const { data: result } = await useFetch<GetUserBrowsingHistoryWithFilterResponseDto>(`${BROWSING_HISTORY_API_URI}/filter?videoTitle=${getUserBrowsingHistoryWithFilterRequest.videoTitle}`, { headers: headerCookie, credentials: "include" });
+	const { data: result } = await useFetch<GetUserBrowsingHistoryWithFilterResponseDto>(`${BROWSING_HISTORY_API_URL}/filter?videoTitle=${getUserBrowsingHistoryWithFilterRequest.videoTitle}`, { headers: headerCookie, credentials: "include" });
 	if (result.value)
 		return result.value;
 	else
