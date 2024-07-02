@@ -1,11 +1,12 @@
 <script setup lang="ts">
 	import shibamata from "assets/audios/shibamata.mp3";
 	import metadata from "assets/audios/shibamata.vtt";
+	const testPhoto = "/static/images/palettes/cyan.png";
 	const audio = ref<HTMLAudioElement>();
 	const currentPitch = ref("");
 	const flipped = ref<boolean>();
 	const photoInput = ref<HTMLInputElement>();
-	const photo = ref();
+	const photo = ref(testPhoto);
 	const cueChangeTimeoutId = ref<Timeout>();
 
 	/**
@@ -81,7 +82,13 @@
 			/>
 		</div>
 		<div class="right" @click="onClickPhoto">
-			<img :src="photo" alt="photo" :class="{ front: flipped === false, back: flipped }" :tabindex="0" />
+			<NuxtImg
+				:src="photo"
+				alt="photo"
+				:class="{ front: flipped === false, back: flipped }"
+				:tabindex="0"
+				format="avif"
+			/>
 		</div>
 	</div>
 </template>
