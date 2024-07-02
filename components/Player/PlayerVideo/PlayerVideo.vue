@@ -366,12 +366,12 @@
 					playing.value = !playing.value;
 				else if (fullscreen.value) {
 					hideController.value = !hideController.value;
-					if (!hideController.value)
+					if (!hideController.value) {
+						clearTimeout(hideControllerTimeoutId.value);
 						hideControllerTimeoutId.value = setTimeout(() => {
 							hideController.value = true;
 						}, 3000);
-					else
-						clearTimeout(hideControllerTimeoutId.value);
+					}
 				}
 			}, 300);
 		else {
