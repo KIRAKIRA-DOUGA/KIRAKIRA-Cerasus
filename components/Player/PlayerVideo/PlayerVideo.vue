@@ -90,6 +90,8 @@
 	const hideControllerTimeoutId = ref<Timeout>();
 	const hideCursor = ref(false);
 	const hideCursorTimeoutId = ref<Timeout>();
+	const dblClickCount = ref(0);
+	const dblClickTimeoutId = ref<Timeout>();
 	const willSendDanmaku = ref<DanmakuComment[]>();
 	const willInsertDanmaku = ref<DanmakuListItem[]>();
 	const initialDanmaku = ref<DanmakuComment[]>();
@@ -355,8 +357,50 @@
 	 * @param e - 指针事件。
 	 */
 	function onVideoPointerUp(e: PointerEvent) {
-		if (isMouse(e)) playing.value = !playing.value;
-		useEvent("component:hideAllPlayerVideoMenu");
+		dblClickCount.value++;
+		if (dblClickCount.value === 1)
+			dblClickTimeoutId.value = setTimeout(() => {
+				dblClickCount.value = 0;
+				useEvent("component:hideAllPlayerVideoMenu");
+				if (isMouse(e))
+					playing.value = !playing.value;
+				else if (fullscreen.value) {
+					hideController.value = !hideController.value;
+					if (!hideController.value)
+						hideControllerTimeoutId.value = setTimeout(() => {
+							hideController.value = true;
+						}, 3000);
+					else
+						clearTimeout(hideControllerTimeoutId.value);
+				}
+			}, 300);
+		else {
+			dblClickCount.value = 0;
+			clearTimeout(dblClickTimeoutId.value);
+			if (isMouse(e))
+				toggleFullscreen();
+			else
+				playing.value = !playing.value;
+		}
+	}
+
+	/**
+	 * 视频控制器触摸开始事件。
+	 */
+	function onPlayerVideoControllerTouchStart() {
+		if (fullscreen.value)
+			clearTimeout(hideControllerTimeoutId.value);
+	}
+
+	/**
+	 * 视频控制器触摸结束事件。
+	 */
+	function onPlayerVideoControllerTouchEnd() {
+		if (fullscreen.value && !hideController.value)
+			hideControllerTimeoutId.value = setTimeout(() => {
+				hideController.value = true;
+				useEvent("component:hideAllPlayerVideoMenu");
+			}, 3000);
 	}
 
 	/**
@@ -378,16 +422,6 @@
 	}
 
 	useEventListener("window", "mouseup", () => playerVideoControllerMouseDown.value = false);
-
-	/**
-	 * 在全屏时自动隐藏控制栏（触摸屏差分）。
-	 */
-	function autoHideControllerTouch() {
-		hideController.value = false;
-		clearTimeout(hideControllerTimeoutId.value);
-		if (fullscreen.value && !hideController.value)
-			hideControllerTimeoutId.value = setTimeout(() => fullscreen.value && (hideController.value = true), 3000);
-	}
 
 	/**
 	 * 切换全屏。
@@ -467,7 +501,7 @@
 			</Accordion>
 		</Modal>
 
-		<div ref="playerVideoMain" class="main" :class="{ 'hide-cursor': hideCursor, fullscreen }" @touchstart="autoHideControllerTouch">
+		<div ref="playerVideoMain" class="main" :class="{ 'hide-cursor': hideCursor, fullscreen }">
 			<div class="screen">
 				<video
 					ref="video"
@@ -481,7 +515,6 @@
 					@progress="onProgress"
 					@ended="ended = true"
 					@waiting="waiting = true"
-					@dblclick="toggleFullscreen()"
 					@contextmenu.prevent="e => menu = e"
 					@pointerup.left="onVideoPointerUp"
 					@pointermove="autoHideController"
@@ -526,6 +559,8 @@
 				:qualities
 				:hidden="hideController"
 				@mousedown="playerVideoControllerMouseDown = true"
+				@touchstart="onPlayerVideoControllerTouchStart"
+				@touchend="onPlayerVideoControllerTouchEnd"
 				@focusin="hideController = false"
 			/>
 		</div>

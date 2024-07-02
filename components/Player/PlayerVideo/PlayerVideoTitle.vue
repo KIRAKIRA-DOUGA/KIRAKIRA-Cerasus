@@ -40,11 +40,14 @@
 </template>
 
 <style scoped lang="scss">
+	$gap: 0.75em;
+
 	:comp {
 		@include acrylic-background;
 		position: absolute;
 		top: 0;
 		display: flex;
+		gap: $gap;
 		justify-content: space-between;
 		align-items: center;
 		width: 100%;
@@ -74,7 +77,7 @@
 
 	.right {
 		display: flex;
-		gap: 0.75em;
+		gap: $gap;
 		align-items: center;
 
 		.icon {
