@@ -1,42 +1,65 @@
 <script setup lang="ts">
+	const searchText = ref(""); // 用户输入的搜索字符
+	const browsingHistory = ref<GetUserBrowsingHistoryWithFilterResponseDto["result"]>([]); // 获取到的浏览历史
+	const browsingHistoryGroupedByDays = computed(() => { // 将浏览历史按当前语言所在时区的日期按天分组
+		return browsingHistory.value?.reduce((acc, video) => {
+			const date = formatLocalizationSemanticDateTime(video.lastUpdateDateTime, 2);
+			if (!acc[date])
+				acc[date] = [];
+			acc[date].push(video);
+			return acc;
+		}, {} as { [key: string]: GetUserBrowsingHistoryWithFilterResponseDto["result"] });
+	});
+
+	/**
+	 * 获取全部或过滤后的用户浏览历史
+	 */
+	async function getUserBrowsingHistory() {
+		const getUserBrowsingHistoryWithFilterRequest: GetUserBrowsingHistoryWithFilterRequestDto = {
+			videoTitle: searchText.value,
+		};
+		const headerCookie = useRequestHeaders(["cookie"]);
+		const result = await api.browsingHistory.getUserBrowsingHistoryWithFilter(getUserBrowsingHistoryWithFilterRequest, headerCookie);
+		browsingHistory.value = result.result;
+	}
+
 	useHead({ title: t.history });
+	getUserBrowsingHistory();
 </script>
 
 <template>
 	<div class="container">
-		<div class="wrapper">
-			<div class="line"></div>
-			<section>
-				<div class="sticky">
-					<div class="ball today"></div>
-					<span>今天</span>
+		<div class="card-container">
+			<div class="center">
+				<div class="line"></div>
+				<section v-for="browsingHistory, dayString in browsingHistoryGroupedByDays" :key="dayString">
+					<div class="sticky" :key="dayString">
+						<div class="ball"></div>
+						<span class="day-string">{{ dayString }}</span>
+					</div>
+					<ThumbGrid>
+						<template v-for="browsingHistoryItem in browsingHistory" :key="browsingHistoryItem.id">
+							<ThumbVideo
+								v-if="browsingHistoryItem.category === 'video'"
+								:videoId="parseInt(browsingHistoryItem.id, 10)"
+								:uploader="browsingHistoryItem.uploader ?? ''"
+								:uploaderId="browsingHistoryItem.uploaderId"
+								:image="browsingHistoryItem.image"
+								:date="new Date(browsingHistoryItem.uploadDate || 0)"
+								:watchedCount="browsingHistoryItem.watchedCount"
+								:duration="new Duration(0, browsingHistoryItem.duration ?? 0)"
+							>{{ browsingHistoryItem.title }}</ThumbVideo>
+							<!-- TODO: 现在只能显示视频，以后应该可以可以显示其他类型的历史记录 -->
+						</template>
+					</ThumbGrid>
+				</section>
+			</div>
+
+			<div class="right">
+				<div class="toolbox-card">
+					<TextBox v-model="searchText" :placeholder="t.search" icon="search" @keydown.enter="getUserBrowsingHistory" @clear="getUserBrowsingHistory" />
 				</div>
-				<ThumbGrid>
-					<ThumbVideo
-						v-for="i in 5"
-						:key="i"
-						link="video"
-						uploader="艾了个拉"
-					>{{ "测试视频".repeat(10) }}</ThumbVideo>
-				</ThumbGrid>
-			</section>
-			<section>
-				<div class="sticky">
-					<div class="ball"></div>
-					<span>昨天</span>
-				</div>
-				<ThumbGrid>
-					<ThumbVideo
-						v-for="i in 5"
-						:key="i"
-						link="video"
-						uploader="艾了个拉"
-						:date="new Date()"
-						:watchedCount="233_0000"
-						:duration="new Duration(2, 33)"
-					>{{ "测试视频".repeat(10) }}</ThumbVideo>
-				</ThumbGrid>
-			</section>
+			</div>
 		</div>
 	</div>
 </template>
@@ -62,10 +85,31 @@
 		}
 	}
 
-	.wrapper {
+	.card-container {
 		display: flex;
-		flex-direction: column;
-		gap: 24px;
+		gap: 16px;
+
+		@include tablet {
+			flex-direction: column-reverse;
+		}
+
+		.center {
+			width: 100%;
+		}
+
+		.right {
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
+
+			@include computer {
+				$margin-top: 1rem;
+				position: sticky;
+				top: $margin-top;
+				height: fit-content;
+				max-height: calc(100dvh - 2 * $margin-top);
+			}
+		}
 	}
 
 	section {
@@ -120,6 +164,7 @@
 
 			span {
 				flex-shrink: 0;
+				width: 80px;
 				color: c(accent);
 				font-weight: bold;
 			}

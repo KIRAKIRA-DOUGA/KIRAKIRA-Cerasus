@@ -42,15 +42,45 @@ export function formatDateWithLocale(
 		year: "numeric",
 		month: "2-digit",
 		day: "2-digit",
-		...(!time ? {} : {
+		...!time ? {} : {
 			hour: "2-digit",
 			minute: "2-digit",
 			second: "2-digit",
-		}),
+		},
 	};
 	let result = Intl.DateTimeFormat(locale, options).format(date ?? new Date());
 	if (date === null) result = result.replaceAll(/\d/g, "‒");
 	return result;
+}
+
+/**
+ * 根据当前语言所对应的时区格式化具有语义的日期。
+ * @param timestamp number - 时间戳。
+ * @param semanticDays number - 设定前 n 天可以按语义化转化，例如，设定为 2 只会有“今天”和“昨天”，设定为 3 则会有“今天”、“昨天”和“前天”。
+ * @returns 格式化后的字符串。
+ */
+export function formatLocalizationSemanticDateTime(timestamp: number, semanticDays: number): string {
+	const locale = getCurrentLocaleLangCode();
+	const targetDate = new Date(timestamp);
+	const now = new Date();
+
+	const targetDateLocalString = formatDateWithLocale(targetDate, { time: false });
+	const nowDateLocalString = formatDateWithLocale(now, { time: false });
+
+	const targetDateLocal = new Date(targetDateLocalString);
+	const nowDateLocal = new Date(nowDateLocalString);
+
+	// Calculate the difference in time
+	const differenceInSeconds = (nowDateLocal.getTime() - targetDateLocal.getTime()) / 1000;
+	const differenceInDays = differenceInSeconds / (3600 * 24);
+
+	if (differenceInDays < semanticDays && differenceInDays > -semanticDays) {
+		const rtf = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });
+		return rtf.format(-differenceInDays, "day");
+	} else {
+		const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "2-digit", day: "2-digit" };
+		return targetDate.toLocaleString(locale, options);
+	}
 }
 
 /**
@@ -59,5 +89,5 @@ export function formatDateWithLocale(
  * @returns 符合 Cloudflare 风格的过期日期字符串
  */
 export function getCloudflareRFC3339ExpiryDateTime(expiresIn: number): string {
-	return (new Date((new Date()).getTime() + expiresIn * 1000)).toISOString().replace(/\.\d{3}/, "");
+	return new Date(new Date().getTime() + expiresIn * 1000).toISOString().replace(/\.\d{3}/, "");
 }
