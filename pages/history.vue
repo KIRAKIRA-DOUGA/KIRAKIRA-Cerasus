@@ -1,11 +1,6 @@
 <script setup lang="ts">
 	const searchText = ref(""); // 用户输入的搜索字符
 	const browsingHistory = ref<GetUserBrowsingHistoryWithFilterResponseDto["result"]>([]); // 获取到的浏览历史
-	const today = new Date();
-	const yesterday = new Date(today);
-	yesterday.setDate(today.getDate() - 1);
-	const todayString = formatDateWithLocale(today, { time: false }); // 根据当前语言获取与语言所在时区一致的“今天”日期
-	const yesterdayString = formatDateWithLocale(yesterday, { time: false }); // 根据当前语言获取与语言所在时区一致的“昨天”日期
 	const browsingHistoryGroupedByDays = computed(() => { // 将浏览历史按当前语言所在时区的日期按天分组
 		return browsingHistory.value?.reduce((acc, video) => {
 			const date = formatLocalizationSemanticDateTime(video.lastUpdateDateTime, 2);
@@ -38,17 +33,7 @@
 			<div class="center">
 				<div class="line"></div>
 				<section v-for="browsingHistory, dayString in browsingHistoryGroupedByDays" :key="dayString">
-					<div class="sticky" v-if="dayString === todayString" :key="`${dayString}-today`">
-						<div class="ball today"></div>
-						<!-- TODO: 使用多语言 -->
-						<span>今天</span>
-					</div>
-					<div class="sticky" v-else-if="dayString === yesterdayString" :key="`${dayString}-yesterday`">
-						<div class="ball"></div>
-						<!-- TODO: 使用多语言 -->
-						<span>昨天</span>
-					</div>
-					<div class="sticky" v-else :key="dayString">
+					<div class="sticky" :key="dayString">
 						<div class="ball"></div>
 						<span class="day-string">{{ dayString }}</span>
 					</div>
