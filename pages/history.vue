@@ -8,7 +8,7 @@
 	const yesterdayString = formatDateWithLocale(yesterday, { time: false }); // 根据当前语言获取与语言所在时区一致的“昨天”日期
 	const browsingHistoryGroupedByDays = computed(() => { // 将浏览历史按当前语言所在时区的日期按天分组
 		return browsingHistory.value?.reduce((acc, video) => {
-			const date = formatDateWithLocale(new Date(video.lastUpdateDateTime), { time: false });
+			const date = formatLocalizationSemanticDateTime(video.lastUpdateDateTime, 2);
 			if (!acc[date])
 				acc[date] = [];
 			acc[date].push(video);
