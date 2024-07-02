@@ -197,14 +197,6 @@
 			default: break;
 		}
 	});
-
-	/** 隐藏控制栏时隐藏菜单，用于触摸屏。 */
-	watch(() => props.hidden, hidden => {
-		if (!hidden) return;
-		volumeMenu.value = undefined;
-		rateMenu.value = undefined;
-		qualityMenu.value = undefined;
-	});
 </script>
 
 <template>
@@ -266,20 +258,20 @@
 				class="quality-button"
 				:text="quality"
 				@pointerenter="e => qualityMenu = e"
-				@pointerleave="qualityMenu = undefined"
+				@pointerleave="e => isMouse(e) && (qualityMenu = undefined)"
 			/>
 			<SoftButton
 				icon="speed_outline"
 				:active="playbackRate !== 1"
 				@pointerenter="e => rateMenu = e"
-				@pointerleave="rateMenu = undefined"
+				@pointerleave="e => isMouse(e) && (rateMenu = undefined)"
 				@pointerup.left="e => isMouse(e) && switchSpeed()"
 			/>
 			<SoftButton
 				:icon="muted ? 'volume_mute' : volumeSet >= 0.5 ? 'volume_up' : volumeSet > 0 ? 'volume_down' : 'volume_none'"
 				class="volume"
 				@pointerenter="e => volumeMenu = e"
-				@pointerleave="volumeMenu = undefined"
+				@pointerleave="e => isMouse(e) && (volumeMenu = undefined)"
 				@pointerup.left="e => isMouse(e) && (muted = !muted)"
 			/>
 			<!-- TODO: 音量图标需要修改为三根弧线，并且使用动画切换，参考 Windows 11 / i(Pad)OS 的动画。 -->
@@ -377,10 +369,6 @@
 			order: 3;
 			height: $thickness;
 			margin-left: $ripple-fix-margin;
-
-			.volume {
-				display: none;
-			}
 		}
 
 		.fullscreen & {
