@@ -197,12 +197,6 @@
 			default: break;
 		}
 	});
-
-	/** 隐藏控制栏时隐藏菜单，用于触摸屏。 */
-	watch(() => props.hidden, hidden => {
-		if (!hidden) return;
-		useEvent("component:hideAllPlayerVideoMenu");
-	});
 </script>
 
 <template>
@@ -375,10 +369,6 @@
 			order: 3;
 			height: $thickness;
 			margin-left: $ripple-fix-margin;
-
-			.volume {
-				display: none;
-			}
 		}
 
 		.fullscreen & {
