@@ -86,6 +86,8 @@
 	const resample = computed({ get: () => !preservesPitch.value, set: value => preservesPitch.value = !value });
 	const menu = ref<MenuModel>();
 	const showDanmaku = ref(true);
+	const showProgressRing = ref(true);
+	const showProgressRingTimeoutId = ref<Timeout>();
 	const hideController = ref(false);
 	const hideControllerTimeoutId = ref<Timeout>();
 	const hideCursor = ref(false);
@@ -172,6 +174,16 @@
 		if (!video.value) return;
 		video.value.muted = muted;
 		playerConfig.audio.muted = muted;
+	});
+
+	watch(waiting, waiting => {
+		if (waiting) {
+			clearTimeout(showProgressRingTimeoutId.value);
+			showProgressRingTimeoutId.value = setTimeout(() => showProgressRing.value = true, 1000);
+		} else {
+			clearTimeout(showProgressRingTimeoutId.value);
+			showProgressRing.value = false;
+		}
 	});
 
 	watch(() => settings.danmaku.opacity, opacity => {
@@ -527,8 +539,7 @@
 						:hidden="!showDanmaku"
 						:style="{ opacity: settings.danmaku.opacity }"
 					/>
-					<!-- TODO: ProgressRing 改成卡住（开屏加载不包含在内）一秒后再显示，防止出现过于频繁。 -->
-					<div v-if="waiting" class="waiting">
+					<div v-if="showProgressRing" class="waiting">
 						<ProgressRing />
 					</div>
 					<PlayerVideoAbout v-model="showAboutPlayer" :playing />
