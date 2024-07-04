@@ -85,6 +85,105 @@ export const searchVideoByTagIds = async (searchVideoByVideoTagIdRequest: Search
 		return { success: false, message: "未提供 TAG ID", videosCount: 0, videos: [] };
 };
 
+export class TusFileUploader {
+	step: "pending" | "created" | "uploading" | "pausing" | "success" | "error" = "pending";
+	process: Promise<string>;
+	uploading?: tus.Upload;
+	isUploadingVideo: Ref<boolean>;
+
+	constructor(file: File, progress: Ref<number>, isUploadingVideo: Ref<boolean>) {
+		if (!file) {
+			this.step = "error";
+			useToast("无法上传：未找到文件", "error"); // TODO: 使用多语言
+			throw new Error("无法上传：未找到文件"); // TODO: 使用多语言
+		}
+		this.isUploadingVideo = isUploadingVideo;
+		this.process = new Promise<string>((resolve, reject) => {
+			let videoId = "";
+			// Create a new tus upload
+			const uploader = new tus.Upload(file, {
+				endpoint: `${VIDEO_API_URL}/tus`,
+				onBeforeRequest(req) {
+					const url = req.getURL();
+					if (!url?.includes("https://upload.videodelivery.net/tus")) { // 仅在请求后端 API 获取上传目的地 URL 时设置允许跨域传递 cookie，
+						const xhr = req.getUnderlyingObject();
+						xhr.withCredentials = true;
+					}
+				},
+				retryDelays: [0, 3000, 5000, 10000, 20000], // 重试超时
+				chunkSize: 52428800, // 视频分片大小
+				storeFingerprintForResuming: true, // 存储用于恢复上传的 key // WARN: 正常运行时，应该为 True
+				removeFingerprintOnSuccess: true, // 上传成功后移除用于恢复上传的 key
+				metadata: {
+					name: file.name,
+					maxDurationSeconds: "1800", // 最大视频长度，1800 秒（30 分钟）
+					expiry: getCloudflareRFC3339ExpiryDateTime(3600), // 最大上传耗时，3600 秒（1 小时）
+				},
+				onError: error => {
+					console.error("ERROR", "Upload error: ", error);
+					this.step = "error";
+					reject(error);
+				},
+				onProgress: (bytesUploaded, bytesTotal) => {
+					const percentage = bytesUploaded / bytesTotal * 100;
+					progress.value = percentage;
+					console.log(bytesUploaded, bytesTotal, percentage.toFixed(2) + "%"); // DELETE ME
+				},
+				onSuccess: () => {
+					console.log("Download %s from %s", (uploader.file as File)?.name, uploader.url); // DELETE ME
+					if (videoId) {
+						this.step = "success";
+						resolve(videoId);
+					} else
+						reject(new Error("Can not find the video ID"));
+				},
+				onAfterResponse: (req, res) => {
+					if (req.getURL().includes("https://upload.videodelivery.net/tus")) {
+						const headerVideoId = res?.getHeader("stream-media-id");
+						if (headerVideoId)
+							videoId = headerVideoId;
+					}
+				},
+			});
+			this.uploading = uploader;
+			this.step = "created";
+			// Check if there are any previous uploads to continue.
+			uploader.findPreviousUploads().then(previousUploads => {
+				// Found previous uploads so we select the first one.
+				if (previousUploads.length)
+					uploader.resumeFromPreviousUpload(previousUploads[0]);
+
+				// Start the upload
+				uploader.start();
+				this.step = "uploading";
+				isUploadingVideo.value = true;
+			});
+		});
+	}
+
+	abort() {
+		if (this.uploading)
+			if (this.step === "uploading") {
+				this.uploading.abort();
+				this.step = "pausing";
+				this.isUploadingVideo.value = false;
+				console.log("Upload paused");
+			} else
+				console.error(`Upload pause failed, Pausing can only work when in 'uploading' step, but you are in '${this.step}' step.`); // TODO: 使用多语言
+	}
+
+	resume() {
+		if (this.uploading)
+			if (this.step === "pausing") {
+				this.uploading.start();
+				this.step = "uploading";
+				this.isUploadingVideo.value = true;
+				console.log("Upload resumed");
+			} else
+				console.error(`Upload resume failed, Uploading can only work when in 'pausing' step, but you are in '${this.step}' step.`); // TODO: 使用多语言
+	}
+}
+
 /**
  * TUS 上传一个文件
  * @param file - 文件
@@ -111,7 +210,7 @@ export function tusFile(file: File, progress: Ref<number>) {
 			},
 			retryDelays: [0, 3000, 5000, 10000, 20000], // 重试超时
 			chunkSize: 52428800, // 视频分片大小
-			storeFingerprintForResuming: false, // 存储用于恢复上传的 key
+			storeFingerprintForResuming: false, // 存储用于恢复上传的 key // WARN: 正常运行时，应该为 True
 			removeFingerprintOnSuccess: true, // 上传成功后移除用于恢复上传的 key
 			metadata: {
 				name: file.name,

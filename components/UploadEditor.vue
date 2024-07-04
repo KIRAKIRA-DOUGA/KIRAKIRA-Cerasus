@@ -1,4 +1,6 @@
 <script setup lang="ts">
+	import type { TusFileUploader } from "~/composables/api/Video/VideoController";
+
 	const props = defineProps<{
 		files: File[];
 	}>();
@@ -41,6 +43,8 @@
 	const hoveredTagContent = ref<[number, string]>(); // 鼠标 hover 的 TAG
 	const hideExceptMe = ref(false);
 	const hideTimeoutId = ref<Timeout>();
+	let uploader: TusFileUploader;
+	const isUploadingVideo = ref(false);
 
 	/**
 	 * 上传文件无效。
@@ -132,13 +136,29 @@
 			useToast("无法上传：未找到视频文件", "error"); // TODO: 使用多语言
 			return;
 		}
-		api.video.tusFile(files[0], uploadProgress)?.then((videoId: string) => {
+
+		uploader = new api.video.TusFileUploader(files[0], uploadProgress, isUploadingVideo);
+		uploader.process?.then((videoId: string) => {
 			cloudflareVideoId.value = videoId;
 			useToast("上传完成", "success"); // TODO: 使用多语言
-		}).catch(error => {
+		}).catch((error: unknown) => {
 			useToast("上传失败", "error"); // TODO: 使用多语言
 			console.error("ERROR", "上传失败：", error);
 		});
+	}
+
+	/**
+	 * 暂停 TUS 上传视频文件
+	 */
+	function stopUploading() {
+		if (isUploadingVideo.value) uploader.abort();
+	}
+
+	/**
+	 * 继续 TUS 上传视频文件
+	 */
+	function continueUploading() {
+		if (!isUploadingVideo.value) uploader.resume();
 	}
 
 	/**
@@ -348,9 +368,11 @@
 			</div>
 
 			<div class="center">
-				<div class="toolbox-card">
+				<div class="progress-card toolbox-card">
 					<!-- 在这里上传和管理分 P -->
-					<ProgressBar :value="uploadProgress" />
+					<ProgressBar class="progress" :value="uploadProgress" />
+					<SoftButton icon="pause" v-if="isUploadingVideo" :disabled="!!cloudflareVideoId" @click="stopUploading" />
+					<SoftButton icon="play" v-else :disabled="!!cloudflareVideoId" @click="continueUploading" />
 				</div>
 
 				<div class="toolbox-card">
@@ -457,6 +479,18 @@
 		flex-direction: column;
 		flex-grow: 1;
 		gap: $card-gap;
+
+		.progress-card {
+			display: flex;
+			flex-direction: row;
+			gap: 0 !important;
+			align-items: center;
+			padding: 15px $center-card-padding !important;
+
+			.progress {
+				flex-grow: 1;
+			}
+		}
 
 		.toolbox-card {
 			padding: $center-card-padding;
