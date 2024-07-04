@@ -25,6 +25,8 @@
 
 	/**
 	 * 手势滑动事件。左右滑动即可收起/展开导航菜单。
+	 * 已暂时禁用，因为会导致所有元素按下去后拖到外部会仍然执行而不会取消。
+	 * 原本使用方法是在当前文件的根 div 上放置 v-drag="onSwipe"
 	 */
 	function onSwipe({ dragging, direction, distance, axis }: GestureDragEvent) {
 		const MIN_DISTANCE = 100;
@@ -59,7 +61,7 @@
 </script>
 
 <template>
-	<div v-drag="onSwipe" v-bind="$attrs" class="settings" :class="{ transparent: useAppSettingsStore().showCssDoodle }">
+	<div v-bind="$attrs" class="settings" :class="{ transparent: useAppSettingsStore().showCssDoodle }">
 		<ShadingIcon icon="settings" position="right top" rotating elastic />
 
 		<nav :class="{ show: showDrawer }">
@@ -277,8 +279,8 @@
 	h2,
 	.page-title-wrapper {
 		color: c(accent);
-		font-weight: bold;
 		font-size: calc(1.275rem + 0.3dvw);
+		font-weight: bold;
 	}
 
 	.page-title-wrapper {
@@ -366,11 +368,11 @@
 			height: $mobile-toolbar-height;
 			margin: 0 -24px;
 			padding: 0 4px;
+		}
 
-			.soft-button {
-				@include square(48px);
-				--ripple-size: 48px;
-			}
+		.soft-button {
+			--wrapper-size: 48px;
+			--ripple-size: var(--wrapper-size);
 		}
 
 		.page-title-icon-wrapper {
@@ -482,7 +484,7 @@
 			bottom: 0;
 			z-index: 4;
 			display: flex;
-			gap: 5px;
+			gap: 8px;
 			justify-content: flex-end;
 			margin: 0 (-$main-padding-x) (-$submit-margin-y);
 			margin-top: 0;
@@ -494,8 +496,8 @@
 
 	@keyframes float-up {
 		from {
-			opacity: 0;
 			translate: 0 1rem;
+			opacity: 0;
 		}
 	}
 </style>
