@@ -177,13 +177,11 @@
 	});
 
 	watch(waiting, waiting => {
-		if (waiting) {
-			clearTimeout(showProgressRingTimeoutId.value);
+		clearTimeout(showProgressRingTimeoutId.value);
+		if (waiting)
 			showProgressRingTimeoutId.value = setTimeout(() => showProgressRing.value = true, 1000);
-		} else {
-			clearTimeout(showProgressRingTimeoutId.value);
+		else
 			showProgressRing.value = false;
-		}
 	});
 
 	watch(() => settings.danmaku.opacity, opacity => {
