@@ -34,6 +34,28 @@
 	const flyoutColorPicker = ref<FlyoutModel>();
 	watch(customColor, customColor => cookieThemeCustomColor.value = customColor.hex);
 
+	const backgroundImageSettingsStore = useAppSettingsStore().backgroundImage;
+
+	const backgroundImageFiles = ref<File[]>([]);
+	const backgroundImageFile = computed(() => backgroundImageFiles.value[0]);
+
+	// 从设置存储中加载背景图片
+	backgroundImageFiles.value.push(new File([backgroundImageSettingsStore.image.data], backgroundImageSettingsStore.image.name));
+
+	watch(backgroundImageFile, file => {
+		if (!file) {
+			backgroundImageSettingsStore.image.name = "";
+			backgroundImageSettingsStore.image.data = "";
+		} else {
+			backgroundImageSettingsStore.image.name = file.name;
+			const reader = new FileReader();
+			reader.onload = () => {
+				backgroundImageSettingsStore.image.data = reader.result as string;
+			};
+			reader.readAsDataURL(file);
+		}
+	});
+
 	onMounted(() => {
 		if (paletteSection.value)
 			for (const item of paletteSection.value.children)
@@ -110,8 +132,25 @@
 	</section>
 
 	<Subheader icon="wallpaper">{{ t.background }}</Subheader>
-	<section list>
-		<SettingsChipItem icon="wallpaper" trailingIcon="edit">{{ t.background.custom }}</SettingsChipItem>
+	<section>
+		<FilePicker v-model="backgroundImageFiles" accept="image/*" />
+		<SettingsSlider
+			v-model="backgroundImageSettingsStore.opacity"
+			:min="0"
+			:max="0.4"
+			:step="0.01"
+			:defaultValue="0.2"
+			icon="opacity"
+		>Opacity</SettingsSlider>
+		<SettingsSlider
+			v-model="backgroundImageSettingsStore.blur"
+			:min="0"
+			:max="64"
+			:step="1"
+			:defaultValue="0"
+			icon="opacity"
+			pending="current"
+		>Blur Intensity</SettingsSlider>
 	</section>
 
 	<Subheader icon="more_horiz">{{ t(2).other }}</Subheader>
@@ -235,5 +274,10 @@
 
 	.color-picker-wrapper {
 		min-width: 300px;
+	}
+
+	.file-picker {
+		width: 300px;
+		margin: 16px;
 	}
 </style>

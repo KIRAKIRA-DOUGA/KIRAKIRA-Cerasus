@@ -1,0 +1,296 @@
+<docs>
+	# 文件选择器
+</docs>
+
+<script setup lang="ts">
+	const props = defineProps<{
+		/** 接受的文件类型。 */
+		accept: string;
+	}>();
+	const fileInput = ref<HTMLInputElement>();
+	const dragover = ref(false);
+	const picked = ref(false);
+	const succeed = ref(false);
+	const files = defineModel<File[]>({ default: [] });
+	const file = computed(() => files.value[0]);
+
+	/**
+	 * 成功上传文件。
+	 * @param fileList - 文件列表。
+	 */
+	async function uploaded(fileList: File[]) {
+		succeed.value = true;
+		if (!isPrefersReducedMotion()) await delay(1500);
+		arrayClearAll(files.value);
+		files.value.push(fileList[0]);
+	}
+
+	/**
+	 * 上传文件无效。
+	 */
+	function invalidUploaded() {
+		succeed.value = false;
+		useToast(t.toast.unsupported_file, "error");
+		clearFileInput(fileInput);
+	}
+
+	/**
+	 * 获取合法的文件列表。
+	 * @param fileList - 原生文件列表。
+	 * @returns 合法的文件列表。
+	 */
+	function getValidFiles(fileList?: FileList | null) {
+		if (!fileList || !fileList.length) return [];
+		const files: File[] = [];
+		for (const file of fileList)
+			if (file.type.match(props.accept))
+				files.push(file);
+		return files;
+	}
+
+	/**
+	 * 拖放事件。
+	 * @param e - 拖放事件。
+	 */
+	function onDrop(e: DragEvent) {
+		dragover.value = false;
+		const files = e.dataTransfer?.files;
+		if (!files) return;
+		const dropFiles = getValidFiles(files);
+		if (dropFiles.length)
+
+			uploaded(dropFiles);
+		else if (files.length)
+			invalidUploaded();
+	}
+
+	/**
+	 * 上传文件事件。
+	 * @param e - 普通事件。
+	 */
+	function onChangeFile(e: Event) {
+		const input = e.target as HTMLInputElement;
+		const files = getValidFiles(input.files);
+		if (files.length)
+			uploaded(files);
+		else if (input.files?.length)
+			invalidUploaded();
+	}
+
+	/**
+	 * 取消本次上传。
+	 */
+	function removePicked() {
+		arrayClearAll(files.value);
+		succeed.value = false;
+		clearFileInput(fileInput);
+	}
+
+	/**
+	 * 获取图片链接。
+	 * @returns 图片链接。
+	 */
+	function getImageSrc() {
+		return URL.createObjectURL(files.value[0]);
+	}
+
+	watch(file, file => {
+		picked.value = !!file;
+	});
+</script>
+
+<template>
+	<Comp
+		:class="{ dragover, succeed }"
+		@dragover.stop.prevent="dragover = true"
+		@dragenter.stop.prevent="dragover = true"
+		@dragleave.stop.prevent="dragover = false"
+		@dragend.stop.prevent="dragover = false"
+		@drop.stop.prevent="onDrop"
+	>
+
+		<input
+			ref="fileInput"
+			hidden
+			type="file"
+			multiple
+			:accept
+			@change="onChangeFile"
+		/>
+
+		<div v-if="!picked" v-ripple class="choose-file" @click="fileInput?.click()">
+			<Icon name="upload" class="upload-icon" />
+			<!-- TODO: 多语言 -->
+			<p>Choose File</p>
+		</div>
+
+		<div v-else class="preview">
+			<div class="toolbar">
+				<div class="content">
+					<Icon name="photo" />
+					<p>{{ files[0].name }}</p>
+				</div>
+				<div class="buttons">
+					<!-- TODO: 多语言 -->
+					<SoftButton v-tooltip:bottom="'Repick'" icon="upload" @click="fileInput?.click()" />
+					<!-- TODO: 多语言 -->
+					<SoftButton v-tooltip:bottom="'Remove'" icon="close" @click="removePicked" />
+				</div>
+				<div class="inner-shadow"></div>
+			</div>
+			<div v-if="files.length && files[0].type.startsWith('image')" class="img-wrapper">
+				<NuxtImg :src="getImageSrc()" />
+			</div>
+			<div class="inner-shadow"></div>
+		</div>
+
+		<div v-if="!picked" class="outline normal"></div>
+		<div v-if="!picked" class="outline succeed"></div>
+	</Comp>
+</template>
+
+<style scoped lang="scss">
+	:comp {
+		@include flex-center;
+		@include round-large;
+		$color: c(icon-color);
+		position: relative;
+		min-height: 36px;
+		overflow: clip;
+
+		&.dragover {
+			animation: shake 1s infinite;
+		}
+
+		.outline {
+			@include round-large;
+			position: absolute;
+			inset: 0;
+			pointer-events: none;
+
+			&.normal {
+				border: 1px dashed $color;
+			}
+
+			&.succeed {
+				border: c(accent) 2px solid;
+				mask-image: conic-gradient(black var(--rotation), transparent var(--rotation));
+			}
+		}
+
+		.choose-file {
+			@include flex-center;
+			flex-grow: 1;
+			gap: 8px;
+			padding: 8px 16px;
+			color: $color;
+			letter-spacing: 0.05em;
+			cursor: pointer;
+
+			.icon {
+				margin-left: -2px;
+				font-size: 20px;
+			}
+		}
+
+		.preview {
+			position: relative;
+			width: 100%;
+			background-color: c(inset-bg);
+
+			.img-wrapper {
+				padding: 8px;
+				padding-top: 0;
+			}
+
+			img {
+				@include chip-shadow;
+				width: 100%;
+			}
+
+			.toolbar {
+				position: relative;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				width: 100%;
+				overflow: clip;
+
+				.content {
+					display: flex;
+					gap: 8px;
+					align-items: center;
+					min-width: 0;
+					margin-left: 8px;
+					color: $color;
+
+					p {
+						overflow: hidden;
+						white-space: nowrap;
+						text-overflow: ellipsis;
+						user-select: text;
+					}
+				}
+
+				.icon {
+					font-size: 20px;
+				}
+
+				.buttons {
+					display: flex;
+					flex-shrink: 0;
+
+					.soft-button {
+						--wrapper-size: 36px;
+						--icon-size: 20px;
+					}
+				}
+			}
+
+			.inner-shadow {
+				@include control-inner-shadow;
+				position: absolute;
+				inset: 0;
+				pointer-events: none;
+			}
+		}
+
+		&.succeed {
+			.outline.succeed {
+				animation: rotation $ease-in-out-smooth 1.5s forwards;
+			}
+
+			.icon.upload-icon {
+				animation: uploading $ease-out-smooth 1s 500ms forwards;
+			}
+		}
+	}
+
+	@keyframes rotation {
+		from {
+			--rotation: 0turn;
+		}
+
+		to {
+			--rotation: 1turn;
+		}
+	}
+
+	@keyframes uploading {
+		0% {
+			translate: 0;
+		}
+
+		50% {
+			translate: 0 -100%;
+		}
+
+		50.0001% {
+			translate: 0 200%;
+		}
+
+		100% {
+			translate: 0;
+		}
+	}
+</style>

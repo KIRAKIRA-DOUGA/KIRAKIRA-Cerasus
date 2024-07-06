@@ -17,6 +17,7 @@
 	const isUserPage = computed(() => getLocaleRouteSlug()[0] === "user");
 	const cssDoodle = refComp();
 	const showCssDoodle = computed(() => useAppSettingsStore().showCssDoodle);
+	const backgroundImageSettingsStore = useAppSettingsStore().backgroundImage;
 	const isToggleSettings = ref(false);
 	const scrollToTop = () => [container, containerMain].forEach(c => c.value?.scrollTo({ top: 0, left: 0, behavior: "instant" }));
 	const transitionProps = (aboutSettings: boolean) => {
@@ -41,8 +42,14 @@
 	</Transition>
 	<div class="viewport">
 		<Transition>
-			<CssDoodle v-show="showCssDoodle" ref="cssDoodle" :rule="background" class="background" />
+			<CssDoodle v-show="showCssDoodle" ref="cssDoodle" :rule="background" class="background-doodle" />
 		</Transition>
+		<ClientOnly>
+			<div v-if="backgroundImageSettingsStore.image.data" class="background" :style="{ opacity: backgroundImageSettingsStore.opacity }">
+				<img :src="backgroundImageSettingsStore.image.data" :style="{ filter: 'blur(' + backgroundImageSettingsStore.blur + 'px)' }" />
+				<div class="overlay"></div>
+			</div>
+		</ClientOnly>
 		<SideBar />
 		<div ref="container" class="container" :class="{ scroll: isSettings, 'toggle-settings': isToggleSettings }">
 			<Transition name="settings" v-bind="transitionProps(true)">
@@ -119,12 +126,35 @@
 		transition: background-color $ease-out-max 250ms;
 	}
 
-	.background {
+	.background-doodle {
 		opacity: 0.3;
 
 		&.v-enter-from,
 		&.v-leave-to {
 			opacity: 0;
+		}
+	}
+
+	.background {
+		position: fixed;
+		inset: 0;
+		z-index: 0;
+		opacity: 0.2;
+
+		img {
+			@include square(100%);
+			position: fixed;
+			inset: 0;
+			object-fit: cover;
+		}
+
+		.overlay {
+			@include square(100%);
+			position: fixed;
+			inset: 0;
+			background-color: c(accent);
+			opacity: 0.75;
+			mix-blend-mode: screen;
 		}
 	}
 

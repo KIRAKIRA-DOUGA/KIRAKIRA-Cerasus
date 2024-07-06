@@ -13,6 +13,15 @@ export const useAppSettingsStore = defineStore("app-settings", {
 		// customThemeColor: "",
 		// coloredSideBar: false,
 
+		backgroundImage: {
+			image: {
+				name: "",
+				data: "",
+			},
+			opacity: 0.2,
+			blur: 0,
+		},
+
 		/** 已登录用户是否允许在多设备上同步主题设置 */
 		isAllowSyncThemeSettings: false,
 		player: {
