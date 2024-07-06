@@ -356,9 +356,9 @@
 	 */
 	function updateBuffered() {
 		if (!video.value) return;
+		arrayClearAll(buffered);
 		for (let i = 0; i < video.value.buffered.length; i++)
-			// 将开始和结束的位置百分比输入进数组。
-			buffered[i] = [video.value.buffered.start(i) / duration.value * 100, video.value.buffered.end(i) / duration.value * 100];
+			buffered.push([video.value.buffered.start(i) / duration.value, video.value.buffered.end(i) / duration.value]);
 	}
 
 	/**

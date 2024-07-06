@@ -211,8 +211,8 @@
 					class="buffered"
 					:key="index"
 					:style="{
-						left: 'calc(' + start + '% + var(--thumb-size))',
-						right: 100 - end + '%',
+						left: 'calc((100% - var(--thumb-size)) * ' + start + ' + var(--thumb-size))',
+						width: 'calc((100% - var(--thumb-size)) * ' + (end - start) + ')',
 					}"
 				></div>
 			</div>
@@ -299,10 +299,7 @@
 	.buffered-container,
 	.buffered {
 		pointer-events: none;
-
-		&:not(.buffered) {
-			transition: none;
-		}
+		transition: none;
 	}
 
 	.passed {
