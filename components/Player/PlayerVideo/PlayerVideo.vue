@@ -29,7 +29,7 @@
 	const muted = ref(false);
 	const currentTime = ref(NaN);
 	const duration = ref(NaN);
-	const buffered = ref(0);
+	const buffered = reactive<[number, number][]>([]);
 	const isTimeUpdating = ref(false);
 	const ended = ref(false);
 	const waiting = ref(true);
@@ -324,6 +324,7 @@
 		duration.value = video.duration;
 		video.preservesPitch = preservesPitch.value;
 		waiting.value = false;
+		updateBuffered();
 	}
 
 	const quality = computed({
@@ -351,15 +352,13 @@
 	}
 
 	/**
-	 * 视频加载缓冲事件。
-	 * @param e - 普通事件。
+	 * 更新缓冲进度。
 	 */
-	function onProgress(e: Event) {
-		const video = e.target as HTMLVideoElement;
-		try {
-			buffered.value = video.buffered.end(0);
-			// TODO: 这个只能获取视频缓存的总长度值，当用户手动跳时间时，会导致显示不准确。待优化。
-		} catch { }
+	function updateBuffered() {
+		if (!video.value) return;
+		for (let i = 0; i < video.value.buffered.length; i++)
+			// 将开始和结束的位置百分比输入进数组。
+			buffered[i] = [video.value.buffered.start(i) / duration.value * 100, video.value.buffered.end(i) / duration.value * 100];
 	}
 
 	/**
@@ -522,7 +521,7 @@
 					@ratechange="e => playbackRate = (e.target as HTMLVideoElement).playbackRate"
 					@timeupdate="onTimeUpdate"
 					@canplay="onCanPlay"
-					@progress="onProgress"
+					@progress="updateBuffered"
 					@ended="ended = true"
 					@waiting="waiting = true"
 					@contextmenu.prevent="e => menu = e"
