@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	const add = ref("");
-	const remove = () => { };
+	const remove = useNoop;
 </script>
 
 <template>

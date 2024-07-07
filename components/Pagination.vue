@@ -85,7 +85,7 @@
 			easing: hasExistAnimations ? eases.easeOutMax : eases.easeInOutSmooth, // 连续快速滚动时切换成缓出插值。
 		});
 		// `Uncaught (in promise) DOMException: The user aborted a request.` 给👴爬！
-		const IGNORE = () => { };
+		const IGNORE = useNoop;
 		if (merged) {
 			scrolledPages.value = merged.items;
 			if (scrollArea.value)

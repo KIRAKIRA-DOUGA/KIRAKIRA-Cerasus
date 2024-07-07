@@ -1,21 +1,28 @@
 /**
  * TAG 类型。
  */
-type CurrentLanguageVideoTag = {
-	tagId: number; // TAG ID
-	tagNameList: string[]; // 当前语言下的 TAG 名称列表
-	defaultTagName?: string; // 当前语言下的默认 TAG
+interface CurrentLanguageVideoTag {
+	/** TAG ID。 */
+	tagId: number;
+	/** 当前语言下的 TAG 名称列表。 */
+	tagNameList: string[];
+	/** 当前语言下的默认 TAG。 */
+	defaultTagName?: string;
+	/** 原名 TAG。 */
 	originTagName?: string;
-};
+}
 
 /**
  * 用于显示的 TAG 类型。
  */
-export type DisplayVideoTag = {
-	tagId: number; // TAG ID
-	mainTagName: string; // 主 TAG 名
-	originTagName?: string; // 次要 TAG 名（原名）
-};
+export interface DisplayVideoTag {
+	/** TAG ID。 */
+	tagId: number;
+	/** 主 TAG 名。 */
+	mainTagName: string;
+	/** 次要 TAG 名（原名）。 */
+	originTagName?: string;
+}
 
 /**
  * 获取当前语言的正确视频 TAG 数据，如果没有当前使用的语言，则使用。
@@ -24,40 +31,34 @@ export type DisplayVideoTag = {
  * @returns TAG 数据。
  */
 function getVideoTagNameWithCurrentLanguage(language: string, tagData?: VideoTag): CurrentLanguageVideoTag {
-	if (tagData) {
-		const { tagId, tagNameList: sourceTagNameList } = tagData;
+	const { tagId, tagNameList: srcTags } = tagData ?? { tagId: -1, tagNameList: [""] as unknown as VideoTag["tagNameList"] };
 
-		let tagNameList;
-		let defaultTagName;
-		if (language) {
-			const currentLanguageTagNameList = sourceTagNameList.filter(tag => tag.lang === language);
+	let tagNameList = [""], defaultTagName = "", originTagName = "", isSingleLang = false;
+	if (tagData && language) {
+		const currentLanguageTagNameList = srcTags.filter(tag => tag.lang === language);
 
-			if (currentLanguageTagNameList.length > 0) {
-				const currentLanguageTagNameList = sourceTagNameList.filter(tag => tag.lang === language);
-				tagNameList = currentLanguageTagNameList[0]?.tagName?.map(tagName => tagName.name);
-				defaultTagName = currentLanguageTagNameList[0]?.tagName.filter(tagName => tagName.isDefault)?.[0]?.name;
-			} else {
-				const otherLanguageTagNameList = sourceTagNameList.filter(tag => tag.lang === "other");
-				if (otherLanguageTagNameList.length > 0) {
-					tagNameList = otherLanguageTagNameList?.[0].tagName?.map(tagName => tagName.name);
-					defaultTagName = otherLanguageTagNameList?.[0].tagName?.filter(tagName => tagName.isDefault)?.[0]?.name;
-				} else {
-					tagNameList = sourceTagNameList?.[0].tagName?.map(tagName => tagName.name);
-					defaultTagName = sourceTagNameList?.[0].tagName?.filter(tagName => tagName.isDefault)?.[0]?.name;
-				}
-			}
+		if (currentLanguageTagNameList.length) {
+			const curLangTags = srcTags.filter(tag => tag.lang === language);
+			tagNameList = curLangTags[0]?.tagName.map(tagName => tagName.name);
+			defaultTagName = curLangTags[0]?.tagName.filter(tagName => tagName.isDefault)[0]?.name;
 		} else {
-			tagNameList = sourceTagNameList?.[0].tagName?.map(tagName => tagName.name);
-			defaultTagName = sourceTagNameList?.[0].tagName?.filter(tagName => tagName.isDefault)?.[0]?.name;
+			const otherLangTags = srcTags.filter(tag => tag.lang === "other");
+			if (otherLangTags.length) {
+				tagNameList = otherLangTags[0].tagName.map(tagName => tagName.name);
+				defaultTagName = otherLangTags[0].tagName.filter(tagName => tagName.isDefault)[0]?.name;
+			} else isSingleLang = true;
 		}
+	} else isSingleLang = true;
+	if (isSingleLang) {
+		const tagName = srcTags[0].tagName, isArray = Array.isArray(tagName);
+		tagNameList = isArray ? tagName.map(tagName => tagName.name) : [tagName];
+		defaultTagName = isArray ? tagName.filter(tagName => tagName.isDefault)[0]?.name : tagName;
+	}
+	srcTags?.forEach(tagNameList => tagNameList.tagName?.forEach?.(tagName => {
+		if (tagName.isOriginalTagName) originTagName = tagName.name;
+	})); // BUG: 示例视频《柴又》下声明的标签信息已经错乱，亟待修改！
 
-		let originTagName = "";
-		sourceTagNameList?.forEach(tagNameList => tagNameList.tagName.forEach(tagName => {
-			if (tagName.isOriginalTagName) originTagName = tagName.name;
-		}));
-
-		return { tagId, tagNameList, defaultTagName, originTagName };
-	} else return { tagId: -1, tagNameList: [""], defaultTagName: "", originTagName: "" };
+	return { tagId, tagNameList, defaultTagName, originTagName };
 }
 
 /**
@@ -68,7 +69,7 @@ function getVideoTagNameWithCurrentLanguage(language: string, tagData?: VideoTag
  */
 export function getDisplayVideoTagWithCurrentLanguage(language: string, tagData?: VideoTag): DisplayVideoTag {
 	const tagName = getVideoTagNameWithCurrentLanguage(language, tagData);
-	if (tagName && tagName.tagId >= 0) {
+	if (tagName?.tagId >= 0) {
 		const tagId = tagName.tagId;
 		const mainTagName = tagName.defaultTagName ?? tagName.tagNameList?.find(name => !!name) ?? "";
 		const originTagName = tagName.originTagName !== mainTagName ? tagName.originTagName : undefined;
@@ -83,7 +84,11 @@ export function getDisplayVideoTagWithCurrentLanguage(language: string, tagData?
  * @returns 有重复？
  */
 export function checkTagUnique(inputTagName: string, tagListSearchResult: VideoTag[]): boolean {
-	return tagListSearchResult.some(tag => tag.tagNameList.some(tagNameList => tagNameList.tagName.some(tagName => halfwidth(tagName.name.trim().replaceAll(/\s+/g, " ").toLowerCase()) === halfwidth(inputTagName.trim().replaceAll(/\s+/g, " ").toLowerCase()))));
+	return tagListSearchResult.some(tag =>
+		tag.tagNameList.some(tagNameList =>
+			tagNameList.tagName.some(tagName =>
+				halfwidth(tagName.name.trim().replaceAll(/\s+/g, " ").toLowerCase()) ===
+				halfwidth(inputTagName.trim().replaceAll(/\s+/g, " ").toLowerCase()))));
 }
 
 /**
@@ -97,6 +102,7 @@ export function getSearchHit(inputTagName: string, language: string, tag: VideoT
 	const displayTagData = getDisplayVideoTagWithCurrentLanguage(language, tag);
 	const text = halfwidth(inputTagName.trim().replaceAll(/\s+/g, " ").toLowerCase());
 	const regex = new RegExp(text, "i"); // 忽略大小写
-	const hitTag = tag.tagNameList.filter(tagName => tagName?.tagName?.some(name => regex.test(name.name)))?.[0]?.tagName?.[0].name;
+	const hitTag = tag.tagNameList.filter(tagName =>
+		tagName.tagName.some(name => regex.test(name.name)))[0]?.tagName[0]?.name;
 	return hitTag !== displayTagData.mainTagName ? hitTag : undefined;
 }
