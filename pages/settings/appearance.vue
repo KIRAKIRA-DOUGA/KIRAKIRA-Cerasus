@@ -39,18 +39,10 @@
 	const backgroundImageFiles = ref<File[]>([]);
 	const backgroundImageFile = computed(() => backgroundImageFiles.value[0]);
 
-	watch(backgroundImageFile, file => {
-		if (!file) {
-			backgroundImageSettingsStore.image.name = "";
-			backgroundImageSettingsStore.image.data = "";
-		} else {
-			backgroundImageSettingsStore.image.name = file.name;
-			const reader = new FileReader();
-			reader.onload = () => {
-				backgroundImageSettingsStore.image.data = reader.result as string;
-			};
-			reader.readAsDataURL(file);
-		}
+	watch(backgroundImageFile, async file => {
+		const bgImage = backgroundImageSettingsStore.image;
+		bgImage.name = file?.name ?? "";
+		bgImage.data = file ? await fileToData(file) : "";
 	});
 
 	onMounted(() => {
@@ -59,7 +51,9 @@
 				item.classList.remove("light", "dark");
 
 		// 从设置存储中加载背景图片
-		backgroundImageFiles.value.push(new File([backgroundImageSettingsStore.image.data], backgroundImageSettingsStore.image.name));
+		const bgImage = backgroundImageSettingsStore.image;
+		if (bgImage.data)
+			backgroundImageFiles.value = [dataToFile(bgImage.data, bgImage.name)];
 	});
 </script>
 

@@ -211,8 +211,8 @@
 					class="buffered"
 					:key="index"
 					:style="{
-						left: 'calc((100% - var(--thumb-size)) * ' + start + ' + var(--thumb-size))',
-						width: 'calc((100% - var(--thumb-size)) * ' + (end - start) + ')',
+						left: `calc((100% - var(--thumb-size)) * ${start} + var(--thumb-size))`,
+						width: `calc((100% - var(--thumb-size)) * ${end - start})`,
 					}"
 				></div>
 			</div>

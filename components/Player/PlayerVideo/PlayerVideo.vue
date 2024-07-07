@@ -29,7 +29,7 @@
 	const muted = ref(false);
 	const currentTime = ref(NaN);
 	const duration = ref(NaN);
-	const buffered = reactive<[number, number][]>([]);
+	const buffered = ref<[number, number][]>([]);
 	const isTimeUpdating = ref(false);
 	const ended = ref(false);
 	const waiting = ref(true);
@@ -356,9 +356,8 @@
 	 */
 	function updateBuffered() {
 		if (!video.value) return;
-		arrayClearAll(buffered);
-		for (let i = 0; i < video.value.buffered.length; i++)
-			buffered.push([video.value.buffered.start(i) / duration.value, video.value.buffered.end(i) / duration.value]);
+		const videoBuffered = video.value.buffered;
+		buffered.value = forMap(videoBuffered.length, index => [videoBuffered.start(index), videoBuffered.end(index)]);
 	}
 
 	/**

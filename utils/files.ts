@@ -47,6 +47,24 @@ export function fileToData(file: File) {
 		fileReader.readAsDataURL(file);
 	});
 }
+/**
+ * Data: Base64 链接转 Blob 文件。
+ * @param dataUrl - Data: Base64 链接。
+ * @param fileName - 文件名，可选。
+ * @returns Blob 文件。
+ */
+export function dataToFile(dataUrl: string, fileName?: string) {
+	const mimeAndBytes = dataUrl.split(",") as [string, string];
+	const mime = mimeAndBytes[0].match(/:(.*?);/)![1];
+	const byteString = atob(mimeAndBytes[1]);
+	let n = byteString.length;
+	const bytes = new Uint8Array(n);
+	while (n--)
+		bytes[n] = byteString.charCodeAt(n);
+	return fileName != null ?
+		new File([bytes], fileName, { type: mime }) :
+		new Blob([bytes], { type: mime }) as File;
+}
 
 /**
  * 下载文件。

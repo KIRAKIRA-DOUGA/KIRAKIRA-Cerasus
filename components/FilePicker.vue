@@ -13,6 +13,10 @@
 	const succeed = ref(false);
 	const files = defineModel<File[]>({ default: [] });
 	const file = computed(() => files.value[0]);
+	const isImageType = computed(() => !!file.value?.type.startsWith("image"));
+	const imageSource = ref<string>();
+
+	// TODO: 使用 showOpenFilePicker() 函数，从此以后就不用再使用那个愚蠢的 input 元素了。
 
 	/**
 	 * 成功上传文件。
@@ -23,6 +27,7 @@
 		if (!isPrefersReducedMotion()) await delay(1500);
 		arrayClearAll(files.value);
 		files.value.push(fileList[0]);
+		updateImageSrc();
 	}
 
 	/**
@@ -58,7 +63,6 @@
 		if (!files) return;
 		const dropFiles = getValidFiles(files);
 		if (dropFiles.length)
-
 			uploaded(dropFiles);
 		else if (files.length)
 			invalidUploaded();
@@ -87,11 +91,11 @@
 	}
 
 	/**
-	 * 获取图片链接。
-	 * @returns 图片链接。
+	 * 更新图片链接。
 	 */
-	function getImageSrc() {
-		return URL.createObjectURL(files.value[0]);
+	async function updateImageSrc() {
+		const dataUrl = await fileToData(file.value);
+		imageSource.value = dataUrl;
 	}
 
 	watch(file, file => {
@@ -113,7 +117,6 @@
 			ref="fileInput"
 			hidden
 			type="file"
-			multiple
 			:accept
 			@change="onChangeFile"
 		/>
@@ -138,9 +141,11 @@
 				</div>
 				<div class="inner-shadow"></div>
 			</div>
-			<div v-if="files.length && files[0].type.startsWith('image')" class="img-wrapper">
-				<NuxtImg :src="getImageSrc()" />
-			</div>
+			<Transition>
+				<div v-if="isImageType" class="img-wrapper">
+					<img :src="imageSource" alt="preview" />
+				</div>
+			</Transition>
 			<div class="inner-shadow"></div>
 		</div>
 
