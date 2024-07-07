@@ -16,7 +16,7 @@ export class Point {
 	 * @returns 距离。
 	 */
 	distance(point: Point): number {
-		return Math.sqrt((point.x - this.x) ** 2 + (point.y - this.y) ** 2);
+		return Math.hypot(point.x - this.x, point.y - this.y);
 	}
 
 	/**

@@ -11,7 +11,7 @@
 					<div class={styles.mask}>
 						<div class={styles.card}>
 							<div class={styles.cardBack}>
-								{forMap(2, i => <Icon name="settings" class={styles.settingsIcon} key={`settings-${i}`} />)}
+								{forMap(2, i => <Icon name="settings" class={styles.settingsIcon} key={`settings-${i}`} />, 1)}
 							</div>
 							<div class={styles.cardBody}>
 								<h1>警告，JavaScript被禁用</h1>
