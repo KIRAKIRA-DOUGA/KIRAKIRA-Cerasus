@@ -10,8 +10,8 @@
 		preservesPitch?: boolean;
 		/** 视频时长。 */
 		duration?: number;
-		/** 缓冲加载进度值。 */
-		buffered?: number;
+		/** 缓冲加载进度百分比数组。 */
+		buffered?: [number, number][];
 		/** 是否全屏？ */
 		fullscreen?: boolean;
 		/** 切换全屏函数。 */
@@ -22,7 +22,7 @@
 		hidden?: boolean;
 	}>(), {
 		duration: NaN,
-		buffered: 0,
+		buffered: undefined,
 		fullscreen: false,
 		toggleFullscreen: undefined,
 		qualities: () => [],
@@ -86,7 +86,6 @@
 	const currentTime = computed(() => new Duration(model.value).toString());
 	const countdownTime = computed(() => new Duration(model.value - props.duration).toString());
 	const duration = computed(() => new Duration(props.duration).toString());
-	const buffered = computed(() => props.buffered / props.duration);
 
 	/**
 	 * 点击速度按钮时，在速度中循环。

@@ -104,7 +104,7 @@
 				<div class="hue-gradient"></div>
 				<Icon name="edit" />
 				<h3>{{ t.custom }}</h3>
-				<p>Try Yourself</p>
+				<p>Make It Yours</p>
 			</div>
 		</SettingsGridItem>
 	</section>

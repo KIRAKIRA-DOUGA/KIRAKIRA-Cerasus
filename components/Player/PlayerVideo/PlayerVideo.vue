@@ -29,7 +29,7 @@
 	const muted = ref(false);
 	const currentTime = ref(NaN);
 	const duration = ref(NaN);
-	const buffered = ref(0);
+	const buffered = reactive<[number, number][]>([]);
 	const isTimeUpdating = ref(false);
 	const ended = ref(false);
 	const waiting = ref(true);
@@ -177,13 +177,11 @@
 	});
 
 	watch(waiting, waiting => {
-		if (waiting) {
-			clearTimeout(showProgressRingTimeoutId.value);
+		clearTimeout(showProgressRingTimeoutId.value);
+		if (waiting)
 			showProgressRingTimeoutId.value = setTimeout(() => showProgressRing.value = true, 1000);
-		} else {
-			clearTimeout(showProgressRingTimeoutId.value);
+		else
 			showProgressRing.value = false;
-		}
 	});
 
 	watch(() => settings.danmaku.opacity, opacity => {
@@ -326,6 +324,7 @@
 		duration.value = video.duration;
 		video.preservesPitch = preservesPitch.value;
 		waiting.value = false;
+		updateBuffered();
 	}
 
 	const quality = computed({
@@ -353,15 +352,13 @@
 	}
 
 	/**
-	 * 视频加载缓冲事件。
-	 * @param e - 普通事件。
+	 * 更新缓冲进度。
 	 */
-	function onProgress(e: Event) {
-		const video = e.target as HTMLVideoElement;
-		try {
-			buffered.value = video.buffered.end(0);
-			// TODO: 这个只能获取视频缓存的总长度值，当用户手动跳时间时，会导致显示不准确。待优化。
-		} catch { }
+	function updateBuffered() {
+		if (!video.value) return;
+		arrayClearAll(buffered);
+		for (let i = 0; i < video.value.buffered.length; i++)
+			buffered.push([video.value.buffered.start(i) / duration.value, video.value.buffered.end(i) / duration.value]);
 	}
 
 	/**
@@ -524,7 +521,7 @@
 					@ratechange="e => playbackRate = (e.target as HTMLVideoElement).playbackRate"
 					@timeupdate="onTimeUpdate"
 					@canplay="onCanPlay"
-					@progress="onProgress"
+					@progress="updateBuffered"
 					@ended="ended = true"
 					@waiting="waiting = true"
 					@contextmenu.prevent="e => menu = e"

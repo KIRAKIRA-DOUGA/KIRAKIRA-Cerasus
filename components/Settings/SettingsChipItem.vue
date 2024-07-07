@@ -101,7 +101,9 @@
 			font-size: 24px;
 
 			&.soft-button {
-				margin-right: -8px;
+				--wrapper-size: 48px;
+				--ripple-size: var(--wrapper-size);
+				margin-right: -12px;
 			}
 		}
 

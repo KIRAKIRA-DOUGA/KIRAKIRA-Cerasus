@@ -6,8 +6,8 @@
 		max?: number;
 		/** 滑块默认值。当单击鼠标中键或触摸屏长按组件时还原默认值。 */
 		defaultValue?: number;
-		/** 媒体缓冲加载进度值。 */
-		buffered?: number;
+		/** 媒体缓冲加载进度百分比数组。 */
+		buffered?: [number, number][];
 		/** 加载中。 */
 		waiting?: boolean;
 		/** 步长。 */
@@ -51,7 +51,6 @@
 	const restrict = (n: number | undefined, nanValue: number) => Number.isFinite(n) ? clamp(map(n!, props.min, props.max, 0, 1), 0, 1) : nanValue;
 	const value = computed(() => restrict(model.value, 0));
 	const smoothValue = useSmoothValue(value, 0.5); // 修改这个参数可以调整滑动条的平滑移动值。
-	const buffered = computed(() => restrict(props.buffered, NaN));
 	const thumbEl = ref<HTMLDivElement>(), trackEl = ref<HTMLDivElement>();
 
 	const showPendingState = ref<"" | "hovering" | "dragging">("");
@@ -189,7 +188,6 @@
 		tabindex="0"
 		:style="{
 			'--value': smoothValue,
-			'--buffered': buffered,
 			'--pending': smoothPendingValue,
 		}"
 		role="slider"
@@ -207,7 +205,17 @@
 			@pointerleave="onTrackLeave"
 		>
 			<div class="base"></div>
-			<div v-show="Number.isFinite(buffered)" class="buffered"></div>
+			<div v-if="buffered && buffered.length > 0" class="buffered-container">
+				<div
+					v-for="([start, end], index) in buffered"
+					class="buffered"
+					:key="index"
+					:style="{
+						left: 'calc((100% - var(--thumb-size)) * ' + start + ' + var(--thumb-size))',
+						width: 'calc((100% - var(--thumb-size)) * ' + (end - start) + ')',
+					}"
+				></div>
+			</div>
 			<div class="passed"></div>
 			<div
 				ref="thumbEl"
@@ -230,7 +238,6 @@
 	$track-thickness: 6px;
 	$track-hit-thickness: 36px; // 反应区
 	$value: calc(var(--value) * (100% - var(--thumb-size)));
-	$buffered: calc(var(--buffered) * (100% - var(--thumb-size)));
 	$pending: calc(var(--pending) * (100% - var(--thumb-size)) + var(--thumb-size) / 2);
 
 	$large-track-thickness: 16px;
@@ -243,7 +250,6 @@
 
 	:comp {
 		--value: 0;
-		--buffered: 0;
 		--pending: -10086;
 		--track-hit-thickness: #{$track-hit-thickness};
 		position: relative;
@@ -273,11 +279,15 @@
 
 	.base,
 	.passed,
+	.buffered-container,
 	.buffered {
 		@include oval;
 		position: absolute;
 		height: var(--track-thickness);
-		margin: $thumb-size-half 0;
+
+		&:not(.buffered) {
+			margin: $thumb-size-half 0;
+		}
 	}
 
 	.base {
@@ -286,6 +296,7 @@
 	}
 
 	.passed,
+	.buffered-container,
 	.buffered {
 		pointer-events: none;
 		transition: none;
@@ -297,8 +308,12 @@
 		opacity: map(var(--value), 0, 1, 0.4, 1, true);
 	}
 
+	.buffered-container {
+		width: 100%;
+		overflow: clip;
+	}
+
 	.buffered {
-		width: $buffered;
 		background-color: c(accent-disabled);
 	}
 
