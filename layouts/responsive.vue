@@ -46,8 +46,8 @@
 		</Transition>
 		<ClientOnly>
 			<div v-if="backgroundImageSettingsStore.image.data" class="background" :style="{ opacity: backgroundImageSettingsStore.opacity }">
-				<img :src="backgroundImageSettingsStore.image.data" :style="{ filter: 'blur(' + backgroundImageSettingsStore.blur + 'px)' }" />
-				<div class="overlay"></div>
+				<img :src="backgroundImageSettingsStore.image.data" :style="{ filter: `blur(${backgroundImageSettingsStore.blur}px)` }" />
+				<div class="overlay" :style="{ opacity: backgroundImageSettingsStore.tint }"></div>
 			</div>
 		</ClientOnly>
 		<SideBar />

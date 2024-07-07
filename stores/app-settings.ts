@@ -19,6 +19,7 @@ export const useAppSettingsStore = defineStore("app-settings", {
 				data: "",
 			},
 			opacity: 0.2,
+			tint: 0.75,
 			blur: 0,
 		},
 

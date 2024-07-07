@@ -86,6 +86,8 @@ declare global {
 			brightness: number;
 		};
 	};
+	/** 媒体缓冲加载进度百分比数组。 */
+	type Buffered = [start: number, end: number][];
 
 	type FlyoutModel = FlyoutModelNS.Tuple | FlyoutModelNS.Object;
 	type MenuModel = MouseEvent | PointerEvent | null;

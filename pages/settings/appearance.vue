@@ -39,9 +39,6 @@
 	const backgroundImageFiles = ref<File[]>([]);
 	const backgroundImageFile = computed(() => backgroundImageFiles.value[0]);
 
-	// 从设置存储中加载背景图片
-	backgroundImageFiles.value.push(new File([backgroundImageSettingsStore.image.data], backgroundImageSettingsStore.image.name));
-
 	watch(backgroundImageFile, file => {
 		if (!file) {
 			backgroundImageSettingsStore.image.name = "";
@@ -60,6 +57,9 @@
 		if (paletteSection.value)
 			for (const item of paletteSection.value.children)
 				item.classList.remove("light", "dark");
+
+		// 从设置存储中加载背景图片
+		backgroundImageFiles.value.push(new File([backgroundImageSettingsStore.image.data], backgroundImageSettingsStore.image.name));
 	});
 </script>
 
@@ -72,7 +72,7 @@
 
 	<Subheader icon="brightness_medium">{{ t.scheme }}</Subheader>
 	<div class="chip sample">
-		<PlayerVideoController :currentTime="30" :duration="110" :buffered="60" />
+		<PlayerVideoController :currentTime="30" :duration="110" :buffered="[[0, 60]]" />
 	</div>
 	<section grid class="theme-type">
 		<SettingsGridItem
@@ -142,6 +142,15 @@
 			:defaultValue="0.2"
 			icon="opacity"
 		>Opacity</SettingsSlider>
+		<SettingsSlider
+			v-model="backgroundImageSettingsStore.tint"
+			:min="0"
+			:max="1"
+			:step="0.01"
+			:defaultValue="0.75"
+			icon="opacity"
+			pending="current"
+		>Tint</SettingsSlider>
 		<SettingsSlider
 			v-model="backgroundImageSettingsStore.blur"
 			:min="0"

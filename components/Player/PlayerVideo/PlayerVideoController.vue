@@ -10,8 +10,8 @@
 		preservesPitch?: boolean;
 		/** 视频时长。 */
 		duration?: number;
-		/** 缓冲加载进度百分比数组。 */
-		buffered?: [number, number][];
+		/** 媒体缓冲加载进度百分比数组。 */
+		buffered?: Buffered;
 		/** 是否全屏？ */
 		fullscreen?: boolean;
 		/** 切换全屏函数。 */
