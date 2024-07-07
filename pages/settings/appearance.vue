@@ -127,7 +127,7 @@
 
 	<Subheader icon="wallpaper">{{ t.background }}</Subheader>
 	<section>
-		<FilePicker v-model="backgroundImageFiles" accept="image/*" />
+		<FilePicker v-model="backgroundImageFiles" accept="image/*" cover />
 		<SettingsSlider
 			v-model="backgroundImageSettingsStore.opacity"
 			:min="0"
@@ -135,6 +135,7 @@
 			:step="0.01"
 			:defaultValue="0.2"
 			icon="opacity"
+			pending="current"
 		>Opacity</SettingsSlider>
 		<SettingsSlider
 			v-model="backgroundImageSettingsStore.tint"

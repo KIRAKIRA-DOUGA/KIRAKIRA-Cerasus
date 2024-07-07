@@ -6,6 +6,12 @@
 	const props = defineProps<{
 		/** 接受的文件类型。 */
 		accept: string;
+		/**
+		 * #### 封面模式？
+		 * * 开启后，图片将填充整个窗格。适用于照片、封面、艺术作品等。
+		 * * 关闭后，图片将适应整个窗格以保证图片不被裁切。适用于截图、纸质扫描件、证件照等。
+		 */
+		cover?: boolean;
 	}>();
 	const fileInput = ref<HTMLInputElement>();
 	const dragover = ref(false);
@@ -27,7 +33,6 @@
 		if (!isPrefersReducedMotion()) await delay(1500);
 		arrayClearAll(files.value);
 		files.value.push(fileList[0]);
-		updateImageSrc();
 	}
 
 	/**
@@ -85,27 +90,31 @@
 	 * 取消本次上传。
 	 */
 	function removePicked() {
-		arrayClearAll(files.value);
-		succeed.value = false;
-		clearFileInput(fileInput);
+		startViewTransition(() => {
+			arrayClearAll(files.value);
+			succeed.value = false;
+			clearFileInput(fileInput);
+		});
 	}
 
 	/**
 	 * 更新图片链接。
 	 */
 	async function updateImageSrc() {
-		const dataUrl = await fileToData(file.value);
-		imageSource.value = dataUrl;
+		imageSource.value = file.value && await fileToData(file.value);
 	}
 
 	watch(file, file => {
-		picked.value = !!file;
+		startViewTransition(async () => {
+			picked.value = !!file;
+			await updateImageSrc();
+		});
 	});
 </script>
 
 <template>
 	<Comp
-		:class="{ dragover, succeed }"
+		:class="{ dragover, succeed, unpicked: !picked }"
 		@dragover.stop.prevent="dragover = true"
 		@dragenter.stop.prevent="dragover = true"
 		@dragleave.stop.prevent="dragover = false"
@@ -121,32 +130,36 @@
 			@change="onChangeFile"
 		/>
 
-		<div v-if="!picked" v-ripple class="choose-file" @click="fileInput?.click()">
-			<Icon name="upload" class="upload-icon" />
-			<!-- TODO: 多语言 -->
-			<p>Choose File</p>
-		</div>
+		<div
+			:class="['container', !picked ? 'select-file' : ['preview', { cover }]]"
+			v-ripple="!picked"
+			@click="!picked && fileInput?.click()"
+		>
+			<template v-if="!picked">
+				<Icon name="upload" class="upload-icon" />
+				<!-- TODO: 多语言 -->
+				<p>Select a File</p>
+			</template>
 
-		<div v-else class="preview">
-			<div class="toolbar">
-				<div class="content">
-					<Icon name="photo" />
-					<p>{{ files[0].name }}</p>
+			<template v-else>
+				<div class="toolbar">
+					<div class="content">
+						<Icon name="photo" />
+						<p>{{ file?.name }}</p>
+					</div>
+					<div class="buttons">
+						<!-- TODO: 多语言 -->
+						<SoftButton v-tooltip:bottom="'Repick'" icon="upload" @click="fileInput?.click()" />
+						<!-- TODO: 多语言 -->
+						<SoftButton v-tooltip:bottom="'Remove'" icon="close" @click="removePicked" />
+					</div>
+					<div class="inner-shadow"></div>
 				</div>
-				<div class="buttons">
-					<!-- TODO: 多语言 -->
-					<SoftButton v-tooltip:bottom="'Repick'" icon="upload" @click="fileInput?.click()" />
-					<!-- TODO: 多语言 -->
-					<SoftButton v-tooltip:bottom="'Remove'" icon="close" @click="removePicked" />
-				</div>
-				<div class="inner-shadow"></div>
-			</div>
-			<Transition>
 				<div v-if="isImageType" class="img-wrapper">
 					<img :src="imageSource" alt="preview" />
 				</div>
-			</Transition>
-			<div class="inner-shadow"></div>
+				<div class="inner-shadow"></div>
+			</template>
 		</div>
 
 		<div v-if="!picked" class="outline normal"></div>
@@ -155,13 +168,21 @@
 </template>
 
 <style scoped lang="scss">
+	$toolbar-height: 36px;
+
 	:comp {
 		@include flex-center;
 		@include round-large;
 		$color: c(icon-color);
 		position: relative;
-		min-height: 36px;
+		align-items: flex-start;
+		min-height: $toolbar-height;
 		overflow: clip;
+		view-transition-name: file-picker;
+
+		&.unpicked {
+			height: $toolbar-height !important;
+		}
 
 		&.dragover {
 			animation: shake 1s infinite;
@@ -183,7 +204,7 @@
 			}
 		}
 
-		.choose-file {
+		.select-file {
 			@include flex-center;
 			flex-grow: 1;
 			gap: 8px;
@@ -209,16 +230,19 @@
 			}
 
 			img {
-				@include chip-shadow;
+				@include chip-shadow-filter;
 				width: 100%;
+				object-fit: contain;
 			}
 
 			.toolbar {
 				position: relative;
+				z-index: 1;
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
 				width: 100%;
+				height: $toolbar-height;
 				overflow: clip;
 
 				.content {
@@ -257,6 +281,32 @@
 				position: absolute;
 				inset: 0;
 				pointer-events: none;
+			}
+
+			&,
+			.img-wrapper,
+			.img-wrapper img {
+				height: 100%;
+			}
+
+			&:not(.cover) .img-wrapper {
+				height: calc(100% - $toolbar-height);
+			}
+
+			&.cover {
+				.toolbar {
+					@include acrylic-background;
+					@include card-shadow-with-blur;
+					position: absolute;
+				}
+
+				.img-wrapper {
+					padding: 0;
+				}
+
+				img {
+					object-fit: cover;
+				}
 			}
 		}
 
@@ -297,5 +347,23 @@
 		100% {
 			translate: 0;
 		}
+	}
+</style>
+
+<style lang="scss">
+	$transition-duration: 500ms;
+
+	::view-transition-old(file-picker),
+	::view-transition-new(file-picker) {
+		height: 100%;
+		object-fit: cover;
+		object-position: center top;
+		overflow: clip;
+		animation-duration: $transition-duration;
+	}
+
+	::view-transition-group(file-picker) {
+		animation-duration: $transition-duration;
+		animation-timing-function: $ease-in-out-material-emphasized;
 	}
 </style>
