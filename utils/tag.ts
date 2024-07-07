@@ -1,5 +1,5 @@
 /**
- * TAG 类型
+ * TAG 类型。
  */
 type CurrentLanguageVideoTag = {
 	tagId: number; // TAG ID
@@ -9,7 +9,7 @@ type CurrentLanguageVideoTag = {
 };
 
 /**
- * 用于显示的 TAG 类型
+ * 用于显示的 TAG 类型。
  */
 export type DisplayVideoTag = {
 	tagId: number; // TAG ID
@@ -18,10 +18,10 @@ export type DisplayVideoTag = {
 };
 
 /**
- * 获取当前语言的正确视频 TAG 数据，如果没有当前使用的语言，则使用
- * @param language 当前语言
- * @param tagData 获取到的 TAG 数据
- * @returns TAG 数据
+ * 获取当前语言的正确视频 TAG 数据，如果没有当前使用的语言，则使用。
+ * @param language - 当前语言。
+ * @param tagData - 获取到的 TAG 数据。
+ * @returns TAG 数据。
  */
 function getVideoTagNameWithCurrentLanguage(language: string, tagData?: VideoTag): CurrentLanguageVideoTag {
 	if (tagData) {
@@ -61,10 +61,10 @@ function getVideoTagNameWithCurrentLanguage(language: string, tagData?: VideoTag
 }
 
 /**
- * 获取当前语言用于显示的 TAG 数据
- * @param language 当前语言
- * @param tagData 获取到的 TAG 数据
- * @returns 用于显示的 TAG 数据
+ * 获取当前语言用于显示的 TAG 数据。
+ * @param language - 当前语言。
+ * @param tagData - 获取到的 TAG 数据。
+ * @returns 用于显示的 TAG 数据。
  */
 export function getDisplayVideoTagWithCurrentLanguage(language: string, tagData?: VideoTag): DisplayVideoTag {
 	const tagName = getVideoTagNameWithCurrentLanguage(language, tagData);
@@ -77,21 +77,21 @@ export function getDisplayVideoTagWithCurrentLanguage(language: string, tagData?
 }
 
 /**
- * 在搜索结果中检查当前输入的 TAG 是否重复
- * @param inputTagName 用户输入的 TAG
- * @param tagListSearchResult 搜索到的 TAG
- * @returns 有重复返回 true, 没重复返回 false
+ * 在搜索结果中检查当前输入的 TAG 是否重复。
+ * @param inputTagName - 用户输入的 TAG。
+ * @param tagListSearchResult - 搜索到的 TAG。
+ * @returns 有重复？
  */
 export function checkTagUnique(inputTagName: string, tagListSearchResult: VideoTag[]): boolean {
 	return tagListSearchResult.some(tag => tag.tagNameList.some(tagNameList => tagNameList.tagName.some(tagName => halfwidth(tagName.name.trim().replaceAll(/\s+/g, " ").toLowerCase()) === halfwidth(inputTagName.trim().replaceAll(/\s+/g, " ").toLowerCase()))));
 }
 
 /**
- * 在搜索结果中获取第一个与当前用户输入内容匹配的 TAG（忽略大小写）
- * @param inputTagName 用户输入的 TAG
- * @param language 当前语言
- * @param tag 搜索到其中一个的 TAG
- * @returns 与当前用户输入内容匹配的 TAG
+ * 在搜索结果中获取第一个与当前用户输入内容匹配的 TAG（忽略大小写）。
+ * @param inputTagName - 用户输入的 TAG。
+ * @param language - 当前语言。
+ * @param tag - 搜索到其中一个的 TAG。
+ * @returns 与当前用户输入内容匹配的 TAG。
  */
 export function getSearchHit(inputTagName: string, language: string, tag: VideoTag): string | undefined {
 	const displayTagData = getDisplayVideoTagWithCurrentLanguage(language, tag);
