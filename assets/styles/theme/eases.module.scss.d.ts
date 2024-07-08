@@ -155,7 +155,7 @@ export type Styles = {
 	 */
 	easeOutSmooth: string;
 	/**
-	 * ### 流动设计强调缓出
+	 * ### 流利设计强调缓出
 	 * 微软 Windows 11 Fluent 2 中用于强调的缓动，如任务栏图标跳动等。
 	 */
 	easeOutFluentBack: string;
@@ -260,7 +260,7 @@ export type Styles = {
 	 */
 	easeInOutSmooth: string;
 	/**
-	 * ### 流动设计点对点缓入缓出
+	 * ### 流利设计点对点缓入缓出
 	 * 微软 Windows 11 Fluent 2 中用于点对点的缓动，如窗口最大化、还原等。
 	 */
 	easeInOutFluent: string;

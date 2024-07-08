@@ -34,10 +34,26 @@
 	const flyoutColorPicker = ref<FlyoutModel>();
 	watch(customColor, customColor => cookieThemeCustomColor.value = customColor.hex);
 
+	const backgroundImageSettingsStore = useAppSettingsStore().backgroundImage;
+
+	const backgroundImageFiles = ref<File[]>([]);
+	const backgroundImageFile = computed(() => backgroundImageFiles.value[0]);
+
+	watch(backgroundImageFile, async file => {
+		const bgImage = backgroundImageSettingsStore.image;
+		bgImage.name = file?.name ?? "";
+		bgImage.data = file ? await fileToData(file) : "";
+	});
+
 	onMounted(() => {
 		if (paletteSection.value)
 			for (const item of paletteSection.value.children)
 				item.classList.remove("light", "dark");
+
+		// 从设置存储中加载背景图片
+		const bgImage = backgroundImageSettingsStore.image;
+		if (bgImage.data)
+			backgroundImageFiles.value = [dataToFile(bgImage.data, bgImage.name)];
 	});
 </script>
 
@@ -50,7 +66,7 @@
 
 	<Subheader icon="brightness_medium">{{ t.scheme }}</Subheader>
 	<div class="chip sample">
-		<PlayerVideoController :currentTime="30" :duration="110" :buffered="60" />
+		<PlayerVideoController :currentTime="30" :duration="110" :buffered="[[0, 60]]" />
 	</div>
 	<section grid class="theme-type">
 		<SettingsGridItem
@@ -110,8 +126,35 @@
 	</section>
 
 	<Subheader icon="wallpaper">{{ t.background }}</Subheader>
-	<section list>
-		<SettingsChipItem icon="wallpaper" trailingIcon="edit">{{ t.background.custom }}</SettingsChipItem>
+	<section>
+		<FilePicker v-model="backgroundImageFiles" accept="image/*" cover />
+		<SettingsSlider
+			v-model="backgroundImageSettingsStore.opacity"
+			:min="0"
+			:max="0.4"
+			:step="0.01"
+			:defaultValue="0.2"
+			icon="opacity"
+			pending="current"
+		>Opacity</SettingsSlider>
+		<SettingsSlider
+			v-model="backgroundImageSettingsStore.tint"
+			:min="0"
+			:max="1"
+			:step="0.01"
+			:defaultValue="0.75"
+			icon="opacity"
+			pending="current"
+		>Tint</SettingsSlider>
+		<SettingsSlider
+			v-model="backgroundImageSettingsStore.blur"
+			:min="0"
+			:max="64"
+			:step="1"
+			:defaultValue="0"
+			icon="opacity"
+			pending="current"
+		>Blur Intensity</SettingsSlider>
 	</section>
 
 	<Subheader icon="more_horiz">{{ t(2).other }}</Subheader>
@@ -235,5 +278,10 @@
 
 	.color-picker-wrapper {
 		min-width: 300px;
+	}
+
+	.file-picker {
+		width: 300px;
+		margin: 16px;
 	}
 </style>

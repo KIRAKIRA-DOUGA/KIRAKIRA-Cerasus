@@ -7,7 +7,7 @@
 		/** 滑块默认值。当单击鼠标中键或触摸屏长按组件时还原默认值。 */
 		defaultValue?: number;
 		/** 媒体缓冲加载进度百分比数组。 */
-		buffered?: [number, number][];
+		buffered?: Buffered;
 		/** 加载中。 */
 		waiting?: boolean;
 		/** 步长。 */
@@ -211,8 +211,8 @@
 					class="buffered"
 					:key="index"
 					:style="{
-						left: 'calc((100% - var(--thumb-size)) * ' + start + ' + var(--thumb-size))',
-						width: 'calc((100% - var(--thumb-size)) * ' + (end - start) + ')',
+						left: `calc((100% - var(--thumb-size)) * ${start} + var(--thumb-size))`,
+						width: `calc((100% - var(--thumb-size)) * ${end - start})`,
 					}"
 				></div>
 			</div>

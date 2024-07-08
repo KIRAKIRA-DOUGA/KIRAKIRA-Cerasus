@@ -29,7 +29,7 @@
 	const muted = ref(false);
 	const currentTime = ref(NaN);
 	const duration = ref(NaN);
-	const buffered = reactive<[number, number][]>([]);
+	const buffered = ref<[number, number][]>([]);
 	const isTimeUpdating = ref(false);
 	const ended = ref(false);
 	const waiting = ref(true);
@@ -192,22 +192,16 @@
 		playerConfig.danmaku.fontSizeScale = size;
 	});
 
-	watch(fullscreen, fullscreen => {
-		try { // 全屏时请求横屏。在设备不支持或安全问题时有可能会报错。
-			if (fullscreen) {
-				if (isMobile()) {
-					screenOrientationBeforeFullscreen.value = screen.orientation.type;
-					screen.orientation.lock("landscape");
-				}
-				autoHideController(); // 进入全屏后自动开始隐藏控制栏计时。
-			} else {
-				if (isMobile()) {
-					screen.orientation.lock(screenOrientationBeforeFullscreen.value);
-					screen.orientation.unlock();
-				}
-				hideController.value = false; // 退出全屏时确保显示播放器控制栏。
-			}
-		} catch { }
+	watch(fullscreen, fullscreen => { // 全屏时请求横屏。在设备不支持或安全问题时有可能会报错。
+		if (fullscreen) {
+			screenOrientationBeforeFullscreen.value = screen.orientation.type;
+			screen.orientation.lock("landscape").catch(useNoop);
+			autoHideController(); // 进入全屏后自动开始隐藏控制栏计时。
+		} else {
+			screen.orientation.lock(screenOrientationBeforeFullscreen.value).catch(useNoop);
+			screen.orientation.unlock();
+			hideController.value = false; // 退出全屏时确保显示播放器控制栏。
+		}
 	});
 
 	const fontSizes = {
@@ -356,9 +350,8 @@
 	 */
 	function updateBuffered() {
 		if (!video.value) return;
-		arrayClearAll(buffered);
-		for (let i = 0; i < video.value.buffered.length; i++)
-			buffered.push([video.value.buffered.start(i) / duration.value, video.value.buffered.end(i) / duration.value]);
+		const videoBuffered = video.value.buffered;
+		buffered.value = forMap(videoBuffered.length, index => [videoBuffered.start(index), videoBuffered.end(index)]);
 	}
 
 	/**

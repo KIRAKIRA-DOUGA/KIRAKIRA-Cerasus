@@ -85,6 +85,8 @@ declare global {
 		 * `ScreenOrientation` 接口的 `lock()` 属性将包含文档的方向锁定为指定的方向。
 		 *
 		 * 堂堂 VSCode 把这个定义给删了。
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/ScreenOrientation/lock)
 		 */
 		lock(type: "any" | "natural" | "landscape" | "portrait" | OrientationType): Promise<void>;
 	}

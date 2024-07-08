@@ -19,7 +19,7 @@
 	onMounted(() => {
 		if (!player.value) return;
 		player.value.preservesPitch = false;
-		player.value.play().catch(() => { });
+		player.value.play().catch(useNoop);
 	});
 
 	/**

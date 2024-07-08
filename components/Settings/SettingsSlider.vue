@@ -6,10 +6,17 @@
 		max?: number;
 		/** 滑块默认值。当单击鼠标中键或触摸屏长按组件时还原默认值。 */
 		defaultValue?: number;
+		/** 步长。 */
+		step?: number;
 		/** 图标。 */
 		icon: DeclaredIcons;
-		/** 显示工具提示。 */
-		tooltip?: boolean;
+		/**
+		 * 显示待定值工具提示。
+		 * - 如留空表示不显示。
+		 * - 如为 `current` 表示显示滑块当前值。
+		 * - 如为 `cursor` 表示显示光标所在位置的值。
+		 */
+		pending?: false | "current" | "cursor";
 	}>();
 
 	const value = defineModel<number>({ required: true });
@@ -20,7 +27,7 @@
 		<Icon :name="icon" />
 		<div class="option-content">
 			<span><slot></slot></span>
-			<Slider v-model="value" :min :max :defaultValue :tooltip />
+			<Slider v-model="value" :min :max :step :defaultValue :pending />
 		</div>
 	</Comp>
 </template>
@@ -33,8 +40,8 @@
 	:comp {
 		display: flex;
 		gap: $gap;
-		align-items: center;
 		justify-content: center;
+		align-items: center;
 		height: 72px;
 		padding: 0 $padding;
 

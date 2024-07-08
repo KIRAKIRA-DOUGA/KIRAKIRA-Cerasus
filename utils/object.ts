@@ -29,8 +29,9 @@ export function keys<K extends object>(obj: K) {
  * @template T - 要重复的对象类型。
  * @param length - 循环次数。
  * @param callback - map 回调函数。
+ * @param startIndex - 初始值序号。
  * @returns 重复指定次数对象的数组。
  */
-export function forMap<T>(length: number, callback: (index: number) => T) {
-	return Array<void>(length).fill(undefined).map((_, index) => callback(index + 1));
+export function forMap<T>(length: number, callback: (index: number) => T, startIndex: number = 0) {
+	return Array<void>(length).fill(undefined).map((_, index) => callback(index + startIndex));
 }

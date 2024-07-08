@@ -34,11 +34,13 @@ export default defineNuxtPlugin(nuxt => {
 	let isInitedPointerUp = false;
 	type D = Directive<HTMLElement, boolean>;
 	type EffectHook = DirectiveEffectHook<D>;
+	const elementEnabled = new WeakMap<Element, boolean>();
 
 	const getIsOverlay = (binding: DirectiveBinding) => !!binding.modifiers.overlay;
-	
+
 	const updated: EffectHook = (element, binding) => {
 		const isOverlay = getIsOverlay(binding);
+		elementEnabled.set(element, binding.value);
 		// 当指定参数为 overlay 时，不会给元素加 overflow: clip，以保证元素内的子元素可以正常超出该元素范围。
 		// 但是如果给所有水波纹默认使用此模式，在另外一些情况下又会出现其它异常，如圆角等的问题。
 		element.classList.add(rippleClass);
@@ -51,7 +53,7 @@ export default defineNuxtPlugin(nuxt => {
 			const isOverlay = getIsOverlay(binding);
 			updated(element, binding);
 			element.addEventListener("pointerdown", e => {
-				if (binding.value === false) return;
+				if (elementEnabled.get(element) === false) return;
 				const rect = element.getBoundingClientRect();
 				if (!rect) return;
 				let wrapper = element;
@@ -104,6 +106,9 @@ export default defineNuxtPlugin(nuxt => {
 					}).finished.then(() => circle.remove());
 				}
 			});
+		},
+		unmounted(element) {
+			elementEnabled.delete(element);
 		},
 	} as D);
 });
