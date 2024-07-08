@@ -85,10 +85,20 @@
 				return;
 			}
 			const userExistsCheckRequest: UserExistsCheckRequestDto = { email: email.value };
+			const locale = getCurrentLocaleLangCode();
+			const requestSendVerificationCodeRequest: RequestSendVerificationCodeRequestDto = {
+				email: email.value,
+				clientLanguage: locale,
+			};
 			try {
-				const userExistsCheckResponse = await api.user.userExistsCheck(userExistsCheckRequest);
+				const userExistsCheckPromise = api.user.userExistsCheck(userExistsCheckRequest);
+				const requestSendVerificationCodePromise = api.user.requestSendVerificationCode(requestSendVerificationCodeRequest);
+				const [userExistsCheckResponse, requestSendVerificationCodeResponse] = await Promise.all([userExistsCheckPromise, requestSendVerificationCodePromise]);
 				if (userExistsCheckResponse.success && !userExistsCheckResponse.exists)
-					currentPage.value = "register2";
+					if (requestSendVerificationCodeResponse.isTimeout)
+						currentPage.value = "register2";
+					else
+						useToast("操作太快啦~ 请稍后再试", "warning", 5000); // TODO: 使用多语言
 				else
 					useToast("该邮箱已注册，请更换", "error", 5000); // TODO: 使用多语言
 			} catch (error) {
@@ -104,7 +114,12 @@
 	async function registerUser() {
 		if (password.value === confirmPassword.value) {
 			const passwordHash = await generateHash(password.value);
-			const userRegistrationRequest: UserRegistrationRequestDto = { email: email.value, passwordHash, passwordHint: passwordHint.value };
+			const userRegistrationRequest: UserRegistrationRequestDto = {
+				email: email.value,
+				passwordHash,
+				passwordHint: passwordHint.value,
+				verificationCode: verificationCode.value,
+			};
 			try {
 				isTryingRegistration.value = true;
 				const registrationResponse = await api.user.registration(userRegistrationRequest);
@@ -261,7 +276,7 @@
 								type="text"
 								:placeholder="t.verification_code"
 								icon="verified"
-								:disabled="true"
+								:required="true"
 								autoComplete="one-time-code"
 							/>
 							<!-- TODO: [Aira] There should be a resend button on the right of the verification code textbox -->
@@ -270,6 +285,7 @@
 								type="password"
 								:placeholder="t.password.retype"
 								icon="lock"
+								:required="true"
 								autoComplete="current-password"
 							/>
 						</div>
