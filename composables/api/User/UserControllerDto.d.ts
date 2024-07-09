@@ -4,14 +4,12 @@
 export type UserRegistrationRequestDto = {
 	/** 用户邮箱 */
 	email: string;
+	/** 验证码 */
+	verificationCode: string;
 	/** 在前端已经被 Bcrypt Hash 过一次的的密码 */
 	passwordHash: string;
 	/** 密码提示 */
 	passwordHint?: string;
-
-	// // TODO 用户创建时间
-	// /** 用户创建时间 */
-	// userCreateDate: number;
 };
 
 /**
@@ -359,6 +357,28 @@ export type UpdateOrCreateUserSettingsResponseDto = {
 	success: boolean;
 	/** 用户个性设定 */
 	userSettings?: { uid: number; editDateTime: number } & BasicUserSettingsDto;
+	/** 附加的文本消息 */
+	message?: string;
+};
+
+/**
+ * 请求发送用户邮箱验证码的请求载荷
+ */
+export type RequestSendVerificationCodeRequestDto = {
+	/** 用户的邮箱 - 非空 - 唯一 */
+	email: string;
+	/** 用户客户端使用的语言 */
+	clientLanguage: string;
+};
+
+/**
+ * 请求发送用户邮箱验证码的请求响应
+ */
+export type RequestSendVerificationCodeResponseDto = {
+	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
+	success: boolean;
+	/** 是否达到超时时间 */
+	isTimeout: boolean;
 	/** 附加的文本消息 */
 	message?: string;
 };
