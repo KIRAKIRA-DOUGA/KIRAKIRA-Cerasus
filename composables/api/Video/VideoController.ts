@@ -87,72 +87,114 @@ export const searchVideoByTagIds = async (searchVideoByVideoTagIdRequest: Search
 
 /**
  * TUS 上传一个文件
- * @param file - 文件
- * @param progress - 进度
- * @returns Promise<string> 视频 ID
  */
-export function tusFile(file: File, progress: Ref<number>) {
-	if (!file) {
-		useToast("无法上传：未找到文件", "error"); // TODO: 使用多语言
-		return;
+export class TusFileUploader {
+	step: "pending" | "created" | "uploading" | "pausing" | "success" | "error" = "pending";
+	process: Promise<string>;
+	uploading?: tus.Upload;
+	isUploadingVideo: Ref<boolean>;
+
+	/**
+	 * TUS 上传一个文件
+	 * @param file - 文件
+	 * @param progress - 进度（Vue 响应式状态）
+	 * @param isUploadingVideo - 是否正在上传视频（Vue 响应式状态）
+	 */
+	constructor(file: File, progress: Ref<number>, isUploadingVideo: Ref<boolean>) {
+		if (!file) {
+			this.step = "error";
+			useToast("无法上传：未找到文件", "error"); // TODO: 使用多语言
+			throw new Error("无法上传：未找到文件"); // TODO: 使用多语言
+		}
+		this.isUploadingVideo = isUploadingVideo;
+		this.process = new Promise<string>((resolve, reject) => {
+			let videoId = "";
+			// Create a new tus upload
+			const uploader = new tus.Upload(file, {
+				endpoint: `${VIDEO_API_URL}/tus`,
+				onBeforeRequest(req) {
+					const url = req.getURL();
+					if (!url?.includes("https://upload.videodelivery.net/tus")) { // 仅在请求后端 API 获取上传目的地 URL 时设置允许跨域传递 cookie，
+						const xhr = req.getUnderlyingObject();
+						xhr.withCredentials = true;
+					}
+				},
+				retryDelays: [0, 3000, 5000, 10000, 20000], // 重试超时
+				chunkSize: 52428800, // 视频分片大小
+				storeFingerprintForResuming: true, // 存储用于恢复上传的 key // WARN: 正常运行时，应该为 True
+				removeFingerprintOnSuccess: true, // 上传成功后移除用于恢复上传的 key
+				metadata: {
+					name: file.name,
+					maxDurationSeconds: "1800", // 最大视频长度，1800 秒（30 分钟）
+					expiry: getCloudflareRFC3339ExpiryDateTime(3600), // 最大上传耗时，3600 秒（1 小时）
+				},
+				onError: error => {
+					console.error("ERROR", "Upload error: ", error);
+					this.step = "error";
+					reject(error);
+				},
+				onProgress: (bytesUploaded, bytesTotal) => {
+					const percentage = bytesUploaded / bytesTotal * 100;
+					progress.value = percentage;
+					console.log(bytesUploaded, bytesTotal, percentage.toFixed(2) + "%"); // DELETE ME
+				},
+				onSuccess: () => {
+					console.log("Download %s from %s", (uploader.file as File)?.name, uploader.url); // DELETE ME
+					if (videoId) {
+						this.step = "success";
+						resolve(videoId);
+					} else
+						reject(new Error("Can not find the video ID"));
+				},
+				onAfterResponse: (req, res) => {
+					if (req.getURL().includes("https://upload.videodelivery.net/tus")) {
+						const headerVideoId = res?.getHeader("stream-media-id");
+						if (headerVideoId)
+							videoId = headerVideoId;
+					}
+				},
+			});
+			this.uploading = uploader;
+			this.step = "created";
+			// Check if there are any previous uploads to continue.
+			uploader.findPreviousUploads().then(previousUploads => {
+				// Found previous uploads so we select the first one.
+				if (previousUploads.length)
+					uploader.resumeFromPreviousUpload(previousUploads[0]);
+
+				// Start the upload
+				uploader.start();
+				this.step = "uploading";
+				isUploadingVideo.value = true;
+			});
+		});
 	}
 
-	return new Promise<string>((resolve, reject) => {
-		let videoId = "";
-		// Create a new tus upload
-		const upload = new tus.Upload(file, {
-			endpoint: `${VIDEO_API_URL}/tus`,
-			onBeforeRequest(req) {
-				const url = req.getURL();
-				if (!url?.includes("https://upload.videodelivery.net/tus")) { // 仅在请求后端 API 获取上传目的地 URL 时设置允许跨域传递 cookie，
-					const xhr = req.getUnderlyingObject();
-					xhr.withCredentials = true;
-				}
-			},
-			retryDelays: [0, 3000, 5000, 10000, 20000], // 重试超时
-			chunkSize: 52428800, // 视频分片大小
-			storeFingerprintForResuming: false, // 存储用于恢复上传的 key
-			removeFingerprintOnSuccess: true, // 上传成功后移除用于恢复上传的 key
-			metadata: {
-				name: file.name,
-				maxDurationSeconds: "1800", // 最大视频长度，1800 秒（30 分钟）
-				expiry: getCloudflareRFC3339ExpiryDateTime(3600), // 最大上传耗时，3600 秒（1 小时）
-			},
-			onError(error) {
-				console.error("ERROR", "Upload error: ", error);
-				reject(error);
-			},
-			onProgress(bytesUploaded, bytesTotal) {
-				const percentage = bytesUploaded / bytesTotal * 100;
-				progress.value = percentage;
-				console.log(bytesUploaded, bytesTotal, percentage.toFixed(2) + "%"); // DELETE ME
-			},
-			onSuccess() {
-				console.log("Download %s from %s", (upload.file as File)?.name, upload.url); // DELETE ME
-				if (videoId)
-					resolve(videoId);
-				else
-					reject(new Error("Can not find the video ID"));
-			},
-			onAfterResponse(req, res) {
-				if (req.getURL().includes("https://upload.videodelivery.net/tus")) {
-					const headerVideoId = res?.getHeader("stream-media-id");
-					if (headerVideoId)
-						videoId = headerVideoId;
-				}
-			},
-		});
+	/**
+	 * 暂停 TUS 上传
+	 */
+	abort() {
+		if (this.uploading)
+			if (this.step === "uploading") {
+				this.uploading.abort();
+				this.step = "pausing";
+				this.isUploadingVideo.value = false;
+			} else
+				console.error(`Upload pause failed, Pausing can only work when in 'uploading' step, but you are in '${this.step}' step.`); // TODO: 使用多语言
+	}
 
-		// Check if there are any previous uploads to continue.
-		upload.findPreviousUploads().then(function (previousUploads) {
-			// Found previous uploads so we select the first one.
-			if (previousUploads.length)
-				upload.resumeFromPreviousUpload(previousUploads[0]);
-
-			// Start the upload
-			upload.start();
-		});
-	});
+	/**
+	 * 恢复 TUS 上传
+	 */
+	resume() {
+		if (this.uploading)
+			if (this.step === "pausing") {
+				this.uploading.start();
+				this.step = "uploading";
+				this.isUploadingVideo.value = true;
+			} else
+				console.error(`Upload resume failed, Uploading can only work when in 'pausing' step, but you are in '${this.step}' step.`); // TODO: 使用多语言
+	}
 }
 
 /**
