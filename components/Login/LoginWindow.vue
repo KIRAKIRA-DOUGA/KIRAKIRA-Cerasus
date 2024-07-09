@@ -393,10 +393,6 @@
 		clip-path: circle(100% at var(--avatar-center));
 		transition: all $transition-ease $enter-duration;
 
-		* {
-			transition: all $transition-ease $enter-duration;
-		}
-
 		&.v-leave-active {
 			transition: all $ease-in-smooth $leave-duration !important;
 
@@ -483,6 +479,10 @@
 				width: 100%;
 			}
 
+			> * {
+				transition: all $transition-ease $enter-duration;
+			}
+
 			.move-left & {
 				width: 0;
 
@@ -506,6 +506,7 @@
 				position: absolute;
 				right: 0;
 				transform: translateX($width * 0.25);
+				transition: all $transition-ease $enter-duration;
 
 				@media #{$narrow-screen} {
 					transform: translateX($width * 0.5);
@@ -601,6 +602,7 @@
 		left: $narrow-width;
 		width: 400px;
 		overflow: clip;
+		transition: all $transition-ease $enter-duration;
 
 		@media #{$narrow-screen} {
 			width: 0;
