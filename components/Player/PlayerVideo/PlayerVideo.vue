@@ -314,7 +314,6 @@
 		const video = e.target as HTMLVideoElement;
 		playing.value = !video.paused;
 		playbackRate.value = video.playbackRate;
-		currentTime.value = video.currentTime;
 		duration.value = video.duration;
 		video.preservesPitch = preservesPitch.value;
 		waiting.value = false;
