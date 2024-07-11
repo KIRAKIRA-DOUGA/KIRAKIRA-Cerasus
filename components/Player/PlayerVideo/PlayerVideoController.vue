@@ -43,7 +43,7 @@
 	const showDanmaku = defineModel<boolean>("showDanmaku", { default: false });
 	const waiting = defineModel<boolean>("waiting", { default: false });
 	const ended = defineModel<boolean>("ended", { default: false });
-	const quality = defineModel<string>("quality", { default: "720P" });
+	const quality = defineModel<number>("quality", { default: 720 });
 	const volumeBackup = ref(volume);
 	const volumeSet = computed({
 		get: () => muted.value ? 0 : volume.value,
@@ -70,7 +70,7 @@
 	const volumeMenu = ref<MenuModel>();
 	const rateMenu = ref<MenuModel>();
 	const qualityMenu = ref<MenuModel>();
-	const qualities = computed(() => props.qualities.map(quality => quality.height + "P").sort().reverse());
+	const qualities = computed(() => props.qualities.sort((a, b) => a.height - b.height).reverse());
 
 	const currentPercent = computed({
 		get() {
@@ -215,10 +215,10 @@
 		<PlayerVideoMenu v-model="qualityMenu">
 			<RadioOption
 				v-for="qual in qualities"
-				:key="qual"
-				:active="quality === qual"
-				@click="quality = qual"
-			>{{ qual }}</RadioOption>
+				:key="qual.qualityIndex"
+				:active="quality === qual.height"
+				@click="quality = qual.height"
+			>{{ qual.height }}</RadioOption>
 		</PlayerVideoMenu>
 		<Transition v-if="!fullscreen">
 			<div

@@ -35,7 +35,7 @@
 	const waiting = ref(true);
 	const showMediaInfo = ref(false);
 	const showAboutPlayer = ref(false);
-	const currentQuality = ref("720P");
+	const currentQuality = ref(720);
 	const settings = reactive<PlayerVideoSettings>({
 		danmaku: {
 			fontSizeScale: 1,
@@ -270,12 +270,13 @@
 					const qual = player.value!.getQualityFor("video");
 					const currentQual = qualities.value[qual];
 					if (currentQual !== undefined)
-						currentQuality.value = currentQual.height + "P";
+						currentQuality.value = currentQual.height;
 				});
 
 				const bitrateInfoList = player.value!.getBitrateInfoListFor("video");
 				player.value!.setQualityFor("video", bitrateInfoList.length - 1);
 				qualities.value = bitrateInfoList;
+				console.log("bitrateInfoList", bitrateInfoList);
 			});
 
 			player.value.initialize(video.value, props.src, false);
@@ -324,10 +325,15 @@
 		get: () => currentQuality.value,
 		set: quality => {
 			// TODO: CRINGE ALERT COPY PASTA
-			const qualityList = qualities.value.map(qual => qual.height + "P");
-			const index = qualityList.findIndex(qual => qual === quality);
+			let index = 0;
+			for (const originQuality of qualities.value)
+				if (originQuality.height === quality) {
+					index = originQuality.qualityIndex;
+					break;
+				}
 			player.value?.setQualityFor("video", index);
 			player.value?.updateSettings({ streaming: { abr: { autoSwitchBitrate: { video: false } } } });
+			currentQuality.value = quality;
 		},
 	});
 
