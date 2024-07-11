@@ -9,7 +9,17 @@
 	const openInNewWindow = ref(false);
 
 	const selfUserInfoStore = useSelfUserInfoStore();
-	const appSettingsStore = useAppSettingsStore();
+
+	const useCookieAndLocalStorageOptions = { isWatchCookieRef: true, isSyncSettings: false };
+	// 在 cookie 和 localStorage 中同步的 Cookie，是否开启主题同步
+	const isAllowSyncThemeSettings = useKiraCookie<boolean>(COOKIE_KEY.isAllowSyncThemeSettings, undefined, useCookieAndLocalStorageOptions);
+	watch(isAllowSyncThemeSettings, () => {
+		// 用户选择开启或关闭 isAllowSyncThemeSettings 的时候会载入数据
+		api.user.getUserSettings().then(userSettings => {
+			saveUserSetting2BrowserCookieStore(userSettings);
+			cookieBinding();
+		});
+	});
 </script>
 
 <template>
@@ -41,7 +51,7 @@
 	<Subheader icon="placeholder">多设备<!-- TODO: 使用多语言 --></Subheader>
 	<section list>
 		<ToggleSwitch
-			v-model="appSettingsStore.isAllowSyncThemeSettings"
+			v-model="isAllowSyncThemeSettings"
 			v-ripple
 			:disabled="!selfUserInfoStore.isLogined"
 			icon="palette"

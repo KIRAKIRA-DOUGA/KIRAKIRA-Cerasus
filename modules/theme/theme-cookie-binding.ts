@@ -14,6 +14,7 @@ export const THEME_ENV = {
 	NO_COLORED_SIDEBAR: "false",
 	NO_SHARP_APPEARANCE_MODE: "false",
 	NO_FLAT_APPEARANCE_MODE: "false",
+	ALLOW_SYNC_THEME_SETTINGS: "true",
 	// HACK: 1 在此处添加
 };
 
@@ -26,6 +27,7 @@ export const COOKIE_KEY = {
 	coloredSidebarCookieKey: "colored-side-bar",
 	sharpAppearanceModeCookieKey: "sharp-appearance-mode",
 	flatAppearanceModeCookieKey: "flat-appearance-mode",
+	isAllowSyncThemeSettings: "is-allow-sync-theme-settings",
 	// HACK: 2 在此处添加
 };
 
@@ -49,6 +51,7 @@ export function cookieBinding() {
 	const NO_COLORED_SIDEBAR = "false";
 	const NO_SHARP_APPEARANCE_MODE = "false";
 	const NO_FLAT_APPEARANCE_MODE = "false";
+	const ALLOW_SYNC_THEME_SETTINGS = "true";
 	// HACK: 3 在此处添加
 
 	// Cookie 键 - 用户样式设置，请保持和上方 COOKIE_KEY 全局变量的值一致
@@ -59,6 +62,7 @@ export function cookieBinding() {
 	const coloredSidebarCookieKey = "colored-side-bar";
 	const sharpAppearanceModeCookieKey = "sharp-appearance-mode";
 	const flatAppearanceModeCookieKey = "flat-appearance-mode";
+	const isAllowSyncThemeSettingsCookieKey = "is-allow-sync-theme-settings"; // useless
 	// HACK: 4 在此处添加
 
 	/**
@@ -93,6 +97,13 @@ export function cookieBinding() {
 				return value;
 		}
 		return ""; // 如果没有找到指定的 cookie，返回 "" 空字符串
+	}
+
+	try {
+		const isAllowSyncThemeSettings = getCookie(isAllowSyncThemeSettingsCookieKey) as ThemeSetType || ALLOW_SYNC_THEME_SETTINGS;
+		localStorage.setItem(isAllowSyncThemeSettingsCookieKey, isAllowSyncThemeSettings || ALLOW_SYNC_THEME_SETTINGS);
+	} catch (error) {
+		console.error("ERROR", "Error in cookieBinding 'isAllowSyncThemeSettings'", error);
 	}
 
 	try {

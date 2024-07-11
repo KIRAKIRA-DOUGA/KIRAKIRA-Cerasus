@@ -16,6 +16,9 @@ export async function cookieBaker() {
 		const cookieUid = useCookie(uidCookieKey, { sameSite: true });
 		const cookieToken = useCookie(tokenCookieKey, { sameSite: true });
 
+		// Nuxt cookie 对象 - 是否同步样式
+		const isAllowSyncThemeSettings = useCookie(COOKIE_KEY.isAllowSyncThemeSettings, DEFAULT_COOKIE_OPTION);
+
 		// Nuxt cookie 对象 - 用户样式设置
 		const cookieThemeType = useCookie(COOKIE_KEY.themeTypeCookieKey, DEFAULT_COOKIE_OPTION);
 		const cookieThemeColor = useCookie(COOKIE_KEY.themeColorCookieKey, DEFAULT_COOKIE_OPTION);
@@ -32,8 +35,11 @@ export async function cookieBaker() {
 		const token = cookieToken.value;
 
 		let userSettings;
-		if (uid !== null && uid !== undefined && token) {
-			// 如果用户认证 cookie 存在，则通过认证 cookie 获取数据库中存储的用户样式设置，并将获取到的设置信息存储至 cookie
+		if (
+			typeof isAllowSyncThemeSettings.value === "boolean" && isAllowSyncThemeSettings.value === true
+			&& uid !== null && uid !== undefined && token
+		) {
+			// 如果用户允许主题同步，且用户认证 cookie 存在，则通过认证 cookie 获取数据库中存储的用户样式设置，并将获取到的设置信息存储至 cookie
 			const userAuthToken: GetSelfUserInfoRequestDto | GetUserSettingsRequestDto = {
 				uid: uid ? parseInt(uid, 10) : -1,
 				token: token || "",
@@ -50,8 +56,12 @@ export async function cookieBaker() {
 			// HACK: 6 在此处添加
 
 			cookieIsLocalStorage.value = "false";
-		} else
+		} else if (typeof isAllowSyncThemeSettings.value === "boolean" && isAllowSyncThemeSettings.value === false)
 			cookieIsLocalStorage.value = "true";
+		else {
+			isAllowSyncThemeSettings.value = THEME_ENV.ALLOW_SYNC_THEME_SETTINGS;
+			cookieIsLocalStorage.value = "true";
+		}
 		return userSettings;
 	}
 }
@@ -86,7 +96,7 @@ export function saveUserSetting2BrowserCookieStore(userSettings: GetUserSettings
  * useKiraCookie 函数的选项
  */
 export type UseKiraCookieOptions = {
-	/** 是否监听 cookie 的响应式变化并调用 callback，默认不开启以免重复监听，请仅在需要监听时显式手动开启 */
+	/** 是否监听 cookie 的响应式变化将其同步至 localStorage，并调用 callback，默认不开启以免重复监听，请仅在需要监听时显式手动开启 */
 	isWatchCookieRef?: boolean;
 	/** 在已开启 isWatchCookieRef 的前提下，isSyncSettings 的值为 true 时，如果 cookie 发生响应式变化，并且用户开启了多端同步，则发送网络请求到后端，值为 false 时则一律不发送，默认为 true */
 	isSyncSettings?: boolean;
@@ -100,13 +110,13 @@ export type UseKiraCookieOptions = {
 /**
  * 通过 useCookie 创建并返回一个 nuxt 响应式 cookie 对象，并在该响应式 cookie 的值被更新后调用 callback 方法 // TODO: 目前只支持监听在程序代码中显式更新的 cookie，比如通过 cookie.value 为 cookie 重新赋值，而不支持在客户端浏览器中更新的 cookie，或许 nuxt 3.10 之后有办法解决
  * @param cookieKey cookie 的 key
- * @param callback cookie 被显示更新后调用的 callback
+ * @param callback cookie 被显式更新后调用的 callback
  * @param options 设置，详见 UseKiraCookieOptions
  * @returns nuxt 响应式 cookie 对象
  */
 export function useKiraCookie<T>(
 	cookieKey: string,
-	callback: (setting: T) => void,
+	callback: (setting: T) => void = () => {},
 	{
 		isWatchCookieRef = false,
 		isSyncSettings = true,
@@ -116,10 +126,11 @@ export function useKiraCookie<T>(
 	const userSettingsCookieBasicOption = { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false, watch: true };
 	const cookie = useCookie<T>(cookieKey, userSettingsCookieBasicOption);
 
+	const isAllowSyncThemeSettingsCookieValue = useCookie<T>(COOKIE_KEY.isAllowSyncThemeSettings, userSettingsCookieBasicOption);
+
 	try {
 		const selfUserInfoStore = useSelfUserInfoStore();
-		const appSettingsStore = useAppSettingsStore();
-		const isAllowSyncThemeSettings = computed(() => appSettingsStore.isAllowSyncThemeSettings && selfUserInfoStore.isLogined && isSyncSettings);
+		const isAllowSyncThemeSettings = computed(() => isAllowSyncThemeSettingsCookieValue.value && selfUserInfoStore.isLogined && isSyncSettings);
 
 		let correctCallback = callback;
 		let correctCookieBinding = cookieBinding;
