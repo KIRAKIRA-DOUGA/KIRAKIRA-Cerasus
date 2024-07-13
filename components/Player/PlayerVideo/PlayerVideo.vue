@@ -266,8 +266,9 @@
 			player.value = Dash.MediaPlayer().create();
 
 			player.value.on(Dash.MediaPlayer.events.STREAM_INITIALIZED, _e => {
-				player.value!.on(Dash.MediaPlayer.events.QUALITY_CHANGE_REQUESTED, _e => {
-					const qual = player.value!.getQualityFor("video");
+				player.value!.on(Dash.MediaPlayer.events.QUALITY_CHANGE_RENDERED, _e => {
+					if (_e.mediaType !== "video") return;
+					const qual = _e.newQuality;
 					const currentQual = qualities.value[qual];
 					if (currentQual !== undefined)
 						currentQuality.value = currentQual.height;
@@ -324,7 +325,6 @@
 	const quality = computed({
 		get: () => currentQuality.value,
 		set: quality => {
-			// TODO: CRINGE ALERT COPY PASTA
 			let index = 0;
 			for (const originQuality of qualities.value)
 				if (originQuality.height === quality) {
