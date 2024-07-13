@@ -181,5 +181,11 @@
 				padding: 0 8px;
 			}
 		}
+
+		:slotted(hr) {
+			margin: 6px 0;
+			border: none;
+			border-top: c(divider, 10%) 1px solid;
+		}
 	}
 </style>

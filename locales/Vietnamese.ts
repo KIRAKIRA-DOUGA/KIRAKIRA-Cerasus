@@ -140,6 +140,9 @@ export default {
 			resample: "Điều chỉnh cao độ phát",
 			continuous: "Điều chỉnh tốc độ phát",
 		},
+		quality: {
+			auto: "Chất lượng tự động",
+		},
 	},
 	danmaku: {
 		_: "Đạn mạc",

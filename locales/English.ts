@@ -136,6 +136,9 @@ export default {
 			resample: "Resample Audio",
 			continuous: "Continuous Control",
 		},
+		quality: {
+			auto: "Auto Quality",
+		},
 	},
 	danmaku: {
 		_: "Danmaku | Danmakus",

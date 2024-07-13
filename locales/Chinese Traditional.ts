@@ -140,6 +140,7 @@ export default {
 			resample: "重採樣音訊",
 			continuous: "無級變速",
 		},
+		quality: {},
 	},
 	danmaku: {
 		_: "彈幕",

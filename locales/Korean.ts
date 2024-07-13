@@ -32,6 +32,7 @@ export default {
 	},
 	player: {
 		speed: {},
+		quality: {},
 	},
 	danmaku: {
 		format: {

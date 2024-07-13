@@ -44,6 +44,7 @@
 	const waiting = defineModel<boolean>("waiting", { default: false });
 	const ended = defineModel<boolean>("ended", { default: false });
 	const quality = defineModel<number>("quality", { default: 720 });
+	const autoQuality = defineModel<boolean>("autoQuality", { default: true });
 	const volumeBackup = ref(volume);
 	const volumeSet = computed({
 		get: () => muted.value ? 0 : volume.value,
@@ -218,7 +219,14 @@
 				:key="qual.qualityIndex"
 				:active="quality === qual.height"
 				@click="quality = qual.height"
-			>{{ qual.height }}</RadioOption>
+				class="quality"
+				:class="{ disabled: autoQuality }"
+			>
+				<span>{{ qual.height }}P</span>
+				<span class="kbps">{{ Math.round(qual.bitrate / 1000) }} Kbps</span>
+			</RadioOption>
+			<hr />
+			<ToggleSwitch v-model="autoQuality" v-ripple.overlay icon="network_check">{{ t.player.quality.auto }}</ToggleSwitch>
 		</PlayerVideoMenu>
 		<Transition v-if="!fullscreen">
 			<div
@@ -255,7 +263,7 @@
 			</div>
 			<SoftButton
 				class="quality-button"
-				:text="quality"
+				:text="`${quality}P`"
 				@pointerenter="e => qualityMenu = e"
 				@pointerleave="e => isMouse(e) && (qualityMenu = undefined)"
 			/>
@@ -455,6 +463,26 @@
 			&.v-enter-from,
 			&.v-leave-to {
 				translate: 0 100%;
+			}
+		}
+
+		.quality {
+			&:deep(> span) {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				width: 100%;
+			}
+
+			&.disabled {
+				pointer-events: none;
+			}
+
+			.kbps {
+				color: c(icon-color);
+				font-size: 12px;
+				font-weight: normal;
+				letter-spacing: 1;
 			}
 		}
 	}

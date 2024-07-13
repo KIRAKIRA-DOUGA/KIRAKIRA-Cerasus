@@ -36,6 +36,7 @@
 	const showMediaInfo = ref(false);
 	const showAboutPlayer = ref(false);
 	const currentQuality = ref(720);
+	const autoQuality = ref(true);
 	const settings = reactive<PlayerVideoSettings>({
 		danmaku: {
 			fontSizeScale: 1,
@@ -266,18 +267,17 @@
 			player.value = Dash.MediaPlayer().create();
 
 			player.value.on(Dash.MediaPlayer.events.STREAM_INITIALIZED, _e => {
-				player.value!.on(Dash.MediaPlayer.events.QUALITY_CHANGE_RENDERED, _e => {
-					if (_e.mediaType !== "video") return;
-					const qual = _e.newQuality;
-					const currentQual = qualities.value[qual];
-					if (currentQual !== undefined)
-						currentQuality.value = currentQual.height;
-				});
-
 				const bitrateInfoList = player.value!.getBitrateInfoListFor("video");
 				player.value!.setQualityFor("video", bitrateInfoList.length - 1);
 				qualities.value = bitrateInfoList;
-				console.log("bitrateInfoList", bitrateInfoList);
+
+				player.value!.on(Dash.MediaPlayer.events.QUALITY_CHANGE_RENDERED, _e => {
+					if (_e.mediaType !== "video") return;
+					const qual = _e.newQuality;
+					const currentQual = bitrateInfoList.find(e => e.qualityIndex === qual);
+					if (currentQual !== undefined)
+						currentQuality.value = currentQual.height;
+				});
 			});
 
 			player.value.initialize(video.value, props.src, false);
@@ -288,6 +288,7 @@
 						fastSwitchEnabled: true,
 					},
 					abr: {
+						autoSwitchBitrate: { video: autoQuality.value },
 						// initialBitrate: { audio: 2000000, video: 2000000 }, // 2mb/s, lol
 						// maxBitrate: { audio: 2000000000000, video: 20000000000000 }, // lmao this can't be right
 					},
@@ -331,10 +332,18 @@
 					index = originQuality.qualityIndex;
 					break;
 				}
-			player.value?.setQualityFor("video", index);
-			player.value?.updateSettings({ streaming: { abr: { autoSwitchBitrate: { video: false } } } });
-			currentQuality.value = quality;
+			player.value?.setQualityFor("video", index, true);
+			// currentQuality.value = quality;
 		},
+	});
+
+	watch(autoQuality, autoQuality => {
+		if (!video.value || !player.value) return;
+		player.value.updateSettings({
+			streaming: {
+				abr: { autoSwitchBitrate: { video: autoQuality } },
+			},
+		});
 	});
 
 	/**
@@ -556,6 +565,7 @@
 				v-model:continuousRateControl="continuousRateControl"
 				v-model:showDanmaku="showDanmaku"
 				v-model:quality="quality"
+				v-model:autoQuality="autoQuality"
 				v-model:waiting="waiting"
 				v-model:ended="ended"
 				:duration
