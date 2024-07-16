@@ -26,6 +26,7 @@
 	});
 	const isTryingLogin = ref(false);
 	const isTryingRegistration = ref(false);
+	const isCheckingEmail = ref(false);
 
 	const open = computed({
 		get: () => !!(model.value ?? props.open),
@@ -79,6 +80,7 @@
 	 */
 	const PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD = "密码提示中不允许包含密码本身"; // TODO: 使用多语言
 	const checkAndJumpNextPage = async () => {
+		isCheckingEmail.value = true;
 		if (email.value && password.value) {
 			if (password.value && passwordHint.value && passwordHint.value.includes(password.value)) { // 判断密码提示中是否包含密码自身
 				useToast(PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD, "error");
@@ -95,9 +97,10 @@
 				const requestSendVerificationCodePromise = api.user.requestSendVerificationCode(requestSendVerificationCodeRequest);
 				const [userExistsCheckResponse, requestSendVerificationCodeResponse] = await Promise.all([userExistsCheckPromise, requestSendVerificationCodePromise]);
 				if (userExistsCheckResponse.success && !userExistsCheckResponse.exists)
-					if (requestSendVerificationCodeResponse.isTimeout)
+					if (!requestSendVerificationCodeResponse.isTimeout) {
+						isCheckingEmail.value = false;
 						currentPage.value = "register2";
-					else
+					} else
 						useToast("操作太快啦~ 请稍后再试", "warning", 5000); // TODO: 使用多语言
 				else
 					useToast("该邮箱已注册，请更换", "error", 5000); // TODO: 使用多语言
@@ -106,38 +109,46 @@
 			}
 		} else
 			useToast("请输入用户名和密码", "error"); // TODO: 使用多语言
+		isCheckingEmail.value = false;
 	};
 
 	/**
 	 * 用户注册，其二。
 	 */
 	async function registerUser() {
-		if (password.value === confirmPassword.value) {
-			const passwordHash = await generateHash(password.value);
-			const userRegistrationRequest: UserRegistrationRequestDto = {
-				email: email.value,
-				passwordHash,
-				passwordHint: passwordHint.value,
-				verificationCode: verificationCode.value,
-			};
-			try {
-				isTryingRegistration.value = true;
-				const registrationResponse = await api.user.registration(userRegistrationRequest);
-
-				if (registrationResponse.success) { // 如果注册成功
-					await api.user.getSelfUserInfo(); // 根据获取到的用户 UID 和 Token 获取用户数据，相当于自动登录
-					open.value = false; // 关闭登录页
-					currentPage.value = "login"; // 将登录页设为登录窗口默认页
-					navigate("/welcome"); // 跳转到欢迎页面
-				} else
-					useToast("注册失败，请稍后再试", "error"); // TODO: 使用多语言
-
-				isTryingRegistration.value = false; // 停止注册按钮加载动画
-			} catch (error) {
-				useToast("注册失败，请稍后再试", "error"); // TODO: 使用多语言
-			}
-		} else
+		if (!verificationCode.value) {
+			useToast("验证码不能为空", "error"); // TODO: 使用多语言
+			return;
+		}
+		if (password.value !== confirmPassword.value) {
 			useToast(t.toast.password_mismatch, "error");
+			return;
+		}
+
+		isTryingRegistration.value = true;
+
+		const passwordHash = await generateHash(password.value);
+		const userRegistrationRequest: UserRegistrationRequestDto = {
+			email: email.value,
+			passwordHash,
+			passwordHint: passwordHint.value,
+			verificationCode: verificationCode.value,
+		};
+		try {
+			const registrationResponse = await api.user.registration(userRegistrationRequest);
+
+			if (registrationResponse.success) { // 如果注册成功
+				await api.user.getSelfUserInfo(); // 根据获取到的用户 UID 和 Token 获取用户数据，相当于自动登录
+				isTryingRegistration.value = false; // 停止注册按钮加载动画
+				open.value = false; // 关闭登录页
+				currentPage.value = "login"; // 将登录页设为登录窗口默认页
+				navigate("/welcome"); // 跳转到欢迎页面
+			} else
+				useToast("注册失败，请稍后再试", "error"); // TODO: 使用多语言
+		} catch (error) {
+			useToast("注册失败，请稍后再试", "error"); // TODO: 使用多语言
+		}
+		isTryingRegistration.value = false; // 停止注册按钮加载动画
 	}
 
 	// DELETE: [Aira] Change passwords should be in settings, not login window.
@@ -262,7 +273,7 @@
 						</div>
 						<div class="action margin-left-inset">
 							<Button @click="currentPage = 'login'">{{ t.loginwindow.register_to_login }}</Button>
-							<Button icon="arrow_right" class="button icon-behind" @click="checkAndJumpNextPage">{{ t.step.next }}</Button>
+							<Button icon="arrow_right" class="button icon-behind" :loading="isCheckingEmail" :disabled="isCheckingEmail" @click="checkAndJumpNextPage">{{ t.step.next }}</Button>
 						</div>
 					</div>
 
@@ -291,7 +302,7 @@
 						</div>
 						<div class="action">
 							<Button icon="arrow_left" class="button" @click="currentPage = 'register'">{{ t.step.previous }}</Button>
-							<Button icon="arrow_right" class="button icon-behind" :loading="isTryingRegistration" @click="registerUser">{{ t.step.next }}</Button>
+							<Button icon="arrow_right" class="button icon-behind" :loading="isTryingRegistration" :disabled="isTryingRegistration" @click="registerUser">{{ t.step.next }}</Button>
 						</div>
 					</div>
 
@@ -666,20 +677,18 @@
 		background-color: c(main-bg);
 		scale: 0;
 		clip-path:
-			polygon(
-				calc(50% - $thickness) 0,
-				calc(50% - $thickness) calc(50% - $thickness),
-				0 calc(50% - $thickness),
-				0 calc(50% + $thickness),
-				calc(50% - $thickness) calc(50% + $thickness),
-				calc(50% - $thickness) 100%,
-				calc(50% + $thickness) 100%,
-				calc(50% + $thickness) calc(50% + $thickness),
-				100% calc(50% + $thickness),
-				100% calc(50% - $thickness),
-				calc(50% + $thickness) calc(50% - $thickness),
-				calc(50% + $thickness) 0
-			);
+			polygon(calc(50% - $thickness) 0,
+			calc(50% - $thickness) calc(50% - $thickness),
+			0 calc(50% - $thickness),
+			0 calc(50% + $thickness),
+			calc(50% - $thickness) calc(50% + $thickness),
+			calc(50% - $thickness) 100%,
+			calc(50% + $thickness) 100%,
+			calc(50% + $thickness) calc(50% + $thickness),
+			100% calc(50% + $thickness),
+			100% calc(50% - $thickness),
+			calc(50% + $thickness) calc(50% - $thickness),
+			calc(50% + $thickness) 0);
 	}
 
 	.avatar {
