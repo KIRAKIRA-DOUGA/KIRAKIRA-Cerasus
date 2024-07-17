@@ -5,6 +5,10 @@
 	import { getLocation } from "components/Flyout/Flyout.vue";
 	import { getPosition } from "plugins/vue/tooltip";
 
+	const props = defineProps<{
+		noFade?: boolean;
+	}>();
+
 	const emits = defineEmits<{
 		show: [];
 		hide: [];
@@ -117,7 +121,7 @@
 			<menu
 				v-if="shown"
 				ref="menu"
-				:class="{ context: isContextMenu }"
+				:class="{ context: isContextMenu, 'no-fade': noFade }"
 				:style="getLocationStyle(location)"
 				@contextmenu.prevent
 			>
@@ -133,6 +137,7 @@
 	menu {
 		@include round-large;
 		@include dropdown-flyouts;
+		@include acrylic-background;
 		top: 0;
 		left: 0;
 		z-index: 70;
@@ -140,7 +145,6 @@
 		margin: 0;
 		padding: $menu-padding 0;
 		overflow: clip;
-		background-color: c(main-bg, 50%);
 		transition: $transition;
 
 		&.context {
@@ -155,8 +159,11 @@
 
 		&:not(:hover, :active) {
 			@include dropdown-flyouts-unhover;
-			background-color: c(main-bg, 40%);
 			transition: $transition, box-shadow 1s, opacity 1s;
+
+			&:not(.no-fade) {
+				background-color: c(main-bg, 40%);
+			}
 		}
 
 		:slotted(.menu-item) {

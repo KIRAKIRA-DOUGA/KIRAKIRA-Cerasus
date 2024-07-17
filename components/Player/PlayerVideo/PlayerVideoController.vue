@@ -3,7 +3,7 @@
 </docs>
 
 <script setup lang="ts">
-	import type { BitrateInfo } from "dashjs";
+	import type shaka from "shaka-player";
 
 	const props = withDefaults(defineProps<{
 		/** 速度保持音高？ */
@@ -16,8 +16,10 @@
 		fullscreen?: boolean;
 		/** 切换全屏函数。 */
 		toggleFullscreen?: (isFullbrowser?: boolean) => void;
-		/** 视频质量列表。 */
-		qualities?: BitrateInfo[];
+		/** 视频轨道列表。 */
+		tracks?: shaka.extern.Track[];
+		/** 是否正在开屏加载。 */
+		splash?: boolean;
 		/** 是否隐藏？ */
 		hidden?: boolean;
 	}>(), {
@@ -25,7 +27,7 @@
 		buffered: undefined,
 		fullscreen: false,
 		toggleFullscreen: undefined,
-		qualities: () => [],
+		tracks: () => [],
 	});
 
 	/** 常用速度列表。 */
@@ -43,7 +45,8 @@
 	const showDanmaku = defineModel<boolean>("showDanmaku", { default: false });
 	const waiting = defineModel<boolean>("waiting", { default: false });
 	const ended = defineModel<boolean>("ended", { default: false });
-	const quality = defineModel<string>("quality", { default: "720P" });
+	const selectedTrack = defineModel<shaka.extern.Track>("selectedTrack");
+	const autoQuality = defineModel<boolean>("autoQuality", { default: true });
 	const volumeBackup = ref(volume);
 	const volumeSet = computed({
 		get: () => muted.value ? 0 : volume.value,
@@ -70,7 +73,7 @@
 	const volumeMenu = ref<MenuModel>();
 	const rateMenu = ref<MenuModel>();
 	const qualityMenu = ref<MenuModel>();
-	const qualities = computed(() => props.qualities.map(quality => quality.height + "P").sort().reverse());
+	const tracksSorted = computed(() => props.tracks.sort((a, b) => (b.height || 0) - (a.height || 0)));
 
 	const currentPercent = computed({
 		get() {
@@ -206,19 +209,31 @@
 			</template>
 		</PlayerVideoMenu>
 		<PlayerVideoMenu v-model="rateMenu">
-			<ToggleSwitch v-model="resample" v-ripple.overlay icon="tunning">{{ t.player.speed.resample }}</ToggleSwitch>
-			<ToggleSwitch v-model="continuousRateControl" v-ripple.overlay icon="speed">{{ t.player.speed.continuous }}</ToggleSwitch>
+			<menu @contextmenu.prevent>
+				<ToggleSwitch v-model="resample" v-ripple.overlay icon="tunning">{{ t.player.speed.resample }}</ToggleSwitch>
+				<ToggleSwitch v-model="continuousRateControl" v-ripple.overlay icon="speed">{{ t.player.speed.continuous }}</ToggleSwitch>
+			</menu>
 			<template #slider>
 				<CapsuleSlider v-model="playbackRateLinear" :min="-2" :max="2" :displayValue="playbackRateText" :defaultValue="0" />
 			</template>
 		</PlayerVideoMenu>
-		<PlayerVideoMenu v-model="qualityMenu">
-			<RadioOption
-				v-for="qual in qualities"
-				:key="qual"
-				:active="quality === qual"
-				@click="quality = qual"
-			>{{ qual }}</RadioOption>
+		<PlayerVideoMenu v-if="selectedTrack && selectedTrack.height" v-model="qualityMenu">
+			<menu @contextmenu.prevent>
+				<RadioOption
+					v-for="track in tracksSorted"
+					:key="track.id"
+					:active="selectedTrack.height === track.height"
+					@click="selectedTrack = track"
+					class="quality"
+					:class="{ disabled: autoQuality }"
+				>
+					<span>{{ track.height }}P</span>
+					<span v-if="track.videoBandwidth" class="kbps">{{ Math.round(track.videoBandwidth / 1000) }} Kbps</span>
+				</RadioOption>
+			</menu>
+			<menu @contextmenu.prevent>
+				<ToggleSwitch v-model="autoQuality" v-ripple.overlay icon="network_check">{{ t.player.quality.auto }}</ToggleSwitch>
+			</menu>
 		</PlayerVideoMenu>
 		<Transition v-if="!fullscreen">
 			<div
@@ -234,7 +249,7 @@
 
 	<Comp role="toolbar" :class="{ mobile: isMobile(), hidden }" v-bind="$attrs">
 		<div class="left">
-			<SoftButton class="play" :icon="ended ? 'replay' : playing ? 'pause' : 'play'" @click="playing = !playing" />
+			<SoftButton class="play" :disabled="splash" :icon="ended ? 'replay' : playing ? 'pause' : 'play'" @click="playing = !playing" />
 		</div>
 		<div class="slider-wrapper">
 			<Slider
@@ -254,8 +269,9 @@
 				<span class="duration">{{ duration }}</span>
 			</div>
 			<SoftButton
+				v-if="selectedTrack && selectedTrack.height"
 				class="quality-button"
-				:text="quality"
+				:text="`${selectedTrack.height}P`"
 				@pointerenter="e => qualityMenu = e"
 				@pointerleave="e => isMouse(e) && (qualityMenu = undefined)"
 			/>
@@ -457,6 +473,26 @@
 				translate: 0 100%;
 			}
 		}
+
+		.quality {
+			&:deep(> span) {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				width: 100%;
+			}
+
+			&.disabled {
+				pointer-events: none;
+			}
+
+			.kbps {
+				color: c(icon-color);
+				font-size: 12px;
+				font-weight: normal;
+				letter-spacing: 1;
+			}
+		}
 	}
 
 	.soft-button {
@@ -469,7 +505,7 @@
 		&.quality-button:deep {
 			&,
 			* {
-				min-width: 55px;
+				min-width: 60px;
 			}
 		}
 	}

@@ -136,6 +136,14 @@ export default {
 			resample: "Resample Audio",
 			continuous: "Continuous Control",
 		},
+		quality: {
+			auto: "Auto Quality",
+		},
+		screenshot: "Screenshot",
+		stats: "Stats",
+		error: {
+			getDanmaku: "Failed to get danmaku list",
+		},
 	},
 	danmaku: {
 		_: "Danmaku | Danmakus",

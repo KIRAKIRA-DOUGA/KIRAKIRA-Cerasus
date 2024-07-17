@@ -36,6 +36,10 @@ export const useAppSettingsStore = defineStore("app-settings", {
 				opacity: 1,
 				fontSizeScale: 1,
 			},
+			quality: {
+				auto: true,
+				preferred: 0,
+			},
 		},
 	}),
 	getters: {

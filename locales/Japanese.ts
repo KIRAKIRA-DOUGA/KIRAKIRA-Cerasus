@@ -140,6 +140,8 @@ export default {
 			resample: "リサンプリング",
 			continuous: "無段変速",
 		},
+		quality: {},
+		error: {},
 	},
 	danmaku: {
 		_: "弾幕",

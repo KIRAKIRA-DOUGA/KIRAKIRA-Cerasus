@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import startSound from "assets/audios/StartSnd.ogg";
+	import startSound from "assets/audios/NOVA 2022.1 Alert Quick.ogg";
 	const startSoundAudio = ref<HTMLAudioElement>();
 
 	const props = defineProps<{
@@ -11,9 +11,9 @@
 	const shown = defineModel<boolean>();
 
 	/**
-	 * 播放启动音。
+	 * 播放声音。
 	 */
-	function playStartSound() {
+	function playSound() {
 		if (startSoundAudio.value) {
 			startSoundAudio.value.currentTime = 0;
 			startSoundAudio.value.play();
@@ -28,7 +28,7 @@
 			<div class="center">
 				<Icon class="logo" name="yozora_big" />
 				<div class="right-wrapper">
-					<p class="name" @animationend="playStartSound">YOZORA PLAYER</p>
+					<p class="name" @animationstart="playSound">YOZORA PLAYER</p>
 				</div>
 			</div>
 			<p class="powered-by">POWERED BY OPEN SOURCES</p>
@@ -93,9 +93,9 @@
 	}
 
 	.name {
-		font-weight: bold;
-		font-size: 4dvw;
 		font-family: $english-logo-fonts;
+		font-size: 4dvw;
+		font-weight: bold;
 		white-space: nowrap;
 		animation: float-right 1s $animation-wait-shown $ease-out-smooth backwards;
 
@@ -136,15 +136,15 @@
 		}
 
 		.logo {
-			rotate: -90deg;
 			scale: 4;
+			rotate: -90deg;
 		}
 	}
 
 	@keyframes logo-in {
 		from {
-			rotate: -1turn;
 			scale: 10;
+			rotate: -1turn;
 		}
 	}
 
@@ -172,14 +172,14 @@
 	@keyframes fluttering {
 		0%,
 		100% {
-			scale: 1;
 			translate: 0;
+			scale: 1;
 			animation-timing-function: $ease-in-smooth;
 		}
 
 		75% {
-			scale: 0.9;
 			translate: 0 0.75rem;
+			scale: 0.9;
 		}
 	}
 </style>

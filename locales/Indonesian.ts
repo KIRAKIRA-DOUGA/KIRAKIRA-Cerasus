@@ -134,6 +134,8 @@ export default {
 			resample: "Resample Audio",
 			continuous: "Kontrol Berkelanjutan",
 		},
+		quality: {},
+		error: {},
 	},
 	danmaku: {
 		_: "Danmaku",

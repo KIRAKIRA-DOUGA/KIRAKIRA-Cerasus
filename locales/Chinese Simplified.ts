@@ -140,6 +140,14 @@ export default {
 			resample: "重采样音频",
 			continuous: "无级变速",
 		},
+		quality: {
+			auto: "自动画质",
+		},
+		screenshot: "截图",
+		stats: "统计信息",
+		error: {
+			getDanmaku: "获取弹幕列表失败",
+		},
 	},
 	danmaku: {
 		_: "弹幕",

@@ -4,10 +4,8 @@
 table:not(.lite) {
 	@include round-large;
 	@include chip-shadow;
-	$border-bottom: c(gray-40) 1px solid;
 	overflow: clip;
 	text-align: left;
-	border-bottom: $border-bottom;
 	border-spacing: 0;
 
 	&:not(.narrow) {
@@ -16,19 +14,14 @@ table:not(.lite) {
 
 	th,
 	td {
-		padding: 0.5rem 0.75rem;
-		border-bottom: $border-bottom;
-	}
-
-	tr:last-of-type > td {
-		border-bottom: none;
+		padding: 8px 12px;
 	}
 
 	tr:nth-of-type(odd) > td {
-		background-color: c(gray-30);
+		background-color: c(main-fg, 4%);
 	}
 
 	tr:hover > td {
-		background-color: c(gray-40);
+		background-color: c(main-fg, 7%);
 	}
 }
