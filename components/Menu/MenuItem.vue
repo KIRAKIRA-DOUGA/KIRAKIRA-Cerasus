@@ -3,6 +3,7 @@
 
 	const props = withDefaults(defineProps<{
 		icon?: DeclaredIcons;
+		noFade?: boolean;
 	}>(), {
 		icon: undefined,
 	});
@@ -39,6 +40,7 @@
 		v-ripple
 		v-i="vIndex"
 		class="menu-item"
+		:class="{ 'no-fade': noFade }"
 		role="menuitem"
 		@click="onClick"
 	>
@@ -59,7 +61,7 @@
 		margin: 0 $menu-padding;
 		padding: 8px 16px;
 		padding-left: 14px;
-		color: c(gray-60);
+		color: c(icon-color);
 		white-space: nowrap;
 		cursor: pointer;
 

@@ -131,9 +131,7 @@
 			@mouseleave="moveOut"
 			@pointerdown="pointerDown"
 		>
-			<menu @contextmenu.prevent>
-				<slot></slot>
-			</menu>
+			<slot></slot>
 			<slot name="slider"></slot>
 		</Comp>
 	</Transition>
@@ -163,29 +161,31 @@
 		}
 	}
 
-	menu {
+	:slotted(menu) {
 		@include round-large;
 		@include dropdown-flyouts;
 		@include acrylic-background;
 		z-index: 70;
-		padding: $menu-padding;
+		padding: $menu-padding 0;
 
 		&:empty {
 			display: none;
 		}
 
-		&:deep {
-			.toggle-switch {
-				@include round-small;
-				min-height: 36px;
-				padding: 0 8px;
-			}
+		> .toggle-switch {
+			@include round-small;
+			min-height: 36px;
+			padding: 0 8px;
 		}
 
-		:slotted(hr) {
+		> hr {
 			margin: 6px 0;
 			border: none;
 			border-top: c(divider, 10%) 1px solid;
+		}
+
+		> :not(hr) {
+			margin: 0 $menu-padding;
 		}
 	}
 </style>

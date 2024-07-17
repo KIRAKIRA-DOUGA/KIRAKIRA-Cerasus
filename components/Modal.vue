@@ -14,6 +14,8 @@
 		icon?: DeclaredIcons;
 		/** 不显示标题部分。 */
 		hideTitle?: boolean;
+		/** 不显示页脚部分 */
+		hideFooter?: boolean;
 	}>(), {
 		title: "",
 		icon: "colored-logo/sakuranomiya",
@@ -95,7 +97,7 @@
 						<slot><em>这是一个空的模态框。</em></slot>
 					</div>
 				</div>
-				<div class="footer">
+				<div v-if="!hideFooter" class="footer">
 					<div class="left">
 						<slot name="footer-left"></slot>
 					</div>
@@ -124,8 +126,8 @@
 		overflow: clip;
 		transform: translate(-50%, -50%); // TODO: 修改密码模态框出现模糊情况。
 		transform-origin: left top;
-		transition: $fallback-transitions, all $ease-out-max 400ms, translate 0s;
 		translate: none;
+		transition: $fallback-transitions, all $ease-out-max 400ms, translate 0s;
 
 		&.v-leave-active {
 			transition: $fallback-transitions, all $ease-in-smooth 150ms;
@@ -133,8 +135,8 @@
 
 		&.v-enter-from,
 		&.v-leave-to {
-			opacity: 0;
 			scale: 1.1;
+			opacity: 0;
 		}
 
 		&:not(:focus, :focus-within) {
@@ -203,9 +205,9 @@
 					@include square(32px);
 					@include round-small;
 					@include absolute-center-sized;
+					content: "";
 					background-color: c(hover-overlay);
 					opacity: 0;
-					content: "";
 				}
 
 				&:hover {
@@ -221,8 +223,8 @@
 				}
 
 				&:hover:active {
-					opacity: 0.7;
 					scale: 0.93;
+					opacity: 0.7;
 				}
 			}
 		}

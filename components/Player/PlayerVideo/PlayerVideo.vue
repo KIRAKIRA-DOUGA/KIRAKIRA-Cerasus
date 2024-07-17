@@ -4,8 +4,7 @@
 </docs>
 
 <script setup lang="ts">
-	import mediainfo from "mediainfo.js";
-	import type { MediaPlayerClass, BitrateInfo } from "dashjs";
+	import type shaka from "shaka-player";
 	import { createDanmakuComment } from "./PlayerVideoPanel/PlayerVideoPanelDanmaku/PlayerVideoPanelDanmakuSender.vue";
 
 	const props = defineProps<{
@@ -33,9 +32,10 @@
 	const isTimeUpdating = ref(false);
 	const ended = ref(false);
 	const waiting = ref(true);
-	const showMediaInfo = ref(false);
+	const showStats = ref(false);
+	const splash = ref(true);
 	const showAboutPlayer = ref(false);
-	const currentQuality = ref(720);
+	const activeTrack = ref<shaka.extern.Track>();
 	const autoQuality = ref(true);
 	const settings = reactive<PlayerVideoSettings>({
 		danmaku: {
@@ -78,8 +78,7 @@
 		return style;
 	});
 
-	const qualities = ref<BitrateInfo[]>([]);
-	const mediaInfos = ref<MediaInfo>();
+	const tracks = ref<shaka.extern.Track[]>([]);
 	const video = ref<HTMLVideoElement>();
 	const playerVideoMain = ref<HTMLDivElement>();
 	const { exit: exitFullscreen, enter: enterFullscreen } = useFullscreen();
@@ -87,58 +86,19 @@
 	const resample = computed({ get: () => !preservesPitch.value, set: value => preservesPitch.value = !value });
 	const menu = ref<MenuModel>();
 	const showDanmaku = ref(true);
-	const showProgressRing = ref(true);
-	const showProgressRingTimeoutId = ref<Timeout>();
 	const hideController = ref(false);
 	const hideControllerTimeoutId = ref<Timeout>();
 	const hideCursor = ref(false);
 	const hideCursorTimeoutId = ref<Timeout>();
 	const dblClickCount = ref(0);
 	const dblClickTimeoutId = ref<Timeout>();
+	const refreshStatsIntervalId = ref<Timeout>();
 	const willSendDanmaku = ref<DanmakuComment[]>();
 	const willInsertDanmaku = ref<DanmakuListItem[]>();
 	const initialDanmaku = ref<DanmakuComment[]>();
 	const screenOrientationBeforeFullscreen = ref<OrientationType>("portrait-primary");
 	const playerVideoControllerMouseDown = ref(false);
-	type MediaInfo = Record<string, Record<string, unknown>>;
 	const playerConfig = useAppSettingsStore().player;
-
-	/**
-	 * 显示视频详细信息。
-	 */
-	async function showInfo() {
-		if (!mediaInfos.value) await getInfo(props.src);
-		if (mediaInfos.value) showMediaInfo.value = true;
-	}
-
-	/**
-	 * 获取视频详细信息，使用库 `mediainfo.js`。
-	 * @param videoPath - 视频地址。
-	 */
-	async function getInfo(videoPath: string) {
-		const response = await fetch(videoPath);
-		const blob = await response.blob();
-		const fileName = path.basename(videoPath);
-		const file = new File([blob], fileName);
-		const mediaInfo = await mediainfo();
-		const result = await mediaInfo.analyzeData(() => file.size,
-			(chunkSize, offset) => new Promise<Uint8Array>((resolve, reject) => {
-				const reader = new FileReader();
-				reader.onload = () => resolve(new Uint8Array(reader.result as ArrayBuffer));
-				reader.onerror = reject;
-				reader.readAsArrayBuffer(file.slice(offset, offset + chunkSize));
-			}));
-		if (typeof result === "string") return; // 仅在会报错时 result 取值为空字符串，如报错在此之前已会报错，忽略之。
-		const tracks = result.media?.track ?? [];
-		mediaInfos.value = {};
-		for (const track of tracks) {
-			const { "@type": type, ...info } = track;
-			mediaInfos.value[type] = info;
-		}
-		showMediaInfo.value = true;
-	}
-
-	watch(() => props.src, () => mediaInfos.value = undefined);
 
 	watch(playing, playing => {
 		if (!video.value) return;
@@ -175,14 +135,6 @@
 		if (!video.value) return;
 		video.value.muted = muted;
 		playerConfig.audio.muted = muted;
-	});
-
-	watch(waiting, waiting => {
-		clearTimeout(showProgressRingTimeoutId.value);
-		if (waiting)
-			showProgressRingTimeoutId.value = setTimeout(() => showProgressRing.value = true, 1000);
-		else
-			showProgressRing.value = false;
 	});
 
 	watch(() => settings.danmaku.opacity, opacity => {
@@ -239,8 +191,8 @@
 				}));
 			}
 		} catch (error) {
-			useToast("获取弹幕列表失败", "error"); // TODO: 使用多语言
-			console.error("ERROR", "获取弹幕列表失败");
+			useToast(t.player.error.getDanmaku, "error");
+			console.error("ERROR", t.player.error.getDanmaku);
 		}
 	}
 	watch(() => props.id, fetchDanmaku, { immediate: true });
@@ -254,60 +206,150 @@
 			}));
 	});
 
-	const player = ref<MediaPlayerClass>();
+	/**
+	 * 从 Pinia 中加载播放器设置。
+	 */
+	volume.value = playerConfig.audio.volume;
+	muted.value = playerConfig.audio.muted;
+	preservesPitch.value = playerConfig.rate.preservesPitch;
+	continuousRateControl.value = playerConfig.rate.continuousControl;
+	autoQuality.value = playerConfig.quality.auto;
+	settings.danmaku.opacity = playerConfig.danmaku.opacity;
+	settings.danmaku.fontSizeScale = playerConfig.danmaku.fontSizeScale;
+
+	const player = ref<shaka.Player>();
+	const playerVersion = ref("");
 
 	onMounted(async () => {
 		if (!video.value) return;
 		onCanPlay({ target: video.value });
 
-		if (props.src.endsWith(".mp4"))
-			video.value.src = props.src;
-		else if (environment.client) {
-			const Dash = await import("dashjs"); // 注意看，由于 Dash 无法在服务端下渲染，因此必须动态导入。
-			player.value = Dash.MediaPlayer().create();
+		if (environment.client) {
+			const shaka = (await import("shaka-player")).default; // 由于 Shaka Player 无法在服务端下渲染，因此必须动态导入。
+			player.value = new shaka.Player();
+			player.value.attach(video.value);
+			const eventManager = new shaka.util.EventManager();
 
-			player.value.on(Dash.MediaPlayer.events.STREAM_INITIALIZED, _e => {
-				const bitrateInfoList = player.value!.getBitrateInfoListFor("video");
-				player.value!.setQualityFor("video", bitrateInfoList.length - 1);
-				qualities.value = bitrateInfoList;
+			playerVersion.value = shaka.Player.version;
 
-				player.value!.on(Dash.MediaPlayer.events.QUALITY_CHANGE_RENDERED, _e => {
-					if (_e.mediaType !== "video") return;
-					const qual = _e.newQuality;
-					const currentQual = bitrateInfoList.find(e => e.qualityIndex === qual);
-					if (currentQual !== undefined)
-						currentQuality.value = currentQual.height;
-				});
-			});
-
-			player.value.initialize(video.value, props.src, false);
-
-			player.value.updateSettings({
-				streaming: {
-					buffer: {
-						fastSwitchEnabled: true,
-					},
-					abr: {
-						autoSwitchBitrate: { video: autoQuality.value },
-						// initialBitrate: { audio: 2000000, video: 2000000 }, // 2mb/s, lol
-						// maxBitrate: { audio: 2000000000000, video: 20000000000000 }, // lmao this can't be right
+			/**
+			 * 设置 Shaka Player。
+			 */
+			player.value.configure({
+				abr: {
+					enabled: autoQuality.value,
+				},
+				manifest: {
+					dash: {
+						ignoreMinBufferTime: true, // @see https://shaka-player-demo.appspot.com/docs/api/
 					},
 				},
 			});
 
-			player.value.attachView(video.value);
+			/**
+			 * 监听首次加载完毕。
+			 */
+			eventManager.listenOnce(player.value, "loaded", () => {
+				splash.value = false;
+			});
 
-			// BUG: Dash.js will raise an error: [614][FragmentController] TypeError: Cannot read properties of undefined (reading 'append')
+			/**
+			 * 监听轨道变化事件。
+			 */
+			eventManager.listen(player.value, "trackschanged", () => {
+				tracks.value = player.value!.getVariantTracks();
+				activeTrack.value = tracks.value.find(e => e.active)!;
+			});
+
+			/**
+			 * 监听自动质量变化事件。
+			 */
+			eventManager.listen(player.value, "adaptation", e => {
+				activeTrack.value = e.newTrack;
+			});
+
+			/**
+			 * 监听手动质量变化事件。
+			 */
+			eventManager.listen(player.value, "variantchanged", e => {
+				activeTrack.value = e.newTrack;
+			});
+
+			/**
+			 * 监听错误事件。
+			 */
+			eventManager.listen(player.value, "error", e => {
+				console.error("Error Code:", e.detail.code, "Object:", e.detail);
+			});
+
+			/**
+			 * 加载视频。
+			 */
+			try {
+				await player.value.load(props.src);
+				if (!autoQuality.value)
+					for (let id = 0; id < tracks.value.length; id++)
+						if (tracks.value[id].height === playerConfig.quality.preferred) {
+							player.value.selectVariantTrack(tracks.value[id], true);
+							break;
+						}
+			} catch (error) {
+				console.error("Unable to load the video", error);
+			}
 		}
-
-		// 从 Pinia 中取出保存的设置。
-		volume.value = playerConfig.audio.volume;
-		muted.value = playerConfig.audio.muted;
-		preservesPitch.value = playerConfig.rate.preservesPitch;
-		continuousRateControl.value = playerConfig.rate.continuousControl;
-		settings.danmaku.opacity = playerConfig.danmaku.opacity;
-		settings.danmaku.fontSizeScale = playerConfig.danmaku.fontSizeScale;
 	});
+
+	const selectedTrack = computed({
+		get: () => activeTrack.value,
+		set: track => {
+			player.value?.selectVariantTrack(track!, true);
+			playerConfig.quality.preferred = track!.height!;
+		},
+	});
+
+	watch(autoQuality, autoQuality => {
+		if (!video.value || !player.value) return;
+		player.value.configure({ abr: { enabled: autoQuality } });
+		playerConfig.quality.auto = autoQuality;
+	});
+
+	watch(showStats, showStats => {
+		if (showStats) {
+			getStats();
+			refreshStatsIntervalId.value = setInterval(() => { getStats(); }, 1000);
+		} else clearInterval(refreshStatsIntervalId.value);
+	});
+
+	const statsPlayer = ref({ manifestType: "", streamBandwidth: 0, estimatedBandwidth: 0, resolution: { width: 0, height: 0 }, frames: { decoded: 0, dropped: 0 } });
+	const statsVideo = ref({ codec: "", mimeType: "", bitRate: 0, resolution: { width: 0, height: 0 }, frameRate: 0 });
+	const statsAudio = ref({ codec: "", mimeType: "", bitRate: 0, sampleRate: 0 });
+
+	/**
+	 * 获取视频详细信息
+	 */
+	function getStats() {
+		if (!player.value || !video.value) return;
+		const stats = player.value?.getStats();
+		if (!stats) return;
+
+		statsVideo.value.codec = activeTrack.value?.videoCodec ?? "";
+		statsVideo.value.mimeType = activeTrack.value?.videoMimeType ?? "";
+		statsVideo.value.bitRate = activeTrack.value?.videoBandwidth ?? 0;
+		statsVideo.value.resolution = { width: activeTrack.value?.width ?? 0, height: activeTrack.value?.height ?? 0 };
+		statsVideo.value.frameRate = activeTrack.value?.frameRate ?? 0;
+
+		statsAudio.value.codec = activeTrack.value?.audioCodec ?? "";
+		statsAudio.value.mimeType = activeTrack.value?.audioMimeType ?? "";
+		statsAudio.value.bitRate = activeTrack.value?.audioBandwidth ?? 0;
+		statsAudio.value.sampleRate = activeTrack.value?.audioSamplingRate ?? 0;
+
+		statsPlayer.value.manifestType = player.value.getManifestType() ?? "";
+		statsPlayer.value.streamBandwidth = stats.streamBandwidth ?? 0;
+		statsPlayer.value.estimatedBandwidth = stats.estimatedBandwidth ?? 0;
+		statsPlayer.value.resolution = { width: stats.width ?? 0, height: stats.height ?? 0 };
+		statsPlayer.value.frames.decoded = stats.decodedFrames ?? 0;
+		statsPlayer.value.frames.dropped = stats.droppedFrames ?? 0;
+	}
 
 	/**
 	 * 当视频已经准备好可以播放时执行的事件。
@@ -316,35 +358,11 @@
 	function onCanPlay(e: Event | { target: EventTarget }) {
 		const video = e.target as HTMLVideoElement;
 		playing.value = !video.paused;
-		playbackRate.value = video.playbackRate;
 		duration.value = video.duration;
 		video.preservesPitch = preservesPitch.value;
 		waiting.value = false;
 		updateBuffered();
 	}
-
-	const quality = computed({
-		get: () => currentQuality.value,
-		set: quality => {
-			let index = 0;
-			for (const originQuality of qualities.value)
-				if (originQuality.height === quality) {
-					index = originQuality.qualityIndex;
-					break;
-				}
-			player.value?.setQualityFor("video", index, true);
-			// currentQuality.value = quality;
-		},
-	});
-
-	watch(autoQuality, autoQuality => {
-		if (!video.value || !player.value) return;
-		player.value.updateSettings({
-			streaming: {
-				abr: { autoSwitchBitrate: { video: autoQuality } },
-			},
-		});
-	});
 
 	/**
 	 * 视频时间码变化事件。
@@ -498,18 +516,82 @@
 
 <template>
 	<Comp :class="{ fullscreen, dark: fullscreen }">
-		<Modal v-model="showMediaInfo" icon="info" title="视频详细信息">
-			<Accordion>
-				<AccordionItem v-for="(info, type) in mediaInfos" :key="type" :title="type" noPadding>
+		<Modal v-model="showStats" icon="info" :title="t.player.stats" hideFooter>
+			<Accordion class="stats">
+				<AccordionItem title="Video File" shown noPadding>
 					<table>
-						<thead>
-							<th>项目</th>
-							<th>值</th>
-						</thead>
 						<tbody>
-							<tr v-for="(value, property) in info" :key="property">
-								<td>{{ property }}</td>
-								<td>{{ value }}</td>
+							<tr>
+								<td>Codec</td>
+								<td>{{ statsVideo.codec }}</td>
+							</tr>
+							<tr>
+								<td>Mime Type</td>
+								<td>{{ statsVideo.mimeType }}</td>
+							</tr>
+							<tr>
+								<td>Bit Rate</td>
+								<td>{{ `${Math.round(statsVideo.bitRate / 1000)} Kbps` }}</td>
+							</tr>
+							<tr>
+								<td>Resolution</td>
+								<td>{{ `${statsVideo.resolution.width} × ${statsVideo.resolution.height}` }}</td>
+							</tr>
+							<tr>
+								<td>Frame Rate</td>
+								<td>{{ `${Number(statsVideo.frameRate.toFixed(3))} FPS` }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</AccordionItem>
+				<AccordionItem title="Audio File" shown noPadding>
+					<table>
+						<tbody>
+							<tr>
+								<td>Codec</td>
+								<td>{{ statsAudio.codec }}</td>
+							</tr>
+							<tr>
+								<td>Mime Type</td>
+								<td>{{ statsAudio.mimeType }}</td>
+							</tr>
+							<tr>
+								<td>Bit Rate</td>
+								<td>{{ `${Math.round(statsAudio.bitRate / 1000)} Kbps` }}</td>
+							</tr>
+							<tr>
+								<td>Sample Rate</td>
+								<td>{{ `${statsAudio.sampleRate} Hz` }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</AccordionItem>
+				<AccordionItem title="Player" shown noPadding>
+					<table>
+						<tbody>
+							<tr>
+								<td>Core</td>
+								<td>Shaka Player {{ playerVersion }}</td>
+							</tr>
+							<tr>
+								<td>Manifest Type</td>
+								<td>{{ statsPlayer.manifestType }}</td>
+							</tr>
+							<tr>
+								<td>Estimated Bandwidth</td>
+								<td>{{ `${Math.round(statsPlayer.estimatedBandwidth / 1000)} Kbps` }}</td>
+							</tr>
+							<tr>
+								<td>Stream Bandwidth</td>
+								<td>{{ `${Math.round(statsPlayer.streamBandwidth / 1000)} Kbps` }}</td>
+							</tr>
+							<tr>
+								<td>Resolution</td>
+								<td>{{ `${statsPlayer.resolution.width} × ${statsPlayer.resolution.height}` }}</td>
+							</tr>
+							<tr>
+								<td>Frames</td>
+								<td>{{ `${statsPlayer.frames.dropped} dropped of ${statsPlayer.frames.decoded}` }}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -525,7 +607,7 @@
 					:style="videoFilterStyle"
 					@play="playing = true"
 					@pause="playing = false"
-					@ratechange="e => playbackRate = (e.target as HTMLVideoElement).playbackRate"
+					@ratechange="(video!.playbackRate !== 0) && (playbackRate = video!.playbackRate)"
 					@timeupdate="onTimeUpdate"
 					@canplay="onCanPlay"
 					@progress="updateBuffered"
@@ -543,7 +625,8 @@
 						:hidden="!showDanmaku"
 						:style="{ opacity: settings.danmaku.opacity }"
 					/>
-					<div v-if="showProgressRing" class="waiting">
+					<PlayerVideoSplash v-model="splash" />
+					<div v-if="splash || waiting" class="waiting">
 						<ProgressRing />
 					</div>
 					<PlayerVideoAbout v-model="showAboutPlayer" :playing />
@@ -555,7 +638,7 @@
 				/>
 			</div>
 			<PlayerVideoController
-				:key="qualities.length"
+				:key="tracks.length"
 				v-model:currentTime="currentTime"
 				v-model:playing="playing"
 				v-model:playbackRate="playbackRate"
@@ -564,7 +647,7 @@
 				v-model:resample="resample"
 				v-model:continuousRateControl="continuousRateControl"
 				v-model:showDanmaku="showDanmaku"
-				v-model:quality="quality"
+				v-model:selectedTrack="selectedTrack"
 				v-model:autoQuality="autoQuality"
 				v-model:waiting="waiting"
 				v-model:ended="ended"
@@ -572,7 +655,8 @@
 				:fullscreen="fullscreen"
 				:toggleFullscreen
 				:buffered
-				:qualities
+				:tracks
+				:splash
 				:hidden="hideController"
 				@mousedown="playerVideoControllerMouseDown = true"
 				@touchstart="onPlayerVideoControllerTouchStart"
@@ -592,10 +676,9 @@
 			:thumbnail
 			:settings
 		/>
-		<Menu v-model="menu">
-			<MenuItem icon="camera" @click="() => getScreenshot()">截取当前画面</MenuItem>
-			<!-- TODO: 使用其他方式而非下载完整视频后获取信息，B站是怎么做的呢？ -->
-			<MenuItem icon="info" @click="showInfo">查看视频详细信息</MenuItem>
+		<Menu v-model="menu" noFade>
+			<MenuItem icon="camera" @click="() => getScreenshot()">{{ t.player.screenshot }}</MenuItem>
+			<MenuItem icon="info" @click="showStats = true">{{ t.player.stats }}</MenuItem>
 			<hr />
 			<MenuItem icon="yozora" class="version" @click="showAboutPlayer = true">YOZORA PLAYER</MenuItem>
 		</Menu>
@@ -659,10 +742,6 @@
 		border-radius: 0;
 	}
 
-	.menu-item {
-		color: c(text-color) !important; // 避免黑底视频看不清文字。
-	}
-
 	.screen {
 		position: relative;
 
@@ -686,6 +765,20 @@
 
 	.player-video-about {
 		cursor: pointer;
+	}
+
+	.stats {
+		min-width: 320px;
+		user-select: text;
+
+		td {
+			user-select: text;
+
+			&:nth-of-type(2) {
+				font-variant-numeric: tabular-nums;
+				text-align: right;
+			}
+		}
 	}
 </style>
 

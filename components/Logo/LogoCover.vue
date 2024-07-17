@@ -1,4 +1,6 @@
 <script setup lang="ts">
+	import { vElementSize } from "@vueuse/components";
+
 	const props = defineProps<{
 		/** 如是则将 LOGO 切换为 Welcome 字样。 */
 		welcome?: boolean;
@@ -7,11 +9,21 @@
 		/** 如是则禁止显示标题。 */
 		noTitle?: boolean;
 	}>();
+
+	const linesWidth = ref("400px");
+
+	/**
+	 * 处理元素大小变化。
+	 * @param width - 宽度。
+	 */
+	function onResize({ width }: { width: number }) {
+		linesWidth.value = width + "px";
+	}
 </script>
 
 <template>
 	<Comp :class="{ animation: !noAnimation }" role="img">
-		<div class="lines">
+		<div class="lines" v-element-size="onResize">
 			<div v-for="i in 5" :key="i"></div>
 		</div>
 		<div class="pluses">
@@ -74,12 +86,12 @@
 	.title {
 		@include absolute-center;
 		$move-distance: 4rem;
-		font-weight: 600;
 		font-size: 1.5rem;
-		text-transform: uppercase;
-		transition: all $ease-out-smooth 800ms;
-		scale: 2.5;
+		font-weight: 600;
 		font-feature-settings: normal;
+		text-transform: uppercase;
+		scale: 2.5;
+		transition: all $ease-out-smooth 800ms;
 
 		.titles:not(.welcome) > &.welcome {
 			margin-top: $move-distance;
@@ -117,8 +129,9 @@
 			@include oval;
 			--line-height: 1rem;
 			--from: 100%;
-			--to: -100%;
+			--to: calc((v-bind("linesWidth") + 100%) * -1);
 			position: absolute;
+			right: 0;
 			width: calc(var(--line-height) * 15);
 			height: var(--line-height);
 			background-color: c(accent, 30%);
@@ -144,17 +157,17 @@
 		:nth-child(3) {
 			--line-height: 0.5rem;
 			--from: 550%;
-			--to: -200%;
+			--to: calc((v-bind("linesWidth") + 200%) * -1);
 			top: 55%;
 			animation-duration: 32s;
 		}
 
 		:nth-child(4) {
-			--line-height: 2rem;
+			--line-height: 1.5rem;
 			--from: 150%;
-			--to: -150%;
+			--to: calc((v-bind("linesWidth") + 150%) * -1);
 			top: 58%;
-			animation-duration: 8s;
+			animation-duration: 12s;
 		}
 
 		:nth-child(5) {
@@ -167,8 +180,8 @@
 	.pluses {
 		right: 0;
 		bottom: 0.25rem;
-		font-weight: 300;
 		font-size: 2rem;
+		font-weight: 300;
 
 		> * {
 			white-space: nowrap;
@@ -200,8 +213,8 @@
 		right: calc(var(--width) - 40%);
 		bottom: 2rem;
 		background-color: transparent;
-		animation-delay: -1s;
 		clip-path: none;
+		animation-delay: -1s;
 
 		svg polygon {
 			fill: transparent;

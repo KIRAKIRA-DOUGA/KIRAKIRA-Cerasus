@@ -143,6 +143,11 @@ export default {
 		quality: {
 			auto: "自动画质",
 		},
+		screenshot: "截图",
+		stats: "统计信息",
+		error: {
+			getDanmaku: "获取弹幕列表失败",
+		},
 	},
 	danmaku: {
 		_: "弹幕",

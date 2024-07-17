@@ -139,6 +139,11 @@ export default {
 		quality: {
 			auto: "Auto Quality",
 		},
+		screenshot: "Screenshot",
+		stats: "Stats",
+		error: {
+			getDanmaku: "Failed to get danmaku list",
+		},
 	},
 	danmaku: {
 		_: "Danmaku | Danmakus",

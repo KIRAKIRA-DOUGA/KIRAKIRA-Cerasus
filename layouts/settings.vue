@@ -62,7 +62,7 @@
 
 <template>
 	<div v-bind="$attrs" class="settings" :class="{ transparent: useAppSettingsStore().showCssDoodle || useAppSettingsStore().backgroundImage.image.data }">
-		<ShadingIcon icon="settings" position="right top" rotating elastic />
+		<ShadingIcon icon="settings" position="right top" rotating />
 
 		<nav :class="{ show: showDrawer }">
 			<div class="content">
