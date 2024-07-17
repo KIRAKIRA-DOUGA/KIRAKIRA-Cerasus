@@ -249,7 +249,7 @@
 			/**
 			 * 监听首次加载完毕。
 			 */
-			eventManager.listenOnce(player.value, "loaded", () => {
+			eventManager.listenOnce(video.value, "canplaythrough", () => {
 				splash.value = false;
 			});
 
