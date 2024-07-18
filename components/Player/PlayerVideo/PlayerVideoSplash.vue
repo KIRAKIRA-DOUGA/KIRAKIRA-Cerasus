@@ -43,6 +43,10 @@
 		top: 16px;
 		right: 16px;
 		z-index: 2;
+
+		@include mobile {
+			display: none;
+		}
 	}
 
 	.logo-player {
