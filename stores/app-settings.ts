@@ -24,6 +24,7 @@ export const useAppSettingsStore = defineStore("app-settings", {
 		},
 
 		player: {
+			autoPlay: false,
 			audio: {
 				volume: 1,
 				muted: false,

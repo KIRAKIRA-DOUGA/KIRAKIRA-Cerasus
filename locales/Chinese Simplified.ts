@@ -145,6 +145,7 @@ export default {
 		},
 		screenshot: "截图",
 		stats: "统计信息",
+		autoPlay: "自动播放",
 		error: {
 			getDanmaku: "获取弹幕列表失败",
 		},

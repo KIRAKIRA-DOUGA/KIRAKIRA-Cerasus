@@ -141,6 +141,7 @@ export default {
 		},
 		screenshot: "Screenshot",
 		stats: "Stats",
+		autoPlay: "Auto Play",
 		error: {
 			getDanmaku: "Failed to get danmaku list",
 		},

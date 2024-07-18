@@ -49,10 +49,10 @@
 				return true;
 			}
 			/* eslint-disable indent */
-			prop === "hue" ? (target.hue = newValue ? 180 : 0) :
-			prop === "saturate" ? (target.saturate = newValue ? 5 : 1) :
-			prop === "contrast" ? (target.contrast = newValue ? 5 : 1) :
-			prop === "brightness" ? (target.brightness = newValue ? 2 : 1) :
+			prop === "hue" ? target.hue = newValue ? 180 : 0 :
+			prop === "saturate" ? target.saturate = newValue ? 5 : 1 :
+			prop === "contrast" ? target.contrast = newValue ? 5 : 1 :
+			prop === "brightness" ? target.brightness = newValue ? 2 : 1 :
 			target[prop as never] = newValue as never;
 			/* eslint-enable indent */
 			return true;
@@ -70,6 +70,7 @@
 		<Comp>
 			<Transition :name="transitionName" mode="out-in">
 				<div v-if="selectedSettingsTab === 'player' " class="page-player">
+					<ToggleSwitch v-model="settings.autoPlay" v-ripple icon="autoplay">{{ t.player.autoPlay }}</ToggleSwitch>
 					<p>弹幕</p>
 					<SettingsSlider
 						v-model="settings.danmaku.fontSizeScale"
@@ -147,10 +148,6 @@
 	.wrapper {
 		@include square(100%);
 		position: relative;
-	}
-
-	.page-player {
-		padding-top: 8px;
 	}
 
 	.tab-bar {

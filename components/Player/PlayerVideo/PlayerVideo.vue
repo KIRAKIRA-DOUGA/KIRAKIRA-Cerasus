@@ -38,6 +38,7 @@
 	const activeTrack = ref<shaka.extern.Track>();
 	const autoQuality = ref(true);
 	const settings = reactive<PlayerVideoSettings>({
+		autoPlay: false,
 		danmaku: {
 			fontSizeScale: 1,
 			opacity: 1,
@@ -137,6 +138,10 @@
 		playerConfig.audio.muted = muted;
 	});
 
+	watch(() => settings.autoPlay, autoPlay => {
+		playerConfig.autoPlay = autoPlay;
+	});
+
 	watch(() => settings.danmaku.opacity, opacity => {
 		playerConfig.danmaku.opacity = opacity;
 	});
@@ -214,6 +219,7 @@
 	preservesPitch.value = playerConfig.rate.preservesPitch;
 	continuousRateControl.value = playerConfig.rate.continuousControl;
 	autoQuality.value = playerConfig.quality.auto;
+	settings.autoPlay = playerConfig.autoPlay;
 	settings.danmaku.opacity = playerConfig.danmaku.opacity;
 	settings.danmaku.fontSizeScale = playerConfig.danmaku.fontSizeScale;
 
@@ -616,6 +622,7 @@
 					@contextmenu.prevent="e => menu = e"
 					@pointerup.left="onVideoPointerUp"
 					@pointermove="autoHideController"
+					:autoplay="settings.autoPlay"
 				></video>
 				<Contents>
 					<PlayerVideoDanmaku

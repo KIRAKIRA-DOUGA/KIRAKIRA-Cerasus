@@ -69,6 +69,7 @@ declare global {
 	type GestureDragEvent = Parameters<Parameters<typeof useDrag<PointerEvent>>[0]>[0];
 	/** 视频播放器设置。 */
 	type PlayerVideoSettings = {
+		autoPlay: boolean;
 		danmaku: {
 			fontSizeScale: number;
 			opacity: number;
