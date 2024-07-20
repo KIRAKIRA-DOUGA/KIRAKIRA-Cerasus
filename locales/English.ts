@@ -139,9 +139,16 @@ export default {
 		quality: {
 			auto: "Auto Quality",
 		},
+		control_bar: {
+			_: "Control Bar",
+			show_frame_by_frame: "Show Frame by Frame Control",
+		},
 		screenshot: "Screenshot",
 		stats: "Stats",
-		autoPlay: "Auto Play",
+		autoplay: "Autoplay",
+		filter: {
+			_: "Filter",
+		},
 		error: {
 			getDanmaku: "Failed to get danmaku list",
 		},
@@ -366,6 +373,7 @@ export default {
 		size: "Text Size",
 	},
 	color: "Color",
+	opacity: "Opacity",
 	mode: "Mode",
 	size: {
 		_: "Size",

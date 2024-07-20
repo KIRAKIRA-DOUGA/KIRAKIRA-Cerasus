@@ -91,14 +91,14 @@
 	<Comp>
 		<div class="top">
 			<div class="info">
-				<CountItem icon="play" :value="getCompactDecimal(counts.play)">{{ t(counts.play).watched }}</CountItem>
-				<CountItem icon="thumb_up" :value="getCompactDecimal(counts.rating)" :class="{ downvote: counts.rating < 0 }">{{ t.rating }}</CountItem>
-				<CountItem icon="star" :value="getCompactDecimal(counts.favorite)">{{ t(counts.favorite).favorite }}</CountItem>
-				<CountItem icon="danmaku" :value="getCompactDecimal(counts.danmaku)">{{ t(counts.danmaku).danmaku }}</CountItem>
-				<div class="watching">
+				<CountItem v-tooltip:bottom="t(counts.play).watched" icon="play" :value="getCompactDecimal(counts.play)" />
+				<CountItem v-tooltip:bottom="t(counts.danmaku).danmaku" icon="danmaku" :value="getCompactDecimal(counts.danmaku)" />
+				<CountItem v-tooltip:bottom="t.rating" icon="thumb_up" :value="getCompactDecimal(counts.rating)" :class="{ downvote: counts.rating < 0 }" />
+				<CountItem v-tooltip:bottom="t(counts.favorite).favorite" icon="star" :value="getCompactDecimal(counts.favorite)" />
+				<!-- <div class="watching">
 					<span class="watching-number">{{ counts.watching }}</span>
 					<span class="watching-description">{{ t(counts.watching).are_watching }}</span>
-				</div>
+				</div> -->
 			</div>
 			<div class="buttons">
 				<SoftButton v-tooltip:bottom="t.upvote" icon="thumb_up" class="button-upvote" @click="upvote" />
@@ -117,8 +117,8 @@
 							<TabItem id="playlist">播放列表「」</TabItem>
 						</TabBar>
 						<TabBar v-else-if="showSettings" v-model="selectedSettingsTab" @movingForTransition="name => transitionName = name">
-							<TabItem id="player">播放器</TabItem>
-							<TabItem id="filters">滤镜</TabItem>
+							<TabItem id="player">{{ t.player }}</TabItem>
+							<TabItem id="filters">{{ t.player.filter }}</TabItem>
 							<TabItem id="block-words">屏蔽词</TabItem>
 						</TabBar>
 					</Transition>
@@ -157,7 +157,7 @@
 
 <style scoped lang="scss">
 	$panel-width: 350px;
-	$info-height: 80px;
+	$info-height: 36px;
 	$buttons-height: 48px;
 
 	:comp {
@@ -201,10 +201,11 @@
 
 	.info {
 		display: grid;
-		grid-auto-flow: column;
-		grid-template-rows: repeat(2, 1fr);
+		// grid-auto-flow: column;
+		grid-template-columns: repeat(4, 1fr);
 		width: 100%;
 		height: $info-height;
+		margin-top: 4px;
 		color: c(icon-color);
 
 		> :deep(*) {
@@ -220,6 +221,7 @@
 				min-width: 3ch;
 				margin-left: 0.2em;
 				text-align: center;
+				user-select: text;
 			}
 
 			&.downvote .icon {

@@ -70,8 +70,9 @@
 		<Comp>
 			<Transition :name="transitionName" mode="out-in">
 				<div v-if="selectedSettingsTab === 'player' " class="page-player">
-					<ToggleSwitch v-model="settings.autoPlay" v-ripple icon="autoplay">{{ t.player.autoPlay }}</ToggleSwitch>
-					<p>弹幕</p>
+					<ToggleSwitch v-model="settings.autoplay" v-ripple icon="autoplay">{{ t.player.autoplay }}</ToggleSwitch>
+					<p>{{ t.danmaku }}</p>
+					<!-- TODO: 多语言。检查字号缩放功能的可用性并显示缩放数值。 -->
 					<SettingsSlider
 						v-model="settings.danmaku.fontSizeScale"
 						:min="0"
@@ -85,7 +86,9 @@
 						:max="1"
 						:defaultValue="1"
 						icon="opacity"
-					>不透明度</SettingsSlider>
+					>{{ t.opacity }}</SettingsSlider>
+					<p>{{ t.player.control_bar }}</p>
+					<ToggleSwitch v-model="settings.controller.showFrameByFrame" v-ripple icon="slow_forward">{{ t.player.control_bar.show_frame_by_frame }}</ToggleSwitch>
 				</div>
 
 				<div v-else-if="selectedSettingsTab === 'filters'">

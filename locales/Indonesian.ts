@@ -135,6 +135,7 @@ export default {
 			continuous: "Kontrol Berkelanjutan",
 		},
 		quality: {},
+		control_bar: {},
 		error: {},
 	},
 	danmaku: {

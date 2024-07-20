@@ -38,10 +38,13 @@
 	const activeTrack = ref<shaka.extern.Track>();
 	const autoQuality = ref(true);
 	const settings = reactive<PlayerVideoSettings>({
-		autoPlay: false,
+		autoplay: false,
 		danmaku: {
 			fontSizeScale: 1,
 			opacity: 1,
+		},
+		controller: {
+			showFrameByFrame: false,
 		},
 		filter: {
 			horizontalFlip: false,
@@ -138,8 +141,8 @@
 		playerConfig.audio.muted = muted;
 	});
 
-	watch(() => settings.autoPlay, autoPlay => {
-		playerConfig.autoPlay = autoPlay;
+	watch(() => settings.autoplay, autoplay => {
+		playerConfig.autoplay = autoplay;
 	});
 
 	watch(() => settings.danmaku.opacity, opacity => {
@@ -148,6 +151,10 @@
 
 	watch(() => settings.danmaku.fontSizeScale, size => {
 		playerConfig.danmaku.fontSizeScale = size;
+	});
+
+	watch(() => settings.controller.showFrameByFrame, showFrameByFrame => {
+		playerConfig.controller.showFrameByFrame = showFrameByFrame;
 	});
 
 	watch(fullscreen, fullscreen => { // 全屏时请求横屏。在设备不支持或安全问题时有可能会报错。
@@ -219,9 +226,10 @@
 	preservesPitch.value = playerConfig.rate.preservesPitch;
 	continuousRateControl.value = playerConfig.rate.continuousControl;
 	autoQuality.value = playerConfig.quality.auto;
-	settings.autoPlay = playerConfig.autoPlay;
+	settings.autoplay = playerConfig.autoplay;
 	settings.danmaku.opacity = playerConfig.danmaku.opacity;
 	settings.danmaku.fontSizeScale = playerConfig.danmaku.fontSizeScale;
+	settings.controller.showFrameByFrame = playerConfig.controller.showFrameByFrame;
 
 	const player = ref<shaka.Player>();
 	const playerVersion = ref("");
@@ -622,7 +630,7 @@
 					@contextmenu.prevent="e => menu = e"
 					@pointerup.left="onVideoPointerUp"
 					@pointermove="autoHideController"
-					:autoplay="settings.autoPlay"
+					:autoplay="settings.autoplay"
 				></video>
 				<Contents>
 					<PlayerVideoDanmaku
@@ -664,6 +672,7 @@
 				:buffered
 				:tracks
 				:splash
+				:settings
 				:hidden="hideController"
 				@mousedown="playerVideoControllerMouseDown = true"
 				@touchstart="onPlayerVideoControllerTouchStart"

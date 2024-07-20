@@ -24,7 +24,7 @@ export const useAppSettingsStore = defineStore("app-settings", {
 		},
 
 		player: {
-			autoPlay: false,
+			autoplay: false,
 			audio: {
 				volume: 1,
 				muted: false,
@@ -36,6 +36,9 @@ export const useAppSettingsStore = defineStore("app-settings", {
 			danmaku: {
 				opacity: 1,
 				fontSizeScale: 1,
+			},
+			controller: {
+				showFrameByFrame: false,
 			},
 			quality: {
 				auto: true,

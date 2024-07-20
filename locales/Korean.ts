@@ -33,6 +33,7 @@ export default {
 	player: {
 		speed: {},
 		quality: {},
+		control_bar: {},
 		error: {},
 	},
 	danmaku: {

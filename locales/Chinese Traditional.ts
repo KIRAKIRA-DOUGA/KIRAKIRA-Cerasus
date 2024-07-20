@@ -141,6 +141,7 @@ export default {
 			continuous: "無級變速",
 		},
 		quality: {},
+		control_bar: {},
 		error: {},
 	},
 	danmaku: {

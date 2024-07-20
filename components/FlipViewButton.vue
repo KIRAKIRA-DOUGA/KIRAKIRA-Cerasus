@@ -21,7 +21,7 @@
 
 		.icon {
 			color: c(icon-color);
-			font-size: 32px;
+			font-size: 24px;
 		}
 
 		&:any-hover {

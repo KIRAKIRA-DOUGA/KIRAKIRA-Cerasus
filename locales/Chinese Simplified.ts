@@ -143,9 +143,13 @@ export default {
 		quality: {
 			auto: "自动画质",
 		},
+		control_bar: {
+			_: "控制栏",
+			show_frame_by_frame: "显示逐帧控制",
+		},
 		screenshot: "截图",
 		stats: "统计信息",
-		autoPlay: "自动播放",
+		autoplay: "自动播放",
 		error: {
 			getDanmaku: "获取弹幕列表失败",
 		},
@@ -370,6 +374,7 @@ export default {
 		size: "字号",
 	},
 	color: "颜色",
+	opacity: "不透明度",
 	mode: "模式",
 	size: {
 		_: "大小",

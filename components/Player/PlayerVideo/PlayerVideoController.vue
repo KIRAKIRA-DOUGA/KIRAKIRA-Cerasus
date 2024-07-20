@@ -20,6 +20,8 @@
 		tracks?: shaka.extern.Track[];
 		/** 是否正在开屏加载。 */
 		splash?: boolean;
+		/** 视频播放器设置。 */
+		settings?: PlayerVideoSettings;
 		/** 是否隐藏？ */
 		hidden?: boolean;
 	}>(), {
@@ -142,6 +144,14 @@
 	}
 
 	/**
+	 * 获取当前轨道的帧率。
+	 * @returns 当前轨道的帧率。
+	 */
+	function getCurrentFrameRate() {
+		return selectedTrack.value?.frameRate;
+	}
+
+	/**
 	 * 当指针移入全屏或网页全屏按钮时的事件。
 	 */
 	function onFullscreenBtnEnter() {
@@ -250,6 +260,12 @@
 	<Comp role="toolbar" :class="{ mobile: isMobile(), hidden }" v-bind="$attrs">
 		<div class="left">
 			<SoftButton class="play" :disabled="splash" :icon="ended ? 'replay' : playing ? 'pause' : 'play'" @click="playing = !playing" />
+			<Transition>
+				<div v-if="settings?.controller.showFrameByFrame" class="frame-by-frame">
+					<SoftButton :disabled="splash || !getCurrentFrameRate()" icon="caret_left" @click="model -= (1 / getCurrentFrameRate()!)" />
+					<SoftButton :disabled="splash || !getCurrentFrameRate()" icon="caret_right" @click="model += (1 / getCurrentFrameRate()!)" />
+				</div>
+			</Transition>
 		</div>
 		<div class="slider-wrapper">
 			<Slider
@@ -370,6 +386,20 @@
 
 		.play {
 			width: $thickness + 10px;
+		}
+
+		.frame-by-frame {
+			display: flex;
+			width: $thickness * 2;
+			margin-right: 6px;
+
+			&.v-enter-from,
+			&.v-leave-to {
+				width: 0;
+				margin-right: 0;
+				scale: 0;
+				opacity: 0;
+			}
 		}
 	}
 

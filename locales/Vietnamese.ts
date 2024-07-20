@@ -143,6 +143,7 @@ export default {
 		quality: {
 			auto: "Chất lượng tự động",
 		},
+		control_bar: {},
 		error: {},
 	},
 	danmaku: {
