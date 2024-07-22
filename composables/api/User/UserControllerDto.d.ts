@@ -10,6 +10,8 @@ export type UserRegistrationRequestDto = {
 	passwordHash: string;
 	/** 密码提示 */
 	passwordHint?: string;
+	/** 注册时使用的邀请码 */
+	invitationCode?: string;
 };
 
 /**
@@ -379,6 +381,92 @@ export type RequestSendVerificationCodeResponseDto = {
 	success: boolean;
 	/** 是否达到超时时间 */
 	isTimeout: boolean;
+	/** 附加的文本消息 */
+	message?: string;
+};
+
+/**
+ * 邀请码类型
+ */
+type InvitationCode = {
+	/** 生成邀请码的用户 - 非空 */
+	creatorUid: number;
+	/** 邀请码 - 非空 */
+	invitationCode: string;
+	/** 生成邀请码的时间 - 非空 */
+	generationDateTime: number;
+	/** 邀请码被标记为等待使用中 - 非空 */
+	isPadding: boolean;
+	/** 邀请码被标记为无法使用 - 非空 */
+	disabled: boolean;
+	/** 使用这个邀请码的用户 */
+	assignee?: number;
+	/** 邀请码被使用的时间 */
+	usedDateTime?: number;
+};
+
+/**
+ * 生成邀请码的请求响应
+ */
+export type GenerationInvitationCodeResponseDto = {
+	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
+	success: boolean;
+	/** 是否超出邀请码生成期限 */
+	isOutOfTimeLimit: boolean;
+	/** 附加的文本消息 */
+	message?: string;
+	/** 生成的邀请码 */
+	invitationCodeResult?: InvitationCode;
+};
+
+/**
+ * 获取自己的邀请码的请求响应
+ */
+export type GetMyInvitationCodeResponseDto = {
+	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
+	success: boolean;
+	/** 附加的文本消息 */
+	message?: string;
+	/** 邀请码列表 */
+	invitationCodeResult: InvitationCode[];
+};
+
+/**
+ * 使用邀请码的参数
+ */
+export type UseInvitationCodeDto = {
+	/** 被使用的邀请码 */
+	invitationCode: string;
+	/** 注册者 UID */
+	registrantUid: number;
+};
+
+/**
+ * 使用邀请码的结果
+ */
+export type UseInvitationCodeResultDto = {
+	/** 是否成功使用验证码 */
+	success: boolean;
+	/** 附加的文本消息 */
+	message?: string;
+};
+
+/**
+ * 检查一个邀请码是否可用的请求载荷
+ */
+export type CheckInvitationCodeRequestDto = {
+	/** 被使用的邀请码 */
+	invitationCode: string;
+};
+
+/**
+ * 检查一个邀请码是否可用的请求响应
+ */
+export type CheckInvitationCodeResponseDto = {
+	/** 是否成功使用验证码 */
+	success: boolean;
+	/** 是否是可用的邀请码 */
+	isAvailableInvitationCode: boolean;
 	/** 附加的文本消息 */
 	message?: string;
 };

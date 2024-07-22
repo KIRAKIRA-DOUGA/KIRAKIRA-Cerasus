@@ -1,5 +1,4 @@
 <script setup lang="ts">
-	const selfUserInfoStore = useSelfUserInfoStore();
 	const currentSetting = computed({
 		get: () => currentSettingsPage(),
 		set: async id => { await navigate(`/settings/${id}`); },
@@ -18,6 +17,9 @@
 			useEvent("user:login", false);
 		}
 	};
+
+	// 彩色侧边栏
+	const cookieColoredSidebar = useCookie<boolean>(COOKIE_KEY.coloredSidebarCookieKey);
 
 	useEventListener("window", "resize", () => {
 		if (window.innerWidth > 991) showDrawer.value = false;
@@ -43,6 +45,7 @@
 			{ id: "security", icon: "lock" },
 			{ id: "account-linking", icon: "groups" },
 			{ id: "blocklist", icon: "block" },
+			{ id: "invitation-code", icon: "link" },
 		],
 		general: [
 			{ id: "appearance", icon: "palette" },
@@ -90,7 +93,7 @@
 		<div class="card"></div>
 		<main ref="main">
 			<div class="content padding-end">
-				<header class="title page-header" :class="{ colored: useAppSettingsStore().coloredSideBar }">
+				<header class="title page-header" :class="{ colored: cookieColoredSidebar }">
 					<div class="show-drawer-wrapper page-title-icon-wrapper">
 						<SoftButton icon="dehaze" @click="showDrawer = true" />
 					</div>
