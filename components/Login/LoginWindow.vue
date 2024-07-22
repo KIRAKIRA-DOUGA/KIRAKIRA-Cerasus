@@ -296,7 +296,7 @@
 								v-model="invitationCode"
 								type="text"
 								placeholder="邀请码"
-								icon="link"
+								icon="gift"
 								:required="true"
 								:invalid="invitationCodeInvalidText"
 							/>

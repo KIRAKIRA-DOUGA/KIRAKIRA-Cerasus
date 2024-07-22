@@ -73,7 +73,7 @@
 
 	<div class="invitation-code-list-title">
 		<!-- // TODO: 使用多语言 -->
-		<Subheader icon="link">邀请码列表</Subheader>
+		<Subheader icon="gift">邀请码列表</Subheader>
 		<!-- // TODO: 使用多语言 -->
 		<Button class="secondary" icon="add" @click="generationInvitationCode">生成一个新邀请码</Button>
 	</div>
@@ -82,7 +82,7 @@
 		<SettingsChipItem
 			v-for="invitationCode in myInvitationCode"
 			:key="invitationCode.invitationCode"
-			icon="link"
+			icon="gift"
 			trailingIcon="copy"
 			:onTrailingIconClick="() => copyInvitationCode(invitationCode.invitationCode)"
 			:details="!!invitationCode.assignee ? '已使用' : '未使用'"

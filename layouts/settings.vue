@@ -45,7 +45,7 @@
 			{ id: "security", icon: "lock" },
 			{ id: "account-linking", icon: "groups" },
 			{ id: "blocklist", icon: "block" },
-			{ id: "invitation-code", icon: "link" },
+			{ id: "invitation-code", icon: "gift" },
 		],
 		general: [
 			{ id: "appearance", icon: "palette" },
