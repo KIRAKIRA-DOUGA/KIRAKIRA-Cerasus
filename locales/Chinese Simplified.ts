@@ -150,6 +150,9 @@ export default {
 		screenshot: "截图",
 		stats: "统计信息",
 		autoplay: "自动播放",
+		filter: {
+			_: "滤镜",
+		},
 		error: {
 			getDanmaku: "获取弹幕列表失败",
 		},
@@ -272,7 +275,11 @@ export default {
 	mention: "提及",
 	more: "更多",
 	delete: "删除",
-	copy: "复制",
+	copy: {
+		_: "复制",
+		success: "复制成功~",
+		failed: "复制失败！",
+	},
 	pin: "置顶",
 	unpin: "取消置顶",
 	report: "投诉",
@@ -442,4 +449,10 @@ export default {
 	current_time: "现在时间",
 	set_as_default: "设为默认",
 	advanced_search: "高级搜索",
+	total: "总共",
+	used: "已使用",
+	unused: "未使用",
+	create: "创建",
+	creatable: "可创建",
+	invitation_code: "邀请码",
 } as const satisfies LocaleIdentifiers;

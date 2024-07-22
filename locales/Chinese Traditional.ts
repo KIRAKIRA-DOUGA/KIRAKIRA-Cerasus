@@ -142,6 +142,7 @@ export default {
 		},
 		quality: {},
 		control_bar: {},
+		filter: {},
 		error: {},
 	},
 	danmaku: {
@@ -262,7 +263,9 @@ export default {
 	mention: "提及",
 	more: "更多",
 	delete: "刪除",
-	copy: "複製",
+	copy: {
+		_: "複製",
+	},
 	pin: "置頂",
 	unpin: "取消置頂",
 	report: "投訴",

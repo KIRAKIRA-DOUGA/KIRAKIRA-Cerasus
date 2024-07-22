@@ -271,7 +271,11 @@ export default {
 	mention: "Mention",
 	more: "More",
 	delete: "Delete",
-	copy: "Copy",
+	copy: {
+		_: "Copy",
+		success: "Copied~",
+		failed: "Copy Failed!",
+	},
 	pin: "Pin",
 	unpin: "Unpin",
 	report: "Report",
@@ -441,4 +445,10 @@ export default {
 	current_time: "Current Time",
 	set_as_default: "Set as Default",
 	advanced_search: "Advanced Search",
+	total: "Total",
+	used: "Used",
+	unused: "Unused",
+	create: "Create",
+	creatable: "Creatable",
+	invitation_code: "Invitation Code",
 } as const;

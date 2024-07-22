@@ -34,6 +34,7 @@ export default {
 		speed: {},
 		quality: {},
 		control_bar: {},
+		filter: {},
 		error: {},
 	},
 	danmaku: {
@@ -52,6 +53,7 @@ export default {
 	favorites: {},
 	upload: {},
 	kaomoji: {},
+	copy: {},
 	sort: {},
 	view: {},
 	step: {},
