@@ -408,7 +408,7 @@ type InvitationCode = {
 /**
  * 生成邀请码的请求响应
  */
-export type GenerationInvitationCodeResponseDto = {
+export type CreateInvitationCodeResponseDto = {
 	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
 	success: boolean;
 	/** 是否超出邀请码生成期限 */

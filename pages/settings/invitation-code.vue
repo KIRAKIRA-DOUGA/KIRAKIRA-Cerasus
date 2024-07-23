@@ -4,17 +4,25 @@
 	/**
 	 * 生成邀请码
 	 */
-	async function generationInvitationCode() { // TODO: 改成createInvitationCode或者generateInvitationCode，前端这边现在是create。
-		const generationInvitationCode = await api.user.generationInvitationCode();
-		if (generationInvitationCode.success)
+	async function createInvitationCode() {
+		const createInvitationCodeResult = await api.user.createInvitationCode();
+
+		if (!createInvitationCodeResult.isOutOfTimeLimit) {
+			useToast("邀请码生成器正在冷却中，请稍后再试。", "warning", 5000); // TODO: 使用多语言
+			return;
+		}
+		if (createInvitationCodeResult.success)
 			await getMyInvitationCode();
+		else
+			useToast("邀请码生成失败。", "error"); // TODO: 使用多语言
 	}
 
 	/**
 	 * 获取邀请码列表
 	 */
 	async function getMyInvitationCode() {
-		const getMyInvitationCodeResult = await api.user.getMyInvitationCode();
+		const headerCookie = useRequestHeaders(["cookie"]);
+		const getMyInvitationCodeResult = await api.user.getMyInvitationCode(headerCookie);
 		if (getMyInvitationCodeResult.success && getMyInvitationCodeResult.invitationCodeResult?.length >= 0)
 			myInvitationCode.value = getMyInvitationCodeResult.invitationCodeResult;
 	}
@@ -61,7 +69,7 @@
 		</div>
 	</div>
 
-	<SoftButton v-tooltip:bottom="t.create" class="create-button" icon="add" @click="generationInvitationCode" />
+	<SoftButton v-tooltip:bottom="t.create" class="create-button" icon="add" @click="createInvitationCode" />
 
 	<div class="user-info chip">
 		<SettingsChipItem
@@ -70,7 +78,7 @@
 			icon="gift"
 			trailingIcon="copy"
 			:onTrailingIconClick="() => copyInvitationCode(invitationCode.invitationCode)"
-			:details="!!invitationCode.assignee ? t.used : t.unused"
+			:details="invitationCode.assignee !== null && invitationCode.assignee !== undefined ? t.used : t.unused"
 		>
 			{{ invitationCode.invitationCode }}
 		</SettingsChipItem>

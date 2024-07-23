@@ -89,7 +89,7 @@
 	const PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD = "密码提示中不允许包含密码本身"; // TODO: 使用多语言
 	const INVITATION_CODE_INVALID_TEXT = "邀请码不能为空或格式有误。"; // TODO: 使用多语言
 	const checkAndJumpNextPage = async () => {
-		if (!invitationCode.value || invitationCodeInvalidText) { // 判断邀请码为空或者格式错误
+		if (!invitationCode.value || !invitationCodeInvalidText) { // 判断邀请码为空或者格式错误
 			useToast(INVITATION_CODE_INVALID_TEXT, "error");
 			return;
 		}
@@ -154,6 +154,7 @@
 			passwordHash,
 			passwordHint: passwordHint.value,
 			verificationCode: verificationCode.value,
+			invitationCode: invitationCode.value,
 		};
 		try {
 			const registrationResponse = await api.user.registration(userRegistrationRequest);
