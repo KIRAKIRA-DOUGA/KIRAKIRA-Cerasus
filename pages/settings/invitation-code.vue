@@ -7,7 +7,7 @@
 	async function createInvitationCode() {
 		const createInvitationCodeResult = await api.user.createInvitationCode();
 
-		if (!createInvitationCodeResult.isOutOfTimeLimit) {
+		if (!createInvitationCodeResult.isCoolingDown) {
 			useToast("邀请码生成器正在冷却中，请稍后再试。", "warning", 5000); // TODO: 使用多语言
 			return;
 		}

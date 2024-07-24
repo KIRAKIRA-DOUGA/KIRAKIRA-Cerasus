@@ -396,7 +396,7 @@ type InvitationCode = {
 	/** 生成邀请码的时间 - 非空 */
 	generationDateTime: number;
 	/** 邀请码被标记为等待使用中 - 非空 */
-	isPadding: boolean;
+	isPending: boolean;
 	/** 邀请码被标记为无法使用 - 非空 */
 	disabled: boolean;
 	/** 使用这个邀请码的用户 */
@@ -411,8 +411,8 @@ type InvitationCode = {
 export type CreateInvitationCodeResponseDto = {
 	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
 	success: boolean;
-	/** 是否超出邀请码生成期限 */
-	isOutOfTimeLimit: boolean;
+	/** 邀请码生成器是否在冷却中（超出邀请码生成期限才能再次生成） */
+	isCoolingDown: boolean;
 	/** 附加的文本消息 */
 	message?: string;
 	/** 生成的邀请码 */
