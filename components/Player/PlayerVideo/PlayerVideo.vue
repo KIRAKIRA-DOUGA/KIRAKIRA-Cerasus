@@ -631,6 +631,7 @@
 					@pointerup.left="onVideoPointerUp"
 					@pointermove="autoHideController"
 					:autoplay="settings.autoplay"
+					playsinline
 				></video>
 				<Contents>
 					<PlayerVideoDanmaku
