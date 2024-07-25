@@ -50,7 +50,7 @@ $mixed-colors: (
 	accent-10: (white 80%, black 40%),
 	accent-5: (white 90%, black 50%),
 	neutral-10: (#b3b3b3 80%, black), // card-shadow
-	neutral-50: (black 82%, white 82%), // icon-color
+	neutral-50: (#666 93%, #eee 93%), // icon-color
 );
 
 // 预设颜色
@@ -75,5 +75,5 @@ $state-colors: (
 	accent-shadow: neutral-10,
 	accent-ripple: accent-pressed 15%,
 	accent-hover-overlay: accent-hover 8%,
-	icon-color: neutral-50 60%,
+	icon-color: neutral-50,
 );

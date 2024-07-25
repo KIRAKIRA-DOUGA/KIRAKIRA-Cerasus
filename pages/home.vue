@@ -26,14 +26,11 @@
 		<TabBar v-model="data.selectedTab" @movingForTransition="name => transitionName = name">
 			<TabItem
 				id="Home"
-				direction="vertical"
-				icon="home"
 			>{{ t.home }}</TabItem>
 			<TabItem
 				v-for="cat in categoryList"
 				:id="cat"
 				:key="cat"
-				direction="vertical-reverse"
 				:badge="categories?.get(cat.toLowerCase())"
 			>
 				{{ t.category[cat.toLowerCase()] }}
