@@ -144,6 +144,7 @@ export default {
 			auto: "Chất lượng tự động",
 		},
 		control_bar: {},
+		filter: {},
 		error: {},
 	},
 	danmaku: {
@@ -264,7 +265,9 @@ export default {
 	mention: "Lượt nhắc",
 	more: "Xem thêm",
 	delete: "Xóa",
-	copy: "Sao chép",
+	copy: {
+		_: "Sao chép",
+	},
 	pin: "Ghim",
 	unpin: "Bỏ ghim",
 	report: "Báo cáo",

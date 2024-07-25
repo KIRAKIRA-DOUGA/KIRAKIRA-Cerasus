@@ -136,6 +136,7 @@ export default {
 		},
 		quality: {},
 		control_bar: {},
+		filter: {},
 		error: {},
 	},
 	danmaku: {
@@ -254,7 +255,9 @@ export default {
 	reply: "Balas",
 	more: "Lainnya",
 	delete: "Hapus",
-	copy: "Salin",
+	copy: {
+		_: "Salin",
+	},
 	pin: "Pin",
 	unpin: "Hapus Pin",
 	report: "Laporkan",

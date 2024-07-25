@@ -27,6 +27,14 @@
 	const isTryingLogin = ref(false);
 	const isTryingRegistration = ref(false);
 	const isCheckingEmail = ref(false);
+	const invitationCode = ref("");
+	const invitationCodeInvalidText = computed(() => {
+		const invitationCodeRegex = /^KIRA-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
+		if (invitationCode.value && !invitationCodeRegex.test(invitationCode.value))
+			return "无效邀请码"; // TODO: 使用多语言
+		else
+			return false;
+	});
 
 	const open = computed({
 		get: () => !!(model.value ?? props.open),
@@ -79,28 +87,41 @@
 	 * 用户注册，其一
 	 */
 	const PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD = "密码提示中不允许包含密码本身"; // TODO: 使用多语言
+	const INVITATION_CODE_INVALID_TEXT = "邀请码不能为空或格式有误。"; // TODO: 使用多语言
 	const checkAndJumpNextPage = async () => {
+		if (!invitationCode.value || !invitationCodeInvalidText) { // 判断邀请码为空或者格式错误
+			useToast(INVITATION_CODE_INVALID_TEXT, "error");
+			return;
+		}
+
+		if (password.value && passwordHint.value && passwordHint.value.includes(password.value)) { // 判断密码提示中是否包含密码自身
+			useToast(PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD, "error");
+			return;
+		}
 		isCheckingEmail.value = true;
 		if (email.value && password.value) {
-			if (password.value && passwordHint.value && passwordHint.value.includes(password.value)) { // 判断密码提示中是否包含密码自身
-				useToast(PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD, "error");
-				return;
-			}
 			const userExistsCheckRequest: UserExistsCheckRequestDto = { email: email.value };
 			const locale = getCurrentLocaleLangCode();
 			const requestSendVerificationCodeRequest: RequestSendVerificationCodeRequestDto = {
 				email: email.value,
 				clientLanguage: locale,
 			};
+			const checkInvitationCodeRequestDto: CheckInvitationCodeRequestDto = {
+				invitationCode: invitationCode.value,
+			};
 			try {
 				const userExistsCheckPromise = api.user.userExistsCheck(userExistsCheckRequest);
 				const requestSendVerificationCodePromise = api.user.requestSendVerificationCode(requestSendVerificationCodeRequest);
-				const [userExistsCheckResponse, requestSendVerificationCodeResponse] = await Promise.all([userExistsCheckPromise, requestSendVerificationCodePromise]);
+				const checkInvitationCodePromise = api.user.checkInvitationCode(checkInvitationCodeRequestDto);
+				const [userExistsCheckResponse, requestSendVerificationCodeResponse, checkInvitationCodeResponse] = await Promise.all([userExistsCheckPromise, requestSendVerificationCodePromise, checkInvitationCodePromise]);
 				if (userExistsCheckResponse.success && !userExistsCheckResponse.exists)
-					if (!requestSendVerificationCodeResponse.isTimeout) {
-						isCheckingEmail.value = false;
-						currentPage.value = "register2";
-					} else
+					if (!requestSendVerificationCodeResponse.isTimeout)
+						if (checkInvitationCodeResponse.success && checkInvitationCodeResponse.isAvailableInvitationCode) {
+							isCheckingEmail.value = false;
+							currentPage.value = "register2";
+						} else
+							useToast("邀请码不合规或者已被使用", "error", 5000); // TODO: 使用多语言
+					else
 						useToast("操作太快啦~ 请稍后再试", "warning", 5000); // TODO: 使用多语言
 				else
 					useToast("该邮箱已注册，请更换", "error", 5000); // TODO: 使用多语言
@@ -133,6 +154,7 @@
 			passwordHash,
 			passwordHint: passwordHint.value,
 			verificationCode: verificationCode.value,
+			invitationCode: invitationCode.value,
 		};
 		try {
 			const registrationResponse = await api.user.registration(userRegistrationRequest);
@@ -262,13 +284,22 @@
 								:required="true"
 								autoComplete="new-password"
 							/>
-							<TextBox
+							<!-- <TextBox
 								v-model="passwordHint"
 								type="text"
 								:placeholder="t.password.hint"
 								icon="visibility"
 								:invalid="passwordHintInvalidText"
 								@input="checkPasswordHintIncludesPassword"
+							/> -->
+							<!-- // TODO: 使用多语言 -->
+							<TextBox
+								v-model="invitationCode"
+								type="text"
+								placeholder="邀请码"
+								icon="gift"
+								:required="true"
+								:invalid="invitationCodeInvalidText"
 							/>
 						</div>
 						<div class="action margin-left-inset">
