@@ -27,8 +27,8 @@
 	const isCoverCropperOpen = ref<boolean>(false); // 封面图裁剪器是否开启状态
 	const isUploadingCover = ref<boolean>(false); // 是否正在上传封面图
 	const cropper = ref(); // 图片裁剪器对象
-	const isNetworkImage = computed(() => thumbnailUrl.value === BASE_THUMBNAIL_URL); // 封面图是静态资源图片还是网图，即用户是否已经完成封面图上传
-	const provider = computed(() => isNetworkImage.value ? undefined : "kirakira"); // 根据 isNetworkImage 的值判断是否使用 kirakira 作为 Nuxt Image 提供商
+	const isNetworkImage = computed(() => thumbnailUrl.value !== BASE_THUMBNAIL_URL); // 封面图是静态资源图片还是网图，即用户是否已经完成封面图上传
+	const provider = computed(() => isNetworkImage.value ? "kirakira" : undefined); // 根据 isNetworkImage 的值判断是否使用 kirakira 作为 Nuxt Image 提供商
 	// 视频分类
 	const VIDEO_CATEGORY = new Map([
 		["anime", t.category.anime],
@@ -196,7 +196,7 @@
 				},
 			],
 			title: title.value,
-			image: isNetworkImage ? thumbnailUrl.value : "f907a7bd-3247-4415-1f5e-a67a5d3ea100", // 没上传封面时使用默认封面图 // TODO: 自动获取视频截图作为封面
+			image: isNetworkImage.value ? thumbnailUrl.value : "f907a7bd-3247-4415-1f5e-a67a5d3ea100", // 没上传封面时使用默认封面图 // TODO: 自动获取视频截图作为封面
 			uploaderId: uid,
 			duration: 300, // TODO: 视频时长
 			description: description.value,
@@ -552,7 +552,7 @@
 		}
 	}
 
-	.repost-options>* {
+	.repost-options > * {
 		display: flex;
 		flex-direction: column;
 		gap: $section-gap;
@@ -564,8 +564,8 @@
 		}
 	}
 
-	.left>*,
-	.left>.left-1>* {
+	.left > *,
+	.left > .left-1 > * {
 		width: 100%;
 	}
 
@@ -597,7 +597,7 @@
 		height: 350px;
 		// @include square(350px, true);
 
-		@media (width <=450px) {
+		@media (width <= 450px) {
 			--size: 80dvw;
 			// 对于图片切割器，不建议使用响应式，因为切割器内部被切割的图片不会随之改变尺寸，但考虑到极端小尺寸的适配问题，且在上传图片时浏览器宽度发生剧烈变化的概率较小，故保留本功能。
 		}
