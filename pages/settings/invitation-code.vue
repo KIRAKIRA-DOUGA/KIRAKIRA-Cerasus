@@ -1,5 +1,8 @@
 <script setup lang="ts">
 	const myInvitationCode = ref<GetMyInvitationCodeResponseDto["invitationCodeResult"]>();
+	const totalInvitationCode = computed(() => myInvitationCode.value?.length ?? 0);
+	const totalUsedInvitationCode = computed(() => myInvitationCode.value?.filter(invitationCode => !!invitationCode.assignee)?.length ?? 0);
+	const totalUnusedInvitationCode = computed(() => myInvitationCode.value?.filter(invitationCode => !invitationCode.assignee)?.length ?? 0);
 
 	/**
 	 * 生成邀请码
@@ -52,21 +55,22 @@
 <template>
 	<div class="invitation-code-counts chip">
 		<div>
-			<span>233</span>
+			<span>{{ totalInvitationCode }}</span>
 			<p>{{ t.total }}</p>
 		</div>
 		<div>
-			<span>233</span>
+			<span>{{ totalUsedInvitationCode }}</span>
 			<p>{{ t.used }}</p>
 		</div>
 		<div>
-			<span>233</span>
+			<span>{{ totalUnusedInvitationCode }}</span>
 			<p>{{ t.unused }}</p>
 		</div>
-		<div>
+		<!-- TODO: Creatable Invitation Code Count -->
+		<!-- <div>
 			<span>233</span>
 			<p>{{ t.creatable }}</p>
-		</div>
+		</div> -->
 	</div>
 
 	<SoftButton v-tooltip:bottom="t.create" class="create-button" icon="add" @click="createInvitationCode" />
