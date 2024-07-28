@@ -25,12 +25,12 @@ export function sleep(ms: number) {
  * @returns 用于取消计时器的 ID 引用。
  */
 export function createInterval(callback: () => void, ms: number) {
-	const timeoueId = ref<Timeout>();
+	const timeoutId = ref<Timeout>();
 	onMounted(() => {
-		timeoueId.value = setInterval(callback, ms);
+		timeoutId.value = setInterval(callback, ms);
 	});
 	onUnmounted(() => {
-		clearInterval(timeoueId.value);
+		clearInterval(timeoutId.value);
 	});
-	return timeoueId;
+	return timeoutId;
 }
