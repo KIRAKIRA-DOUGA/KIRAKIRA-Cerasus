@@ -23,11 +23,16 @@
 	/** fetch the user profile data */
 	async function fetchUserData() {
 		// TODO: 现在获取用户信息的接口还没法获得这些信息
-		// const userInfoResult = await api.user.getSelfUserInfo();
-		await console.log("TODO -> TODO user info index");
-		userBirthday.value = 0; // TODO
-		userJoinDate.value = 0; // TODO
-		userId.value = -1; // TODO
+		const getUserInfoByUidRequest: GetUserInfoByUidRequestDto = {
+			uid: urlUid.value,
+		};
+		const userInfoResult = await api.user.getUserInfo(getUserInfoByUidRequest);
+		if (userInfoResult.success) {
+			const userInfo = userInfoResult.result;
+			userBirthday.value = 0; // TODO
+			userJoinDate.value = userInfo?.userCreateDateTime ?? 0; // TODO
+			userId.value = urlUid.value; // TODO
+		}
 	}
 	/**
 	 * fetch the videos according to the query.
@@ -91,12 +96,12 @@
 					<div class="items">
 						<div v-if="userBirthday" v-tooltip:x="t.user.birthday" class="birthday">
 							<Icon name="birthday" />
-							<DateTime :dateTime="userBirthday" />
+							<DateTime :dateTime="new Date(userBirthday)" />
 						</div>
 
 						<div v-if="userJoinDate" v-tooltip:x="t.user.join_time" class="join-time">
 							<Icon name="history" />
-							<DateTime :dateTime="userJoinDate" />
+							<DateTime :dateTime="new Date(userJoinDate)" />
 						</div>
 
 						<div v-tooltip:x="'UID'" class="uid">
@@ -140,8 +145,8 @@
 			flex-direction: column;
 
 			span {
-				font-weight: bold;
 				font-size: 20px;
+				font-weight: bold;
 			}
 
 			p {
@@ -161,9 +166,9 @@
 
 			&.shading-title {
 				top: 10px;
-				font-weight: 600;
-				font-size: 32px;
 				font-family: $english-logo-fonts;
+				font-size: 32px;
+				font-weight: 600;
 				font-style: italic;
 				text-align: center;
 				text-transform: capitalize;
@@ -178,8 +183,8 @@
 
 	.user-info {
 		h3 {
-			font-weight: bold;
 			font-size: 20px;
+			font-weight: bold;
 		}
 
 		.items {

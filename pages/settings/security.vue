@@ -3,13 +3,69 @@
 	const authenticatorAddDate = ref(new Date());
 	const passwordChangeDateDisplay = computed(() => formatDateWithLocale(passwordChangeDate.value));
 	const authenticatorAddDateDisplay = computed(() => formatDateWithLocale(authenticatorAddDate.value));
-	const email = ref("aira@aira.cafe");
+	const selfUserInfoStore = useSelfUserInfoStore();
+
+	const showChangeEmail = ref(false);
+	const changeEmailVerificationCode = ref("");
+	const newEmail = ref("");
+	const isInvalidNewEmail = computed(() => !!newEmail.value && !newEmail.value.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]{2,}$/));
+	const changeEmailPassword = ref("");
+	const isChangingEmail = ref(false);
 
 	const showChangePassword = ref(false);
-
 	const oldPassword = ref("");
 	const newPassword = ref("");
 	const confirmNewPassword = ref("");
+
+	/**
+	 * 打开修改 Email 的对话框，同时请求发送修改邮箱的验证码
+	 */
+	function openChangeEmailModel() {
+		showChangeEmail.value = true;
+		const locale = getCurrentLocaleLangCode();
+		const requestSendChangeEmailVerificationCodeRequest: RequestSendChangeEmailVerificationCodeRequestDto = {
+			clientLanguage: locale,
+		};
+		api.user.requestSendChangeEmailVerificationCode(requestSendChangeEmailVerificationCodeRequest).then(requestSendChangeEmailVerificationCodeResult => {
+			if (requestSendChangeEmailVerificationCodeResult.success && requestSendChangeEmailVerificationCodeResult.isCoolingDown)
+				useToast("邮件发送冷却中，请稍后再试", "error", 5000);
+		});
+	}
+
+	/**
+	 * 修改 Email
+	 */
+	async function updateUserEmail() {
+		const oldEmail = selfUserInfoStore.userEmail ?? "";
+		if (!newEmail.value || !changeEmailPassword.value || !changeEmailVerificationCode.value) {
+			useToast("必填项不能为空！", "warning", 5000); // TODO: 使用多语言
+			return;
+		}
+		if (oldEmail === newEmail.value) {
+			useToast("新邮箱不能与旧邮箱相同！", "warning", 5000); // TODO: 使用多语言
+			return;
+		}
+		isChangingEmail.value = true;
+		const passwordHash = await generateHash(changeEmailPassword.value);
+		const updateUserEmailRequest: UpdateUserEmailRequestDto = {
+			uid: selfUserInfoStore.uid ?? 0,
+			oldEmail,
+			newEmail: newEmail.value,
+			passwordHash,
+			verificationCode: changeEmailVerificationCode.value,
+		};
+		const updateUserEmailResult = await api.user.updateUserEmail(updateUserEmailRequest);
+		if (updateUserEmailResult.success) {
+			await api.user.getSelfUserInfo();
+			useToast("更换邮箱成功", "success"); // TODO: 使用多语言
+			showChangeEmail.value = false;
+		} else
+			useToast("更换邮箱失败，请稍后再试", "error", 5000); // TODO: 使用多语言
+		newEmail.value = "";
+		changeEmailPassword.value = "";
+		changeEmailVerificationCode.value = "";
+		isChangingEmail.value = false;
+	}
 </script>
 
 <template>
@@ -17,7 +73,8 @@
 		<SettingsChipItem
 			icon="email"
 			trailingIcon="edit"
-			:details="t.current_email + t.colon + email"
+			:details="t.current_email + t.colon + selfUserInfoStore.userEmail"
+			@trailingIconClick="openChangeEmailModel"
 		>{{ t.email_address }}</SettingsChipItem>
 	</section>
 	<section>
@@ -35,6 +92,27 @@
 			:details="t.addition_date + t.colon + authenticatorAddDateDisplay"
 		>{{ t.authenticator }}</SettingsChipItem>
 	</section>
+
+	<!-- TODO: 使用多语言 -->
+	<Modal v-model="showChangeEmail" title="更改邮箱" icon="email">
+		<div class="change-email-modal">
+			<!-- TODO: 使用多语言 -->
+			<div>验证码已发送至您的旧邮箱。</div>
+			<form>
+				<!-- TODO: 使用多语言 -->
+				<TextBox v-model="changeEmailVerificationCode" :required="true" type="text" icon="verified" placeholder="验证码" autoComplete="change-email-verified-code" />
+				<!-- TODO: 使用多语言 -->
+				<TextBox v-model="newEmail" :required="true" :invalid="isInvalidNewEmail" type="email" icon="lock" placeholder="新邮箱" autoComplete="new-email" />
+				<TextBox v-model="changeEmailPassword" :required="true" type="password" icon="lock" :placeholder="t.password._" autoComplete="current-password" />
+			</form>
+		</div>
+		<template #footer-right>
+			<Button class="secondary" @click="showChangePassword = false">{{ t.step.cancel }}</Button>
+			<Button @click="updateUserEmail" :disabled="isChangingEmail" :loading="isChangingEmail">{{ t.step.apply }}</Button>
+			<!-- TODO: Use a toast to show success or not, usage can be seen in page/components. -->
+			<!-- if success, the modal should be closed automaticly -->
+		</template>
+	</Modal>
 
 	<Modal v-model="showChangePassword" :title="t.password.change" icon="password">
 		<div class="change-password-modal">
@@ -55,6 +133,23 @@
 
 <style scoped lang="scss">
 	.change-password-modal {
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+		width: 300px;
+
+		> form {
+			display: flex;
+			flex-direction: column;
+			gap: 16px;
+		}
+
+		.text-box {
+			--size: large;
+		}
+	}
+
+	.change-email-modal {
 		display: flex;
 		flex-direction: column;
 		gap: 24px;
