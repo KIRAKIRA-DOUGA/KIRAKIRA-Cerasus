@@ -546,15 +546,15 @@ export default [
 
 	// animation
 	"transition",
-	"transition-delay",
-	"transition-timing-function",
 	"transition-duration",
+	"transition-timing-function",
+	"transition-delay",
 	"transition-property",
 	"transition-behavior",
 	"animation",
 	"animation-name",
-	"animation-duration",
 	"animation-play-state",
+	"animation-duration",
 	"animation-timing-function",
 	"animation-delay",
 	"animation-iteration-count",
