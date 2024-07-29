@@ -1,6 +1,6 @@
 import { GET, POST, uploadFile2CloudflareImages } from "api/Common";
 import getCorrectUri from "api/Common/getCorrectUri";
-import type { CheckInvitationCodeRequestDto, CheckInvitationCodeResponseDto, CheckUserTokenResponseDto, CreateInvitationCodeResponseDto, GetMyInvitationCodeResponseDto, GetSelfUserInfoRequestDto, GetSelfUserInfoResponseDto, GetUserAvatarUploadSignedUrlResponseDto, GetUserInfoByUidRequestDto, GetUserInfoByUidResponseDto, GetUserSettingsRequestDto, GetUserSettingsResponseDto, RequestSendVerificationCodeRequestDto, RequestSendVerificationCodeResponseDto, UpdateOrCreateUserInfoResponseDto, UpdateOrCreateUserSettingsRequestDto, UpdateOrCreateUserSettingsResponseDto, UpdateUserEmailRequestDto, UpdateUserEmailResponseDto, UserExistsCheckRequestDto, UserExistsCheckResponseDto, UserLoginRequestDto, UserLoginResponseDto, UserRegistrationRequestDto, UserRegistrationResponseDto } from "./UserControllerDto";
+import type { CheckInvitationCodeRequestDto, CheckInvitationCodeResponseDto, CheckUserTokenResponseDto, CreateInvitationCodeResponseDto, GetMyInvitationCodeResponseDto, GetSelfUserInfoRequestDto, GetSelfUserInfoResponseDto, GetUserAvatarUploadSignedUrlResponseDto, GetUserInfoByUidRequestDto, GetUserInfoByUidResponseDto, GetUserSettingsRequestDto, GetUserSettingsResponseDto, RequestSendChangeEmailVerificationCodeRequestDto, RequestSendChangeEmailVerificationCodeResponseDto, RequestSendVerificationCodeRequestDto, RequestSendVerificationCodeResponseDto, UpdateOrCreateUserInfoResponseDto, UpdateOrCreateUserSettingsRequestDto, UpdateOrCreateUserSettingsResponseDto, UpdateUserEmailRequestDto, UpdateUserEmailResponseDto, UserExistsCheckRequestDto, UserExistsCheckResponseDto, UserLoginRequestDto, UserLoginResponseDto, UserRegistrationRequestDto, UserRegistrationResponseDto } from "./UserControllerDto";
 
 const BACK_END_URL = getCorrectUri();
 const USER_API_URL = `${BACK_END_URL}/user`;
@@ -66,6 +66,8 @@ export const getSelfUserInfo = async (getSelfUserInfoRequest?: GetSelfUserInfoRe
 		const selfUserInfoStore = useSelfUserInfoStore();
 		selfUserInfoStore.isLogined = true;
 		selfUserInfoStore.uid = selfUserInfoResult.uid;
+		selfUserInfoStore.userCreateDateTime = selfUserInfoResult.userCreateDateTime ?? 0;
+		selfUserInfoStore.userEmail = selfUserInfoResult.email ?? "";
 		selfUserInfoStore.userAvatar = selfUserInfoResult.avatar || "";
 		selfUserInfoStore.username = selfUserInfoResult.username || "Anonymous"; // TODO: 使用多语言，为未设置用户名的用户提供国际化的缺省用户名
 		selfUserInfoStore.userNickname = selfUserInfoResult.userNickname || "Anonymous"; // TODO: 使用多语言，为未设置用户昵称的用户提供国际化的缺省用户昵称
@@ -104,6 +106,8 @@ export const userLogout = async (): Promise<undefined> => {
 	const selfUserInfoStore = useSelfUserInfoStore();
 	selfUserInfoStore.isLogined = false;
 	selfUserInfoStore.uid = undefined;
+	selfUserInfoStore.userCreateDateTime = 0;
+	selfUserInfoStore.userEmail = "";
 	selfUserInfoStore.userAvatar = "";
 	selfUserInfoStore.username = "";
 	selfUserInfoStore.userNickname = "";
@@ -201,4 +205,14 @@ export const getMyInvitationCode = async (headerCookie: { cookie?: string | unde
 		console.error("ERROR", "获取用户邀请码失败");
 		return { success: false, message: "获取用户邀请码失败", invitationCodeResult: [] };
 	}
+};
+
+/**
+ * 请求发送修改邮箱的邮箱验证码
+ * @param requestSendChangeEmailVerificationCodeRequest 请求发送修改邮箱的邮箱验证码的请求载荷
+ * @returns 请求发送修改邮箱的邮箱验证码的请求响应
+ */
+export const requestSendChangeEmailVerificationCode = async (requestSendChangeEmailVerificationCodeRequest: RequestSendChangeEmailVerificationCodeRequestDto): Promise<RequestSendChangeEmailVerificationCodeResponseDto> => {
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	return await POST(`${USER_API_URL}/requestSendChangeEmailVerificationCode`, requestSendChangeEmailVerificationCodeRequest, { credentials: "include" }) as RequestSendChangeEmailVerificationCodeResponseDto;
 };

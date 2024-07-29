@@ -88,6 +88,8 @@ export type UpdateUserEmailRequestDto = {
 	newEmail: string;
 	/** 经过一次 Hash 的用户密码 */
 	passwordHash: string;
+	/** 验证码 */
+	verificationCode: string;
 };
 
 /**
@@ -199,7 +201,14 @@ export type GetSelfUserInfoResponseDto = {
 	/** 附加的文本消息 */
 	message?: string;
 	/** 请求结果 */
-	result?: { uid?: number } & UpdateOrCreateUserInfoRequestDto;
+	result?: {
+		/** 用户 ID */
+		uid?: number;
+		/** 用户邮箱 */
+		email?: string;
+		/** 用户创建时间 */
+		userCreateDateTime?: number;
+	} & UpdateOrCreateUserInfoRequestDto;
 };
 
 /**
@@ -232,6 +241,8 @@ export type GetUserInfoByUidResponseDto = {
 		gender?: string;
 		/** 用户的个人标签 */
 		label?: UserLabel[];
+		/** 用户创建时间 */
+		userCreateDateTime?: number;
 	};
 };
 
@@ -364,7 +375,7 @@ export type UpdateOrCreateUserSettingsResponseDto = {
 };
 
 /**
- * 请求发送用户邮箱验证码的请求载荷
+ * 请求发送用户注册邮箱验证码的请求载荷
  */
 export type RequestSendVerificationCodeRequestDto = {
 	/** 用户的邮箱 - 非空 - 唯一 */
@@ -463,10 +474,30 @@ export type CheckInvitationCodeRequestDto = {
  * 检查一个邀请码是否可用的请求响应
  */
 export type CheckInvitationCodeResponseDto = {
-	/** 是否成功使用验证码 */
+	/** 是否成功生成邀请码 */
 	success: boolean;
 	/** 是否是可用的邀请码 */
 	isAvailableInvitationCode: boolean;
+	/** 附加的文本消息 */
+	message?: string;
+};
+
+/**
+ * 请求发送用户更改邮箱验证码的请求载荷
+ */
+export type RequestSendChangeEmailVerificationCodeRequestDto = {
+	/** 用户客户端使用的语言 */
+	clientLanguage: string;
+};
+
+/**
+ * 请求发送用户更改邮箱验证码的请求载荷
+ */
+export type RequestSendChangeEmailVerificationCodeResponseDto = {
+	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
+	success: boolean;
+	/** 是否达到超时时间 */
+	isCoolingDown: boolean;
 	/** 附加的文本消息 */
 	message?: string;
 };

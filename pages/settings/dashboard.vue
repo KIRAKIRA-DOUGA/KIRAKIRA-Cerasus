@@ -1,7 +1,7 @@
 <script setup lang="ts">
-	const registerDate = ref(new Date());
-	const registerDateDisplay = computed(() => formatDateWithLocale(registerDate.value));
 	const selfUserInfoStore = useSelfUserInfoStore();
+	const userBirthdayDisplay = computed(() => selfUserInfoStore.birthday ? formatDateWithLocale(new Date(selfUserInfoStore.birthday)) : "Unknown");
+	const registerDateDisplay = computed(() => selfUserInfoStore.userCreateDateTime ? formatDateWithLocale(new Date(selfUserInfoStore.userCreateDateTime)) : "Unknown");
 </script>
 
 <template>
@@ -10,8 +10,16 @@
 			<UserAvatar :avatar="selfUserInfoStore.isLogined ? selfUserInfoStore.userAvatar : undefined" />
 		</div>
 		<div class="text">
-			<div class="username">{{ selfUserInfoStore.username }}</div>
-			<div class="bio">TODO: Bio here</div>
+			<div class="names">
+				<span class="username">{{ selfUserInfoStore.username }}</span>
+
+				<span class="icons">
+					<Icon v-if="selfUserInfoStore.gender === 'male' " name="male" class="male" />
+					<Icon v-else-if="selfUserInfoStore.gender === 'female'" name="female" class="female" />
+					<span v-else class="other-gender">{{ selfUserInfoStore.gender }}</span>
+				</span>
+			</div>
+			<div class="bio">{{ selfUserInfoStore.signature }}</div>
 		</div>
 	</div>
 
@@ -35,7 +43,7 @@
 	</div>
 
 	<div class="user-info chip">
-		<SettingsChipItem icon="birthday" :details="registerDateDisplay">{{ t.user.birthday }}</SettingsChipItem>
+		<SettingsChipItem icon="birthday" :details="userBirthdayDisplay">{{ t.user.birthday }}</SettingsChipItem>
 		<SettingsChipItem icon="history" :details="registerDateDisplay">{{ t.user.join_time }}</SettingsChipItem>
 		<SettingsChipItem icon="fingerprint" :details="selfUserInfoStore.isLogined ? selfUserInfoStore.uid : undefined">UID</SettingsChipItem>
 	</div>
@@ -58,9 +66,36 @@
 			gap: 6px;
 			justify-content: center;
 
-			.username {
-				font-weight: bold;
+			.names {
+				display: flex;
 				font-size: 24px;
+
+				.username {
+					font-size: 24px;
+					font-weight: bold;
+
+					+ .icons {
+						margin-left: 10px;
+					}
+				}
+
+				.icons {
+					@include flex-center;
+
+					.male {
+						color: c(blue);
+					}
+
+					.female {
+						color: c(pink);
+					}
+
+					.other-gender {
+						background: linear-gradient(to right, #58c8f2, #eda4b2);
+						background-clip: text;
+						-webkit-text-fill-color: transparent;
+					}
+				}
 			}
 
 			.bio {
@@ -80,8 +115,8 @@
 			width: 25%;
 
 			span {
-				font-weight: bold;
 				font-size: 24px;
+				font-weight: bold;
 			}
 
 			p {
