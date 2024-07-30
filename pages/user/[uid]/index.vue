@@ -23,16 +23,17 @@
 	/** fetch the user profile data */
 	async function fetchUserData() {
 		// TODO: 现在获取用户信息的接口还没法获得这些信息
+
 		const getUserInfoByUidRequest: GetUserInfoByUidRequestDto = {
 			uid: urlUid.value,
 		};
 		const userInfoResult = await api.user.getUserInfo(getUserInfoByUidRequest);
 		if (userInfoResult.success) {
 			const userInfo = userInfoResult.result;
-			userBirthday.value = 0; // TODO
 			userJoinDate.value = userInfo?.userCreateDateTime ?? 0; // TODO
-			userId.value = urlUid.value; // TODO
 		}
+		userBirthday.value = 0; // TODO
+		userId.value = urlUid.value; // TODO
 	}
 	/**
 	 * fetch the videos according to the query.

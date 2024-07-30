@@ -7,6 +7,8 @@ export const useAppSettingsStore = defineStore("app-settings", {
 		lastSettingPage: "appearance",
 		exitSettingRoute: "/",
 
+		isOpenVideoInNewWindow: false, // 是否在新窗口打开视频
+
 		// DELETE: 以下内容已搬迁至 /modules/theme/theme-cookie-binding.ts，不再使用 pinia 储存。
 		// themeType: "system",
 		// themeColor: "pink",
