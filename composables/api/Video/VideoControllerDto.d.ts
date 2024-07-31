@@ -220,5 +220,25 @@ export type SearchVideoByVideoTagIdRequestDto = {
 	tagId: UploadVideoRequestDto["videoTagList"][number]["tagId"][];
 };
 
-/** 通过视频 TAG ID 获取视频的请求响应 */
+/**
+ * 通过视频 TAG ID 获取视频的请求响应
+ */
 export type SearchVideoByVideoTagIdResponseDto = ThumbVideoResponseDto & {};
+
+/**
+ * 删除一个视频的请求载荷
+ */
+export type DeleteVideoRequestDto = {
+	/** 视频 ID (KVID) */
+	videoId: number;
+};
+
+/**
+ * 删除一个视频的请求响应
+ */
+export type DeleteVideoResponseDto = {
+	/** 请求是否成功，成功返回 true，否则返回 false */
+	success: boolean;
+	/** 附加的文本消息 */
+	message?: string;
+};
