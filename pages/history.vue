@@ -11,6 +11,8 @@
 		}, {} as { [key: string]: GetUserBrowsingHistoryWithFilterResponseDto["result"] });
 	});
 
+	const appSettings = useAppSettingsStore();
+
 	/**
 	 * 获取全部或过滤后的用户浏览历史
 	 */
@@ -48,6 +50,7 @@
 								:date="new Date(browsingHistoryItem.uploadDate || 0)"
 								:watchedCount="browsingHistoryItem.watchedCount"
 								:duration="new Duration(0, browsingHistoryItem.duration ?? 0)"
+								:blank="appSettings.isOpenVideoInNewTab"
 							>{{ browsingHistoryItem.title }}</ThumbVideo>
 							<!-- TODO: 现在只能显示视频，以后应该可以可以显示其他类型的历史记录 -->
 						</template>
