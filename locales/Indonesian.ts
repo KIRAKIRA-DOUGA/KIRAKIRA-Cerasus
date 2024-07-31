@@ -325,8 +325,6 @@ export default {
 		language: "Pilih Bahasa",
 	},
 	user: {
-		name: "Nama",
-		name_requirements: "1~20 karakter, hanya mencakup huruf Latin besar & kecil, angka, Hiragana/Katakana umum, karakter CJK, simbol khusus \"-\", \"_\"",
 		bio: "Bio",
 		gender: "Gender",
 		memo: "Memo",
@@ -416,4 +414,5 @@ export default {
 	confirm: {
 		cancel_upload: "Apakah Anda yakin ingin membatalkan Unggah?",
 	},
+	invitation_code: {},
 } as const satisfies LocaleIdentifiers;

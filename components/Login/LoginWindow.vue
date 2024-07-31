@@ -1,4 +1,5 @@
 <script setup lang="ts">
+	import makeUsername from "pomsky/username.pom";
 	const props = defineProps<{
 		/** 已打开，单向绑定使用。 */
 		open?: boolean;
@@ -7,9 +8,9 @@
 	const selfUserInfoStore = useSelfUserInfoStore();
 	const model = defineModel<boolean>();
 	const avatar = "/static/images/avatars/aira.webp";
-	type PageType = "login" | "register" | "register2" | "forgot" | "reset";
+	type PageType = "login" | "register1" | "register2" | "register3" | "forgot" | "reset";
 	const currentPage = ref<PageType>("login");
-	const isWelcome = computed(() => ["register", "register2"].includes(currentPage.value));
+	const isWelcome = computed(() => ["register1", "register2", "register3"].includes(currentPage.value));
 	const coverMoveLeft = computed(() => currentPage.value !== "login");
 	const email = ref("");
 	const password = ref("");
@@ -31,7 +32,7 @@
 	const invitationCodeInvalidText = computed(() => {
 		const invitationCodeRegex = /^KIRA-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
 		if (invitationCode.value && !invitationCodeRegex.test(invitationCode.value))
-			return "无效邀请码"; // TODO: 使用多语言
+			return t.invitation_code.invalid;
 		else
 			return false;
 	});
@@ -47,6 +48,10 @@
 	});
 	const loginWindow = refComp();
 	const isInvalidEmail = computed(() => !!email.value && !email.value.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]{2,}$/));
+
+	const validChar = makeUsername();
+	const username = ref("");
+	const nickname = ref("");
 
 	/**
 	 * 登录账户。
@@ -118,7 +123,7 @@
 					if (!requestSendVerificationCodeResponse.isTimeout)
 						if (checkInvitationCodeResponse.success && checkInvitationCodeResponse.isAvailableInvitationCode) {
 							isCheckingEmail.value = false;
-							currentPage.value = "register2";
+							currentPage.value = "register3";
 						} else
 							useToast("邀请码不合规或者已被使用", "error", 5000); // TODO: 使用多语言
 					else
@@ -257,14 +262,50 @@
 						</div>
 						<div class="action margin-left-inset margin-right-inset">
 							<Button @click="currentPage = 'forgot'">{{ t.loginwindow.login_to_forgot }}</Button>
-							<Button @click="currentPage = 'register'">{{ t.loginwindow.login_to_register }}</Button>
+							<Button @click="currentPage = 'register1'">{{ t.loginwindow.login_to_register }}</Button>
 						</div>
 					</div>
 				</div>
 
 				<div class="main right">
 					<!-- 注册 其一 Register #1 -->
-					<div class="register">
+					<div class="register1">
+						<HeadingGroup :name="t.register" englishName="Register" class="collapse" />
+						<div class="form textbox-with-span">
+							<span>{{ t.user.username_nickname_requirements }}</span>
+							<div>
+								<TextBox
+									ref="nameTextBox"
+									v-model="username"
+									:placeholder="t.user.username"
+									size="large"
+									icon="person"
+									required
+									:pattern="validChar"
+									:maxLength="20"
+								/>
+								<span>{{ t.user.username_requirements_unique }}</span>
+							</div>
+							<div>
+								<TextBox
+									ref="nameTextBox"
+									v-model="nickname"
+									:placeholder="t.user.nickname"
+									size="large"
+									icon="person"
+									:pattern="validChar"
+									:maxLength="20"
+								/>
+							</div>
+						</div>
+						<div class="action margin-left-inset">
+							<Button @click="currentPage = 'login'">{{ t.loginwindow.register_to_login }}</Button>
+							<Button icon="arrow_right" class="button icon-behind" :loading="isCheckingEmail" :disabled="isCheckingEmail" @click="currentPage = 'register2'">{{ t.step.next }}</Button>
+						</div>
+					</div>
+
+					<!-- 注册 其二 Register #2 -->
+					<div class="register2">
 						<HeadingGroup :name="t.register" englishName="Register" class="collapse" />
 						<div class="form">
 							<TextBox
@@ -292,24 +333,23 @@
 								:invalid="passwordHintInvalidText"
 								@input="checkPasswordHintIncludesPassword"
 							/> -->
-							<!-- // TODO: 使用多语言 -->
 							<TextBox
 								v-model="invitationCode"
 								type="text"
-								placeholder="邀请码"
+								:placeholder="t.invitation_code"
 								icon="gift"
 								:required="true"
 								:invalid="invitationCodeInvalidText"
 							/>
 						</div>
 						<div class="action margin-left-inset">
-							<Button @click="currentPage = 'login'">{{ t.loginwindow.register_to_login }}</Button>
+							<Button icon="arrow_left" class="button" @click="currentPage = 'register1'">{{ t.step.previous }}</Button>
 							<Button icon="arrow_right" class="button icon-behind" :loading="isCheckingEmail" :disabled="isCheckingEmail" @click="checkAndJumpNextPage">{{ t.step.next }}</Button>
 						</div>
 					</div>
 
-					<!-- 注册 其二 Register #2 -->
-					<div class="register2">
+					<!-- 注册 其三 Register #3 -->
+					<div class="register3">
 						<HeadingGroup :name="t.register" englishName="Register" class="collapse" />
 						<div class="form">
 							<div><Preserves>{{ t.loginwindow.register_email_sent_info }}</Preserves></div>
@@ -331,8 +371,8 @@
 								autoComplete="current-password"
 							/>
 						</div>
-						<div class="action">
-							<Button icon="arrow_left" class="button" @click="currentPage = 'register'">{{ t.step.previous }}</Button>
+						<div class="action margin-left-inset">
+							<Button icon="arrow_left" class="button" @click="currentPage = 'register2'">{{ t.step.previous }}</Button>
 							<Button icon="arrow_right" class="button icon-behind" :loading="isTryingRegistration" :disabled="isTryingRegistration" @click="registerUser">{{ t.step.next }}</Button>
 						</div>
 					</div>
@@ -505,12 +545,14 @@
 			padding: 35px 45px;
 
 			@if true { // HACK: 为了故意不应用排序规则而将下面这部分页面声明单独提炼在下方。
-				@include page("!.register", ".register", right);
+				@include page("!.register1", ".register1", right);
 				@include page("!.register2", ".register2", right);
+				@include page("!.register3", ".register3", right);
 				@include page("!.forgot", ".forgot", right);
 				@include page("!.reset", ".reset", right);
-				@include page(".register2", ".register", left);
-				@include page("!.register, .register2", ".register-title", right);
+				@include page(".register2", ".register1", left);
+				@include page(".register3", ".register2", left);
+				@include page("!.register1, .register2, .register3", ".register-title", right);
 			}
 		}
 
@@ -606,6 +648,26 @@
 				@extend .logo-font;
 				--i: 0;
 				position: absolute;
+			}
+		}
+
+		&.textbox-with-span {
+			gap: 8px;
+
+			> span {
+				margin-bottom: 16px;
+			}
+
+			> * {
+				display: flex;
+				flex-direction: column;
+				gap: 8px;
+
+				> span {
+					color: c(icon-color);
+					font-size: 12px;
+					text-align: right;
+				}
 			}
 		}
 	}

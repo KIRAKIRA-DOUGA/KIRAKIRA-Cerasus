@@ -143,9 +143,19 @@ export default {
 		quality: {
 			auto: "Chất lượng tự động",
 		},
-		control_bar: {},
-		filter: {},
-		error: {},
+		control_bar: {
+			_: "Thanh điều khiển",
+			show_frame_by_frame: "Hiển thị điều khiển từng khung hình",
+		},
+		screenshot: "Ảnh chụp màn hình",
+		stats: "Thống kê",
+		autoplay: "Tự động phát",
+		filter: {
+			_: "Bộ lọc",
+		},
+		error: {
+			getDanmaku: "Nhận danh sách đạn mạc thất bại",
+		},
 	},
 	danmaku: {
 		_: "Đạn mạc",
@@ -267,6 +277,8 @@ export default {
 	delete: "Xóa",
 	copy: {
 		_: "Sao chép",
+		success: "Đã sao chép~",
+		failed: "Sao chép thất bại!",
 	},
 	pin: "Ghim",
 	unpin: "Bỏ ghim",
@@ -339,8 +351,6 @@ export default {
 	},
 	user: {
 		_: "Người dùng",
-		name: "Tên người dùng",
-		name_requirements: "Phạm vi từ 1 đến 20 ký tự. Chỉ được bao gồm: chữ số, ký tự Latinh, Hán tự, tiếng Hàn, Hiragana/Katakana và các ký tự đặc biệt \"-\", \"_\"",
 		bio: "Giới thiệu",
 		gender: "Giới tính",
 		memo: "Phụ chú",
@@ -369,6 +379,7 @@ export default {
 		size: "Cỡ chữ",
 	},
 	color: "Màu",
+	opacity: "Độ mờ đục",
 	mode: "Chế độ",
 	size: {
 		_: "Cỡ",
@@ -436,4 +447,12 @@ export default {
 	current_time: "Thời gian hiện tại",
 	set_as_default: "Đặt về mặc định",
 	advanced_search: "Tìm kiếm nâng cao",
+	total: "Tổng",
+	used: "Đã sử dụng",
+	unused: "Chưa sử dụng",
+	create: "Tạo",
+	creatable: "Cho phép tạo",
+	invitation_code: {
+		_: "Mã mời",
+	},
 } as const satisfies LocaleIdentifiers;

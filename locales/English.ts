@@ -347,8 +347,12 @@ export default {
 	},
 	user: {
 		_: "User | Users",
-		name: "Name",
-		name_requirements: '1~20 characters, including only upper & lower case Latin letters, numbers, common Hiragana/Katakana, CJK characters, special symbols "-", "_"',
+		username: "Username",
+		username_requirements: 'Must be unique. 1~20 characters, including only upper & lower case Latin letters, numbers, common Hiragana/Katakana, CJK characters, special symbols "-", "_".',
+		username_requirements_unique: "Username must be unique.",
+		nickname: "Nickname",
+		nickname_requirements: '1~20 characters, including only upper & lower case Latin letters, numbers, common Hiragana/Katakana, CJK characters, special symbols "-", "_".',
+		username_nickname_requirements: "Usernames and nicknames must be 1~20 characters, including only upper & lower case Latin letters, numbers, common Hiragana/Katakana, CJK characters, special symbols '-', '_'.",
 		bio: "Bio",
 		gender: "Gender",
 		memo: "Memo",
@@ -450,5 +454,8 @@ export default {
 	unused: "Unused",
 	create: "Create",
 	creatable: "Creatable",
-	invitation_code: "Invitation Code",
+	invitation_code: {
+		_: "Invitation Code",
+		invalid: "Invalid Invitation Code",
+	},
 } as const;

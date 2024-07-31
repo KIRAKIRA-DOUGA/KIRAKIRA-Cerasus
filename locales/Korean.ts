@@ -68,4 +68,5 @@ export default {
 	navigation: {},
 	toast: {},
 	confirm: {},
+	invitation_code: {},
 } as const satisfies LocaleIdentifiers;

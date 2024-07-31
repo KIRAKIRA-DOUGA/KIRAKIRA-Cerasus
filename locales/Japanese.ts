@@ -336,8 +336,6 @@ export default {
 	},
 	user: {
 		_: "ユーザー",
-		name: "ニックネーム",
-		name_requirements: "1~20文字、大小英数字、ひらがな/カタカナ、漢字、特殊記号の｢-｣と｢_｣のみ使用できます。",
 		bio: "自己紹介",
 		gender: "性別",
 		memo: "メモ",
@@ -433,4 +431,5 @@ export default {
 	current_time: "現在時刻",
 	set_as_default: "デフォルトとして設定",
 	advanced_search: "高度な検索",
+	invitation_code: {},
 } as const satisfies LocaleIdentifiers;
