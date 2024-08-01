@@ -90,7 +90,7 @@ export default {
 		edit_banner: "Thay đổi ảnh bìa",
 		edit_avatar: "Thay đổi ảnh đại diện",
 	},
-	traces: "Ghi nhật ký truy cập",
+	traces: "Lịch sử xem",
 	privacy: {
 		_: "Riêng tư",
 		cookie: "Cookie☆",
@@ -351,6 +351,9 @@ export default {
 	},
 	user: {
 		_: "Người dùng",
+		username: "Tên người dùng",
+		username_requirements_unique: "Tên người dùng phải là duy nhất.",
+		nickname: "Biệt danh",
 		bio: "Giới thiệu",
 		gender: "Giới tính",
 		memo: "Phụ chú",
@@ -454,5 +457,6 @@ export default {
 	creatable: "Cho phép tạo",
 	invitation_code: {
 		_: "Mã mời",
+		invalid: "Mã mời không hợp lệ",
 	},
 } as const satisfies LocaleIdentifiers;
