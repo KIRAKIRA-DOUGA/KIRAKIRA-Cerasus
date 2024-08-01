@@ -7,6 +7,8 @@
 	const videos = ref<GetVideoByUidResponseDto>();
 	const { query } = route;
 
+	const appSettings = useAppSettingsStore();
+
 	const data = reactive({
 		uid: urlUid,
 		search: query.search ?? "none",
@@ -48,6 +50,7 @@
 					:date="new Date()"
 					:watchedCount="video.watchedCount"
 					:duration="new Duration(0, video.duration ?? 0)"
+					:blank="appSettings.isOpenVideoInNewTab"
 				>{{ video.title }}</ThumbVideo>
 			</ThumbGrid>
 		</div>

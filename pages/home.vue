@@ -19,6 +19,8 @@
 	const categoryList = ["Anime", "Music", "Otomad", "Tech", "Design", "Game", "Misc"];
 	const categories = ref<Map<string | undefined, number | undefined>>();
 	const resultTimestamp = ref(0);
+
+	const appSettings = useAppSettingsStore();
 </script>
 
 <template>
@@ -49,6 +51,7 @@
 					:date="new Date(video.uploadDate || 0)"
 					:watchedCount="video.watchedCount"
 					:duration="new Duration(0, video.duration ?? 0)"
+					:blank="appSettings.isOpenVideoInNewTab"
 				>{{ video.title }}</ThumbVideo>
 			</ThumbGrid>
 		</Transition>

@@ -12,6 +12,8 @@
 		href?: string;
 		/** 按钮是否在加载中？ */
 		loading?: boolean;
+		/** 按钮事件级别。 */
+		severity?: "warning" | "error";
 	}>();
 
 	const emits = defineEmits<{
@@ -32,6 +34,7 @@
 	<button
 		type="button"
 		@click="onClick"
+		:class="severity && ['force-color', { warning: 'yellow', error: 'red' }[severity]]"
 	>
 		<div v-ripple class="button-content">
 			<Icon v-if="icon" :name="icon" />
@@ -99,8 +102,8 @@
 		white-space: nowrap;
 		vertical-align: middle;
 		background-color: c(accent);
-		transition: $fallback-transitions, all $ease-out-back 500ms !important;
 		touch-action: manipulation;
+		transition: $fallback-transitions, all $ease-out-back 500ms !important;
 
 		> span {
 			font-family: inherit;
@@ -249,8 +252,8 @@
 		border-radius: 0 !important;
 
 		.wrapper {
-			translate: -50%;
 			background-color: transparent;
+			translate: -50%;
 		}
 
 		button:not([disabled]) & .line {

@@ -201,14 +201,19 @@ export type GetSelfUserInfoResponseDto = {
 	/** 附加的文本消息 */
 	message?: string;
 	/** 请求结果 */
-	result?: {
-		/** 用户 ID */
-		uid?: number;
-		/** 用户邮箱 */
-		email?: string;
-		/** 用户创建时间 */
-		userCreateDateTime?: number;
-	} & UpdateOrCreateUserInfoRequestDto;
+	result?: (
+		{
+			/** 用户 ID */
+			uid?: number;
+			/** 用户邮箱 */
+			email?: string;
+			/** 用户创建时间 */
+			userCreateDateTime?: number;
+			/** 用户的角色 */
+			role?: string;
+		}
+		& UpdateOrCreateUserInfoRequestDto
+	);
 };
 
 /**
@@ -498,6 +503,48 @@ export type RequestSendChangeEmailVerificationCodeResponseDto = {
 	success: boolean;
 	/** 是否达到超时时间 */
 	isCoolingDown: boolean;
+	/** 附加的文本消息 */
+	message?: string;
+};
+
+/**
+ * 请求发送用户更改密码的验证码的请求载荷
+ */
+export type RequestSendChangePasswordVerificationCodeRequestDto = {
+	/** 用户客户端使用的语言 */
+	clientLanguage: string;
+};
+
+/**
+ * 请求发送用户更改密码的验证码的请求载荷
+ */
+export type RequestSendChangePasswordVerificationCodeResponseDto = {
+	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
+	success: boolean;
+	/** 是否达到超时时间 */
+	isCoolingDown: boolean;
+	/** 附加的文本消息 */
+	message?: string;
+};
+
+/**
+ * 用户更改密码的请求的参数
+ */
+export type UpdateUserPasswordRequestDto = {
+	/** 用户的旧密码 */
+	oldPasswordHash: string;
+	/** 用户的新邮箱 */
+	newPasswordHash: string;
+	/** 验证码 */
+	verificationCode: string;
+};
+
+/**
+ * 用户更改密码返回的参数
+ */
+export type UpdateUserPasswordResponseDto = {
+	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
+	success: boolean;
 	/** 附加的文本消息 */
 	message?: string;
 };
