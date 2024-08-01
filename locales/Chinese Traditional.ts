@@ -337,8 +337,6 @@ export default {
 	},
 	user: {
 		_: "用戶",
-		name: "昵稱",
-		name_requirements: "1~20個字元，僅可包含大小寫拉丁字母、數字、常用平/片假名、漢字、特殊符號 ｢-｣ ｢_｣",
 		bio: "個性簽名",
 		gender: "性別",
 		memo: "備註",
@@ -434,4 +432,5 @@ export default {
 	current_time: "現在時間",
 	set_as_default: "設為默認",
 	advanced_search: "高級搜索",
+	invitation_code: {},
 } as const satisfies LocaleIdentifiers;

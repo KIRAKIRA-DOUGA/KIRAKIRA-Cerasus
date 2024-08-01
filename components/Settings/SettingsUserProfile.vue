@@ -49,34 +49,30 @@
 
 <template>
 	<div class="name">
-		<!-- TODO: 使用多语言 -->
-		<!-- FIXME: t.user.name 应为“用户名”而非“昵称” -->
 		<TextBox
 			ref="nameTextBox"
 			v-model="profile.name"
-			placeholder="用户名"
+			:placeholder="t.user.username"
 			size="large"
 			icon="person"
 			required
 			:pattern="validChar"
 			:maxLength="20"
 		/>
-		<!-- TODO: 使用多语言 -->
-		<span>1~20个字符，不允许重名，仅可包含数字、大小写拉丁字母、越南语字母、汉字、常用平/片假名、现代谚文音节、特殊符号 ｢-｣ ｢_｣</span>
+		<span>{{ t.user.username_requirements }}</span>
 	</div>
 
 	<div class="nickname">
-		<!-- TODO: 使用多语言 -->
 		<TextBox
 			ref="nameTextBox"
 			v-model="profile.nickname"
-			placeholder="昵称"
+			:placeholder="t.user.nickname"
 			size="large"
 			icon="person"
 			:pattern="validChar"
 			:maxLength="20"
 		/>
-		<span>{{ t.user.name_requirements }}</span>
+		<span>{{ t.user.nickname_requirements }}</span>
 	</div>
 
 	<!-- <TextBox
@@ -130,7 +126,8 @@
 		--size: large;
 	}
 
-	.name, .nickname {
+	.name,
+	.nickname {
 		display: flex;
 		flex-direction: column;
 		gap: 8px;

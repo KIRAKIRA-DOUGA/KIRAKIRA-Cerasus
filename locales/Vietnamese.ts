@@ -90,7 +90,7 @@ export default {
 		edit_banner: "Thay đổi ảnh bìa",
 		edit_avatar: "Thay đổi ảnh đại diện",
 	},
-	traces: "Ghi nhật ký truy cập",
+	traces: "Lịch sử xem",
 	privacy: {
 		_: "Riêng tư",
 		cookie: "Cookie☆",
@@ -143,9 +143,19 @@ export default {
 		quality: {
 			auto: "Chất lượng tự động",
 		},
-		control_bar: {},
-		filter: {},
-		error: {},
+		control_bar: {
+			_: "Thanh điều khiển",
+			show_frame_by_frame: "Hiển thị điều khiển từng khung hình",
+		},
+		screenshot: "Ảnh chụp màn hình",
+		stats: "Thống kê",
+		autoplay: "Tự động phát",
+		filter: {
+			_: "Bộ lọc",
+		},
+		error: {
+			getDanmaku: "Nhận danh sách đạn mạc thất bại",
+		},
 	},
 	danmaku: {
 		_: "Đạn mạc",
@@ -267,6 +277,8 @@ export default {
 	delete: "Xóa",
 	copy: {
 		_: "Sao chép",
+		success: "Đã sao chép~",
+		failed: "Sao chép thất bại!",
 	},
 	pin: "Ghim",
 	unpin: "Bỏ ghim",
@@ -339,8 +351,12 @@ export default {
 	},
 	user: {
 		_: "Người dùng",
-		name: "Tên người dùng",
-		name_requirements: "Phạm vi từ 1 đến 20 ký tự. Chỉ được bao gồm: chữ số, ký tự Latinh, Hán tự, tiếng Hàn, Hiragana/Katakana và các ký tự đặc biệt \"-\", \"_\"",
+		username: "Tên người dùng",
+		username_requirements: "Phải là tên độc lập duy nhất. @:user.nickname_requirements",
+		username_requirements_unique: "Tên người dùng phải là duy nhất.",
+		nickname: "Biệt danh",
+		nickname_requirements: "1~20 ký tự, chỉ bao gồm số, chữ cái Latin in hoa và thường, chữ cái tiếng Việt, chữ CJK, chữ Hiragana/Katakana thông dụng, âm tiết Hangul hiện đại, ký hiệu đặc biệt \"-\", \"_\".",
+		username_nickname_requirements: "Tên người dùng và biệt danh phải là @:user.nickname_requirements",
 		bio: "Giới thiệu",
 		gender: "Giới tính",
 		memo: "Phụ chú",
@@ -369,6 +385,7 @@ export default {
 		size: "Cỡ chữ",
 	},
 	color: "Màu",
+	opacity: "Độ mờ đục",
 	mode: "Chế độ",
 	size: {
 		_: "Cỡ",
@@ -436,4 +453,13 @@ export default {
 	current_time: "Thời gian hiện tại",
 	set_as_default: "Đặt về mặc định",
 	advanced_search: "Tìm kiếm nâng cao",
+	total: "Tổng",
+	used: "Đã sử dụng",
+	unused: "Chưa sử dụng",
+	create: "Tạo",
+	creatable: "Cho phép tạo",
+	invitation_code: {
+		_: "Mã mời",
+		invalid: "Mã mời không hợp lệ",
+	},
 } as const satisfies LocaleIdentifiers;

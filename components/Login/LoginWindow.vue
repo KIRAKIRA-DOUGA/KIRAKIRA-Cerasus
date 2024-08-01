@@ -1,4 +1,5 @@
 <script setup lang="ts">
+	import makeUsername from "pomsky/username.pom";
 	const props = defineProps<{
 		/** 已打开，单向绑定使用。 */
 		open?: boolean;
@@ -7,9 +8,9 @@
 	const selfUserInfoStore = useSelfUserInfoStore();
 	const model = defineModel<boolean>();
 	const avatar = "/static/images/avatars/aira.webp";
-	type PageType = "login" | "register" | "register2" | "forgot" | "reset";
+	type PageType = "login" | "register1" | "register2" | "register3" | "forgot" | "reset";
 	const currentPage = ref<PageType>("login");
-	const isWelcome = computed(() => ["register", "register2"].includes(currentPage.value));
+	const isWelcome = computed(() => ["register1", "register2", "register3"].includes(currentPage.value));
 	const coverMoveLeft = computed(() => currentPage.value !== "login");
 	const email = ref("");
 	const password = ref("");
@@ -31,7 +32,7 @@
 	const invitationCodeInvalidText = computed(() => {
 		const invitationCodeRegex = /^KIRA-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
 		if (invitationCode.value && !invitationCodeRegex.test(invitationCode.value))
-			return "无效邀请码"; // TODO: 使用多语言
+			return t.invitation_code.invalid;
 		else
 			return false;
 	});
@@ -47,6 +48,11 @@
 	});
 	const loginWindow = refComp();
 	const isInvalidEmail = computed(() => !!email.value && !email.value.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]{2,}$/));
+
+	const isCheckingUsername = ref(false);
+	const validChar = makeUsername();
+	const username = ref("");
+	const nickname = ref("");
 
 	/**
 	 * 登录账户。
@@ -84,7 +90,37 @@
 	}
 
 	/**
-	 * 用户注册，其一
+	 * 用户注册，其一。
+	 */
+	const checkUsernameAndJumpNextPage = async () => {
+		if (!username.value && username.value.length <= 0) {
+			useToast("用户名不能为空！", "error"); // TODO: 使用多语言
+			return;
+		}
+
+		if (username.value.length > 200) {
+			useToast("用户名过长！", "error"); // TODO: 使用多语言
+			return;
+		}
+
+		if (nickname.value?.length > 200) {
+			useToast("用户昵称过长！", "error"); // TODO: 使用多语言
+			return;
+		}
+		isCheckingUsername.value = true;
+		const checkUsernameRequest: CheckUsernameRequestDto = {
+			username: username.value,
+		};
+		const checkUsernameResult = await api.user.checkUsername(checkUsernameRequest);
+		if (checkUsernameResult.success && checkUsernameResult.isAvailableUsername)
+			currentPage.value = "register2";
+		else
+			useToast("用户名无效，请更换一个", "warning", 5000); // TODO: 使用多语言
+		isCheckingUsername.value = false;
+	};
+
+	/**
+	 * 用户注册，其二。
 	 */
 	const PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD = "密码提示中不允许包含密码本身"; // TODO: 使用多语言
 	const INVITATION_CODE_INVALID_TEXT = "邀请码不能为空或格式有误。"; // TODO: 使用多语言
@@ -110,20 +146,21 @@
 				invitationCode: invitationCode.value,
 			};
 			try {
-				const userExistsCheckPromise = api.user.userExistsCheck(userExistsCheckRequest);
-				const requestSendVerificationCodePromise = api.user.requestSendVerificationCode(requestSendVerificationCodeRequest);
-				const checkInvitationCodePromise = api.user.checkInvitationCode(checkInvitationCodeRequestDto);
-				const [userExistsCheckResponse, requestSendVerificationCodeResponse, checkInvitationCodeResponse] = await Promise.all([userExistsCheckPromise, requestSendVerificationCodePromise, checkInvitationCodePromise]);
-				if (userExistsCheckResponse.success && !userExistsCheckResponse.exists)
+				const userExistsCheckResult = await api.user.userExistsCheck(userExistsCheckRequest);
+				if (userExistsCheckResult.success && !userExistsCheckResult.exists) {
+					const requestSendVerificationCodePromise = api.user.requestSendVerificationCode(requestSendVerificationCodeRequest);
+					const checkInvitationCodePromise = api.user.checkInvitationCode(checkInvitationCodeRequestDto);
+					const [requestSendVerificationCodeResponse, checkInvitationCodeResponse] = await Promise.all([requestSendVerificationCodePromise, checkInvitationCodePromise]);
+
 					if (!requestSendVerificationCodeResponse.isTimeout)
 						if (checkInvitationCodeResponse.success && checkInvitationCodeResponse.isAvailableInvitationCode) {
 							isCheckingEmail.value = false;
-							currentPage.value = "register2";
+							currentPage.value = "register3";
 						} else
 							useToast("邀请码不合规或者已被使用", "error", 5000); // TODO: 使用多语言
 					else
 						useToast("操作太快啦~ 请稍后再试", "warning", 5000); // TODO: 使用多语言
-				else
+				} else
 					useToast("该邮箱已注册，请更换", "error", 5000); // TODO: 使用多语言
 			} catch (error) {
 				useToast("注册失败", "error"); // TODO: 使用多语言
@@ -134,7 +171,7 @@
 	};
 
 	/**
-	 * 用户注册，其二。
+	 * 用户注册，其三。
 	 */
 	async function registerUser() {
 		if (!verificationCode.value) {
@@ -155,6 +192,8 @@
 			passwordHint: passwordHint.value,
 			verificationCode: verificationCode.value,
 			invitationCode: invitationCode.value,
+			username: username.value,
+			userNickname: nickname.value,
 		};
 		try {
 			const registrationResponse = await api.user.registration(userRegistrationRequest);
@@ -164,7 +203,6 @@
 				isTryingRegistration.value = false; // 停止注册按钮加载动画
 				open.value = false; // 关闭登录页
 				currentPage.value = "login"; // 将登录页设为登录窗口默认页
-				navigate("/welcome"); // 跳转到欢迎页面
 			} else
 				useToast("注册失败，请稍后再试", "error"); // TODO: 使用多语言
 		} catch (error) {
@@ -257,14 +295,50 @@
 						</div>
 						<div class="action margin-left-inset margin-right-inset">
 							<Button @click="currentPage = 'forgot'">{{ t.loginwindow.login_to_forgot }}</Button>
-							<Button @click="currentPage = 'register'">{{ t.loginwindow.login_to_register }}</Button>
+							<Button @click="currentPage = 'register1'">{{ t.loginwindow.login_to_register }}</Button>
 						</div>
 					</div>
 				</div>
 
 				<div class="main right">
 					<!-- 注册 其一 Register #1 -->
-					<div class="register">
+					<div class="register1">
+						<HeadingGroup :name="t.register" englishName="Register" class="collapse" />
+						<div class="form textbox-with-span">
+							<span>{{ t.user.username_nickname_requirements }}</span>
+							<div>
+								<TextBox
+									ref="nameTextBox"
+									v-model="username"
+									:placeholder="t.user.username"
+									size="large"
+									icon="person"
+									required
+									:pattern="validChar"
+									:maxLength="20"
+								/>
+								<span>{{ t.user.username_requirements_unique }}</span>
+							</div>
+							<div>
+								<TextBox
+									ref="nameTextBox"
+									v-model="nickname"
+									:placeholder="t.user.nickname"
+									size="large"
+									icon="person"
+									:pattern="validChar"
+									:maxLength="20"
+								/>
+							</div>
+						</div>
+						<div class="action margin-left-inset">
+							<Button @click="currentPage = 'login'">{{ t.loginwindow.register_to_login }}</Button>
+							<Button icon="arrow_right" class="button icon-behind" :loading="isCheckingUsername" :disabled="isCheckingUsername" @click="checkUsernameAndJumpNextPage">{{ t.step.next }}</Button>
+						</div>
+					</div>
+
+					<!-- 注册 其二 Register #2 -->
+					<div class="register2">
 						<HeadingGroup :name="t.register" englishName="Register" class="collapse" />
 						<div class="form">
 							<TextBox
@@ -292,24 +366,23 @@
 								:invalid="passwordHintInvalidText"
 								@input="checkPasswordHintIncludesPassword"
 							/> -->
-							<!-- // TODO: 使用多语言 -->
 							<TextBox
 								v-model="invitationCode"
 								type="text"
-								placeholder="邀请码"
+								:placeholder="t.invitation_code"
 								icon="gift"
 								:required="true"
 								:invalid="invitationCodeInvalidText"
 							/>
 						</div>
 						<div class="action margin-left-inset">
-							<Button @click="currentPage = 'login'">{{ t.loginwindow.register_to_login }}</Button>
+							<Button icon="arrow_left" class="button" @click="currentPage = 'register1'">{{ t.step.previous }}</Button>
 							<Button icon="arrow_right" class="button icon-behind" :loading="isCheckingEmail" :disabled="isCheckingEmail" @click="checkAndJumpNextPage">{{ t.step.next }}</Button>
 						</div>
 					</div>
 
-					<!-- 注册 其二 Register #2 -->
-					<div class="register2">
+					<!-- 注册 其三 Register #3 -->
+					<div class="register3">
 						<HeadingGroup :name="t.register" englishName="Register" class="collapse" />
 						<div class="form">
 							<div><Preserves>{{ t.loginwindow.register_email_sent_info }}</Preserves></div>
@@ -331,8 +404,8 @@
 								autoComplete="current-password"
 							/>
 						</div>
-						<div class="action">
-							<Button icon="arrow_left" class="button" @click="currentPage = 'register'">{{ t.step.previous }}</Button>
+						<div class="action margin-left-inset">
+							<Button icon="arrow_left" class="button" @click="currentPage = 'register2'">{{ t.step.previous }}</Button>
 							<Button icon="arrow_right" class="button icon-behind" :loading="isTryingRegistration" :disabled="isTryingRegistration" @click="registerUser">{{ t.step.next }}</Button>
 						</div>
 					</div>
@@ -505,12 +578,14 @@
 			padding: 35px 45px;
 
 			@if true { // HACK: 为了故意不应用排序规则而将下面这部分页面声明单独提炼在下方。
-				@include page("!.register", ".register", right);
+				@include page("!.register1", ".register1", right);
 				@include page("!.register2", ".register2", right);
+				@include page("!.register3", ".register3", right);
 				@include page("!.forgot", ".forgot", right);
 				@include page("!.reset", ".reset", right);
-				@include page(".register2", ".register", left);
-				@include page("!.register, .register2", ".register-title", right);
+				@include page(".register2", ".register1", left);
+				@include page(".register3", ".register2", left);
+				@include page("!.register1, .register2, .register3", ".register-title", right);
 			}
 		}
 
@@ -606,6 +681,26 @@
 				@extend .logo-font;
 				--i: 0;
 				position: absolute;
+			}
+		}
+
+		&.textbox-with-span {
+			gap: 8px;
+
+			> span {
+				margin-bottom: 16px;
+			}
+
+			> * {
+				display: flex;
+				flex-direction: column;
+				gap: 8px;
+
+				> span {
+					color: c(icon-color);
+					font-size: 12px;
+					text-align: right;
+				}
 			}
 		}
 	}

@@ -351,8 +351,12 @@ export default {
 	},
 	user: {
 		_: "用户",
-		name: "昵称",
-		name_requirements: "1~20个字符，仅可包含数字、大小写拉丁字母、越南语字母、汉字、常用平/片假名、现代谚文音节、特殊符号 ｢-｣ ｢_｣",
+		username: "用户名",
+		username_requirements: "不允许重名。@:user.nickname_requirements",
+		username_requirements_unique: "用户名不允许重名。",
+		nickname: "昵称",
+		nickname_requirements: "1~20个字符，仅可包含数字、大小写拉丁字母、越南语字母、汉字、常用平/片假名、现代谚文音节、特殊符号 ｢-｣ ｢_｣。",
+		username_nickname_requirements: "用户名和昵称必须为@:user.nickname_requirements",
 		bio: "个性签名",
 		gender: "性别",
 		memo: "备注",
@@ -454,5 +458,8 @@ export default {
 	unused: "未使用",
 	create: "创建",
 	creatable: "可创建",
-	invitation_code: "邀请码",
+	invitation_code: {
+		_: "邀请码",
+		invalid: "邀请码无效",
+	},
 } as const satisfies LocaleIdentifiers;
