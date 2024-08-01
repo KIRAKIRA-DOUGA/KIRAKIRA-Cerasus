@@ -12,6 +12,10 @@ export type UserRegistrationRequestDto = {
 	passwordHint?: string;
 	/** 注册时使用的邀请码 */
 	invitationCode?: string;
+	/** 用户名 */
+	username: string;
+	/** 用户昵称 */
+	userNickname?: string;
 };
 
 /**
@@ -248,6 +252,8 @@ export type GetUserInfoByUidResponseDto = {
 		label?: UserLabel[];
 		/** 用户创建时间 */
 		userCreateDateTime?: number;
+		/** 用户的角色 */
+		role?: string;
 	};
 };
 
@@ -547,4 +553,24 @@ export type UpdateUserPasswordResponseDto = {
 	success: boolean;
 	/** 附加的文本消息 */
 	message?: string;
+};
+
+/**
+ * 检查用户名是否可用的请求载荷
+ */
+export type CheckUsernameRequestDto = {
+	/** 用户名 */
+	username: string;
+};
+
+/**
+ * 检查用户名是否可用的请求响应
+ */
+export type CheckUsernameResponseDto = {
+	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
+	success: boolean;
+	/** 附加的文本消息 */
+	message?: string;
+	/** 是否是可用的用户名 */
+	isAvailableUsername: boolean;
 };

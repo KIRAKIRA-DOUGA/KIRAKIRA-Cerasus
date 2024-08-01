@@ -49,6 +49,7 @@
 	const loginWindow = refComp();
 	const isInvalidEmail = computed(() => !!email.value && !email.value.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]{2,}$/));
 
+	const isCheckingUsername = ref(false);
 	const validChar = makeUsername();
 	const username = ref("");
 	const nickname = ref("");
@@ -89,7 +90,37 @@
 	}
 
 	/**
-	 * 用户注册，其一
+	 * 用户注册，其一。
+	 */
+	const checkUsernameAndJumpNextPage = async () => {
+		if (!username.value && username.value.length <= 0) {
+			useToast("用户名不能为空！", "error"); // TODO: 使用多语言
+			return;
+		}
+
+		if (username.value.length > 200) {
+			useToast("用户名过长！", "error"); // TODO: 使用多语言
+			return;
+		}
+
+		if (nickname.value?.length > 200) {
+			useToast("用户昵称过长！", "error"); // TODO: 使用多语言
+			return;
+		}
+		isCheckingUsername.value = true;
+		const checkUsernameRequest: CheckUsernameRequestDto = {
+			username: username.value,
+		};
+		const checkUsernameResult = await api.user.checkUsername(checkUsernameRequest);
+		if (checkUsernameResult.success && checkUsernameResult.isAvailableUsername)
+			currentPage.value = "register2";
+		else
+			useToast("用户名无效，请更换一个", "warning", 5000); // TODO: 使用多语言
+		isCheckingUsername.value = false;
+	};
+
+	/**
+	 * 用户注册，其二。
 	 */
 	const PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD = "密码提示中不允许包含密码本身"; // TODO: 使用多语言
 	const INVITATION_CODE_INVALID_TEXT = "邀请码不能为空或格式有误。"; // TODO: 使用多语言
@@ -115,11 +146,12 @@
 				invitationCode: invitationCode.value,
 			};
 			try {
-				const userExistsCheckPromise = api.user.userExistsCheck(userExistsCheckRequest);
-				const requestSendVerificationCodePromise = api.user.requestSendVerificationCode(requestSendVerificationCodeRequest);
-				const checkInvitationCodePromise = api.user.checkInvitationCode(checkInvitationCodeRequestDto);
-				const [userExistsCheckResponse, requestSendVerificationCodeResponse, checkInvitationCodeResponse] = await Promise.all([userExistsCheckPromise, requestSendVerificationCodePromise, checkInvitationCodePromise]);
-				if (userExistsCheckResponse.success && !userExistsCheckResponse.exists)
+				const userExistsCheckResult = await api.user.userExistsCheck(userExistsCheckRequest);
+				if (userExistsCheckResult.success && !userExistsCheckResult.exists) {
+					const requestSendVerificationCodePromise = api.user.requestSendVerificationCode(requestSendVerificationCodeRequest);
+					const checkInvitationCodePromise = api.user.checkInvitationCode(checkInvitationCodeRequestDto);
+					const [requestSendVerificationCodeResponse, checkInvitationCodeResponse] = await Promise.all([requestSendVerificationCodePromise, checkInvitationCodePromise]);
+
 					if (!requestSendVerificationCodeResponse.isTimeout)
 						if (checkInvitationCodeResponse.success && checkInvitationCodeResponse.isAvailableInvitationCode) {
 							isCheckingEmail.value = false;
@@ -128,7 +160,7 @@
 							useToast("邀请码不合规或者已被使用", "error", 5000); // TODO: 使用多语言
 					else
 						useToast("操作太快啦~ 请稍后再试", "warning", 5000); // TODO: 使用多语言
-				else
+				} else
 					useToast("该邮箱已注册，请更换", "error", 5000); // TODO: 使用多语言
 			} catch (error) {
 				useToast("注册失败", "error"); // TODO: 使用多语言
@@ -139,7 +171,7 @@
 	};
 
 	/**
-	 * 用户注册，其二。
+	 * 用户注册，其三。
 	 */
 	async function registerUser() {
 		if (!verificationCode.value) {
@@ -160,6 +192,8 @@
 			passwordHint: passwordHint.value,
 			verificationCode: verificationCode.value,
 			invitationCode: invitationCode.value,
+			username: username.value,
+			userNickname: nickname.value,
 		};
 		try {
 			const registrationResponse = await api.user.registration(userRegistrationRequest);
@@ -169,7 +203,6 @@
 				isTryingRegistration.value = false; // 停止注册按钮加载动画
 				open.value = false; // 关闭登录页
 				currentPage.value = "login"; // 将登录页设为登录窗口默认页
-				navigate("/welcome"); // 跳转到欢迎页面
 			} else
 				useToast("注册失败，请稍后再试", "error"); // TODO: 使用多语言
 		} catch (error) {
@@ -300,7 +333,7 @@
 						</div>
 						<div class="action margin-left-inset">
 							<Button @click="currentPage = 'login'">{{ t.loginwindow.register_to_login }}</Button>
-							<Button icon="arrow_right" class="button icon-behind" :loading="isCheckingEmail" :disabled="isCheckingEmail" @click="currentPage = 'register2'">{{ t.step.next }}</Button>
+							<Button icon="arrow_right" class="button icon-behind" :loading="isCheckingUsername" :disabled="isCheckingUsername" @click="checkUsernameAndJumpNextPage">{{ t.step.next }}</Button>
 						</div>
 					</div>
 

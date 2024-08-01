@@ -1,6 +1,6 @@
 import { GET, POST, uploadFile2CloudflareImages } from "api/Common";
 import getCorrectUri from "api/Common/getCorrectUri";
-import type { CheckInvitationCodeRequestDto, CheckInvitationCodeResponseDto, CheckUserTokenResponseDto, CreateInvitationCodeResponseDto, GetMyInvitationCodeResponseDto, GetSelfUserInfoRequestDto, GetSelfUserInfoResponseDto, GetUserAvatarUploadSignedUrlResponseDto, GetUserInfoByUidRequestDto, GetUserInfoByUidResponseDto, GetUserSettingsRequestDto, GetUserSettingsResponseDto, RequestSendChangeEmailVerificationCodeRequestDto, RequestSendChangePasswordVerificationCodeRequestDto, RequestSendChangeEmailVerificationCodeResponseDto, RequestSendVerificationCodeRequestDto, RequestSendVerificationCodeResponseDto, UpdateOrCreateUserInfoResponseDto, UpdateOrCreateUserSettingsRequestDto, UpdateOrCreateUserSettingsResponseDto, UpdateUserEmailRequestDto, UpdateUserEmailResponseDto, UserExistsCheckRequestDto, UserExistsCheckResponseDto, UserLoginRequestDto, UserLoginResponseDto, UserRegistrationRequestDto, UserRegistrationResponseDto, RequestSendChangePasswordVerificationCodeResponseDto, UpdateUserPasswordRequestDto, UpdateUserPasswordResponseDto, UserLogoutResponseDto } from "./UserControllerDto";
+import type { CheckUsernameRequestDto, CheckInvitationCodeRequestDto, CheckInvitationCodeResponseDto, CheckUserTokenResponseDto, CreateInvitationCodeResponseDto, GetMyInvitationCodeResponseDto, GetSelfUserInfoRequestDto, GetSelfUserInfoResponseDto, GetUserAvatarUploadSignedUrlResponseDto, GetUserInfoByUidRequestDto, GetUserInfoByUidResponseDto, GetUserSettingsRequestDto, GetUserSettingsResponseDto, RequestSendChangeEmailVerificationCodeRequestDto, RequestSendChangePasswordVerificationCodeRequestDto, RequestSendChangeEmailVerificationCodeResponseDto, RequestSendVerificationCodeRequestDto, RequestSendVerificationCodeResponseDto, UpdateOrCreateUserInfoResponseDto, UpdateOrCreateUserSettingsRequestDto, UpdateOrCreateUserSettingsResponseDto, UpdateUserEmailRequestDto, UpdateUserEmailResponseDto, UserExistsCheckRequestDto, UserExistsCheckResponseDto, UserLoginRequestDto, UserLoginResponseDto, UserRegistrationRequestDto, UserRegistrationResponseDto, RequestSendChangePasswordVerificationCodeResponseDto, UpdateUserPasswordRequestDto, UpdateUserPasswordResponseDto, UserLogoutResponseDto, CheckUsernameResponseDto } from "./UserControllerDto";
 
 const BACK_END_URL = getCorrectUri();
 const USER_API_URL = `${BACK_END_URL}/user`;
@@ -236,5 +236,16 @@ export const requestSendChangePasswordVerificationCode = async (requestSendChang
  * @returns 用户更改密码返回的参数
  */
 export const updateUserPassword = async (updateUserPasswordRequest: UpdateUserPasswordRequestDto): Promise<UpdateUserPasswordResponseDto> => {
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	return await POST(`${USER_API_URL}/update/password`, updateUserPasswordRequest, { credentials: "include" }) as UpdateUserPasswordResponseDto;
+};
+
+/**
+ * 检查用户名是否可用
+ * @param checkUsernameRequest 用户更改密码的请求的请求载荷
+ * @returns 用户更改密码返回的参数
+ */
+export const checkUsername = async (checkUsernameRequest: CheckUsernameRequestDto): Promise<CheckUsernameResponseDto> => {
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	return await GET(`${USER_API_URL}/checkUsername?username=${checkUsernameRequest.username}`, { credentials: "include" }) as CheckUsernameResponseDto;
 };
