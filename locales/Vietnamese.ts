@@ -352,8 +352,11 @@ export default {
 	user: {
 		_: "Người dùng",
 		username: "Tên người dùng",
+		username_requirements: "Phải là tên độc lập duy nhất. @:user.nickname_requirements",
 		username_requirements_unique: "Tên người dùng phải là duy nhất.",
 		nickname: "Biệt danh",
+		nickname_requirements: "1~20 ký tự, chỉ bao gồm số, chữ cái Latin in hoa và thường, chữ cái tiếng Việt, chữ CJK, chữ Hiragana/Katakana thông dụng, âm tiết Hangul hiện đại, ký hiệu đặc biệt \"-\", \"_\".",
+		username_nickname_requirements: "Tên người dùng và biệt danh phải là @:user.nickname_requirements",
 		bio: "Giới thiệu",
 		gender: "Giới tính",
 		memo: "Phụ chú",
