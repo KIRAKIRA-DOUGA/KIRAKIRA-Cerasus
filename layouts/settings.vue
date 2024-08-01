@@ -12,11 +12,15 @@
 	const htmlTitle = computed(() => title.value + " - " + settingsString);
 	const logout = async () => {
 		const logoutResult = await api.user.userLogout();
-		if (logoutResult) {
+		if (logoutResult.success) {
+			navigateTo("/settings/appearance");
 			useToast("用户已登出。", "success"); // TODO: 使用多语言
 			useEvent("user:login", false);
 		}
 	};
+
+	const selfUserInfoStore = useSelfUserInfoStore();
+	const isAdmin = computed(() => selfUserInfoStore.role === "admin");
 
 	// 彩色侧边栏
 	const cookieColoredSidebar = useCookie<boolean>(COOKIE_KEY.coloredSidebarCookieKey);
@@ -58,6 +62,9 @@
 			{ id: "about", icon: "info" },
 			{ id: "acknowledgement", icon: "campaign" },
 		],
+		admin: [
+			{ id: "content", icon: "category" },
+		],
 	};
 
 	useHead({ title: htmlTitle });
@@ -79,6 +86,11 @@
 						<TabItem v-for="setting in settings.personal" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
 						<Subheader icon="apps">{{ t.settings.app }}</Subheader>
 						<TabItem v-for="setting in settings.general" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
+						<!-- TODO: 使用多语言 -->
+						<Subheader v-if="isAdmin" icon="badge">管理</Subheader>
+						<template v-if="isAdmin">
+							<TabItem v-for="setting in settings.admin" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
+						</template>
 					</TabBar>
 					<div class="nav-bottom-buttons">
 						<Button icon="logout" @click="logout">{{ t.logout }}</Button>

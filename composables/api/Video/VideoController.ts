@@ -1,7 +1,7 @@
 import getCorrectUri from "api/Common/getCorrectUri";
 import * as tus from "tus-js-client";
-import { GET, POST, uploadFile2CloudflareImages } from "../Common";
-import type { GetVideoByKvidRequestDto, GetVideoByKvidResponseDto, GetVideoByUidRequestDto, GetVideoByUidResponseDto, GetVideoCoverUploadSignedUrlResponseDto, SearchVideoByVideoTagIdRequestDto, SearchVideoByVideoTagIdResponseDto, ThumbVideoResponseDto, UploadVideoRequestDto, UploadVideoResponseDto } from "./VideoControllerDto";
+import { GET, POST, DELETE, uploadFile2CloudflareImages } from "../Common";
+import type { DeleteVideoRequestDto, DeleteVideoResponseDto, GetVideoByKvidRequestDto, GetVideoByKvidResponseDto, GetVideoByUidRequestDto, GetVideoByUidResponseDto, GetVideoCoverUploadSignedUrlResponseDto, SearchVideoByVideoTagIdRequestDto, SearchVideoByVideoTagIdResponseDto, ThumbVideoResponseDto, UploadVideoRequestDto, UploadVideoResponseDto } from "./VideoControllerDto";
 
 const BACK_END_URL = getCorrectUri();
 const VIDEO_API_URL = `${BACK_END_URL}/video`;
@@ -229,4 +229,13 @@ export async function uploadVideoCover(fileName: string, videoCoverBlobData: Blo
  */
 export async function commitVideo(uploadVideoRequest: UploadVideoRequestDto): Promise<UploadVideoResponseDto> {
 	return await POST(`${VIDEO_API_URL}/upload`, uploadVideoRequest, { credentials: "include" }) as UploadVideoResponseDto;
+}
+
+/**
+ * 删除一个视频
+ * @param deleteVideoRequest 删除一个视频的请求载荷
+ * @returns 删除一个视频的请求响应
+ */
+export async function deleteVideo(deleteVideoRequest: DeleteVideoRequestDto): Promise<DeleteVideoResponseDto> {
+	return await DELETE(`${VIDEO_API_URL}/delete`, deleteVideoRequest, { credentials: "include" }) as DeleteVideoResponseDto;
 }
