@@ -526,6 +526,8 @@
 		downloadFile(blob, `${props.title} (kv${props.id}) - ${new Duration(currentTime.value).toString()}`);
 		return image;
 	}
+
+	provide("fullscreen", fullscreen);
 </script>
 
 <template>

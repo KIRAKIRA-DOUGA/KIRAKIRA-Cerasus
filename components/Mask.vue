@@ -10,6 +10,10 @@
 		position?: MaskSlotPosition;
 		/** 聚焦内容。是否**不要**单击空白处关闭。 */
 		focusing?: boolean;
+		/** 是否禁用。 */
+		disabled?: boolean;
+		/** 是否禁用 Teleport。 */
+		teleportDisabled?: boolean;
 	}>(), {
 		zIndex: 50,
 		position: "center",
@@ -31,8 +35,8 @@
 </script>
 
 <template>
-	<Teleport to="#popovers">
-		<Contents :style="{ '--z-index': zIndex }">
+	<Teleport to="#popovers" :disabled="teleportDisabled">
+		<Contents v-if="!disabled" :style="{ '--z-index': zIndex }">
 			<Transition>
 				<div
 					v-if="shown"
@@ -44,6 +48,7 @@
 			</Transition>
 			<slot><div></div></slot>
 		</Contents>
+		<slot v-else></slot>
 	</Teleport>
 </template>
 

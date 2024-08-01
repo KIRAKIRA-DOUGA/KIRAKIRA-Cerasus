@@ -92,6 +92,8 @@
 	const countdownTime = computed(() => new Duration(model.value - props.duration).toString());
 	const duration = computed(() => new Duration(props.duration).toString());
 
+	const mobile = () => getResponsiveDevice() === "mobile";
+
 	/**
 	 * 点击速度按钮时，在速度中循环。
 	 */
@@ -234,7 +236,7 @@
 					:key="track.id"
 					:active="selectedTrack.height === track.height"
 					@click="selectedTrack = track"
-					class="quality"
+					class="quality-item"
 					:class="{ disabled: autoQuality }"
 				>
 					<span>{{ track.height }}P</span>
@@ -272,7 +274,7 @@
 				v-model="currentPercent"
 				:min="0"
 				:max="1"
-				:buffered="buffered?.map(timeRanges => timeRanges.map(seconds => seconds / props.duration))"
+				:buffered="buffered?.map(timeRanges => timeRanges.map(seconds => seconds / props.duration)) as Buffered"
 				:waiting
 				pending="cursor"
 				:displayValue="pending => new Duration(pending * props.duration).toString()"
@@ -288,22 +290,25 @@
 				v-if="selectedTrack && selectedTrack.height"
 				class="quality-button"
 				:text="`${selectedTrack.height}P`"
-				@pointerenter="e => qualityMenu = e"
+				@pointerenter="e => isMouse(e) && (qualityMenu = e)"
 				@pointerleave="e => isMouse(e) && (qualityMenu = undefined)"
+				@click="e => mobile() && (qualityMenu = e)"
 			/>
 			<SoftButton
 				icon="speed_outline"
 				:active="playbackRate !== 1"
-				@pointerenter="e => rateMenu = e"
+				@pointerenter="e => isMouse(e) && (rateMenu = e)"
 				@pointerleave="e => isMouse(e) && (rateMenu = undefined)"
 				@pointerup.left="e => isMouse(e) && switchSpeed()"
+				@click="e => mobile() && (rateMenu = e)"
 			/>
 			<SoftButton
 				:icon="muted ? 'volume_mute' : volumeSet >= 0.5 ? 'volume_up' : volumeSet > 0 ? 'volume_down' : 'volume_none'"
 				class="volume"
-				@pointerenter="e => volumeMenu = e"
+				@pointerenter="e => isMouse(e) && (volumeMenu = e)"
 				@pointerleave="e => isMouse(e) && (volumeMenu = undefined)"
 				@pointerup.left="e => isMouse(e) && (muted = !muted)"
+				@click="e => mobile() && (volumeMenu = e)"
 			/>
 			<!-- TODO: 音量图标需要修改为三根弧线，并且使用动画切换，参考 Windows 11 / i(Pad)OS 的动画。 -->
 			<SoftButton
@@ -503,26 +508,27 @@
 				translate: 0 100%;
 			}
 		}
+	}
 
-		.quality {
-			&:deep(> span) {
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				width: 100%;
-			}
+	.quality-item {
+		&:deep(> span) {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			width: 100%;
+		}
 
-			&.disabled {
-				pointer-events: none;
-			}
+		&.disabled {
+			opacity: 0.5;
+			pointer-events: none;
+		}
 
-			.kbps {
-				color: c(icon-color);
-				font-size: 12px;
-				font-weight: normal;
-				font-variant-numeric: tabular-nums;
-				letter-spacing: 1;
-			}
+		.kbps {
+			color: c(icon-color);
+			font-size: 12px;
+			font-weight: normal;
+			font-variant-numeric: tabular-nums;
+			letter-spacing: 1;
 		}
 	}
 

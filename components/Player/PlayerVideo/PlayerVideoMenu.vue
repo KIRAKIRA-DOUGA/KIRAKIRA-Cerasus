@@ -26,6 +26,8 @@
 	const isMouseDown = ref(false);
 	const { width: menuWidth, margin } = useScssVariables().numbers;
 	const isFixed = ref(false);
+	const isKeyboard = ref(false);
+	const mobile = () => getResponsiveDevice() === "mobile";
 
 	/**
 	 * 隐藏菜单。
@@ -70,10 +72,11 @@
 		hideExceptMe.value = true;
 		useEvent("component:hideAllPlayerVideoMenu");
 		hideExceptMe.value = false;
-		if (e && typeof e === "object") {
+		if (e && typeof e === "object" && !mobile()) {
 			const relativeEl = getPath(e).find(element => getComputedStyle(element).position === "relative");
 			if (!relativeEl) return;
 			isFixed.value = false;
+			isKeyboard.value = false;
 			reshow();
 			const { right: relativeRight, bottom: relativeBottom } = relativeEl.getBoundingClientRect();
 			const el = e.currentTarget as HTMLElement;
@@ -82,11 +85,19 @@
 			const right = Math.max(relativeRight - targetRight - (menuWidth - targetWidth) / 2, margin);
 			locationStyle.value = { right: right + "px", bottom: Math.max(bottom, CONTROLLER_HEIGHT) + "px" };
 		} else {
+			isKeyboard.value = !(e && typeof e === "object");
 			isFixed.value = true;
 			reshow();
-			const left = (window.innerWidth - menuWidth) / 2;
-			locationStyle.value = { left: left + "px", bottom: CONTROLLER_HEIGHT + "px" };
-			moveOut();
+			let left: number, bottom: number;
+			if (!mobile() || isKeyboard.value) {
+				left = (window.innerWidth - menuWidth) / 2;
+				bottom = CONTROLLER_HEIGHT;
+				moveOut();
+			} else {
+				left = 0;
+				bottom = 0;
+			}
+			locationStyle.value = { left: left + "px", bottom: bottom + "px", top: "unset" };
 		}
 		shown.value = true;
 		isMouseEnter.value = true;
@@ -118,23 +129,27 @@
 		if (e === undefined) moveOut();
 		else show(e);
 	}, { immediate: true });
+
+	const isDark = inject("fullscreen");
 </script>
 
 <template>
-	<Transition>
-		<Comp
-			v-if="shown"
-			role="menu"
-			:class="{ fixed: isFixed }"
-			:style="locationStyle"
-			@mouseenter="reshow"
-			@mouseleave="moveOut"
-			@pointerdown="pointerDown"
-		>
-			<slot></slot>
-			<slot name="slider"></slot>
-		</Comp>
-	</Transition>
+	<Mask v-model="shown" :disabled="!mobile() || isKeyboard" :teleportDisabled="mobile() && !isKeyboard" position="center bottom">
+		<Transition>
+			<Comp
+				v-if="shown"
+				role="menu"
+				:class="{ fixed: isFixed, dark: isDark, keyboard: isKeyboard }"
+				:style="locationStyle"
+				@mouseenter="reshow"
+				@mouseleave="moveOut"
+				@pointerdown="pointerDown"
+			>
+				<slot></slot>
+				<slot name="slider"></slot>
+			</Comp>
+		</Transition>
+	</Mask>
 </template>
 
 <style scoped lang="scss">
@@ -151,22 +166,52 @@
 			opacity: 0;
 		}
 
-		> :deep(*) {
-			margin-bottom: $margin;
+		@include not-mobile {
+			> :deep(*) {
+				margin-bottom: $margin;
+			}
 		}
 
 		&.fixed {
 			position: fixed;
 			z-index: 90;
 		}
+
+		@include mobile {
+			&:not(.keyboard) {
+				@include dropdown-flyouts;
+				@include acrylic-background;
+				width: 100dvw;
+				padding-bottom: env(safe-area-inset-bottom);
+
+				:slotted(.capsule-slider) {
+					margin: 8px;
+
+					.track {
+						@include chip-shadow;
+					}
+				}
+			}
+		}
 	}
 
 	:slotted(menu) {
 		@include round-large;
-		@include dropdown-flyouts;
 		@include acrylic-background;
 		z-index: 70;
-		padding: $menu-padding 0;
+		padding: $menu-padding;
+
+		@include not-mobile {
+			@include dropdown-flyouts;
+		}
+
+		:comp:not(.keyboard) & {
+			@include mobile {
+				@include chip-shadow;
+				@include acrylic-background;
+				margin: 8px;
+			}
+		}
 
 		&:empty {
 			display: none;
@@ -176,16 +221,6 @@
 			@include round-small;
 			min-height: 36px;
 			padding: 0 8px;
-		}
-
-		> hr {
-			margin: 6px 0;
-			border: none;
-			border-top: c(divider, 10%) 1px solid;
-		}
-
-		> :not(hr) {
-			margin: 0 $menu-padding;
 		}
 	}
 </style>

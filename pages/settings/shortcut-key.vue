@@ -9,17 +9,7 @@
 	};
 	const Kbd = ((_, { slots }) => <kbd onClick={playSfx}>{slots.default?.()}</kbd>) as VueJsx;
 
-	type Platform = "Windows" | "macOS" | "Linux";
-
-	const platform = computed<Platform | undefined>(() => {
-		if (environment.server) return;
-		const { platform } = navigator;
-		if (/(Mac|iPhone|iPod|iPad)/i.test(platform)) return "macOS";
-		else if (/(Linux)/i.test(platform)) return "Linux";
-		else if (/(Win)/i.test(platform)) return "Windows";
-	});
-
-	const Ctrl = computed(() => platform.value === "macOS" ? "⌘" : platform.value === "Linux" ? "Control" : "Ctrl");
+	const Ctrl = computed(() => getPlatform() === "Apple" ? "⌘" : getPlatform() === "Linux" ? "Control" : "Ctrl");
 </script>
 
 <template>
@@ -38,19 +28,19 @@
 		<!-- TODO: 使用多语言 -->
 		<p>全屏</p>
 		<p><Kbd>F</Kbd> <Kbd>F11</Kbd></p>
-		
+
 		<p>弹幕</p>
 		<p><Kbd>D</Kbd></p>
-		
+
 		<p>静音</p>
 		<p><Kbd>M</Kbd></p>
-		
+
 		<p>音量</p>
 		<p><Kbd>↑</Kbd> <Kbd>↓</Kbd></p>
-		
+
 		<p>快退 / 快进</p>
 		<p><Kbd>←</Kbd> <Kbd>→</Kbd></p>
-		
+
 		<p>慢放 / 快放</p>
 		<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>←</Kbd> <Kbd>→</Kbd></p>
 		<!-- #endregion -->
