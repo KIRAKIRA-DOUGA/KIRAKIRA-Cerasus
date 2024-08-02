@@ -41,7 +41,7 @@
 				@click="onClickUser"
 			/>
 			<p class="nickname">{{ selfUserInfoStore.isLogined ? selfUserInfoStore.userNickname : t.login }}</p>
-			<p v-if="selfUserInfoStore.isLogined" class="username">{{ "@" + selfUserInfoStore.userNickname }}</p>
+			<p v-if="selfUserInfoStore.isLogined" class="username">@{{ selfUserInfoStore.username }}</p>
 			<p v-if="selfUserInfoStore.isLogined && selfUserInfoStore.signature" class="bio">{{ selfUserInfoStore.signature }}</p>
 		</div>
 		<div class="grid">
