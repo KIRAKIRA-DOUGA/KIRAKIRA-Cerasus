@@ -67,6 +67,9 @@
 		],
 	};
 
+	if (!selfUserInfoStore.isLogined && settings.personal.some(setting => setting.id === currentSetting.value))
+		navigate("/settings/appearance");
+
 	useHead({ title: htmlTitle });
 </script>
 
@@ -82,8 +85,10 @@
 						<TextBox v-model="search" type="search" :placeholder="t.settings.search" icon="search" />
 					</header>
 					<TabBar v-model="currentSetting" vertical>
-						<Subheader icon="person">{{ t.settings.user }}</Subheader>
-						<TabItem v-for="setting in settings.personal" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
+						<template v-if="selfUserInfoStore.isLogined">
+							<Subheader icon="person">{{ t.settings.user }}</Subheader>
+							<TabItem v-for="setting in settings.personal" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
+						</template>
 						<Subheader icon="apps">{{ t.settings.app }}</Subheader>
 						<TabItem v-for="setting in settings.general" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
 						<!-- TODO: 使用多语言 -->
