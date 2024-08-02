@@ -36,12 +36,13 @@
 	<Comp>
 		<div class="user">
 			<UserAvatar
-				v-tooltip="selfUserInfoStore.isLogined ? selfUserInfoStore.username : t.login"
+				v-tooltip="selfUserInfoStore.isLogined ? selfUserInfoStore.userNickname : t.login"
 				:avatar="selfUserInfoStore.isLogined ? selfUserInfoStore.userAvatar : undefined"
 				@click="onClickUser"
 			/>
-			<p class="username">艾了个拉</p>
-			<p class="bio">Kind and Kawaii, Forever!</p>
+			<p class="nickname">{{ selfUserInfoStore.isLogined ? selfUserInfoStore.userNickname : t.login }}</p>
+			<p v-if="selfUserInfoStore.isLogined" class="username">{{ "@" + selfUserInfoStore.userNickname }}</p>
+			<p v-if="selfUserInfoStore.isLogined && selfUserInfoStore.signature" class="bio">{{ selfUserInfoStore.signature }}</p>
 		</div>
 		<div class="grid">
 			<div v-for="item in drawerItems" :key="item.icon" v-ripple class="drawer-item" @click="to(item.route)">
@@ -65,13 +66,20 @@
 	}
 
 	.user {
-		.username {
-			margin: 16px 0 8px;
+		.nickname {
+			margin-top: 16px;
 			font-size: 16px;
 			font-weight: bold;
 		}
 
+		.username {
+			margin-top: 4px;
+			color: c(icon-color);
+			font-size: 12px;
+		}
+
 		.bio {
+			margin-top: 12px;
 			font-size: 12px;
 		}
 	}
