@@ -134,7 +134,7 @@
 </script>
 
 <template>
-	<Mask v-model="shown" :disabled="!mobile() || isKeyboard" :teleportDisabled="mobile() && !isKeyboard" position="center bottom">
+	<Mask v-model="shown" :disabled="!mobile() || isKeyboard" :teleportDisabled="!mobile() && !isKeyboard" position="center bottom">
 		<Transition>
 			<Comp
 				v-if="shown"
