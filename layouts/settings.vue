@@ -85,8 +85,8 @@
 						<TextBox v-model="search" type="search" :placeholder="t.settings.search" icon="search" />
 					</header>
 					<TabBar v-model="currentSetting" vertical>
+						<Subheader v-if="selfUserInfoStore.isLogined" icon="person">{{ t.settings.user }}</Subheader>
 						<template v-if="selfUserInfoStore.isLogined">
-							<Subheader icon="person">{{ t.settings.user }}</Subheader>
 							<TabItem v-for="setting in settings.personal" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
 						</template>
 						<Subheader icon="apps">{{ t.settings.app }}</Subheader>
