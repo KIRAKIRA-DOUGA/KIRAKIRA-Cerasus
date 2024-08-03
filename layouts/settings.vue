@@ -99,8 +99,8 @@
 					</TabBar>
 					<div class="nav-bottom-buttons">
 						<Button icon="logout" @click="logout">{{ t.logout }}</Button>
-						<Button icon="build" href="/dev">{{ t.development_test_page }}</Button>
-						<Button icon="apps" href="/components">{{ t.components_test_page }}</Button>
+						<Button v-if="isAdmin" icon="build" href="/dev">{{ t.development_test_page }}</Button>
+						<Button v-if="isAdmin" icon="apps" href="/components">{{ t.components_test_page }}</Button>
 					</div>
 				</header>
 			</div>
