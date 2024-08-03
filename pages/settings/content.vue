@@ -9,9 +9,9 @@
 	const isDeletingVideo = ref(false);
 
 	/**
-	 * 开启删除视频的模态框
+	 * 开启删除视频的警告框
 	 */
-	async function openDeleteVideoModel() {
+	async function openDeleteVideoAlert() {
 		const videoId = parseInt(deletedVideoId.value, 10);
 		if (deletedVideoId.value === null || deletedVideoId.value === undefined || videoId < 0) {
 			useToast("未正确输入视频 ID", "error", 5000);
@@ -49,7 +49,7 @@
 			deletedVideoId.value = undefined;
 			useToast("视频已删除", "success");
 		} else
-			useToast("无法获取目标视频，请检查视频 ID 是否正确", "error", 5000);
+			useToast("无法删除目标视频，请检查视频 ID 是否正确", "error", 5000);
 		isDeletingVideo.value = false;
 	}
 
@@ -72,7 +72,7 @@
 
 <template>
 	<Alert v-model="showDeleteVideoAlert" static>
-		<h3>确定要删除这个视频吗？</h3>
+		<h4>确定要删除这个视频吗？</h4>
 		<div class="delete-thumb-video">
 			<ThumbVideo
 				v-if="deleteVideoInfo"
@@ -87,7 +87,7 @@
 			>{{ deleteVideoInfo.title }}</ThumbVideo>
 		</div>
 		<template #footer-left>
-			<Button @click="deleteVideo">确认删除</Button>
+			<Button @click="deleteVideo" :loading="isDeletingVideo" :disabled="isDeletingVideo">确认删除</Button>
 		</template>
 		<template #footer-right>
 			<Button @click="showDeleteVideoAlert = false" class="secondary">取消</Button>
@@ -106,7 +106,7 @@
 			<!-- TODO: 使用多语言 -->
 			<span>输入要删除的视频的 KV 号，例如 kv1 只需输入数字 1 即可。</span>
 		</div>
-		<Button @click="openDeleteVideoModel" :disabled="!isAdmin || isOpeningDeleteVideoAlert" :loading="isOpeningDeleteVideoAlert">删除视频</Button>
+		<Button @click="openDeleteVideoAlert" :disabled="!isAdmin || isOpeningDeleteVideoAlert" :loading="isOpeningDeleteVideoAlert">删除视频</Button>
 	</div>
 </template>
 
