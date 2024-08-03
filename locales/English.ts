@@ -337,7 +337,6 @@ export default {
 		register_email_sent_info: "We have sent a verification code to your email, please enter the code here.\nIf you did not receive it, you can resend.",
 		forgot_info: "Please enter your email.\nWe will send a verification code to your email.",
 		reset_successful_info: "Verification successful!\nPlease enter and remember your new password.",
-		alpha_notice: "The current site you are visiting is an Alpha test for developers, and any modifications currently made may be deleted at any time!\nIf you are not a developer, please be patient and wait for the beta test.",
 	},
 	unselected: {
 		combobox: "Select a Item",
