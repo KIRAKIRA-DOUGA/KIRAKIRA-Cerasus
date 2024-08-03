@@ -44,17 +44,19 @@
 			h1 {
 				--i: 1;
 				margin: 0;
-				font-weight: bold;
-				font-size: 6rem;
 				font-family: $english-logo-fonts;
+				font-size: 112px;
+				font-weight: bold;
+				font-variant-numeric: oldstyle-nums;
 				line-height: 1;
 				animation: float-down $title-animation-options;
-				font-variant-numeric: oldstyle-nums;
 			}
 
 			h2 {
 				--i: 0;
 				margin: 0.5rem;
+				font-family: $english-logo-fonts;
+				font-size: 26px;
 				animation: float-down $title-animation-options;
 			}
 		}
@@ -68,8 +70,8 @@
 
 	@keyframes float-down {
 		from {
-			opacity: 0;
 			translate: 0 -50px;
+			opacity: 0;
 		}
 	}
 

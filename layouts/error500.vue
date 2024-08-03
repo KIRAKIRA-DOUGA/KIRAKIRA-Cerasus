@@ -99,7 +99,7 @@
 			.title {
 				display: flex;
 				flex-direction: column;
-				justify-content: space-evenly;
+				justify-content: space-between;
 				color: c(accent);
 
 				* {
@@ -114,7 +114,7 @@
 				}
 
 				p {
-					font-size: 20px;
+					font-size: 26px;
 					font-weight: bold;
 					line-height: 1.5em;
 				}
