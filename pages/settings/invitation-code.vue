@@ -73,7 +73,7 @@
 		</div> -->
 	</div>
 
-	<SoftButton v-tooltip:bottom="t.create" class="create-button" icon="add" @click="createInvitationCode" />
+	<SoftButton v-tooltip:bottom="t.create" class="create-button" icon="add" @click="useToast('暂时不能创建新的邀请码了哦，请等待开放QWQ', 'error')" />
 
 	<div class="user-info chip">
 		<SettingsChipItem
