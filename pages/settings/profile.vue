@@ -126,6 +126,10 @@
 			if (updateOrCreateUserInfoResult.success) {
 				await api.user.getSelfUserInfo();
 				isUpdateUserInfo.value = false;
+				useToast("用户信息已更新！", "success"); // TODO: 使用多语言
+			} else {
+				isUpdateUserInfo.value = false;
+				useToast("用户信息更新失败！", "error"); // TODO: 使用多语言
 			}
 		} catch (error) {
 			isUpdateUserInfo.value = false;
