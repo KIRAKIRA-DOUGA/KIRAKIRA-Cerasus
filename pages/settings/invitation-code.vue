@@ -4,6 +4,8 @@
 	const totalUsedInvitationCode = computed(() => myInvitationCode.value?.filter(invitationCode => !!invitationCode.assignee)?.length ?? 0);
 	const totalUnusedInvitationCode = computed(() => myInvitationCode.value?.filter(invitationCode => !invitationCode.assignee)?.length ?? 0);
 
+	const selfUserInfoStore = useSelfUserInfoStore();
+
 	/**
 	 * 生成邀请码
 	 */
@@ -50,6 +52,16 @@
 		if (loginStatus)
 			await getMyInvitationCode();
 	});
+
+	/**
+	 * 临时的创建邀请码
+	 */
+	function createInvitationCodeTemp() {
+		if (selfUserInfoStore.role !== "admin")
+			useToast("暂时不能创建新的邀请码了哦，请等待开放QWQ", "error");
+		else
+			createInvitationCode();
+	}
 </script>
 
 <template>
@@ -73,7 +85,7 @@
 		</div> -->
 	</div>
 
-	<SoftButton v-tooltip:bottom="t.create" class="create-button" icon="add" @click="useToast('暂时不能创建新的邀请码了哦，请等待开放QWQ', 'error')" />
+	<SoftButton v-tooltip:bottom="t.create" class="create-button" icon="add" @click="createInvitationCodeTemp" />
 
 	<div class="user-info chip">
 		<SettingsChipItem
