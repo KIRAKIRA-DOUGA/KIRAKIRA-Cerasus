@@ -20,7 +20,7 @@
 			</div>
 			<div class="card-bottom">
 				<div class="bottom-left">
-					<LogoLuXun class="qrcode" />
+					<!-- <LogoLuXun class="qrcode" /> -->
 					<div class="title">
 						<h1>{{ statusCode }}</h1>
 						<p>{{ title }}</p>
@@ -61,8 +61,8 @@
 			@include card-shadow;
 			--i: 2;
 			display: flex;
-			align-items: flex-end;
 			justify-content: space-between;
+			align-items: flex-end;
 			padding: 50px 60px;
 			background-color: c(main-bg, 50%);
 
@@ -74,8 +74,8 @@
 			.bottom-right {
 				display: flex;
 				flex-direction: column;
-				align-items: flex-end;
 				justify-content: space-between;
+				align-items: flex-end;
 				height: 100%;
 
 				.logo-text {
@@ -86,8 +86,8 @@
 				.fix-bug {
 					flex-shrink: 100;
 					margin-bottom: 6px;
-					font-weight: 100;
 					font-size: 32px;
+					font-weight: 100;
 				}
 			}
 
@@ -104,13 +104,13 @@
 
 				h1 {
 					font-size: 112px;
-					line-height: 1em;
 					font-variant-numeric: oldstyle-nums;
+					line-height: 1em;
 				}
 
 				p {
-					font-weight: bold;
 					font-size: 20px;
+					font-weight: bold;
 					line-height: 1.5em;
 				}
 			}
@@ -147,8 +147,8 @@
 
 	@keyframes float-up {
 		from {
-			opacity: 0;
 			translate: 0 50px;
+			opacity: 0;
 		}
 	}
 </style>

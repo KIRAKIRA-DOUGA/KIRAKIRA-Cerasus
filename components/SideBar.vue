@@ -75,7 +75,7 @@
 <template>
 	<DefineAvatar>
 		<UserAvatar
-			v-tooltip="selfUserInfoStore.isLogined ? selfUserInfoStore.username : t.login"
+			v-tooltip="selfUserInfoStore.isLogined ? selfUserInfoStore.userNickname : t.login"
 			:avatar="selfUserInfoStore.isLogined ? selfUserInfoStore.userAvatar : undefined"
 		/>
 	</DefineAvatar>

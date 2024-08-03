@@ -10,14 +10,14 @@
 			<UserAvatar :avatar="selfUserInfoStore.isLogined ? selfUserInfoStore.userAvatar : undefined" />
 		</div>
 		<div class="text">
-			<div class="names">
-				<span class="username">{{ selfUserInfoStore.username }}</span>
-
-				<span class="icons">
+			<div class="name">
+				<span class="nickname">{{ selfUserInfoStore.userNickname }}</span>
+				<span class="username">@{{ selfUserInfoStore.username }}</span>
+				<div class="icons">
 					<Icon v-if="selfUserInfoStore.gender === 'male' " name="male" class="male" />
 					<Icon v-else-if="selfUserInfoStore.gender === 'female'" name="female" class="female" />
 					<span v-else class="other-gender">{{ selfUserInfoStore.gender }}</span>
-				</span>
+				</div>
 			</div>
 			<div class="bio">{{ selfUserInfoStore.signature }}</div>
 		</div>
@@ -66,21 +66,22 @@
 			gap: 6px;
 			justify-content: center;
 
-			.names {
+			.name {
 				display: flex;
+				gap: 8px;
 				font-size: 24px;
 
-				.username {
-					font-size: 24px;
+				.nickname {
 					font-weight: bold;
+				}
 
-					+ .icons {
-						margin-left: 10px;
-					}
+				.user-name {
+					color: c(icon-color);
 				}
 
 				.icons {
 					@include flex-center;
+					margin-left: 10px;
 
 					.male {
 						color: c(blue);

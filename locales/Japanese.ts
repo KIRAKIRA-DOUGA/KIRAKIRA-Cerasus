@@ -140,10 +140,22 @@ export default {
 			resample: "リサンプリング",
 			continuous: "無段変速",
 		},
-		quality: {},
-		control_bar: {},
-		filter: {},
-		error: {},
+		quality: {
+			auto: "自動画質",
+		},
+		control_bar: {
+			_: "コントロールバー",
+			show_frame_by_frame: "フレームごとに制御の表示",
+		},
+		screenshot: "スクリーンショット",
+		stats: "統計情報",
+		autoplay: "自動再生",
+		filter: {
+			_: "フィルター",
+		},
+		error: {
+			getDanmaku: "弾幕リストの取得に失敗しました",
+		},
 	},
 	danmaku: {
 		_: "弾幕",
@@ -265,6 +277,8 @@ export default {
 	delete: "削除",
 	copy: {
 		_: "コピー",
+		success: "コピーしました～",
+		failed: "コピー失敗！",
 	},
 	pin: "固定",
 	unpin: "固定解除",
@@ -327,6 +341,7 @@ export default {
 		register_email_sent_info: "確認コードを送信しました。受け取ったコードを入力してください。\n届いてない場合、コードを再送信することができます。",
 		forgot_info: "アカウントのメールアドレスを入力してください。\nこのアドレス宛にメールを送ります。メールの中のリンクをクリックしてパスワード再設定の手続を続行します。",
 		reset_successful_info: "本人確認ができました！\n新しいパスワードを設定してください。そして忘れないようにしてください。",
+		alpha_notice: "今ご覧になっているサイトは開発者向けのアルファテストバージョンで、行われている変更はいつでも消去される可能性があります。\n開発者ではない方にはベターテストをお待ちください。",
 	},
 	unselected: {
 		combobox: "選択してください",
@@ -336,6 +351,12 @@ export default {
 	},
 	user: {
 		_: "ユーザー",
+		username: "ユーザー名",
+		username_requirements: "一意である必要があります。　@:user.nickname_requirements",
+		username_requirements_unique: "ユーザー名は一意である必要があります。",
+		nickname: "ニックネーム",
+		nickname_requirements: "1~20文字、半角英数字とベトナム文字、CJK統合漢字、ひらがな、カタカナ、ハングル、そして記号の「-」、「_」のみ使用できます。",
+		username_nickname_requirements: "ユーザー名とニックネームは　@:user.nickname_requirements　のルールに従う必要があります。",
 		bio: "自己紹介",
 		gender: "性別",
 		memo: "メモ",
@@ -364,6 +385,7 @@ export default {
 		size: "フォント サイズ",
 	},
 	color: "文字色",
+	opacity: "不透明度",
 	mode: "モード",
 	size: {
 		_: "サイズ",
@@ -431,5 +453,13 @@ export default {
 	current_time: "現在時刻",
 	set_as_default: "デフォルトとして設定",
 	advanced_search: "高度な検索",
-	invitation_code: {},
+	total: "総計",
+	used: "使用済",
+	unused: "未使用",
+	create: "作成",
+	creatable: "作成可能",
+	invitation_code: {
+		_: "招待コード",
+		invalid: "無効な招待コード",
+	},
 } as const satisfies LocaleIdentifiers;

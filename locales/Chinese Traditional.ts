@@ -140,10 +140,22 @@ export default {
 			resample: "重採樣音訊",
 			continuous: "無級變速",
 		},
-		quality: {},
-		control_bar: {},
-		filter: {},
-		error: {},
+		quality: {
+			auto: "自動畫質",
+		},
+		control_bar: {
+			_: "控制列",
+			show_frame_by_frame: "顯示逐幀控制",
+		},
+		screenshot: "螢幕截圖",
+		stats: "統計",
+		autoplay: "自動播放",
+		filter: {
+			_: "篩選",
+		},
+		error: {
+			getDanmaku: "獲取彈幕列表失敗",
+		},
 	},
 	danmaku: {
 		_: "彈幕",
@@ -265,6 +277,8 @@ export default {
 	delete: "刪除",
 	copy: {
 		_: "複製",
+		success: "已複製～",
+		failed: "複製失敗！",
 	},
 	pin: "置頂",
 	unpin: "取消置頂",
@@ -337,6 +351,12 @@ export default {
 	},
 	user: {
 		_: "用戶",
+		username: "用戶名",
+		username_requirements: "不可重名。@:user.nickname_requirements",
+		username_requirements_unique: "用戶名不可重複。",
+		nickname: "暱稱",
+		nickname_requirements: "一至二十個字元，只可包含數字、大小寫拉丁字母、越南語字母、中日韓文字、常用平／片假名、現代諺文、特殊符號「-」和「_」。",
+		username_nickname_requirements: "用戶名及暱稱必須為@:user.nickname_requirements",
 		bio: "個性簽名",
 		gender: "性別",
 		memo: "備註",
@@ -365,6 +385,7 @@ export default {
 		size: "字型大小",
 	},
 	color: "顏色",
+	opacity: "不透明度",
 	mode: "模式",
 	size: {
 		_: "大小",
@@ -432,5 +453,13 @@ export default {
 	current_time: "現在時間",
 	set_as_default: "設為默認",
 	advanced_search: "高級搜索",
-	invitation_code: {},
+	total: "總計",
+	used: "已使用",
+	unused: "未使用",
+	create: "創建",
+	creatable: "可創建",
+	invitation_code: {
+		_: "邀請碼",
+		invalid: "無效的邀請碼",
+	},
 } as const satisfies LocaleIdentifiers;
