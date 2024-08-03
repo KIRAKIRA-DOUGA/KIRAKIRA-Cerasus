@@ -62,7 +62,7 @@
 		<div class="spotlight"></div>
 		<div class="content">
 			<h1>{{ statusCode }}</h1>
-			<p>{{ message }}</p>
+			<p>{{ message || t.page_not_found_info }}</p>
 			<!-- <div>test pointer: {{ parallax.x }}, {{ parallax.y }}</div>
 			<div>test gsensor: {{ gsensor.alpha }}, {{ gsensor.beta }}, {{ gsensor.gamma }}</div>
 			<div>{{ rotationDeg }}</div> -->
@@ -102,20 +102,20 @@
 			margin: 0;
 			margin-bottom: 2rem;
 			color: c(accent);
-			font-weight: bold;
-			font-size: 6rem;
 			font-family: $english-logo-fonts;
+			font-size: 6rem;
+			font-weight: bold;
+			font-variant-numeric: oldstyle-nums;
 			line-height: 1;
 			animation: float-down $title-animation-options;
-			font-variant-numeric: oldstyle-nums;
 		}
 
 		p {
 			--i: 1;
 			margin: 0;
 			margin-bottom: 4rem;
-			font-weight: 300;
 			font-size: 1.25rem;
+			font-weight: 300;
 			line-height: 1.25;
 			animation: float-down $title-animation-options;
 		}
@@ -148,6 +148,7 @@
 
 		&::before {
 			@include round-large;
+			content: "";
 			position: absolute;
 			inset: 0;
 			width: 100%;
@@ -155,12 +156,11 @@
 			background: linear-gradient(90deg, #e2e2e2 0%, #e2e2e2 25%, #00dc82 50%, #36e4da 75%, #0047e1 100%);
 			background-size: 400% auto !important;
 			opacity: 0.5;
-			transition: background-position 0.3s ease-in-out, opacity 0.2s ease-in-out;
-			content: "";
 			mask: linear-gradient(white 0 0) content-box, linear-gradient(white 0 0);
 			// stylelint-disable-next-line property-no-vendor-prefix
 			-webkit-mask-composite: xor;
 			mask-composite: exclude;
+			transition: background-position 0.3s ease-in-out, opacity 0.2s ease-in-out;
 
 			:root.dark & {
 				background: linear-gradient(90deg, #303030 0%, #303030 25%, #00dc82 50%, #36e4da 75%, #0047e1 100%);
@@ -195,9 +195,9 @@
 				bottom: 0;
 				width: 0;
 				height: 0;
-				border-color: transparent;
-				border-style: solid;
 				border-width: 0 calc($height / $sqrt3) $height;
+				border-style: solid;
+				border-color: transparent;
 				transition: none;
 				animation: move-up $mountain-animation-options;
 			}
@@ -226,8 +226,8 @@
 		left: 50%;
 		flex-direction: column;
 		justify-content: space-between;
-		transition: none;
 		translate: -50%;
+		transition: none;
 
 		> * {
 			@include square(calc(100vmin / 5));
@@ -256,8 +256,8 @@
 
 	@keyframes float-down {
 		from {
-			opacity: 0;
 			translate: 0 -50px;
+			opacity: 0;
 		}
 	}
 

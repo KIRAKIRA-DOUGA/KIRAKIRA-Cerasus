@@ -1,16 +1,4 @@
 <script setup lang="ts">
-	definePageMeta({
-		validate: async route => {
-			const uid = route.params.uid;
-			let uidBigInt: bigint;
-			try {
-				uidBigInt = BigInt(uid);
-			} catch { return false; }
-			const userInfoResult = await api.user.getUserInfo({ uid: Number(uidBigInt) }); // TODO: UID 最好使用 string 或 bigint 存储，不要用 number 存储。
-			return userInfoResult.success;
-		},
-	});
-
 	const urlUid = computed(currentUserUid);
 	const userBirthday = ref(0);
 	const userJoinDate = ref(0);

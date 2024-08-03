@@ -15,19 +15,16 @@
 	/**
 	 * 判断用户是否合法，或者判断用户是否已经登录
 	 */
-	const checkUser = async (): Promise<boolean> => {
+	async function checkUser(): Promise<boolean> {
 		const checkUserResult = await api.user.checkUserToken();
-		if (checkUserResult.success && checkUserResult.userTokenOk)
-			return true;
-		else
-			return false;
-	};
+		return checkUserResult.success && !!checkUserResult.userTokenOk;
+	}
 
 	/**
 	 * 如果用户已登录，则根据 cookie 中的 uid 和 token 来获取用户信息（同时具有验证用户 token 的功能）
 	 * 如果未登录或验证不成功，则清空全局变量中的用户信息并清空残留 cookie
 	 */
-	const getUserInfo = async () => {
+	async function getUserInfo() {
 		const checkUserResult = await checkUser();
 		if (checkUserResult)
 			try {
@@ -41,7 +38,7 @@
 			api.user.userLogout(); // 如果未登录或验证不成功，则清空全局变量中的用户信息并清空残留 cookie
 			console.warn("WARN", "用户未登录或身份验证失败");
 		}
-	};
+	}
 
 	/**
 	 * 点击用户头像事件。未登录时提示登录，已登录时导航到个人主页。
