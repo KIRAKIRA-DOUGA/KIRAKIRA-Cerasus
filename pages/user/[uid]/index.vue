@@ -1,8 +1,17 @@
 <script setup lang="ts">
-	// import { Users200Response } from "kirakira-backend";
+	definePageMeta({
+		validate: async route => {
+			const uid = route.params.uid;
+			let uidBigInt: bigint;
+			try {
+				uidBigInt = BigInt(uid);
+			} catch { return false; }
+			const userInfoResult = await api.user.getUserInfo({ uid: Number(uidBigInt) }); // TODO: UID 最好使用 string 或 bigint 存储，不要用 number 存储。
+			return userInfoResult.success;
+		},
+	});
 
 	const urlUid = computed(currentUserUid);
-	// const user = ref<Users200Response>();
 	const userBirthday = ref(0);
 	const userJoinDate = ref(0);
 	const userId = ref<number>();
@@ -22,7 +31,9 @@
 		await Promise.allSettled([fetchUserDataPromise, fetchUserVideoDataPromise]);
 	}
 
-	/** fetch the user profile data */
+	/**
+	 * Fetch the user profile data.
+	 */
 	async function fetchUserData() {
 		// TODO: 现在获取用户信息的接口还没法获得这些信息
 
@@ -37,8 +48,9 @@
 		userBirthday.value = 0; // TODO
 		userId.value = urlUid.value; // TODO
 	}
+
 	/**
-	 * fetch the videos according to the query.
+	 * Fetch the videos according to the query.
 	 */
 	async function fetchUserVideoData() {
 		try {
