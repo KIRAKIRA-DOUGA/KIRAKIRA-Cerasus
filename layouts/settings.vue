@@ -64,6 +64,7 @@
 		],
 		admin: [
 			{ id: "content", icon: "category" },
+			{ id: "user", icon: "account_circle" },
 		],
 	};
 

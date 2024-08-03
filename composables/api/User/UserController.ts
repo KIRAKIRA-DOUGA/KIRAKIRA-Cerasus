@@ -1,6 +1,6 @@
 import { GET, POST, uploadFile2CloudflareImages } from "api/Common";
 import getCorrectUri from "api/Common/getCorrectUri";
-import type { CheckUsernameRequestDto, CheckInvitationCodeRequestDto, CheckInvitationCodeResponseDto, CheckUserTokenResponseDto, CreateInvitationCodeResponseDto, GetMyInvitationCodeResponseDto, GetSelfUserInfoRequestDto, GetSelfUserInfoResponseDto, GetUserAvatarUploadSignedUrlResponseDto, GetUserInfoByUidRequestDto, GetUserInfoByUidResponseDto, GetUserSettingsRequestDto, GetUserSettingsResponseDto, RequestSendChangeEmailVerificationCodeRequestDto, RequestSendChangePasswordVerificationCodeRequestDto, RequestSendChangeEmailVerificationCodeResponseDto, RequestSendVerificationCodeRequestDto, RequestSendVerificationCodeResponseDto, UpdateOrCreateUserInfoResponseDto, UpdateOrCreateUserSettingsRequestDto, UpdateOrCreateUserSettingsResponseDto, UpdateUserEmailRequestDto, UpdateUserEmailResponseDto, UserExistsCheckRequestDto, UserExistsCheckResponseDto, UserLoginRequestDto, UserLoginResponseDto, UserRegistrationRequestDto, UserRegistrationResponseDto, RequestSendChangePasswordVerificationCodeResponseDto, UpdateUserPasswordRequestDto, UpdateUserPasswordResponseDto, UserLogoutResponseDto, CheckUsernameResponseDto } from "./UserControllerDto";
+import type { CheckUsernameRequestDto, CheckInvitationCodeRequestDto, CheckInvitationCodeResponseDto, CheckUserTokenResponseDto, CreateInvitationCodeResponseDto, GetMyInvitationCodeResponseDto, GetSelfUserInfoRequestDto, GetSelfUserInfoResponseDto, GetUserAvatarUploadSignedUrlResponseDto, GetUserInfoByUidRequestDto, GetUserInfoByUidResponseDto, GetUserSettingsRequestDto, GetUserSettingsResponseDto, RequestSendChangeEmailVerificationCodeRequestDto, RequestSendChangePasswordVerificationCodeRequestDto, RequestSendChangeEmailVerificationCodeResponseDto, RequestSendVerificationCodeRequestDto, RequestSendVerificationCodeResponseDto, UpdateOrCreateUserInfoResponseDto, UpdateOrCreateUserSettingsRequestDto, UpdateOrCreateUserSettingsResponseDto, UpdateUserEmailRequestDto, UpdateUserEmailResponseDto, UserExistsCheckRequestDto, UserExistsCheckResponseDto, UserLoginRequestDto, UserLoginResponseDto, UserRegistrationRequestDto, UserRegistrationResponseDto, RequestSendChangePasswordVerificationCodeResponseDto, UpdateUserPasswordRequestDto, UpdateUserPasswordResponseDto, UserLogoutResponseDto, CheckUsernameResponseDto, BlockUserByUIDRequestDto, BlockUserByUIDResponseDto, ReactivateUserByUIDRequestDto, ReactivateUserByUIDResponseDto, GetBlockedUserResponseDto } from "./UserControllerDto";
 
 const BACK_END_URL = getCorrectUri();
 const USER_API_URL = `${BACK_END_URL}/user`;
@@ -248,4 +248,44 @@ export const updateUserPassword = async (updateUserPasswordRequest: UpdateUserPa
 export const checkUsername = async (checkUsernameRequest: CheckUsernameRequestDto): Promise<CheckUsernameResponseDto> => {
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	return await GET(`${USER_API_URL}/checkUsername?username=${checkUsernameRequest.username}`, { credentials: "include" }) as CheckUsernameResponseDto;
+};
+
+/**
+ * 根据 UID 封禁一个用户
+ * @param blockUserByUIDRequest 封禁用户的请求载荷
+ * @returns 封禁用户的请求响应
+ */
+export const blockUserByUID = async (blockUserByUIDRequest: BlockUserByUIDRequestDto): Promise<BlockUserByUIDResponseDto> => {
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	return await POST(`${USER_API_URL}/blockUser`, blockUserByUIDRequest, { credentials: "include" }) as BlockUserByUIDResponseDto;
+};
+
+/**
+ * 根据 UID 重新激活一个用户
+ * @param reactivateUserByUIDRequest 重新激活一个用户的请求载荷
+ * @returns 重新激活一个用户的请求响应
+ */
+export const reactivateUserByUID = async (reactivateUserByUIDRequest: ReactivateUserByUIDRequestDto): Promise<ReactivateUserByUIDResponseDto> => {
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	return await POST(`${USER_API_URL}/reactivateUser`, reactivateUserByUIDRequest, { credentials: "include" }) as ReactivateUserByUIDResponseDto;
+};
+
+/**
+ * 获取所有被封禁用户的信息
+ * @param headerCookie  从客户端发起 SSR 请求时传递的 Header 中的 Cookie 部分，在 SSR 时将其转交给后端 API
+ * @returns 获取所有被封禁用户的信息的请求响应
+ */
+export const getBlockedUser = async (headerCookie: { cookie?: string | undefined }): Promise<GetBlockedUserResponseDto> => {
+	// NOTE: use { headers: headerCookie } to passing client-side cookies to backend API when SSR.
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	const { data: result } = await useFetch(`${USER_API_URL}/blocked/info`, { headers: headerCookie, credentials: "include" });
+	const userInfoResult = result.value as GetBlockedUserResponseDto;
+	const finalUserInfoResult = userInfoResult?.result?.map(userInfo => {
+		const finalResult = {
+			avatar: "",
+			...userInfo,
+		};
+		return finalResult;
+	});
+	return { ...userInfoResult, result: finalUserInfoResult };
 };
