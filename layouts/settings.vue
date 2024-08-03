@@ -92,7 +92,7 @@
 						<Subheader icon="apps">{{ t.settings.app }}</Subheader>
 						<TabItem v-for="setting in settings.general" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
 						<!-- TODO: 使用多语言 -->
-						<Subheader v-if="isAdmin" icon="badge">管理</Subheader>
+						<Subheader v-if="isAdmin" icon="badge">管理设置</Subheader>
 						<template v-if="isAdmin">
 							<TabItem v-for="setting in settings.admin" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
 						</template>

@@ -8,7 +8,9 @@
 
 	const appSettings = useAppSettingsStore();
 
-	/** fetch all data */
+	/**
+	 * Fetch all data.
+	 */
 	async function fetchData() {
 		const fetchUserDataPromise = new Promise<void>(resolve => {
 			fetchUserData().then(resolve);

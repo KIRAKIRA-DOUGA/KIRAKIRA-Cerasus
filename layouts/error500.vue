@@ -1,4 +1,5 @@
 <script setup lang="ts">
+	import qrcode from "assets/images/kirakira_cerasus_issues_qrcode.png";
 	import { httpResponseStatusCodes } from "helpers/http-status";
 	const props = defineProps<{
 		statusCode: number | string;
@@ -8,6 +9,9 @@
 
 	const title = computed(() => httpResponseStatusCodes[props.statusCode]);
 	const is500 = computed(() => +props.statusCode === 500);
+
+	const selfUserInfoStore = useSelfUserInfoStore();
+	const isAdmin = computed(() => selfUserInfoStore.role === "admin");
 </script>
 
 <template>
@@ -21,6 +25,7 @@
 			<div class="card-bottom">
 				<div class="bottom-left">
 					<!-- <LogoLuXun class="qrcode" /> -->
+					<NuxtImg :src="qrcode" class="qrcode" />
 					<div class="title">
 						<h1>{{ statusCode }}</h1>
 						<p>{{ title }}</p>
@@ -28,7 +33,7 @@
 				</div>
 				<div class="bottom-right">
 					<LogoText />
-					<div v-if="is500 && environment.development" class="fix-bug">又有bug了，快修哇！</div>
+					<div v-if="is500 && (environment.development || isAdmin)" class="fix-bug">又有bug了，快修哇！</div>
 				</div>
 			</div>
 		</div>
