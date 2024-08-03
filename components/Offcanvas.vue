@@ -27,6 +27,7 @@
 	 * 点击用户头像事件。未登录时提示登录，已登录时导航到个人主页。
 	 */
 	function onClickUser() {
+		shown.value = false;
 		if (!selfUserInfoStore.isLogined) useEvent("app:requestLogin");
 		else to("/user");
 	}

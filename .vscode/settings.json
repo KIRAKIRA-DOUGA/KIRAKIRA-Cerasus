@@ -180,4 +180,5 @@
 	"workbench.colorCustomizations": {
 		"statusBar.background": "#00c16a1f",
 	},
+	"editor.formatOnPaste": false,
 }

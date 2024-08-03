@@ -411,7 +411,7 @@
 	.avatar-cropper {
 		@include square(350px, true);
 
-		@media (width <=450px) {
+		@media (width <= 450px) {
 			--size: 80dvw;
 			// 对于图片切割器，不建议使用响应式，因为切割器内部被切割的图片不会随之改变尺寸，但考虑到极端小尺寸的适配问题，且在上传图片时浏览器宽度发生剧烈变化的概率较小，故保留本功能。
 		}

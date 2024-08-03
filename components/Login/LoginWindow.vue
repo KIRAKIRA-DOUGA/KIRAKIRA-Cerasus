@@ -5,9 +5,9 @@
 		open?: boolean;
 	}>();
 
+	const { avatarSize, avatarGap, avatarMinLeft } = useScssVariables().numbers;
 	const selfUserInfoStore = useSelfUserInfoStore();
 	const model = defineModel<boolean>();
-	const avatar = "/static/images/avatars/aira.webp";
 	type PageType = "login" | "register1" | "register2" | "register3" | "forgot" | "reset";
 	const currentPage = ref<PageType>("login");
 	const isWelcome = computed(() => ["register1", "register2", "register3"].includes(currentPage.value));
@@ -17,10 +17,15 @@
 	const confirmPassword = ref("");
 	const verificationCode = ref("");
 	const passwordHint = ref("");
+	const loginAnimationText = ref<HTMLDivElement>();
+	const avatarMovement = ref(0);
+	const textPaddingLeft = ref(0);
 	const _isLogining = ref(false);
 	const isLogining = computed({
 		get: () => _isLogining.value,
-		set: value => {
+		set: async value => {
+			if (value) updateAvatarMovement();
+			await nextTick();
 			_isLogining.value = value;
 			if (value) closeLater();
 		},
@@ -36,11 +41,12 @@
 		else
 			return false;
 	});
-
 	const open = computed({
 		get: () => !!(model.value ?? props.open),
 		set: value => {
 			model.value = value;
+			avatarMovement.value = 0;
+			textPaddingLeft.value = 0;
 			if (isLogining.value) useEvent("user:login", true);
 			if (isLogining.value) selfUserInfoStore.isLogined = true;
 			isLogining.value = false;
@@ -55,6 +61,20 @@
 	const nickname = ref("");
 
 	/**
+	 * 更新登录动画中头像向左滑动的距离。
+	 */
+	function updateAvatarMovement() {
+		const windowWidth = loginWindow.value!.offsetWidth;
+		const texts = loginAnimationText.value!;
+		texts.classList.add("rendered");
+		const textWidth = texts.offsetWidth;
+		texts.classList.remove("rendered");
+		const left = Math.max(avatarMinLeft, (windowWidth - textWidth - avatarGap - avatarSize) / 2);
+		avatarMovement.value = windowWidth / 2 - left - avatarSize / 2;
+		textPaddingLeft.value = left + avatarSize + avatarGap;
+	}
+
+	/**
 	 * 登录账户。
 	 */
 	async function loginUser() {
@@ -67,7 +87,6 @@
 				isTryingLogin.value = false;
 
 				if (loginResponse.success && loginResponse.uid && loginResponse.token) {
-					open.value = false;
 					selfUserInfoStore.isLogined = true;
 
 					// 登陆后，将用户设置存储到 cookie，然后调用 cookieBinding 从 cookie 中获取样式设置并追加到 dom 根节点
@@ -77,6 +96,7 @@
 
 					// NOTE: 触发用户登录事件，应当放在最后，等待上方的一系列业务逻辑执行完成之后在发送事件
 					useEvent("user:login", true);
+					isLogining.value = true;
 				} else {
 					useToast(t.toast.login_failed, "error", 5000);
 					if (loginResponse.passwordHint) useToast(`${t.password.hint}: ${loginResponse.passwordHint}`, "info", 10000);
@@ -267,6 +287,10 @@
 				role="dialog"
 				aria-modal="true"
 				:aria-label="currentPage"
+				:style="{
+					'--avatar-movement': avatarMovement + 'px',
+					'--text-padding-left': textPaddingLeft + 'px',
+				}"
 			>
 
 				<div class="main left">
@@ -281,6 +305,7 @@
 								icon="email"
 								:invalid="isInvalidEmail"
 								autoComplete="username"
+								@keyup.enter="loginUser"
 							/>
 							<TextBox
 								v-model="password"
@@ -288,6 +313,7 @@
 								:placeholder="t.password"
 								icon="lock"
 								autoComplete="current-password"
+								@keyup.enter="loginUser"
 							/>
 							<div class="button login-button-placeholder">
 								<Button class="button login-button button-block" :loading="isTryingLogin" :disabled="isTryingLogin || selfUserInfoStore.isLogined" @click="loginUser">Link Start!</Button>
@@ -472,10 +498,13 @@
 						<div class="line"></div>
 					</div>
 					<div class="avatar">
-						<NuxtImg :src="avatar" alt="avatar" />
+						<NuxtImg v-if="selfUserInfoStore.userAvatar" provider="kirakira" :src="selfUserInfoStore.userAvatar" alt="avatar" />
+						<Icon v-else name="person" />
 					</div>
-					<div class="welcome">{{ t.loginwindow.login_welcome }}</div>
-					<div class="name">艾了个拉</div> <!-- TODO: user name here -->
+					<div ref="loginAnimationText" class="texts">
+						<div class="welcome">{{ t.loginwindow.login_welcome }}</div>
+						<div class="name">{{ selfUserInfoStore.userNickname }}</div>
+					</div>
 				</div>
 			</Comp>
 		</Transition>
@@ -491,20 +520,21 @@
 	$transition-ease: $ease-out-smooth;
 	$narrow-screen: "(width < #{$width})";
 	$avatar-size: 128px;
-	$avatar-movement: 110px;
+	$avatar-gap: 25px;
+	$avatar-min-left: 25px;
 
 	:comp {
 		@include dropdown-flyouts;
 		@include round-large;
 		@include set-max-size;
 		@include acrylic-background;
-		--avatar-center: #{calc($width / 2) - $avatar-movement} 50%;
+		--avatar-center: calc(#{$narrow-width} - var(--avatar-movement)) 50%;
 		display: flex;
 		justify-content: space-between;
 		width: $width;
 		height: $height;
 		overflow: clip;
-		clip-path: circle(100% at var(--avatar-center));
+		clip-path: circle(125% at var(--avatar-center));
 		transition: all $transition-ease $enter-duration;
 
 		&.v-leave-active {
@@ -523,7 +553,7 @@
 		}
 
 		@media #{$narrow-screen} {
-			--avatar-center: #{calc($narrow-width / 2) - $avatar-movement} 50%;
+			--avatar-center: calc(#{calc($narrow-width / 2)} - var(--avatar-movement)) 50%;
 			width: $narrow-width;
 		}
 	}
@@ -576,7 +606,8 @@
 			height: 100%;
 			padding: 35px 45px;
 
-			@if true { // HACK: 为了故意不应用排序规则而将下面这部分页面声明单独提炼在下方。
+			@if true {
+				// HACK: 为了故意不应用排序规则而将下面这部分页面声明单独提炼在下方。
 				@include page("!.register1", ".register1", right);
 				@include page("!.register2", ".register2", right);
 				@include page("!.register3", ".register3", right);
@@ -818,6 +849,12 @@
 		background-color: c(accent-20);
 		scale: 0;
 
+		> .icon {
+			color: c(accent-90);
+			font-size: $avatar-size;
+			scale: 0.6;
+		}
+
 		> img {
 			width: 100%;
 			aspect-ratio: 1 / 1;
@@ -825,19 +862,27 @@
 		}
 	}
 
-	.welcome {
-		position: absolute;
-		top: 40%;
-		left: 48%;
+	.texts {
 		display: none;
+		flex-direction: column;
+		gap: 8px;
+		justify-content: center;
+		width: fit-content;
+		height: 100%;
+		padding-right: $avatar-min-left;
+		padding-left: var(--text-padding-left);
+		
+		&.rendered {
+			display: flex;
+			visibility: hidden;
+		}
+	}
+
+	.welcome {
 		font-size: 24px;
 	}
 
 	.name {
-		position: absolute;
-		top: 50%;
-		left: 48%;
-		display: none;
 		font-size: 38px;
 		font-weight: bold;
 	}
@@ -895,6 +940,12 @@
 		.login-button {
 			pointer-events: none;
 			animation: login-animation-button 600ms $ease-login-button forwards;
+			
+			&,
+			:deep(span) {
+				color: transparent;
+				transition: $fallback-transitions, color 100ms;
+			}
 
 			@media #{$narrow-screen} {
 				animation-name: login-animation-button-narrow;
@@ -917,13 +968,15 @@
 				login-animation-avatar-mover 600ms 1s $ease-scaler-or-mover forwards;
 		}
 
+		.texts {
+			display: flex;
+		}
+
 		.welcome {
-			display: block;
 			animation: name-move 700ms 1.05s $ease-text-move both;
 		}
 
 		.name {
-			display: block;
 			animation: name-move 700ms 1.1s $ease-text-move both;
 		}
 
@@ -942,20 +995,23 @@
 				circle-mask-become-smaller 500ms 2s $ease-out-max forwards,
 				move-avatar-to-corner 500ms 2.5s $ease-out-max forwards;
 
-			@media (height <= 432px) {
+			@media (height <= 432px) and (width > #{$mobile-max-width}) {
 				--corner-y: calc(50dvh - #{40px * 3 - 12px});
+			}
+
+			@include mobile {
+				--corner-y: calc(-50dvh + 28px);
+
+				animation:
+					circle-mask-become-smaller 500ms 2s $ease-out-max forwards,
+					move-avatar-to-corner-mobile 500ms 2.5s $ease-out-max forwards;
 			}
 		}
 	}
 
 	@keyframes login-animation-button {
-		10% {
-			color: transparent;
-		}
-
-		100% {
+		to {
 			@include square(800px);
-			color: transparent;
 			border-radius: 50%;
 			translate: -40px -450px;
 			scale: 1.15;
@@ -963,13 +1019,8 @@
 	}
 
 	@keyframes login-animation-button-narrow {
-		10% {
-			color: transparent;
-		}
-
-		100% {
+		to {
 			@include square(400px);
-			color: transparent;
 			border-radius: 50%;
 			translate: -40px -260px;
 			scale: 1.5;
@@ -1014,7 +1065,7 @@
 		}
 
 		to {
-			translate: -$avatar-movement;
+			translate: calc(0px - var(--avatar-movement));
 		}
 	}
 
@@ -1079,8 +1130,17 @@
 
 	@keyframes move-avatar-to-corner {
 		to {
-			translate: calc(59px - 50dvw) var(--corner-y);
-			scale: calc(40px / $avatar-size);
+			$scale: calc(40px / $avatar-size);
+			translate: calc(-50dvw + 4px + (#{$avatar-size} / 2 + var(--avatar-movement)) * #{$scale}) var(--corner-y);
+			scale: $scale;
+		}
+	}
+
+	@keyframes move-avatar-to-corner-mobile {
+		to {
+			$scale: calc(40px / $avatar-size);
+			translate: calc(-50dvw + 20px + (#{$avatar-size} / 2 + var(--avatar-movement)) * #{$scale}) var(--corner-y);
+			scale: $scale;
 		}
 	}
 </style>

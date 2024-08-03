@@ -92,7 +92,7 @@
 		"stylelint-order": "^6.0.4",
 		"stylelint-scss": "^6.3.0",
 		"tsx": "^4.11.0",
-		"typescript": "^5.4.5",
+		"typescript": "^5.5.4",
 		"typescript-eslint": "^7.11.0",
 		"typescript-plugin-css-modules": "^5.1.0"
 	},
