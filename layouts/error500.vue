@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import qrcode from "assets/images/kirakira_cerasus_issues_qrcode.png";
+	const qrcode = "/static/images/qrcodes/kirakira_cerasus_issues.png";
 	import { httpResponseStatusCodes } from "helpers/http-status";
 	const props = defineProps<{
 		statusCode: number | string;

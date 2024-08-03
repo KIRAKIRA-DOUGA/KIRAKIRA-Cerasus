@@ -23,11 +23,12 @@
 			<div v-if="image" class="image">
 				<NuxtImg
 					:src="image"
+					provider="kirakira"
 					alt="image"
 					draggable="false"
 					format="avif"
-					width="64px"
-					height="64px"
+					width="64"
+					height="64"
 					placeholder
 				/>
 			</div>
