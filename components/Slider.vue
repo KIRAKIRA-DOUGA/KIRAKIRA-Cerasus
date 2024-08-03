@@ -146,8 +146,8 @@
 		if (isInPath(e, thumbEl)) return;
 		if (showPendingState.value === "")
 			showPendingState.value = "hovering";
-		if (showPendingState.value === "hovering")
-			pendingValue.value = props.pending === "cursor" ? getPointerOnTrackValue(e) : value.value;
+		// if (showPendingState.value === "hovering")
+		// 	pendingValue.value = props.pending === "cursor" ? getPointerOnTrackValue(e) : value.value;
 	}
 
 	/**

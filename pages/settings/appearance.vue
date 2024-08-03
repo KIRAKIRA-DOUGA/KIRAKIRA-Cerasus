@@ -35,9 +35,9 @@
 	watch(customColor, customColor => cookieThemeCustomColor.value = customColor.hex);
 
 	const backgroundImageSettingsStore = useAppSettingsStore().backgroundImage;
-
 	const backgroundImageFiles = ref<File[]>([]);
 	const backgroundImageFile = computed(() => backgroundImageFiles.value[0]);
+	const backgroundSliderDisplayValue = (value: number) => value.toFixed(2);
 
 	watch(backgroundImageFile, async file => {
 		const bgImage = backgroundImageSettingsStore.image;
@@ -127,34 +127,40 @@
 
 	<Subheader icon="wallpaper">{{ t.background }}</Subheader>
 	<section>
-		<FilePicker v-model="backgroundImageFiles" accept="image/*" cover />
-		<SettingsSlider
-			v-model="backgroundImageSettingsStore.opacity"
-			:min="0"
-			:max="0.4"
-			:step="0.01"
-			:defaultValue="0.2"
-			icon="opacity"
-			pending="current"
-		>Opacity</SettingsSlider>
-		<SettingsSlider
-			v-model="backgroundImageSettingsStore.tint"
-			:min="0"
-			:max="1"
-			:step="0.01"
-			:defaultValue="0.75"
-			icon="opacity"
-			pending="current"
-		>Tint</SettingsSlider>
-		<SettingsSlider
-			v-model="backgroundImageSettingsStore.blur"
-			:min="0"
-			:max="64"
-			:step="1"
-			:defaultValue="0"
-			icon="opacity"
-			pending="current"
-		>Blur Intensity</SettingsSlider>
+		<FilePicker v-model="backgroundImageFiles" accept="image/*" cover :unselectedText="t.unselected.image" />
+		<template v-if="backgroundImageFile">
+			<SettingsSlider
+				v-model="backgroundImageSettingsStore.opacity"
+				:min="0"
+				:max="0.4"
+				:step="0.01"
+				:defaultValue="0.2"
+				icon="opacity"
+				pending="current"
+				:displayValue="backgroundSliderDisplayValue"
+			>{{ t.background.opacity }}</SettingsSlider>
+			<SettingsSlider
+				v-model="backgroundImageSettingsStore.tint"
+				:min="0"
+				:max="1"
+				:step="0.01"
+				:defaultValue="0.75"
+				icon="opacity"
+				pending="current"
+				:displayValue="backgroundSliderDisplayValue"
+			>{{ t.background.tint }}</SettingsSlider>
+			<SettingsSlider
+				v-model="backgroundImageSettingsStore.blur"
+				:min="0"
+				:max="64"
+				:step="1"
+				:defaultValue="0"
+				icon="opacity"
+				pending="current"
+				:displayValue="backgroundSliderDisplayValue"
+			>{{ t.background.blurIntensity }}</SettingsSlider>
+			<!-- TODO: 滑块上方的气泡定位有问题。 -->
+		</template>
 	</section>
 
 	<Subheader icon="more_horiz">{{ t(2).other }}</Subheader>

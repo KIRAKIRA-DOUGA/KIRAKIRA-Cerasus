@@ -17,6 +17,8 @@
 		 * - 如为 `cursor` 表示显示光标所在位置的值。
 		 */
 		pending?: false | "current" | "cursor";
+		/** 待定值工具提示的显示值，或将数值转换为显示值的函数。 */
+		displayValue?: ((value: number) => Readable) | Readable;
 	}>();
 
 	const value = defineModel<number>({ required: true });
@@ -27,7 +29,7 @@
 		<Icon :name="icon" />
 		<div class="option-content">
 			<span><slot></slot></span>
-			<Slider v-model="value" :min :max :step :defaultValue :pending />
+			<Slider v-model="value" :min :max :step :defaultValue :pending :displayValue />
 		</div>
 	</Comp>
 </template>

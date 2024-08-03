@@ -46,6 +46,9 @@ export default {
 		_: "Background",
 		animated: "Animated Background",
 		custom: "Custom Background",
+		opacity: "Opacity",
+		tint: "Tint",
+		blurIntensity: "Blur Intensity",
 	},
 	appearance: {
 		_: "Appearance",
@@ -343,6 +346,8 @@ export default {
 		settings: "Please select a setting",
 		tag: "Search Tags",
 		language: "Select Language",
+		image: "Select a Image",
+		file: "Select a File",
 	},
 	user: {
 		_: "User | Users",

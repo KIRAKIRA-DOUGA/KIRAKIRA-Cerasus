@@ -3,7 +3,7 @@
 </docs>
 
 <script setup lang="ts">
-	const props = defineProps<{
+	const props = withDefaults(defineProps<{
 		/** 接受的文件类型。 */
 		accept: string;
 		/**
@@ -12,7 +12,10 @@
 		 * * 关闭后，图片将适应整个窗格以保证图片不被裁切。适用于截图、纸质扫描件、证件照等。
 		 */
 		cover?: boolean;
-	}>();
+		unselectedText?: string;
+	}>(), {
+		unselectedText: () => t.unselected.file,
+	});
 	const fileInput = ref<HTMLInputElement>();
 	const dragover = ref(false);
 	const picked = ref(false);
@@ -138,7 +141,7 @@
 			<template v-if="!picked">
 				<Icon name="upload" class="upload-icon" />
 				<!-- TODO: 多语言 -->
-				<p>Select a File</p>
+				<p>{{ unselectedText }}</p>
 			</template>
 
 			<template v-else>
