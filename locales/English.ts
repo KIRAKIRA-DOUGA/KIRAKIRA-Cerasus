@@ -346,7 +346,7 @@ export default {
 		settings: "Please select a setting",
 		tag: "Search Tags",
 		language: "Select Language",
-		image: "Select a Image",
+		image: "Select an Image",
 		file: "Select a File",
 	},
 	user: {
