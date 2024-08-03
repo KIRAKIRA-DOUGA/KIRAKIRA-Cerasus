@@ -73,7 +73,7 @@
 	<DefineAvatar>
 		<UserAvatar
 			v-tooltip="selfUserInfoStore.isLogined ? selfUserInfoStore.userNickname : t.login"
-			:avatar="selfUserInfoStore.isLogined ? selfUserInfoStore.userAvatar : undefined"
+			:avatar="selfUserInfoStore.isLogined && !selfUserInfoStore.tempHideAvatarFromSidebar ? selfUserInfoStore.userAvatar : undefined"
 		/>
 	</DefineAvatar>
 
@@ -81,7 +81,7 @@
 
 	<aside
 		:class="{
-			colored: useAppSettingsStore().coloredSideBar,
+			colored: useAppSettingsStore().coloredSideBar, // TODO: 需要删除吗？
 			'hide-topbar': isCurrentSettings,
 		}"
 		:[scopeId]="''"

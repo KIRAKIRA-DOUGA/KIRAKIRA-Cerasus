@@ -17,8 +17,6 @@
 	const confirmPassword = ref("");
 	const verificationCode = ref("");
 	const passwordHint = ref("");
-	const displayUserAvatar = ref<string>();
-	const displayUserNickname = ref<string>();
 	const loginAnimationText = ref<HTMLDivElement>();
 	const avatarMovement = ref(0);
 	const textPaddingLeft = ref(0);
@@ -49,10 +47,9 @@
 			model.value = value;
 			avatarMovement.value = 0;
 			textPaddingLeft.value = 0;
-			displayUserAvatar.value = undefined;
-			displayUserNickname.value = undefined;
 			if (isLogining.value) useEvent("user:login", true);
 			if (isLogining.value) selfUserInfoStore.isLogined = true;
+			if (!value) selfUserInfoStore.tempHideAvatarFromSidebar = false;
 			isLogining.value = false;
 		},
 	});
@@ -91,10 +88,8 @@
 				isTryingLogin.value = false;
 
 				if (loginResponse.success && loginResponse.uid && loginResponse.token) {
-					const userInfo = await api.user.getSelfUserInfo();
+					selfUserInfoStore.tempHideAvatarFromSidebar = true;
 					selfUserInfoStore.isLogined = true;
-					displayUserAvatar.value = userInfo.result!.avatar!;
-					displayUserNickname.value = userInfo.result!.userNickname!;
 
 					// 登录后，将用户设置存储到 cookie，然后调用 cookieBinding 从 cookie 中获取样式设置并追加到 dom 根节点
 					const userSettings = await api.user.getUserSettings();
@@ -102,6 +97,7 @@
 					cookieBinding();
 
 					// NOTE: 触发用户登录事件，应当放在最后，等待上方的一系列业务逻辑执行完成之后在发送事件
+					useEvent("user:login", true);
 					isLogining.value = true;
 				} else {
 					useToast(t.toast.login_failed, "error", 5000);
@@ -258,7 +254,6 @@
 		try {
 			await Promise.all(finishes);
 		} catch { return; }
-		useEvent("user:login", true);
 		open.value = false;
 	}
 
@@ -505,12 +500,12 @@
 						<div class="line"></div>
 					</div>
 					<div class="avatar">
-						<NuxtImg v-if="displayUserAvatar" provider="kirakira" :src="displayUserAvatar" alt="avatar" />
+						<NuxtImg v-if="selfUserInfoStore.userAvatar" provider="kirakira" :src="selfUserInfoStore.userAvatar" alt="avatar" />
 						<Icon v-else name="person" />
 					</div>
 					<div ref="loginAnimationText" class="texts">
 						<div class="welcome">{{ t.loginwindow.login_welcome }}</div>
-						<div class="name">{{ displayUserNickname }}</div>
+						<div class="name">{{ selfUserInfoStore.userNickname }}</div>
 					</div>
 				</div>
 			</Comp>
