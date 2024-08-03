@@ -9,7 +9,7 @@
 	const isDeletingVideo = ref(false);
 
 	/**
-	 * 开启删除视频的模态框
+	 * 开启删除视频的警告框
 	 */
 	async function openDeleteVideoAlert() {
 		const videoId = parseInt(deletedVideoId.value, 10);
