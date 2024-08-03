@@ -1,27 +1,25 @@
 <script setup lang="ts">
-	const avatar = (name: string) => `/static/images/avatars/${name}`;
-
+	// const avatar = (name: string) => `/static/images/avatars/${name}`;
 	const nuxt = useNuxtApp();
 
 	const repositories: { name: string; codeName?: string; link: string; icon?: string }[] = [
 		{ name: t.about.repositories.frontend, codeName: "KIRAKIRA Cerasus", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus" },
-		{ name: t.about.repositories.markdown, codeName: "KIRAKIRA Flavored Markdown", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Flavored-Markdown" },
 		{ name: t.about.repositories.backend, codeName: "KIRAKIRA Rosales", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Rosales" },
+		{ name: t.about.repositories.markdown, codeName: "KIRAKIRA Flavored Markdown", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Flavored-Markdown" },
 	];
 
-	const team: { name: string; job: string[]; uid: number; avatar?: string }[] = [
-		{ name: "艾了个拉", job: [t.about.staff.webmistress, t.about.staff.designer], uid: NaN, avatar: avatar("aira.webp") },
-		{ name: "兰音", job: [t.about.staff.frontend, t.about.staff.designer], uid: NaN, avatar: avatar("nucleic_acid_testing.jpg") },
-		{ name: "维他柠檬茶", job: [t.about.staff.frontend], uid: NaN, avatar: avatar("VTchara.webp") },
-		{ name: "鸣", job: [t.about.staff.frontend], uid: NaN, avatar: avatar("Mingeax.jpg") },
-		{ name: "冲锋的小卡卡", job: [t.about.staff.backend], uid: NaN, avatar: avatar("ZERO_TWO.jpg") },
-		{ name: "琪露诺瓦露", job: [t.about.staff.translator(t.language.ja)], uid: NaN, avatar: avatar("Cirnoire.png") },
-		{ name: "HanceyMica", job: [t.about.staff.translator(t.language.zht)], uid: NaN, avatar: avatar("HanceyMica.png") },
-		{ name: "Cyahega", job: [t.about.staff.translator(t.language.vi)], uid: NaN, avatar: avatar("Cyahega.jpg") },
-		{ name: "Remagtacrepus", job: [t.about.staff.translator(t.language.vi)], uid: NaN, avatar: avatar("remagtacrepus.png") },
-		{ name: "Ade Edogawa", job: [t.about.staff.translator(t.language.id)], uid: NaN, avatar: avatar("AdeEdogawa.jpg") },
-		{ name: "Jujun Gamers", job: [t.about.staff.translator(t.language.id)], uid: NaN, avatar: avatar("JujunG.webp") },
-	];
+	const team = reactive<{ name?: string; job: string[]; uid: number; avatar?: string }[]>([
+		{ uid: 1, job: [t.about.staff.webmistress, t.about.staff.designer] },
+		{ uid: 3, job: [t.about.staff.frontend, t.about.staff.designer] },
+		{ uid: 12, job: [t.about.staff.frontend] },
+		// { uid: NaN, name: "鸣", job: [t.about.staff.frontend] },
+		{ uid: 2, job: [t.about.staff.backend] },
+		{ uid: 9, job: [t.about.staff.translator(t.language.ja)] },
+		{ uid: 5, job: [t.about.staff.translator(t.language.zht)] },
+		// { uid: NaN, name: "HanceyMica", job: [t.about.staff.translator(t.language.zht)] },
+		{ uid: 8, job: [t.about.staff.translator(t.language.vi)] },
+		{ uid: 7, job: [t.about.staff.translator(t.language.vi)] },
+	]);
 
 	const technologies: { name: string; version?: string; ability: string; icon?: string; monochrome?: boolean; link: string }[] = [
 		{ name: "Nuxt", version: nuxt.versions.nuxt || "3", ability: "Vue Framework for Frontend", icon: "nuxt", link: "https://nuxt.com/" },
@@ -50,6 +48,16 @@
 		clearAllToast();
 		useToast("你已进入开发者模式！", "success");
 	}
+
+	team.forEach(async developer => {
+		const { uid } = developer;
+		if (!Number.isFinite(uid)) return;
+		const userInfo = await api.user.getUserInfo({ uid });
+		if (userInfo.success) {
+			developer.name = userInfo.result?.username;
+			developer.avatar = userInfo.result?.avatar;
+		}
+	});
 </script>
 
 <template>
@@ -81,6 +89,7 @@
 			icon="placeholder"
 			:details="`${staff.job.join(' / ')} - UID ${staff.uid}`"
 			trailingIcon="open_in_new"
+			:href="`/user/${staff.uid}`"
 		>{{ staff.name }}</SettingsChipItem>
 	</section>
 
