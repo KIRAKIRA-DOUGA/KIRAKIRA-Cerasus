@@ -21,6 +21,7 @@
 	});
 	const cropper = ref<InstanceType<typeof ImageCropper>>(); // 图片裁剪器实例
 	const isUploadingUserAvatar = ref(false); // 是否正在上传头像
+	const showConfirmResetAlert = ref(false); // 是否显示重置警告框
 
 	/**
 	 * 点击头像事件，模拟点击文件上传并唤起文件资源管理器
@@ -139,6 +140,13 @@
 	}
 
 	/**
+	 * 弹出确认重置的警告框
+	 */
+	function resetConfirm() {
+		showConfirmResetAlert.value = true;
+	}
+
+	/**
 	 * reset all user info.
 	 * 重置用户设置
 	 * 请求旧用户信息，并修改 Pinia 中的用户数据，然后触发上方的监听
@@ -147,7 +155,6 @@
 		isResetUserInfo.value = true;
 		const updateOrCreateUserInfoRequest: UpdateOrCreateUserInfoRequestDto = {
 			avatar: "",
-			username: "",
 			userNickname: "",
 			signature: "",
 			gender: "",
@@ -159,6 +166,10 @@
 			if (updateOrCreateUserInfoResult.success) {
 				await api.user.getSelfUserInfo();
 				isResetUserInfo.value = false;
+				showConfirmResetAlert.value = false;
+			} else {
+				isResetUserInfo.value = false;
+				useToast("未能清空用户信息！", "error"); // TODO: 使用多语言
 			}
 		} catch (error) {
 			isResetUserInfo.value = false;
@@ -189,6 +200,16 @@
 </script>
 
 <template>
+	<Alert v-model="showConfirmResetAlert" static>
+		确定要重置用户信息设置吗？
+		<template #footer-left>
+			<Button @click="reset" :loading="isResetUserInfo" :disabled="isUpdateUserInfo || isResetUserInfo">确认</Button>
+		</template>
+		<template #footer-right>
+			<Button @click="showConfirmResetAlert = false" class="secondary">取消</Button>
+		</template>
+	</Alert>
+
 	<!-- TODO: 使用多语言 -->
 	<Modal v-model="isAvatarCropperOpen" title="更新头像">
 		<div class="avatar-cropper">
@@ -227,7 +248,7 @@
 	</div>
 
 	<div class="submit">
-		<Button icon="delete" class="secondary" @click="reset" :loading="isResetUserInfo" :disabled="isUpdateUserInfo || isResetUserInfo">{{ t.step.reset }}</Button>
+		<Button icon="delete" class="secondary" @click="resetConfirm" :disabled="isUpdateUserInfo || isResetUserInfo">{{ t.step.reset }}</Button>
 		<Button icon="check" @click="updateProfile" :loading="isUpdateUserInfo" :disabled="isUpdateUserInfo || isResetUserInfo">{{ t.step.save }}</Button>
 	</div>
 </template>
