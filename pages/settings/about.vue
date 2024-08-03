@@ -8,7 +8,7 @@
 		{ name: t.about.repositories.markdown, codeName: "KIRAKIRA Flavored Markdown", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Flavored-Markdown" },
 	];
 
-	const team = reactive<{ name?: string; job: string[]; uid: number; avatar?: string }[]>([
+	const team = reactive<{ nickname?: string; username?: string; job: string[]; uid: number; avatar?: string }[]>([
 		{ uid: 1, job: [t.about.staff.webmistress, t.about.staff.designer] },
 		{ uid: 3, job: [t.about.staff.frontend, t.about.staff.designer] },
 		{ uid: 12, job: [t.about.staff.frontend] },
@@ -54,7 +54,8 @@
 		if (!Number.isFinite(uid)) return;
 		const userInfo = await api.user.getUserInfo({ uid });
 		if (userInfo.success) {
-			developer.name = userInfo.result?.username;
+			developer.nickname = userInfo.result?.userNickname;
+			developer.username = userInfo.result?.username;
 			developer.avatar = userInfo.result?.avatar;
 		}
 	});
@@ -84,13 +85,16 @@
 	<section>
 		<SettingsChipItem
 			v-for="staff in team"
-			:key="staff.name"
+			:key="staff.username"
 			:image="staff.avatar"
-			icon="placeholder"
+			icon="person"
 			:details="`${staff.job.join(' / ')} - UID ${staff.uid}`"
 			trailingIcon="open_in_new"
 			:href="`/user/${staff.uid}`"
-		>{{ staff.name }}</SettingsChipItem>
+		>
+			<span class="nickname">{{ staff.nickname }}</span>
+			<span class="username">@{{ staff.username }}</span>
+		</SettingsChipItem>
 	</section>
 
 	<Subheader icon="build">{{ t.about.technologies_used }}</Subheader>
@@ -148,6 +152,15 @@
 		span {
 			display: inline-block;
 		}
+	}
+
+	.nickname {
+		font-weight: bold;
+	}
+
+	.username {
+		margin-left: 0.5em;
+		color: c(icon-color);
 	}
 
 	@keyframes float-up {
