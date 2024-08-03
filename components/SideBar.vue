@@ -123,7 +123,7 @@
 		<div class="icons">
 			<BottomNavItem icon="home" href="/">{{ t.home }}</BottomNavItem>
 			<BottomNavItem icon="category" href="/category">{{ t.category }}</BottomNavItem>
-			<BottomNavItem icon="feed" href="/audio">{{ t.feed }}</BottomNavItem>
+			<BottomNavItem icon="feed" href="/feed">{{ t.feed }}</BottomNavItem>
 		</div>
 	</nav>
 </template>
