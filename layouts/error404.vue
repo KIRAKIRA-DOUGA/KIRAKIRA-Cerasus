@@ -4,6 +4,9 @@
 		message: string;
 	}>();
 
+	const message = computed(() => props.message
+		.replace(/^Page Not Found:\s*/i, t.page_not_found_info + t.colon)
+		.replace(/^Page Not Found(?=\s|$)/i, t.page_not_found_info));
 	const mouse = useMouse();
 	const gsensor = useDeviceOrientation(); // Safari 不支持加速度传感器（重力感应），散了吧。
 	const inited = ref(false);
@@ -62,7 +65,7 @@
 		<div class="spotlight"></div>
 		<div class="content">
 			<h1>{{ statusCode }}</h1>
-			<p>{{ message || t.page_not_found_info }}</p>
+			<p>{{ message }}</p>
 			<!-- <div>test pointer: {{ parallax.x }}, {{ parallax.y }}</div>
 			<div>test gsensor: {{ gsensor.alpha }}, {{ gsensor.beta }}, {{ gsensor.gamma }}</div>
 			<div>{{ rotationDeg }}</div> -->

@@ -341,7 +341,7 @@ export default {
 		register_email_sent_info: "我们已向您的邮箱中发送了验证码，请在此输入验证码。\n如未收到，您可以重新发送。",
 		forgot_info: "请在此输入您的邮箱，\n我们将会给您的邮箱发送一封邮件，请点击邮件中的链接重置密码。",
 		reset_successful_info: "验证成功！\n请输入并务必牢记您的新密码。",
-		alpha_notice: "当前站点是给开发人员使用的Alpha测试，当前所做的任何修改都随时可能会被删除！\n普通用户请耐心等待Beta测试。",
+		alpha_notice: "当前站点是给开发人员使用的内测，当前所做的任何修改都随时可能会被删除！\n普通用户请耐心等待公测。",
 	},
 	unselected: {
 		combobox: "请选择一项",
@@ -433,7 +433,7 @@ export default {
 	color_picker: "调色板",
 	video_count: "{0}个视频",
 	video_recommendations: "相关视频",
-	page_not_found_info: "你似乎来到了一个很新的页面。",
+	page_not_found_info: "你似乎来到了一个很新的页面",
 	click_to_refresh: "点击刷新",
 	toast: {
 		finish: "操作成功完成",

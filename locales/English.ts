@@ -429,7 +429,7 @@ export default {
 	color_picker: "Color Picker",
 	video_count: "{0} Video | {0} Videos",
 	video_recommendations: "Recommendations",
-	page_not_found_info: "You seem to have arrived at a very new page.",
+	page_not_found_info: "You seem to have arrived at a very new page",
 	click_to_refresh: "Click to Refresh",
 	toast: {
 		finish: "Operation Completed Successfully",

@@ -433,7 +433,7 @@ export default {
 	color_picker: "Chọn màu",
 	video_count: "{0} Video",
 	video_recommendations: "Gợi ý cho bạn",
-	page_not_found_info: "Có vẻ như bạn vừa đến một trang mới...",
+	page_not_found_info: "Có vẻ như bạn vừa đến một trang mới",
 	click_to_refresh: "Bấm để tải lại",
 	toast: {
 		finish: "Xong",

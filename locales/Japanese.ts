@@ -433,7 +433,7 @@ export default {
 	color_picker: "カラー選択",
 	video_count: "{0}本の動画",
 	video_recommendations: "おすすめ動画",
-	page_not_found_info: "新しすぎるページにやってきたみたい。",
+	page_not_found_info: "新しすぎるページにやってきたみたい",
 	click_to_refresh: "クリックして再読込",
 	toast: {
 		finish: "操作は正常に完了しました",

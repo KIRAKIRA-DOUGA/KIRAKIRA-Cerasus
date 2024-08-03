@@ -399,7 +399,7 @@ export default {
 	color_picker: "Pemilih warna",
 	video_count: "{0} Video",
 	video_recommendations: "Rekomendasi",
-	page_not_found_info: "Kamu sepertinya telah sampai pada halaman yang sangat baru.",
+	page_not_found_info: "Kamu sepertinya telah sampai pada halaman yang sangat baru",
 	click_to_refresh: "Klik untuk refresh",
 	toast: {
 		finish: "Operasi Berhasil",
