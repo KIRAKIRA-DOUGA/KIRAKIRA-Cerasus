@@ -135,7 +135,9 @@
 
 	.quote {
 		@include round-small;
+		container: flyout-notification-item-quote / inline-size;
 		display: flex;
+		gap: 4px;
 		align-items: center;
 		padding: 4px;
 		color: c(icon-color);
@@ -143,12 +145,11 @@
 		background-color: c(gray-10);
 
 		.icon {
-			margin-right: 4px;
 			font-size: 16px;
 		}
 
 		> p {
-			width: 100%;
+			width: calc(100cqw - 16px - 4px);
 			overflow: clip;
 			white-space: nowrap;
 			text-overflow: ellipsis;

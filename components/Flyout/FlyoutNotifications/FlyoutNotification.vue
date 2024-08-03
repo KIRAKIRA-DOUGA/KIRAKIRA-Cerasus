@@ -17,7 +17,7 @@
 	<Flyout v-model="flyout" noPadding>
 		<Comp>
 			<div class="content">
-				<TabBar v-model="currentPage" @movingForTransition="name => transitionName = name">
+				<TabBar v-model="currentPage" vertical>
 					<TabItem v-for="page in pages" :key="page.id" :id="page.id" :icon="page.icon">{{ page.name }}</TabItem>
 				</TabBar>
 				<div class="page-wrapper">
@@ -37,27 +37,28 @@
 
 <style scoped lang="scss">
 	$title-bar-height: 48px;
+	$tab-bar-width: 108px;
 
 	:comp {
+		container: flyout-notification / inline-size;
 		display: flex;
-		flex-direction: column;
 		width: 500px;
 		min-height: 400px;
 
 		.tab-bar {
 			--full: true;
+			min-width: $tab-bar-width;
 			padding: 8px;
 		}
 
 		.content {
 			display: flex;
-			flex-direction: column;
 		}
 
 		.page-wrapper {
-			flex-grow: 1;
+			width: calc(100cqw - $tab-bar-width);
 			padding: 16px;
-			padding-top: 0;
+			padding-left: 8px;
 		}
 	}
 </style>
