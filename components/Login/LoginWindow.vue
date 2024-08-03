@@ -459,7 +459,6 @@
 
 				<div class="cover-wrapper">
 					<LogoCover :welcome="isWelcome" />
-					<InfoBar><preserves>{{ t.loginwindow.alpha_notice }}</preserves></InfoBar>
 				</div>
 
 				<!-- 登录动画 Login Animation -->
@@ -760,13 +759,6 @@
 		.v-enter-from &,
 		.v-leave-to & {
 			translate: 6rem 0;
-		}
-
-		.info-bar {
-			position: absolute;
-			inset: 0;
-			bottom: auto;
-			margin: 8px;
 		}
 	}
 

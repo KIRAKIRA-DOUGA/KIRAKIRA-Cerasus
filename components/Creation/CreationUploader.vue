@@ -2,6 +2,8 @@
 	const props = defineProps<{
 		/** 头像网址。 */
 		avatar?: string;
+		/** 昵称。 */
+		nickname: string;
 		/** 用户名。 */
 		username: string;
 		/** 粉丝数。 */
@@ -17,8 +19,14 @@
 	<Comp>
 		<UserAvatar :avatar :uid />
 		<div class="text">
-			<div class="username">{{ username }}</div>
-			<div class="fans">{{ fans }} {{ t(fans).fans }}</div>
+			<div class="name">
+				<span class="nickname">{{ nickname }}</span>
+				<!-- TODO: 显示管理组用户组图标。 -->
+			</div>
+			<div class="more">
+				<span class="username">@{{ username }}</span>
+				<span class="fans">{{ fans }} {{ t(fans).fans }}</span>
+			</div>
 		</div>
 		<Button v-if="!isFollowed" icon="add">{{ t.follow_verb }}</Button>
 		<Button v-else disabled icon="check">{{ t.following }}</Button>
@@ -37,11 +45,32 @@
 
 		.text {
 			width: 100%;
+			min-width: 0;
 
-			.username {
+			.name {
+				display: flex;
+				gap: 4px;
 				margin-bottom: 4px;
-				font-weight: bold;
 				font-size: 18px;
+				user-select: text;
+
+				.nickname {
+					font-weight: bold;
+				}
+			}
+
+			.more {
+				display: flex;
+				gap: 8px;
+				align-items: center;
+				color: c(icon-color);
+				font-size: 12px;
+			}
+
+			span {
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
 			}
 		}
 	}

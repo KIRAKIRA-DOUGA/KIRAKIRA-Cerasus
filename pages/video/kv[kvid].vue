@@ -140,6 +140,7 @@
 				<CreationUploader
 					:uid="videoDetails?.uploaderInfo?.uid ?? 0"
 					:avatar="videoDetails?.uploaderInfo?.avatar"
+					:nickname="videoDetails?.uploaderInfo?.userNickname ?? ''"
 					:username="videoDetails?.uploaderInfo?.username ?? ''"
 					:fans="videoDetails?.uploaderSubscribers ?? 0"
 					isFollowed

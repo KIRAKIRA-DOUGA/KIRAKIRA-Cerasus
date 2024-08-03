@@ -62,11 +62,11 @@
 
 	const titleAffixString = t.user_page.title_affix; // HACK: Bypass "A composable that requires access to the Nuxt instance was called outside of a plugin."
 
-	const titleUserName = computed(() => isSelf.value ? userSelfInfoStore.username ? titleAffixString(userSelfInfoStore.username) : "" : userInfo.value?.username ? titleAffixString(userInfo.value?.username) : "");
+	const titleUserNickname = computed(() => isSelf.value ? userSelfInfoStore.userNickname ? titleAffixString(userSelfInfoStore.userNickname) : "" : userInfo.value?.userNickname ? titleAffixString(userInfo.value?.userNickname) : "");
 
 	// const titleUserName = computed(() => isSelf.value ? "aaa" : "bbb");
 
-	useHead({ title: titleUserName });
+	useHead({ title: titleUserNickname });
 </script>
 
 <template>
@@ -76,8 +76,9 @@
 				<div class="user">
 					<UserAvatar :avatar="isSelf ? (userSelfInfoStore.userAvatar) : userInfo?.avatar" />
 					<div class="texts">
-						<div class="names">
-							<span class="username">{{ isSelf ? userSelfInfoStore.username : userInfo?.username }}</span>
+						<div class="name">
+							<span class="nickname">{{ isSelf ? userSelfInfoStore.userNickname : userInfo?.userNickname }}</span>
+							<span class="username">@{{ isSelf ? userSelfInfoStore.username : userInfo?.username }}</span>
 							<!-- <span v-if="memoParen" class="memo" :class="[memoParen]">{{ user?.bio }}</span> -->
 							<span class="icons">
 								<Icon v-if="isSelf ? userSelfInfoStore.gender === 'male' : userInfo?.gender === 'male'" name="male" class="male" />
@@ -144,25 +145,37 @@
 
 		.user {
 			display: flex;
+			flex-grow: 1;
 			gap: 16px;
 			align-items: center;
 
-			.names {
+			.texts {
+				flex-grow: 1;
+				width: 100%;
+				user-select: text;
+			}
+
+			.name {
 				display: flex;
+				gap: 8px;
+				align-items: center;
 				font-size: 24px;
 
 				> * {
 					flex-shrink: 0;
-					user-select: text;
 				}
 
-				.username {
+				.nickname {
 					color: c(text-color);
 					font-weight: bold;
 
 					+ .icons {
 						margin-left: 10px;
 					}
+				}
+
+				.username {
+					color: c(icon-color);
 				}
 
 				.memo {
