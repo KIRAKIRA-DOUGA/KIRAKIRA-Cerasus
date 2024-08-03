@@ -13,6 +13,12 @@
 	 * @param fileList - 文件列表。
 	 */
 	async function uploaded(fileList: File[]) {
+		// DELETE ME: 改判定仅测试阶段使用
+		if (selfUserInfoStore.role !== "admin") {
+			useToast("测试阶段该功能仅限管理员使用。", "warning", 5000);
+			return;
+		}
+
 		successfulUploaded.value = true;
 		if (!isPrefersReducedMotion()) await delay(1500);
 		files.push(fileList[0]);
