@@ -261,7 +261,7 @@ export default {
 	share: "Chia sẻ",
 	play: "Phát",
 	pause: "Dừng",
-	rating: "Đánh giá",
+	rating: "Xếp hạng",
 	kaomoji: {
 		_: "Biểu cảm",
 		happy: "Vui",
