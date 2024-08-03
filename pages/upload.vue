@@ -6,6 +6,8 @@
 	const showEditor = ref(false);
 	const files = reactive<File[]>([]);
 
+	const selfUserInfoStore = useSelfUserInfoStore();
+
 	/**
 	 * 成功上传文件。
 	 * @param fileList - 文件列表。
@@ -62,6 +64,12 @@
 	function onChangeFile(e: Event) {
 		const input = e.target as HTMLInputElement;
 		const files = getValidFiles(input.files);
+		// DELETE ME: 改判定仅测试阶段使用
+		if (selfUserInfoStore.role !== "admin") {
+			useToast("测试阶段该功能仅限管理员使用。", "warning", 5000);
+			return;
+		}
+
 		if (files.length)
 			uploaded(files);
 		else if (input.files?.length)
@@ -83,6 +91,12 @@
 
 <template>
 	<div class="container" :class="{ 'no-scroll': !showEditor }">
+
+		<InfoBar type="warning" title="警告">
+			测试阶段该功能仅限管理员使用。
+			<!-- TODO: 使用多语言 -->
+		</InfoBar>
+
 		<!-- TODO: 临时 SoftButton，之后请在 UploadEditor 的 Submit 按钮左边放一个取消。 -->
 		<SoftButton icon="close" v-if="showEditor" @click="cancelUpdate" />
 		<input
