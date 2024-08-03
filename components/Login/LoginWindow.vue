@@ -95,7 +95,6 @@
 					cookieBinding();
 
 					// NOTE: 触发用户登录事件，应当放在最后，等待上方的一系列业务逻辑执行完成之后在发送事件
-					useEvent("user:login", true);
 					isLogining.value = true;
 				} else {
 					useToast(t.toast.login_failed, "error", 5000);
@@ -139,11 +138,11 @@
 		isCheckingUsername.value = false;
 	};
 
+	const PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD = "密码提示中不允许包含密码本身"; // TODO: 使用多语言
+	const INVITATION_CODE_INVALID_TEXT = "邀请码不能为空或格式有误。"; // TODO: 使用多语言
 	/**
 	 * 用户注册，其二。
 	 */
-	const PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD = "密码提示中不允许包含密码本身"; // TODO: 使用多语言
-	const INVITATION_CODE_INVALID_TEXT = "邀请码不能为空或格式有误。"; // TODO: 使用多语言
 	const checkAndJumpNextPage = async () => {
 		if (!invitationCode.value || !invitationCodeInvalidText) { // 判断邀请码为空或者格式错误
 			useToast(INVITATION_CODE_INVALID_TEXT, "error");
@@ -252,6 +251,7 @@
 		try {
 			await Promise.all(finishes);
 		} catch { return; }
+		useEvent("user:login", true);
 		open.value = false;
 	}
 
