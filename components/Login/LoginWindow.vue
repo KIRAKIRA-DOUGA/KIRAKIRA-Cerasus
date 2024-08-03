@@ -87,9 +87,12 @@
 				isTryingLogin.value = false;
 
 				if (loginResponse.success && loginResponse.uid && loginResponse.token) {
+					const userInfo = await api.user.getSelfUserInfo();
 					selfUserInfoStore.isLogined = true;
+					selfUserInfoStore.userAvatar = userInfo.result!.avatar!;
+					selfUserInfoStore.userNickname = userInfo.result!.userNickname!;
 
-					// 登陆后，将用户设置存储到 cookie，然后调用 cookieBinding 从 cookie 中获取样式设置并追加到 dom 根节点
+					// 登录后，将用户设置存储到 cookie，然后调用 cookieBinding 从 cookie 中获取样式设置并追加到 dom 根节点
 					const userSettings = await api.user.getUserSettings();
 					saveUserSetting2BrowserCookieStore(userSettings);
 					cookieBinding();
@@ -871,7 +874,7 @@
 		height: 100%;
 		padding-right: $avatar-min-left;
 		padding-left: var(--text-padding-left);
-		
+
 		&.rendered {
 			display: flex;
 			visibility: hidden;
@@ -940,7 +943,7 @@
 		.login-button {
 			pointer-events: none;
 			animation: login-animation-button 600ms $ease-login-button forwards;
-			
+
 			&,
 			:deep(span) {
 				color: transparent;
