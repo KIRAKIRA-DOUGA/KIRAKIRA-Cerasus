@@ -178,7 +178,7 @@
 
 				<SettingsUserProfile v-model="profile" />
 
-				<Checkbox v-model:single="isRead">我已阅读并同意<a href="https://otomad.github.io/cssc/license.htm" target="_blank" @click.stop>《KIRAKIRA☆DOUGA用户协议》</a></Checkbox>
+				<Checkbox v-model:single="isRead">我已阅读并同意<PopupWindowLink href="https://otomad.github.io/cssc/license.htm">《KIRAKIRA☆DOUGA用户协议》</PopupWindowLink></Checkbox>
 
 				<Button icon="check" :disabled="!validData || isUpdateUserInfo" :loading="isUpdateUserInfo" @click="finish">开始畅游KIRAKIRA☆DOUGA</Button>
 			</div>
