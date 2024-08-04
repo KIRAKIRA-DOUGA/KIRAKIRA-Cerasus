@@ -13,7 +13,9 @@
 		/** 评论发布日期。 */
 		date?: Date;
 		/** 用户 UID。 */
-		uid?: number;
+		uid: number;
+		/** 评论的路由 */
+		commentRoute: string;
 	}>(), {
 		avatar: undefined,
 		username: "匿名",
@@ -38,6 +40,8 @@
 	const voteLock = ref(false);
 
 	const userSelfInfoStore = useSelfUserInfoStore();
+	const isSelfComment = computed(() => props.uid === userSelfInfoStore.uid); // 这条评论是否是自己发送的
+	const isAdmin = computed(() => userSelfInfoStore.role === "admin"); // 这条评论是否是自己发送的
 
 	/**
 	 * 点击加分、减分按钮事件。
@@ -175,14 +179,43 @@
 	}
 
 	/**
-	 * // TODO: 删除评论。
-	 * @param commentId - 评论 ID。
+	 * 删除自己的评论
+	 * @param commentRoute - 评论的路由
+	 * @param videoId - KVID 视频 ID
 	 */
-	async function deleteComment(commentId: number | undefined) {
-		if (!commentId) return;
-		const api = useApi();
-		await api.deleteComment(commentId);
-		// TODO: trigger reload in parent
+	async function deleteSelfComment(commentRoute?: string, videoId?: number) {
+		if (!commentRoute || !videoId) return;
+		const deleteSelfVideoCommentRequest: DeleteSelfVideoCommentRequestDto = {
+			videoId,
+			commentRoute,
+		};
+		const deleteVideoResult = await api.videoComment.deleteSelfVideoComment(deleteSelfVideoCommentRequest);
+		if (deleteVideoResult.success) {
+			useToast("删除评论成功！", "success", 5000); // TODO: 使用多语言
+			useEvent("videoComment:deleteVideoComment", commentRoute);
+		} else
+			useToast("删除评论失败！", "error", 5000); // TODO: 使用多语言
+			// TODO: 性能问题
+	}
+
+	/**
+	 * 管理员删除评论
+	 * @param commentRoute - 评论的路由
+	 * @param videoId - KVID 视频 ID
+	 */
+	async function adminDeleteVideoComment(commentRoute?: string, videoId?: number) {
+		if (!commentRoute || !videoId) return;
+		const adminDeleteVideoCommentRequest: AdminDeleteVideoCommentRequestDto = {
+			videoId,
+			commentRoute,
+		};
+		const deleteVideoResult = await api.videoComment.adminDeleteVideoComment(adminDeleteVideoCommentRequest);
+		if (deleteVideoResult.success) {
+			useToast("删除评论成功！", "success", 5000); // TODO: 使用多语言
+			useEvent("videoComment:deleteVideoComment", commentRoute);
+		} else
+			useToast("删除评论失败！", "error", 5000); // TODO: 使用多语言
+			// TODO: 性能问题
 	}
 </script>
 
@@ -219,7 +252,9 @@
 					<SoftButton v-tooltip:bottom="t.reply" icon="reply" />
 					<SoftButton v-tooltip:bottom="t.more" icon="more_vert" @click="e => menu = [e, 'y']" />
 					<Menu v-model="menu">
-						<MenuItem icon="delete" @click="deleteComment(index)">{{ t.delete }}</MenuItem>
+						<MenuItem v-if="isSelfComment" icon="delete" @click="deleteSelfComment(commentRoute, videoId)">{{ t.delete }}</MenuItem>
+						<!-- TODO: 使用多语言 -->
+						<MenuItem v-if="isAdmin" icon="delete" @click="adminDeleteVideoComment(commentRoute, videoId)">{{ t.delete }}（管理员）</MenuItem>
 						<MenuItem :icon="unpinnedCaption" @click="pinned = !pinned">{{ t[unpinnedCaption] }}</MenuItem>
 						<hr />
 						<MenuItem icon="flag">{{ t.report }}</MenuItem>

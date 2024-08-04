@@ -10,7 +10,7 @@ import * as _videoTag from "api/VideoTag/VideoTagControllerDto";
  */
 declare global {
 	// VideoCommentControllerDto
-	export type { GetUserBrowsingHistoryWithFilterRequestDto, GetUserBrowsingHistoryWithFilterResponseDto } from "api/BrowsingHistory/BrowsingHistoryControllerDto";
+	export type { AdminDeleteVideoCommentRequestDto, DeleteSelfVideoCommentRequestDto, GetUserBrowsingHistoryWithFilterRequestDto, GetUserBrowsingHistoryWithFilterResponseDto } from "api/BrowsingHistory/BrowsingHistoryControllerDto";
 	// VideoCommentControllerDto
 	export type { CancelVideoCommentDownvoteRequestDto, CancelVideoCommentUpvoteRequestDto, EmitVideoCommentDownvoteRequestDto, EmitVideoCommentRequestDto, EmitVideoCommentUpvoteRequestDto, GetVideoCommentByKvidRequestDto, GetVideoCommentByKvidResponseDto, VideoCommentResult } from "api/Comment/VideoCommentControllerDto";
 	// DanmakuControllerDto
@@ -18,7 +18,7 @@ declare global {
 	// UserControllerDto
 	export type { ReactivateUserByUIDRequestDto, GetBlockedUserResponseDto, BlockUserByUIDRequestDto, CheckUsernameRequestDto, UpdateUserPasswordRequestDto, RequestSendChangePasswordVerificationCodeRequestDto, UpdateUserEmailRequestDto, RequestSendChangeEmailVerificationCodeRequestDto, GetMyInvitationCodeResponseDto, CheckInvitationCodeRequestDto, RequestSendVerificationCodeRequestDto, GetSelfUserInfoRequestDto, GetUserInfoByUidRequestDto, GetUserInfoByUidResponseDto, GetUserSettingsRequestDto, GetUserSettingsResponseDto, UpdateOrCreateUserInfoRequestDto, UpdateOrCreateUserSettingsRequestDto, UserExistsCheckRequestDto, UserLabelSchema, UserLoginRequestDto, UserRegistrationRequestDto } from "api/User/UserControllerDto";
 	// VideoControllerDto
-	export type { DeleteVideoRequestDto, GetVideoByKvidRequestDto, GetVideoByKvidResponseDto, GetVideoByUidRequestDto, GetVideoByUidResponseDto, SearchVideoByKeywordRequestDto, SearchVideoByKeywordResponseDto, SearchVideoByVideoTagIdRequestDto, ThumbVideoResponseDto, UploadVideoRequestDto } from "api/Video/VideoControllerDto";
+	export type { ApprovePendingReviewVideoRequestDto, PendingReviewVideoResponseDto, DeleteVideoRequestDto, GetVideoByKvidRequestDto, GetVideoByKvidResponseDto, GetVideoByUidRequestDto, GetVideoByUidResponseDto, SearchVideoByKeywordRequestDto, SearchVideoByKeywordResponseDto, SearchVideoByVideoTagIdRequestDto, ThumbVideoResponseDto, UploadVideoRequestDto } from "api/Video/VideoControllerDto";
 	// VideoTagControllerDto
 	export type { CreateVideoTagRequestDto, GetVideoTagByTagIdRequestDto, VideoTag } from "api/VideoTag/VideoTagControllerDto";
 }

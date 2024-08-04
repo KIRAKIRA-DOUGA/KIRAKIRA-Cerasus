@@ -1,6 +1,6 @@
 import { DELETE, GET, POST } from "../Common";
 import getCorrectUri from "../Common/getCorrectUri";
-import type { CancelVideoCommentDownvoteRequestDto, CancelVideoCommentUpvoteRequestDto, EmitVideoCommentDownvoteRequestDto, EmitVideoCommentDownvoteResponseDto, EmitVideoCommentRequestDto, EmitVideoCommentResponseDto, EmitVideoCommentUpvoteRequestDto, EmitVideoCommentUpvoteResponseDto, GetVideoCommentByKvidRequestDto, GetVideoCommentByKvidResponseDto } from "./VideoCommentControllerDto";
+import type { CancelVideoCommentDownvoteRequestDto, CancelVideoCommentUpvoteRequestDto, DeleteSelfVideoCommentRequestDto, DeleteSelfVideoCommentResponseDto, AdminDeleteVideoCommentRequestDto, AdminDeleteVideoCommentResponseDto, EmitVideoCommentDownvoteRequestDto, EmitVideoCommentDownvoteResponseDto, EmitVideoCommentRequestDto, EmitVideoCommentResponseDto, EmitVideoCommentUpvoteRequestDto, EmitVideoCommentUpvoteResponseDto, GetVideoCommentByKvidRequestDto, GetVideoCommentByKvidResponseDto } from "./VideoCommentControllerDto";
 
 const BACK_END_URL = getCorrectUri();
 const VIDEO_COMMENT_API_URL = `${BACK_END_URL}/video/comment`;
@@ -63,4 +63,24 @@ export const cancelVideoCommentUpvote = async (cancelVideoCommentUpvoteRequest: 
 export const cancelVideoCommentDownvote = async (cancelVideoCommentDownvoteRequest: CancelVideoCommentDownvoteRequestDto): Promise<EmitVideoCommentDownvoteResponseDto> => {
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	return await DELETE(`${VIDEO_COMMENT_API_URL}/downvote/cancel`, cancelVideoCommentDownvoteRequest, { credentials: "include" }) as EmitVideoCommentDownvoteResponseDto;
+};
+
+/**
+ * 删除一条自己发布的视频评论
+ * @param deleteSelfVideoCommentRequest 删除一条自己发布的视频评论的请求载荷
+ * @returns 删除一条自己发布的视频评论的请求响应
+ */
+export const deleteSelfVideoComment = async (deleteSelfVideoCommentRequest: DeleteSelfVideoCommentRequestDto): Promise<DeleteSelfVideoCommentResponseDto> => {
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	return await DELETE(`${VIDEO_COMMENT_API_URL}/deleteSelfComment`, deleteSelfVideoCommentRequest, { credentials: "include" }) as DeleteSelfVideoCommentResponseDto;
+};
+
+/**
+ * 管理员删除一条视频评论
+ * @param dadminDeleteVideoCommentRequest 管理员删除一条视频评论的请求载荷
+ * @returns 管理员删除一条视频评论的请求响应
+ */
+export const adminDeleteVideoComment = async (dadminDeleteVideoCommentRequest: AdminDeleteVideoCommentRequestDto): Promise<AdminDeleteVideoCommentResponseDto> => {
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	return await DELETE(`${VIDEO_COMMENT_API_URL}/adminDeleteComment`, dadminDeleteVideoCommentRequest, { credentials: "include" }) as AdminDeleteVideoCommentResponseDto;
 };

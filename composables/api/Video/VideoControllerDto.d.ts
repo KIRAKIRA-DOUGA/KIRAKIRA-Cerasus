@@ -242,3 +242,26 @@ export type DeleteVideoResponseDto = {
 	/** 附加的文本消息 */
 	message?: string;
 };
+
+/**
+ * 等待被审核的视频列表
+ */
+export type PendingReviewVideoResponseDto = {} & ThumbVideoResponseDto;
+
+/**
+ * 通过一个待审核视频的请求载荷
+ */
+export type ApprovePendingReviewVideoRequestDto = {
+	/** 视频 ID (KVID) */
+	videoId: number;
+};
+
+/**
+ * 通过一个待审核视频的请求响应
+ */
+export type ApprovePendingReviewVideoResponseDto = {
+	/** 请求是否成功，成功返回 true，否则返回 false */
+	success: boolean;
+	/** 附加的文本消息 */
+	message?: string;
+};

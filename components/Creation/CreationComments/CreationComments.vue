@@ -45,6 +45,7 @@
 				:videoId
 				:uid="comment.uid"
 				:index="comment.commentIndex"
+				:commentRoute="comment.commentRoute"
 				:username="comment.userInfo?.username"
 				:avatar="comment.userInfo?.avatar"
 				:date="new Date(comment.editDateTime)"
