@@ -10,20 +10,12 @@
 	const title = computed(() => ti(currentSetting.value));
 	const settingsString = t.settings; // HACK: Bypass "A composable that requires access to the Nuxt instance was called outside of a plugin."
 	const htmlTitle = computed(() => title.value + " - " + settingsString);
-	const logout = async () => {
-		const logoutResult = await api.user.userLogout();
-		if (logoutResult.success) {
-			navigateTo("/settings/appearance");
-			useToast("用户已登出。", "success"); // TODO: 使用多语言
-			useEvent("user:login", false);
-		}
-	};
 
 	const selfUserInfoStore = useSelfUserInfoStore();
 	const isAdmin = computed(() => selfUserInfoStore.role === "admin");
 	const isDevMode = toNewRef(isAdmin);
 	provide("isDevMode", isDevMode);
-	
+
 	// 彩色侧边栏
 	const cookieColoredSidebar = useCookie<boolean>(COOKIE_KEY.coloredSidebarCookieKey);
 
@@ -72,6 +64,20 @@
 
 	if (!selfUserInfoStore.isLogined && settings.personal.some(setting => setting.id === currentSetting.value))
 		navigate("/settings/appearance");
+
+	/**
+	 * 登出。
+	 */
+	async function logout() {
+		const logoutResult = await api.user.userLogout();
+		if (logoutResult.success) {
+			const curPage = currentSettingsPage();
+			if (settings.general.findIndex(({ id }) => id === curPage) === -1)
+				navigateTo("/settings/appearance");
+			useToast("你已成功登出！", "success"); // TODO: 使用多语言
+			useEvent("user:login", false);
+		}
+	}
 
 	useHead({ title: htmlTitle });
 </script>
