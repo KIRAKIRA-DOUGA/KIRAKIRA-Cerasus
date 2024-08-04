@@ -45,7 +45,6 @@
 				:videoId
 				:uid="comment.uid"
 				:index="comment.commentIndex"
-				:uid="comment.uid"
 				:commentRoute="comment.commentRoute"
 				:username="comment.userInfo?.username"
 				:avatar="comment.userInfo?.avatar"
