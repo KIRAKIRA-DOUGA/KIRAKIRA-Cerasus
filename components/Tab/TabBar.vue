@@ -307,12 +307,9 @@
 	}
 
 	.scroll-area {
+		@include no-scrollar;
 		overflow: clip;
 		overflow-x: auto;
-		
-		&::-webkit-scrollbar {
-			@include square(0);
-		}
 	}
 
 	.items {

@@ -43,6 +43,7 @@
 				v-model:pinned="pinned"
 				:commentId="comment._id"
 				:videoId
+				:uid="comment.uid"
 				:index="comment.commentIndex"
 				:username="comment.userInfo?.username"
 				:avatar="comment.userInfo?.avatar"
@@ -68,16 +69,16 @@
 	.toolbar {
 		display: flex;
 		flex-wrap: wrap;
-		align-items: center;
 		justify-content: space-between;
+		align-items: center;
 		margin-top: 16px;
 
 		> * {
 			display: flex;
 			flex-wrap: wrap;
 			gap: 16px;
-			align-items: center;
 			justify-content: flex-end;
+			align-items: center;
 		}
 
 		.soft-button {

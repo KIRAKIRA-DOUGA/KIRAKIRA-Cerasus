@@ -7,8 +7,8 @@
 /// @output display, align-items, justify-content
 @mixin flex-center {
 	display: flex;
-	align-items: center;
 	justify-content: center;
+	align-items: center;
 }
 
 /// 变成正方形。长宽均相等。
@@ -106,10 +106,10 @@
 /// @output display, clear, height, visibility, content
 @mixin fix-page-end-padding($zero-height: true) {
 	&::after {
+		content: "."; // 内容不能为空。
 		display: block;
 		clear: both;
 		visibility: hidden; // 占位但不可见。
-		content: "."; // 内容不能为空。
 
 		@if $zero-height {
 			height: 0;
@@ -146,9 +146,9 @@
 
 		&:not([disabled])::before {
 			@include square($button-size);
+			content: "";
 			position: absolute;
 			display: block;
-			content: "";
 			pointer-events: auto;
 		}
 	}
@@ -232,8 +232,8 @@
 
 		@keyframes #{$keyframes-name} {
 			from {
-				opacity: 0;
 				translate: 0 #{$direction * $distance};
+				opacity: 0;
 			}
 		}
 	}
@@ -244,4 +244,12 @@
 @mixin set-max-size {
 	max-width: 100dvw;
 	max-height: 100dvh;
+}
+
+/// 禁止显示滚动条，但仍可滚动。
+/// @output ::-webkit-scrollbar, width, height
+@mixin no-scrollar {
+	&::-webkit-scrollbar {
+		@include square(0);
+	}
 }

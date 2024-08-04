@@ -205,8 +205,13 @@
 			justify-content: space-between;
 			align-items: center;
 			height: $height;
-			padding: 0 8px;
+			padding-right: 4px;
 			overflow: clip;
+		
+			.left {
+				@include no-scrollar;
+				overflow: auto clip;
+			}
 
 			> * {
 				display: flex;
@@ -222,6 +227,7 @@
 					display: block;
 					margin: 0 8px;
 					color: c(icon-color);
+					font-variant-numeric: tabular-nums;
 				}
 			}
 		}
