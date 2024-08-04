@@ -95,6 +95,10 @@ a {
 	display: none !important;
 }
 
+time {
+	font-variant-numeric: tabular-nums;
+}
+
 .no-scroll {
 	overflow: hidden !important;
 }

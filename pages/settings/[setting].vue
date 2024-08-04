@@ -6,8 +6,8 @@
 	<div class="no-settings">
 		<LogoSettings />
 
-		<p>{{ t.settings }}</p>
-		<span>{{ t.unselected.settings }}</span>
+		<h2>{{ t.settings }}</h2>
+		<p>{{ t.unselected.settings }}</p>
 	</div>
 </template>
 
