@@ -8,12 +8,19 @@
 	const photoInput = ref<HTMLInputElement>();
 	const photo = ref(testPhoto);
 	const cueChangeTimeoutId = ref<Timeout>();
+	const pitch = ref(0);
+	const rate = computed({
+		get: () => 2 ** (pitch.value / 12),
+		set: value => pitch.value = Math.log2(value) * 12,
+	});
+	const enter = ref(true);
 
 	/**
 	 * 一键柴又！
 	 */
 	function otomading() {
 		if (!audio.value) return;
+		audio.value.preservesPitch = false;
 		const { paused } = audio.value;
 		if (paused) audio.value.play().catch(useNoop);
 		else {
@@ -33,7 +40,7 @@
 		if (!cue) return;
 		clearTimeout(cueChangeTimeoutId.value);
 		const duration = (cue.endTime - cue.startTime) * 1000;
-		cueChangeTimeoutId.value = setTimeout(() => currentPitch.value = "", duration);
+		cueChangeTimeoutId.value = setTimeout(() => currentPitch.value = "", duration / rate.value);
 		currentPitch.value = cue.text;
 		flipped.value = !flipped.value;
 	}
@@ -58,6 +65,23 @@
 		photoInput.value?.click();
 	}
 
+	/**
+	 * 滑动滑动条完成后事件。
+	 */
+	function onSliding() {
+		if (!audio.value) return;
+		audio.value.playbackRate = rate.value;
+	}
+
+	/**
+	 * 当音频改变播放速度事件。
+	 * @param e - 普通事件。
+	 */
+	function onRateChange(e: Event) {
+		const audio = e.currentTarget as HTMLAudioElement;
+		rate.value = audio.playbackRate;
+	}
+
 	onMounted(() => {
 		otomading();
 	});
@@ -69,7 +93,9 @@
 			<h2>测试相簿功能</h2>
 			<Button @click="otomading">音MADing!</Button>
 			<p class="pitch">{{ currentPitch }}</p>
-			<audio ref="audio" loop controls>
+			<ToggleSwitch v-model="enter">进入</ToggleSwitch>
+			<Slider v-model="pitch" :min="-24" :max="24" :defaultValue="0" @changing="onSliding" />
+			<audio ref="audio" loop controls @ratechange="onRateChange">
 				<source :src="shibamata" />
 				<track default kind="metadata" :src="metadata" @cuechange="onCueChange" />
 			</audio>
@@ -85,7 +111,7 @@
 			<img
 				:src="photo"
 				alt="photo"
-				:class="{ front: flipped === false, back: flipped }"
+				:class="{ front: flipped === false, back: flipped, enter }"
 				:tabindex="0"
 			/>
 		</div>
@@ -113,6 +139,7 @@
 		justify-content: flex-start;
 
 		.pitch {
+			margin-bottom: auto;
 			font-size: 54px;
 			text-align: center;
 
@@ -123,8 +150,6 @@
 
 		video,
 		audio {
-			margin-top: auto;
-
 			@include mobile {
 				width: 100%;
 			}
@@ -158,6 +183,10 @@
 
 			&:focus-visible {
 				filter: invert(1);
+			}
+
+			&:not(.enter) {
+				animation-timing-function: step-start;
 			}
 		}
 	}

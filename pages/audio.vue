@@ -29,12 +29,21 @@
 		if (!player.value) return;
 		player.value.playbackRate = 2 ** (pitch.value / 12);
 	}
+
+	/**
+	 * 当音频改变播放速度事件。
+	 * @param e - 普通事件。
+	 */
+	function onRateChange(e: Event) {
+		const audio = e.currentTarget as HTMLAudioElement;
+		pitch.value = Math.log2(audio.playbackRate) * 12;
+	}
 </script>
 
 <template>
 	<div class="container">
 		<h2>测试音频与频谱功能</h2>
-		<audio ref="player" :src="audio" controls loop />
+		<audio ref="player" :src="audio" controls loop @ratechange="onRateChange" />
 		<Slider v-model="pitch" :min="-24" :max="24" :defaultValue="0" @changing="onSliding" />
 		<canvas ref="canvas" />
 	</div>
