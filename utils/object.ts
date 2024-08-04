@@ -35,3 +35,12 @@ export function keys<K extends object>(obj: K) {
 export function forMap<T>(length: number, callback: (index: number) => T, startIndex: number = 0) {
 	return Array<void>(length).fill(undefined).map((_, index) => callback(index + startIndex));
 }
+
+/**
+ * Convert a maybe ref, getter, or computed ref to an independent new ref.
+ * @param existedRef - An existed maybe ref, getter, or computed ref.
+ * @returns An independent new ref.
+ */
+export function toNewRef<T>(existedRef: MaybeRefOrGetter<T> | ComputedRef<T>) {
+	return toRef(toValue(existedRef));
+}

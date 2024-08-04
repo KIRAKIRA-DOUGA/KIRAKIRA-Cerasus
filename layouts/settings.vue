@@ -21,7 +21,9 @@
 
 	const selfUserInfoStore = useSelfUserInfoStore();
 	const isAdmin = computed(() => selfUserInfoStore.role === "admin");
-
+	const isDevMode = toNewRef(isAdmin);
+	provide("isDevMode", isDevMode);
+	
 	// 彩色侧边栏
 	const cookieColoredSidebar = useCookie<boolean>(COOKIE_KEY.coloredSidebarCookieKey);
 
@@ -93,15 +95,17 @@
 						<Subheader icon="apps">{{ t.settings.app }}</Subheader>
 						<TabItem v-for="setting in settings.general" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
 						<!-- TODO: 使用多语言 -->
-						<Subheader v-if="isAdmin" icon="badge">管理设置</Subheader>
+						<Subheader v-if="isAdmin" icon="build_circle">管理设置</Subheader>
 						<template v-if="isAdmin">
 							<TabItem v-for="setting in settings.admin" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
 						</template>
 					</TabBar>
 					<div class="nav-bottom-buttons">
 						<Button icon="logout" @click="logout">{{ t.logout }}</Button>
-						<Button v-if="isAdmin" icon="build" href="/dev">{{ t.development_test_page }}</Button>
-						<Button v-if="isAdmin" icon="apps" href="/components">{{ t.components_test_page }}</Button>
+						<template v-if="isAdmin || isDevMode">
+							<Button icon="build" href="/dev">{{ t.development_test_page }}</Button>
+							<Button icon="apps" href="/components">{{ t.components_test_page }}</Button>
+						</template>
 					</div>
 				</header>
 			</div>

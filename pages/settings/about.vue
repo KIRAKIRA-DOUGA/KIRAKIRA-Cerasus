@@ -1,7 +1,7 @@
 <script setup lang="ts">
-	// const avatar = (name: string) => `/static/images/avatars/${name}`;
 	const nuxt = useNuxtApp();
-
+	const isDevMode = inject<Ref<boolean>>("isDevMode");
+	
 	const repositories: { name: string; codeName?: string; link: string; icon?: string }[] = [
 		{ name: t.about.repositories.frontend, codeName: "KIRAKIRA Cerasus", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus" },
 		{ name: t.about.repositories.backend, codeName: "KIRAKIRA Rosales", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Rosales" },
@@ -41,13 +41,14 @@
 	 */
 	function showDevMode(e: MouseEvent) {
 		replayAnimation(e.currentTarget as HTMLDivElement, "active");
-		if (remainingClick.value) {
+		if (remainingClick.value && !isDevMode?.value) {
 			clearAllToast();
 			useToast(`继续点击${remainingClick.value--}次即可进入开发者模式`, "info");
 			return;
 		}
 		clearAllToast();
 		useToast("你已进入开发者模式！", "success");
+		isDevMode && (isDevMode.value = true);
 	}
 
 	team.forEach(async developer => {
@@ -88,7 +89,7 @@
 			v-for="staff in team"
 			:key="staff.username"
 			:image="staff.avatar"
-			icon="person"
+			icon="account_circle"
 			:details="`${staff.job.join(' / ')} - UID ${staff.uid}`"
 			trailingIcon="open_in_new"
 			:href="`/user/${staff.uid}`"
