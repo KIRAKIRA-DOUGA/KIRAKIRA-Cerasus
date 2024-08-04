@@ -34,6 +34,7 @@ export default [
 					ts: tseslint.parser,
 				},
 				sourceType: "module",
+				ecmaVersion: "latest",
 			},
 			ecmaVersion: "latest",
 			sourceType: "module",

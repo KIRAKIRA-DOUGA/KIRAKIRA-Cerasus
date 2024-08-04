@@ -252,6 +252,7 @@ export default {
 	},
 	messages: "消息",
 	notification: "通知",
+	pleaseLogin: "请登入",
 	login: "登入",
 	logout: "登出",
 	register: "注册",

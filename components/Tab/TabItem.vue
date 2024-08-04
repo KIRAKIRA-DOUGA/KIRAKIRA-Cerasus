@@ -11,7 +11,7 @@
 		badge?: Readable;
 		/** 图标，可选。 */
 		icon?: DeclaredIcons;
-		/** 仅内部使用！是否是垂直选项卡？ */
+		/** @internal 仅内部使用！是否是垂直选项卡？ */
 		// eslint-disable-next-line vue/prop-name-casing
 		_internalIsVertical?: boolean;
 	}>(), {

@@ -12,9 +12,11 @@
 		trailingIcon?: DeclaredIcons;
 		/** 尾随操作图标单击事件。 */
 		onTrailingIconClick?: () => void;
-		/** 点击链接。在域名未完全确定前目前只能支持外链，如内链需要额外的自动检测。 */
+		/** 点击链接。支持外链和内链。 */
 		href?: string;
 	}>();
+
+	const isExtenalLink = computed(() => props.href?.includes(":/"));
 </script>
 
 <template>
@@ -41,7 +43,10 @@
 				<Icon v-if="!onTrailingIconClick" class="trailing-icon" :name="trailingIcon" />
 				<SoftButton v-else :icon="trailingIcon" class="trailing-icon" @click.stop="onTrailingIconClick" />
 			</template>
-			<a v-if="href" draggable="false" :href target="_blank" class="link lite"></a>
+			<template v-if="href">
+				<a v-if="isExtenalLink" draggable="false" :href target="_blank" class="link lite"></a>
+				<LocaleLink v-else draggable="false" :to="href" :blank="useAppSettingsStore().isOpenVideoInNewTab" class="link lite" />
+			</template>
 		</div>
 	</Comp>
 </template>

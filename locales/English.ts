@@ -248,6 +248,7 @@ export default {
 	},
 	messages: "Messages",
 	notification: "Notification | Notifications",
+	pleaseLogin: "Please Login",
 	login: "Login",
 	logout: "Logout",
 	register: "Register",

@@ -366,6 +366,35 @@
 		> * {
 			pointer-events: none;
 		}
+		
+		.offcanvas ~ * &,
+		&:any-hover,
+		&:active {
+			:deep(.icon) {
+				color: c(accent);
+			}
+			
+			.user-avatar {
+				--hover: true;
+				background-color: c(accent-5);
+			}
+		}
+		
+		.offcanvas ~ * & .user-avatar {
+			--tint: true;
+		}
+		
+		&:any-hover {
+			opacity: 1;
+		}
+		
+		&:active {
+			opacity: 0.6;
+			
+			.decorative-icon {
+				scale: 1 0.75;
+			}
+		}
 	}
 
 	.decorative-icon {
@@ -374,14 +403,6 @@
 		color: c(icon-color);
 		font-size: $size;
 		cursor: pointer;
-
-		&:any-hover {
-			color: c(accent);
-		}
-
-		&:active {
-			opacity: 0.6;
-		}
 	}
 
 	nav {

@@ -243,7 +243,6 @@
 	 * 请求刷新指示器位置。
 	 */
 	function requireReindicate() {
-		console.log(123);
 		update(undefined, updateIndicatorWithoutAnimation);
 	}
 

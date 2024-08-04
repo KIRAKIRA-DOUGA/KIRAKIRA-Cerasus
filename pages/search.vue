@@ -30,8 +30,6 @@
 	const hideExceptMe = ref(false);
 	const hideTimeoutId = ref<Timeout>();
 
-	const appSettings = useAppSettingsStore();
-
 	const data = reactive({
 		selectedTab: "Home",
 		search: querySearch.value,
@@ -231,7 +229,6 @@
 						:date="new Date(video.uploadDate || 0)"
 						:watchedCount="video.watchedCount"
 						:duration="new Duration(0, video.duration ?? 0)"
-						:blank="appSettings.isOpenVideoInNewTab"
 					>{{ video.title }}</ThumbVideo>
 				</ThumbGrid>
 			</div>

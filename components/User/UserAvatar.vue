@@ -35,16 +35,31 @@
 			:placeholder="[20, 20, 100, 2]"
 		/>
 		<Icon v-else name="person" />
+		<div v-if="avatar" class="tint-overlay"></div>
 		<LocaleLink v-if="userLink" :to="userLink" :draggable="false" class="lite" />
 	</Comp>
 </template>
 
 <style scoped lang="scss">
+	@layer props {
+		:comp {
+			/// 显式触发悬停效果？
+			--hover: false;
+			/// 着色？
+			--tint: false;
+		}
+	}
+
 	@layer utilities {
 		:comp {
 			@include square(58px, true);
 			font-size: calc(var(--size) * 0.6);
 		}
+	}
+	
+	@mixin hover {
+		scale: 125%;
+		filter: brightness(0.85);
 	}
 
 	:comp {
@@ -76,12 +91,31 @@
 
 			&:any-hover,
 			&:has(~ a:any-hover) {
-				scale: 125%;
-				filter: brightness(0.85);
+				@include hover;
+			}
+			
+			@container style(--hover: true) {
+				@include hover;
+				transition-duration: 250ms !important;
 			}
 
 			&:not(:any-hover):is(:not(:has(~ a)), :has(~ a:not(:any-hover))) {
 				transition-duration: 1s;
+			}
+		}
+		
+		.tint-overlay {
+			position: absolute;
+			inset: 0;
+			z-index: 1;
+			background-color: c(accent);
+			opacity: 0;
+			visibility: hidden;
+			mix-blend-mode: color;
+			
+			@container style(--tint: true) {
+				opacity: 1;
+				visibility: visible;
 			}
 		}
 

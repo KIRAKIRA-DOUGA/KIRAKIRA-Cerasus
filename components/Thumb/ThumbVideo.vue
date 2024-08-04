@@ -29,6 +29,7 @@
 		watchedCount: 0,
 		uploaderId: undefined,
 		duration: undefined,
+		black: () => useAppSettingsStore().isOpenVideoInNewTab,
 	});
 
 	const watchedCount = computed(() => getCompactDecimal(props.watchedCount));
