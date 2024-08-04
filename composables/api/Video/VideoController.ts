@@ -1,7 +1,7 @@
 import getCorrectUri from "api/Common/getCorrectUri";
 import * as tus from "tus-js-client";
 import { GET, POST, DELETE, uploadFile2CloudflareImages } from "../Common";
-import type { DeleteVideoRequestDto, DeleteVideoResponseDto, GetVideoByKvidRequestDto, GetVideoByKvidResponseDto, GetVideoByUidRequestDto, GetVideoByUidResponseDto, GetVideoCoverUploadSignedUrlResponseDto, SearchVideoByVideoTagIdRequestDto, SearchVideoByVideoTagIdResponseDto, ThumbVideoResponseDto, UploadVideoRequestDto, UploadVideoResponseDto } from "./VideoControllerDto";
+import type { ApprovePendingReviewVideoRequestDto, ApprovePendingReviewVideoResponseDto, DeleteVideoRequestDto, DeleteVideoResponseDto, GetVideoByKvidRequestDto, GetVideoByKvidResponseDto, GetVideoByUidRequestDto, GetVideoByUidResponseDto, GetVideoCoverUploadSignedUrlResponseDto, PendingReviewVideoResponseDto, SearchVideoByVideoTagIdRequestDto, SearchVideoByVideoTagIdResponseDto, ThumbVideoResponseDto, UploadVideoRequestDto, UploadVideoResponseDto } from "./VideoControllerDto";
 
 const BACK_END_URL = getCorrectUri();
 const VIDEO_API_URL = `${BACK_END_URL}/video`;
@@ -238,4 +238,25 @@ export async function commitVideo(uploadVideoRequest: UploadVideoRequestDto): Pr
  */
 export async function deleteVideo(deleteVideoRequest: DeleteVideoRequestDto): Promise<DeleteVideoResponseDto> {
 	return await DELETE(`${VIDEO_API_URL}/delete`, deleteVideoRequest, { credentials: "include" }) as DeleteVideoResponseDto;
+}
+
+/**
+ * 获取待审核视频列表
+ * @param headerCookie  从客户端发起 SSR 请求时传递的 Header 中的 Cookie 部分，在 SSR 时将其转交给后端 API
+ * @returns 获取待审核视频列表的请求响应
+ */
+export const getPendingReviewVideo = async (headerCookie: { cookie?: string | undefined }): Promise<PendingReviewVideoResponseDto> => {
+	// NOTE: use { headers: headerCookie } to passing client-side cookies to backend API when SSR.
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	const { data: result } = await useFetch(`${VIDEO_API_URL}/pending`, { headers: headerCookie, credentials: "include" });
+	return result.value as PendingReviewVideoResponseDto;
+};
+
+/**
+ * 通过一个待审核视频
+ * @param approvePendingReviewVideoRequest 通过一个待审核视频的请求载荷
+ * @returns 通过一个待审核视频的请求响应
+ */
+export async function approvePendingReviewVideo(approvePendingReviewVideoRequest: ApprovePendingReviewVideoRequestDto): Promise<ApprovePendingReviewVideoResponseDto> {
+	return await POST(`${VIDEO_API_URL}/pending/approved`, approvePendingReviewVideoRequest, { credentials: "include" }) as ApprovePendingReviewVideoResponseDto;
 }

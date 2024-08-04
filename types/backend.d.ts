@@ -18,7 +18,7 @@ declare global {
 	// UserControllerDto
 	export type { ReactivateUserByUIDRequestDto, GetBlockedUserResponseDto, BlockUserByUIDRequestDto, CheckUsernameRequestDto, UpdateUserPasswordRequestDto, RequestSendChangePasswordVerificationCodeRequestDto, UpdateUserEmailRequestDto, RequestSendChangeEmailVerificationCodeRequestDto, GetMyInvitationCodeResponseDto, CheckInvitationCodeRequestDto, RequestSendVerificationCodeRequestDto, GetSelfUserInfoRequestDto, GetUserInfoByUidRequestDto, GetUserInfoByUidResponseDto, GetUserSettingsRequestDto, GetUserSettingsResponseDto, UpdateOrCreateUserInfoRequestDto, UpdateOrCreateUserSettingsRequestDto, UserExistsCheckRequestDto, UserLabelSchema, UserLoginRequestDto, UserRegistrationRequestDto } from "api/User/UserControllerDto";
 	// VideoControllerDto
-	export type { DeleteVideoRequestDto, GetVideoByKvidRequestDto, GetVideoByKvidResponseDto, GetVideoByUidRequestDto, GetVideoByUidResponseDto, SearchVideoByKeywordRequestDto, SearchVideoByKeywordResponseDto, SearchVideoByVideoTagIdRequestDto, ThumbVideoResponseDto, UploadVideoRequestDto } from "api/Video/VideoControllerDto";
+	export type { ApprovePendingReviewVideoRequestDto, PendingReviewVideoResponseDto, DeleteVideoRequestDto, GetVideoByKvidRequestDto, GetVideoByKvidResponseDto, GetVideoByUidRequestDto, GetVideoByUidResponseDto, SearchVideoByKeywordRequestDto, SearchVideoByKeywordResponseDto, SearchVideoByVideoTagIdRequestDto, ThumbVideoResponseDto, UploadVideoRequestDto } from "api/Video/VideoControllerDto";
 	// VideoTagControllerDto
 	export type { CreateVideoTagRequestDto, GetVideoTagByTagIdRequestDto, VideoTag } from "api/VideoTag/VideoTagControllerDto";
 }
