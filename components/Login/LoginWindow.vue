@@ -299,7 +299,7 @@
 					<!-- 登录 Login -->
 					<div class="login">
 						<HeadingGroup :name="t.login" englishName="Login" />
-						<div class="form">
+						<form class="form">
 							<TextBox
 								v-model="email"
 								type="email"
@@ -320,7 +320,7 @@
 							<div class="button login-button-placeholder">
 								<Button class="button login-button button-block" :loading="isTryingLogin" :disabled="isTryingLogin || selfUserInfoStore.isLogined" @click="loginUser">Link Start!</Button>
 							</div>
-						</div>
+						</form>
 						<div class="action margin-left-inset margin-right-inset">
 							<Button @click="currentPage = 'forgot'">{{ t.loginwindow.login_to_forgot }}</Button>
 							<Button @click="currentPage = 'register1'">{{ t.loginwindow.login_to_register }}</Button>

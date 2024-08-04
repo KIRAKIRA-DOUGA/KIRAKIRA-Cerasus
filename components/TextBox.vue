@@ -81,7 +81,7 @@
 		input: [e: InputEvent];
 		keydown: [e: KeyboardEvent];
 		keyup: [e: KeyboardEvent];
-		clear: void;
+		clear: [];
 	}>();
 
 	const value = defineModel<string | number>({ required: true });
@@ -245,6 +245,7 @@
 			icon?: DeclaredIcons;
 			animatedIcon?: DeclaredLotties;
 			animatedState?: string;
+			nonfocusable?: boolean;
 		}
 		return (props: Props) => (
 			<Transition css={false} onEnter={onTrailingIconEnter} onLeave={onTrailingIconLeave}>
@@ -257,6 +258,7 @@
 						nonclickable={!props.onClick}
 						appearance="textbox-trailingicon"
 						disabled={textBoxProps.disabled}
+						nonfocusable={props.nonfocusable}
 						onClick={props.onClick}
 					/>
 				}
@@ -302,6 +304,7 @@
 					<TrailingIcon
 						:shown="showClearAll"
 						icon="close"
+						nonfocusable
 						@click="clearAll"
 					/>
 					<TrailingIcon
@@ -433,7 +436,7 @@
 		height: 100%;
 
 		@include is-large-size {
-			clip-path: inset(0 0 $focus-stripe-height)
+			clip-path: inset(0 0 $focus-stripe-height);
 		}
 
 		> span:empty {
