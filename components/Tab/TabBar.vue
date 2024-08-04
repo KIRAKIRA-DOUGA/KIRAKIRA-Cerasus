@@ -22,7 +22,8 @@
 	const unmounted = ref(false);
 	const scrollArea = ref<HTMLDivElement>();
 	const { x: scrollX } = useScroll(scrollArea, { behavior: "smooth" });
-	const resizeObserver = ref<ResizeObserver>();
+	const scrollAreaResizeObserver = ref<ResizeObserver>();
+	const tabBarInlineResizeObserver = ref<ResizeObserver>();
 	const arrivedState = ref({ left: false, right: false }); // 用以解决 useScroll 自带 arrivedState 属性的功能实现缺陷。
 	const longPressTimeoutId = ref<Timeout>();
 	const clearLongPressTimeoutId = () => clearInterval(longPressTimeoutId.value!);
@@ -237,14 +238,24 @@
 			right: el.scrollLeft < el.scrollWidth - el.offsetWidth - 1,
 		};
 	}
+	
+	/**
+	 * 请求刷新指示器位置。
+	 */
+	function requireReindicate() {
+		console.log(123);
+		update(undefined, updateIndicatorWithoutAnimation);
+	}
 
 	watch(model, (id, prevId) => update(id, prevId));
 	// useEventListener("window", "resize", () => update(undefined, updateIndicatorWithoutAnimation));
 	useEventListener(scrollArea, "scroll", showFlipViewButtonHandler);
 
 	onMounted(async () => {
-		resizeObserver.value = new ResizeObserver(showFlipViewButtonHandler);
-		scrollArea.value && resizeObserver.value.observe(scrollArea.value);
+		scrollAreaResizeObserver.value = new ResizeObserver(showFlipViewButtonHandler);
+		scrollArea.value && scrollAreaResizeObserver.value.observe(scrollArea.value);
+		tabBarInlineResizeObserver.value = new ResizeObserver(requireReindicate);
+		tabBarInline.value && tabBarInlineResizeObserver.value.observe(tabBarInline.value);
 		while (!isNoTransform() && !unmounted.value)
 			await delay(100);
 		update(undefined);
@@ -252,7 +263,7 @@
 
 	onUnmounted(() => {
 		unmounted.value = true;
-		resizeObserver.value?.disconnect();
+		scrollAreaResizeObserver.value?.disconnect();
 		clearLongPressTimeoutId();
 	});
 
@@ -298,9 +309,10 @@
 
 	.scroll-area {
 		overflow: clip;
-
-		@media (hover: none) { // 触摸屏允许直接左右滑动翻页。
-			overflow-x: auto;
+		overflow-x: auto;
+		
+		&::-webkit-scrollbar {
+			@include square(0);
 		}
 	}
 
