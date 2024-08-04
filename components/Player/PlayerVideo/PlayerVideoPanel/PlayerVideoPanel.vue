@@ -18,6 +18,7 @@
 	const sendDanmaku = defineModel<DanmakuComment[]>("sendDanmaku");
 	const insertDanmaku = defineModel<DanmakuListItem[]>("insertDanmaku");
 
+	/** @deprecated - 测试数据。 */
 	const counts = reactive({
 		play: 100n,
 		rating: props.rating,
@@ -92,7 +93,7 @@
 		<div class="top">
 			<div class="info">
 				<CountItem v-tooltip:bottom="t(counts.play).watched" icon="play" :value="getCompactDecimal(counts.play)" />
-				<CountItem v-tooltip:bottom="t(counts.danmaku).danmaku" icon="danmaku" :value="getCompactDecimal(counts.danmaku)" />
+				<CountItem v-tooltip:bottom="t(counts.danmaku).danmaku" icon="danmaku" :value="getCompactDecimal(insertDanmaku?.length ?? 0)" />
 				<CountItem v-tooltip:bottom="t.rating" icon="thumb_up" :value="getCompactDecimal(counts.rating)" :class="{ downvote: counts.rating < 0 }" />
 				<CountItem v-tooltip:bottom="t(counts.favorite).favorite" icon="star" :value="getCompactDecimal(counts.favorite)" />
 				<!-- <div class="watching">

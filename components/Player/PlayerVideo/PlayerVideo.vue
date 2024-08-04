@@ -345,24 +345,33 @@
 		if (!player.value || !video.value) return;
 		const stats = player.value?.getStats();
 		if (!stats) return;
-
-		statsVideo.value.codec = activeTrack.value?.videoCodec ?? "";
-		statsVideo.value.mimeType = activeTrack.value?.videoMimeType ?? "";
-		statsVideo.value.bitRate = activeTrack.value?.videoBandwidth ?? 0;
-		statsVideo.value.resolution = { width: activeTrack.value?.width ?? 0, height: activeTrack.value?.height ?? 0 };
-		statsVideo.value.frameRate = activeTrack.value?.frameRate ?? 0;
-
-		statsAudio.value.codec = activeTrack.value?.audioCodec ?? "";
-		statsAudio.value.mimeType = activeTrack.value?.audioMimeType ?? "";
-		statsAudio.value.bitRate = activeTrack.value?.audioBandwidth ?? 0;
-		statsAudio.value.sampleRate = activeTrack.value?.audioSamplingRate ?? 0;
-
-		statsPlayer.value.manifestType = player.value.getManifestType() ?? "";
-		statsPlayer.value.streamBandwidth = stats.streamBandwidth ?? 0;
-		statsPlayer.value.estimatedBandwidth = stats.estimatedBandwidth ?? 0;
-		statsPlayer.value.resolution = { width: stats.width ?? 0, height: stats.height ?? 0 };
-		statsPlayer.value.frames.decoded = stats.decodedFrames ?? 0;
-		statsPlayer.value.frames.dropped = stats.droppedFrames ?? 0;
+		const a = activeTrack.value;
+		
+		assign(statsVideo.value, {
+			codec: a?.videoCodec ?? "",
+			mimeType: a?.videoMimeType ?? "",
+			bitRate: a?.videoBandwidth ?? 0,
+			resolution: { width: a?.width ?? 0, height: a?.height ?? 0 },
+			frameRate: a?.frameRate ?? 0,
+		});
+		
+		assign(statsAudio.value, {
+			codec: a?.audioCodec ?? "",
+			mimeType: a?.audioMimeType ?? "",
+			bitRate: a?.audioBandwidth ?? 0,
+			sampleRate: a?.audioSamplingRate ?? 0,
+		});
+		
+		assign(statsPlayer.value, {
+			manifestType: player.value.getManifestType() ?? "",
+			streamBandwidth: stats.streamBandwidth ?? 0,
+			estimatedBandwidth: stats.estimatedBandwidth ?? 0,
+			resolution: { width: stats.width ?? 0, height: stats.height ?? 0 },
+			frames: {
+				decoded: stats.decodedFrames ?? 0,
+				dropped: stats.droppedFrames ?? 0,
+			},
+		});
 	}
 
 	/**

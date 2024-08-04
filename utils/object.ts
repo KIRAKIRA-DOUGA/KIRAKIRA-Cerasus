@@ -24,6 +24,18 @@ export function keys<K extends object>(obj: K) {
 }
 
 /**
+ * 将所有可枚举自身属性的值从一个或多个源对象复制到目标对象。
+ *
+ * 相较于 `Object.assign`，输入的值的类型不会那么恶心。
+ * @param target — 要复制到的目标对象。
+ * @param source — 从中复制属性的源对象。
+ * @returns 返回目标对象。
+ */
+export function assign<T extends object>(target: T, ...sources: Partial<T>[]): T {
+	return Object.assign(target, ...sources);
+}
+
+/**
  * 创建一个重复指定次数对象的数组，用于循环创建组件。
  * 但是只需关心循环次数，不关心数组的内容。
  * @template T - 要重复的对象类型。
@@ -37,9 +49,9 @@ export function forMap<T>(length: number, callback: (index: number) => T, startI
 }
 
 /**
- * Convert a maybe ref, getter, or computed ref to an independent new ref.
- * @param existedRef - An existed maybe ref, getter, or computed ref.
- * @returns An independent new ref.
+ * 将 MaybeRef、Getter 或 ComputedRef 转换为独立的新 Ref。
+ * @param existedRef — 存在的 MaybeRef、Getter 或 ComputedRef。
+ * @returns 一个独立的新 Ref。
  */
 export function toNewRef<T>(existedRef: MaybeRefOrGetter<T> | ComputedRef<T>) {
 	return toRef(toValue(existedRef));

@@ -39,7 +39,7 @@
 		<div class="info">
 			<div class="data">
 				<CreationDetailItem icon="calendar"><DateTime :dateTime="date" showTime /></CreationDetailItem>
-				<CreationDetailItem icon="category">{{ category }}</CreationDetailItem>
+				<CreationDetailItem icon="category">{{ t.category[category] }}</CreationDetailItem>
 				<CreationDetailItem v-if="copyright === 'original'" icon="fact_check">{{ t.original }}</CreationDetailItem>
 				<CreationDetailItem v-if="copyright === 'authorized-repost'" icon="local_shipping">{{ t.authorized_repost }}</CreationDetailItem>
 				<CreationDetailItem v-if="copyright === 'repost'" icon="local_shipping">{{ t.repost }}</CreationDetailItem>
