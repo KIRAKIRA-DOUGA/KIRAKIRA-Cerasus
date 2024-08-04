@@ -21,6 +21,7 @@
 	const flyoutKaomoji = ref<FlyoutModel>();
 	const flyoutKaomojiMini = ref<FlyoutModel>();
 	const textLength = ref(0);
+	const isSendingComment = ref(false);
 
 	const editor = useEditor({
 		extensions: [
@@ -95,6 +96,7 @@
 	 */
 	async function sendComment() {
 		try {
+			isSendingComment.value = true;
 			// TODO: // WARN 需要对用户输入的文字进行 Base64 编码
 			const content = editor.value?.getText() ?? ""; // Get plain text currently to avoid web attack.
 			const emitVideoCommentRequest: EmitVideoCommentRequestDto = {
@@ -105,16 +107,19 @@
 			const emitVideoCommentResult = await api.videoComment.emitVideoComment(emitVideoCommentRequest);
 			const videoComment = emitVideoCommentResult.videoComment;
 			if (emitVideoCommentResult?.success && videoComment) {
+				editor.value?.commands.clearContent()
+				textLength.value = 0
 				useEvent("videoComment:emitVideoComment", videoComment);
-				const messageDuration = 5000;
-				useToast("评论发出去咯~", "success", messageDuration); // TODO: 使用多语言
+				useToast("评论发出去咯~", "success", 5000); // TODO: 使用多语言
 			} else {
-				useToast("发送评论失败！", "error"); // TODO: 使用多语言
+				useToast("发送评论失败！", "error", 5000); // TODO: 使用多语言
 				console.error("ERROR", "发送评论失败：请求未成功");
 			}
+			isSendingComment.value = true;
 		} catch (error) {
-			useToast("发送评论失败！", "error"); // TODO: 使用多语言
+			useToast("发送评论失败！", "error", 5000); // TODO: 使用多语言
 			console.error("ERROR", "发送评论失败！", error);
+			isSendingComment.value = true;
 		}
 	}
 
@@ -173,7 +178,7 @@
 			</div>
 			<div class="right">
 				<span class="text-length">{{ textLength }}</span>
-				<ToolItem :tooltip="t.send" icon="send" :disabled="!textLength" @click="sendComment" />
+				<ToolItem :tooltip="t.send" icon="send" :disabled="!textLength || isSendingComment" :loading="isSendingComment" @click="sendComment" />
 			</div>
 		</div>
 	</Comp>
