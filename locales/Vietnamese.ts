@@ -50,6 +50,9 @@ export default {
 		_: "Phông nền",
 		animated: "Phông nền động",
 		custom: "Phông tùy chỉnh",
+		opacity: "Độ mờ đục",
+		tint: "Màu nhuộm",
+		blurIntensity: "Mức độ làm mờ",
 	},
 	appearance: {
 		_: "Giao diện",
@@ -347,6 +350,8 @@ export default {
 		settings: "Chọn một cài đặt",
 		tag: "Tìm kiếm thẻ...",
 		language: "Chọn ngôn ngữ",
+		image: "Chọn ảnh",
+		file: "Chọn tệp tin",
 	},
 	user: {
 		_: "Người dùng",

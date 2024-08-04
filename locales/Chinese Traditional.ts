@@ -50,6 +50,9 @@ export default {
 		_: "背景",
 		animated: "動態背景",
 		custom: "自訂背景",
+		opacity: "不透明度",
+		tint: "著色",
+		blurIntensity: "模糊程度",
 	},
 	appearance: {
 		_: "外觀",
@@ -347,6 +350,8 @@ export default {
 		settings: "請選擇一項設置",
 		tag: "請搜索標籤",
 		language: "選擇語言",
+		image: "選取影像",
+		file: "選取檔案",
 	},
 	user: {
 		_: "用戶",

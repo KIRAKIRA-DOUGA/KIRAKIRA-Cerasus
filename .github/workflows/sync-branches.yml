@@ -1,4 +1,4 @@
-name: Sync Develop to Locale Branch
+name: Sync Develop to Production Branch
 on:
   push:
     branches:
@@ -12,12 +12,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Merge develop -> locale
+      - name: Merge develop -> production
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "Github Actions"
           git config pull.rebase false
 
-          git checkout locale
+          git checkout production
           git pull origin develop
-          git push origin locale
+          git push origin production

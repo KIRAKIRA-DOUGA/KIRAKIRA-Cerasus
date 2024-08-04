@@ -316,7 +316,7 @@ export default {
 		_: "视图",
 		list: "列表",
 		grid: "网格",
-		tile: "磁贴",
+		tile: "平铺",
 	},
 	duration: "时长",
 	are_watching: "人正在看",
