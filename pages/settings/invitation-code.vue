@@ -12,7 +12,7 @@
 	async function createInvitationCode() {
 		const createInvitationCodeResult = await api.user.createInvitationCode();
 
-		if (!createInvitationCodeResult.isCoolingDown) {
+		if (createInvitationCodeResult.isCoolingDown) {
 			useToast("邀请码生成器正在冷却中，请稍后再试。", "warning", 5000); // TODO: 使用多语言
 			return;
 		}
@@ -52,16 +52,6 @@
 		if (loginStatus)
 			await getMyInvitationCode();
 	});
-
-	/**
-	 * 临时的创建邀请码
-	 */
-	function createInvitationCodeTemp() {
-		if (selfUserInfoStore.role !== "admin")
-			useToast("暂时不能创建新的邀请码了哦，请等待开放QWQ", "error");
-		else
-			createInvitationCode();
-	}
 </script>
 
 <template>
@@ -85,7 +75,7 @@
 		</div> -->
 	</div>
 
-	<SoftButton v-tooltip:bottom="t.create" class="create-button" icon="add" @click="createInvitationCodeTemp" />
+	<SoftButton v-tooltip:bottom="t.create" class="create-button" icon="add" @click="createInvitationCode" />
 
 	<div class="user-info chip">
 		<SettingsChipItem
