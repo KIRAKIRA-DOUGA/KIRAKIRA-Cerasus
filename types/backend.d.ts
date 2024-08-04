@@ -10,7 +10,7 @@ import * as _videoTag from "api/VideoTag/VideoTagControllerDto";
  */
 declare global {
 	// VideoCommentControllerDto
-	export type { GetUserBrowsingHistoryWithFilterRequestDto, GetUserBrowsingHistoryWithFilterResponseDto } from "api/BrowsingHistory/BrowsingHistoryControllerDto";
+	export type { AdminDeleteVideoCommentRequestDto, DeleteSelfVideoCommentRequestDto, GetUserBrowsingHistoryWithFilterRequestDto, GetUserBrowsingHistoryWithFilterResponseDto } from "api/BrowsingHistory/BrowsingHistoryControllerDto";
 	// VideoCommentControllerDto
 	export type { CancelVideoCommentDownvoteRequestDto, CancelVideoCommentUpvoteRequestDto, EmitVideoCommentDownvoteRequestDto, EmitVideoCommentRequestDto, EmitVideoCommentUpvoteRequestDto, GetVideoCommentByKvidRequestDto, GetVideoCommentByKvidResponseDto, VideoCommentResult } from "api/Comment/VideoCommentControllerDto";
 	// DanmakuControllerDto

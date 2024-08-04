@@ -84,8 +84,19 @@
 
 	onMounted(fetchVideoCommentData);
 
+	/**
+	 * 发送评论，将发送的评论添加到评论列表中
+	 */
 	useListen("videoComment:emitVideoComment", videoComment => {
 		comments.value.push(videoComment);
+	});
+
+	/**
+	 * 删除评论，根据被删除的评论路由来过滤评论列表
+	 * // TODO: 性能改进
+	 */
+	useListen("videoComment:deleteVideoComment", commentRoute => {
+		comments.value = comments.value.filter(comment => comment.commentRoute !== commentRoute);
 	});
 
 	useHead({

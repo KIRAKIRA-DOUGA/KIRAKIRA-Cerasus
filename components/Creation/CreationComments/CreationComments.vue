@@ -44,6 +44,8 @@
 				:commentId="comment._id"
 				:videoId
 				:index="comment.commentIndex"
+				:uid="comment.uid"
+				:commentRoute="comment.commentRoute"
 				:username="comment.userInfo?.username"
 				:avatar="comment.userInfo?.avatar"
 				:date="new Date(comment.editDateTime)"
@@ -68,16 +70,16 @@
 	.toolbar {
 		display: flex;
 		flex-wrap: wrap;
-		align-items: center;
 		justify-content: space-between;
+		align-items: center;
 		margin-top: 16px;
 
 		> * {
 			display: flex;
 			flex-wrap: wrap;
 			gap: 16px;
-			align-items: center;
 			justify-content: flex-end;
+			align-items: center;
 		}
 
 		.soft-button {
