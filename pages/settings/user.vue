@@ -84,13 +84,13 @@
 	definePageMeta(
 		{
 			middleware: [
-				(to, from) => {
+				(to: unknown) => {
 					// WARN: 此处需要重新创建 Store
 					const selfUserInfoStore = useSelfUserInfoStore();
 					if (selfUserInfoStore.role !== "admin")
 						return navigateTo("/settings/appearance");
 
-					if (to.path !== "/settings/user")
+					if (to && typeof to === "object" && "path" in to && to.path !== "/settings/user")
 						return navigateTo("/settings/user");
 				},
 			],
@@ -142,6 +142,7 @@
 		<Button @click="openBlockUserAlert" :disabled="!isAdmin || isOpeningBlockUserAlert" :loading="isOpeningBlockUserAlert">封禁用户</Button>
 	</div>
 
+	<!-- TODO: 使用多语言 -->
 	<Subheader icon="block">已封禁用户</Subheader>
 	<section>
 		<SettingsChipItem
