@@ -24,11 +24,13 @@ export function keys<K extends object>(obj: K) {
 }
 
 /**
- * 将所有可枚举自身属性的值从一个或多个源对象复制到目标对象。
+ * 将所有可枚举的自身属性从一个或多个源对象复制到目标对象。它返回修改后的目标对象。
  *
- * 相较于 `Object.assign`，输入的值的类型不会那么恶心。
- * @param target — 要复制到的目标对象。
- * @param source — 从中复制属性的源对象。
+ * 相较于 `Object.assign`，当您键入源对象时，您将享受 TypeScript 从源对象获得的属性类型提示。此外，由于 TypeScript
+ * 内置库的实现是将目标对象的类型与每个源对象的类型合并，事实上，我们只需要维护目标对象的原始类型。
+ *
+ * @param target — 要复制到的目标对象 — 将源属性应用于什么，在修改后返回。
+ * @param source — 从中复制属性的源对象 — 包含要应用的属性的对象。
  * @returns 返回目标对象。
  */
 export function assign<T extends object>(target: T, ...sources: Partial<T>[]): T {

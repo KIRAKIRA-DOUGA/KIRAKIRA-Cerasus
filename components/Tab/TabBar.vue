@@ -174,10 +174,14 @@
 				await delayTime();
 				setPosition1();
 				break;
-			case "ignore":
 			case "fade":
 				setPosition1();
 				setPosition2();
+				break;
+			case "ignore":
+				setPosition1();
+				setPosition2();
+				await setStyleWithoutTransition(indicatorStyle);
 				break;
 			default:
 				style[prev] = prevItemPosEntry[prev];

@@ -30,6 +30,19 @@ export function nextAnimationTick() {
 }
 
 /**
+ * 在设置元素样式时**暂时**禁用过渡动画。
+ * @param element - HTML DOM 元素及其 CSS 样式声明。
+ * @param style - CSS 样式。
+ */
+export async function setStyleWithoutTransition(element: HTMLElement | CSSStyleDeclaration, style: CSSProperties = {}) {
+	const styles = element instanceof CSSStyleDeclaration ? element : element.style;
+	Object.assign(styles, style);
+	styles.transition = "none";
+	await nextAnimationTick();
+	styles.transition = null!;
+}
+
+/**
  * 重播 CSS 动画。
  * @param element - HTML DOM 元素。
  * @param className - 具有动画的 CSS 类名。
