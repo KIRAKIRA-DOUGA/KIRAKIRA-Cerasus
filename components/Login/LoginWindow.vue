@@ -1073,12 +1073,12 @@
 
 	@keyframes name-move {
 		0% {
-			translate: 200px;
+			translate: calc(var(--avatar-movement) + 100px);
 			opacity: 0;
 		}
 
 		1% {
-			translate: 200px;
+			translate: calc(var(--avatar-movement) + 100px);
 			opacity: 1;
 		}
 
