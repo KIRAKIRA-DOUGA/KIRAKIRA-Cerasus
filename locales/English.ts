@@ -41,6 +41,7 @@ export default {
 		ko: "Korean",
 		vi: "Vietnamese",
 		id: "Indonesian",
+		fr: "French",
 	},
 	background: {
 		_: "Background",
@@ -58,6 +59,7 @@ export default {
 	},
 	confetti: "Confetti",
 	send: "Send",
+	resend: "Resend",
 	query: "Query",
 	on: "On",
 	off: "Off",

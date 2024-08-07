@@ -45,6 +45,7 @@ export default {
 		ko: "韩语",
 		vi: "越南语",
 		id: "印尼语",
+		fr: "法语",
 	},
 	background: {
 		_: "背景",
@@ -62,6 +63,7 @@ export default {
 	},
 	confetti: "五彩纸屑",
 	send: "发送",
+	resend: "重新发送",
 	query: "查询",
 	on: "开",
 	off: "关",
