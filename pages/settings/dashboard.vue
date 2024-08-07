@@ -68,6 +68,7 @@
 
 			.name {
 				display: flex;
+				flex-wrap: wrap;
 				gap: 8px;
 				font-size: 24px;
 

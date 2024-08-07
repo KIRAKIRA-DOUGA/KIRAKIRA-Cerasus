@@ -114,7 +114,7 @@
 	/**
 	 * 用户注册，其一。
 	 */
-	const checkUsernameAndJumpNextPage = async () => {
+	async function checkUsernameAndJumpNextPage() {
 		if (!username.value && username.value.length <= 0) {
 			useToast("用户名不能为空！", "error"); // TODO: 使用多语言
 			return;
@@ -139,14 +139,14 @@
 		else
 			useToast("用户名无效，请更换一个", "warning", 5000); // TODO: 使用多语言
 		isCheckingUsername.value = false;
-	};
+	}
 
 	const PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD = "密码提示中不允许包含密码本身"; // TODO: 使用多语言
 	const INVITATION_CODE_INVALID_TEXT = "邀请码不能为空或格式有误。"; // TODO: 使用多语言
 	/**
 	 * 用户注册，其二。
 	 */
-	const checkAndJumpNextPage = async () => {
+	async function checkAndJumpNextPage() {
 		if (!invitationCode.value || !invitationCodeInvalidText) { // 判断邀请码为空或者格式错误
 			useToast(INVITATION_CODE_INVALID_TEXT, "error");
 			return;
@@ -159,29 +159,22 @@
 		isCheckingEmail.value = true;
 		if (email.value && password.value) {
 			const userExistsCheckRequest: UserExistsCheckRequestDto = { email: email.value };
-			const locale = getCurrentLocaleLangCode();
-			const requestSendVerificationCodeRequest: RequestSendVerificationCodeRequestDto = {
-				email: email.value,
-				clientLanguage: locale,
-			};
 			const checkInvitationCodeRequestDto: CheckInvitationCodeRequestDto = {
 				invitationCode: invitationCode.value,
 			};
 			try {
 				const userExistsCheckResult = await api.user.userExistsCheck(userExistsCheckRequest);
 				if (userExistsCheckResult.success && !userExistsCheckResult.exists) {
-					const requestSendVerificationCodePromise = api.user.requestSendVerificationCode(requestSendVerificationCodeRequest);
-					const checkInvitationCodePromise = api.user.checkInvitationCode(checkInvitationCodeRequestDto);
-					const [requestSendVerificationCodeResponse, checkInvitationCodeResponse] = await Promise.all([requestSendVerificationCodePromise, checkInvitationCodePromise]);
+					const checkInvitationCodeResponse = await api.user.checkInvitationCode(checkInvitationCodeRequestDto);
 
-					if (!requestSendVerificationCodeResponse.isTimeout)
-						if (checkInvitationCodeResponse.success && checkInvitationCodeResponse.isAvailableInvitationCode) {
-							isCheckingEmail.value = false;
-							currentPage.value = "register3";
-						} else
-							useToast("邀请码不合规或者已被使用", "error", 5000); // TODO: 使用多语言
-					else
-						useToast("操作太快啦~ 请稍后再试", "warning", 5000); // TODO: 使用多语言
+					isCheckingEmail.value = false;
+					currentPage.value = "register3";
+
+					if (checkInvitationCodeResponse.success && checkInvitationCodeResponse.isAvailableInvitationCode) {
+						isCheckingEmail.value = false;
+						currentPage.value = "register3";
+					} else
+						useToast("邀请码不合规或者已被使用", "error", 5000); // TODO: 使用多语言
 				} else
 					useToast("该邮箱已注册，请更换", "error", 5000); // TODO: 使用多语言
 			} catch (error) {
@@ -190,7 +183,7 @@
 		} else
 			useToast("请输入用户名和密码", "error"); // TODO: 使用多语言
 		isCheckingEmail.value = false;
-	};
+	}
 
 	/**
 	 * 用户注册，其三。
@@ -260,8 +253,8 @@
 	const passwordHintInvalidText = ref<string | boolean>();
 
 	/**
-	 * 校验密码提示中是否包含密码自身
-	 * @param e 用户输入事件
+	 * 校验密码提示中是否包含密码自身。
+	 * @param e - 用户输入事件。
 	 */
 	function checkPasswordHintIncludesPassword(e: InputEvent) {
 		const targe = e.target as HTMLInputElement;
@@ -270,6 +263,23 @@
 			passwordHintInvalidText.value = PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD;
 		else
 			passwordHintInvalidText.value = false;
+	}
+
+	/**
+	 * 发送注册验证码
+	 */
+	async function sendRegisterVerificationCode() {
+		if (!email.value) return;
+		const locale = getCurrentLocaleLangCode();
+		const requestSendVerificationCodeRequest: RequestSendVerificationCodeRequestDto = {
+			email: email.value,
+			clientLanguage: locale,
+		};
+		const requestSendVerificationCodeResponse = await api.user.requestSendVerificationCode(requestSendVerificationCodeRequest);
+		if (!requestSendVerificationCodeResponse.isTimeout)
+			console.log(requestSendVerificationCodeResponse);
+		else
+			useToast("操作太快啦~ 请稍后再试", "warning", 5000); // TODO: 使用多语言
 	}
 </script>
 
@@ -414,14 +424,7 @@
 						<HeadingGroup :name="t.register" englishName="Register" class="collapse" />
 						<div class="form">
 							<div><Preserves>{{ t.loginwindow.register_email_sent_info }}</Preserves></div>
-							<TextBox
-								v-model="verificationCode"
-								type="text"
-								:placeholder="t.verification_code"
-								icon="verified"
-								:required="true"
-								autoComplete="one-time-code"
-							/>
+							<SendVerificationCode v-model="verificationCode" :email="email" @send="sendRegisterVerificationCode" />
 							<!-- TODO: [Aira] There should be a resend button on the right of the verification code textbox -->
 							<TextBox
 								v-model="confirmPassword"

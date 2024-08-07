@@ -14,7 +14,7 @@ export function normalizeNumber(num: number | bigint | string) {
 			float += "";
 			let dot = float.indexOf(".");
 			if (dot === -1) dot = float.length;
-			dot = (direct > 0 ? dot + 1 : dot - 1);
+			dot = direct > 0 ? dot + 1 : dot - 1;
 			float = float.replace(".", "");
 			if (dot === float.length) void 0;
 			else if (dot > float.length) float += "0";
@@ -97,6 +97,7 @@ export function getCompactDecimal(value: number | bigint) {
 		// vi: ["V", "Ứ", "Tr", "K", "Giai", "T", "Nhương", "Câu", "Giản", "Chánh", "Tái", "Cực", "Hằng Hà Sa", "A Tăng Kỳ", "Na Do Tha", "Bất Khả Tư Nghị", "Vô Lượng", "Đại Sổ"], // In Ancient Vietnamese Number
 		vi: ["N", "Tr", "T", "NT", "TrT", "TT", "NTT", "TrTT", "TTT", "NTTT"], // In Modern Vietnamese Number
 		id: ["rb", "jt", "M", "T", "KT", "QI", "SX", "SP"],
+		fr: ["k", "M", "Md", "Bn"],
 	};
 	const unit = units[keys(units).find(code => locale.value.startsWith(code)) ?? "en"];
 	const spaceBeforeUnit = ["vi", "id"].some(startsWithLang) ? " " : "";

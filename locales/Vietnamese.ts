@@ -45,6 +45,7 @@ export default {
 		ko: "Tiếng Hàn",
 		vi: "Tiếng Việt",
 		id: "Tiếng Indonesia",
+		fr: "Tiếng Pháp",
 	},
 	background: {
 		_: "Phông nền",
@@ -150,7 +151,7 @@ export default {
 			_: "Thanh điều khiển",
 			show_frame_by_frame: "Hiển thị điều khiển từng khung hình",
 		},
-		screenshot: "Ảnh chụp màn hình",
+		screenshot: "Chụp ảnh màn hình",
 		stats: "Thống kê",
 		autoplay: "Tự động phát",
 		filter: {

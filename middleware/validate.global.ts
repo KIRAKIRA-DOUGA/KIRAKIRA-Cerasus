@@ -24,6 +24,17 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 		appSettingsStore.lastSettingPage = settingPageId;
 		return;
 	}
+	if (routeSlug[0] === "video") {
+		const checkKvidResult = await checkKvid(routeSlug[1]);
+		if (checkKvidResult === true) {
+			if (!routeSlug[1] || routeSlug.length >= 3 && !to.name)
+				return navigate(`/video/${routeSlug[1]}`);
+		} else
+			return abortNavigation({
+				statusCode: 404,
+				message: checkKvidResult.message,
+			});
+	}
 	if (routeSlug[0] === "user") {
 		const uid = await getUserInfo(routeSlug[1]);
 		if (typeof uid === "bigint") {
@@ -60,6 +71,33 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 });
 
 /**
+ * 检查 KVID 是否存在
+ * @param kvidString URL 中的 KVID 字符
+ * @returns 存在返回 true，否则返回一个 Error
+ */
+async function checkKvid(kvidString: string): Promise<true | Error> {
+	try {
+		const match = kvidString.match(/(\d+)/);
+		if (match) {
+			const kvidBigInt = BigInt(match[0]);
+			const kvidNumber = Number(kvidBigInt);
+			if (kvidNumber.toString().includes("e")) return new Error(`你输入的 KVID: ${kvidNumber} 超出琪露诺能理解的数值范围`);
+			const getVideoByKvidRequest: GetVideoByKvidRequestDto = {
+				videoId: kvidNumber,
+			};
+			const videoInfoResult = await api.video.getVideoByKvid(getVideoByKvidRequest);
+			if (videoInfoResult.success && videoInfoResult.video)
+				return true;
+			else
+				return new Error("你输入的 KVID 不存在");
+		} else
+			return new Error("请输入 KVID");
+	} catch (e) {
+		return new Error("你输入的 KVID 不合法");
+	}
+}
+
+/**
  * 如果用户已登录，则根据 cookie 中的 uid 和 token 来获取用户信息（同时具有验证用户 token 的功能）。
  * 如果未登录或验证不成功，则清空全局变量中的用户信息并清空残留 cookie。
  * @param uid - 显式指定其他用户的 UID。
@@ -71,11 +109,13 @@ async function getUserInfo(uid?: string) {
 		try {
 			uidBigInt = BigInt(uid);
 		} catch { return new Error(`你输入的 UID: ${uid} 不合法`); }
-		const userInfoResult = await api.user.getUserInfo({ uid: Number(uidBigInt) }); // TODO: UID 最好使用 string 或 bigint 存储，不要用 number 存储。
+		const uidNumber = Number(uidBigInt);
+		if (uidNumber.toString().includes("e")) return new Error(`你输入的 UID: ${uidBigInt} 超出琪露诺能理解的数值范围`);
+		const userInfoResult = await api.user.getUserInfo({ uid: uidNumber }); // TODO: UID 最好使用 string 或 bigint 存储，不要用 number 存储。
 		if (userInfoResult.success) return uidBigInt;
 		else return new Error(`你输入的 UID: ${uidBigInt} 用户不存在`);
 	}
-	// 未指定 UID，打开该自己的用户主页。
+	// 未指定 UID，打开自己的用户主页。
 	const checkUserResult = await api.user.checkUserToken();
 	if (checkUserResult.success && checkUserResult.userTokenOk)
 		try {

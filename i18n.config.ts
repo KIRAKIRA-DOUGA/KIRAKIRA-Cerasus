@@ -5,6 +5,7 @@ import ja from "locales/Japanese";
 import ko from "locales/Korean";
 import vi from "locales/Vietnamese";
 import id from "locales/Indonesian";
+import fr from "locales/French";
 
 export default defineI18nConfig(() => ({
 	legacy: false,
@@ -17,6 +18,7 @@ export default defineI18nConfig(() => ({
 		ko,
 		vi,
 		id,
+		fr,
 	},
 	fallbackLocale: {
 		zht: ["zhs"],

@@ -45,6 +45,7 @@ export default {
 		ko: "韓国語",
 		vi: "ベトナム語",
 		id: "インドネシア語",
+		fr: "フランス語",
 	},
 	background: {
 		_: "背景",

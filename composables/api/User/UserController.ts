@@ -104,18 +104,21 @@ export const checkUserToken = async (): Promise<CheckUserTokenResponseDto> => {
 export const userLogout = async (): Promise<UserLogoutResponseDto> => {
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	const logoutResult = await GET(`${USER_API_URL}/logout`, { credentials: "include" }) as UserLogoutResponseDto;
-	const selfUserInfoStore = useSelfUserInfoStore();
-	selfUserInfoStore.isLogined = false;
-	selfUserInfoStore.uid = undefined;
-	selfUserInfoStore.userCreateDateTime = 0;
-	selfUserInfoStore.role = "user";
-	selfUserInfoStore.userEmail = "";
-	selfUserInfoStore.userAvatar = "";
-	selfUserInfoStore.username = "";
-	selfUserInfoStore.userNickname = "";
-	selfUserInfoStore.gender = "";
-	selfUserInfoStore.signature = "";
-	selfUserInfoStore.tags = [];
+	if (logoutResult.success) {
+		const selfUserInfoStore = useSelfUserInfoStore();
+		selfUserInfoStore.isLogined = false;
+		selfUserInfoStore.uid = undefined;
+		selfUserInfoStore.userCreateDateTime = 0;
+		selfUserInfoStore.role = "user";
+		selfUserInfoStore.userEmail = "";
+		selfUserInfoStore.userAvatar = "";
+		selfUserInfoStore.username = "";
+		selfUserInfoStore.userNickname = "";
+		selfUserInfoStore.gender = "";
+		selfUserInfoStore.signature = "";
+		selfUserInfoStore.tags = [];
+	} else
+		console.error("ERROR", "用户登出失败"); // TODO: 使用多语言
 	return logoutResult;
 };
 

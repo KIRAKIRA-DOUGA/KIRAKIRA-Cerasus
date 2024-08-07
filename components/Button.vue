@@ -86,6 +86,10 @@
 		&.icon-behind {
 			--icon-behind: true;
 		}
+		
+		&:deep(*) {
+			font-variant-numeric: inherit;
+		}
 	}
 
 	.button-content {
