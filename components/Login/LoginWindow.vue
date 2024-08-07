@@ -166,10 +166,6 @@
 				const userExistsCheckResult = await api.user.userExistsCheck(userExistsCheckRequest);
 				if (userExistsCheckResult.success && !userExistsCheckResult.exists) {
 					const checkInvitationCodeResponse = await api.user.checkInvitationCode(checkInvitationCodeRequestDto);
-
-					isCheckingEmail.value = false;
-					currentPage.value = "register3";
-
 					if (checkInvitationCodeResponse.success && checkInvitationCodeResponse.isAvailableInvitationCode) {
 						isCheckingEmail.value = false;
 						currentPage.value = "register3";
