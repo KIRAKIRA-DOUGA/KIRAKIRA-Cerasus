@@ -1,4 +1,4 @@
-const TIMEOUT = 20;
+const TIMEOUT = 60;
 
 export const useSendVerificationCodeTimeout = defineStore("send-verification-code-timeout", () => {
 	const timeout = ref(0);

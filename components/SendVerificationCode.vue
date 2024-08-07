@@ -16,16 +16,16 @@
 	/**
 	 * 发送验证码。
 	 */
-	async function sendVerificationCode() {
+	function sendVerificationCode() {
 		emits("send");
-		if (!props.email) return;
-		const locale = getCurrentLocaleLangCode();
-		const requestSendVerificationCodeRequest: RequestSendVerificationCodeRequestDto = {
-			email: props.email,
-			clientLanguage: locale,
-		};
-		const requestSendVerificationCodePromise = api.user.requestSendVerificationCode(requestSendVerificationCodeRequest);
-		await requestSendVerificationCodePromise;
+		// if (!props.email) return;
+		// const locale = getCurrentLocaleLangCode();
+		// const requestSendVerificationCodeRequest: RequestSendVerificationCodeRequestDto = {
+		// 	email: props.email,
+		// 	clientLanguage: locale,
+		// };
+		// const requestSendVerificationCodePromise = api.user.requestSendVerificationCode(requestSendVerificationCodeRequest);
+		// await requestSendVerificationCodePromise;
 	}
 </script>
 

@@ -166,18 +166,15 @@
 				const userExistsCheckResult = await api.user.userExistsCheck(userExistsCheckRequest);
 				if (userExistsCheckResult.success && !userExistsCheckResult.exists) {
 					const checkInvitationCodeResponse = await api.user.checkInvitationCode(checkInvitationCodeRequestDto);
-					
+
 					isCheckingEmail.value = false;
 					currentPage.value = "register3";
 
-					// if (!requestSendVerificationCodeResponse.isTimeout) // FIXME: 下面这些不知道咋写了。
-					// 	if (checkInvitationCodeResponse.success && checkInvitationCodeResponse.isAvailableInvitationCode) {
-					// 		isCheckingEmail.value = false;
-					// 		currentPage.value = "register3";
-					// 	} else
-					// 		useToast("邀请码不合规或者已被使用", "error", 5000); // TODO: 使用多语言
-					// else
-					// 	useToast("操作太快啦~ 请稍后再试", "warning", 5000); // TODO: 使用多语言
+					if (checkInvitationCodeResponse.success && checkInvitationCodeResponse.isAvailableInvitationCode) {
+						isCheckingEmail.value = false;
+						currentPage.value = "register3";
+					} else
+						useToast("邀请码不合规或者已被使用", "error", 5000); // TODO: 使用多语言
 				} else
 					useToast("该邮箱已注册，请更换", "error", 5000); // TODO: 使用多语言
 			} catch (error) {
@@ -266,6 +263,23 @@
 			passwordHintInvalidText.value = PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD;
 		else
 			passwordHintInvalidText.value = false;
+	}
+
+	/**
+	 * 发送注册验证码
+	 */
+	async function sendRegisterVerificationCode() {
+		if (!email.value) return;
+		const locale = getCurrentLocaleLangCode();
+		const requestSendVerificationCodeRequest: RequestSendVerificationCodeRequestDto = {
+			email: email.value,
+			clientLanguage: locale,
+		};
+		const requestSendVerificationCodeResponse = await api.user.requestSendVerificationCode(requestSendVerificationCodeRequest);
+		if (!requestSendVerificationCodeResponse.isTimeout)
+			console.log(requestSendVerificationCodeResponse);
+		else
+			useToast("操作太快啦~ 请稍后再试", "warning", 5000); // TODO: 使用多语言
 	}
 </script>
 
@@ -410,7 +424,7 @@
 						<HeadingGroup :name="t.register" englishName="Register" class="collapse" />
 						<div class="form">
 							<div><Preserves>{{ t.loginwindow.register_email_sent_info }}</Preserves></div>
-							<SendVerificationCode v-model="verificationCode" :email="email" />
+							<SendVerificationCode v-model="verificationCode" :email="email" @send="sendRegisterVerificationCode" />
 							<!-- TODO: [Aira] There should be a resend button on the right of the verification code textbox -->
 							<TextBox
 								v-model="confirmPassword"
