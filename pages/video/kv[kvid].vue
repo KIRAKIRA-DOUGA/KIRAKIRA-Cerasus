@@ -1,10 +1,4 @@
 <script setup lang="ts">
-	import exampleVideoPath from "assets/videos/shibamata.mp4";
-	import defaultThumbnail from "assets/images/av820864307.jpg";
-
-	// const exampleVideoPath = "https://video_api.kms233.com/bili/av9912788";
-	// 暂时不要用在线视频链接，虽然可以用，但是每次查看视频详细信息我都要等好久。
-
 	const route = useRoute();
 	const kvid = +route.params.kvid;
 	const videoSource = ref<string>();
@@ -50,21 +44,8 @@
 					handleError("获取视频失败，结果异常！"); // TODO: 使用多语言
 			} else
 				handleError("获取视频失败，请求失败！"); // TODO: 使用多语言
-		} else {
-			handleError("未获取到视频 ID，开始使用默认视频！", "warning"); // TODO: 使用多语言
-			videoSource.value = exampleVideoPath;
-			videoDetails.value = {
-				videoPart: [{ id: 0, videoPartTitle: "柴又", link: exampleVideoPath }],
-				title: "柴又",
-				videoTagList: [{ tagId: -1, tagNameList: [{ lang: "default", tagName: "233" }] }, { tagId: -1, tagNameList: [{ lang: "default", tagName: "天下笨蛋是一家" }] }, { tagId: -1, tagNameList: [{ lang: "default", tagName: "艾拉原创出品" }] }],
-				uploaderInfo: { uid: -1, username: "艾了个拉" },
-				uploadDate: new Date().getTime(),
-				videoId: 0,
-				videoCategory: "音MAD",
-				copyright: "repost",
-				image: defaultThumbnail,
-			};
-		}
+		} else
+			handleError("未获取到 KVID，开始使用默认视频！", "warning"); // TODO: 使用多语言
 	}
 
 	/**

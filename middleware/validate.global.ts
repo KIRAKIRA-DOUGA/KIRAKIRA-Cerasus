@@ -24,6 +24,17 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 		appSettingsStore.lastSettingPage = settingPageId;
 		return;
 	}
+	if (routeSlug[0] === "video") {
+		const checkKvidResult = await checkKvid(routeSlug[1]);
+		if (checkKvidResult === true) {
+			if (!routeSlug[1] || routeSlug.length >= 3 && !to.name)
+				return navigate(`/video/${routeSlug[1]}`);
+		} else
+			return abortNavigation({
+				statusCode: 404,
+				message: checkKvidResult.message,
+			});
+	}
 	if (routeSlug[0] === "user") {
 		const uid = await getUserInfo(routeSlug[1]);
 		if (typeof uid === "bigint") {
@@ -58,6 +69,33 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 			});
 	}
 });
+
+/**
+ * 检查 KVID 是否存在
+ * @param kvidString URL 中的 KVID 字符
+ * @returns 存在返回 true，否则返回一个 Error
+ */
+async function checkKvid(kvidString: string): Promise<true | Error> {
+	try {
+		const match = kvidString.match(/(\d+)/);
+		if (match) {
+			const kvidBigInt = BigInt(match[0]);
+			const kvidNumber = Number(kvidBigInt);
+			if (kvidNumber.toString().includes("e")) return new Error(`你输入的 KVID: ${kvidNumber} 超出琪露诺能理解的数值范围`);
+			const getVideoByKvidRequest: GetVideoByKvidRequestDto = {
+				videoId: kvidNumber,
+			};
+			const videoInfoResult = await api.video.getVideoByKvid(getVideoByKvidRequest);
+			if (videoInfoResult.success && videoInfoResult.video)
+				return true;
+			else
+				return new Error("你输入的 KVID 不存在");
+		} else
+			return new Error("请输入 KVID");
+	} catch (e) {
+		return new Error("你输入的 KVID 不合法");
+	}
+}
 
 /**
  * 如果用户已登录，则根据 cookie 中的 uid 和 token 来获取用户信息（同时具有验证用户 token 的功能）。
