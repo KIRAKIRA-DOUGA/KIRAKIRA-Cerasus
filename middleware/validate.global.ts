@@ -71,7 +71,9 @@ async function getUserInfo(uid?: string) {
 		try {
 			uidBigInt = BigInt(uid);
 		} catch { return new Error(`你输入的 UID: ${uid} 不合法`); }
-		const userInfoResult = await api.user.getUserInfo({ uid: Number(uidBigInt) }); // TODO: UID 最好使用 string 或 bigint 存储，不要用 number 存储。
+		const uidNumber = Number(uidBigInt);
+		if (uidNumber.toString().includes("e")) return new Error(`你输入的 UID: ${uidBigInt} 超出琪露诺能理解的数值范围`);
+		const userInfoResult = await api.user.getUserInfo({ uid: uidNumber }); // TODO: UID 最好使用 string 或 bigint 存储，不要用 number 存储。
 		if (userInfoResult.success) return uidBigInt;
 		else return new Error(`你输入的 UID: ${uidBigInt} 用户不存在`);
 	}
