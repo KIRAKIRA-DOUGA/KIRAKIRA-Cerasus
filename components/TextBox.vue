@@ -550,6 +550,10 @@
 		input:invalid ~ & :deep(.icon) {
 			color: c(red) !important;
 		}
+
+		:slotted(button) {
+			height: var(--height);
+		}
 	}
 
 	:deep(.soft-button) {
