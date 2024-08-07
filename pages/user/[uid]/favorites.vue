@@ -77,7 +77,7 @@
 			</div>
 			<main>
 				<ThumbGrid>
-					<ThumbVideo
+					<!-- <ThumbVideo
 						v-for="i in 5"
 						:key="i"
 						link="video"
@@ -85,7 +85,7 @@
 						:date="new Date()"
 						:watchedCount="233_0000"
 						:duration="new Duration(2, 33)"
-					>{{ "测试视频".repeat(10) }}</ThumbVideo>
+					>{{ "测试视频".repeat(10) }}</ThumbVideo> -->
 				</ThumbGrid>
 			</main>
 		</div>
@@ -119,8 +119,8 @@
 		position: absolute;
 		top: 0;
 		display: flex;
-		align-items: center;
 		justify-content: space-between;
+		align-items: center;
 		padding: 6px;
 
 		&:first-child {
