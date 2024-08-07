@@ -77,7 +77,7 @@ async function getUserInfo(uid?: string) {
 		if (userInfoResult.success) return uidBigInt;
 		else return new Error(`你输入的 UID: ${uidBigInt} 用户不存在`);
 	}
-	// 未指定 UID，打开该自己的用户主页。
+	// 未指定 UID，打开自己的用户主页。
 	const checkUserResult = await api.user.checkUserToken();
 	if (checkUserResult.success && checkUserResult.userTokenOk)
 		try {
