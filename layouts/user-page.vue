@@ -83,7 +83,6 @@
 							<span class="icons">
 								<Icon v-if="isSelf ? userSelfInfoStore.gender === 'male' : userInfo?.gender === 'male'" name="male" class="male" />
 								<Icon v-else-if="isSelf ? userSelfInfoStore.gender === 'female' : userInfo?.gender === 'female'" name="female" class="female" />
-								<span v-else class="other-gender">{{ isSelf ? userSelfInfoStore.gender : userInfo?.gender }}</span>
 							</span>
 						</div>
 						<div class="bio">{{ isSelf ? userSelfInfoStore.signature : userInfo?.signature }}</div>
@@ -211,12 +210,6 @@
 
 					.female {
 						color: c(pink);
-					}
-
-					.other-gender {
-						background: linear-gradient(to right, #58c8f2, #eda4b2);
-						background-clip: text;
-						-webkit-text-fill-color: transparent;
 					}
 				}
 			}
