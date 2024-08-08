@@ -35,7 +35,7 @@
 	/** 常用速度列表。 */
 	const loopedPlaybackRates = [0.5, 1, 2];
 	/** 有级速度列表。 */
-	const stepedPlaybackRates = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 3, 4];
+	const steppedPlaybackRates = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 3, 4];
 
 	const playing = defineModel<boolean>("playing", { default: false });
 	const playbackRate = defineModel<number>("playbackRate", { default: 1 });
@@ -63,9 +63,9 @@
 		set: value => {
 			value = 2 ** value;
 			if (!continuousRateControl.value) {
-				const variances = stepedPlaybackRates.map(rate => (value - rate) ** 2);
+				const variances = steppedPlaybackRates.map(rate => (value - rate) ** 2);
 				const minimum = Math.min(...variances);
-				value = stepedPlaybackRates[variances.indexOf(minimum)];
+				value = steppedPlaybackRates[variances.indexOf(minimum)];
 			}
 			playbackRate.value = value;
 		},
@@ -114,7 +114,7 @@
 	function switchSpeedByDirection(increment: 1 | -1) {
 		showMenuByKeyboard(rateMenu);
 		const rate = playbackRate.value;
-		const rates = stepedPlaybackRates.slice();
+		const rates = steppedPlaybackRates.slice();
 		if (!rates.includes(rate)) {
 			rates.push(rate);
 			rates.sort();

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import startSound from "assets/audios/NOVA 2022.1 Alert Quick.ogg";
+	import startSound from "assets/audios/华_音MAD.ogg";
 	const startSoundAudio = ref<HTMLAudioElement>();
 
 	const props = defineProps<{
