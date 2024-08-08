@@ -20,10 +20,9 @@
 	const isChangingPassword = ref(false);
 
 	/**
-	 * 打开修改 Email 的对话框，同时请求发送修改邮箱的验证码
+	 * 请求发送修改邮箱的验证码
 	 */
-	function openChangeEmailModel() {
-		showChangeEmail.value = true;
+	function requestSendChangeEmailEmail() {
 		const locale = getCurrentLocaleLangCode();
 		const requestSendChangeEmailVerificationCodeRequest: RequestSendChangeEmailVerificationCodeRequestDto = {
 			clientLanguage: locale,
@@ -70,10 +69,9 @@
 	}
 
 	/**
-	 * 打开修改密码的对话框，同时请求发送修改邮箱的验证码
+	 * 请求发送修改邮箱的验证码
 	 */
-	function openChangePasswordModel() {
-		showChangePassword.value = true;
+	function requestSendChangePasswordEmail() {
 		const locale = getCurrentLocaleLangCode();
 		const requestSendChangePasswordVerificationCodeRequest: RequestSendChangePasswordVerificationCodeRequestDto = {
 			clientLanguage: locale,
@@ -130,7 +128,7 @@
 			icon="email"
 			trailingIcon="edit"
 			:details="t.current_email + t.colon + selfUserInfoStore.userEmail"
-			@trailingIconClick="openChangeEmailModel"
+			@trailingIconClick="showChangeEmail = true;"
 		>{{ t.email_address }}</SettingsChipItem>
 	</section>
 	<section>
@@ -138,7 +136,7 @@
 			icon="password"
 			trailingIcon="edit"
 			:details="t.modification_date + t.colon + passwordChangeDateDisplay"
-			@trailingIconClick="openChangePasswordModel"
+			@trailingIconClick="showChangePassword = true;"
 		>{{ t.password }}</SettingsChipItem>
 	</section>
 	<section>
@@ -152,11 +150,8 @@
 	<!-- TODO: 使用多语言 -->
 	<Modal v-model="showChangeEmail" title="更改邮箱" icon="email">
 		<div class="change-email-modal">
-			<!-- TODO: 使用多语言 -->
-			<div>验证码已发送至您的旧邮箱。</div>
 			<form>
-				<!-- TODO: 使用多语言 -->
-				<TextBox v-model="changeEmailVerificationCode" :required="true" type="text" icon="verified" placeholder="验证码" autoComplete="change-email-verified-code" />
+				<SendVerificationCode v-model="changeEmailVerificationCode" @send="requestSendChangeEmailEmail" />
 				<!-- TODO: 使用多语言 -->
 				<TextBox v-model="newEmail" :required="true" :invalid="isInvalidNewEmail" type="email" icon="lock" placeholder="新邮箱" autoComplete="new-email" />
 				<TextBox v-model="changeEmailPassword" :required="true" type="password" icon="lock" :placeholder="t.password._" autoComplete="current-password" />
@@ -165,18 +160,13 @@
 		<template #footer-right>
 			<Button class="secondary" @click="showChangePassword = false">{{ t.step.cancel }}</Button>
 			<Button @click="updateUserEmail" :disabled="isChangingEmail" :loading="isChangingEmail">{{ t.step.apply }}</Button>
-			<!-- TODO: Use a toast to show success or not, usage can be seen in page/components. -->
-			<!-- if success, the modal should be closed automaticly -->
 		</template>
 	</Modal>
 
 	<Modal v-model="showChangePassword" :title="t.password.change" icon="password">
 		<div class="change-password-modal">
-			<!-- TODO: 使用多语言 -->
-			<div>验证码已发送至您的邮箱。</div>
 			<form>
-				<!-- TODO: 使用多语言 -->
-				<TextBox v-model="changePasswordVerificationCode" :required="true" type="text" icon="verified" placeholder="验证码" autoComplete="change-email-verified-code" />
+				<SendVerificationCode v-model="changeEmailVerificationCode" @send="requestSendChangePasswordEmail" />
 				<TextBox v-model="oldPassword" :required="true" type="password" icon="lock" :placeholder="t.password.current" autoComplete="current-password" />
 				<TextBox v-model="newPassword" :required="true" type="password" icon="lock" :placeholder="t.password.new" autoComplete="new-password" />
 				<TextBox v-model="confirmNewPassword" :required="true" type="password" icon="lock" :placeholder="t.password.new_retype" autoComplete="new-password" />
@@ -185,8 +175,6 @@
 		<template #footer-right>
 			<Button class="secondary" @click="showChangePassword = false">{{ t.step.cancel }}</Button>
 			<Button @click="updateUserPassword" :disabled="isChangingPassword" :loading="isChangingPassword">{{ t.step.apply }}</Button>
-			<!-- TODO: Use a toast to show success or not, usage can be seen in page/components. -->
-			<!-- if success, the modal should be closed automaticly -->
 		</template>
 	</Modal>
 </template>

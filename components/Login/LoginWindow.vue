@@ -421,7 +421,6 @@
 						<div class="form">
 							<div><Preserves>{{ t.loginwindow.register_email_sent_info }}</Preserves></div>
 							<SendVerificationCode v-model="verificationCode" :email="email" @send="sendRegisterVerificationCode" />
-							<!-- TODO: [Aira] There should be a resend button on the right of the verification code textbox -->
 							<TextBox
 								v-model="confirmPassword"
 								type="password"
