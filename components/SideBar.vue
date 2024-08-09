@@ -111,7 +111,7 @@
 
 		<div class="bottom icons">
 			<Avatar class="pc" @click="onClickUser" />
-			<SoftButton v-tooltip="t.notification" icon="notifications" :active="!!flyoutNotification" @click="e => flyoutNotification = [e]" />
+			<SoftButton v-if="selfUserInfoStore.isLogined" v-tooltip="t.notification" icon="notifications" :active="!!flyoutNotification" @click="e => flyoutNotification = [e]" />
 			<SoftButton v-tooltip="t.settings" class="pc icon-settings" icon="settings" href="/settings" :active="isCurrentSettings" />
 			<SoftButton v-tooltip="t.search" class="pe" icon="search" href="/search" />
 		</div>
@@ -366,31 +366,31 @@
 		> * {
 			pointer-events: none;
 		}
-		
+
 		.offcanvas ~ * &,
 		&:any-hover,
 		&:active {
 			:deep(.icon) {
 				color: c(accent);
 			}
-			
+
 			.user-avatar {
 				--hover: true;
 				background-color: c(accent-5);
 			}
 		}
-		
+
 		.offcanvas ~ * & .user-avatar {
 			--tint: true;
 		}
-		
+
 		&:any-hover {
 			opacity: 1;
 		}
-		
+
 		&:active {
 			opacity: 0.6;
-			
+
 			.decorative-icon {
 				scale: 1 0.75;
 			}
