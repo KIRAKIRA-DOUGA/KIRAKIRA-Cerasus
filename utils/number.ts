@@ -85,8 +85,9 @@ export function digitCase(n: number | bigint, upperCase: boolean = false, amount
  */
 export function getCompactDecimal(value: number | bigint) {
 	value = typeof value === "number" ? BigInt(Math.trunc(value)) : value;
-	const { locale } = useI18n();
-	const startsWithLang = (lang: string) => locale.value.startsWith(lang);
+	let locale = useI18n().locale.value;
+	if (locale === "yue") locale = "zht";
+	const startsWithLang = (lang: string) => locale.startsWith(lang);
 	const radix = ["zh", "ja", "ko"].some(startsWithLang) ? 10000n : 1000n;
 	const units = {
 		zhs: ["万", "亿", "兆", "京", "垓", "秭", "穰", "沟", "涧", "正", "载", "极", "恒河沙", "阿僧祇", "那由他", "不可思议", "无量", "大数"],
@@ -99,7 +100,7 @@ export function getCompactDecimal(value: number | bigint) {
 		id: ["rb", "jt", "M", "T", "KT", "QI", "SX", "SP"],
 		fr: ["k", "M", "Md", "Bn"],
 	};
-	const unit = units[keys(units).find(code => locale.value.startsWith(code)) ?? "en"];
+	const unit = units[keys(units).find(code => locale.startsWith(code)) ?? "en"];
 	const spaceBeforeUnit = ["vi", "id"].some(startsWithLang) ? " " : "";
 
 	let value_str = value + "";

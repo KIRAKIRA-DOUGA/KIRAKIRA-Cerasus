@@ -42,6 +42,7 @@ export default {
 		vi: "Vietnamese",
 		id: "Indonesian",
 		fr: "French",
+		yue: "Cantonese",
 	},
 	background: {
 		_: "Background",

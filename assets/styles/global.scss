@@ -39,6 +39,14 @@
 	}
 }
 
+:lang(yue) {
+	&,
+	&::before,
+	&::after {
+		font-family: $traditional-chinese-hongkong-fonts;
+	}
+}
+
 :lang(ja) {
 	&,
 	&::before,
