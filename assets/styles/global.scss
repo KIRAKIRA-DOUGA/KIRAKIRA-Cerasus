@@ -208,11 +208,8 @@ hr {
 }
 
 label {
+	@include hide-if-empty;
 	display: block;
-
-	&:empty {
-		display: none;
-	}
 
 	&.details {
 		color: c(icon-color);

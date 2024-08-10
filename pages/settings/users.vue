@@ -64,6 +64,7 @@
 		align-items: center;
 
 		.nickname {
+			@include hide-if-empty;
 			font-weight: bold;
 		}
 

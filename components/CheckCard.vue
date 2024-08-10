@@ -106,10 +106,7 @@
 	}
 
 	.text {
+		@include hide-if-empty;
 		margin-top: 8px;
-
-		&:empty {
-			display: none;
-		}
 	}
 </style>
