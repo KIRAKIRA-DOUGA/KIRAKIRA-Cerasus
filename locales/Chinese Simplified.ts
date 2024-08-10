@@ -46,6 +46,7 @@ export default {
 		vi: "越南语",
 		id: "印尼语",
 		fr: "法语",
+		yue: "粤语",
 	},
 	background: {
 		_: "背景",

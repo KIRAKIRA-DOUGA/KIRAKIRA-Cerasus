@@ -115,11 +115,11 @@
 				useToast("发送评论失败！", "error", 5000); // TODO: 使用多语言
 				console.error("ERROR", "发送评论失败：请求未成功");
 			}
-			isSendingComment.value = true;
+			isSendingComment.value = false;
 		} catch (error) {
 			useToast("发送评论失败！", "error", 5000); // TODO: 使用多语言
 			console.error("ERROR", "发送评论失败！", error);
-			isSendingComment.value = true;
+			isSendingComment.value = false;
 		}
 	}
 
@@ -207,7 +207,7 @@
 			height: $height;
 			padding-right: 4px;
 			overflow: clip;
-		
+
 			.left {
 				@include no-scrollar;
 				overflow: auto clip;

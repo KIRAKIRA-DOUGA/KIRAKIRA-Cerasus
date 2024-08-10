@@ -15,12 +15,24 @@
 [![Korean Translation][ko-translation-shield]][ko-translation-url]
 [![Vietnamese Translation][vi-translation-shield]][vi-translation-url]
 [![Indonesian Translation][id-translation-shield]][id-translation-url]
+[![French Translation][fr-translation-shield]][fr-translation-url]
+[![Cantonese Translation][yue-translation-shield]][yue-translation-url]
 
 KIRAKIRA 的前端
 
 **简体中文** | [English](README_en-US.md)
 
 [点击此处前往 Figma 设计文稿 >](https://www.figma.com/file/S5mM7zW5iMo560xnQ4cmbL/KIRAKIRA-Douga-PC?node-id=0%3A1)
+
+## 标星历史
+
+<a href="https://star-history.com/#KIRAKIRA-DOUGA/KIRAKIRA-Cerasus&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=KIRAKIRA-DOUGA/KIRAKIRA-Cerasus&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=KIRAKIRA-DOUGA/KIRAKIRA-Cerasus&type=Date" />
+   <img alt="标星历史图表" src="https://api.star-history.com/svg?repos=KIRAKIRA-DOUGA/KIRAKIRA-Cerasus&type=Date" />
+ </picture>
+</a>
 
 ## Nuxt 3
 
@@ -628,3 +640,7 @@ button:any-hover {
 [vi-translation-url]: https://crowdin.com/project/kirakira/vi
 [id-translation-shield]: https://img.shields.io/badge/dynamic/json?color=blue&label=Bahasa%20Indonesia&style=flat-square&logo=crowdin&query=%24.progress[?(@.data.languageId==%27id%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-14133121-613305.json
 [id-translation-url]: https://crowdin.com/project/kirakira/id
+[fr-translation-shield]: https://img.shields.io/badge/dynamic/json?color=blue&label=Français&style=flat-square&logo=crowdin&query=%24.progress[?(@.data.languageId==%27fr%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-14133121-613305.json
+[fr-translation-url]: https://crowdin.com/project/kirakira/fr
+[yue-translation-shield]: https://img.shields.io/badge/dynamic/json?color=blue&label=粵語&style=flat-square&logo=crowdin&query=%24.progress[?(@.data.languageId==%27yue%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-14133121-613305.json
+[yue-translation-url]: https://crowdin.com/project/kirakira/yue

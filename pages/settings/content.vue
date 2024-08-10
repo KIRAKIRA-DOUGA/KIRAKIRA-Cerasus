@@ -150,10 +150,10 @@
 				(to: unknown) => {
 					const selfUserInfoStore = useSelfUserInfoStore(); // WARN: 此处需要重新创建 Store
 					if (selfUserInfoStore.role !== "admin")
-						return navigateTo("/settings/appearance");
+						return navigate("/settings/appearance");
 
 					if (to && typeof to === "object" && "path" in to && to.path !== "/settings/content")
-						return navigateTo("/settings/content");
+						return navigate("/settings/content");
 				},
 			],
 		},

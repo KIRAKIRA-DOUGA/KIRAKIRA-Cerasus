@@ -78,6 +78,12 @@
 			{ rel: "alternate", href: `${homepage}ko`, hreflang: "ko" },
 			{ rel: "alternate", href: `${homepage}vi`, hreflang: "vi" },
 			{ rel: "alternate", href: `${homepage}id`, hreflang: "id" },
+			{ rel: "alternate", href: `${homepage}fr`, hreflang: "fr" },
+			{ rel: "alternate", href: `${homepage}yue`, hreflang: "zh-yue" },
+			{ rel: "alternate", href: `${homepage}yue`, hreflang: "yue" },
+			{ rel: "preconnect", href: "https://fonts.googleapis.com" },
+			{ rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" },
+			{ rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" },
 		],
 	});
 

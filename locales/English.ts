@@ -42,6 +42,7 @@ export default {
 		vi: "Vietnamese",
 		id: "Indonesian",
 		fr: "French",
+		yue: "Cantonese",
 	},
 	background: {
 		_: "Background",
@@ -119,7 +120,7 @@ export default {
 		_: "Blocklist",
 		ban: {
 			_: "Ban",
-			description: "Users you don't want to allow to intract with you.",
+			description: "Users you don't want to allow to interact with you.",
 		},
 		hide: {
 			_: "Hide",

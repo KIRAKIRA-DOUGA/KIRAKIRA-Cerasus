@@ -4,24 +4,12 @@
 
 	@for $style from 1 through 2 {
 		@font-face {
-			font-weight: $weight;
 			font-family: Montserrat;
+			font-weight: $weight;
 			font-style: if($style == 1, normal, italic);
-			font-display: block;
 			src: url("assets/fonts/Montserrat/Montserrat_#{$weight}#{if($style == 1, '', _Italic)}.woff2") format("woff2");
+			font-display: block;
 		}
-	}
-}
-
-/// 英文正文可变字体 Inter
-/// https://github.com/rsms/inter
-@for $style from 1 through 2 {
-	@font-face {
-		font-weight: 100 900;
-		font-family: "Inter Variable";
-		font-style: if($style == 1, normal, italic);
-		font-display: swap;
-		src: url("assets/fonts/Inter/InterVariable#{if($style == 1, '', _Italic)}.woff2?v=4.0") format("woff2-variations");
 	}
 }
 
@@ -29,10 +17,10 @@
 /// https://github.com/MY1L/QuQi
 @for $weight from 1 through 2 {
 	@font-face {
-		font-weight: if($weight == 1, normal, bold);
 		font-family: Monu;
+		font-weight: if($weight == 1, normal, bold);
 		font-style: normal;
-		font-display: swap;
 		src: url("assets/fonts/Monu/Monu#{if($weight == 1, '', _Bold)}.woff2") format("woff2");
+		font-display: swap;
 	}
 }
