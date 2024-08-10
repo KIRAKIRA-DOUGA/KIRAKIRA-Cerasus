@@ -2,6 +2,7 @@
 	const props = withDefaults(defineProps<{
 		title?: string;
 		type?: "info" | "warning";
+		lite?: boolean;
 	}>(), {
 		title: undefined,
 		type: "info",
@@ -14,7 +15,7 @@
 </script>
 
 <template>
-	<Comp :class="{ 'force-color yellow': type === 'warning' }">
+	<Comp :class="{ 'force-color yellow': type === 'warning', lite }">
 		<Icon :name="icon" />
 		<div class="content">
 			<p v-if="title" class="title">{{ title }}</p>
@@ -32,6 +33,11 @@
 		padding: 16px;
 		color: white;
 		background-color: c(accent);
+
+		&.lite {
+			color: c(text-color);
+			background-color: c(surface-color);
+		}
 	}
 
 	.content {
@@ -41,11 +47,15 @@
 	}
 
 	.title {
-		font-weight: bold;
 		font-size: 16px;
+		font-weight: bold;
 	}
 
 	.icon {
 		font-size: 24px;
+	}
+
+	p {
+		user-select: text;
 	}
 </style>
