@@ -7,6 +7,7 @@
 	const currentPage = ref(1);
 	const pages = 6; // TODO: 目前无获取用户总数的 API，暂时假定总共只有 6 页。
 	const users = ref<UserInfo[]>([]);
+	const sortedUsers = computed(() => users.value.toSorted((userA, userB) => userA.uid - userB.uid));
 	type UserInfo = GetUserInfoByUidResponseDto["result"] & { uid: number };
 
 	/**
@@ -23,24 +24,8 @@
 			api.user.getUserInfo({ uid }).then(result => {
 				if (!result.success || !result.result) return;
 				const userInfo = result.result;
-				insertUserByUid({ ...userInfo, uid });
+				_users.push({ ...userInfo, uid });
 			});
-	}
-
-	/**
-	 * 由于 `refreshUserInfos` 函数采用同步操作而非异步操作，这样可以使得加载数据变得更快，但是由于同时加载速度不一致因而无法保证输出顺序，因此我们需要根据 UID 顺序来加入数组。
-	 * @param user - 用户数据。
-	 */
-	function insertUserByUid(user: UserInfo) {
-		const { uid } = user;
-		const _users = users.value;
-		let index = 0;
-		for (index = 0; index < _users.length; index++) {
-			const previousUser = _users[index], nextUser = _users[index + 1];
-			if (previousUser.uid <= uid && nextUser && nextUser.uid > uid)
-				break;
-		}
-		_users.splice(index, 0, user);
 	}
 
 	watch(currentPage, () => refreshUserInfos(), { immediate: true });
@@ -50,7 +35,7 @@
 	<Pagination v-model="currentPage" :pages />
 	<section>
 		<SettingsChipItem
-			v-for="user in users"
+			v-for="user in sortedUsers"
 			:key="user.uid"
 			:image="user.avatar"
 			icon="account_circle"

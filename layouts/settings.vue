@@ -55,11 +55,11 @@
 			{ id: "shortcut-key", icon: "keyboard" },
 			{ id: "about", icon: "info" },
 			{ id: "acknowledgement", icon: "campaign" },
-			{ id: "users", icon: "account_circle" },
 		],
 		admin: [
 			{ id: "content", icon: "category" },
 			{ id: "user", icon: "account_circle" },
+			{ id: "users", icon: "account_circle" },
 		],
 	};
 
