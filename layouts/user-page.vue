@@ -13,6 +13,7 @@
 
 <script setup lang="ts">
 	import makeFullwidth from "pomsky/fullwidth.pom";
+	import LocaleLink from "components/LocaleLink.vue";
 
 	const userSelfInfoStore = useSelfUserInfoStore();
 
@@ -74,7 +75,9 @@
 		<div>
 			<div class="content">
 				<div class="user">
-					<UserAvatar :avatar="isSelf ? (userSelfInfoStore.userAvatar) : userInfo?.avatar" />
+					<component :is="isSelf ? LocaleLink : 'span'" to="/settings/profile">
+						<UserAvatar :avatar="isSelf ? (userSelfInfoStore.userAvatar) : userInfo?.avatar" />
+					</component>
 					<div class="texts">
 						<div class="name">
 							<span class="nickname">{{ isSelf ? userSelfInfoStore.userNickname : userInfo?.userNickname }}</span>
