@@ -76,7 +76,7 @@
 			<div class="content">
 				<div class="user">
 					<component :is="isSelf ? LocaleLink : 'span'" to="/settings/profile">
-						<UserAvatar :avatar="isSelf ? (userSelfInfoStore.userAvatar) : userInfo?.avatar" />
+						<UserAvatar :avatar="isSelf ? userSelfInfoStore.userAvatar : userInfo?.avatar" />
 					</component>
 					<div class="texts">
 						<div class="name">
