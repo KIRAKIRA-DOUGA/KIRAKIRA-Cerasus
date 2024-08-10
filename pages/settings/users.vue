@@ -49,6 +49,7 @@
 				<div class="icons">
 					<Icon v-if="user.gender === 'male' " name="male" class="male" />
 					<Icon v-else-if="user.gender === 'female'" name="female" class="female" />
+					<Icon v-if="user.role === 'admin' " name="build_circle" class="admin" />
 				</div>
 			</div>
 		</SettingsChipItem>
@@ -79,6 +80,10 @@
 
 			.female {
 				color: c(pink);
+			}
+			
+			.admin {
+				color: c(red);
 			}
 		}
 	}
