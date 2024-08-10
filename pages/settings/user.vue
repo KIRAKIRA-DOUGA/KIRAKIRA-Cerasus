@@ -88,10 +88,10 @@
 					// WARN: 此处需要重新创建 Store
 					const selfUserInfoStore = useSelfUserInfoStore();
 					if (selfUserInfoStore.role !== "admin")
-						return navigateTo("/settings/appearance");
+						return navigate("/settings/appearance");
 
 					if (to && typeof to === "object" && "path" in to && to.path !== "/settings/user")
-						return navigateTo("/settings/user");
+						return navigate("/settings/user");
 				},
 			],
 		},
