@@ -13,13 +13,13 @@ $fallback-transitions: all $ease-out-expo 250ms, color $ease-out-expo 100ms, fil
 // #region 字体
 /// 首先使用“思源黑体”系列字体以提供一致的体验。\
 /// “语言”附标将自动切换区域字形，因此无需担心字形不匹配的问题。除了每个地区的字体家族样式那里都会写一大堆“思源黑体”系列字体之外。\
-/// 顺序：Adobe 语言特定版本可变字体、Google 语言特定版本可变或普通字体、Adobe 语言特定版本普通字体、Adobe 地区子集版本可变字体、Google 地区子集版本可变或普通字体、Adobe 地区子集版本普通字体。
+/// 顺序：Adobe 语言特定版本可变字体、Google 语言特定版本可变或普通字体、Adobe 语言特定版本普通字体。
 $source-han-sans-fonts: (
-	simplified-chinese: ("Source Han Sans SC VF", "Noto Sans CJK SC", "Source Han Sans SC", "Source Han Sans CN VF", "Noto Sans SC", "Source Han Sans CN"),
-	traditional-chinese-taiwan: ("Source Han Sans TC VF", "Noto Sans CJK TC", "Source Han Sans TC", "Source Han Sans TW VF", "Noto Sans TC", "Source Han Sans TW"),
-	traditional-chinese-hongkong: ("Source Han Sans HC VF", "Noto Sans CJK HK", "Source Han Sans HC", "Source Han Sans HK VF", "Noto Sans HK", "Source Han Sans HK"),
-	japanese: ("Source Han Sans VF", "Noto Sans CJK JP", "Source Han Sans", "Source Han Sans JP VF", "Noto Sans JP", "Source Han Sans JP"),
-	korean: ("Source Han Sans K VF", "Noto Sans CJK KR", "Source Han Sans K", "Source Han Sans KR VF", "Noto Sans KR", "Source Han Sans KR"),
+	simplified-chinese: ("Source Han Sans SC VF", "Noto Sans CJK SC", "Source Han Sans SC"),
+	traditional-chinese-taiwan: ("Source Han Sans TC VF", "Noto Sans CJK TC", "Source Han Sans TC"),
+	traditional-chinese-hongkong: ("Source Han Sans HC VF", "Noto Sans CJK HK", "Source Han Sans HC"),
+	japanese: ("Source Han Sans VF", "Noto Sans CJK JP", "Source Han Sans"),
+	korean: ("Source Han Sans K VF", "Noto Sans CJK KR", "Source Han Sans K"),
 );
 $source-han-sans-fonts: map.set($source-han-sans-fonts, merged, map.values($source-han-sans-fonts));
 /// 绘文字字体：苹果、安卓、火狐、视窗、视窗 8.1 及以下兼容（仅限基本区）。
@@ -42,15 +42,17 @@ $english-fonts: -apple-system, BlinkMacSystemFont, "Inter", "SF Pro Text", "Sego
 $simplified-chinese-fonts: $english-fonts, "PingFang SC", map.get($source-han-sans-fonts, simplified-chinese), map.get($source-han-sans-fonts, merged), "Hiragino Sans GB", "HarmonyOS Sans SC", "MiSans VF", MiSans, "MI Lan Pro VF", "Microsoft YaHei", $fallback-fonts;
 /// 台湾地区繁体中文字体：苹方、思源黑体地区专属、思源黑体一锅端、冬青黑体台标、冬青黑体日标、冬青黑体陆标、鸿蒙黑体可变字体、小米兰亭可变字体、微软正黑。\
 /// 优先使用“冬青黑体”系列字体，以提供一致的体验。繁体中文地区亦可见使用日语字体的内容，因此后面先放“冬青黑体日标”。
-$traditional-chinese-taiwan-fonts: $english-fonts, "PingFang TC", map.get($source-han-sans-fonts, traditional-chinese-taiwan), map.get($source-han-sans-fonts, merged), "Hiragino Sans CNS", "Hiragino Kaku Gothic ProN", "Hiragino Kaku Gothic Pro", "Hiragino Sans GB", "HarmonyOS Sans TC", "HarmonyOS Sans SC", "MiSans TC VF", "MiSans TC", "MiSans VF", MiSans, "Microsoft JhengHei", $fallback-fonts;
+$traditional-chinese-taiwan-fonts: $english-fonts, "PingFang TC", map.get($source-han-sans-fonts, traditional-chinese-taiwan), map.get($source-han-sans-fonts, merged), "Hiragino Sans TC", "Hiragino Sans CNS", "Hiragino Kaku Gothic ProN", "Hiragino Kaku Gothic Pro", "Hiragino Sans GB", "HarmonyOS Sans TC", "HarmonyOS Sans SC", "MiSans TC VF", "MiSans TC", "MiSans VF", MiSans, "Microsoft JhengHei", $fallback-fonts;
 /// 香港地区繁体中文字体：苹方、思源黑体地区专属、思源黑体一锅端、冬青黑体台标、冬青黑体日标、冬青黑体陆标、微软正黑。
-$traditional-chinese-hongkong-fonts: $english-fonts, "PingFang HK", map.get($source-han-sans-fonts, traditional-chinese-hongkong), map.get($source-han-sans-fonts, merged), "Hiragino Sans CNS", "Hiragino Kaku Gothic ProN", "Hiragino Kaku Gothic Pro", "Hiragino Sans GB", "Microsoft JhengHei", $fallback-fonts;
+/// 不对香港用户使用台标、陆标字体，此处的Hiragino Sans GB仅作“让冬青风格一致”的回退字体。
+/// 香港用户可能喜欢旧字形，但现有严格遵从旧字形的字体多半字重极为有限，先不放进去。“一点源黑”发布之後再看看。
+$traditional-chinese-hongkong-fonts: $english-fonts, "PingFang HK", map.get($source-han-sans-fonts, traditional-chinese-hongkong), map.get($source-han-sans-fonts, merged), "Hiragino Kaku Gothic ProN", "Hiragino Kaku Gothic Pro", "Hiragino Sans GB", "Microsoft JhengHei", $fallback-fonts;
 /// 日语字体：冬青黑体日标、冬青黑体陆标、冬青黑体台标、思源黑体地区专属、思源黑体一锅端、游黑体、明瞭体、微软旧黑体。\
 /// 优先使用“冬青黑体”系列字体，以提供一致的体验。如果用户安装了“冬青黑体”中文字体，则会避免回退到非“冬青黑体”系列字体而破坏一致性的观感。\
 /// 注意：由于艾了个拉不喜欢窄假名字体，故没有使用 Yu Gothic UI、Meiryo UI、MS UI Gothic 字体，因此请日语翻译者注意控制一下译文字数，比如多用汉字词、少用“片假名语”之类的，否则字就跑到边框外面去了。
 $japanese-fonts: $english-fonts, "Hiragino Kaku Gothic ProN", "Hiragino Kaku Gothic Pro", "Hiragino Sans GB", "Hiragino Sans CNS", map.get($source-han-sans-fonts, japanese), map.get($source-han-sans-fonts, merged), "Yu Gothic", Meiryo, "MS Gothic", $fallback-fonts;
 /// 韩语字体：苹果韩语默认字体、思源黑体地区专属、思源黑体一锅端、视窗韩语默认字体。
-$korean-fonts: $english-fonts, "Apple SD Gothic Neo", map.get($source-han-sans-fonts, korean), map.get($source-han-sans-fonts, merged), "Malgun Gothic", $fallback-fonts;
+$korean-fonts: $english-fonts, map.get($source-han-sans-fonts, korean), map.get($source-han-sans-fonts, merged), "Apple SD Gothic Neo", "Malgun Gothic", $fallback-fonts;
 /// 英语徽标字体：Montserrat、Apple OS 可变字体（仅有大文本）、英语字体。
 /// 原计划后置回退字体，但会使用微软正黑显示所有汉字字符，故暂时移除。
 $english-logo-fonts: Montserrat, "SF Pro Display", $english-fonts;
