@@ -314,9 +314,7 @@
 		}
 	}
 
-	.pending-videos {
-		.button-group {
-			margin-bottom: 30px;
-		}
+	.button-group {
+		margin-bottom: 30px;
 	}
 </style>
