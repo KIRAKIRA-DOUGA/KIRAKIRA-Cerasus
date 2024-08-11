@@ -164,8 +164,8 @@
 		</template>
 	</Alert>
 
-	<InfoBar type="warning" title="警告">
-		先改后审：用户修改信息立即生效。
+	<InfoBar type="info" title="提示">
+		先改后审：用户修改信息立即公开展示给他人。
 		<br />
 		你可以开启“只展示新注册和更新了用户信息的待审核用户”选项来审核用户信息。
 		<br />
