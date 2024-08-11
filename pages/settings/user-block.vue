@@ -90,13 +90,8 @@
 					if (selfUserInfoStore.role !== "admin")
 						return navigate("/settings/appearance");
 
-<<<<<<< Updated upstream:pages/settings/user.vue
-					if (to && typeof to === "object" && "path" in to && to.path !== "/settings/user")
-						return navigate("/settings/user");
-=======
 					if (to && typeof to === "object" && "path" in to && to.path !== "/settings/user-block")
 						return navigate("/settings/user-block");
->>>>>>> Stashed changes:pages/settings/user-block.vue
 				},
 			],
 		},
