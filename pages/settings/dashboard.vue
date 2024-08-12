@@ -16,7 +16,6 @@
 				<div class="icons">
 					<Icon v-if="selfUserInfoStore.gender === 'male' " name="male" class="male" />
 					<Icon v-else-if="selfUserInfoStore.gender === 'female'" name="female" class="female" />
-					<span v-else class="other-gender">{{ selfUserInfoStore.gender }}</span>
 				</div>
 			</div>
 			<div class="bio">{{ selfUserInfoStore.signature }}</div>
@@ -68,6 +67,7 @@
 
 			.name {
 				display: flex;
+				flex-wrap: wrap;
 				gap: 8px;
 				font-size: 24px;
 
@@ -89,12 +89,6 @@
 
 					.female {
 						color: c(pink);
-					}
-
-					.other-gender {
-						background: linear-gradient(to right, #58c8f2, #eda4b2);
-						background-clip: text;
-						-webkit-text-fill-color: transparent;
 					}
 				}
 			}

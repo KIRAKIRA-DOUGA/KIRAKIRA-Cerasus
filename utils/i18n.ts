@@ -86,5 +86,8 @@ export function getCurrentLocale() {
  */
 export function getCurrentLocaleLangCode(locale?: string) {
 	locale ||= getCurrentLocale();
-	return locale === "zhs" ? "zh-Hans-CN" : locale === "zht" ? "zh-Hant-TW" : locale;
+	return {
+		zhs: "zh-Hans-CN",
+		zht: "zh-Hant-TW",
+	}[locale] ?? locale;
 }

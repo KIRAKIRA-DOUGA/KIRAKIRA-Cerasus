@@ -13,6 +13,7 @@
 
 <script setup lang="ts">
 	import makeFullwidth from "pomsky/fullwidth.pom";
+	import LocaleLink from "components/LocaleLink.vue";
 
 	const userSelfInfoStore = useSelfUserInfoStore();
 
@@ -74,7 +75,9 @@
 		<div>
 			<div class="content">
 				<div class="user">
-					<UserAvatar :avatar="isSelf ? (userSelfInfoStore.userAvatar) : userInfo?.avatar" />
+					<component :is="isSelf ? LocaleLink : 'span'" to="/settings/profile">
+						<UserAvatar :avatar="isSelf ? (userSelfInfoStore.userAvatar) : userInfo?.avatar" />
+					</component>
 					<div class="texts">
 						<div class="name">
 							<span class="nickname">{{ isSelf ? userSelfInfoStore.userNickname : userInfo?.userNickname }}</span>
@@ -83,7 +86,6 @@
 							<span class="icons">
 								<Icon v-if="isSelf ? userSelfInfoStore.gender === 'male' : userInfo?.gender === 'male'" name="male" class="male" />
 								<Icon v-else-if="isSelf ? userSelfInfoStore.gender === 'female' : userInfo?.gender === 'female'" name="female" class="female" />
-								<span v-else class="other-gender">{{ isSelf ? userSelfInfoStore.gender : userInfo?.gender }}</span>
 							</span>
 						</div>
 						<div class="bio">{{ isSelf ? userSelfInfoStore.signature : userInfo?.signature }}</div>
@@ -211,12 +213,6 @@
 
 					.female {
 						color: c(pink);
-					}
-
-					.other-gender {
-						background: linear-gradient(to right, #58c8f2, #eda4b2);
-						background-clip: text;
-						-webkit-text-fill-color: transparent;
 					}
 				}
 			}

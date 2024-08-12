@@ -6,6 +6,8 @@
 <script setup lang="ts">
 	import type shaka from "shaka-player";
 	import { createDanmakuComment } from "./PlayerVideoPanel/PlayerVideoPanelDanmaku/PlayerVideoPanelDanmakuSender.vue";
+	import beepSound from "assets/audios/NOVA 2022.1 Alert Quick.ogg";
+	const beepSoundAudio = ref<HTMLAudioElement>();
 
 	const props = defineProps<{
 		/** 视频源。 */
@@ -129,16 +131,36 @@
 		video.value.playbackRate = playbackRate;
 	});
 
+	/**
+	 * 如果视频已暂停，则在修改音量时鸣笛。
+	 * @param logarithmicVolume - 对数音量。
+	 */
+	function beepIfPaused(logarithmicVolume?: number) {
+		if (beepSoundAudio.value) {
+			if (logarithmicVolume !== undefined)
+				beepSoundAudio.value.volume = logarithmicVolume;
+			if (video.value?.paused !== false) { // passed when true or undefined
+				beepSoundAudio.value.currentTime = 0;
+				beepSoundAudio.value.play();
+			}
+		}
+	}
+
 	watch(volume, volume => {
-		if (!video.value) return;
-		video.value.volume = volume ** 2; // 使用对数音量。
-		playerConfig.audio.volume = volume;
+		const logarithmicVolume = volume ** 2; // 使用对数音量。
+		beepIfPaused(logarithmicVolume);
+		if (video.value) {
+			video.value.volume = logarithmicVolume;
+			playerConfig.audio.volume = volume;
+		}
 	});
 
 	watch(muted, muted => {
-		if (!video.value) return;
-		video.value.muted = muted;
-		playerConfig.audio.muted = muted;
+		if (!muted) beepIfPaused();
+		if (video.value) {
+			video.value.muted = muted;
+			playerConfig.audio.muted = muted;
+		}
 	});
 
 	watch(() => settings.autoplay, autoplay => {
@@ -692,6 +714,7 @@
 				@focusin="hideController = false"
 			/>
 		</div>
+		<audio ref="beepSoundAudio" :src="beepSound"></audio>
 
 		<PlayerVideoPanel
 			v-if="!fullscreen"

@@ -41,6 +41,8 @@ export default {
 		ko: "Korean",
 		vi: "Vietnamese",
 		id: "Indonesian",
+		fr: "French",
+		yue: "Cantonese",
 	},
 	background: {
 		_: "Background",
@@ -58,6 +60,7 @@ export default {
 	},
 	confetti: "Confetti",
 	send: "Send",
+	resend: "Resend",
 	query: "Query",
 	on: "On",
 	off: "Off",
@@ -117,7 +120,7 @@ export default {
 		_: "Blocklist",
 		ban: {
 			_: "Ban",
-			description: "Users you don't want to allow to intract with you.",
+			description: "Users you don't want to allow to interact with you.",
 		},
 		hide: {
 			_: "Hide",
@@ -184,12 +187,19 @@ export default {
 	shortcut_key: {
 		_: "Shortcut Key",
 		player_page: "Player Page",
-		play_pause: "Play/Pause",
+		play_pause: "Play / Pause",
 		exit_fullscreen: "Exit Fullscreen",
 		pagination: "Pagination",
 		page_turning: "Page Turning",
 		comment_area: "Comment Area",
 		quick_insert_kaomoji: "Quick Insert Kaomoji",
+		fullscreen: "Fullscreen",
+		mute: "Mute",
+		volume: "Volume",
+		fast_rewind: "Fast Rewind",
+		fast_forward: "Fast Forward",
+		slow_down: "Slow Down",
+		speed_up: "Speed Up",
 	},
 	guide: "Guide",
 	about: {

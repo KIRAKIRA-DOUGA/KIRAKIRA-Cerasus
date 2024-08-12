@@ -98,7 +98,7 @@
 		z-index: 20;
 		flex-direction: column;
 		justify-content: flex-start;
-		padding-top: 5rem;
+		padding: 5rem 3rem 0;
 
 		h1 {
 			--i: 2;
@@ -120,6 +120,7 @@
 			font-size: 1.25rem;
 			font-weight: 300;
 			line-height: 1.25;
+			word-break: break-word;
 			animation: float-down $title-animation-options;
 		}
 

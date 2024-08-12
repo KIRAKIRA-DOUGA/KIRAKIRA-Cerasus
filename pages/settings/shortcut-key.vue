@@ -26,22 +26,22 @@
 		<p><Kbd>Esc</Kbd></p>
 
 		<!-- TODO: 使用多语言 -->
-		<p>全屏</p>
+		<p>{{ t.shortcut_key.fullscreen }}</p>
 		<p><Kbd>F</Kbd> <Kbd>F11</Kbd></p>
 
-		<p>弹幕</p>
+		<p>{{ t.danmaku }}</p>
 		<p><Kbd>D</Kbd></p>
 
-		<p>静音</p>
+		<p>{{ t.shortcut_key.mute }}</p>
 		<p><Kbd>M</Kbd></p>
 
-		<p>音量</p>
+		<p>{{ t.shortcut_key.volume }}</p>
 		<p><Kbd>↑</Kbd> <Kbd>↓</Kbd></p>
 
-		<p>快退 / 快进</p>
+		<p>{{ t.shortcut_key.fast_rewind }} / {{ t.shortcut_key.fast_forward }}</p>
 		<p><Kbd>←</Kbd> <Kbd>→</Kbd></p>
 
-		<p>慢放 / 快放</p>
+		<p>{{ t.shortcut_key.slow_down }} / {{ t.shortcut_key.speed_up }}</p>
 		<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>←</Kbd> <Kbd>→</Kbd></p>
 		<!-- #endregion -->
 

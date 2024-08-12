@@ -167,6 +167,7 @@
 			<TextBox v-model="inputValue" placeholder="小小的软软的香香的" :style="{ '--size': 'small' }" />
 			<TextBox v-model="inputValue" type="email" required placeholder="请输入正确的邮箱" />
 			<TextBox v-model="inputValue" icon="lock" type="password" placeholder="密码" :style="{ '--size': 'large' }" />
+			<SendVerificationCode v-model="inputValue" />
 			<em>所有输入框的内容同时输入属正常现象，因为懒得做三个变量。</em>
 			<hr />
 			<p>他有没有可能是演的，他是不是演的呢？</p>

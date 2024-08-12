@@ -3,19 +3,14 @@
 import type { LocaleIdentifiers } from "./types";
 
 export default {
+	colon: "：",
+	semicolon: "；",
+	caesura: "、",
 	category: {},
 	scheme: {},
 	palette: {},
 	language: {
-		_: "언어",
-		zhs: "중국어 간체",
-		zht: "중국어 번체",
-		en: "영어",
-		ja: "일본어",
-		ko: "한국인",
-		vi: "베트남어",
-		id: "인도네시아어",
-		fr: "프랑스 국민",
+		_: "語言",
 	},
 	background: {},
 	appearance: {},

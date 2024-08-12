@@ -6,7 +6,7 @@
 	const currentDanmaku = ref<UnwrapRef<DanmakuListItem>>();
 	const { copy } = useClipboard();
 	const headers = { videoTime: t.danmaku.list.thead.time, content: t.danmaku.list.thead.content, sendTime: t.danmaku.list.thead.sending_time };
-	const colWidths = reactive([60, 150, 100]);
+	const colWidths = reactive([60, 125, 160]);
 	const danmakuList = ref<Array<{ item: DanmakuListItem; key: PropertyKey }>>([]);
 	const danmakuListKey = ref(0); // FIXME: 理论上 vue-virtual-scroller 会自动监测弹幕数组更新，但是目前不知道为什么不生效，暂时只能用这种方法解决。
 	const sortBy = reactive<[column: "videoTime" | "sendTime", order: SortOrder]>(["sendTime", "ascending"]);
@@ -82,7 +82,7 @@
 	 * @returns 显示为字符串的值。
 	 */
 	function handleTableDataCellText(value: ValueOf<UnwrapRef<DanmakuListItem>>) {
-		if (value instanceof Date) return formatDateWithLocale(value);
+		if (value instanceof Date) return formatDateWithLocale(value, { time: true });
 		else if (value instanceof Duration) return value.toString();
 		else return value;
 	}
@@ -138,13 +138,14 @@
 
 	:comp {
 		flex-grow: 1;
+		overflow-x: overlay;
 		color: c(icon-color);
 
 		table {
-			@include square(100%);
 			position: relative;
 			display: block;
-			overflow-x: overlay;
+			width: fit-content;
+			height: 100%;
 			table-layout: fixed;
 			background-color: c(main-bg);
 			border-spacing: 0;
@@ -232,8 +233,8 @@
 			}
 
 			tbody tr {
-				td:nth-child(1),
-				td:nth-child(3) {
+				td:nth-of-type(1),
+				td:nth-of-type(3) {
 					font-variant-numeric: tabular-nums;
 				}
 			}

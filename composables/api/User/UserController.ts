@@ -75,7 +75,8 @@ export const getSelfUserInfo = async (getSelfUserInfoRequest?: GetSelfUserInfoRe
 		selfUserInfoStore.gender = selfUserInfoResult.gender || "";
 		selfUserInfoStore.signature = selfUserInfoResult.signature || "";
 		selfUserInfoStore.tags = selfUserInfoResult.label?.map(label => label.labelName) || [];
-	}
+	} else
+		await userLogout();
 	return selfUserInfo;
 };
 
@@ -101,23 +102,26 @@ export const checkUserToken = async (): Promise<CheckUserTokenResponseDto> => {
  * 用户登出
  * @returns 什么也不返回，但是会携带立即清除的 cookie 并覆盖原本的 cookie，同时将全局变量中的用户信息置空
  */
-export const userLogout = async (): Promise<UserLogoutResponseDto> => {
+export async function userLogout(): Promise<UserLogoutResponseDto> {
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	const logoutResult = await GET(`${USER_API_URL}/logout`, { credentials: "include" }) as UserLogoutResponseDto;
-	const selfUserInfoStore = useSelfUserInfoStore();
-	selfUserInfoStore.isLogined = false;
-	selfUserInfoStore.uid = undefined;
-	selfUserInfoStore.userCreateDateTime = 0;
-	selfUserInfoStore.role = "user";
-	selfUserInfoStore.userEmail = "";
-	selfUserInfoStore.userAvatar = "";
-	selfUserInfoStore.username = "";
-	selfUserInfoStore.userNickname = "";
-	selfUserInfoStore.gender = "";
-	selfUserInfoStore.signature = "";
-	selfUserInfoStore.tags = [];
+	if (logoutResult.success) {
+		const selfUserInfoStore = useSelfUserInfoStore();
+		selfUserInfoStore.isLogined = false;
+		selfUserInfoStore.uid = undefined;
+		selfUserInfoStore.userCreateDateTime = 0;
+		selfUserInfoStore.role = "user";
+		selfUserInfoStore.userEmail = "";
+		selfUserInfoStore.userAvatar = "";
+		selfUserInfoStore.username = "";
+		selfUserInfoStore.userNickname = "";
+		selfUserInfoStore.gender = "";
+		selfUserInfoStore.signature = "";
+		selfUserInfoStore.tags = [];
+	} else
+		console.error("ERROR", "用户登出失败"); // TODO: 使用多语言
 	return logoutResult;
-};
+}
 
 /**
  * 更新用户头像，并获取用于用户上传头像的预签名 URL, 上传限时 60 秒

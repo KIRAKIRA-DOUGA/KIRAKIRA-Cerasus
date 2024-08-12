@@ -16,31 +16,6 @@
 		birthday: Date;
 		tags: string[];
 	}>({ required: true });
-	const genderCustomChecked = ref(false);
-	const isBasicGender = (gender: string): gender is "male" | "female" | "" => gender === "male" || gender === "female" || gender === "" && !genderCustomChecked.value;
-	const genderCustomBackup = ref(isBasicGender(profile.value.gender) ? "" : profile.value.gender);
-	const genderBasic = computed({
-		get: () => {
-			const { gender } = profile.value;
-			return !isBasicGender(gender) ? "custom" : gender;
-		},
-		set: value => {
-			if (value === "custom") {
-				genderCustomChecked.value = true;
-				profile.value.gender = genderCustomBackup.value;
-			} else profile.value.gender = value;
-		},
-	});
-	const genderCustom = computed({
-		get: () => {
-			const { gender } = profile.value;
-			return !isBasicGender(gender) ? gender : "";
-		},
-		set: value => {
-			genderCustomBackup.value = value;
-			profile.value.gender = value;
-		},
-	});
 	const nameTextBox = ref<InstanceType<typeof TextBox>>();
 	watch(() => profile.value.name, () => {
 		profile.value.nameValid = nameTextBox.value?.isInvalid() === false; // 在值为 true 和 undefined 的情况下返回 false。
@@ -100,14 +75,9 @@
 		</div>
 
 		<div class="gender-radio-group">
-			<RadioButton v-model="genderBasic" value="male">{{ t.user.male }}</RadioButton>
-			<RadioButton v-model="genderBasic" value="female">{{ t.user.female }}</RadioButton>
-			<div class="gender-custom">
-				<RadioButton v-model="genderBasic" value="custom">{{ t.custom }}</RadioButton>
-				<Transition>
-					<TextBox v-show="genderBasic === 'custom'" v-model="genderCustom" class="normal" />
-				</Transition>
-			</div>
+			<RadioButton v-model="profile.gender" value="male">{{ t.user.male }}</RadioButton>
+			<RadioButton v-model="profile.gender" value="female">{{ t.user.female }}</RadioButton>
+			<RadioButton v-model="profile.gender" value="other">{{ t.other }}</RadioButton>
 		</div>
 	</div>
 
@@ -170,11 +140,6 @@
 		.gender-radio-group {
 			display: flex;
 			gap: 1rem 32px;
-		}
-
-		.gender-custom {
-			display: flex;
-			gap: 1rem;
 		}
 
 		.text-box {

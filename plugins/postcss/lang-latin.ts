@@ -1,6 +1,6 @@
 import parser from "postcss-selector-parser";
 
-const latinLangs = ["en", "vi", "id"] as const;
+const latinLangs = ["en", "vi", "id", "fr"] as const;
 
 // 值得注意的是，:lang 选择器并不支持同时选择多种语言，即你不能这么写：
 // :lang(zh, en, ja)

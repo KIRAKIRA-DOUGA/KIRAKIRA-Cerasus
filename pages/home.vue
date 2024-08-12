@@ -36,6 +36,15 @@
 				{{ t.category[cat.toLowerCase()] }}
 			</TabItem>
 		</TabBar>
+		<InfoBar title="公告" lite>
+			目前网站仍然处于早期的Early Beta中，由于用户数量增长速度远超预期，站娘已暂停发放邀请码，请不要一直私聊啦！
+			<br />
+			上传、关注等功能也因为还在开发中暂时无法开放。但是我们可能会不定期上传一些视频喔～
+			<br />
+			非常感谢大家对我们的网站能有如此高的热情，但是我们团队所有人都是在业余时间才能开发的，因此速度较为缓慢，希望大家谅解，谢谢啦！❤️
+			<br />
+			也欢迎有开发或者社区管理能力的人前来联系<a href="https://aira.cafe" target="_blank">站娘</a>～
+		</InfoBar>
 		<Subheader icon="upload" :badge="categoryItemCount">{{ t.latest }}</Subheader>
 		<Transition :name="transitionName" mode="out-in">
 			<ThumbGrid :key="resultTimestamp">
