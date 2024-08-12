@@ -260,27 +260,6 @@
 			</div>
 		</SettingsChipItem>
 	</section>
-
-	<!-- <section v-if="isAdmin && !isLoadingUserInfo && !isOnlyShowUserInfoUpdatedAfterReview">
-		<SettingsChipItem
-			v-for="user in users?.result"
-			:key="user?.username"
-			:image="user?.avatar"
-			:details="`UID: ${user.uid}, UUID: ${user.UUID} Bio: ${user?.signature}`"
-			trailingIcon="account_circle"
-			@trailingIconClick="() => jump2UserPage(user.uid)"
-		>{{ user?.username }}</SettingsChipItem>
-	</section>
-	<section v-if="isAdmin && !isLoadingUserInfo && isOnlyShowUserInfoUpdatedAfterReview">
-		<SettingsChipItem
-			v-for="user in users?.result"
-			:key="user?.username"
-			:image="user?.avatar"
-			:details="`UID: ${user.uid}, UUID: ${user.UUID} Bio: ${user?.signature}`"
-			trailingIcon="check"
-			@trailingIconClick="() => approveUserInfo(user.UUID)"
-		>{{ user?.username }}</SettingsChipItem>
-	</section> -->
 </template>
 
 <style scoped lang="scss">
