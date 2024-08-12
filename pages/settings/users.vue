@@ -1,5 +1,6 @@
 <docs>
 	# 用户管理
+	WARN 该组件并没有被使用
 </docs>
 
 <script setup lang="ts">
@@ -82,7 +83,7 @@
 			.female {
 				color: c(pink);
 			}
-			
+
 			.admin {
 				color: c(red);
 			}

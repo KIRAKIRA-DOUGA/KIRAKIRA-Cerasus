@@ -1,3 +1,7 @@
+<docs>
+	# 封禁用户
+</docs>
+
 <script setup lang="ts">
 	const selfUserInfoStore = useSelfUserInfoStore();
 	const isAdmin = computed(() => selfUserInfoStore.role === "admin");

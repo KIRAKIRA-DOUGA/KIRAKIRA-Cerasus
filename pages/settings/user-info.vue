@@ -1,13 +1,28 @@
+<docs>
+	# 用户信息管理
+</docs>
+
 <script setup lang="ts">
 	const selfUserInfoStore = useSelfUserInfoStore();
 	const isAdmin = computed(() => selfUserInfoStore.role === "admin");
 
 	const isOnlyShowUserInfoUpdatedAfterReview = ref(false); // 是否只展示在上一次审核通过后修改了用户信息的用户
-	const users = ref<AdminGetUserInfoResponseDto>();
-	const pageSize = 20;
-	const pageCount = computed(() => Math.floor(users.value?.totalCount ? users.value.totalCount / pageSize : 0) + 1); // 总页数
-	const currentPage = ref(1); // 当前页数
+	const users = ref<AdminGetUserInfoResponseDto>(); // 用户信息
 	const isLoadingUserInfo = ref(false); // 是否正在加载用户信息
+	const pageSize = 20; // 每页数量
+	const pageCount = computed(() => Math.floor(users.value?.totalCount ? users.value.totalCount / pageSize : 0) + 1); // 总页数
+	const currentPageRef = ref(1);
+	const currentPage = computed({ // 当前页数
+		get() {
+			return currentPageRef.value;
+		},
+		set(page: number) {
+			if (!isLoadingUserInfo.value) // TODO: 当正在加载用户数据时，不能更换页码，即同一时间只允许有一个请求。
+				currentPageRef.value = page;
+			else
+				useToast("数据加载中，请稍等。", "warning", 5000);
+		},
+	});
 
 	const isOpeningClearUserInfoAlert = ref(false);
 	const showClearUserInfoAlert = ref(false);
@@ -22,12 +37,19 @@
 	 */
 	async function adminGetUserInfo() {
 		isLoadingUserInfo.value = true;
-		const headerCookie = useRequestHeaders(["cookie"]);
-		const adminGetUserInfoResult = await api.user.adminGetUserInfo(isOnlyShowUserInfoUpdatedAfterReview.value, currentPage.value, pageSize, headerCookie);
-		if (adminGetUserInfoResult.success)
-			users.value = adminGetUserInfoResult;
-		else
-			useToast("获取用户信息失败", "error", 5000);
+		try {
+			const headerCookie = useRequestHeaders(["cookie"]);
+			const adminGetUserInfoResult = await api.user.adminGetUserInfo(isOnlyShowUserInfoUpdatedAfterReview.value, currentPage.value, pageSize, headerCookie);
+			if (adminGetUserInfoResult.success)
+				users.value = adminGetUserInfoResult;
+			else {
+				useToast("获取用户信息失败", "error", 5000);
+				!!users.value && (users.value = { ...users.value, result: [] });
+			}
+		} catch (error) {
+			useToast("获取用户信息失败，网络请求失败", "error", 5000);
+			!!users.value && (users.value = { ...users.value, result: [] });
+		}
 		isLoadingUserInfo.value = false;
 	}
 
@@ -194,7 +216,52 @@
 	</section>
 
 	<Pagination v-model="currentPage" :pages="pageCount" :displayPageCount="7" />
+
 	<section v-if="isAdmin && !isLoadingUserInfo && !isOnlyShowUserInfoUpdatedAfterReview">
+		<SettingsChipItem
+			v-for="user in users?.result"
+			:key="user.uid"
+			:image="user.avatar"
+			icon="account_circle"
+			:details="`UID ${user.uid}, UUID ${user.UUID}` + (user.signature?.trim() ? ` - ${user.signature}` : '')"
+			trailingIcon="open_in_new"
+			:href="`/user/${user.uid}`"
+		>
+			<div class="name">
+				<span class="nickname">{{ user.userNickname }}</span>
+				<span class="username">@{{ user.username }}</span>
+				<div class="icons">
+					<Icon v-if="user.gender === 'male' " name="male" class="male" />
+					<Icon v-else-if="user.gender === 'female'" name="female" class="female" />
+					<Icon v-if="user.role === 'admin' " name="build_circle" class="admin" />
+				</div>
+			</div>
+		</SettingsChipItem>
+	</section>
+
+	<section v-if="isAdmin && !isLoadingUserInfo && isOnlyShowUserInfoUpdatedAfterReview">
+		<SettingsChipItem
+			v-for="user in users?.result"
+			:key="user.uid"
+			:image="user.avatar"
+			icon="account_circle"
+			:details="`UID ${user.uid}, UUID ${user.UUID}` + (user.signature?.trim() ? ` - ${user.signature}` : '')"
+			trailingIcon="check"
+			@trailingIconClick="() => approveUserInfo(user.UUID)"
+		>
+			<div class="name">
+				<span class="nickname">{{ user.userNickname }}</span>
+				<span class="username">@{{ user.username }}</span>
+				<div class="icons">
+					<Icon v-if="user.gender === 'male' " name="male" class="male" />
+					<Icon v-else-if="user.gender === 'female'" name="female" class="female" />
+					<Icon v-if="user.role === 'admin' " name="build_circle" class="admin" />
+				</div>
+			</div>
+		</SettingsChipItem>
+	</section>
+
+	<!-- <section v-if="isAdmin && !isLoadingUserInfo && !isOnlyShowUserInfoUpdatedAfterReview">
 		<SettingsChipItem
 			v-for="user in users?.result"
 			:key="user?.username"
@@ -213,7 +280,7 @@
 			trailingIcon="check"
 			@trailingIconClick="() => approveUserInfo(user.UUID)"
 		>{{ user?.username }}</SettingsChipItem>
-	</section>
+	</section> -->
 </template>
 
 <style scoped lang="scss">
@@ -245,80 +312,34 @@
 		}
 	}
 
-	.clear-user-display {
-		height: 60px;
+	.name {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		align-items: center;
 
-		.user {
-			display: flex;
-			gap: 16px;
-			align-items: center;
-			margin-top: 20px;
+		.nickname {
+			@include hide-if-empty;
+			font-weight: bold;
+		}
 
-			.names {
-				display: flex;
-				font-size: 24px;
+		.username {
+			color: c(icon-color);
+		}
 
-				> * {
-					flex-shrink: 0;
-					user-select: text;
-				}
+		.icons {
+			@include flex-center;
 
-				.username {
-					color: c(text-color);
-					font-weight: bold;
-
-					+ .icons {
-						margin-left: 10px;
-					}
-				}
-
-				.memo {
-					color: c(icon-color);
-
-					&.fullwidth {
-						&::before {
-							content: "（";
-						}
-
-						&::after {
-							content: "）";
-						}
-					}
-
-					&.halfwidth {
-						&::before {
-							content: "\a0(";
-						}
-
-						&::after {
-							content: ")\a0";
-						}
-					}
-				}
-
-				.icons {
-					@include flex-center;
-
-					.male {
-						color: c(blue);
-					}
-
-					.female {
-						color: c(pink);
-					}
-
-					.other-gender {
-						background: linear-gradient(to right, #58c8f2, #eda4b2);
-						background-clip: text;
-						-webkit-text-fill-color: transparent;
-					}
-				}
+			.male {
+				color: c(blue);
 			}
 
-			.bio {
-				margin-top: 6px;
-				color: c(icon-color);
-				user-select: text;
+			.female {
+				color: c(pink);
+			}
+
+			.admin {
+				color: c(red);
 			}
 		}
 	}
