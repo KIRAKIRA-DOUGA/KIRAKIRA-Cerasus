@@ -8,6 +8,7 @@
 	const correctAvatar = computed(() => newAvatar.value ?? selfUserInfoStore.userAvatar); // 正确显示的头像（如果用户没有新上传头像，则使用全局变量中的旧头像）
 	const userAvatarUploadFile = ref<string | undefined>(); // 用户上传的头像文件 Blob
 	const isAvatarCropperOpen = ref(false); // 用户头像图片裁剪器是否开启
+	const newAvatarImageBlob = ref<Blob>(); // 用户裁剪后的头像
 	const userAvatarFileInput = ref<HTMLInputElement>(); // 隐藏的图片上传 Input 元素
 	const isUpdateUserInfo = ref<boolean>(false); // 是否正在上传用户信息
 	const isResetUserInfo = ref<boolean>(false); // 是否正在重置用户信息
@@ -55,12 +56,32 @@
 	}
 
 	/**
+	 * 点击裁剪头像
+	 */
+	async function handleChangeAvatarImage() {
+		isUploadingUserAvatar.value = true;
+		try {
+			const blobImageData = await cropper.value?.getCropBlobData();
+			if (blobImageData) {
+				const imageBlobUrl = URL.createObjectURL(blobImageData);
+				newAvatar.value = imageBlobUrl;
+				newAvatarImageBlob.value = blobImageData;
+			} else
+				useToast("裁剪头像失败，请刷新页面后重试", "error", 5000); // TODO: 使用多语言
+		} catch (error) {
+			useToast("修改头像失败，请刷新页面后重试", "error", 5000); // TODO: 使用多语言
+			console.error("ERROR", "修改头像失败", error);
+		}
+		isUploadingUserAvatar.value = false;
+		isAvatarCropperOpen.value = false;
+	}
+
+	/**
 	 * 修改头像事件，向服务器提交新的图片。
 	 */
 	async function handleSubmitAvatarImage() {
 		try {
-			isUploadingUserAvatar.value = true;
-			const blobImageData = await cropper.value?.getCropBlobData();
+			const blobImageData = newAvatarImageBlob.value;
 			if (blobImageData) {
 				const userAvatarUploadSignedUrlResult = await api.user.getUserAvatarUploadSignedUrl();
 				const userAvatarUploadSignedUrl = userAvatarUploadSignedUrlResult.userAvatarUploadSignedUrl;
@@ -69,10 +90,8 @@
 					const uploadResult = await api.user.uploadUserAvatar(userAvatarUploadFilename, blobImageData, userAvatarUploadSignedUrl);
 					if (uploadResult) {
 						newAvatar.value = userAvatarUploadFilename;
-						isAvatarCropperOpen.value = false;
 						clearBlobUrl(); // 释放内存
 					}
-					isUploadingUserAvatar.value = false;
 				}
 			} else {
 				useToast("无法获取裁切后的图片！", "error"); // TODO: 使用多语言
@@ -81,7 +100,6 @@
 		} catch (error) {
 			useToast("头像上传失败！", "error"); // TODO: 使用多语言
 			console.error("ERROR", "在上传用户头像时出错", error);
-			isUploadingUserAvatar.value = false;
 		}
 	}
 
@@ -113,6 +131,14 @@
 	 */
 	async function updateProfile() {
 		isUpdateUserInfo.value = true;
+		if (newAvatarImageBlob.value)
+			try {
+				await handleSubmitAvatarImage();
+			} catch (error) {
+				useToast("头像上传失败！", "error"); // TODO: 使用多语言
+				console.error("ERROR", "在上传用户头像时出错", error);
+			}
+
 		const updateOrCreateUserInfoRequest: UpdateOrCreateUserInfoRequestDto = {
 			avatar: correctAvatar.value,
 			username: profile.name,
@@ -127,6 +153,7 @@
 			if (updateOrCreateUserInfoResult.success) {
 				await api.user.getSelfUserInfo();
 				isUpdateUserInfo.value = false;
+				newAvatarImageBlob.value = undefined;
 				useToast("用户信息已更新！", "success"); // TODO: 使用多语言
 			} else {
 				isUpdateUserInfo.value = false;
@@ -201,11 +228,14 @@
 
 <template>
 	<Alert v-model="showConfirmResetAlert" static>
+		<!-- TODO: 使用多语言 -->
 		确定要重置用户信息设置吗？
 		<template #footer-left>
+			<!-- TODO: 使用多语言 -->
 			<Button @click="reset" :loading="isResetUserInfo" :disabled="isUpdateUserInfo || isResetUserInfo">确认</Button>
 		</template>
 		<template #footer-right>
+			<!-- TODO: 使用多语言 -->
 			<Button @click="showConfirmResetAlert = false" class="secondary">取消</Button>
 		</template>
 	</Alert>
@@ -228,7 +258,7 @@
 			<!-- TODO: 使用多语言 -->
 			<Button class="secondary" @click="isAvatarCropperOpen = false">取消</Button>
 			<!-- TODO: 使用多语言 -->
-			<Button :loading="isUploadingUserAvatar" @click="handleSubmitAvatarImage">更新头像</Button>
+			<Button :loading="isUploadingUserAvatar" @click="handleChangeAvatarImage">更新头像</Button>
 		</template>
 	</Modal>
 
