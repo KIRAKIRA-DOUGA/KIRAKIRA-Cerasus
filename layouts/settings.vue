@@ -58,8 +58,8 @@
 		],
 		admin: [
 			{ id: "content", icon: "category" },
-			{ id: "user", icon: "account_circle" },
-			{ id: "users", icon: "account_circle" },
+			{ id: "user-block", icon: "account_circle" },
+			{ id: "user-info", icon: "account_circle" },
 		],
 	};
 

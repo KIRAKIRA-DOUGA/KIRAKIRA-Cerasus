@@ -1,6 +1,24 @@
 import { GET, POST, uploadFile2CloudflareImages } from "api/Common";
 import getCorrectUri from "api/Common/getCorrectUri";
-import type { CheckUsernameRequestDto, CheckInvitationCodeRequestDto, CheckInvitationCodeResponseDto, CheckUserTokenResponseDto, CreateInvitationCodeResponseDto, GetMyInvitationCodeResponseDto, GetSelfUserInfoRequestDto, GetSelfUserInfoResponseDto, GetUserAvatarUploadSignedUrlResponseDto, GetUserInfoByUidRequestDto, GetUserInfoByUidResponseDto, GetUserSettingsRequestDto, GetUserSettingsResponseDto, RequestSendChangeEmailVerificationCodeRequestDto, RequestSendChangePasswordVerificationCodeRequestDto, RequestSendChangeEmailVerificationCodeResponseDto, RequestSendVerificationCodeRequestDto, RequestSendVerificationCodeResponseDto, UpdateOrCreateUserInfoResponseDto, UpdateOrCreateUserSettingsRequestDto, UpdateOrCreateUserSettingsResponseDto, UpdateUserEmailRequestDto, UpdateUserEmailResponseDto, UserExistsCheckRequestDto, UserExistsCheckResponseDto, UserLoginRequestDto, UserLoginResponseDto, UserRegistrationRequestDto, UserRegistrationResponseDto, RequestSendChangePasswordVerificationCodeResponseDto, UpdateUserPasswordRequestDto, UpdateUserPasswordResponseDto, UserLogoutResponseDto, CheckUsernameResponseDto, BlockUserByUIDRequestDto, BlockUserByUIDResponseDto, ReactivateUserByUIDRequestDto, ReactivateUserByUIDResponseDto, GetBlockedUserResponseDto } from "./UserControllerDto";
+import type {
+	CheckUsernameRequestDto, CheckInvitationCodeRequestDto, CheckInvitationCodeResponseDto,
+	CheckUserTokenResponseDto, CreateInvitationCodeResponseDto, GetMyInvitationCodeResponseDto,
+	GetSelfUserInfoRequestDto, GetSelfUserInfoResponseDto, GetUserAvatarUploadSignedUrlResponseDto,
+	GetUserInfoByUidRequestDto, GetUserInfoByUidResponseDto, GetUserSettingsRequestDto,
+	GetUserSettingsResponseDto, RequestSendChangeEmailVerificationCodeRequestDto, RequestSendChangePasswordVerificationCodeRequestDto,
+	RequestSendChangeEmailVerificationCodeResponseDto, RequestSendVerificationCodeRequestDto,
+	RequestSendVerificationCodeResponseDto, UpdateOrCreateUserInfoResponseDto, UpdateOrCreateUserSettingsRequestDto,
+	UpdateOrCreateUserSettingsResponseDto, UpdateUserEmailRequestDto, UpdateUserEmailResponseDto,
+	UserExistsCheckRequestDto, UserExistsCheckResponseDto, UserLoginRequestDto,
+	UserLoginResponseDto, UserRegistrationRequestDto, UserRegistrationResponseDto,
+	RequestSendChangePasswordVerificationCodeResponseDto, UpdateUserPasswordRequestDto,
+	UpdateUserPasswordResponseDto, UserLogoutResponseDto, CheckUsernameResponseDto,
+	BlockUserByUIDRequestDto, BlockUserByUIDResponseDto, ReactivateUserByUIDRequestDto,
+	ReactivateUserByUIDResponseDto, GetBlockedUserResponseDto, AdminGetUserInfoResponseDto,
+	ApproveUserInfoRequestDto, ApproveUserInfoResponseDto,
+	AdminClearUserInfoRequestDto,
+	AdminClearUserInfoResponseDto,
+} from "./UserControllerDto";
 
 const BACK_END_URL = getCorrectUri();
 const USER_API_URL = `${BACK_END_URL}/user`;
@@ -292,4 +310,39 @@ export const getBlockedUser = async (headerCookie: { cookie?: string | undefined
 		return finalResult;
 	});
 	return { ...userInfoResult, result: finalUserInfoResult };
+};
+
+/**
+ * 管理员获取用户信息
+ * @param isOnlyShowUserInfoUpdatedAfterReview 是否只展示在上一次审核通过后修改了用户信息的用户
+ * @param page 当前在第几页
+ * @param pageSize 每页显示多少项目
+ * @param headerCookie 从客户端发起 SSR 请求时传递的 Header 中的 Cookie 部分，在 SSR 时将其转交给后端 API
+ * @returns 管理员获取用户信息的请求响应
+ */
+export const adminGetUserInfo = async (isOnlyShowUserInfoUpdatedAfterReview: boolean, page: number, pageSize: number, headerCookie: { cookie?: string | undefined }): Promise<AdminGetUserInfoResponseDto> => {
+	// NOTE: use { headers: headerCookie } to passing client-side cookies to backend API when SSR.
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	const { data: result } = await useFetch(`${USER_API_URL}/adminGetUserInfo?isOnlyShowUserInfoUpdatedAfterReview=${isOnlyShowUserInfoUpdatedAfterReview}&page=${page}&pageSize=${pageSize}`, { headers: headerCookie, credentials: "include" });
+	return result.value as AdminGetUserInfoResponseDto;
+};
+
+/**
+ * 管理员通过用户信息审核
+ * @param approveUserInfoRequest 管理员通过用户信息审核的请求载荷
+ * @returns 管理员通过用户信息审核的请求响应
+ */
+export const approveUserInfo = async (approveUserInfoRequest: ApproveUserInfoRequestDto): Promise<ApproveUserInfoResponseDto> => {
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	return await POST(`${USER_API_URL}/approveUserInfo`, approveUserInfoRequest, { credentials: "include" }) as ApproveUserInfoResponseDto;
+};
+
+/**
+ * 管理员清空某个用户的信息
+ * @param adminClearUserInfoRequest 管理员清空某个用户的信息的请求载荷
+ * @returns 管理员清空某个用户的信息的请求响应
+ */
+export const adminClearUserInfo = async (adminClearUserInfoRequest: AdminClearUserInfoRequestDto): Promise<AdminClearUserInfoResponseDto> => {
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	return await POST(`${USER_API_URL}/adminClearUserInfo`, adminClearUserInfoRequest, { credentials: "include" }) as AdminClearUserInfoResponseDto;
 };

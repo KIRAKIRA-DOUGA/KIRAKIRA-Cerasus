@@ -1,3 +1,7 @@
+<docs>
+	# 封禁用户
+</docs>
+
 <script setup lang="ts">
 	const selfUserInfoStore = useSelfUserInfoStore();
 	const isAdmin = computed(() => selfUserInfoStore.role === "admin");
@@ -90,8 +94,8 @@
 					if (selfUserInfoStore.role !== "admin")
 						return navigate("/settings/appearance");
 
-					if (to && typeof to === "object" && "path" in to && to.path !== "/settings/user")
-						return navigate("/settings/user");
+					if (to && typeof to === "object" && "path" in to && to.path !== "/settings/user-block")
+						return navigate("/settings/user-block");
 				},
 			],
 		},
