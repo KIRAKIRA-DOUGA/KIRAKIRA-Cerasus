@@ -327,7 +327,7 @@ export default {
 		_: "呈現形式",
 		list: "列表",
 		grid: "格仔",
-		tile: "磁貼",
+		tile: "並排",
 	},
 	duration: "時長",
 	are_watching: "個人睇緊",
