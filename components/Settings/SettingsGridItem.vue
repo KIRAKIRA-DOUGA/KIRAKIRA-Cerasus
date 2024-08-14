@@ -86,8 +86,8 @@
 			transform-origin: left center;
 
 			:comp:not(.active) & {
-				opacity: 0;
 				scale: 0.5;
+				opacity: 0;
 			}
 		}
 	}
@@ -96,12 +96,13 @@
 		@include round-large;
 		@include chip-shadow;
 		@include flex-center;
+		container: card / inline-size;
 		position: relative;
 		width: 100%;
 		aspect-ratio: 16 / 9;
 		object-fit: cover;
 		overflow: clip;
-		container: card / inline-size;
+		background-color: c(surface-color);
 		cursor: pointer;
 		transition: $fallback-transitions, scale $ease-out-back 500ms !important;
 

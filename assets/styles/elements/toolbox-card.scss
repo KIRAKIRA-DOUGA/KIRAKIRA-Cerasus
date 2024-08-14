@@ -9,7 +9,7 @@
 	gap: 24px;
 	padding: 16px;
 	overflow: clip;
-	background-color: c(main-bg);
+	background-color: c(surface-color);
 
 	@each $pos in left, right {
 		.#{$pos} &,
@@ -40,13 +40,13 @@
 @mixin settings-grid {
 	$min-width: 226px;
 	$gap: 12px;
+	container: settings-grid / inline-size;
 
 	display: grid;
 	grid-gap: 0;
 	grid-template-columns: repeat(auto-fill, minmax($min-width, 1fr));
-	align-items: start;
 	justify-content: space-between;
-	container: settings-grid / inline-size;
+	align-items: start;
 
 	&:has(.settings-grid-item) {
 		gap: $gap;

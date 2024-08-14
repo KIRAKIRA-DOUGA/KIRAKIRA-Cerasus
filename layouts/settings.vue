@@ -317,16 +317,11 @@
 
 	.page-title-wrapper {
 		position: relative;
+		display: flex;
 		flex-grow: 1;
+		align-items: center;
 		height: 1.5em;
-		margin-top: 0.1em;
-		margin-bottom: -0.15em;
 		overflow-y: hidden;
-
-		@include computer {
-			margin-top: 0;
-			margin-bottom: -0.25em;
-		}
 	}
 
 	h2 {
@@ -338,11 +333,11 @@
 		}
 
 		&.v-leave-to {
-			translate: 0 -100%;
+			translate: 0 -120%;
 		}
 
 		&.v-enter-from {
-			translate: 0 100%;
+			translate: 0 120%;
 		}
 	}
 
@@ -382,7 +377,7 @@
 	.page-header {
 		display: flex;
 		gap: 1rem;
-		align-items: flex-start;
+		align-items: center;
 		background-color: c(main-bg, 80%);
 
 		@include not-mobile {
@@ -423,16 +418,6 @@
 		.show-drawer-wrapper {
 			@include computer {
 				display: none;
-			}
-
-			@include not-mobile {
-				margin-left: -1rem;
-			}
-		}
-
-		.close-button-wrapper {
-			@include not-mobile {
-				margin-right: -1rem;
 			}
 		}
 
