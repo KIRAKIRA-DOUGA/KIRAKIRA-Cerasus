@@ -19,13 +19,15 @@
 		const uid = props.uid === undefined ? NaN : Number(props.uid); // 不要用一元加号运算符！
 		return Number.isFinite(uid) ? `/user/${uid}` : props.link;
 	});
+
+	const provider = computed(() => props.avatar?.startsWith("blob:http") ? undefined : "kirakira");
 </script>
 
 <template>
 	<Comp v-ripple>
 		<NuxtImg
 			v-if="avatar"
-			provider="kirakira"
+			:provider
 			:src="avatar"
 			alt="avatar"
 			draggable="false"
@@ -56,7 +58,7 @@
 			font-size: calc(var(--size) * 0.6);
 		}
 	}
-	
+
 	@mixin hover {
 		scale: 125%;
 		filter: brightness(0.85);
@@ -93,7 +95,7 @@
 			&:has(~ a:any-hover) {
 				@include hover;
 			}
-			
+
 			@container style(--hover: true) {
 				@include hover;
 				transition-duration: 250ms !important;
@@ -103,7 +105,7 @@
 				transition-duration: 1s;
 			}
 		}
-		
+
 		.tint-overlay {
 			position: absolute;
 			inset: 0;
@@ -112,7 +114,7 @@
 			opacity: 0;
 			visibility: hidden;
 			mix-blend-mode: color;
-			
+
 			@container style(--tint: true) {
 				opacity: 1;
 				visibility: visible;

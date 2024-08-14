@@ -198,6 +198,7 @@
 	:slotted(menu) {
 		@include round-large;
 		@include acrylic-background;
+		@include hide-if-empty;
 		z-index: 70;
 		padding: $menu-padding;
 
@@ -211,10 +212,6 @@
 				@include acrylic-background;
 				margin: 8px;
 			}
-		}
-
-		&:empty {
-			display: none;
 		}
 
 		> .toggle-switch {

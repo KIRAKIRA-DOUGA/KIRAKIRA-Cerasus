@@ -124,8 +124,8 @@
 				font-size: 22px;
 			}
 
-			+ span:empty {
-				display: none;
+			+ span {
+				@include hide-if-empty;
 			}
 		}
 
@@ -136,11 +136,8 @@
 		}
 
 		.badge {
+			@include hide-if-empty;
 			font-weight: normal;
-
-			&:empty {
-				display: none;
-			}
 		}
 
 		.tab-bar.vertical & {

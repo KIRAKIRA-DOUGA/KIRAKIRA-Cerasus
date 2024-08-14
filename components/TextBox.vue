@@ -439,8 +439,8 @@
 			clip-path: inset(0 0 $focus-stripe-height);
 		}
 
-		> span:empty {
-			display: none;
+		> span {
+			@include hide-if-empty;
 		}
 
 		.prefix {

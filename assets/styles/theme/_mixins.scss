@@ -253,3 +253,11 @@
 		@include square(0);
 	}
 }
+
+/// 如果元素为空就隐藏它。
+/// @output :empty, display
+@mixin hide-if-empty {
+	&:empty {
+		display: none;
+	}
+}

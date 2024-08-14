@@ -24,6 +24,8 @@ export type UserRegistrationRequestDto = {
 export type UserRegistrationResponseDto = {
 	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
 	success: boolean;
+	/** 用户的 UUID */
+	UUID?: string;
 	/** 用户 ID */
 	uid?: number;
 	/** 如果注册成功，则返回一个 token，如果注册失败，则 token 是一个假值（undefined、null 或 ""） */
@@ -50,6 +52,8 @@ export type UserLoginResponseDto = {
 	success: boolean;
 	/** 用户邮箱 */
 	email?: string;
+	/** 用户的 UUID */
+	UUID?: string;
 	/** 用户 ID */
 	uid?: number;
 	/** 如果登录成功，则返回一个 token，如果登录失败，则 token 是一个假值（undefined、null 或 ""） */
@@ -463,6 +467,8 @@ export type UseInvitationCodeDto = {
 	invitationCode: string;
 	/** 注册者 UID */
 	registrantUid: number;
+	/** 注册者 UUID */
+	registrantUUID: string;
 };
 
 /**
@@ -617,7 +623,7 @@ export type ReactivateUserByUIDResponseDto = {
  * 获取所有被封禁用户的信息的请求响应
  */
 export type GetBlockedUserResponseDto = {
-	/** 执行结果，是否重新激活成功 */
+	/** 执行结果 */
 	success: boolean;
 	/** 附加的文本消息 */
 	message?: string;
@@ -626,4 +632,73 @@ export type GetBlockedUserResponseDto = {
 		GetUserInfoByUidResponseDto["result"]
 		& { uid: number }
 	)[];
+};
+
+/**
+ * 管理员获取用户信息的请求载荷
+ */
+export type AdminGetUserInfoRequestDto = {
+	/** 是否只展示在上一次审核通过后修改了用户信息的用户 */
+	isOnlyShowUserInfoUpdatedAfterReview: boolean;
+	/** 分页查询 */
+	pagination: {
+		/** 当前在第几页 */
+		page: number;
+		/** 一页显示多少条 */
+		pageSize: number;
+	};
+};
+
+/**
+ * 管理员获取用户信息的请求响应
+ */
+export type AdminGetUserInfoResponseDto = {
+		/** 执行结果 */
+	success: boolean;
+		/** 附加的文本消息 */
+	message?: string;
+		/** 请求响应 */
+	result?: (
+			GetSelfUserInfoResponseDto["result"]
+			& { uid: number }
+			& { UUID: string }
+	)[];
+		/** 数据总长度 */
+	totalCount: number;
+};
+
+/**
+ * 管理员通过用户信息审核的请求载荷
+ */
+export type ApproveUserInfoRequestDto = {
+	/** 用户的 UUID */
+	UUID: string;
+};
+
+/**
+ * 管理员通过用户信息审核的请求响应
+ */
+export type ApproveUserInfoResponseDto = {
+	/** 执行结果 */
+	success: boolean;
+	/** 附加的文本消息 */
+	message?: string;
+};
+
+/**
+ * 管理员清空某个用户的信息的请求载荷
+ */
+export type AdminClearUserInfoRequestDto = {
+	/** 用户的 UID */
+	uid: number;
+};
+
+/**
+ * 管理员清空某个用户的信息的请求响应
+ */
+export type AdminClearUserInfoResponseDto = {
+	/** 执行结果 */
+	success: boolean;
+	/** 附加的文本消息 */
+	message?: string;
 };

@@ -149,10 +149,10 @@
 			// 网格线
 			&::before,
 			&::after {
+				content: "";
 				position: absolute;
 				z-index: 1;
 				border: dotted c(accent);
-				content: "";
 				pointer-events: none;
 			}
 
@@ -186,10 +186,10 @@
 			&::before,
 			&::after {
 				@include oval;
+				content: "";
 				position: absolute;
 				display: block;
 				background-color: c(accent);
-				content: "";
 				pointer-events: none;
 			}
 
@@ -220,11 +220,11 @@
 
 			&::before {
 				@include circle;
+				content: "";
 				display: block;
 				width: 100%;
 				height: 100%;
 				background-color: c(accent);
-				content: "";
 				scale: 0.5;
 			}
 
@@ -284,9 +284,9 @@
 			padding: 8px 10px;
 			color: c(text-color);
 			font-size: 14px;
+			font-variant-numeric: tabular-nums;
 			white-space: nowrap;
 			translate: -50% 44px;
-			font-variant-numeric: tabular-nums;
 		}
 	}
 </style>

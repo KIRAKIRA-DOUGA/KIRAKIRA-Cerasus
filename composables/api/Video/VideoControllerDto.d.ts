@@ -143,6 +143,8 @@ export type GetVideoByKvidResponseDto = {
 		watchedCount?: number;
 		/** 视频作者 ID */
 		uploader?: string;
+		/** 创作者 UUID */
+		uploaderUUID?: string;
 		/** 创作者 UID */
 		uploaderId?: number;
 		/** 视频作者信息 */
