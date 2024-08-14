@@ -433,7 +433,7 @@ export default {
 		linkedin: "領英",
 		facebook: "Facebook",
 		instagram: "Instagram",
-		tiktok: "TikTok",
+		tiktok: "抖音",
 		pixiv: "Pixiv",
 		github: "GitHub",
 	},
