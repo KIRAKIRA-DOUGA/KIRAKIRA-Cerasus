@@ -34,7 +34,7 @@
 			else if (lang.match(/^zh/i)) {
 				if (lang.match(/(CN|SG|MY)$/i) || lang === "zhs") lang = "zh-Hans-CN";
 				else if (lang.match(/(TW|MO)$/i) || lang === "zht") lang = "zh-Hant-TW";
-				else if (lang.match(/(HK)$/i) || lang === "zht") lang = "zh-Hant-HK";
+				else if (lang.match(/(HK)$/i) || lang === "zht") lang = "yue";
 				else return;
 			}
 			else return;
@@ -43,7 +43,7 @@
 			var titles = {
 				"zh-Hans-CN": "是时候更换你的浏览器了",
 				"zh-Hant-TW": "是時候更換你的瀏覽器了",
-				"zh-Hant-HK": "係時候換咗你嘅Browser喇",
+				"yue": "係時候換咗你嘅Browser喇",
 				en: "Time to Change Your Browser",
 				ja: "ブラウザの変更時期",
 				ko: "Time to Change Your Browser",
@@ -76,7 +76,7 @@
 		}
 
 		html.zh-Hant-TW body,
-		html.zh-Hant-HK body {
+		html.yue body {
 			font-family: "Segoe UI", "Microsoft JhengHei", "Microsoft YaHei", Tahoma, Geneva, Verdana, Arial, SimHei, sans-serif;
 		}
 
@@ -289,7 +289,7 @@
 
 		html.zh-Hans-CN .text.zh-Hans-CN,
 		html.zh-Hant-TW .text.zh-Hant-TW,
-		html.zh-Hant-HK .text.zh-Hant-HK,
+		html.yue .text.yue,
 		html.en .text.en,
 		html.ja .text.ja,
 		html.ko .text.ko,
@@ -385,7 +385,7 @@
 					</span>
 				</p>
 			</div>
-			<div lang="zh-Hant-HK" class="text zh-Hant-HK">
+			<div lang="yue" class="text yue">
 				<h1>唔L係啩，<br />你仲用緊咁舊嘅Browser？</h1>
 				<p>
 					你搭住Internet Explorer嚟到ACG嘅大海，好可惜，部船炒咗⋯⋯<br />
