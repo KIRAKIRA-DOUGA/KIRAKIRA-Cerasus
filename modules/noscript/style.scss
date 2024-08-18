@@ -38,7 +38,9 @@ html:lang(en) span:lang(en),
 html:lang(ja) span:lang(ja),
 html:lang(ko) span:lang(ko),
 html:lang(vi) span:lang(vi),
-html:lang(id) span:lang(id) {
+html:lang(id) span:lang(id),
+html:lang(fr) span:lang(fr),
+html:lang(yue) span:lang(yue) {
 	display: inline;
 }
 
@@ -82,7 +84,8 @@ html:lang(id) span:lang(id) {
 			text-align: right;
 			animation: move-down $animation-options;
 
-			&:lang(zh) {
+			&:lang(zh),
+			&:lang(yue) {
 				font-size: 64px;
 			}
 		}
