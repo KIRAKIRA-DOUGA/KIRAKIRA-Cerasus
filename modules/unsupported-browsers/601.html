@@ -33,7 +33,8 @@
 			else if (lang.match(/^id/i)) lang = "id";
 			else if (lang.match(/^zh/i)) {
 				if (lang.match(/(CN|SG|MY)$/i) || lang === "zhs") lang = "zh-Hans-CN";
-				else if (lang.match(/(TW|HK|MO)$/i) || lang === "zht") lang = "zh-Hant-TW";
+				else if (lang.match(/(TW|MO)$/i) || lang === "zht") lang = "zh-Hant-TW";
+				else if (lang.match(/(HK)$/i) || lang === "zht") lang = "zh-Hant-HK";
 				else return;
 			}
 			else return;
@@ -42,6 +43,7 @@
 			var titles = {
 				"zh-Hans-CN": "是时候更换你的浏览器了",
 				"zh-Hant-TW": "是時候更換你的瀏覽器了",
+				"zh-Hant-HK": "係時候換咗你嘅Browser喇",
 				en: "Time to Change Your Browser",
 				ja: "ブラウザの変更時期",
 				ko: "Time to Change Your Browser",
@@ -73,7 +75,8 @@
 			user-select: none;
 		}
 
-		html.zh-Hant-TW body {
+		html.zh-Hant-TW body,
+		html.zh-Hant-HK body {
 			font-family: "Segoe UI", "Microsoft JhengHei", "Microsoft YaHei", Tahoma, Geneva, Verdana, Arial, SimHei, sans-serif;
 		}
 
@@ -286,6 +289,7 @@
 
 		html.zh-Hans-CN .text.zh-Hans-CN,
 		html.zh-Hant-TW .text.zh-Hant-TW,
+		html.zh-Hant-HK .text.zh-Hant-HK,
 		html.en .text.en,
 		html.ja .text.ja,
 		html.ko .text.ko,
@@ -381,6 +385,22 @@
 					</span>
 				</p>
 			</div>
+			<div lang="zh-Hant-HK" class="text zh-Hant-HK">
+				<h1>唔L係啩，<br />你仲用緊咁舊嘅Browser？</h1>
+				<p>
+					你搭住Internet Explorer嚟到ACG嘅大海，好可惜，部船炒咗⋯⋯<br />
+					咁舊嘅技術好難適應呢片海洋環境，呢個咁老嘅Browser亦都難以令你揚帆出海。<br />
+					<br />
+					Internet Explorer代表咗過去，代表住21世紀初互聯網曾經有過嘅美好時光。<br />
+					雖然你可能同我哋一樣好憎新時代咁快嘅節奏、咁忙嘅生活同埋咁封閉嘅環境，<br />
+					懷念過去嘅歡笑、慢節奏同開放，但係我哋要做嘅，就係好似呢個網站噉，<br />
+					去改變呢個時代，爲呢個新時代畫上自己嘅一筆，而唔係留喺過去。<br />
+					<br />
+					<span class="browsers-title">
+						你可以嘗試轉乘
+					</span>
+				</p>
+			</div>
 			<div lang="en" class="text en">
 				<h1>You are really despised for<br />using outdated browser</h1>
 				<p>
@@ -425,10 +445,10 @@
 					Bạn đã dong thuyền tới đại dương A.C.G (Anime-Comic-Game) bằng Internet Explorer nhưng không may bị mắc cạn...<br />
 					Công nghệ cũ như vậy khó có thể thích ứng với môi trường đại dương này và trình duyệt cũ kỹ này cũng khiến bạn khó tài nào ra khơi.<br />
 					Internet Explorer tượng trưng cho quá khứ, vẻ đẹp của Internet đầu thế kỷ 21.<br />
-					Mặc dù bạn có thể có cùng sự ác cảm với chúng tôi đối với sự điên đảo, căng thẳng và đơn độc của thời đại mới,<br /> 
+					Mặc dù bạn có thể có cùng sự ác cảm với chúng tôi đối với sự điên đảo, căng thẳng và đơn độc của thời đại mới,<br />
 					cũng như nỗi hoài niệm về tiếng cười, nhịp sống chậm rãi và sự cởi mở của quá khứ,<br />
 					nhưng chúng ta nên thay đổi trước thời cuộc<br />
-					và đưa màu sắc riêng ấy của chúng ta đến kỷ nguyên mới này,<br /> 
+					và đưa màu sắc riêng ấy của chúng ta đến kỷ nguyên mới này,<br />
 					(giống như trang web này), thay vì kẹt lại mãi trong quá khứ.<br />
 					<span class="browsers-title">
 						Bạn có thể thử chuyển sang
