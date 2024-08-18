@@ -23,7 +23,7 @@
 			// 设置网页语言。
 			var lang = params.lang;
 			if (!lang) {
-				var isIe11 = navigator.userAgent.indexOf("Trident") > 0;
+				var isIe11 = navigator.userAgent.indexOf("Trident") >= 0;
 				lang = isIe11 ? navigator.browserLanguage : navigator.language;
 			}
 			if (lang.match(/^en/i)) lang = "en";
@@ -31,10 +31,11 @@
 			else if (lang.match(/^ko/i)) lang = "ko";
 			else if (lang.match(/^vi/i)) lang = "vi";
 			else if (lang.match(/^id/i)) lang = "id";
+			else if (lang.match(/^fr/i)) lang = "fr";
+			else if (lang.match(/^yue/i)) lang = "yue";
 			else if (lang.match(/^zh/i)) {
 				if (lang.match(/(CN|SG|MY)$/i) || lang === "zhs") lang = "zh-Hans-CN";
-				else if (lang.match(/(TW|MO)$/i) || lang === "zht") lang = "zh-Hant-TW";
-				else if (lang.match(/(HK)$/i) || lang === "zht") lang = "zh-Hant-HK";
+				else if (lang.match(/(TW|HK|MO)$/i) || lang === "zht") lang = "zh-Hant-TW";
 				else return;
 			}
 			else return;
@@ -43,12 +44,13 @@
 			var titles = {
 				"zh-Hans-CN": "是时候更换你的浏览器了",
 				"zh-Hant-TW": "是時候更換你的瀏覽器了",
-				"zh-Hant-HK": "係時候換咗你嘅Browser喇",
 				en: "Time to Change Your Browser",
 				ja: "ブラウザの変更時期",
-				ko: "Time to Change Your Browser",
+				ko: "{{!Time to Change Your Browser}}",
 				vi: "Đến lúc đổi trình duyệt rồi",
-				id: "Time to Change Your Browser"
+				id: "{{!Time to Change Your Browser}}",
+				fr: "{{!Time to Change Your Browser}}",
+				yue: "係時候換咗你嘅Browser喇"
 			};
 			var title = titles[lang];
 			if (title) document.title = title + " - KIRAKIRA☆DOUGA";
@@ -76,7 +78,8 @@
 		}
 
 		html.zh-Hant-TW body,
-		html.zh-Hant-HK body {
+		html.zh-Hant-HK body,
+		html.yue body {
 			font-family: "Segoe UI", "Microsoft JhengHei", "Microsoft YaHei", Tahoma, Geneva, Verdana, Arial, SimHei, sans-serif;
 		}
 
@@ -125,8 +128,8 @@
 			margin: 0;
 			padding: 0;
 			color: #f06e8e;
-			font-weight: bold;
 			font-size: 40px;
+			font-weight: bold;
 			line-height: 53px;
 			white-space: nowrap;
 		}
@@ -140,13 +143,15 @@
 
 		html.en .main-card h1,
 		html.vi .main-card h1,
-		html.id .main-card h1 {
+		html.id .main-card h1,
+		html.fr .main-card h1 {
 			line-height: 45px;
 		}
 
 		html.en .main-card p,
 		html.vi .main-card p,
-		html.id .main-card p {
+		html.id .main-card p,
+		html.fr .main-card p {
 			top: 145px;
 			text-align: left;
 		}
@@ -154,14 +159,16 @@
 		html.en .main-card .right,
 		html.ja .main-card .right,
 		html.vi .main-card .right,
-		html.id .main-card .right {
+		html.id .main-card .right,
+		html.fr .main-card .right {
 			width: 500px;
 		}
 
 		html.en .browsers-title,
 		html.ja .browsers-title,
 		html.vi .browsers-title,
-		html.id .browsers-title {
+		html.id .browsers-title,
+		html.fr .browsers-title {
 			margin-right: 50px;
 		}
 
@@ -289,12 +296,13 @@
 
 		html.zh-Hans-CN .text.zh-Hans-CN,
 		html.zh-Hant-TW .text.zh-Hant-TW,
-		html.zh-Hant-HK .text.zh-Hant-HK,
 		html.en .text.en,
 		html.ja .text.ja,
 		html.ko .text.ko,
 		html.vi .text.vi,
-		html.id .text.id {
+		html.id .text.id,
+		html.fr .text.fr,
+		html.yue .text.yue {
 			display: block;
 		}
 	</style>
@@ -385,22 +393,6 @@
 					</span>
 				</p>
 			</div>
-			<div lang="zh-Hant-HK" class="text zh-Hant-HK">
-				<h1>唔L係啩，<br />你仲用緊咁舊嘅Browser？</h1>
-				<p>
-					你搭住Internet Explorer嚟到ACG嘅大海，好可惜，部船炒咗⋯⋯<br />
-					咁舊嘅技術好難適應呢片海洋環境，呢個咁老嘅Browser亦都難以令你揚帆出海。<br />
-					<br />
-					Internet Explorer代表咗過去，代表住21世紀初互聯網曾經嘅美好。<br />
-					雖然你可能同我哋一樣好憎新時代嘅狂躁、忙碌同封閉，<br />
-					懷念過去嘅歡笑、慢節奏同開放，但係我哋要做嘅，係好似呢個網站噉，<br />
-					去改變呢個時代，爲呢個新時代畫上自己嘅一筆，而唔係留喺過去。<br />
-					<br />
-					<span class="browsers-title">
-						你可以嘗試轉乘
-					</span>
-				</p>
-			</div>
 			<div lang="en" class="text en">
 				<h1>You are really despised for<br />using outdated browser</h1>
 				<p>
@@ -428,14 +420,14 @@
 				</p>
 			</div>
 			<div lang="ko" class="text ko">
-				<h1>You are really despised for<br />using outdated browser</h1>
+				<h1>{{!You are really despised for<br />using outdated browser}}</h1>
 				<p>
-					You arrived at the ocean of ACG by Internet Explorer, unfortunately, you ran aground...<br />
+					{{!You arrived at the ocean of ACG by Internet Explorer, unfortunately, you ran aground...<br />
 					Such old technology is hard to adapt to this ocean environment, and this aged browser is also difficult for you to set sail.<br />
 					Internet Explorer represents the past and the beauty of the Internet in the early 21<sup>st</sup> century.<br />
-					Although you may share our aversion to the madness, busyness, and isolation of the new era, as well as our nostalgia for the laughter, slow pace, and openness of the past, what we need to do is to change the times and add a touch of our own color to this new era, just like this website, rather than trapped in the past.<br />
+					Although you may share our aversion to the madness, busyness, and isolation of the new era, as well as our nostalgia for the laughter, slow pace, and openness of the past, what we need to do is to change the times and add a touch of our own color to this new era, just like this website, rather than trapped in the past.}}<br />
 					<span class="browsers-title">
-						You can try transferring
+						{{!You can try transferring}}
 					</span>
 				</p>
 			</div>
@@ -456,14 +448,42 @@
 				</p>
 			</div>
 			<div lang="id" class="text id">
-				<h1>You are really despised for<br />using outdated browser</h1>
+				<h1>{{!You are really despised for<br />using outdated browser}}</h1>
 				<p>
-					You arrived at the ocean of ACG by Internet Explorer, unfortunately, you ran aground...<br />
+					{{!You arrived at the ocean of ACG by Internet Explorer, unfortunately, you ran aground...<br />
 					Such old technology is hard to adapt to this ocean environment, and this aged browser is also difficult for you to set sail.<br />
 					Internet Explorer represents the past and the beauty of the Internet in the early 21<sup>st</sup> century.<br />
-					Although you may share our aversion to the madness, busyness, and isolation of the new era, as well as our nostalgia for the laughter, slow pace, and openness of the past, what we need to do is to change the times and add a touch of our own color to this new era, just like this website, rather than trapped in the past.<br />
+					Although you may share our aversion to the madness, busyness, and isolation of the new era, as well as our nostalgia for the laughter, slow pace, and openness of the past, what we need to do is to change the times and add a touch of our own color to this new era, just like this website, rather than trapped in the past.}}<br />
 					<span class="browsers-title">
-						You can try transferring
+						{{!You can try transferring}}
+					</span>
+				</p>
+			</div>
+			<div lang="fr" class="text fr">
+				<h1>{{!You are really despised for<br />using outdated browser}}</h1>
+				<p>
+					{{!You arrived at the ocean of ACG by Internet Explorer, unfortunately, you ran aground...<br />
+					Such old technology is hard to adapt to this ocean environment, and this aged browser is also difficult for you to set sail.<br />
+					Internet Explorer represents the past and the beauty of the Internet in the early 21<sup>st</sup> century.<br />
+					Although you may share our aversion to the madness, busyness, and isolation of the new era, as well as our nostalgia for the laughter, slow pace, and openness of the past, what we need to do is to change the times and add a touch of our own color to this new era, just like this website, rather than trapped in the past.}}<br />
+					<span class="browsers-title">
+						{{!You can try transferring}}
+					</span>
+				</p>
+			</div>
+			<div lang="yue" class="text yue">
+				<h1>唔L係啩，<br />你仲用緊咁舊嘅Browser？</h1>
+				<p>
+					你搭住Internet Explorer嚟到ACG嘅大海，好可惜，部船炒咗⋯⋯<br />
+					咁舊嘅技術好難適應呢片海洋環境，呢個咁老嘅Browser亦都難以令你揚帆出海。<br />
+					<br />
+					Internet Explorer代表咗過去，代表住21世紀初互聯網曾經嘅美好。<br />
+					雖然你可能同我哋一樣好憎新時代嘅狂躁、忙碌同封閉，<br />
+					懷念過去嘅歡笑、慢節奏同開放，但係我哋要做嘅，係好似呢個網站噉，<br />
+					去改變呢個時代，爲呢個新時代畫上自己嘅一筆，而唔係留喺過去。<br />
+					<br />
+					<span class="browsers-title">
+						你可以嘗試轉乘
 					</span>
 				</p>
 			</div>
