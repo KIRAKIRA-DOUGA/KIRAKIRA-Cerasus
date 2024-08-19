@@ -31,9 +31,9 @@ export default {
 		pink: "ココア ピンク",
 		blue: "チノ 青",
 		purple: "リゼ 紫",
-		green: "千夜 緑",
+		green: "チヤ 緑",
 		yellow: "シャロ 黄",
-		cyan: "マヤ シアン",
+		cyan: "マヤ 青緑",
 		red: "メグ 赤",
 	},
 	language: {

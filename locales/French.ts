@@ -207,7 +207,7 @@ export default {
 	},
 	guide: "Tutoriel",
 	about: {
-		_: "A propos",
+		_: "À propos de",
 		repositories: {
 			_: "Sources",
 			frontend: "Référentiel front-end GitHub et commentaires sur les problèmes",
@@ -270,7 +270,8 @@ export default {
 	current_page_label: "Page {0} sur {1}",
 	switch_page_label: "Passer à la page {0}",
 	selected_item_label: "L'élément sélectionné est : ",
-	upvote: "Voter",
+	upvote: "Vote positif",
+	downvote: "Vote négatif",
 	share: "Partager",
 	play: "Jouer",
 	pause: "Pause",
