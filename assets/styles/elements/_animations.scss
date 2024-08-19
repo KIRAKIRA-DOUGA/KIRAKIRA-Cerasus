@@ -127,27 +127,27 @@
 // animation: headshake 2.5s 1.5s $ease-in-out-sine infinite;
 @keyframes headshake {
 	0% {
-		transform: translateX(0)
+		transform: translateX(0);
 	}
 
 	3.25% {
-		transform: translateX(-6px) rotateY(-9deg)
+		transform: translateX(-6px) rotateY(-9deg);
 	}
 
 	9.25% {
-		transform: translateX(5px) rotateY(7deg)
+		transform: translateX(5px) rotateY(7deg);
 	}
 
 	15.75% {
-		transform: translateX(-3px) rotateY(-5deg)
+		transform: translateX(-3px) rotateY(-5deg);
 	}
 
 	21.75% {
-		transform: translateX(2px) rotateY(3deg)
+		transform: translateX(2px) rotateY(3deg);
 	}
 
 	25% {
-		transform: translateX(0)
+		transform: translateX(0);
 	}
 }
 

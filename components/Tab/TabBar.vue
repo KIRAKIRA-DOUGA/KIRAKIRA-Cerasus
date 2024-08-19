@@ -150,7 +150,7 @@
 		else if (isUpdateIndicatorToFade)
 			movement = "fade";
 		else {
-			if (prevId !== undefined) prevItem = children.value?.[prevId].el;
+			if (prevId !== undefined) prevItem = children.value?.[prevId]?.el;
 			if (prevId !== undefined && prevItem) {
 				prevItemPosEntry = getIndicatorPositions(prevItem, LENGTH);
 				movement = itemPosEntry[prev] >= prevItemPosEntry[prev] ? "next" : "previous";
