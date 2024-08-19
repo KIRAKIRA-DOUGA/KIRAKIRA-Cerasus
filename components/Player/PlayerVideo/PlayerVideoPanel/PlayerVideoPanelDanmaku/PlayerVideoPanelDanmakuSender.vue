@@ -24,8 +24,10 @@
 				if (format.enableRainbow) div.classList.add("dm-rainbow");
 				Object.assign(div.style, {
 					fontSize: fontSizes[format.fontSize] + "px",
+					fontWeight: "bold",
 					color: format.color ? format.color.hashHex : undefined,
 					border: "1px solid #337ab7", // 用户刚刚发**射**的弹幕会有一个蓝色框
+					textShadow: "1px 0 1px #000,0 1px 1px #000,0 -1px 1px #000,-1px 0 1px #000",
 				});
 				return div;
 			},
