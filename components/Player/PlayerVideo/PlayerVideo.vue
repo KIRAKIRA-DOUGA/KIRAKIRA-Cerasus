@@ -5,7 +5,7 @@
 
 <script setup lang="ts">
 	import type shaka from "shaka-player";
-	import { createDanmakuComment } from "./PlayerVideoPanel/PlayerVideoPanelDanmaku/PlayerVideoPanelDanmakuSender.vue";
+	import { createDanmakuComment, basicDanmakuCommentStyle } from "./PlayerVideoPanel/PlayerVideoPanelDanmaku/PlayerVideoPanelDanmakuSender.vue";
 	import beepSound from "assets/audios/NOVA 2022.1 Alert Quick.ogg";
 	const beepSoundAudio = ref<HTMLAudioElement>();
 
@@ -212,10 +212,9 @@
 					mode: danmaku.mode,
 					time: danmaku.time,
 					style: {
+						...basicDanmakuCommentStyle,
 						fontSize: `${fontSizes[danmaku.fontSIze]}px`,
-						fontWeight: "bold",
 						color: `#${danmaku.color}`,
-						textShadow: "1px 0 1px #000,0 1px 1px #000,0 -1px 1px #000,-1px 0 1px #000",
 					},
 				}));
 				// 初始化视频旁边的弹幕列表
