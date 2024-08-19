@@ -4,6 +4,9 @@
 	import caliburTv from "assets/svg/calibur_tv.svg?raw";
 	import caliburPixel from "assets/svg/calibur_pixel.svg?raw";
 
+	import otomadHelper from "assets/svg/otomad_helper.svg?raw";
+	import omMidi from "assets/svg/om_midi.svg?raw";
+
 	const links = {
 		NOVA: [
 			{ logo: novaOtomads, href: "https://space.bilibili.com/171767281/" },
@@ -11,9 +14,13 @@
 			{ logo: caliburTv, href: "https://www.calibur.tv/" },
 			{ logo: caliburPixel, href: "https://mc.calibur.tv/" },
 		],
+		"OTOMAD+": [
+			{ logo: otomadHelper, href: "https://otomad.github.io/otomad/link/OtomadHelper.html#homepage" },
+			{ logo: omMidi, href: "https://otomad.github.io/otomad/link/om_midi.html#homepage" },
+		],
 	} as Record<string, { logo: string; href: string; index?: number }[]>;
 
-	let i = 0;
+	let i = 1;
 	for (const section of Object.values(links))
 		for (const link of section)
 			link.index = i++;
@@ -22,16 +29,17 @@
 <template>
 	<Subheader icon="link">{{ t.friendly_links }}</Subheader>
 	<template v-for="section, title in links" :key="title">
-		<Subheader>{{ title }}</Subheader>
+		<Subheader class="section" :style="{ '--i': section[0]?.index }">{{ title }}</Subheader>
 		<div class="links lite-links">
 			<!-- eslint-disable-next-line vue/no-v-html -->
-			<a v-for="{ logo, href, index } in section" :key="href" :style="{ '--i': index }" :href v-html="logo"></a>
+			<a v-for="{ logo, href, index } in section" :key="href" target="_blank" :style="{ '--i': index }" :href v-html="logo"></a>
 		</div>
 	</template>
 </template>
 
 <style scoped lang="scss">
 	$delay: 250ms;
+	$item-height: 64px;
 
 	.links {
 		display: flex;
@@ -44,14 +52,15 @@
 			align-items: center;
 			width: min-content;
 			max-width: 500px;
+			height: $item-height;
 
 			&,
 			:deep(svg) .logo,
 			:deep(svg) .text {
 				transition: $fallback-transitions, scale $ease-out-back-smooth 500ms, transform $ease-out-back-smooth 500ms;
 			}
-			
-			&:is(:hover, :focus-visible):not(:active) {
+
+			&:is(:hover, :focus-visible) {
 				filter: saturate(2);
 			}
 
@@ -68,7 +77,7 @@
 			}
 
 			:deep(svg) {
-				height: 64px;
+				max-height: $item-height;
 				overflow: visible;
 
 				.logo,
@@ -86,6 +95,10 @@
 				}
 			}
 		}
+	}
+
+	.section {
+		animation-delay: calc(var(--i) * $delay - 100ms);
 	}
 
 	@keyframes scale-out-in {
