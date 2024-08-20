@@ -138,6 +138,17 @@
 
 	onMounted(() => {
 		document.addEventListener("keydown", onArrowKeydown);
+
+		// Try to fix issue 222
+		const stopWatch = watch(pages, (newVal, oldVal) => {
+			if (newVal > 2) {
+				scrolledPages.value = [];
+				for (let i = 2; i <= newVal; i++) {
+					scrolledPages.value.push(i);
+				}
+				stopWatch();
+			}
+		});
 	});
 
 	onBeforeUnmount(() => {
