@@ -138,6 +138,14 @@
 
 	onMounted(() => {
 		document.addEventListener("keydown", onArrowKeydown);
+
+		// Try to fix issue 222
+		const stopScrollWatcher = watch(pages, (updatedPageCount,) => {
+			if (updatedPageCount > 2) {
+				scrolledPages.value = Array.from({ length: updatedPageCount - 1 }, (_, i) => i + 2);
+				stopScrollWatcher();
+			}
+		});
 	});
 
 	onBeforeUnmount(() => {
