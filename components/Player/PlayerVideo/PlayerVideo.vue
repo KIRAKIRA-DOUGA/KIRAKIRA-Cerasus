@@ -405,6 +405,7 @@
 		playing.value = !video.paused;
 		duration.value = video.duration;
 		video.preservesPitch = preservesPitch.value;
+		video.volume = volume.value ** 2; // 使用对数音量。
 		waiting.value = false;
 		updateBuffered();
 	}
