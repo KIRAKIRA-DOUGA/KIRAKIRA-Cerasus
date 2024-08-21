@@ -75,9 +75,9 @@
 		position?: number;
 	}>();
 
-	// Try to fix issue 222
-	const stopScrollWatcher = watch(pages, () => {
-		scrolledPages.value = !!pages && pages.value > 2 ? getScrolledItems(currentPage.value) : scrolledPages.value;
+	// 防止异步更新页数时，翻页器的中间数字不显示。
+	const stopScrollWatcher = watch(pages, pages => {
+		scrolledPages.value = pages > 2 ? getScrolledItems(currentPage.value) : scrolledPages.value;
 		stopScrollWatcher();
 	});
 
