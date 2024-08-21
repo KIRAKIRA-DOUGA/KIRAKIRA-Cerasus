@@ -20,20 +20,6 @@
 	const isChangingPassword = ref(false);
 
 	/**
-	 * 请求发送修改邮箱的验证码
-	 */
-	function requestSendChangeEmailEmail() {
-		const locale = getCurrentLocaleLangCode();
-		const requestSendChangeEmailVerificationCodeRequest: RequestSendChangeEmailVerificationCodeRequestDto = {
-			clientLanguage: locale,
-		};
-		api.user.requestSendChangeEmailVerificationCode(requestSendChangeEmailVerificationCodeRequest).then(requestSendChangeEmailVerificationCodeResult => {
-			if (requestSendChangeEmailVerificationCodeResult.success && requestSendChangeEmailVerificationCodeResult.isCoolingDown)
-				useToast("邮件发送冷却中，请稍后再试", "error", 5000);
-		});
-	}
-
-	/**
 	 * 修改 Email
 	 */
 	async function updateUserEmail() {
@@ -66,20 +52,6 @@
 		changeEmailPassword.value = "";
 		changeEmailVerificationCode.value = "";
 		isChangingEmail.value = false;
-	}
-
-	/**
-	 * 请求发送修改邮箱的验证码
-	 */
-	function requestSendChangePasswordEmail() {
-		const locale = getCurrentLocaleLangCode();
-		const requestSendChangePasswordVerificationCodeRequest: RequestSendChangePasswordVerificationCodeRequestDto = {
-			clientLanguage: locale,
-		};
-		api.user.requestSendChangePasswordVerificationCode(requestSendChangePasswordVerificationCodeRequest).then(requestSendChangePasswordVerificationCodeResult => {
-			if (requestSendChangePasswordVerificationCodeResult.success && requestSendChangePasswordVerificationCodeResult.isCoolingDown)
-				useToast("修改密码的验证码发送冷却中，请稍后再试", "error", 5000);
-		});
 	}
 
 	/**
@@ -151,9 +123,9 @@
 	<Modal v-model="showChangeEmail" title="更改邮箱" icon="email">
 		<div class="change-email-modal">
 			<form>
-				<SendVerificationCode v-model="changeEmailVerificationCode" @send="requestSendChangeEmailEmail" />
 				<!-- TODO: 使用多语言 -->
-				<TextBox v-model="newEmail" :required="true" :invalid="isInvalidNewEmail" type="email" icon="lock" placeholder="新邮箱" autoComplete="new-email" />
+				<TextBox v-model="newEmail" :required="true" :invalid="isInvalidNewEmail" type="email" icon="email" placeholder="新邮箱" autoComplete="new-email" />
+				<SendVerificationCode v-model="changeEmailVerificationCode" :email="newEmail" verificationCodeFor="change-email" :disabled="!newEmail || isInvalidNewEmail" />
 				<TextBox v-model="changeEmailPassword" :required="true" type="password" icon="lock" :placeholder="t.password._" autoComplete="current-password" />
 			</form>
 		</div>
@@ -166,7 +138,7 @@
 	<Modal v-model="showChangePassword" :title="t.password.change" icon="password">
 		<div class="change-password-modal">
 			<form>
-				<SendVerificationCode v-model="changeEmailVerificationCode" @send="requestSendChangePasswordEmail" />
+				<SendVerificationCode v-model="changePasswordVerificationCode" verificationCodeFor="change-password" />
 				<TextBox v-model="oldPassword" :required="true" type="password" icon="lock" :placeholder="t.password.current" autoComplete="current-password" />
 				<TextBox v-model="newPassword" :required="true" type="password" icon="lock" :placeholder="t.password.new" autoComplete="new-password" />
 				<TextBox v-model="confirmNewPassword" :required="true" type="password" icon="lock" :placeholder="t.password.new_retype" autoComplete="new-password" />
