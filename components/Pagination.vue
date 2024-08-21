@@ -75,6 +75,12 @@
 		position?: number;
 	}>();
 
+	// Try to fix issue 222
+	const stopScrollWatcher = watch(pages, () => {
+		scrolledPages.value = !!pages && pages.value > 2 ? getScrolledItems(currentPage.value) : scrolledPages.value;
+		stopScrollWatcher();
+	});
+
 	watch(() => currentPage.value, (page, prevPage) => {
 		// #region 导轨动画
 		const prevItems = getScrolledItems(prevPage);
@@ -138,14 +144,6 @@
 
 	onMounted(() => {
 		document.addEventListener("keydown", onArrowKeydown);
-
-		// Try to fix issue 222
-		const stopScrollWatcher = watch(pages, (updatedPageCount,) => {
-			if (updatedPageCount > 2) {
-				scrolledPages.value = Array.from({ length: updatedPageCount - 1 }, (_, i) => i + 2);
-				stopScrollWatcher();
-			}
-		});
 	});
 
 	onBeforeUnmount(() => {
