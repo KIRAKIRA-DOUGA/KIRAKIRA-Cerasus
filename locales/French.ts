@@ -223,7 +223,7 @@ export default {
 			translator: "{0} Traducteur",
 		},
 		technologies_used: "Technologies utilisées",
-		slogan: "Un site mignon \npour les gens mignons !",
+		slogan: "Un site mignon \n pour les gens mignons !",
 	},
 	acknowledgement: "Acquittement",
 	friendly_links: "Liens amicaux",
