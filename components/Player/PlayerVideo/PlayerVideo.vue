@@ -806,11 +806,6 @@
 			.waiting {
 				@include flex-center;
 				pointer-events: none;
-
-				.progress-ring {
-					--size: 56px;
-					--thickness: 6px;
-				}
 			}
 		}
 	}
