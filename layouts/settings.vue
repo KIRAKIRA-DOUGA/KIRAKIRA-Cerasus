@@ -1,8 +1,5 @@
 <script setup lang="ts">
-	const currentSetting = computed({
-		get: () => currentSettingsPage(),
-		set: async id => { await navigate(`/settings/${id}`); },
-	});
+	const currentSetting = computed(() => currentSettingsPage());
 	const search = ref("");
 	const main = ref<HTMLElement>();
 	const showDrawer = ref(false);
@@ -97,14 +94,14 @@
 					<TabBar v-model="currentSetting" vertical>
 						<Subheader v-if="selfUserInfoStore.isLogined" icon="person">{{ t.settings.user }}</Subheader>
 						<template v-if="selfUserInfoStore.isLogined">
-							<TabItem v-for="setting in settings.personal" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
+							<TabItem v-for="setting in settings.personal" :id="setting.id" :key="setting.id" :icon="setting.icon" :to="`/settings/${setting.id}`" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
 						</template>
 						<Subheader icon="apps">{{ t.settings.app }}</Subheader>
-						<TabItem v-for="setting in settings.general" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
+						<TabItem v-for="setting in settings.general" :id="setting.id" :key="setting.id" :icon="setting.icon" :to="`/settings/${setting.id}`" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
 						<!-- TODO: 使用多语言 -->
 						<Subheader v-if="isAdmin" icon="build_circle">管理设置</Subheader>
 						<template v-if="isAdmin">
-							<TabItem v-for="setting in settings.admin" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
+							<TabItem v-for="setting in settings.admin" :id="setting.id" :key="setting.id" :icon="setting.icon" :to="`/settings/${setting.id}`" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
 						</template>
 					</TabBar>
 					<div class="nav-bottom-buttons">
@@ -117,7 +114,6 @@
 				</header>
 			</div>
 		</nav>
-		<NuxtLoadingIndicator color="var(--accent)" />
 
 		<div class="card"></div>
 		<main ref="main">

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+	import LocaleLink from "../LocaleLink.vue";
 	import TabBar from "./TabBar.vue";
 	import type { Property } from "csstype";
 
@@ -11,6 +12,8 @@
 		badge?: Readable;
 		/** 图标，可选。 */
 		icon?: DeclaredIcons;
+		/** 超链接目标地址，可选。 */
+		to?: string;
 		/** @internal 仅内部使用！是否是垂直选项卡？ */
 		// eslint-disable-next-line vue/prop-name-casing
 		_internalIsVertical?: boolean;
@@ -37,18 +40,22 @@
 	 * @param e - 鼠标事件。
 	 */
 	function onClick(e: MouseEvent) {
+		if (props.to) return;
 		parent?.exposed?.changeTab(props.id);
 		emits("click", e, props.id);
 	}
 </script>
 
 <template>
-	<Comp
+	<component
+		:is="props.to ? LocaleLink : 'div'"
 		v-ripple="vertical"
 		:class="{ active, vertical: direction.includes('vertical') }"
 		role="tab"
 		:aria-selected="active"
 		:aria-current="active"
+		:to
+		class="tab-item lite"
 		@click="onClick"
 	>
 		<!-- <div v-if="!vertical" v-ripple class="horizontal-ripple"></div> -->
@@ -59,11 +66,11 @@
 			<span><slot></slot></span>
 			<Badge class="badge"><slot name="badge">{{ badge }}</slot></Badge>
 		</div>
-	</Comp>
+	</component>
 </template>
 
 <style scoped lang="scss">
-	:comp {
+	.tab-item {
 		@include round-small;
 		@include flex-center;
 		position: relative;
@@ -103,9 +110,9 @@
 
 		.horizontal-ripple {
 			@include circle;
+			content: "";
 			position: absolute;
 			width: calc(100% + 16px);
-			content: "";
 			aspect-ratio: 1 / 1;
 		}
 
@@ -154,7 +161,7 @@
 				}
 			}
 
-			&:not(:any-hover) >* {
+			&:not(:any-hover) > * {
 				transition-duration: 1s;
 			}
 
