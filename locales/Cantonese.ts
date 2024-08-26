@@ -340,7 +340,7 @@ export default {
 		close: "閂",
 		modify: "執",
 		save: "保存",
-		add: "建立",
+		add: "添加",
 		apply: "應用",
 		reset: "重設",
 	},

@@ -41,7 +41,7 @@ export default {
 		ko: "Bahasa Korea",
 		vi: "Bahasa Vietnam",
 		id: "Bahasa Indonesia",
-		fr: "Perancis",
+		fr: "Bahasa Perancis",
 		yue: "Bahasa Kanton",
 	},
 	background: {
