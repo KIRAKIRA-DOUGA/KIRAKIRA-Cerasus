@@ -40,7 +40,6 @@
 	 * @param e - 鼠标事件。
 	 */
 	function onClick(e: MouseEvent) {
-		if (props.to) return;
 		parent?.exposed?.changeTab(props.id);
 		emits("click", e, props.id);
 	}
@@ -48,7 +47,7 @@
 
 <template>
 	<component
-		:is="props.to ? LocaleLink : 'div'"
+		:is="props.to ? LocaleLink : 'span'"
 		v-ripple="vertical"
 		:class="{ active, vertical: direction.includes('vertical') }"
 		role="tab"
