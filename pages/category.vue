@@ -1,14 +1,22 @@
 <script setup lang="ts">
-	const categoryList = ["Anime", "Music", "Otomad", "Tech", "Design", "Game", "Misc"];
+	const categories = [
+		{ id: "anime", icon: "movie" },
+		{ id: "music", icon: "music" },
+		{ id: "otomad", icon: "otomad_wiki" },
+		{ id: "tech", icon: "programmer" },
+		{ id: "design", icon: "design" },
+		{ id: "game", icon: "games" },
+		{ id: "misc", icon: "sun" },
+	];
 </script>
 
 <template>
 	<div class="container">
 		<div class="categories">
-			<div v-for="cat in categoryList" :key="cat" class="item">
+			<div v-for="{ id: cat, icon } in categories" :key="cat" class="item">
 				<p>
-					<Icon name="placeholder" />
-					{{ t.category[cat.toLowerCase()] }}
+					<Icon :name="icon" />
+					{{ t.category[cat] }}
 				</p>
 				<Badge>39</Badge>
 			</div>
@@ -26,8 +34,8 @@
 			@include round-large;
 			@include mini-card-shadow;
 			display: flex;
-			align-items: center;
 			justify-content: space-between;
+			align-items: center;
 			padding: 13px 16px;
 			background-color: c(main-bg);
 

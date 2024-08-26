@@ -69,19 +69,19 @@
 				display: flex;
 				flex-wrap: wrap;
 				gap: 8px;
+				align-items: center;
 				font-size: 24px;
 
 				.nickname {
 					font-weight: bold;
 				}
 
-				.user-name {
+				.username {
 					color: c(icon-color);
 				}
 
 				.icons {
 					@include flex-center;
-					margin-left: 10px;
 
 					.male {
 						color: c(blue);

@@ -18,12 +18,14 @@ export default defineNuxtConfig({
 	devtools: {
 		enabled: false,
 	},
+
 	plugins: [
 		"plugins/vue/ripple.ts",
 		"plugins/vue/css-var-i.ts",
 		"plugins/vue/tooltip.ts",
 		"plugins/vue/gesture.ts",
 	],
+
 	modules: [
 		// "@nuxt/devtools",
 		"@nuxtjs/i18n",
@@ -44,6 +46,7 @@ export default defineNuxtConfig({
 		"@nuxtjs/robots",
 		"@nuxtjs/sitemap",
 	],
+
 	alias: defineAlias(__dirname,
 		"assets/styles",
 		"components",
@@ -68,6 +71,7 @@ export default defineNuxtConfig({
 		"assets/pomsky",
 		"composables/api",
 	),
+
 	css: [
 		"styles/global.scss",
 		"styles/global-colors.scss",
@@ -75,6 +79,7 @@ export default defineNuxtConfig({
 		"vue-virtual-scroller/dist/vue-virtual-scroller.css",
 		"vue-cropper/dist/index.css",
 	],
+
 	vite: {
 		plugins: [
 			docsLoader(),
@@ -130,6 +135,7 @@ export default defineNuxtConfig({
 			"**/*.vtt",
 		],
 	},
+
 	nitro: {
 		devProxy: {
 			"/api": {
@@ -147,6 +153,7 @@ export default defineNuxtConfig({
 			},
 		},
 	},
+
 	build: {
 		vendor: [
 			"vue-cropper",
@@ -155,6 +162,7 @@ export default defineNuxtConfig({
 			{ src: "~/plugins/vue-cropper", ssr: false },
 		],
 	},
+
 	vue: {
 		compilerOptions: {
 			isCustomElement(tag) {
@@ -169,17 +177,18 @@ export default defineNuxtConfig({
 			},
 		},
 	},
+
 	i18n: {
 		locales: [
-			{ code: "zhs", iso: "zh-CN", name: "简体中文" },
-			{ code: "zht", iso: "zh-TW", name: "繁體中文" },
-			{ code: "en", iso: "en-US", name: "English" },
+			{ code: "zhs", language: "zh-CN", name: "简体中文" },
+			{ code: "zht", language: "zh-TW", name: "繁體中文" },
+			{ code: "en", language: "en-US", name: "English" },
 			{ code: "ja", name: "日本語" },
 			{ code: "ko", name: "한국어" },
 			{ code: "vi", name: "Tiếng Việt" },
 			{ code: "id", name: "Bahasa Indonesia" },
 			{ code: "fr", name: "Français" },
-			{ code: "yue", name: "粵語" },
+			{ code: "yue", name: "廣東話" },
 		],
 		defaultLocale: "zhs",
 		vueI18n: "./i18n.config.ts",
@@ -189,6 +198,7 @@ export default defineNuxtConfig({
 			alwaysRedirect: true,
 		},
 	},
+
 	content: {
 		markdown: {
 			remarkPlugins: {
@@ -205,6 +215,7 @@ export default defineNuxtConfig({
 			},
 		},
 	},
+
 	image: {
 		format: ["avif", "webp"], // 只适用于 <NuxtPicture>，对 <NuxtImg> 无效。
 		providers: {
@@ -219,15 +230,18 @@ export default defineNuxtConfig({
 			},
 		},
 	},
+
 	piniaPersistedstate: {
 		cookieOptions: {
 			sameSite: "strict",
 		},
 		storage: "localStorage",
 	},
+
 	svgSprite: {
 		input: "~/assets/icons",
 	},
+
 	imports: {
 		dirs: [
 			"components",
@@ -236,6 +250,7 @@ export default defineNuxtConfig({
 			"stores",
 		],
 	},
+
 	postcss: {
 		plugins: {
 			"./plugins/postcss/component-root": true,
@@ -244,30 +259,37 @@ export default defineNuxtConfig({
 			"postcss-combine-media-query": false,
 		},
 	},
+
 	components: [
 		{
 			path: "components",
 			pathPrefix: false,
 		},
 	],
+
 	lodash: {
 		exclude: ["now"],
 	},
+
 	site: {
 		url: "https://cerasus.kirakira.moe",
 	},
+
 	app: {
 		/* pageTransition: {
-			name: "page-jump",
-			mode: "out-in",
+						name: "page-jump",
+						mode: "out-in",
 		}, */
 		rootId: "root",
 		teleportId: "popovers",
 	},
+
 	runtimeConfig: {
 		public: {
 			/** Cloudflare MPD 视频清单 URL 模板，其中 "{videoId}" 部分将会被替换为真实的视频 ID */
 			cloudflareMpdVideoUrlTemplate: "https://customer-yvgxn6arnuae3q89.cloudflarestream.com/{videoId}/manifest/video.mpd",
 		},
 	},
+
+	compatibilityDate: "2024-08-25",
 } as BroadNuxtConfig);

@@ -65,9 +65,9 @@
 	@layer props {
 		:comp {
 			/// 进度环尺寸大小。
-			--size: 28px;
+			--size: 40px;
 			/// 进度环边缘线条粗细。
-			--thickness: 3px;
+			--thickness: 4px;
 			/// 颜色。
 			color: c(accent);
 		}
@@ -77,8 +77,8 @@
 		@include square(var(--size));
 		position: relative;
 		display: inline-block;
-		line-height: 0;
 		contain: strict;
+		line-height: 0;
 
 		&.v-leave-active * {
 			transition-timing-function: $ease-in-cubic;
@@ -160,9 +160,9 @@
 			box-sizing: border-box;
 			width: 200%;
 			height: 100%;
-			border-color: inherit;
-			border-style: solid;
 			border-width: var(--thickness);
+			border-style: solid;
+			border-color: inherit;
 			border-bottom-color: transparent !important;
 			animation: none;
 
@@ -205,15 +205,15 @@
 			--center: calc(var(--size) / 2);
 			--radius: calc(var(--center) - var(--thickness) / 2);
 			--dash-array: calc(2 * #{math.$pi} * var(--radius));
+			fill: transparent;
+			stroke: currentColor;
+			stroke-dasharray: var(--dash-array);
+			stroke-dashoffset: calc(var(--dash-array) * (1 - var(--progress)));
+			stroke-linecap: round;
+			stroke-width: var(--thickness);
 			cx: var(--center);
 			cy: var(--center);
 			r: var(--radius);
-			fill: transparent;
-			stroke: currentColor;
-			stroke-width: var(--thickness);
-			stroke-linecap: round;
-			stroke-dasharray: var(--dash-array);
-			stroke-dashoffset: calc(var(--dash-array) * (1 - var(--progress)));
 		}
 
 		&.to-determinate circle {

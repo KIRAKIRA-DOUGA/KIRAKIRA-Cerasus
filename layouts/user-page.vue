@@ -126,7 +126,7 @@
 		top: 0;
 		z-index: 4;
 		padding: 0 $page-padding-x;
-		background-color: c(main-bg);
+		background-color: c(surface-color);
 
 		@include tablet {
 			padding: 0 $page-padding-x-tablet;

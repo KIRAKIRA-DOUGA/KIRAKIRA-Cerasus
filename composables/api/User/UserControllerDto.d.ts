@@ -460,6 +460,18 @@ export type GetMyInvitationCodeResponseDto = {
 };
 
 /**
+ * 获取用户自己注册的邀请码的请求响应
+ */
+export type GetUserInvitationCodeResponseDto = {
+	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
+	success: boolean;
+	/** 附加的文本消息 */
+	message?: string;
+	/** 注册时使用的邀请码 */
+	invitationCode?: string;
+};
+
+/**
  * 使用邀请码的参数
  */
 export type UseInvitationCodeDto = {
@@ -507,6 +519,8 @@ export type CheckInvitationCodeResponseDto = {
 export type RequestSendChangeEmailVerificationCodeRequestDto = {
 	/** 用户客户端使用的语言 */
 	clientLanguage: string;
+	/** 用户的新邮箱 */
+	newEmail: string;
 };
 
 /**

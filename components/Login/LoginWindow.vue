@@ -260,23 +260,6 @@
 		else
 			passwordHintInvalidText.value = false;
 	}
-
-	/**
-	 * 发送注册验证码
-	 */
-	async function sendRegisterVerificationCode() {
-		if (!email.value) return;
-		const locale = getCurrentLocaleLangCode();
-		const requestSendVerificationCodeRequest: RequestSendVerificationCodeRequestDto = {
-			email: email.value,
-			clientLanguage: locale,
-		};
-		const requestSendVerificationCodeResponse = await api.user.requestSendVerificationCode(requestSendVerificationCodeRequest);
-		if (!requestSendVerificationCodeResponse.isTimeout)
-			console.log(requestSendVerificationCodeResponse);
-		else
-			useToast("操作太快啦~ 请稍后再试", "warning", 5000); // TODO: 使用多语言
-	}
 </script>
 
 <template>
@@ -420,7 +403,7 @@
 						<HeadingGroup :name="t.register" englishName="Register" class="collapse" />
 						<div class="form">
 							<div><Preserves>{{ t.loginwindow.register_email_sent_info }}</Preserves></div>
-							<SendVerificationCode v-model="verificationCode" :email="email" @send="sendRegisterVerificationCode" />
+							<SendVerificationCode v-model="verificationCode" :email="email" verificationCodeFor="registration" />
 							<TextBox
 								v-model="confirmPassword"
 								type="password"

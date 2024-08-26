@@ -5,7 +5,7 @@
 
 <script setup lang="ts">
 	import type shaka from "shaka-player";
-	import { createDanmakuComment } from "./PlayerVideoPanel/PlayerVideoPanelDanmaku/PlayerVideoPanelDanmakuSender.vue";
+	import { createDanmakuComment, basicDanmakuCommentStyle } from "./PlayerVideoPanel/PlayerVideoPanelDanmaku/PlayerVideoPanelDanmakuSender.vue";
 	import beepSound from "assets/audios/NOVA 2022.1 Alert Quick.ogg";
 	const beepSoundAudio = ref<HTMLAudioElement>();
 
@@ -212,9 +212,9 @@
 					mode: danmaku.mode,
 					time: danmaku.time,
 					style: {
+						...basicDanmakuCommentStyle,
 						fontSize: `${fontSizes[danmaku.fontSIze]}px`,
 						color: `#${danmaku.color}`,
-						textShadow: "-1px -1px #000, -1px 1px #000, 1px -1px #000, 1px 1px #000",
 					},
 				}));
 				// 初始化视频旁边的弹幕列表
@@ -368,7 +368,7 @@
 		const stats = player.value?.getStats();
 		if (!stats) return;
 		const a = activeTrack.value;
-		
+
 		assign(statsVideo.value, {
 			codec: a?.videoCodec ?? "",
 			mimeType: a?.videoMimeType ?? "",
@@ -376,14 +376,14 @@
 			resolution: { width: a?.width ?? 0, height: a?.height ?? 0 },
 			frameRate: a?.frameRate ?? 0,
 		});
-		
+
 		assign(statsAudio.value, {
 			codec: a?.audioCodec ?? "",
 			mimeType: a?.audioMimeType ?? "",
 			bitRate: a?.audioBandwidth ?? 0,
 			sampleRate: a?.audioSamplingRate ?? 0,
 		});
-		
+
 		assign(statsPlayer.value, {
 			manifestType: player.value.getManifestType() ?? "",
 			streamBandwidth: stats.streamBandwidth ?? 0,
@@ -405,6 +405,7 @@
 		playing.value = !video.paused;
 		duration.value = video.duration;
 		video.preservesPitch = preservesPitch.value;
+		video.volume = volume.value ** 2; // 使用对数音量。
 		waiting.value = false;
 		updateBuffered();
 	}
@@ -805,11 +806,6 @@
 			.waiting {
 				@include flex-center;
 				pointer-events: none;
-
-				.progress-ring {
-					--size: 56px;
-					--thickness: 6px;
-				}
 			}
 		}
 	}

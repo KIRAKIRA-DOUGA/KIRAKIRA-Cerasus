@@ -11,7 +11,7 @@ export default {
 		_: "Danh mục",
 		anime: "Anime",
 		music: "Âm nhạc",
-		otomad: "Otomad",
+		otomad: "otoMAD",
 		tech: "Công nghệ",
 		design: "Thiết kế",
 		game: "Trò chơi",
@@ -46,6 +46,7 @@ export default {
 		vi: "Tiếng Việt",
 		id: "Tiếng Indonesia",
 		fr: "Tiếng Pháp",
+		yue: "Tiếng Quảng Đông",
 	},
 	background: {
 		_: "Phông nền",
@@ -189,8 +190,8 @@ export default {
 	accessibility: "Trợ năng",
 	shortcut_key: {
 		_: "Phím tắt",
-		player_page: "Trình phát",
-		play_pause: "Phát/Dừng",
+		player_page: "Trang trình phát",
+		play_pause: "Phát / Dừng",
 		exit_fullscreen: "Thoát chế độ toàn màn hình",
 		pagination: "Xem dưới dạng Trang",
 		page_turning: "Sang trang",
@@ -209,7 +210,7 @@ export default {
 		_: "Về chúng tôi",
 		repositories: {
 			_: "Mã nguồn",
-			frontend: "Kho lưu trữ GitHub Frontend và phản hồi các vấn đề",
+			frontend: "Kho lưu trữ GitHub Frontend và phản hồi về các vấn đề",
 			backend: "Kho lưu trữ GitHub Backend và phản hồi về các vấn đề",
 			markdown: "Kho lưu trữ mã nguồn Markdown của người dùng và phản hồi các vấn đề",
 		},

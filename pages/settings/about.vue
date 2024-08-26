@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	const nuxt = useNuxtApp();
 	const isDevMode = inject<Ref<boolean>>("isDevMode");
-	
+
 	const repositories: { name: string; codeName?: string; link: string; icon?: string }[] = [
 		{ name: t.about.repositories.frontend, codeName: "KIRAKIRA Cerasus", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus" },
 		{ name: t.about.repositories.backend, codeName: "KIRAKIRA Rosales", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Rosales" },
@@ -20,6 +20,7 @@
 		// { uid: NaN, name: "HanceyMica", job: [t.about.staff.translator(t.language.zht)] },
 		{ uid: 8, job: [t.about.staff.translator(t.language.vi)] },
 		{ uid: 7, job: [t.about.staff.translator(t.language.vi)] },
+		{ uid: 209, job: [t.about.staff.translator(t.language.yue)] },
 	]);
 
 	const technologies: { name: string; version?: string; ability: string; icon?: string; monochrome?: boolean; link: string }[] = [

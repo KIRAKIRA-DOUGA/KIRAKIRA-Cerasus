@@ -454,7 +454,7 @@ export default {
 		finish: "操作成功完成",
 		unsupported_file: "不支持上传所选文件！",
 		no_cover: "请上传封面！",
-		login_failed: "登录失败！用户名或密码错误。",
+		login_failed: "登入失败！用户名或密码错误。",
 		password_mismatch: "两次输入密码不一致！",
 		copied: "已复制！",
 		modification_failed: "修改失败！",

@@ -89,6 +89,10 @@
 		background: linear-gradient(45deg, c(accent-10) 0%, c(accent-80) 50%, c(accent) 100%);
 		filter: blur(20dvh);
 		pointer-events: none;
+
+		html.dark & {
+			background: black;
+		}
 	}
 
 	.content {
@@ -191,6 +195,10 @@
 		left: calc((100dvw / 11 - $height * 2 / $sqrt3) / 2);
 		display: flex;
 
+		html.dark & {
+			filter: brightness(0.3);
+		}
+
 		> * {
 			@include square(100%);
 
@@ -207,7 +215,7 @@
 			}
 
 			@for $i from 1 through 11 {
-				$colors: #f06e8e, #f1587e, #f58ca6, #ec7f9a, #dd91a3, #ecd2d8;
+				$colors: c(accent), c(accent-40), c(accent-30), c(accent-20), c(accent-10), c(accent-5);
 
 				&:nth-of-type(#{$i}) > * {
 					$j: $i - 1;

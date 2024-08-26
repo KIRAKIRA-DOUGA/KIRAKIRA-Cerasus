@@ -27,8 +27,8 @@
 	const showAlert = ref(false);
 	const showModal = ref(false);
 	const showProgress = ref(true);
-	const progressRingSize = ref(28);
-	const progressRingThickness = ref(3);
+	const progressRingSize = ref(40);
+	const progressRingThickness = ref(4);
 	const progressBarHeight = ref(4);
 	const progressPercent = ref(30);
 	const progressIndeterminate = ref(true);

@@ -86,7 +86,7 @@
 				<div class="body">
 					<div class="titlebar">
 						<div class="title" :class="{ hide: hideTitle }" @pointerdown="onTitleBarDown">
-							<Icon :name="icon" filled @dblclick="open = false" />
+							<Icon :name="icon" :filled="icon.startsWith('colored-')" @dblclick="open = false" />
 							<span>{{ title }}</span>
 						</div>
 						<button class="close-button" :aria-label="t.step.close" @click="open = false">

@@ -23,7 +23,7 @@ export default {
 	scheme: {
 		_: "スキーム",
 		light: "ライト テーマ",
-		dark: "ライト テーマ",
+		dark: "ダーク テーマ",
 		system: "システムのテーマ設定を使用する",
 	},
 	palette: {
@@ -31,9 +31,9 @@ export default {
 		pink: "ココア ピンク",
 		blue: "チノ 青",
 		purple: "リゼ 紫",
-		green: "千夜 緑",
+		green: "チヤ 緑",
 		yellow: "シャロ 黄",
-		cyan: "マヤ シアン",
+		cyan: "マヤ 青緑",
 		red: "メグ 赤",
 	},
 	language: {
@@ -141,10 +141,10 @@ export default {
 		},
 	},
 	player: {
-		_: "プレーヤー",
+		_: "プレイヤー",
 		speed: {
 			resample: "リサンプリング",
-			continuous: "無段変速",
+			continuous: "細かい変速",
 		},
 		quality: {
 			auto: "自動画質",
@@ -160,7 +160,7 @@ export default {
 			_: "フィルター",
 		},
 		error: {
-			getDanmaku: "弾幕リストの取得に失敗しました",
+			getDanmaku: "弾幕リストの取得に失敗しました。",
 		},
 	},
 	danmaku: {

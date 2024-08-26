@@ -1,8 +1,5 @@
 <script setup lang="ts">
-	const currentSetting = computed({
-		get: () => currentSettingsPage(),
-		set: async id => { await navigate(`/settings/${id}`); },
-	});
+	const currentSetting = computed(() => currentSettingsPage());
 	const search = ref("");
 	const main = ref<HTMLElement>();
 	const showDrawer = ref(false);
@@ -97,14 +94,14 @@
 					<TabBar v-model="currentSetting" vertical>
 						<Subheader v-if="selfUserInfoStore.isLogined" icon="person">{{ t.settings.user }}</Subheader>
 						<template v-if="selfUserInfoStore.isLogined">
-							<TabItem v-for="setting in settings.personal" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
+							<TabItem v-for="setting in settings.personal" :id="setting.id" :key="setting.id" :icon="setting.icon" :to="`/settings/${setting.id}`" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
 						</template>
 						<Subheader icon="apps">{{ t.settings.app }}</Subheader>
-						<TabItem v-for="setting in settings.general" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
+						<TabItem v-for="setting in settings.general" :id="setting.id" :key="setting.id" :icon="setting.icon" :to="`/settings/${setting.id}`" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
 						<!-- TODO: 使用多语言 -->
 						<Subheader v-if="isAdmin" icon="build_circle">管理设置</Subheader>
 						<template v-if="isAdmin">
-							<TabItem v-for="setting in settings.admin" :id="setting.id" :key="setting.id" :icon="setting.icon" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
+							<TabItem v-for="setting in settings.admin" :id="setting.id" :key="setting.id" :icon="setting.icon" :to="`/settings/${setting.id}`" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
 						</template>
 					</TabBar>
 					<div class="nav-bottom-buttons">
@@ -117,7 +114,6 @@
 				</header>
 			</div>
 		</nav>
-		<NuxtLoadingIndicator color="var(--accent)" />
 
 		<div class="card"></div>
 		<main ref="main">
@@ -317,16 +313,11 @@
 
 	.page-title-wrapper {
 		position: relative;
+		display: flex;
 		flex-grow: 1;
+		align-items: center;
 		height: 1.5em;
-		margin-top: 0.1em;
-		margin-bottom: -0.15em;
 		overflow-y: hidden;
-
-		@include computer {
-			margin-top: 0;
-			margin-bottom: -0.25em;
-		}
 	}
 
 	h2 {
@@ -338,11 +329,11 @@
 		}
 
 		&.v-leave-to {
-			translate: 0 -100%;
+			translate: 0 -120%;
 		}
 
 		&.v-enter-from {
-			translate: 0 100%;
+			translate: 0 120%;
 		}
 	}
 
@@ -382,7 +373,7 @@
 	.page-header {
 		display: flex;
 		gap: 1rem;
-		align-items: flex-start;
+		align-items: center;
 		background-color: c(main-bg, 80%);
 
 		@include not-mobile {
@@ -423,16 +414,6 @@
 		.show-drawer-wrapper {
 			@include computer {
 				display: none;
-			}
-
-			@include not-mobile {
-				margin-left: -1rem;
-			}
-		}
-
-		.close-button-wrapper {
-			@include not-mobile {
-				margin-right: -1rem;
 			}
 		}
 
