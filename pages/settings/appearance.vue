@@ -103,9 +103,9 @@
 				/>
 				<div class="overlay light"></div>
 				<div class="overlay color"></div>
-				<Icon name="palette" />
 				<h3>{{ t.palette[item.color] }}</h3>
 				<p lang="ja">{{ item.subtitle }}</p>
+				<Icon name="palette" />
 			</div>
 		</SettingsGridItem>
 		<SettingsGridItem
@@ -118,9 +118,9 @@
 		>
 			<div class="content">
 				<div class="hue-gradient"></div>
-				<Icon name="edit" />
 				<h3>{{ t.custom }}</h3>
 				<p>Make It Yours</p>
+				<Icon name="edit" />
 			</div>
 		</SettingsGridItem>
 	</section>
@@ -196,6 +196,8 @@
 
 	.content {
 		@include square(100%);
+		display: flex;
+		flex-direction: column;
 		padding: 18px 20px;
 		color: c(accent);
 
@@ -219,13 +221,7 @@
 
 		.icon {
 			display: block;
-			margin-top: -0.125em;
-			margin-bottom: calc(4px + 0.2cqh);
-
-			.settings-grid-item:not(.active) & {
-				margin-top: -1.25em;
-				translate: 0 -1.5em;
-			}
+			margin-top: auto;
 		}
 
 		img,
