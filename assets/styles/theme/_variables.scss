@@ -7,7 +7,7 @@ $tablet-max-width: 991px;
 // #endregion
 
 // #region 过渡动画
-$fallback-transitions: all $ease-out-expo 250ms, color $ease-out-expo 100ms, fill $ease-out-expo 100ms;
+$fallback-transitions: all $ease-out-expo 250ms, color $ease-out-expo 100ms, fill $ease-out-expo 100ms, accent-color 0ms;
 // #endregion
 
 // #region 字体

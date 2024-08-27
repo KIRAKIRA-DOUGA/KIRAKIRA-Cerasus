@@ -255,6 +255,13 @@ html.flat {
 	}
 }
 
+// 移除颜色过渡。
+html.remove-color-transition {
+	@include enhanced-selector {
+		transition: $fallback-transitions, color 0s, background 0s, fill 0s, border-color 0s, filter 0s !important;
+	}
+}
+
 // #region 主题过渡
 ::view-transition-old(root),
 ::view-transition-new(root) {
