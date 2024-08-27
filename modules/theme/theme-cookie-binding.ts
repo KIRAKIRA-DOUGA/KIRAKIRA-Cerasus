@@ -182,14 +182,14 @@ export function cookieBinding() {
 		if (isFlatAppearanceMode === "true") rootNode.classList.add("flat");
 		if (themeColor) {
 			if (themeColor === THEME_COLOR_CUSTOM && themeColorCustom) { // 如果 themeColor 的值是 custom 且 themeColorCustom 为真值，则使用自定义主题色。
-				rootNode.classList.add("remove-color-transition");
+				rootNode.classList.add("no-color-transition");
 				rootNode.style.setProperty("--accent-50", `#${themeColorCustom}`);
-				setTimeout(() => rootNode.classList.remove("remove-color-transition"), 5);
+				setTimeout(() => rootNode.classList.remove("no-color-transition"), 5);
 			} else { // 否则移除自定义主题色并将主题设置为用户选中的官方主题色。
 				rootNode.style.removeProperty("--accent-50");
-				rootNode.classList.add("remove-color-transition");
+				rootNode.classList.add("no-color-transition");
 				rootNode.classList.add(themeColor);
-				setTimeout(() => rootNode.classList.remove("remove-color-transition"), 5);
+				setTimeout(() => rootNode.classList.remove("no-color-transition"), 5);
 			}
 			const themeColorMetaTagName = "theme-color";
 			const themeColorCssPropertyName = "--accent-50";
