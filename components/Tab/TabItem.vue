@@ -40,7 +40,7 @@
 	 * @param e - 鼠标事件。
 	 */
 	function onClick(e: MouseEvent) {
-		parent?.exposed?.changeTab(props.id);
+		if(!props.to) parent?.exposed?.changeTab(props.id);
 		emits("click", e, props.id);
 	}
 </script>
