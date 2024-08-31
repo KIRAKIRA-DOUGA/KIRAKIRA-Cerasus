@@ -16,7 +16,7 @@ const dev = environment.development;
 
 export default defineNuxtConfig({
 	devtools: {
-		enabled: false,
+		enabled: true,
 	},
 
 	plugins: [
