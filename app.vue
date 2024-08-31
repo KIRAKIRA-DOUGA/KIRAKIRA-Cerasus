@@ -111,7 +111,7 @@
 </script>
 
 <template>
-	<NuxtLoadingIndicator color="var(--accent)" />
+	<PageLoadingIndicator />
 	<NuxtLayout :name="layout">
 		<NuxtPage />
 	</NuxtLayout>
