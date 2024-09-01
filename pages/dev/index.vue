@@ -26,14 +26,14 @@
 	}
 
 	const pages = getPages(
-		["组件测试页", "/components"],
+		["组件测试页", "/dev/components"],
+		["富文本测试页", "/dev/test-rich-text-editor"],
+		["动态图标测试页", "/dev/test-lottie"],
+		["字体测试页", "/dev/test-font"],
+		["滑块测试页", "/dev/test-slider"],
 		["示例视频", "/video/kvtest"],
 		["示例音频", "/audio"],
 		["示例相簿", "/photo"],
-		["富文本测试页", "/test-rich-text-editor"],
-		["API 测试页", "/test-api"],
-		["动态图标测试页", "/test-lottie"],
-		["字体测试页", "/test-font"],
 		["搜索", "/search"],
 		["投稿", "/upload"],
 		["稿件编辑", "/upload/edit"],

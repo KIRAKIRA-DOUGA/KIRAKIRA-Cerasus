@@ -272,7 +272,7 @@ export default defineNuxtConfig({
 	},
 
 	site: {
-		url: "https://cerasus.kirakira.moe",
+		url: "https://kirakira.moe",
 	},
 
 	app: {
@@ -289,6 +289,11 @@ export default defineNuxtConfig({
 			/** Cloudflare MPD 视频清单 URL 模板，其中 "{videoId}" 部分将会被替换为真实的视频 ID */
 			cloudflareMpdVideoUrlTemplate: "https://customer-yvgxn6arnuae3q89.cloudflarestream.com/{videoId}/manifest/video.mpd",
 		},
+	},
+
+	robots: {
+		credits: false,
+		disallow: ["/search/", "/dev/", "/settings/", "/welcome/"],
 	},
 
 	compatibilityDate: "2024-08-25",

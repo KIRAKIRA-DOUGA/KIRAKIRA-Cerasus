@@ -105,11 +105,11 @@
 						</template>
 					</TabBar>
 					<div class="nav-bottom-buttons">
-						<Button v-if="selfUserInfoStore.isLogined" icon="logout" @click="logout">{{ t.logout }}</Button>
 						<template v-if="isAdmin || isDevMode">
 							<Button icon="build" href="/dev">{{ t.development_test_page }}</Button>
-							<Button icon="apps" href="/components">{{ t.components_test_page }}</Button>
+							<Button icon="apps" href="/dev/components">{{ t.components_test_page }}</Button>
 						</template>
+						<Button v-if="selfUserInfoStore.isLogined" icon="logout" @click="logout">{{ t.logout }}</Button>
 					</div>
 				</header>
 			</div>
