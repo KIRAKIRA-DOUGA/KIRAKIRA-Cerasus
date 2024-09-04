@@ -1,98 +1,199 @@
 <script setup lang="ts">
+	import music from "assets/audios/全都是你的所作所为.aac";
+
 	const props = withDefaults(defineProps<{
-		statusCode: number | string;
-		message: string;
+		/** 错误原因。 */
+		message?: string;
 	}>(), {
 		// TODO: 后续的视频删除原因可能需要在数据库进行记录（官方删除可能性？）
-		message: "该视频被万恶的UP主给削除了",
+		message: "该视频被万恶的创作者给削除了",
 	});
+
+	const musicEl = ref<HTMLAudioElement>();
+	const playMusic = () => musicEl.value?.play().catch(useNoop);
+	onMounted(() => playMusic());
+	useEventListener("document", "click", () => playMusic());
+
+	const ELLIPSIS_GLITCH_DURATION = 20;
+	const ellipsisGlitchOffsets = [
+		useDynamicRandom(ELLIPSIS_GLITCH_DURATION, -1, 1),
+		useDynamicRandom(ELLIPSIS_GLITCH_DURATION, -1, 1),
+		useDynamicRandom(ELLIPSIS_GLITCH_DURATION, -1, 1),
+	];
 </script>
 
 <template>
-	<!-- TODO: Figma里面做的那个背景设计图我还没整 -->
-	<div class="card">
-		<div class="content">
-			<h1>啊？不见了‽</h1>
-			<h2>{{ message }}</h2>
-			<Button href="/">{{ t.navigation.return_to_home }}</Button>
+	<audio ref="musicEl" :src="music" loop></audio>
+	<div class="background">
+		<svg width="90" height="90" viewBox="0 0 90 90" class="inverse-bullet">
+			<rect width="100%" height="100%" mask="url(#inverse-bullet-mask)" />
+			<mask id="inverse-bullet-mask">
+				<rect width="100%" height="100%" fill="white" />
+				<circle cx="50%" cy="50%" r="30%" fill="black" />
+			</mask>
+		</svg>
+		<div class="ellipsis-container">
+			<div class="ellipsis-container-relative">
+				<div class="circle"></div>
+				<div class="triangle triangle-up"></div>
+				<div class="triangle triangle-down"></div>
+				<section v-for="i in 3" :key="i" class="ellipsis" :style="{ '--offset': ellipsisGlitchOffsets[i - 1].value }">
+					<div v-for="j in 3" :key="j" class="ellipsis-dot"></div>
+				</section>
+			</div>
 		</div>
 	</div>
+	<!-- <div class="foreground">
+		<h1>啊？不见了‽</h1>
+		<h2>{{ message }}</h2>
+		<Button href="/">{{ t.navigation.return_to_home }}</Button>
+	</div> -->
 </template>
 
 <style scoped lang="scss">
-	// TODO: 文本尺寸及绝对定位需要可能根据设计稿进行调整。
-	$title-animation-options: $ease-out-expo 600ms backwards calc(100ms * var(--i));
+	$bpm: 132;
+	$beat: calc(60s / $bpm);
 
-	.background {
-		@include square(100%);
+	$inverse-bullet-initial-rotate: 55.55deg;
+
+	.inverse-bullet {
 		position: absolute;
-		animation: fade-in 1s $ease-out-sine;
+		top: -5px;
+		left: 87.5px;
+		rotate: $inverse-bullet-initial-rotate;
+		animation: inverse-bullet-rotation ($beat * 2) $ease-out-smooth infinite both;
+		fill: c(accent-20);
 	}
 
-	.card {
-		@include round-large;
-		@include card-shadow;
-		$margin-y: 3.5rem;
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		height: calc(100dvh - 2 * $margin-y);
-		margin: $margin-y 2.5rem 0;
-		overflow: clip;
-		animation: intro 600ms $ease-out-smooth;
+	.ellipsis-container {
+		@include square(50dvmin);
+		@include absolute-center(fixed);
+		container: ellipsis-container / size;
+		animation: ellipsis-container-emphasize $beat $ease-out-material-emphasized infinite forwards;
 
-		.content {
-			@include flex-center;
+		.ellipsis-container-relative {
 			@include square(100%);
 			position: relative;
-			z-index: 20;
-			flex-direction: column;
-			justify-content: flex-start;
-			align-items: flex-start;
-			padding-left: 112px;
+		}
 
-			h1 {
-				--i: 1;
-				margin: 0;
-				padding-top: 65px;
-				color: c(accent);
-				font-size: 108px;
-				font-weight: 400;
-				line-height: 1;
-				animation: float-down $title-animation-options;
+		.circle {
+			@include square(100%);
+			@include circle;
+			--box-shadow-spread: 1px;
+			box-shadow: 0 0 0 var(--box-shadow-spread) c(accent-30) inset;
+			animation: circle-thickness-change $beat $ease-out-smooth infinite forwards;
+		}
+
+		.triangle {
+			$length: 14cqw;
+			$margin: 13cqh;
+			$color: c(accent-40);
+			position: absolute;
+			left: 50%;
+			margin: 0 auto;
+			transform: translateX(-50%);
+
+			&.triangle-up {
+				@include triangle($length, $color, up);
+				top: $margin;
+				animation: triangle-move-up ($beat * 2) $ease-out-material-emphasized infinite both;
 			}
 
-			h2 {
-				--i: 0;
-				margin: 0.5rem;
-				padding-top: 40px;
-				color: c(neutral-50);
-				font-family: $simplified-chinese-fonts;
-				font-size: 40px;
-				font-weight: 400;
-				animation: float-down $title-animation-options;
+			&.triangle-down {
+				@include triangle($length, $color, down);
+				bottom: $margin;
+				animation: triangle-move-down ($beat * 2) $ease-out-material-emphasized $beat infinite both;
+			}
+		}
+
+		.ellipsis {
+			@include absolute-center(absolute, false);
+			$dot-size: 16cqh;
+			display: flex;
+			gap: 9cqw;
+			translate: calc(var(--offset, 0) * 10px);
+
+			.ellipsis-dot {
+				@include square($dot-size);
+				@include circle;
+				background-color: c(accent);
 			}
 
-			button {
-				--i: 0;
-				position: absolute;
-				bottom: 80px;
-				animation: float-down $title-animation-options;
+			&:nth-of-type(1) {
+				clip-path: inset(0 0 calc(35 / 60 * 100%) 0);
+			}
+
+			&:nth-of-type(2) {
+				clip-path: inset(calc(25 / 60 * 100%) 0 calc(15 / 60 * 100%) 0);
+			}
+
+			&:nth-of-type(3) {
+				clip-path: inset(calc(44 / 60 * 100%) 0 0 0);
 			}
 		}
 	}
 
-	@keyframes float-down {
-		from {
-			translate: 0 -50px;
-			opacity: 0;
+	@keyframes inverse-bullet-rotation {
+		0% {
+			rotate: $inverse-bullet-initial-rotate;
+		}
+
+		50% {
+			rotate: $inverse-bullet-initial-rotate + 45deg;
+		}
+
+		100% {
+			rotate: $inverse-bullet-initial-rotate + 90deg;
 		}
 	}
 
-	@keyframes fade-in {
+	@keyframes circle-thickness-change {
 		from {
-			opacity: 0;
+			--box-shadow-spread: 20px;
+			scale: 1.025;
 		}
+
+		to {
+			--box-shadow-spread: 1px;
+			scale: 1;
+		}
+	}
+
+	@each $direction in up, down {
+		@keyframes triangle-move-#{$direction} {
+			$movement: 12cqh;
+			$movement-starting: if($direction == up, $movement, -$movement);
+
+			0% {
+				translate: 0 $movement-starting;
+				opacity: 0;
+			}
+
+			50% {
+				translate: 0;
+				opacity: 1;
+			}
+
+			100% {
+				translate: 0 (-$movement-starting);
+				opacity: 0;
+			}
+		}
+	}
+
+	@keyframes ellipsis-container-emphasize {
+		from {
+			scale: 1.35;
+		}
+
+		to {
+			scale: 1;
+		}
+	}
+
+	@property --box-shadow-spread {
+		syntax: "<length>";
+		inherits: false;
+		initial-value: 0;
 	}
 </style>

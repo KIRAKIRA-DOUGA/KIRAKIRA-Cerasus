@@ -37,5 +37,5 @@ export function useSmoothValue<T extends number | number[] | Point>(current: May
 	onUnmounted(() => {
 		cancelAnimationFrame(animationId.value!);
 	});
-	return smoothValue;
+	return readonly(smoothValue);
 }
