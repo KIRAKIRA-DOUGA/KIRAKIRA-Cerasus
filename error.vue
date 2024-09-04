@@ -40,5 +40,7 @@
 <template>
 	<NuxtLayout v-if="isStatusCode(404, 233)" name="error404" :statusCode="error.statusCode" :message="error.message" />
 	<NuxtLayout v-else-if="isStatusCode(502)" name="error502" :statusCode="error.statusCode" :message="error.message" />
+	<!-- TODO: 对于 301 错误页面的设计，可能需要一个新的参数来传递错误信息。 -->
+	<NuxtLayout v-else-if="isStatusCode(301)" name="error301" :statusCode="error.statusCode" />
 	<NuxtLayout v-else name="error500" :statusCode="error.statusCode" :message="error.message" :stack="error.stack ?? ''" />
 </template>
