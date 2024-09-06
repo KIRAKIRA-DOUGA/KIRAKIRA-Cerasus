@@ -19,7 +19,7 @@ export const clamp = (val: number, min: number, max: number) => Math.min(Math.ma
  * @returns 转换后的新标度数值。
  */
 export function map(x: number, min: number, max: number, a: number, b: number) {
-	return ((b - a) * (x - min) / (max - min)) + a;
+	return (b - a) * (x - min) / (max - min) + a;
 }
 
 /**

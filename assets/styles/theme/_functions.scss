@@ -1,27 +1,28 @@
 @use "sass:color";
 @use "sass:list";
 @use "sass:string";
+@use "sass:math";
 
 /// 将指定颜色反转亮度。
 /// @param {Color} $color - 颜色值。
 /// @return {Color} 反转亮度后的颜色值。
 @function invert-lightness($color) {
 	$lightness: 100% - color.lightness($color);
-	@return hsla(hue($color), saturation($color), $lightness, alpha($color));
+	@return hsla(color.hue($color), color.saturation($color), $lightness, color.alpha($color));
 }
 
 /// 将 Sass 映射的键名转换为 CSS 属性的属性名。
 /// @param {String} $key - Sass 映射的键名。
 /// @return {String} CSS 属性的属性名。
 @function key-to-css-var($key) {
-	@return unquote($string: "--" + $key);
+	@return string.unquote($string: "--" + $key);
 }
 
 /// 将颜色值中的“#”号转义，放在 background url data svg 中。
 /// @param {Color} $color - 颜色值。
 /// @return {String} 转义 SVG 中的颜色值。
 @function color-to-svg-color($color) {
-	@return unquote("%23" + string.slice(#{$color}, -6)); // $color 变量是颜色类型，需要转换成字符串类型才可继续使用。
+	@return string.unquote("%23" + string.slice(#{$color}, -6)); // $color 变量是颜色类型，需要转换成字符串类型才可继续使用。
 }
 
 /// 将颜色（如 `#f00`）转换为 RGB 列表（如 `255, 0, 0`），方便用于调用 rgba 函数。
@@ -95,7 +96,7 @@
 /// @param {String} $string - 初始字符串。
 /// @param {String} $search - 要更换的子字符串。
 /// @param {String} $replace [""] - 新值。
-/// @return {String} - 更新后的字符串。
+/// @return {String} 更新后的字符串。
 @function string-replace($string, $search, $replace: "") {
 	$index: string.index($string, $search);
 
@@ -104,4 +105,17 @@
 	}
 
 	@return $string;
+}
+
+/// 生成给定两个数之间随机数。
+/// @param {Number} $min - 最小值。
+/// @param {Number} $max - 最大值。
+/// @param {Bool} $is-int [true] - 是否必须返回一个整数而不是小数？默认是整数。
+/// @return {Number} 范围内的随机数。
+@function rand-between($min, $max, $is-int: true) {
+	@if $is-int {
+		@return math.random($max + 1 - $min) + $min;
+	} @else {
+		@return math.random() * ($max - $min) + $min;
+	}
 }

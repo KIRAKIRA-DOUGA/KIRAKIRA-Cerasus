@@ -66,6 +66,16 @@
 	}
 }
 
+@keyframes breathe {
+	from {
+		opacity: 1;
+	}
+
+	to {
+		opacity: 0.5;
+	}
+}
+
 // animation: swing 500ms $ease-out-sine;
 @keyframes swing {
 	0% { rotate: 0deg; }
