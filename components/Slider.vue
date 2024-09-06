@@ -358,7 +358,7 @@
 		}
 
 		&.waiting::after {
-			animation: breath calc(2s / 3) linear alternate infinite; // 这里呼吸动画的速度对应了 ProgressRing。
+			animation: breathe calc(2s / 3) linear alternate infinite; // 这里呼吸动画的速度对应了 ProgressRing。
 		}
 
 		@container style(--size: large) {
@@ -418,16 +418,6 @@
 		&.v-enter-from,
 		&.v-leave-to {
 			scale: 0;
-		}
-	}
-
-	@keyframes breath {
-		from {
-			opacity: 1;
-		}
-
-		to {
-			opacity: 0.5;
 		}
 	}
 </style>

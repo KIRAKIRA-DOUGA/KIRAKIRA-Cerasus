@@ -93,7 +93,7 @@ export default {
 		"@stylistic/declaration-colon-space-before": "never",
 		"@stylistic/function-comma-space-after": "always-single-line",
 		"@stylistic/function-comma-space-before": "never",
-		"@stylistic/function-parentheses-space-inside": "never",
+		"@stylistic/function-parentheses-space-inside": "never-single-line",
 		"@stylistic/media-feature-colon-space-after": "always",
 		"@stylistic/media-feature-colon-space-before": "never",
 		"@stylistic/media-feature-parentheses-space-inside": "never",

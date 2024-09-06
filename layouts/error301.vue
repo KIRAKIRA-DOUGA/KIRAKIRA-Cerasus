@@ -1,12 +1,20 @@
 <script setup lang="ts">
+	import { httpResponseStatusCodes } from "helpers/http-status";
 	import music from "assets/audios/全都是你的所作所为.aac";
 
 	const props = withDefaults(defineProps<{
+		statusCode?: 301;
 		/** 错误原因。 */
 		message?: string;
 	}>(), {
+		statusCode: 301,
 		// TODO: 后续的视频删除原因可能需要在数据库进行记录（官方删除可能性？）
 		message: "该视频被万恶的创作者给削除了",
+	});
+
+	const message = computed(() => {
+		const message = props.message.trim();
+		return !message || message === httpResponseStatusCodes[301] ? "该视频被万恶的创作者给削除了" : message;
 	});
 
 	const musicEl = ref<HTMLAudioElement>();
@@ -28,6 +36,11 @@
 				<circle cx="50%" cy="50%" r="30%" fill="black" />
 			</mask>
 		</svg>
+		<div class="strokes">
+			<svg v-for="j in 2" :key="j">
+				<rect v-for="i in 8" :key="i" />
+			</svg>
+		</div>
 		<div class="ellipsis-container">
 			<div class="ellipsis-container-relative">
 				<div class="circle"></div>
@@ -40,11 +53,16 @@
 			</div>
 		</div>
 	</div>
-	<!-- <div class="foreground">
-		<h1>啊？不见了‽</h1>
-		<h2>{{ message }}</h2>
-		<Button href="/">{{ t.navigation.return_to_home }}</Button>
-	</div> -->
+	<div class="foreground">
+		<div class="top">
+			<h1>啊？不见了‽</h1>
+		</div>
+		<div class="ellipsis-container-shadow"></div>
+		<div class="bottom">
+			<h2>{{ message }}</h2>
+			<Button href="/">{{ t.navigation.return_to_home }}</Button>
+		</div>
+	</div>
 </template>
 
 <style scoped lang="scss">
@@ -62,8 +80,12 @@
 		fill: c(accent-20);
 	}
 
-	.ellipsis-container {
+	%ellipsis-container-size {
 		@include square(50dvmin);
+	}
+
+	.ellipsis-container {
+		@extend %ellipsis-container-size;
 		@include absolute-center(fixed);
 		container: ellipsis-container / size;
 		animation: ellipsis-container-emphasize $beat $ease-out-material-emphasized infinite forwards;
@@ -136,6 +158,130 @@
 		}
 	}
 
+	.ellipsis-container-shadow {
+		@extend %ellipsis-container-size;
+	}
+
+	.strokes svg {
+		$base-stroke-width: 50px;
+		$base-animation-duration: 3s;
+		$stroke-count: 8;
+		position: fixed;
+		width: 30lvw;
+		height: 100lvh;
+		overflow: visible;
+
+		rect { // SVG line 元素暂时不支持使用 CSS 控制锚点，故改用 rect 元素代替之。
+			width: 1px;
+			height: var(--height);
+			animation: stroke-scrolling $base-animation-duration linear infinite both;
+			fill: none;
+			stroke: c(accent);
+			stroke-linecap: round;
+			stroke-width: var(--stroke-width);
+			x: 100%;
+			y: 100px;
+			rx: 1;
+		}
+
+		@for $side-index from 1 through 2 {
+			&:nth-of-type(#{$side-index}) {
+				#{if($side-index == 1, left, right)}: 10dvw;
+
+				@for $i from 1 through $stroke-count {
+					rect:nth-of-type(#{$i}) {
+						// $depth: calc((rand-between(1, $stroke-count) - 1) / 2 + 1);
+						$depth: calc(($stroke-count - $i) / 2 + 1);
+						$transparency: map($depth, 1, calc($stroke-count / 2), 0.1, 0.6) * 100%;
+						$reversed: math.random() <= 0.5;
+						$height: calc(rand-between(100, 600) * 1px / $depth);
+						$stroke-width: calc($base-stroke-width / $depth);
+						--height: #{$height};
+						--stroke-width: #{$stroke-width};
+						animation-duration: $base-animation-duration * $depth;
+						animation-delay: math.random() * (-$base-animation-duration);
+						animation-direction: if(not $reversed, normal, reverse);
+						stroke: color-mix(in oklab, c(accent-50), c(main-bg) $transparency);
+						x: math.random() * 100%;
+
+						@if $stroke-width * 7 <= $height * calc(3 / 4) and $i <= $stroke-count - 2 {
+							$x: $stroke-width;
+							$e: $stroke-width * 0.2;
+							clip-path: if(
+								not $reversed,
+								polygon(
+									0 0, 100% 0, 100% ($x + $e), 0 ($x + $e),
+									0 ($x * 2 + $e), 100% ($x * 2 + $e), 100% ($x * 3 + $e), 0 ($x * 3 + $e),
+									0 ($x * 4 + $e), 100% ($x * 4 + $e), 100% ($x * 5 + $e), 0 ($x * 5 + $e),
+									0 ($x * 6 + $e), 100% ($x * 6 + $e), 100% 100%, 0 100%,
+								),
+								polygon(
+									0 100%, 100% 100%, 100% calc(100% - ($x + $e)), 0 calc(100% - ($x + $e)),
+									0 calc(100% - ($x * 2 + $e)), 100% calc(100% - ($x * 2 + $e)), 100% calc(100% - ($x * 3 + $e)), 0 calc(100% - ($x * 3 + $e)),
+									0 calc(100% - ($x * 4 + $e)), 100% calc(100% - ($x * 4 + $e)), 100% calc(100% - ($x * 5 + $e)), 0 calc(100% - ($x * 5 + $e)),
+									0 calc(100% - ($x * 6 + $e)), 100% calc(100% - ($x * 6 + $e)), 100% 0, 0 0,
+								),
+							);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.foreground {
+		@include fullscreen;
+		display: grid;
+		grid-auto-rows: 1fr auto 1fr;
+		gap: 50px;
+		text-align: center;
+		animation: breathe ($beat * 2) $ease-in-smooth alternate infinite backwards;
+
+		.top,
+		.bottom {
+			display: flex;
+			flex-direction: column;
+			gap: 20px;
+			align-items: center;
+
+			> * {
+				transition: $fallback-transitions, translate $ease-out-smooth 1s;
+			}
+		}
+
+		.top {
+			justify-content: flex-end;
+		}
+
+		h1 {
+			color: c(accent);
+			font-size: 5rem;
+			font-weight: bold;
+
+			@starting-style {
+				translate: 0 -50px;
+			}
+		}
+
+		h2 {
+			color: c(icon-color);
+			font-size: 1.25rem;
+			font-weight: 300;
+
+			@starting-style {
+				translate: 0 50px;
+			}
+		}
+
+		button {
+			width: fit-content;
+
+			@starting-style {
+				translate: 0 100px;
+			}
+		}
+	}
+
 	@keyframes inverse-bullet-rotation {
 		0% {
 			rotate: $inverse-bullet-initial-rotate;
@@ -196,7 +342,7 @@
 
 	@for $i from 1 through 3 {
 		@keyframes ellipsis-glitch-#{$i} {
-			$step: 5;
+			$step: 2.5;
 			$distance: 10px;
 
 			@for $j from 0 through calc(100 / $step) {
@@ -205,6 +351,16 @@
 					translate: $offset * $distance;
 				}
 			}
+		}
+	}
+
+	@keyframes stroke-scrolling {
+		from {
+			y: calc(100% + var(--stroke-width) / 2);
+		}
+
+		to {
+			y: calc(0% - var(--height) - var(--stroke-width) / 2);
 		}
 	}
 
