@@ -14,20 +14,16 @@
 	onMounted(() => playMusic());
 	useEventListener("document", "click", () => playMusic());
 
-	const ELLIPSIS_GLITCH_DURATION = 20;
-	const ellipsisGlitchOffsets = [
-		useDynamicRandom(ELLIPSIS_GLITCH_DURATION, -1, 1),
-		useDynamicRandom(ELLIPSIS_GLITCH_DURATION, -1, 1),
-		useDynamicRandom(ELLIPSIS_GLITCH_DURATION, -1, 1),
-	];
+	const INVERSE_BULLET_SIZE = 90;
+	const inverseBulletMaskId = useId();
 </script>
 
 <template>
 	<audio ref="musicEl" :src="music" loop></audio>
 	<div class="background">
-		<svg width="90" height="90" viewBox="0 0 90 90" class="inverse-bullet">
-			<rect width="100%" height="100%" mask="url(#inverse-bullet-mask)" />
-			<mask id="inverse-bullet-mask">
+		<svg :width="INVERSE_BULLET_SIZE" :height="INVERSE_BULLET_SIZE" :viewBox="`0 0 ${INVERSE_BULLET_SIZE} ${INVERSE_BULLET_SIZE}`" class="inverse-bullet">
+			<rect width="100%" height="100%" :mask="`url(#${inverseBulletMaskId})`" />
+			<mask :id="inverseBulletMaskId">
 				<rect width="100%" height="100%" fill="white" />
 				<circle cx="50%" cy="50%" r="30%" fill="black" />
 			</mask>
@@ -37,7 +33,8 @@
 				<div class="circle"></div>
 				<div class="triangle triangle-up"></div>
 				<div class="triangle triangle-down"></div>
-				<section v-for="i in 3" :key="i" class="ellipsis" :style="{ '--offset': ellipsisGlitchOffsets[i - 1].value }">
+				<!-- 原计划使用 JS 生成真随机故障效果，但是那样的话不支持 SSR，即服务端和客户端生成的随机数不可能一致。故改用 Sass 伪随机，即生成的动画实际上是周期变化的。 -->
+				<section v-for="i in 3" :key="i" class="ellipsis">
 					<div v-for="j in 3" :key="j" class="ellipsis-dot"></div>
 				</section>
 			</div>
@@ -130,6 +127,12 @@
 			&:nth-of-type(3) {
 				clip-path: inset(calc(44 / 60 * 100%) 0 0 0);
 			}
+
+			@for $i from 1 through 3 {
+				&:nth-of-type(#{$i}) {
+					animation: ellipsis-glitch-#{$i} 1s linear infinite;
+				}
+			}
 		}
 	}
 
@@ -188,6 +191,20 @@
 
 		to {
 			scale: 1;
+		}
+	}
+
+	@for $i from 1 through 3 {
+		@keyframes ellipsis-glitch-#{$i} {
+			$step: 5;
+			$distance: 10px;
+
+			@for $j from 0 through calc(100 / $step) {
+				#{$j * $step}% {
+					$offset: math.random() * 2 - 1;
+					translate: $offset * $distance;
+				}
+			}
 		}
 	}
 

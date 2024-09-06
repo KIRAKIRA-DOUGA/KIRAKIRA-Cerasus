@@ -343,7 +343,7 @@ export function useDynamicRandom(interval: number, min: number, max: number): Re
  * @param max - 指定最大值，可选。
  * @returns 会根据周期动态改变的随机数。
  */
-export function useDynamicRandom(interval: number, min?: number, max?: number) {
+export function useDynamicRandom(interval: number, min?: number, max?: number) { // WARN: 该函数不支持 SSR，谨慎使用。
 	const initial = min != null && max != null ? (max - min) / 2 + min : 0.5;
 	const random = ref(initial);
 	const intervalId = ref<Timeout>();
