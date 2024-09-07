@@ -108,6 +108,8 @@ type VideoCommentIdDto = {
  * 评论发送者的用户信息
  */
 type CommentSenderUserInfo = {
+	/** 用户昵称 */
+	userNickname?: string;
 	/** 用户名 */
 	username?: string;
 	/** 用户头像的链接 */
