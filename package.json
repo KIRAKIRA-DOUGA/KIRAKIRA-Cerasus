@@ -42,7 +42,8 @@
 		"delete-node-modules": "npx rimraf --glob ./node_modules || npx rimraf --glob ./.nuxt",
 		"crowdin:update": "tsx scripts/crowdin/update.ts",
 		"crowdin:download": "tsx scripts/crowdin/download.ts",
-		"prepare": "husky"
+		"prepare": "husky",
+		"commit": "git-cz -a"
 	},
 	"lint-staged": {
 		"*.{html,vue,css,sass,scss}": [
@@ -64,6 +65,8 @@
 	"devDependencies": {
 		"@commitlint/cli": "^19.4.0",
 		"@commitlint/config-conventional": "^19.2.2",
+		"@commitlint/cz-commitlint": "^19.4.0",
+		"@commitlint/types": "^19.0.3",
 		"@crowdin/crowdin-api-client": "^1.35.0",
 		"@nuxt/content": "^2.13.2",
 		"@nuxt/kit": "^3.13.0",
@@ -75,6 +78,7 @@
 		"@stylistic/stylelint-plugin": "^3.0.1",
 		"@types/eslint": "^9.6.0",
 		"@types/html-minifier-terser": "^7.0.2",
+		"commitizen": "^4.3.0",
 		"cross-env": "^7.0.3",
 		"eslint": "^9.9.1",
 		"eslint-plugin-vue": "^9.27.0",
@@ -137,6 +141,11 @@
 			"lottie-web@5.12.2": "patches/lottie-web@5.12.2.patch",
 			"shaka-player@4.10.11": "patches/shaka-player@4.10.11.patch",
 			"@vue/compiler-sfc": "patches/@vue__compiler-sfc.patch"
+		}
+	},
+	"config": {
+		"commitizen": {
+			"path": "@commitlint/cz-commitlint"
 		}
 	},
 	"keywords": [
