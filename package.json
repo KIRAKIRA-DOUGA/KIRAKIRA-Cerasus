@@ -140,7 +140,7 @@
 		"patchedDependencies": {
 			"lottie-web@5.12.2": "patches/lottie-web@5.12.2.patch",
 			"shaka-player@4.10.11": "patches/shaka-player@4.10.11.patch",
-			"@vue/compiler-sfc": "patches/@vue__compiler-sfc.patch"
+			"@vue/runtime-core@3.4.38": "patches/@vue__runtime-core@3.4.38.patch"
 		}
 	},
 	"config": {
