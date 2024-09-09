@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
+  '@vue/runtime-core@3.4.38':
+    hash: ztp3ypobxivfcwxmduyuuyw4ty
+    path: patches/@vue__runtime-core@3.4.38.patch
   lottie-web@5.12.2:
     hash: i2gspqsoejhklw4cdx6nsmskse
     path: patches/lottie-web@5.12.2.patch
@@ -8065,7 +8068,7 @@ snapshots:
     dependencies:
       '@vue/shared': 3.4.38
 
-  '@vue/runtime-core@3.4.38':
+  '@vue/runtime-core@3.4.38(patch_hash=ztp3ypobxivfcwxmduyuuyw4ty)':
     dependencies:
       '@vue/reactivity': 3.4.38
       '@vue/shared': 3.4.38
@@ -8073,7 +8076,7 @@ snapshots:
   '@vue/runtime-dom@3.4.38':
     dependencies:
       '@vue/reactivity': 3.4.38
-      '@vue/runtime-core': 3.4.38
+      '@vue/runtime-core': 3.4.38(patch_hash=ztp3ypobxivfcwxmduyuuyw4ty)
       '@vue/shared': 3.4.38
       csstype: 3.1.3
 
