@@ -7,6 +7,8 @@
 		/** 评论发布者头像网址。 */
 		avatar?: string;
 		/** 评论发布者昵称。 */
+		nickname?: string;
+		/** 评论发布者用户名。 */
 		username?: string;
 		/** 评论序号。 */
 		index?: number; // 我不赞成在序号前导 0，因为你怎敢假定评论数在绝大多数情况下小于或等于两位数？
@@ -225,13 +227,11 @@
 		<div class="content">
 			<div class="header">
 				<Icon v-if="pinned" name="pin" class="pin" />
-				<span class="username">{{ username }}</span>
+				<span v-if="nickname" class="nickname">{{ nickname }}</span>
+				<span v-if="username" class="username">@{{ username }}</span>
 			</div>
 			<div class="comments">
-				<slot>
-					ふたりの時間、選びとる未来。<br />
-					艾拉是整个 KIRAKIRA 开发组最笨的笨蛋です。
-				</slot>
+				<slot></slot>
 			</div>
 			<div class="footer">
 				<div class="left">
@@ -291,9 +291,13 @@
 			font-size: 20px;
 		}
 
-		.username {
+		.nickname {
 			font-size: 16px;
 			font-weight: bold;
+		}
+
+		.username {
+			color: c(icon-color);
 		}
 	}
 

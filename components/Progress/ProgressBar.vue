@@ -39,7 +39,7 @@
 				</template>
 				<div
 					v-else
-					class="line"
+					class="line determinate"
 					:class="{ 'to-determinate': toDeterminate }"
 					:style="{ width: value / max * 100 + '%' }"
 				></div>

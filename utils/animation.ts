@@ -321,3 +321,43 @@ export async function startViewTransition(callback: () => MaybePromise<void>) {
 	if (document.startViewTransition) await document.startViewTransition(callback).finished;
 	else await callback();
 }
+
+/**
+ * 获取一个会根据周期动态改变的随机数。
+ * @param interval - 改变周期。单位：毫秒。
+ * @returns 会根据周期动态改变的随机数。
+ */
+export function useDynamicRandom(interval: number): Readonly<Ref<number>>;
+/**
+ * 获取一个会根据周期动态改变的随机数。
+ * @param interval - 改变周期。单位：毫秒。
+ * @param min - 指定最小值。
+ * @param max - 指定最大值。
+ * @returns 会根据周期动态改变的随机数。
+ */
+export function useDynamicRandom(interval: number, min: number, max: number): Readonly<Ref<number>>;
+/**
+ * 获取一个会根据周期动态改变的随机数。
+ * @param interval - 改变周期。单位：毫秒。
+ * @param min - 指定最小值，可选。
+ * @param max - 指定最大值，可选。
+ * @returns 会根据周期动态改变的随机数。
+ */
+export function useDynamicRandom(interval: number, min?: number, max?: number) { // WARN: 该函数不支持 SSR，谨慎使用。
+	const initial = min != null && max != null ? (max - min) / 2 + min : 0.5;
+	const random = ref(initial);
+	const intervalId = ref<Timeout>();
+
+	onMounted(() => {
+		intervalId.value = setInterval(() => {
+			random.value = Math.random();
+			if (min != null && max != null) random.value = random.value * (max - min) + min;
+		}, interval);
+	});
+
+	onUnmounted(() => {
+		clearInterval(intervalId.value);
+	});
+
+	return readonly(random);
+}

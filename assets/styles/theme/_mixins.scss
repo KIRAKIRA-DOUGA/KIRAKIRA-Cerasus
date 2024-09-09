@@ -1,3 +1,6 @@
+@use "sass:map";
+@use "sass:list";
+@use "sass:math";
 @use "variables" as *;
 @use "internal" as *;
 @use "functions" as *;
@@ -40,6 +43,37 @@
 /// @output border-radius
 @mixin circle($position: full) {
 	@include set-border-radius(100%, $position);
+}
+
+/// 画一个实心等边三角形。
+/// @param {type} $length - 边长。
+/// @param {type} $fill - 填充颜色。
+/// @param {type} $arrow [up] - 三角形箭头指向。可选的值为：up | down | left | right。
+/// @output width, height, border-top, border-right, border-bottom, border-left
+@mixin triangle($length, $fill, $arrow: up) {
+	@include square(0);
+
+	$arrow-to-border: (
+		up: border-bottom border-top,
+		down: border-top border-bottom,
+		top: border-bottom border-top,
+		bottom: border-top border-bottom,
+		left: border-right border-left,
+		right: border-left border-right,
+	);
+	$border-correct: map.get($arrow-to-border, $arrow);
+	$border-this: list.nth($border-correct, 1);
+	$border-that: list.nth($border-correct, 2);
+
+	@each $side in border-top, border-right, border-bottom, border-left {
+		@if $side == $border-this {
+			#{$side}: calc($length / 2 * math.sqrt(3)) solid $fill;
+		} @else if $side == $border-that {
+			#{$side}: none;
+		} @else {
+			#{$side}: calc($length / 2) solid transparent;
+		}
+	}
 }
 
 /// 将元素占满整个屏幕。
@@ -119,12 +153,18 @@
 
 /// 未知宽/高度的绝对定位的居中。
 /// @param {String} $position [absolute] - 指定元素的 position 属性。
-/// @output position, top, left, translate
-@mixin absolute-center($position: absolute) {
+/// @param {Bool} $use-translate [true] - 使用 translate 而不是 transform, 默认为是，如否可提供更多的自定义变换可能性。
+/// @output position, top, left, translate, transform
+@mixin absolute-center($position: absolute, $use-translate: true) {
 	position: $position;
 	top: 50%;
 	left: 50%;
-	translate: -50% -50%;
+
+	@if $use-translate {
+		translate: -50% -50%;
+	} @else {
+		transform: translate(-50%, -50%);
+	}
 }
 
 /// 已知宽/高度的绝对定位的居中。

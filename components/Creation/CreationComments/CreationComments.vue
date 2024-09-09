@@ -46,6 +46,7 @@
 				:uid="comment.uid"
 				:index="comment.commentIndex"
 				:commentRoute="comment.commentRoute"
+				:nickname="comment.userInfo?.userNickname"
 				:username="comment.userInfo?.username"
 				:avatar="comment.userInfo?.avatar"
 				:date="new Date(comment.editDateTime)"

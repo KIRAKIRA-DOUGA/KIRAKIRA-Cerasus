@@ -31,7 +31,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 				return navigate(`/video/${routeSlug[1]}`);
 		} else
 			return abortNavigation({
-				statusCode: 404,
+				statusCode: 301,
 				message: checkKvidResult.message,
 			});
 	}
@@ -71,9 +71,9 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 });
 
 /**
- * 检查 KVID 是否存在
- * @param kvidString URL 中的 KVID 字符
- * @returns 存在返回 true，否则返回一个 Error
+ * 检查 KVID 是否存在？
+ * @param kvidString - URL 中的 KVID 字符。
+ * @returns 存在返回 true，否则返回一个 Error。
  */
 async function checkKvid(kvidString: string): Promise<true | Error> {
 	try {
