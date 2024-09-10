@@ -88,6 +88,7 @@
 			>
 				<!-- eslint-disable-next-line vue/no-v-html -->
 				<!-- <div v-html="comment.text"></div> -->
+				<!-- TODO: 评论支持富文本。 -->
 				<div>{{ comment.text }}</div>
 			</CreationCommentsItem>
 		</div>
