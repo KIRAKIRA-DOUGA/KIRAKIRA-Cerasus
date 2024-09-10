@@ -5,8 +5,6 @@
 	const videoDetails = ref<VideoData>();
 	const title = computed(() => videoDetails.value?.title ?? "");
 	const thumbnail = computed(() => videoDetails.value?.image || defaultThumbnail);
-	const comments = ref<GetVideoCommentByKvidResponseDto["videoCommentList"]>([]);
-	const commentsCount = ref<number>(0);
 	const currentLanguage = computed(getCurrentLocale); // 当前用户的语言
 	// const recommendations = ref<Videos200ResponseVideosInner[]>();
 	type VideoData = GetVideoByKvidResponseDto["video"];
@@ -48,37 +46,8 @@
 			handleError("未获取到 KVID，开始使用默认视频！", "warning"); // TODO: 使用多语言
 	}
 
-	/**
-	 * 获取视频的评论数据
-	 */
-	async function fetchVideoCommentData() {
-		const getVideoCommentByKvidRequest: GetVideoCommentByKvidRequestDto = { videoId: kvid };
-		const videoCommentsResponse = await api.videoComment.getVideoCommentByKvid(getVideoCommentByKvidRequest);
-		if (videoCommentsResponse.success) {
-			comments.value = videoCommentsResponse.videoCommentList ?? [];
-			commentsCount.value = videoCommentsResponse.videoCommentCount ?? 0;
-		}
-	}
-
 	watch(() => kvid, fetchVideoData);
 	await fetchVideoData();
-
-	onMounted(fetchVideoCommentData);
-
-	/**
-	 * 发送评论，将发送的评论添加到评论列表中
-	 */
-	useListen("videoComment:emitVideoComment", videoComment => {
-		comments.value.push(videoComment);
-	});
-
-	/**
-	 * 删除评论，根据被删除的评论路由来过滤评论列表
-	 * // TODO: 性能改进
-	 */
-	useListen("videoComment:deleteVideoComment", commentRoute => {
-		comments.value = comments.value.filter(comment => comment.commentRoute !== commentRoute);
-	});
 
 	useHead({
 		title: title.value,
@@ -124,8 +93,6 @@
 
 				<CreationComments
 					:videoId="kvid"
-					:count="commentsCount"
-					:comments
 				/>
 			</div>
 			<div class="right">

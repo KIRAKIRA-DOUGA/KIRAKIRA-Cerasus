@@ -22,7 +22,7 @@ export const emitVideoComment = async (emitVideoCommentRequest: EmitVideoComment
  */
 export const getVideoCommentByKvid = async (getVideoCommentByKvidRequest: GetVideoCommentByKvidRequestDto): Promise<GetVideoCommentByKvidResponseDto> => {
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
-	return await GET(`${VIDEO_COMMENT_API_URL}?videoId=${getVideoCommentByKvidRequest.videoId}`, { credentials: "include" }) as GetVideoCommentByKvidResponseDto;
+	return await GET(`${VIDEO_COMMENT_API_URL}?videoId=${getVideoCommentByKvidRequest.videoId}&page=${getVideoCommentByKvidRequest.pagination.page}&pageSize=${getVideoCommentByKvidRequest.pagination.pageSize}`, { credentials: "include" }) as GetVideoCommentByKvidResponseDto;
 };
 
 /**
