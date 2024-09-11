@@ -93,6 +93,13 @@ export type GetVideoCommentDownvoteResultDto = {
 export type GetVideoCommentByKvidRequestDto = {
 	/** KVID 视频 ID */
 	videoId: number;
+	/** 分页查询 */
+	pagination: {
+		/** 当前在第几页 */
+		page: number;
+		/** 一页显示多少条 */
+		pageSize: number;
+	};
 };
 
 type VideoCommentIdDto = {
