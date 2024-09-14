@@ -1,8 +1,8 @@
 diff --git a/dist/runtime-core.d.ts b/dist/runtime-core.d.ts
-index 99fab8b74c336b6f14ac3e832d793478c0a4b374..5433f943565dbb8072b81221410ed26e8366dd36 100644
+index b709e00c8b8115862610db622c903d000d9cb362..85b027916c9bd7faa8c6ed3ee1121ca0d6f3138d 100644
 --- a/dist/runtime-core.d.ts
 +++ b/dist/runtime-core.d.ts
-@@ -111,13 +111,14 @@ type ComponentPublicInstanceConstructor<T extends ComponentPublicInstance<Props,
+@@ -110,13 +110,14 @@ type ComponentPublicInstanceConstructor<T extends ComponentPublicInstance<Props,
      new (...args: any[]): T;
  };
  export type CreateComponentPublicInstance<P = {}, B = {}, D = {}, C extends ComputedOptions = {}, M extends MethodOptions = {}, Mixin extends ComponentOptionsMixin = ComponentOptionsMixin, Extends extends ComponentOptionsMixin = ComponentOptionsMixin, E extends EmitsOptions = {}, PublicProps = P, Defaults = {}, MakeDefaultsOptional extends boolean = false, I extends ComponentInjectOptions = {}, S extends SlotsType = {}, PublicMixin = IntersectionMixin<Mixin> & IntersectionMixin<Extends>, PublicP = UnwrapMixinsType<PublicMixin, 'P'> & EnsureNonVoid<P>, PublicB = UnwrapMixinsType<PublicMixin, 'B'> & EnsureNonVoid<B>, PublicD = UnwrapMixinsType<PublicMixin, 'D'> & EnsureNonVoid<D>, PublicC extends ComputedOptions = UnwrapMixinsType<PublicMixin, 'C'> & EnsureNonVoid<C>, PublicM extends MethodOptions = UnwrapMixinsType<PublicMixin, 'M'> & EnsureNonVoid<M>, PublicDefaults = UnwrapMixinsType<PublicMixin, 'Defaults'> & EnsureNonVoid<Defaults>> = ComponentPublicInstance<PublicP, PublicB, PublicD, PublicC, PublicM, E, PublicProps, PublicDefaults, MakeDefaultsOptional, ComponentOptionsBase<P, B, D, C, M, Mixin, Extends, E, string, Defaults, {}, string, S>, I, S>;
