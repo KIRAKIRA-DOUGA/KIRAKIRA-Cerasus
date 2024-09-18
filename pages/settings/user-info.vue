@@ -10,7 +10,8 @@
 	const users = ref<AdminGetUserInfoResponseDto>(); // 用户信息
 	const isLoadingUserInfo = ref(false); // 是否正在加载用户信息
 	const pageSize = 20; // 每页数量
-	const pageCount = computed(() => Math.floor(users.value?.totalCount ? users.value.totalCount / pageSize : 0) + 1); // 总页数
+	const pageCount = computed(() => Math.max(1, Math.ceil(users.value?.totalCount ? users.value.totalCount / pageSize : 0))); // 总页数
+
 	const currentPageRef = ref(1);
 	const currentPage = computed({ // 当前页数
 		get() {
@@ -112,14 +113,6 @@
 		} else
 			useToast("无法清理目标用户信息，请检查 UID 是否正确", "error", 5000);
 		isClearingUserInfo.value = false;
-	}
-
-	/**
-	 * 跳转到某个用户的主页
-	 * @param uid 用户 ID
-	 */
-	function jump2UserPage(uid: number) {
-		navigate(`/user/${uid}`);
 	}
 
 	watch(isOnlyShowUserInfoUpdatedAfterReview, async () => {

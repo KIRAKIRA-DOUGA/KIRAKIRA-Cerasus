@@ -47,7 +47,7 @@
 		const videoResult = await api.video.searchVideoByKeyword(searchVideoByKeywordRequest);
 		if (videoResult && videoResult.success) {
 			videos.value = videoResult;
-			data.pages = Math.floor(videoResult.videosCount / 50) + 1;
+			data.pages = Math.max(1, Math.ceil(videoResult.videosCount / 50));
 		}
 	}
 
@@ -60,7 +60,7 @@
 		const videoResult = await api.video.searchVideoByTagIds(searchVideoByVideoTagIdRequest);
 		if (videoResult && videoResult.success) {
 			videos.value = videoResult;
-			data.pages = Math.floor(videoResult.videosCount / 50) + 1;
+			data.pages = Math.max(1, Math.ceil(videoResult.videosCount / 50));
 		}
 	}
 
@@ -71,7 +71,7 @@
 		const videoResult = await api.video.getHomePageThumbVideo();
 		if (videoResult && videoResult.success) {
 			videos.value = videoResult;
-			data.pages = Math.floor(videoResult.videosCount / 50) + 1;
+			data.pages = Math.max(1, Math.ceil(videoResult.videosCount / 50));
 		}
 	}
 
