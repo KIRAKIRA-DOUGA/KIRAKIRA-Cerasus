@@ -1,19 +1,37 @@
 <script lang="ts">
 	export const tabs = [
 		{ id: "", icon: "home" },
-		{ id: "series", icon: "video_library" },
+		// { id: "series", icon: "video_library" },
 		{ id: "video", icon: "movie" },
-		{ id: "audio", icon: "music" },
-		{ id: "photo", icon: "photo_library" },
+		// { id: "audio", icon: "music" },
+		// { id: "photo", icon: "photo_library" },
 		{ id: "favorites", icon: "star" },
 	];
-
-	export const userTabs = tabs.map(tab => tab.id);
 </script>
 
 <script setup lang="ts">
 	import makeFullwidth from "pomsky/fullwidth.pom";
 	import LocaleLink from "components/LocaleLink.vue";
+
+	definePageMeta({
+		pageTransition: {
+			name: "page-jump",
+			mode: "out-in",
+		},
+		async middleware(to, from) {
+			const { tabs } = await import("./user.vue");
+			if (to.meta.pageTransition && typeof to.meta.pageTransition !== "boolean") {
+				const [path, prevPath] = [removeI18nPrefix(to.path), removeI18nPrefix(from.path)];
+				if (path.startsWith("/user/") && prevPath.startsWith("/user/")) {
+					const [tab, prevTab] = [path.split("/")[3], prevPath.split("/")[3]];
+					const [index, prevIndex] = [tabs.findIndex(i => i.id === tab), tabs.findIndex(i => i.id === prevTab)];
+					if (index !== prevIndex)
+						to.meta.pageTransition.name = index > prevIndex ? "right" : index < prevIndex ? "left" : "";
+				}
+			}
+		},
+	});
+
 
 	const userSelfInfoStore = useSelfUserInfoStore();
 
@@ -23,6 +41,15 @@
 	const userInfo = ref<GetUserInfoByUidResponseDto["result"]>();
 
 	const fullwidthRegexp = makeFullwidth();
+
+	const route = useRoute("");
+	const urlUid = ref(+route.params.uid);
+	watch(urlUid, fetchUserData, { deep: false });
+
+	const selfUid = computed(() => userSelfInfoStore.uid);
+	watch(selfUid, fetchUserData, { deep: false });
+
+	const currentTab = computed(() => currentUserTab());
 
 	// TODO
 	// // 验证是否是加上全宽括弧而不是半宽括弧，条件是包含至少一个非谚文的全宽字符。
@@ -48,18 +75,7 @@
 		}
 	}
 
-	const urlUid = computed(currentUserUid);
-	watch(urlUid, fetchUserData, { deep: false });
-
-	const selfUid = computed(() => userSelfInfoStore.uid);
-	watch(selfUid, fetchUserData, { deep: false });
-
 	await fetchUserData();
-
-	const currentTab = computed({
-		get: () => currentUserTab(),
-		set: async id => { await navigate(`/user/${urlUid.value}/${id}`); },
-	});
 
 	const titleAffixString = t.user_page.title_affix; // HACK: Bypass "A composable that requires access to the Nuxt instance was called outside of a plugin."
 
@@ -71,49 +87,54 @@
 </script>
 
 <template>
-	<header class="user-center">
-		<div>
-			<div class="content">
-				<div class="user">
-					<component :is="isSelf ? LocaleLink : 'span'" to="/settings/profile">
-						<UserAvatar :avatar="isSelf ? userSelfInfoStore.userAvatar : userInfo?.avatar" />
-					</component>
-					<div class="texts">
-						<div class="name">
-							<span class="nickname">{{ isSelf ? userSelfInfoStore.userNickname : userInfo?.userNickname }}</span>
-							<span class="username">@{{ isSelf ? userSelfInfoStore.username : userInfo?.username }}</span>
-							<!-- <span v-if="memoParen" class="memo" :class="[memoParen]">{{ user?.bio }}</span> -->
-							<span class="icons">
-								<Icon v-if="isSelf ? userSelfInfoStore.gender === 'male' : userInfo?.gender === 'male'" name="male" class="male" />
-								<Icon v-else-if="isSelf ? userSelfInfoStore.gender === 'female' : userInfo?.gender === 'female'" name="female" class="female" />
-							</span>
+	<div>
+		<header>
+			<div>
+				<div class="content">
+					<div class="user">
+						<component :is="isSelf ? LocaleLink : 'span'" to="/settings/profile">
+							<UserAvatar :avatar="isSelf ? userSelfInfoStore.userAvatar : userInfo?.avatar" />
+						</component>
+						<div class="texts">
+							<div class="name">
+								<span class="nickname">{{ isSelf ? userSelfInfoStore.userNickname : userInfo?.userNickname }}</span>
+								<span class="username">@{{ isSelf ? userSelfInfoStore.username : userInfo?.username }}</span>
+								<!-- <span v-if="memoParen" class="memo" :class="[memoParen]">{{ user?.bio }}</span> -->
+								<span class="icons">
+									<Icon v-if="isSelf ? userSelfInfoStore.gender === 'male' : userInfo?.gender === 'male'" name="male" class="male" />
+									<Icon v-else-if="isSelf ? userSelfInfoStore.gender === 'female' : userInfo?.gender === 'female'" name="female" class="female" />
+								</span>
+							</div>
+							<div class="bio">{{ isSelf ? userSelfInfoStore.signature : userInfo?.signature }}</div>
 						</div>
-						<div class="bio">{{ isSelf ? userSelfInfoStore.signature : userInfo?.signature }}</div>
+					</div>
+					<div class="actions">
+						<!-- <SoftButton v-tooltip:top="'私信'" icon="email" /> -->
+						<SoftButton v-if="!isSelf" v-tooltip:top="t.more" icon="more_vert" @click="e => actionMenu = [e, 'y']" />
+						<Menu v-if="!isSelf" v-model="actionMenu">
+							<MenuItem icon="badge">{{ t.modify_memo }}</MenuItem>
+							<MenuItem icon="groups">{{ t.add_to_group }}</MenuItem>
+							<hr />
+							<MenuItem v-tooltip:x="'老铁们，给我举报他！'" icon="flag">{{ t.report }}</MenuItem>
+							<MenuItem icon="block">{{ t.add_to_blocklist }}</MenuItem>
+						</Menu>
+						<div v-if="!isSelf" class="follow-button">
+							<Button v-if="!isFollowed" icon="add" @click="isFollowed = true">{{ t.follow_verb }}</Button>
+							<!-- TODO: !user.isFollowed -->
+							<Button v-else icon="check" @click="isFollowed = false">{{ t.following }}</Button>
+						</div>
+						<Button v-if="isSelf">{{ t.manage_content }}</Button>
 					</div>
 				</div>
-				<div class="actions">
-					<!-- <SoftButton v-tooltip:top="'私信'" icon="email" /> -->
-					<SoftButton v-if="!isSelf" v-tooltip:top="t.more" icon="more_vert" @click="e => actionMenu = [e, 'y']" />
-					<Menu v-if="!isSelf" v-model="actionMenu">
-						<MenuItem icon="badge">{{ t.modify_memo }}</MenuItem>
-						<MenuItem icon="groups">{{ t.add_to_group }}</MenuItem>
-						<hr />
-						<MenuItem v-tooltip:x="'老铁们，给我举报他！'" icon="flag">{{ t.report }}</MenuItem>
-						<MenuItem icon="block">{{ t.add_to_blocklist }}</MenuItem>
-					</Menu>
-					<div v-if="!isSelf" class="follow-button">
-						<Button v-if="!isFollowed" icon="add" @click="isFollowed = true">{{ t.follow_verb }}</Button>
-						<!-- TODO: !user.isFollowed -->
-						<Button v-else icon="check" @click="isFollowed = false">{{ t.following }}</Button>
-					</div>
-					<Button v-if="isSelf">{{ t.manage_content }}</Button>
-				</div>
+				<TabBar v-model="currentTab">
+					<TabItem v-for="tab in tabs" :id="tab.id" :key="tab.id" :icon="tab.icon" :to="`/user/${urlUid}/${tab.id}`">{{ t[tab.id || "home"] }}</TabItem>
+				</TabBar>
 			</div>
-			<TabBar v-model="currentTab">
-				<TabItem v-for="tab in tabs" :id="tab.id" :key="tab.id" :icon="tab.icon">{{ t[tab.id || "home"] }}</TabItem>
-			</TabBar>
+		</header>
+		<div class="slot">
+			<NuxtPage />
 		</div>
-	</header>
+	</div>
 </template>
 
 <style scoped lang="scss">
@@ -248,7 +269,7 @@
 		}
 	}
 
-	header:deep ~ .user-center-slot > .container {
+	.slot:deep(.container) {
 		display: flex;
 		gap: 20px;
 		align-items: flex-start;

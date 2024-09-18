@@ -33,28 +33,30 @@
 </script>
 
 <template>
-	<Pagination v-model="currentPage" :pages />
-	<section>
-		<SettingsChipItem
-			v-for="user in sortedUsers"
-			:key="user.uid"
-			:image="user.avatar"
-			icon="account_circle"
-			:details="`UID ${user.uid}` + (user.signature?.trim() ? ` - ${user.signature}` : '')"
-			trailingIcon="open_in_new"
-			:href="`/user/${user.uid}`"
-		>
-			<div class="name">
-				<span class="nickname">{{ user.userNickname }}</span>
-				<span class="username">@{{ user.username }}</span>
-				<div class="icons">
-					<Icon v-if="user.gender === 'male' " name="male" class="male" />
-					<Icon v-else-if="user.gender === 'female'" name="female" class="female" />
-					<Icon v-if="user.role === 'admin' " name="build_circle" class="admin" />
+	<div>
+		<Pagination v-model="currentPage" :pages />
+		<section>
+			<SettingsChipItem
+				v-for="user in sortedUsers"
+				:key="user.uid"
+				:image="user.avatar"
+				icon="account_circle"
+				:details="`UID ${user.uid}` + (user.signature?.trim() ? ` - ${user.signature}` : '')"
+				trailingIcon="open_in_new"
+				:href="`/user/${user.uid}`"
+			>
+				<div class="name">
+					<span class="nickname">{{ user.userNickname }}</span>
+					<span class="username">@{{ user.username }}</span>
+					<div class="icons">
+						<Icon v-if="user.gender === 'male' " name="male" class="male" />
+						<Icon v-else-if="user.gender === 'female'" name="female" class="female" />
+						<Icon v-if="user.role === 'admin' " name="build_circle" class="admin" />
+					</div>
 				</div>
-			</div>
-		</SettingsChipItem>
-	</section>
+			</SettingsChipItem>
+		</section>
+	</div>
 </template>
 
 <style scoped lang="scss">

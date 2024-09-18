@@ -293,7 +293,7 @@
 					margin-left: auto;
 				}
 
-				.checkbox:deep {
+				.checkbox:deep() {
 					padding: 0 14px;
 
 					label {

@@ -103,61 +103,63 @@
 </script>
 
 <template>
-	<Alert v-model="showBlockUserAlert" static>
-		<h4>确定要封禁这个用户吗？</h4>
-		<div class="block-user-display">
-			<div class="user">
-				<UserAvatar :avatar="criminalUserInfo?.avatar" />
-				<div class="texts">
-					<div class="names">
-						<span class="username">{{ criminalUserInfo?.username }}</span> <span v-if="criminalUserInfo?.userNickname">/{{ criminalUserInfo?.userNickname }}</span>
-						<!-- <span v-if="memoParen" class="memo" :class="[memoParen]">{{ user?.bio }}</span> -->
-						<span class="icons">
-							<Icon v-if="criminalUserInfo?.gender === 'male'" name="male" class="male" />
-							<Icon v-else-if="criminalUserInfo?.gender === 'female'" name="female" class="female" />
-							<span v-else class="other-gender">{{ criminalUserInfo?.gender }}</span>
-						</span>
+	<div>
+		<Alert v-model="showBlockUserAlert" static>
+			<h4>确定要封禁这个用户吗？</h4>
+			<div class="block-user-display">
+				<div class="user">
+					<UserAvatar :avatar="criminalUserInfo?.avatar" />
+					<div class="texts">
+						<div class="names">
+							<span class="username">{{ criminalUserInfo?.username }}</span> <span v-if="criminalUserInfo?.userNickname">/{{ criminalUserInfo?.userNickname }}</span>
+							<!-- <span v-if="memoParen" class="memo" :class="[memoParen]">{{ user?.bio }}</span> -->
+							<span class="icons">
+								<Icon v-if="criminalUserInfo?.gender === 'male'" name="male" class="male" />
+								<Icon v-else-if="criminalUserInfo?.gender === 'female'" name="female" class="female" />
+								<span v-else class="other-gender">{{ criminalUserInfo?.gender }}</span>
+							</span>
+						</div>
+						<div class="bio">{{ criminalUserInfo?.signature }}</div>
 					</div>
-					<div class="bio">{{ criminalUserInfo?.signature }}</div>
 				</div>
 			</div>
-		</div>
-		<template #footer-left>
-			<Button @click="blockUser" :loading="isBlockingUser" :disabled="isBlockingUser">确认封禁</Button>
-		</template>
-		<template #footer-right>
-			<Button @click="showBlockUserAlert = false" class="secondary">取消</Button>
-		</template>
-	</Alert>
+			<template #footer-left>
+				<Button @click="blockUser" :loading="isBlockingUser" :disabled="isBlockingUser">确认封禁</Button>
+			</template>
+			<template #footer-right>
+				<Button @click="showBlockUserAlert = false" class="secondary">取消</Button>
+			</template>
+		</Alert>
 
-	<div class="block-user">
-		<div class="input">
-			<!-- TODO: 使用多语言 -->
-			<TextBox
-				type="number"
-				v-model="criminalUid"
-				placeholder="封禁用户"
-				size="large"
-				icon="person"
-			/>
-			<!-- TODO: 使用多语言 -->
-			<span>输入要封禁的用户的 UID，例如 UID114 只需输入数字 114 即可。</span>
+		<div class="block-user">
+			<div class="input">
+				<!-- TODO: 使用多语言 -->
+				<TextBox
+					type="number"
+					v-model="criminalUid"
+					placeholder="封禁用户"
+					size="large"
+					icon="person"
+				/>
+				<!-- TODO: 使用多语言 -->
+				<span>输入要封禁的用户的 UID，例如 UID114 只需输入数字 114 即可。</span>
+			</div>
+			<Button @click="openBlockUserAlert" :disabled="!isAdmin || isOpeningBlockUserAlert" :loading="isOpeningBlockUserAlert">封禁用户</Button>
 		</div>
-		<Button @click="openBlockUserAlert" :disabled="!isAdmin || isOpeningBlockUserAlert" :loading="isOpeningBlockUserAlert">封禁用户</Button>
+
+		<!-- TODO: 使用多语言 -->
+		<Subheader icon="block">已封禁用户</Subheader>
+		<section>
+			<SettingsChipItem
+				v-for="user in blockedUser?.result"
+				:key="user?.username"
+				:image="user?.avatar"
+				:details="`UID: ${user.uid} Name: ${user?.username}`"
+				trailingIcon="close"
+				@trailingIconClick="() => reactivateUserByUID(user.uid)"
+			>{{ user?.signature }}</SettingsChipItem>
+		</section>
 	</div>
-
-	<!-- TODO: 使用多语言 -->
-	<Subheader icon="block">已封禁用户</Subheader>
-	<section>
-		<SettingsChipItem
-			v-for="user in blockedUser?.result"
-			:key="user?.username"
-			:image="user?.avatar"
-			:details="`UID: ${user.uid} Name: ${user?.username}`"
-			trailingIcon="close"
-			@trailingIconClick="() => reactivateUserByUID(user.uid)"
-		>{{ user?.signature }}</SettingsChipItem>
-	</section>
 </template>
 
 <style scoped lang="scss">

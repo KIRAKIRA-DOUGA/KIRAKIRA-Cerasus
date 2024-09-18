@@ -85,26 +85,20 @@
 </script>
 
 <template>
-	<DefinePopoverSlot>
-		<div class="modal-content">
-			<div>
-				<p>视频标题</p>
-				<TextBox v-model="inputValue" placeholder="视频标题" />
-			</div>
-			<div>
-				<p>视频分P</p>
-				<TextBox v-model="inputValue" placeholder="视频分P" />
-			</div>
-		</div>
-	</DefinePopoverSlot>
-
 	<div class="container">
-		<div class="links">
-			<LocaleLink to="/">{{ t.home }}</LocaleLink>
-			<LocaleLink to="/video/kvtest">{{ t.video }}</LocaleLink>
-			<LocaleLink to="/hello">{{ t.content }}</LocaleLink>
-			<LocaleLink to="/search">{{ t.search }}</LocaleLink>
-		</div>
+		<DefinePopoverSlot>
+			<div class="modal-content">
+				<div>
+					<p>视频标题</p>
+					<TextBox v-model="inputValue" placeholder="视频标题" />
+				</div>
+				<div>
+					<p>视频分P</p>
+					<TextBox v-model="inputValue" placeholder="视频分P" />
+				</div>
+			</div>
+		</DefinePopoverSlot>
+
 		<div class="component-test">
 			<Pagination v-model="page" :pages :displayPageCount enableArrowKeyMove />
 			<Segmented v-model="selectedSegmented" :style="{ '--ease': 'ease-in-out' }">
@@ -344,11 +338,6 @@
 <style scoped lang="scss">
 	.component-test > :deep(*) {
 		margin: 0.8rem 0.5rem;
-	}
-
-	.links {
-		display: flex;
-		gap: 8px;
 	}
 
 	.marquee {

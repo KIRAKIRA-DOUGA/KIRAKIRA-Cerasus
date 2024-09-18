@@ -539,7 +539,7 @@
 			scale: 1.2;
 		}
 
-		&.quality-button:deep {
+		&.quality-button:deep() {
 			&,
 			* {
 				min-width: 60px;

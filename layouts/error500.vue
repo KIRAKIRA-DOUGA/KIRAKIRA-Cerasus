@@ -140,7 +140,7 @@
 				user-select: text;
 			}
 
-			div:deep {
+			div:deep() {
 				color: c(icon-color);
 
 				> pre > span.stack {

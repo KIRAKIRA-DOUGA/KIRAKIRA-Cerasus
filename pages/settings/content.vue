@@ -161,120 +161,122 @@
 </script>
 
 <template>
-	<Alert v-model="showDeleteVideoAlert" static>
-		<h4>确定要删除这个视频吗？</h4>
-		<div class="delete-thumb-video">
-			<ThumbVideo
-				v-if="deleteVideoInfo"
-				:videoId="deleteVideoInfo.videoId"
-				:uploader="deleteVideoInfo.uploader ?? ''"
-				:uploaderId="deleteVideoInfo.uploaderId"
-				:image="deleteVideoInfo.image"
-				:date="new Date(deleteVideoInfo.uploadDate || 0)"
-				:watchedCount="deleteVideoInfo.watchedCount"
-				:duration="new Duration(0, deleteVideoInfo.duration ?? 0)"
-				:blank="true"
-			>{{ deleteVideoInfo.title }}</ThumbVideo>
-		</div>
-		<template #footer-left>
-			<Button @click="deleteVideo" :loading="isDeletingPendingVideo || isDeletingVideo" :disabled="!isAdmin || isDeletingPendingVideo || isDeletingVideo">确认删除</Button>
-		</template>
-		<template #footer-right>
-			<Button @click="showDeleteVideoAlert = false" class="secondary">取消</Button>
-		</template>
-	</Alert>
-
-	<Alert v-model="showDeletePendingVideoAlert" static>
-		<h4>确定要删除这个待审核视频吗？</h4>
-		<div class="delete-thumb-video">
-			<ThumbVideo
-				v-if="deletePendingVideoInfo"
-				:videoId="deletePendingVideoInfo.videoId"
-				:uploader="deletePendingVideoInfo.uploader ?? ''"
-				:uploaderId="deletePendingVideoInfo.uploaderId"
-				:image="deletePendingVideoInfo.image"
-				:date="new Date(deletePendingVideoInfo.uploadDate || 0)"
-				:watchedCount="deletePendingVideoInfo.watchedCount"
-				:duration="new Duration(0, deletePendingVideoInfo.duration ?? 0)"
-				:blank="true"
-			>{{ deletePendingVideoInfo.title }}</ThumbVideo>
-		</div>
-		<template #footer-left>
-			<Button
-				@click="deletePendingVideo"
-				:loading="isDeletingPendingVideo || isDeletingVideo"
-				:disabled="!isAdmin || isDeletingPendingVideo || isDeletingVideo"
-			>
-				确认删除
-			</Button>
-		</template>
-		<template #footer-right>
-			<Button @click="showDeletePendingVideoAlert = false" class="secondary">取消</Button>
-		</template>
-	</Alert>
-
-	<div class="delete-video">
-		<div class="input">
-			<!-- TODO: 使用多语言 -->
-			<TextBox
-				type="number"
-				v-model="deletedVideoId"
-				placeholder="删除视频"
-				size="large"
-				icon="delete"
-			/>
-			<!-- TODO: 使用多语言 -->
-			<span>输入要删除的视频的 KV 号，例如 kv1 只需输入数字 1 即可。</span>
-		</div>
-		<Button
-			@click="openDeleteVideoAlert"
-			:disabled="!isAdmin || isOpeningDeleteVideoAlert || isOpeningDeletePendingVideoAlert || isApprovingPendingVideo"
-			:loading="isOpeningDeleteVideoAlert || isOpeningDeletePendingVideoAlert || isApprovingPendingVideo"
-		>
-			删除视频
-		</Button>
-	</div>
-
-	<!-- TODO: 使用多语言 -->
-	<Subheader icon="block">新上传的视频</Subheader>
-	<h4>新上传待审核的视频</h4>
-	<ThumbGrid :key="resultTimestamp">
-		<div
-			class="pending-videos"
-			v-for="video in pendingReviewVideos?.videos"
-			:key="video.videoId"
-		>
-			<ThumbVideo
-				:videoId="video.videoId"
-				:uploader="video.uploader ?? ''"
-				:uploaderId="video.uploaderId"
-				:image="video.image"
-				:date="new Date(video.uploadDate || 0)"
-				:watchedCount="video.watchedCount"
-				:duration="new Duration(0, video.duration ?? 0)"
-			>
-				{{ video.title }}
-			</ThumbVideo>
-			<div class="button-group">
-				<Button
-					class="secondary"
-					@click="() => approvePendingReviewVideo(video.videoId)"
-					:disabled="!isAdmin || isOpeningDeleteVideoAlert || isOpeningDeletePendingVideoAlert || isApprovingPendingVideo"
-					:loading="isOpeningDeleteVideoAlert || isOpeningDeletePendingVideoAlert || isApprovingPendingVideo"
-				>
-					通过
-				</Button>
-				<Button
-					class="secondary"
-					@click="() => openDeletePendingVideoAlert(video.videoId)"
-					:disabled="!isAdmin || isOpeningDeleteVideoAlert || isOpeningDeletePendingVideoAlert || isApprovingPendingVideo"
-					:loading="isOpeningDeleteVideoAlert || isOpeningDeletePendingVideoAlert || isApprovingPendingVideo"
-				>
-					删除
-				</Button>
+	<div>
+		<Alert v-model="showDeleteVideoAlert" static>
+			<h4>确定要删除这个视频吗？</h4>
+			<div class="delete-thumb-video">
+				<ThumbVideo
+					v-if="deleteVideoInfo"
+					:videoId="deleteVideoInfo.videoId"
+					:uploader="deleteVideoInfo.uploader ?? ''"
+					:uploaderId="deleteVideoInfo.uploaderId"
+					:image="deleteVideoInfo.image"
+					:date="new Date(deleteVideoInfo.uploadDate || 0)"
+					:watchedCount="deleteVideoInfo.watchedCount"
+					:duration="new Duration(0, deleteVideoInfo.duration ?? 0)"
+					:blank="true"
+				>{{ deleteVideoInfo.title }}</ThumbVideo>
 			</div>
+			<template #footer-left>
+				<Button @click="deleteVideo" :loading="isDeletingPendingVideo || isDeletingVideo" :disabled="!isAdmin || isDeletingPendingVideo || isDeletingVideo">确认删除</Button>
+			</template>
+			<template #footer-right>
+				<Button @click="showDeleteVideoAlert = false" class="secondary">取消</Button>
+			</template>
+		</Alert>
+
+		<Alert v-model="showDeletePendingVideoAlert" static>
+			<h4>确定要删除这个待审核视频吗？</h4>
+			<div class="delete-thumb-video">
+				<ThumbVideo
+					v-if="deletePendingVideoInfo"
+					:videoId="deletePendingVideoInfo.videoId"
+					:uploader="deletePendingVideoInfo.uploader ?? ''"
+					:uploaderId="deletePendingVideoInfo.uploaderId"
+					:image="deletePendingVideoInfo.image"
+					:date="new Date(deletePendingVideoInfo.uploadDate || 0)"
+					:watchedCount="deletePendingVideoInfo.watchedCount"
+					:duration="new Duration(0, deletePendingVideoInfo.duration ?? 0)"
+					:blank="true"
+				>{{ deletePendingVideoInfo.title }}</ThumbVideo>
+			</div>
+			<template #footer-left>
+				<Button
+					@click="deletePendingVideo"
+					:loading="isDeletingPendingVideo || isDeletingVideo"
+					:disabled="!isAdmin || isDeletingPendingVideo || isDeletingVideo"
+				>
+					确认删除
+				</Button>
+			</template>
+			<template #footer-right>
+				<Button @click="showDeletePendingVideoAlert = false" class="secondary">取消</Button>
+			</template>
+		</Alert>
+
+		<div class="delete-video">
+			<div class="input">
+				<!-- TODO: 使用多语言 -->
+				<TextBox
+					type="number"
+					v-model="deletedVideoId"
+					placeholder="删除视频"
+					size="large"
+					icon="delete"
+				/>
+				<!-- TODO: 使用多语言 -->
+				<span>输入要删除的视频的 KV 号，例如 kv1 只需输入数字 1 即可。</span>
+			</div>
+			<Button
+				@click="openDeleteVideoAlert"
+				:disabled="!isAdmin || isOpeningDeleteVideoAlert || isOpeningDeletePendingVideoAlert || isApprovingPendingVideo"
+				:loading="isOpeningDeleteVideoAlert || isOpeningDeletePendingVideoAlert || isApprovingPendingVideo"
+			>
+				删除视频
+			</Button>
 		</div>
-	</ThumbGrid>
+
+		<!-- TODO: 使用多语言 -->
+		<Subheader icon="block">新上传的视频</Subheader>
+		<h4>新上传待审核的视频</h4>
+		<ThumbGrid :key="resultTimestamp">
+			<div
+				class="pending-videos"
+				v-for="video in pendingReviewVideos?.videos"
+				:key="video.videoId"
+			>
+				<ThumbVideo
+					:videoId="video.videoId"
+					:uploader="video.uploader ?? ''"
+					:uploaderId="video.uploaderId"
+					:image="video.image"
+					:date="new Date(video.uploadDate || 0)"
+					:watchedCount="video.watchedCount"
+					:duration="new Duration(0, video.duration ?? 0)"
+				>
+					{{ video.title }}
+				</ThumbVideo>
+				<div class="button-group">
+					<Button
+						class="secondary"
+						@click="() => approvePendingReviewVideo(video.videoId)"
+						:disabled="!isAdmin || isOpeningDeleteVideoAlert || isOpeningDeletePendingVideoAlert || isApprovingPendingVideo"
+						:loading="isOpeningDeleteVideoAlert || isOpeningDeletePendingVideoAlert || isApprovingPendingVideo"
+					>
+						通过
+					</Button>
+					<Button
+						class="secondary"
+						@click="() => openDeletePendingVideoAlert(video.videoId)"
+						:disabled="!isAdmin || isOpeningDeleteVideoAlert || isOpeningDeletePendingVideoAlert || isApprovingPendingVideo"
+						:loading="isOpeningDeleteVideoAlert || isOpeningDeletePendingVideoAlert || isApprovingPendingVideo"
+					>
+						删除
+					</Button>
+				</div>
+			</div>
+		</ThumbGrid>
+	</div>
 </template>
 
 <style scoped lang="scss">

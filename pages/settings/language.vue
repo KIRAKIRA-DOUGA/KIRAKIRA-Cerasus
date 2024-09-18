@@ -17,23 +17,25 @@
 </script>
 
 <template>
-	<div class="date-time">
-		<Subheader icon="time">{{ t.current_time }}</Subheader>
-		<p><DateTime :dateTime="date" showTime /></p>
+	<div>
+		<div class="date-time">
+			<Subheader icon="time">{{ t.current_time }}</Subheader>
+			<p><DateTime :dateTime="date" showTime /></p>
+		</div>
+		<section grid>
+			<SettingsGridItem
+				v-for="locale in localeList"
+				:id="locale.code"
+				:key="locale.code"
+				v-model="localeModel"
+				:title="t.language[locale.code]"
+			>
+				<div class="line" :lang="locale.lang">
+					{{ locale.name }}
+				</div>
+			</SettingsGridItem>
+		</section>
 	</div>
-	<section grid>
-		<SettingsGridItem
-			v-for="locale in localeList"
-			:id="locale.code"
-			:key="locale.code"
-			v-model="localeModel"
-			:title="t.language[locale.code]"
-		>
-			<div class="line" :lang="locale.lang">
-				{{ locale.name }}
-			</div>
-		</SettingsGridItem>
-	</section>
 </template>
 
 <style scoped lang="scss">
@@ -81,13 +83,13 @@
 		margin: 0 20px;
 		padding: 20px 0;
 		color: c(icon-color);
-		font-weight: 500;
 		font-size: 32px;
+		font-weight: 500;
+		font-feature-settings: normal;
 		line-height: 32px;
 		text-align: center;
 		border: c(gray-40) solid;
 		border-width: 1px 0;
-		font-feature-settings: normal;
 
 		&:lang-latin {
 			font-family: $english-logo-fonts;

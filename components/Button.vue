@@ -86,7 +86,7 @@
 		&.icon-behind {
 			--icon-behind: true;
 		}
-		
+
 		&:deep(*) {
 			font-variant-numeric: inherit;
 		}
@@ -249,7 +249,7 @@
 		position: absolute !important;
 	}
 
-	.progress-bar:deep {
+	.progress-bar:deep() {
 		position: absolute !important;
 		bottom: 0;
 		width: 100%;

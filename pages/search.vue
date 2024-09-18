@@ -5,7 +5,7 @@
 	const tagSearch = computed(() => {
 		const tagIds = route.query.tagId;
 		if (Array.isArray(tagIds))
-			return tagIds.map(tagId => parseInt(tagId, 10));
+			return tagIds.map(tagId => parseInt(tagId!, 10));
 		else if (typeof tagIds === "string")
 			return [parseInt(tagIds, 10)];
 		else
@@ -128,7 +128,7 @@
 		switch (searchMode.value) {
 			case "keyword": {
 				if (query)
-					await searchVideoByKeyword(query);
+					await searchVideoByKeyword(query as string);
 				else
 					await getHomeVideo();
 				break;

@@ -13,66 +13,68 @@
 </script>
 
 <template>
-	<Subheader icon="keyboard">{{ t.guide }}</Subheader>
-	<audio ref="sfx" :src="k1bod"></audio>
-	<div class="table">
-		<!-- #region 播放页 -->
-		<h3>{{ t.shortcut_key.player_page }}</h3>
+	<div>
+		<Subheader icon="keyboard">{{ t.guide }}</Subheader>
+		<audio ref="sfx" :src="k1bod"></audio>
+		<div class="table">
+			<!-- #region 播放页 -->
+			<h3>{{ t.shortcut_key.player_page }}</h3>
 
-		<p>{{ t.shortcut_key.play_pause }}</p>
-		<p><Kbd>Space</Kbd></p>
+			<p>{{ t.shortcut_key.play_pause }}</p>
+			<p><Kbd>Space</Kbd></p>
 
-		<p>{{ t.shortcut_key.exit_fullscreen }}</p>
-		<p><Kbd>Esc</Kbd></p>
+			<p>{{ t.shortcut_key.exit_fullscreen }}</p>
+			<p><Kbd>Esc</Kbd></p>
 
-		<!-- TODO: 使用多语言 -->
-		<p>{{ t.shortcut_key.fullscreen }}</p>
-		<p><Kbd>F</Kbd> <Kbd>F11</Kbd></p>
+			<!-- TODO: 使用多语言 -->
+			<p>{{ t.shortcut_key.fullscreen }}</p>
+			<p><Kbd>F</Kbd> <Kbd>F11</Kbd></p>
 
-		<p>{{ t.danmaku }}</p>
-		<p><Kbd>D</Kbd></p>
+			<p>{{ t.danmaku }}</p>
+			<p><Kbd>D</Kbd></p>
 
-		<p>{{ t.shortcut_key.mute }}</p>
-		<p><Kbd>M</Kbd></p>
+			<p>{{ t.shortcut_key.mute }}</p>
+			<p><Kbd>M</Kbd></p>
 
-		<p>{{ t.shortcut_key.volume }}</p>
-		<p><Kbd>↑</Kbd> <Kbd>↓</Kbd></p>
+			<p>{{ t.shortcut_key.volume }}</p>
+			<p><Kbd>↑</Kbd> <Kbd>↓</Kbd></p>
 
-		<p>{{ t.shortcut_key.fast_rewind }} / {{ t.shortcut_key.fast_forward }}</p>
-		<p><Kbd>←</Kbd> <Kbd>→</Kbd></p>
+			<p>{{ t.shortcut_key.fast_rewind }} / {{ t.shortcut_key.fast_forward }}</p>
+			<p><Kbd>←</Kbd> <Kbd>→</Kbd></p>
 
-		<p>{{ t.shortcut_key.slow_down }} / {{ t.shortcut_key.speed_up }}</p>
-		<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>←</Kbd> <Kbd>→</Kbd></p>
-		<!-- #endregion -->
+			<p>{{ t.shortcut_key.slow_down }} / {{ t.shortcut_key.speed_up }}</p>
+			<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>←</Kbd> <Kbd>→</Kbd></p>
+			<!-- #endregion -->
 
-		<!-- #region 分页器 -->
-		<h3>{{ t.shortcut_key.pagination }}</h3>
+			<!-- #region 分页器 -->
+			<h3>{{ t.shortcut_key.pagination }}</h3>
 
-		<p>{{ t.shortcut_key.page_turning }}</p>
-		<p><Kbd>←</Kbd> <Kbd>→</Kbd></p>
-		<!-- #endregion -->
+			<p>{{ t.shortcut_key.page_turning }}</p>
+			<p><Kbd>←</Kbd> <Kbd>→</Kbd></p>
+			<!-- #endregion -->
 
-		<!-- #region 评论区 -->
-		<h3>{{ t.shortcut_key.comment_area }}</h3>
+			<!-- #region 评论区 -->
+			<h3>{{ t.shortcut_key.comment_area }}</h3>
 
-		<p>{{ t.format.bold }}</p>
-		<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>B</Kbd></p>
+			<p>{{ t.format.bold }}</p>
+			<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>B</Kbd></p>
 
-		<p>{{ t.format.italic }}</p>
-		<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>I</Kbd></p>
+			<p>{{ t.format.italic }}</p>
+			<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>I</Kbd></p>
 
-		<p>{{ t.format.underline }}</p>
-		<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>U</Kbd></p>
+			<p>{{ t.format.underline }}</p>
+			<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>U</Kbd></p>
 
-		<p>{{ t.format.strikethrough }}</p>
-		<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>Shift</Kbd> + <Kbd>X</Kbd></p>
+			<p>{{ t.format.strikethrough }}</p>
+			<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>Shift</Kbd> + <Kbd>X</Kbd></p>
 
-		<p>{{ t.shortcut_key.quick_insert_kaomoji }}</p>
-		<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>M</Kbd></p>
+			<p>{{ t.shortcut_key.quick_insert_kaomoji }}</p>
+			<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>M</Kbd></p>
 
-		<p>{{ t.send }}</p>
-		<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>Enter</Kbd></p>
-		<!-- #endregion -->
+			<p>{{ t.send }}</p>
+			<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>Enter</Kbd></p>
+			<!-- #endregion -->
+		</div>
 	</div>
 </template>
 

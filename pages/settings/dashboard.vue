@@ -5,46 +5,49 @@
 </script>
 
 <template>
-	<div class="user-profile" @click="navigate('/settings/profile')">
-		<div class="avatar">
-			<UserAvatar :avatar="selfUserInfoStore.isLogined ? selfUserInfoStore.userAvatar : undefined" />
-		</div>
-		<div class="text">
-			<div class="name">
-				<span class="nickname">{{ selfUserInfoStore.userNickname }}</span>
-				<span class="username">@{{ selfUserInfoStore.username }}</span>
-				<div class="icons">
-					<Icon v-if="selfUserInfoStore.gender === 'male' " name="male" class="male" />
-					<Icon v-else-if="selfUserInfoStore.gender === 'female'" name="female" class="female" />
-				</div>
+	<div>
+		<div class="user-profile" @click="navigate('/settings/profile')">
+			<div class="avatar">
+				<UserAvatar :avatar="selfUserInfoStore.isLogined ? selfUserInfoStore.userAvatar : undefined" />
 			</div>
-			<div class="bio">{{ selfUserInfoStore.signature }}</div>
+			<div class="text">
+				<div class="name">
+					<span class="nickname">{{ selfUserInfoStore.userNickname }}</span>
+					<span class="username">@{{ selfUserInfoStore.username }}</span>
+					<div class="icons">
+						<Icon v-if="selfUserInfoStore.gender === 'male' " name="male" class="male" />
+						<Icon v-else-if="selfUserInfoStore.gender === 'female'" name="female" class="female" />
+					</div>
+				</div>
+				<div class="bio">{{ selfUserInfoStore.signature }}</div>
+			</div>
 		</div>
-	</div>
 
-	<div class="user-counts chip">
-		<div>
-			<span class="value">233</span>
-			<p>{{ t.follow }}</p>
+		<div class="user-counts chip">
+			<div>
+				<span class="value">233</span>
+				<p>{{ t.follow }}</p>
+			</div>
+			<div>
+				<span class="value">233</span>
+				<p>{{ t.fans }}</p>
+			</div>
+			<div>
+				<span class="value">233</span>
+				<p>{{ t.watched }}</p>
+			</div>
+			<div>
+				<span class="value">233</span>
+				<p>{{ t.rating }}</p>
+			</div>
 		</div>
-		<div>
-			<span class="value">233</span>
-			<p>{{ t.fans }}</p>
-		</div>
-		<div>
-			<span class="value">233</span>
-			<p>{{ t.watched }}</p>
-		</div>
-		<div>
-			<span class="value">233</span>
-			<p>{{ t.rating }}</p>
-		</div>
-	</div>
 
-	<div class="user-info chip">
-		<SettingsChipItem icon="birthday" :details="userBirthdayDisplay">{{ t.user.birthday }}</SettingsChipItem>
-		<SettingsChipItem icon="history" :details="registerDateDisplay">{{ t.user.join_time }}</SettingsChipItem>
-		<SettingsChipItem icon="fingerprint" :details="selfUserInfoStore.isLogined ? selfUserInfoStore.uid : undefined">UID</SettingsChipItem>
+		<div class="user-info chip">
+			<SettingsChipItem icon="birthday" :details="userBirthdayDisplay">{{ t.user.birthday }}</SettingsChipItem>
+			<SettingsChipItem icon="history" :details="registerDateDisplay">{{ t.user.join_time }}</SettingsChipItem>
+			<SettingsChipItem icon="fingerprint" :details="selfUserInfoStore.isLogined ? selfUserInfoStore.uid : undefined">UID</SettingsChipItem>
+			<SettingsChipItem icon="gift" :details="`TODO`">使用邀请码</SettingsChipItem>
+		</div>
 	</div>
 </template>
 

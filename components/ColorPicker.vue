@@ -274,16 +274,16 @@
 
 	%inner-stroke {
 		@include color-palette-stroke;
-		position: absolute;
-		border-radius: inherit;
-		inset: 0;
 		content: "";
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
 	}
 
 	.plane {
 		position: relative;
-		margin: $thumb-size-half 0;
 		aspect-ratio: 1 / 1;
+		margin: $thumb-size-half 0;
 		cursor: pointer;
 		touch-action: pinch-zoom;
 
@@ -297,8 +297,8 @@
 
 			> * {
 				position: absolute;
-				border-radius: 8px; // 与下方滑动条的圆角大小一致，因此使用特殊值。
 				inset: 0;
+				border-radius: 8px; // 与下方滑动条的圆角大小一致，因此使用特殊值。
 			}
 		}
 
@@ -348,7 +348,7 @@
 		}
 	}
 
-	.slider:deep {
+	.slider:deep() {
 		--size: large;
 
 		.passed {
@@ -366,18 +366,18 @@
 	}
 
 	@function slider-model($model) {
-		@return ".slider.auxiliary.#{$model}:deep .base";
+		@return ".slider.auxiliary.#{$model}:deep() .base";
 	}
 
 	#{slider-model(rgb)} {
 		background: $hue-linear;
 
 		&::before {
-			position: absolute;
-			background-color: var(--wo-h);
-			inset: 0;
-			transition: none;
 			content: "";
+			position: absolute;
+			inset: 0;
+			background-color: var(--wo-h);
+			transition: none;
 		}
 	}
 
@@ -389,7 +389,7 @@
 		background: linear-gradient(to right, black, var(--wo-v));
 	}
 
-	.slider.opacity:deep .base,
+	.slider.opacity:deep() .base,
 	.checkerboard {
 		$color: c(gray-40);
 		--checkerboard-size: 8px;
@@ -408,12 +408,12 @@
 		}
 	}
 
-	.slider.opacity:deep .base::before {
-		position: absolute;
-		background: linear-gradient(to right, transparent, var(--wo-a));
-		inset: 0;
-		transition: none;
+	.slider.opacity:deep() .base::before {
 		content: "";
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(to right, transparent, var(--wo-a));
+		transition: none;
 	}
 
 	.controls {
@@ -457,7 +457,7 @@
 		@include round-large;
 	}
 
-	.slider:deep .thumb,
+	.slider:deep() .thumb,
 	.plane .thumb {
 		z-index: 1;
 		background-color: white;
@@ -488,8 +488,8 @@
 		&::after {
 			@include square(100%);
 			@include circle;
-			display: block;
 			content: "";
+			display: block;
 			scale: 0.625;
 		}
 

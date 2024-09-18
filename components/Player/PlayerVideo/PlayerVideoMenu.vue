@@ -130,7 +130,7 @@
 		else show(e);
 	}, { immediate: true });
 
-	const isDark = inject("fullscreen");
+	const isDark = inject("fullscreen", false);
 </script>
 
 <template>

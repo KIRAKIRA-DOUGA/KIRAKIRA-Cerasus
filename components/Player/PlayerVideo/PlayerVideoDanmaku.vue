@@ -114,7 +114,7 @@
 </template>
 
 <style scoped lang="scss">
-	.danmaku-container:deep {
+	.danmaku-container:deep() {
 		pointer-events: none;
 
 		* {
