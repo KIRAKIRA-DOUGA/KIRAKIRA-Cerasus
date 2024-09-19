@@ -227,59 +227,61 @@
 </script>
 
 <template>
-	<Alert v-model="showConfirmResetAlert" static>
+	<div>
+		<Alert v-model="showConfirmResetAlert" static>
+			<!-- TODO: 使用多语言 -->
+			确定要重置用户信息设置吗？
+			<template #footer-left>
+				<!-- TODO: 使用多语言 -->
+				<Button @click="reset" :loading="isResetUserInfo" :disabled="isUpdateUserInfo || isResetUserInfo">确认</Button>
+			</template>
+			<template #footer-right>
+				<!-- TODO: 使用多语言 -->
+				<Button @click="showConfirmResetAlert = false" class="secondary">取消</Button>
+			</template>
+		</Alert>
+
 		<!-- TODO: 使用多语言 -->
-		确定要重置用户信息设置吗？
-		<template #footer-left>
-			<!-- TODO: 使用多语言 -->
-			<Button @click="reset" :loading="isResetUserInfo" :disabled="isUpdateUserInfo || isResetUserInfo">确认</Button>
-		</template>
-		<template #footer-right>
-			<!-- TODO: 使用多语言 -->
-			<Button @click="showConfirmResetAlert = false" class="secondary">取消</Button>
-		</template>
-	</Alert>
+		<Modal v-model="isAvatarCropperOpen" title="更新头像">
+			<div class="avatar-cropper">
+				<ImageCropper
+					ref="cropper"
+					:image="userAvatarUploadFile"
+					:fixed="true"
+					:fixedNumber="[1, 1]"
+					:full="true"
+					:centerBox="true"
+					:infoTrue="true"
+					:mode="'contain '"
+				/>
+			</div>
+			<template #footer-right>
+				<!-- TODO: 使用多语言 -->
+				<Button class="secondary" @click="isAvatarCropperOpen = false">取消</Button>
+				<!-- TODO: 使用多语言 -->
+				<Button :loading="isUploadingUserAvatar" @click="handleChangeAvatarImage">更新头像</Button>
+			</template>
+		</Modal>
 
-	<!-- TODO: 使用多语言 -->
-	<Modal v-model="isAvatarCropperOpen" title="更新头像">
-		<div class="avatar-cropper">
-			<ImageCropper
-				ref="cropper"
-				:image="userAvatarUploadFile"
-				:fixed="true"
-				:fixedNumber="[1, 1]"
-				:full="true"
-				:centerBox="true"
-				:infoTrue="true"
-				:mode="'contain '"
-			/>
+		<div v-ripple class="banner">
+			<NuxtImg :src="banner" alt="banner" draggable="false" format="avif" placeholder />
+			<span>{{ t.profile.edit_banner }}</span>
 		</div>
-		<template #footer-right>
-			<!-- TODO: 使用多语言 -->
-			<Button class="secondary" @click="isAvatarCropperOpen = false">取消</Button>
-			<!-- TODO: 使用多语言 -->
-			<Button :loading="isUploadingUserAvatar" @click="handleChangeAvatarImage">更新头像</Button>
-		</template>
-	</Modal>
 
-	<div v-ripple class="banner">
-		<NuxtImg :src="banner" alt="banner" draggable="false" format="avif" placeholder />
-		<span>{{ t.profile.edit_banner }}</span>
-	</div>
+		<div class="change-avatar" @click="handleUploadAvatarImage">
+			<UserAvatar :avatar="correctAvatar" />
+			<span>{{ t.profile.edit_avatar }}</span>
+			<input ref="userAvatarFileInput" type="file" accept="image/*" hidden />
+		</div>
 
-	<div class="change-avatar" @click="handleUploadAvatarImage">
-		<UserAvatar :avatar="correctAvatar" />
-		<span>{{ t.profile.edit_avatar }}</span>
-		<input ref="userAvatarFileInput" type="file" accept="image/*" hidden />
-	</div>
+		<div class="items">
+			<SettingsUserProfile v-model="profile" />
+		</div>
 
-	<div class="items">
-		<SettingsUserProfile v-model="profile" />
-	</div>
-
-	<div class="submit">
-		<Button icon="delete" class="secondary" @click="resetConfirm" :disabled="isUpdateUserInfo || isResetUserInfo">{{ t.step.reset }}</Button>
-		<Button icon="check" @click="updateProfile" :loading="isUpdateUserInfo" :disabled="isUpdateUserInfo || isResetUserInfo">{{ t.step.save }}</Button>
+		<div class="submit">
+			<Button icon="delete" class="secondary" @click="resetConfirm" :disabled="isUpdateUserInfo || isResetUserInfo">{{ t.step.reset }}</Button>
+			<Button icon="check" @click="updateProfile" :loading="isUpdateUserInfo" :disabled="isUpdateUserInfo || isResetUserInfo">{{ t.step.save }}</Button>
+		</div>
 	</div>
 </template>
 

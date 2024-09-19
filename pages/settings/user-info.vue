@@ -152,114 +152,116 @@
 </script>
 
 <template>
-	<!-- TODO: 使用多语言 -->
-	<!-- WARN: 该页面需要多语言支持 -->
-	<!-- TODO: 使用多语言 -->
+	<div>
+		<!-- TODO: 使用多语言 -->
+		<!-- WARN: 该页面需要多语言支持 -->
+		<!-- TODO: 使用多语言 -->
 
-	<Alert v-model="showClearUserInfoAlert" static>
-		<h4>确定要清除这个用户的信息吗？</h4>
-		<p>该用户的用户名、昵称、头像、签名、性别、用户 TAG 和 生日等用户信息将会被清空。</p>
-		<p>被清空的用户将会使用 UUID 作为用户名。</p>
-		<p>如果该用户的 UUID 被占用，则无法清空，请联系开发组解决。</p>
-		<div class="clear-user-display">
-			<div class="user">
-				<UserAvatar :avatar="clearedUserInfo?.avatar" />
-				<div class="texts">
-					<div class="names">
-						<span class="username">{{ clearedUserInfo?.username }}</span> <span v-if="clearedUserInfo?.userNickname">/{{ clearedUserInfo?.userNickname }}</span>
-						<!-- <span v-if="memoParen" class="memo" :class="[memoParen]">{{ user?.bio }}</span> -->
-						<span class="icons">
-							<Icon v-if="clearedUserInfo?.gender === 'male'" name="male" class="male" />
-							<Icon v-else-if="clearedUserInfo?.gender === 'female'" name="female" class="female" />
-							<span v-else class="other-gender">{{ clearedUserInfo?.gender }}</span>
-						</span>
+		<Alert v-model="showClearUserInfoAlert" static>
+			<h4>确定要清除这个用户的信息吗？</h4>
+			<p>该用户的用户名、昵称、头像、签名、性别、用户 TAG 和 生日等用户信息将会被清空。</p>
+			<p>被清空的用户将会使用 UUID 作为用户名。</p>
+			<p>如果该用户的 UUID 被占用，则无法清空，请联系开发组解决。</p>
+			<div class="clear-user-display">
+				<div class="user">
+					<UserAvatar :avatar="clearedUserInfo?.avatar" />
+					<div class="texts">
+						<div class="names">
+							<span class="username">{{ clearedUserInfo?.username }}</span> <span v-if="clearedUserInfo?.userNickname">/{{ clearedUserInfo?.userNickname }}</span>
+							<!-- <span v-if="memoParen" class="memo" :class="[memoParen]">{{ user?.bio }}</span> -->
+							<span class="icons">
+								<Icon v-if="clearedUserInfo?.gender === 'male'" name="male" class="male" />
+								<Icon v-else-if="clearedUserInfo?.gender === 'female'" name="female" class="female" />
+								<span v-else class="other-gender">{{ clearedUserInfo?.gender }}</span>
+							</span>
+						</div>
+						<div class="bio">{{ clearedUserInfo?.signature }}</div>
 					</div>
-					<div class="bio">{{ clearedUserInfo?.signature }}</div>
 				</div>
 			</div>
-		</div>
-		<template #footer-left>
-			<Button @click="clearUserInfo" :loading="isClearingUserInfo" :disabled="isClearingUserInfo">确认清空</Button>
-		</template>
-		<template #footer-right>
-			<Button @click="showClearUserInfoAlert = false" class="secondary">取消</Button>
-		</template>
-	</Alert>
+			<template #footer-left>
+				<Button @click="clearUserInfo" :loading="isClearingUserInfo" :disabled="isClearingUserInfo">确认清空</Button>
+			</template>
+			<template #footer-right>
+				<Button @click="showClearUserInfoAlert = false" class="secondary">取消</Button>
+			</template>
+		</Alert>
 
-	<InfoBar type="info" title="提示">
-		先改后审：用户修改信息立即公开展示给他人。
-		<br />
-		你可以开启“只展示新注册和更新了用户信息的待审核用户”选项来审核用户信息。
-		<br />
-		被封禁的用户不能修改自己的信息，但封禁用户并不能同时删除用户已有信息，请使用本页面中的 “清空用户信息” 功能。
-	</InfoBar>
+		<InfoBar type="info" title="提示">
+			先改后审：用户修改信息立即公开展示给他人。
+			<br />
+			你可以开启“只展示新注册和更新了用户信息的待审核用户”选项来审核用户信息。
+			<br />
+			被封禁的用户不能修改自己的信息，但封禁用户并不能同时删除用户已有信息，请使用本页面中的 “清空用户信息” 功能。
+		</InfoBar>
 
-	<Subheader icon="placeholder">清空用户信息</Subheader>
-	<div class="clear-user" v-if="isAdmin">
-		<div class="input">
-			<TextBox
-				type="number"
-				v-model="clearedUid"
-				placeholder="清除用户信息"
-				size="large"
-				icon="person"
-			/>
-			<span>输入要清空信息的目标用户 UID，例如 UID114 只需输入数字 114 即可。</span>
+		<Subheader icon="placeholder">清空用户信息</Subheader>
+		<div class="clear-user" v-if="isAdmin">
+			<div class="input">
+				<TextBox
+					type="number"
+					v-model="clearedUid"
+					placeholder="清除用户信息"
+					size="large"
+					icon="person"
+				/>
+				<span>输入要清空信息的目标用户 UID，例如 UID114 只需输入数字 114 即可。</span>
+			</div>
+			<Button @click="openClearUserInfoAlert" :disabled="!isAdmin || isOpeningClearUserInfoAlert" :loading="isOpeningClearUserInfoAlert">清空用户信息</Button>
 		</div>
-		<Button @click="openClearUserInfoAlert" :disabled="!isAdmin || isOpeningClearUserInfoAlert" :loading="isOpeningClearUserInfoAlert">清空用户信息</Button>
+
+		<Subheader icon="account_circle" v-if="isOnlyShowUserInfoUpdatedAfterReview">待审核用户</Subheader>
+		<Subheader icon="account_circle" v-else>全部用户</Subheader>
+		<section list>
+			<ToggleSwitch v-model="isOnlyShowUserInfoUpdatedAfterReview" icon="visibility">只展示新注册和更新了用户信息的待审核用户</ToggleSwitch>
+		</section>
+
+		<Pagination v-model="currentPage" :pages="pageCount" :displayPageCount="7" />
+
+		<section v-if="isAdmin && !isLoadingUserInfo && !isOnlyShowUserInfoUpdatedAfterReview">
+			<SettingsChipItem
+				v-for="user in users?.result"
+				:key="user.uid"
+				:image="user.avatar"
+				icon="account_circle"
+				:details="`UID ${user.uid}, UUID ${user.UUID}` + (user.signature?.trim() ? ` - ${user.signature}` : '')"
+				trailingIcon="open_in_new"
+				:href="`/user/${user.uid}`"
+			>
+				<div class="name">
+					<span class="nickname">{{ user.userNickname }}</span>
+					<span class="username">@{{ user.username }}</span>
+					<div class="icons">
+						<Icon v-if="user.gender === 'male' " name="male" class="male" />
+						<Icon v-else-if="user.gender === 'female'" name="female" class="female" />
+						<Icon v-if="user.role === 'admin' " name="build_circle" class="admin" />
+					</div>
+				</div>
+			</SettingsChipItem>
+		</section>
+
+		<section v-if="isAdmin && !isLoadingUserInfo && isOnlyShowUserInfoUpdatedAfterReview">
+			<SettingsChipItem
+				v-for="user in users?.result"
+				:key="user.uid"
+				:image="user.avatar"
+				icon="account_circle"
+				:details="`UID ${user.uid}, UUID ${user.UUID}` + (user.signature?.trim() ? ` - ${user.signature}` : '')"
+				trailingIcon="check"
+				@trailingIconClick="() => approveUserInfo(user.UUID)"
+			>
+				<div class="name">
+					<span class="nickname">{{ user.userNickname }}</span>
+					<span class="username">@{{ user.username }}</span>
+					<div class="icons">
+						<Icon v-if="user.gender === 'male' " name="male" class="male" />
+						<Icon v-else-if="user.gender === 'female'" name="female" class="female" />
+						<Icon v-if="user.role === 'admin' " name="build_circle" class="admin" />
+					</div>
+				</div>
+			</SettingsChipItem>
+		</section>
 	</div>
-
-	<Subheader icon="account_circle" v-if="isOnlyShowUserInfoUpdatedAfterReview">待审核用户</Subheader>
-	<Subheader icon="account_circle" v-else>全部用户</Subheader>
-	<section list>
-		<ToggleSwitch v-model="isOnlyShowUserInfoUpdatedAfterReview" icon="visibility">只展示新注册和更新了用户信息的待审核用户</ToggleSwitch>
-	</section>
-
-	<Pagination v-model="currentPage" :pages="pageCount" :displayPageCount="7" />
-
-	<section v-if="isAdmin && !isLoadingUserInfo && !isOnlyShowUserInfoUpdatedAfterReview">
-		<SettingsChipItem
-			v-for="user in users?.result"
-			:key="user.uid"
-			:image="user.avatar"
-			icon="account_circle"
-			:details="`UID ${user.uid}, UUID ${user.UUID}` + (user.signature?.trim() ? ` - ${user.signature}` : '')"
-			trailingIcon="open_in_new"
-			:href="`/user/${user.uid}`"
-		>
-			<div class="name">
-				<span class="nickname">{{ user.userNickname }}</span>
-				<span class="username">@{{ user.username }}</span>
-				<div class="icons">
-					<Icon v-if="user.gender === 'male' " name="male" class="male" />
-					<Icon v-else-if="user.gender === 'female'" name="female" class="female" />
-					<Icon v-if="user.role === 'admin' " name="build_circle" class="admin" />
-				</div>
-			</div>
-		</SettingsChipItem>
-	</section>
-
-	<section v-if="isAdmin && !isLoadingUserInfo && isOnlyShowUserInfoUpdatedAfterReview">
-		<SettingsChipItem
-			v-for="user in users?.result"
-			:key="user.uid"
-			:image="user.avatar"
-			icon="account_circle"
-			:details="`UID ${user.uid}, UUID ${user.UUID}` + (user.signature?.trim() ? ` - ${user.signature}` : '')"
-			trailingIcon="check"
-			@trailingIconClick="() => approveUserInfo(user.UUID)"
-		>
-			<div class="name">
-				<span class="nickname">{{ user.userNickname }}</span>
-				<span class="username">@{{ user.username }}</span>
-				<div class="icons">
-					<Icon v-if="user.gender === 'male' " name="male" class="male" />
-					<Icon v-else-if="user.gender === 'female'" name="female" class="female" />
-					<Icon v-if="user.role === 'admin' " name="build_circle" class="admin" />
-				</div>
-			</div>
-		</SettingsChipItem>
-	</section>
 </template>
 
 <style scoped lang="scss">

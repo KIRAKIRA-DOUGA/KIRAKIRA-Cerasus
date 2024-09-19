@@ -7,8 +7,8 @@
 ::before,
 ::after {
 	box-sizing: border-box;
-	margin-block: 0 0;
-	margin-inline: 0 0;
+	margin-block: 0;
+	margin-inline: 0;
 	scroll-behavior: smooth;
 	font-family: $simplified-chinese-fonts;
 	// font-feature-settings: "ss02" on, "ss01" on, "liga" on, "rlig" on, "dlig" on, "hlig" on, "onum" on, "kern" on; // 开多了有点过分了。
@@ -89,7 +89,7 @@ body {
 	@include fullscreen(relative);
 	margin: 0;
 	padding: 0;
-	overflow: hidden;
+	scrollbar-gutter: stable; // WARN: Chromium 114 开始，overflow 的 overlay 成了 auto 的别名，因此只能提前占位显示来确保不晃动。目前甚至 Chromium 自己的设置页都在依赖于 overlay，太荒谬了。https://bugs.chromium.org/p/chromium/issues/detail?id=1450927
 	color: c(text-color);
 	background-color: c(main-bg);
 	transition: background-color $ease-out-max 250ms;
@@ -283,11 +283,28 @@ html.no-color-transition {
 // #region 页面过渡
 .page-forward-enter-active,
 .page-backward-enter-active,
-.page-jump-enter-active,
 .settings-enter-active,
 .right-enter-active,
 .left-enter-active {
 	transition: all $ease-out-smooth 600ms !important;
+}
+
+.page-jump-enter-active {
+	@media not (prefers-reduced-motion: reduce) {
+		> * {
+			$length: 20;
+			transition: all $ease-out-smooth !important;
+			transition-duration: (600ms + 50ms * ($length - 1)) !important;
+			transition-delay: (10ms * ($length - 1)) !important;
+
+			@for $i from 1 through $length {
+				&:nth-child(#{$i}) {
+					transition-duration: (600ms + 50ms * ($i - 1)) !important;
+					transition-delay: (10ms * ($i - 1)) !important;
+				}
+			}
+		}
+	}
 }
 
 .page-forward-leave-active,
@@ -318,8 +335,10 @@ html.no-color-transition {
 }
 
 .page-jump-enter-from {
-	translate: 0 8rem;
-	opacity: 0;
+	> * {
+		translate: 0 8rem;
+		opacity: 0;
+	}
 }
 
 .page-jump-leave-to {

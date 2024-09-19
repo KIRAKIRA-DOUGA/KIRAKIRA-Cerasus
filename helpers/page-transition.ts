@@ -1,7 +1,7 @@
-import { userTabs } from "layouts/user-page.vue";
+// import { userTabs } from "layouts/user-page.vue";
 
 const SETTINGS = "/settings";
-const USER = "/user";
+// const USER = "/user";
 
 /**
  * 设定页面切换动画。
@@ -18,11 +18,11 @@ export function usePageTransition() {
 		if (path.startsWith(prevPath)) pageTransition.value = "page-forward";
 		if (path.startsWith(SETTINGS) !== prevPath.startsWith(SETTINGS)) pageTransition.value = "";
 		if (prevPath === path) pageTransition.value = "page-backward";
-		if (path.startsWith(USER) && prevPath.startsWith(USER)) {
-			const [tab, prevTab] = [slug[2] || "", prevSlug[2] || ""];
-			const [index, prevIndex] = [userTabs.indexOf(tab), userTabs.indexOf(prevTab)];
-			pageTransition.value = index > prevIndex ? "right" : index < prevIndex ? "left" : "";
-		}
+		// if (path.startsWith(USER) && prevPath.startsWith(USER)) {
+		// 	const [tab, prevTab] = [slug[2] || "", prevSlug[2] || ""];
+		// 	const [index, prevIndex] = [userTabs.indexOf(tab), userTabs.indexOf(prevTab)];
+		// 	pageTransition.value = index > prevIndex ? "right" : index < prevIndex ? "left" : "";
+		// }
 	});
 
 	return pageTransition;

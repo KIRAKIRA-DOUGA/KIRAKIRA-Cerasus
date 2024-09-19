@@ -7,10 +7,18 @@
 
 	const selfUserInfoStore = useSelfUserInfoStore();
 	const showLogin = ref(false);
-	const isCurrentSettings = computed(() => !!currentSettingsPage());
+	const isCurrentSettings = ref(false);
 	const [DefineAvatar, Avatar] = createReusableTemplate();
 	const scopeId = useParentScopeId()!;
 	const flyoutNotification = ref<FlyoutModel>();
+
+	// SSR
+	isCurrentSettings.value = !!currentSettingsPage();
+	// CSR
+	const nuxtApp = useNuxtApp();
+	nuxtApp.hook("page:finish", () => {
+		isCurrentSettings.value = !!currentSettingsPage();
+	});
 
 	/**
 	 * 判断用户是否合法，或者判断用户是否已经登录
@@ -81,7 +89,6 @@
 
 	<aside
 		:class="{
-			colored: useAppSettingsStore().coloredSideBar, // TODO: 需要删除吗？
 			'hide-topbar': isCurrentSettings,
 		}"
 		:[scopeId]="''"
@@ -241,7 +248,7 @@
 				--ripple-size: 48px;
 			}
 
-			&.icon-settings:deep {
+			&.icon-settings:deep() {
 				&:active i {
 					rotate: -30deg;
 				}

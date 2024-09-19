@@ -50,7 +50,7 @@
 		} catch (error) { console.error(error); }
 	}
 	watch(urlUid, fetchData, { deep: true });
-	fetchData(); // WARN 为什么在此处使用 await 会导致第二次进入用户主页时，Vue 卡死
+	await fetchData();
 </script>
 
 <template>

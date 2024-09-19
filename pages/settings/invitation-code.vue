@@ -55,39 +55,41 @@
 </script>
 
 <template>
-	<div class="invitation-code-counts chip">
-		<div>
-			<span>{{ totalInvitationCode }}</span>
-			<p>{{ t.total }}</p>
-		</div>
-		<div>
-			<span>{{ totalUsedInvitationCode }}</span>
-			<p>{{ t.used }}</p>
-		</div>
-		<div>
-			<span>{{ totalUnusedInvitationCode }}</span>
-			<p>{{ t.unused }}</p>
-		</div>
+	<div>
+		<div class="invitation-code-counts chip">
+			<div>
+				<span>{{ totalInvitationCode }}</span>
+				<p>{{ t.total }}</p>
+			</div>
+			<div>
+				<span>{{ totalUsedInvitationCode }}</span>
+				<p>{{ t.used }}</p>
+			</div>
+			<div>
+				<span>{{ totalUnusedInvitationCode }}</span>
+				<p>{{ t.unused }}</p>
+			</div>
 		<!-- TODO: Creatable Invitation Code Count -->
 		<!-- <div>
 			<span>233</span>
 			<p>{{ t.creatable }}</p>
 		</div> -->
-	</div>
+		</div>
 
-	<SoftButton v-tooltip:bottom="t.create" class="create-button" icon="add" @click="createInvitationCode" />
+		<SoftButton v-tooltip:bottom="t.create" class="create-button" icon="add" @click="createInvitationCode" />
 
-	<div class="user-info chip">
-		<SettingsChipItem
-			v-for="invitationCode in myInvitationCode"
-			:key="invitationCode.invitationCode"
-			icon="gift"
-			trailingIcon="copy"
-			:onTrailingIconClick="() => copyInvitationCode(invitationCode.invitationCode)"
-			:details="invitationCode.assignee !== null && invitationCode.assignee !== undefined ? t.used : t.unused"
-		>
-			{{ invitationCode.invitationCode }}
-		</SettingsChipItem>
+		<div class="user-info chip">
+			<SettingsChipItem
+				v-for="invitationCode in myInvitationCode"
+				:key="invitationCode.invitationCode"
+				icon="gift"
+				trailingIcon="copy"
+				:onTrailingIconClick="() => copyInvitationCode(invitationCode.invitationCode)"
+				:details="invitationCode.assignee !== null && invitationCode.assignee !== undefined ? t.used : t.unused"
+			>
+				{{ invitationCode.invitationCode }}
+			</SettingsChipItem>
+		</div>
 	</div>
 </template>
 

@@ -1,10 +1,39 @@
 <script setup lang="ts">
-	const currentSetting = computed(() => currentSettingsPage());
+	definePageMeta({
+		pageTransition: {
+			name: "settings",
+			mode: "out-in",
+		},
+	});
+
+	// 已请求的设置页面。
+	const currentSettingsRequested = ref("");
+	// 已渲染的设置页面。
+	const currentSettingsRendered = ref("");
+
+	// 当前地址栏路由地址。
+	const currentSettingsRoute = computed(() => currentSettingsPage());
+
+	// 先判断当前是否在设置页面，然后赋值给 currentSettingsRequested，防止退出页面时数值异常。
+	watch(currentSettingsRoute, currentSettingsRoute => {
+		if (currentSettingsRoute !== "")
+			currentSettingsRequested.value = currentSettingsRoute;
+	}, { immediate: true });
+
+	// SSR 首屏加载时确保内容不是空的。
+	currentSettingsRendered.value = currentSettingsRequested.value;
+
+	// CSR 切换页面。
+	const nuxtApp = useNuxtApp();
+	nuxtApp.hook("page:finish", () => {
+		currentSettingsRendered.value = currentSettingsRequested.value;
+	});
+
 	const search = ref("");
 	const main = ref<HTMLElement>();
 	const showDrawer = ref(false);
 	const ti = (id: string) => t[new VariableName(id).snake];
-	const title = computed(() => ti(currentSetting.value));
+	const title = computed(() => ti(currentSettingsRendered.value));
 	const settingsString = t.settings; // HACK: Bypass "A composable that requires access to the Nuxt instance was called outside of a plugin."
 	const htmlTitle = computed(() => title.value + " - " + settingsString);
 
@@ -60,7 +89,7 @@
 		],
 	};
 
-	if (!selfUserInfoStore.isLogined && settings.personal.some(setting => setting.id === currentSetting.value))
+	if (!selfUserInfoStore.isLogined && settings.personal.some(setting => setting.id === currentSettingsRequested.value))
 		navigate("/settings/appearance");
 
 	/**
@@ -91,7 +120,7 @@
 						<h1>{{ t.settings }}</h1>
 						<TextBox v-model="search" type="search" :placeholder="t.settings.search" icon="search" />
 					</header>
-					<TabBar v-model="currentSetting" vertical>
+					<TabBar v-model="currentSettingsRequested" vertical>
 						<Subheader v-if="selfUserInfoStore.isLogined" icon="person">{{ t.settings.user }}</Subheader>
 						<template v-if="selfUserInfoStore.isLogined">
 							<TabItem v-for="setting in settings.personal" :id="setting.id" :key="setting.id" :icon="setting.icon" :to="`/settings/${setting.id}`" @click="showDrawer = false">{{ ti(setting.id) }}</TabItem>
@@ -124,14 +153,17 @@
 					</div>
 					<div class="page-title-wrapper">
 						<Transition>
-							<h2 :key="currentSetting">{{ title }}</h2>
+							<h2 :key="currentSettingsRendered">{{ title }}</h2>
 						</Transition>
 					</div>
 					<div class="close-button-wrapper page-title-icon-wrapper">
 						<SoftButton href="/settings/exit" icon="close" />
 					</div>
 				</header>
-				<slot></slot>
+
+				<div class="router-view">
+					<NuxtPage :transition="{ name: 'page-jump', mode: 'out-in' }" />
+				</div>
 			</div>
 		</main>
 
@@ -148,7 +180,7 @@
 	$nav-padding-x: 24px;
 	$mobile-nav-padding-x: 16px;
 	$main-padding-x: 48px;
-	$mobile-padding-x: 24px;
+	$mobile-padding: $page-padding-x-mobile;
 	$show-drawer-duration: 500ms;
 	$nav-width: 245px + 2 * $nav-padding-x;
 	$max-width: 960px;
@@ -196,7 +228,7 @@
 			gap: 10px;
 			max-height: 100dvh;
 			padding: 0 $nav-padding-x;
-			overflow-y: overlay;
+			overflow: hidden overlay;
 			scrollbar-gutter: stable; // WARN: Chromium 114 开始，overflow 的 overlay 成了 auto 的别名，因此只能提前占位显示来确保不晃动。目前甚至 Chromium 自己的设置页都在依赖于 overlay，太荒谬了。https://bugs.chromium.org/p/chromium/issues/detail?id=1450927
 			transition: none;
 
@@ -235,11 +267,14 @@
 	}
 
 	.card {
-		@include card-shadow;
 		@include square(100%);
 		position: absolute;
 		z-index: 5;
 		pointer-events: none;
+
+		@include computer {
+			@include card-shadow;
+		}
 	}
 
 	.card,
@@ -277,22 +312,18 @@
 			padding: 0 $main-padding-x;
 
 			@include mobile {
-				padding: 0 $mobile-padding-x;
+				padding: 0 $mobile-padding;
 			}
 
-			> :deep(.router-view) {
-				$length: 20;
-				display: flex;
-				flex-direction: column;
-				gap: 1rem;
+			.router-view {
+				:deep(> div) {
+					display: flex;
+					flex-direction: column;
+					gap: 1rem;
 
-				@layer layout {
-					@media not (prefers-reduced-motion: reduce) {
-						@for $i from 1 through $length {
-							> :nth-child(#{$i}) {
-								animation: float-up 600ms (100ms * ($i - 1)) $ease-out-smooth backwards;
-							}
-						}
+					@include mobile {
+						padding-top: $mobile-toolbar-height + $mobile-padding;
+						padding-bottom: $mobile-toolbar-height + $mobile-padding;
 					}
 				}
 			}
@@ -387,9 +418,11 @@
 
 		@include mobile {
 			@include sidebar-shadow;
+			position: fixed;
 			align-items: center;
+			width: 100%;
 			height: $mobile-toolbar-height;
-			margin: 0 -24px;
+			margin: 0 (-$mobile-padding);
 			padding: 0 4px;
 		}
 
@@ -455,7 +488,7 @@
 		background-color: c(surface-color);
 	}
 
-	:deep {
+	:deep() {
 		.chip {
 			@extend %chip;
 		}

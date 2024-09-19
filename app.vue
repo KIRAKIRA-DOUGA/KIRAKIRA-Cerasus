@@ -111,11 +111,12 @@
 </script>
 
 <template>
-	<PageLoadingIndicator />
 	<NuxtLayout :name="layout">
 		<NuxtPage />
 	</NuxtLayout>
 
 	<Toasts />
 	<Tooltips />
+
+	<PageLoadingIndicator />
 </template>

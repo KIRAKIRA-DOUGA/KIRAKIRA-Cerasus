@@ -276,10 +276,10 @@ export default defineNuxtConfig({
 	},
 
 	app: {
-		/* pageTransition: {
-						name: "page-jump",
-						mode: "out-in",
-		}, */
+		pageTransition: {
+			name: "page-jump",
+			mode: "out-in",
+		},
 		rootId: "root",
 		teleportId: "popovers",
 	},

@@ -87,68 +87,70 @@
 </script>
 
 <template>
-	<InfoBar type="warning" title="警告">
-		该页面中的某些功能正在开发中，无法按预期工作。
-		<br />
-		1）密码的修改日期未正确显示。
-		<br />
-		2）身份验证器无法正常使用。
+	<div>
+		<InfoBar type="warning" title="警告">
+			该页面中的某些功能正在开发中，无法按预期工作。
+			<br />
+			1）密码的修改日期未正确显示。
+			<br />
+			2）身份验证器无法正常使用。
 		<!-- TODO: 使用多语言 -->
-	</InfoBar>
-	<section>
-		<SettingsChipItem
-			icon="email"
-			trailingIcon="edit"
-			:details="t.current_email + t.colon + selfUserInfoStore.userEmail"
-			@trailingIconClick="showChangeEmail = true;"
-		>{{ t.email_address }}</SettingsChipItem>
-	</section>
-	<section>
-		<SettingsChipItem
-			icon="password"
-			trailingIcon="edit"
-			:details="t.modification_date + t.colon + passwordChangeDateDisplay"
-			@trailingIconClick="showChangePassword = true;"
-		>{{ t.password }}</SettingsChipItem>
-	</section>
-	<section>
-		<SettingsChipItem
-			icon="qr_code_scanner"
-			trailingIcon="edit"
-			:details="t.addition_date + t.colon + authenticatorAddDateDisplay"
-		>{{ t.authenticator }}</SettingsChipItem>
-	</section>
+		</InfoBar>
+		<section>
+			<SettingsChipItem
+				icon="email"
+				trailingIcon="edit"
+				:details="t.current_email + t.colon + selfUserInfoStore.userEmail"
+				@trailingIconClick="showChangeEmail = true;"
+			>{{ t.email_address }}</SettingsChipItem>
+		</section>
+		<section>
+			<SettingsChipItem
+				icon="password"
+				trailingIcon="edit"
+				:details="t.modification_date + t.colon + passwordChangeDateDisplay"
+				@trailingIconClick="showChangePassword = true;"
+			>{{ t.password }}</SettingsChipItem>
+		</section>
+		<section>
+			<SettingsChipItem
+				icon="lock"
+				trailingIcon="edit"
+				:details="t.addition_date + t.colon + authenticatorAddDateDisplay"
+			>{{ t.authenticator }}</SettingsChipItem>
+		</section>
 
-	<!-- TODO: 使用多语言 -->
-	<Modal v-model="showChangeEmail" title="更改邮箱" icon="email">
-		<div class="change-email-modal">
-			<form>
-				<!-- TODO: 使用多语言 -->
-				<TextBox v-model="newEmail" :required="true" :invalid="isInvalidNewEmail" type="email" icon="email" placeholder="新邮箱" autoComplete="new-email" />
-				<SendVerificationCode v-model="changeEmailVerificationCode" :email="newEmail" verificationCodeFor="change-email" :disabled="!newEmail || isInvalidNewEmail" />
-				<TextBox v-model="changeEmailPassword" :required="true" type="password" icon="lock" :placeholder="t.password._" autoComplete="current-password" />
-			</form>
-		</div>
-		<template #footer-right>
-			<Button class="secondary" @click="showChangePassword = false">{{ t.step.cancel }}</Button>
-			<Button @click="updateUserEmail" :disabled="isChangingEmail" :loading="isChangingEmail">{{ t.step.apply }}</Button>
-		</template>
-	</Modal>
+		<!-- TODO: 使用多语言 -->
+		<Modal v-model="showChangeEmail" title="更改邮箱" icon="email">
+			<div class="change-email-modal">
+				<form>
+					<!-- TODO: 使用多语言 -->
+					<TextBox v-model="newEmail" :required="true" :invalid="isInvalidNewEmail" type="email" icon="email" placeholder="新邮箱" autoComplete="new-email" />
+					<SendVerificationCode v-model="changeEmailVerificationCode" :email="newEmail" verificationCodeFor="change-email" :disabled="!newEmail || isInvalidNewEmail" />
+					<TextBox v-model="changeEmailPassword" :required="true" type="password" icon="lock" :placeholder="t.password._" autoComplete="current-password" />
+				</form>
+			</div>
+			<template #footer-right>
+				<Button class="secondary" @click="showChangePassword = false">{{ t.step.cancel }}</Button>
+				<Button @click="updateUserEmail" :disabled="isChangingEmail" :loading="isChangingEmail">{{ t.step.apply }}</Button>
+			</template>
+		</Modal>
 
-	<Modal v-model="showChangePassword" :title="t.password.change" icon="password">
-		<div class="change-password-modal">
-			<form>
-				<SendVerificationCode v-model="changePasswordVerificationCode" verificationCodeFor="change-password" />
-				<TextBox v-model="oldPassword" :required="true" type="password" icon="lock" :placeholder="t.password.current" autoComplete="current-password" />
-				<TextBox v-model="newPassword" :required="true" type="password" icon="lock" :placeholder="t.password.new" autoComplete="new-password" />
-				<TextBox v-model="confirmNewPassword" :required="true" type="password" icon="lock" :placeholder="t.password.new_retype" autoComplete="new-password" />
-			</form>
-		</div>
-		<template #footer-right>
-			<Button class="secondary" @click="showChangePassword = false">{{ t.step.cancel }}</Button>
-			<Button @click="updateUserPassword" :disabled="isChangingPassword" :loading="isChangingPassword">{{ t.step.apply }}</Button>
-		</template>
-	</Modal>
+		<Modal v-model="showChangePassword" :title="t.password.change" icon="password">
+			<div class="change-password-modal">
+				<form>
+					<SendVerificationCode v-model="changePasswordVerificationCode" verificationCodeFor="change-password" />
+					<TextBox v-model="oldPassword" :required="true" type="password" icon="lock" :placeholder="t.password.current" autoComplete="current-password" />
+					<TextBox v-model="newPassword" :required="true" type="password" icon="lock" :placeholder="t.password.new" autoComplete="new-password" />
+					<TextBox v-model="confirmNewPassword" :required="true" type="password" icon="lock" :placeholder="t.password.new_retype" autoComplete="new-password" />
+				</form>
+			</div>
+			<template #footer-right>
+				<Button class="secondary" @click="showChangePassword = false">{{ t.step.cancel }}</Button>
+				<Button @click="updateUserPassword" :disabled="isChangingPassword" :loading="isChangingPassword">{{ t.step.apply }}</Button>
+			</template>
+		</Modal>
+	</div>
 </template>
 
 <style scoped lang="scss">

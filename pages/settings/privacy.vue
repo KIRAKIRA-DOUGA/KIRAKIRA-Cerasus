@@ -42,37 +42,39 @@
 </script>
 
 <template>
-	<InfoBar type="warning" title="警告">
-		该页面中的某些功能正在开发中，无法按预期工作。
+	<div>
+		<InfoBar type="warning" title="警告">
+			该页面中的某些功能正在开发中，无法按预期工作。
 		<!-- TODO: 使用多语言 -->
-	</InfoBar>
+		</InfoBar>
 
-	<!-- TODO: 使用多语言 -->
-	<Subheader icon="cookie">网络曲奇☆</Subheader>
-	<section list>
-		<ToggleSwitch v-model="enableCookie" v-ripple icon="cookie">{{ t.privacy.allow_cookies }}</ToggleSwitch>
-	</section>
+		<!-- TODO: 使用多语言 -->
+		<Subheader icon="cookie">网络曲奇☆</Subheader>
+		<section list>
+			<ToggleSwitch v-model="enableCookie" v-ripple icon="cookie">{{ t.privacy.allow_cookies }}</ToggleSwitch>
+		</section>
 
-	<div class="privacy-header">
-		<Subheader icon="visibility">{{ t.privacy.info_visibility }}</Subheader>
-		<div class="options">
-			<SoftButton v-tooltip:top="t.privacy.public" icon="visibility" @click="setColonVisibility('public')" />
-			<SoftButton v-tooltip:top="t.privacy.following" icon="person_add" @click="setColonVisibility('following')" />
-			<SoftButton v-tooltip:top="t.privacy.private" icon="visibility_off" @click="setColonVisibility('private')" />
+		<div class="privacy-header">
+			<Subheader icon="visibility">{{ t.privacy.info_visibility }}</Subheader>
+			<div class="options">
+				<SoftButton v-tooltip:top="t.privacy.public" icon="visibility" @click="setColonVisibility('public')" />
+				<SoftButton v-tooltip:top="t.privacy.following" icon="person_add" @click="setColonVisibility('following')" />
+				<SoftButton v-tooltip:top="t.privacy.private" icon="visibility_off" @click="setColonVisibility('private')" />
+			</div>
 		</div>
-	</div>
-	<section list>
-		<SettingsPrivacyItem
-			v-for="item in visibilities"
-			:key="item.name"
-			v-model="item.privacy"
-			:icon="item.logo ? 'mono-logo/' + item.logo : item.icon || 'placeholder'"
-		>{{ item.name }}</SettingsPrivacyItem>
-	</section>
+		<section list>
+			<SettingsPrivacyItem
+				v-for="item in visibilities"
+				:key="item.name"
+				v-model="item.privacy"
+				:icon="item.logo ? 'mono-logo/' + item.logo : item.icon || 'placeholder'"
+			>{{ item.name }}</SettingsPrivacyItem>
+		</section>
 
-	<div class="submit">
-		<Button icon="reset" class="secondary">{{ t.step.reset }}</Button>
-		<Button icon="check" @click="useToast(t.toast.modification_failed, 'error');">{{ t.step.apply }}</Button>
+		<div class="submit">
+			<Button icon="reset" class="secondary">{{ t.step.reset }}</Button>
+			<Button icon="check" @click="useToast(t.toast.modification_failed, 'error');">{{ t.step.apply }}</Button>
+		</div>
 	</div>
 </template>
 

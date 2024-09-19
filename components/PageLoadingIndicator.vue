@@ -6,11 +6,7 @@
 </docs>
 
 <script setup lang="ts">
-	const { progress, isLoading, error, start, finish, clear } = useLoadingIndicator({
-		duration: 2000,
-		throttle: 200,
-		estimatedProgress: (duration, elapsed) => (2 / Math.PI * 100) * Math.atan(elapsed / duration * 100 / 50),
-	})
+	const { progress, isLoading, error, start, finish, clear } = useLoadingIndicator();
 </script>
 
 <template>
@@ -25,7 +21,7 @@
 		top: 0;
 		right: -4px;
 		left: 0;
-		z-index: 999999;
+		z-index: calc(infinity);
 		pointer-events: none;
 
 		.progress-bar {

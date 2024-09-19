@@ -22,7 +22,7 @@
 	watch(indeterminate, async (curInd, prevInd) => {
 		if (prevInd && !curInd) { // 当从不定状态到定值状态时增加一个动画，但反之则不会。
 			toDeterminate.value = true;
-			await delay(250);
+			await delay(500);
 			toDeterminate.value = false;
 		}
 	});
@@ -60,7 +60,7 @@
 		&.v-leave-to {
 			scale: 1 0;
 		}
-		
+
 		@layer components {
 			position: relative;
 		}
@@ -103,7 +103,7 @@
 			}
 
 			&.to-determinate {
-				animation: to-determinate-scale 250ms $ease-out-smooth;
+				animation: to-determinate-scale 500ms $ease-out-smooth;
 			}
 		}
 	}
@@ -189,7 +189,7 @@
 
 	@keyframes to-determinate-scale {
 		from {
-			width: 100%;
+			width: 0;
 		}
 	}
 </style>

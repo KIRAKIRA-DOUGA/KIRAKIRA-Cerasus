@@ -12,17 +12,29 @@
 		{ name: "upload", englishName: "Upload", icon: "upload" },
 	] as const;
 
-	const localedRoute = computed(() => getRoutePath());
-	watchRoute(() => {
-		if (localedRoute.value === "") page.value = "home";
-		else if (localedRoute.value.startsWith("user")) page.value = "user";
-		else if (localedRoute.value.startsWith("search")) page.value = "search";
-		else if (localedRoute.value.startsWith("history")) page.value = "history";
-		else if (localedRoute.value.startsWith("favorite")) page.value = "favorite";
-		else if (localedRoute.value.startsWith("feed")) page.value = "feed";
-		else if (localedRoute.value.startsWith("upload")) page.value = "upload";
+	/**
+	 * 检测当前页面并更新 page 的值。
+	 */
+	function updateCurrentPage() {
+		const localedRoute = getRoutePath();
+		if (localedRoute === "") page.value = "home";
+		else if (localedRoute.startsWith("user")) page.value = "user";
+		else if (localedRoute.startsWith("search")) page.value = "search";
+		else if (localedRoute.startsWith("history")) page.value = "history";
+		else if (localedRoute.startsWith("favorite")) page.value = "favorite";
+		else if (localedRoute.startsWith("feed")) page.value = "feed";
+		else if (localedRoute.startsWith("upload")) page.value = "upload";
 		else page.value = "other";
-	}, true);
+	}
+
+	// SSR 首屏加载。
+	updateCurrentPage();
+
+	// CSR 切换页面。
+	const nuxtApp = useNuxtApp();
+	nuxtApp.hook("page:finish", () => {
+		updateCurrentPage();
+	});
 
 	const banner = "/static/images/banner-20220717.png";
 </script>

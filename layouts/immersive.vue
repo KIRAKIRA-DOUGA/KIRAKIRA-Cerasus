@@ -13,7 +13,7 @@
 </template>
 
 <style scoped lang="scss">
-	main:deep {
+	main:deep() {
 		overflow-y: auto;
 
 		> .container {

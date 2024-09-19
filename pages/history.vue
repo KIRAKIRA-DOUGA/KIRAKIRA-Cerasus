@@ -24,7 +24,7 @@
 	}
 
 	useHead({ title: t.history });
-	getUserBrowsingHistory();
+	await getUserBrowsingHistory();
 </script>
 
 <template>
@@ -171,7 +171,7 @@
 		}
 
 		.thumb-grid {
-			flex-grow: 1;
+			width: 100%;
 		}
 	}
 </style>

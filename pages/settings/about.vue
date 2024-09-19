@@ -65,53 +65,55 @@
 </script>
 
 <template>
-	<Contents>
-		<div class="info" @click="showDevMode">
-			<LogoText />
-			<p class="slogan"><span>{{ sloganLines[0] }}</span><span><b>{{ sloganLines[1] }}</b></span></p>
-		</div>
-	</Contents>
+	<div>
+		<Contents>
+			<div class="info" @click="showDevMode">
+				<LogoText />
+				<p class="slogan"><span>{{ sloganLines[0] }}</span><span><b>{{ sloganLines[1] }}</b></span></p>
+			</div>
+		</Contents>
 
-	<Subheader icon="link">{{ t.about.repositories }}</Subheader>
-	<section>
-		<SettingsChipItem
-			v-for="repo in repositories"
-			:key="repo.name"
-			:icon="repo.icon || 'mono-logo/github'"
-			:details="repo.codeName"
-			:href="repo.link"
-			trailingIcon="open_in_new"
-		>{{ repo.name }}</SettingsChipItem>
-	</section>
+		<Subheader icon="link">{{ t.about.repositories }}</Subheader>
+		<section>
+			<SettingsChipItem
+				v-for="repo in repositories"
+				:key="repo.name"
+				:icon="repo.icon || 'mono-logo/github'"
+				:details="repo.codeName"
+				:href="repo.link"
+				trailingIcon="open_in_new"
+			>{{ repo.name }}</SettingsChipItem>
+		</section>
 
-	<Subheader icon="people">{{ t.about.team }}</Subheader>
-	<section>
-		<SettingsChipItem
-			v-for="staff in team"
-			:key="staff.username"
-			:image="staff.avatar"
-			icon="account_circle"
-			:details="`${staff.job.join(' / ')} - UID ${staff.uid}`"
-			trailingIcon="open_in_new"
-			:href="`/user/${staff.uid}`"
-		>
-			<span class="nickname">{{ staff.nickname }}</span>
-			<span class="username">@{{ staff.username }}</span>
-		</SettingsChipItem>
-	</section>
+		<Subheader icon="people">{{ t.about.team }}</Subheader>
+		<section>
+			<SettingsChipItem
+				v-for="staff in team"
+				:key="staff.username"
+				:image="staff.avatar"
+				icon="account_circle"
+				:details="`${staff.job.join(' / ')} - UID ${staff.uid}`"
+				trailingIcon="open_in_new"
+				:href="`/user/${staff.uid}`"
+			>
+				<span class="nickname">{{ staff.nickname }}</span>
+				<span class="username">@{{ staff.username }}</span>
+			</SettingsChipItem>
+		</section>
 
-	<Subheader icon="build">{{ t.about.technologies_used }}</Subheader>
-	<section>
-		<SettingsChipItem
-			v-for="tech in technologies"
-			:key="tech.name"
-			:icon="tech.icon ? 'colored-logo/' + tech.icon : 'placeholder'"
-			:filled="!tech.monochrome"
-			:details="tech.version ? `${tech.ability} - v${tech.version}` : tech.ability"
-			:href="tech.link"
-			trailingIcon="open_in_new"
-		>{{ tech.name }}</SettingsChipItem>
-	</section>
+		<Subheader icon="build">{{ t.about.technologies_used }}</Subheader>
+		<section>
+			<SettingsChipItem
+				v-for="tech in technologies"
+				:key="tech.name"
+				:icon="tech.icon ? 'colored-logo/' + tech.icon : 'placeholder'"
+				:filled="!tech.monochrome"
+				:details="tech.version ? `${tech.ability} - v${tech.version}` : tech.ability"
+				:href="tech.link"
+				trailingIcon="open_in_new"
+			>{{ tech.name }}</SettingsChipItem>
+		</section>
+	</div>
 </template>
 
 <style scoped lang="scss">
