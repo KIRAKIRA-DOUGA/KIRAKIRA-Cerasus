@@ -83,7 +83,7 @@
 							<Icon name="branch" /><span>{{ gitBranch }}</span>
 						</div>
 						<div>
-							<Icon name="commit" /><span>{{ gitCommit }}</span>
+							<Icon name="commit" /><span>{{ gitCommit.slice(0, 7) }}</span>
 						</div>
 					</div>
 				</template>
