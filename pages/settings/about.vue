@@ -2,6 +2,8 @@
 	const nuxt = useNuxtApp();
 	const isDevMode = inject<Ref<boolean>>("isDevMode");
 
+	const { gitBranch, gitCommit } = useRuntimeConfig().public;
+
 	const repositories: { name: string; codeName?: string; link: string; icon?: string }[] = [
 		{ name: t.about.repositories.frontend, codeName: "KIRAKIRA Cerasus", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus" },
 		{ name: t.about.repositories.backend, codeName: "KIRAKIRA Rosales", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Rosales" },
@@ -72,6 +74,23 @@
 				<p class="slogan"><span>{{ sloganLines[0] }}</span><span><b>{{ sloganLines[1] }}</b></span></p>
 			</div>
 		</Contents>
+
+		<section>
+			<SettingsChipItem icon="info">
+				<template v-if="gitBranch && gitCommit" #details>
+					<div class="version-info">
+						<div>
+							<Icon name="branch" /><span>{{ gitBranch }}</span>
+						</div>
+						<div>
+							<Icon name="commit" /><span>{{ gitCommit.slice(0, 7) }}</span>
+						</div>
+					</div>
+				</template>
+				<template v-else #details>undefined</template>
+				{{ t.version }}
+			</SettingsChipItem>
+		</section>
 
 		<Subheader icon="link">{{ t.about.repositories }}</Subheader>
 		<section>
@@ -156,6 +175,26 @@
 
 		span {
 			display: inline-block;
+		}
+	}
+
+	.version-info {
+		display: flex;
+		gap: 6px;
+		align-items: center;
+
+		> div {
+			display: flex;
+			gap: 2px;
+			align-items: center;
+
+			> .icon {
+				font-size: 16px;
+			}
+
+			> span {
+				user-select: text;
+			}
 		}
 	}
 
