@@ -473,4 +473,5 @@ export default {
 		_: "Invitation Code",
 		invalid: "Invalid Invitation Code",
 	},
+	version: "Version",
 } as const;
