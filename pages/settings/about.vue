@@ -1,4 +1,5 @@
 <script setup lang="ts">
+	import process from "process";
 	const nuxt = useNuxtApp();
 	const isDevMode = inject<Ref<boolean>>("isDevMode");
 
@@ -72,6 +73,23 @@
 				<p class="slogan"><span>{{ sloganLines[0] }}</span><span><b>{{ sloganLines[1] }}</b></span></p>
 			</div>
 		</Contents>
+
+		<section>
+			<SettingsChipItem icon="info">
+				<template v-if="!environment.development && process.env.VERCEL_GIT_COMMIT_REF" #details>
+					<div class="version-info">
+						<div>
+							<Icon name="branch" /><span>{{ process.env.VERCEL_GIT_COMMIT_REF }}</span>
+						</div>
+						<div>
+							<Icon name="commit" /><span>{{ process.env.VERCEL_GIT_COMMIT_SHA }}</span>
+						</div>
+					</div>
+				</template>
+				<template v-else #details>undefined</template>
+				{{ t.version }}
+			</SettingsChipItem>
+		</section>
 
 		<Subheader icon="link">{{ t.about.repositories }}</Subheader>
 		<section>
@@ -156,6 +174,26 @@
 
 		span {
 			display: inline-block;
+		}
+	}
+
+	.version-info {
+		display: flex;
+		gap: 6px;
+		align-items: center;
+
+		> div {
+			display: flex;
+			gap: 2px;
+			align-items: center;
+
+			> .icon {
+				font-size: 16px;
+			}
+
+			> span {
+				user-select: text;
+			}
 		}
 	}
 

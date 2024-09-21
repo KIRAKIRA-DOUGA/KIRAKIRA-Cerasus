@@ -67,7 +67,6 @@
 		display: flex;
 		gap: 16px;
 		align-items: center;
-		cursor: pointer;
 
 		> :not(.text) {
 			flex-shrink: 0;
