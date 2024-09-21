@@ -2,8 +2,10 @@
 	const nuxt = useNuxtApp();
 	const isDevMode = inject<Ref<boolean>>("isDevMode");
 
-	const gitBranch = process.env.VERCEL_GIT_COMMIT_REF;
-	const gitCommit = process.env.VERCEL_GIT_COMMIT_SHA;
+	if (environment.server) {
+		const gitBranch = process.env.VERCEL_GIT_COMMIT_REF;
+		const gitCommit = process.env.VERCEL_GIT_COMMIT_SHA;
+	}
 
 	const repositories: { name: string; codeName?: string; link: string; icon?: string }[] = [
 		{ name: t.about.repositories.frontend, codeName: "KIRAKIRA Cerasus", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus" },
