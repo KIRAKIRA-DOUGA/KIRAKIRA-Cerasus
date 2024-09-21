@@ -77,7 +77,7 @@
 
 		<section>
 			<SettingsChipItem icon="info">
-				<template v-if="appConfig.version.branch && appConfig.version.commit" #details>
+				<template v-if="!environment.development" #details>
 					<div class="version-info">
 						<div>
 							<Icon name="branch" /><span>{{ appConfig.version.branch }}</span>
