@@ -2,10 +2,7 @@
 	const nuxt = useNuxtApp();
 	const isDevMode = inject<Ref<boolean>>("isDevMode");
 
-	if (environment.server) {
-		const gitBranch = process.env.VERCEL_GIT_COMMIT_REF;
-		const gitCommit = process.env.VERCEL_GIT_COMMIT_SHA;
-	}
+	const appConfig = useAppConfig();
 
 	const repositories: { name: string; codeName?: string; link: string; icon?: string }[] = [
 		{ name: t.about.repositories.frontend, codeName: "KIRAKIRA Cerasus", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus" },
@@ -80,13 +77,13 @@
 
 		<section>
 			<SettingsChipItem icon="info">
-				<template v-if="gitBranch && gitCommit" #details>
+				<template v-if="appConfig.version.branch && appConfig.version.commit" #details>
 					<div class="version-info">
 						<div>
-							<Icon name="branch" /><span>{{ gitBranch }}</span>
+							<Icon name="branch" /><span>{{ appConfig.version.branch }}</span>
 						</div>
 						<div>
-							<Icon name="commit" /><span>{{ gitCommit }}</span>
+							<Icon name="commit" /><span>{{ appConfig.version.commit }}</span>
 						</div>
 					</div>
 				</template>

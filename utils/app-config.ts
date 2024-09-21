@@ -11,4 +11,4 @@ const appConfig = reactive({}) as {
 for (const [key, def] of entries(defaults))
 	appConfig[key] = useStorage(key, def) as RemovableRef<never>;
 
-export { appConfig };
+// export { appConfig };
