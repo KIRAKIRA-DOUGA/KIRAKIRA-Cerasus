@@ -216,7 +216,7 @@ export default {
 		},
 		team: "L'équipe",
 		staff: {
-			webmistress: "Webmaster",
+			webmistress: "Webmestres",
 			designer: "Concepteur",
 			frontend: "Avant",
 			backend: "Logs & Autres données",

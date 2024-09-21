@@ -54,7 +54,7 @@ export default {
 		custom: "自定义背景",
 		opacity: "不透明度",
 		tint: "着色",
-		blurIntensity: "模糊程度",
+		blurIntensity: "模糊强度",
 	},
 	appearance: {
 		_: "外观",
@@ -477,4 +477,5 @@ export default {
 		_: "邀请码",
 		invalid: "邀请码无效",
 	},
+	version: "版本",
 } as const satisfies LocaleIdentifiers;

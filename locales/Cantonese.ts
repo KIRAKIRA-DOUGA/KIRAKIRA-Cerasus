@@ -223,7 +223,7 @@ export default {
 			translator: "{0} 翻譯",
 		},
 		technologies_used: "使用技術",
-		slogan: "一個可愛嘅網站，\n送畀同樣心靈嘅你！",
+		slogan: "一個可愛嘅網站，\n送畀可愛嘅你！",
 	},
 	acknowledgement: "鳴謝",
 	friendly_links: "友情連結",
@@ -345,7 +345,7 @@ export default {
 		reset: "重設",
 	},
 	loginwindow: {
-		login_welcome: "歡迎蒞臨",
+		login_welcome: "歡迎返嚟",
 		login_to_forgot: "我唔記得密碼",
 		login_to_register: "未有帳戶？註冊",
 		register_to_login: "有咗帳戶？登入",

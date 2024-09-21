@@ -240,7 +240,7 @@ export default {
 	favorite_verb: "Thêm vào mục ưa thích",
 	favorites: {
 		_: "Ưa thích",
-		my_favorites: "Mục ưa thích",
+		my_favorites: "Mục ưa thích của tôi",
 		subscribed_favorites: "Mục ưa thích đã đăng ký",
 		modify_info: "Sửa thông tin",
 		clear_expired: "Xóa các video đã quá hạn",
@@ -285,7 +285,7 @@ export default {
 		embarrassed: "Xấu hổ",
 	},
 	associate_existing: "Chia phần video",
-	reply: "Trả lời",
+	reply: "Phản hồi",
 	mention: "Lượt nhắc",
 	more: "Xem thêm",
 	delete: "Xóa",
