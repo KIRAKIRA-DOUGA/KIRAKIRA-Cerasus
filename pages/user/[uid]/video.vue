@@ -3,7 +3,16 @@
 	const sort = ref<SortModel>(["date", "descending"]);
 
 	const route = useRoute();
-	const urlUid = computed(currentUserUid);
+
+	const urlUid = ref();
+	// SSR
+	urlUid.value = currentUserUid();
+	// CSR
+	const nuxtApp = useNuxtApp();
+	nuxtApp.hook("page:finish", () => {
+		urlUid.value = currentUserUid();
+	});
+
 	const videos = ref<GetVideoByUidResponseDto>();
 	const { query } = route;
 

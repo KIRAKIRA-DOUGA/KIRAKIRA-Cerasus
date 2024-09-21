@@ -1,5 +1,13 @@
 <script setup lang="ts">
-	const urlUid = computed(currentUserUid);
+	const urlUid = ref();
+	// SSR
+	urlUid.value = currentUserUid();
+	// CSR
+	const nuxtApp = useNuxtApp();
+	nuxtApp.hook("page:finish", () => {
+		urlUid.value = currentUserUid();
+	});
+
 	const userBirthday = ref(0);
 	const userJoinDate = ref(0);
 	const userId = ref<number>();

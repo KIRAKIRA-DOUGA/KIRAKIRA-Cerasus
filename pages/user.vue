@@ -27,6 +27,8 @@
 					const [index, prevIndex] = [tabs.findIndex(i => i.id === tab), tabs.findIndex(i => i.id === prevTab)];
 					if (index !== prevIndex)
 						to.meta.pageTransition.name = index > prevIndex ? "right" : index < prevIndex ? "left" : "";
+				} else {
+					to.meta.pageTransition.name = "page-jump";
 				}
 			}
 		},
@@ -43,7 +45,16 @@
 	const fullwidthRegexp = makeFullwidth();
 
 	const route = useRoute("");
-	const urlUid = ref(+route.params.uid);
+
+	const urlUid = ref();
+	// SSR
+	urlUid.value = route.params.uid;
+	// CSR
+	const nuxtApp = useNuxtApp();
+	nuxtApp.hook("page:finish", () => {
+		urlUid.value = route.params.uid;
+	});
+
 	watch(urlUid, fetchUserData, { deep: false });
 
 	const selfUid = computed(() => userSelfInfoStore.uid);
