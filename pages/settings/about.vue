@@ -77,7 +77,7 @@
 
 		<section>
 			<SettingsChipItem icon="info">
-				<template v-if="!environment.development" #details>
+				<template v-if="gitBranch && gitCommit" #details>
 					<div class="version-info">
 						<div>
 							<Icon name="branch" /><span>{{ gitBranch }}</span>
