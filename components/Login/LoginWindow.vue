@@ -1,3 +1,7 @@
+<docs>
+	TODO 建议重构该组件中的动画。
+</docs>
+
 <script setup lang="ts">
 	import makeUsername from "pomsky/username.pom";
 	const props = defineProps<{
@@ -8,12 +12,13 @@
 	const { avatarSize, avatarGap, avatarMinLeft } = useScssVariables().numbers;
 	const selfUserInfoStore = useSelfUserInfoStore();
 	const model = defineModel<boolean>();
-	type PageType = "login" | "register1" | "register2" | "register3" | "forgot" | "reset";
-	const currentPage = ref<PageType>("login");
+	type PageType = "login1" | "login2" | "register1" | "register2" | "register3" | "forgot" | "reset";
+	const currentPage = ref<PageType>("login1");
 	const isWelcome = computed(() => ["register1", "register2", "register3"].includes(currentPage.value));
-	const coverMoveLeft = computed(() => currentPage.value !== "login");
+	const coverMoveLeft = computed(() => !["login1", "login2"].includes(currentPage.value));
 	const email = ref("");
 	const password = ref("");
+	const loginCode = ref(""); // 登录验证码，该输入框也允许输入一次性备份码（6 位）和一次性恢复码（8 位）
 	const confirmPassword = ref("");
 	const verificationCode = ref("");
 	const passwordHint = ref("");
@@ -213,7 +218,7 @@
 				await api.user.getSelfUserInfo(); // 根据获取到的用户 UID 和 Token 获取用户数据，相当于自动登录
 				isTryingRegistration.value = false; // 停止注册按钮加载动画
 				open.value = false; // 关闭登录页
-				currentPage.value = "login"; // 将登录页设为登录窗口默认页
+				currentPage.value = "login1"; // 将登录页设为登录窗口默认页
 			} else
 				useToast("注册失败，请稍后再试", "error"); // TODO: 使用多语言
 		} catch (error) {
@@ -286,7 +291,7 @@
 
 				<div class="main left">
 					<!-- 登录 Login -->
-					<div class="login">
+					<div class="login1">
 						<HeadingGroup :name="t.login" englishName="Login" />
 						<form class="form">
 							<TextBox
@@ -313,6 +318,32 @@
 						<div class="action margin-left-inset margin-right-inset">
 							<Button @click="currentPage = 'forgot'">{{ t.loginwindow.login_to_forgot }}</Button>
 							<Button @click="currentPage = 'register1'">{{ t.loginwindow.login_to_register }}</Button>
+							<Button @click="currentPage = 'login2'">登录2</Button>
+						</div>
+					</div>
+
+					<div class="login2">
+						<HeadingGroup :name="t.login" englishName="Login" />
+						<span>您开启了 2FA，因此需要提供验证码。<br />若验证设备不可用，请使用备用码或恢复码登录。</span>
+						<span>
+							注意：使用恢复码登陆后，您账号的 2FA 将在登录成功后失效。
+						</span>
+						<form class="form">
+							<TextBox
+								v-model="loginCode"
+								type="text"
+								placeholder="验证码"
+								icon="lock"
+								:invalid="isInvalidEmail"
+								autoComplete="username"
+								@keyup.enter="loginUser"
+							/>
+						</form>
+						<div class="button login-button-placeholder">
+							<Button class="button login-button button-block" :loading="isTryingLogin" :disabled="isTryingLogin || selfUserInfoStore.isLogined" @click="loginUser">Link Start!</Button>
+						</div>
+						<div class="action margin-left-inset margin-right-inset">
+							<Button @click="currentPage = 'login1'">返回</Button>
 						</div>
 					</div>
 				</div>
@@ -349,7 +380,7 @@
 							</div>
 						</div>
 						<div class="action margin-left-inset">
-							<Button @click="currentPage = 'login'">{{ t.loginwindow.register_to_login }}</Button>
+							<Button @click="currentPage = 'login1'">{{ t.loginwindow.register_to_login }}</Button>
 							<Button icon="arrow_right" class="button icon-behind" :loading="isCheckingUsername" :disabled="isCheckingUsername" @click="checkUsernameAndJumpNextPage">{{ t.step.next }}</Button>
 						</div>
 					</div>
@@ -433,7 +464,7 @@
 							<Button icon="send" class="button logo-font button-block">{{ t.send }}</Button>
 						</div>
 						<div class="action margin-left-inset">
-							<Button @click="currentPage = 'login'">{{ t.loginwindow.forgot_to_login }}</Button>
+							<Button @click="currentPage = 'login1'">{{ t.loginwindow.forgot_to_login }}</Button>
 						</div>
 					</div>
 
@@ -560,7 +591,7 @@
 		}
 	}
 
-	:comp:not(.move-left) .main > * {
+	:comp:not(.move-left) .main.right > * {
 		translate: 0 !important;
 	}
 
@@ -591,6 +622,10 @@
 
 			@if true {
 				// HACK: 为了故意不应用排序规则而将下面这部分页面声明单独提炼在下方。
+				@include page("!.login1", ".login1", left);
+				@include page("!.login2", ".login2", left);
+				@include page(".login2", ".login1", left);
+				@include page(".login1", ".login2", right);
 				@include page("!.register1", ".register1", right);
 				@include page("!.register2", ".register2", right);
 				@include page("!.register3", ".register3", right);
