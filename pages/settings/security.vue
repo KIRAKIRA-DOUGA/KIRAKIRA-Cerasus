@@ -19,6 +19,29 @@
 	const confirmNewPassword = ref("");
 	const isChangingPassword = ref(false);
 
+	const isEmail2FAEnabled = ref(false);
+	const isTotp2FAEnabled = ref(false);
+
+	const typeOf2FA = ref<"none" | "email" | "totp">('none')
+	const showTotpModel = ref(false)
+	const checkUser2FAResult =
+
+	// function open2FAModel() {
+	// 	if
+	// }
+
+	function openCreate2FAModel() {
+		/**
+		 * 0. 开启模态框
+		 * 2. 请求创建 TOTP
+		 * 3. 根绝创建结果渲染二维码
+		 */
+
+		showTotpModel.value = true
+
+
+	}
+
 	/**
 	 * 修改 Email
 	 */
@@ -101,7 +124,7 @@
 				icon="email"
 				trailingIcon="edit"
 				:details="t.current_email + t.colon + selfUserInfoStore.userEmail"
-				@trailingIconClick="showChangeEmail = true;"
+				@trailingIconClick="showChangeEmail = true"
 			>{{ t.email_address }}</SettingsChipItem>
 		</section>
 		<section>
@@ -109,15 +132,24 @@
 				icon="password"
 				trailingIcon="edit"
 				:details="t.modification_date + t.colon + passwordChangeDateDisplay"
-				@trailingIconClick="showChangePassword = true;"
+				@trailingIconClick="showChangePassword = true"
 			>{{ t.password }}</SettingsChipItem>
 		</section>
-		<section>
+		<!-- TODO: 使用多语言 -->
+		<Subheader icon="lock">双重验证</Subheader>
+		<section list>
+			<RadioButton v-model="typeOf2FA" v-ripple value="none" details="关闭双重验证会降低账号安全性。">关闭</RadioButton>
+			<RadioButton v-model="typeOf2FA" v-ripple value="email" details="登录时必须填写邮箱中的验证码。若您已经绑定 TOTP 设备，则需要先解绑才能开启此选项。" :disabled="typeOf2FA === 'totp'">邮箱验证码</RadioButton>
+			<RadioButton v-model="typeOf2FA" v-ripple value="totp" details="在你的设备中绑定 TOTP 以生成验证码。">TOTP（基于时间的一次性密码）</RadioButton>
+		</section>
+		<section v-if="typeOf2FA === 'totp'">
+			<!-- TODO: 使用多语言 -->
 			<SettingsChipItem
 				icon="lock"
 				trailingIcon="edit"
 				:details="t.addition_date + t.colon + authenticatorAddDateDisplay"
-			>{{ t.authenticator }}</SettingsChipItem>
+				@trailingIconClick="openCreate2FAModel"
+			>TOTP {{ t.authenticator }}</SettingsChipItem>
 		</section>
 
 		<!-- TODO: 使用多语言 -->
@@ -137,6 +169,22 @@
 		</Modal>
 
 		<Modal v-model="showChangePassword" :title="t.password.change" icon="password">
+			<div class="change-password-modal">
+				<form>
+					<SendVerificationCode v-model="changePasswordVerificationCode" verificationCodeFor="change-password" />
+					<TextBox v-model="oldPassword" :required="true" type="password" icon="lock" :placeholder="t.password.current" autoComplete="current-password" />
+					<TextBox v-model="newPassword" :required="true" type="password" icon="lock" :placeholder="t.password.new" autoComplete="new-password" />
+					<TextBox v-model="confirmNewPassword" :required="true" type="password" icon="lock" :placeholder="t.password.new_retype" autoComplete="new-password" />
+				</form>
+			</div>
+			<template #footer-right>
+				<Button class="secondary" @click="showChangePassword = false">{{ t.step.cancel }}</Button>
+				<Button @click="updateUserPassword" :disabled="isChangingPassword" :loading="isChangingPassword">{{ t.step.apply }}</Button>
+			</template>
+		</Modal>
+
+		<!-- TODO: 使用多语言 -->
+		<Modal v-model="showTotpModel" :title="t.password.change" icon="password">
 			<div class="change-password-modal">
 				<form>
 					<SendVerificationCode v-model="changePasswordVerificationCode" verificationCodeFor="change-password" />
