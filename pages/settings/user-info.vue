@@ -114,14 +114,6 @@
 		isClearingUserInfo.value = false;
 	}
 
-	/**
-	 * 跳转到某个用户的主页
-	 * @param uid 用户 ID
-	 */
-	function jump2UserPage(uid: number) {
-		navigate(`/user/${uid}`);
-	}
-
 	watch(isOnlyShowUserInfoUpdatedAfterReview, async () => {
 		disableCurrentPageEffect.value = true; // 阻止 currentPage 的 watch 副作用被执行
 		currentPage.value = 1;

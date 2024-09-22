@@ -18,6 +18,7 @@ import type {
 	ApproveUserInfoRequestDto, ApproveUserInfoResponseDto,
 	AdminClearUserInfoRequestDto,
 	AdminClearUserInfoResponseDto,
+	CheckUserHave2FAServiceResponseDto,
 } from "./UserControllerDto";
 
 const BACK_END_URL = getCorrectUri();
@@ -345,4 +346,16 @@ export const approveUserInfo = async (approveUserInfoRequest: ApproveUserInfoReq
 export const adminClearUserInfo = async (adminClearUserInfoRequest: AdminClearUserInfoRequestDto): Promise<AdminClearUserInfoResponseDto> => {
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	return await POST(`${USER_API_URL}/adminClearUserInfo`, adminClearUserInfoRequest, { credentials: "include" }) as AdminClearUserInfoResponseDto;
+};
+
+/**
+ * 通过 UUID 检查用户是否已开启 2FA 身份验证器
+ * @param headerCookie 从客户端发起 SSR 请求时传递的 Header 中的 Cookie 部分，在 SSR 时将其转交给后端 API
+ * @returns 通过 UUID 检查用户是否已开启 2FA 身份验证器的请求响应
+ */
+export const checkUserHave2FAByUUID = async (headerCookie: { cookie?: string | undefined }): Promise<CheckUserHave2FAServiceResponseDto> => {
+	// NOTE: use { headers: headerCookie } to passing client-side cookies to backend API when SSR.
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	const { data: result } = await useFetch(`${USER_API_URL}/checkUserHave2FAByUUID`, { headers: headerCookie, credentials: "include" });
+	return result.value as CheckUserHave2FAServiceResponseDto;
 };

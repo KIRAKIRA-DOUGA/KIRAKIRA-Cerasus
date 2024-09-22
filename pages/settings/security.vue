@@ -22,24 +22,48 @@
 	const isEmail2FAEnabled = ref(false);
 	const isTotp2FAEnabled = ref(false);
 
-	const typeOf2FA = ref<"none" | "email" | "totp">('none')
-	const showTotpModel = ref(false)
-	const checkUser2FAResult =
+	const typeOf2FA = ref<"none" | "email" | "totp">("none");
+	const showCreateTotpModel = ref(false);
+	const showEditTotpModel = ref(false);
+	const checkUser2FAResult = ref<CheckUserHave2FAServiceResponseDto>();
+	const hasBoundTotp = computed(() => checkUser2FAResult.value?.success && checkUser2FAResult.value.have2FA && checkUser2FAResult.value?.type === "totp"); // 当 2FA 存在且类型为 totp 时，开启编辑 TOTP 的模态框，否则开启创建 TOTP 的模态框
 
-	// function open2FAModel() {
-	// 	if
-	// }
+	/**
+	 * 通过 Cookie 中的 UUID 检查用户是否已开启 2FA 身份验证器
+	 */
+	async function checkUserHave2FAByUUID() {
+		const headerCookie = useRequestHeaders(["cookie"]);
+		checkUser2FAResult.value = await api.user.checkUserHave2FAByUUID(headerCookie);
+	}
 
-	function openCreate2FAModel() {
+	/**
+	 * 开启 TOTP 模态框
+	 */
+	function openTotpModel() {
+		if (hasBoundTotp.value)
+			openEditTotpModel();
+		else
+			openCreateTotpModel();
+	}
+
+	/**
+	 * 开启创建 TOTP 的模态框
+	 */
+	function openCreateTotpModel() {
 		/**
 		 * 0. 开启模态框
-		 * 2. 请求创建 TOTP
-		 * 3. 根绝创建结果渲染二维码
+		 * 1. 请求创建 TOTP
+		 * 2. 根据创建结果渲染二维码、显示备份码、恢复码
 		 */
 
-		showTotpModel.value = true
+		showCreateTotpModel.value = true;
+	}
 
-
+	/**
+	 * 开启编辑 TOTP 的模态框
+	 */
+	function openEditTotpModel() {
+		showEditTotpModel.value = true;
 	}
 
 	/**
@@ -107,6 +131,8 @@
 		} else
 			useToast("更换密码失败，请稍后再试", "error"); // TODO: 使用多语言
 	}
+
+	await checkUserHave2FAByUUID();
 </script>
 
 <template>
@@ -139,16 +165,16 @@
 		<Subheader icon="lock">双重验证</Subheader>
 		<section list>
 			<RadioButton v-model="typeOf2FA" v-ripple value="none" details="关闭双重验证会降低账号安全性。">关闭</RadioButton>
-			<RadioButton v-model="typeOf2FA" v-ripple value="email" details="登录时必须填写邮箱中的验证码。若您已经绑定 TOTP 设备，则需要先解绑才能开启此选项。" :disabled="typeOf2FA === 'totp'">邮箱验证码</RadioButton>
-			<RadioButton v-model="typeOf2FA" v-ripple value="totp" details="在你的设备中绑定 TOTP 以生成验证码。">TOTP（基于时间的一次性密码）</RadioButton>
+			<RadioButton v-model="typeOf2FA" v-ripple value="email" details="验证码将会直接发送到您的邮箱。若您已经绑定 TOTP 设备，则需要先关闭 TOTP 才能切换至此选项。" :disabled="typeOf2FA === 'totp' || checkUser2FAResult?.type === 'totp'">邮箱验证码</RadioButton>
+			<RadioButton v-model="typeOf2FA" v-ripple value="totp" details="在你绑定了 TOTP 的设备中查看验证码。">TOTP（基于时间的一次性密码）</RadioButton>
 		</section>
 		<section v-if="typeOf2FA === 'totp'">
 			<!-- TODO: 使用多语言 -->
 			<SettingsChipItem
 				icon="lock"
-				trailingIcon="edit"
+				:trailingIcon="hasBoundTotp ? 'edit' : 'add'"
 				:details="t.addition_date + t.colon + authenticatorAddDateDisplay"
-				@trailingIconClick="openCreate2FAModel"
+				@trailingIconClick="openTotpModel"
 			>TOTP {{ t.authenticator }}</SettingsChipItem>
 		</section>
 
@@ -184,7 +210,7 @@
 		</Modal>
 
 		<!-- TODO: 使用多语言 -->
-		<Modal v-model="showTotpModel" :title="t.password.change" icon="password">
+		<Modal v-model="showCreateTotpModel" :title="t.password.change" icon="password">
 			<div class="change-password-modal">
 				<form>
 					<SendVerificationCode v-model="changePasswordVerificationCode" verificationCodeFor="change-password" />

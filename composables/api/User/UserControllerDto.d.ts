@@ -16,7 +16,7 @@ export type UserRegistrationRequestDto = {
 	username: string;
 	/** 用户昵称 */
 	userNickname?: string;
-}
+};
 
 /**
  * 用户注册的返回参数
@@ -32,7 +32,7 @@ export type UserRegistrationResponseDto = {
 	token?: string;
 	/** 附加的文本消息 */
 	message?: string;
-}
+};
 
 /**
  * 用户登录提交的参数
@@ -44,7 +44,7 @@ export type UserLoginRequestDto = {
 	passwordHash: string;
 	/** 用户输入的一次性验证码 */
 	clientOtp?: string;
-}
+};
 
 /**
  * 用户登录的返回参数
@@ -65,8 +65,8 @@ export type UserLoginResponseDto = {
 	/** 附加的文本消息 */
 	message?: string;
 	/** 身份验证器的类型 */
-	authenticatorType?: 'email' | 'totp' | 'none';
-}
+	authenticatorType?: "email" | "totp" | "none";
+};
 
 /**
  * 验证用户邮箱是否存在提交的参数
@@ -74,7 +74,7 @@ export type UserLoginResponseDto = {
 export type UserExistsCheckRequestDto = {
 	/** 用户邮箱 */
 	email: string;
-}
+};
 
 /**
  * 验证用户邮箱是否已经存在的返回参数
@@ -86,7 +86,7 @@ export type UserExistsCheckResponseDto = {
 	exists: boolean; // WARN: 用户已存在或查询失败时都会返回 true
 	/** 附加的文本消息 */
 	message?: string;
-}
+};
 
 /**
  * 用户更改邮箱的请求的参数
@@ -102,7 +102,7 @@ export type UpdateUserEmailRequestDto = {
 	passwordHash: string;
 	/** 验证码 */
 	verificationCode: string;
-}
+};
 
 /**
  * 用户更改邮箱返回的参数
@@ -112,7 +112,7 @@ export type UpdateUserEmailResponseDto = {
 	success: boolean;
 	/** 附加的文本消息 */
 	message?: string;
-}
+};
 
 /**
  * 等待被 Hash 的密码和用户信息
@@ -122,7 +122,7 @@ export type BeforeHashPasswordDataType = {
 	email: string;
 	/** 在前端已经 Hash 过一次的的密码 */
 	passwordHash: string;
-}
+};
 
 /**
  * 用户的个人标签
@@ -132,7 +132,7 @@ export type UserLabel = {
 	id: number;
 	/** 标签名 */
 	labelName: string;
-}
+};
 
 /**
  * 用户的关联账户
@@ -142,7 +142,7 @@ export type UserLinkAccounts = {
 	accountType: string;
 	/** 关联账户唯一标识 */
 	accountUniqueId: string;
-}
+};
 
 /**
  * 用户的关联网站
@@ -152,7 +152,7 @@ export type UserWebsite = {
 	websiteName: string;
 	/** 关联网站 URL */
 	websiteUrl: string;
-}
+};
 
 /**
  * 更新或创建用户信息时的请求参数
@@ -180,7 +180,7 @@ export type UpdateOrCreateUserInfoRequestDto = {
 	userLinkAccounts?: UserLinkAccounts[];
 	/** 用户的关联网站 */
 	userWebsite?: UserWebsite;
-}
+};
 
 /**
  * 更新或创建用户信息的请求结果
@@ -192,7 +192,7 @@ export type UpdateOrCreateUserInfoResponseDto = {
 	message?: string;
 	/** 请求结果 */
 	result?: {} & UpdateOrCreateUserInfoRequestDto;
-}
+};
 
 /**
  * 获取当前登录的用户信息的请求参数
@@ -202,7 +202,7 @@ export type GetSelfUserInfoRequestDto = {
 	uid: number;
 	/** 用户的身分令牌 */
 	token: string;
-}
+};
 
 /**
  * 通过 UUID 获取当前登录的用户信息的请求参数
@@ -212,7 +212,7 @@ export type GetSelfUserInfoByUuidRequestDto = {
 	uuid: string;
 	/** 用户的身分令牌 */
 	token: string;
-}
+};
 
 /**
  * 获取当前登录的用户信息的请求响应
@@ -238,12 +238,12 @@ export type GetSelfUserInfoResponseDto = {
 		}
 		& UpdateOrCreateUserInfoRequestDto
 	);
-}
+};
 
 /**
  * 通过 UUID 获取当前登录的用户信息的请求响应
  */
-export type GetSelfUserInfoByUuidResponseDto = {} & GetSelfUserInfoResponseDto
+export type GetSelfUserInfoByUuidResponseDto = {} & GetSelfUserInfoResponseDto;
 
 /**
  * 通过 UID 获取用户信息的请求载荷
@@ -251,7 +251,7 @@ export type GetSelfUserInfoByUuidResponseDto = {} & GetSelfUserInfoResponseDto
 export type GetUserInfoByUidRequestDto = {
 	/** 目标用户的 UID */
 	uid: number;
-}
+};
 
 /**
  * 通过 UID 获取用户信息的请求响应
@@ -282,7 +282,7 @@ export type GetUserInfoByUidResponseDto = {
 		/** 用户的角色 */
 		role?: string;
 	};
-}
+};
 
 /**
  * 通过 UID 和 TOKEN 校验用户的返回结果
@@ -294,7 +294,7 @@ export type CheckUserTokenResponseDto = {
 	message?: string;
 	/** 用户校验结果，用户正常为 true，非法用户为 false */
 	userTokenOk?: boolean;
-}
+};
 
 /**
  * 用户登出的响应
@@ -304,7 +304,7 @@ export type UserLogoutResponseDto = {
 	success: boolean;
 	/** 附加的文本消息 */
 	message?: string;
-}
+};
 
 /**
  * 获取用于用户上传头像的预签名 URL, 上传限时 60 秒
@@ -318,7 +318,7 @@ export type GetUserAvatarUploadSignedUrlResponseDto = {
 	userAvatarFilename?: string;
 	/** 附加的文本消息 */
 	message?: string;
-}
+};
 
 /**
  * 用户关联账户的隐私设置
@@ -327,8 +327,8 @@ type UserLinkAccountsPrivacySettingDto = {
 	/** 关联账户类型 - 非空 - 例："X" */
 	accountType: string;
 	/** 显示方式 - 非空 - 允许的值有：{public: 公开, following: 仅关注, private: 隐藏} */
-	privacyType: 'public' | 'following' | 'private';
-}
+	privacyType: "public" | "following" | "private";
+};
 
 /**
  * 基础用户个性设置类型
@@ -337,7 +337,7 @@ export type BasicUserSettingsDto = {
 	/** 是否启用 Cookie - 布尔 */
 	enableCookie?: boolean;
 	/** 主题外观设置（主题类型） - 可选的值：{light: 浅色, dark: 深色, system: 跟随系统} */
-	themeType?: 'light' | 'dark' | 'system';
+	themeType?: "light" | "dark" | "system";
 	/** 主题颜色 - 字符串，颜色字符串 */
 	themeColor?: string;
 	/** 用户自定义主题颜色 - 字符串，HAX 颜色字符串，不包含井号 */
@@ -347,7 +347,7 @@ export type BasicUserSettingsDto = {
 	/** 是否启用彩色导航栏 - 布尔 */
 	coloredSideBar?: boolean;
 	/** 流量使用偏好 - 字符串，{standard: 标准, limit: 节省网络流量模式, preview: 超前加载} */
-	dataSaverMode?: 'standard' | 'limit' | 'preview';
+	dataSaverMode?: "standard" | "limit" | "preview";
 	/** 禁用搜索推荐 - 布尔 */
 	noSearchRecommendations?: boolean;
 	/** 禁用相关视频推荐 - 布尔 */
@@ -373,15 +373,15 @@ export type BasicUserSettingsDto = {
 	/** 实验性：启用扁平模式 - 布尔 */
 	flatAppearanceMode?: boolean;
 	/** 用户关联网站的隐私设置 - 允许的值有：{public: 公开, following: 仅关注, private: 隐藏} */
-	userWebsitePrivacySetting?: 'public' | 'following' | 'private';
+	userWebsitePrivacySetting?: "public" | "following" | "private";
 	/** 用户关联账户的隐私设置 */
 	userLinkAccountsPrivacySetting?: UserLinkAccountsPrivacySettingDto[];
-}
+};
 
 /**
  * 获取用于渲染页面的用户设定的请求参数
  */
-export type GetUserSettingsRequestDto = {} & GetSelfUserInfoRequestDto
+export type GetUserSettingsRequestDto = {} & GetSelfUserInfoRequestDto;
 
 /**
  * 获取用于渲染页面的用户设定的请求响应
@@ -393,12 +393,12 @@ export type GetUserSettingsResponseDto = {
 	userSettings?: { uid: number; editDateTime: number } & BasicUserSettingsDto;
 	/** 附加的文本消息 */
 	message?: string;
-}
+};
 
 /**
  * 更新或创建用户设定的请求参数
  */
-export type UpdateOrCreateUserSettingsRequestDto = {} & BasicUserSettingsDto
+export type UpdateOrCreateUserSettingsRequestDto = {} & BasicUserSettingsDto;
 
 /**
  * 更新或创建用户设定的请求响应
@@ -410,7 +410,7 @@ export type UpdateOrCreateUserSettingsResponseDto = {
 	userSettings?: { uid: number; editDateTime: number } & BasicUserSettingsDto;
 	/** 附加的文本消息 */
 	message?: string;
-}
+};
 
 /**
  * 请求发送用户注册邮箱验证码的请求载荷
@@ -420,7 +420,7 @@ export type RequestSendVerificationCodeRequestDto = {
 	email: string;
 	/** 用户客户端使用的语言 */
 	clientLanguage: string;
-}
+};
 
 /**
  * 请求发送用户邮箱验证码的请求响应
@@ -432,7 +432,7 @@ export type RequestSendVerificationCodeResponseDto = {
 	isTimeout: boolean;
 	/** 附加的文本消息 */
 	message?: string;
-}
+};
 
 /**
  * 邀请码类型
@@ -452,7 +452,7 @@ type InvitationCode = {
 	assignee?: number;
 	/** 邀请码被使用的时间 */
 	usedDateTime?: number;
-}
+};
 
 /**
  * 生成邀请码的请求响应
@@ -466,7 +466,7 @@ export type CreateInvitationCodeResponseDto = {
 	message?: string;
 	/** 生成的邀请码 */
 	invitationCodeResult?: InvitationCode;
-}
+};
 
 /**
  * 获取自己的邀请码的请求响应
@@ -478,7 +478,7 @@ export type GetMyInvitationCodeResponseDto = {
 	message?: string;
 	/** 邀请码列表 */
 	invitationCodeResult: InvitationCode[];
-}
+};
 
 /**
  * 获取用户自己注册的邀请码的请求响应
@@ -490,7 +490,7 @@ export type GetUserInvitationCodeResponseDto = {
 	message?: string;
 	/** 注册时使用的邀请码 */
 	invitationCode?: string;
-}
+};
 
 /**
  * 使用邀请码的参数
@@ -502,7 +502,7 @@ export type UseInvitationCodeDto = {
 	registrantUid: number;
 	/** 注册者 UUID */
 	registrantUUID: string;
-}
+};
 
 /**
  * 使用邀请码的结果
@@ -512,7 +512,7 @@ export type UseInvitationCodeResultDto = {
 	success: boolean;
 	/** 附加的文本消息 */
 	message?: string;
-}
+};
 
 /**
  * 检查一个邀请码是否可用的请求载荷
@@ -520,7 +520,7 @@ export type UseInvitationCodeResultDto = {
 export type CheckInvitationCodeRequestDto = {
 	/** 被使用的邀请码 */
 	invitationCode: string;
-}
+};
 
 /**
  * 检查一个邀请码是否可用的请求响应
@@ -532,7 +532,7 @@ export type CheckInvitationCodeResponseDto = {
 	isAvailableInvitationCode: boolean;
 	/** 附加的文本消息 */
 	message?: string;
-}
+};
 
 /**
  * 请求发送用户更改邮箱验证码的请求载荷
@@ -542,7 +542,7 @@ export type RequestSendChangeEmailVerificationCodeRequestDto = {
 	clientLanguage: string;
 	/** 用户的新邮箱 */
 	newEmail: string;
-}
+};
 
 /**
  * 请求发送用户更改邮箱验证码的请求载荷
@@ -554,7 +554,7 @@ export type RequestSendChangeEmailVerificationCodeResponseDto = {
 	isCoolingDown: boolean;
 	/** 附加的文本消息 */
 	message?: string;
-}
+};
 
 /**
  * 请求发送用户更改密码的验证码的请求载荷
@@ -562,7 +562,7 @@ export type RequestSendChangeEmailVerificationCodeResponseDto = {
 export type RequestSendChangePasswordVerificationCodeRequestDto = {
 	/** 用户客户端使用的语言 */
 	clientLanguage: string;
-}
+};
 
 /**
  * 请求发送用户更改密码的验证码的请求载荷
@@ -574,7 +574,7 @@ export type RequestSendChangePasswordVerificationCodeResponseDto = {
 	isCoolingDown: boolean;
 	/** 附加的文本消息 */
 	message?: string;
-}
+};
 
 /**
  * 用户更改密码的请求的参数
@@ -586,7 +586,7 @@ export type UpdateUserPasswordRequestDto = {
 	newPasswordHash: string;
 	/** 验证码 */
 	verificationCode: string;
-}
+};
 
 /**
  * 用户更改密码返回的参数
@@ -596,7 +596,7 @@ export type UpdateUserPasswordResponseDto = {
 	success: boolean;
 	/** 附加的文本消息 */
 	message?: string;
-}
+};
 
 /**
  * 检查用户名是否可用的请求载荷
@@ -604,7 +604,7 @@ export type UpdateUserPasswordResponseDto = {
 export type CheckUsernameRequestDto = {
 	/** 用户名 */
 	username: string;
-}
+};
 
 /**
  * 检查用户名是否可用的请求响应
@@ -616,7 +616,7 @@ export type CheckUsernameResponseDto = {
 	message?: string;
 	/** 是否是可用的用户名 */
 	isAvailableUsername: boolean;
-}
+};
 
 /**
  * 封锁一个用户的请求载荷
@@ -624,7 +624,7 @@ export type CheckUsernameResponseDto = {
 export type BlockUserByUIDRequestDto = {
 	/** 将被封锁的用户的 UID */
 	criminalUid: number;
-}
+};
 
 /**
  * 封锁一个用户的请求响应
@@ -634,7 +634,7 @@ export type BlockUserByUIDResponseDto = {
 	success: boolean;
 	/** 附加的文本消息 */
 	message?: string;
-}
+};
 
 /**
  * 重新激活一个用户的请求载荷
@@ -642,7 +642,7 @@ export type BlockUserByUIDResponseDto = {
 export type ReactivateUserByUIDRequestDto = {
 	/** 将被重新激活的用户的 UID */
 	uid: number;
-}
+};
 
 /**
  * 重新激活一个用户的请求响应
@@ -652,7 +652,7 @@ export type ReactivateUserByUIDResponseDto = {
 	success: boolean;
 	/** 附加的文本消息 */
 	message?: string;
-}
+};
 
 /**
  * 获取所有被封禁用户的信息的请求响应
@@ -664,11 +664,10 @@ export type GetBlockedUserResponseDto = {
 	message?: string;
 	/** 请求响应，被封禁的用户 */
 	result?: (
-		GetUserInfoByUidResponseDto['result']
+		GetUserInfoByUidResponseDto["result"]
 		& { uid: number }
 	)[];
-}
-
+};
 
 /**
  * 管理员获取用户信息的请求载荷
@@ -683,26 +682,25 @@ export type AdminGetUserInfoRequestDto = {
 		/** 一页显示多少条 */
 		pageSize: number;
 	};
-}
-
+};
 
 /**
  * 管理员获取用户信息的请求响应
  */
 export type AdminGetUserInfoResponseDto = {
 		/** 执行结果 */
-		success: boolean;
+	success: boolean;
 		/** 附加的文本消息 */
-		message?: string;
+	message?: string;
 		/** 请求响应 */
-		result?: (
-			GetSelfUserInfoResponseDto['result']
+	result?: (
+			GetSelfUserInfoResponseDto["result"]
 			& { uid: number }
 			& { UUID: string }
-		)[];
+	)[];
 		/** 数据总长度 */
-		totalCount: number;
-}
+	totalCount: number;
+};
 
 /**
  * 管理员通过用户信息审核的请求载荷
@@ -710,7 +708,7 @@ export type AdminGetUserInfoResponseDto = {
 export type ApproveUserInfoRequestDto = {
 	/** 用户的 UUID */
 	UUID: string;
-}
+};
 
 /**
  * 管理员通过用户信息审核的请求响应
@@ -720,7 +718,7 @@ export type ApproveUserInfoResponseDto = {
 	success: boolean;
 	/** 附加的文本消息 */
 	message?: string;
-}
+};
 
 /**
  * 管理员清空某个用户的信息的请求载荷
@@ -728,7 +726,7 @@ export type ApproveUserInfoResponseDto = {
 export type AdminClearUserInfoRequestDto = {
 	/** 用户的 UID */
 	uid: number;
-}
+};
 
 /**
  * 管理员清空某个用户的信息的请求响应
@@ -738,7 +736,7 @@ export type AdminClearUserInfoResponseDto = {
 	success: boolean;
 	/** 附加的文本消息 */
 	message?: string;
-}
+};
 
 /**
  * 发送删除身份验证器的邮箱验证码的请求载荷
@@ -746,7 +744,7 @@ export type AdminClearUserInfoResponseDto = {
 export type SendDeleteTotpAuthenticatorByEmailVerificationCodeRequestDto = {
 	/** 用户客户端使用的语言 */
 	clientLanguage: string;
-}
+};
 
 /**
  * 发送删除身份验证器的邮箱验证码的请求响应
@@ -758,17 +756,17 @@ export type SendDeleteTotpAuthenticatorByEmailVerificationCodeResponseDto = {
 	isCoolingDown: boolean;
 	/** 附加的文本消息 */
 	message?: string;
-}
+};
 
 /**
  * 已登录用户通过密码和邮箱验证码删除身份验证器的请求载荷
  */
 export type DeleteTotpAuthenticatorByEmailVerificationCodeRequestDto = {
 	/** 验证码 */
-	verificationCode: string,
+	verificationCode: string;
 	/** 被哈希一次的密码 */
-	passwordHash: string,
-}
+	passwordHash: string;
+};
 
 /**
  * 已登录用户通过密码和邮箱验证码删除用户的身份验证器的请求响应
@@ -778,7 +776,7 @@ export type DeleteTotpAuthenticatorByEmailVerificationCodeResponseDto = {
 	success: boolean;
 	/** 附加的文本消息 */
 	message?: string;
-}
+};
 
 /**
  * 用户创建 TOTP 身份验证器的请求响应
@@ -789,15 +787,15 @@ export type CreateUserTotpAuthenticatorResponseDto = {
 	/** 身份验证器是否已存在 */
 	isExists: boolean;
 	/** 如果已存在，则返回验证器的类型 */
-	existsAuthenticatorType?: 'email' | 'totp';
+	existsAuthenticatorType?: "email" | "totp";
 	/** TOTP 身份验证器信息 */
 	result?: {
 		/** TOTP 的唯一 ID，验证器的二维码 */
 		otpAuth?: string;
-	}
+	};
 	/** 附加的文本消息 */
 	message?: string;
-}
+};
 
 /**
  * 用户确认绑定 TOTP 设备的请求载荷
@@ -807,7 +805,7 @@ export type ConfirmUserTotpAuthenticatorRequestDto = {
 	clientOtp: string;
 	/** TOTP 的唯一 ID */
 	otpAuth: string;
-}
+};
 
 /**
  * 用户确认绑定 TOTP 设备的请求响应
@@ -821,18 +819,18 @@ export type ConfirmUserTotpAuthenticatorResponseDto = {
 		backupCode?: string[];
 		/** 验证器备份码 */
 		recoveryCode?: string;
-	}
+	};
 	/** 附加的文本消息 */
 	message?: string;
-}
+};
 
 /**
  * 检查 2FA 是否开启的请求在和
  */
 export type CheckUserHave2FAServiceRequestDto = {
 	/** 用户的邮箱 */
-	email: string,
-}
+	email: string;
+};
 
 /**
  * 检查 2FA 是否开启的请求响应
@@ -843,10 +841,9 @@ export type CheckUserHave2FAServiceResponseDto = {
 	/** 是否存在身份验证器 */
 	have2FA: boolean;
 	/** 如果存在，则返回 2FA 的类型 */
-	type?: 'email' | 'totp';
+	type?: "email" | "totp";
 	/** 如果存在且结果为 totp，则返回 2FA 的创建时间 */
 	totpCreationDateTime?: number;
 	/** 附加的文本消息 */
 	message?: string;
-}
-
+};
