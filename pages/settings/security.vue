@@ -1,4 +1,7 @@
 <script setup lang="ts">
+	import QrcodeVue from 'qrcode.vue'
+	import type { Level, RenderAs } from 'qrcode.vue'
+
 	const passwordChangeDate = ref(new Date());
 	const authenticatorAddDate = ref(new Date());
 	const passwordChangeDateDisplay = computed(() => formatDateWithLocale(passwordChangeDate.value));
@@ -28,6 +31,13 @@
 	const checkUser2FAResult = ref<CheckUserHave2FAServiceResponseDto>();
 	const hasBoundTotp = computed(() => checkUser2FAResult.value?.success && checkUser2FAResult.value.have2FA && checkUser2FAResult.value?.type === "totp"); // 当 2FA 存在且类型为 totp 时，开启编辑 TOTP 的模态框，否则开启创建 TOTP 的模态框
 
+	const totpQrcodeValue = ref<string>('')
+	const totpQrcodeLevel = ref<Level>('M')
+	const totpQrcodeRenderAs = ref<RenderAs>('svg')
+	const totpQrcodeSize = ref<number>(200)
+
+	const confirmTotpVerificationCode = ref('')
+
 	/**
 	 * 通过 Cookie 中的 UUID 检查用户是否已开启 2FA 身份验证器
 	 */
@@ -49,7 +59,7 @@
 	/**
 	 * 开启创建 TOTP 的模态框
 	 */
-	function openCreateTotpModel() {
+	async function openCreateTotpModel() {
 		/**
 		 * 0. 开启模态框
 		 * 1. 请求创建 TOTP
@@ -57,6 +67,21 @@
 		 */
 
 		showCreateTotpModel.value = true;
+		const headerCookie = useRequestHeaders(["cookie"]);
+		const createTotpAuthenticatorResult = await api.user.createTotpAuthenticator(headerCookie);
+		if (createTotpAuthenticatorResult.success && createTotpAuthenticatorResult.result?.otpAuth) {
+			console.log("aaaaaa", createTotpAuthenticatorResult.result.otpAuth);
+			console.log("eeee", createTotpAuthenticatorResult.isExists);
+			totpQrcodeValue.value = createTotpAuthenticatorResult.result.otpAuth
+		}
+	}
+
+	/**
+	 * 关闭创建 TOTP 的模态框，并清除二维码数据
+	 */
+	function closeCreateTotpModel() {
+		showCreateTotpModel.value = false
+		totpQrcodeValue.value = ''
 	}
 
 	/**
@@ -65,6 +90,8 @@
 	function openEditTotpModel() {
 		showEditTotpModel.value = true;
 	}
+
+
 
 	/**
 	 * 修改 Email
@@ -137,14 +164,14 @@
 
 <template>
 	<div>
-		<InfoBar type="warning" title="警告">
+		<!-- TODO: 使用多语言 -->
+		<!-- <InfoBar type="warning" title="警告">
 			该页面中的某些功能正在开发中，无法按预期工作。
 			<br />
 			1）密码的修改日期未正确显示。
 			<br />
 			2）身份验证器无法正常使用。
-		<!-- TODO: 使用多语言 -->
-		</InfoBar>
+		</InfoBar> -->
 		<section>
 			<SettingsChipItem
 				icon="email"
@@ -210,18 +237,42 @@
 		</Modal>
 
 		<!-- TODO: 使用多语言 -->
-		<Modal v-model="showCreateTotpModel" :title="t.password.change" icon="password">
-			<div class="change-password-modal">
-				<form>
-					<SendVerificationCode v-model="changePasswordVerificationCode" verificationCodeFor="change-password" />
-					<TextBox v-model="oldPassword" :required="true" type="password" icon="lock" :placeholder="t.password.current" autoComplete="current-password" />
-					<TextBox v-model="newPassword" :required="true" type="password" icon="lock" :placeholder="t.password.new" autoComplete="new-password" />
-					<TextBox v-model="confirmNewPassword" :required="true" type="password" icon="lock" :placeholder="t.password.new_retype" autoComplete="new-password" />
-				</form>
+		<Modal v-model="showCreateTotpModel" title="绑定 TOTP 身份验证器" icon="lock" :hideTitleCloseIcon="true">
+			<div class="create-totp-modal">
+				<InfoBar type="warning" title="警告">
+					请勿向他人展示本页中显示的内容！
+					<!-- TODO: 使用多语言 -->
+				</InfoBar>
+				<div class="step1">
+					<h3>1. 安装验证器程序</h3>
+					<p>如果你已安装验证器程序，请跳过本步骤。</p>
+					<p>如果没有，你需要在你的私人设备中安装一个支持 TOTP 算法的验证器程序，例如 <a href="https://www.microsoft.com/security/mobile-authenticator-app" target="_blank">Microsoft Authenticator</a> 或 <a href="https://support.google.com/accounts/answer/1066447" target="_blank"> Google Authenticator</a>.</p>
+				</div>
+				<div class="step2">
+					<h3>2. 使用验证器程序扫描下方二维码</h3>
+					<div class="totp-qrcode-box">
+						<QrcodeVue v-if="totpQrcodeValue" :value="totpQrcodeValue" :level="totpQrcodeLevel" :render-as="totpQrcodeRenderAs" :size="totpQrcodeSize" />
+					</div>
+				</div>
+				<div class="step3">
+					<h3>3. 填写验证码</h3>
+					<p>扫描二维码后，您的验证器程序中应该会出现一个新的验证码。<a href="https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus/issues" target="_blank">遇到问题？</a></p>
+					<p>请将验证码填写至下方的输入框中，并在倒计时结束前点击“确认绑定”按钮。</p>
+					<form class="totp-confirm-form">
+						<TextBox
+							v-model="confirmTotpVerificationCode"
+							:required="true"
+							type="text"
+							icon="verified"
+							placeholder="验证码"
+						/>
+					</form>
+				</div>
+
 			</div>
 			<template #footer-right>
-				<Button class="secondary" @click="showChangePassword = false">{{ t.step.cancel }}</Button>
-				<Button @click="updateUserPassword" :disabled="isChangingPassword" :loading="isChangingPassword">{{ t.step.apply }}</Button>
+				<Button class="secondary" @click="closeCreateTotpModel">{{ t.step.cancel }}</Button>
+				<Button>确认绑定</Button>
 			</template>
 		</Modal>
 	</div>
@@ -259,6 +310,35 @@
 
 		.text-box {
 			--size: large;
+		}
+	}
+
+	.create-totp-modal {
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+		width: 80dvw;
+		max-width: 550px;
+
+		> form {
+			display: flex;
+			flex-direction: column;
+			gap: 16px;
+		}
+
+		.text-box {
+			--size: large;
+		}
+
+		.totp-qrcode-box {
+			display: flex;
+			flex-direction: column;
+			height: 200px;
+			margin: 5px 0 0 20px;
+		}
+
+		.totp-confirm-form {
+			padding-top: 5px;
 		}
 	}
 </style>

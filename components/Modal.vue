@@ -16,9 +16,12 @@
 		hideTitle?: boolean;
 		/** 不显示页脚部分 */
 		hideFooter?: boolean;
+		/** 不显示标题中的关闭按钮 */
+		hideTitleCloseIcon?: boolean;
 	}>(), {
 		title: "",
 		icon: "colored-logo/sakuranomiya",
+		hideTitleCloseIcon: false,
 	});
 
 	const model = defineModel<boolean>();
@@ -89,7 +92,7 @@
 							<Icon :name="icon" :filled="icon.startsWith('colored-')" @dblclick="open = false" />
 							<span>{{ title }}</span>
 						</div>
-						<button class="close-button" :aria-label="t.step.close" @click="open = false">
+						<button v-if="!hideTitleCloseIcon" class="close-button" :aria-label="t.step.close" @click="open = false">
 							<Icon name="close" />
 						</button>
 					</div>
