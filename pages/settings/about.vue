@@ -69,28 +69,31 @@
 <template>
 	<div>
 		<Contents>
-			<div class="info" @click="showDevMode">
-				<LogoText />
-				<p class="slogan"><span>{{ sloganLines[0] }}</span><span><b>{{ sloganLines[1] }}</b></span></p>
-			</div>
-		</Contents>
-
-		<section>
-			<SettingsChipItem icon="info">
-				<template v-if="gitBranch && gitCommit" #details>
-					<div class="version-info">
+			<div class="info">
+				<div class="product" @click="showDevMode">
+					<LogoText />
+					<p class="slogan"><span>{{ sloganLines[0] }}</span><span><b>{{ sloganLines[1] }}</b></span></p>
+				</div>
+				<div class="version">
+					<template v-if="gitBranch && gitCommit">
 						<div>
 							<Icon name="branch" /><span>{{ gitBranch }}</span>
 						</div>
 						<div>
 							<Icon name="commit" /><span>{{ gitCommit.slice(0, 7) }}</span>
 						</div>
-					</div>
-				</template>
-				<template v-else #details>undefined</template>
-				{{ t.version }}
-			</SettingsChipItem>
-		</section>
+					</template>
+					<template v-else>
+						<div>
+							<Icon name="code" /><span>Frontend Development Mode</span>
+						</div>
+						<div v-if="environment.localBackend">
+							<Icon name="server" /><span>Local Backend</span>
+						</div>
+					</template>
+				</div>
+			</div>
+		</Contents>
 
 		<Subheader icon="link">{{ t.about.repositories }}</Subheader>
 		<section>
@@ -139,17 +142,24 @@
 	.info {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
+		gap: 2rem;
 		align-items: center;
 		margin: 3rem 0;
 		animation: none;
+	}
+
+	.product {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		align-items: center;
 
 		> * {
-			animation: float-up 600ms $ease-out-smooth backwards;
+			animation: float-up 800ms $ease-out-smooth backwards;
 
 			@for $i from 1 through 2 {
 				&:nth-child(#{$i}) {
-					animation-delay: 150ms * ($i - 1);
+					animation-delay: 100ms * ($i - 1);
 				}
 			}
 		}
@@ -178,14 +188,20 @@
 		}
 	}
 
-	.version-info {
+	.version {
+		@include round-small;
 		display: flex;
-		gap: 6px;
+		gap: 16px;
+		justify-content: center;
 		align-items: center;
+		padding: 8px 16px;
+		color: c(accent);
+		background-color: c(accent-5);
+		animation: float-up 800ms 200ms $ease-out-smooth backwards;
 
 		> div {
 			display: flex;
-			gap: 2px;
+			gap: 4px;
 			align-items: center;
 
 			> .icon {
@@ -193,6 +209,7 @@
 			}
 
 			> span {
+				font-size: 13px;
 				user-select: text;
 			}
 		}
@@ -209,7 +226,7 @@
 
 	@keyframes float-up {
 		from {
-			translate: 0 1rem;
+			translate: 0 5rem;
 			opacity: 0;
 		}
 	}
