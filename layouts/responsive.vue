@@ -207,5 +207,6 @@
 <style lang="scss">
 	body:has(.router-view.is-settings) {
 		overflow-x: hidden;
+		overscroll-behavior: none;
 	}
 </style>

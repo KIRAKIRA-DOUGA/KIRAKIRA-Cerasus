@@ -229,6 +229,7 @@
 			max-height: 100dvh;
 			padding: 0 $nav-padding-x;
 			overflow: hidden overlay;
+			overscroll-behavior-y: contain;
 			scrollbar-gutter: stable; // WARN: Chromium 114 开始，overflow 的 overlay 成了 auto 的别名，因此只能提前占位显示来确保不晃动。目前甚至 Chromium 自己的设置页都在依赖于 overlay，太荒谬了。https://bugs.chromium.org/p/chromium/issues/detail?id=1450927
 			transition: none;
 
