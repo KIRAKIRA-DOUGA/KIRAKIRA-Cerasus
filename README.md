@@ -24,6 +24,8 @@ KIRAKIRA 的前端
 
 [点击此处前往 Figma 设计文稿 >](https://www.figma.com/file/S5mM7zW5iMo560xnQ4cmbL/KIRAKIRA-Douga-PC?node-id=0%3A1)
 
+![Discord Server][discord-server-shield]
+
 ## 标星历史
 
 <a href="https://star-history.com/#KIRAKIRA-DOUGA/KIRAKIRA-Cerasus&Date">
@@ -613,6 +615,8 @@ button:any-hover {
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[discord-server-shield]: https://dcbadge.limes.pink/api/server/https://discord.gg/uVd9ZJzEy7
+
 [state-shield]: https://img.shields.io/badge/STATE-ALPHA-red?style=flat-square
 [tag-shield]: https://img.shields.io/badge/TAG-0.0.0-orange?style=flat-square
 [license-shield]: https://img.shields.io/badge/LICENSE-BSD%203‐Clause-green?style=flat-square
