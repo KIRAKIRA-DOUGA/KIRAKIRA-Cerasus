@@ -24,7 +24,7 @@ KIRAKIRA 的前端
 
 [点击此处前往 Figma 设计文稿 >](https://www.figma.com/file/S5mM7zW5iMo560xnQ4cmbL/KIRAKIRA-Douga-PC?node-id=0%3A1)
 
-![Discord Server][discord-server-shield]
+[![Discord Server][discord-server-shield]][discord-server-url]
 
 ## 标星历史
 
@@ -615,8 +615,6 @@ button:any-hover {
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[discord-server-shield]: https://dcbadge.limes.pink/api/server/https://discord.gg/uVd9ZJzEy7
-
 [state-shield]: https://img.shields.io/badge/STATE-ALPHA-red?style=flat-square
 [tag-shield]: https://img.shields.io/badge/TAG-0.0.0-orange?style=flat-square
 [license-shield]: https://img.shields.io/badge/LICENSE-BSD%203‐Clause-green?style=flat-square
@@ -648,3 +646,6 @@ button:any-hover {
 [fr-translation-url]: https://crowdin.com/project/kirakira/fr
 [yue-translation-shield]: https://img.shields.io/badge/dynamic/json?color=blue&label=粵語&style=flat-square&logo=crowdin&query=%24.progress[?(@.data.languageId==%27yue%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-14133121-613305.json
 [yue-translation-url]: https://crowdin.com/project/kirakira/yue
+
+[discord-server-shield]: https://dcbadge.limes.pink/api/server/https://discord.gg/uVd9ZJzEy7
+[discord-server-url]: https://discord.gg/uVd9ZJzEy7
