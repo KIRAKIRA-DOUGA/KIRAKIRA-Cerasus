@@ -202,6 +202,12 @@
 		}
 	});
 
+	useEventListener("window", "fullscreenchange", () => {
+		if (props.fullscreen) {
+			props.toggleFullscreen?.();
+		}
+	})
+
 	useEventListener("window", "keyup", e => {
 		switch (e.code) {
 			case "KeyD": /* 弹幕 */ showDanmaku.value = !showDanmaku.value; break;
