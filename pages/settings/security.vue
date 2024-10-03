@@ -5,7 +5,7 @@
 	const passwordChangeDate = ref(new Date());
 	const authenticatorAddDate = ref(new Date());
 	const passwordChangeDateDisplay = computed(() => formatDateWithLocale(passwordChangeDate.value));
-	const authenticatorAddDateDisplay = computed(() => formatDateWithLocale(authenticatorAddDate.value));
+	const authenticatorAddDateDisplay = computed(() => formatDateWithLocale(new Date(checkUser2FAResult.value?.totpCreationDateTime ?? 0)));
 	const selfUserInfoStore = useSelfUserInfoStore();
 
 	const showChangeEmail = ref(false);
@@ -22,25 +22,22 @@
 	const confirmNewPassword = ref("");
 	const isChangingPassword = ref(false);
 
-	const isEmail2FAEnabled = ref(false);
-	const isTotp2FAEnabled = ref(false);
+	const typeOf2FA = ref<"none" | "email" | "totp">("none"); // 2FA 的类型
+	const showCreateTotpModel = ref(false); // 是否显示创建 TOTP 模态框
+	const showEditTotpModel = ref(false); // 是否显示编辑 TOTP 模态框
+	const checkUser2FAResult = ref<CheckUserHave2FAServiceResponseDto>(); //
+	const hasBoundTotp = computed(() => checkUser2FAResult.value?.success && checkUser2FAResult.value.have2FA && checkUser2FAResult.value?.type === "totp"); // 是否已经有 TOTP，当 2FA 存在且类型为 totp 时，开启编辑 TOTP 的模态框，否则开启创建 TOTP 的模态框
 
-	const typeOf2FA = ref<"none" | "email" | "totp">("none");
-	const showCreateTotpModel = ref(false);
-	const showEditTotpModel = ref(false);
-	const checkUser2FAResult = ref<CheckUserHave2FAServiceResponseDto>();
-	const hasBoundTotp = computed(() => checkUser2FAResult.value?.success && checkUser2FAResult.value.have2FA && checkUser2FAResult.value?.type === "totp"); // 当 2FA 存在且类型为 totp 时，开启编辑 TOTP 的模态框，否则开启创建 TOTP 的模态框
-
-	const otpAuth = ref<string>('');
-	const totpQrcodeLevel = ref<Level>('M');
-	const totpQrcodeRenderAs = ref<RenderAs>('svg');
-	const totpQrcodeSize = ref<number>(200);
-
-	const confirmTotpVerificationCode = ref('');
-	const isConfirmTotp = ref(false);
-
-	const backupCode = ref<string[]>([]);
-	const recoveryCode = ref("")
+	// 创建 TOTP
+	const otpAuth = ref<string>(''); // TOTP AUTH（也就是二维码中的值）
+	const totpQrcodeLevel = ref<Level>('M'); // 二维码等级
+	const totpQrcodeRenderAs = ref<RenderAs>('svg'); // 二维码渲染格式
+	const totpQrcodeSize = ref<number>(200); // 二维码尺寸（px）
+	const confirmTotpVerificationCode = ref(''); // 确认绑定 TOTP 的验证码
+	const isConfirmTotp = ref(false); // 是否正在确认绑定 TOTP
+	const backupCode = ref<string[]>([]); // 备份码
+	const displayBackupCode = computed(() => backupCode.value.join("\t")) // 用于显示的备份码，中间用 TAB 隔开
+	const recoveryCode = ref("") // 恢复码
 
 	/**
 	 * 修改 Email
@@ -114,7 +111,7 @@
 	async function checkUserHave2FAByUUID() {
 		const headerCookie = useRequestHeaders(["cookie"]);
 		checkUser2FAResult.value = await api.user.checkUserHave2FAByUUID(headerCookie);
-		if (checkUser2FAResult.value.type)
+		if (checkUser2FAResult.value?.type)
 			typeOf2FA.value = checkUser2FAResult.value.type
 	}
 
@@ -146,12 +143,17 @@
 	}
 
 	/**
-	 * 关闭创建 TOTP 的模态框，并清除二维码数据
+	 * 关闭创建 TOTP 的模态框，并清除二维码数据和备份码/恢复码数据
 	 */
 	function closeCreateTotpModel() {
 		showCreateTotpModel.value = false;
 		otpAuth.value = '';
 		confirmTotpVerificationCode.value = "";
+		isConfirmTotp.value = false
+		backupCode.value = [];
+		recoveryCode.value = ""
+
+		checkUserHave2FAByUUID()
 	}
 
 	/**
@@ -174,6 +176,16 @@
 			backupCode.value = confirmUserTotpAuthenticatorResult.result.backupCode
 			recoveryCode.value = confirmUserTotpAuthenticatorResult.result.recoveryCode
 		}
+		isConfirmTotp.value = false;
+	}
+
+	/**
+	 * 下载 TOTP 生成的备份码和恢复码。
+	 */
+	function downloadBackupCodeAndRecoveryCode() {
+		const backupCodeAndRecoveryCode = `BACKUP CODE:\n${displayBackupCode.value}\n\nRECOVERY CODE:\n${recoveryCode.value}`
+		const filename = `KIRAKIRA TOTP CODE ${selfUserInfoStore.username} (UID ${selfUserInfoStore.uid}) ${new Date().getTime()}`
+		downloadTxtFileFromString(backupCodeAndRecoveryCode, filename)
 	}
 
 	/**
@@ -224,7 +236,7 @@
 			<SettingsChipItem
 				icon="lock"
 				:trailingIcon="hasBoundTotp ? 'edit' : 'add'"
-				:details="t.addition_date + t.colon + authenticatorAddDateDisplay"
+				:details="checkUser2FAResult?.totpCreationDateTime ? t.addition_date + t.colon + authenticatorAddDateDisplay : undefined"
 				@trailingIconClick="openTotpModel"
 			>TOTP {{ t.authenticator }}</SettingsChipItem>
 		</section>
@@ -264,10 +276,10 @@
 		<Modal v-model="showCreateTotpModel" title="绑定 TOTP 身份验证器" icon="lock" :hideTitleCloseIcon="true">
 			<div class="create-totp-modal">
 				<InfoBar type="warning" title="警告">
-					请勿向他人展示本页中显示的内容！
 					<!-- TODO: 使用多语言 -->
+					请勿向他人展示本页中显示的内容！
 				</InfoBar>
-				<div v-if="!backupCode || !recoveryCode" class="page1">
+				<div v-if="!backupCode || backupCode.length <= 0 || !recoveryCode" class="page1">
 					<div class="step1">
 						<h3>1. 安装验证器程序</h3>
 						<p>如果你已安装验证器程序，请跳过本步骤。</p>
@@ -301,16 +313,24 @@
 						<p>每个备份码和恢复码仅能使用一次，且关闭本页面后将不再显示，请妥善保存。</p>
 						<br />
 						<p>你的备份码如下：</p>
-						<pre><code>{{ backupCode.join("\t") }}</code></pre>
+						<pre><code>{{ displayBackupCode }}</code></pre>
 						<br />
 						<p>你的恢复码如下：</p>
 						<pre><code>{{ recoveryCode }}</code></pre>
 					</div>
 				</div>
 			</div>
-			<template #footer-right>
-				<Button class="secondary" @click="closeCreateTotpModel">{{ t.step.cancel }}</Button>
-				<Button @click="handleClickConfirmTotp">确认绑定</Button>
+
+			<template v-if="!backupCode || backupCode.length <= 0 || !recoveryCode" #footer-right>
+				<Button class="secondary" @click="closeCreateTotpModel" :disabled="isConfirmTotp" :loading="isConfirmTotp">{{ t.step.cancel }}</Button>
+				<!-- TODO: 使用多语言 -->
+				<Button @click="handleClickConfirmTotp" :disabled="isConfirmTotp" :loading="isConfirmTotp">确认绑定</Button>
+			</template>
+			<template v-else #footer-right>
+				<!-- TODO: 使用多语言 -->
+				<Button class="secondary" @click="downloadBackupCodeAndRecoveryCode">下载备份码和恢复码</Button>
+				<!-- TODO: 使用多语言 -->
+				<Button @click="closeCreateTotpModel">我已知晓，确认关闭本页面</Button>
 			</template>
 		</Modal>
 	</div>
