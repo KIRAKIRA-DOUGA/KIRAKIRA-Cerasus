@@ -34,7 +34,7 @@
 				uid: urlUid.value,
 			};
 			const videosResponse = await api.video.getVideoByUid(getVideoByUidRequest);
-			pages.value = Math.ceil(videosResponse.videosCount / 50);
+			pages.value = Math.max(1, Math.ceil(videosResponse.videosCount / 50));
 			videos.value = videosResponse;
 		} catch (error) { console.error(error); }
 	}

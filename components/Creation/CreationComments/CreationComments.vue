@@ -11,7 +11,7 @@
 	const currentPage = ref(1); // 当前页码
 	const pinned = ref(false);
 	const search = ref("");
-	const pageCount = computed(() => Math.floor(commentsCount.value / pageSize) + 1);
+	const pageCount = computed(() => Math.max(1, Math.ceil(commentsCount.value / pageSize)));
 
 	/**
 	 * 发送评论，将发送的评论添加到评论列表中

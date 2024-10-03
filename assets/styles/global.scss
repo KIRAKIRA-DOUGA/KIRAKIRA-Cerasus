@@ -82,14 +82,13 @@ xmp {
 
 html,
 body {
+	scrollbar-gutter: stable; // WARN: Chromium 114 开始，overflow 的 overlay 成了 auto 的别名，因此只能提前占位显示来确保不晃动。目前甚至 Chromium 自己的设置页都在依赖于 overlay，太荒谬了。https://bugs.chromium.org/p/chromium/issues/detail?id=1450927
 	font-size: 14px;
 }
 
 body {
-	@include fullscreen(relative);
 	margin: 0;
 	padding: 0;
-	scrollbar-gutter: stable; // WARN: Chromium 114 开始，overflow 的 overlay 成了 auto 的别名，因此只能提前占位显示来确保不晃动。目前甚至 Chromium 自己的设置页都在依赖于 overlay，太荒谬了。https://bugs.chromium.org/p/chromium/issues/detail?id=1450927
 	color: c(text-color);
 	background-color: c(main-bg);
 	transition: background-color $ease-out-max 250ms;

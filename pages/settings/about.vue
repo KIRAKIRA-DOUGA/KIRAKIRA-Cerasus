@@ -196,7 +196,7 @@
 		align-items: center;
 		padding: 8px 16px;
 		color: c(accent);
-		background-color: c(accent-5);
+		background-color: c(accent-hover-overlay);
 		animation: float-up 800ms 200ms $ease-out-smooth backwards;
 
 		> div {
