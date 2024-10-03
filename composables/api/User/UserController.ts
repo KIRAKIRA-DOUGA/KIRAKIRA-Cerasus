@@ -20,6 +20,8 @@ import type {
 	AdminClearUserInfoResponseDto,
 	CheckUserHave2FAServiceResponseDto,
 	CreateUserTotpAuthenticatorResponseDto,
+	ConfirmUserTotpAuthenticatorRequestDto,
+	ConfirmUserTotpAuthenticatorResponseDto,
 } from "./UserControllerDto";
 
 const BACK_END_URL = getCorrectUri();
@@ -371,4 +373,25 @@ export const createTotpAuthenticator = async (headerCookie: { cookie?: string | 
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	const { data: result } = await useFetch(`${USER_API_URL}/createTotpAuthenticator`, { method: "POST", headers: headerCookie, credentials: "include" });
 	return result.value as CreateUserTotpAuthenticatorResponseDto;
+};
+
+/**
+ * 用户确认绑定 TOTP 设备
+ * @param confirmUserTotpAuthenticatorRequest 用户确认绑定 TOTP 设备的请求载荷
+ * @param headerCookie 从客户端发起 SSR 请求时传递的 Header 中的 Cookie 部分，在 SSR 时将其转交给后端 API
+ * @returns 用户确认绑定 TOTP 设备的请求响应
+ */
+export const confirmUserTotpAuthenticator = async (confirmUserTotpAuthenticatorRequest: ConfirmUserTotpAuthenticatorRequestDto, headerCookie: { cookie?: string | undefined }): Promise<ConfirmUserTotpAuthenticatorResponseDto> => {
+	// NOTE: use { headers: headerCookie } to passing client-side cookies to backend API when SSR.
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	const { data: result } = await useFetch(
+		`${USER_API_URL}/confirmUserTotpAuthenticator`,
+		{
+			method: "POST",
+			body: { ...confirmUserTotpAuthenticatorRequest },
+			headers: headerCookie,
+			credentials: "include",
+		}
+	);
+	return result.value as ConfirmUserTotpAuthenticatorResponseDto;
 };

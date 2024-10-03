@@ -31,67 +31,16 @@
 	const checkUser2FAResult = ref<CheckUserHave2FAServiceResponseDto>();
 	const hasBoundTotp = computed(() => checkUser2FAResult.value?.success && checkUser2FAResult.value.have2FA && checkUser2FAResult.value?.type === "totp"); // 当 2FA 存在且类型为 totp 时，开启编辑 TOTP 的模态框，否则开启创建 TOTP 的模态框
 
-	const totpQrcodeValue = ref<string>('')
-	const totpQrcodeLevel = ref<Level>('M')
-	const totpQrcodeRenderAs = ref<RenderAs>('svg')
-	const totpQrcodeSize = ref<number>(200)
+	const otpAuth = ref<string>('');
+	const totpQrcodeLevel = ref<Level>('M');
+	const totpQrcodeRenderAs = ref<RenderAs>('svg');
+	const totpQrcodeSize = ref<number>(200);
 
-	const confirmTotpVerificationCode = ref('')
+	const confirmTotpVerificationCode = ref('');
+	const isConfirmTotp = ref(false);
 
-	/**
-	 * 通过 Cookie 中的 UUID 检查用户是否已开启 2FA 身份验证器
-	 */
-	async function checkUserHave2FAByUUID() {
-		const headerCookie = useRequestHeaders(["cookie"]);
-		checkUser2FAResult.value = await api.user.checkUserHave2FAByUUID(headerCookie);
-	}
-
-	/**
-	 * 开启 TOTP 模态框
-	 */
-	function openTotpModel() {
-		if (hasBoundTotp.value)
-			openEditTotpModel();
-		else
-			openCreateTotpModel();
-	}
-
-	/**
-	 * 开启创建 TOTP 的模态框
-	 */
-	async function openCreateTotpModel() {
-		/**
-		 * 0. 开启模态框
-		 * 1. 请求创建 TOTP
-		 * 2. 根据创建结果渲染二维码、显示备份码、恢复码
-		 */
-
-		showCreateTotpModel.value = true;
-		const headerCookie = useRequestHeaders(["cookie"]);
-		const createTotpAuthenticatorResult = await api.user.createTotpAuthenticator(headerCookie);
-		if (createTotpAuthenticatorResult.success && createTotpAuthenticatorResult.result?.otpAuth) {
-			console.log("aaaaaa", createTotpAuthenticatorResult.result.otpAuth);
-			console.log("eeee", createTotpAuthenticatorResult.isExists);
-			totpQrcodeValue.value = createTotpAuthenticatorResult.result.otpAuth
-		}
-	}
-
-	/**
-	 * 关闭创建 TOTP 的模态框，并清除二维码数据
-	 */
-	function closeCreateTotpModel() {
-		showCreateTotpModel.value = false
-		totpQrcodeValue.value = ''
-	}
-
-	/**
-	 * 开启编辑 TOTP 的模态框
-	 */
-	function openEditTotpModel() {
-		showEditTotpModel.value = true;
-	}
-
-
+	const backupCode = ref<string[]>([]);
+	const recoveryCode = ref("")
 
 	/**
 	 * 修改 Email
@@ -157,6 +106,81 @@
 			useEvent("app:requestLogin");
 		} else
 			useToast("更换密码失败，请稍后再试", "error"); // TODO: 使用多语言
+	}
+
+	/**
+	 * 通过 Cookie 中的 UUID 检查用户是否已开启 2FA 身份验证器
+	 */
+	async function checkUserHave2FAByUUID() {
+		const headerCookie = useRequestHeaders(["cookie"]);
+		checkUser2FAResult.value = await api.user.checkUserHave2FAByUUID(headerCookie);
+		if (checkUser2FAResult.value.type)
+			typeOf2FA.value = checkUser2FAResult.value.type
+	}
+
+	/**
+	 * 开启 TOTP 模态框
+	 */
+	function openTotpModel() {
+		if (hasBoundTotp.value)
+			openEditTotpModel();
+		else
+			openCreateTotpModel();
+	}
+
+	/**
+	 * 开启创建 TOTP 的模态框
+	 */
+	async function openCreateTotpModel() {
+		/**
+		 * 0. 开启模态框
+		 * 1. 请求创建 TOTP
+		 * 2. 根据创建结果渲染二维码、显示备份码、恢复码
+		 */
+
+		showCreateTotpModel.value = true;
+		const headerCookie = useRequestHeaders(["cookie"]);
+		const createTotpAuthenticatorResult = await api.user.createTotpAuthenticator(headerCookie);
+		if (createTotpAuthenticatorResult.success && createTotpAuthenticatorResult.result?.otpAuth)
+			otpAuth.value = createTotpAuthenticatorResult.result.otpAuth;
+	}
+
+	/**
+	 * 关闭创建 TOTP 的模态框，并清除二维码数据
+	 */
+	function closeCreateTotpModel() {
+		showCreateTotpModel.value = false;
+		otpAuth.value = '';
+		confirmTotpVerificationCode.value = "";
+	}
+
+	/**
+	 * 确认绑定 TOTP
+	 */
+	async function handleClickConfirmTotp() {
+		if (!confirmTotpVerificationCode.value) {
+			useToast("请输入验证码", "error");
+		}
+
+		isConfirmTotp.value = true;
+		const confirmUserTotpAuthenticatorRequest: ConfirmUserTotpAuthenticatorRequestDto = {
+			clientOtp: confirmTotpVerificationCode.value,
+			otpAuth: otpAuth.value,
+		};
+		const headerCookie = useRequestHeaders(["cookie"]);
+		const confirmUserTotpAuthenticatorResult = await api.user.confirmUserTotpAuthenticator(confirmUserTotpAuthenticatorRequest, headerCookie);
+
+		if (confirmUserTotpAuthenticatorResult.success && confirmUserTotpAuthenticatorResult.result?.backupCode && confirmUserTotpAuthenticatorResult.result.recoveryCode) {
+			backupCode.value = confirmUserTotpAuthenticatorResult.result.backupCode
+			recoveryCode.value = confirmUserTotpAuthenticatorResult.result.recoveryCode
+		}
+	}
+
+	/**
+	 * 开启编辑 TOTP 的模态框
+	 */
+	function openEditTotpModel() {
+		showEditTotpModel.value = true;
 	}
 
 	await checkUserHave2FAByUUID();
@@ -243,36 +267,50 @@
 					请勿向他人展示本页中显示的内容！
 					<!-- TODO: 使用多语言 -->
 				</InfoBar>
-				<div class="step1">
-					<h3>1. 安装验证器程序</h3>
-					<p>如果你已安装验证器程序，请跳过本步骤。</p>
-					<p>如果没有，你需要在你的私人设备中安装一个支持 TOTP 算法的验证器程序，例如 <a href="https://www.microsoft.com/security/mobile-authenticator-app" target="_blank">Microsoft Authenticator</a> 或 <a href="https://support.google.com/accounts/answer/1066447" target="_blank"> Google Authenticator</a>.</p>
-				</div>
-				<div class="step2">
-					<h3>2. 使用验证器程序扫描下方二维码</h3>
-					<div class="totp-qrcode-box">
-						<QrcodeVue v-if="totpQrcodeValue" :value="totpQrcodeValue" :level="totpQrcodeLevel" :render-as="totpQrcodeRenderAs" :size="totpQrcodeSize" />
+				<div v-if="!backupCode || !recoveryCode" class="page1">
+					<div class="step1">
+						<h3>1. 安装验证器程序</h3>
+						<p>如果你已安装验证器程序，请跳过本步骤。</p>
+						<p>如果没有，你需要在你的私人设备中安装一个支持 TOTP 算法的验证器程序，例如 <a href="https://www.microsoft.com/security/mobile-authenticator-app" target="_blank">Microsoft Authenticator</a> 或 <a href="https://support.google.com/accounts/answer/1066447" target="_blank"> Google Authenticator</a>.</p>
+					</div>
+					<div class="step2">
+						<h3>2. 使用验证器程序扫描下方二维码</h3>
+						<div class="totp-qrcode-box">
+							<QrcodeVue v-if="otpAuth" :value="otpAuth" :level="totpQrcodeLevel" :render-as="totpQrcodeRenderAs" :size="totpQrcodeSize" />
+						</div>
+					</div>
+					<div class="step3">
+						<h3>3. 填写验证码</h3>
+						<p>扫描二维码后，您的验证器程序中应该会出现一个新的验证码。<a href="https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus/issues" target="_blank">遇到问题？</a></p>
+						<p>请将验证码填写至下方的输入框中，并在倒计时结束前点击“确认绑定”按钮。</p>
+						<form class="totp-confirm-form">
+							<TextBox
+								v-model="confirmTotpVerificationCode"
+								:required="true"
+								type="text"
+								icon="verified"
+								placeholder="验证码"
+							/>
+						</form>
 					</div>
 				</div>
-				<div class="step3">
-					<h3>3. 填写验证码</h3>
-					<p>扫描二维码后，您的验证器程序中应该会出现一个新的验证码。<a href="https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus/issues" target="_blank">遇到问题？</a></p>
-					<p>请将验证码填写至下方的输入框中，并在倒计时结束前点击“确认绑定”按钮。</p>
-					<form class="totp-confirm-form">
-						<TextBox
-							v-model="confirmTotpVerificationCode"
-							:required="true"
-							type="text"
-							icon="verified"
-							placeholder="验证码"
-						/>
-					</form>
+				<div v-else class="page2">
+					<div class="step4">
+						<h3>4. 保存备份码和恢复码</h3>
+						<p>备份码可以作为 TOTP 验证码的替代。恢复码不仅可以作为 TOTP 验证码的替代，在使用恢复码登陆后，还会自动解除 TOTP 2FA 绑定。</p>
+						<p>每个备份码和恢复码仅能使用一次，且关闭本页面后将不再显示，请妥善保存。</p>
+						<br />
+						<p>你的备份码如下：</p>
+						<pre><code>{{ backupCode.join("\t") }}</code></pre>
+						<br />
+						<p>你的恢复码如下：</p>
+						<pre><code>{{ recoveryCode }}</code></pre>
+					</div>
 				</div>
-
 			</div>
 			<template #footer-right>
 				<Button class="secondary" @click="closeCreateTotpModel">{{ t.step.cancel }}</Button>
-				<Button>确认绑定</Button>
+				<Button @click="handleClickConfirmTotp">确认绑定</Button>
 			</template>
 		</Modal>
 	</div>
@@ -330,15 +368,39 @@
 			--size: large;
 		}
 
-		.totp-qrcode-box {
+		.page1,
+		.page2 {
 			display: flex;
 			flex-direction: column;
-			height: 200px;
-			margin: 5px 0 0 20px;
-		}
+			gap: 24px;
 
-		.totp-confirm-form {
-			padding-top: 5px;
+			.totp-qrcode-box {
+				display: flex;
+				flex-direction: column;
+				height: 200px;
+				margin: 5px 0 0 20px;
+			}
+
+			.totp-confirm-form {
+				padding-top: 5px;
+			}
+
+			.step4 {
+				pre {
+					margin-top: 5px;
+					padding: 10px;
+					background-color: #f4f4f4;
+					border: 1px solid #ddd;
+					border-radius: 6px;
+					cursor: text;
+
+					code {
+						display: block;
+						width: 100%;
+						user-select: text;
+					}
+				}
+			}
 		}
 	}
 </style>
