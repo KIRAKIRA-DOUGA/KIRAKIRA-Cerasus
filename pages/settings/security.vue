@@ -24,7 +24,7 @@
 
 	const typeOf2FA = ref<"none" | "email" | "totp">("none"); // 2FA 的类型
 	const showCreateTotpModel = ref(false); // 是否显示创建 TOTP 模态框
-	const showEditTotpModel = ref(false); // 是否显示编辑 TOTP 模态框
+	const showDeleteTotpModel = ref(false); // 是否显示编辑 TOTP 模态框
 	const checkUser2FAResult = ref<CheckUserHave2FAServiceResponseDto>(); //
 	const hasBoundTotp = computed(() => checkUser2FAResult.value?.success && checkUser2FAResult.value.have2FA && checkUser2FAResult.value?.type === "totp"); // 是否已经有 TOTP，当 2FA 存在且类型为 totp 时，开启编辑 TOTP 的模态框，否则开启创建 TOTP 的模态框
 
@@ -33,11 +33,14 @@
 	const totpQrcodeLevel = ref<Level>('M'); // 二维码等级
 	const totpQrcodeRenderAs = ref<RenderAs>('svg'); // 二维码渲染格式
 	const totpQrcodeSize = ref<number>(200); // 二维码尺寸（px）
-	const confirmTotpVerificationCode = ref(''); // 确认绑定 TOTP 的验证码
+	const confirmTotpVerificationCode = ref(''); // 确认绑定 TOTP 时用户输入的验证码
 	const isConfirmTotp = ref(false); // 是否正在确认绑定 TOTP
 	const backupCode = ref<string[]>([]); // 备份码
-	const displayBackupCode = computed(() => backupCode.value.join("\t")) // 用于显示的备份码，中间用 TAB 隔开
-	const recoveryCode = ref("") // 恢复码
+	const displayBackupCode = computed(() => backupCode.value.join("\t")); // 用于显示的备份码，中间用 TAB 隔开
+	const recoveryCode = ref(""); // 恢复码
+
+	// 删除 TOTP
+	const deleteTotpVerificationCode = ref(""); // 删除 TOTP 时用户输入的验证码
 
 	/**
 	 * 修改 Email
@@ -112,7 +115,9 @@
 		const headerCookie = useRequestHeaders(["cookie"]);
 		checkUser2FAResult.value = await api.user.checkUserHave2FAByUUID(headerCookie);
 		if (checkUser2FAResult.value?.type)
-			typeOf2FA.value = checkUser2FAResult.value.type
+			typeOf2FA.value = checkUser2FAResult.value.type;
+		else
+			typeOf2FA.value = "none";
 	}
 
 	/**
@@ -120,7 +125,7 @@
 	 */
 	function openTotpModel() {
 		if (hasBoundTotp.value)
-			openEditTotpModel();
+			openDeleteTotpModel();
 		else
 			openCreateTotpModel();
 	}
@@ -145,15 +150,17 @@
 	/**
 	 * 关闭创建 TOTP 的模态框，并清除二维码数据和备份码/恢复码数据
 	 */
-	function closeCreateTotpModel() {
+	async function closeCreateTotpModel() {
+
+		isConfirmTotp.value = true;
+		await checkUserHave2FAByUUID();
+
 		showCreateTotpModel.value = false;
 		otpAuth.value = '';
 		confirmTotpVerificationCode.value = "";
-		isConfirmTotp.value = false
+		isConfirmTotp.value = false;
 		backupCode.value = [];
-		recoveryCode.value = ""
-
-		checkUserHave2FAByUUID()
+		recoveryCode.value = "";
 	}
 
 	/**
@@ -191,8 +198,8 @@
 	/**
 	 * 开启编辑 TOTP 的模态框
 	 */
-	function openEditTotpModel() {
-		showEditTotpModel.value = true;
+	function openDeleteTotpModel() {
+		showDeleteTotpModel.value = true;
 	}
 
 	await checkUserHave2FAByUUID();
@@ -235,7 +242,7 @@
 			<!-- TODO: 使用多语言 -->
 			<SettingsChipItem
 				icon="lock"
-				:trailingIcon="hasBoundTotp ? 'edit' : 'add'"
+				:trailingIcon="hasBoundTotp ? 'delete' : 'add'"
 				:details="checkUser2FAResult?.totpCreationDateTime ? t.addition_date + t.colon + authenticatorAddDateDisplay : undefined"
 				@trailingIconClick="openTotpModel"
 			>TOTP {{ t.authenticator }}</SettingsChipItem>
@@ -322,7 +329,7 @@
 			</div>
 
 			<template v-if="!backupCode || backupCode.length <= 0 || !recoveryCode" #footer-right>
-				<Button class="secondary" @click="closeCreateTotpModel" :disabled="isConfirmTotp" :loading="isConfirmTotp">{{ t.step.cancel }}</Button>
+				<Button class="secondary" @click="closeCreateTotpModel" :disabled="isConfirmTotp">{{ t.step.cancel }}</Button>
 				<!-- TODO: 使用多语言 -->
 				<Button @click="handleClickConfirmTotp" :disabled="isConfirmTotp" :loading="isConfirmTotp">确认绑定</Button>
 			</template>
@@ -330,7 +337,7 @@
 				<!-- TODO: 使用多语言 -->
 				<Button class="secondary" @click="downloadBackupCodeAndRecoveryCode">下载备份码和恢复码</Button>
 				<!-- TODO: 使用多语言 -->
-				<Button @click="closeCreateTotpModel">我已知晓，确认关闭本页面</Button>
+				<Button @click="closeCreateTotpModel" :disabled="isConfirmTotp" :loading="isConfirmTotp">我已知晓，确认关闭本页面</Button>
 			</template>
 		</Modal>
 	</div>
