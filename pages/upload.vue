@@ -110,7 +110,7 @@
 			hidden
 			type="file"
 			multiple
-			accept="video/*"
+			accept="video/*,.mkv"
 			@change="onChangeFile"
 		/>
 
