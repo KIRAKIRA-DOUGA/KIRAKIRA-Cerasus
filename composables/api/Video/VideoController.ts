@@ -112,6 +112,13 @@ export class TusFileUploader {
 			// Create a new tus upload
 			const uploader = new tus.Upload(file, {
 				endpoint: `${VIDEO_API_URL}/tus`,
+				onBeforeRequest(req) {
+					const url = req.getURL();
+					if (url?.includes(VIDEO_API_URL)) { // 仅在请求后端 API 获取上传目的地 URL 时设置允许跨域传递 cookie，
+						const xhr = req.getUnderlyingObject();
+						xhr.withCredentials = true;
+					}
+				},
 				retryDelays: [0, 3000, 5000, 10000, 20000], // 重试超时
 				chunkSize: 52428800, // 视频分片大小
 				storeFingerprintForResuming: true, // 存储用于恢复上传的 key // WARN: 正常运行时，应该为 True
@@ -140,7 +147,7 @@ export class TusFileUploader {
 						reject(new Error("Can not find the video ID"));
 				},
 				onAfterResponse: (req, res) => {
-					if (req.getURL().includes("https://upload.videodelivery.net/tus")) {
+					if (!req.getURL().includes(VIDEO_API_URL)) {
 						const headerVideoId = res?.getHeader("stream-media-id");
 						if (headerVideoId)
 							videoId = headerVideoId;
