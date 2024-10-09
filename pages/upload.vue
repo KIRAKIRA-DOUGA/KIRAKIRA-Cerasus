@@ -43,7 +43,7 @@
 		if (!fileList || !fileList.length) return [];
 		const files: File[] = [];
 		for (const file of fileList)
-			if (file.type.startsWith("video"))
+			if (file.type.startsWith("video") || file.name.endsWith(".mkv"))
 				files.push(file);
 		return files;
 	}
