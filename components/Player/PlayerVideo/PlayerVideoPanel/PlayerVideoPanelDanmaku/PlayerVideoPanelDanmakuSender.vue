@@ -85,10 +85,10 @@
 
 		const emitDanmakuRequestData: EmitDanmakuRequestDto = {
 			videoId: props.videoId,
-			time: props.currentTime,
+			time: props.currentTime || 0,
 			text,
 			color: format.color.hex,
-			fontSIze: format.fontSize,
+			fontSize: format.fontSize,
 			mode: format.mode,
 			enableRainbow: format.enableRainbow,
 		};
