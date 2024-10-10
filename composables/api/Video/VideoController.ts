@@ -114,7 +114,7 @@ export class TusFileUploader {
 				endpoint: `${VIDEO_API_URL}/tus`,
 				onBeforeRequest(req) {
 					const url = req.getURL();
-					if (!url?.includes("https://upload.videodelivery.net/tus")) { // 仅在请求后端 API 获取上传目的地 URL 时设置允许跨域传递 cookie，
+					if (url?.includes(VIDEO_API_URL)) { // 仅在请求后端 API 获取上传目的地 URL 时设置允许跨域传递 cookie，
 						const xhr = req.getUnderlyingObject();
 						xhr.withCredentials = true;
 					}
@@ -147,7 +147,7 @@ export class TusFileUploader {
 						reject(new Error("Can not find the video ID"));
 				},
 				onAfterResponse: (req, res) => {
-					if (req.getURL().includes("https://upload.videodelivery.net/tus")) {
+					if (!req.getURL().includes(VIDEO_API_URL)) {
 						const headerVideoId = res?.getHeader("stream-media-id");
 						if (headerVideoId)
 							videoId = headerVideoId;
