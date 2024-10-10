@@ -213,7 +213,7 @@
 					time: danmaku.time,
 					style: {
 						...basicDanmakuCommentStyle,
-						fontSize: `${fontSizes[danmaku.fontSIze]}px`,
+						fontSize: `${fontSizes[danmaku.fontSize]}px`,
 						color: `#${danmaku.color}`,
 					},
 				}));
