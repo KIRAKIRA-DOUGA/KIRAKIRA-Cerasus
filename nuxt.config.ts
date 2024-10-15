@@ -257,6 +257,7 @@ export default defineNuxtConfig({
 			"./plugins/postcss/any-hover": true,
 			"./plugins/postcss/lang-latin": true,
 			"postcss-combine-media-query": false,
+			"postcss-viewport-unit-fallback": true,
 		},
 	},
 
