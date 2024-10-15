@@ -235,9 +235,8 @@
 					v-for="track in tracksSorted"
 					:key="track.id"
 					:active="selectedTrack.height === track.height"
-					@click="selectedTrack = track"
+					@click="selectedTrack = track; autoQuality = false"
 					class="quality-item"
-					:class="{ disabled: autoQuality }"
 				>
 					<span>{{ track.height }}P</span>
 					<span v-if="track.videoBandwidth" class="kbps">{{ Math.round(track.videoBandwidth / 1000) }} Kbps</span>
@@ -516,11 +515,6 @@
 			justify-content: space-between;
 			align-items: center;
 			width: 100%;
-		}
-
-		&.disabled {
-			opacity: 0.5;
-			pointer-events: none;
 		}
 
 		.kbps {
