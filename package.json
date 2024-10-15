@@ -92,6 +92,7 @@
 		"postcss": "^8.4.41",
 		"postcss-combine-media-query": "^1.0.1",
 		"postcss-html": "^1.7.0",
+		"postcss-viewport-unit-fallback": "^1.0.1",
 		"protobufjs": "^7.4.0",
 		"sass": "1.77.6",
 		"stylelint": "^16.8.2",
