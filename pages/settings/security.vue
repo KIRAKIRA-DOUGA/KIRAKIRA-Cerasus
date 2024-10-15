@@ -22,13 +22,28 @@
 	const confirmNewPassword = ref("");
 	const isChangingPassword = ref(false);
 
-	const typeOf2FA = ref<"none" | "email" | "totp">("none"); // 2FA 的类型
-	const showCreateTotpModel = ref(false); // 是否显示创建 TOTP 模态框
-	const showDeleteTotpModel = ref(false); // 是否显示编辑 TOTP 模态框
-	const checkUser2FAResult = ref<CheckUserHave2FAServiceResponseDto>(); //
+	type TypeOf2FA = "none" | "email" | "totp"
+	const categoryOf2FA = ref<TypeOf2FA>("none"); // 2FA 的类型
+	// 2FA 的类型，带有副作用
+	const categoryOf2FAComputed = computed<TypeOf2FA>({
+		get() {
+			return categoryOf2FA.value;
+		},
+		set(newValue) {
+			// 当响应式变量从 totp 改变为其他非 totp 的值，且用户的 2FA 类型为 totp 时，打开解绑 TOTP 的模态框，且不会导致导致响应式变量的变更
+			if (categoryOf2FA.value === 'totp' && newValue !== 'totp' && checkUser2FAResult.value?.type === 'totp') {
+				// TODO: 使用多语言
+				useToast("在关闭 2FA 之前必须删除 TOTP 验证器", "warning", 5000)
+				openDeleteTotpModel();
+			} else
+				categoryOf2FA.value = newValue
+		}
+	});
+	const checkUser2FAResult = ref<CheckUserHave2FAServiceResponseDto>(); // 获取到的用户 2FA 类型
 	const hasBoundTotp = computed(() => checkUser2FAResult.value?.success && checkUser2FAResult.value.have2FA && checkUser2FAResult.value?.type === "totp"); // 是否已经有 TOTP，当 2FA 存在且类型为 totp 时，开启编辑 TOTP 的模态框，否则开启创建 TOTP 的模态框
 
 	// 创建 TOTP
+	const showCreateTotpModel = ref(false); // 是否显示创建 TOTP 模态框
 	const otpAuth = ref<string>(''); // TOTP AUTH（也就是二维码中的值）
 	const totpQrcodeLevel = ref<Level>('M'); // 二维码等级
 	const totpQrcodeRenderAs = ref<RenderAs>('svg'); // 二维码渲染格式
@@ -40,7 +55,10 @@
 	const recoveryCode = ref(""); // 恢复码
 
 	// 删除 TOTP
+	const showDeleteTotpModel = ref(false); // 是否显示编辑 TOTP 模态框
 	const deleteTotpVerificationCode = ref(""); // 删除 TOTP 时用户输入的验证码
+	const deleteTotpPassword = ref(""); // 删除 TOTP 时用户输入的密码
+	const isDeletingTotp = ref(false); // 是否正在删除 TOTP
 
 	/**
 	 * 修改 Email
@@ -115,9 +133,9 @@
 		const headerCookie = useRequestHeaders(["cookie"]);
 		checkUser2FAResult.value = await api.user.checkUserHave2FAByUUID(headerCookie);
 		if (checkUser2FAResult.value?.type)
-			typeOf2FA.value = checkUser2FAResult.value.type;
+			categoryOf2FAComputed.value = checkUser2FAResult.value.type;
 		else
-			typeOf2FA.value = "none";
+			categoryOf2FAComputed.value = "none";
 	}
 
 	/**
@@ -151,7 +169,6 @@
 	 * 关闭创建 TOTP 的模态框，并清除二维码数据和备份码/恢复码数据
 	 */
 	async function closeCreateTotpModel() {
-
 		isConfirmTotp.value = true;
 		await checkUserHave2FAByUUID();
 
@@ -169,19 +186,27 @@
 	async function handleClickConfirmTotp() {
 		if (!confirmTotpVerificationCode.value) {
 			useToast("请输入验证码", "error");
+			return;
 		}
 
 		isConfirmTotp.value = true;
-		const confirmUserTotpAuthenticatorRequest: ConfirmUserTotpAuthenticatorRequestDto = {
-			clientOtp: confirmTotpVerificationCode.value,
-			otpAuth: otpAuth.value,
-		};
-		const headerCookie = useRequestHeaders(["cookie"]);
-		const confirmUserTotpAuthenticatorResult = await api.user.confirmUserTotpAuthenticator(confirmUserTotpAuthenticatorRequest, headerCookie);
 
-		if (confirmUserTotpAuthenticatorResult.success && confirmUserTotpAuthenticatorResult.result?.backupCode && confirmUserTotpAuthenticatorResult.result.recoveryCode) {
-			backupCode.value = confirmUserTotpAuthenticatorResult.result.backupCode
-			recoveryCode.value = confirmUserTotpAuthenticatorResult.result.recoveryCode
+		try {
+			const confirmUserTotpAuthenticatorRequest: ConfirmUserTotpAuthenticatorRequestDto = {
+				clientOtp: confirmTotpVerificationCode.value,
+				otpAuth: otpAuth.value,
+			};
+			const headerCookie = useRequestHeaders(["cookie"]);
+			const confirmUserTotpAuthenticatorResult = await api.user.confirmUserTotpAuthenticator(confirmUserTotpAuthenticatorRequest, headerCookie);
+
+			if (confirmUserTotpAuthenticatorResult.success && confirmUserTotpAuthenticatorResult.result?.backupCode && confirmUserTotpAuthenticatorResult.result.recoveryCode) {
+				backupCode.value = confirmUserTotpAuthenticatorResult.result.backupCode
+				recoveryCode.value = confirmUserTotpAuthenticatorResult.result.recoveryCode
+			}
+			await checkUserHave2FAByUUID();
+		} catch (error) {
+			isConfirmTotp.value = false;
+			useToast("绑定 TOTP 验证器失败，请稍后再试", "error", 5000);
 		}
 		isConfirmTotp.value = false;
 	}
@@ -196,10 +221,59 @@
 	}
 
 	/**
-	 * 开启编辑 TOTP 的模态框
+	 * 开启删除 TOTP 的模态框
 	 */
 	function openDeleteTotpModel() {
 		showDeleteTotpModel.value = true;
+	}
+
+	/**
+	 * 关闭删除 TOTP 的模态框，并清除相关状态
+	 */
+	function closeDeleteTotpModel() {
+		showDeleteTotpModel.value = false;
+		isDeletingTotp.value = false;
+		deleteTotpPassword.value = "";
+		deleteTotpVerificationCode.value = "";
+	}
+
+	/**
+	 * 删除 TOTP 身份验证器
+	 */
+	async function deleteTotpByVerification() {
+		if (!deleteTotpPassword.value) {
+			useToast("请输入密码", "error");
+			return;
+		}
+
+		if (!deleteTotpVerificationCode.value) {
+			useToast("请输入验证码", "error");
+			return;
+		}
+
+		isDeletingTotp.value = true;
+		try {
+			const passwordHash = await generateHash(deleteTotpPassword.value);
+			const deleteTotpAuthenticatorByTotpVerificationCodeRequest: DeleteTotpAuthenticatorByTotpVerificationCodeRequestDto = {
+				passwordHash,
+				clientOtp: deleteTotpVerificationCode.value,
+			};
+			const headerCookie = useRequestHeaders(["cookie"]);
+			const deleteTotpByVerificationCodeResult = await api.user.deleteTotpByVerificationCode(deleteTotpAuthenticatorByTotpVerificationCodeRequest, headerCookie);
+			if (deleteTotpByVerificationCodeResult.isCoolingDown)
+				// TODO: 使用多语言
+				useToast("无法删除，验证码冷却中", "warning");
+
+			if (deleteTotpByVerificationCodeResult.success)
+				categoryOf2FAComputed.value = "none";
+
+			checkUserHave2FAByUUID();
+			closeDeleteTotpModel();
+		} catch (error) {
+			// TODO: 使用多语言
+			useToast("删除 TOTP 身份验证器失败，请稍后再试", "error", 5000);
+			isDeletingTotp.value = false;
+		}
 	}
 
 	await checkUserHave2FAByUUID();
@@ -234,11 +308,11 @@
 		<!-- TODO: 使用多语言 -->
 		<Subheader icon="lock">双重验证</Subheader>
 		<section list>
-			<RadioButton v-model="typeOf2FA" v-ripple value="none" details="关闭双重验证会降低账号安全性。">关闭</RadioButton>
-			<RadioButton v-model="typeOf2FA" v-ripple value="email" details="验证码将会直接发送到您的邮箱。若您已经绑定 TOTP 设备，则需要先关闭 TOTP 才能切换至此选项。" :disabled="typeOf2FA === 'totp' || checkUser2FAResult?.type === 'totp'">邮箱验证码</RadioButton>
-			<RadioButton v-model="typeOf2FA" v-ripple value="totp" details="在你绑定了 TOTP 的设备中查看验证码。">TOTP（基于时间的一次性密码）</RadioButton>
+			<RadioButton v-model="categoryOf2FAComputed" v-ripple value="none" details="关闭双重验证会降低账号安全性。">关闭</RadioButton>
+			<RadioButton v-model="categoryOf2FAComputed" v-ripple value="email" details="验证码将会直接发送到您的邮箱。若您已经绑定 TOTP 设备，则需要先关闭 TOTP 才能切换至此选项。" :disabled="checkUser2FAResult?.type === 'totp'">邮箱验证码</RadioButton>
+			<RadioButton v-model="categoryOf2FAComputed" v-ripple value="totp" details="在你绑定了 TOTP 的设备中查看验证码。">TOTP（基于时间的一次性密码）</RadioButton>
 		</section>
-		<section v-if="typeOf2FA === 'totp'">
+		<section v-if="categoryOf2FAComputed === 'totp'">
 			<!-- TODO: 使用多语言 -->
 			<SettingsChipItem
 				icon="lock"
@@ -259,7 +333,7 @@
 				</form>
 			</div>
 			<template #footer-right>
-				<Button class="secondary" @click="showChangePassword = false">{{ t.step.cancel }}</Button>
+				<Button class="secondary" :disabled="isChangingEmail" @click="showChangePassword = false">{{ t.step.cancel }}</Button>
 				<Button @click="updateUserEmail" :disabled="isChangingEmail" :loading="isChangingEmail">{{ t.step.apply }}</Button>
 			</template>
 		</Modal>
@@ -274,7 +348,7 @@
 				</form>
 			</div>
 			<template #footer-right>
-				<Button class="secondary" @click="showChangePassword = false">{{ t.step.cancel }}</Button>
+				<Button class="secondary" :disabled="isChangingPassword" @click="showChangePassword = false">{{ t.step.cancel }}</Button>
 				<Button @click="updateUserPassword" :disabled="isChangingPassword" :loading="isChangingPassword">{{ t.step.apply }}</Button>
 			</template>
 		</Modal>
@@ -338,6 +412,20 @@
 				<Button class="secondary" @click="downloadBackupCodeAndRecoveryCode">下载备份码和恢复码</Button>
 				<!-- TODO: 使用多语言 -->
 				<Button @click="closeCreateTotpModel" :disabled="isConfirmTotp" :loading="isConfirmTotp">我已知晓，确认关闭本页面</Button>
+			</template>
+		</Modal>
+
+		<!-- TODO: 使用多语言 -->
+		<Modal v-model="showDeleteTotpModel" title="删除 TOTP 身份验证器" icon="delete">
+			<div class="delete-totp-modal">
+				<form>
+					<TextBox v-model="deleteTotpPassword" :required="true" type="password" icon="lock" :placeholder="t.password" autoComplete="current-password" />
+					<TextBox v-model="deleteTotpVerificationCode" :required="true" type="text" icon="lock" placeholder="TOTP 验证码" />
+				</form>
+			</div>
+			<template #footer-right>
+				<Button class="secondary" :disabled="isDeletingTotp" @click="closeDeleteTotpModel">{{ t.step.cancel }}</Button>
+				<Button @click="deleteTotpByVerification" :disabled="isDeletingTotp" :loading="isDeletingTotp">{{ t.delete }}</Button>
 			</template>
 		</Modal>
 	</div>
@@ -428,6 +516,23 @@
 					}
 				}
 			}
+		}
+	}
+
+	.delete-totp-modal {
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+		width: 300px;
+
+		> form {
+			display: flex;
+			flex-direction: column;
+			gap: 16px;
+		}
+
+		.text-box {
+			--size: large;
 		}
 	}
 </style>

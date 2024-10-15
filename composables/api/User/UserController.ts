@@ -22,6 +22,8 @@ import type {
 	CreateUserTotpAuthenticatorResponseDto,
 	ConfirmUserTotpAuthenticatorRequestDto,
 	ConfirmUserTotpAuthenticatorResponseDto,
+	DeleteTotpAuthenticatorByTotpVerificationCodeRequestDto,
+	DeleteTotpAuthenticatorByTotpVerificationCodeResponseDto,
 } from "./UserControllerDto";
 
 const BACK_END_URL = getCorrectUri();
@@ -395,3 +397,24 @@ export const confirmUserTotpAuthenticator = async (confirmUserTotpAuthenticatorR
 	);
 	return result.value as ConfirmUserTotpAuthenticatorResponseDto;
 };
+
+/**
+ * 已登录用户通过密码和 TOTP 验证码删除身份验证器
+ * @param deleteTotpAuthenticatorByTotpVerificationCodeRequest
+ * @param headerCookie
+ * @returns 已登录用户通过密码和 TOTP 验证码删除身份验证器的请求响应
+ */
+export const deleteTotpByVerificationCode = async (deleteTotpAuthenticatorByTotpVerificationCodeRequest: DeleteTotpAuthenticatorByTotpVerificationCodeRequestDto, headerCookie: { cookie?: string | undefined }): Promise<DeleteTotpAuthenticatorByTotpVerificationCodeResponseDto> => {
+	// NOTE: use { headers: headerCookie } to passing client-side cookies to backend API when SSR.
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	const { data: result } = await useFetch(
+		`${USER_API_URL}/deleteTotpAuthenticatorByTotpVerificationCodeController`,
+		{
+			method: "DELETE",
+			body: { ...deleteTotpAuthenticatorByTotpVerificationCodeRequest },
+			headers: headerCookie,
+			credentials: "include",
+		}
+	);
+	return result.value as DeleteTotpAuthenticatorByTotpVerificationCodeResponseDto;
+}
