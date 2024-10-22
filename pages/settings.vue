@@ -522,6 +522,13 @@
 			&[grid] {
 				@include settings-grid;
 				padding: 20px;
+
+				&[force-multi-column] {
+					@include mobile {
+						--force-multi-column: true;
+						grid-template-columns: 1fr 1fr;
+					}
+				}
 			}
 		}
 

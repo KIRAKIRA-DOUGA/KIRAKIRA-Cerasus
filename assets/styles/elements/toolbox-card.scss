@@ -38,8 +38,9 @@
 }
 
 @mixin settings-grid {
-	$min-width: 226px;
+	$min-width: 218px;
 	$gap: 12px;
+	--force-multi-column: false;
 	container: settings-grid / inline-size;
 
 	display: grid;
@@ -55,12 +56,14 @@
 	> * {
 		--column: multi;
 
-		@container settings-grid (width < #{$min-width * 2 + $gap}) {
-			--column: single;
-		}
+		@container settings-grid style(--force-multi-column: false) {
+			@container settings-grid (width < #{$min-width * 2 + $gap}) {
+				--column: single;
+			}
 
-		@container settings-grid (width < #{$min-width * 2}) {
-			--view: list;
+			@container settings-grid (width < #{$min-width * 2}) {
+				--view: list;
+			}
 		}
 	}
 }

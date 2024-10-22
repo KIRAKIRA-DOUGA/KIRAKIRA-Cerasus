@@ -83,7 +83,7 @@
 		</section>
 
 		<Subheader icon="palette">{{ t.palette }}</Subheader>
-		<section ref="paletteSection" grid>
+		<section ref="paletteSection" grid force-multi-column>
 			<SettingsGridItem
 				v-for="item in paletteList"
 				:id="item.color"
@@ -93,7 +93,7 @@
 				class="force-color"
 				:class="[item.color]"
 			>
-				<div class="content">
+				<div class="palette-card">
 					<NuxtImg
 						:src="getPaletteImage(item.color)"
 						alt="Is the Order a Rabbit?"
@@ -104,8 +104,10 @@
 					/>
 					<div class="overlay light"></div>
 					<div class="overlay color"></div>
-					<h3>{{ t.palette[item.color] }}</h3>
-					<p lang="ja">{{ item.subtitle }}</p>
+					<div>
+						<h3>{{ t.palette[item.color] }}</h3>
+						<p lang="ja">{{ item.subtitle }}</p>
+					</div>
 					<Icon name="palette" />
 				</div>
 			</SettingsGridItem>
@@ -117,10 +119,12 @@
 				class="custom-color"
 				@click="e => flyoutColorPicker = [e]"
 			>
-				<div class="content">
+				<div class="palette-card">
 					<div class="hue-gradient"></div>
-					<h3>{{ t.custom }}</h3>
-					<p>Make It Yours</p>
+					<div>
+						<h3>{{ t.custom }}</h3>
+						<p>Make It Yours</p>
+					</div>
 					<Icon name="edit" />
 				</div>
 			</SettingsGridItem>
@@ -196,11 +200,12 @@
 		}
 	}
 
-	.content {
+	.palette-card {
 		@include square(100%);
 		display: flex;
 		flex-direction: column;
-		padding: 18px 20px;
+		justify-content: space-between;
+		padding: 14px 16px;
 		color: c(accent);
 
 		.custom-color & {
@@ -213,17 +218,28 @@
 
 		.icon,
 		h3 {
-			margin-bottom: calc(2px + 0.1cqh);
 			font-size: calc(16px + 4cqw);
+		}
+
+		h3 {
+			margin-bottom: calc(2px + 0.1cqh);
+
+			@include mobile {
+				display: none;
+			}
 		}
 
 		p {
 			font-size: calc(14px + 1cqw);
+
+			@include mobile {
+				font-weight: bold;
+			}
 		}
 
 		.icon {
 			display: block;
-			margin-top: auto;
+			margin-top: calc(8px + 0.1cqh);
 		}
 
 		img,
