@@ -140,7 +140,6 @@
 
 	:comp {
 		flex-grow: 1;
-		overflow-x: overlay;
 		color: c(icon-color);
 
 		> .scroll-container {

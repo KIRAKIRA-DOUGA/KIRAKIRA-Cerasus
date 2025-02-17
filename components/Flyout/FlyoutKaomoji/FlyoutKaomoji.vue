@@ -33,9 +33,9 @@
 			</TabBar>
 			<div>
 				<Transition :name="transitionName" mode="out-in">
-					<div :key="selected" class="grid">
+					<ScrollContainer :key="selected">
 						<FlyoutKaomojiButton v-for="i in kaomojiList" :key="i" @click="input(i)">{{ i }}</FlyoutKaomojiButton>
-					</div>
+					</ScrollContainer>
 				</Transition>
 			</div>
 		</Comp>
@@ -60,16 +60,22 @@
 		}
 	}
 
-	.grid {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 6px;
-		align-content: flex-start;
-		align-items: baseline;
+	.scroll-container {
 		height: $height;
-		padding: 12px $padding-x;
-		padding-top: 0.25rem;
-		overflow-y: auto;
+
+		&:deep(.scroller) {
+			overscroll-behavior: contain;
+
+			> .content {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: 6px;
+				align-content: flex-start;
+				align-items: baseline;
+				padding: 12px $padding-x;
+				padding-top: 0.25rem;
+			}
+		}
 	}
 
 	// stylelint-disable-next-line order/order
