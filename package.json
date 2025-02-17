@@ -134,6 +134,7 @@
 		"tus-js-client": "^4.1.0",
 		"vue-audio-visual": "^3.0.8",
 		"vue-cropper": "^1.1.4",
+		"vue-router-better-scroller": "^0.0.0",
 		"vue-virtual-scroller": "2.0.0-beta.8"
 	},
 	"pnpm": {
