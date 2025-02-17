@@ -281,9 +281,9 @@
 					<UploaderAira :hidden="!isUploaderLovinIt" />
 				</AccordionItem>
 				<AccordionItem title="滚动条测试">
-					<div class="scroll-test">
+					<ScrollContainer class="scroll-test">
 						<div class="scroll-test-item"></div>
-					</div>
+					</ScrollContainer>
 				</AccordionItem>
 				<AccordionItem title="工具提示测试">
 					注意触摸屏设备不会触发。
@@ -398,7 +398,6 @@
 	.scroll-test {
 		width: 100%;
 		height: 500px;
-		overflow: overlay;
 
 		.scroll-test-item {
 			@include square(200%);

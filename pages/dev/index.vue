@@ -30,6 +30,7 @@
 		["富文本测试页", "/dev/test-rich-text-editor"],
 		["动态图标测试页", "/dev/test-lottie"],
 		["字体测试页", "/dev/test-font"],
+		["滚动测试页", "/dev/test-scroll"],
 		["滑块测试页", "/dev/test-slider"],
 		["颜色测试页", "/dev/test-color"],
 		["指针类型检测", "/dev/pointer-type"],
