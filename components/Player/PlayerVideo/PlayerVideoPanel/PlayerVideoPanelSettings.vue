@@ -68,48 +68,49 @@
 <template>
 	<div class="wrapper">
 		<Comp>
-			<Transition :name="transitionName" mode="out-in">
-				<div v-if="selectedSettingsTab === 'player' " class="page-player">
-					<ToggleSwitch v-model="settings.autoplay" v-ripple icon="autoplay">{{ t.player.autoplay }}</ToggleSwitch>
-					<p>{{ t.danmaku }}</p>
-					<!-- TODO: 多语言。检查字号缩放功能的可用性并显示缩放数值。 -->
-					<SettingsSlider
-						v-model="settings.danmaku.fontSizeScale"
-						:min="0"
-						:max="2"
-						:defaultValue="1"
-						icon="font_size"
-					>字号缩放</SettingsSlider>
-					<SettingsSlider
-						v-model="settings.danmaku.opacity"
-						:min="0"
-						:max="1"
-						:defaultValue="1"
-						icon="opacity"
-					>{{ t.opacity }}</SettingsSlider>
-					<p>{{ t.player.control_bar }}</p>
-					<ToggleSwitch v-model="settings.controller.showFrameByFrame" v-ripple icon="slow_forward">{{ t.player.control_bar.show_frame_by_frame }}</ToggleSwitch>
-				</div>
+			<ScrollContainer overflowX="clip">
+				<Transition :name="transitionName" mode="out-in">
+					<div v-if="selectedSettingsTab === 'player' " class="page-player">
+						<ToggleSwitch v-model="settings.autoplay" v-ripple icon="autoplay">{{ t.player.autoplay }}</ToggleSwitch>
+						<p>{{ t.danmaku }}</p>
+						<!-- TODO: 多语言。检查字号缩放功能的可用性并显示缩放数值。 -->
+						<SettingsSlider
+							v-model="settings.danmaku.fontSizeScale"
+							:min="0"
+							:max="2"
+							:defaultValue="1"
+							icon="font_size"
+						>字号缩放</SettingsSlider>
+						<SettingsSlider
+							v-model="settings.danmaku.opacity"
+							:min="0"
+							:max="1"
+							:defaultValue="1"
+							icon="opacity"
+						>{{ t.opacity }}</SettingsSlider>
+						<p>{{ t.player.control_bar }}</p>
+						<ToggleSwitch v-model="settings.controller.showFrameByFrame" v-ripple icon="slow_forward">{{ t.player.control_bar.show_frame_by_frame }}</ToggleSwitch>
+					</div>
 
-				<div v-else-if="selectedSettingsTab === 'filters'">
-					<div class="grid">
-						<CheckCard v-for="([filter, style], key) in filters" :key="key" v-model="filterBooleanProxy[key]">
-							{{ filter }}
-							<template #image>
-								<NuxtImg
-									:style
-									:provider="environment.cloudflareImageProvider"
-									:src="thumbnail"
-									:alt="`preview-${filter}`"
-									:draggable="false"
-									format="avif"
-									width="200"
-									height="200"
-									:placeholder="[20, 20, 100, 2]"
-								/>
-							</template>
-						</CheckCard>
-					<!-- <CheckCard v-model="settings.filter.horizontalFlip">
+					<div v-else-if="selectedSettingsTab === 'filters'">
+						<div class="grid">
+							<CheckCard v-for="([filter, style], key) in filters" :key="key" v-model="filterBooleanProxy[key]">
+								{{ filter }}
+								<template #image>
+									<NuxtImg
+										:style
+										:provider="environment.cloudflareImageProvider"
+										:src="thumbnail"
+										:alt="`preview-${filter}`"
+										:draggable="false"
+										format="avif"
+										width="200"
+										height="200"
+										:placeholder="[20, 20, 100, 2]"
+									/>
+								</template>
+							</CheckCard>
+							<!-- <CheckCard v-model="settings.filter.horizontalFlip">
 					水平翻转
 					<template #image><NuxtImg :src="thumbnail" alt="preview" /></template>
 				</CheckCard>
@@ -117,19 +118,20 @@
 					垂直翻转
 					<template #image><NuxtImg :src="thumbnail" alt="preview" /></template>
 				</CheckCard> -->
+						</div>
 					</div>
-				</div>
 
-				<div v-else-if="selectedSettingsTab === 'block-words'">
-					<ToggleSwitch v-model="blockWordsToggle" v-ripple icon="visibility_off">开启屏蔽</ToggleSwitch>
+					<div v-else-if="selectedSettingsTab === 'block-words'">
+						<ToggleSwitch v-model="blockWordsToggle" v-ripple icon="visibility_off">开启屏蔽</ToggleSwitch>
 
-					<TabBar v-model="blockWordsSelectedTab">
-						<TabItem id="block-keywords">屏蔽文本</TabItem>
-						<TabItem id="block-regex">屏蔽正则</TabItem>
-						<TabItem id="block-users">屏蔽用户</TabItem>
-					</TabBar>
-				</div>
-			</Transition>
+						<TabBar v-model="blockWordsSelectedTab">
+							<TabItem id="block-keywords">屏蔽文本</TabItem>
+							<TabItem id="block-regex">屏蔽正则</TabItem>
+							<TabItem id="block-users">屏蔽用户</TabItem>
+						</TabBar>
+					</div>
+				</Transition>
+			</ScrollContainer>
 		</Comp>
 		<ShadingIcon icon="settings" position="right bottom" rotating :elastic="playing" large />
 	</div>
@@ -145,7 +147,14 @@
 		flex-grow: 1;
 		height: 100%;
 		contain: strict;
-		overflow: clip auto;
+
+		> .scroll-container {
+			height: 100%;
+
+			&:deep(.scroller) {
+				overscroll-behavior: contain;
+			}
+		}
 	}
 
 	.wrapper {

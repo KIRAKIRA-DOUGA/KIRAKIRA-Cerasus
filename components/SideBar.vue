@@ -151,6 +151,11 @@
 		overflow: clip;
 		background-color: c(main-bg);
 
+		@include mobile {
+			background-color: c(main-bg, 75%);
+			backdrop-filter: blur(16px);
+		}
+
 		:root.colored-sidebar & {
 			@include sidebar-shadow-colored;
 			--color: white;
@@ -419,7 +424,8 @@
 		z-index: 30;
 		padding: $icons-gap 0;
 		overflow: clip;
-		background-color: c(main-bg);
+		background-color: c(main-bg, 75%);
+		backdrop-filter: blur(16px);
 
 		.icons {
 			@include square(100%);

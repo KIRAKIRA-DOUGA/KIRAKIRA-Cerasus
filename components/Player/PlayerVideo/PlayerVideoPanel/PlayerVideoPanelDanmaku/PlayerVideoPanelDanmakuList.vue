@@ -91,32 +91,34 @@
 <template>
 	<Comp>
 		<ClientOnly>
-			<table class="lite">
-				<thead>
-					<th v-for="(header, column, j) in headers" :key="header" v-ripple :width="colWidths[j]" @click="() => sort(j)">
-						<span>{{ header }}</span>
-						<Icon
-							name="chevron_up"
-							:class="sortBy[0] === column && {
-								ascending: sortBy[1] === 'ascending',
-								descending: sortBy[1] === 'descending',
-							}"
-						/>
-					</th>
-					<div class="shadow">
-						<th v-for="(header, _column, j) in headers" :key="header" :width="colWidths[j]">
-							<div class="grip" :data-index="j" @pointerdown="onGripDown"></div>
+			<ScrollContainer>
+				<table class="lite">
+					<thead>
+						<th v-for="(header, column, j) in headers" :key="header" v-ripple :width="colWidths[j]" @click="() => sort(j)">
+							<span>{{ header }}</span>
+							<Icon
+								name="chevron_up"
+								:class="sortBy[0] === column && {
+									ascending: sortBy[1] === 'ascending',
+									descending: sortBy[1] === 'descending',
+								}"
+							/>
 						</th>
-					</div>
-				</thead>
-				<tbody>
-					<RecycleScroller v-slot="{ item }" class="scroller" :itemSize="28" keyField="key" :items="danmakuList">
-						<tr :key="item.key" v-ripple @contextmenu.prevent="e => { currentDanmaku = item.item; danmakuItemMenu = e; }">
-							<td v-for="(value, key, j) in item.item" :key="key" :width="colWidths[j]">{{ handleTableDataCellText(value) }}</td>
-						</tr>
-					</RecycleScroller>
-				</tbody>
-			</table>
+						<div class="shadow">
+							<th v-for="(header, _column, j) in headers" :key="header" :width="colWidths[j]">
+								<div class="grip" :data-index="j" @pointerdown="onGripDown"></div>
+							</th>
+						</div>
+					</thead>
+					<tbody>
+						<RecycleScroller v-slot="{ item }" class="scroller" :itemSize="28" keyField="key" :items="danmakuList" pageMode>
+							<tr :key="item.key" v-ripple @contextmenu.prevent="e => { currentDanmaku = item.item; danmakuItemMenu = e; }">
+								<td v-for="(value, key, j) in item.item" :key="key" :width="colWidths[j]">{{ handleTableDataCellText(value) }}</td>
+							</tr>
+						</RecycleScroller>
+					</tbody>
+				</table>
+			</ScrollContainer>
 			<template #fallback>
 				<div class="danmaku-placeholder">
 					<ProgressRing />
@@ -140,6 +142,14 @@
 		flex-grow: 1;
 		overflow-x: overlay;
 		color: c(icon-color);
+
+		> .scroll-container {
+			height: 100%;
+
+			&:deep(.scroller) {
+				overscroll-behavior: contain;
+			}
+		}
 
 		table {
 			position: relative;

@@ -117,7 +117,7 @@
 
 		<nav :class="{ show: showDrawer }">
 			<div class="content">
-				<header class="title content padding-end">
+				<header class="title content">
 					<header class="title nav-header">
 						<h1>{{ t.settings }}</h1>
 						<TextBox v-model="search" type="search" :placeholder="t.settings.search" icon="search" />
@@ -148,7 +148,7 @@
 
 		<div class="card"></div>
 		<main ref="main">
-			<div class="content padding-end">
+			<div class="content">
 				<header class="title page-header" :class="{ colored: cookieColoredSidebar }">
 					<div class="show-drawer-wrapper page-title-icon-wrapper">
 						<SoftButton icon="dehaze" @click="showDrawer = true" />
@@ -213,6 +213,8 @@
 		@include tablet {
 			@include system-card;
 			@include acrylic-background;
+			position: fixed;
+			z-index: 30;
 			transition-duration: $show-drawer-duration;
 
 			&:not(.show) {
@@ -229,15 +231,14 @@
 			flex-direction: column;
 			gap: 10px;
 			max-height: 100dvh;
-			padding: 0 $nav-padding-x;
+			padding: 0 $nav-padding-x $nav-padding-x;
 			overflow: hidden overlay;
 			overscroll-behavior-y: contain;
 			scrollbar-gutter: stable; // WARN: Chromium 114 开始，overflow 的 overlay 成了 auto 的别名，因此只能提前占位显示来确保不晃动。目前甚至 Chromium 自己的设置页都在依赖于 overlay，太荒谬了。https://bugs.chromium.org/p/chromium/issues/detail?id=1450927
 			transition: none;
 
 			@include mobile {
-				max-height: calc(100dvh - $sidebar-width);
-				padding: 0 $mobile-nav-padding-x;
+				padding: 0 $mobile-nav-padding-x $mobile-nav-padding-x;
 			}
 
 			> * {
@@ -312,7 +313,7 @@
 			flex-direction: column;
 			gap: 1rem;
 			max-width: $max-width;
-			padding: 0 $main-padding-x;
+			padding: 0 $main-padding-x $main-padding-x;
 
 			@include mobile {
 				padding: 0 $mobile-padding;
@@ -325,8 +326,8 @@
 					gap: 1rem;
 
 					@include mobile {
-						padding-top: $mobile-toolbar-height + $mobile-padding;
-						padding-bottom: $mobile-toolbar-height + $mobile-padding;
+						padding-top: $mobile-padding;
+						padding-bottom: $mobile-padding;
 					}
 				}
 			}
@@ -422,6 +423,7 @@
 		@include mobile {
 			@include sidebar-shadow;
 			position: fixed;
+			top: 0;
 			align-items: center;
 			width: 100%;
 			height: $mobile-toolbar-height;

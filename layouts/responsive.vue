@@ -5,8 +5,6 @@
 <script setup lang="ts">
 	import background from "assets/styles/css-doodles/background.css-doodle";
 
-	const container = ref<HTMLDivElement>();
-	const containerMain = ref<HTMLElement>();
 	const cssDoodle = refComp();
 	const showCssDoodle = computed(() => useAppSettingsStore().showCssDoodle);
 	const backgroundImageSettingsStore = useAppSettingsStore().backgroundImage;
@@ -43,24 +41,34 @@
 			</div>
 		</ClientOnly>
 		<SideBar />
-		<main ref="container" class="container">
+		<ScrollContainer class="container" :overflowX="isCurrentSettings ? 'hidden' : undefined">
 			<Banner />
-			<div class="router-view" :class="{ 'is-settings': isCurrentSettings }">
+			<div class="router-view">
 				<slot></slot>
 			</div>
-		</main>
+		</ScrollContainer>
 		<div v-if="showDrawer" class="hide-drawer-mask" @click="showDrawer = false"></div>
 	</div>
 </template>
 
 <style scoped lang="scss">
-	.container {
+	.scroll-container {
 		position: relative;
-		padding-left: $sidebar-width;
+		width: 100dvw;
+		height: 100dvh;
 		transition: $fallback-transitions, width 0s, height 0s;
 
+		@include not-mobile {
+			--padding-left: #{$sidebar-width};
+		}
+
+		@include mobile {
+			--padding-top: #{$mobile-toolbar-height};
+			--padding-bottom: #{$mobile-toolbar-height};
+		}
+
 		@layer layout {
-			> .router-view:deep() > .container {
+			> .scroller > .content > .router-view:deep() > .container {
 				padding: 26px $page-padding-x;
 
 				@include tablet {
@@ -69,7 +77,6 @@
 
 				@include mobile {
 					padding: $page-padding-x-mobile;
-					padding-bottom: $page-padding-x-mobile + $mobile-toolbar-height;
 				}
 			}
 		}
@@ -142,11 +149,6 @@
 	}
 
 	@include mobile {
-		.container {
-			padding-top: $mobile-toolbar-height;
-			padding-left: 0;
-		}
-
 		aside,
 		nav {
 			width: 100dvw;
@@ -201,12 +203,5 @@
 		inset: 0;
 		z-index: 99;
 		cursor: pointer;
-	}
-</style>
-
-<style lang="scss">
-	body:has(.router-view.is-settings) {
-		overflow-x: hidden;
-		overscroll-behavior: none;
 	}
 </style>
