@@ -112,13 +112,13 @@
 				useEvent("videoComment:emitVideoComment", videoComment);
 				useToast(t.toast.comment_sent, "success", 5000);
 			} else {
-				useToast(t.toast.comment_send_failed, "error", 5000);
-				console.error("ERROR", t.toast.comment_send_failed);
+				useToast(t.toast.something_went_wrong, "error", 5000);
+				console.error("ERROR", "Failed to send comment: request failed.");
 			}
 			isSendingComment.value = false;
 		} catch (error) {
-			useToast(t.toast.comment_send_failed, "error", 5000);
-			console.error("ERROR", t.toast.comment_send_failed, error);
+			useToast(t.toast.something_went_wrong, "error", 5000);
+			console.error("ERROR", "Failed to send comment:", error);
 			isSendingComment.value = false;
 		}
 	}

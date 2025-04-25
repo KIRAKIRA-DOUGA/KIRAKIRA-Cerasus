@@ -67,10 +67,10 @@
 				newAvatar.value = imageBlobUrl;
 				newAvatarImageBlob.value = blobImageData;
 			} else
-				useToast(t.toast.avatar_crop_failed, "error", 5000);
+				useToast(t.toast.something_went_wrong, "error", 5000);
 		} catch (error) {
-			useToast(t.toast.avatar_update_failed, "error", 5000);
-			console.error("ERROR", t.toast.avatar_update_failed, error);
+			useToast(t.toast.something_went_wrong, "error", 5000);
+			console.error("ERROR", "Failed to update avatar.", error);
 		}
 		isUploadingUserAvatar.value = false;
 		isAvatarCropperOpen.value = false;
@@ -94,12 +94,12 @@
 					}
 				}
 			} else {
-				useToast(t.toast.avatar_get_cropped_failed, "error");
-				console.error("ERROR", t.toast.avatar_get_cropped_failed);
+				useToast(t.toast.something_went_wrong, "error");
+				console.error("ERROR", "Failed to get cropped image data.");
 			}
 		} catch (error) {
 			useToast(t.toast.avatar_upload_failed, "error");
-			console.error("ERROR", t.toast.avatar_upload_failed, error);
+			console.error("ERROR", "Failed to upload avatar.", error);
 		}
 	}
 
@@ -136,7 +136,7 @@
 				await handleSubmitAvatarImage();
 			} catch (error) {
 				useToast(t.toast.avatar_upload_failed, "error");
-				console.error("ERROR", t.toast.avatar_upload_failed, error);
+				console.error("ERROR", "Failed to upload avatar.", error);
 			}
 
 		const updateOrCreateUserInfoRequest: UpdateOrCreateUserInfoRequestDto = {
@@ -157,12 +157,12 @@
 				useToast(t.toast.profile_updated, "success");
 			} else {
 				isUpdateUserInfo.value = false;
-				useToast(t.toast.profile_update_failed, "error");
+				useToast(t.toast.something_went_wrong, "error");
 			}
 		} catch (error) {
 			isUpdateUserInfo.value = false;
-			useToast(t.toast.profile_update_failed, "error");
-			console.error(t.toast.profile_update_failed, error);
+			useToast(t.toast.something_went_wrong, "error");
+			console.error("Failed to update profile.", error);
 		}
 	}
 
@@ -196,12 +196,12 @@
 				showConfirmResetAlert.value = false;
 			} else {
 				isResetUserInfo.value = false;
-				useToast(t.toast.profile_reset_failed, "error");
+				useToast(t.toast.something_went_wrong, "error");
 			}
 		} catch (error) {
 			isResetUserInfo.value = false;
-			useToast(t.toast.profile_reset_failed, "error");
-			console.error(t.toast.profile_reset_failed, error);
+			useToast(t.toast.something_went_wrong, "error");
+			console.error("Failed to reset profile.", error);
 		}
 	}
 

@@ -38,8 +38,8 @@
 			try {
 				await api.user.getSelfUserInfo();
 			} catch (error) {
-				console.error(t.toast.get_current_login_user_failed, error);
-				useToast(t.toast.get_current_login_user_failed, "error", 7000);
+				console.error("ERROR", "Failed to get current logged in user info:", error);
+				useToast(t.toast.get_current_logged_in_user_info_failed, "error", 7000);
 			}
 		else {
 			// TODO: 如果用户未登录，要怎样？要引导登录吗？

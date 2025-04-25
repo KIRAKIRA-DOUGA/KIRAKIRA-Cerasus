@@ -23,7 +23,7 @@
 	 */
 	async function requestSendRegisterVerificationCodeEmail() {
 		if (!props.email) {
-			useToast(t.toast.email_empty, "warning", 5000);
+			useToast(t.validation.required.email, "warning", 5000);
 			return;
 		}
 		const locale = getCurrentLocaleLangCode();
@@ -43,7 +43,7 @@
 	 */
 	async function requestSendChangeEmailVerificationCodeEmail() {
 		if (!props.email) {
-			useToast(t.toast.email_empty, "warning", 5000);
+			useToast(t.validation.required.email, "warning", 5000);
 			return;
 		}
 		const locale = getCurrentLocaleLangCode();
@@ -102,13 +102,13 @@
 					await requestSendDeleteEmail2FAVerificationCodeEmail();
 					break;
 				default:
-					console.error("ERROR", t.toast.send_verification_code_no_purpose);
-					throw new Error(t.toast.send_verification_code_no_purpose);
+					console.error("ERROR", "verificationCodeFor is not defined.");
+					throw new Error("verificationCodeFor is not defined.");
 			}
 			startTimeout();
 		} catch (error) {
 			useToast(t.toast.verification_code_send_failed, "error", 5000);
-			console.error("ERROR", t.toast.verification_code_send_failed, error);
+			console.error("ERROR", "Failed to send verification code:", error);
 		}
 		isSendingEmail.value = false;
 	}

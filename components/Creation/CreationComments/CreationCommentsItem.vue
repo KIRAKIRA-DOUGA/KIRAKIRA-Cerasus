@@ -102,8 +102,8 @@
 		const emitVideoCommentUpvoteRequest: EmitVideoCommentUpvoteRequestDto = { id: commentId, videoId };
 		api.videoComment.emitVideoCommentUpvote(emitVideoCommentUpvoteRequest).catch(error => {
 			voteLock.value = false; // 请求锁：释放
-			useToast(t.toast.upvote_failed, "error");
-			console.error("ERROR", t.toast.upvote_failed, error);
+			useToast(t.toast.something_went_wrong, "error");
+			console.error("ERROR", "Failed to upvote:", error);
 		}).finally(() => {
 			voteLock.value = false; // 请求锁：释放
 		});
@@ -126,8 +126,8 @@
 		const cancelVideoCommentUpvoteRequest: CancelVideoCommentUpvoteRequestDto = { id: commentId, videoId };
 		api.videoComment.cancelVideoCommentUpvote(cancelVideoCommentUpvoteRequest).catch(error => {
 			voteLock.value = false; // 请求锁：释放
-			useToast(t.toast.undo_upvote_failed, "error");
-			console.error("ERROR", t.toast.undo_upvote_failed, error);
+			useToast(t.toast.something_went_wrong, "error");
+			console.error("ERROR", "Failed to undo upvote:", error);
 		}).finally(() => {
 			voteLock.value = false; // 请求锁：释放
 		});
@@ -146,8 +146,8 @@
 		const emitVideoCommentDownvoteRequest: EmitVideoCommentDownvoteRequestDto = { id: commentId, videoId };
 		api.videoComment.emitVideoCommentDownvote(emitVideoCommentDownvoteRequest).catch(error => {
 			voteLock.value = false; // 请求锁：释放
-			useToast(t.toast.downvote_failed, "error");
-			console.error("ERROR", t.toast.downvote_failed, error);
+			useToast(t.toast.something_went_wrong, "error");
+			console.error("ERROR", "Failed to downvote:", error);
 		}).finally(() => {
 			voteLock.value = false; // 请求锁：释放
 		});
@@ -170,8 +170,8 @@
 		const cancelVideoCommentDownvoteRequest: CancelVideoCommentDownvoteRequestDto = { id: commentId, videoId };
 		api.videoComment.cancelVideoCommentDownvote(cancelVideoCommentDownvoteRequest).catch(error => {
 			voteLock.value = false; // 请求锁：释放
-			useToast(t.toast.undo_downvote_failed, "error");
-			console.error("ERROR", t.toast.undo_downvote_failed, error);
+			useToast(t.toast.something_went_wrong, "error");
+			console.error("ERROR", "Failed to undo downvote:", error);
 		}).finally(() => {
 			voteLock.value = false; // 请求锁：释放
 		});
@@ -196,7 +196,7 @@
 			useToast(t.toast.comment_delete_success, "success", 5000);
 			useEvent("videoComment:deleteVideoComment", commentRoute);
 		} else
-			useToast(t.toast.comment_delete_failed, "error", 5000);
+			useToast(t.toast.something_went_wrong, "error", 5000);
 			// TODO: 性能问题
 	}
 
@@ -216,7 +216,7 @@
 			useToast(t.toast.comment_delete_success, "success", 5000);
 			useEvent("videoComment:deleteVideoComment", commentRoute);
 		} else
-			useToast(t.toast.comment_delete_failed, "error", 5000);
+			useToast(t.toast.something_went_wrong, "error", 5000);
 			// TODO: 性能问题
 	}
 </script>

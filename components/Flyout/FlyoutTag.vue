@@ -41,8 +41,8 @@
 					else showCreateNew.value = true;
 				} else showCreateNew.value = true;
 			} catch (error) {
-				console.error("ERROR", t.toast.search_tag_failed, error);
-				useToast(t.toast.search_tag_failed, "error");
+				console.error("ERROR", "Failed to search tag:", error);
+				useToast(t.toast.something_went_wrong, "error");
 			}
 	}
 	const debounceVideoTagSearcher = useDebounce(searchVideoTag, 500);
@@ -250,7 +250,7 @@
 								<ComboBox v-model="item.language.langId" :placeholder="t.unselected.language">
 									<ComboBoxItem v-for="lang in availableLanguages[index]" :id="lang.langId" :key="lang.langId">{{ lang.langName }}</ComboBoxItem>
 								</ComboBox>
-								<TagsEditor v-model="item.values" v-model:default="item.default" v-model:editor-original="item.original" v-model:original="original" />
+								<TagsEditor v-model="item.values" v-model:default="item.default" v-model:editorOriginal="item.original" v-model:original="original" />
 							</template>
 						</div>
 					</div>

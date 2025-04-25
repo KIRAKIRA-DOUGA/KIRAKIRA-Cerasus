@@ -19,7 +19,7 @@
 		if (createInvitationCodeResult.success)
 			await getMyInvitationCode();
 		else
-			useToast(t.toast.invitation_code_create_failed, "error");
+			useToast(t.toast.something_went_wrong, "error");
 	}
 
 	/**

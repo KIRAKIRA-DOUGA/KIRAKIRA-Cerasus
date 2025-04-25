@@ -280,7 +280,8 @@
 				} else
 					useToast(t.validation.other.email_registered, "error", 5000);
 			} catch (error) {
-				useToast(t.toast.registration_failed, "error");
+				useToast(t.toast.something_went_wrong, "error");
+				console.error("ERROR", "Registration failed:", error);
 			}
 		} else
 			useToast(t.validation.required.email_and_password, "error");
@@ -321,9 +322,10 @@
 				open.value = false; // 关闭登录页
 				currentPage.value = "login1"; // 将登录页设为登录窗口默认页
 			} else
-				useToast(t.toast.registration_failed, "error");
+				useToast(t.toast.something_went_wrong, "error");
 		} catch (error) {
-			useToast(t.toast.registration_failed, "error");
+			useToast(t.toast.something_went_wrong, "error");
+			console.error("ERROR", "Registration failed:", error);
 		}
 		isTryingRegistration.value = false; // 停止注册按钮加载动画
 	}

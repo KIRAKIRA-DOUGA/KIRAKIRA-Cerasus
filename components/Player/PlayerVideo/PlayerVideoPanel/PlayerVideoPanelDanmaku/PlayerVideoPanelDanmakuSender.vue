@@ -96,13 +96,13 @@
 		try {
 			api.danmaku.emitDanmaku(emitDanmakuRequestData).then(emitDanmakuResult => {
 				if (!emitDanmakuResult.success) {
-					useToast(t.toast.danmaku_send_failed, "error");
-					console.error("ERROR", t.toast.danmaku_send_failed);
+					useToast(t.toast.something_went_wrong, "error");
+					console.error("ERROR", "Failed to send danmaku.");
 				}
 			});
 		} catch (error) {
-			useToast(t.toast.danmaku_send_failed, "error");
-			console.error("ERROR", t.toast.danmaku_send_failed, error);
+			useToast(t.toast.something_went_wrong, "error");
+			console.error("ERROR", "Failed to send danmaku. Request failed:", error);
 		}
 
 		sendDanmaku.value = [createDanmakuComment(text, undefined, format)];

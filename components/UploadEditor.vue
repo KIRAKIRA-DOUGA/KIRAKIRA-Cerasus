@@ -144,7 +144,7 @@
 			useToast(t.toast.uploaded, "success");
 		}).catch((error: unknown) => {
 			useToast(t.toast.upload_failed, "error");
-			console.error("ERROR", t.toast.upload_failed, error);
+			console.error("ERROR", "Upload Failed:", error);
 		});
 	}
 
@@ -223,8 +223,8 @@
 			}
 		} catch (error) {
 			isCommitButtonLoading.value = false;
-			useToast(t.toast.submission_failed, "error");
-			console.error("ERROR", t.toast.submission_failed, error);
+			useToast(t.toast.upload_failed, "error");
+			console.error("ERROR", "Video submission failed:", error);
 		}
 	}
 

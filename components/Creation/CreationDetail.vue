@@ -30,7 +30,7 @@
 			const IMAGE_MAX_WIDTH = 999999;
 			window.open(image(props.cover, { width: IMAGE_MAX_WIDTH }, { provider: environment.cloudflareImageProvider }), "_blank"); // TODO: 先暂时改为在新标签页中直接打开图片的样式，而非下载图片
 			// downloadFile(props.cover, `${props.title} (kv${props.videoId})`);
-		} else useToast(t.toast.cover_view_failed, "error");
+		} else useToast(t.toast.something_went_wrong, "error");
 	}
 </script>
 

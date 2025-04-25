@@ -174,7 +174,7 @@ export async function userLogout(): Promise<UserLogoutResponseDto> {
 		selfUserInfoStore.signature = "";
 		selfUserInfoStore.tags = [];
 	} else
-		console.error("ERROR", t.toast.logout_failed);
+		console.error("ERROR", "Logout failed.", logoutResult);
 	return logoutResult;
 }
 
@@ -197,7 +197,7 @@ export const uploadUserAvatar = async (fileName: string, avatarBlobData: Blob, s
 		await uploadFile2CloudflareImages(fileName, signedUrl, avatarBlobData, 60000);
 		return true;
 	} catch (error) {
-		console.error("用户头像上传失败，错误信息：", error, { avatarBlobData, signedUrl });
+		console.error("ERROR", "Failed to upload avatar:", error, { avatarBlobData, signedUrl });
 		return false;
 	}
 };

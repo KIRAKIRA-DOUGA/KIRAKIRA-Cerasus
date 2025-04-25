@@ -4,9 +4,9 @@
 </docs>
 
 <script setup lang="ts">
-	import type shaka from "shaka-player";
-	import { createDanmakuComment, basicDanmakuCommentStyle } from "./PlayerVideoPanel/PlayerVideoPanelDanmaku/PlayerVideoPanelDanmakuSender.vue";
 	import beepSound from "assets/audios/NOVA 2022.1 Alert Quick.ogg";
+	import type shaka from "shaka-player";
+	import { basicDanmakuCommentStyle, createDanmakuComment } from "./PlayerVideoPanel/PlayerVideoPanelDanmaku/PlayerVideoPanelDanmakuSender.vue";
 	const beepSoundAudio = ref<HTMLAudioElement>();
 
 	const props = defineProps<{
@@ -80,7 +80,7 @@
 		if (filter.saturate !== 1) filters.push(`saturate(${filter.saturate})`);
 		if (filter.contrast !== 1) filters.push(`contrast(${filter.contrast})`);
 		if (filter.brightness !== 1) filters.push(`brightness(${filter.brightness})`);
-		if (filters.length) style.filter = filters.join(" ");
+		if (filters.length > 0) style.filter = filters.join(" ");
 		return style;
 	});
 
@@ -226,7 +226,7 @@
 			}
 		} catch (error) {
 			useToast(t.player.error.getDanmaku, "error");
-			console.error("ERROR", t.player.error.getDanmaku);
+			console.error("ERROR", "Failed to get danmaku:", error);
 		}
 	}
 	watch(() => props.id, fetchDanmaku, { immediate: true });
@@ -331,7 +331,7 @@
 							break;
 						}
 			} catch (error) {
-				console.error("Unable to load the video", error);
+				console.error("ERROR", "Failed to load the video:", error);
 			}
 		}
 	});
