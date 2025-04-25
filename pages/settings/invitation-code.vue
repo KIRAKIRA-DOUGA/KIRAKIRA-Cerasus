@@ -13,13 +13,13 @@
 		const createInvitationCodeResult = await api.user.createInvitationCode();
 
 		if (createInvitationCodeResult.isCoolingDown) {
-			useToast("邀请码生成器正在冷却中，请稍后再试。", "warning", 5000); // TODO: 使用多语言
+			useToast(t.toast.cooling_down, "warning", 5000); // TODO: 需要显示冷却剩余时间，需要API返回。
 			return;
 		}
 		if (createInvitationCodeResult.success)
 			await getMyInvitationCode();
 		else
-			useToast("邀请码生成失败。", "error"); // TODO: 使用多语言
+			useToast(t.toast.invitation_code_create_failed, "error");
 	}
 
 	/**
@@ -39,9 +39,9 @@
 	async function copyInvitationCode(invitationCode: string) {
 		try {
 			await navigator.clipboard.writeText(invitationCode);
-			useToast(t.copy.success, "success");
+			useToast(t.toast.copied, "success");
 		} catch (error) {
-			useToast(t.copy.failed, "error");
+			useToast(t.toast.copy_failed, "error");
 		}
 	}
 

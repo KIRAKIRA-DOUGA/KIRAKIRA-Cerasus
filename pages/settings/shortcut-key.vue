@@ -26,7 +26,6 @@
 			<p>{{ t.shortcut_key.exit_fullscreen }}</p>
 			<p><Kbd>Esc</Kbd></p>
 
-			<!-- TODO: 使用多语言 -->
 			<p>{{ t.shortcut_key.fullscreen }}</p>
 			<p><Kbd>F</Kbd> <Kbd>F11</Kbd></p>
 

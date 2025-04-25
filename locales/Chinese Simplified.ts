@@ -402,8 +402,7 @@ export default {
 	components_test_page: "组件测试页面",
 	view_cover: "查看封面",
 	watch_later: "稍后观看",
-	download_video: "下载视频",
-	report_creation: "稿件投诉",
+	download: "下载",
 	format: {
 		_: "格式",
 		bold: "加粗",

@@ -5,9 +5,8 @@
 
 <template>
 	<div>
-		<InfoBar type="warning" title="警告">
-			该页面中的某些功能正在开发中，无法按预期工作。
-		<!-- TODO: 使用多语言 -->
+		<InfoBar type="warning" :title="t.severity.warning">
+			{{ t.under_development.page }}
 		</InfoBar>
 
 		<Subheader icon="block">{{ t.blocklist.ban }}</Subheader>

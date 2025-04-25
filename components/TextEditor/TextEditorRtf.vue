@@ -110,15 +110,15 @@
 				editor.value?.commands.clearContent()
 				textLength.value = 0
 				useEvent("videoComment:emitVideoComment", videoComment);
-				useToast("评论发出去咯~", "success", 5000); // TODO: 使用多语言
+				useToast(t.toast.comment_sent, "success", 5000);
 			} else {
-				useToast("发送评论失败！", "error", 5000); // TODO: 使用多语言
-				console.error("ERROR", "发送评论失败：请求未成功");
+				useToast(t.toast.comment_send_failed, "error", 5000);
+				console.error("ERROR", t.toast.comment_send_failed);
 			}
 			isSendingComment.value = false;
 		} catch (error) {
-			useToast("发送评论失败！", "error", 5000); // TODO: 使用多语言
-			console.error("ERROR", "发送评论失败！", error);
+			useToast(t.toast.comment_send_failed, "error", 5000);
+			console.error("ERROR", t.toast.comment_send_failed, error);
 			isSendingComment.value = false;
 		}
 	}

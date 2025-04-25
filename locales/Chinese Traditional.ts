@@ -399,8 +399,7 @@ export default {
 	components_test_page: "元件測試頁面",
 	view_cover: "查看封面",
 	watch_later: "稍後觀看",
-	download_video: "下載影片",
-	report_creation: "稿件投訴",
+	download: "下載",
 	format: {
 		_: "格式",
 		bold: "加粗",

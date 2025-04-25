@@ -38,13 +38,13 @@
 			try {
 				await api.user.getSelfUserInfo();
 			} catch (error) {
-				console.error("无法获取用户信息，请尝试重新登录", error);
-				useToast("无法获取用户信息，请尝试重新登录", "error", 7000); // TODO: 使用多语言
+				console.error(t.toast.get_current_login_user_failed, error);
+				useToast(t.toast.get_current_login_user_failed, "error", 7000);
 			}
 		else {
 			// TODO: 如果用户未登录，要怎样？要引导登录吗？
 			api.user.userLogout(); // 如果未登录或验证不成功，则清空全局变量中的用户信息并清空残留 cookie
-			console.warn("WARN", "用户未登录或身份验证失败");
+			console.warn("WARN", "User not logged in or authentication failed.");
 		}
 	}
 

@@ -98,9 +98,8 @@
 <template>
 	<div class="container" :class="{ 'no-scroll': !showEditor }">
 
-		<InfoBar type="warning" title="警告">
-			测试阶段该功能仅限管理员使用。
-			<!-- TODO: 使用多语言 -->
+		<InfoBar type="warning" :title="t.severity.warning">
+			{{ t.under_development.feature_admin_only }}
 		</InfoBar>
 
 		<!-- TODO: 临时 SoftButton，之后请在 UploadEditor 的 Submit 按钮左边放一个取消。 -->

@@ -44,8 +44,8 @@
 
 		if (image) {
 			if (!/\.(a?png|jpe?g|jfif|pjp(eg)?|gif|svg|webp)$/i.test(fileInput.value)) {
-				useToast("只能上传图片文件！", "error"); // TODO: 使用多语言
-				console.error("ERROR", "不支持所选头像图片格式！");
+				useToast(t.toast.unsupported_image_format, "error");
+				console.error("ERROR", t.toast.unsupported_image_format);
 				return;
 			}
 
@@ -67,10 +67,10 @@
 				newAvatar.value = imageBlobUrl;
 				newAvatarImageBlob.value = blobImageData;
 			} else
-				useToast("裁剪头像失败，请刷新页面后重试", "error", 5000); // TODO: 使用多语言
+				useToast(t.toast.avatar_crop_failed, "error", 5000);
 		} catch (error) {
-			useToast("修改头像失败，请刷新页面后重试", "error", 5000); // TODO: 使用多语言
-			console.error("ERROR", "修改头像失败", error);
+			useToast(t.toast.avatar_update_failed, "error", 5000);
+			console.error("ERROR", t.toast.avatar_update_failed, error);
 		}
 		isUploadingUserAvatar.value = false;
 		isAvatarCropperOpen.value = false;
@@ -94,12 +94,12 @@
 					}
 				}
 			} else {
-				useToast("无法获取裁切后的图片！", "error"); // TODO: 使用多语言
-				console.error("ERROR", "无法获取裁切后的图片");
+				useToast(t.toast.avatar_get_cropped_failed, "error");
+				console.error("ERROR", t.toast.avatar_get_cropped_failed);
 			}
 		} catch (error) {
-			useToast("头像上传失败！", "error"); // TODO: 使用多语言
-			console.error("ERROR", "在上传用户头像时出错", error);
+			useToast(t.toast.avatar_upload_failed, "error");
+			console.error("ERROR", t.toast.avatar_upload_failed, error);
 		}
 	}
 
@@ -135,8 +135,8 @@
 			try {
 				await handleSubmitAvatarImage();
 			} catch (error) {
-				useToast("头像上传失败！", "error"); // TODO: 使用多语言
-				console.error("ERROR", "在上传用户头像时出错", error);
+				useToast(t.toast.avatar_upload_failed, "error");
+				console.error("ERROR", t.toast.avatar_upload_failed, error);
 			}
 
 		const updateOrCreateUserInfoRequest: UpdateOrCreateUserInfoRequestDto = {
@@ -154,15 +154,15 @@
 				await api.user.getSelfUserInfo();
 				isUpdateUserInfo.value = false;
 				newAvatarImageBlob.value = undefined;
-				useToast("用户信息已更新！", "success"); // TODO: 使用多语言
+				useToast(t.toast.profile_updated, "success");
 			} else {
 				isUpdateUserInfo.value = false;
-				useToast("用户信息更新失败！", "error"); // TODO: 使用多语言
+				useToast(t.toast.profile_update_failed, "error");
 			}
 		} catch (error) {
 			isUpdateUserInfo.value = false;
-			useToast("用户信息更新失败！", "error"); // TODO: 使用多语言
-			console.error("用户信息更新失败！", error);
+			useToast(t.toast.profile_update_failed, "error");
+			console.error(t.toast.profile_update_failed, error);
 		}
 	}
 
@@ -196,12 +196,12 @@
 				showConfirmResetAlert.value = false;
 			} else {
 				isResetUserInfo.value = false;
-				useToast("未能清空用户信息！", "error"); // TODO: 使用多语言
+				useToast(t.toast.profile_reset_failed, "error");
 			}
 		} catch (error) {
 			isResetUserInfo.value = false;
-			useToast("未能清空用户信息！", "error"); // TODO: 使用多语言
-			console.error("未能清空用户信息！", error);
+			useToast(t.toast.profile_reset_failed, "error");
+			console.error(t.toast.profile_reset_failed, error);
 		}
 	}
 
@@ -229,20 +229,16 @@
 <template>
 	<div>
 		<Alert v-model="showConfirmResetAlert" static>
-			<!-- TODO: 使用多语言 -->
-			确定要重置用户信息设置吗？
+			{{ t.confirm.reset_profile }}
 			<template #footer-left>
-				<!-- TODO: 使用多语言 -->
-				<Button @click="reset" :loading="isResetUserInfo" :disabled="isUpdateUserInfo || isResetUserInfo">确认</Button>
+				<Button @click="reset" :loading="isResetUserInfo" :disabled="isUpdateUserInfo || isResetUserInfo">{{ t.step.ok }}</Button>
 			</template>
 			<template #footer-right>
-				<!-- TODO: 使用多语言 -->
-				<Button @click="showConfirmResetAlert = false" class="secondary">取消</Button>
+				<Button @click="showConfirmResetAlert = false" class="secondary">{{ t.step.cancel }}</Button>
 			</template>
 		</Alert>
 
-		<!-- TODO: 使用多语言 -->
-		<Modal v-model="isAvatarCropperOpen" title="更新头像">
+		<Modal v-model="isAvatarCropperOpen" :title="t.profile.edit_avatar">
 			<div class="avatar-cropper">
 				<ImageCropper
 					ref="cropper"
@@ -256,10 +252,8 @@
 				/>
 			</div>
 			<template #footer-right>
-				<!-- TODO: 使用多语言 -->
-				<Button class="secondary" @click="isAvatarCropperOpen = false">取消</Button>
-				<!-- TODO: 使用多语言 -->
-				<Button :loading="isUploadingUserAvatar" @click="handleChangeAvatarImage">更新头像</Button>
+				<Button class="secondary" @click="isAvatarCropperOpen = false">{{ t.step.cancel }}</Button>
+				<Button :loading="isUploadingUserAvatar" @click="handleChangeAvatarImage">{{ t.step.ok }}</Button>
 			</template>
 		</Modal>
 

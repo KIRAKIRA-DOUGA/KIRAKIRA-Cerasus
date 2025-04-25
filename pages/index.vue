@@ -36,11 +36,10 @@
 				{{ t.category[cat.toLowerCase()] }}
 			</TabItem>
 		</TabBar>
-		<!-- TODO: 使用多语言 -->
-		<InfoBar title="公告" lite>
-			<TransInterpolation :i18nKey="t.announcement">
-				<template #webmistress>
-					<a href="https://aira.cafe" target="_blank">{{ t.about.staff.webmistress.toString().toLocaleLowerCase() }}</a>
+		<InfoBar :title="t.announcement" lite>
+			<TransInterpolation :i18nKey="t.announcement.homepage">
+				<template #discordServer>
+					<a href="https://aira.cafe" target="_blank">{{ t.platform.discord.server }}</a>
 				</template>
 			</TransInterpolation>
 		</InfoBar>

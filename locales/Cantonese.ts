@@ -400,8 +400,6 @@ export default {
 	components_test_page: "元件測試頁面",
 	view_cover: "睇吓封面",
 	watch_later: "陣間至睇",
-	download_video: "單撈條片",
-	report_creation: "作品投訴",
 	format: {
 		_: "格式",
 		bold: "粗體",

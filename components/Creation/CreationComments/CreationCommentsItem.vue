@@ -62,17 +62,17 @@
 		const videoId = props.videoId; // 视频 ID
 
 		if (!props.index || !commentId || videoId === undefined || videoId === null) { // 非空验证
-			useToast("出错啦！请刷新页面再试~", "error"); // TODO: 使用多语言
+			useToast(t.toast.something_went_wrong, "error");
 			return;
 		}
 
 		if (voteLock.value) { // 如果请求的“悲观锁”处于锁定状态，则弹出错误提示并停止
-			useToast("操作过于频繁，请稍后再试~", "error"); // TODO: 使用多语言
+			useToast(t.toast.too_many_requests, "error");
 			return;
 		}
 
 		if (!userSelfInfoStore.isLogined) { // 如果用户未登录，则不允许加分/减分
-			useToast("请登录后再操作~", "error"); // TODO: 使用多语言
+			useEvent("app:requestLogin");
 			return;
 		}
 
@@ -102,8 +102,8 @@
 		const emitVideoCommentUpvoteRequest: EmitVideoCommentUpvoteRequestDto = { id: commentId, videoId };
 		api.videoComment.emitVideoCommentUpvote(emitVideoCommentUpvoteRequest).catch(error => {
 			voteLock.value = false; // 请求锁：释放
-			useToast("加分失败！", "error"); // TODO: 使用多语言
-			console.error("ERROR", "加分失败！", error);
+			useToast(t.toast.upvote_failed, "error");
+			console.error("ERROR", t.toast.upvote_failed, error);
 		}).finally(() => {
 			voteLock.value = false; // 请求锁：释放
 		});
@@ -126,8 +126,8 @@
 		const cancelVideoCommentUpvoteRequest: CancelVideoCommentUpvoteRequestDto = { id: commentId, videoId };
 		api.videoComment.cancelVideoCommentUpvote(cancelVideoCommentUpvoteRequest).catch(error => {
 			voteLock.value = false; // 请求锁：释放
-			useToast("取消加分失败！", "error"); // TODO: 使用多语言
-			console.error("ERROR", "取消加分失败！", error);
+			useToast(t.toast.undo_upvote_failed, "error");
+			console.error("ERROR", t.toast.undo_upvote_failed, error);
 		}).finally(() => {
 			voteLock.value = false; // 请求锁：释放
 		});
@@ -146,8 +146,8 @@
 		const emitVideoCommentDownvoteRequest: EmitVideoCommentDownvoteRequestDto = { id: commentId, videoId };
 		api.videoComment.emitVideoCommentDownvote(emitVideoCommentDownvoteRequest).catch(error => {
 			voteLock.value = false; // 请求锁：释放
-			useToast("减分失败！", "error"); // TODO: 使用多语言
-			console.error("ERROR", "减分失败！", error);
+			useToast(t.toast.downvote_failed, "error");
+			console.error("ERROR", t.toast.downvote_failed, error);
 		}).finally(() => {
 			voteLock.value = false; // 请求锁：释放
 		});
@@ -170,8 +170,8 @@
 		const cancelVideoCommentDownvoteRequest: CancelVideoCommentDownvoteRequestDto = { id: commentId, videoId };
 		api.videoComment.cancelVideoCommentDownvote(cancelVideoCommentDownvoteRequest).catch(error => {
 			voteLock.value = false; // 请求锁：释放
-			useToast("取消减分失败！", "error"); // TODO: 使用多语言
-			console.error("ERROR", "取消减分失败！", error);
+			useToast(t.toast.undo_downvote_failed, "error");
+			console.error("ERROR", t.toast.undo_downvote_failed, error);
 		}).finally(() => {
 			voteLock.value = false; // 请求锁：释放
 		});
@@ -193,10 +193,10 @@
 		};
 		const deleteVideoResult = await api.videoComment.deleteSelfVideoComment(deleteSelfVideoCommentRequest);
 		if (deleteVideoResult.success) {
-			useToast("删除评论成功！", "success", 5000); // TODO: 使用多语言
+			useToast(t.toast.comment_delete_success, "success", 5000);
 			useEvent("videoComment:deleteVideoComment", commentRoute);
 		} else
-			useToast("删除评论失败！", "error", 5000); // TODO: 使用多语言
+			useToast(t.toast.comment_delete_failed, "error", 5000);
 			// TODO: 性能问题
 	}
 
@@ -213,10 +213,10 @@
 		};
 		const deleteVideoResult = await api.videoComment.adminDeleteVideoComment(adminDeleteVideoCommentRequest);
 		if (deleteVideoResult.success) {
-			useToast("删除评论成功！", "success", 5000); // TODO: 使用多语言
+			useToast(t.toast.comment_delete_success, "success", 5000);
 			useEvent("videoComment:deleteVideoComment", commentRoute);
 		} else
-			useToast("删除评论失败！", "error", 5000); // TODO: 使用多语言
+			useToast(t.toast.comment_delete_failed, "error", 5000);
 			// TODO: 性能问题
 	}
 </script>
@@ -246,8 +246,7 @@
 				<SoftButton v-tooltip:bottom="t.more" icon="more_vert" @click="e => menu = [e, 'y']" />
 				<Menu v-model="menu">
 					<MenuItem v-if="isSelfComment" icon="delete" @click="deleteSelfComment(commentRoute, videoId)">{{ t.delete }}</MenuItem>
-					<!-- TODO: 使用多语言 -->
-					<MenuItem v-if="isAdmin" icon="delete" @click="adminDeleteVideoComment(commentRoute, videoId)">{{ t.delete }}（管理员）</MenuItem>
+					<MenuItem v-if="isAdmin" icon="delete" @click="adminDeleteVideoComment(commentRoute, videoId)">{{ t.delete }}{{ t.admin_operation_suffix }}</MenuItem>
 					<MenuItem :icon="unpinnedCaption" @click="pinned = !pinned">{{ t[unpinnedCaption] }}</MenuItem>
 					<hr />
 					<MenuItem icon="flag">{{ t.report }}</MenuItem>

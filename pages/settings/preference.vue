@@ -26,8 +26,8 @@
 	<div>
 		<!-- WARN: 使用多语言，该页面严重缺乏国际化 -->
 		<!-- TODO: 使用多语言 -->
-		<InfoBar type="warning" title="警告">
-			该页面中的某些功能正在开发中，无法按预期工作。
+		<InfoBar type="warning" :title="t.severity.warning">
+			{{ t.under_development.page }}
 			<ol>
 				<li>可用功能：在新窗口打开视频、同步外观样式、使用阿卡林游客头像。</li>
 				<li>除上述功能外其它功能都用不了。</li>

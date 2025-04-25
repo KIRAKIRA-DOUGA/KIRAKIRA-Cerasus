@@ -400,7 +400,7 @@
 <template>
 	<div>
 		<!-- TODO: 使用多语言 -->
-		<InfoBar v-if="isUnsafeAccount" type="warning" title="警告">
+		<InfoBar v-if="isUnsafeAccount" type="warning" :title="t.severity.warning">
 			你还没有开启二重验证，建议你立即启用。
 			<br />
 			没有启动二重验证的账号更容易被盗号。
@@ -477,7 +477,7 @@
 		<!-- TODO: 使用多语言 -->
 		<Modal v-model="showCreateTotpModel" title="绑定 TOTP 身份验证器" icon="lock" :hideTitleCloseIcon="true">
 			<div class="create-totp-modal">
-				<InfoBar type="warning" title="警告">
+				<InfoBar type="warning" :title="t.severity.warning">
 					<!-- TODO: 使用多语言 -->
 					请勿向他人展示本页中显示的内容！
 				</InfoBar>

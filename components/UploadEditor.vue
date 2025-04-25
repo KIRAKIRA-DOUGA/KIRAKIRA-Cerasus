@@ -118,11 +118,11 @@
 				isCoverCropperOpen.value = false;
 				clearBlobUrl(); // 释放内存
 			} else {
-				useToast("封面图上传失败，请重试", "error"); // TODO: 使用多语言
+				useToast(t.toast.cover_upload_failed, "error");
 				isUploadingCover.value = false;
 			}
 		} else {
-			useToast("封面图上传失败，请重试", "error"); // TODO: 使用多语言
+			useToast(t.toast.cover_upload_failed, "error");
 			isUploadingCover.value = false;
 			isCoverCropperOpen.value = false;
 		}
@@ -134,17 +134,17 @@
 	 */
 	function tusUpload(files: File[]) {
 		if (!files || files.length < 1) {
-			useToast("无法上传：未找到视频文件", "error"); // TODO: 使用多语言
+			useToast(t.toast.upload_file_not_found, "error");
 			return;
 		}
 
 		uploader = new api.video.TusFileUploader(files[0], uploadProgress, isUploadingVideo);
 		uploader.process?.then((videoId: string) => {
 			cloudflareVideoId.value = videoId;
-			useToast("上传完成", "success"); // TODO: 使用多语言
+			useToast(t.toast.uploaded, "success");
 		}).catch((error: unknown) => {
-			useToast("上传失败", "error"); // TODO: 使用多语言
-			console.error("ERROR", "上传失败：", error);
+			useToast(t.toast.upload_failed, "error");
+			console.error("ERROR", t.toast.upload_failed, error);
 		});
 	}
 
@@ -167,24 +167,24 @@
 	 */
 	async function commitVideo() {
 		if (!cloudflareVideoId.value) {
-			useToast("视频没有上传完成", "error"); // TODO: 使用多语言
+			useToast(t.toast.upload_not_completed, "error");
 			return;
 		}
 		const uid = useSelfUserInfoStore().uid;
 		if (!uid) {
-			useToast("未登录用户不能上传", "error"); // TODO: 使用多语言
+			useToast(t.toast.upload_must_logged_in, "error");
 			return;
 		}
 		if (!title.value) {
-			useToast("必须填写标题", "error"); // TODO: 使用多语言
+			useToast(t.validation.required.title, "error");
 			return;
 		}
 		if (!description.value) {
-			useToast("必须填写简介", "error"); // TODO: 使用多语言
+			useToast(t.validation.required.description, "error");
 			return;
 		}
 		if (!category.value) {
-			useToast("必须选择分区", "error"); // TODO: 使用多语言
+			useToast(t.validation.required.category, "error");
 			return;
 		}
 
@@ -223,8 +223,8 @@
 			}
 		} catch (error) {
 			isCommitButtonLoading.value = false;
-			useToast("视频上传失败", "error"); // TODO: 使用多语言
-			console.error("ERROR", "视频提交失败：", error);
+			useToast(t.toast.submission_failed, "error");
+			console.error("ERROR", t.toast.submission_failed, error);
 		}
 	}
 
@@ -316,10 +316,8 @@
 				/>
 			</div>
 			<template #footer-right>
-				<!-- TODO: 使用多语言 -->
-				<Button class="secondary" @click="isCoverCropperOpen = false">取消</Button>
-				<!-- TODO: 使用多语言 -->
-				<Button :loading="isUploadingCover" :disabled="isUploadingCover" @click="handleSubmitCoverImage">上传</Button>
+				<Button class="secondary" @click="isCoverCropperOpen = false">{{ t.step.cancel }}</Button>
+				<Button :loading="isUploadingCover" :disabled="isUploadingCover" @click="handleSubmitCoverImage">{{ t.upload }}</Button>
 			</template>
 		</Modal>
 

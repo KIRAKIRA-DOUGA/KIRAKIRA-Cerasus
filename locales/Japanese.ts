@@ -402,8 +402,7 @@ export default {
 	components_test_page: "コンポーネンツ テストページ",
 	view_cover: "サムネイルの確認",
 	watch_later: "後で見る",
-	download_video: "ダウンロード",
-	report_creation: "通報",
+	download: "ダウンロード",
 	format: {
 		_: "フォーマット",
 		bold: "太字",

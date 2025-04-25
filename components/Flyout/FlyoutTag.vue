@@ -16,8 +16,8 @@
 		{ langId: "ko", langName: t.language.ko },
 		{ langId: "vi", langName: t.language.vi },
 		{ langId: "id", langName: t.language.id },
-		{ langId: "ar", langName: "阿拉伯语" }, // TODO: 使用多语言
-		{ langId: "other", langName: "其它" }, // TODO: 使用多语言
+		// { langId: "ar", langName: "阿拉伯语" }, // DELETE: 认真的？
+		{ langId: "other", langName: t.other },
 	] as const; // 可选语言列表
 	type LanguageList = typeof languages[number];
 	type EditorType = { language: LanguageList | { langId: ""; langName: "" }; values: string[]; default: [number, string] | null; original: [number, string] | null }[];
@@ -41,8 +41,8 @@
 					else showCreateNew.value = true;
 				} else showCreateNew.value = true;
 			} catch (error) {
-				console.error("ERROR", "搜索 TAG 时出错：", error);
-				useToast("搜索 TAG 失败", "error"); // TODO: 使用多语言
+				console.error("ERROR", t.toast.search_tag_failed, error);
+				useToast(t.toast.search_tag_failed, "error");
 			}
 	}
 	const debounceVideoTagSearcher = useDebounce(searchVideoTag, 500);

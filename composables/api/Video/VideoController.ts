@@ -118,8 +118,8 @@ export class TusFileUploader {
 	constructor(file: File, progress: Ref<number>, isUploadingVideo: Ref<boolean>) {
 		if (!file) {
 			this.step = "error";
-			useToast("无法上传：未找到文件", "error"); // TODO: 使用多语言
-			throw new Error("无法上传：未找到文件"); // TODO: 使用多语言
+			useToast(t.toast.upload_file_not_found, "error");
+			throw new Error(t.toast.upload_file_not_found);
 		}
 		this.isUploadingVideo = isUploadingVideo;
 		this.process = new Promise<string>((resolve, reject) => {

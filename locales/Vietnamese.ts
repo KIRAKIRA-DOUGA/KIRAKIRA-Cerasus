@@ -402,8 +402,6 @@ export default {
 	components_test_page: "Trang thử nghiệm từng phần",
 	view_cover: "Xem bìa",
 	watch_later: "Xem sau",
-	download_video: "Tải video",
-	report_creation: "Báo cáo",
 	format: {
 		_: "Định dạng văn bản",
 		bold: "Đậm",
@@ -452,6 +450,9 @@ export default {
 		tiktok: "TikTok",
 		pixiv: "Pixiv",
 		github: "GitHub",
+		bluesky: "Bluesky",
+		kwai: "Kwai",
+		rednote: "REDnote",
 	},
 	modify_memo: "Sửa đổi phụ chú",
 	add_to_group: "Thêm vào nhóm",

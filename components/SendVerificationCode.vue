@@ -23,7 +23,7 @@
 	 */
 	async function requestSendRegisterVerificationCodeEmail() {
 		if (!props.email) {
-			useToast("邮箱不能为空", "warning", 5000); // TODO: 使用多语言
+			useToast(t.toast.email_empty, "warning", 5000);
 			return;
 		}
 		const locale = getCurrentLocaleLangCode();
@@ -35,7 +35,7 @@
 		if (!requestSendVerificationCodeResponse.isTimeout)
 			console.log(requestSendVerificationCodeResponse);
 		else
-			useToast("操作太快啦~ 请稍后再试", "warning", 5000); // TODO: 使用多语言
+			useToast(t.toast.too_many_requests, "warning", 5000);
 	}
 
 	/**
@@ -43,7 +43,7 @@
 	 */
 	async function requestSendChangeEmailVerificationCodeEmail() {
 		if (!props.email) {
-			useToast("邮箱不能为空", "warning", 5000); // TODO: 使用多语言
+			useToast(t.toast.email_empty, "warning", 5000);
 			return;
 		}
 		const locale = getCurrentLocaleLangCode();
@@ -53,7 +53,7 @@
 		};
 		const requestSendChangeEmailVerificationCodeResult = await api.user.requestSendChangeEmailVerificationCode(requestSendChangeEmailVerificationCodeRequest);
 		if (requestSendChangeEmailVerificationCodeResult.success && requestSendChangeEmailVerificationCodeResult.isCoolingDown)
-			useToast("邮件发送冷却中，请稍后再试", "error", 5000);
+			useToast(t.toast.cooling_down, "error", 5000);
 	}
 
 	/**
@@ -66,7 +66,7 @@
 		};
 		const requestSendChangePasswordVerificationCodeResult = await api.user.requestSendChangePasswordVerificationCode(requestSendChangePasswordVerificationCodeRequest);
 		if (requestSendChangePasswordVerificationCodeResult.success && requestSendChangePasswordVerificationCodeResult.isCoolingDown)
-			useToast("邮件发送冷却中，请稍后再试", "error", 5000);
+			useToast(t.toast.cooling_down, "error", 5000);
 	}
 
 	/**
@@ -79,7 +79,7 @@
 		};
 		const sendUserEmailAuthenticatorVerificationCodeResult = await api.user.sendDeleteUserEmailAuthenticatorVerificationCode(sendUserDeleteEmailAuthenticatorVerificationCodeRequest);
 		if (sendUserEmailAuthenticatorVerificationCodeResult.success && sendUserEmailAuthenticatorVerificationCodeResult.isCoolingDown)
-			useToast("邮件发送冷却中，请稍后再试", "error", 5000);
+			useToast(t.toast.cooling_down, "error", 5000);
 	}
 
 	/**
@@ -102,13 +102,13 @@
 					await requestSendDeleteEmail2FAVerificationCodeEmail();
 					break;
 				default:
-					console.error("ERROR", "必须指定发送邀请码的目的。");
-					throw new Error("必须指定发送邀请码的目的。");
+					console.error("ERROR", t.toast.send_verification_code_no_purpose);
+					throw new Error(t.toast.send_verification_code_no_purpose);
 			}
 			startTimeout();
 		} catch (error) {
-			useToast("发送验证码时出错，请重试~", "error", 5000);
-			console.error("ERROR", "发送验证码时出错：", error);
+			useToast(t.toast.verification_code_send_failed, "error", 5000);
+			console.error("ERROR", t.toast.verification_code_send_failed, error);
 		}
 		isSendingEmail.value = false;
 	}

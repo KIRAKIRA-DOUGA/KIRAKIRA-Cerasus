@@ -96,13 +96,13 @@
 		try {
 			api.danmaku.emitDanmaku(emitDanmakuRequestData).then(emitDanmakuResult => {
 				if (!emitDanmakuResult.success) {
-					useToast("弹幕发送失败", "error"); // TODO: 使用多语言
-					console.error("ERROR", "弹幕发送失败");
+					useToast(t.toast.danmaku_send_failed, "error");
+					console.error("ERROR", t.toast.danmaku_send_failed);
 				}
 			});
 		} catch (error) {
-			useToast("弹幕发送失败，请求失败", "error"); // TODO: 使用多语言
-			console.error("ERROR", "弹幕发送失败，请求失败：", error);
+			useToast(t.toast.danmaku_send_failed, "error");
+			console.error("ERROR", t.toast.danmaku_send_failed, error);
 		}
 
 		sendDanmaku.value = [createDanmakuComment(text, undefined, format)];

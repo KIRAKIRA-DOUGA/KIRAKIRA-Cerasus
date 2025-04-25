@@ -46,13 +46,11 @@
 
 <template>
 	<div>
-		<InfoBar type="warning" title="警告">
-			该页面中的某些功能正在开发中，无法如期工作。
-		<!-- TODO: 使用多语言 -->
+		<InfoBar type="warning" :title="t.severity.warning">
+			{{ t.under_development.page }}
 		</InfoBar>
 
-		<!-- TODO: 使用多语言 -->
-		<Subheader icon="cookie">网络曲奇☆</Subheader>
+		<Subheader icon="cookie">{{ t.privacy.cookie }}</Subheader>
 		<section list>
 			<ToggleSwitch v-model="enableCookie" v-ripple icon="cookie">{{ t.privacy.allow_cookies }}</ToggleSwitch>
 		</section>

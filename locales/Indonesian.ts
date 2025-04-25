@@ -377,8 +377,6 @@ export default {
 	components_test_page: "Halaman Uji Komponen",
 	view_cover: "Lihat Sampul",
 	watch_later: "Tonton Nanti",
-	download_video: "Download Video",
-	report_creation: "Lapor",
 	format: {
 		_: "Format",
 		bold: "Bold",

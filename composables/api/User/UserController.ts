@@ -174,7 +174,7 @@ export async function userLogout(): Promise<UserLogoutResponseDto> {
 		selfUserInfoStore.signature = "";
 		selfUserInfoStore.tags = [];
 	} else
-		console.error("ERROR", "用户登出失败"); // TODO: 使用多语言
+		console.error("ERROR", t.toast.logout_failed);
 	return logoutResult;
 }
 

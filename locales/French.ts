@@ -402,8 +402,7 @@ export default {
 	components_test_page: "Page de test des composants",
 	view_cover: "Voir La Couverture",
 	watch_later: "Regarder plus tard",
-	download_video: "Télécharger la vidéo",
-	report_creation: "Création de rapport",
+	download: "Télécharger",
 	format: {
 		_: "Format",
 		bold: "Gras",

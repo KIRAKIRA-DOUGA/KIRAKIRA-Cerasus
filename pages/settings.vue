@@ -98,7 +98,7 @@
 			const curPage = currentSettingsPage();
 			if (settings.general.findIndex(({ id }) => id === curPage) === -1)
 				navigate("/settings/appearance");
-			useToast("你已成功登出！", "success"); // TODO: 使用多语言
+			useToast(t.toast.logout_success, "success");
 			useEvent("user:login", false);
 		}
 	}

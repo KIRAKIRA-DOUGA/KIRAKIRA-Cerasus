@@ -32,7 +32,7 @@
 	 */
 	function favorite() {
 		if (selfUserInfoStore.isLogined)
-			useToast("抱歉，收藏功能正在制作中，请稍等~", "warning", 5000); // TODO: 使用多语言 // DELETE 请在收藏功能完成后删除该提示
+			useToast(t.under_development.feature, "warning", 5000); // DELETE 请在收藏功能完成后删除该提示
 		else
 			useEvent("app:requestLogin");
 	}

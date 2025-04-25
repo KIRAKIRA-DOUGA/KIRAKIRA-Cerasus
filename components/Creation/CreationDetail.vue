@@ -30,7 +30,7 @@
 			const IMAGE_MAX_WIDTH = 999999;
 			window.open(image(props.cover, { width: IMAGE_MAX_WIDTH }, { provider: environment.cloudflareImageProvider }), "_blank"); // TODO: 先暂时改为在新标签页中直接打开图片的样式，而非下载图片
 			// downloadFile(props.cover, `${props.title} (kv${props.videoId})`);
-		} else useToast("无法查看封面!", "error"); // TODO 使用多语言
+		} else useToast(t.toast.cover_view_failed, "error");
 	}
 </script>
 
@@ -45,8 +45,8 @@
 				<CreationDetailItem v-if="copyright === 'repost'" icon="local_shipping">{{ t.repost }}</CreationDetailItem>
 				<CreationDetailItem icon="photo" clickable @click="downloadCover">{{ t.view_cover }}</CreationDetailItem>
 				<CreationDetailItem icon="playlist_play" clickable>{{ t.watch_later }}</CreationDetailItem>
-				<CreationDetailItem icon="arrow_down" clickable>{{ t.download_video }}</CreationDetailItem>
-				<CreationDetailItem icon="flag" clickable>{{ t.report_creation }}</CreationDetailItem>
+				<CreationDetailItem icon="arrow_down" clickable>{{ t.download }}</CreationDetailItem>
+				<CreationDetailItem icon="flag" clickable>{{ t.report }}</CreationDetailItem>
 			</div>
 			<h1>{{ title }}</h1>
 		</div>
