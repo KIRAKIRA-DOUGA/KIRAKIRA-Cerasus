@@ -67,7 +67,7 @@
 	 * @returns 获取符合条件的图片列表。
 	 */
 	function getValidFiles(fileList?: FileList | null) {
-		if (!fileList || !fileList.length) return [];
+		if (!fileList || fileList.length === 0) return [];
 		const files: File[] = [];
 		for (const file of fileList)
 			if (file.type.startsWith("image"))
@@ -83,7 +83,7 @@
 		const input = e.target as HTMLInputElement;
 		const thumbnails = getValidFiles(input.files);
 
-		if (thumbnails.length) {
+		if (thumbnails.length > 0) {
 			thumbnailBlob.value = fileToBlob(thumbnails[0]);
 			isCoverCropperOpen.value = true;
 			input.value = ""; // 读取完用户上传的文件后，需要清空 input，以免用户在下次上传同一个文件时无法触发 change 事件。
@@ -133,7 +133,7 @@
 	 * @param files - 文件列表。
 	 */
 	function tusUpload(files: File[]) {
-		if (!files || files.length < 1) {
+		if (!files || files.length === 0) {
 			useToast(t.toast.upload_file_not_found, "error");
 			return;
 		}
@@ -299,8 +299,7 @@
 
 <template>
 	<div class="container">
-		<!-- TODO: 使用多语言 -->
-		<Modal v-model="isCoverCropperOpen" title="上传封面">
+		<Modal v-model="isCoverCropperOpen" :title="t.select_cover">
 			<div class="cover-cropper">
 				<ImageCropper
 					ref="cropper"

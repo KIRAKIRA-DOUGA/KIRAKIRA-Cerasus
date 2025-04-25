@@ -1,5 +1,6 @@
 <docs>
 	# 封禁用户
+	DELETE: Cerasus内置管理设置即将被单独的控制台Lycoris项目取代。
 </docs>
 
 <script setup lang="ts">

@@ -1,3 +1,7 @@
+<docs>
+	DELETE: Cerasus内置管理设置即将被单独的控制台Lycoris项目取代。
+</docs>
+
 <script setup lang="ts">
 	const selfUserInfoStore = useSelfUserInfoStore();
 	const isAdmin = computed(() => selfUserInfoStore.roles.includes("administrator"));

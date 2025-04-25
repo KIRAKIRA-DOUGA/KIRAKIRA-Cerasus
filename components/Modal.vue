@@ -97,7 +97,7 @@
 						</button>
 					</div>
 					<div class="content">
-						<slot><em>这是一个空的模态框。</em></slot>
+						<slot><em>This is an empty Modal dialog.</em></slot>
 					</div>
 				</div>
 				<div v-if="!hideFooter" class="footer">
@@ -106,8 +106,8 @@
 					</div>
 					<div class="right">
 						<slot name="footer-right">
-							<Button class="secondary" @click="open = false">取消</Button>
-							<Button @click="open = false">确定</Button>
+							<Button class="secondary" @click="open = false">{{ t.step.cancel }}</Button>
+							<Button @click="open = false">{{ t.step.ok }}</Button>
 						</slot>
 					</div>
 				</div>
