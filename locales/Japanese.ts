@@ -5,7 +5,8 @@ import type { LocaleIdentifiers } from "./types";
 export default {
 	colon: "：",
 	semicolon: "；",
-	caesura: "・",
+	enumerationComma: "・",
+	rangeDash: "〜",
 	home: "ホーム",
 	category: {
 		_: "カテゴリ",

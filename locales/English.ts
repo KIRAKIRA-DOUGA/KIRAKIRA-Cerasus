@@ -1,7 +1,8 @@
 export default {
 	colon: ": ",
 	semicolon: "; ",
-	caesura: ", ",
+	enumerationComma: ", ",
+	rangeDash: " – ",
 	home: "Home",
 	category: {
 		_: "Category",

@@ -5,7 +5,6 @@ import type { LocaleIdentifiers } from "./types";
 export default {
 	colon: ": ",
 	semicolon: "; ",
-	caesura: ", ",
 	home: "Beranda",
 	category: {
 		_: "Kategori",

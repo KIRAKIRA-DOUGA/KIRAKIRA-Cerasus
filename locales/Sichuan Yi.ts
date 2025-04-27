@@ -5,7 +5,8 @@ import type { LocaleIdentifiers } from "./types";
 export default {
 	colon: "crwdns2184:0crwdne2184:0",
 	semicolon: "crwdns2186:0crwdne2186:0",
-	caesura: "crwdns2188:0crwdne2188:0",
+	enumerationComma: "crwdns3550:0crwdne3550:0",
+	rangeDash: "crwdns3552:0crwdne3552:0",
 	home: "crwdns2190:0crwdne2190:0",
 	category: {
 		_: "crwdns2192:0crwdne2192:0",

@@ -5,7 +5,8 @@ import type { LocaleIdentifiers } from "./types";
 export default {
 	colon: ": ",
 	semicolon: "; ",
-	caesura: ", ",
+	enumerationComma: ", ",
+	rangeDash: " – ",
 	home: "Trang chủ",
 	category: {
 		_: "Danh mục",

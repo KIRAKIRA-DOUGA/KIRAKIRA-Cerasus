@@ -5,7 +5,6 @@ import type { LocaleIdentifiers } from "./types";
 export default {
 	colon: "：",
 	semicolon: "；",
-	caesura: "、",
 	home: "首頁",
 	category: {
 		_: "分區",
