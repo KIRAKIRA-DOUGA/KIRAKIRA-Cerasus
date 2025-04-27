@@ -243,7 +243,7 @@
 		if (checkUsernameResult.success && checkUsernameResult.isAvailableUsername)
 			currentPage.value = "register2";
 		else
-			useToast(t.validation.other.username_invaild_or_taken, "warning", 5000);
+			useToast(t.validation.username_invalid_or_taken, "warning", 5000);
 		isCheckingUsername.value = false;
 	}
 
@@ -276,9 +276,9 @@
 						isCheckingEmail.value = false;
 						currentPage.value = "register3";
 					} else
-						useToast(t.validation.other.invitation_code_invalid_or_used, "error", 5000);
+						useToast(t.validation.invitation_code_invalid_or_used, "error", 5000);
 				} else
-					useToast(t.validation.other.email_registered, "error", 5000);
+					useToast(t.validation.email_registered, "error", 5000);
 			} catch (error) {
 				useToast(t.toast.something_went_wrong, "error");
 				console.error("ERROR", "Registration failed:", error);

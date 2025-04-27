@@ -6,7 +6,7 @@
 <template>
 	<div>
 		<InfoBar type="warning" :title="t.severity.warning">
-			{{ t.under_development.page }}
+			{{ t.under_construction.page }}
 		</InfoBar>
 
 		<Subheader icon="block">{{ t.block_and_hide.block }}</Subheader>

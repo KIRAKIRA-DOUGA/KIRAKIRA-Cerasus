@@ -109,7 +109,7 @@
 	 * @returns 规范化后的标签。
 	 */
 	function normalizeTag(tag: string) {
-		return tag.trim().replace(/[\r\n\t\v]/g, "").replace(/\s+/g, " ");
+		return tag.trim().replaceAll(/[\r\n\t\v]/g, "").replaceAll(/\s+/g, " ");
 	}
 
 	/**
@@ -277,7 +277,7 @@
 			@mouseleave="hideContextualToolbar"
 		>
 			<Button v-if="def !== undefined && hoveredTagContent && !isDefaultTag(def, hoveredTagContent) && !original && !isOriginalTag(editorOriginal, hoveredTagContent)" icon="check" @click="setToDefault()">{{ t.set_as_default }}</Button>
-			<Button v-if="hoveredTagContent && !isOriginalTag(editorOriginal, hoveredTagContent) && isDefaultTag(def, hoveredTagContent)" icon="close" @click="clearDefault()">{{ t.tag.set_as_default }}</Button>
+			<Button v-if="hoveredTagContent && !isOriginalTag(editorOriginal, hoveredTagContent) && isDefaultTag(def, hoveredTagContent)" icon="close" @click="clearDefault()">{{ t.unset_as_default }}</Button>
 			<Button v-if="!original && hoveredTagContent && isDefaultTag(def, hoveredTagContent) && !isOriginalTag(editorOriginal, hoveredTagContent)" icon="star" @click="setToOriginal()">{{ t.tag.set_as_original }}</Button>
 			<Button v-if="hoveredTagContent && isDefaultTag(def, hoveredTagContent) && isOriginalTag(editorOriginal, hoveredTagContent)" icon="close" @click="clearOriginal()">{{ t.tag.unset_as_original }}</Button>
 			<Button icon="close" @click="updateTags(hoveredTagContent![0], '')">{{ t.delete }}</Button>

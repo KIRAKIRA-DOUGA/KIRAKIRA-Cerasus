@@ -88,7 +88,7 @@
 	async function updateUserEmail() {
 		const oldEmail = selfUserInfoStore.userEmail ?? "";
 		if (!newEmail.value || !changeEmailPassword.value || !changeEmailVerificationCode.value) {
-			useToast(t.toast.required_not_filled, "warning", 5000);
+			useToast(t(3).toast.required_not_filled, "warning", 5000);
 			return;
 		}
 		if (oldEmail === newEmail.value) {
@@ -122,7 +122,7 @@
 	 */
 	async function updateUserPassword() {
 		if (!oldPassword.value || !newPassword.value || !changePasswordVerificationCode.value) {
-			useToast(t.toast.required_not_filled, "warning");
+			useToast(t(3).toast.required_not_filled, "warning");
 			return;
 		}
 		if (newPassword.value !== confirmNewPassword.value) {
@@ -229,7 +229,7 @@
 		try {
 			if (!deleteEmail2FAPassword.value || !deleteEmail2FAVerificationCode.value) {
 				isDeletingEmail2FA.value = false;
-				useToast(t.toast.required_not_filled, "error", 5000);
+				useToast(t(2).toast.required_not_filled, "error", 5000);
 				return;
 			}
 
@@ -475,16 +475,15 @@
 						<h3><Icon name="counter_1" />{{ t.two_factor_authentication.add_totp.step_install }}</h3>
 						<p>
 							<TransInterpolation :i18nKey="t.two_factor_authentication.add_totp.step_install_description">
-							<!-- FIXME: TransInterpolation报错 -->
-							<!-- <template #ente-auth>
-								<a href="https://ente.io/auth/" target="_blank">Ente Auth</a>
-							</template>
-							<template #microsoft-authenticator>
-								<a href="https://www.microsoft.com/security/mobile-authenticator-app" target="_blank">Microsoft Authenticator</a>
-							</template>
-							<template #google-authenticator>
-								<a href="https://support.google.com/accounts/answer/1066447" target="_blank">Google Authenticator</a>
-							</template> -->
+								<template #ente-auth>
+									<a href="https://ente.io/auth/" target="_blank">Ente Auth</a>
+								</template>
+								<template #microsoft-authenticator>
+									<a href="https://www.microsoft.com/security/mobile-authenticator-app" target="_blank">Microsoft Authenticator</a>
+								</template>
+								<template #google-authenticator>
+									<a href="https://support.google.com/accounts/answer/1066447" target="_blank">Google Authenticator</a>
+								</template>
 							</TransInterpolation>
 						</p>
 					</div>

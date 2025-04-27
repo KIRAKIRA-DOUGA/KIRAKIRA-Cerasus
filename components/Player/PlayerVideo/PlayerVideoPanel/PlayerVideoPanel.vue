@@ -32,7 +32,7 @@
 	 */
 	function favorite() {
 		if (selfUserInfoStore.isLogined)
-			useToast(t.under_development.feature, "warning", 5000); // DELETE 请在收藏功能完成后删除该提示
+			useToast(t.under_construction.feature, "warning", 5000); // DELETE 请在收藏功能完成后删除该提示
 		else
 			useEvent("app:requestLogin");
 	}

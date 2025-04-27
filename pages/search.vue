@@ -143,14 +143,14 @@
 			}
 
 			case "user": {
-				useToast(t.under_development.search_mode, "error", 10000);
+				useToast(t.under_construction.search_mode, "error", 10000);
 				console.warn("no support search mode: user");
 				await getHomeVideo();
 				break;
 			}
 
 			case "advanced_search": {
-				useToast(t.under_development.search_mode, "error", 10000);
+				useToast(t.under_construction.search_mode, "error", 10000);
 				console.warn("no support search mode: advanced_search");
 				await getHomeVideo();
 				break;

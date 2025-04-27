@@ -153,7 +153,7 @@
 				onFlyoutHide();
 			} else
 				// useToast(t.toast.no_language_selected, "warning");
-				useToast(t.toast.required_not_filled, "warning");
+				useToast(t(1).toast.required_not_filled, "warning");
 		} else if (shown === "cancel") showTagEditor.value = false;
 		else {
 			const text = search.value.trim().replaceAll(/\s+/g, " ");

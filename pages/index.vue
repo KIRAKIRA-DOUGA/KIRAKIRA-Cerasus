@@ -38,7 +38,7 @@
 		</TabBar>
 		<InfoBar :title="t.announcement" lite>
 			<TransInterpolation :i18nKey="t.announcement.homepage">
-				<template #discordServer>
+				<template #discord-server>
 					<a href="https://aira.cafe" target="_blank">{{ t.platform.discord.server }}</a>
 				</template>
 			</TransInterpolation>

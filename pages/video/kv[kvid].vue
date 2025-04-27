@@ -43,7 +43,7 @@
 			} else
 				handleError(t.toast.video_request_failed);
 		} else
-			handleError(t.toast.video_nokvid);
+			handleError(t.toast.video_no_id);
 	}
 
 	watch(() => kvid, fetchVideoData);

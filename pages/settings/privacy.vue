@@ -47,7 +47,7 @@
 <template>
 	<div>
 		<InfoBar type="warning" :title="t.severity.warning">
-			{{ t.under_development.page }}
+			{{ t.under_construction.page }}
 		</InfoBar>
 
 		<Subheader icon="cookie">{{ t.privacy.cookie }}</Subheader>

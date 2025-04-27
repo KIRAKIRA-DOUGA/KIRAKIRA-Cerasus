@@ -40,7 +40,7 @@
 	 * @returns 合法的文件列表。
 	 */
 	function getValidFiles(fileList?: FileList | null) {
-		if (!fileList || !fileList.length) return [];
+		if (!fileList || fileList.length === 0) return [];
 		const files: File[] = [];
 		for (const file of fileList)
 			if (file.type.startsWith("video") || file.name.endsWith(".mkv"))
@@ -57,9 +57,9 @@
 		const files = e.dataTransfer?.files;
 		if (!files) return;
 		const dropFiles = getValidFiles(files);
-		if (dropFiles.length)
+		if (dropFiles.length > 0)
 			uploaded(dropFiles);
-		else if (files.length)
+		else if (files.length > 0)
 			invalidUploaded();
 	}
 
@@ -76,7 +76,7 @@
 			return;
 		}
 
-		if (files.length)
+		if (files.length > 0)
 			uploaded(files);
 		else if (input.files?.length)
 			invalidUploaded();
@@ -99,7 +99,7 @@
 	<div class="container" :class="{ 'no-scroll': !showEditor }">
 
 		<InfoBar type="warning" :title="t.severity.warning">
-			{{ t.under_development.feature_admin_only }}
+			{{ t.under_construction.feature_admin_only }}
 		</InfoBar>
 
 		<!-- TODO: 临时 SoftButton，之后请在 UploadEditor 的 Submit 按钮左边放一个取消。 -->
