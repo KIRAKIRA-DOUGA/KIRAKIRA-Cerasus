@@ -17,7 +17,7 @@
 		{ langId: "vi", langName: getLocaleName("vi") },
 		{ langId: "id", langName: getLocaleName("id") },
 		{ langId: "ar", langName: getLocaleName("ar") },
-		{ langId: "other", langName: t.other }, // TODO: 使用多语言
+		{ langId: "other", langName: t.other },
 	] as const; // 可选语言列表
 	type LanguageList = typeof languages[number];
 	type EditorType = { language: LanguageList | { langId: ""; langName: "" }; values: string[]; default: [number, string] | null; original: [number, string] | null }[];
@@ -153,7 +153,7 @@
 				onFlyoutHide();
 			} else
 				// useToast(t.toast.no_language_selected, "warning");
-				useToast("TAG 未正确填写！ ", "warning"); // TODO: 使用多语言
+				useToast(t.toast.required_not_filled, "warning");
 		} else if (shown === "cancel") showTagEditor.value = false;
 		else {
 			const text = search.value.trim().replaceAll(/\s+/g, " ");

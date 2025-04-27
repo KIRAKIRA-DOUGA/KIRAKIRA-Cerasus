@@ -506,6 +506,9 @@ export default {
 		video_invalid_result: "Failed to get video! Invalid result.",
 		video_request_failed: "Failed to get video! Request failed.",
 		video_nokvid: "No KVID!",
+		developer_mode_remain_clicks: "Click {0} more times to enter developer mode.",
+		developer_mode_enabled: "Developer mode enabled~",
+		developer_mode_already_enabled: "Developer mode is already enabled.",
 	},
 	validation: {
 		required: {

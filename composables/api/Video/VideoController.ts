@@ -1,5 +1,5 @@
 import * as tus from "tus-js-client";
-import { GET, POST, DELETE, uploadFile2CloudflareImages } from "../Common";
+import { DELETE, GET, POST, uploadFile2CloudflareImages } from "../Common";
 import type { ApprovePendingReviewVideoRequestDto, ApprovePendingReviewVideoResponseDto, CheckVideoExistRequestDto, CheckVideoExistResponseDto, DeleteVideoRequestDto, DeleteVideoResponseDto, GetVideoByKvidRequestDto, GetVideoByKvidResponseDto, GetVideoByUidRequestDto, GetVideoByUidResponseDto, GetVideoCoverUploadSignedUrlResponseDto, PendingReviewVideoResponseDto, SearchVideoByVideoTagIdRequestDto, SearchVideoByVideoTagIdResponseDto, ThumbVideoResponseDto, UploadVideoRequestDto, UploadVideoResponseDto } from "./VideoControllerDto";
 
 const BACK_END_URI = environment.backendUri;
@@ -144,7 +144,7 @@ export class TusFileUploader {
 					expiry: getCloudflareRFC3339ExpiryDateTime(3600), // 最大上传耗时，3600 秒（1 小时）
 				},
 				onError: error => {
-					console.error("ERROR", "Upload error: ", error);
+					console.error("ERROR", "Upload error:", error);
 					this.step = "error";
 					reject(error);
 				},
@@ -174,7 +174,7 @@ export class TusFileUploader {
 			// Check if there are any previous uploads to continue.
 			uploader.findPreviousUploads().then(previousUploads => {
 				// Found previous uploads so we select the first one.
-				if (previousUploads.length)
+				if (previousUploads.length > 0)
 					uploader.resumeFromPreviousUpload(previousUploads[0]);
 
 				// Start the upload
@@ -195,7 +195,7 @@ export class TusFileUploader {
 				this.step = "pausing";
 				this.isUploadingVideo.value = false;
 			} else
-				console.error(`Upload pause failed, Pausing can only work when in 'uploading' step, but you are in '${this.step}' step.`); // TODO: 使用多语言
+				console.error(`Upload pause failed, Pausing can only work when in 'uploading' step, but you are in '${this.step}' step.`);
 	}
 
 	/**
@@ -208,7 +208,7 @@ export class TusFileUploader {
 				this.step = "uploading";
 				this.isUploadingVideo.value = true;
 			} else
-				console.error(`Upload resume failed, Uploading can only work when in 'pausing' step, but you are in '${this.step}' step.`); // TODO: 使用多语言
+				console.error(`Upload resume failed, Uploading can only work when in 'pausing' step, but you are in '${this.step}' step.`);
 	}
 }
 

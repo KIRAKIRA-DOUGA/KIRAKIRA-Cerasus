@@ -54,14 +54,17 @@
 	 */
 	function showDevMode(e: MouseEvent) {
 		replayAnimation(e.currentTarget as HTMLDivElement, "active");
-		if (remainingClick.value && !isDevMode?.value) {
-			clearAllToast();
-			useToast(`继续点击${remainingClick.value--}次即可进入开发者模式`, "info"); // TODO: 使用多语言。
-			return;
-		}
 		clearAllToast();
-		useToast("你已进入开发者模式！", "success"); // TODO: 使用多语言。
-		isDevMode && (isDevMode.value = true);
+		if (isDevMode?.value) {
+			useToast(t.toast.developer_mode_already_enabled, "info");
+			return;
+		} else if (remainingClick.value) {
+			useToast(t.toast.developer_mode_remain_clicks(remainingClick.value--), "info");
+			return;
+		} else {
+			isDevMode && (isDevMode.value = true);
+			useToast(t.toast.developer_mode_enabled, "success");
+		}
 	}
 
 	team.forEach(async developer => {
