@@ -36,18 +36,6 @@ export default {
 		cyan: "Maya Xanh Dương",
 		red: "Megu Đỏ",
 	},
-	language: {
-		_: "Ngôn ngữ",
-		zhs: "Tiếng Trung - giản thể",
-		zht: "Tiếng Trung - phồn thể",
-		en: "Tiếng Anh",
-		ja: "Tiếng Nhật",
-		ko: "Tiếng Hàn",
-		vi: "Tiếng Việt",
-		id: "Tiếng Indonesia",
-		fr: "Tiếng Pháp",
-		yue: "Tiếng Quảng Đông",
-	},
 	background: {
 		_: "Phông nền",
 		animated: "Phông nền động",
@@ -88,6 +76,7 @@ export default {
 		search: "Tìm kiếm cài đặt",
 		user: "Cài đặt người dùng",
 		app: "Cài đặt ứng dụng",
+		security: {},
 	},
 	dashboard: "Tổng quan",
 	account: "Tài khoản",
@@ -121,25 +110,12 @@ export default {
 		hint: "Gợi ý mật khẩu",
 	},
 	account_linking: "Liên kết tài khoản",
-	blocklist: {
-		_: "Danh sách chặn",
-		ban: {
-			_: "Chặn",
-			description: "Người dùng bạn không muốn liên hệ.",
-		},
-		hide: {
-			_: "Ẩn",
-			description: "Ẩn đi người dùng bạn không muốn thấy (trừ khi truy cập trang cá nhân của họ).",
-		},
-		tag: {
-			description: "Lọc theo thẻ để ẩn đi nội dung bạn không muốn thấy.",
-		},
-		keyword: {
-			description: "Lọc theo từ khóa để ẩn đi nội dung bạn không muốn thấy.",
-		},
-		regexp: {
-			description: "Dùng thuật toán để ẩn đi nội dung bạn không muốn thấy.",
-		},
+	block_and_hide: {
+		block: {},
+		hide: {},
+		tag: {},
+		keyword: {},
+		regexp: {},
 	},
 	player: {
 		_: "Trình phát",
@@ -244,7 +220,6 @@ export default {
 	keyword: "Từ khóa",
 	email: "Email",
 	email_address: "Email",
-	authenticator: "Bộ xác thực",
 	current_email: "Địa chỉ email hiện tại",
 	modification_date: "Ngày chỉnh sửa",
 	addition_date: "Ngày thêm",
@@ -422,7 +397,6 @@ export default {
 		title_affix: "Trang cá nhân của {0}",
 	},
 	manage_content: "Quản lý nội dung",
-	add_to_blocklist: "Thêm vào danh sách chặn",
 	platform: {
 		twitter: "Twitter",
 		qq: "QQ",
@@ -478,7 +452,6 @@ export default {
 		invalid_format: {},
 		too_long: {},
 		duplicate: {},
-		other: {},
 	},
 	confirm: {
 		cancel_upload: "Bạn có chắc muốn ngừng quá trình đăng tải?",
@@ -497,7 +470,13 @@ export default {
 	},
 	version: "Phiên bản",
 	announcement: {},
-	under_development: {},
+	under_construction: {},
 	severity: {},
 	http_status_code: {},
+	two_factor_authentication: {
+		add_totp: {},
+		remove_totp: {},
+		enable_email: {},
+		disable_email: {},
+	},
 } as const satisfies LocaleIdentifiers;

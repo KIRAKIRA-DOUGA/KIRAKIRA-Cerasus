@@ -9,12 +9,12 @@ export function getCloudflareMpdVideoUrl(videoId: string): string {
 		try {
 			return cloudflareMpdVideoUrlTemplate.replace("{videoId}", videoId);
 		} catch (error) {
-			useToast(t.toast.video_manifest_generate_failed, "error");
+			useToast(t.toast.video_manifest_file_generate_failed, "error");
 			console.error("ERROR", "生成视频清单文件时出错，ERROR:  ！", error);
 			return "";
 		}
 	else {
-		useToast(t.toast.video_manifest_generate_failed, "error");
+		useToast(t.toast.video_manifest_file_generate_failed, "error");
 		console.error("ERROR", "生成视频清单文件失败，必要参数为空，template: ！", cloudflareMpdVideoUrlTemplate);
 		return "";
 	}

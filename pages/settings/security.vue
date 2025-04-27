@@ -301,7 +301,7 @@
 	 */
 	async function handleClickConfirmTotp() {
 		if (!confirmTotpVerificationCode.value) {
-			useToast(t.validation.required.verification_code, "error");
+			useToast(t.validation.required.totp_verification_code, "error");
 			return;
 		}
 
@@ -364,7 +364,7 @@
 		}
 
 		if (!deleteTotpVerificationCode.value) {
-			useToast(t.validation.required.verification_code, "error");
+			useToast(t.validation.required.totp_verification_code, "error");
 			return;
 		}
 
@@ -498,11 +498,7 @@
 						<ShadingIcon icon="edit" />
 						<h3><Icon name="counter_3" />{{ t.two_factor_authentication.add_totp.step_enter_code }}</h3>
 						<p>
-							<TransInterpolation :i18nKey="t.two_factor_authentication.add_totp.step_enter_code_description">
-								<template #needHelp>
-									<a href="https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus/issues" target="_blank">{{ t.need_help }}</a>
-								</template>
-							</TransInterpolation>
+							<Preserves>{{ t.two_factor_authentication.add_totp.step_enter_code_description }}</Preserves>
 						</p>
 						<form class="totp-confirm-form">
 							<TextBox
@@ -510,7 +506,7 @@
 								:required="true"
 								type="text"
 								icon="verified"
-								:placeholder="t.verification_code"
+								:placeholder="t.totp_verification_code"
 							/>
 						</form>
 					</div>
@@ -523,8 +519,8 @@
 							<Preserves>{{ t.two_factor_authentication.add_totp.step_save_description }}</Preserves>
 						</p>
 						<br />
-						<p>{{ t.two_factor_authentication.add_totp.backup_codes }}</p>
-						<label class="details">{{ t.two_factor_authentication.add_totp.backup_codes_description }}</label>
+						<p>{{ t(2).two_factor_authentication.add_totp.backup_code }}</p>
+						<label class="details">{{ t.two_factor_authentication.add_totp.backup_code_description }}</label>
 						<pre><code>{{ displayBackupCode }}</code></pre>
 						<br />
 						<p>{{ t.two_factor_authentication.add_totp.recovery_code }}</p>
@@ -548,12 +544,12 @@
 			<div class="delete-totp-modal">
 				<form>
 					<TextBox v-model="deleteTotpPassword" :required="true" type="password" icon="lock" :placeholder="t.password" autoComplete="current-password" />
-					<TextBox v-model="deleteTotpVerificationCode" :required="true" type="text" icon="lock" :placeholder="t.verification_code" />
+					<TextBox v-model="deleteTotpVerificationCode" :required="true" type="text" icon="lock" :placeholder="t.totp_verification_code" />
 				</form>
 			</div>
 			<template #footer-right>
 				<Button class="secondary" :disabled="isDeletingTotp" @click="closeDeleteTotpModel">{{ t.step.cancel }}</Button>
-				<Button severity="danger" icon="delete" @click="deleteTotpByVerification" :disabled="isDeletingTotp" :loading="isDeletingTotp">{{ t.remove }}</Button>
+				<Button severity="danger" icon="delete" @click="deleteTotpByVerification" :disabled="isDeletingTotp || !deleteTotpVerificationCode" :loading="isDeletingTotp">{{ t.remove }}</Button>
 			</template>
 		</Modal>
 

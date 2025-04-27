@@ -36,18 +36,6 @@ export default {
 		cyan: "麻耶青",
 		red: "小惠紅",
 	},
-	language: {
-		_: "語言",
-		zhs: "簡體中文",
-		zht: "繁體中文",
-		en: "英語",
-		ja: "日語",
-		ko: "韓語",
-		vi: "越南語",
-		id: "印尼語",
-		fr: "法語",
-		yue: "粵語",
-	},
 	background: {
 		_: "背景",
 		animated: "動態背景",
@@ -73,7 +61,6 @@ export default {
 		_: "標籤",
 		search: "搜尋標籤",
 		new: "創建新標籤",
-		set_as_default: "設定為預設值",
 	},
 	all: "全部",
 	video: "影片",
@@ -89,6 +76,7 @@ export default {
 		search: "搜尋設定",
 		user: "使用者設定",
 		app: "程式設定",
+		security: {},
 	},
 	dashboard: "數據",
 	account: "帳戶",
@@ -122,16 +110,11 @@ export default {
 		hint: "密碼提示",
 	},
 	account_linking: "關聯社群平臺",
-	blocklist: {
-		_: "黑名單",
-		ban: {
-			_: "封禁",
+	block_and_hide: {
+		block: {
 			description: "不想與其交流的使用者，其將被禁止與你互動。",
 		},
-		hide: {
-			_: "隱藏",
-			description: "不想看到的用戶，其將會從你的視角消失（除非你主動進入其個人主頁）。",
-		},
+		hide: {},
 		tag: {
 			description: "使用標籤來隱藏不想看到的內容。",
 		},
@@ -245,7 +228,6 @@ export default {
 	keyword: "關鍵字",
 	email: "電子郵件",
 	email_address: "電子信箱",
-	authenticator: "身分驗證器",
 	current_email: "當前郵箱",
 	modification_date: "修改日期",
 	addition_date: "添加日期",
@@ -420,7 +402,6 @@ export default {
 		title_affix: "{0}的個人主頁",
 	},
 	manage_content: "稿件管理",
-	add_to_blocklist: "加入黑名單",
 	platform: {
 		twitter: "Twitter",
 		qq: "QQ",
@@ -473,7 +454,6 @@ export default {
 		invalid_format: {},
 		too_long: {},
 		duplicate: {},
-		other: {},
 	},
 	confirm: {
 		cancel_upload: "確定要取消本次上傳嗎？",
@@ -492,7 +472,13 @@ export default {
 	},
 	version: "版本",
 	announcement: {},
-	under_development: {},
+	under_construction: {},
 	severity: {},
 	http_status_code: {},
+	two_factor_authentication: {
+		add_totp: {},
+		remove_totp: {},
+		enable_email: {},
+		disable_email: {},
+	},
 } as const satisfies LocaleIdentifiers;

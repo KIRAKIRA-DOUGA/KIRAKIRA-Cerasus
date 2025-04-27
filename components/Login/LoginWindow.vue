@@ -438,7 +438,7 @@
 							<TextBox
 								v-model="clientOtp"
 								type="text"
-								:placeholder="t.verification_code"
+								:placeholder="t.totp_verification_code"
 								icon="lock"
 								:invalid="isInvalidEmail"
 								autoComplete="username"

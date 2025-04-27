@@ -32,18 +32,6 @@ export default {
 		purple: "Ungu Rize",
 		green: "Hijau Chiya",
 	},
-	language: {
-		_: "Bahasa",
-		zhs: "Bahasa Cina (Sederhana)",
-		zht: "Bahasa Cina (Tradisional)",
-		en: "Bahasa Inggris",
-		ja: "Bahasa Jepang",
-		ko: "Bahasa Korea",
-		vi: "Bahasa Vietnam",
-		id: "Bahasa Indonesia",
-		fr: "Bahasa Perancis",
-		yue: "Bahasa Kanton",
-	},
 	background: {
 		_: "Latar",
 		animated: "Latar Belakang Animasi",
@@ -67,7 +55,6 @@ export default {
 		_: "Tag",
 		search: "Cari Tag",
 		new: "Buat Tag Baru",
-		set_as_default: "Tetapkan sebagai Default",
 	},
 	all: "Semua",
 	video: "Video",
@@ -83,6 +70,7 @@ export default {
 		search: "Cari Pengaturan",
 		user: "Pengaturan Pengguna",
 		app: "Pengaturan Aplikasi",
+		security: {},
 	},
 	dashboard: "Dasbor",
 	account: "Akun",
@@ -115,25 +103,12 @@ export default {
 		hint: "Petunjuk Password",
 	},
 	account_linking: "Penautan Akun",
-	blocklist: {
-		_: "Daftar Blokir",
-		ban: {
-			_: "Ban",
-			description: "Pengguna yang Tidak ingin Kamu izinkan berinteraksi dengan Kamu.",
-		},
-		hide: {
-			_: "Sembunyikan",
-			description: "Pengguna yang tidak ingin Anda lihat mana yang akan dihilangkan (kecuali kalau kamu langsung masuk ke halaman penggunanya).",
-		},
-		tag: {
-			description: "Gunakan tag untuk menyembunyikan konten yang tidak ingin dilihat.",
-		},
-		keyword: {
-			description: "Gunakan kata kunci untuk menyembunyikan konten yang tidak ingin dilihat.",
-		},
-		regexp: {
-			description: "Gunakan ekspresi reguler untuk menyembunyikan konten yang tidak ingin Anda lihat.",
-		},
+	block_and_hide: {
+		block: {},
+		hide: {},
+		tag: {},
+		keyword: {},
+		regexp: {},
 	},
 	player: {
 		_: "Player",
@@ -225,7 +200,6 @@ export default {
 	keyword: "Kata Kunci",
 	email: "Email",
 	email_address: "Email",
-	authenticator: "Pengautentik",
 	current_email: "Email Saat Ini",
 	modification_date: "Modifikasi",
 	addition_date: "Tanggal Penambahan",
@@ -397,7 +371,6 @@ export default {
 		title_affix: "{0} Laman Pengguna",
 	},
 	manage_content: "Kelola Konten",
-	add_to_blocklist: "Masukan ke Daftar Blokir",
 	platform: {
 		twitter: "Twitter",
 		qq: "QQ",
@@ -450,7 +423,6 @@ export default {
 		invalid_format: {},
 		too_long: {},
 		duplicate: {},
-		other: {},
 	},
 	confirm: {
 		cancel_upload: "Apakah Anda yakin ingin membatalkan Unggah?",
@@ -468,7 +440,13 @@ export default {
 		invalid: "Kode Undangan Tidak Valid",
 	},
 	announcement: {},
-	under_development: {},
+	under_construction: {},
 	severity: {},
 	http_status_code: {},
+	two_factor_authentication: {
+		add_totp: {},
+		remove_totp: {},
+		enable_email: {},
+		disable_email: {},
+	},
 } as const satisfies LocaleIdentifiers;

@@ -36,18 +36,7 @@ export default {
 		cyan: "麻耶青",
 		red: "小惠紅",
 	},
-	language: {
-		_: "語言",
-		zhs: "簡體中文",
-		zht: "繁體中文",
-		en: "英語",
-		ja: "日語",
-		ko: "韓語",
-		vi: "越南語",
-		id: "印尼語",
-		fr: "法語",
-		yue: "廣東話",
-	},
+	language: "語言",
 	background: {
 		_: "背景",
 		animated: "動態背景",
@@ -73,7 +62,6 @@ export default {
 		_: "標籤",
 		search: "搵標籤",
 		new: "整個新標籤",
-		set_as_default: "設做預設值",
 	},
 	all: "所有",
 	video: "影片",
@@ -89,6 +77,7 @@ export default {
 		search: "搵設定",
 		user: "用家設定",
 		app: "程式設定",
+		security: {},
 	},
 	dashboard: "儀表盤",
 	account: "帳戶",
@@ -122,15 +111,12 @@ export default {
 		hint: "密碼提醒",
 	},
 	account_linking: "關連社交媒體",
-	blocklist: {
-		_: "黑名單",
-		ban: {
-			_: "封鎖",
+	block_and_hide: {
+		block: {
 			description: "呢度可以擺啲你唔鍾意嘅人，佢哋唔會過嚟煩你。",
 		},
 		hide: {
 			_: "隱藏",
-			description: "唔想見到嘅人，會從你嘅視角消失（除非你主動入去佢哋嘅個人主頁）。",
 		},
 		tag: {
 			description: "使用標籤匹配唔想見到嘅內容。",
@@ -245,7 +231,7 @@ export default {
 	keyword: "關鍵字",
 	email: "電郵",
 	email_address: "電郵",
-	authenticator: "身份驗證器",
+	totp_verification_code: "驗證碼",
 	current_email: "當前電郵",
 	modification_date: "修改日期",
 	addition_date: "添加日期",
@@ -276,6 +262,8 @@ export default {
 	},
 	messages: "消息",
 	notification: "通知",
+	pleaseLogin: "請登入",
+	login: "登入",
 	register: "註冊",
 	verification_code: "驗證碼",
 	current_page_label: "第{0}頁，共{1}頁",
@@ -393,6 +381,7 @@ export default {
 	components_test_page: "元件測試頁面",
 	view_cover: "睇吓封面",
 	watch_later: "陣間至睇",
+	download: "下載",
 	format: {
 		_: "格式",
 		bold: "粗體",
@@ -420,7 +409,6 @@ export default {
 		title_affix: "{0}嘅個人主頁",
 	},
 	manage_content: "投稿管理",
-	add_to_blocklist: "加入黑名單",
 	platform: {
 		twitter: "Twitter",
 		qq: "QQ",
@@ -434,6 +422,7 @@ export default {
 		cloudmusic: "網易雲音樂",
 		discord: {
 			_: "Discord",
+			server: "Discord伺服器",
 		},
 		telegram: "Telegram",
 		midishow: "MidiShow",
@@ -443,6 +432,8 @@ export default {
 		tiktok: "抖音",
 		pixiv: "Pixiv",
 		github: "GitHub",
+		bluesky: "Bluesky",
+		rednote: "小紅書",
 	},
 	modify_memo: "修改備註",
 	add_to_group: "加入分組",
@@ -462,7 +453,7 @@ export default {
 		no_cover: "請上載封面！",
 		login_failed: "登入失敗！用戶名或密碼錯誤。",
 		password_mismatch: "兩次輸入嘅密碼唔同！",
-		copied: "複製咗喇 ~",
+		copied: "複製咗喇~",
 		modification_failed: "修改失敗！",
 		failed_to_disable_cookies: "停用唔到Cookie！",
 		duplicate_tag: "標籤重複咗！",
@@ -474,7 +465,6 @@ export default {
 		invalid_format: {},
 		too_long: {},
 		duplicate: {},
-		other: {},
 	},
 	confirm: {
 		cancel_upload: "你係咪要取消呢次嘅upload呀？",
@@ -492,8 +482,20 @@ export default {
 		invalid: "邀請碼無效",
 	},
 	version: "版本",
-	announcement: {},
-	under_development: {},
-	severity: {},
+	announcement: {
+		_: "公告",
+	},
+	under_construction: {},
+	severity: {
+		warning: "警告",
+		error: "錯誤",
+	},
+	need_help: "需要協助？",
 	http_status_code: {},
+	two_factor_authentication: {
+		add_totp: {},
+		remove_totp: {},
+		enable_email: {},
+		disable_email: {},
+	},
 } as const satisfies LocaleIdentifiers;
