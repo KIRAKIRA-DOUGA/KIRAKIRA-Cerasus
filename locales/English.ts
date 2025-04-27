@@ -423,7 +423,7 @@ export default {
 		title_affix: "{0}'s User Page",
 	},
 	manage_content: "Manage Content",
-	add_to_blocklist: "Add to Blocklist",
+	block_user: "Block User",
 	platform: {
 		twitter: "Twitter",
 		qq: "QQ",

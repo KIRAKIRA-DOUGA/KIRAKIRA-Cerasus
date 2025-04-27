@@ -107,7 +107,7 @@
 							<MenuItem icon="groups">{{ t.add_to_group }}</MenuItem>
 							<hr />
 							<MenuItem v-tooltip:x="'老铁们，给我举报他！'" icon="flag">{{ t.report }}</MenuItem>
-							<MenuItem icon="block">{{ t.add_to_blocklist }}</MenuItem>
+							<MenuItem icon="block">{{ t.block_user }}</MenuItem>
 						</Menu>
 						<div v-if="!isSelf" class="follow-button">
 							<Button v-if="!isFollowed" icon="add" @click="isFollowed = true">{{ t.follow_verb }}</Button>
