@@ -433,7 +433,7 @@
 
 					<div class="login2-2fa">
 						<HeadingGroup :name="t.login" englishName="Login" />
-						<span><Preserves>{{ t.loginwindow.login_2fa_info }}</Preserves></span>
+						<span><Preserves>{{ t.loginwindow.login_totp_info }}</Preserves></span>
 						<form class="form">
 							<TextBox
 								v-model="clientOtp"

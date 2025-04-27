@@ -234,12 +234,10 @@
 			position: absolute;
 			scale: 1.5;
 			transition: $fallback-transitions, all $ease-out-back 1s;
-			animation: decoration-move 2s linear infinite both;
-			animation-play-state: paused;
+			animation: decoration-move 4s linear infinite both;
 
 			button:any-hover & {
 				scale: 2;
-				animation-play-state: running;
 			}
 
 			button.danger:any-hover & {
@@ -249,7 +247,7 @@
 
 		@for $i from 1 through 5 {
 			> :nth-child(#{$i}) {
-				animation-delay: (0.8s * ($i - 1));
+				animation-delay: (1.6s * ($i - 1));
 			}
 		}
 

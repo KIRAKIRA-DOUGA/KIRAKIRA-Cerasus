@@ -68,7 +68,7 @@
 			{ id: "privacy", icon: "shield" },
 			{ id: "security", icon: "lock" },
 			{ id: "account-linking", icon: "groups" },
-			{ id: "blocklist", icon: "block" },
+			{ id: "block_and_hide", icon: "block" },
 			{ id: "invitation-code", icon: "gift" },
 		],
 		general: [

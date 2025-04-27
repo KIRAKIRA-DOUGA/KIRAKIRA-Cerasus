@@ -39,11 +39,11 @@
 						image: videoData.image,
 					};
 				} else
-					handleError("获取视频失败，结果异常！"); // TODO: 使用多语言
+					handleError(t.toast.video_invalid_result);
 			} else
-				handleError("获取视频失败，请求失败！"); // TODO: 使用多语言
+				handleError(t.toast.video_request_failed);
 		} else
-			handleError("未获取到 KVID，开始使用默认视频！", "warning"); // TODO: 使用多语言
+			handleError(t.toast.video_nokvid);
 	}
 
 	watch(() => kvid, fetchVideoData);

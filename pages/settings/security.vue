@@ -1,6 +1,6 @@
 <script setup lang="ts">
-	import QrcodeVue from "qrcode.vue";
 	import type { Level, RenderAs } from "qrcode.vue";
+	import QrcodeVue from "qrcode.vue";
 
 	const passwordChangeDate = ref(new Date());
 	const passwordChangeDateDisplay = computed(() => formatDateWithLocale(passwordChangeDate.value));
@@ -35,13 +35,12 @@
 		set(newValue) {
 			if (appSettings.typeOf2FA === "totp" && newValue !== "totp" && checkUser2FAResult.value?.type === "totp") {
 				// 当响应式变量从 totp 改变为其他非 totp 的值，且用户的 2FA 类型为 totp 时，打开解绑 TOTP 的模态框，且不会导致导致响应式变量的变更
-				// TODO: 使用多语言
-				useToast("在关闭 2FA 之前必须删除 TOTP 验证器", "warning", 5000);
+				useToast(t.toast.must_remove_totp_first, "warning", 5000);
 				openDeleteTotpModel();
 			} else if (appSettings.typeOf2FA === "email" && newValue !== "email" && checkUser2FAResult.value?.type === "email") {
 				// 当响应式变量从 email 改变为其他非 email 的值，且用户的 2FA 类型为 email 时，打开删除 Email 2FA 的模态框，且不会导致导致响应式变量的变更
 				openDeleteEmail2FAModel();
-				useToast("在关闭 2FA 之前必须验证你的邮箱。", "warning", 5000);
+				useToast(t.toast.must_verify_email_first, "warning", 5000);
 			} else if (newValue === "email" && appSettings.typeOf2FA !== "email" && checkUser2FAResult.value?.type !== "email")
 				openCreateEmail2FAModel();
 			else
@@ -89,11 +88,11 @@
 	async function updateUserEmail() {
 		const oldEmail = selfUserInfoStore.userEmail ?? "";
 		if (!newEmail.value || !changeEmailPassword.value || !changeEmailVerificationCode.value) {
-			useToast("必填项不能为空！", "warning", 5000); // TODO: 使用多语言
+			useToast(t.toast.required_not_filled, "warning", 5000);
 			return;
 		}
 		if (oldEmail === newEmail.value) {
-			useToast("新邮箱不能与旧邮箱相同！", "warning", 5000); // TODO: 使用多语言
+			useToast(t.toast.new_email_same, "warning", 5000);
 			return;
 		}
 		isChangingEmail.value = true;
@@ -108,10 +107,10 @@
 		const updateUserEmailResult = await api.user.updateUserEmail(updateUserEmailRequest);
 		if (updateUserEmailResult.success) {
 			await api.user.getSelfUserInfo();
-			useToast("更换邮箱成功", "success"); // TODO: 使用多语言
+			useToast(t.toast.email_changed, "success");
 			showChangeEmail.value = false;
 		} else
-			useToast("更换邮箱失败，请稍后再试", "error", 5000); // TODO: 使用多语言
+			useToast(t.toast.something_went_wrong, "error", 5000);
 		newEmail.value = "";
 		changeEmailPassword.value = "";
 		changeEmailVerificationCode.value = "";
@@ -123,11 +122,11 @@
 	 */
 	async function updateUserPassword() {
 		if (!oldPassword.value || !newPassword.value || !changePasswordVerificationCode.value) {
-			useToast("必要的参数为空", "warning"); // TODO: 使用多语言
+			useToast(t.toast.required_not_filled, "warning");
 			return;
 		}
 		if (newPassword.value !== confirmNewPassword.value) {
-			useToast("两次输入的密码不一致，请确认。", "warning"); // TODO: 使用多语言
+			useToast(t.toast.password_mismatch, "warning");
 			return;
 		}
 		isChangingPassword.value = true;
@@ -142,11 +141,11 @@
 		if (updateUserPasswordResult.success) {
 			isChangingPassword.value = false;
 			showChangePassword.value = false;
-			useToast("更换密码成功", "success"); // TODO: 使用多语言
+			useToast(t.toast.password_changed, "success");
 			await api.user.userLogout();
 			useEvent("app:requestLogin");
 		} else
-			useToast("更换密码失败，请稍后再试", "error"); // TODO: 使用多语言
+			useToast(t.toast.something_went_wrong, "error");
 	}
 
 	/**
@@ -184,22 +183,23 @@
 			const headerCookie = useRequestHeaders(["cookie"]);
 			const createEmail2FAResult = await api.user.createEmail2FA(headerCookie);
 			if (!createEmail2FAResult.success) {
-				useToast("开启邮箱双重验证失败，请稍后重试。", "error", 5000); // TODO: 使用多语言
+				useToast(t.toast.something_went_wrong, "error", 5000);
 				isCreatingEmail2FA.value = false;
 			}
 
 			if (createEmail2FAResult.isExists) {
-				useToast("你已经开启过一个 2FA，请刷新页面。", "warning", 5000); // TODO: 使用多语言
+				useToast(t.toast.exists_2fa, "warning", 5000);
 				isCreatingEmail2FA.value = false;
 			}
 
 			isCreatingEmail2FA.value = false;
 			showCreateEmail2FAModel.value = false;
 			appSettings.typeOf2FA = "email";
-			useToast("成功开启邮箱双重验证！", "success", 3000); // TODO: 使用多语言
+			useToast(t.toast.email_2fa_enabled, "success", 3000);
 			checkUserHave2FAByUUID();
 		} catch (error) {
-			useToast("开启邮箱双重验证时出错，请稍后重试。", "error", 5000); // TODO: 使用多语言
+			useToast(t.toast.something_went_wrong, "error", 5000);
+			console.error("ERRRR", "Failed to enable email 2FA:", error);
 			checkUserHave2FAByUUID();
 		}
 	}
@@ -229,7 +229,7 @@
 		try {
 			if (!deleteEmail2FAPassword.value || !deleteEmail2FAVerificationCode.value) {
 				isDeletingEmail2FA.value = false;
-				useToast("必填项为空。", "error", 5000); // TODO: 使用多语言
+				useToast(t.toast.required_not_filled, "error", 5000);
 				return;
 			}
 
@@ -240,16 +240,17 @@
 			const headerCookie = useRequestHeaders(["cookie"]);
 			const deleteEmail2FAResult = await api.user.deleteEmail2FA(deleteUserEmailAuthenticatorRequest, headerCookie);
 			if (deleteEmail2FAResult.success) {
-				useToast("你已关闭邮箱验证码。", "success", 5000); // TODO: 使用多语言
+				useToast(t.toast.email_2fa_disabled, "success", 5000);
 				closeDeleteEmail2FAModel();
 				await checkUserHave2FAByUUID();
 			} else {
 				isDeletingEmail2FA.value = false;
-				useToast("关闭 Email 2FA 失败，请稍后重试", "error", 5000); // TODO: 使用多语言
+				useToast(t.toast.something_went_wrong, "error", 5000);
 			}
 		} catch (error) {
 			isDeletingEmail2FA.value = false;
-			useToast("关闭 Email 2FA 时出错，请刷新页面", "error", 5000); // TODO: 使用多语言
+			useToast(t.toast.something_went_wrong, "error", 5000);
+			console.error("ERRRR", "Failed to disable email 2FA:", error);
 		}
 	}
 
@@ -300,7 +301,7 @@
 	 */
 	async function handleClickConfirmTotp() {
 		if (!confirmTotpVerificationCode.value) {
-			useToast("请输入验证码", "error"); // TODO: 使用多语言
+			useToast(t.validation.required.verification_code, "error");
 			return;
 		}
 
@@ -321,7 +322,8 @@
 			await checkUserHave2FAByUUID();
 		} catch (error) {
 			isConfirmTotp.value = false;
-			useToast("绑定 TOTP 验证器失败，请稍后再试", "error", 5000); // TODO: 使用多语言
+			useToast(t.toast.something_went_wrong, "error", 5000);
+			console.error("ERRRR", "Failed to add TOTP authenticator:", error);
 		}
 		isConfirmTotp.value = false;
 	}
@@ -330,9 +332,7 @@
 	 * 下载 TOTP 生成的备份码和恢复码。
 	 */
 	function downloadBackupCodeAndRecoveryCode() {
-		// TODO: 使用多语言
-		// 此处也许没必要使用多语言。
-		const backupCodeAndRecoveryCode = `BACKUP CODE:\n${displayBackupCode.value}\n\nRECOVERY CODE:\n${recoveryCode.value}`;
+		const backupCodeAndRecoveryCode = `${t.two_factor_authentication.add_totp.backup_codes}\n${displayBackupCode.value}\n\n${t.two_factor_authentication.add_totp.recovery_code}\n${recoveryCode.value}`;
 		const filename = `KIRAKIRA TOTP CODE ${selfUserInfoStore.username} (UID ${selfUserInfoStore.uid}) ${new Date().getTime()}`;
 		downloadTxtFileFromString(backupCodeAndRecoveryCode, filename);
 	}
@@ -359,12 +359,12 @@
 	 */
 	async function deleteTotpByVerification() {
 		if (!deleteTotpPassword.value) {
-			useToast("请输入密码", "error"); // TODO: 使用多语言
+			useToast(t.validation.required.password, "error");
 			return;
 		}
 
 		if (!deleteTotpVerificationCode.value) {
-			useToast("请输入验证码", "error"); // TODO: 使用多语言
+			useToast(t.validation.required.verification_code, "error");
 			return;
 		}
 
@@ -379,17 +379,18 @@
 			const deleteTotpByVerificationCodeResult = await api.user.deleteTotpByVerificationCode(deleteTotpAuthenticatorByTotpVerificationCodeRequest, headerCookie);
 
 			if (deleteTotpByVerificationCodeResult.isCoolingDown)
-				useToast("无法删除，验证码冷却中。", "warning"); // TODO: 使用多语言
+				useToast(t.toast.cooling_down, "warning");
 
 			if (deleteTotpByVerificationCodeResult.success) {
 				closeDeleteTotpModel();
 				await checkUserHave2FAByUUID();
 			} else
-				useToast("删除 TOTP 身份验证器失败，请稍后再试", "error", 5000); // TODO: 使用多语言
+				useToast(t.toast.something_went_wrong, "error", 5000);
 
 			isDeletingTotp.value = false;
 		} catch (error) {
-			useToast("删除 TOTP 身份验证器失败，请稍后再试", "error", 5000); // TODO: 使用多语言
+			useToast(t.toast.something_went_wrong, "error", 5000);
+			console.error("ERRRR", "Failed to remove TOTP authenticator:", error);
 			isDeletingTotp.value = false;
 		}
 	}
@@ -399,11 +400,8 @@
 
 <template>
 	<div>
-		<!-- TODO: 使用多语言 -->
 		<InfoBar v-if="isUnsafeAccount" type="warning" :title="t.severity.warning">
-			你还没有开启二重验证，建议你立即启用。
-			<br />
-			没有启动二重验证的账号更容易被盗号。
+			<Preserves>{{ t.settings.security.is_unsafe_2fa }}</Preserves>
 		</InfoBar>
 		<section>
 			<SettingsChipItem
@@ -421,41 +419,33 @@
 				@trailingIconClick="showChangePassword = true"
 			>{{ t.password }}</SettingsChipItem>
 		</section>
-		<!-- TODO: 使用多语言 -->
-		<Subheader icon="lock">双重验证</Subheader>
-		<!-- TODO: 使用多语言 -->
-		<span>开启双重验证可以提高账号的安全性，如果你需要切换 2FA 类型，必须先将其关闭。</span>
+		<Subheader icon="lock">{{ t.two_factor_authentication }}</Subheader>
+		<span>{{ t.two_factor_authentication.description }}</span>
 		<section list>
-			<!-- TODO: 使用多语言 -->
-			<RadioButton v-model="categoryOf2FAComputed" v-ripple value="none" details="关闭双重验证会降低账号安全性。">关闭</RadioButton>
-			<!-- TODO: 使用多语言 -->
-			<RadioButton v-model="categoryOf2FAComputed" v-ripple value="email" details="敏感操作时，验证码将会直接发送到你的邮箱。" :disabled="isEmail2FADisable">邮箱验证码</RadioButton>
-			<!-- TODO: 使用多语言 -->
-			<RadioButton v-model="categoryOf2FAComputed" v-ripple value="totp" details="敏感操作时，需要在你绑定了 TOTP 的设备中查看验证码。" :disabled="isTotp2FADisable">TOTP（基于时间的一次性密码）</RadioButton>
+			<RadioButton v-model="categoryOf2FAComputed" v-ripple value="none" :details="t.two_factor_authentication.off_description">{{ t.off }}</RadioButton>
+			<RadioButton v-model="categoryOf2FAComputed" v-ripple value="email" :details="t.two_factor_authentication.email_description" :disabled="isEmail2FADisable">{{ t.email }}</RadioButton>
+			<RadioButton v-model="categoryOf2FAComputed" v-ripple value="totp" :details="t.two_factor_authentication.totp_description" :disabled="isTotp2FADisable">{{ t.two_factor_authentication.totp }}</RadioButton>
 		</section>
 		<section v-if="categoryOf2FAComputed === 'totp'">
-			<!-- TODO: 使用多语言 -->
 			<SettingsChipItem
 				icon="lock"
 				:trailingIcon="hasBoundTotp ? 'delete' : 'add'"
 				:details="checkUser2FAResult?.totpCreationDateTime ? t.addition_date + t.colon + authenticatorAddDateDisplay : undefined"
 				@trailingIconClick="openTotpModel"
-			>TOTP {{ t.authenticator }}</SettingsChipItem>
+			>{{ t.totp_authenticator }}</SettingsChipItem>
 		</section>
 
-		<!-- TODO: 使用多语言 -->
-		<Modal v-model="showChangeEmail" title="更改邮箱" icon="email">
+		<Modal v-model="showChangeEmail" :title="t.change_email" icon="email">
 			<div class="change-email-modal">
 				<form>
-					<!-- TODO: 使用多语言 -->
-					<TextBox v-model="newEmail" :required="true" :invalid="isInvalidNewEmail" type="email" icon="email" placeholder="新邮箱" autoComplete="new-email" />
+					<TextBox v-model="newEmail" :required="true" :invalid="isInvalidNewEmail" type="email" icon="email" :placeholder="t.new_email" autoComplete="new-email" />
 					<SendVerificationCode v-model="changeEmailVerificationCode" :email="newEmail" verificationCodeFor="change-email" :disabled="!newEmail || isInvalidNewEmail" />
 					<TextBox v-model="changeEmailPassword" :required="true" type="password" icon="lock" :placeholder="t.password._" autoComplete="current-password" />
 				</form>
 			</div>
 			<template #footer-right>
 				<Button class="secondary" :disabled="isChangingEmail" @click="showChangePassword = false">{{ t.step.cancel }}</Button>
-				<Button @click="updateUserEmail" :disabled="isChangingEmail" :loading="isChangingEmail">{{ t.step.apply }}</Button>
+				<Button @click="updateUserEmail" :disabled="isChangingEmail || !newEmail || !changeEmailPassword || !changeEmailVerificationCode" :loading="isChangingEmail">{{ t.step.apply }}</Button>
 			</template>
 		</Modal>
 
@@ -470,43 +460,58 @@
 			</div>
 			<template #footer-right>
 				<Button class="secondary" :disabled="isChangingPassword" @click="showChangePassword = false">{{ t.step.cancel }}</Button>
-				<Button @click="updateUserPassword" :disabled="isChangingPassword" :loading="isChangingPassword">{{ t.step.apply }}</Button>
+				<Button @click="updateUserPassword" :disabled="isChangingPassword || !oldPassword || !newPassword || !changePasswordVerificationCode" :loading="isChangingPassword">{{ t.step.apply }}</Button>
 			</template>
 		</Modal>
 
-		<!-- TODO: 使用多语言 -->
-		<Modal v-model="showCreateTotpModel" title="绑定 TOTP 身份验证器" icon="lock" :hideTitleCloseIcon="true">
+		<Modal v-model="showCreateTotpModel" :title="t.two_factor_authentication.add_totp" icon="lock" :hideTitleCloseIcon="true">
 			<div class="create-totp-modal">
 				<InfoBar type="warning" :title="t.severity.warning">
-					<!-- TODO: 使用多语言 -->
-					请勿向他人展示本页中显示的内容！
+					{{ t.two_factor_authentication.add_totp.warning }}
 				</InfoBar>
 				<div v-if="!backupCode || backupCode.length <= 0 || !recoveryCode" class="page">
 					<div class="step">
 						<ShadingIcon icon="download" />
-						<h3><Icon name="counter_1" />安装验证器程序</h3>
-						<p>如果你已安装验证器程序，请跳过本步骤。</p>
-						<p>如果没有，你需要在你的私人设备中安装一个支持 TOTP 算法的验证器程序，例如 <a href="https://ente.io/auth/" target="_blank">Ente Auth</a>、<a href="https://www.microsoft.com/security/mobile-authenticator-app" target="_blank">Microsoft Authenticator</a> 或 <a href="https://support.google.com/accounts/answer/1066447" target="_blank">Google Authenticator</a>.</p>
+						<h3><Icon name="counter_1" />{{ t.two_factor_authentication.add_totp.step_install }}</h3>
+						<p>
+							<TransInterpolation :i18nKey="t.two_factor_authentication.add_totp.step_install_description">
+							<!-- FIXME: TransInterpolation报错 -->
+							<!-- <template #ente-auth>
+								<a href="https://ente.io/auth/" target="_blank">Ente Auth</a>
+							</template>
+							<template #microsoft-authenticator>
+								<a href="https://www.microsoft.com/security/mobile-authenticator-app" target="_blank">Microsoft Authenticator</a>
+							</template>
+							<template #google-authenticator>
+								<a href="https://support.google.com/accounts/answer/1066447" target="_blank">Google Authenticator</a>
+							</template> -->
+							</TransInterpolation>
+						</p>
 					</div>
 					<div class="step">
 						<ShadingIcon icon="qr_code_scanner" />
-						<h3><Icon name="counter_2" />使用验证器程序扫描下方二维码</h3>
+						<h3><Icon name="counter_2" />{{ t.two_factor_authentication.add_totp.step_scan }}</h3>
 						<div class="totp-qrcode-box">
 							<QrcodeVue v-if="otpAuth" :value="otpAuth" :level="totpQrcodeLevel" :renderAs="totpQrcodeRenderAs" :size="totpQrcodeSize" />
 						</div>
 					</div>
 					<div class="step">
 						<ShadingIcon icon="edit" />
-						<h3><Icon name="counter_3" />填写验证码</h3>
-						<p>扫描二维码后，你的验证器程序中应该会出现一个新的验证码。<a href="https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus/issues" target="_blank">遇到问题？</a></p>
-						<p>请将验证码填写至下方的输入框中，并在倒计时结束前点击“确认绑定”按钮。</p>
+						<h3><Icon name="counter_3" />{{ t.two_factor_authentication.add_totp.step_enter_code }}</h3>
+						<p>
+							<TransInterpolation :i18nKey="t.two_factor_authentication.add_totp.step_enter_code_description">
+								<template #needHelp>
+									<a href="https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus/issues" target="_blank">{{ t.need_help }}</a>
+								</template>
+							</TransInterpolation>
+						</p>
 						<form class="totp-confirm-form">
 							<TextBox
 								v-model="confirmTotpVerificationCode"
 								:required="true"
 								type="text"
 								icon="verified"
-								placeholder="验证码"
+								:placeholder="t.verification_code"
 							/>
 						</form>
 					</div>
@@ -514,14 +519,17 @@
 				<div v-else class="page">
 					<div class="step">
 						<ShadingIcon icon="lock_reset" />
-						<h3><Icon name="counter_4" />保存备份码和恢复码</h3>
-						<p>备份码可以作为 TOTP 验证码的替代。恢复码不仅可以作为 TOTP 验证码的替代，在使用恢复码登陆后，还会自动解除 TOTP 2FA 绑定。</p>
-						<p>每个备份码和恢复码仅能使用一次，且关闭本页面后将不再显示，请妥善保存。</p>
+						<h3><Icon name="counter_4" />{{ t.two_factor_authentication.add_totp.step_save }}</h3>
+						<p>
+							<Preserves>{{ t.two_factor_authentication.add_totp.step_save_description }}</Preserves>
+						</p>
 						<br />
-						<p>你的备份码如下：</p>
+						<p>{{ t.two_factor_authentication.add_totp.backup_codes }}</p>
+						<label class="details">{{ t.two_factor_authentication.add_totp.backup_codes_description }}</label>
 						<pre><code>{{ displayBackupCode }}</code></pre>
 						<br />
-						<p>你的恢复码如下：</p>
+						<p>{{ t.two_factor_authentication.add_totp.recovery_code }}</p>
+						<label class="details">{{ t.two_factor_authentication.add_totp.recovery_code_description }}</label>
 						<pre><code>{{ recoveryCode }}</code></pre>
 					</div>
 				</div>
@@ -529,46 +537,39 @@
 
 			<template v-if="!backupCode || backupCode.length <= 0 || !recoveryCode" #footer-right>
 				<Button class="secondary" @click="closeCreateTotpModel" :disabled="isConfirmTotp">{{ t.step.cancel }}</Button>
-				<!-- TODO: 使用多语言 -->
-				<Button @click="handleClickConfirmTotp" :disabled="isConfirmTotp" :loading="isConfirmTotp">确认绑定</Button>
+				<Button icon="arrow_right" class="icon-behind" @click="handleClickConfirmTotp" :disabled="isConfirmTotp || !confirmTotpVerificationCode" :loading="isConfirmTotp">{{ t.step.next }}</Button>
 			</template>
 			<template v-else #footer-right>
-				<!-- TODO: 使用多语言 -->
-				<Button class="secondary" @click="downloadBackupCodeAndRecoveryCode">下载备份码和恢复码</Button>
-				<!-- TODO: 使用多语言 -->
-				<Button @click="closeCreateTotpModel" :disabled="isConfirmTotp" :loading="isConfirmTotp">我已知晓，确认关闭本页面</Button>
+				<Button icon="download" class="secondary" @click="downloadBackupCodeAndRecoveryCode">{{ t.two_factor_authentication.add_totp.download }}</Button>
+				<Button icon="check" @click="closeCreateTotpModel" :disabled="isConfirmTotp" :loading="isConfirmTotp">{{ t.step.finish }}</Button>
 			</template>
 		</Modal>
 
-		<!-- TODO: 使用多语言 -->
-		<Modal v-model="showDeleteTotpModel" title="删除 TOTP 身份验证器" icon="delete">
+		<Modal v-model="showDeleteTotpModel" :title="t.two_factor_authentication.remove_totp" icon="delete">
 			<div class="delete-totp-modal">
 				<form>
 					<TextBox v-model="deleteTotpPassword" :required="true" type="password" icon="lock" :placeholder="t.password" autoComplete="current-password" />
-					<TextBox v-model="deleteTotpVerificationCode" :required="true" type="text" icon="lock" placeholder="TOTP 验证码" />
+					<TextBox v-model="deleteTotpVerificationCode" :required="true" type="text" icon="lock" :placeholder="t.verification_code" />
 				</form>
 			</div>
 			<template #footer-right>
 				<Button class="secondary" :disabled="isDeletingTotp" @click="closeDeleteTotpModel">{{ t.step.cancel }}</Button>
-				<Button @click="deleteTotpByVerification" :disabled="isDeletingTotp" :loading="isDeletingTotp">{{ t.delete }}</Button>
+				<Button severity="danger" icon="delete" @click="deleteTotpByVerification" :disabled="isDeletingTotp" :loading="isDeletingTotp">{{ t.remove }}</Button>
 			</template>
 		</Modal>
 
-		<!-- TODO: 使用多语言 -->
-		<Modal v-model="showCreateEmail2FAModel" title="确认开启邮箱验证" icon="lock">
-			<div>
-				<p>你注册时使用的邮箱是{{ t.colon + selfUserInfoStore.userEmail }}</p>
-				<p>请确保该邮箱仍在使用。</p>
+		<Modal v-model="showCreateEmail2FAModel" :title="t.two_factor_authentication.enable_email" icon="lock">
+			<div class="enable-email-2fa-modal">
+				<p>{{ t.current_email + t.colon + selfUserInfoStore.userEmail }}</p>
+				<p class="danger-text">{{ t.two_factor_authentication.enable_email.ensure }}</p>
 			</div>
 			<template #footer-right>
 				<Button class="secondary" :disabled="isCreatingEmail2FA" @click="closeCreateEmail2FAModel">{{ t.step.cancel }}</Button>
-				<!-- TODO: 使用多语言 -->
-				<Button @click="createEmail2FA" :disabled="isCreatingEmail2FA" :loading="isCreatingEmail2FA">开启邮箱验证</Button>
+				<Button severity="danger" @click="createEmail2FA" :disabled="isCreatingEmail2FA" :loading="isCreatingEmail2FA">{{ t.enable }}</Button>
 			</template>
 		</Modal>
 
-		<!-- TODO: 使用多语言 -->
-		<Modal v-model="showDeleteEmail2FAModel" title="确认关闭邮箱验证" icon="delete">
+		<Modal v-model="showDeleteEmail2FAModel" :title="t.two_factor_authentication.disable_email" icon="delete">
 			<div class="delete-email-2fa-modal">
 				<form>
 					<TextBox v-model="deleteEmail2FAPassword" :required="true" type="password" icon="lock" :placeholder="t.password" autoComplete="current-password" />
@@ -577,8 +578,7 @@
 			</div>
 			<template #footer-right>
 				<Button class="secondary" :disabled="isDeletingEmail2FA" @click="closeDeleteEmail2FAModel">{{ t.step.cancel }}</Button>
-				<!-- TODO: 使用多语言 -->
-				<Button @click="deleteEmail2FAByVerification" :disabled="isDeletingEmail2FA" :loading="isDeletingEmail2FA">关闭邮箱验证</Button>
+				<Button severity="danger" @click="deleteEmail2FAByVerification" :disabled="isDeletingEmail2FA || !deleteEmail2FAPassword || !deleteEmail2FAVerificationCode" :loading="isDeletingEmail2FA">{{ t.disable }}</Button>
 			</template>
 		</Modal>
 	</div>
@@ -588,8 +588,9 @@
 	.change-password-modal {
 		display: flex;
 		flex-direction: column;
+		flex-grow: 1;
 		gap: 24px;
-		width: 300px;
+		width: 350px;
 
 		> form {
 			display: flex;
@@ -605,8 +606,9 @@
 	.change-email-modal {
 		display: flex;
 		flex-direction: column;
+		flex-grow: 1;
 		gap: 24px;
-		width: 300px;
+		width: 350px;
 
 		> form {
 			display: flex;
@@ -622,6 +624,7 @@
 	.create-totp-modal {
 		display: flex;
 		flex-direction: column;
+		flex-grow: 1;
 		gap: 8px;
 		width: 80dvw;
 		max-width: 550px;
@@ -713,8 +716,9 @@
 	.delete-totp-modal {
 		display: flex;
 		flex-direction: column;
+		flex-grow: 1;
 		gap: 24px;
-		width: 300px;
+		width: 350px;
 
 		> form {
 			display: flex;
@@ -727,11 +731,13 @@
 		}
 	}
 
+	.enable-email-2fa-modal,
 	.delete-email-2fa-modal {
 		display: flex;
 		flex-direction: column;
+		flex-grow: 1;
 		gap: 24px;
-		width: 300px;
+		width: 350px;
 
 		> form {
 			display: flex;
@@ -742,5 +748,9 @@
 		.text-box {
 			--size: large;
 		}
+	}
+
+	.danger-text {
+		color: c(red);
 	}
 </style>
