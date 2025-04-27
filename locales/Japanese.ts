@@ -54,7 +54,7 @@ export default {
 		custom: "カスタム背景",
 		opacity: "不透明度",
 		tint: "色合い",
-		blurIntensity: "ぼかしの強度",
+		blur_intensity: "ぼかしの強度",
 	},
 	appearance: {
 		_: "外観",

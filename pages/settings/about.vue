@@ -18,12 +18,12 @@
 		{ uid: 5, job: [t.about.staff.designer] },
 		// { uid: NaN, name: "鸣", job: [t.about.staff.frontend] },
 		{ uid: 2, job: [t.about.staff.backend] },
-		{ uid: 9, job: [t.about.staff.translator(t.language.ja)] },
-		{ uid: 4, job: [t.about.staff.translator(t.language.zht)] },
-		// { uid: NaN, name: "HanceyMica", job: [t.about.staff.translator(t.language.zht)] },
-		{ uid: 8, job: [t.about.staff.translator(t.language.vi)] },
-		{ uid: 7, job: [t.about.staff.translator(t.language.vi)] },
-		{ uid: 209, job: [t.about.staff.translator(t.language.yue)] },
+		{ uid: 9, job: [t.about.staff.translator(getLocaleName("ja"))] },
+		{ uid: 4, job: [t.about.staff.translator(getLocaleName("zh-Hant"))] },
+		// { uid: NaN, name: "HanceyMica", job: [t.about.staff.translator(getLocaleName("zh-Hant"))] },
+		{ uid: 8, job: [t.about.staff.translator(getLocaleName("vi"))] },
+		{ uid: 7, job: [t.about.staff.translator(getLocaleName("vi"))] },
+		{ uid: 209, job: [t.about.staff.translator(getLocaleName("yue"))] },
 	]);
 
 	const technologies: { name: string; version?: string; ability: string; icon?: string; monochrome?: boolean; link: string }[] = [
@@ -42,7 +42,7 @@
 	} : {
 		code: "Frontend Development Mode",
 		...isLocalBackend.value && { commit: "Local Backend" },
-	}) satisfies Record<DeclaredIcons, string | false>;
+	}) satisfies Partial<Record<DeclaredIcons, string>>;
 	console.log(" isLocalBackend", isLocalBackend.value);
 
 	const sloganLines = computed(() => t.about.slogan.toString().split("\n"));
@@ -56,11 +56,11 @@
 		replayAnimation(e.currentTarget as HTMLDivElement, "active");
 		if (remainingClick.value && !isDevMode?.value) {
 			clearAllToast();
-			useToast(`继续点击${remainingClick.value--}次即可进入开发者模式`, "info");
+			useToast(`继续点击${remainingClick.value--}次即可进入开发者模式`, "info"); // TODO: 使用多语言。
 			return;
 		}
 		clearAllToast();
-		useToast("你已进入开发者模式！", "success");
+		useToast("你已进入开发者模式！", "success"); // TODO: 使用多语言。
 		isDevMode && (isDevMode.value = true);
 	}
 

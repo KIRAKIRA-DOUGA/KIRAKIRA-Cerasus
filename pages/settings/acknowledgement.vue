@@ -1,11 +1,10 @@
 <script setup lang="ts">
-	import novaOtomads from "assets/svg/nova_otomads.svg?raw";
-	import otomadWiki from "assets/svg/otomad_wiki.svg?raw";
-	import caliburTv from "assets/svg/calibur_tv.svg?raw";
 	import caliburPixel from "assets/svg/calibur_pixel.svg?raw";
-
-	import otomadHelper from "assets/svg/otomad_helper.svg?raw";
+	import caliburTv from "assets/svg/calibur_tv.svg?raw";
+	import novaOtomads from "assets/svg/nova_otomads.svg?raw";
 	import omMidi from "assets/svg/om_midi.svg?raw";
+	import otomadHelper from "assets/svg/otomad_helper.svg?raw";
+	import otomadWiki from "assets/svg/otomad_wiki.svg?raw";
 
 	const links = {
 		NOVA: [
@@ -50,11 +49,11 @@
 		font-size: 20px;
 		font-weight: 600;
 		text-align: center;
-		
+
 		&:first-of-type {
 			margin-block-start: 0;
 		}
-		
+
 		&::before,
 		&::after {
 			content: "\2013";

@@ -54,7 +54,7 @@ export default {
 		custom: "Phông tùy chỉnh",
 		opacity: "Độ mờ đục",
 		tint: "Màu nhuộm",
-		blurIntensity: "Mức độ làm mờ",
+		blur_intensity: "Mức độ làm mờ",
 	},
 	appearance: {
 		_: "Giao diện",

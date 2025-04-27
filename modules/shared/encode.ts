@@ -1,13 +1,13 @@
-import { createResolver } from "@nuxt/kit";
 import fs from "fs/promises";
-import htmlMinifierTerser from "html-minifier-terser";
-import { Nuxt } from "nuxt/schema";
 import { dirname, resolve } from "path";
+import { fileURLToPath } from "url";
+import { createResolver } from "@nuxt/kit";
+import htmlMinifierTerser from "html-minifier-terser";
+import type { Nuxt } from "nuxt/schema";
+import { type ModuleFormat, rollup } from "rollup";
 import sass from "sass";
 import * as terser from "terser";
 import ts from "typescript";
-import { fileURLToPath } from "url";
-import { rollup, ModuleFormat } from "rollup";
 
 /**
  * 将 TypeScript 源码编译为 JavaScript 代码。

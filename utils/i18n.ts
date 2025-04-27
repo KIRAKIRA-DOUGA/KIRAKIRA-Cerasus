@@ -6,17 +6,17 @@ import type { I18nArgsFunction, LocaleWithDefaultValue } from "locales/types";
 const getProxy = (options: TranslateOptions | typeof targetFunction) =>
 	new Proxy(options, {
 		get(target, rootName) {
-			if (rootName === "__v_isRef" || typeof rootName === "symbol") return; // Vuex 干的好事。
+			if (rootName === "__v_isRef" || typeof rootName === "symbol") return; // Vue 干的好事。
 			if (typeof target === "function") target = {};
-			const getParentsPrefix = (...prefixes: string[]) => prefixes.length ? prefixes.join(".") : "";
+			const getParentsPrefix = (...prefixes: string[]) => prefixes.length > 0 ? prefixes.join(".") : "";
 			const i18n = useNuxtApp().$i18n;
 			const getDeclarationInfo = (...keys: string[]) => {
 				const key = getParentsPrefix(...keys);
-				const raw = i18n.tm(key) as string | object;
+				const raw: string | object = i18n.tm(key);
 				return {
-					isNamespace: typeof raw === "object" && !!Object.keys(raw).length,
+					isNamespace: typeof raw === "object" && Object.keys(raw).length > 0,
 					includesInterpolation: typeof raw === "string" && raw.includes("{"),
-					missing: typeof raw === "object" && !Object.keys(raw).length,
+					missing: typeof raw === "object" && Object.keys(raw).length === 0,
 					missingDefault: typeof raw === "object" && !("_" in raw),
 					key,
 					raw,
@@ -86,8 +86,38 @@ export function getCurrentLocale() {
  */
 export function getCurrentLocaleLangCode(locale?: string) {
 	locale ||= getCurrentLocale();
-	return {
-		zhs: "zh-Hans-CN",
-		zht: "zh-Hant-TW",
-	}[locale] ?? locale;
+	return locale === "zhs" ? "zh-Hans-CN" : locale === "zht" ? "zh-Hant-TW" : locale;
+}
+
+/**
+ * 获取目标语言在当前显示语言中的名称。
+ * @param targetLocale - 目标语言。
+ * @param displayLocale - 当前显示语言，留空时会自动获取。
+ * @returns 语言名称。
+ * @example
+ * ```typescript
+ * console.log(getLocaleName("en", "zh")); // "英语"
+ * console.log(getLocaleName("zh", "en")); // "Chinese"
+ * ```
+ */
+export function getLocaleName(targetLocale: string | Intl.Locale, displayLocale?: string | Intl.Locale) {
+	if (targetLocale instanceof Intl.Locale) targetLocale = targetLocale.toString();
+	if (displayLocale instanceof Intl.Locale) displayLocale = displayLocale.toString();
+	targetLocale = targetLocale === "zhs" ? "zh-Hans" : targetLocale === "zht" ? "zh-Hant" : targetLocale;
+	displayLocale = getCurrentLocaleLangCode(displayLocale);
+	const fallbackLocales = [displayLocale];
+	if (displayLocale === "yue") fallbackLocales.push("zh-Hant-HK");
+	return new Intl.DisplayNames(fallbackLocales, { type: "language" }).of(targetLocale)!;
+}
+
+/**
+ * 处于语境翻译工具模式？
+ */
+export function isInContextLocalization(locale?: string) {
+	const { locale: currentLocale } = useI18n();
+
+	return computed(() => {
+		const resolvedLocale = locale || currentLocale.value;
+		return resolvedLocale === "ii";
+	});
 }

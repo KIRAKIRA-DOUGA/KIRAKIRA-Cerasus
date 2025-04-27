@@ -54,7 +54,7 @@ export default {
 		custom: "自定义背景",
 		opacity: "不透明度",
 		tint: "着色",
-		blurIntensity: "模糊强度",
+		blur_intensity: "模糊强度",
 	},
 	appearance: {
 		_: "外观",

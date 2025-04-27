@@ -9,15 +9,15 @@
 	const showTagEditor = ref(false); // 是否显示 TAG（创建）编辑器
 	const isCreatingTag = ref(false); // 是否正在创建 TAG
 	const languages = [
-		{ langId: "zhs", langName: t.language.zhs },
-		{ langId: "en", langName: t.language.en },
-		{ langId: "ja", langName: t.language.ja },
-		{ langId: "zht", langName: t.language.zht },
-		{ langId: "ko", langName: t.language.ko },
-		{ langId: "vi", langName: t.language.vi },
-		{ langId: "id", langName: t.language.id },
-		// { langId: "ar", langName: "阿拉伯语" }, // DELETE: 认真的？
-		{ langId: "other", langName: t.other },
+		{ langId: "zhs", langName: getLocaleName("zh-Hans") },
+		{ langId: "en", langName: getLocaleName("en") },
+		{ langId: "ja", langName: getLocaleName("ja") },
+		{ langId: "zht", langName: getLocaleName("zh-Hant") },
+		{ langId: "ko", langName: getLocaleName("ko") },
+		{ langId: "vi", langName: getLocaleName("vi") },
+		{ langId: "id", langName: getLocaleName("id") },
+		{ langId: "ar", langName: getLocaleName("ar") },
+		{ langId: "other", langName: t.other }, // TODO: 使用多语言
 	] as const; // 可选语言列表
 	type LanguageList = typeof languages[number];
 	type EditorType = { language: LanguageList | { langId: ""; langName: "" }; values: string[]; default: [number, string] | null; original: [number, string] | null }[];

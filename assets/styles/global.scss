@@ -203,6 +203,7 @@ hr {
 	display: contents;
 }
 
+// 禁用虚拟列表的过渡以免穿帮。
 // stylelint-disable-next-line selector-class-pattern
 .vue-recycle-scroller__item-view {
 	transition: none;
@@ -223,6 +224,21 @@ img {
 	user-select: none;
 	-webkit-user-drag: none;
 	user-drag: none;
+}
+
+// Crowdin 语境翻译工具标志
+img.jipt-loader-logo {
+	@include absolute-center-sized(fixed);
+}
+
+// Crowdin 语境翻译工具遮罩修正
+#crowdin-jipt-mask {
+	background-color: c(main-bg) !important;
+
+	&,
+	* {
+		transition: none;
+	}
 }
 
 @layer base {

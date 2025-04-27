@@ -163,7 +163,7 @@
 					icon="opacity"
 					pending="current"
 					:displayValue="backgroundSliderDisplayValue"
-				>{{ t.background.blurIntensity }}</SettingsSlider>
+				>{{ t.background.blur_intensity }}</SettingsSlider>
 			<!-- TODO: 滑块上方的气泡定位有问题。 -->
 			</template>
 		</section>

@@ -1,18 +1,23 @@
 <script setup lang="ts">
-	import type { LocaleObject } from "@nuxtjs/i18n/dist/runtime/composables";
 	import { useNow } from "@vueuse/core"; // 它与 lodash 同名函数冲突，只得显式引入。
 
 	const { locale: currentLocale, locales } = useI18n();
 	const date = useNow();
+	const inContextLocalization = isInContextLocalization();
 
 	const localeModel = computed({
 		get: () => currentLocale.value,
 		set: value => switchLanguage(value),
 	});
-	const localeList = computed(() => (locales.value as LocaleObject[]).map(locale => ({
+	const localeList = computed(() => locales.value.map(locale => ({
 		code: locale.code,
 		lang: getCurrentLocaleLangCode(locale.code),
 		name: locale.name || locale.code,
+		title: (() => {
+			if (isInContextLocalization(locale.code).value)
+				return inContextLocalization.value ? t.translating : t.improve_translation;
+			return getLocaleName(locale.code);
+		})(),
 	})));
 </script>
 
@@ -28,9 +33,10 @@
 				:id="locale.code"
 				:key="locale.code"
 				v-model="localeModel"
-				:title="t.language[locale.code]"
+				:title="locale.title"
 			>
-				<div class="line" :lang="locale.lang">
+				<LogoImproveTranslation v-if="isInContextLocalization(locale.code).value" />
+				<div v-else class="line" :lang="locale.lang">
 					{{ locale.name }}
 				</div>
 			</SettingsGridItem>

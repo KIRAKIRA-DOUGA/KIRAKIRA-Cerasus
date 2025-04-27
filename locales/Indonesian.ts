@@ -48,7 +48,7 @@ export default {
 		_: "Latar",
 		animated: "Latar Belakang Animasi",
 		custom: "Sesuaikan Latar",
-		blurIntensity: "Tingkat Keburaman",
+		blur_intensity: "Tingkat Keburaman",
 	},
 	appearance: {
 		_: "Penampilan",
