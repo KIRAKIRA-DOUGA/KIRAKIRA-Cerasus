@@ -134,6 +134,7 @@
 		"node-vibrant": "^4.0.3",
 		"nuxt-icons": "^3.2.1",
 		"nuxt-site-config": "^3.2.2",
+		"p2p-media-loader-shaka": "^2.2.1",
 		"path-browserify-es": "^1.1.0",
 		"pinia": "^3.0.3",
 		"pinia-plugin-persistedstate": "^4.5.0",

@@ -254,7 +254,7 @@
 	settings.controller.showFrameByFrame = playerConfig.controller.showFrameByFrame;
 	settings.controller.autoResumePlayAfterSeeking = playerConfig.controller.autoResumePlayAfterSeeking;
 
-	const player = ref<shaka.Player>();
+	let player: shaka.Player;
 	const playerVersion = ref("");
 
 	onMounted(async () => {
@@ -263,8 +263,13 @@
 
 		if (environment.client) {
 			const shaka = (await import("shaka-player")).default; // 由于 Shaka Player 无法在服务端下渲染，因此必须动态导入。
-			player.value = new shaka.Player();
-			player.value.attach(video.value);
+			const { ShakaP2PEngine } = await import("p2p-media-loader-shaka");
+			ShakaP2PEngine.registerPlugins(shaka);
+			const shakaP2PEngine = new ShakaP2PEngine({ }, shaka);
+
+			player = new shaka.Player();
+			await player.attach(video.value);
+			shakaP2PEngine.bindShakaPlayer(player);
 			const eventManager = new shaka.util.EventManager();
 
 			playerVersion.value = shaka.Player.version;
@@ -272,7 +277,7 @@
 			/**
 			 * 设置 Shaka Player。
 			 */
-			player.value.configure({
+			player.configure({
 				abr: {
 					enabled: autoQuality.value,
 				},
@@ -294,43 +299,50 @@
 			/**
 			 * 监听轨道变化事件。
 			 */
-			eventManager.listen(player.value, "trackschanged", () => {
-				tracks.value = player.value!.getVariantTracks();
+			eventManager.listen(player, "trackschanged", () => {
+				tracks.value = player!.getVariantTracks();
 				activeTrack.value = tracks.value.find(e => e.active)!;
 			});
 
 			/**
 			 * 监听自动质量变化事件。
 			 */
-			eventManager.listen(player.value, "adaptation", e => {
+			eventManager.listen(player, "adaptation", e => {
 				activeTrack.value = e.newTrack;
 			});
 
 			/**
 			 * 监听手动质量变化事件。
 			 */
-			eventManager.listen(player.value, "variantchanged", e => {
+			eventManager.listen(player, "variantchanged", e => {
 				activeTrack.value = e.newTrack;
 			});
 
 			/**
 			 * 监听错误事件。
 			 */
-			eventManager.listen(player.value, "error", e => {
+			eventManager.listen(player, "error", e => {
 				console.error("Error Code:", e.detail.code, "Object:", e.detail);
+			});
+
+			// 监听完整 segment 加载
+			shakaP2PEngine.addEventListener("onSegmentLoaded", details => {
+				console.log("Segment Loaded:", details);
 			});
 
 			/**
 			 * 加载视频。
 			 */
 			try {
-				await player.value.load(props.src);
+				await player.load(props.src);
 				if (!autoQuality.value)
 					for (let id = 0; id < tracks.value.length; id++)
 						if (tracks.value[id].height === playerConfig.quality.preferred) {
-							player.value.selectVariantTrack(tracks.value[id], true);
+							player.selectVariantTrack(tracks.value[id], true);
 							break;
 						}
+				
+				video.value.currentTime = Number.isNaN(currentTime.value) ? 0 : currentTime.value;
 			} catch (error) {
 				console.error("ERROR", "Failed to load the video:", error);
 			}
@@ -340,14 +352,14 @@
 	const selectedTrack = computed({
 		get: () => activeTrack.value,
 		set: track => {
-			player.value?.selectVariantTrack(track, true);
+			player?.selectVariantTrack(track, true);
 			playerConfig.quality.preferred = track!.height!;
 		},
 	});
 
 	watch(autoQuality, autoQuality => {
-		if (!video.value || !player.value) return;
-		player.value.configure({ abr: { enabled: autoQuality } });
+		if (!video.value || !player) return;
+		player.configure({ abr: { enabled: autoQuality } });
 		playerConfig.quality.auto = autoQuality;
 	});
 
@@ -366,8 +378,8 @@
 	 * 获取视频详细信息
 	 */
 	function getStats() {
-		if (!player.value || !video.value) return;
-		const stats = player.value?.getStats();
+		if (!player || !video.value) return;
+		const stats = player?.getStats();
 		if (!stats) return;
 		const a = activeTrack.value;
 
@@ -387,7 +399,7 @@
 		});
 
 		assign(statsPlayer.value, {
-			manifestType: player.value.getManifestType() ?? "",
+			manifestType: player.getManifestType() ?? "",
 			streamBandwidth: stats.streamBandwidth ?? 0,
 			estimatedBandwidth: stats.estimatedBandwidth ?? 0,
 			resolution: { width: stats.width ?? 0, height: stats.height ?? 0 },
@@ -655,6 +667,7 @@
 				<video
 					ref="video"
 					class="player"
+					id="test-video"
 					:style="videoFilterStyle"
 					@play="playing = true"
 					@pause="playing = false"
