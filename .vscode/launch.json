@@ -5,10 +5,10 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"command": "npm run dev",
+			"command": "bun dev-local",
 			"name": "Dev Server",
 			"request": "launch",
 			"type": "node-terminal"
-		},
+		}
 	]
 }

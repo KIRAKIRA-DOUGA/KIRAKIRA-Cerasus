@@ -5,7 +5,6 @@
 	"engines": {
 		"node": ">=20.9.0"
 	},
-	"packageManager": "pnpm@10.14.0+sha512.ad27a79641b49c3e481a16a805baa71817a04bbe06a38d17e60e2eaee83f6a146c6a688125f5792e48dd5ba30e7da52a5cda4c3992b9ccf333f9ce223af84748",
 	"private": true,
 	"type": "module",
 	"module": "esnext",
@@ -24,7 +23,7 @@
 	"license": "BSD 3-Clause",
 	"author": "KIRAKIRA Project Team",
 	"scripts": {
-		"dev-local": "cross-env pnpm run dev-local-stg",
+		"dev-local": "cross-env bun run dev-local-stg",
 		"dev-local-stg": "cross-env VITE_BACKEND_URI=https://localhost:9999 VITE_CLOUDFLARE_IMAGES_PROVIDER=cloudflare-stg VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://customer-o9xrvgnj5fidyfm4.cloudflarestream.com/ nuxt dev --host --https --ssl-cert server/server.cer --ssl-key server/server.key",
 		"dev-local-prod": "cross-env VITE_BACKEND_URI=https://localhost:9999 VITE_CLOUDFLARE_IMAGES_PROVIDER=cloudflare-prod VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://customer-yvgxn6arnuae3q89.cloudflarestream.com/ nuxt dev --host --https --ssl-cert server/server.cer --ssl-key server/server.key",
 		"dev-stg-demo": "cross-env VITE_BACKEND_URI=https://stg-rosales.kirafile.com VITE_CLOUDFLARE_IMAGES_PROVIDER=cloudflare-stg VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://customer-o9xrvgnj5fidyfm4.cloudflarestream.com/ nuxt dev --host --https --ssl-cert server/server.cer --ssl-key server/server.key",
@@ -37,8 +36,8 @@
 		"typed-scss-modules": "typed-scss-modules assets/styles/*.module.scss --exportType default",
 		"update-eases": "tsx scripts/update-eases.ts",
 		"compact-svg": "tsx scripts/compact-svg.ts",
-		"delete-node-modules": "pnpx rimraf --glob ./node_modules || pnpx rimraf --glob ./.nuxt",
-		"node-modules-inspector": "pnpx node-modules-inspector",
+		"delete-node-modules": "bun x rimraf --glob ./node_modules || bun x rimraf --glob ./.nuxt",
+		"node-modules-inspector": "bun x node-modules-inspector",
 		"crowdin:update": "tsx scripts/crowdin/update.ts",
 		"crowdin:download": "tsx scripts/crowdin/download.ts",
 		"prepare": "husky",
@@ -185,5 +184,12 @@
 		"nova",
 		"dango",
 		"calibur"
+	],
+	"patchedDependencies": {
+		"nuxt@4.0.3": "patches/nuxt@4.0.3.patch"
+	},
+	"trustedDependencies": [
+		"@parcel/watcher",
+		"protobufjs"
 	]
 }
