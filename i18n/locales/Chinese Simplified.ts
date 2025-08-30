@@ -158,7 +158,7 @@ export default {
 			first_last_frame_description: "转到首帧或末帧并停止",
 			frame_by_frame: "显示逐帧控制按钮",
 			frame_by_frame_description: "按帧精确调整时间",
-			auto_resume_play_after_seeking: "循迹后自动恢复播放",
+			auto_resume_play_after_seeking: "跳转后自动恢复播放",
 		},
 		screenshot: "截图",
 		stats: "统计信息",

@@ -491,6 +491,7 @@ export default {
 		unsupported_file: "Định dạng file không được hỗ trợ!",
 		no_cover: "Hãy thêm bìa cho video!",
 		login_failed: "Đăng nhập thất bại! Thông tin đăng nhập không hợp lệ.",
+		reset_password_failed: "Đặt lại mật khẩu thất bại! Thông tin đăng nhập không hợp lệ.",
 		logout_success: "Đăng xuất thành công~",
 		password_changed: "Đã đổi mật khẩu~",
 		password_mismatch: "Hai mật khẩu vừa nhập không khớp!",
@@ -635,6 +636,7 @@ export default {
 	},
 	enable: "Kích hoạt",
 	disable: "Vô hiệu",
+	sync_color_settings_across_devices: "Đồng bộ hoá cài đặt màu trên mọi thiết bị",
 	role: {
 		administrator: "Quản trị viên",
 		developer: "Lập trình viên",
