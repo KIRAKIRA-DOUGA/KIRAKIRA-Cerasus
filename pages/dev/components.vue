@@ -17,6 +17,7 @@
 	const isClicked = ref(false);
 	const theme = cookieThemeType;
 	const palette = cookieThemeColor;
+	const radioValue = ref("");
 	const timeoutId = ref<Timeout>();
 	const isTagChecked = ref(false);
 	const tagInput = ref<string>("输入标签名称");
@@ -136,6 +137,10 @@
 			<ToggleSwitch v-model="toggle">切换开关 {{ toggle ? t.on : t.off }}</ToggleSwitch>
 			<ToggleSwitch disabled>{{ t.disabled }} {{ t.off }}</ToggleSwitch>
 			<ToggleSwitch on disabled>{{ t.disabled }} {{ t.on }}</ToggleSwitch>
+			<hr />
+			<RadioButton v-model="radioValue" value="1">选项1</RadioButton>
+			<RadioButton v-model="radioValue" value="2">选项2</RadioButton>
+			<hr />
 			<RadioButton v-model="theme" value="light">{{ t.scheme.light }}</RadioButton>
 			<RadioButton v-model="theme" value="dark">{{ t.scheme.dark }}</RadioButton>
 			<RadioButton v-model="theme" value="system">{{ t.scheme.system }}</RadioButton>

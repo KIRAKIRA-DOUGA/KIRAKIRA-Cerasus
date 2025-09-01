@@ -12,7 +12,7 @@
 	const { avatarSize, avatarGap, avatarMinLeft } = useScssVariables().numbers;
 	const selfUserInfoStore = useSelfUserInfoStore();
 	const model = defineModel<boolean>();
-	type PageType = "login1" | "login2-2fa" | "login2-email" | "register1" | "register2" | "register3" | "forgot" | "reset";
+	type PageType = "login1" | "login2-2fa" | "login2-email" | "register1" | "register2" | "register3" | "forgot1" | "forgot2-email" | "forgot2-totp";
 	const currentPage = ref<PageType>("login1");
 	const isWelcome = computed(() => ["register1", "register2", "register3"].includes(currentPage.value));
 	const coverMoveLeft = computed(() => !["login1", "login2-2fa", "login2-email"].includes(currentPage.value));
@@ -68,6 +68,12 @@
 	const validChar = makeUsername();
 	const username = ref("");
 	const nickname = ref("");
+
+	const resetPasswordVerificationCode = ref(""); // 重置密码时的验证码
+	const newPassword = ref(""); // 新密码
+	const confirmNewPassword = ref(""); // 确认新密码
+	const isSendingForgotPasswordVerificationCode = ref(false); // 正在发送忘记密码的验证码
+	const isResetPasssword = ref(false); // 正在重置密码
 
 	const timeout = useSendVerificationCodeTimeout(); // 全局的验证码倒计时
 
@@ -330,15 +336,100 @@
 		isTryingRegistration.value = false; // 停止注册按钮加载动画
 	}
 
-	// DELETE: [Aira] Change passwords should be in settings, not login window.
+	/**
+	 * 跳转到重置密码页面。
+	 */
+	async function jump2ResetPasswordPage() {
+		isChecking2FA.value = true;
+		try {
+			const emailStr = email.value;
+
+			if (isInvalidEmail.value) {
+				useToast(t.validation.invalid_format.email, "error", 5000);
+				isChecking2FA.value = false;
+				return;
+			}
+
+			const checkUserHave2FARequest: CheckUserHave2FARequestDto = {
+				email: emailStr,
+			};
+			const check2FAByEmailResult = await api.user.checkUserHave2FAByEmail(checkUserHave2FARequest);
+			if (!check2FAByEmailResult.success) { // 查询用户是否开启 2FA 失败，通常是因为用户不存在
+				useToast(t.validation.failed.user_info, "error", 5000);
+				isChecking2FA.value = false;
+				return;
+			}
+			if (!check2FAByEmailResult.have2FA || check2FAByEmailResult.have2FA && check2FAByEmailResult.type === "email") {
+				const locale = getCurrentLocaleLangCode();
+				const requestSendForgotPasswordVerificationCodeRequest: RequestSendForgotPasswordVerificationCodeRequestDto = {
+					email: emailStr,
+					clientLanguage: locale,
+				};
+
+				isSendingForgotPasswordVerificationCode.value = true;
+				const sendResult = await api.user.requestSendForgotPasswordVerificationCode(requestSendForgotPasswordVerificationCodeRequest);
+				timeout.startTimeout(); // 开始倒计时
+				isSendingForgotPasswordVerificationCode.value = false;
+				
+				if (sendResult.isCoolingDown)
+					useToast(t.toast.cooling_down, "error", 5000);
+				else if (!sendResult.success)
+					useToast(t.toast.verification_code_send_failed, "error", 5000);
+				else
+					currentPage.value = "forgot2-email";
+			} else
+				currentPage.value = "forgot2-totp";
+
+			isChecking2FA.value = false;
+		} catch (error) {
+			isSendingForgotPasswordVerificationCode.value = false;
+			isChecking2FA.value = false;
+			useToast(t.toast.reset_password_failed, "error");
+			console.error("ERROR", "Reset password failed:", error);
+		}
+	}
+
 	/**
 	 * 重置密码。
 	 */
 	async function resetPassword() {
-		// const oapiClient = useMap();
-		// const oldPassword = ""; // Should we get this?
-		// await oapiClient.resetPassword(oldPassword, password.value);
-		// open.value = false;
+		isResetPasssword.value = true;
+		try {
+			const emailStr = email.value;
+			const password = newPassword.value;
+			const confirmPassword = confirmNewPassword.value;
+			const resetPasswordVerificationCodeStr = resetPasswordVerificationCode.value;
+			if (password !== confirmPassword) {
+				useToast(t.toast.password_mismatch, "error");
+				return;
+			}
+
+			const passwordHash = await generateHash(password);
+
+			const forgotPasswordRequest: ForgotPasswordRequestDto = {
+				email: emailStr,
+				newPasswordHash: passwordHash,
+				verificationCode: resetPasswordVerificationCodeStr,
+			};
+
+			const forgotAndResetPasswordResult = await api.user.forgotAndResetPassword(forgotPasswordRequest);
+			if (forgotAndResetPasswordResult.success) {
+				useToast(t.toast.password_changed, "success");
+				currentPage.value = "login1";
+			} else
+				useToast(t.toast.reset_password_failed, "error");
+		} catch (error) {
+			useToast(t.toast.reset_password_failed, "error");
+			console.error("ERROR", "Reset password failed:", error);
+		}
+		isResetPasssword.value = false;
+	}
+
+	/**
+	 * // TODO: 对于使用 TOTP 的用户，无法找回密码。只能跳转到 GitHub 联系管理员手动找回。
+	 */
+	function jump2GitHub() {
+		window.open("https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus/issues", "_blank");
 	}
 
 	/**
@@ -426,7 +517,7 @@
 							</div>
 						</form>
 						<div class="action margin-left-inset margin-right-inset">
-							<Button @click="currentPage = 'forgot'">{{ t.loginwindow.login_to_forgot }}</Button>
+							<Button @click="currentPage = 'forgot1'">{{ t.loginwindow.login_to_forgot }}</Button>
 							<Button @click="currentPage = 'register1'">{{ t.loginwindow.login_to_register }}</Button>
 						</div>
 					</div>
@@ -581,9 +672,9 @@
 						</div>
 					</div>
 
-					<!-- 忘记密码 Forgot Password -->
-					<div class="forgot">
-						<HeadingGroup :name="t.loginwindow.forgot_title" englishName="forgot" />
+					<!-- 忘记密码 其一 Forgot Password #1 -->
+					<div class="forgot1">
+						<HeadingGroup :name="t.loginwindow.forgot_title" englishName="forgot" class="collapse" />
 						<div class="form">
 							<div><Preserves>{{ t.loginwindow.forgot_info }}</Preserves></div>
 							<TextBox
@@ -591,40 +682,72 @@
 								type="email"
 								:placeholder="t.email_address"
 								icon="email"
+								:invalid="isInvalidEmail"
+								@keyup.enter="jump2ResetPasswordPage"
 							/>
-							<Button icon="send" class="button logo-font button-block">{{ t.send }}</Button>
 						</div>
 						<div class="action margin-left-inset">
-							<Button @click="currentPage = 'login1'">{{ t.loginwindow.forgot_to_login }}</Button>
+							<Button icon="arrow_left" @click="currentPage = 'login1'">{{ t.loginwindow.forgot_to_login }}</Button>
+							<Button
+								icon="arrow_right"
+								class="icon-behind"
+								@click="jump2ResetPasswordPage"
+								:loading="isChecking2FA || isSendingForgotPasswordVerificationCode"
+								:disabled="isChecking2FA || isSendingForgotPasswordVerificationCode || !timeout.isTimeouted"
+							>{{ timeout.isTimeouted ? t.step.next : `${t.step.next} (${timeout.timeout})` }}</Button>
 						</div>
 					</div>
 
-					<!-- 重设密码 Reset Password -->
-					<div class="reset">
-						<HeadingGroup :name="t.loginwindow.reset_title" englishName="Reset" />
+					<!-- 重设密码 其二点一 Forgot Passsword (Email) #2.1 -->
+					<div class="forgot2-email">
+						<HeadingGroup :name="t.loginwindow.forgot_title" englishName="forgot" class="collapse" />
 						<div class="form">
-							<div><Preserves>{{ t.loginwindow.reset_successful_info }}</Preserves></div>
+							<div><Preserves>{{ t.loginwindow.reset_password_info }}</Preserves></div>
 							<TextBox
-								v-model="password"
+								v-model="resetPasswordVerificationCode"
+								type="text"
+								:placeholder="t.verification_code"
+								:required="true"
+								icon="verified"
+							/>
+							<TextBox
+								v-model="newPassword"
 								type="password"
 								:placeholder="t.password"
+								:required="true"
 								icon="lock"
 							/>
 							<TextBox
-								v-model="confirmPassword"
+								v-model="confirmNewPassword"
 								type="password"
 								:placeholder="t.password.retype"
+								:required="true"
 								icon="lock"
 							/>
 						</div>
 						<div class="action margin-left-inset">
-							<div></div>
-							<Button icon="check" class="button" @click="resetPassword">{{ t.step.finish }}</Button>
+							<Button icon="arrow_left" class="secondary" @click="currentPage = 'forgot1'">{{ t.loginwindow.resent_verification_code }}</Button>
+							<Button icon="check" class="button icon-behind" @click="resetPassword" :loading="isResetPasssword" :disabled="isResetPasssword">{{ t.step.finish }}</Button>
+						</div>
+					</div>
+
+					<!-- 重设密码 其二点二 Forgot Passsword (Totp) #2.2 -->
+					<div class="forgot2-totp">
+						<HeadingGroup :name="t.loginwindow.forgot_title" englishName="forgot" class="collapse" />
+						<div class="form">
+							<div><Preserves>{{ t.loginwindow.reset_password_totp_warning }}</Preserves></div>
+						</div>
+						<div class="action margin-left-inset">
+							<Button icon="arrow_left" class="secondary" @click="currentPage = 'login1'">{{ t.loginwindow.back_to_login }}</Button>
+							<Button icon="link" class="button" @click="jump2GitHub">{{ t.platform.github }}</Button>
 						</div>
 					</div>
 
 					<div class="register-title">
 						<HeadingGroup :name="t.register" englishName="Register" />
+					</div>
+					<div class="forgot-title">
+						<HeadingGroup :name="currentPage === 'forgot1' ? t.loginwindow.forgot_title : t.loginwindow.reset_title" :englishName="currentPage === 'forgot1' ? 'forgot' : 'reset'" />
 					</div>
 				</div>
 
@@ -767,13 +890,18 @@
 				@include page("!.register2", ".register2", right);
 				@include page("!.register3", ".register3", right);
 
-				@include page("!.forgot", ".forgot", right);
-				@include page("!.reset", ".reset", right);
+				@include page("!.forgot1", ".forgot1", right);
+				@include page("!.forgot2-email", ".forgot2-email", right);
+				@include page("!.forgot2-totp", ".forgot2-totp", right);
 
 				@include page(".register2", ".register1", left);
 				@include page(".register3", ".register2", left);
+				
+				@include page(".forgot2-email", ".forgot1", left);
+				@include page(".forgot2-totp", ".forgot1", left);
 
 				@include page("!.register1, .register2, .register3", ".register-title", right);
+				@include page("!.forgot1, .forgot2-email, .forgot2-totp", ".forgot-title", right);
 			}
 		}
 

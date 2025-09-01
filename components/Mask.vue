@@ -1,18 +1,18 @@
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
-		/** 是否显示，单向绑定使用。 */
+		/** 是否显示？（单向绑定使用） */
 		shown?: boolean;
 		/** CSS 中的 Z 轴高度。 */
 		zIndex?: number;
-		/** 是否是静态的，即没有外观，形式上的遮罩。 */
+		/** 是否是静态的，即没有外观，形式上的遮罩？ */
 		effectless?: boolean;
 		/** 指定内容的位置。 */
 		position?: MaskSlotPosition;
-		/** 聚焦内容。是否**不要**单击空白处关闭。 */
+		/** 聚焦内容。是否**不要**单击空白处关闭？ */
 		focusing?: boolean;
-		/** 是否禁用。 */
+		/** 禁用？ */
 		disabled?: boolean;
-		/** 是否禁用 Teleport。 */
+		/** 是否禁用 Teleport？ */
 		teleportDisabled?: boolean;
 	}>(), {
 		zIndex: 50,

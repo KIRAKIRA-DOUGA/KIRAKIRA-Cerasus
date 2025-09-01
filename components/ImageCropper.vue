@@ -1,7 +1,7 @@
 <!-- 基于 vue-cropper 的图片切割组件 -->
 <script setup lang="ts">
-	import { VueCropper } from "vue-cropper";
 	import cropTestImage from "assets/images/av820864307.jpg";
+	import { VueCropper } from "vue-cropper";
 
 	const props = withDefaults(defineProps<{
 		/** 裁剪图片的地址 */
@@ -57,8 +57,8 @@
 		info: true,
 		canScale: true,
 		autoCrop: true,
-		autoCropWidth: undefined,
-		autoCropHeight: undefined,
+		autoCropWidth: Infinity,
+		autoCropHeight: Infinity,
 		fixed: false,
 		fixedNumber: () => [1, 1],
 		full: false,
@@ -279,14 +279,22 @@
 			@include dropdown-flyouts;
 			@include acrylic-background;
 			top: unset !important;
-			bottom: -8px;
+			bottom: 16px;
 			left: 50%;
 			padding: 8px 10px;
 			color: c(text-color);
 			font-size: 14px;
 			font-variant-numeric: tabular-nums;
 			white-space: nowrap;
-			translate: -50% 44px;
+			translate: -50% 0;
+			opacity: 0;
+			visibility: hidden;
+			transition: $fallback-transitions;
+		}
+
+		&:has(.crop-point:active) .crop-info {
+			opacity: 1;
+			visibility: visible;
 		}
 	}
 </style>

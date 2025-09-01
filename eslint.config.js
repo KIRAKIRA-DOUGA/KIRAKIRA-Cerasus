@@ -538,6 +538,10 @@ export default [
 		files: ["*.{js,jsx}"],
 		rules: {
 			"jsdoc/check-tag-names": "off",
+			"jsdoc/no-types": "off",
+			"jsdoc/require-param-type": "error",
+			"jsdoc/require-returns-type": "error",
+			"jsdoc/require-property-type": "error",
 		},
 	},
 	{

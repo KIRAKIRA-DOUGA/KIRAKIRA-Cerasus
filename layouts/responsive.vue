@@ -3,7 +3,10 @@
 </docs>
 
 <script setup lang="ts">
+	import { Analytics } from "@vercel/analytics/nuxt";
+
 	const backgroundImageSettingsStore = useAppSettingsStore().backgroundImage;
+	const backgroundImages = useBackgroundImages();
 	const showDrawer = ref(false);
 	const isSettingsPage = ref(false);
 
@@ -37,8 +40,10 @@
 
 <template>
 	<ClientOnly>
-		<div v-if="backgroundImageSettingsStore.image.data" class="background" :style="{ opacity: backgroundImageSettingsStore.opacity }">
-			<img :src="backgroundImageSettingsStore.image.data" :style="{ filter: `blur(${backgroundImageSettingsStore.blur}px)` }" />
+		<div v-if="backgroundImages.shown" class="background" :style="{ opacity: backgroundImageSettingsStore.opacity }">
+			<Transition appear>
+				<img :src="backgroundImages.currentImage" :style="{ filter: `blur(${backgroundImageSettingsStore.blur}px)` }" />
+			</Transition>
 			<div class="overlay" :style="{ opacity: backgroundImageSettingsStore.tint }"></div>
 		</div>
 	</ClientOnly>
@@ -49,6 +54,7 @@
 		<Offcanvas v-if="showDrawer" v-model="showDrawer" />
 	</Transition>
 	<div class="viewport">
+		<Analytics />
 		<SideBar :hideAppBar :flatAppBar :hideBottomNav :isSettingsPage :overrideLogoText="showDrawer ? t.navigation.back : undefined" />
 		<ScrollContainer
 			scrollElId="mainScroller"
@@ -136,6 +142,17 @@
 			position: fixed;
 			inset: 0;
 			object-fit: cover;
+
+			&.v-enter-from,
+			&.v-leave-to {
+				scale: 1.1;
+				opacity: 0;
+			}
+
+			&.v-enter-active,
+			&.v-leave-active {
+				transition: scale $ease-out-smooth 1s, opacity ease 1s;
+			}
 		}
 
 		.overlay {

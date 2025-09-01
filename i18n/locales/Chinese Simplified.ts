@@ -36,6 +36,7 @@ export default {
 		yellow: "纱路黄",
 		cyan: "麻耶青",
 		red: "小惠红",
+		follow_bg: "跟随背景",
 	},
 	language: "语言",
 	background: {
@@ -118,7 +119,6 @@ export default {
 		new_retype: "确认新密码",
 		hint: "密码提示",
 	},
-	account_linking: "关联社交平台",
 	block_and_hide: {
 		_: "屏蔽和隐藏",
 		block: {
@@ -158,7 +158,7 @@ export default {
 			first_last_frame_description: "转到首帧或末帧并停止",
 			frame_by_frame: "显示逐帧控制按钮",
 			frame_by_frame_description: "按帧精确调整时间",
-			auto_resume_play_after_seeking: "循迹后自动恢复播放",
+			auto_resume_play_after_seeking: "跳转后自动恢复播放",
 		},
 		screenshot: "截图",
 		stats: "统计信息",
@@ -373,11 +373,14 @@ export default {
 		login_to_register: "我没有账号？注册",
 		register_to_login: "我已有账号？登入",
 		forgot_to_login: "我想起来密码了",
+		resent_verification_code: "重新发送验证码",
+		back_to_login: "返回登入",
 		forgot_title: "忘记密码",
 		reset_title: "重设密码",
 		register_email_sent_info: "我们已向你的邮箱中发送了验证码，请在此输入验证码。\n如未收到，你可以重新发送。",
-		forgot_info: "请在此输入你的邮箱，\n我们将会给你的邮箱发送一封邮件，请点击邮件中的链接重置密码。",
-		reset_successful_info: "验证成功！\n请输入并务必牢记你的新密码。",
+		forgot_info: "请输入你的邮箱。\n\n如果你的账号满足重置密码的条件，我们将会向你的邮箱发送一封包含验证码的邮件。",
+		reset_password_info: "请输入并务必牢记你的新密码。",
+		reset_password_totp_warning: "你的账号开启了动态令牌双重验证，暂不支持自助找回密码。\n如需找回密码，请联系管理员。",
 		login_totp_info: "账号已启用双重验证，请输入动态令牌以继续。\n如果不能访问你的身份验证设备，请使用备份码或恢复码登录。\n注意：使用恢复码登录后，你的账号将禁用双重验证。",
 		login_email_info: "邮箱双重验证已在账号上启用，验证码已发送到你的邮箱。\n若未收到验证码，请检查垃圾邮件。",
 	},
@@ -487,7 +490,8 @@ export default {
 		cooling_down: "冷却中！(・_・;) 请稍后再试",
 		unsupported_file: "不支持的文件格式！",
 		no_cover: "请上传封面！",
-		login_failed: "登入失败！用户名或密码错误",
+		login_failed: "登入失败！登入信息错误",
+		reset_password_failed: "找回密码失败！信息错误。",
 		logout_success: "登出成功~",
 		password_changed: "密码已更改~",
 		password_mismatch: "两次输入密码不一致！",
@@ -632,7 +636,7 @@ export default {
 	},
 	enable: "启用",
 	disable: "禁用",
-	sync_across_devices: "在设备之间同步",
+	sync_color_settings_across_devices: "在设备之间同步颜色设置",
 	role: {
 		administrator: "管理员",
 		developer: "开发者",
@@ -641,5 +645,9 @@ export default {
 	calendar: {
 		gregory: "公历",
 		chinese: "农历",
+	},
+	file_picker: {
+		choose: "选择文件",
+		rechoose: "重新选择",
 	},
 } as const satisfies LocaleIdentifiers;

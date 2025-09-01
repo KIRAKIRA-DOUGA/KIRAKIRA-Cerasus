@@ -10,7 +10,7 @@
 		details?: Readable;
 		/** 尾随操作图标。 */
 		trailingIcon?: DeclaredIcons;
-		/** 是否禁止尾随操作图片点击 */
+		/** 是否禁止尾随操作图片点击？ */
 		trailingIconDisabled?: boolean;
 		/** 尾随操作图标单击事件。 */
 		onTrailingIconClick?: () => void;

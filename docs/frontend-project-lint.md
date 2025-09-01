@@ -1,10 +1,10 @@
 ﻿# KIRAKIRA☆DOUGA 前端项目规范
 
 ## 简要
-1. **JavaScript 框架：**<wbr>Vue 3
+1. **JavaScript 框架：**<wbr>Vue
 1. **Vue API 风格：**<wbr>组合式 [(?)](https://cn.vuejs.org/guide/introduction.html#single-file-components)
 1. **使用类型系统：**<wbr>TypeScript
-1. **Vue 服务器渲染工具：**<wbr>Nuxt 3
+1. **Vue 服务器渲染工具：**<wbr>Nuxt
 1. **Vue 路由：**<wbr>Vue Router
 1. **打包工具：**<wbr>Vite
 1. **代码混淆工具：**<wbr>terser、esbuild

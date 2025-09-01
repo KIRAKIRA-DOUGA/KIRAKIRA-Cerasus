@@ -309,7 +309,7 @@
 
 	.base {
 		width: 100%;
-		background-color: c(gray-20);
+		background-color: c(main-fg, 7%);
 	}
 
 	.passed,

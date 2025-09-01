@@ -4,9 +4,9 @@
 	const props = withDefaults(defineProps<{
 		/** 勾选，单向绑定使用。 */
 		checked?: boolean;
-		/** 是否为原名 TAG */
+		/** 是否为原名标签？ */
 		original?: boolean;
-		/** 禁用。 */
+		/** 禁用？ */
 		disabled?: boolean;
 		/** 链接。 */
 		link?: string;

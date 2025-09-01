@@ -1,9 +1,7 @@
 <docs>
 	# 图标组件
 	封装的总图标组件。如果下次想更换图标模块可直接在此处统一更换。
-	目前的图标模块：
-	在开发环境下是 `@nuxtjs/svg-sprite`；
-	在生产环境下是 `nuxt-icons`。
+	目前的图标模块：@nuxt/icon
 </docs>
 
 <script setup lang="ts">
@@ -15,12 +13,15 @@
 	}>(), {
 		filled: false,
 	});
+
+	const iconName = computed(() => {
+		return props.name.replace(/^(.*)\/|^/, (_, prefix) => (prefix ?? "kirakira") + ":");
+	});
 </script>
 
 <template>
 	<i class="icon" :class="{ filled }" role="img" :aria-label="new VariableName(name).words">
-		<SvgIcon v-if="environment.production" :name />
-		<NuxtIcon v-else :name :filled />
+		<NuxtIcon :name="iconName" />
 	</i>
 </template>
 
@@ -35,17 +36,6 @@
 
 		:deep(svg) {
 			@include square(1em);
-		}
-
-		> .nuxt-icon {
-			@include square(1em);
-			display: inline-flex;
-			align-items: center;
-			justify-content: center;
-
-			> :deep(svg) {
-				margin-bottom: 0 !important;
-			}
 		}
 	}
 </style>

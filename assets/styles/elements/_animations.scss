@@ -54,6 +54,16 @@
 	}
 }
 
+@keyframes rotation-reverse {
+	from {
+		rotate: 0turn;
+	}
+
+	to {
+		rotate: -1turn;
+	}
+}
+
 @keyframes fade-in {
 	from {
 		opacity: 0;

@@ -99,8 +99,8 @@ export default {
 						emoji: "🔣",
 					},
 					delete: {
-						description: "删除文件",
-						title: "Delete Files",
+						description: "删除功能或文件",
+						title: "Delete Features or Files",
 						emoji: "🚮",
 					},
 					stash: {

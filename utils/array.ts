@@ -14,37 +14,45 @@ export function arrayRemoveAt<T>(array: T[], index: number): void {
 /**
  * 删除数组的指定项目，如有多个重复项目只删除第一个。
  * @param array - 数组。
- * @param item - 项目。
- * @returns 是否成功删除。
+ * @param items - 项目。
+ * @returns 成功删除的个数。
  */
-export function arrayRemoveItem<T>(array: T[], item: T): boolean {
-	const index = array.indexOf(item);
-	if (index === -1) return false;
-	array.splice(index, 1);
-	return true;
+export function arrayRemoveItem<T>(array: T[], ...items: T[]): number {
+	let successes = 0;
+	for (const item of items) {
+		const index = array.indexOf(item);
+		if (index === -1) continue;
+		array.splice(index, 1);
+		successes++;
+	}
+	return successes;
 }
 
 /**
  * 删除数组的所有指定项目。
  * @param array - 数组。
- * @param item - 项目。
+ * @param items - 项目。
+ * @returns 成功删除的个数。
  */
-export function arrayRemoveAllItem<T>(array: T[], item: T) {
-	while (true) {
-		const index = array.indexOf(item);
-		if (index === -1) return;
-		array.splice(index, 1);
-	}
+export function arrayRemoveAllItem<T>(array: T[], ...items: T[]) {
+	let successes = 0;
+	for (let i = array.length - 1; i >= 0; i--)
+		if (items.includes(array[i])) {
+			array.splice(i, 1);
+			successes++;
+		}
+	return successes;
 }
 
 /**
  * 仅在数组不包含该项目时，在数组末尾追加该项目。
  * @param array - 数组。
- * @param item - 项目。
+ * @param items - 项目。
  */
-export function arrayPushDistinct<T>(array: T[], item: T) {
-	if (!array.includes(item))
-		array.push(item);
+export function arrayPushUniquely<T>(array: T[], ...items: T[]) {
+	for (const item of items)
+		if (!array.includes(item))
+			array.push(item);
 }
 
 /**
@@ -68,10 +76,11 @@ export function arrayRelist<T>(array: T[], items: Iterable<T>): void {
  * 切换数组是否包含项目。如果数组包含该项目则移除，反之则添加。
  * @param array - 数组。
  * @param item - 项目。
+ * @param force - 包括后，将切换变成仅单向操作。如果设置为 false，则只会删除项目，但不会添加。如果设置为 true，则只会添加项目，但不会删除。
  */
-export function arrayToggle<T>(array: T[], item: T): void {
+export function arrayToggle<T>(array: T[], item: T, force?: boolean): void {
 	const index = array.indexOf(item);
-	if (index === -1)
+	if (index === -1 || force)
 		array.push(item);
 	else
 		arrayRemoveAt(array, index);

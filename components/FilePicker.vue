@@ -14,7 +14,7 @@
 		cover?: boolean;
 		unselectedText?: string;
 	}>(), {
-		unselectedText: () => t.unselected.file,
+		unselectedText: () => t.file_picker.choose,
 	});
 	const fileInput = ref<HTMLInputElement>();
 	const dragover = ref(false);
@@ -140,7 +140,6 @@
 		>
 			<template v-if="!picked">
 				<Icon name="upload" class="upload-icon" />
-				<!-- TODO: 多语言 -->
 				<p>{{ unselectedText }}</p>
 			</template>
 
@@ -151,10 +150,8 @@
 						<p>{{ file?.name }}</p>
 					</div>
 					<div class="buttons">
-						<!-- TODO: 多语言 -->
-						<SoftButton v-tooltip:bottom="'Repick'" icon="upload" @click="fileInput?.click()" />
-						<!-- TODO: 多语言 -->
-						<SoftButton v-tooltip:bottom="'Remove'" icon="close" @click="removePicked" />
+						<SoftButton v-tooltip:bottom="t.file_picker.rechoose" icon="upload" @click="fileInput?.click()" />
+						<SoftButton v-tooltip:bottom="t.remove" icon="close" @click="removePicked" />
 					</div>
 					<div class="inner-shadow"></div>
 				</div>

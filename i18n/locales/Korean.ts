@@ -84,4 +84,5 @@ export default {
 	},
 	role: {},
 	calendar: {},
+	file_picker: {},
 } as const satisfies LocaleIdentifiers;

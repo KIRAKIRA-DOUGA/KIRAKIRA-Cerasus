@@ -36,6 +36,7 @@ export default {
 		yellow: "Syaro Jaune",
 		cyan: "Maya Cyan",
 		red: "Megu Rouge",
+		follow_bg: "Suivre l'arrière-plan",
 	},
 	language: "Langue",
 	background: {
@@ -118,7 +119,6 @@ export default {
 		new_retype: "Retapez le nouveau mot de passe",
 		hint: "Indice mot de passe",
 	},
-	account_linking: "Liaison de Compte",
 	block_and_hide: {
 		_: "Bloquer et masquer",
 		block: {
@@ -373,11 +373,14 @@ export default {
 		login_to_register: "Créer un compte",
 		register_to_login: "J'ai déjà un compte",
 		forgot_to_login: "J'ai oublié mon mot de passe",
+		resent_verification_code: "Renvoyer le code de vérification",
+		back_to_login: "Retour à la connexion",
 		forgot_title: "Oublié",
 		reset_title: "Réinitialiser",
 		register_email_sent_info: "Nous vous avons envoyé un code de vérification par e-mail, veuillez saisir le code ici.\nSi vous ne l'avez pas reçu, vous pouvez le renvoyer.",
-		forgot_info: "Veuillez saisir votre adresse e-mail.\nNous vous enverrons un code de vérification par e-mail.",
-		reset_successful_info: "Vérification réussie !\nVeuillez saisir et mémoriser votre nouveau mot de passe.",
+		forgot_info: "Veuillez entrer votre adresse e-mail.\n\nSi votre compte peut réinitialiser le mot de passe, nous enverrons un code de vérification à votre adresse e-mail.",
+		reset_password_info: "Veuillez saisir et mémoriser votre nouveau mot de passe.",
+		reset_password_totp_warning: "Votre compte a TOTP 2FA activé, et l'auto-récupération de mot de passe n'est pas prise en charge.\nSi vous avez besoin de réinitialiser votre mot de passe, veuillez contacter l'administrateur.",
 		login_totp_info: "L'authentification à deux facteurs est activée sur votre compte. Veuillez saisir votre code de vérification pour continuer.\nSi vous n'avez pas accès à votre dispositif d'authentification, utilisez un code de secours ou de récupération pour vous connecter.\nRemarque : La connexion avec un code de récupération désactivera l'authentification à deux facteurs sur votre compte après une connexion réussie.",
 		login_email_info: "L'authentification à deux facteurs par e-mail est activée sur votre compte. Un code de vérification vous a été envoyé. Si vous ne le recevez pas, veuillez vérifier vos pourriels.",
 	},
@@ -487,7 +490,8 @@ export default {
 		cooling_down: "Refroidissement! (・_・;) Veuillez réessayer plus tard.",
 		unsupported_file: "Format de fichier non pris en charge !",
 		no_cover: "Veuillez télécharger la couverture !",
-		login_failed: "Connexion échouée ! Le nom d'utilisateur ou le mot de passe est incorrect.",
+		login_failed: "Échec de la connexion ! Identifiants invalides.",
+		reset_password_failed: "La réinitialisation du mot de passe a échoué! Identifiants invalides.",
 		logout_success: "Déconnexion réussie~",
 		password_changed: "Mot de passe modifié~",
 		password_mismatch: "Les deux mots de passe saisis ne correspondent pas !",
@@ -632,7 +636,7 @@ export default {
 	},
 	enable: "Activer",
 	disable: "Désactiver",
-	sync_across_devices: "Synchroniser entre les appareils",
+	sync_color_settings_across_devices: "Synchroniser les paramètres de couleur à travers les appareils",
 	role: {
 		administrator: "Administrateur",
 		developer: "Développeur",
@@ -641,5 +645,9 @@ export default {
 	calendar: {
 		gregory: "Grégorien",
 		chinese: "Chinois",
+	},
+	file_picker: {
+		choose: "Choisir un fichier",
+		rechoose: "Rechoisir",
 	},
 } as const satisfies LocaleIdentifiers;

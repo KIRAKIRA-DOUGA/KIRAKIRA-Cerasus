@@ -3,11 +3,11 @@
 	// BUG: 上面那个是 typescript-eslint 的 bug，如果去掉，则会触发 typescript 的报错。简而言之就是目前 typescript-eslint 和 typescript 在互相打架。
 
 	const props = withDefaults(defineProps<{
-		/** 禁用。 */
+		/** 禁用？ */
 		disabled?: boolean;
 		/** 值。 */
 		value?: T;
-		/** 已勾选，单向绑定使用。 */
+		/** 已勾选？（单向绑定使用） */
 		checked?: boolean;
 		/** 详细信息。 */
 		details?: Readable;
@@ -51,7 +51,7 @@
 
 	watch(isChecked, async () => {
 		isAnimating.value = true;
-		await delay(400); // $duration-half 记得及时如果更新。
+		await delay(400); // $duration-half * 2 如果更新记得及时修改。
 		isAnimating.value = false;
 	});
 
@@ -92,6 +92,7 @@
 <template>
 	<Comp
 		:tabindex="isChecked && !disabled && !props.readonly ? 0 : -1"
+		:class="{ 'is-animating': isAnimating }"
 		role="radio"
 		:aria-checked="isChecked"
 		@click="onChange"
@@ -107,7 +108,7 @@
 		/>
 		<div class="radio-focus">
 			<div class="radio-shadow">
-				<div class="radio" :class="{ 'is-animating': isAnimating }"></div>
+				<div class="radio"></div>
 			</div>
 		</div>
 		<div v-if="hasLabel" class="content">
@@ -153,10 +154,10 @@
 		overflow: clip;
 		box-shadow: inset 0 0 0 $border-size c(icon-color);
 		transition: $transition, box-shadow $ease-out-max $duration-half;
-		animation: outer-border-change-back $duration-half $duration-half $ease-in-max reverse;
 
-		&.is-animating {
+		:comp.is-animating & {
 			transition: $transition;
+			animation: outer-border-change-back $duration-half $duration-half $ease-in-max reverse;
 		}
 
 		:comp:any-hover & {
@@ -176,14 +177,19 @@
 			background-color: c(icon-color);
 			opacity: 0;
 			transition: $fallback-transitions, all $ease-in-out-max $duration;
-			animation:
-				inner-resize-back $duration-half $ease-out-max reverse,
-				cut-out $duration-half step-start;
+
+			:comp.is-animating & {
+				animation:
+					inner-resize-back $duration-half $ease-out-max reverse,
+					cut-out $duration-half step-start;
+			}
 		}
 	}
 
 	input:checked + .radio-focus {
-		animation: pressing $duration-half $ease-in alternate 2;
+		:comp.is-animating & {
+			animation: pressing $duration-half $ease-in alternate 2;
+		}
 
 		.radio-shadow {
 			@include button-shadow;
@@ -200,19 +206,21 @@
 
 		.radio {
 			box-shadow: inset 0 0 0 $border-size c(accent);
-			animation: outer-border-change $duration-half $ease-in-max;
+
+			:comp.is-animating & {
+				animation: outer-border-change $duration-half $ease-in-max;
+			}
 
 			&::before {
 				@include short-transition;
 				background-color: c(accent);
 				scale: 0.5;
 				opacity: 1;
-				animation:
-					inner-resize $duration-half $duration-half $ease-out-max,
-					cut-in $duration-half step-start;
 
-				:comp:any-hover & {
-					scale: 0.6;
+				:comp.is-animating & {
+					animation:
+						inner-resize $duration-half $duration-half $ease-out-max,
+						cut-in $duration-half step-start;
 				}
 
 				:comp:active & {
@@ -225,7 +233,10 @@
 	.radio-focus {
 		@include square($size);
 		@include circle;
-		animation: pressing-back $duration-half $ease-in alternate 2;
+
+		:comp.is-animating & {
+			animation: pressing-back $duration-half $ease-in alternate 2;
+		}
 
 		:comp:any-hover &,
 		:comp:focus-visible & {

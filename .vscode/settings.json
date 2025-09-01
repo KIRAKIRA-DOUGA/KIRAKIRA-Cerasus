@@ -194,4 +194,11 @@
 		"nuxt",
 		"akkarin"
 	],
+	"vue.suggest.componentNameCasing": "preferPascalCase",
+	"vue.suggest.propNameCasing": "preferCamelCase",
+	"vue.inlayHints.destructuredProps": true,
+	"vue.inlayHints.inlineHandlerLeading": true,
+	"vue.inlayHints.missingProps": true,
+	"vue.inlayHints.optionsWrapper": true,
+	"vue.inlayHints.vBindShorthand": true,
 }

@@ -25,6 +25,7 @@
 		"experimentalDecorators": true,
 		"resolveJsonModule": true,
 		"noErrorTruncation": true,
+		"noUncheckedIndexedAccess": false,
 		"plugins": [
 			{
 				"name": "typescript-plugin-css-modules",

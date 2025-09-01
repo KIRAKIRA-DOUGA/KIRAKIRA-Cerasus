@@ -1,4 +1,5 @@
 @use "../theme/functions" as *;
+@use "../theme/variables" as *;
 
 @mixin set-box-shadow($border-color, $broadside-color, $is-pressed: false) {
 	$is-pressed: if($is-pressed, -1, 1);
@@ -11,12 +12,12 @@ kbd {
 	margin: 0 0.1em;
 	padding: 0.1em 0.6em;
 	color: c(text-color);
+	font-family: "SF Compact", $monospace-fonts;
 	font-size: 100%;
-	font-family: monospace, sans-serif;
 	line-height: 1.4;
 	background-color: c(gray-5);
 	border-radius: 4px;
-	
+
 	html.dark & {
 		@include set-box-shadow(gray-10, gray-5);
 		background-color: c(gray-20);
@@ -25,9 +26,9 @@ kbd {
 	&:active {
 		@include set-box-shadow(gray-30, gray-30, true);
 		color: c(icon-color);
-		translate: 0 3.2px;
 		background-color: c(gray-20);
-		
+		translate: 0 3.2px;
+
 		html.dark & {
 			@include set-box-shadow(gray-5, gray-5, true);
 			color: c(gray-40);

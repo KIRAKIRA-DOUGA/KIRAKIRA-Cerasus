@@ -104,6 +104,11 @@
 
 	const layout = useDynamicLayout();
 
+	const backgroundImages = useBackgroundImages();
+	watch(() => backgroundImages.currentDominantColor, color => {
+		document.documentElement.style.setProperty("--accent-wallpaper", color || null);
+	});
+
 	// Service Worker
 	if (environment.client)
 		window.addEventListener("load", () => {
@@ -133,4 +138,5 @@
 	<Tooltips />
 
 	<PageLoadingIndicator />
+	<div id="large-viewport-size"></div>
 </template>

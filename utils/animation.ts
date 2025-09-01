@@ -260,6 +260,26 @@ export function simpleAnimateSize(specified: "width" | "height" = "height", dura
 export const STOP_TRANSITION_ID = "stop-transition";
 
 /**
+ * 使用新 `CSSStyleSheet` 实例并返回清理功能以将其删除。
+ *
+ * @param css - 要添加到文档中的 CSS 字符串。
+ * @returns 一个函数，当调用时，从 `document.adoptedStyleSheets` 中删除添加的样式表。
+ *
+ * @example
+ * ```typescript
+ * const removeStyle = addStyle(css`.foo { color: red; }`);
+ * await doSomething();
+ * removeStyle();
+ * ```
+ */
+function addStyle(css: string) {
+	const sheet = new CSSStyleSheet();
+	sheet.replaceSync(css);
+	document.adoptedStyleSheets.push(sheet);
+	return () => { arrayRemoveAllItem(document.adoptedStyleSheets, sheet); };
+}
+
+/**
  * 通过注入一个 `<style>` 元素，为所有元素（包括伪元素）设置 `transition: none !important;`，暂时禁用页面上的所有 CSS 过渡。
  *
  * @returns 一个清场函数，当被调用时，它会删除注入的 `<style>` 元素并恢复过渡。
@@ -276,12 +296,10 @@ export const STOP_TRANSITION_ID = "stop-transition";
  * ```
  */
 export function stopTransition({ includesViewTransitions = false }: {
-	/** Includes `view-transition-old` and `view-transition-new`? */
+	/** 也包含 `view-transition-old` 和 `view-transition-new`？ */
 	includesViewTransitions?: boolean;
 } = {}) {
-	const style = document.createElement("style");
-	style.id = STOP_TRANSITION_ID;
-	style.textContent = String(`
+	return addStyle(`
 		*,
 		::before,
 		::after,
@@ -317,12 +335,6 @@ export function stopTransition({ includesViewTransitions = false }: {
 			}
 		` : ""}
 	`);
-	document.head.appendChild(style);
-
-	return () => {
-		style.remove();
-		document.querySelectorAll(`style#${STOP_TRANSITION_ID}`).forEach(node => node.remove());
-	};
 }
 
 type ColorViewTransitionAnimationOption = Override<KeyframeAnimationOptions, {
@@ -332,6 +344,8 @@ type ColorViewTransitionAnimationOption = Override<KeyframeAnimationOptions, {
 interface ColorViewTransitionAnimationFallbackDefaultOption extends ColorViewTransitionAnimationOption {
 	/** 设置过渡时的光标指针。 */
 	cursor?: Cursor;
+	/** 在整个过渡期间，附加其它静态 CSS 样式。 */
+	staticStyle?: string;
 }
 
 /**
@@ -352,6 +366,7 @@ export async function startColorViewTransition(changeFunc: () => MaybePromise<vo
 	defaultOptions.pseudoElement ??= "::view-transition-new(root)";
 
 	const restoreTransitions = stopTransition({ includesViewTransitions: true });
+	const removeStyle = defaultOptions.staticStyle ? addStyle(defaultOptions.staticStyle) : undefined;
 
 	try {
 		if (defaultOptions.cursor) forceCursor(defaultOptions.cursor);
@@ -364,6 +379,7 @@ export async function startColorViewTransition(changeFunc: () => MaybePromise<vo
 		}));
 	} finally {
 		restoreTransitions();
+		removeStyle?.();
 		if (defaultOptions.cursor) forceCursor(null);
 	}
 }
@@ -375,6 +391,48 @@ export async function startColorViewTransition(changeFunc: () => MaybePromise<vo
 export async function startViewTransition(callback: () => MaybePromise<void>) {
 	if (document.startViewTransition) await document.startViewTransition(callback).finished;
 	else await callback();
+}
+
+let lastClickMouseEvent: MouseEvent | undefined;
+try {
+	if (typeof document !== "undefined")
+		document?.addEventListener("click", e => lastClickMouseEvent = e, true);
+} catch (error) {
+	console.error("ERROR", "Client-side code (adding global event listeners) should not be run on the server. (Error catched in modules/theme/theme-cookie-binding.ts)");
+	console.error("ERROR", error);
+}
+
+export function startCircleViewTransition(isSpread: boolean, changeFunc: () => MaybePromise<void | unknown>) {
+	return new Promise<void>(resolve => {
+		// It is difficult to get 100lvh (large viewport) height in JavaScript.
+		const lvsEl = document.getElementById("large-viewport-size");
+		const lvh = lvsEl?.offsetHeight ?? window.innerHeight, lvw = lvsEl?.offsetWidth ?? window.innerWidth;
+		const { x, y } = lastClickMouseEvent ?? { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+		const endRadius = Math.hypot(Math.max(x, lvw - x), Math.max(y, lvh - y));
+		const clipPath = [
+			`circle(0px at ${x}px ${y}px)`,
+			`circle(${endRadius}px at ${x}px ${y}px)`,
+		];
+		startColorViewTransition(changeFunc, [
+			[{
+				clipPath: isSpread ? clipPath : clipPath.toReversed(),
+			}, {
+				pseudoElement: isSpread ? "::view-transition-new(root)" : "::view-transition-old(root)",
+			}],
+			[{
+				zIndex: ["1", "1"],
+			}, {
+				pseudoElement: !isSpread ? "::view-transition-new(root)" : "::view-transition-old(root)",
+			}],
+			[{
+				zIndex: ["calc(infinity)", "calc(infinity)"],
+			}, {
+				pseudoElement: isSpread ? "::view-transition-new(root)" : "::view-transition-old(root)",
+			}],
+		], { cursor: "progress" }).then(() => {
+			resolve();
+		});
+	});
 }
 
 /**

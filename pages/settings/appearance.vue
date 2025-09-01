@@ -12,6 +12,7 @@
 		{ color: "red", subtitle: "奈津恵" },
 	] as const;
 	const paletteSection = ref<HTMLElement>();
+	const DEFAULT_PALETTE = "pink" satisfies PaletteType;
 
 	// HACK: 16 请参照此部分 ↓ ↓ ↓
 
@@ -34,16 +35,18 @@
 	const flyoutColorPicker = ref<FlyoutModel>();
 	watch(customColor, customColor => cookieThemeCustomColor.value = customColor.hex);
 
+	// 背景图片
 	const backgroundImageSettingsStore = useAppSettingsStore().backgroundImage;
-	const backgroundImageFiles = ref<File[]>([]);
-	const backgroundImageFile = computed(() => backgroundImageFiles.value[0]);
 	const backgroundSliderDisplayValue = (value: number) => value.toFixed(2);
+	const backgroundImages = useBackgroundImages();
+	const backgroundImageItemMenu = ref<[MenuModel | undefined, BackgroundImageRowWithMore, HTMLElement | undefined]>([undefined, DEFAULT_BACKGROUND_IMAGE_ROW, undefined]);
+	const confirmDeleteBackgroundImageFlyout = ref<[FlyoutModel | undefined, () => void]>([undefined, useNoop]);
 
-	watch(backgroundImageFile, async file => {
-		const bgImage = backgroundImageSettingsStore.image;
-		bgImage.name = file?.name ?? "";
-		bgImage.data = file ? await fileToData(file) : "";
-	});
+	async function addBackgroundImage() {
+		const files = await openFile({ accept: "image/*", multiple: true });
+		for (const file of files)
+			await backgroundImages.add(file);
+	}
 
 	const useCookieAndLocalStorageOptions = { isWatchCookieRef: true, isSyncSettings: false };
 	// 在 cookie 和 localStorage 中同步的 Cookie，是否开启主题同步
@@ -63,11 +66,6 @@
 		if (paletteSection.value)
 			for (const item of paletteSection.value.children)
 				item.classList.remove("light", "dark");
-
-		// 从设置存储中加载背景图片
-		const bgImage = backgroundImageSettingsStore.image;
-		if (bgImage.data)
-			backgroundImageFiles.value = [dataToFile(bgImage.data, bgImage.name)];
 	});
 </script>
 
@@ -97,7 +95,7 @@
 		</section>
 
 		<Subheader icon="palette">{{ t.palette }}</Subheader>
-		<section ref="paletteSection" grid force-multi-column>
+		<section ref="paletteSection" grid>
 			<SettingsGridItem
 				v-for="item in paletteList"
 				:id="item.color"
@@ -106,6 +104,7 @@
 				:title="t.palette[item.color]"
 				class="force-color"
 				:class="[item.color]"
+				:checked="item.color === DEFAULT_PALETTE && cookieThemeColor === 'wallpaper' && !backgroundImages.shown || undefined"
 			>
 				<div class="palette-card">
 					<NuxtImg
@@ -137,50 +136,106 @@
 					<div class="hue-gradient"></div>
 					<div>
 						<h3>{{ t.custom }}</h3>
-						<p>Make It Yours</p>
+						<p lang="en">Make It Yours</p>
 					</div>
 					<Icon name="edit" />
 				</div>
 			</SettingsGridItem>
+			<SettingsGridItem
+				v-if="backgroundImages.shown"
+				id="wallpaper"
+				key="wallpaper"
+				v-model="cookieThemeColor"
+				:title="t.background"
+				class="wallpaper-color force-color"
+			>
+				<div class="palette-card">
+					<img :src="backgroundImages.currentImage" :alt="t.background" />
+					<div class="overlay light"></div>
+					<div class="overlay color"></div>
+					<div>
+						<h3>{{ t.background }}</h3>
+						<p>{{ t.palette.follow_bg }}</p>
+					</div>
+					<Icon name="wallpaper" />
+				</div>
+			</SettingsGridItem>
 		</section>
 
-		<Subheader icon="wallpaper">{{ t.background }}</Subheader>
-		<section>
-			<FilePicker v-model="backgroundImageFiles" accept="image/*" cover :unselectedText="t.unselected.image" />
-			<template v-if="backgroundImageFile">
-				<SettingsSlider
-					v-model="backgroundImageSettingsStore.opacity"
-					:min="0"
-					:max="0.4"
-					:step="0.01"
-					:defaultValue="0.2"
-					icon="opacity"
-					pending="current"
-					:displayValue="backgroundSliderDisplayValue"
-				>{{ t.background.opacity }}</SettingsSlider>
-				<SettingsSlider
-					v-model="backgroundImageSettingsStore.tint"
-					:min="0"
-					:max="1"
-					:step="0.01"
-					:defaultValue="0.75"
-					icon="join_inner"
-					pending="current"
-					:displayValue="backgroundSliderDisplayValue"
-				>{{ t.background.tint }}</SettingsSlider>
-				<SettingsSlider
-					v-model="backgroundImageSettingsStore.blur"
-					:min="0"
-					:max="64"
-					:step="1"
-					:defaultValue="0"
-					icon="blur"
-					pending="current"
-					:displayValue="backgroundSliderDisplayValue"
-				>{{ t.background.blur }}</SettingsSlider>
-			<!-- TODO: 滑块上方的气泡定位有问题。 -->
-			</template>
-		</section>
+		<ClientOnly>
+			<Subheader icon="wallpaper">{{ t.background }}</Subheader>
+			<section>
+				<Button class="upload-bg-image-btn" icon="upload" @click="addBackgroundImage">{{ t.file_picker.choose }}</Button>
+				<section grid force-multi-column class="section-background-images">
+					<TransitionGroup appear>
+						<SettingsGridItem
+							v-for="item in backgroundImages.items"
+							:id="item.key"
+							:key="item.key"
+							v-model="backgroundImages.backgroundImage"
+							class="preview-bg-image force-color"
+							:style="{ '--accent-50': item.color }"
+							@contextmenu.prevent="e => item.key !== -1 && (backgroundImageItemMenu = [e, item, e.currentTarget])"
+						>
+							<Icon v-if="item.key === -1" name="prohibited" />
+							<img v-else :src="item.url" alt="" />
+						</SettingsGridItem>
+					</TransitionGroup>
+				</section>
+				<template v-if="backgroundImages.shown">
+					<SettingsSlider
+						v-model="backgroundImageSettingsStore.opacity"
+						:min="0"
+						:max="0.4"
+						:step="0.01"
+						:defaultValue="0.2"
+						icon="opacity"
+						pending="current"
+						:displayValue="backgroundSliderDisplayValue"
+					>{{ t.background.opacity }}</SettingsSlider>
+					<SettingsSlider
+						v-model="backgroundImageSettingsStore.tint"
+						:min="0"
+						:max="1"
+						:step="0.01"
+						:defaultValue="0.75"
+						icon="join_inner"
+						pending="current"
+						:displayValue="backgroundSliderDisplayValue"
+					>{{ t.background.tint }}</SettingsSlider>
+					<SettingsSlider
+						v-model="backgroundImageSettingsStore.blur"
+						:min="0"
+						:max="64"
+						:step="1"
+						:defaultValue="0"
+						icon="blur"
+						pending="current"
+						:displayValue="backgroundSliderDisplayValue"
+					>{{ t.background.blur }}</SettingsSlider>
+				</template>
+			</section>
+
+			<Menu v-model="backgroundImageItemMenu[0]">
+				<!-- TODO: 多语言。 -->
+				<MenuItem icon="arrow_left" :disabled="backgroundImageItemMenu[1].displayIndex <= 0" @click="backgroundImages.reorder(backgroundImageItemMenu[1].key, backgroundImageItemMenu[1].displayIndex - 1)">往前挪</MenuItem>
+				<MenuItem icon="arrow_right" :disabled="backgroundImageItemMenu[1].displayIndex >= backgroundImages.items.length - 2" @click="backgroundImages.reorder(backgroundImageItemMenu[1].key, backgroundImageItemMenu[1].displayIndex + 1)">往后挪</MenuItem>
+				<hr />
+				<MenuItem icon="delete" @click="confirmDeleteBackgroundImageFlyout = [[backgroundImageItemMenu[2], 'y'], () => backgroundImages.delete(backgroundImageItemMenu[1].key)]">{{ t.delete }}</MenuItem>
+			</Menu>
+
+			<Flyout v-model="confirmDeleteBackgroundImageFlyout[0]">
+				<div class="flyout-content">
+					<h4>{{ t.delete }}</h4>
+					<!-- TODO: 多语言。 -->
+					<p>确定要删除该背景图像吗？</p>
+					<div class="flyout-buttons">
+						<Button @click="confirmDeleteBackgroundImageFlyout[0] = undefined">{{ t.step.cancel }}</Button>
+						<Button @click="confirmDeleteBackgroundImageFlyout[0] = undefined; confirmDeleteBackgroundImageFlyout[1]();" :style="{ '--appearance': 'secondary' }">{{ t.step.ok }}</Button>
+					</div>
+				</div>
+			</Flyout>
+		</ClientOnly>
 
 		<Subheader icon="more_horiz">{{ t(2).other }}</Subheader>
 		<section list>
@@ -195,7 +250,7 @@
 				:disabled="!selfUserInfoStore.isLogined"
 				icon="sync"
 			>
-				{{ t.sync_across_devices }}
+				{{ t.sync_color_settings_across_devices }}
 			</ToggleSwitch>
 		</section>
 	</div>
@@ -238,6 +293,10 @@
 			color: inherit;
 		}
 
+		.wallpaper-color & {
+			color: var(--accent-wallpaper);
+		}
+
 		> * {
 			position: relative;
 		}
@@ -248,19 +307,12 @@
 		}
 
 		h3 {
-			margin-bottom: calc(2px + 0.1cqh);
-
-			@include mobile {
-				display: none;
-			}
+			margin-bottom: calc(4px + 0.1cqh);
+			line-height: 1;
 		}
 
 		p {
 			font-size: calc(14px + 1cqw);
-
-			@include mobile {
-				font-weight: bold;
-			}
 		}
 
 		.icon {
@@ -291,6 +343,10 @@
 				opacity: 0.6;
 				mix-blend-mode: color;
 
+				.wallpaper-color & {
+					background-color: var(--accent-wallpaper);
+				}
+
 				html.dark & {
 					mix-blend-mode: hue;
 				}
@@ -312,6 +368,9 @@
 		}
 
 		@container style(--column: single) {
+			padding: 8px;
+
+			h3,
 			p {
 				display: none;
 			}
@@ -329,5 +388,55 @@
 	.file-picker {
 		width: 300px;
 		margin: 16px;
+	}
+
+	section.section-background-images {
+		padding-top: 0;
+
+		&:not(:last-child) {
+			padding-bottom: 0;
+		}
+	}
+
+	.upload-bg-image-btn {
+		margin: 20px;
+
+		& + section:empty {
+			display: none;
+		}
+	}
+
+	.preview-bg-image {
+		img {
+			@include square(100%);
+			aspect-ratio: inherit;
+			object-fit: inherit;
+		}
+
+		.icon {
+			color: c(icon-color);
+			font-size: 48px;
+		}
+
+		&.v-enter-from,
+		&.v-leave-to {
+			scale: 0;
+		}
+
+		&.v-leave-active {
+			position: absolute;
+		}
+	}
+
+	.flyout-content {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		min-width: min(250px, 100dvw);
+
+		.flyout-buttons {
+			display: flex;
+			gap: 8px;
+		}
 	}
 </style>

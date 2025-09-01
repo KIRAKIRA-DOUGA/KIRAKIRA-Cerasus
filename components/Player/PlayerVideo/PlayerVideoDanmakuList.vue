@@ -127,7 +127,7 @@
 			</table>
 			<!-- </ScrollContainer> -->
 
-			<Menu v-model="danmakuItemMenu">
+			<Menu v-model="danmakuItemMenu" noFade>
 				<MenuItem icon="copy" @click="copyDanmaku">{{ t.copy }}</MenuItem>
 				<MenuItem icon="flag">{{ t.report }}</MenuItem>
 				<hr />

@@ -49,11 +49,11 @@
 	 * 在上传图片时调用。
 	 * @param e - 普通事件。
 	 */
-	function onChangePhoto(e: Event) {
+	async function onChangePhoto(e: Event) {
 		const input = e.target as HTMLInputElement;
 		const image = input.files?.[0];
 		if (image)
-			photo.value = fileToBlob(image);
+			photo.value = await fileToBlob(image);
 	}
 
 	/**

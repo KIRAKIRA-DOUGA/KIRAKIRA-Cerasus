@@ -44,7 +44,7 @@
 	 * 即：用户选择了本地文件的事件。
 	 * @param e - 应为用户上传文件的 `<input>` 元素的 change 事件。
 	 */
-	function handleOpenAvatarCropper(e?: Event) {
+	async function handleOpenAvatarCropper(e?: Event) {
 		e?.stopPropagation();
 		const fileInput = e?.target as HTMLInputElement | undefined;
 		const image = fileInput?.files?.[0];
@@ -56,7 +56,7 @@
 				return;
 			}
 
-			userAvatarUploadFile.value = fileToBlob(image);
+			userAvatarUploadFile.value = await fileToBlob(image);
 			isAvatarCropperOpen.value = true;
 			fileInput.value = ""; // 读取完用户上传的文件后，需要清空 input，以免用户在下次上传同一个文件时无法触发 change 事件。
 		}
@@ -153,7 +153,7 @@
 			userNickname: profile.nickname.normalize(),
 			signature: profile.bio.normalize(),
 			gender: profile.gender.normalize(),
-			// userBirthday: profile.birthday.toString(), // TODO: 请在后端实现生日信息存储后启用。
+			userBirthday: profile.birthday.toString(),
 			label: profile.tags?.map((tag, index) => ({ id: index, labelName: tag.normalize() })),
 		};
 		try {

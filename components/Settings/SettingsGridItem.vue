@@ -1,21 +1,28 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends PropertyKey | Readable">
 	const props = withDefaults(defineProps<{
+		/** 标题文本。 */
 		title?: string;
-		id: string;
+		/** 指定当前项目的标识符。 */
+		id: T;
+		/** 开启水波纹？默认为是。 */
 		ripple?: boolean;
+		/** 使用自定义选中状态覆盖默认值。 */
+		checked?: boolean;
 	}>(), {
 		title: "",
 		ripple: true,
+		checked: undefined,
 	});
 
 	const radio = refComp();
-	const selected = defineModel<string | string[]>({ default: [] });
-	const isRadio = computed(() => typeof selected.value === "string");
+	const selected = defineModel<T | T[]>({ default: [] });
+	const isRadio = computed(() => !Array.isArray(selected.value));
 	const active = computed(() => {
+		if (props.checked !== undefined) return props.checked;
 		if (isRadio.value)
 			return selected.value === props.id;
 		else
-			return selected.value.includes(props.id);
+			return (selected.value as T[]).includes(props.id);
 	});
 
 	/**
@@ -25,7 +32,7 @@
 		if (isRadio.value)
 			selected.value = props.id;
 		else
-			arrayToggle(selected.value as string[], props.id);
+			arrayToggle(selected.value as T[], props.id);
 	}
 
 	// 如果勾选情况与 prop 不同，就强制使其相同。
@@ -52,7 +59,7 @@
 			<div v-ripple="ripple" class="thumbnail">
 				<slot></slot>
 			</div>
-			<div class="caption">
+			<div v-if="props.title" class="caption">
 				<Icon name="check_circle_outline" />
 				<div class="title">{{ props.title }}</div>
 			</div>

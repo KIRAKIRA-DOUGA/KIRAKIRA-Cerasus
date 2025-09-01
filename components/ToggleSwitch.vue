@@ -2,7 +2,7 @@
 	const props = withDefaults(defineProps<{
 		/** 打开，单向绑定使用。 */
 		on?: boolean;
-		/** 禁用。 */
+		/** 禁用？ */
 		disabled?: boolean;
 		/** 图标，可选。 */
 		icon?: DeclaredIcons;

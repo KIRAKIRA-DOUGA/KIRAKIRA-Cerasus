@@ -90,4 +90,11 @@ declare global {
 	type DeepReadonly<T> = Readonly<{
 		[key in keyof T]: DeepReadonly<T[key]>;
 	}>;
+
+	/**
+	 * 可能是承诺也可能是它自己。
+	 *
+	 * @template T - 可能是承诺的类型。
+	 */
+	type MaybePromise<T> = T | Promise<T>;
 }

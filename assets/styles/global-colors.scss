@@ -1,4 +1,6 @@
 @use "sass:list" as -list; // 修复在 noscript 模块中导入时触发未定义 bug
+@use "sass:map" as -map;
+@use "sass:meta" as -meta;
 @use "theme/colors" as *;
 @use "theme/internal" as *;
 @use "theme/functions" as *;
@@ -41,7 +43,7 @@
 		}
 
 		@each $state, $color in $state-colors {
-			@if type-of($color) != list {
+			@if -meta.type-of($color) != list {
 				--#{$state}: #{c($color)};
 			} @else {
 				--#{$state}: #{c(-list.nth($color, 1), -list.nth($color, 2))};
@@ -63,4 +65,8 @@
 
 		// @include wave-link($key, $color, $is-light); // TODO: 波浪链接颜色样式暂时搁置，完成后请将 hyperlink.scss 中的注释取消注释。
 	}
+}
+
+:root.wallpaper {
+	--accent-50: var(--accent-wallpaper, #{-map.get($palette, pink)});
 }

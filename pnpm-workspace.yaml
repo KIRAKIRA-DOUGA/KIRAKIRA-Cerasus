@@ -4,6 +4,7 @@ onlyBuiltDependencies:
   - protobufjs
   - sharp
   - vue-demi
+
 patchedDependencies:
-  shaka-player: patches/shaka-player.patch
   nuxt: patches/nuxt.patch
+  shaka-player: patches/shaka-player.patch

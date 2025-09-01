@@ -12,4 +12,10 @@ export const useRecentKaomojiStore = defineStore("recent-kaomoji", () => {
 	}
 
 	return { max, kaomojis, add };
-}, { persist: true });
+},
+{
+	persist: {
+		storage: piniaPluginPersistedstate.localStorage(),
+	},
+},
+);

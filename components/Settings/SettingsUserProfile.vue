@@ -63,15 +63,14 @@
 
 	<TextBox v-model="profile.bio" :placeholder="t.user.bio" icon="edit" />
 
-	<!-- TODO: 请在后端实现生日信息存储后启用。 -->
-	<!-- <div class="gender">
+	<div class="gender">
 		<div class="gender-subtitle">
 			<Icon name="birthday" class="icon" />
 			<span class="text">{{ t.user.birthday }}</span>
 		</div>
 
 		<DatePicker v-model="profile.birthday" />
-	</div> -->
+	</div>
 
 	<div class="gender">
 		<div class="gender-subtitle">

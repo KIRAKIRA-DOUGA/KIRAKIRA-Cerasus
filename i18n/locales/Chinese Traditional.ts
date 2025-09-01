@@ -107,7 +107,6 @@ export default {
 		new_retype: "確認新密碼",
 		hint: "密碼提示",
 	},
-	account_linking: "關聯社群平臺",
 	block_and_hide: {
 		block: {
 			description: "不想與其交流的使用者，其將被禁止與你互動。",
@@ -324,8 +323,6 @@ export default {
 		forgot_title: "忘記密碼",
 		reset_title: "重設密碼",
 		register_email_sent_info: "我們已向您的郵箱中發送了驗證碼，請在此輸入驗證碼。\n如未收到，您可以重新發送。",
-		forgot_info: "請在此輸入您的郵箱，\n我們將會給您的郵箱發送一封郵件，請點擊郵件中的連結重設密碼。",
-		reset_successful_info: "驗證成功！\n請輸入並務必牢記您的新密碼。",
 	},
 	unselected: {
 		combobox: "請選擇一項",
@@ -422,7 +419,6 @@ export default {
 	click_to_refresh: "重新整理",
 	toast: {
 		no_cover: "請上傳封面！",
-		login_failed: "登入失敗！使用者名稱或密碼錯誤。",
 		password_mismatch: "兩次輸入密碼不一致！",
 		copied: "已複製～",
 		modification_failed: "修改失敗！",
@@ -465,4 +461,5 @@ export default {
 	},
 	role: {},
 	calendar: {},
+	file_picker: {},
 } as const satisfies LocaleIdentifiers;

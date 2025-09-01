@@ -36,6 +36,7 @@ export default {
 		yellow: "Syaro Vàng",
 		cyan: "Maya Xanh Dương",
 		red: "Megu Đỏ",
+		follow_bg: "Theo hình nền",
 	},
 	language: "Ngôn Ngữ",
 	background: {
@@ -118,7 +119,6 @@ export default {
 		new_retype: "Nhập lại mật khẩu mới",
 		hint: "Gợi ý mật khẩu",
 	},
-	account_linking: "Liên kết tài khoản",
 	block_and_hide: {
 		_: "Chặn và Ẩn",
 		block: {
@@ -231,7 +231,7 @@ export default {
 			_: "Mã nguồn",
 			frontend: "Kho lưu trữ GitHub Frontend và phản hồi về các vấn đề",
 			backend: "Kho lưu trữ GitHub Backend và phản hồi về các vấn đề",
-			markdown: "Kho lưu trữ mã nguồn Markdown của người dùng và phản hồi các vấn đề",
+			markdown: "Kho lưu trữ mã nguồn Markdown của người dùng và phản hồi về các vấn đề",
 		},
 		team: "Đội ngũ",
 		staff: {
@@ -373,11 +373,14 @@ export default {
 		login_to_register: "Tạo tài khoản",
 		register_to_login: "Đã có tài khoản?",
 		forgot_to_login: "Tôi nhớ mật khẩu rồi",
+		resent_verification_code: "Gửi lại mã xác nhận",
+		back_to_login: "Quay lại Đăng nhập",
 		forgot_title: "Quên mật khẩu",
 		reset_title: "Đặt lại mật khẩu",
 		register_email_sent_info: "Vui lòng nhập mã xác nhận chúng tôi vừa gửi vào email của bạn.\nHãy yêu cầu gửi lại trong trường hợp chưa nhận được mã.",
-		forgot_info: "Hãy nhập email.\nChúng tôi sẽ gửi một mã xác nhận vào email.",
-		reset_successful_info: "Xác nhận thành công!\nHãy nhập và ghi nhớ mật khẩu mới của bạn.",
+		forgot_info: "Vui lòng điền email của bạn.\n\nNếu tài khoản của bạn có thể đặt lại mật khẩu, chúng tôi sẽ gửi mã xác minh đến email của bạn.",
+		reset_password_info: "Vui lòng điền và nhớ mật khẩu mới của bạn.",
+		reset_password_totp_warning: "Tài khoản của bạn đã bật TOTP 2FA và tính năng tự động lấy lại mật khẩu hiện không được hỗ trợ.\nNếu bạn cần đặt lại mật khẩu, vui lòng liên hệ với quản trị viên.",
 		login_totp_info: "Xác minh hai bước hiện hành trên tài khoản. Vui lòng nhập mã xác thực để tiếp tục.\nTrường hợp không có thiết bị xác thực, vui lòng đăng nhập bằng mã dự phòng hoặc mã khôi phục.\nLưu ý: Sau khi đăng nhập thành công bằng mã khôi phục thì xác minh hai bước sẽ bị vô hiệu",
 		login_email_info: "Xác minh hai bước bằng email hiện hành trên tài khoản. Chúng tôi đã gửi mã xác thực đến Email của bạn.\nTrường hợp không thấy email, vui lòng kiểm tra mục spam hoặc thư rác.",
 	},
@@ -487,7 +490,8 @@ export default {
 		cooling_down: "Đang hạ hỏa... (・_・;) Hãy thử lại sau.",
 		unsupported_file: "Định dạng file không được hỗ trợ!",
 		no_cover: "Hãy thêm bìa cho video!",
-		login_failed: "Đăng nhập thất bại! Tên người dùng hoặc mật khẩu không đúng.",
+		login_failed: "Đăng nhập thất bại! Thông tin đăng nhập không hợp lệ.",
+		reset_password_failed: "Đặt lại mật khẩu thất bại! Thông tin đăng nhập không hợp lệ.",
 		logout_success: "Đăng xuất thành công~",
 		password_changed: "Đã đổi mật khẩu~",
 		password_mismatch: "Hai mật khẩu vừa nhập không khớp!",
@@ -632,7 +636,7 @@ export default {
 	},
 	enable: "Kích hoạt",
 	disable: "Vô hiệu",
-	sync_across_devices: "Đồng bộ với mọi thiết bị",
+	sync_color_settings_across_devices: "Đồng bộ hoá cài đặt màu trên mọi thiết bị",
 	role: {
 		administrator: "Quản trị viên",
 		developer: "Lập trình viên",
@@ -641,5 +645,9 @@ export default {
 	calendar: {
 		gregory: "Dương lịch",
 		chinese: "Âm lịch",
+	},
+	file_picker: {
+		choose: "Chọn tệp",
+		rechoose: "Chọn lại",
 	},
 } as const satisfies LocaleIdentifiers;

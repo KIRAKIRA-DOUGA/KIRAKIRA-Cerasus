@@ -97,6 +97,7 @@ export default {
 			"vw", "vh", "vmin", "vmax", // 请使用 dvw、dvh、dvmin、dvmax 代替之。
 			"cm", "mm", "Q", "in", "pc", "pt", "mozmm", // 你觉得这种单位可能合理吗？
 		],
+		"number-max-precision": null,
 		"scss/dollar-variable-empty-line-before": null,
 		"scss/double-slash-comment-empty-line-before": null,
 		/* "scss/double-slash-comment-empty-line-before": ["always", {

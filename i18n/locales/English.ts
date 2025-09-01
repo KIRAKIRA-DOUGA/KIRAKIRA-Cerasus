@@ -32,6 +32,7 @@ export default {
 		yellow: "Syaro Yellow",
 		cyan: "Maya Cyan",
 		red: "Megu Red",
+		follow_bg: "Follow Background",
 	},
 	language: "Language",
 	background: {
@@ -368,11 +369,14 @@ export default {
 		login_to_register: "Create an account",
 		register_to_login: "I have an account",
 		forgot_to_login: "I found my password",
+		resent_verification_code: "Resend Verification Code",
+		back_to_login: "Back to Login",
 		forgot_title: "Forgot",
 		reset_title: "Reset",
 		register_email_sent_info: "We have sent a verification code to your email, please enter the code here.\nIf you did not receive it, you can resend.",
-		forgot_info: "Please enter your email.\nWe will send a verification code to your email.",
-		reset_successful_info: "Verification successful!\nPlease enter and remember your new password.",
+		forgot_info: "Please enter your email.\n\nIf your account can reset the password, we will send a verification code to your email.",
+		reset_password_info: "Please enter and remember your new password.",
+		reset_password_totp_warning: "Your account has TOTP 2FA enabled, and password self-retrieval is currently not supported.\nIf you need to reset your password, please contact the administrator.",
 		login_totp_info: "2FA is enabled on your account. Please enter your verification code to continue.\nIf you don’t have access to your authentication device, use a backup code or recovery code to log in.\nNote: Logging in with a recovery code will disable 2FA on your account after a successful login.",
 		login_email_info: "Email 2FA is enabled on your account. A verification code has been sent to your email.\nIf you don’t see the email, please check your spam or junk folder.",
 	},
@@ -482,7 +486,8 @@ export default {
 		cooling_down: "Cooling down! (・_・;) Please try again later.",
 		unsupported_file: "Unsupported file format!",
 		no_cover: "Please upload the cover!",
-		login_failed: "Login failed! The username or password is incorrect.",
+		login_failed: "Login failed! Invalid credentials.",
+		reset_password_failed: "Reset password failed! Invalid credentials.",
 		logout_success: "Logged out successfully~",
 		password_changed: "Password changed~",
 		password_mismatch: "The two passwords entered do not match!",
@@ -627,7 +632,7 @@ export default {
 	},
 	enable: "Enable",
 	disable: "Disable",
-	sync_across_devices: "Sync Across Devices",
+	sync_color_settings_across_devices: "Sync Color Settings Across Devices",
 	role: {
 		administrator: "Administrator",
 		developer: "Developer",
@@ -636,5 +641,9 @@ export default {
 	calendar: {
 		gregory: "Gregorian",
 		chinese: "Chinese",
+	},
+	file_picker: {
+		choose: "Choose File",
+		rechoose: "Rechoose",
 	},
 } as const;

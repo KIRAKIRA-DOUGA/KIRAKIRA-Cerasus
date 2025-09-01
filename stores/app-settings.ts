@@ -7,17 +7,8 @@ export const useAppSettingsStore = defineStore("app-settings", {
 		akkarinGuestAvatar: false,
 		relativeDate: false,
 
-		// DELETE: 以下内容已搬迁至 /modules/theme/theme-cookie-binding.ts，不再使用 pinia 储存。
-		// themeType: "system",
-		// themeColor: "pink",
-		// customThemeColor: "",
-		// coloredSideBar: false,
-
 		backgroundImage: {
-			image: {
-				name: "",
-				data: "",
-			},
+			imageIndex: -1,
 			opacity: 0.2,
 			tint: 0.75,
 			blur: 0,
@@ -58,5 +49,7 @@ export const useAppSettingsStore = defineStore("app-settings", {
 			return route;
 		},
 	},
-	persist: true,
+	persist: {
+		storage: piniaPluginPersistedstate.localStorage(),
+	},
 });

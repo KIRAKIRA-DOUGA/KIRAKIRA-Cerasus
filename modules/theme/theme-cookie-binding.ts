@@ -6,7 +6,7 @@ export const DEFAULT_COOKIE_OPTION = { expires: new Date("9999/9/9"), sameSite: 
 // theme 常量或默认值，请保持和下方 cookieBinding 函数中的局部变量的值一致
 export const THEME_ENV = {
 	SYSTEM_THEME: "system",
-	DEFAULT_THEME_COLOR: "pink",
+	DEFAULT_THEME_COLOR: "wallpaper",
 	CUSTOM_THEME_COLOR: "custom",
 	DEFAULT_CUSTOM_THEME_COLOR: "f06e8e",
 	THEME_DARK: "dark",
@@ -27,15 +27,6 @@ export const COOKIE_KEY = {
 	// HACK: 2 在此处添加
 };
 
-let lastClickMouseEvent: MouseEvent | undefined;
-try {
-	if (typeof document !== "undefined")
-		document?.addEventListener("click", e => lastClickMouseEvent = e, true);
-} catch (error) {
-	console.error("ERROR", "Client-side code (adding global event listeners) should not be run on the server. (Error catched in modules/theme/theme-cookie-binding.ts)");
-	console.error("ERROR", error);
-}
-
 /**
  * 在 DOM 加载之前执行的脚本。
  */
@@ -44,7 +35,7 @@ export function cookieBinding() {
 
 	// theme 常量或默认值，请保持和上方 THEME_ENV 全局变量的值一致
 	const SYSTEM_THEME = "system";
-	const DEFAULT_THEME_COLOR = "pink";
+	const DEFAULT_THEME_COLOR = "wallpaper";
 	const THEME_COLOR_CUSTOM = "custom";
 	const DEFAULT_CUSTOM_THEME_COLOR = "f06e8e";
 	const THEME_DARK = "dark";
@@ -194,26 +185,10 @@ export function cookieBinding() {
 				rootNode.classList.toggle("light", !isDark);
 			};
 
-			if (typeof lastClickMouseEvent !== "undefined" && isPreviousDark !== isDark) {
+			if (typeof startCircleViewTransition !== "undefined" && isPreviousDark !== isDark) {
 				if (isPreviousDark) rootNode.classList.add("dark");
 				else rootNode.classList.add("light");
-				const { x, y } = lastClickMouseEvent;
-				const endRadius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
-				const clipPath = [
-					`circle(0px at ${x}px ${y}px)`,
-					`circle(${endRadius}px at ${x}px ${y}px)`,
-				];
-				const CHANGING_THEME_CLASS = "changing-theme";
-				rootNode.classList.add(CHANGING_THEME_CLASS);
-				startColorViewTransition(updateThemeSettings, [[
-					{
-						clipPath: actualThemeType === "light" ? clipPath : clipPath.toReversed(),
-					}, {
-						pseudoElement: actualThemeType === "light" ? "::view-transition-new(root)" : "::view-transition-old(root)",
-					},
-				]], { cursor: "progress" }).then(() => {
-					rootNode.classList.remove(CHANGING_THEME_CLASS);
-				});
+				startCircleViewTransition(actualThemeType === "light", updateThemeSettings);
 			} else updateThemeSettings();
 		}
 		// HACK: 14 在此处添加

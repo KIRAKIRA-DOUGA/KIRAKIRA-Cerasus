@@ -20,7 +20,8 @@ export function urlToBlob_legacy(url: string, callback: (blob: Blob) => void) {
  * @param file - 文件。
  * @returns Blob: 链接。
  */
-export function fileToBlob(file: File) {
+export async function fileToBlob(file: File | Blob) {
+	if (file instanceof FileSystemFileHandle) file = await file.getFile();
 	const blob = URL.createObjectURL(file);
 	return blob;
 }
@@ -93,4 +94,41 @@ export async function downloadTxtFileFromString(content: string, fileName: strin
 	const blob = new Blob([content], { type: "text/plain" });
 	if (!fileName.endsWith(".txt")) fileName += ".txt";
 	await downloadFile(blob, fileName);
+}
+
+/**
+ * 打开文件选择器对话框并返回选中文件的 `File` 对象。
+ *
+ * @returns 代表所选文件的单个文件对象。如果未选择文件，返回 `null`。
+ */
+export async function openFile(options?: {
+	/** 指定要接受的文件类型的字符串，例如：.jpg,.png,image/*。 */
+	accept?: string;
+	/** 指定是否允许选择多个文件？ */
+	multiple?: false;
+}): Promise<File | null>;
+/**
+ * 打开文件选择器对话框并返回选中文件的 `File[]` 对象。
+ *
+ * @returns 代表所选文件的文件对象数组。
+ */
+export async function openFile(options?: {
+	/** 指定要接受的文件类型的字符串，例如：.jpg,.png,image/*。 */
+	accept?: string;
+	/** 指定是否允许选择多个文件？ */
+	multiple: true;
+}): Promise<File[]>;
+export async function openFile({ accept = "", multiple = false } = {}): Promise<File | File[] | null> {
+	// `showOpenFilePicker` 更好，但是它不支持所有浏览器以及 **TypeScript**。
+	const input = document.createElement("input");
+	input.type = "file";
+	input.accept = accept;
+	input.multiple = multiple;
+	await new Promise<void>(resolve => {
+		input.onchange = () => resolve();
+		input.click();
+	});
+	const files = await Array.fromAsync(input.files ?? [], async file => file instanceof FileSystemFileHandle ? await file.getFile() : file);
+	if (multiple) return files;
+	else return files[0] ?? null;
 }

@@ -6,6 +6,7 @@
 	import { getPosition } from "plugins/vue/tooltip";
 
 	const props = defineProps<{
+		/** 是否避免在鼠标移开菜单时降低不透明度？ */
 		noFade?: boolean;
 	}>();
 

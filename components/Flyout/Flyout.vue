@@ -2,7 +2,7 @@
 	/**
 	 * 获取位置和矩形。
 	 * @param target - 目标元素。
-	 * @return 位置和矩形。
+	 * @returns 位置和矩形。
 	 */
 	export function getLocation(target: FlyoutModelNS.Target): [location: TwoD | null, targetRect: DOMRect | undefined] {
 		if (target instanceof Array) return [target, undefined];

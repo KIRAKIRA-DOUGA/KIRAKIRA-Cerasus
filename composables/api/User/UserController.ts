@@ -15,12 +15,12 @@ import type {
 	DeleteTotpAuthenticatorByTotpVerificationCodeRequestDto,
 	DeleteTotpAuthenticatorByTotpVerificationCodeResponseDto,
 	DeleteUserEmailAuthenticatorRequestDto,
-	DeleteUserEmailAuthenticatorResponseDto, GetBlockedUserResponseDto, GetMyInvitationCodeResponseDto,
+	DeleteUserEmailAuthenticatorResponseDto, ForgotPasswordRequestDto, ForgotPasswordResponseDto, GetBlockedUserResponseDto, GetMyInvitationCodeResponseDto,
 	GetSelfUserInfoRequestDto, GetSelfUserInfoResponseDto, GetUserAvatarUploadSignedUrlResponseDto,
 	GetUserInfoByUidRequestDto, GetUserInfoByUidResponseDto, GetUserSettingsRequestDto,
 	GetUserSettingsResponseDto, RequestSendChangeEmailVerificationCodeRequestDto,
 	RequestSendChangeEmailVerificationCodeResponseDto, RequestSendChangePasswordVerificationCodeRequestDto,
-	RequestSendChangePasswordVerificationCodeResponseDto, RequestSendVerificationCodeRequestDto,
+	RequestSendChangePasswordVerificationCodeResponseDto, RequestSendForgotPasswordVerificationCodeRequestDto, RequestSendForgotPasswordVerificationCodeResponseDto, RequestSendVerificationCodeRequestDto,
 	RequestSendVerificationCodeResponseDto,
 	SendDeleteUserEmailAuthenticatorVerificationCodeRequestDto,
 	SendDeleteUserEmailAuthenticatorVerificationCodeResponseDto,
@@ -316,6 +316,26 @@ export const requestSendChangePasswordVerificationCode = async (requestSendChang
 export const updateUserPassword = async (updateUserPasswordRequest: UpdateUserPasswordRequestDto): Promise<UpdateUserPasswordResponseDto> => {
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	return await POST(`${USER_API_URI}/update/password`, updateUserPasswordRequest, { credentials: "include" }) as UpdateUserPasswordResponseDto;
+};
+
+/**
+ * 请求发送忘记密码的邮箱验证码
+ * @param requestSendForgotPasswordVerificationCodeRequest - 请求发送忘记密码的邮箱验证码的请求载荷
+ * @returns 请求发送忘记密码的邮箱验证码的请求响应
+ */
+export const requestSendForgotPasswordVerificationCode = async (requestSendForgotPasswordVerificationCodeRequest: RequestSendForgotPasswordVerificationCodeRequestDto): Promise<RequestSendForgotPasswordVerificationCodeResponseDto> => {
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	return await POST(`${USER_API_URI}/requestSendForgotPasswordVerificationCode`, requestSendForgotPasswordVerificationCodeRequest, { credentials: "include" }) as RequestSendForgotPasswordVerificationCodeResponseDto;
+};
+
+/**
+ * 找回密码（更新密码）
+ * @param forgotPasswordRequest - 忘记密码（更新密码）的请求载荷
+ * @returns 忘记密码（更新密码）的请求响应
+ */
+export const forgotAndResetPassword = async (forgotPasswordRequest: ForgotPasswordRequestDto): Promise<ForgotPasswordResponseDto> => {
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	return await POST(`${USER_API_URI}/forgot/password`, forgotPasswordRequest, { credentials: "include" }) as ForgotPasswordResponseDto;
 };
 
 /**

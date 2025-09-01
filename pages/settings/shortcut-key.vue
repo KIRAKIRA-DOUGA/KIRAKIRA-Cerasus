@@ -10,6 +10,9 @@
 	const Kbd = ((_, { slots }) => <kbd onClick={playSfx}>{slots.default?.()}</kbd>) as VueJsx;
 
 	const Ctrl = computed(() => getPlatform() === "Apple" ? "⌘" : getPlatform() === "Linux" ? "Control" : "Ctrl");
+	const Esc = computed(() => getPlatform() === "Apple" ? "esc" : "Esc");
+	const Shift = computed(() => getPlatform() === "Apple" ? "⇧" : "Shift");
+	const Enter = computed(() => getPlatform() === "Apple" ? "⏎" : "Enter");
 </script>
 
 <template>
@@ -21,10 +24,10 @@
 			<h3>{{ t.shortcut_key.player_page }}</h3>
 
 			<p>{{ t.shortcut_key.play_pause }}</p>
-			<p><Kbd>Space</Kbd></p>
+			<p><Kbd>␣</Kbd></p>
 
 			<p>{{ t.shortcut_key.exit_fullscreen }}</p>
-			<p><Kbd>Esc</Kbd></p>
+			<p><Kbd>{{ Esc }}</Kbd></p>
 
 			<p>{{ t.shortcut_key.fullscreen }}</p>
 			<p><Kbd>F</Kbd> <Kbd>F11</Kbd></p>
@@ -65,13 +68,13 @@
 			<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>U</Kbd></p>
 
 			<p>{{ t.format.strikethrough }}</p>
-			<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>Shift</Kbd> + <Kbd>X</Kbd></p>
+			<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>{{ Shift }}</Kbd> + <Kbd>X</Kbd></p>
 
 			<p>{{ t.shortcut_key.quick_insert_kaomoji }}</p>
 			<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>M</Kbd></p>
 
 			<p>{{ t.send }}</p>
-			<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>Enter</Kbd></p>
+			<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>{{ Enter }}</Kbd></p>
 			<!-- #endregion -->
 		</div>
 	</div>

@@ -14,6 +14,14 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; // 支持 HTTPS。
 const dev = process.env.NODE_ENV === "development";
 
 export default defineNuxtConfig({
+	// HACK: 以下为还原 Nuxt 3 目录结构的配置，请尽量在之后改为 Nuxt 4 的目录结构。
+	// This reverts the new srcDir default from `app` back to your root directory
+	srcDir: ".",
+	// This specifies the directory prefix for `router.options.ts` and `spa-loading-template.html`
+	dir: {
+		app: "app",
+	},
+
 	devtools: {
 		enabled: true,
 	},
@@ -26,13 +34,11 @@ export default defineNuxtConfig({
 	],
 
 	modules: [
-		// "@nuxt/devtools",
 		"@nuxtjs/i18n",
 		"@nuxt/image",
-		dev && "nuxt-icons",
-		!dev && "@nuxtjs/svg-sprite",
+		"@nuxt/icon",
 		"@vueuse/nuxt",
-		"nuxt-lodash",
+		"@chettapong/nuxt-lodash",
 		["@pinia/nuxt", {
 			autoImports: ["defineStore", "storeToRefs"],
 		}],
@@ -52,6 +58,7 @@ export default defineNuxtConfig({
 		"layouts",
 		"pages",
 		"plugins",
+		"public",
 		"public/static",
 		"assets/lotties",
 		"modules",
@@ -86,20 +93,6 @@ export default defineNuxtConfig({
 			pomsky.vite({
 				fileExtensions: [".vue"],
 			}),
-			{
-				// 干掉 nuxt-icons 引起的警告。https://github.com/gitFoxCode/nuxt-icons/issues/56
-				name: "vite-plugin-glob-transform",
-				transform(code: string, id: string) {
-					if (id.includes("nuxt-icons")) {
-						const transformed = code.replaceAll(/as:\s*['"]raw['"]/g, 'query: "?raw", import: "default"');
-						return {
-							code: transformed,
-							map: null,
-						};
-					}
-					return null;
-				},
-			},
 		],
 		optimizeDeps: {
 			// 防止「optimized dependencies changed. reloading」
@@ -113,10 +106,17 @@ export default defineNuxtConfig({
 				"danmaku/dist/esm/danmaku.dom.js",
 				"qrcode.vue",
 				"shaka-player",
+				"@tiptap/vue-3",
 				"@tiptap/starter-kit",
 				"@tiptap/extension-underline",
-				"@tiptap/core",
 				"safe-regex",
+				"path-browserify-es",
+				"variable-name-conversion",
+				"temporal-polyfill",
+				"@vueuse/gesture",
+				"mitt",
+				"tus-js-client",
+				"node-vibrant/worker",
 			],
 			needsInterop: [
 				"mediainfo.js",
@@ -164,9 +164,6 @@ export default defineNuxtConfig({
 	},
 
 	nitro: {
-		compressPublicAssets: {
-			brotli: true,
-		},
 		esbuild: {
 			options: {
 				target: "esnext",
@@ -190,8 +187,8 @@ export default defineNuxtConfig({
 					tag.includes("-") ||
 					[
 						"marquee",
-						dev && "SvgIcon", // 将非开发/生产环境的对应组件故意视为原生元素。
-						!dev && "NuxtIcon",
+						// dev && "SvgIcon", // 将非开发/生产环境的对应组件故意视为原生元素。
+						// !dev && "NuxtIcon",
 					].includes(tag)
 				);
 			},
@@ -257,9 +254,26 @@ export default defineNuxtConfig({
 		storage: "localStorage",
 	},
 
-	svgSprite: {
-		input: "~/assets/icons",
-		iconsPath: false,
+	icon: {
+		mode: "svg",
+		componentName: "NuxtIcon",
+		customCollections: [
+			{
+				prefix: "kirakira",
+				dir: "assets/icons",
+				normalizeIconName: false,
+			},
+			{
+				prefix: "mono-logo",
+				dir: "assets/icons/mono-logo",
+				normalizeIconName: false,
+			},
+			{
+				prefix: "colored-logo",
+				dir: "assets/icons/colored-logo",
+				normalizeIconName: false,
+			},
+		],
 	},
 
 	imports: {

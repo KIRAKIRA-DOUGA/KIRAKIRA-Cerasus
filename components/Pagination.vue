@@ -12,7 +12,7 @@
 		displayPageCount?: number;
 		/** 允许用户使用键盘上左右箭头键翻页。 */
 		enableArrowKeyMove?: boolean;
-		/** 是否禁用？ */
+		/** 禁用？ */
 		disabled?: boolean;
 	}>(), {
 		current: 1,

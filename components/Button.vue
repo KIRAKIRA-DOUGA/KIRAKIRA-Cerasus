@@ -74,6 +74,7 @@
 
 		&[disabled] {
 			pointer-events: none;
+			interactivity: inert;
 		}
 
 		* {

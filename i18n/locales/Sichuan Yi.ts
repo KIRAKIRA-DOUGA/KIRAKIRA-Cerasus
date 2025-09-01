@@ -36,6 +36,7 @@ export default {
 		yellow: "crwdns2852:0crwdne2852:0",
 		cyan: "crwdns2234:0crwdne2234:0",
 		red: "crwdns2854:0crwdne2854:0",
+		follow_bg: "crwdns3666:0crwdne3666:0",
 	},
 	language: "crwdns3380:0crwdne3380:0",
 	background: {
@@ -118,7 +119,6 @@ export default {
 		new_retype: "crwdns2356:0crwdne2356:0",
 		hint: "crwdns2358:0crwdne2358:0",
 	},
-	account_linking: "crwdns2360:0crwdne2360:0",
 	block_and_hide: {
 		_: "crwdns3386:0crwdne3386:0",
 		block: {
@@ -373,11 +373,14 @@ export default {
 		login_to_register: "crwdns3222:0crwdne3222:0",
 		register_to_login: "crwdns2664:0crwdne2664:0",
 		forgot_to_login: "crwdns2666:0crwdne2666:0",
+		resent_verification_code: "crwdns3676:0crwdne3676:0",
+		back_to_login: "crwdns3684:0crwdne3684:0",
 		forgot_title: "crwdns2668:0crwdne2668:0",
 		reset_title: "crwdns2670:0crwdne2670:0",
 		register_email_sent_info: "crwdns2672:0crwdne2672:0",
-		forgot_info: "crwdns2674:0crwdne2674:0",
-		reset_successful_info: "crwdns2676:0crwdne2676:0",
+		forgot_info: "crwdns3688:0crwdne3688:0",
+		reset_password_info: "crwdns3680:0crwdne3680:0",
+		reset_password_totp_warning: "crwdns3690:0crwdne3690:0",
 		login_totp_info: "crwdns3410:0crwdne3410:0",
 		login_email_info: "crwdns3412:0crwdne3412:0",
 	},
@@ -487,7 +490,8 @@ export default {
 		cooling_down: "crwdns3376:0crwdne3376:0",
 		unsupported_file: "crwdns3378:0crwdne3378:0",
 		no_cover: "crwdns2828:0crwdne2828:0",
-		login_failed: "crwdns2830:0crwdne2830:0",
+		login_failed: "crwdns3674:0crwdne3674:0",
+		reset_password_failed: "crwdns3698:0crwdne3698:0",
 		logout_success: "crwdns3242:0crwdne3242:0",
 		password_changed: "crwdns3418:0crwdne3418:0",
 		password_mismatch: "crwdns2832:0crwdne2832:0",
@@ -632,7 +636,7 @@ export default {
 	},
 	enable: "crwdns3504:0crwdne3504:0",
 	disable: "crwdns3506:0crwdne3506:0",
-	sync_across_devices: "crwdns3554:0crwdne3554:0",
+	sync_color_settings_across_devices: "crwdns3700:0crwdne3700:0",
 	role: {
 		administrator: "crwdns3646:0crwdne3646:0",
 		developer: "crwdns3648:0crwdne3648:0",
@@ -641,5 +645,9 @@ export default {
 	calendar: {
 		gregory: "crwdns3662:0crwdne3662:0",
 		chinese: "crwdns3664:0crwdne3664:0",
+	},
+	file_picker: {
+		choose: "crwdns3668:0crwdne3668:0",
+		rechoose: "crwdns3670:0crwdne3670:0",
 	},
 } as const satisfies LocaleIdentifiers;

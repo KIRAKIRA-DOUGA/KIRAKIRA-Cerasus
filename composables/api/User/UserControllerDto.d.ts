@@ -533,18 +533,6 @@ export type GetMyInvitationCodeResponseDto = {
 };
 
 /**
- * 管理员根据 UID 查询用户邀请码的请求响应
- */
-export type AdminGetUserInvitationCodeResponseDto = {
-	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
-	success: boolean;
-	/** 附加的文本消息 */
-	message?: string;
-	/** 注册时使用的邀请码 */
-	invitationCodeResult: InvitationCode[];
-};
-
-/**
  * 管理员根据邀请码查询用户的请求响应
  */
 export type AdminGetUserByInvitationCodeResponseDto = {
@@ -614,7 +602,7 @@ export type RequestSendChangeEmailVerificationCodeRequestDto = {
 };
 
 /**
- * 请求发送用户更改邮箱验证码的请求载荷
+ * 请求发送用户更改邮箱验证码的请求响应
  */
 export type RequestSendChangeEmailVerificationCodeResponseDto = {
 	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
@@ -634,7 +622,7 @@ export type RequestSendChangePasswordVerificationCodeRequestDto = {
 };
 
 /**
- * 请求发送用户更改密码的验证码的请求载荷
+ * 请求发送用户更改密码的验证码的请求响应
  */
 export type RequestSendChangePasswordVerificationCodeResponseDto = {
 	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
@@ -661,6 +649,50 @@ export type UpdateUserPasswordRequestDto = {
  * 用户更改密码返回的参数
  */
 export type UpdateUserPasswordResponseDto = {
+	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
+	success: boolean;
+	/** 附加的文本消息 */
+	message?: string;
+};
+
+/**
+ * 请求发送忘记密码的邮箱验证码的请求载荷
+ */
+export type RequestSendForgotPasswordVerificationCodeRequestDto = {
+	/** 用户客户端使用的语言 */
+	clientLanguage: string;
+	/** 忘记密码的账户的邮箱 */
+	email: string;
+};
+
+/**
+ * 请求发送忘记密码的邮箱验证码的请求响应
+ */
+export type RequestSendForgotPasswordVerificationCodeResponseDto = {
+	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
+	success: boolean;
+	/** 是否达到超时时间 */
+	isCoolingDown: boolean;
+	/** 附加的文本消息 */
+	message?: string;
+};
+
+/**
+ * 找回密码（更新密码）的请求载荷
+ */
+export type ForgotPasswordRequestDto = {
+	/** 忘记密码的账户的邮箱 */
+	email: string;
+	/** 用户的新邮箱 */
+	newPasswordHash: string;
+	/** 验证码 */
+	verificationCode: string;
+};
+
+/**
+ * 找回密码（更新密码）的请求响应
+ */
+export type ForgotPasswordResponseDto = {
 	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
 	success: boolean;
 	/** 附加的文本消息 */

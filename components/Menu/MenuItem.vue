@@ -2,10 +2,13 @@
 	import Menu from "./Menu.vue";
 
 	const props = withDefaults(defineProps<{
+		/** 图标。 */
 		icon?: DeclaredIcons;
-		noFade?: boolean;
+		/** 禁用？ */
+		disabled?: boolean;
 	}>(), {
 		icon: undefined,
+		disabled: false,
 	});
 
 	const emits = defineEmits<{
@@ -40,8 +43,10 @@
 		v-ripple
 		v-i="vIndex"
 		class="menu-item"
-		:class="{ 'no-fade': noFade }"
 		role="menuitem"
+		:disabled="disabled ? '' : undefined"
+		:aria-disabled="disabled"
+		:tabindex="disabled ? -1 : 0"
 		@click="onClick"
 	>
 		<Icon v-if="icon" :name="icon" />
@@ -85,6 +90,12 @@
 
 		&:not(:any-hover) {
 			transition-duration: 1s;
+		}
+
+		&[disabled] {
+			color: c(gray-40);
+			pointer-events: none;
+			interactivity: inert;
 		}
 	}
 </style>

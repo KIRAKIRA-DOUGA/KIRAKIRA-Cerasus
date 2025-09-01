@@ -1,7 +1,20 @@
 <script setup lang="ts">
 	const selfUserInfoStore = useSelfUserInfoStore();
-	const userBirthdayDisplay = computed(() => selfUserInfoStore.userInfo.birthday ? formatDateWithLocale(new Date(selfUserInfoStore.userInfo.birthday)) : "Unknown"); // TODO: 生日功能
-	const registerDateDisplay = computed(() => selfUserInfoStore.userInfo.userCreateDateTime ? formatDateWithLocale(new Date(selfUserInfoStore.userInfo.userCreateDateTime)) : "Unknown");
+	// const userBirthdayDisplay = computed(() => selfUserInfoStore.userInfo.userBirthday ? formatDateWithLocale(new Date(selfUserInfoStore.userInfo.userBirthday)) : "Unknown"); // TODO: 生日功能适配temporal
+
+	/**
+	 * 复制内容到剪贴板。
+	 * @param content - 要复制的内容。
+	 */
+	async function copy(content: Readable) {
+		if (!content) return;
+		try {
+			await navigator.clipboard.writeText(content.toString());
+			useToast(t.toast.copied, "success");
+		} catch (error) {
+			useToast(t.toast.copy_failed, "error");
+		}
+	}
 </script>
 
 <template>
@@ -23,7 +36,8 @@
 			</UserContent>
 		</div>
 
-		<div class="user-counts chip">
+		<!-- TODO: 请在至少一个计数做完之后启用 -->
+		<!-- <div class="user-counts chip">
 			<div>
 				<span class="value">233</span>
 				<p>{{ t.following }}</p>
@@ -40,13 +54,36 @@
 				<span class="value">233</span>
 				<p>{{ t.rating }}</p>
 			</div>
-		</div>
+		</div> -->
 
 		<div class="user-info chip">
-			<SettingsChipItem icon="birthday" :details="userBirthdayDisplay">{{ t.user.birthday }}</SettingsChipItem>
-			<SettingsChipItem icon="history" :details="registerDateDisplay">{{ t.user.join_time }}</SettingsChipItem>
-			<SettingsChipItem icon="fingerprint" :details="selfUserInfoStore.isLogined ? selfUserInfoStore.userInfo.uid : undefined">UID</SettingsChipItem>
-			<SettingsChipItem icon="gift" :details="selfUserInfoStore.isLogined ? selfUserInfoStore.userInfo.invitationCode : undefined">使用邀请码</SettingsChipItem>
+			<!-- TODO: 生日功能适配temporal -->
+			<!-- <SettingsChipItem icon="birthday" :details="userBirthdayDisplay">{{ t.user.birthday }}</SettingsChipItem> -->
+			<SettingsChipItem
+				v-if="selfUserInfoStore.userInfo.userCreateDateTime"
+				icon="history"
+				:details="formatDateWithLocale(new Date(selfUserInfoStore.userInfo.userCreateDateTime))"
+			>
+				{{ t.user.join_time }}
+			</SettingsChipItem>
+			<SettingsChipItem
+				v-if="selfUserInfoStore.userInfo.uid"
+				icon="fingerprint"
+				:details="selfUserInfoStore.isLogined ? selfUserInfoStore.userInfo.uid : undefined"
+				trailingIcon="copy"
+				:onTrailingIconClick="() => copy(selfUserInfoStore.userInfo.uid!)"
+			>
+				UID
+			</SettingsChipItem>
+			<SettingsChipItem
+				v-if="selfUserInfoStore.userInfo.invitationCode"
+				icon="gift"
+				:details="selfUserInfoStore.userInfo.invitationCode"
+				trailingIcon="copy"
+				:onTrailingIconClick="() => copy(selfUserInfoStore.userInfo.invitationCode!)"
+			>
+				使用邀请码
+			</SettingsChipItem>
 		</div>
 	</div>
 </template>

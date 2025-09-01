@@ -3,7 +3,7 @@
 	// BUG: 上面那个是 typescript-eslint 的 bug，如果去掉，则会触发 typescript 的报错。简而言之就是目前 typescript-eslint 和 typescript 在互相打架。
 
 	const props = withDefaults(defineProps<{
-		/** 禁用。 */
+		/** 禁用？ */
 		disabled?: boolean;
 		/** 值。 */
 		value?: T;
@@ -46,7 +46,7 @@
 		const nextState: CheckState = nextChecked ? "checked" : "unchecked";
 		const modelValue = model.value ?? [];
 		if (props.value)
-			if (nextChecked) arrayPushDistinct(modelValue, props.value);
+			if (nextChecked) arrayPushUniquely(modelValue, props.value);
 			else arrayRemoveAllItem(modelValue, props.value);
 		model.value = modelValue;
 		single.value = nextChecked;

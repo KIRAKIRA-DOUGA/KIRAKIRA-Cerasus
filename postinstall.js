@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable valid-jsdoc */
 import { exec as originalExec } from "child_process";
 
 const commands = [

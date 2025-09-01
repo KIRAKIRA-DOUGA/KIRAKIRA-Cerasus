@@ -79,12 +79,12 @@
 	 * 在上传缩略图时调用。
 	 * @param e - 普通事件。
 	 */
-	function onChangeThumbnail(e: Event) {
+	async function onChangeThumbnail(e: Event) {
 		const input = e.target as HTMLInputElement;
 		const thumbnails = getValidFiles(input.files);
 
 		if (thumbnails.length > 0) {
-			thumbnailBlob.value = fileToBlob(thumbnails[0]);
+			thumbnailBlob.value = await fileToBlob(thumbnails[0]);
 			isCoverCropperOpen.value = true;
 			input.value = ""; // 读取完用户上传的文件后，需要清空 input，以免用户在下次上传同一个文件时无法触发 change 事件。
 		} else if (input.files?.length)
@@ -304,8 +304,6 @@
 				<ImageCropper
 					ref="cropper"
 					:image="thumbnailBlob"
-					:autoCropWidth="480"
-					:autoCropHeight="270"
 					:fixed="true"
 					:fixedNumber="[16, 9]"
 					:full="true"
