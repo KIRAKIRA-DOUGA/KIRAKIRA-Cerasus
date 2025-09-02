@@ -19,7 +19,6 @@
 	"scss.validate": false,
 	"vue.server.includeLanguages": [
 		"vue",
-		"html",
 		"css",
 		"javascript",
 		"typescript",
