@@ -57,25 +57,17 @@
 			--width: 400px; // v-bind 基于运行时，因此没办法赋值给 scss 变量。
 			/// 封面高度。
 			--height: 400px;
-			/// 如是则使用完全形式的 LOGO。
-			--full-logo: false;
 		}
 	}
 
 	.logo-text {
-		--form: half;
-	}
-
-	@container style(--full-logo: true) {
-		.logo-text {
-			--form: full;
-		}
+		--form: full;
 	}
 
 	.titles {
 		position: relative;
 		width: 100%;
-		height: 70px;
+		height: 7rem;
 		overflow: clip;
 
 		:comp.animation & {
@@ -85,12 +77,11 @@
 
 	.title {
 		@include absolute-center;
-		$move-distance: 4rem;
-		font-size: 1.5rem;
+		$move-distance: 5rem;
+		font-size: 48px;
 		font-weight: 600;
 		font-feature-settings: normal;
 		text-transform: uppercase;
-		scale: 2.5;
 		transition: all $ease-out-smooth 800ms;
 
 		.titles:not(.welcome) > &.welcome {

@@ -22,7 +22,7 @@
 		hideTitleCloseIcon?: boolean;
 	}>(), {
 		title: "",
-		icon: "colored-logo/sakuranomiya",
+		icon: "colored-logo/kirakira",
 		hideTitleCloseIcon: false,
 	});
 

@@ -83,6 +83,7 @@
 				.logo-text {
 					--form: full;
 					margin-top: 8px;
+					font-size: 24px;
 				}
 
 				.fix-bug {

@@ -264,7 +264,6 @@
 			</div>
 			<hr />
 			<RadioButton v-model="logoTextForm" value="hidden">LOGO隐藏</RadioButton>
-			<RadioButton v-model="logoTextForm" value="half">LOGO半显示</RadioButton>
 			<RadioButton v-model="logoTextForm" value="full">LOGO全显示</RadioButton>
 			<LogoText :style="{ '--form': logoTextForm }" />
 			<hr />

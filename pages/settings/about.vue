@@ -151,7 +151,7 @@
 	.product {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
+		gap: 4px;
 		align-items: center;
 
 		> * {
@@ -171,11 +171,7 @@
 
 	.logo-text {
 		--form: full;
-		zoom: 2;
-
-		@include mobile {
-			--form: half;
-		}
+		font-size: 48px;
 	}
 
 	.slogan {

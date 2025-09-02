@@ -251,11 +251,16 @@
 				font-weight: 600;
 
 				@media (height >= 678px) {
-					--form: half;
+					--form: visible;
 				}
 
-				@media (height >= 765px) {
-					--form: full;
+				:deep(.logo-shape) {
+					margin-top: 0;
+					rotate: 100grad;
+
+					@include mobile {
+						display: none;
+					}
 				}
 
 				&.v-enter-from,
@@ -346,10 +351,6 @@
 					display: flex;
 					align-items: center;
 					height: 48px;
-				}
-
-				.logo-text {
-					--form: half !important;
 				}
 			}
 
