@@ -211,7 +211,6 @@
 		.logo-cover {
 			--width: 100%;
 			--height: 280px;
-			--full-logo: true;
 			position: absolute;
 			top: 0;
 			pointer-events: none;

@@ -85,11 +85,6 @@
 		> .logo-cover {
 			--width: 100dvw;
 			--height: 280px;
-			--full-logo: true;
-
-			@media (width < 625px) {
-				--full-logo: false;
-			}
 		}
 
 		> .page-user {

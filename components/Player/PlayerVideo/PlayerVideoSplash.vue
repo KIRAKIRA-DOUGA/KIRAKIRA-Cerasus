@@ -40,9 +40,10 @@
 	.logo-text {
 		--form: full;
 		position: absolute;
-		top: 16px;
-		right: 16px;
+		top: 12px;
+		right: 10px;
 		z-index: 2;
+		font-size: 22px;
 
 		@include mobile {
 			display: none;

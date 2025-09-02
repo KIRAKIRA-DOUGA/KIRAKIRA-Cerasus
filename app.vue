@@ -52,8 +52,9 @@
 			{ name: "twitter:url", content: homepage },
 		],
 		link: [
-			{ rel: "icon", type: "image/vnd.microsoft.icon", href: "/favicon.ico" },
-			{ rel: "apple-touch-icon", href: "/public/static/images/touch/48.png" },
+			{ rel: "icon", href: "/favicon.ico", sizes: "48x48" },
+			{ rel: "icon", href: "/favicon.svg", sizes: "any", type: "image/svg+xml" },
+			{ rel: "apple-touch-icon", href: "/static/images/icons/apple-touch-icon.png" },
 			{ rel: "manifest", href: "/manifest.json" },
 			{ rel: "alternate", href: homepage, hreflang: "x-default" },
 			{ rel: "alternate", href: homepage, hreflang: "zh-Hans" },
