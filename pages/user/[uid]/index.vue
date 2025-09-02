@@ -220,7 +220,7 @@
 		}
 
 		.join-time .icon {
-			color: c(orange);
+			color: c(yellow);
 		}
 
 		.uid .icon {
