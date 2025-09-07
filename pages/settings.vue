@@ -80,7 +80,7 @@
 			{ id: "language", icon: "translate", name: t("language") },
 			{ id: "experimental", icon: "science", name: t("experimental") },
 			{ id: "shortcut-key", icon: "keyboard", name: t("shortcut_key.title") },
-			{ id: "about", icon: "info", name: $t("about.title") },
+			{ id: "about", icon: "info", name: t("about.title") },
 			{ id: "acknowledgement", icon: "campaign", name: t("acknowledgement") },
 		],
 		admin: [
