@@ -117,6 +117,7 @@ export default defineNuxtConfig({
 				"mitt",
 				"tus-js-client",
 				"node-vibrant/worker",
+				"@vercel/analytics/nuxt",
 			],
 			needsInterop: [
 				"mediainfo.js",
@@ -219,7 +220,7 @@ export default defineNuxtConfig({
 			optimizeTranslationDirective: false,
 		},
 		experimental: {
-			typedOptionsAndMessages: "default",
+			typedOptionsAndMessages: "all",
 		},
 	},
 
