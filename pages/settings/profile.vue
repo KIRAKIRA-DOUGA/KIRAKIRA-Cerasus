@@ -1,4 +1,5 @@
 <script setup lang="ts">
+	const { t } = useI18n();
 	const banner = "static/images/banner-20220717.png";
 
 	// const avatar = "/static/images/avatars/aira.webp";
@@ -51,8 +52,8 @@
 
 		if (image) {
 			if (!/\.(a?png|jpe?g|jfif|pjp(eg)?|gif|svg|webp)$/i.test(fileInput.value)) {
-				useToast(t.toast.unsupported_image_format, "error");
-				console.error("ERROR", t.toast.unsupported_image_format);
+				useToast(t("toast.unsupported_image_format"), "error");
+				console.error("ERROR", t("toast.unsupported_image_format"));
 				return;
 			}
 
@@ -74,9 +75,9 @@
 				newAvatar.value = imageBlobUrl;
 				newAvatarImageBlob.value = blobImageData;
 			} else
-				useToast(t.toast.something_went_wrong, "error", 5000);
+				useToast(t("toast.something_went_wrong"), "error", 5000);
 		} catch (error) {
-			useToast(t.toast.something_went_wrong, "error", 5000);
+			useToast(t("toast.something_went_wrong"), "error", 5000);
 			console.error("ERROR", "Failed to update avatar.", error);
 		}
 		isUploadingUserAvatar.value = false;
@@ -101,11 +102,11 @@
 					}
 				}
 			} else {
-				useToast(t.toast.something_went_wrong, "error");
+				useToast(t("toast.something_went_wrong"), "error");
 				console.error("ERROR", "Failed to get cropped image data.");
 			}
 		} catch (error) {
-			useToast(t.toast.avatar_upload_failed, "error");
+			useToast(t("toast.avatar_upload_failed"), "error");
 			console.error("ERROR", "Failed to upload avatar.", error);
 		}
 	}
@@ -143,7 +144,7 @@
 			try {
 				await handleSubmitAvatarImage();
 			} catch (error) {
-				useToast(t.toast.avatar_upload_failed, "error");
+				useToast(t("toast.avatar_upload_failed"), "error");
 				console.error("ERROR", "Failed to upload avatar.", error);
 			}
 
@@ -162,14 +163,14 @@
 				await api.user.getSelfUserInfo({ getSelfUserInfoRequest: undefined, appSettingsStore, selfUserInfoStore, headerCookie: undefined });
 				isUpdateUserInfo.value = false;
 				newAvatarImageBlob.value = undefined;
-				useToast(t.toast.profile_updated, "success");
+				useToast(t("toast.profile_updated"), "success");
 			} else {
 				isUpdateUserInfo.value = false;
-				useToast(t.toast.something_went_wrong, "error");
+				useToast(t("toast.something_went_wrong"), "error");
 			}
 		} catch (error) {
 			isUpdateUserInfo.value = false;
-			useToast(t.toast.something_went_wrong, "error");
+			useToast(t("toast.something_went_wrong"), "error");
 			console.error("Failed to update profile.", error);
 		}
 	}
@@ -204,11 +205,11 @@
 				showConfirmResetAlert.value = false;
 			} else {
 				isResetUserInfo.value = false;
-				useToast(t.toast.something_went_wrong, "error");
+				useToast(t("toast.something_went_wrong"), "error");
 			}
 		} catch (error) {
 			isResetUserInfo.value = false;
-			useToast(t.toast.something_went_wrong, "error");
+			useToast(t("toast.something_went_wrong"), "error");
 			console.error("Failed to reset profile.", error);
 		}
 	}
@@ -238,16 +239,16 @@
 <template>
 	<div>
 		<Alert v-model="showConfirmResetAlert" static>
-			{{ t.confirm.reset_profile }}
+			{{ $t('confirm.reset_profile') }}
 			<template #footer-left>
-				<Button @click="reset" :loading="isResetUserInfo" :disabled="isUpdateUserInfo || isResetUserInfo">{{ t.step.ok }}</Button>
+				<Button @click="reset" :loading="isResetUserInfo" :disabled="isUpdateUserInfo || isResetUserInfo">{{ $t('step.ok') }}</Button>
 			</template>
 			<template #footer-right>
-				<Button @click="showConfirmResetAlert = false" class="secondary">{{ t.step.cancel }}</Button>
+				<Button @click="showConfirmResetAlert = false" class="secondary">{{ $t('step.cancel') }}</Button>
 			</template>
 		</Alert>
 
-		<Modal v-model="isAvatarCropperOpen" :title="t.profile.edit_avatar">
+		<Modal v-model="isAvatarCropperOpen" :title="$t('profile.edit_avatar')">
 			<div class="avatar-cropper">
 				<ImageCropper
 					ref="cropper"
@@ -261,19 +262,19 @@
 				/>
 			</div>
 			<template #footer-right>
-				<Button class="secondary" @click="isAvatarCropperOpen = false">{{ t.step.cancel }}</Button>
-				<Button :loading="isUploadingUserAvatar" @click="handleChangeAvatarImage">{{ t.step.ok }}</Button>
+				<Button class="secondary" @click="isAvatarCropperOpen = false">{{ $t('step.cancel') }}</Button>
+				<Button :loading="isUploadingUserAvatar" @click="handleChangeAvatarImage">{{ $t('step.ok') }}</Button>
 			</template>
 		</Modal>
 
 		<div v-ripple class="banner">
 			<NuxtImg :src="banner" alt="banner" draggable="false" format="avif" />
-			<span>{{ t.profile.edit_banner }}</span>
+			<span>{{ $t('profile.edit_banner') }}</span>
 		</div>
 
 		<div class="change-avatar" @click="handleUploadAvatarImage">
 			<UserAvatar :avatar="correctAvatar" hoverable />
-			<span>{{ t.profile.edit_avatar }}</span>
+			<span>{{ $t('profile.edit_avatar') }}</span>
 			<input ref="userAvatarFileInput" type="file" accept="image/*" hidden />
 		</div>
 
@@ -282,8 +283,8 @@
 		</div>
 
 		<div class="submit">
-			<Button icon="delete" class="secondary" @click="resetConfirm" :disabled="isUpdateUserInfo || isResetUserInfo">{{ t.step.reset }}</Button>
-			<Button icon="check" @click="updateProfile" :loading="isUpdateUserInfo" :disabled="isUpdateUserInfo || isResetUserInfo">{{ t.step.save }}</Button>
+			<Button icon="delete" class="secondary" @click="resetConfirm" :disabled="isUpdateUserInfo || isResetUserInfo">{{ $t('step.reset') }}</Button>
+			<Button icon="check" @click="updateProfile" :loading="isUpdateUserInfo" :disabled="isUpdateUserInfo || isResetUserInfo">{{ $t('step.save') }}</Button>
 		</div>
 	</div>
 </template>

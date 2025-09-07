@@ -27,12 +27,20 @@
 
 <template>
 	<div>
-		<Subheader icon="link">{{ t.friendly_links }}</Subheader>
+		<Subheader icon="link">{{ $t('friendly_links') }}</Subheader>
 		<template v-for="section, title in links" :key="title">
 			<header class="section" :style="{ '--i': section[0]?.index }">{{ title }}</header>
 			<div class="links lite-links">
-				<!-- eslint-disable-next-line vue/no-v-html -->
-				<a v-for="{ logo, href, index } in section" :key="href" target="_blank" :style="{ '--i': index }" :href v-html="logo"></a>
+				<!-- eslint-disable vue/no-v-html -->
+				<a
+					v-for="{ logo, href, index } in section"
+					:key="href"
+					target="_blank"
+					:style="{ '--i': index }"
+					:href
+					v-html="logo"
+				></a>
+				<!-- eslint-enable vue/no-v-html -->
 			</div>
 		</template>
 	</div>

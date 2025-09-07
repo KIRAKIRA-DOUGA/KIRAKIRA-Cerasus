@@ -1,4 +1,5 @@
 <script setup lang="ts">
+	const { t } = useI18n();
 	import { numbers } from "virtual:scss-var:theme/_variables";
 	import { ScrollContainer } from "#components";
 
@@ -44,7 +45,7 @@
 			const videoDataResponse = await api.video.getVideoByKvid(getVideoByKvidRequest, headerCookie);
 
 			if (!videoDataResponse.success)
-				handleError(t.toast.video_request_failed);
+				handleError(t("toast.video_request_failed"));
 
 			if (videoDataResponse.isBlocked)
 				navigateToErrorPage(404);
@@ -66,9 +67,9 @@
 					image: videoData.image,
 				};
 			} else
-				handleError(t.toast.video_invalid_result);
+				handleError(t("toast.video_invalid_result"));
 		} else
-			handleError(t.toast.video_no_id);
+			handleError(t("toast.video_no_id"));
 	}
 
 	watch(() => kvid, fetchVideoData);
@@ -125,9 +126,9 @@
 				</template>
 			</PlayerVideo>
 			<TabBar v-model="selectedTab" @movingForTransition="name => transitionName = name">
-				<TabItem id="info">{{ t.info }}</TabItem>
-				<TabItem id="comments">{{ t.comments }}</TabItem>
-				<TabItem id="danmakus">{{ t(0).danmaku }}</TabItem>
+				<TabItem id="info">{{ $t('info') }}</TabItem>
+				<TabItem id="comments">{{ $t('comments') }}</TabItem>
+				<TabItem id="danmakus">{{ $t('danmaku.title', 0) }}</TabItem>
 			</TabBar>
 		</div>
 		<div class="below-player">

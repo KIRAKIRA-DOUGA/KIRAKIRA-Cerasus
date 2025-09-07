@@ -1,4 +1,5 @@
 <script setup lang="ts">
+	const { t } = useI18n();
 	const searchText = ref(""); // 用户输入的搜索字符
 	const browsingHistory = ref<GetUserBrowsingHistoryWithFilterResponseDto["result"]>([]); // 获取到的浏览历史
 	const browsingHistoryGroupedByDays = computed(() => { // 将浏览历史按当前语言所在时区的日期按天分组
@@ -23,7 +24,7 @@
 		browsingHistory.value = result.result;
 	}
 
-	useHead({ title: t.history });
+	useHead({ title: t("history") });
 	await getUserBrowsingHistory();
 </script>
 
@@ -57,7 +58,7 @@
 
 			<div class="right">
 				<div class="toolbox-card">
-					<TextBox v-model="searchText" :placeholder="t.search" icon="search" @keydown.enter="getUserBrowsingHistory" @clear="getUserBrowsingHistory" />
+					<TextBox v-model="searchText" :placeholder="$t('search')" icon="search" @keydown.enter="getUserBrowsingHistory" @clear="getUserBrowsingHistory" />
 				</div>
 			</div>
 		</div>

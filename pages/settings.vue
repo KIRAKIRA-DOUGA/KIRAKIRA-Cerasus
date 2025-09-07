@@ -1,4 +1,5 @@
 <script setup lang="ts">
+	const { t } = useI18n();
 	definePageMeta({
 		hideAppBar: true,
 		hideBottomNav: true,
@@ -34,10 +35,6 @@
 	const search = ref("");
 	const main = ref<HTMLElement>();
 	const showDrawer = ref(false);
-	const ti = (id: string) => t[new VariableName(id).snake];
-	const title = computed(() => ti(currentSettingsRendered.value));
-	const settingsString = t.settings; // HACK: Bypass "A composable that requires access to the Nuxt instance was called outside of a plugin."
-	const htmlTitle = computed(() => title.value + " - " + settingsString);
 
 	const selfUserInfoStore = useSelfUserInfoStore();
 	const appSettingsStore = useAppSettingsStore();
@@ -67,29 +64,29 @@
 
 	const settings = {
 		personal: [
-			{ id: "dashboard", icon: "dashboard" },
-			{ id: "profile", icon: "badge" },
-			{ id: "traces", icon: "history" },
-			{ id: "privacy", icon: "shield" },
-			{ id: "security", icon: "lock" },
-			{ id: "block-and-hide", icon: "block" },
-			{ id: "invitation-code", icon: "gift" },
+			{ id: "dashboard", icon: "dashboard", name: t("dashboard") },
+			{ id: "profile", icon: "badge", name: t("profile.title") },
+			{ id: "traces", icon: "history", name: t("traces") },
+			{ id: "privacy", icon: "shield", name: t("privacy.title") },
+			{ id: "security", icon: "lock", name: t("security") },
+			{ id: "block-and-hide", icon: "block", name: t("block_and_hide.title") },
+			{ id: "invitation-code", icon: "gift", name: t("invitation_code") },
 		],
 		general: [
-			{ id: "appearance", icon: "palette" },
-			{ id: "player", icon: "play" },
-			{ id: "danmaku", icon: "danmaku" },
-			{ id: "preference", icon: "star" },
-			{ id: "language", icon: "translate" },
-			{ id: "experimental", icon: "science" },
-			{ id: "shortcut-key", icon: "keyboard" },
-			{ id: "about", icon: "info" },
-			{ id: "acknowledgement", icon: "campaign" },
+			{ id: "appearance", icon: "palette", name: t("appearance.title") },
+			{ id: "player", icon: "play", name: t("player.title") },
+			{ id: "danmaku", icon: "danmaku", name: t("danmaku.title") },
+			{ id: "preference", icon: "star", name: t("preference") },
+			{ id: "language", icon: "translate", name: t("language") },
+			{ id: "experimental", icon: "science", name: t("experimental") },
+			{ id: "shortcut-key", icon: "keyboard", name: t("shortcut_key.title") },
+			{ id: "about", icon: "info", name: $t("about.title") },
+			{ id: "acknowledgement", icon: "campaign", name: t("acknowledgement") },
 		],
 		admin: [
-			{ id: "content", icon: "category" },
-			{ id: "user-block", icon: "account_circle" },
-			{ id: "user-info", icon: "account_circle" },
+			{ id: "content", icon: "category", name: t("content") },
+			{ id: "user-block", icon: "account_circle", name: "User Block" },
+			{ id: "user-info", icon: "account_circle", name: "User Info" },
 		],
 	};
 
@@ -102,11 +99,20 @@
 			const curPage = currentSettingsPage();
 			if (settings.general.findIndex(({ id }) => id === curPage) === -1)
 				navigate("/settings/appearance");
-			useToast(t.toast.logout_success, "success");
+			useToast(t("toast.logout_success"), "success");
 			useEvent("user:login", false);
 		}
 	}
 
+	const title = computed(() => {
+		const allSettings = Object.values(settings).flat();
+		const current = allSettings.find(setting => setting.id === currentSettingsRendered.value);
+		return current ? current.name : null;
+	});
+	const htmlTitle = computed(() => {
+		if (title) return title.value + " - " + t("settings.title");
+		else return t("settings-title");
+	});
 	useHead({ title: htmlTitle });
 
 	watch(() => selfUserInfoStore.isEffectiveCheckOnce, () => {
@@ -133,11 +139,11 @@
 				<header class="title content">
 					<ScrollContainer overflowX="clip">
 						<header class="title nav-header">
-							<h1>{{ t.settings }}</h1>
-							<TextBox v-model="search" type="search" :placeholder="t.settings.search" icon="search" />
+							<h1>{{ $t('settings.title') }}</h1>
+							<TextBox v-model="search" type="search" :placeholder="$t('settings.search')" icon="search" />
 						</header>
 						<TabBar v-model="currentSettingsRequested" vertical>
-							<Subheader v-if="selfUserInfoStore.isLogined" icon="person">{{ t.settings.user }}</Subheader>
+							<Subheader v-if="selfUserInfoStore.isLogined" icon="person">{{ $t('settings.user') }}</Subheader>
 							<template v-if="selfUserInfoStore.isLogined">
 								<TabItem
 									v-for="setting in settings.personal"
@@ -146,9 +152,9 @@
 									:icon="setting.icon"
 									:to="`/settings/${setting.id}`"
 									@click="showDrawer = false"
-								>{{ ti(setting.id) }}</TabItem>
+								>{{ setting.name }}</TabItem>
 							</template>
-							<Subheader icon="apps">{{ t.settings.app }}</Subheader>
+							<Subheader icon="apps">{{ $t('settings.app') }}</Subheader>
 							<TabItem
 								v-for="setting in settings.general"
 								:id="setting.id"
@@ -156,7 +162,7 @@
 								:icon="setting.icon"
 								:to="`/settings/${setting.id}`"
 								@click="showDrawer = false"
-							>{{ ti(setting.id) }}</TabItem>
+							>{{ setting.name }}</TabItem>
 							<!-- DELETE: Cerasus内置管理设置即将被单独的控制台Lycoris项目取代。 -->
 							<Subheader v-if="isAdmin" icon="build_circle">管理设置</Subheader>
 							<template v-if="isAdmin">
@@ -167,15 +173,15 @@
 									:icon="setting.icon"
 									:to="`/settings/${setting.id}`"
 									@click="showDrawer = false"
-								>{{ ti(setting.id) }}</TabItem>
+								>{{ setting.name }}</TabItem>
 							</template>
 						</TabBar>
 						<div class="nav-bottom-buttons">
 							<template v-if="isAdmin || isDevMode">
-								<Button icon="build" href="/dev">{{ t.development_test_page }}</Button>
-								<Button icon="apps" href="/dev/components">{{ t.components_test_page }}</Button>
+								<Button icon="build" href="/dev">{{ $t('development_test_page') }}</Button>
+								<Button icon="apps" href="/dev/components">{{ $t('components_test_page') }}</Button>
 							</template>
-							<Button v-if="selfUserInfoStore.isLogined" icon="logout" @click="logout">{{ t.logout }}</Button>
+							<Button v-if="selfUserInfoStore.isLogined" icon="logout" @click="logout">{{ $t('logout') }}</Button>
 						</div>
 					</ScrollContainer>
 				</header>

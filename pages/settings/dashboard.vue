@@ -1,4 +1,5 @@
 <script setup lang="ts">
+	const { t } = useI18n();
 	const selfUserInfoStore = useSelfUserInfoStore();
 	// const userBirthdayDisplay = computed(() => selfUserInfoStore.userInfo.userBirthday ? formatDateWithLocale(new Date(selfUserInfoStore.userInfo.userBirthday)) : "Unknown"); // TODO: 生日功能适配temporal
 
@@ -10,9 +11,9 @@
 		if (!content) return;
 		try {
 			await navigator.clipboard.writeText(content.toString());
-			useToast(t.toast.copied, "success");
-		} catch (error) {
-			useToast(t.toast.copy_failed, "error");
+			useToast(t("toast.copied"), "success");
+		} catch {
+			useToast(t("toast.copy_failed"), "error");
 		}
 	}
 </script>
@@ -21,7 +22,7 @@
 	<div>
 		<div class="user-profile">
 			<UserContent
-				v-tooltip="t.profile.edit"
+				v-tooltip="$t('profile.edit')"
 				:avatar="selfUserInfoStore.userInfo.avatar"
 				:username="selfUserInfoStore.userInfo.username"
 				:nickname="selfUserInfoStore.userInfo.userNickname"
@@ -40,19 +41,19 @@
 		<!-- <div class="user-counts chip">
 			<div>
 				<span class="value">233</span>
-				<p>{{ t.following }}</p>
+				<p>{{ $t('following') }}</p>
 			</div>
 			<div>
 				<span class="value">233</span>
-				<p>{{ t(0).follower }}</p>
+				<p>{{ $t('follower', 0) }}</p>
 			</div>
 			<div>
 				<span class="value">233</span>
-				<p>{{ t.watched }}</p>
+				<p>{{ $t('watched') }}</p>
 			</div>
 			<div>
 				<span class="value">233</span>
-				<p>{{ t.rating }}</p>
+				<p>{{ $t('rating') }}</p>
 			</div>
 		</div> -->
 
@@ -64,7 +65,7 @@
 				icon="history"
 				:details="formatDateWithLocale(new Date(selfUserInfoStore.userInfo.userCreateDateTime))"
 			>
-				{{ t.user.join_time }}
+				{{ $t('user.join_time') }}
 			</SettingsChipItem>
 			<SettingsChipItem
 				v-if="selfUserInfoStore.userInfo.uid"

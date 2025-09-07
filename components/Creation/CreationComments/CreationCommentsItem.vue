@@ -30,6 +30,8 @@
 		uid: undefined,
 	});
 
+	const { t } = useI18n();
+
 	/** 为该评论加分的值。 */
 	const upvote = defineModel("upvote", { default: 0 });
 	/** 是否已点击加分？ */
@@ -52,9 +54,9 @@
 	/**
 	 * 点击加分、减分按钮事件。
 	 * @param button - 点击的按钮是加分还是减分。
-	 * @param [noNestingDolls] - 禁止套娃，防止递归调用。
+	 * @param [_noNestingDolls] - 禁止套娃，防止递归调用。
 	 */
-	function onClickVotes(button: "upvote" | "downvote", noNestingDolls: boolean = false) {
+	function onClickVotes(button: "upvote" | "downvote", _noNestingDolls: boolean = false) {
 		// const states = { upvote, isUpvoted, downvote, isDownvoted };
 		// const value = states[button], clicked = states[`${button}Clicked`]; // 面向字符串编程。
 		// const another = button === "like" ? "dislike" : "like";
@@ -66,12 +68,12 @@
 		const videoId = props.videoId; // 视频 ID
 
 		if (!props.index || !commentId || videoId === undefined || videoId === null) { // 非空验证
-			useToast(t.toast.something_went_wrong, "error");
+			useToast(t("toast.something_went_wrong"), "error");
 			return;
 		}
 
 		if (voteLock.value) { // 如果请求的“悲观锁”处于锁定状态，则弹出错误提示并停止
-			useToast(t.toast.too_many_requests, "error");
+			useToast(t("toast.too_many_requests"), "error");
 			return;
 		}
 
@@ -106,7 +108,7 @@
 		const emitVideoCommentUpvoteRequest: EmitVideoCommentUpvoteRequestDto = { id: commentId, videoId };
 		api.videoComment.emitVideoCommentUpvote(emitVideoCommentUpvoteRequest).catch(error => {
 			voteLock.value = false; // 请求锁：释放
-			useToast(t.toast.something_went_wrong, "error");
+			useToast(t("toast.something_went_wrong"), "error");
 			console.error("ERROR", "Failed to upvote:", error);
 		}).finally(() => {
 			voteLock.value = false; // 请求锁：释放
@@ -130,7 +132,7 @@
 		const cancelVideoCommentUpvoteRequest: CancelVideoCommentUpvoteRequestDto = { id: commentId, videoId };
 		api.videoComment.cancelVideoCommentUpvote(cancelVideoCommentUpvoteRequest).catch(error => {
 			voteLock.value = false; // 请求锁：释放
-			useToast(t.toast.something_went_wrong, "error");
+			useToast(t("toast.something_went_wrong"), "error");
 			console.error("ERROR", "Failed to undo upvote:", error);
 		}).finally(() => {
 			voteLock.value = false; // 请求锁：释放
@@ -150,7 +152,7 @@
 		const emitVideoCommentDownvoteRequest: EmitVideoCommentDownvoteRequestDto = { id: commentId, videoId };
 		api.videoComment.emitVideoCommentDownvote(emitVideoCommentDownvoteRequest).catch(error => {
 			voteLock.value = false; // 请求锁：释放
-			useToast(t.toast.something_went_wrong, "error");
+			useToast(t("toast.something_went_wrong"), "error");
 			console.error("ERROR", "Failed to downvote:", error);
 		}).finally(() => {
 			voteLock.value = false; // 请求锁：释放
@@ -174,7 +176,7 @@
 		const cancelVideoCommentDownvoteRequest: CancelVideoCommentDownvoteRequestDto = { id: commentId, videoId };
 		api.videoComment.cancelVideoCommentDownvote(cancelVideoCommentDownvoteRequest).catch(error => {
 			voteLock.value = false; // 请求锁：释放
-			useToast(t.toast.something_went_wrong, "error");
+			useToast(t("toast.something_went_wrong"), "error");
 			console.error("ERROR", "Failed to undo downvote:", error);
 		}).finally(() => {
 			voteLock.value = false; // 请求锁：释放
@@ -197,10 +199,10 @@
 		};
 		const deleteVideoResult = await api.videoComment.deleteSelfVideoComment(deleteSelfVideoCommentRequest);
 		if (deleteVideoResult.success) {
-			useToast(t.toast.comment_delete_success, "success", 5000);
+			useToast(t("toast.comment_delete_success"), "success", 5000);
 			useEvent("videoComment:deleteVideoComment", commentRoute);
 		} else
-			useToast(t.toast.something_went_wrong, "error", 5000);
+			useToast(t("toast.something_went_wrong"), "error", 5000);
 			// TODO: 性能问题
 	}
 
@@ -217,10 +219,10 @@
 		};
 		const deleteVideoResult = await api.videoComment.adminDeleteVideoComment(adminDeleteVideoCommentRequest);
 		if (deleteVideoResult.success) {
-			useToast(t.toast.comment_delete_success, "success", 5000);
+			useToast(t("toast.comment_delete_success"), "success", 5000);
 			useEvent("videoComment:deleteVideoComment", commentRoute);
 		} else
-			useToast(t.toast.something_went_wrong, "error", 5000);
+			useToast(t("toast.something_went_wrong"), "error", 5000);
 			// TODO: 性能问题
 	}
 </script>
@@ -242,21 +244,21 @@
 
 			<template #footerLeft>
 				<div class="votes">
-					<SoftButton v-tooltip:bottom="t.upvote" icon="arrow_up" :active="isUpvoted" @click="onClickVotes('upvote')" />
+					<SoftButton v-tooltip:bottom="$t('upvote')" icon="arrow_up" :active="isUpvoted" @click="onClickVotes('upvote')" />
 					<NumberFlow :value="upvote - downvote" />
-					<SoftButton v-tooltip:bottom="t.downvote" icon="arrow_down" :active="isDownvoted" @click="onClickVotes('downvote')" />
+					<SoftButton v-tooltip:bottom="$t('downvote')" icon="arrow_down" :active="isDownvoted" @click="onClickVotes('downvote')" />
 				</div>
 			</template>
 
 			<template #footerRight>
-				<SoftButton v-tooltip:bottom="t.reply" icon="reply" />
-				<SoftButton v-tooltip:bottom="t.more" icon="more_vert" @click="e => menu = [e, 'y']" />
+				<SoftButton v-tooltip:bottom="$t('reply')" icon="reply" />
+				<SoftButton v-tooltip:bottom="$t('more')" icon="more_vert" @click="e => menu = [e, 'y']" />
 				<Menu v-model="menu">
-					<MenuItem v-if="isSelfComment" icon="delete" @click="deleteSelfComment(commentRoute, videoId)">{{ t.delete }}</MenuItem>
-					<MenuItem v-if="isAdmin" icon="delete" @click="adminDeleteVideoComment(commentRoute, videoId)">{{ t.delete }}{{ t.admin_operation_suffix }}</MenuItem>
-					<MenuItem :icon="unpinnedCaption" @click="pinned = !pinned">{{ t[unpinnedCaption] }}</MenuItem>
+					<MenuItem v-if="isSelfComment" icon="delete" @click="deleteSelfComment(commentRoute, videoId)">{{ $t('delete') }}</MenuItem>
+					<MenuItem v-if="isAdmin" icon="delete" @click="adminDeleteVideoComment(commentRoute, videoId)">{{ $t('delete') }}{{ $t('admin_operation_suffix') }}</MenuItem>
+					<MenuItem :icon="unpinnedCaption" @click="pinned = !pinned">{{ $t(unpinnedCaption) }}</MenuItem>
 					<hr />
-					<MenuItem icon="flag">{{ t.report }}</MenuItem>
+					<MenuItem icon="flag">{{ $t('report') }}</MenuItem>
 				</Menu>
 			</template>
 		</UserContent>

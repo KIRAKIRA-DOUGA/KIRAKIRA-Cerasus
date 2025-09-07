@@ -3,6 +3,8 @@
 	import type { ToastEvent } from "composables/toast";
 	import animationData from "lotties/spinner-dev1.json";
 
+	const { t } = useI18n();
+
 	const useSyncKiraCookieOptions = { isWatchCookieRef: true, isSyncSettings: true, isListenLoginEvent: true };
 
 	// 主题
@@ -85,7 +87,7 @@
 		b.playbackRate = 2 ** (pitch.value / 12);
 	}
 
-	useHead({ title: t.components_test_page });
+	useHead({ title: t("components_test_page") });
 </script>
 
 <template>
@@ -115,8 +117,8 @@
 				<Button class="test-button" severity="warning">警告按钮</Button>
 				<Button class="test-button" severity="danger">危险按钮</Button>
 				<Button disabled>主要按钮被禁用</Button>
-				<Button @click="showConfetti">{{ t.confetti }}</Button>
-				<Button icon="send">{{ t.send }}</Button>
+				<Button @click="showConfetti">{{ $t('confetti') }}</Button>
+				<Button icon="send">{{ $t('send') }}</Button>
 				<Button @click="showAlert = true">显示警告框</Button>
 				<Button @click="showModal = true">显示模态框</Button>
 				<Button @click="showFlyout">显示浮窗</Button>
@@ -134,25 +136,25 @@
 				<PopoverSlot />
 			</Flyout>
 			<FlyoutKaomoji v-model="flyoutKaomoji" />
-			<ToggleSwitch v-model="toggle">切换开关 {{ toggle ? t.on : t.off }}</ToggleSwitch>
-			<ToggleSwitch disabled>{{ t.disabled }} {{ t.off }}</ToggleSwitch>
-			<ToggleSwitch on disabled>{{ t.disabled }} {{ t.on }}</ToggleSwitch>
+			<ToggleSwitch v-model="toggle">切换开关 {{ toggle ? $t('on') : $t('off') }}</ToggleSwitch>
+			<ToggleSwitch disabled>{{ $t('disabled') }} {{ $t('off') }}</ToggleSwitch>
+			<ToggleSwitch on disabled>{{ $t('disabled') }} {{ $t('on') }}</ToggleSwitch>
 			<hr />
 			<RadioButton v-model="radioValue" value="1">选项1</RadioButton>
 			<RadioButton v-model="radioValue" value="2">选项2</RadioButton>
 			<hr />
-			<RadioButton v-model="theme" value="light">{{ t.scheme.light }}</RadioButton>
-			<RadioButton v-model="theme" value="dark">{{ t.scheme.dark }}</RadioButton>
-			<RadioButton v-model="theme" value="system">{{ t.scheme.system }}</RadioButton>
+			<RadioButton v-model="theme" value="light">{{ $t('scheme.light') }}</RadioButton>
+			<RadioButton v-model="theme" value="dark">{{ $t('scheme.dark') }}</RadioButton>
+			<RadioButton v-model="theme" value="system">{{ $t('scheme.system') }}</RadioButton>
 			<hr />
-			<RadioButton v-model="palette" value="pink">{{ t.palette.pink }}</RadioButton>
-			<RadioButton v-model="palette" value="sky">{{ t.palette.sky }}</RadioButton>
-			<RadioButton v-model="palette" value="blue">{{ t.palette.blue }}</RadioButton>
-			<RadioButton v-model="palette" value="orange">{{ t.palette.orange }}</RadioButton>
-			<RadioButton v-model="palette" value="purple">{{ t.palette.purple }}</RadioButton>
-			<RadioButton v-model="palette" value="green">{{ t.palette.green }}</RadioButton>
-			<RadioButton v-model="palette" value="custom" disabled>{{ t.custom }}</RadioButton>
-			<RadioButton checked disabled>{{ t.disabled }} {{ t.on }}</RadioButton>
+			<RadioButton v-model="palette" value="pink">{{ $t('palette.pink') }}</RadioButton>
+			<RadioButton v-model="palette" value="sky">{{ $t('palette.sky') }}</RadioButton>
+			<RadioButton v-model="palette" value="blue">{{ $t('palette.blue') }}</RadioButton>
+			<RadioButton v-model="palette" value="orange">{{ $t('palette.orange') }}</RadioButton>
+			<RadioButton v-model="palette" value="purple">{{ $t('palette.purple') }}</RadioButton>
+			<RadioButton v-model="palette" value="green">{{ $t('palette.green') }}</RadioButton>
+			<RadioButton v-model="palette" value="custom" disabled>{{ $t('custom') }}</RadioButton>
+			<RadioButton checked disabled>{{ $t('disabled') }} {{ $t('on') }}</RadioButton>
 			<hr />
 			<p>请问您喜欢KIRAKIRA的地方有：</p>
 			<Checkbox :checkState="isSelectAll" @change="onSelectAllChange">全选</Checkbox>
@@ -213,7 +215,7 @@
 			<ProgressBar :hidden="!showProgress" :style="{ height: progressBarHeight + 'px' }" :value="progressValue" />
 			<!-- <Lottie loop autoplay :animationData="animationData" /> -->
 			<hr />
-			<Tag v-model="isTagChecked">{{ t.tag }}</Tag>
+			<Tag v-model="isTagChecked">{{ $t('tag.title') }}</Tag>
 			<Tag v-model:input="tagInput" />
 			<br />
 			<Spoiler>你知道的<ruby>太<rt>tài</rt>多<rt>duō</rt></ruby>了。</Spoiler>
@@ -227,16 +229,16 @@
 			<em>单击鼠标中键或触摸屏长按组件以还原默认值。</em>
 			<audio ref="beep" :src="beepSrc"></audio>
 			<TabBar v-model="selectedTab">
-				<TabItem id="all">{{ t.all }}</TabItem>
-				<TabItem id="video">{{ t.video }}</TabItem>
-				<TabItem id="images">{{ t.image }}</TabItem>
+				<TabItem id="all">{{ $t('all') }}</TabItem>
+				<TabItem id="video">{{ $t('video') }}</TabItem>
+				<TabItem id="images">{{ $t('image') }}</TabItem>
 				<TabItem id="long" badge="角标">测试很长很长很长</TabItem>
 				<TabItem id="short">短</TabItem>
 			</TabBar>
 			<TabBar v-model="selectedTab" vertical>
-				<TabItem id="all">{{ t.all }}</TabItem>
-				<TabItem id="video">{{ t.video }}</TabItem>
-				<TabItem id="images">{{ t.image }}</TabItem>
+				<TabItem id="all">{{ $t('all') }}</TabItem>
+				<TabItem id="video">{{ $t('video') }}</TabItem>
+				<TabItem id="images">{{ $t('image') }}</TabItem>
 				<TabItem id="long" badge="角标">测试很长很长很长</TabItem>
 				<TabItem id="short">短</TabItem>
 			</TabBar>

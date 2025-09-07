@@ -38,13 +38,14 @@
 </script>
 
 <script setup lang="ts">
+	const { t } = useI18n();
 	const value = defineModel<Temporal.PlainDate>({ required: true });
 	const locale = getCurrentLocaleLangCode(undefined, true);
 	const useHanzi = computed(() => locale.startsWith("zh") || locale === "ja"); // 中文（包括简中、繁中、粤语）和日语可以使用汉字。
 	const isChineseCalendar = computed(() => value.value.calendarId === "chinese");
 	const format = computed(() => getLocaleDateFormat(locale));
 	const staticFields = {
-		calendar: { name: "calendar", values: availableCalendars, getDisplayValue: calendar => t.calendar[calendar] } satisfies BaseDateTimePickerField<string>,
+		calendar: { name: "calendar", values: availableCalendars, getDisplayValue: calendar => t("calendar." + calendar) } satisfies BaseDateTimePickerField<string>,
 		weekday: { name: "weekday", text: () => format.value.weekdays[value.value.dayOfWeek % 7], minWidth: "2em" },
 		y: {
 			name: "year",

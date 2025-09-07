@@ -21,6 +21,8 @@
 		cover: undefined,
 	});
 
+	const { t } = useI18n();
+
 	const selfUserInfoStore = useSelfUserInfoStore();
 	const flyoutTag = ref<FlyoutModel>();
 	const menuMoreAction = ref<FlyoutModel>();
@@ -70,7 +72,7 @@
 	 */
 	function saveToCollection() {
 		if (selfUserInfoStore.isLogined)
-			useToast(t.under_construction.feature, "warning", 5000); // DELETE 请在收藏功能完成后删除该提示
+			useToast(t("under_construction.feature"), "warning", 5000); // DELETE 请在收藏功能完成后删除该提示
 		else
 			useEvent("app:requestLogin");
 	}
@@ -80,7 +82,7 @@
 	 */
 	function watchLater() {
 		if (selfUserInfoStore.isLogined)
-			useToast(t.under_construction.feature, "warning", 5000); // DELETE 请在收藏功能完成后删除该提示
+			useToast(t("under_construction.feature"), "warning", 5000); // DELETE 请在收藏功能完成后删除该提示
 		else
 			useEvent("app:requestLogin");
 	}
@@ -105,7 +107,7 @@
 			const IMAGE_MAX_WIDTH = 999999;
 			window.open(image(props.cover, { width: IMAGE_MAX_WIDTH }, { provider: environment.cloudflareImageProvider }), "_blank"); // TODO: 先暂时改为在新标签页中直接打开图片的样式，而非下载图片
 			// downloadFile(props.cover, `${props.title} (kv${props.videoId})`);
-		} else useToast(t.toast.something_went_wrong, "error");
+		} else useToast(t("toast.something_went_wrong"), "error");
 	}
 
 	/**
@@ -113,7 +115,7 @@
 	 */
 	function report() {
 		if (selfUserInfoStore.isLogined)
-			useToast(t.under_construction.feature, "warning", 5000); // DELETE 请在举报功能完成后删除该提示
+			useToast(t("under_construction.feature"), "warning", 5000); // DELETE 请在举报功能完成后删除该提示
 		else
 			useEvent("app:requestLogin");
 	}
@@ -126,47 +128,47 @@
 			<div class="data">
 				<CreationDetailItem icon="play"><NumberFlow :value="count.play" /></CreationDetailItem>
 				<CreationDetailItem icon="calendar"><DateTime :dateTime="date" showTime /></CreationDetailItem>
-				<CreationDetailItem icon="category">{{ t.category[category] }}</CreationDetailItem>
-				<CreationDetailItem v-if="copyright === 'original'" icon="fact_check">{{ t.original }}</CreationDetailItem>
-				<CreationDetailItem v-if="copyright === 'authorized-repost'" icon="local_shipping">{{ t.authorized_repost }}</CreationDetailItem>
-				<CreationDetailItem v-if="copyright === 'repost'" icon="local_shipping">{{ t.repost }}</CreationDetailItem>
+				<CreationDetailItem icon="category">{{ $t('category.' + category) }}</CreationDetailItem>
+				<CreationDetailItem v-if="copyright === 'original'" icon="fact_check">{{ $t('original') }}</CreationDetailItem>
+				<CreationDetailItem v-if="copyright === 'authorized-repost'" icon="local_shipping">{{ $t('authorized_repost') }}</CreationDetailItem>
+				<CreationDetailItem v-if="copyright === 'repost'" icon="local_shipping">{{ $t('repost') }}</CreationDetailItem>
 			</div>
 		</div>
 		<div class="actions">
 			<div class="main">
 				<div>
-					<SoftButton v-tooltip:bottom="t.like" icon="thumb_up" @click="like" :active="interactionState.like" />
+					<SoftButton v-tooltip:bottom="$t('like')" icon="thumb_up" @click="like" :active="interactionState.like" />
 					<NumberFlow :value="count.like" />
 				</div>
 				<div>
-					<SoftButton v-tooltip:bottom="t.dislike" icon="thumb_down" @click="dislike" :active="interactionState.dislike" />
+					<SoftButton v-tooltip:bottom="$t('dislike')" icon="thumb_down" @click="dislike" :active="interactionState.dislike" />
 					<NumberFlow :value="count.dislike" />
 				</div>
 				<div>
-					<SoftButton v-tooltip:bottom="t.collection.verb" icon="star" @click="saveToCollection" :active="interactionState.save" />
+					<SoftButton v-tooltip:bottom="$t('collection.verb')" icon="star" @click="saveToCollection" :active="interactionState.save" />
 					<NumberFlow :value="count.save" />
 				</div>
 			</div>
 			<div class="extra">
 				<div>
-					<SoftButton v-tooltip:bottom="t.watch_later" icon="watch_later" @click="watchLater" :active="interactionState.watchLater" />
-					<span class="pe">{{ t.watch_later }}</span>
+					<SoftButton v-tooltip:bottom="$t('watch_later')" icon="watch_later" @click="watchLater" :active="interactionState.watchLater" />
+					<span class="pe">{{ $t('watch_later') }}</span>
 				</div>
 				<div>
-					<SoftButton v-tooltip:bottom="t.more" icon="more_vert" class="pe" @click="e => menuMoreAction = [e, 'bottom']" />
-					<span class="pe">{{ t.more }}</span>
+					<SoftButton v-tooltip:bottom="$t('more')" icon="more_vert" class="pe" @click="e => menuMoreAction = [e, 'bottom']" />
+					<span class="pe">{{ $t('more') }}</span>
 				</div>
 
-				<SoftButton v-tooltip:bottom="t.share" icon="share" class="pc" @click="share" />
-				<SoftButton v-tooltip:bottom="t.view_cover" icon="photo" class="pc" @click="downloadCover" />
-				<SoftButton v-tooltip:bottom="t.download" icon="download" class="pc" />
-				<SoftButton v-tooltip:bottom="t.report" icon="flag" class="pc" @click="report" />
+				<SoftButton v-tooltip:bottom="$t('share')" icon="share" class="pc" @click="share" />
+				<SoftButton v-tooltip:bottom="$t('view_cover')" icon="photo" class="pc" @click="downloadCover" />
+				<SoftButton v-tooltip:bottom="$t('download')" icon="download" class="pc" />
+				<SoftButton v-tooltip:bottom="$t('report')" icon="flag" class="pc" @click="report" />
 
 				<Menu v-model="menuMoreAction">
-					<MenuItem icon="share">{{ t.share }}</MenuItem>
-					<MenuItem icon="photo">{{ t.view_cover }}</MenuItem>
-					<MenuItem icon="download">{{ t.download }}</MenuItem>
-					<MenuItem icon="flag">{{ t.report }}</MenuItem>
+					<MenuItem icon="share">{{ $t('share') }}</MenuItem>
+					<MenuItem icon="photo">{{ $t('view_cover') }}</MenuItem>
+					<MenuItem icon="download">{{ $t('download') }}</MenuItem>
+					<MenuItem icon="flag">{{ $t('report') }}</MenuItem>
 				</Menu>
 			</div>
 		</div>

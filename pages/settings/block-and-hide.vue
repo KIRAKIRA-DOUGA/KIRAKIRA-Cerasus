@@ -169,7 +169,7 @@
 
 	/**
 	 * 解除屏蔽用户
-	 * @param blockUserUid 被屏蔽的用户 UID
+	 * @param blockUserUid - 被屏蔽的用户 UID
 	 */
 	async function unblockUser(blockUserUid: number) {
 		try {
@@ -300,7 +300,7 @@
 
 	/**
 	 * 恢复显示用户
-	 * @param hideUserUid 被屏蔽的用户 UID
+	 * @param hideUserUid - 被屏蔽的用户 UID
 	 */
 	async function showUser(hideUserUid: number) {
 		try {
@@ -364,6 +364,7 @@
 
 	/**
 	 * 解除屏蔽 TAG
+	 * @param tagId - 标签 ID
 	 */
 	async function removeTag(tagId: number) {
 		try {
@@ -393,7 +394,7 @@
 
 	/**
 	 * 屏蔽一个 TAG
-	 * @param tag 标签
+	 * @param tag - 标签
 	 */
 	async function handleAddNewBlockTag(tag: VideoTag) {
 		try {
@@ -467,7 +468,7 @@
 
 	/**
 	 * 解除屏蔽关键词
-	 * @param keyword 待解除屏蔽的关键词
+	 * @param keyword - 待解除屏蔽的关键词
 	 */
 	async function unBlockKeyword(keyword: string) {
 		try {
@@ -537,7 +538,7 @@
 
 	/**
 	 * 移除用于屏蔽内容的正则表达式
-	 * @param regexString 待移除用于屏蔽内容的正则表达式
+	 * @param regexString - 待移除用于屏蔽内容的正则表达式
 	 */
 	async function removeRegex(regexString: string) {
 		try {
@@ -570,9 +571,10 @@
 
 	/**
 	 * 获取屏蔽数据
-	 * @param blockListType 屏蔽的类型
-	 * @param page 页号
-	 * @param pageSize 每页数量
+	 * @param blockListType - 屏蔽的类型
+	 * @param page - 页号
+	 * @param pageSize - 每页数量
+	 * @returns 获取的屏蔽数据
 	 */
 	async function getBlockList(blockListType: string, page: number, pageSize: number): Promise<GetBlockListResponseDto> {
 		const getBlockListRequest: GetBlockListRequestDto = {
@@ -643,15 +645,15 @@
 
 <template>
 	<div>
-		<Subheader icon="block">{{ t.block_and_hide.block }}</Subheader>
-		<span>{{ t.block_and_hide.block.description }}</span>
+		<Subheader icon="block">{{ $t('block_and_hide.block.title') }}</Subheader>
+		<span>{{ $t('block_and_hide.block.description') }}</span>
 		<section>
 			<SettingsChipItem
 				v-for="blockUser in blockUserList?.result"
 				:key="blockUser.uid"
 				:image="blockUser.avatar"
 				icon="placeholder"
-				:details="t.addition_date + t.colon + formatLocalizationSemanticDateTime(blockUser.createDateTime, 2)"
+				:details="$t('addition_date') + $t('colon') + formatLocalizationSemanticDateTime(blockUser.createDateTime, 2)"
 				trailingIcon="delete"
 				:trailingIconDisabled="unblockingUserUid === blockUser.uid"
 				@trailingIconClick="unblockUser(blockUser.uid ?? -1)"
@@ -660,18 +662,18 @@
 		<Pagination v-if="blockUserList?.blocklistCount" v-model="blockUserListPage" :pages="blockUserListPageCount" :displayPageCount="7" />
 		<div class="add">
 			<TextBox v-model="inputPendingBlockUid" type="number" icon="person" />
-			<Button icon="add" @click="getPendingBlockUserInfo" :disabled="isAddButtonUnclickalbe" :loading="isFetchPendingBlockUserInfo">{{ t.step.add }}</Button>
+			<Button icon="add" @click="getPendingBlockUserInfo" :disabled="isAddButtonUnclickalbe" :loading="isFetchPendingBlockUserInfo">{{ $t('step.add') }}</Button>
 		</div>
 
-		<Subheader icon="visibility_off">{{ t.block_and_hide.hide }}</Subheader>
-		<span>{{ t.block_and_hide.hide.description }}</span>
+		<Subheader icon="visibility_off">{{ $t('block_and_hide.hide.title') }}</Subheader>
+		<span>{{ $t('block_and_hide.hide.description') }}</span>
 		<section>
 			<SettingsChipItem
 				v-for="hideUser in hideUserList?.result"
 				:key="hideUser.uid"
 				:image="hideUser.avatar"
 				icon="placeholder"
-				:details="t.addition_date + t.colon + formatLocalizationSemanticDateTime(hideUser.createDateTime, 2)"
+				:details="$t('addition_date') + $t('colon') + formatLocalizationSemanticDateTime(hideUser.createDateTime, 2)"
 				trailingIcon="delete"
 				:trailingIconDisabled="showingUserUid === hideUser.uid"
 				@trailingIconClick="showUser(hideUser.uid ?? -1)"
@@ -680,13 +682,13 @@
 		<Pagination v-if="hideUserList?.blocklistCount" v-model="hideUserListPage" :pages="hideUserListPageCount" :displayPageCount="7" />
 		<div class="add">
 			<TextBox v-model="inputPendingHideUid" type="number" icon="person" />
-			<Button icon="add" @click="getPendingHideUserInfo" :disabled="isAddButtonUnclickalbe" :loading="isFetchPendingHideUserInfo">{{ t.step.add }}</Button>
+			<Button icon="add" @click="getPendingHideUserInfo" :disabled="isAddButtonUnclickalbe" :loading="isFetchPendingHideUserInfo">{{ $t('step.add') }}</Button>
 		</div>
 
 		<hr />
 
-		<Subheader icon="tag">{{ t(2).tag }}</Subheader>
-		<span>{{ t.block_and_hide.tag.description }}</span>
+		<Subheader icon="tag">{{ $t('tag', 0) }}</Subheader>
+		<span>{{ $t('block_and_hide.tag.description') }}</span>
 
 		<div class="tags">
 			<Tag
@@ -714,16 +716,16 @@
 			@mouseenter="reshowContextualToolbar"
 			@mouseleave="hideContextualToolbar"
 		>
-			<Button icon="close" @click="removeTag(hoveredTagContent![0])">{{ t.delete }}</Button>
+			<Button icon="close" @click="removeTag(hoveredTagContent![0])">{{ $t('delete') }}</Button>
 		</Flyout>
 
-		<Subheader icon="key">{{ t(2).keyword }}</Subheader>
-		<span>{{ t.block_and_hide.keyword.description }}</span>
+		<Subheader icon="key">{{ $t('keyword', 0) }}</Subheader>
+		<span>{{ $t('block_and_hide.keyword.description') }}</span>
 		<section>
 			<SettingsChipItem
 				v-for="(blockKeyword, index) in blockKeywordList"
 				:key="index + '-' + blockKeyword.value"
-				:details="t.addition_date + t.colon + formatLocalizationSemanticDateTime(blockKeyword.createDateTime, 2)"
+				:details="$t('addition_date') + $t('colon') + formatLocalizationSemanticDateTime(blockKeyword.createDateTime, 2)"
 				trailingIcon="delete"
 				:trailingIconDisabled="unblockingKeyword === blockKeyword.value"
 				@trailingIconClick="unBlockKeyword(blockKeyword.value)"
@@ -731,17 +733,17 @@
 		</section>
 		<div class="add">
 			<TextBox v-model="inputPendingBlockKeyword" :invalid="isInvalidKeyword" icon="key" />
-			<Button icon="add" :disabled="isAddButtonUnclickalbe || isBlockKeyword" :loading="isBlockKeyword" @click="addBlockKeyword">{{ t.step.add }}</Button>
+			<Button icon="add" :disabled="isAddButtonUnclickalbe || isBlockKeyword" :loading="isBlockKeyword" @click="addBlockKeyword">{{ $t('step.add') }}</Button>
 		</div>
 
-		<Subheader icon="regexp">{{ t.regexp }}</Subheader>
+		<Subheader icon="regexp">{{ $t('regexp') }}</Subheader>
 		<!-- TODO: 使用多语言 -->
-		<span>{{ t.block_and_hide.regexp.description + "（前后无需添加斜线 '/'）" }}</span>
+		<span>{{ $t('block_and_hide.regexp.description') + "（前后无需添加斜线 '/'）" }}</span>
 		<section>
 			<SettingsChipItem
 				v-for="(blockRegex, index) in blockRegexList"
 				:key="index + '-' + blockRegex.value"
-				:details="t.addition_date + t.colon + formatLocalizationSemanticDateTime(blockRegex.createDateTime, 2)"
+				:details="$t('addition_date') + $t('colon') + formatLocalizationSemanticDateTime(blockRegex.createDateTime, 2)"
 				trailingIcon="delete"
 				:trailingIconDisabled="removingRegex === blockRegex.value"
 				@trailingIconClick="removeRegex(blockRegex.value)"
@@ -749,7 +751,7 @@
 		</section>
 		<div class="add">
 			<TextBox v-model="inputPendingAddRegex" :invalid="isInvalidRegex" icon="regexp" />
-			<Button icon="add" :disabled="isAddButtonUnclickalbe || isAddRegex" :loading="isAddRegex" @click="addRegex">{{ t.step.add }}</Button>
+			<Button icon="add" :disabled="isAddButtonUnclickalbe || isAddRegex" :loading="isAddRegex" @click="addRegex">{{ $t('step.add') }}</Button>
 		</div>
 
 		<Alert v-model="isShowAddBlockUserAlert" static>

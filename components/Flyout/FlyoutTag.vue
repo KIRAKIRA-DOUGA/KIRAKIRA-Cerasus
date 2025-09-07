@@ -12,6 +12,7 @@
 	const showCreateNew = ref(false); // 是否显示 “创建 TAG” 按钮
 	const showTagEditor = ref(false); // 是否显示 TAG（创建）编辑器
 	const isCreatingTag = ref(false); // 是否正在创建 TAG
+	const { t } = useI18n();
 	const languages = [
 		{ langId: "zhs", langName: getLocaleName("zh-Hans") },
 		{ langId: "en", langName: getLocaleName("en") },
@@ -21,7 +22,7 @@
 		{ langId: "vi", langName: getLocaleName("vi") },
 		{ langId: "id", langName: getLocaleName("id") },
 		{ langId: "ar", langName: getLocaleName("ar") },
-		{ langId: "other", langName: t.other },
+		{ langId: "other", langName: t("other") },
 	] as const; // 可选语言列表
 	type LanguageList = typeof languages[number];
 	type EditorType = { language: LanguageList | { langId: ""; langName: "" }; values: string[]; default: [number, string] | null; original: [number, string] | null }[];
@@ -46,7 +47,7 @@
 				} else showCreateNew.value = true;
 			} catch (error) {
 				console.error("ERROR", "Failed to search tag:", error);
-				useToast(t.toast.something_went_wrong, "error");
+				useToast(t("toast.something_went_wrong"), "error");
 			}
 	}
 	const debounceVideoTagSearcher = useDebounce(searchVideoTag, 500);
@@ -60,7 +61,7 @@
 
 	/**
 	 * TAG 编辑器生成的数据转换为适用于后端存储的格式
-	 * @param editor TAG 编辑器数据
+	 * @param editor - TAG 编辑器数据
 	 * @returns 适于存储的 TAG 数据
 	 *
 	 * @example
@@ -130,15 +131,15 @@
 
 	/**
 	 * 检查 TAG 数据是否合法
-	 * @param createVideoTagRequest TAG 数据
+	 * @param createVideoTagRequest - TAG 数据
 	 * @returns boolean 合法返回 true, 不合法返回 false
 	 */
 	function checkTagData(createVideoTagRequest: CreateVideoTagRequestDto): boolean {
 		const isAllTagItemNotNull = createVideoTagRequest?.tagNameList?.every(tag => tag && tag.lang && tag.tagName?.length > 0 && tag.tagName.every(tagName => !!tagName.name));
 
 		return (
-			createVideoTagRequest && createVideoTagRequest?.tagNameList?.length > 0
-			&& isAllTagItemNotNull
+			createVideoTagRequest && createVideoTagRequest?.tagNameList?.length > 0 &&
+			isAllTagItemNotNull
 		);
 	}
 
@@ -159,8 +160,8 @@
 				isCreatingTag.value = false;
 				onFlyoutHide();
 			} else
-				// useToast(t.toast.no_language_selected, "warning");
-				useToast(t.toast.required_not_filled, "warning");
+				// useToast(t("toast.no_language_selected"), "warning");
+				useToast(t("toast.required_not_filled"), "warning");
 		} else if (shown === "cancel") showTagEditor.value = false;
 		else {
 			const text = search.value.trim().replaceAll(/\s+/g, " ");
@@ -172,7 +173,7 @@
 
 	/**
 	 * 用户点击一个搜索到的 TAG，将其添加到视频 TAG 列表中。
-	 * @param tag 用户点击的 TAG 数据。
+	 * @param tag - 用户点击的 TAG 数据。
 	 */
 	function addTag(tag: VideoTag) {
 		if (tag.tagId !== undefined && tag.tagId !== null && tag.tagId >= 0) {
@@ -189,7 +190,7 @@
 		editor.forEach(({ language, default: def }, index) => {
 			if (!language && def) {
 				editor[index].default = null;
-				useToast(t.toast.no_language_selected, "warning");
+				useToast(t("toast.no_language_selected"), "warning");
 			}
 			availableLanguages.value[index] = languages.filter(lang => {
 				if (lang.langId === language.langId) return true;
@@ -217,7 +218,7 @@
 						<Transition>
 							<div v-if="!isSearched" class="empty">
 								<Icon name="tag" />
-								<p>{{ t.unselected.tag }}</p>
+								<p>{{ $t('unselected.tag') }}</p>
 							</div>
 							<div v-else class="list">
 								<TransitionGroup>
@@ -233,7 +234,7 @@
 													{{ getDisplayVideoTagWithCurrentLanguage(currentLanguage, tag).originTagName }}
 												</div>
 											</div>
-											<p class="count">{{ t(100).video_count(100) }}</p>
+											<p class="count">{{ $t('video_count', 100, { named: { n: 100 } }) }}</p>
 										</div>
 										<div class="trailing-icons">
 											<SoftButton icon="edit" @click.stop />
@@ -244,20 +245,20 @@
 											<Icon name="add" />
 										</div>
 										<div class="content">
-											<p class="title">{{ t.tag.new }}</p>
+											<p class="title">{{ $t('tag.new') }}</p>
 										</div>
 									</div>
 								</TransitionGroup>
 							</div>
 						</Transition>
 					</div>
-					<TextBox v-model="search" icon="search" :placeholder="t.tag.search" @input="onInput" />
+					<TextBox v-model="search" icon="search" :placeholder="$t('tag.search')" @input="onInput" />
 				</div>
 				<div v-else class="page-editor">
 					<div class="list-wrapper">
 						<div class="list">
 							<template v-for="(item, index) in editor" :key="index">
-								<ComboBox v-model="item.language.langId" :placeholder="t.unselected.language">
+								<ComboBox v-model="item.language.langId" :placeholder="$t('unselected.language')">
 									<ComboBoxItem v-for="lang in availableLanguages[index]" :id="lang.langId" :key="lang.langId">{{ lang.langName }}</ComboBoxItem>
 								</ComboBox>
 								<TagsEditor v-model="item.values" v-model:default="item.default" v-model:editorOriginal="item.original" v-model:original="original" />
@@ -265,8 +266,8 @@
 						</div>
 					</div>
 					<div class="submit">
-						<Button class="secondary" :disabled="isCreatingTag" @click="switchTagEditor('cancel')">{{ t.step.cancel }}</Button>
-						<Button :disabled="isCreatingTag" :loading="isCreatingTag" @click="switchTagEditor('ok')">{{ t.step.ok }}</Button>
+						<Button class="secondary" :disabled="isCreatingTag" @click="switchTagEditor('cancel')">{{ $t('step.cancel') }}</Button>
+						<Button :disabled="isCreatingTag" :loading="isCreatingTag" @click="switchTagEditor('ok')">{{ $t('step.ok') }}</Button>
 					</div>
 				</div>
 			</Transition>

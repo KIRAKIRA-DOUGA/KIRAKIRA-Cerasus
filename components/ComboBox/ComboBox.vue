@@ -3,7 +3,7 @@
 		/** 内容占位符，当选中的一项不是任何一项有效的标识符时显示。 */
 		placeholder?: string;
 	}>(), {
-		placeholder: () => t.unselected.combobox, // 注意看，如果在 prop 的默认值中使用 i18n 则必须这样写。
+		placeholder: () => useI18n().t("unselected.combobox"),
 	});
 
 	const selected = defineModel<string>({ required: true });
@@ -152,8 +152,8 @@
 		@include round-large;
 		@include chip-shadow;
 		display: flex;
-		align-items: center;
 		justify-content: space-between;
+		align-items: center;
 		height: var(--height);
 		padding: 0 $start-indent;
 		color: c(text-color);
@@ -204,7 +204,7 @@
 		position: absolute;
 		z-index: 70;
 		width: calc(100% + 2 * $menu-padding);
-		margin: (-$menu-padding) (-$menu-padding);
+		margin: (-$menu-padding);
 		padding: $menu-padding 0;
 		overflow: clip;
 		color: c(text-color);

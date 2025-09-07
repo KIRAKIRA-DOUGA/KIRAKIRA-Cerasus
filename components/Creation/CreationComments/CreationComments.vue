@@ -71,19 +71,19 @@
 	<Comp>
 		<HeadingComments :count="commentsCount" />
 		<div class="send">
-			<UserAvatar :avatar="selfUserInfoStore.userAvatar" />
+			<UserAvatar :avatar="selfUserInfoStore.userInfo.avatar" />
 			<TextEditorRtf :videoId :editable />
 		</div>
 		<div class="toolbar">
 			<div class="left">
 				<Sort v-model="sort">
-					<SortItem id="rating">{{ t.rating }}</SortItem>
-					<SortItem id="date">{{ t.send_date }}</SortItem>
+					<SortItem id="rating">{{ $t("rating") }}</SortItem>
+					<SortItem id="date">{{ $t("send_date") }}</SortItem>
 				</Sort>
 			</div>
 			<div class="right">
 				<SoftButton icon="deletion_history" />
-				<TextBox v-model="search" :placeholder="t.search" icon="search" />
+				<TextBox v-model="search" :placeholder="$t('search')" icon="search" />
 				<Pagination v-model="currentPage" :pages="pageCount" :displayPageCount="7" :disabled="loading" />
 			</div>
 		</div>
@@ -120,7 +120,7 @@
 		</div>
 		<div v-else class="error">
 			<Icon name="error" />
-			<p>{{ t.toast.something_went_wrong }}</p>
+			<p>{{ $t("toast.something_went_wrong") }}</p>
 		</div>
 		<div class="toolbar bottom">
 			<Pagination v-model="currentPage" :pages="pageCount" :displayPageCount="7" :disabled="loading" />

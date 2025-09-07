@@ -123,8 +123,9 @@ export class TusFileUploader {
 	constructor(file: File, progress: Ref<number>, isUploadingVideo: Ref<boolean>) {
 		if (!file) {
 			this.step = "error";
-			useToast(t.toast.upload_file_not_found, "error");
-			throw new Error(t.toast.upload_file_not_found);
+			const { t } = useI18n();
+			useToast(t("toast.upload_file_not_found"), "error");
+			throw new Error(t("toast.upload_file_not_found"));
 		}
 		this.isUploadingVideo = isUploadingVideo;
 		this.process = new Promise<string>((resolve, reject) => {

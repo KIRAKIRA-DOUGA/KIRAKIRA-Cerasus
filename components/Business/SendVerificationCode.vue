@@ -8,6 +8,8 @@
 		disabled?: boolean;
 	}>();
 
+	const { t } = useI18n();
+
 	const emits = defineEmits<{
 		send: [];
 	}>();
@@ -23,7 +25,7 @@
 	 */
 	async function requestSendRegisterVerificationCodeEmail() {
 		if (!props.email) {
-			useToast(t.validation.required.email, "warning", 5000);
+			useToast(t("validation.required.email"), "warning", 5000);
 			return;
 		}
 		const locale = getCurrentLocaleLangCode();
@@ -35,7 +37,7 @@
 		if (!requestSendVerificationCodeResponse.isTimeout)
 			console.log(requestSendVerificationCodeResponse);
 		else
-			useToast(t.toast.too_many_requests, "warning", 5000);
+			useToast(t("toast.too_many_requests"), "warning", 5000);
 	}
 
 	/**
@@ -43,7 +45,7 @@
 	 */
 	async function requestSendChangeEmailVerificationCodeEmail() {
 		if (!props.email) {
-			useToast(t.validation.required.email, "warning", 5000);
+			useToast(t("validation.required.email"), "warning", 5000);
 			return;
 		}
 		const locale = getCurrentLocaleLangCode();
@@ -53,7 +55,7 @@
 		};
 		const requestSendChangeEmailVerificationCodeResult = await api.user.requestSendChangeEmailVerificationCode(requestSendChangeEmailVerificationCodeRequest);
 		if (requestSendChangeEmailVerificationCodeResult.success && requestSendChangeEmailVerificationCodeResult.isCoolingDown)
-			useToast(t.toast.cooling_down, "error", 5000);
+			useToast(t("toast.cooling_down"), "error", 5000);
 	}
 
 	/**
@@ -66,7 +68,7 @@
 		};
 		const requestSendChangePasswordVerificationCodeResult = await api.user.requestSendChangePasswordVerificationCode(requestSendChangePasswordVerificationCodeRequest);
 		if (requestSendChangePasswordVerificationCodeResult.success && requestSendChangePasswordVerificationCodeResult.isCoolingDown)
-			useToast(t.toast.cooling_down, "error", 5000);
+			useToast(t("toast.cooling_down"), "error", 5000);
 	}
 
 	/**
@@ -79,7 +81,7 @@
 		};
 		const sendUserEmailAuthenticatorVerificationCodeResult = await api.user.sendDeleteUserEmailAuthenticatorVerificationCode(sendUserDeleteEmailAuthenticatorVerificationCodeRequest);
 		if (sendUserEmailAuthenticatorVerificationCodeResult.success && sendUserEmailAuthenticatorVerificationCodeResult.isCoolingDown)
-			useToast(t.toast.cooling_down, "error", 5000);
+			useToast(t("toast.cooling_down"), "error", 5000);
 	}
 
 	/**
@@ -107,7 +109,7 @@
 			}
 			startTimeout();
 		} catch (error) {
-			useToast(t.toast.verification_code_send_failed, "error", 5000);
+			useToast(t("toast.verification_code_send_failed"), "error", 5000);
 			console.error("ERROR", "Failed to send verification code:", error);
 		}
 		isSendingEmail.value = false;
@@ -126,13 +128,13 @@
 		v-model="value"
 		required
 		icon="verified"
-		:placeholder="t.verification_code"
+		:placeholder="$t('verification_code')"
 		:pattern
 		autoComplete="one-time-code"
 	>
 		<template #actions>
 			<Button :disabled="!timeout.isTimeouted || props.disabled === true || isSendingEmail" @click="startTimeout(); sendVerificationCode();">
-				{{ (timeout.isResent ? t.resend : t.send) + (timeout.isTimeouted ? "" : ` (${timeout.timeout})`) }}
+				{{ (timeout.isResent ? $t('resend') : $t('send')) + (timeout.isTimeouted ? "" : ` (${timeout.timeout})`) }}
 			</Button>
 		</template>
 	</TextBox>

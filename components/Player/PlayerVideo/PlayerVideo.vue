@@ -4,6 +4,7 @@
 </docs>
 
 <script setup lang="ts">
+	const { t } = useI18n();
 	import type shaka from "shaka-player";
 	import { numbers } from "virtual:scss-var:theme/_variables";
 	import { basicDanmakuCommentStyle, createDanmakuComment } from "./PlayerVideoDanmakuSender.vue";
@@ -223,7 +224,7 @@
 				}));
 			}
 		} catch (error) {
-			useToast(t.player.error.getDanmaku, "error");
+			useToast(t("player.error.getDanmaku"), "error");
 			console.error("ERROR", "Failed to get danmaku:", error);
 		}
 	}
@@ -567,7 +568,7 @@
 
 <template>
 	<Comp :class="{ fullscreen, dark: fullscreen }">
-		<Modal v-model="showStats" icon="info" :title="t.player.stats" hideFooter>
+		<Modal v-model="showStats" icon="info" :title="$t('player.stats')" hideFooter>
 			<Accordion class="stats">
 				<AccordionItem title="Video File" shown noPadding>
 					<table>
@@ -737,14 +738,14 @@
 				<template #fallback>
 					<div class="danmaku-loading">
 						<LogoDanmakuLoading />
-						<span>{{ t.danmaku.list.loading }}</span>
+						<span>{{ $t('danmaku.list.loading') }}</span>
 					</div>
 				</template>
 			</ClientOnly>
 		</div>
 		<Menu v-model="menu" noFade>
-			<MenuItem icon="camera" @click="() => getScreenshot()">{{ t.player.screenshot }}</MenuItem>
-			<MenuItem icon="info" @click="showStats = true">{{ t.player.stats }}</MenuItem>
+			<MenuItem icon="camera" @click="() => getScreenshot()">{{ $t('player.screenshot') }}</MenuItem>
+			<MenuItem icon="info" @click="showStats = true">{{ $t('player.stats') }}</MenuItem>
 			<hr />
 			<MenuItem icon="yozora" class="version" @click="showAboutPlayer = true">YOZORA PLAYER</MenuItem>
 		</Menu>

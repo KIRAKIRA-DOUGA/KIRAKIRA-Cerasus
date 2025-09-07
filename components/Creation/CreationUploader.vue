@@ -23,7 +23,7 @@
 	<Comp>
 		<UserContent :avatar="avatar" :nickname="nickname" :followers="followers" :uid="uid" center>
 			<template #description>
-				{{ followers }} {{ t(followers).follower }}
+				{{ followers }} {{ $t('follower', followers) }}
 			</template>
 		</UserContent>
 		<FollowButton v-if="!isSelf" :uid :isFollowing />

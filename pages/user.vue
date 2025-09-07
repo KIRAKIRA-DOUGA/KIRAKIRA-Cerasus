@@ -6,7 +6,7 @@
 		// { id: "posts", name: "post", icon: "post" }, // 帖子
 		// { id: "audios", icon: "music" }, // 音频
 		// { id: "albums", icon: "photo_library" }, // 相簿或者相册，类似QQ空间相册，所有帖子配图默认也会放在这里，相簿名称可以直接叫「帖子」。
-		{ id: "collections", name: "collection", icon: "star" },
+		{ id: "collections", name: "collection.title", icon: "star" },
 	];
 </script>
 
@@ -31,6 +31,7 @@
 		},
 	});
 
+	const { t } = useI18n();
 	const selfUserInfoStore = useSelfUserInfoStore();
 
 	const headerCookie = useRequestHeaders(["cookie"]);
@@ -94,7 +95,7 @@
 
 	/**
 	 * fetch user profile data
-	*/
+	 */
 	async function fetchUserData() {
 		if (urlUid.value === selfUserInfoStore.userInfo.uid)
 			isSelf.value = true;
@@ -119,8 +120,7 @@
 	await fetchUserData();
 	watch(() => [urlUid.value, selfUid.value], fetchUserData);
 
-	const titleAffixString = t.user_page.title_affix; // HACK: Bypass "A composable that requires access to the Nuxt instance was called outside of a plugin."
-	const titleUserNickname = computed(() => isSelf.value ? selfUserInfoStore.userInfo.userNickname ? titleAffixString(selfUserInfoStore.userInfo.userNickname) : "" : userInfo.value?.result?.userNickname ? titleAffixString(userInfo.value?.result?.userNickname) : "");
+	const titleUserNickname = computed(() => isSelf.value ? selfUserInfoStore.userInfo.userNickname ? t("user_page.title_affix", [selfUserInfoStore.userInfo.userNickname]) : "" : userInfo.value?.result?.userNickname ? t("user_page.title_affix", [userInfo.value?.result?.userNickname]) : "");
 	useHead({ title: titleUserNickname });
 </script>
 
@@ -130,7 +130,7 @@
 			<div>
 				<div class="content">
 					<UserContent
-						v-tooltip="isSelf ? t.profile.edit : undefined"
+						v-tooltip="isSelf ? $t('profile.edit') : undefined"
 						:avatar="isSelf ? selfUserInfoStore.userInfo.avatar : userInfo?.result?.avatar"
 						:username="isSelf ? selfUserInfoStore.userInfo.username : userInfo?.result?.username"
 						:nickname="isSelf ? selfUserInfoStore.userInfo.userNickname : userInfo?.result?.userNickname"
@@ -146,20 +146,20 @@
 					</UserContent>
 					<div class="actions">
 						<!-- <SoftButton v-tooltip:top="'私信'" icon="email" /> -->
-						<SoftButton v-if="!isSelf" v-tooltip:top="t.more" icon="more_vert" @click="e => actionMenu = [e, 'y']" />
+						<SoftButton v-if="!isSelf" v-tooltip:top="$t('more')" icon="more_vert" @click="e => actionMenu = [e, 'y']" />
 						<Menu v-if="!isSelf" v-model="actionMenu">
-							<MenuItem icon="groups">{{ t.add_to_group }}</MenuItem>
-							<MenuItem icon="badge">{{ t.modify_memo }}</MenuItem>
+							<MenuItem icon="groups">{{ $t('add_to_group') }}</MenuItem>
+							<MenuItem icon="badge">{{ $t('modify_memo') }}</MenuItem>
 							<hr />
-							<MenuItem icon="flag">{{ t.report }}</MenuItem>
-							<MenuItem icon="block" @click="blockUser">{{ t.block_user }}</MenuItem>
+							<MenuItem icon="flag">{{ $t('report') }}</MenuItem>
+							<MenuItem icon="block" @click="blockUser">{{ $t('block_user') }}</MenuItem>
 						</Menu>
 						<FollowButton v-if="!isSelf" :uid="urlUid" :isFollowing />
-						<Button v-if="isSelf" href="/upload">{{ t.manage_content }}</Button>
+						<Button v-if="isSelf" href="/upload">{{ $t('manage_content') }}</Button>
 					</div>
 				</div>
 				<TabBar v-model="currentTab">
-					<TabItem v-for="tab in tabs" :id="tab.id" :key="tab.id" :icon="tab.icon" :to="`/user/${urlUid}/${tab.id}`">{{ t(2)[tab.name || "home"] }}</TabItem>
+					<TabItem v-for="tab in tabs" :id="tab.id" :key="tab.id" :icon="tab.icon" :to="`/user/${urlUid}/${tab.id}`">{{ $t(tab.name || "home", 2) }}</TabItem>
 				</TabBar>
 			</div>
 		</header>

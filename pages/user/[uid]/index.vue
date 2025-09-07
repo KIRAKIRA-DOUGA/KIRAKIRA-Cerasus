@@ -84,33 +84,33 @@
 				<div class="user-counts">
 					<div>
 						<span class="value">{{ 0 }}</span>
-						<p>{{ t(0).following }}</p>
+						<p>{{ $t('following', 0) }}</p>
 					</div>
 					<div>
 						<span class="value">{{ 0 }}</span>
-						<p>{{ t(0).follower }}</p>
+						<p>{{ $t('follower', 0) }}</p>
 					</div>
 					<div>
 						<span class="value">{{ 0 }}</span>
-						<p>{{ t(0).watched }}</p>
+						<p>{{ $t('watched', 0) }}</p>
 					</div>
 					<div>
 						<span class="value">{{ 0 }}</span>
-						<p>{{ t(0).rating }}</p>
+						<p>{{ $t('rating', 0) }}</p>
 					</div>
 				</div>
 			</div>
 
 			<div class="toolbox-card user-info-container">
 				<div class="user-info">
-					<h3>{{ t.user.info }}</h3>
+					<h3>{{ $t('user.info') }}</h3>
 					<div class="items">
-						<div v-if="userBirthday" v-tooltip:x="t.user.birthday" class="birthday">
+						<div v-if="userBirthday" v-tooltip:x="$t('user.birthday')" class="birthday">
 							<Icon name="birthday" />
 							<DateTime :dateTime="new Date(userBirthday)" />
 						</div>
 
-						<div v-if="userJoinDate" v-tooltip:x="t.user.join_time" class="join-time">
+						<div v-if="userJoinDate" v-tooltip:x="$t('user.join_time')" class="join-time">
 							<Icon name="history" />
 							<DateTime :dateTime="new Date(userJoinDate)" />
 						</div>

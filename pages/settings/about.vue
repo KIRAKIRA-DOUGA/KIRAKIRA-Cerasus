@@ -1,30 +1,16 @@
 <script setup lang="ts">
 	const nuxt = useNuxtApp();
+	const { t } = useI18n();
 	const isDevMode = inject<Ref<boolean>>("isDevMode");
 	const isLocalBackend = computed(() => environment.backendUri.includes("https://localhost"));
 
 	const { gitBranch, gitCommit } = useRuntimeConfig().public;
 
 	const repositories: { name: string; codeName?: string; link: string; icon?: string }[] = [
-		{ name: t.about.repositories.frontend, codeName: "KIRAKIRA Cerasus", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus" },
-		{ name: t.about.repositories.backend, codeName: "KIRAKIRA Rosales", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Rosales" },
-		{ name: t.about.repositories.markdown, codeName: "KIRAKIRA Flavored Markdown", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Flavored-Markdown" },
+		{ name: t("about.repositories.frontend"), codeName: "KIRAKIRA Cerasus", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Cerasus" },
+		{ name: t("about.repositories.backend"), codeName: "KIRAKIRA Rosales", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Rosales" },
+		{ name: t("about.repositories.markdown"), codeName: "KIRAKIRA Flavored Markdown", link: "https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Flavored-Markdown" },
 	];
-
-	const team = reactive<{ nickname?: string; username?: string; job: string[]; uid: number; avatar?: string }[]>([
-		{ uid: 1, job: [t.about.staff.webmistress, t.about.staff.designer] },
-		{ uid: 3, job: [t.about.staff.frontend, t.about.staff.designer] },
-		{ uid: 12, job: [t.about.staff.frontend] },
-		{ uid: 5, job: [t.about.staff.designer] },
-		// { uid: NaN, name: "鸣", job: [t.about.staff.frontend] },
-		{ uid: 2, job: [t.about.staff.backend] },
-		{ uid: 9, job: [t.about.staff.translator(getLocaleName("ja"))] },
-		{ uid: 4, job: [t.about.staff.translator(getLocaleName("zh-Hant"))] },
-		// { uid: NaN, name: "HanceyMica", job: [t.about.staff.translator(getLocaleName("zh-Hant"))] },
-		{ uid: 8, job: [t.about.staff.translator(getLocaleName("vi"))] },
-		{ uid: 7, job: [t.about.staff.translator(getLocaleName("vi"))] },
-		{ uid: 209, job: [t.about.staff.translator(getLocaleName("yue"))] },
-	]);
 
 	const technologies: { name: string; version?: string; ability: string; icon?: string; monochrome?: boolean; link: string }[] = [
 		{ name: "Nuxt", version: nuxt.versions.nuxt || "3", ability: "Vue Framework for Frontend", icon: "nuxt", link: "https://nuxt.com/" },
@@ -45,7 +31,7 @@
 	}) satisfies Partial<Record<DeclaredIcons, string>>;
 	console.log(" isLocalBackend", isLocalBackend.value);
 
-	const sloganLines = computed(() => t.about.slogan.toString().split("\n"));
+	const sloganLines = computed(() => t("about.slogan").toString().split("\n"));
 	const remainingClick = ref(4);
 
 	/**
@@ -56,27 +42,16 @@
 		replayAnimation(e.currentTarget as HTMLDivElement, "active");
 		clearAllToast();
 		if (isDevMode?.value) {
-			useToast(t.toast.developer_mode_already_enabled, "info");
+			useToast(t("toast.developer_mode_already_enabled"), "info");
 			return;
 		} else if (remainingClick.value) {
-			useToast(t.toast.developer_mode_remain_clicks(remainingClick.value--), "info");
+			useToast(t("toast.developer_mode_remain_clicks", [remainingClick.value--]), "info");
 			return;
 		} else {
 			isDevMode && (isDevMode.value = true);
-			useToast(t.toast.developer_mode_enabled, "success");
+			useToast(t("toast.developer_mode_enabled"), "success");
 		}
 	}
-
-	team.forEach(async developer => {
-		const { uid } = developer;
-		if (!Number.isFinite(uid)) return;
-		const userInfo = await api.user.getUserInfo({ uid });
-		if (userInfo.success) {
-			developer.nickname = userInfo.result?.userNickname;
-			developer.username = userInfo.result?.username;
-			developer.avatar = userInfo.result?.avatar;
-		}
-	});
 </script>
 
 <template>
@@ -95,7 +70,7 @@
 			</div>
 		</Contents>
 
-		<Subheader icon="link">{{ t.about.repositories }}</Subheader>
+		<Subheader icon="link">{{ $t('about.repositories.title') }}</Subheader>
 		<section>
 			<SettingsChipItem
 				v-for="repo in repositories"
@@ -107,23 +82,7 @@
 			>{{ repo.name }}</SettingsChipItem>
 		</section>
 
-		<Subheader icon="people">{{ t.about.team }}</Subheader>
-		<section>
-			<SettingsChipItem
-				v-for="staff in team"
-				:key="staff.username"
-				:image="staff.avatar"
-				icon="account_circle"
-				:details="`${staff.job.join(' / ')} - UID ${staff.uid}`"
-				trailingIcon="open_in_new"
-				:href="`/user/${staff.uid}`"
-			>
-				<span class="nickname">{{ staff.nickname }}</span>
-				<span class="username">@{{ staff.username }}</span>
-			</SettingsChipItem>
-		</section>
-
-		<Subheader icon="build">{{ t.about.technologies_used }}</Subheader>
+		<Subheader icon="build">{{ $t('about.technologies_used') }}</Subheader>
 		<section>
 			<SettingsChipItem
 				v-for="tech in technologies"

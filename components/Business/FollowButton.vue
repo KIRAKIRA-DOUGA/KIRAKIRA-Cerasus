@@ -10,6 +10,8 @@
 		isFollowing: boolean;
 	}>();
 
+	const { t } = useI18n();
+
 	const isFollowing = ref(props.isFollowing); // 是否正在关注
 	const isTogglingFollow = ref(false); // 是否正在发送关注或取消关注用户的请求
 	const followButton = ref<InstanceType<typeof Button>>(); // 关注按钮实例
@@ -53,9 +55,9 @@
 			if (data.value?.success)
 				isFollowing.value = true;
 			else
-				useToast(t.toast.something_went_wrong, "error", 5000);
+				useToast(t("toast.something_went_wrong"), "error", 5000);
 		} catch (error) {
-			useToast(t.toast.something_went_wrong, "error", 5000);
+			useToast(t("toast.something_went_wrong"), "error", 5000);
 			console.error("ERROR", "关注用户时出错：", error);
 		}
 		isTogglingFollow.value = false;
@@ -75,11 +77,11 @@
 				isFollowing.value = false;
 			else {
 				isFollowing.value = true;
-				useToast(t.toast.something_went_wrong, "error", 5000);
+				useToast(t("toast.something_went_wrong"), "error", 5000);
 			}
 		} catch (error) {
 			isFollowing.value = true;
-			useToast(t.toast.something_went_wrong, "error", 5000);
+			useToast(t("toast.something_went_wrong"), "error", 5000);
 			console.error("ERROR", "取消关注用户时出错：", error);
 		}
 		isTogglingFollow.value = false;
@@ -95,9 +97,9 @@
 		:loading="isTogglingFollow"
 		@click="onFollowButtonClick"
 	>
-		{{ isFollowing ? t.following : t.follow_verb }}
+		{{ isFollowing ? $t("following") : $t("follow_verb") }}
 		<Menu v-model="unfollowMenu">
-			<MenuItem icon="close" @click="onUnfollowButtonClick">{{ t.unfollow_verb }}</MenuItem>
+			<MenuItem icon="close" @click="onUnfollowButtonClick">{{ $t("unfollow_verb") }}</MenuItem>
 		</Menu>
 	</Button>
 </template>

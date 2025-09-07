@@ -59,7 +59,7 @@
 		<div class="ellipsis-container-shadow"></div>
 		<div class="bottom">
 			<h2>{{ message }}</h2>
-			<Button href="/">{{ t.navigation.return_to_home }}</Button>
+			<Button href="/">{{ $t("navigation.return_to_home") }}</Button>
 		</div>
 	</div>
 </template>
