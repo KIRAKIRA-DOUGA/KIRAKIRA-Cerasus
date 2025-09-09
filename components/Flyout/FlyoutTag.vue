@@ -234,7 +234,7 @@
 													{{ getDisplayVideoTagWithCurrentLanguage(currentLanguage, tag).originTagName }}
 												</div>
 											</div>
-											<p class="count">{{ $t('video_count', 100, { named: { n: 100 } }) }}</p>
+											<p class="count">{{ $t('video_count', 100, { list: [100] }) }}</p>
 										</div>
 										<div class="trailing-icons">
 											<SoftButton icon="edit" @click.stop />

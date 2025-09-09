@@ -128,8 +128,8 @@
 						</div>
 						<div class="right">
 							<slot name="footer-right">
-								<Button class="secondary" @click="open = false">{{ $t('step.cancel') }}</Button>
-								<Button @click="open = false">{{ $t('step.ok') }}</Button>
+								<Button class="secondary" @click="open = false">{{ $t("step.cancel") }}</Button>
+								<Button @click="open = false">{{ $t("step.ok") }}</Button>
 							</slot>
 						</div>
 					</div>

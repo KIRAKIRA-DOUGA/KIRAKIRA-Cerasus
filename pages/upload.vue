@@ -151,7 +151,7 @@
 					<div class="outline normal"></div>
 					<div class="outline successful"></div>
 				</div>
-				<CountCard :value="0" icon="movie" :name="$t('video', 0)" />
+				<CountCard :value="0" icon="movie" :name="$t('video', 2)" />
 				<CountCard :value="0" icon="play" :name="$t('sort.view')" />
 			</div>
 

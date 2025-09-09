@@ -204,7 +204,7 @@
 		position: absolute;
 		z-index: 70;
 		width: calc(100% + 2 * $menu-padding);
-		margin: (-$menu-padding);
+		margin: -$menu-padding;
 		padding: $menu-padding 0;
 		overflow: clip;
 		color: c(text-color);

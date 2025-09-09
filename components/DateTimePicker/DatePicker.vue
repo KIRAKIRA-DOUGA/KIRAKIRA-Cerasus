@@ -45,7 +45,7 @@
 	const isChineseCalendar = computed(() => value.value.calendarId === "chinese");
 	const format = computed(() => getLocaleDateFormat(locale));
 	const staticFields = {
-		calendar: { name: "calendar", values: availableCalendars, getDisplayValue: calendar => t("calendar." + calendar) } satisfies BaseDateTimePickerField<string>,
+		calendar: { name: "calendar", values: availableCalendars, getDisplayValue: calendar => t(`calendar.${calendar}`) } satisfies BaseDateTimePickerField<string>,
 		weekday: { name: "weekday", text: () => format.value.weekdays[value.value.dayOfWeek % 7], minWidth: "2em" },
 		y: {
 			name: "year",

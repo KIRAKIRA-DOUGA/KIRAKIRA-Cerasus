@@ -68,13 +68,13 @@
 				:key="cat"
 				:badge="categories?.get(cat.toLowerCase())"
 			>
-				{{ $t('category.' + cat.toLowerCase()) }}
+				{{ $t(`category.${cat.toLowerCase()}`) }}
 			</TabItem>
 		</TabBar>
 		<InfoBar :title="$t('announcement.title')" lite>
 			<TransInterpolation keypath="announcement.homepage">
 				<template #discord-server>
-					<a href="https://discord.gg/uVd9ZJzEy7" target="_blank">{{ $t('platform.discord_server') }}</a>
+					<a href="https://discord.gg/uVd9ZJzEy7" target="_blank">{{ $t("platform.discord.server") }}</a>
 				</template>
 			</TransInterpolation>
 		</InfoBar>

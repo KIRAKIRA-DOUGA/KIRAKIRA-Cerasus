@@ -87,7 +87,7 @@
 				:id="item"
 				:key="item"
 				v-model="cookieThemeType"
-				:title="$t('scheme.' + item)"
+				:title="$t(`scheme.${item}`)"
 				:ripple="false"
 			>
 				<LogoThemePreview :theme="item" />
@@ -101,7 +101,7 @@
 				:id="item.color"
 				:key="item.color"
 				v-model="cookieThemeColor"
-				:title="$t('palette.' + item.color)"
+				:title="$t(`palette.${item.color}`)"
 				class="force-color"
 				:class="[item.color]"
 				:checked="item.color === DEFAULT_PALETTE && cookieThemeColor === 'wallpaper' && !backgroundImages.shown || undefined"
@@ -118,7 +118,7 @@
 					<div class="overlay light"></div>
 					<div class="overlay color"></div>
 					<div>
-						<h3>{{ $t('palette.' + item.color) }}</h3>
+						<h3>{{ $t(`palette.${item.color}`) }}</h3>
 						<p lang="ja">{{ item.subtitle }}</p>
 					</div>
 					<Icon name="palette" />
@@ -237,7 +237,7 @@
 			</Flyout>
 		</ClientOnly>
 
-		<Subheader icon="more_horiz">{{ $t('other', 0) }}</Subheader>
+		<Subheader icon="more_horiz">{{ $t("other", 2) }}</Subheader>
 		<section list>
 			<ToggleSwitch v-model="cookieColoredSidebar" v-ripple icon="dehaze">{{ $t('appearance.colorful_navbar') }}</ToggleSwitch>
 			<ToggleSwitch v-model="appSettings.akkarinGuestAvatar" v-ripple :icon="appSettings.akkarinGuestAvatar ? 'akkarin' : 'person'">{{ $t('appearance.akkarin_guest_avatar') }}</ToggleSwitch>

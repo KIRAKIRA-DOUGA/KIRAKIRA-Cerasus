@@ -8,7 +8,7 @@
 
 	const drawerItems: { name: string; icon: DeclaredIcons; route?: string }[] = [
 		{ name: t("history"), icon: "history", route: "/history" },
-		{ name: t("collection.title", 0), icon: "star", route: "/collections" },
+		{ name: t("collection.title", 2), icon: "star", route: "/collections" },
 		{ name: t("upload"), icon: "upload", route: "/upload" },
 	];
 
@@ -53,7 +53,7 @@
 			</div>
 		</div>
 		<div class="tab-bar vertical"><!-- 假装是 TabBar -->
-			<TabItem id="settings" v-ripple icon="settings" _internalIsVertical @click="to('/settings')">{{ $t('settings.title') }}</TabItem>
+			<TabItem id="settings" v-ripple icon="settings" _internalIsVertical @click="to('/settings')">{{ $t("settings.title") }}</TabItem>
 		</div>
 	</Comp>
 </template>

@@ -454,7 +454,7 @@
 						:required="true"
 						type="password"
 						icon="lock"
-						:placeholder="$t('password._')"
+						:placeholder="$t('password.title')"
 						autoComplete="current-password"
 					/>
 				</form>

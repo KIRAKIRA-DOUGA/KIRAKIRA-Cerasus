@@ -84,19 +84,19 @@
 				<div class="user-counts">
 					<div>
 						<span class="value">{{ 0 }}</span>
-						<p>{{ $t('following', 0) }}</p>
+						<p>{{ $t('following', 2) }}</p>
 					</div>
 					<div>
 						<span class="value">{{ 0 }}</span>
-						<p>{{ $t('follower', 0) }}</p>
+						<p>{{ $t('follower', 2) }}</p>
 					</div>
 					<div>
 						<span class="value">{{ 0 }}</span>
-						<p>{{ $t('watched', 0) }}</p>
+						<p>{{ $t('watched', 2) }}</p>
 					</div>
 					<div>
 						<span class="value">{{ 0 }}</span>
-						<p>{{ $t('rating', 0) }}</p>
+						<p>{{ $t('rating', 2) }}</p>
 					</div>
 				</div>
 			</div>

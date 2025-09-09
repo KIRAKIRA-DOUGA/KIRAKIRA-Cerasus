@@ -128,7 +128,7 @@
 			<TabBar v-model="selectedTab" @movingForTransition="name => transitionName = name">
 				<TabItem id="info">{{ $t('info') }}</TabItem>
 				<TabItem id="comments">{{ $t('comments') }}</TabItem>
-				<TabItem id="danmakus">{{ $t('danmaku.title', 0) }}</TabItem>
+				<TabItem id="danmakus">{{ $t('danmaku.title', 2) }}</TabItem>
 			</TabBar>
 		</div>
 		<div class="below-player">

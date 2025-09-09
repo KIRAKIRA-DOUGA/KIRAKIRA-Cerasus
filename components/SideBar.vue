@@ -110,7 +110,7 @@
 			<SoftButton v-tooltip="$t('home')" icon="home" href="/" />
 			<SoftButton v-tooltip="$t('search')" icon="search" href="/search" />
 			<SoftButton v-tooltip="$t('history')" icon="history" href="/history" />
-			<SoftButton v-tooltip="$t('collection.title', 0)" icon="star" href="/collections" />
+			<SoftButton v-tooltip="$t('collection.title', 2)" icon="star" href="/collections" />
 			<SoftButton v-tooltip="$t('feed.following')" icon="feed" href="/feed/following" />
 			<SoftButton v-tooltip="$t('upload.title')" icon="upload" href="/upload" />
 		</div>
@@ -135,7 +135,7 @@
 			<Avatar class="pc" @click="onClickUser" />
 			<SoftButton
 				v-if="selfUserInfoStore.isLogined"
-				v-tooltip="$t('notification', 0)"
+				v-tooltip="$t('notification', 2)"
 				icon="notifications"
 				:active="!!flyoutNotifications"
 				@click="e => flyoutNotifications = [e]"
@@ -156,9 +156,9 @@
 	<Transition>
 		<nav v-show="!hideBottomNav" :[scopeId]="''">
 			<div class="icons">
-				<BottomNavItem icon="home" href="/">{{ $t('home') }}</BottomNavItem>
-				<BottomNavItem icon="category" href="/category">{{ $t('category.title') }}</BottomNavItem>
-				<BottomNavItem icon="feed" href="/feed/following">{{ $t('feed.following') }}</BottomNavItem>
+				<BottomNavItem icon="home" href="/">{{ $t("home") }}</BottomNavItem>
+				<BottomNavItem icon="category" href="/category">{{ $t("category.title") }}</BottomNavItem>
+				<BottomNavItem icon="feed" href="/feed/following">{{ $t("feed.following") }}</BottomNavItem>
 			</div>
 		</nav>
 	</Transition>

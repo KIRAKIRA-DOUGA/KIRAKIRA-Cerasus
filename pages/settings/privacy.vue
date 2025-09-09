@@ -18,8 +18,8 @@
 		{ id: "privary.birthday", name: t("user.birthday"), icon: "birthday" },
 		{ id: "privary.age", name: t("user.age"), icon: "calendar" },
 		{ id: "privary.follow", name: t("following"), icon: "person_add" },
-		{ id: "privary.fans", name: t("follower", 0), icon: "person_heart" },
-		{ id: "privary.favorites", name: t("collection.title", 0), icon: "star" },
+		{ id: "privary.fans", name: t("follower", 2), icon: "person_heart" },
+		{ id: "privary.favorites", name: t("collection.title", 2), icon: "star" },
 	];
 
 	/**

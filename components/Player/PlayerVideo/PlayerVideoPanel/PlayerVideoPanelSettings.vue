@@ -113,7 +113,6 @@
 							<CheckCard v-for="([filter, style], key) in filters" :key="key" v-model="filterBooleanProxy[key]">
 								{{ filter }}
 								<template #image>
-									<!-- @vue-ignore - Placeholder array is valid at runtime, ignore TS template typing -->
 									<NuxtImg
 										:style
 										:provider="environment.cloudflareImageProvider"
@@ -123,7 +122,6 @@
 										format="avif"
 										width="200"
 										height="200"
-										:placeholder="[20, 20, 100, 2]"
 									/>
 								</template>
 							</CheckCard>

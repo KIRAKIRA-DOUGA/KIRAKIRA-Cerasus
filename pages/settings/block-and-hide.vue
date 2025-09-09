@@ -687,7 +687,7 @@
 
 		<hr />
 
-		<Subheader icon="tag">{{ $t('tag', 0) }}</Subheader>
+		<Subheader icon="tag">{{ $t("tag", 2) }}</Subheader>
 		<span>{{ $t('block_and_hide.tag.description') }}</span>
 
 		<div class="tags">
@@ -719,7 +719,7 @@
 			<Button icon="close" @click="removeTag(hoveredTagContent![0])">{{ $t('delete') }}</Button>
 		</Flyout>
 
-		<Subheader icon="key">{{ $t('keyword', 0) }}</Subheader>
+		<Subheader icon="key">{{ $t("keyword", 2) }}</Subheader>
 		<span>{{ $t('block_and_hide.keyword.description') }}</span>
 		<section>
 			<SettingsChipItem

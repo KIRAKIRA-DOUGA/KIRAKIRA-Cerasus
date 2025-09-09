@@ -388,7 +388,7 @@
 					</section>
 
 					<section>
-						<Subheader icon="tag">{{ $t('tag', 0) }}</Subheader>
+						<Subheader icon="tag">{{ $t("tag", 2) }}</Subheader>
 						<div class="tags">
 							<Tag
 								v-for="tag in displayTags"

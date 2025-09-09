@@ -45,7 +45,7 @@
 			</div>
 			<div>
 				<span class="value">233</span>
-				<p>{{ $t('follower', 0) }}</p>
+				<p>{{ $t('follower', 2) }}</p>
 			</div>
 			<div>
 				<span class="value">233</span>

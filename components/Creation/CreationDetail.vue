@@ -128,10 +128,10 @@
 			<div class="data">
 				<CreationDetailItem icon="play"><NumberFlow :value="count.play" /></CreationDetailItem>
 				<CreationDetailItem icon="calendar"><DateTime :dateTime="date" showTime /></CreationDetailItem>
-				<CreationDetailItem icon="category">{{ $t('category.' + category) }}</CreationDetailItem>
-				<CreationDetailItem v-if="copyright === 'original'" icon="fact_check">{{ $t('original') }}</CreationDetailItem>
-				<CreationDetailItem v-if="copyright === 'authorized-repost'" icon="local_shipping">{{ $t('authorized_repost') }}</CreationDetailItem>
-				<CreationDetailItem v-if="copyright === 'repost'" icon="local_shipping">{{ $t('repost') }}</CreationDetailItem>
+				<CreationDetailItem icon="category">{{ $t(`category.${category}`) }}</CreationDetailItem>
+				<CreationDetailItem v-if="copyright === 'original'" icon="fact_check">{{ $t("original") }}</CreationDetailItem>
+				<CreationDetailItem v-if="copyright === 'authorized-repost'" icon="local_shipping">{{ $t("authorized_repost") }}</CreationDetailItem>
+				<CreationDetailItem v-if="copyright === 'repost'" icon="local_shipping">{{ $t("repost") }}</CreationDetailItem>
 			</div>
 		</div>
 		<div class="actions">
@@ -152,11 +152,11 @@
 			<div class="extra">
 				<div>
 					<SoftButton v-tooltip:bottom="$t('watch_later')" icon="watch_later" @click="watchLater" :active="interactionState.watchLater" />
-					<span class="pe">{{ $t('watch_later') }}</span>
+					<span class="pe">{{ $t("watch_later") }}</span>
 				</div>
 				<div>
 					<SoftButton v-tooltip:bottom="$t('more')" icon="more_vert" class="pe" @click="e => menuMoreAction = [e, 'bottom']" />
-					<span class="pe">{{ $t('more') }}</span>
+					<span class="pe">{{ $t("more") }}</span>
 				</div>
 
 				<SoftButton v-tooltip:bottom="$t('share')" icon="share" class="pc" @click="share" />
@@ -165,10 +165,10 @@
 				<SoftButton v-tooltip:bottom="$t('report')" icon="flag" class="pc" @click="report" />
 
 				<Menu v-model="menuMoreAction">
-					<MenuItem icon="share">{{ $t('share') }}</MenuItem>
-					<MenuItem icon="photo">{{ $t('view_cover') }}</MenuItem>
-					<MenuItem icon="download">{{ $t('download') }}</MenuItem>
-					<MenuItem icon="flag">{{ $t('report') }}</MenuItem>
+					<MenuItem icon="share">{{ $t("share") }}</MenuItem>
+					<MenuItem icon="photo">{{ $t("view_cover") }}</MenuItem>
+					<MenuItem icon="download">{{ $t("download") }}</MenuItem>
+					<MenuItem icon="flag">{{ $t("report") }}</MenuItem>
 				</Menu>
 			</div>
 		</div>
