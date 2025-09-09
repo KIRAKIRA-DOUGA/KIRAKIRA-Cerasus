@@ -58,15 +58,15 @@
 		<div class="invitation-code-counts chip">
 			<div>
 				<span>{{ totalInvitationCode }}</span>
-				<p>{{ $t('total') }}</p>
+				<p>{{ $t("total") }}</p>
 			</div>
 			<div>
 				<span>{{ totalUsedInvitationCode }}</span>
-				<p>{{ $t('used') }}</p>
+				<p>{{ $t("used") }}</p>
 			</div>
 			<div>
 				<span>{{ totalUnusedInvitationCode }}</span>
-				<p>{{ $t('unused') }}</p>
+				<p>{{ $t("unused") }}</p>
 			</div>
 		<!-- TODO: Creatable Invitation Code Count -->
 		<!-- <div>

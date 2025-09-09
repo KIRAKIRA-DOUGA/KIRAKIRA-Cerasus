@@ -73,7 +73,7 @@
 				<Transition :name="transitionName" mode="out-in">
 					<div v-if="selectedSettingsTab === 'player' " class="page-player">
 						<!-- TODO: 需详细阐述是自动播放啥？分 P、合集的下一集、还是相关视频？ -->
-						<ToggleSwitch v-model="settings.autoplay" v-ripple icon="autoplay">{{ $t('player.autoplay') }}</ToggleSwitch>
+						<ToggleSwitch v-model="settings.autoplay" v-ripple icon="autoplay">{{ $t("player.autoplay") }}</ToggleSwitch>
 						<p class="subheading">{{ $t("danmaku.title") }}</p>
 						<!-- TODO: 检查字号缩放功能的可用性并显示缩放数值。 -->
 						<SettingsSlider
@@ -82,29 +82,29 @@
 							:max="2"
 							:defaultValue="1"
 							icon="font_size"
-						>{{ $t('text.size') }}</SettingsSlider>
+						>{{ $t("text.size") }}</SettingsSlider>
 						<SettingsSlider
 							v-model="settings.danmaku.opacity"
 							:min="0"
 							:max="1"
 							:defaultValue="1"
 							icon="opacity"
-						>{{ $t('opacity') }}</SettingsSlider>
-						<p class="subheading">{{ $t('player.control_bar.title') }}</p>
+						>{{ $t("opacity") }}</SettingsSlider>
+						<p class="subheading">{{ $t("player.control_bar.title") }}</p>
 						<ToggleSwitch v-model="settings.controller.showStop" v-ripple icon="stop">
-							{{ !settings.controller.showFrameByFrame ? $t('player.control_bar.stop') : $t('player.control_bar.first_last_frame') }}
-							<template #details>{{ !settings.controller.showFrameByFrame ? $t('player.control_bar.stop_description') : $t('player.control_bar.first_last_frame_description') }}</template>
+							{{ !settings.controller.showFrameByFrame ? $t("player.control_bar.stop") : $t("player.control_bar.first_last_frame") }}
+							<template #details>{{ !settings.controller.showFrameByFrame ? $t("player.control_bar.stop_description") : $t("player.control_bar.first_last_frame_description") }}</template>
 						</ToggleSwitch>
 						<ToggleSwitch v-model="settings.controller.showReplay" v-ripple icon="replay">
-							{{ $t('player.control_bar.replay') }}
-							<template #details>{{ $t('player.control_bar.replay_description') }}</template>
+							{{ $t("player.control_bar.replay") }}
+							<template #details>{{ $t("player.control_bar.replay_description") }}</template>
 						</ToggleSwitch>
 						<ToggleSwitch v-model="settings.controller.showFrameByFrame" v-ripple icon="slow_forward">
-							{{ $t('player.control_bar.frame_by_frame') }}
-							<template #details>{{ $t('player.control_bar.frame_by_frame_description') }}</template>
+							{{ $t("player.control_bar.frame_by_frame") }}
+							<template #details>{{ $t("player.control_bar.frame_by_frame_description") }}</template>
 						</ToggleSwitch>
 						<ToggleSwitch v-model="settings.controller.autoResumePlayAfterSeeking" v-ripple icon="play">
-							{{ $t('player.control_bar.auto_resume_play_after_seeking') }}
+							{{ $t("player.control_bar.auto_resume_play_after_seeking") }}
 						</ToggleSwitch>
 					</div>
 

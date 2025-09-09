@@ -239,8 +239,8 @@
 		</PlayerVideoMenu>
 		<PlayerVideoMenu v-model="rateMenu">
 			<menu @contextmenu.prevent>
-				<ToggleSwitch v-model="resample" v-ripple.overlay icon="tunning">{{ $t('player.speed.resample') }}</ToggleSwitch>
-				<ToggleSwitch v-model="continuousRateControl" v-ripple.overlay icon="speed">{{ $t('player.speed.continuous') }}</ToggleSwitch>
+				<ToggleSwitch v-model="resample" v-ripple.overlay icon="tunning">{{ $t("player.speed.resample") }}</ToggleSwitch>
+				<ToggleSwitch v-model="continuousRateControl" v-ripple.overlay icon="speed">{{ $t("player.speed.continuous") }}</ToggleSwitch>
 			</menu>
 			<template #slider>
 				<CapsuleSlider v-model="playbackRateLinear" :min="-2" :max="2" :displayValue="playbackRateText" :defaultValue="0" />
@@ -260,7 +260,7 @@
 				</RadioOption>
 			</menu>
 			<menu @contextmenu.prevent>
-				<ToggleSwitch v-model="autoQuality" v-ripple.overlay icon="network_check">{{ $t('player.quality.auto') }}</ToggleSwitch>
+				<ToggleSwitch v-model="autoQuality" v-ripple.overlay icon="network_check">{{ $t("player.quality.auto") }}</ToggleSwitch>
 			</menu>
 		</PlayerVideoMenu>
 		<Transition v-if="!fullscreen">

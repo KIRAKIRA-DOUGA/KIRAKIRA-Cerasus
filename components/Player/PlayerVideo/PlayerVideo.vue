@@ -738,14 +738,14 @@
 				<template #fallback>
 					<div class="danmaku-loading">
 						<LogoDanmakuLoading />
-						<span>{{ $t('danmaku.list.loading') }}</span>
+						<span>{{ $t("danmaku.list.loading") }}</span>
 					</div>
 				</template>
 			</ClientOnly>
 		</div>
 		<Menu v-model="menu" noFade>
-			<MenuItem icon="camera" @click="() => getScreenshot()">{{ $t('player.screenshot') }}</MenuItem>
-			<MenuItem icon="info" @click="showStats = true">{{ $t('player.stats') }}</MenuItem>
+			<MenuItem icon="camera" @click="() => getScreenshot()">{{ $t("player.screenshot") }}</MenuItem>
+			<MenuItem icon="info" @click="showStats = true">{{ $t("player.stats") }}</MenuItem>
 			<hr />
 			<MenuItem icon="yozora" class="version" @click="showAboutPlayer = true">YOZORA PLAYER</MenuItem>
 		</Menu>

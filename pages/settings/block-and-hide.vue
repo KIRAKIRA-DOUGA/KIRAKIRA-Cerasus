@@ -645,8 +645,8 @@
 
 <template>
 	<div>
-		<Subheader icon="block">{{ $t('block_and_hide.block.title') }}</Subheader>
-		<span>{{ $t('block_and_hide.block.description') }}</span>
+		<Subheader icon="block">{{ $t("block_and_hide.block.title") }}</Subheader>
+		<span>{{ $t("block_and_hide.block.description") }}</span>
 		<section>
 			<SettingsChipItem
 				v-for="blockUser in blockUserList?.result"
@@ -662,11 +662,11 @@
 		<Pagination v-if="blockUserList?.blocklistCount" v-model="blockUserListPage" :pages="blockUserListPageCount" :displayPageCount="7" />
 		<div class="add">
 			<TextBox v-model="inputPendingBlockUid" type="number" icon="person" />
-			<Button icon="add" @click="getPendingBlockUserInfo" :disabled="isAddButtonUnclickalbe" :loading="isFetchPendingBlockUserInfo">{{ $t('step.add') }}</Button>
+			<Button icon="add" @click="getPendingBlockUserInfo" :disabled="isAddButtonUnclickalbe" :loading="isFetchPendingBlockUserInfo">{{ $t("step.add") }}</Button>
 		</div>
 
-		<Subheader icon="visibility_off">{{ $t('block_and_hide.hide.title') }}</Subheader>
-		<span>{{ $t('block_and_hide.hide.description') }}</span>
+		<Subheader icon="visibility_off">{{ $t("block_and_hide.hide.title") }}</Subheader>
+		<span>{{ $t("block_and_hide.hide.description") }}</span>
 		<section>
 			<SettingsChipItem
 				v-for="hideUser in hideUserList?.result"
@@ -682,13 +682,13 @@
 		<Pagination v-if="hideUserList?.blocklistCount" v-model="hideUserListPage" :pages="hideUserListPageCount" :displayPageCount="7" />
 		<div class="add">
 			<TextBox v-model="inputPendingHideUid" type="number" icon="person" />
-			<Button icon="add" @click="getPendingHideUserInfo" :disabled="isAddButtonUnclickalbe" :loading="isFetchPendingHideUserInfo">{{ $t('step.add') }}</Button>
+			<Button icon="add" @click="getPendingHideUserInfo" :disabled="isAddButtonUnclickalbe" :loading="isFetchPendingHideUserInfo">{{ $t("step.add") }}</Button>
 		</div>
 
 		<hr />
 
 		<Subheader icon="tag">{{ $t("tag", 2) }}</Subheader>
-		<span>{{ $t('block_and_hide.tag.description') }}</span>
+		<span>{{ $t("block_and_hide.tag.description") }}</span>
 
 		<div class="tags">
 			<Tag
@@ -716,11 +716,11 @@
 			@mouseenter="reshowContextualToolbar"
 			@mouseleave="hideContextualToolbar"
 		>
-			<Button icon="close" @click="removeTag(hoveredTagContent![0])">{{ $t('delete') }}</Button>
+			<Button icon="close" @click="removeTag(hoveredTagContent![0])">{{ $t("delete") }}</Button>
 		</Flyout>
 
 		<Subheader icon="key">{{ $t("keyword", 2) }}</Subheader>
-		<span>{{ $t('block_and_hide.keyword.description') }}</span>
+		<span>{{ $t("block_and_hide.keyword.description") }}</span>
 		<section>
 			<SettingsChipItem
 				v-for="(blockKeyword, index) in blockKeywordList"
@@ -733,12 +733,12 @@
 		</section>
 		<div class="add">
 			<TextBox v-model="inputPendingBlockKeyword" :invalid="isInvalidKeyword" icon="key" />
-			<Button icon="add" :disabled="isAddButtonUnclickalbe || isBlockKeyword" :loading="isBlockKeyword" @click="addBlockKeyword">{{ $t('step.add') }}</Button>
+			<Button icon="add" :disabled="isAddButtonUnclickalbe || isBlockKeyword" :loading="isBlockKeyword" @click="addBlockKeyword">{{ $t("step.add") }}</Button>
 		</div>
 
-		<Subheader icon="regexp">{{ $t('regexp') }}</Subheader>
+		<Subheader icon="regexp">{{ $t("regexp") }}</Subheader>
 		<!-- TODO: 使用多语言 -->
-		<span>{{ $t('block_and_hide.regexp.description') + "（前后无需添加斜线 '/'）" }}</span>
+		<span>{{ $t("block_and_hide.regexp.description") + "（前后无需添加斜线 '/'）" }}</span>
 		<section>
 			<SettingsChipItem
 				v-for="(blockRegex, index) in blockRegexList"
@@ -751,7 +751,7 @@
 		</section>
 		<div class="add">
 			<TextBox v-model="inputPendingAddRegex" :invalid="isInvalidRegex" icon="regexp" />
-			<Button icon="add" :disabled="isAddButtonUnclickalbe || isAddRegex" :loading="isAddRegex" @click="addRegex">{{ $t('step.add') }}</Button>
+			<Button icon="add" :disabled="isAddButtonUnclickalbe || isAddRegex" :loading="isAddRegex" @click="addRegex">{{ $t("step.add") }}</Button>
 		</div>
 
 		<Alert v-model="isShowAddBlockUserAlert" static>

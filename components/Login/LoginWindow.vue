@@ -527,7 +527,7 @@
 					<!-- 登录 其二点一 Login #2.1 -->
 					<div class="login2-2fa">
 						<HeadingGroup :name="$t('login')" englishName="Login" />
-						<span><Preserves>{{ $t('loginwindow.login_totp_info') }}</Preserves></span>
+						<span><Preserves>{{ $t("loginwindow.login_totp_info") }}</Preserves></span>
 						<form class="form">
 							<TextBox
 								v-model="clientOtp"
@@ -550,7 +550,7 @@
 					<!-- 登录 其二点二 Login #2.2 -->
 					<div class="login2-email">
 						<HeadingGroup :name="$t('login')" englishName="Login" />
-						<span>{{ $t('loginwindow.login_email_info') }}</span>
+						<span>{{ $t("loginwindow.login_email_info") }}</span>
 						<form class="form">
 							<TextBox
 								v-model="loginVerificationCode"
@@ -577,7 +577,7 @@
 					<div class="register1">
 						<HeadingGroup :name="$t('register')" englishName="Register" class="collapse" />
 						<div class="form textbox-with-span">
-							<span>{{ $t('user.username_nickname_requirements') }}</span>
+							<span>{{ $t("user.username_nickname_requirements") }}</span>
 							<div>
 								<TextBox
 									ref="nameTextBox"
@@ -589,7 +589,7 @@
 									:pattern="validChar"
 									:maxLength="20"
 								/>
-								<span>{{ $t('user.username_requirements_unique') }}</span>
+								<span>{{ $t("user.username_requirements_unique") }}</span>
 							</div>
 							<div>
 								<TextBox
@@ -657,7 +657,7 @@
 					<div class="register3">
 						<HeadingGroup :name="$t('register')" englishName="Register" class="collapse" />
 						<div class="form">
-							<div><Preserves>{{ $t('loginwindow.register_email_sent_info') }}</Preserves></div>
+							<div><Preserves>{{ $t("loginwindow.register_email_sent_info") }}</Preserves></div>
 							<SendVerificationCode v-model="registrationVerificationCode" :email="email" verificationCodeFor="registration" />
 							<TextBox
 								v-model="confirmPassword"
@@ -678,7 +678,7 @@
 					<div class="forgot1">
 						<HeadingGroup :name="$t('loginwindow.forgot_title')" englishName="forgot" class="collapse" />
 						<div class="form">
-							<div><Preserves>{{ $t('loginwindow.forgot_info') }}</Preserves></div>
+							<div><Preserves>{{ $t("loginwindow.forgot_info") }}</Preserves></div>
 							<TextBox
 								v-model="email"
 								type="email"
@@ -704,7 +704,7 @@
 					<div class="forgot2-email">
 						<HeadingGroup :name="$t('loginwindow.forgot_title')" englishName="forgot" class="collapse" />
 						<div class="form">
-							<div><Preserves>{{ $t('loginwindow.reset_password_info') }}</Preserves></div>
+							<div><Preserves>{{ $t("loginwindow.reset_password_info") }}</Preserves></div>
 							<TextBox
 								v-model="resetPasswordVerificationCode"
 								type="text"
@@ -737,7 +737,7 @@
 					<div class="forgot2-totp">
 						<HeadingGroup :name="$t('loginwindow.forgot_title')" englishName="forgot" class="collapse" />
 						<div class="form">
-							<div><Preserves>{{ $t('loginwindow.reset_password_totp_warning') }}</Preserves></div>
+							<div><Preserves>{{ $t("loginwindow.reset_password_totp_warning") }}</Preserves></div>
 						</div>
 						<div class="action margin-left-inset">
 							<Button icon="arrow_left" class="secondary" @click="currentPage = 'login1'">{{ $t("loginwindow.back_to_login") }}</Button>
@@ -772,7 +772,7 @@
 						<Icon v-else name="person" />
 					</div>
 					<div ref="loginAnimationText" class="texts">
-						<div class="welcome">{{ $t('loginwindow.login_welcome') }}</div>
+						<div class="welcome">{{ $t("loginwindow.login_welcome") }}</div>
 						<div class="name">{{ selfUserInfoStore.userInfo.userNickname }}</div>
 					</div>
 				</div>

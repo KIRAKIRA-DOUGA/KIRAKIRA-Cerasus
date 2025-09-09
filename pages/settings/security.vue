@@ -402,7 +402,7 @@
 <template>
 	<div>
 		<InfoBar v-if="isUnsafeAccount" type="warning" :title="$t('severity.warning')">
-			<Preserves>{{ $t('settings.security.is_unsafe_2fa') }}</Preserves>
+			<Preserves>{{ $t("settings.security.is_unsafe_2fa") }}</Preserves>
 		</InfoBar>
 		<section>
 			<SettingsChipItem
@@ -410,7 +410,7 @@
 				trailingIcon="edit"
 				:details="$t('current_email') + $t('colon') + selfUserInfoStore.userInfo.email"
 				@trailingIconClick="showChangeEmail = true"
-			>{{ $t('email_address') }}</SettingsChipItem>
+			>{{ $t("email_address") }}</SettingsChipItem>
 		</section>
 		<section>
 			<SettingsChipItem
@@ -418,14 +418,14 @@
 				trailingIcon="edit"
 				:details="$t('modification_date') + $t('colon') + passwordChangeDateDisplay"
 				@trailingIconClick="showChangePassword = true"
-			>{{ $t('password.title') }}</SettingsChipItem>
+			>{{ $t("password.title") }}</SettingsChipItem>
 		</section>
-		<Subheader icon="lock">{{ $t('two_factor_authentication.title') }}</Subheader>
-		<span>{{ $t('two_factor_authentication.description') }}</span>
+		<Subheader icon="lock">{{ $t("two_factor_authentication.title") }}</Subheader>
+		<span>{{ $t("two_factor_authentication.description") }}</span>
 		<section list>
-			<RadioButton v-model="categoryOf2FAComputed" v-ripple value="none" :details="$t('two_factor_authentication.off_description')">{{ $t('off') }}</RadioButton>
-			<RadioButton v-model="categoryOf2FAComputed" v-ripple value="email" :details="$t('two_factor_authentication.email_description')" :disabled="isEmail2FADisable">{{ $t('email') }}</RadioButton>
-			<RadioButton v-model="categoryOf2FAComputed" v-ripple value="totp" :details="$t('two_factor_authentication.totp_description')" :disabled="isTotp2FADisable">{{ $t('two_factor_authentication.totp') }}</RadioButton>
+			<RadioButton v-model="categoryOf2FAComputed" v-ripple value="none" :details="$t('two_factor_authentication.off_description')">{{ $t("off") }}</RadioButton>
+			<RadioButton v-model="categoryOf2FAComputed" v-ripple value="email" :details="$t('two_factor_authentication.email_description')" :disabled="isEmail2FADisable">{{ $t("email") }}</RadioButton>
+			<RadioButton v-model="categoryOf2FAComputed" v-ripple value="totp" :details="$t('two_factor_authentication.totp_description')" :disabled="isTotp2FADisable">{{ $t("two_factor_authentication.totp") }}</RadioButton>
 		</section>
 		<section v-if="categoryOf2FAComputed === 'totp'">
 			<SettingsChipItem
@@ -433,7 +433,7 @@
 				:trailingIcon="hasBoundTotp ? 'delete' : 'add'"
 				:details="checkUser2FAResult?.totpCreationDateTime ? $t('addition_date') + $t('colon') + authenticatorAddDateDisplay : undefined"
 				@trailingIconClick="openTotpModel"
-			>{{ $t('totp_authenticator') }}</SettingsChipItem>
+			>{{ $t("totp_authenticator") }}</SettingsChipItem>
 		</section>
 
 		<Modal v-model="showChangeEmail" :title="$t('change_email')" icon="email">
@@ -460,8 +460,8 @@
 				</form>
 			</div>
 			<template #footer-right>
-				<Button class="secondary" :disabled="isChangingEmail" @click="showChangePassword = false">{{ $t('step.cancel') }}</Button>
-				<Button @click="updateUserEmail" :disabled="isChangingEmail || !newEmail || !changeEmailPassword || !changeEmailVerificationCode" :loading="isChangingEmail">{{ $t('step.apply') }}</Button>
+				<Button class="secondary" :disabled="isChangingEmail" @click="showChangePassword = false">{{ $t("step.cancel") }}</Button>
+				<Button @click="updateUserEmail" :disabled="isChangingEmail || !newEmail || !changeEmailPassword || !changeEmailVerificationCode" :loading="isChangingEmail">{{ $t("step.apply") }}</Button>
 			</template>
 		</Modal>
 
@@ -496,20 +496,20 @@
 				</form>
 			</div>
 			<template #footer-right>
-				<Button class="secondary" :disabled="isChangingPassword" @click="showChangePassword = false">{{ $t('step.cancel') }}</Button>
-				<Button @click="updateUserPassword" :disabled="isChangingPassword || !oldPassword || !newPassword || !changePasswordVerificationCode" :loading="isChangingPassword">{{ $t('step.apply') }}</Button>
+				<Button class="secondary" :disabled="isChangingPassword" @click="showChangePassword = false">{{ $t("step.cancel") }}</Button>
+				<Button @click="updateUserPassword" :disabled="isChangingPassword || !oldPassword || !newPassword || !changePasswordVerificationCode" :loading="isChangingPassword">{{ $t("step.apply") }}</Button>
 			</template>
 		</Modal>
 
 		<Modal v-model="showCreateTotpModel" :title="$t('two_factor_authentication.add_totp.title')" icon="lock" :hideTitleCloseIcon="true">
 			<div class="create-totp-modal">
 				<InfoBar type="warning" :title="$t('severity.warning')">
-					{{ $t('two_factor_authentication.add_totp.warning') }}
+					{{ $t("two_factor_authentication.add_totp.warning") }}
 				</InfoBar>
 				<div v-if="!backupCode || backupCode.length <= 0 || !recoveryCode" class="page">
 					<div class="step">
 						<ShadingIcon icon="download" />
-						<h3><Icon name="counter_1" />{{ $t('two_factor_authentication.add_totp.step_install') }}</h3>
+						<h3><Icon name="counter_1" />{{ $t("two_factor_authentication.add_totp.step_install") }}</h3>
 						<p>
 							<TransInterpolation keypath="two_factor_authentication.add_totp.step_install_description">
 								<template #ente-auth>
@@ -526,16 +526,16 @@
 					</div>
 					<div class="step">
 						<ShadingIcon icon="qr_code_scanner" />
-						<h3><Icon name="counter_2" />{{ $t('two_factor_authentication.add_totp.step_scan') }}</h3>
+						<h3><Icon name="counter_2" />{{ $t("two_factor_authentication.add_totp.step_scan") }}</h3>
 						<div class="totp-qrcode-box">
 							<QrcodeVue v-if="otpAuth" :value="otpAuth" :level="totpQrcodeLevel" :renderAs="totpQrcodeRenderAs" :size="totpQrcodeSize" />
 						</div>
 					</div>
 					<div class="step">
 						<ShadingIcon icon="edit" />
-						<h3><Icon name="counter_3" />{{ $t('two_factor_authentication.add_totp.step_enter_code') }}</h3>
+						<h3><Icon name="counter_3" />{{ $t("two_factor_authentication.add_totp.step_enter_code") }}</h3>
 						<p>
-							<Preserves>{{ $t('two_factor_authentication.add_totp.step_enter_code_description') }}</Preserves>
+							<Preserves>{{ $t("two_factor_authentication.add_totp.step_enter_code_description") }}</Preserves>
 						</p>
 						<form class="totp-confirm-form">
 							<TextBox
@@ -552,29 +552,29 @@
 				<div v-else class="page">
 					<div class="step">
 						<ShadingIcon icon="lock_reset" />
-						<h3><Icon name="counter_4" />{{ $t('two_factor_authentication.add_totp.step_save') }}</h3>
+						<h3><Icon name="counter_4" />{{ $t("two_factor_authentication.add_totp.step_save") }}</h3>
 						<p>
-							<Preserves>{{ $t('two_factor_authentication.add_totp.step_save_description') }}</Preserves>
+							<Preserves>{{ $t("two_factor_authentication.add_totp.step_save_description") }}</Preserves>
 						</p>
 						<br />
-						<p>{{ $t('two_factor_authentication.add_totp.backup_code', 5) }}</p>
-						<label class="details">{{ $t('two_factor_authentication.add_totp.backup_code_description') }}</label>
+						<p>{{ $t("two_factor_authentication.add_totp.backup_code", 5) }}</p>
+						<label class="details">{{ $t("two_factor_authentication.add_totp.backup_code_description") }}</label>
 						<pre><code>{{ displayBackupCode }}</code></pre>
 						<br />
-						<p>{{ $t('two_factor_authentication.add_totp.recovery_code') }}</p>
-						<label class="details">{{ $t('two_factor_authentication.add_totp.recovery_code_description') }}</label>
+						<p>{{ $t("two_factor_authentication.add_totp.recovery_code") }}</p>
+						<label class="details">{{ $t("two_factor_authentication.add_totp.recovery_code_description") }}</label>
 						<pre><code>{{ recoveryCode }}</code></pre>
 					</div>
 				</div>
 			</div>
 
 			<template v-if="!backupCode || backupCode.length <= 0 || !recoveryCode" #footer-right>
-				<Button class="secondary" @click="closeCreateTotpModel" :disabled="isConfirmTotp">{{ $t('step.cancel') }}</Button>
-				<Button icon="arrow_right" class="icon-behind" @click="handleClickConfirmTotp" :disabled="isConfirmTotp || !confirmTotpVerificationCode" :loading="isConfirmTotp">{{ $t('step.next') }}</Button>
+				<Button class="secondary" @click="closeCreateTotpModel" :disabled="isConfirmTotp">{{ $t("step.cancel") }}</Button>
+				<Button icon="arrow_right" class="icon-behind" @click="handleClickConfirmTotp" :disabled="isConfirmTotp || !confirmTotpVerificationCode" :loading="isConfirmTotp">{{ $t("step.next") }}</Button>
 			</template>
 			<template v-else #footer-right>
-				<Button icon="download" class="secondary" @click="downloadBackupCodeAndRecoveryCode">{{ $t('two_factor_authentication.add_totp.download') }}</Button>
-				<Button icon="check" @click="closeCreateTotpModel" :disabled="isConfirmTotp" :loading="isConfirmTotp">{{ $t('step.finish') }}</Button>
+				<Button icon="download" class="secondary" @click="downloadBackupCodeAndRecoveryCode">{{ $t("two_factor_authentication.add_totp.download") }}</Button>
+				<Button icon="check" @click="closeCreateTotpModel" :disabled="isConfirmTotp" :loading="isConfirmTotp">{{ $t("step.finish") }}</Button>
 			</template>
 		</Modal>
 
@@ -600,19 +600,19 @@
 				</form>
 			</div>
 			<template #footer-right>
-				<Button class="secondary" :disabled="isDeletingTotp" @click="closeDeleteTotpModel">{{ $t('step.cancel') }}</Button>
-				<Button severity="danger" icon="delete" @click="deleteTotpByVerification" :disabled="isDeletingTotp || !deleteTotpVerificationCode" :loading="isDeletingTotp">{{ $t('remove') }}</Button>
+				<Button class="secondary" :disabled="isDeletingTotp" @click="closeDeleteTotpModel">{{ $t("step.cancel") }}</Button>
+				<Button severity="danger" icon="delete" @click="deleteTotpByVerification" :disabled="isDeletingTotp || !deleteTotpVerificationCode" :loading="isDeletingTotp">{{ $t("remove") }}</Button>
 			</template>
 		</Modal>
 
 		<Modal v-model="showCreateEmail2FAModel" :title="$t('two_factor_authentication.enable_email.title')" icon="lock">
 			<div class="enable-email-2fa-modal">
-				<p>{{ $t('current_email') + $t('colon') + selfUserInfoStore.userInfo.email }}</p>
-				<p class="danger-text">{{ $t('two_factor_authentication.enable_email.ensure') }}</p>
+				<p>{{ $t("current_email") + $t("colon") + selfUserInfoStore.userInfo.email }}</p>
+				<p class="danger-text">{{ $t("two_factor_authentication.enable_email.ensure") }}</p>
 			</div>
 			<template #footer-right>
-				<Button class="secondary" :disabled="isCreatingEmail2FA" @click="closeCreateEmail2FAModel">{{ $t('step.cancel') }}</Button>
-				<Button severity="warning" @click="createEmail2FA" :disabled="isCreatingEmail2FA" :loading="isCreatingEmail2FA">{{ $t('enable') }}</Button>
+				<Button class="secondary" :disabled="isCreatingEmail2FA" @click="closeCreateEmail2FAModel">{{ $t("step.cancel") }}</Button>
+				<Button severity="warning" @click="createEmail2FA" :disabled="isCreatingEmail2FA" :loading="isCreatingEmail2FA">{{ $t("enable") }}</Button>
 			</template>
 		</Modal>
 
@@ -631,8 +631,8 @@
 				</form>
 			</div>
 			<template #footer-right>
-				<Button class="secondary" :disabled="isDeletingEmail2FA" @click="closeDeleteEmail2FAModel">{{ $t('step.cancel') }}</Button>
-				<Button severity="danger" @click="deleteEmail2FAByVerification" :disabled="isDeletingEmail2FA || !deleteEmail2FAPassword || !deleteEmail2FAVerificationCode" :loading="isDeletingEmail2FA">{{ $t('disable') }}</Button>
+				<Button class="secondary" :disabled="isDeletingEmail2FA" @click="closeDeleteEmail2FAModel">{{ $t("step.cancel") }}</Button>
+				<Button severity="danger" @click="deleteEmail2FAByVerification" :disabled="isDeletingEmail2FA || !deleteEmail2FAPassword || !deleteEmail2FAVerificationCode" :loading="isDeletingEmail2FA">{{ $t("disable") }}</Button>
 			</template>
 		</Modal>
 	</div>

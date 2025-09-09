@@ -115,16 +115,16 @@
 <template>
 	<div>
 		<InfoBar type="warning" :title="$t('severity.warning')">
-			{{ $t('under_construction.page') }}
+			{{ $t("under_construction.page") }}
 		</InfoBar>
 
-		<Subheader icon="cookie">{{ $t('privacy.cookie') }}</Subheader>
+		<Subheader icon="cookie">{{ $t("privacy.cookie") }}</Subheader>
 		<section list>
-			<ToggleSwitch v-model="enableCookie" v-ripple icon="cookie">{{ $t('privacy.allow_cookies') }}</ToggleSwitch>
+			<ToggleSwitch v-model="enableCookie" v-ripple icon="cookie">{{ $t("privacy.allow_cookies") }}</ToggleSwitch>
 		</section>
 
 		<div class="privacy-header">
-			<Subheader icon="visibility">{{ $t('privacy.info_visibility') }}</Subheader>
+			<Subheader icon="visibility">{{ $t("privacy.info_visibility") }}</Subheader>
 			<div class="options">
 				<SoftButton v-tooltip:top="$t('privacy.public')" icon="visibility" @click="setColonPrivacyVisibility('public')" />
 				<SoftButton v-tooltip:top="$t('privacy.following')" icon="person_add" @click="setColonPrivacyVisibility('following')" />
@@ -142,8 +142,8 @@
 		</section>
 
 		<div class="submit">
-			<Button icon="reset" :disabled="isPending" :loading="isReactVisibilitiesSetting" class="secondary" @click="resetColonVisibility()">{{ $t('step.reset') }}</Button>
-			<Button icon="check" :disabled="isPending" :loading="isApplyingVisibilitiesSetting" @click="applyVisibilitiesSetting">{{ $t('step.apply') }}</Button>
+			<Button icon="reset" :disabled="isPending" :loading="isReactVisibilitiesSetting" class="secondary" @click="resetColonVisibility()">{{ $t("step.reset") }}</Button>
+			<Button icon="check" :disabled="isPending" :loading="isApplyingVisibilitiesSetting" @click="applyVisibilitiesSetting">{{ $t("step.apply") }}</Button>
 		</div>
 	</div>
 </template>

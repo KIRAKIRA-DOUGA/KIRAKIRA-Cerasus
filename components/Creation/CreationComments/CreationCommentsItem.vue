@@ -254,11 +254,11 @@
 				<SoftButton v-tooltip:bottom="$t('reply')" icon="reply" />
 				<SoftButton v-tooltip:bottom="$t('more')" icon="more_vert" @click="e => menu = [e, 'y']" />
 				<Menu v-model="menu">
-					<MenuItem v-if="isSelfComment" icon="delete" @click="deleteSelfComment(commentRoute, videoId)">{{ $t('delete') }}</MenuItem>
-					<MenuItem v-if="isAdmin" icon="delete" @click="adminDeleteVideoComment(commentRoute, videoId)">{{ $t('delete') }}{{ $t('admin_operation_suffix') }}</MenuItem>
+					<MenuItem v-if="isSelfComment" icon="delete" @click="deleteSelfComment(commentRoute, videoId)">{{ $t("delete") }}</MenuItem>
+					<MenuItem v-if="isAdmin" icon="delete" @click="adminDeleteVideoComment(commentRoute, videoId)">{{ $t("delete") }}{{ $t("admin_operation_suffix") }}</MenuItem>
 					<MenuItem :icon="unpinnedCaption" @click="pinned = !pinned">{{ $t(unpinnedCaption) }}</MenuItem>
 					<hr />
-					<MenuItem icon="flag">{{ $t('report') }}</MenuItem>
+					<MenuItem icon="flag">{{ $t("report") }}</MenuItem>
 				</Menu>
 			</template>
 		</UserContent>

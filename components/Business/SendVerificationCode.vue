@@ -134,7 +134,7 @@
 	>
 		<template #actions>
 			<Button :disabled="!timeout.isTimeouted || props.disabled === true || isSendingEmail" @click="startTimeout(); sendVerificationCode();">
-				{{ (timeout.isResent ? $t('resend') : $t('send')) + (timeout.isTimeouted ? "" : ` (${timeout.timeout})`) }}
+				{{ (timeout.isResent ? $t("resend") : $t("send")) + (timeout.isTimeouted ? "" : ` (${timeout.timeout})`) }}
 			</Button>
 		</template>
 	</TextBox>

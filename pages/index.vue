@@ -61,7 +61,7 @@
 		<TabBar v-model="data.selectedTab" @movingForTransition="name => transitionName = name">
 			<TabItem
 				id="Home"
-			>{{ $t('home') }}</TabItem>
+			>{{ $t("home") }}</TabItem>
 			<TabItem
 				v-for="cat in categoryList"
 				:id="cat"
@@ -78,7 +78,7 @@
 				</template>
 			</TransInterpolation>
 		</InfoBar>
-		<Subheader icon="upload" :badge="categoryItemCount">{{ $t('latest') }}</Subheader>
+		<Subheader icon="upload" :badge="categoryItemCount">{{ $t("latest") }}</Subheader>
 		<Transition :name="transitionName" mode="out-in">
 			<ThumbGrid :key="resultTimestamp">
 				<ThumbVideo

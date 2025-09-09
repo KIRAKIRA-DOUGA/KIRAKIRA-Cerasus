@@ -60,18 +60,18 @@
 					}"
 				>
 					<div class="left">
-						<Button icon="info">{{ $t('collection.modify_info') }}</Button>
-						<Button icon="clear_all">{{ $t('collection.clear_expired') }}</Button>
-						<Button icon="star">{{ $t('collection.follow') }}</Button>
-						<Button icon="play">{{ $t('collection.play_all') }}</Button>
+						<Button icon="info">{{ $t("collection.modify_info") }}</Button>
+						<Button icon="clear_all">{{ $t("collection.clear_expired") }}</Button>
+						<Button icon="star">{{ $t("collection.follow") }}</Button>
+						<Button icon="play">{{ $t("collection.play_all") }}</Button>
 					</div>
 					<div class="right">
-						<Button icon="add">{{ $t('collection.add') }}</Button>
+						<Button icon="add">{{ $t("collection.add") }}</Button>
 						<Button
 							:class="{ active: isSelectedMode }"
 							icon="library_add_check"
 							@click="isSelectedMode = !isSelectedMode"
-						>{{ $t('collection.multi_select') }}</Button>
+						>{{ $t("collection.multi_select") }}</Button>
 					</div>
 				</div>
 			</div>
@@ -92,15 +92,15 @@
 
 		<div class="toolbox-card right">
 			<section>
-				<Subheader icon="sort">{{ $t('sort.by') }}</Subheader>
+				<Subheader icon="sort">{{ $t("sort.by") }}</Subheader>
 				<Sort v-model="sort">
-					<SortItem id="upload_date" preferOrder="descending">{{ $t('upload_date') }}</SortItem>
-					<SortItem id="view" preferOrder="descending">{{ $t('sort.view') }}</SortItem>
-					<SortItem id="danmaku" preferOrder="descending">{{ $t('sort.danmaku') }}</SortItem>
-					<SortItem id="comment" preferOrder="descending">{{ $t('sort.comment') }}</SortItem>
-					<SortItem id="save" preferOrder="descending">{{ $t('sort.save') }}</SortItem>
-					<SortItem id="duration" preferOrder="descending">{{ $t('duration') }}</SortItem>
-					<SortItem id="rating">{{ $t('rating') }}</SortItem>
+					<SortItem id="upload_date" preferOrder="descending">{{ $t("upload_date") }}</SortItem>
+					<SortItem id="view" preferOrder="descending">{{ $t("sort.view") }}</SortItem>
+					<SortItem id="danmaku" preferOrder="descending">{{ $t("sort.danmaku") }}</SortItem>
+					<SortItem id="comment" preferOrder="descending">{{ $t("sort.comment") }}</SortItem>
+					<SortItem id="save" preferOrder="descending">{{ $t("sort.save") }}</SortItem>
+					<SortItem id="duration" preferOrder="descending">{{ $t("duration") }}</SortItem>
+					<SortItem id="rating">{{ $t("rating") }}</SortItem>
 				</Sort>
 			</section>
 			<Pagination v-model="page" :pages :displayPageCount enableArrowKeyMove />

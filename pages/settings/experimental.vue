@@ -15,8 +15,8 @@
 	<div class="no-settings">
 		<Icon name="science" />
 
-		<h2>{{ $t('experimental') }}</h2>
-		<p>{{ $t('settings.no_experimental_features') }}</p>
+		<h2>{{ $t("experimental") }}</h2>
+		<p>{{ $t("settings.no_experimental_features") }}</p>
 	</div>
 </template>
 

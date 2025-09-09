@@ -60,13 +60,13 @@
 				<div v-if="showTabBar || showSettings" class="tab-wrapper">
 					<Transition :name="showSettings ? 'page-jump-out' : 'page-jump-in'" mode="out-in">
 						<TabBar v-if="showTabBar && !showSettings" v-model="selectedTab" @movingForTransition="name => transitionName = name">
-							<TabItem id="danmaku-list">{{ $t('danmaku.title', 2) }}</TabItem>
+							<TabItem id="danmaku-list">{{ $t("danmaku.title", 2) }}</TabItem>
 							<TabItem id="chapters">分段章节</TabItem>
 							<TabItem id="playlist">播放列表</TabItem>
 						</TabBar>
 						<TabBar v-else-if="showSettings" v-model="selectedSettingsTab" @movingForTransition="name => transitionName = name">
-							<TabItem id="player">{{ $t('player.title') }}</TabItem>
-							<TabItem id="filters">{{ $t('player.filter') }}</TabItem>
+							<TabItem id="player">{{ $t("player.title") }}</TabItem>
+							<TabItem id="filters">{{ $t("player.filter") }}</TabItem>
 							<TabItem id="block-words">屏蔽词</TabItem>
 						</TabBar>
 					</Transition>

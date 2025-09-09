@@ -39,9 +39,9 @@
 				<!-- TODO: 制作富文本后展开需要**带格式**。 -->
 				<SoftButton icon="chevron_down" />
 				<Menu v-model="menu">
-					<MenuItem icon="delete">{{ $t('delete') }}</MenuItem>
-					<MenuItem icon="pin">{{ $t('pin') }}</MenuItem>
-					<MenuItem icon="flag">{{ $t('report') }}</MenuItem>
+					<MenuItem icon="delete">{{ $t("delete") }}</MenuItem>
+					<MenuItem icon="pin">{{ $t("pin") }}</MenuItem>
+					<MenuItem icon="flag">{{ $t("report") }}</MenuItem>
 				</Menu>
 			</template>
 		</UserContent>

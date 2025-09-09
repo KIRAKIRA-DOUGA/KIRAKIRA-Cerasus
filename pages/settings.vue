@@ -139,11 +139,11 @@
 				<header class="title content">
 					<ScrollContainer overflowX="clip">
 						<header class="title nav-header">
-							<h1>{{ $t('settings.title') }}</h1>
+							<h1>{{ $t("settings.title") }}</h1>
 							<TextBox v-model="search" type="search" :placeholder="$t('settings.search')" icon="search" />
 						</header>
 						<TabBar v-model="currentSettingsRequested" vertical>
-							<Subheader v-if="selfUserInfoStore.isLogined" icon="person">{{ $t('settings.user') }}</Subheader>
+							<Subheader v-if="selfUserInfoStore.isLogined" icon="person">{{ $t("settings.user") }}</Subheader>
 							<template v-if="selfUserInfoStore.isLogined">
 								<TabItem
 									v-for="setting in settings.personal"
@@ -154,7 +154,7 @@
 									@click="showDrawer = false"
 								>{{ setting.name }}</TabItem>
 							</template>
-							<Subheader icon="apps">{{ $t('settings.app') }}</Subheader>
+							<Subheader icon="apps">{{ $t("settings.app") }}</Subheader>
 							<TabItem
 								v-for="setting in settings.general"
 								:id="setting.id"
@@ -178,10 +178,10 @@
 						</TabBar>
 						<div class="nav-bottom-buttons">
 							<template v-if="isAdmin || isDevMode">
-								<Button icon="build" href="/dev">{{ $t('development_test_page') }}</Button>
-								<Button icon="apps" href="/dev/components">{{ $t('components_test_page') }}</Button>
+								<Button icon="build" href="/dev">{{ $t("development_test_page") }}</Button>
+								<Button icon="apps" href="/dev/components">{{ $t("components_test_page") }}</Button>
 							</template>
-							<Button v-if="selfUserInfoStore.isLogined" icon="logout" @click="logout">{{ $t('logout') }}</Button>
+							<Button v-if="selfUserInfoStore.isLogined" icon="logout" @click="logout">{{ $t("logout") }}</Button>
 						</div>
 					</ScrollContainer>
 				</header>

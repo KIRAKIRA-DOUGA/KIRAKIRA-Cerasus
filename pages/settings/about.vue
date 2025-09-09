@@ -70,7 +70,7 @@
 			</div>
 		</Contents>
 
-		<Subheader icon="link">{{ $t('about.repositories.title') }}</Subheader>
+		<Subheader icon="link">{{ $t("about.repositories.title") }}</Subheader>
 		<section>
 			<SettingsChipItem
 				v-for="repo in repositories"
@@ -82,7 +82,7 @@
 			>{{ repo.name }}</SettingsChipItem>
 		</section>
 
-		<Subheader icon="build">{{ $t('about.technologies_used') }}</Subheader>
+		<Subheader icon="build">{{ $t("about.technologies_used") }}</Subheader>
 		<section>
 			<SettingsChipItem
 				v-for="tech in technologies"

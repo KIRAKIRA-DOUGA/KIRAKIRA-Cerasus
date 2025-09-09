@@ -27,7 +27,7 @@
 
 <template>
 	<div>
-		<Subheader icon="link">{{ $t('friendly_links') }}</Subheader>
+		<Subheader icon="link">{{ $t("friendly_links") }}</Subheader>
 		<template v-for="section, title in links" :key="title">
 			<header class="section" :style="{ '--i': section[0]?.index }">{{ title }}</header>
 			<div class="links lite-links">

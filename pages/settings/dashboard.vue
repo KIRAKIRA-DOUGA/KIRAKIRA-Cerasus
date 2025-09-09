@@ -41,19 +41,19 @@
 		<!-- <div class="user-counts chip">
 			<div>
 				<span class="value">233</span>
-				<p>{{ $t('following') }}</p>
+				<p>{{ $t("following") }}</p>
 			</div>
 			<div>
 				<span class="value">233</span>
-				<p>{{ $t('follower', 2) }}</p>
+				<p>{{ $t("follower", 2) }}</p>
 			</div>
 			<div>
 				<span class="value">233</span>
-				<p>{{ $t('watched') }}</p>
+				<p>{{ $t("watched") }}</p>
 			</div>
 			<div>
 				<span class="value">233</span>
-				<p>{{ $t('rating') }}</p>
+				<p>{{ $t("rating") }}</p>
 			</div>
 		</div> -->
 
@@ -65,7 +65,7 @@
 				icon="history"
 				:details="formatDateWithLocale(new Date(selfUserInfoStore.userInfo.userCreateDateTime))"
 			>
-				{{ $t('user.join_time') }}
+				{{ $t("user.join_time") }}
 			</SettingsChipItem>
 			<SettingsChipItem
 				v-if="selfUserInfoStore.userInfo.uid"

@@ -77,7 +77,7 @@
 			</div>
 		</Flyout>
 
-		<Subheader icon="brightness_medium">{{ $t('scheme.title') }}</Subheader>
+		<Subheader icon="brightness_medium">{{ $t("scheme.title") }}</Subheader>
 		<div class="chip sample">
 			<PlayerVideoController :currentTime="30" :duration="110" :buffered="[[0, 60]]" />
 		</div>
@@ -94,7 +94,7 @@
 			</SettingsGridItem>
 		</section>
 
-		<Subheader icon="palette">{{ $t('palette.title') }}</Subheader>
+		<Subheader icon="palette">{{ $t("palette.title") }}</Subheader>
 		<section ref="paletteSection" grid>
 			<SettingsGridItem
 				v-for="item in paletteList"
@@ -135,7 +135,7 @@
 				<div class="palette-card">
 					<div class="hue-gradient"></div>
 					<div>
-						<h3>{{ $t('custom') }}</h3>
+						<h3>{{ $t("custom") }}</h3>
 						<p lang="en">Make It Yours</p>
 					</div>
 					<Icon name="edit" />
@@ -154,8 +154,8 @@
 					<div class="overlay light"></div>
 					<div class="overlay color"></div>
 					<div>
-						<h3>{{ $t('background.title') }}</h3>
-						<p>{{ $t('palette.follow_bg') }}</p>
+						<h3>{{ $t("background.title") }}</h3>
+						<p>{{ $t("palette.follow_bg") }}</p>
 					</div>
 					<Icon name="wallpaper" />
 				</div>
@@ -163,9 +163,9 @@
 		</section>
 
 		<ClientOnly>
-			<Subheader icon="wallpaper">{{ $t('background.title') }}</Subheader>
+			<Subheader icon="wallpaper">{{ $t("background.title") }}</Subheader>
 			<section>
-				<Button class="upload-bg-image-btn" icon="upload" @click="addBackgroundImage">{{ $t('file_picker.choose') }}</Button>
+				<Button class="upload-bg-image-btn" icon="upload" @click="addBackgroundImage">{{ $t("file_picker.choose") }}</Button>
 				<section grid force-multi-column class="section-background-images">
 					<TransitionGroup appear>
 						<SettingsGridItem
@@ -192,7 +192,7 @@
 						icon="opacity"
 						pending="current"
 						:displayValue="backgroundSliderDisplayValue"
-					>{{ $t('background.opacity') }}</SettingsSlider>
+					>{{ $t("background.opacity") }}</SettingsSlider>
 					<SettingsSlider
 						v-model="backgroundImageSettingsStore.tint"
 						:min="0"
@@ -202,7 +202,7 @@
 						icon="join_inner"
 						pending="current"
 						:displayValue="backgroundSliderDisplayValue"
-					>{{ $t('background.tint') }}</SettingsSlider>
+					>{{ $t("background.tint") }}</SettingsSlider>
 					<SettingsSlider
 						v-model="backgroundImageSettingsStore.blur"
 						:min="0"
@@ -212,7 +212,7 @@
 						icon="blur"
 						pending="current"
 						:displayValue="backgroundSliderDisplayValue"
-					>{{ $t('background.blur') }}</SettingsSlider>
+					>{{ $t("background.blur") }}</SettingsSlider>
 				</template>
 			</section>
 
@@ -221,17 +221,17 @@
 				<MenuItem icon="arrow_left" :disabled="backgroundImageItemMenu[1].displayIndex <= 0" @click="backgroundImages.reorder(backgroundImageItemMenu[1].key, backgroundImageItemMenu[1].displayIndex - 1)">往前挪</MenuItem>
 				<MenuItem icon="arrow_right" :disabled="backgroundImageItemMenu[1].displayIndex >= backgroundImages.items.length - 2" @click="backgroundImages.reorder(backgroundImageItemMenu[1].key, backgroundImageItemMenu[1].displayIndex + 1)">往后挪</MenuItem>
 				<hr />
-				<MenuItem icon="delete" @click="confirmDeleteBackgroundImageFlyout = [[backgroundImageItemMenu[2], 'y'], () => backgroundImages.delete(backgroundImageItemMenu[1].key)]">{{ $t('delete') }}</MenuItem>
+				<MenuItem icon="delete" @click="confirmDeleteBackgroundImageFlyout = [[backgroundImageItemMenu[2], 'y'], () => backgroundImages.delete(backgroundImageItemMenu[1].key)]">{{ $t("delete") }}</MenuItem>
 			</Menu>
 
 			<Flyout v-model="confirmDeleteBackgroundImageFlyout[0]">
 				<div class="flyout-content">
-					<h4>{{ $t('delete') }}</h4>
+					<h4>{{ $t("delete") }}</h4>
 					<!-- TODO: 多语言。 -->
 					<p>确定要删除该背景图像吗？</p>
 					<div class="flyout-buttons">
-						<Button @click="confirmDeleteBackgroundImageFlyout[0] = undefined">{{ $t('step.cancel') }}</Button>
-						<Button @click="confirmDeleteBackgroundImageFlyout[0] = undefined; confirmDeleteBackgroundImageFlyout[1]();" :style="{ '--appearance': 'secondary' }">{{ $t('step.ok') }}</Button>
+						<Button @click="confirmDeleteBackgroundImageFlyout[0] = undefined">{{ $t("step.cancel") }}</Button>
+						<Button @click="confirmDeleteBackgroundImageFlyout[0] = undefined; confirmDeleteBackgroundImageFlyout[1]();" :style="{ '--appearance': 'secondary' }">{{ $t("step.ok") }}</Button>
 					</div>
 				</div>
 			</Flyout>
@@ -239,8 +239,8 @@
 
 		<Subheader icon="more_horiz">{{ $t("other", 2) }}</Subheader>
 		<section list>
-			<ToggleSwitch v-model="cookieColoredSidebar" v-ripple icon="dehaze">{{ $t('appearance.colorful_navbar') }}</ToggleSwitch>
-			<ToggleSwitch v-model="appSettings.akkarinGuestAvatar" v-ripple :icon="appSettings.akkarinGuestAvatar ? 'akkarin' : 'person'">{{ $t('appearance.akkarin_guest_avatar') }}</ToggleSwitch>
+			<ToggleSwitch v-model="cookieColoredSidebar" v-ripple icon="dehaze">{{ $t("appearance.colorful_navbar") }}</ToggleSwitch>
+			<ToggleSwitch v-model="appSettings.akkarinGuestAvatar" v-ripple :icon="appSettings.akkarinGuestAvatar ? 'akkarin' : 'person'">{{ $t("appearance.akkarin_guest_avatar") }}</ToggleSwitch>
 		</section>
 
 		<section list>
@@ -250,7 +250,7 @@
 				:disabled="!selfUserInfoStore.isLogined"
 				icon="sync"
 			>
-				{{ $t('sync_color_settings_across_devices') }}
+				{{ $t("sync_color_settings_across_devices") }}
 			</ToggleSwitch>
 		</section>
 	</div>

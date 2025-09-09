@@ -218,7 +218,7 @@
 						<Transition>
 							<div v-if="!isSearched" class="empty">
 								<Icon name="tag" />
-								<p>{{ $t('unselected.tag') }}</p>
+								<p>{{ $t("unselected.tag") }}</p>
 							</div>
 							<div v-else class="list">
 								<TransitionGroup>
@@ -234,7 +234,7 @@
 													{{ getDisplayVideoTagWithCurrentLanguage(currentLanguage, tag).originTagName }}
 												</div>
 											</div>
-											<p class="count">{{ $t('video_count', 100, { list: [100] }) }}</p>
+											<p class="count">{{ $t("video_count", 100, { list: [100] }) }}</p>
 										</div>
 										<div class="trailing-icons">
 											<SoftButton icon="edit" @click.stop />
@@ -245,7 +245,7 @@
 											<Icon name="add" />
 										</div>
 										<div class="content">
-											<p class="title">{{ $t('tag.new') }}</p>
+											<p class="title">{{ $t("tag.new") }}</p>
 										</div>
 									</div>
 								</TransitionGroup>
@@ -266,8 +266,8 @@
 						</div>
 					</div>
 					<div class="submit">
-						<Button class="secondary" :disabled="isCreatingTag" @click="switchTagEditor('cancel')">{{ $t('step.cancel') }}</Button>
-						<Button :disabled="isCreatingTag" :loading="isCreatingTag" @click="switchTagEditor('ok')">{{ $t('step.ok') }}</Button>
+						<Button class="secondary" :disabled="isCreatingTag" @click="switchTagEditor('cancel')">{{ $t("step.cancel") }}</Button>
+						<Button :disabled="isCreatingTag" :loading="isCreatingTag" @click="switchTagEditor('ok')">{{ $t("step.ok") }}</Button>
 					</div>
 				</div>
 			</Transition>

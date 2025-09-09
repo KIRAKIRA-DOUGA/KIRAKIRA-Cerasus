@@ -116,7 +116,7 @@
 		</DefineCountCard>
 
 		<InfoBar type="warning" :title="$t('severity.warning')">
-			{{ $t('under_construction.feature_admin_only') }}
+			{{ $t("under_construction.feature_admin_only") }}
 		</InfoBar>
 
 		<!-- TODO: 临时 SoftButton，之后请在 UploadEditor 的 Submit 按钮左边放一个取消。 -->
@@ -144,8 +144,8 @@
 					@click="fileInput?.click()"
 				>
 					<div class="content">
-						<h3>{{ $t('upload.drag_to_upload') }}</h3>
-						<p>{{ $t('upload.format_info') }}</p>
+						<h3>{{ $t("upload.drag_to_upload") }}</h3>
+						<p>{{ $t("upload.format_info") }}</p>
 					</div>
 					<Icon name="upload" class="upload-icon" />
 					<div class="outline normal"></div>

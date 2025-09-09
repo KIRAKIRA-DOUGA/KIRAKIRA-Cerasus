@@ -148,14 +148,14 @@
 						<!-- <SoftButton v-tooltip:top="'私信'" icon="email" /> -->
 						<SoftButton v-if="!isSelf" v-tooltip:top="$t('more')" icon="more_vert" @click="e => actionMenu = [e, 'y']" />
 						<Menu v-if="!isSelf" v-model="actionMenu">
-							<MenuItem icon="groups">{{ $t('add_to_group') }}</MenuItem>
-							<MenuItem icon="badge">{{ $t('modify_memo') }}</MenuItem>
+							<MenuItem icon="groups">{{ $t("add_to_group") }}</MenuItem>
+							<MenuItem icon="badge">{{ $t("modify_memo") }}</MenuItem>
 							<hr />
-							<MenuItem icon="flag">{{ $t('report') }}</MenuItem>
-							<MenuItem icon="block" @click="blockUser">{{ $t('block_user') }}</MenuItem>
+							<MenuItem icon="flag">{{ $t("report") }}</MenuItem>
+							<MenuItem icon="block" @click="blockUser">{{ $t("block_user") }}</MenuItem>
 						</Menu>
 						<FollowButton v-if="!isSelf" :uid="urlUid" :isFollowing />
-						<Button v-if="isSelf" href="/upload">{{ $t('manage_content') }}</Button>
+						<Button v-if="isSelf" href="/upload">{{ $t("manage_content") }}</Button>
 					</div>
 				</div>
 				<TabBar v-model="currentTab">

@@ -15,7 +15,7 @@
 		<!-- WARN: 使用多语言，该页面严重缺乏国际化 -->
 		<!-- TODO: 使用多语言 -->
 		<InfoBar type="warning" :title="$t('severity.warning')">
-			{{ $t('under_construction.page') }}
+			{{ $t("under_construction.page") }}
 			<ol>
 				<li>可用功能：在新窗口打开视频、同步外观样式、使用阿卡林游客头像、使用相对时间。</li>
 				<li>除上述功能外其它功能都用不了。</li>

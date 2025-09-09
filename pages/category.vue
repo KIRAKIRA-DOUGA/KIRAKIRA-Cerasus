@@ -16,7 +16,7 @@
 			<div v-for="{ id: cat, icon } in categories" :key="cat" class="item">
 				<p>
 					<Icon :name="icon" />
-					{{ $t('category.' + cat) }}
+					{{ $t(`category.${cat}`) }}
 				</p>
 				<Badge>39</Badge>
 			</div>

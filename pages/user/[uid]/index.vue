@@ -84,26 +84,26 @@
 				<div class="user-counts">
 					<div>
 						<span class="value">{{ 0 }}</span>
-						<p>{{ $t('following', 2) }}</p>
+						<p>{{ $t("following", 2) }}</p>
 					</div>
 					<div>
 						<span class="value">{{ 0 }}</span>
-						<p>{{ $t('follower', 2) }}</p>
+						<p>{{ $t("follower", 2) }}</p>
 					</div>
 					<div>
 						<span class="value">{{ 0 }}</span>
-						<p>{{ $t('watched', 2) }}</p>
+						<p>{{ $t("watched", 2) }}</p>
 					</div>
 					<div>
 						<span class="value">{{ 0 }}</span>
-						<p>{{ $t('rating', 2) }}</p>
+						<p>{{ $t("rating", 2) }}</p>
 					</div>
 				</div>
 			</div>
 
 			<div class="toolbox-card user-info-container">
 				<div class="user-info">
-					<h3>{{ $t('user.info') }}</h3>
+					<h3>{{ $t("user.info") }}</h3>
 					<div class="items">
 						<div v-if="userBirthday" v-tooltip:x="$t('user.birthday')" class="birthday">
 							<Icon name="birthday" />
