@@ -5,7 +5,7 @@
 
 	const homepage = "https://kirakira.moe/";
 	const { locale } = useI18n();
-	const inContextLocalization = isInContextLocalization();
+	const inContextLocalization = computed(() => isInContextLocalization(locale.value));
 
 	const langTag = computed(() => ({
 		zhs: "zh-Hans-CN",

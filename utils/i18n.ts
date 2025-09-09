@@ -44,8 +44,8 @@ export function getLocaleName(targetLocale: string | Intl.Locale, displayLocale?
 /**
  * 处于语境翻译工具模式？
  * @param locale - 指示当前语言环境。
- * @returns 获取是否处于语境翻译工具模式的计算响应式变量。
+ * @returns 是否处于语境翻译工具模式。
  */
-export function isInContextLocalization(locale?: string) {
-	return locale === "ii" || useNuxtApp().$i18n.locale.value === "ii";
+export function isInContextLocalization(locale: string) {
+	return locale === "ii";
 }

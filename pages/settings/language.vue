@@ -3,7 +3,7 @@
 
 	const { locale: currentLocale, locales, t } = useI18n();
 	const date = useNow();
-	const inContextLocalization = isInContextLocalization();
+	const inContextLocalization = computed(() => isInContextLocalization(currentLocale.value));
 
 	const localeModel = computed({
 		get: () => currentLocale.value,
@@ -14,7 +14,7 @@
 		lang: getCurrentLocaleLangCode(locale.code, true),
 		name: locale.name || locale.code,
 		title: (() => {
-			if (isInContextLocalization(locale.code).value)
+			if (isInContextLocalization(locale.code))
 				return inContextLocalization.value ? t("translating") : t("improve_translation");
 			return getLocaleName(locale.code);
 		})(),
@@ -35,7 +35,7 @@
 				v-model="localeModel"
 				:title="locale.title"
 			>
-				<LogoImproveTranslation v-if="isInContextLocalization(locale.code).value" />
+				<LogoImproveTranslation v-if="isInContextLocalization(locale.code)" />
 				<div v-else class="line" :lang="locale.lang">
 					{{ locale.name }}
 				</div>
