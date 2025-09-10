@@ -5,10 +5,8 @@
 	const danmakuItemMenu = ref<MenuModel>();
 	const currentDanmaku = ref<UnwrapRef<DanmakuListItem>>();
 	const { copy } = useClipboard();
-	const { t: $t } = useI18n();
-	const columns = ["videoTime", "content", "sendTime"] as const;
-	type ColumnKey = typeof columns[number];
-	const headers: Record<ColumnKey, string> = { videoTime: $t("danmaku.list.thead.time"), content: $t("danmaku.list.thead.content"), sendTime: $t("send_date") };
+	const { t } = useI18n();
+	const headers = { videoTime: t("danmaku.list.thead.time"), content: t("danmaku.list.thead.content"), sendTime: t("send_date") };
 	const colWidths = reactive([70, 130, 180]);
 	const danmakuList = ref<Array<{ item: DanmakuListItem; key: PropertyKey }>>([]);
 	const danmakuListKey = ref(0); // FIXME: 理论上 vue-virtual-scroller 会自动监测弹幕数组更新，但是目前不知道为什么不生效，暂时只能用这种方法解决。
@@ -33,8 +31,8 @@
 	 * @param columnIndex - 单击的列。
 	 */
 	function sort(columnIndex: number) {
-		const column = columns[columnIndex];
-		if (!column || column === "content") return;
+		const column = columnIndex === 0 ? "videoTime" : columnIndex === 2 ? "sendTime" : undefined;
+		if (!column) return;
 		if (sortBy[0] === column) sortBy[1] = sortBy[1] === "ascending" ? "descending" : "ascending";
 		else [sortBy[0], sortBy[1]] = [column, "ascending"];
 		danmakuList.value = danmakuList.value.toSorted((a, b) => {
@@ -97,8 +95,8 @@
 			<!-- <ScrollContainer> -->
 			<table class="lite">
 				<thead>
-					<th v-for="(column, j) in columns" :key="column" v-ripple :width="colWidths[j]" @click="() => sort(j)">
-						<span>{{ headers[column] }}</span>
+					<th v-for="(header, column, j) in headers" :key="header" v-ripple :width="colWidths[j]" @click="() => sort(j)">
+						<span>{{ header }}</span>
 						<Icon
 							name="chevron_up"
 							:class="sortBy[0] === column && {
@@ -108,7 +106,7 @@
 						/>
 					</th>
 					<tr class="shadow">
-						<th v-for="(column, j) in columns" :key="column" :width="colWidths[j]">
+						<th v-for="(header, _column, j) in headers" :key="header" :width="colWidths[j]">
 							<div class="grip" :data-index="j" @pointerdown="onGripDown"></div>
 						</th>
 					</tr>
@@ -123,7 +121,7 @@
 						:items="danmakuList"
 					>
 						<tr :key="item.key" v-ripple @contextmenu.prevent="e => { currentDanmaku = item.item; danmakuItemMenu = e; }">
-							<td v-for="(column, j) in columns" :key="column" :width="colWidths[j]">{{ handleTableDataCellText(item.item[column]) }}</td>
+							<td v-for="(value, key, j) in item.item" :key="key" :width="colWidths[j]">{{ handleTableDataCellText(value) }}</td>
 						</tr>
 					</RecycleScroller>
 				</tbody>
