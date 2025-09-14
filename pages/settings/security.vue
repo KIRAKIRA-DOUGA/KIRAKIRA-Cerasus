@@ -2,15 +2,15 @@
 	import type { Level, RenderAs } from "qrcode.vue";
 	import QrcodeVue from "qrcode.vue";
 
-	const passwordChangeDate = ref(new Date());
-	const passwordChangeDateDisplay = computed(() => formatDateWithLocale(passwordChangeDate.value));
 	const selfUserInfoStore = useSelfUserInfoStore();
 	const appSettingsStore = useAppSettingsStore();
-	const selfUserInfo = useSelfUserInfoStore();
 
 	// 修改邮箱相关
-	const showChangeEmail = ref(false);
+	type ChangeEmailStep = "verification" | "final" | "closed";
+	const changeEmailStep = ref<ChangeEmailStep>("closed");
+
 	const changeEmailVerificationCode = ref("");
+	const changeEmailNewEmailVerificationCode = ref("");
 	const newEmail = ref("");
 	const isInvalidNewEmail = computed(() => !!newEmail.value && !newEmail.value.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]{2,}$/));
 	const changeEmailPassword = ref("");
@@ -23,6 +23,8 @@
 	const newPassword = ref("");
 	const confirmNewPassword = ref("");
 	const isChangingPassword = ref(false);
+	const passwordChangeDate = ref(new Date());
+	const passwordChangeDateDisplay = computed(() => formatDateWithLocale(passwordChangeDate.value));
 
 	// 2FA 相关
 	const checkUser2FAResult = ref<CheckUserHave2FAResponseDto>(); // 获取到的用户 2FA 类型
@@ -52,7 +54,7 @@
 	const isTotp2FADisable = computed(() => checkUser2FAResult.value?.type === "email" || categoryOf2FAComputed.value === "email");
 
 	// 警告相关
-	const isUnsafeAccount = computed(() => selfUserInfo.isLogined && (appSettingsStore.authenticatorType === "none" || !checkUser2FAResult.value?.have2FA));
+	const isUnsafeAccount = computed(() => selfUserInfoStore.isLogined && (appSettingsStore.authenticatorType === "none" || !checkUser2FAResult.value?.have2FA));
 
 	// 创建 TOTP 2FA 相关
 	const showCreateTotpModel = ref(false); // 是否显示创建 TOTP 模态框
@@ -87,7 +89,7 @@
 	 */
 	async function updateUserEmail() {
 		const oldEmail = selfUserInfoStore.userInfo.email ?? "";
-		if (!newEmail.value || !changeEmailPassword.value || !changeEmailVerificationCode.value) {
+		if (!newEmail.value || !changeEmailPassword.value || !changeEmailNewEmailVerificationCode.value) {
 			useToast(t(3).toast.required_not_filled, "warning", 5000);
 			return;
 		}
@@ -102,18 +104,18 @@
 			oldEmail,
 			newEmail: newEmail.value,
 			passwordHash,
-			verificationCode: changeEmailVerificationCode.value,
+			verificationCode: changeEmailNewEmailVerificationCode.value,
 		};
 		const updateUserEmailResult = await api.user.updateUserEmail(updateUserEmailRequest);
 		if (updateUserEmailResult.success) {
 			await api.user.getSelfUserInfo({ getSelfUserInfoRequest: undefined, appSettingsStore, selfUserInfoStore, headerCookie: undefined });
 			useToast(t.toast.email_changed, "success");
-			showChangeEmail.value = false;
+			changeEmailStep.value = "verification";
 		} else
 			useToast(t.toast.something_went_wrong, "error", 5000);
 		newEmail.value = "";
 		changeEmailPassword.value = "";
-		changeEmailVerificationCode.value = "";
+		changeEmailNewEmailVerificationCode.value = "";
 		isChangingEmail.value = false;
 	}
 
@@ -408,7 +410,7 @@
 				icon="email"
 				trailingIcon="edit"
 				:details="t.current_email + t.colon + selfUserInfoStore.userInfo.email"
-				@trailingIconClick="showChangeEmail = true"
+				@trailingIconClick="changeEmailStep = 'verification'"
 			>{{ t.email_address }}</SettingsChipItem>
 		</section>
 		<section>
@@ -435,7 +437,52 @@
 			>{{ t.totp_authenticator }}</SettingsChipItem>
 		</section>
 
-		<Modal v-model="showChangeEmail" :title="t.change_email" icon="email">
+		<!-- 修改邮箱 1 -->
+		<Modal :open="changeEmailStep === 'verification'" :title="t.change_email" icon="email">
+			<div v-if="categoryOf2FAComputed === 'email'" class="change-email-modal">
+				<h3>请输入旧邮箱中的验证码</h3>
+				<p>
+					<Preserves>您已开启邮箱二步验证，因此修改前需要验证您的邮箱。</Preserves>
+				</p>
+				<form>
+					<TextBox
+						v-model="changeEmailVerificationCode"
+						:required="true"
+						type="text"
+						icon="lock"
+						:placeholder="t.new_email"
+						utoComplete="off"
+					/>
+				</form>
+			</div>
+			<div v-else class="change-email-modal">
+				<h3>请输入新邮箱中的验证码</h3>
+				<p>
+					<Preserves>您已开启邮箱二步验证，因此需要提前验证您的新邮箱。</Preserves>
+				</p>
+				<form>
+					<TextBox
+						v-model="changeEmailNewEmailVerificationCode"
+						:required="true"
+						type="text"
+						icon="lock"
+						:placeholder="t.new_email"
+						utoComplete="off"
+					/>
+				</form>
+			</div>
+			<template v-if="categoryOf2FAComputed === 'email'" #footer-right>
+				<Button class="secondary" :disabled="isChangingEmail" @click="changeEmailStep = 'closed'">{{ t.step.cancel }}</Button>
+				<Button @click="changeEmailStep = 'final'" :disabled="isChangingEmail" :loading="isChangingEmail">{{ t.step.apply }}</Button>
+			</template>
+			<template v-else #footer-right>
+				<Button class="secondary" :disabled="isChangingEmail" @click="changeEmailStep = 'closed'">{{ t.step.cancel }}</Button>
+				<Button @click="changeEmailStep = 'final'" :disabled="isChangingEmail" :loading="isChangingEmail">{{ t.step.apply }}</Button>
+			</template>
+		</Modal>
+
+		<!-- 修改邮箱 2 -->
+		<Modal :open="changeEmailStep === 'final'" :title="t.change_email" icon="email">
 			<div class="change-email-modal">
 				<form>
 					<TextBox
@@ -447,7 +494,22 @@
 						:placeholder="t.new_email"
 						autoComplete="new-email"
 					/>
-					<SendVerificationCode v-model="changeEmailVerificationCode" :email="newEmail" verificationCodeFor="change-email" :disabled="!newEmail || isInvalidNewEmail" />
+					<SendVerificationCode
+						v-if="['email', 'none'].includes(categoryOf2FAComputed)"
+						v-model="changeEmailNewEmailVerificationCode"
+						:email="newEmail"
+						verificationCodeFor="change-email"
+						:disabled="!newEmail || isInvalidNewEmail"
+					/>
+					<TextBox
+						v-else
+						v-model="changeEmailVerificationCode"
+						:required="true"
+						type="text"
+						icon="lock"
+						:placeholder="t.new_email"
+						utoComplete="off"
+					/>
 					<TextBox
 						v-model="changeEmailPassword"
 						:required="true"
@@ -459,8 +521,8 @@
 				</form>
 			</div>
 			<template #footer-right>
-				<Button class="secondary" :disabled="isChangingEmail" @click="showChangePassword = false">{{ t.step.cancel }}</Button>
-				<Button @click="updateUserEmail" :disabled="isChangingEmail || !newEmail || !changeEmailPassword || !changeEmailVerificationCode" :loading="isChangingEmail">{{ t.step.apply }}</Button>
+				<Button class="secondary" :disabled="isChangingEmail" @click="changeEmailStep = 'closed'">{{ t.step.cancel }}</Button>
+				<Button @click="updateUserEmail" :disabled="isChangingEmail" :loading="isChangingEmail">{{ t.step.apply }}</Button>
 			</template>
 		</Modal>
 
