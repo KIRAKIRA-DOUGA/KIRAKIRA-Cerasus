@@ -7,8 +7,26 @@
 
 	// 修改邮箱相关
 	type ChangeEmailStep = "verification" | "final" | "closed";
+	type ChangeEmailModelName = "verification-totp" | "verification-email" | "final-totp" | "final-email" | "final-no-2fa" | "closed";
 	const changeEmailStep = ref<ChangeEmailStep>("closed");
-
+	const changeEmailModelName = computed<ChangeEmailModelName>(() => {
+		if (changeEmailStep.value === "closed")
+			return "closed";
+		if (changeEmailStep.value === "verification")
+			return appSettingsStore.authenticatorType === "email" ? "verification-email" : "verification-totp";
+		else
+			if (appSettingsStore.authenticatorType === "email")
+				return "final-email";
+			else if (appSettingsStore.authenticatorType === "totp")
+				return "final-totp";
+			else
+				return "final-no-2fa";
+	});
+	const showChangeEmailVerficationEmail = computed(() => changeEmailModelName.value === "verification-email");
+	const showChangeEmailVerficationTotp = computed(() => changeEmailModelName.value === "verification-totp");
+	const showChangeEmailFinalEmail = computed(() => changeEmailModelName.value === "final-email");
+	const showChangeEmailFinalTotp = computed(() => changeEmailModelName.value === "final-totp");
+	const showChangeEmailFinalNo2Fa = computed(() => changeEmailModelName.value === "final-no-2fa");
 	const changeEmailVerificationCode = ref("");
 	const changeEmailNewEmailVerificationCode = ref("");
 	const newEmail = ref("");
@@ -89,7 +107,7 @@
 	 */
 	async function updateUserEmail() {
 		const oldEmail = selfUserInfoStore.userInfo.email ?? "";
-		if (!newEmail.value || !changeEmailPassword.value || !changeEmailNewEmailVerificationCode.value) {
+		if (!newEmail.value || !changeEmailPassword.value || !changeEmailVerificationCode.value) {
 			useToast(t(3).toast.required_not_filled, "warning", 5000);
 			return;
 		}
@@ -104,17 +122,39 @@
 			oldEmail,
 			newEmail: newEmail.value,
 			passwordHash,
-			verificationCode: changeEmailNewEmailVerificationCode.value,
+			verificationCode: changeEmailVerificationCode.value,
 		};
 		const updateUserEmailResult = await api.user.updateUserEmail(updateUserEmailRequest);
 		if (updateUserEmailResult.success) {
 			await api.user.getSelfUserInfo({ getSelfUserInfoRequest: undefined, appSettingsStore, selfUserInfoStore, headerCookie: undefined });
 			useToast(t.toast.email_changed, "success");
-			changeEmailStep.value = "verification";
+			changeEmailStep.value = "closed";
 		} else
 			useToast(t.toast.something_went_wrong, "error", 5000);
 		newEmail.value = "";
 		changeEmailPassword.value = "";
+		changeEmailVerificationCode.value = "";
+		isChangingEmail.value = false;
+	}
+
+	/**
+	 * 根据用户当前的 2FA 类型，开启修改 Email 的模态框并展示不同表单
+	 */
+	function openChangeEmailModel() {
+		if (selfUserInfoStore.userInfo.authenticatorType && ["totp", "email"].includes(selfUserInfoStore.userInfo.authenticatorType))
+			changeEmailStep.value = "verification";
+		else
+			changeEmailStep.value = "final";
+	}
+
+	/**
+	 * 关闭修改 Email 的模态框，并清除相关状态
+	 */
+	function closeChangeEmailModel() {
+		changeEmailStep.value = "closed";
+		newEmail.value = "";
+		changeEmailPassword.value = "";
+		changeEmailVerificationCode.value = "";
 		changeEmailNewEmailVerificationCode.value = "";
 		isChangingEmail.value = false;
 	}
@@ -410,7 +450,7 @@
 				icon="email"
 				trailingIcon="edit"
 				:details="t.current_email + t.colon + selfUserInfoStore.userInfo.email"
-				@trailingIconClick="changeEmailStep = 'verification'"
+				@trailingIconClick="openChangeEmailModel"
 			>{{ t.email_address }}</SettingsChipItem>
 		</section>
 		<section>
@@ -437,92 +477,126 @@
 			>{{ t.totp_authenticator }}</SettingsChipItem>
 		</section>
 
-		<!-- 修改邮箱 1 -->
-		<Modal :open="changeEmailStep === 'verification'" :title="t.change_email" icon="email">
-			<div v-if="categoryOf2FAComputed === 'email'" class="change-email-modal">
-				<h3>请输入旧邮箱中的验证码</h3>
-				<p>
-					<Preserves>您已开启邮箱二步验证，因此修改前需要验证您的邮箱。</Preserves>
-				</p>
-				<form>
-					<TextBox
-						v-model="changeEmailVerificationCode"
-						:required="true"
-						type="text"
-						icon="lock"
-						:placeholder="t.new_email"
-						utoComplete="off"
-					/>
-				</form>
-			</div>
-			<div v-else class="change-email-modal">
-				<h3>请输入新邮箱中的验证码</h3>
-				<p>
-					<Preserves>您已开启邮箱二步验证，因此需要提前验证您的新邮箱。</Preserves>
-				</p>
-				<form>
-					<TextBox
-						v-model="changeEmailNewEmailVerificationCode"
-						:required="true"
-						type="text"
-						icon="lock"
-						:placeholder="t.new_email"
-						utoComplete="off"
-					/>
-				</form>
-			</div>
-			<template v-if="categoryOf2FAComputed === 'email'" #footer-right>
-				<Button class="secondary" :disabled="isChangingEmail" @click="changeEmailStep = 'closed'">{{ t.step.cancel }}</Button>
-				<Button @click="changeEmailStep = 'final'" :disabled="isChangingEmail" :loading="isChangingEmail">{{ t.step.apply }}</Button>
-			</template>
-			<template v-else #footer-right>
-				<Button class="secondary" :disabled="isChangingEmail" @click="changeEmailStep = 'closed'">{{ t.step.cancel }}</Button>
-				<Button @click="changeEmailStep = 'final'" :disabled="isChangingEmail" :loading="isChangingEmail">{{ t.step.apply }}</Button>
-			</template>
-		</Modal>
-
-		<!-- 修改邮箱 2 -->
-		<Modal :open="changeEmailStep === 'final'" :title="t.change_email" icon="email">
+		<!-- 修改邮箱 -->
+		<Modal :open="changeEmailStep !== 'closed'" :title="t.change_email" icon="email">
 			<div class="change-email-modal">
-				<form>
-					<TextBox
-						v-model="newEmail"
-						:required="true"
-						:invalid="isInvalidNewEmail"
-						type="email"
-						icon="email"
-						:placeholder="t.new_email"
-						autoComplete="new-email"
-					/>
-					<SendVerificationCode
-						v-if="['email', 'none'].includes(categoryOf2FAComputed)"
-						v-model="changeEmailNewEmailVerificationCode"
-						:email="newEmail"
-						verificationCodeFor="change-email"
-						:disabled="!newEmail || isInvalidNewEmail"
-					/>
-					<TextBox
-						v-else
-						v-model="changeEmailVerificationCode"
-						:required="true"
-						type="text"
-						icon="lock"
-						:placeholder="t.new_email"
-						utoComplete="off"
-					/>
-					<TextBox
-						v-model="changeEmailPassword"
-						:required="true"
-						type="password"
-						icon="lock"
-						:placeholder="t.password._"
-						autoComplete="current-password"
-					/>
-				</form>
+				<div class="page">
+					<div v-if="showChangeEmailVerficationEmail" class="step">
+						<ShadingIcon icon="email" />
+						<h3><Icon name="counter_1" />验证当前的邮箱</h3>
+						<p>
+							<Preserves>请在下方输入我们发送到你当前绑定邮箱中的验证码。</Preserves>
+						</p>
+						<br />
+						<form>
+							<TextBox
+								v-model="changeEmailVerificationCode"
+								:required="true"
+								type="text"
+								icon="lock"
+								:placeholder="t.new_email"
+								utoComplete="off"
+							/>
+						</form>
+					</div>
+					<div v-else-if="showChangeEmailVerficationTotp" class="step">
+						<ShadingIcon icon="email" />
+						<h3><Icon name="counter_1" />验证你的新邮箱</h3>
+						<p>
+							<Preserves>请输入你的新邮箱，然后点击发送按钮，我们将会发送另一封包含验证码的的邮件到你的新邮箱。</Preserves>
+						</p>
+						<br />
+						<form>
+							<TextBox
+								v-model="newEmail"
+								:required="true"
+								:invalid="isInvalidNewEmail"
+								type="email"
+								icon="email"
+								:placeholder="t.new_email"
+								autoComplete="new-email"
+							/>
+							<SendVerificationCode
+								v-model="changeEmailNewEmailVerificationCode"
+								:email="newEmail"
+								verificationCodeFor="change-email"
+								:disabled="!newEmail || isInvalidNewEmail"
+							/>
+						</form>
+					</div>
+					<div v-else-if="showChangeEmailFinalEmail || showChangeEmailFinalNo2Fa" class="step">
+						<ShadingIcon icon="email" />
+						<h3><Icon :name="showChangeEmailFinalEmail ? 'counter_2' : 'counter_1'" />验证凭据和新邮箱</h3>
+						<p>
+							<Preserves>请输入你的密码，以及你的新邮箱，然后点击发送按钮。验证码会发送至你的新邮箱。</Preserves>
+						</p>
+						<br />
+						<form>
+							<TextBox
+								v-model="changeEmailPassword"
+								:required="true"
+								type="password"
+								icon="lock"
+								:placeholder="t.password._"
+								autoComplete="current-password"
+							/>
+							<TextBox
+								v-model="newEmail"
+								:required="true"
+								:invalid="isInvalidNewEmail"
+								type="email"
+								icon="email"
+								:placeholder="t.new_email"
+								autoComplete="new-email"
+							/>
+							<SendVerificationCode
+								v-model="changeEmailNewEmailVerificationCode"
+								:email="newEmail"
+								verificationCodeFor="change-email"
+								:disabled="!newEmail || isInvalidNewEmail"
+							/>
+						</form>
+					</div>
+					<div v-else-if="showChangeEmailFinalTotp" class="step">
+						<ShadingIcon icon="email" />
+						<h3><Icon name="counter_2" />验证你的凭据</h3>
+						<p>
+							<Preserves>请输入你的密码，以及你的 TOTP 双重验证验证码（可以在你绑定的验证设备中找到）。</Preserves>
+						</p>
+						<br />
+						<form>
+							<TextBox
+								v-model="changeEmailPassword"
+								:required="true"
+								type="password"
+								icon="lock"
+								:placeholder="t.password._"
+								autoComplete="current-password"
+							/>
+							<TextBox
+								v-model="changeEmailVerificationCode"
+								:required="true"
+								type="text"
+								icon="lock"
+								:placeholder="t.totp_verification_code"
+								utoComplete="off"
+							/>
+						</form>
+					</div>
+				</div>
 			</div>
-			<template #footer-right>
-				<Button class="secondary" :disabled="isChangingEmail" @click="changeEmailStep = 'closed'">{{ t.step.cancel }}</Button>
-				<Button @click="updateUserEmail" :disabled="isChangingEmail" :loading="isChangingEmail">{{ t.step.apply }}</Button>
+			<template v-if="showChangeEmailVerficationEmail" #footer-right>
+				<Button class="secondary" :disabled="isChangingEmail" @click="closeChangeEmailModel">{{ t.step.cancel }}</Button>
+				<Button icon="arrow_right" class="icon-behind" @click="changeEmailStep = 'final'">{{ t.step.next }}</Button>
+			</template>
+			<template v-else-if="showChangeEmailVerficationTotp" #footer-right>
+				<Button class="secondary" :disabled="isChangingEmail" @click="closeChangeEmailModel">{{ t.step.cancel }}</Button>
+				<Button icon="arrow_right" class="icon-behind" @click="changeEmailStep = 'final'">{{ t.step.next }}</Button>
+			</template>
+			<template v-else-if="showChangeEmailFinalEmail || showChangeEmailFinalTotp || showChangeEmailFinalNo2Fa" #footer-right>
+				<Button v-if="!showChangeEmailFinalNo2Fa" icon="arrow_left" class="secondary" :disabled="isChangingEmail" @click="changeEmailStep = 'verification'">{{ t.step.previous }}</Button>
+				<Button class="secondary" :disabled="isChangingEmail" @click="closeChangeEmailModel">{{ t.step.cancel }}</Button>
+				<Button @click="closeChangeEmailModel">{{ t.step.apply }}</Button>
 			</template>
 		</Modal>
 
@@ -700,14 +774,15 @@
 </template>
 
 <style scoped lang="scss">
-	.change-password-modal {
+	.change-email-modal {
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
 		gap: 24px;
-		width: 350px;
+		width: 80dvw;
+		max-width: 400px;
 
-		> form {
+		form {
 			display: flex;
 			flex-direction: column;
 			gap: 16px;
@@ -718,7 +793,7 @@
 		}
 	}
 
-	.change-email-modal {
+	.change-password-modal {
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
@@ -754,76 +829,40 @@
 			--size: large;
 		}
 
-		.page {
+		.totp-qrcode-box {
+			@include round-small;
+			@include chip-shadow;
+			display: inline-flex;
+			justify-content: center;
+			align-items: center;
+			width: 150px;
+			height: 150px;
+			padding: 8px;
+			background-color: white;
+
+			> svg {
+				@include square(100%);
+			}
+		}
+
+		.totp-confirm-form {
+			margin-top: 8px;
+		}
+
+		pre {
+			@include round-small;
 			display: flex;
-			flex-direction: column;
-			gap: 8px;
+			align-items: center;
+			height: 36px;
+			margin-top: 4px;
+			padding: 0 12px;
+			background-color: c(gray-10);
+			cursor: text;
 
-			.totp-qrcode-box {
-				@include round-small;
-				@include chip-shadow;
-				display: inline-flex;
-				justify-content: center;
-				align-items: center;
-				width: 150px;
-				height: 150px;
-				padding: 8px;
-				background-color: white;
-
-				> svg {
-					@include square(100%);
-				}
-			}
-
-			.totp-confirm-form {
-				margin-top: 8px;
-			}
-
-			.step {
-				@include chip-shadow;
-				@include round-large;
-				position: relative;
-				padding: 16px;
-				overflow: clip;
-				background-color: c(surface-color);
-
-				.shading-icon {
-					position: absolute;
-					z-index: unset;
-				}
-
-				> *:not(h3) {
-					margin-left: 32px;
-				}
-			}
-
-			h3 {
-				display: flex;
-				gap: 8px;
-				align-items: center;
-				margin-bottom: 6px;
-
-				.icon {
-					color: c(accent);
-					font-size: 24px;
-				}
-			}
-
-			pre {
-				@include round-small;
-				display: flex;
-				align-items: center;
-				height: 36px;
-				margin-top: 4px;
-				padding: 0 12px;
-				background-color: c(gray-10);
-				cursor: text;
-
-				code {
-					display: block;
-					width: 100%;
-					user-select: text;
-				}
+			code {
+				display: block;
+				width: 100%;
+				user-select: text;
 			}
 		}
 	}
@@ -862,6 +901,49 @@
 
 		.text-box {
 			--size: large;
+		}
+	}
+
+	.change-password-modal,
+	.change-email-modal,
+	.create-totp-modal,
+	.delete-totp-modal,
+	.enable-email-2fa-modal,
+	.delete-email-2fa-modal {
+		.page {
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+
+			.step {
+				@include chip-shadow;
+				@include round-large;
+				position: relative;
+				padding: 16px;
+				overflow: clip;
+				background-color: c(surface-color);
+
+				.shading-icon {
+					position: absolute;
+					z-index: unset;
+				}
+
+				> *:not(h3) {
+					margin-left: 32px;
+				}
+			}
+
+			h3 {
+				display: flex;
+				gap: 8px;
+				align-items: center;
+				margin-bottom: 6px;
+
+				.icon {
+					color: c(accent);
+					font-size: 24px;
+				}
+			}
 		}
 	}
 
