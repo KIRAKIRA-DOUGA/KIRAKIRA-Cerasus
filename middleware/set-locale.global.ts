@@ -1,6 +1,6 @@
 /*
- * 用户未登录时根据 URL 参数设置语言。
- * 用于 SEO 优化。
+ * 根据 URL 参数临时设置当前语言。
+ * 主要用于 SEO 优化。
  */
 
 export default defineNuxtRouteMiddleware(to => {
