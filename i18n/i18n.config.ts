@@ -1,6 +1,7 @@
+/* eslint-disable import/order */
+import en from "./locales/English";
 import zhs from "./locales/Chinese Simplified";
 import zht from "./locales/Chinese Traditional";
-import en from "./locales/English";
 import ja from "./locales/Japanese";
 import ko from "./locales/Korean";
 import vi from "./locales/Vietnamese";
@@ -11,11 +12,11 @@ import ii from "./locales/Sichuan Yi"; // 语境翻译工具伪语言
 
 export default defineI18nConfig(() => ({
 	legacy: false,
-	locale: "zhs",
+	locale: "en",
 	messages: {
+		en,
 		zhs,
 		zht,
-		en,
 		ja,
 		ko,
 		vi,

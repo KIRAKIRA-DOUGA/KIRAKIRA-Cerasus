@@ -198,9 +198,9 @@ export default defineNuxtConfig({
 
 	i18n: {
 		locales: [
+			{ code: "en", language: "en-US", name: "English" },
 			{ code: "zhs", language: "zh-CN", name: "简体中文" },
 			{ code: "zht", language: "zh-TW", name: "繁體中文" },
-			{ code: "en", language: "en-US", name: "English" },
 			{ code: "ja", name: "日本語" },
 			{ code: "ko", name: "한국어" },
 			{ code: "vi", name: "Tiếng Việt" },
@@ -209,18 +209,20 @@ export default defineNuxtConfig({
 			{ code: "yue", name: "廣東話" },
 			{ code: "ii", name: "ꆈꌠꉙ" }, // In Context Language
 		],
-		defaultLocale: "zhs",
+		defaultLocale: "en",
 		vueI18n: "./i18n.config.ts",
+		strategy: "no_prefix",
 		detectBrowserLanguage: {
 			cookieKey: "language",
 			alwaysRedirect: true,
+			redirectOn: "all",
 		},
 		bundle: {
 			// 非预期错误，临时解决办法。参考：https://github.com/intlify/bundle-tools/issues/423#issuecomment-2525540710
 			optimizeTranslationDirective: false,
 		},
 		experimental: {
-			typedOptionsAndMessages: "all",
+			typedOptionsAndMessages: "default",
 		},
 	},
 

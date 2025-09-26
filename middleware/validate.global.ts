@@ -5,7 +5,7 @@ const MEDIA_INFO_MODULE_WASM = "MediaInfoModule.wasm";
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
 	if (environment.client && environment.development)
-		console.log("to", to, "\nfrom", from, "\nrouteBaseName(to)", useNuxtApp().$getRouteBaseName(to));
+		console.log("to", to, "\nfrom", from, "\nrouteBaseName(to)", useNuxtApp().$routeBaseName(to));
 
 	if (environment.client)
 		document.getElementById(STOP_TRANSITION_ID)?.remove();

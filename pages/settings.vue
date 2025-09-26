@@ -64,27 +64,27 @@
 
 	const settings = {
 		personal: [
-			{ id: "dashboard", icon: "dashboard", name: t("dashboard") },
-			{ id: "profile", icon: "badge", name: t("profile.title") },
-			{ id: "traces", icon: "history", name: t("traces") },
-			{ id: "privacy", icon: "shield", name: t("privacy.title") },
-			{ id: "security", icon: "lock", name: t("security") },
-			{ id: "block-and-hide", icon: "block", name: t("block_and_hide.title") },
-			{ id: "invitation-code", icon: "gift", name: t("invitation_code") },
+			{ id: "dashboard", icon: "dashboard", nameKey: "dashboard" },
+			{ id: "profile", icon: "badge", nameKey: "profile.title" },
+			{ id: "traces", icon: "history", nameKey: "traces" },
+			{ id: "privacy", icon: "shield", nameKey: "privacy.title" },
+			{ id: "security", icon: "lock", nameKey: "security" },
+			{ id: "block-and-hide", icon: "block", nameKey: "block_and_hide.title" },
+			{ id: "invitation-code", icon: "gift", nameKey: "invitation_code" },
 		],
 		general: [
-			{ id: "appearance", icon: "palette", name: t("appearance.title") },
-			{ id: "player", icon: "play", name: t("player.title") },
-			{ id: "danmaku", icon: "danmaku", name: t("danmaku.title") },
-			{ id: "preference", icon: "star", name: t("preference") },
-			{ id: "language", icon: "translate", name: t("language") },
-			{ id: "experimental", icon: "science", name: t("experimental") },
-			{ id: "shortcut-key", icon: "keyboard", name: t("shortcut_key.title") },
-			{ id: "about", icon: "info", name: t("about.title") },
-			{ id: "acknowledgement", icon: "campaign", name: t("acknowledgement") },
+			{ id: "appearance", icon: "palette", nameKey: "appearance.title" },
+			{ id: "player", icon: "play", nameKey: "player.title" },
+			{ id: "danmaku", icon: "danmaku", nameKey: "danmaku.title" },
+			{ id: "preference", icon: "star", nameKey: "preference" },
+			{ id: "language", icon: "translate", nameKey: "language" },
+			{ id: "experimental", icon: "science", nameKey: "experimental" },
+			{ id: "shortcut-key", icon: "keyboard", nameKey: "shortcut_key.title" },
+			{ id: "about", icon: "info", nameKey: "about.title" },
+			{ id: "acknowledgement", icon: "campaign", nameKey: "acknowledgement" },
 		],
 		admin: [
-			{ id: "content", icon: "category", name: t("content") },
+			{ id: "content", icon: "category", nameKey: "content" },
 			{ id: "user-block", icon: "account_circle", name: "User Block" },
 			{ id: "user-info", icon: "account_circle", name: "User Info" },
 		],
@@ -107,7 +107,8 @@
 	const title = computed(() => {
 		const allSettings = Object.values(settings).flat();
 		const current = allSettings.find(setting => setting.id === currentSettingsRendered.value);
-		return current ? current.name : null;
+		if (!current) return null;
+		return current.nameKey ? t(current.nameKey) : current.name ?? null;
 	});
 	const htmlTitle = computed(() => {
 		if (title) return title.value + " - " + t("settings.title");
@@ -152,7 +153,7 @@
 									:icon="setting.icon"
 									:to="`/settings/${setting.id}`"
 									@click="showDrawer = false"
-								>{{ setting.name }}</TabItem>
+								>{{ $t(setting.nameKey) }}</TabItem>
 							</template>
 							<Subheader icon="apps">{{ $t("settings.app") }}</Subheader>
 							<TabItem
@@ -162,7 +163,7 @@
 								:icon="setting.icon"
 								:to="`/settings/${setting.id}`"
 								@click="showDrawer = false"
-							>{{ setting.name }}</TabItem>
+							>{{ $t(setting.nameKey) }}</TabItem>
 							<!-- DELETE: Cerasus内置管理设置即将被单独的控制台Lycoris项目取代。 -->
 							<Subheader v-if="isAdmin" icon="build_circle">管理设置</Subheader>
 							<template v-if="isAdmin">
@@ -173,7 +174,7 @@
 									:icon="setting.icon"
 									:to="`/settings/${setting.id}`"
 									@click="showDrawer = false"
-								>{{ setting.name }}</TabItem>
+								>{{ setting.nameKey ? $t(setting.nameKey) : setting.name }}</TabItem>
 							</template>
 						</TabBar>
 						<div class="nav-bottom-buttons">
