@@ -3,7 +3,7 @@
 	import { useDynamicLayout } from "helpers/page-transition";
 	import manifest from "public/manifest.json";
 
-	const homepage = "https://kirakira.moe/";
+	const host = useRequestURL().host;
 	const { locale } = useI18n();
 	const inContextLocalization = computed(() => isInContextLocalization(locale.value));
 
@@ -41,38 +41,38 @@
 			{ property: "og:site_name", content: manifest.name },
 			{ property: "og:title", content: manifest.name }, // 这里得放页面的 title。
 			{ property: "og:description", content: manifest.description },
-			{ property: "og:image", content: `${homepage}static/images/thumbnail.png` },
-			{ property: "og:url", content: homepage },
+			{ property: "og:image", content: `${host}/static/images/thumbnail.png` },
+			{ property: "og:url", content: host },
 			// 以下内容为推特私有内容属性。
 			{ name: "twitter:card", content: "summary" },
 			{ name: "twitter:site", content: manifest.name },
 			{ name: "twitter:title", content: manifest.name }, // 这里得放页面的 title。
 			{ name: "twitter:description", content: manifest.description },
-			{ name: "twitter:image", content: `${homepage}static/images/thumbnail.png` },
-			{ name: "twitter:url", content: homepage },
+			{ name: "twitter:image", content: `${host}/static/images/thumbnail.png` },
+			{ name: "twitter:url", content: host },
 		],
 		link: [
 			{ rel: "icon", href: "/favicon.ico", sizes: "48x48" },
 			{ rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
 			{ rel: "apple-touch-icon", href: "/static/images/icons/apple-touch-icon.png" },
 			{ rel: "manifest", href: "/manifest.json" },
-			{ rel: "alternate", href: homepage, hreflang: "x-default" },
-			{ rel: "alternate", href: homepage, hreflang: "zh-Hans" },
-			{ rel: "alternate", href: homepage, hreflang: "zh-CN" },
-			{ rel: "alternate", href: homepage, hreflang: "zh-SG" },
-			{ rel: "alternate", href: homepage, hreflang: "zh-MY" },
-			{ rel: "alternate", href: `${homepage}zht`, hreflang: "zh-Hant" },
-			{ rel: "alternate", href: `${homepage}zht`, hreflang: "zh-TW" },
-			{ rel: "alternate", href: `${homepage}zht`, hreflang: "zh-HK" },
-			{ rel: "alternate", href: `${homepage}zht`, hreflang: "zh-MO" },
-			{ rel: "alternate", href: `${homepage}en`, hreflang: "en" },
-			{ rel: "alternate", href: `${homepage}ja`, hreflang: "ja" },
-			{ rel: "alternate", href: `${homepage}ko`, hreflang: "ko" },
-			{ rel: "alternate", href: `${homepage}vi`, hreflang: "vi" },
-			{ rel: "alternate", href: `${homepage}id`, hreflang: "id" },
-			{ rel: "alternate", href: `${homepage}fr`, hreflang: "fr" },
-			{ rel: "alternate", href: `${homepage}yue`, hreflang: "zh-yue" },
-			{ rel: "alternate", href: `${homepage}yue`, hreflang: "yue" },
+			{ rel: "alternate", href: host, hreflang: "x-default" },
+			{ rel: "alternate", href: `${host}?lang=zhs`, hreflang: "zh-Hans" },
+			{ rel: "alternate", href: `${host}?lang=zhs`, hreflang: "zh-CN" },
+			{ rel: "alternate", href: `${host}?lang=zhs`, hreflang: "zh-SG" },
+			{ rel: "alternate", href: `${host}?lang=zhs`, hreflang: "zh-MY" },
+			{ rel: "alternate", href: `${host}?lang=zht`, hreflang: "zh-Hant" },
+			{ rel: "alternate", href: `${host}?lang=zht`, hreflang: "zh-TW" },
+			{ rel: "alternate", href: `${host}?lang=zht`, hreflang: "zh-HK" },
+			{ rel: "alternate", href: `${host}?lang=zht`, hreflang: "zh-MO" },
+			{ rel: "alternate", href: `${host}?lang=en`, hreflang: "en" },
+			{ rel: "alternate", href: `${host}?lang=ja`, hreflang: "ja" },
+			{ rel: "alternate", href: `${host}?lang=ko`, hreflang: "ko" },
+			{ rel: "alternate", href: `${host}?lang=vi`, hreflang: "vi" },
+			{ rel: "alternate", href: `${host}?lang=id`, hreflang: "id" },
+			{ rel: "alternate", href: `${host}?lang=fr`, hreflang: "fr" },
+			{ rel: "alternate", href: `${host}?lang=yue`, hreflang: "zh-yue" },
+			{ rel: "alternate", href: `${host}?lang=yue`, hreflang: "yue" },
 			{ rel: "preconnect", href: "https://rsms.me/" },
 			{ rel: "stylesheet", href: "https://rsms.me/inter/inter.css" },
 		],
