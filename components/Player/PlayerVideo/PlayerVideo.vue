@@ -4,7 +4,6 @@
 </docs>
 
 <script setup lang="ts">
-	const { t } = useI18n();
 	import type shaka from "shaka-player";
 	import { numbers } from "virtual:scss-var:theme/_variables";
 	import { basicDanmakuCommentStyle, createDanmakuComment } from "./PlayerVideoDanmakuSender.vue";
@@ -20,6 +19,7 @@
 		thumbnail: string;
 	}>();
 
+	const { t } = useI18n();
 	const windowSize = useWindowSize();
 	const isMobileWidth = computed(() => windowSize.width.value <= numbers.tabletMaxWidth);
 
