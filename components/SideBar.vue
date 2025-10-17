@@ -1,5 +1,6 @@
 <script setup lang="ts">
 	// import { numbers } from "virtual:scss-var:theme/_variables";
+	const { t } = useI18n();
 	// onMounted(() => console.log(numbers));
 	// const windowSize = useWindowSize();
 	// const isMobile = computed(() => windowSize.width.value <= numbers.mobileMaxWidth);
@@ -46,7 +47,7 @@
 				await api.user.getSelfUserInfo({ getSelfUserInfoRequest: undefined, appSettingsStore, selfUserInfoStore, headerCookie });
 			} catch (error) {
 				console.error("ERROR", "Failed to get current logged in user info:", error);
-				useToast(t.toast.get_current_logged_in_user_info_failed, "error", 7000);
+				useToast(t("toast.get_current_logged_in_user_info_failed"), "error", 7000);
 			}
 		else {
 			// TODO: 如果用户未登录，要怎样？要引导登录吗？
@@ -87,7 +88,7 @@
 	<DefineAvatar>
 		<UserAvatar
 			v-if="selfUserInfoStore.isEffectiveCheckOnce"
-			v-tooltip="selfUserInfoStore.isLogined ? selfUserInfoStore.userInfo.userNickname : t.login"
+			v-tooltip="selfUserInfoStore.isLogined ? selfUserInfoStore.userInfo.userNickname : $t('login')"
 			:avatar="selfUserInfoStore.isLogined && !selfUserInfoStore.tempHideAvatarFromSidebar ? selfUserInfoStore.userInfo.avatar : undefined"
 			hoverable
 		/>
@@ -106,12 +107,12 @@
 		aria-orientation="vertical"
 	>
 		<div class="top icons">
-			<SoftButton v-tooltip="t.home" icon="home" href="/" />
-			<SoftButton v-tooltip="t.search" icon="search" href="/search" />
-			<SoftButton v-tooltip="t.history" icon="history" href="/history" />
-			<SoftButton v-tooltip="t(2).collection" icon="star" href="/collections" />
-			<SoftButton v-tooltip="t.feed.following" icon="feed" href="/feed/following" />
-			<SoftButton v-tooltip="t.upload" icon="upload" href="/upload" />
+			<SoftButton v-tooltip="$t('home')" icon="home" href="/" />
+			<SoftButton v-tooltip="$t('search')" icon="search" href="/search" />
+			<SoftButton v-tooltip="$t('history')" icon="history" href="/history" />
+			<SoftButton v-tooltip="$t('collection.title', 2)" icon="star" href="/collections" />
+			<SoftButton v-tooltip="$t('feed.following')" icon="feed" href="/feed/following" />
+			<SoftButton v-tooltip="$t('upload.title')" icon="upload" href="/upload" />
 		</div>
 
 		<div class="center">
@@ -134,19 +135,19 @@
 			<Avatar class="pc" @click="onClickUser" />
 			<SoftButton
 				v-if="selfUserInfoStore.isLogined"
-				v-tooltip="t.notification"
+				v-tooltip="$t('notification', 2)"
 				icon="notifications"
 				:active="!!flyoutNotifications"
 				@click="e => flyoutNotifications = [e]"
 			/>
 			<SoftButton
-				v-tooltip="t.settings"
+				v-tooltip="$t('settings.title')"
 				class="pc icon-settings"
 				icon="settings"
 				href="/settings"
 				:active="isSettingsPage"
 			/>
-			<SoftButton v-tooltip="t.search" class="pe" icon="search" href="/search" />
+			<SoftButton v-tooltip="$t('search')" class="pe" icon="search" href="/search" />
 		</div>
 
 		<LoginWindow v-model="showLogin" />
@@ -155,9 +156,9 @@
 	<Transition>
 		<nav v-show="!hideBottomNav" :[scopeId]="''">
 			<div class="icons">
-				<BottomNavItem icon="home" href="/">{{ t.home }}</BottomNavItem>
-				<BottomNavItem icon="category" href="/category">{{ t.category }}</BottomNavItem>
-				<BottomNavItem icon="feed" href="/feed/following">{{ t.feed.following }}</BottomNavItem>
+				<BottomNavItem icon="home" href="/">{{ $t("home") }}</BottomNavItem>
+				<BottomNavItem icon="category" href="/category">{{ $t("category.title") }}</BottomNavItem>
+				<BottomNavItem icon="feed" href="/feed/following">{{ $t("feed.following") }}</BottomNavItem>
 			</div>
 		</nav>
 	</Transition>

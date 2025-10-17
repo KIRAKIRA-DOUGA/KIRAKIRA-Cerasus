@@ -9,7 +9,7 @@ export default {
 	rangeDash: " – ",
 	home: "Accueil",
 	category: {
-		_: "Catégorie",
+		title: "Catégorie",
 		anime: "Animes",
 		music: "Musique",
 		otomad: "Otomades",
@@ -22,13 +22,13 @@ export default {
 	search: "Recherche",
 	custom: "Personnalisé",
 	scheme: {
-		_: "Schème",
+		title: "Schème",
 		light: "Thème clair",
 		dark: "Thème Sombre",
 		system: "Suivre le thème du système",
 	},
 	palette: {
-		_: "Palette",
+		title: "Palette",
 		pink: "Cocoa Roses",
 		blue: "Chino Bleu",
 		purple: "Rize Violet",
@@ -40,14 +40,14 @@ export default {
 	},
 	language: "Langue",
 	background: {
-		_: "Arrière-plan",
+		title: "Arrière-plan",
 		custom: "Arrière-plan personnalisé",
 		opacity: "Opacité",
 		tint: "Teinte",
 		blur: "Intensité de flou",
 	},
 	appearance: {
-		_: "Apparence",
+		title: "Apparence",
 		sharp_mode: "Mode sharp",
 		flat_mode: "Mode plat",
 		colorful_navbar: "Barre de navigation colorée",
@@ -61,7 +61,7 @@ export default {
 	off: "Désactivé",
 	disabled: "Désactivé",
 	tag: {
-		_: "Étiquette | Étiquettes",
+		title: "Étiquette | Étiquettes",
 		search: "Étiquettes de recherche",
 		new: "Ajouter Tag",
 		set_as_original: "Définir comme nom original",
@@ -78,7 +78,7 @@ export default {
 	comments: "Commentaires",
 	you_know_too_much: "Vous en savez trop.",
 	settings: {
-		_: "Paramètres",
+		title: "Paramètres",
 		search: "Paramètres de recherche",
 		user: "Paramètres de l'utilisateur",
 		app: "Paramètres de l'application",
@@ -91,14 +91,14 @@ export default {
 	dashboard: "Tableau de Bord",
 	account: "Compte",
 	profile: {
-		_: "Profils",
+		title: "Profils",
 		edit: "Modifier le profil",
 		edit_banner: "Modifier La Bannière",
 		edit_avatar: "Modifier l’avatar",
 	},
 	traces: "Traces",
 	privacy: {
-		_: "Confidentialité",
+		title: "Confidentialité",
 		cookie: "Cookie☆",
 		allow_cookies: "Autoriser l'utilisation de Cookies",
 		info_visibility: "Visibilité Des Infos",
@@ -109,7 +109,7 @@ export default {
 	security: "Sécurité",
 	login_options: "Options de Connexion",
 	password: {
-		_: "Mot de Passe",
+		title: "Mot de Passe",
 		forgot: "Mot de passe oublié",
 		reset: "Réinitialiser le mot de passe",
 		retype: "Retaper le mot de passe",
@@ -120,13 +120,13 @@ export default {
 		hint: "Indice mot de passe",
 	},
 	block_and_hide: {
-		_: "Bloquer et masquer",
+		title: "Bloquer et masquer",
 		block: {
-			_: "Bloquer",
+			title: "Bloquer",
 			description: "Les utilisateurs que vous ne voulez pas autoriser à interagir avec vous.",
 		},
 		hide: {
-			_: "Masquer",
+			title: "Masquer",
 			description: "Cacher les utilisateurs que vous ne voulez pas voir (sauf si vous entrez directement leurs pages utilisateurs).",
 		},
 		tag: {
@@ -140,7 +140,7 @@ export default {
 		},
 	},
 	player: {
-		_: "Joueur",
+		title: "Joueur",
 		speed: {
 			resample: "Rééchantillon audio",
 			continuous: "Contrôle Continu",
@@ -149,7 +149,7 @@ export default {
 			auto: "Qualité Automatique",
 		},
 		control_bar: {
-			_: "Barre de Contrôle",
+			title: "Barre de Contrôle",
 			stop: "Afficher le bouton d'arrêt",
 			stop_description: "Aller à la première image et arrêter",
 			replay: "Toujours afficher le bouton de relecture",
@@ -163,9 +163,7 @@ export default {
 		screenshot: "Capture d'écran",
 		stats: "Statistiques",
 		autoplay: "Lecture automatique",
-		filter: {
-			_: "Filtre",
-		},
+		filter: "Filtre",
 		error: {
 			getDanmaku: "Impossible d'obtenir la liste de danmaku",
 			loadMedia: "Échec de lecture du média",
@@ -175,7 +173,7 @@ export default {
 			remove_from_playlist: "Supprimer de la Playlist",
 		},
 		playback_order: {
-			_: "Ordre de lecture",
+			title: "Ordre de lecture",
 			sequential: "Séquentielle",
 			repeat_all: "Tout répéter",
 			repeat_one: "Répéter une fois",
@@ -183,7 +181,7 @@ export default {
 		},
 	},
 	danmaku: {
-		_: "Danmaku | Danmakus",
+		title: "Danmaku | Danmakus",
 		send: "Envoyer un Danmaku",
 		history: "Danmaku Histoire",
 		format: {
@@ -208,7 +206,7 @@ export default {
 	experimental: "Expérimental",
 	accessibility: "Accessibilité",
 	shortcut_key: {
-		_: "Raccourcis claviers",
+		title: "Raccourcis claviers",
 		player_page: "Page Joueur",
 		play_pause: "Lecture / Pause",
 		exit_fullscreen: "Quitter le mode plein écran",
@@ -226,20 +224,12 @@ export default {
 	},
 	guide: "Tutoriel",
 	about: {
-		_: "À propos de",
+		title: "À propos de",
 		repositories: {
-			_: "Sources",
+			title: "Sources",
 			frontend: "Référentiel front-end GitHub et commentaires sur les problèmes",
 			backend: "Référentiels backend GitHub et commentaires sur les problèmes",
 			markdown: "Référentiels Markdown de pages utilisateur et commentaires sur les problèmes",
-		},
-		team: "L'équipe",
-		staff: {
-			webmistress: "Webmestres",
-			designer: "Concepteur",
-			frontend: "Avant",
-			backend: "Logs & Autres données",
-			translator: "{0} Traducteur",
 		},
 		technologies_used: "Technologies utilisées",
 		slogan: "Un site mignon \npour les gens mignons !",
@@ -259,7 +249,7 @@ export default {
 	addition_date: "Date d'ajout",
 	history: "Histoire",
 	collection: {
-		_: "Collection | Collections",
+		title: "Collection | Collections",
 		verb: "Enregistrer dans la collection",
 		my: "Mes collections",
 		follow: "Suivre la collection",
@@ -279,10 +269,11 @@ export default {
 		following: "Suit",
 	},
 	upload: {
-		_: "Télécharger",
+		title: "Télécharger",
 		drag_to_upload: "Glisser ici pour télécharger",
 		format_info: "Prise en charge des formats vidéo tels que MP4, WMV, WEBM",
 	},
+	publish: "Publier",
 	messages: "Messages",
 	notification: "Notification | Notifications",
 	pleaseLogin: "Veuillez vous connecter",
@@ -302,7 +293,7 @@ export default {
 	pause: "Pause",
 	rating: "Évaluation",
 	kaomoji: {
-		_: "Kaomoji",
+		title: "Kaomoji",
 		happy: "Heureux",
 		greet: "Sapa",
 		awa: "Moe",
@@ -348,7 +339,7 @@ export default {
 		save: "Nombre d'enregistrements",
 	},
 	view: {
-		_: "Vue",
+		title: "Vue",
 		list: "Liste",
 		grid: "Grille",
 		tile: "Tuile",
@@ -385,15 +376,18 @@ export default {
 		login_email_info: "L'authentification à deux facteurs par e-mail est activée sur votre compte. Un code de vérification vous a été envoyé. Si vous ne le recevez pas, veuillez vérifier vos pourriels.",
 	},
 	unselected: {
-		combobox: "Sélectionner un élément",
+		combobox: "Sélectionnez un élément",
 		settings: "Sélectionner les paramètres de la tâche",
 		tag: "Étiquettes de recherche",
 		language: "Sélectionner une langue",
 		image: "Choisir une Image",
 		file: "Sélectionnez un fichier",
 	},
+	empty: {
+		comments: "Aucun commentaire",
+	},
 	user: {
-		_: "Utilisateur | Utilisateurs",
+		title: "Utilisateur | Utilisateurs",
 		username: "Nom d’utilisateur",
 		username_requirements: "Doit être unique. @:user.nickname_requirements",
 		username_requirements_unique: "Un nom d'utilisateur doit être unique.",
@@ -416,21 +410,21 @@ export default {
 	watch_later: "Regarder plus tard",
 	download: "Télécharger",
 	format: {
-		_: "Format",
+		title: "Format",
 		bold: "Gras",
 		italic: "Italique",
 		underline: "Souligner",
 		strikethrough: "Barré",
 	},
 	text: {
-		_: "Texte",
+		title: "Texte",
 		size: "Taille du texte",
 	},
 	color: "Couleur ",
 	opacity: "Opacité",
 	mode: "Mode",
 	size: {
-		_: "Taille",
+		title: "Taille",
 		tiny: "Minuscule",
 		small: "Petite",
 		medium: "Moyen",
@@ -438,7 +432,7 @@ export default {
 		huge: "Énorme",
 	},
 	user_page: {
-		_: "Page utilisateur",
+		title: "Page utilisateur",
 		title_affix: "Page de l'utilisateur {0}",
 	},
 	manage_content: "Gérer le contenu",
@@ -455,7 +449,7 @@ export default {
 		tieba: "Tieba",
 		cloudmusic: "Musique Cloud",
 		discord: {
-			_: "Discord",
+			title: "Discord",
 			server: "Serveur Discord",
 		},
 		telegram: "Télégramme",
@@ -473,7 +467,6 @@ export default {
 	modify_memo: "Modifier les infos",
 	add_to_group: "Ajouter au groupe",
 	navigation: {
-		_: "Navigation",
 		back: "Précédent",
 		return_to_home: "Retour à Accueil",
 	},
@@ -514,6 +507,7 @@ export default {
 		comment_sent: "Commentaire envoyé ~",
 		unsupported_image_format: "Format d'image non pris en charge !",
 		profile_updated: "Profil mis à jour~",
+		settings_updated: "Paramètres mis à jour~",
 		must_remove_totp_first: "Vous devez d'abord supprimer l'authentificateur TOTP !",
 		must_verify_email_first: "Vous devez d'abord vérifier votre adresse e-mail !",
 		new_email_same: "Le nouvel e-mail ne peut pas être identique à celui qui est en cours !",
@@ -576,13 +570,10 @@ export default {
 	unused: "Inutilisé",
 	create: "Créer",
 	creatable: "Créable",
-	invitation_code: {
-		_: "Code d'invitation",
-		invalid: "Le code d'invidation est invalide",
-	},
+	invitation_code: "Code d'invitation",
 	version: "Version",
 	announcement: {
-		_: "Annonce",
+		title: "Annonce",
 		homepage: "Ce petit site est en pleine croissance ~! Rejoignez notre {discord-server} pour le regarder monter de niveau et discuter avec les développeurs ! (<unk> <unk> <unk> <unk> )文\nVous avez une puissance de codage ? Nous serions très heureux si vous nous avez rejoint dans cette aventure~!! (<unk> •©<unk> •́)و<unk>",
 	},
 	under_construction: {
@@ -601,14 +592,14 @@ export default {
 		code_403: "Vous n'avez pas la permission d'accéder à cette page.",
 	},
 	two_factor_authentication: {
-		_: "Authentification à deux facteurs (2FA)",
+		title: "Authentification à deux facteurs (2FA)",
 		description: "L'activation de l'A2F renforce la sécurité de votre compte. Si vous avez besoin de changer de méthode 2FA, veuillez d'abord désactiver la méthode actuelle.",
 		off_description: "La désactivation de l'A2F rendra votre compte moins sécurisé.",
 		email_description: "Pour les opérations sensibles, entrez le code de vérification envoyé à votre adresse e-mail pour continuer.",
 		totp: "Mot de passe unique basé sur le temps (TOTP)",
 		totp_description: "Pour les opérations sensibles, saisissez le code de vérification de votre application d'authentificateur pour continuer.",
 		add_totp: {
-			_: "Ajouter un authentificateur TOTP",
+			title: "Ajouter un authentificateur TOTP",
 			warning: "Ne partagez aucun contenu sur cette page avec qui que ce soit !",
 			step_install: "Installer une application d'authentification",
 			step_install_description: "Si vous avez déjà une application d'authentification, passez cette étape.\nSinon, installez une application qui prend en charge TOTP sur votre appareil personnel, comme {ente-auth}, {microsoft-authenticator}, ou {google-authenticator}.",
@@ -624,14 +615,14 @@ export default {
 			download: "Télécharger les codes",
 		},
 		remove_totp: {
-			_: "Supprimer un authentificateur TOTP",
+			title: "Supprimer un authentificateur TOTP",
 		},
 		enable_email: {
-			_: "Activer l'authentification par courriel",
+			title: "Activer l'authentification par courriel",
 			ensure: "Veuillez vous assurer que vous avez toujours accès à cet e-mail!",
 		},
 		disable_email: {
-			_: "Désactiver l'authentification par courriel",
+			title: "Désactiver l'authentification par courriel",
 		},
 	},
 	enable: "Activer",

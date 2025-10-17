@@ -3,6 +3,7 @@
 </docs>
 
 <script setup lang="ts">
+	const { t } = useI18n();
 	const props = withDefaults(defineProps<{
 		/** 接受的文件类型。 */
 		accept: string;
@@ -14,7 +15,7 @@
 		cover?: boolean;
 		unselectedText?: string;
 	}>(), {
-		unselectedText: () => t.file_picker.choose,
+		unselectedText: () => useI18n().t("file_picker.choose"),
 	});
 	const fileInput = ref<HTMLInputElement>();
 	const dragover = ref(false);
@@ -43,7 +44,7 @@
 	 */
 	function invalidUploaded() {
 		succeed.value = false;
-		useToast(t.toast.unsupported_file, "error");
+		useToast(t("toast.unsupported_file"), "error");
 		clearFileInput(fileInput);
 	}
 
@@ -150,8 +151,8 @@
 						<p>{{ file?.name }}</p>
 					</div>
 					<div class="buttons">
-						<SoftButton v-tooltip:bottom="t.file_picker.rechoose" icon="upload" @click="fileInput?.click()" />
-						<SoftButton v-tooltip:bottom="t.remove" icon="close" @click="removePicked" />
+						<SoftButton v-tooltip:bottom="$t('file_picker.rechoose')" icon="upload" @click="fileInput?.click()" />
+						<SoftButton v-tooltip:bottom="$t('remove')" icon="close" @click="removePicked" />
 					</div>
 					<div class="inner-shadow"></div>
 				</div>

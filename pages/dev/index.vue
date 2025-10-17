@@ -1,5 +1,6 @@
 <script setup lang="ts">
-	useHead({ title: t.development_test_page });
+	const { t } = useI18n();
+	useHead({ title: t("development_test_page") });
 
 	type Page = { name: string; link: string };
 

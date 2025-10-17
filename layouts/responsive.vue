@@ -16,6 +16,8 @@
 	const hideBottomNav = ref(false);
 	const appBarTitle = ref<string | undefined>();
 
+	const { t } = useI18n();
+
 	function pageLoaded() {
 		isSettingsPage.value = !!currentSettingsPage();
 		hideAppBar.value = Boolean(route.meta.hideAppBar);
@@ -23,7 +25,7 @@
 		hideBottomNav.value = Boolean(route.meta.hideBottomNav);
 
 		const appBarTitleTemp = route.meta.appBarTitle as string | undefined;
-		if (appBarTitleTemp?.startsWith("t.")) appBarTitle.value = t(2)[appBarTitleTemp.slice(2)];
+		if (appBarTitleTemp?.startsWith("t.")) appBarTitle.value = t(appBarTitleTemp.slice(2), 2);
 		else appBarTitle.value = route.meta.appBarTitle as string | undefined;
 	}
 
@@ -55,7 +57,7 @@
 	</Transition>
 	<div class="viewport">
 		<Analytics />
-		<SideBar :hideAppBar :flatAppBar :hideBottomNav :isSettingsPage :overrideLogoText="showDrawer ? t.navigation.back : undefined" />
+		<SideBar :hideAppBar :flatAppBar :hideBottomNav :isSettingsPage :overrideLogoText="showDrawer ? $t('navigation.back') : undefined" />
 		<ScrollContainer
 			scrollElId="mainScroller"
 			class="container"

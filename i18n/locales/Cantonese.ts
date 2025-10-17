@@ -9,7 +9,7 @@ export default {
 	rangeDash: " ~ ",
 	home: "主頁",
 	category: {
-		_: "分區",
+		title: "分區",
 		anime: "動畫",
 		music: "音樂",
 		otomad: "音MAD",
@@ -22,13 +22,13 @@ export default {
 	search: "搵嘢",
 	custom: "自訂",
 	scheme: {
-		_: "主題",
+		title: "主題",
 		light: "淺色模式",
 		dark: "深色模式",
 		system: "跟返系統",
 	},
 	palette: {
-		_: "個性色",
+		title: "個性色",
 		pink: "心愛粉",
 		blue: "智乃藍",
 		purple: "理世紫",
@@ -40,17 +40,18 @@ export default {
 	},
 	language: "語言",
 	background: {
-		_: "背景",
+		title: "背景",
 		custom: "自訂背景",
 		opacity: "透光度",
 		tint: "染色",
 		blur: "模糊強度",
 	},
 	appearance: {
-		_: "版面",
+		title: "版面",
 		sharp_mode: "直角模式",
 		flat_mode: "平面模式",
 		colorful_navbar: "彩色導覽列",
+		akkarin_guest_avatar: "Akkarin 遊客頭像",
 	},
 	confetti: "七彩碎紙",
 	send: "傳送",
@@ -60,7 +61,7 @@ export default {
 	off: "閂",
 	disabled: "停用",
 	tag: {
-		_: "標籤",
+		title: "標籤",
 		search: "搵標籤",
 		new: "整個新標籤",
 		set_as_original: "設做原名",
@@ -77,7 +78,7 @@ export default {
 	comments: "留言",
 	you_know_too_much: "你知太多嘢。",
 	settings: {
-		_: "設定",
+		title: "設定",
 		search: "搵設定",
 		user: "用家設定",
 		app: "程式設定",
@@ -90,14 +91,14 @@ export default {
 	dashboard: "儀表盤",
 	account: "帳戶",
 	profile: {
-		_: "資料",
+		title: "資料",
 		edit: "編輯個人資料",
 		edit_banner: "換張封面",
 		edit_avatar: "換個樣",
 	},
 	traces: "蹤跡",
 	privacy: {
-		_: "私隱",
+		title: "私隱",
 		cookie: "Cookie☆",
 		allow_cookies: "畀呢個網站去用Cookies",
 		info_visibility: "資訊可視性",
@@ -108,7 +109,7 @@ export default {
 	security: "保安",
 	login_options: "登入選項",
 	password: {
-		_: "密碼",
+		title: "密碼",
 		forgot: "唔記得密碼",
 		reset: "重設密碼",
 		retype: "確認密碼",
@@ -119,13 +120,13 @@ export default {
 		hint: "密碼提醒",
 	},
 	block_and_hide: {
-		_: "封鎖同隱藏",
+		title: "封鎖同隱藏",
 		block: {
-			_: "封鎖",
+			title: "封鎖",
 			description: "呢度擺你唔鍾意嘅人，佢哋唔會再過嚟煩你。",
 		},
 		hide: {
-			_: "隱藏",
+			title: "隱藏",
 			description: "隱藏你唔想見到嘅用戶（除非你直接入去佢哋嘅個人頁面）。",
 		},
 		tag: {
@@ -139,7 +140,7 @@ export default {
 		},
 	},
 	player: {
-		_: "播放",
+		title: "播放",
 		speed: {
 			resample: "重新採樣音訊",
 			continuous: "無級變速",
@@ -148,7 +149,7 @@ export default {
 			auto: "自動畫質",
 		},
 		control_bar: {
-			_: "控制列",
+			title: "控制列",
 			stop: "顯示暫停掣",
 			stop_description: "跳至第一個影格兼停止",
 			replay: "始終顯示重播掣",
@@ -162,9 +163,7 @@ export default {
 		screenshot: "擷取畫面",
 		stats: "統計",
 		autoplay: "自動播放",
-		filter: {
-			_: "濾鏡",
-		},
+		filter: "濾鏡",
 		error: {
 			getDanmaku: "收取彈幕列表失敗",
 			loadMedia: "載入媒體失敗",
@@ -174,7 +173,7 @@ export default {
 			remove_from_playlist: "喺播放清單度移除",
 		},
 		playback_order: {
-			_: "播放排列",
+			title: "播放排列",
 			sequential: "順序播放",
 			repeat_all: "列表循環",
 			repeat_one: "重複播放",
@@ -182,7 +181,7 @@ export default {
 		},
 	},
 	danmaku: {
-		_: "彈幕",
+		title: "彈幕",
 		send: "傳送彈幕",
 		history: "彈幕記錄",
 		format: {
@@ -207,7 +206,7 @@ export default {
 	experimental: "實驗",
 	accessibility: "輔助使用",
 	shortcut_key: {
-		_: "快捷鍵",
+		title: "快捷鍵",
 		player_page: "播放頁",
 		play_pause: "播放 / 暫停",
 		exit_fullscreen: "離開全螢幕",
@@ -225,20 +224,12 @@ export default {
 	},
 	guide: "指南",
 	about: {
-		_: "關於",
+		title: "關於",
 		repositories: {
-			_: "原始碼倉庫",
+			title: "原始碼倉庫",
 			frontend: "GitHub前端倉庫地址同意見提出",
 			backend: "GitHub後端倉庫地址同意見提出",
 			markdown: "個人主頁Markdown倉庫地址同意見提出",
-		},
-		team: "創作團隊",
-		staff: {
-			webmistress: "站娘",
-			designer: "設計",
-			frontend: "前端",
-			backend: "後端",
-			translator: "{0} 翻譯",
 		},
 		technologies_used: "使用技術",
 		slogan: "一個可愛嘅網站，\n送畀可愛嘅你！",
@@ -258,7 +249,7 @@ export default {
 	addition_date: "添加日期",
 	history: "記錄",
 	collection: {
-		_: "收藏",
+		title: "收藏",
 		verb: "儲存至收藏",
 		my: "我嘅收藏",
 		follow: "訂閱收藏",
@@ -278,7 +269,7 @@ export default {
 		following: "跟緊",
 	},
 	upload: {
-		_: "上載",
+		title: "上載",
 		drag_to_upload: "拖到嚟呢度去po嘢",
 		format_info: "支援MP4、WMV、WEBM等主流格式",
 	},
@@ -301,7 +292,7 @@ export default {
 	pause: "暫停",
 	rating: "評分",
 	kaomoji: {
-		_: "顏文字",
+		title: "顏文字",
 		happy: "開心",
 		greet: "問候",
 		awa: "扮得意",
@@ -347,7 +338,7 @@ export default {
 		save: "收藏數",
 	},
 	view: {
-		_: "呈現形式",
+		title: "呈現形式",
 		list: "清單",
 		grid: "格仔",
 		tile: "並排",
@@ -372,20 +363,27 @@ export default {
 		login_to_register: "我未有帳戶？註冊",
 		register_to_login: "我有咗帳戶？登入",
 		forgot_to_login: "我記得密碼喇",
+		resent_verification_code: "重新傳送驗證碼",
+		back_to_login: "返去登入",
 		forgot_title: "唔記得密碼",
 		reset_title: "重設密碼",
 		register_email_sent_info: "我哋經已送出驗證碼到閣下嘅電郵度，唔該喺度輸入驗證碼。\n未有收到嘅話，你可以選擇重新傳送。",
+		forgot_info: "請輸入你嘅電郵。\n\n若然你嘅帳號滿足重設密碼條件，我哋會傳送驗證碼到你電郵。",
+		reset_password_info: "請輸入同要記得你嘅新密碼。",
+		reset_password_totp_warning: "你嘅帳號啓用咗動態密碼雙重驗證，而家未支援重設密碼。\n若然你需要重設密碼，請聯絡管理員。",
+		login_totp_info: "你嘅帳號啓用咗雙重驗證，請輸入動態密碼繼續。\n若然你使用唔到你嘅身份驗證裝置，請使用備份碼或恢復碼登入。\n註：使用恢復碼登入你帳號後會停用雙重驗證。",
+		login_email_info: "電郵雙重驗證經已喺你帳號啓用，驗證碼經已傳送到你嘅電郵。\n若然你未收到驗證碼，請檢查係咪喺垃圾郵件或垃圾桶度。",
 	},
 	unselected: {
-		combobox: "請揀一項",
 		settings: "請揀一項設定",
 		tag: "搵標籤",
 		language: "揀個語言",
 		image: "揀張相",
 		file: "揀個file",
 	},
+	empty: {},
 	user: {
-		_: "用戶",
+		title: "用戶",
 		username: "用戶名",
 		username_requirements: "唔得重名。@:user.nickname_requirements",
 		username_requirements_unique: "用戶名冇得重複。",
@@ -408,21 +406,21 @@ export default {
 	watch_later: "陣間至睇",
 	download: "下載",
 	format: {
-		_: "格式",
+		title: "格式",
 		bold: "粗體",
 		italic: "斜體",
 		underline: "底線",
 		strikethrough: "刪除線",
 	},
 	text: {
-		_: "文字",
+		title: "文字",
 		size: "字形大細",
 	},
 	color: "色彩",
 	opacity: "透光度",
 	mode: "模式",
 	size: {
-		_: "大細",
+		title: "大細",
 		tiny: "勁細",
 		small: "細",
 		medium: "中",
@@ -430,7 +428,7 @@ export default {
 		huge: "勁大",
 	},
 	user_page: {
-		_: "個人主頁",
+		title: "個人主頁",
 		title_affix: "{0}嘅個人主頁",
 	},
 	manage_content: "投稿管理",
@@ -447,7 +445,7 @@ export default {
 		tieba: "百度貼吧",
 		cloudmusic: "網易雲音樂",
 		discord: {
-			_: "Discord",
+			title: "Discord",
 			server: "Discord伺服器",
 		},
 		telegram: "Telegram",
@@ -465,7 +463,6 @@ export default {
 	modify_memo: "修改備註",
 	add_to_group: "加入分組",
 	navigation: {
-		_: "導航",
 		back: "返回",
 		return_to_home: "去返主頁",
 	},
@@ -482,6 +479,8 @@ export default {
 		cooling_down: "冷卻緊！(・_・;) 唔該陣間試多次。",
 		unsupported_file: "唔支援此檔案格式！",
 		no_cover: "請上載封面！",
+		login_failed: "登入失敗！登入憑證無效。",
+		reset_password_failed: "重設密碼失敗！憑證無效。",
 		logout_success: "登出咗喇~",
 		password_changed: "密碼改咗喇~",
 		password_mismatch: "兩次輸入嘅密碼唔同！",
@@ -506,6 +505,7 @@ export default {
 		profile_updated: "個人資料更新咗喇~",
 		must_remove_totp_first: "請移除身份驗證器先！",
 		must_verify_email_first: "請驗證你嘅電郵先！",
+		new_email_same: "新電郵唔得同而家嘅電郵一樣！",
 		email_changed: "電郵改咗喇~",
 		required_not_filled: "請填寫必填欄位！",
 		exists_2fa: "你啓用過雙重驗證喇！唔該重新整理個頁面。",
@@ -531,7 +531,9 @@ export default {
 			verification_code: "請填寫驗證碼！",
 			totp_verification_code: "請填寫動態密碼！",
 		},
-		failed: {},
+		failed: {
+			user_info: "用戶資訊驗證失敗！",
+		},
 		invalid_format: {
 			email: "電郵格式無效！",
 			invitation_code: "邀請碼格式無效！",
@@ -546,6 +548,7 @@ export default {
 		},
 		invitation_code_invalid_or_used: "邀請碼無效或俾人用咗！",
 		username_invalid_or_taken: "用戶名無效或俾人用咗！",
+		email_registered: "呢個電郵俾人用咗！請用第個。",
 	},
 	confirm: {
 		cancel_upload: "你確定要取消咗呢次upload？",
@@ -562,16 +565,16 @@ export default {
 	unused: "未使用",
 	create: "建立",
 	creatable: "可建立",
-	invitation_code: {
-		_: "邀請碼",
-		invalid: "邀請碼無效",
-	},
+	invitation_code: "邀請碼",
 	version: "版本",
 	announcement: {
-		_: "公告",
+		title: "公告",
 		homepage: "我哋呢個小天地仲喺度成長緊㗎～！快啲加入我哋嘅{discord-server}，一齊見證住佢升呢，兼且同班dev傾下偈啦！(๑˃ᴗ˂)ﻭ\n身懷coding絕技？\n誠意邀請你加入我哋，一齊展開呢個冒險旅程～！！(๑•̀ㅂ•́)و✧",
 	},
 	under_construction: {
+		feature: "呢個功能仲喺度開發緊！",
+		feature_admin_only: "呢個功能仲喺度開發緊，而家淨係畀管理員使用。",
+		page: "呢個功能仲喺度開發緊，部分功能或未能正常運作。",
 		search_mode: "呢種搵嘢模式仲未用得！",
 	},
 	severity: {
@@ -584,12 +587,15 @@ export default {
 		code_403: "你冇權限進入呢個頁面。",
 	},
 	two_factor_authentication: {
-		_: "雙重驗證（2FA）",
+		title: "雙重驗證（2FA）",
 		description: "啓用雙重驗證可提升你嘅帳戶保安。若然你需要切換雙重驗證類型，唔該停用而家用嘅先。",
 		off_description: "停用雙重驗證會降低你嘅帳戶安全。",
-		totp_description: "基於保安理由，請輸入你身份驗證器動態密碼以繼續敏感操作。",
+		email_description: "基於保安理由，請輸入我哋傳送到你電郵嘅驗證碼去繼續操作。",
+		totp: "動態密碼（TOTP）",
+		totp_description: "基於保安理由，請輸入你身份驗證器動態密碼去繼續敏感操作。",
 		add_totp: {
-			_: "加入身份驗證器",
+			title: "加入身份驗證器",
+			warning: "唔好同其他人分享呢個頁面嘅任何內容！",
 			step_install: "安裝身份驗證器App",
 			step_install_description: "若然你經已有身份驗證器App，可跳過呢個步驟。\n冇嘅話，請喺你嘅個人裝置都安裝一個支援TOTP嘅App，譬如{ente-auth}、{microsoft-authenticator}或{google-authenticator}。",
 			step_scan: "請用你嘅身份驗證器App掃描下方QR Code",
@@ -598,28 +604,34 @@ export default {
 			step_save: "儲存備份碼同恢復碼",
 			step_save_description: "請妥善保管以下嘅密碼，並將佢哋儲存喺一個安全嘅地方。每個備份碼或恢復碼都只可以用一次，離開此頁面後將唔會再顯示。\n若然你無法使用你身份驗證器App，就可以用返呢啲密碼登入。",
 			backup_code: "備份碼",
+			backup_code_description: "可以替代動態密碼。",
 			recovery_code: "恢復碼",
+			recovery_code_description: "唔淨只可以替代動態密碼，仲會喺登入時停用雙重驗證。",
 			download: "下載代碼",
 		},
 		remove_totp: {
-			_: "移除身份驗證器",
+			title: "移除身份驗證器",
 		},
 		enable_email: {
-			_: "啓用電郵雙重驗證",
+			title: "啓用電郵雙重驗證",
 			ensure: "請確保你依然可以使用呢個電郵！",
 		},
 		disable_email: {
-			_: "停用電郵雙重驗證",
+			title: "停用電郵雙重驗證",
 		},
 	},
 	enable: "啓用",
 	disable: "停用",
+	sync_color_settings_across_devices: "喺所有裝置上同步顏色設定",
 	role: {
 		administrator: "管理員",
 		developer: "開發者",
 	},
 	info: "資訊",
-	calendar: {},
+	calendar: {
+		gregory: "公曆",
+		chinese: "農曆",
+	},
 	file_picker: {
 		choose: "揀選檔案",
 		rechoose: "重新揀選",

@@ -114,7 +114,7 @@
 						<Icon :name="icon" :filled="icon.startsWith('colored-')" @dblclick="open = false" />
 						<span>{{ title }}</span>
 					</div>
-					<button v-if="!hideTitleCloseIcon" class="close-button" :aria-label="t.step.close" @click="open = false">
+					<button v-if="!hideTitleCloseIcon" class="close-button" :aria-label="$t('step.close')" @click="open = false">
 						<Icon name="close" />
 					</button>
 				</div>
@@ -128,8 +128,8 @@
 						</div>
 						<div class="right">
 							<slot name="footer-right">
-								<Button class="secondary" @click="open = false">{{ t.step.cancel }}</Button>
-								<Button @click="open = false">{{ t.step.ok }}</Button>
+								<Button class="secondary" @click="open = false">{{ $t("step.cancel") }}</Button>
+								<Button @click="open = false">{{ $t("step.ok") }}</Button>
 							</slot>
 						</div>
 					</div>

@@ -5,7 +5,8 @@
 	const danmakuItemMenu = ref<MenuModel>();
 	const currentDanmaku = ref<UnwrapRef<DanmakuListItem>>();
 	const { copy } = useClipboard();
-	const headers = { videoTime: t.danmaku.list.thead.time, content: t.danmaku.list.thead.content, sendTime: t.send_date };
+	const { t } = useI18n();
+	const headers = { videoTime: t("danmaku.list.thead.time"), content: t("danmaku.list.thead.content"), sendTime: t("send_date") };
 	const colWidths = reactive([70, 130, 180]);
 	const danmakuList = ref<Array<{ item: DanmakuListItem; key: PropertyKey }>>([]);
 	const danmakuListKey = ref(0); // FIXME: 理论上 vue-virtual-scroller 会自动监测弹幕数组更新，但是目前不知道为什么不生效，暂时只能用这种方法解决。
@@ -73,7 +74,7 @@
 	function copyDanmaku() {
 		if (!currentDanmaku.value) return;
 		copy(currentDanmaku.value.content);
-		useToast(t.toast.copied, "success");
+		useToast($t("toast.copied"), "success");
 	}
 
 	/**
@@ -128,8 +129,8 @@
 			<!-- </ScrollContainer> -->
 
 			<Menu v-model="danmakuItemMenu" noFade>
-				<MenuItem icon="copy" @click="copyDanmaku">{{ t.copy }}</MenuItem>
-				<MenuItem icon="flag">{{ t.report }}</MenuItem>
+				<MenuItem icon="copy" @click="copyDanmaku">{{ $t("copy") }}</MenuItem>
+				<MenuItem icon="flag">{{ $t("report") }}</MenuItem>
 				<hr />
 				<MenuItem icon="person">TODO: USER NAME HERE</MenuItem>
 			</Menu>

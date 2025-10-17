@@ -9,7 +9,7 @@ export default {
 	rangeDash: " – ",
 	home: "Trang chủ",
 	category: {
-		_: "Danh mục",
+		title: "Danh mục",
 		anime: "Anime",
 		music: "Âm nhạc",
 		otomad: "otoMAD",
@@ -22,13 +22,13 @@ export default {
 	search: "Tìm kiếm",
 	custom: "Tùy chỉnh",
 	scheme: {
-		_: "Chế độ",
+		title: "Chế độ",
 		light: "Chế độ sáng",
 		dark: "Chế độ tối",
 		system: "Theo hệ thống",
 	},
 	palette: {
-		_: "Bảng màu",
+		title: "Bảng màu",
 		pink: "Cocoa Hồng",
 		blue: "Chino Xanh",
 		purple: "Rize Tím",
@@ -40,14 +40,14 @@ export default {
 	},
 	language: "Ngôn Ngữ",
 	background: {
-		_: "Phông nền",
+		title: "Phông nền",
 		custom: "Phông tùy chỉnh",
 		opacity: "Độ mờ đục",
 		tint: "Màu nhuộm",
 		blur: "Mức độ làm mờ",
 	},
 	appearance: {
-		_: "Giao diện",
+		title: "Giao diện",
 		sharp_mode: "Sắc sảo",
 		flat_mode: "Đơn giản",
 		colorful_navbar: "Thêm màu vào thanh điều hướng",
@@ -61,7 +61,7 @@ export default {
 	off: "Tắt",
 	disabled: "Bị vô hiệu",
 	tag: {
-		_: "Thẻ",
+		title: "Thẻ",
 		search: "Tìm thẻ",
 		new: "Tạo thẻ mới",
 		set_as_original: "Đặt làm tên chính",
@@ -78,7 +78,7 @@ export default {
 	comments: "Bình luận",
 	you_know_too_much: "Biết hơi bị nhiều rồi đấy...",
 	settings: {
-		_: "Cài đặt",
+		title: "Cài đặt",
 		search: "Tìm kiếm cài đặt",
 		user: "Cài đặt người dùng",
 		app: "Cài đặt ứng dụng",
@@ -91,14 +91,14 @@ export default {
 	dashboard: "Tổng quan",
 	account: "Tài khoản",
 	profile: {
-		_: "Hồ sơ",
+		title: "Hồ sơ",
 		edit: "Sửa hồ sơ",
 		edit_banner: "Thay đổi ảnh bìa",
 		edit_avatar: "Thay đổi ảnh đại diện",
 	},
 	traces: "Lịch sử xem",
 	privacy: {
-		_: "Riêng tư",
+		title: "Riêng tư",
 		cookie: "Cookie☆",
 		allow_cookies: "Cho phép sử dụng Cookie",
 		info_visibility: "Hiển thị thông tin",
@@ -109,7 +109,7 @@ export default {
 	security: "Bảo mật",
 	login_options: "Tùy chọn đăng nhập",
 	password: {
-		_: "Mật khẩu",
+		title: "Mật khẩu",
 		forgot: "Quên mật khẩu",
 		reset: "Đặt lại mật khẩu",
 		retype: "Nhập lại mật khẩu",
@@ -120,13 +120,13 @@ export default {
 		hint: "Gợi ý mật khẩu",
 	},
 	block_and_hide: {
-		_: "Chặn và Ẩn",
+		title: "Chặn và Ẩn",
 		block: {
-			_: "Chặn",
+			title: "Chặn",
 			description: "Người dùng bạn không muốn tương tác.",
 		},
 		hide: {
-			_: "Ẩn",
+			title: "Ẩn",
 			description: "Ẩn người dùng không muốn thấy (trừ phi truy cập trực tiếp lên trang cá nhân)",
 		},
 		tag: {
@@ -140,7 +140,7 @@ export default {
 		},
 	},
 	player: {
-		_: "Trình phát",
+		title: "Trình phát",
 		speed: {
 			resample: "Điều chỉnh cao độ phát",
 			continuous: "Điều chỉnh tốc độ phát",
@@ -149,7 +149,7 @@ export default {
 			auto: "Chất lượng tự động",
 		},
 		control_bar: {
-			_: "Thanh điều khiển",
+			title: "Thanh điều khiển",
 			stop: "Hiện nút Tạm dừng",
 			stop_description: "Tới khung hình đầu tiên và dừng",
 			replay: "Luôn hiện nút phát lại",
@@ -163,9 +163,7 @@ export default {
 		screenshot: "Chụp ảnh màn hình",
 		stats: "Thống kê",
 		autoplay: "Tự động phát",
-		filter: {
-			_: "Bộ lọc",
-		},
+		filter: "Bộ lọc",
 		error: {
 			getDanmaku: "Nhận danh sách Danmaku thất bại",
 			loadMedia: "Không tải được đa phương tiện",
@@ -175,7 +173,7 @@ export default {
 			remove_from_playlist: "Xóa khỏi Danh sách phát",
 		},
 		playback_order: {
-			_: "Thứ tự phát",
+			title: "Thứ tự phát",
 			sequential: "Theo thứ tự",
 			repeat_all: "Lặp lại tất cả",
 			repeat_one: "Lặp lại một lần",
@@ -183,7 +181,7 @@ export default {
 		},
 	},
 	danmaku: {
-		_: "Danmaku",
+		title: "Danmaku",
 		send: "Gửi một Danmaku",
 		history: "Nhật ký Danmaku",
 		format: {
@@ -208,7 +206,7 @@ export default {
 	experimental: "Thử nghiệm",
 	accessibility: "Trợ năng",
 	shortcut_key: {
-		_: "Phím tắt",
+		title: "Phím tắt",
 		player_page: "Trang trình phát",
 		play_pause: "Phát / Dừng",
 		exit_fullscreen: "Thoát chế độ toàn màn hình",
@@ -226,20 +224,12 @@ export default {
 	},
 	guide: "Hướng dẫn",
 	about: {
-		_: "Về chúng tôi",
+		title: "Về chúng tôi",
 		repositories: {
-			_: "Mã nguồn",
+			title: "Mã nguồn",
 			frontend: "Kho lưu trữ GitHub Frontend và phản hồi về các vấn đề",
 			backend: "Kho lưu trữ GitHub Backend và phản hồi về các vấn đề",
 			markdown: "Kho lưu trữ mã nguồn Markdown của người dùng và phản hồi về các vấn đề",
-		},
-		team: "Đội ngũ",
-		staff: {
-			webmistress: "Chủ trì",
-			designer: "Thiết kế",
-			frontend: "Thiết kế Frontend",
-			backend: "Thiết kế Backend",
-			translator: "Dịch giả {0}",
 		},
 		technologies_used: "Dự án có sử dụng:",
 		slogan: "Một trang web dễ thương \ndành cho những người dễ thương!",
@@ -259,7 +249,7 @@ export default {
 	addition_date: "Ngày thêm",
 	history: "Lịch sử",
 	collection: {
-		_: "Bộ sưu tập | Bộ sưu tập",
+		title: "Bộ sưu tập | Bộ sưu tập",
 		verb: "Lưu vào Bộ sưu tập",
 		my: "Bộ sưu tập của tôi",
 		follow: "Theo dõi Bộ sưu tập",
@@ -279,7 +269,7 @@ export default {
 		following: "Đang theo dõi",
 	},
 	upload: {
-		_: "Tải lên",
+		title: "Tải lên",
 		drag_to_upload: "Kéo vào đây để tải lên video",
 		format_info: "Hỗ trợ các định dạng như MP4, WMV, WEBM",
 	},
@@ -302,7 +292,7 @@ export default {
 	pause: "Dừng",
 	rating: "Xếp hạng",
 	kaomoji: {
-		_: "Kaomoji",
+		title: "Kaomoji",
 		happy: "Vui",
 		greet: "Chào hỏi",
 		awa: "Mòe",
@@ -348,7 +338,7 @@ export default {
 		save: "Lượt lưu",
 	},
 	view: {
-		_: "Chế độ hiển thị",
+		title: "Chế độ hiển thị",
 		list: "Danh sách",
 		grid: "Lưới",
 		tile: "Ô",
@@ -385,15 +375,15 @@ export default {
 		login_email_info: "Xác minh hai bước bằng email hiện hành trên tài khoản. Chúng tôi đã gửi mã xác thực đến Email của bạn.\nTrường hợp không thấy email, vui lòng kiểm tra mục spam hoặc thư rác.",
 	},
 	unselected: {
-		combobox: "Chọn mục",
 		settings: "Chọn một cài đặt",
 		tag: "Tìm kiếm thẻ...",
 		language: "Chọn ngôn ngữ",
 		image: "Chọn ảnh",
 		file: "Chọn tệp tin",
 	},
+	empty: {},
 	user: {
-		_: "Người dùng",
+		title: "Người dùng",
 		username: "Tên người dùng",
 		username_requirements: "Phải là tên độc lập duy nhất. @:user.nickname_requirements",
 		username_requirements_unique: "Tên người dùng phải là duy nhất.",
@@ -416,21 +406,21 @@ export default {
 	watch_later: "Xem sau",
 	download: "Tải xuống",
 	format: {
-		_: "Định dạng văn bản",
+		title: "Định dạng văn bản",
 		bold: "Đậm",
 		italic: "Nghiêng",
 		underline: "Gạch dưới",
 		strikethrough: "Gạch ngang",
 	},
 	text: {
-		_: "Văn bản",
+		title: "Văn bản",
 		size: "Cỡ chữ",
 	},
 	color: "Màu",
 	opacity: "Độ mờ đục",
 	mode: "Chế độ",
 	size: {
-		_: "Cỡ",
+		title: "Cỡ",
 		tiny: "Cực nhỏ",
 		small: "Nhỏ",
 		medium: "Vừa",
@@ -438,7 +428,7 @@ export default {
 		huge: "Cực lớn",
 	},
 	user_page: {
-		_: "Trang cá nhân",
+		title: "Trang cá nhân",
 		title_affix: "Trang cá nhân của {0}",
 	},
 	manage_content: "Quản lý nội dung",
@@ -455,7 +445,7 @@ export default {
 		tieba: "Tieba",
 		cloudmusic: "Cloud Music",
 		discord: {
-			_: "Discord",
+			title: "Discord",
 			server: "Máy Chủ Discord",
 		},
 		telegram: "Telegram",
@@ -473,7 +463,6 @@ export default {
 	modify_memo: "Sửa đổi phụ chú",
 	add_to_group: "Thêm vào nhóm",
 	navigation: {
-		_: "Tìm kiếm...",
 		back: "Quay lại",
 		return_to_home: "Trở về trang chủ",
 	},
@@ -576,13 +565,10 @@ export default {
 	unused: "Chưa sử dụng",
 	create: "Tạo",
 	creatable: "Cho phép tạo",
-	invitation_code: {
-		_: "Mã mời",
-		invalid: "Mã mời không hợp lệ",
-	},
+	invitation_code: "Mã mời",
 	version: "Phiên bản",
 	announcement: {
-		_: "Thông báo",
+		title: "Thông báo",
 		homepage: "Trang web nhỏ xinh vẫn đang lớn lên từng ngày~! Tham gia {discord-server} để theo dõi tiến độ phát triển và trò chuyện cùng các nhà phát triển! (๑˃ᴗ˂)ﻭ\nBạn biết lập trình...? Chúng tôi rất vinh dự nếu bạn tham gia hành trình này cùng với chúng tôi~!! (๑•̀ㅂ•́)و✧",
 	},
 	under_construction: {
@@ -601,14 +587,14 @@ export default {
 		code_403: "Bạn không có quyền truy cập trang này.",
 	},
 	two_factor_authentication: {
-		_: "Xác thực hai bước (2FA)",
+		title: "Xác thực hai bước (2FA)",
 		description: "Kích hoạt xác thực hai bước để tăng tính bảo mật cho tài khoản. Để đổi phương thức xác minh, trước tiên phải vô hiệu phương thức hiện hành.",
 		off_description: "Vô hiệu xác thực hai bước, có thể khiến tài khoản kém bảo mật hơn.",
 		email_description: "Vì lý do bảo mật, hãy nhập mã xác minh được gửi qua email để tiếp tục.",
 		totp: "Mật khẩu ngắn hạn dùng 1 lần (TOTP)",
 		totp_description: "Vì lý do bảo mật, hãy nhập mã xác minh được gửi qua ứng dụng xác thực để tiếp tục.",
 		add_totp: {
-			_: "Thêm mã TOTP",
+			title: "Thêm mã TOTP",
 			warning: "Tuyệt đối không chia sẻ nội dung trên trang này với bất cứ ai!",
 			step_install: "Cài đặt một ứng dụng xác thực",
 			step_install_description: "Nếu đã có ứng dụng xác thực bạn có thể bỏ qua bước này.\nNếu không, hãy cài đặt một ứng dụng có TOTP trên thiết bị cá nhân. Ví dụ {ente-auth}, {microsoft-authenticator}, hoặc {google-authenticator}.",
@@ -624,14 +610,14 @@ export default {
 			download: "Tải mã về",
 		},
 		remove_totp: {
-			_: "Loại bỏ mã TOTP",
+			title: "Loại bỏ mã TOTP",
 		},
 		enable_email: {
-			_: "Kích hoạt xác thực 2 bước bằng email",
+			title: "Kích hoạt xác thực 2 bước bằng email",
 			ensure: "Hãy chắc chắn rằng bạn còn truy nhập được địa chỉ email này!",
 		},
 		disable_email: {
-			_: "Vô hiệu xác thực 2 bước bằng email",
+			title: "Vô hiệu xác thực 2 bước bằng email",
 		},
 	},
 	enable: "Kích hoạt",

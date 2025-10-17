@@ -1,5 +1,6 @@
 <script setup lang="ts">
 	import type { TusFileUploader } from "~/composables/api/Video/VideoController";
+	const { t } = useI18n();
 
 	const props = defineProps<{
 		files: File[];
@@ -32,13 +33,13 @@
 	const provider = computed(() => isNetworkImage.value ? environment.cloudflareImageProvider : undefined); // 根据 isNetworkImage 的值判断是否使用 cloudflare 作为 Nuxt Image 提供商
 	// 视频分类
 	const VIDEO_CATEGORY = new Map([
-		["anime", t.category.anime],
-		["music", t.category.music],
-		["otomad", t.category.otomad],
-		["tech", t.category.tech],
-		["design", t.category.design],
-		["game", t.category.game],
-		["misc", t.category.misc],
+		["anime", t("category.anime")],
+		["music", t("category.music")],
+		["otomad", t("category.otomad")],
+		["tech", t("category.tech")],
+		["design", t("category.design")],
+		["game", t("category.game")],
+		["misc", t("category.misc")],
 	]);
 	const contextualToolbar = ref<FlyoutModel>(); // TAG 的工具烂浮窗
 	const hoveredTagContent = ref<[number, string]>(); // 鼠标 hover 的 TAG
@@ -51,7 +52,7 @@
 	 * 上传文件无效。
 	 */
 	function invalidUploaded() {
-		useToast(t.toast.unsupported_file, "error");
+		useToast(t("toast.unsupported_file"), "error");
 		clearFileInput(thumbnailInput);
 	}
 
@@ -118,11 +119,11 @@
 				isCoverCropperOpen.value = false;
 				clearBlobUrl(); // 释放内存
 			} else {
-				useToast(t.toast.cover_upload_failed, "error");
+				useToast(t("toast.cover_upload_failed"), "error");
 				isUploadingCover.value = false;
 			}
 		} else {
-			useToast(t.toast.cover_upload_failed, "error");
+			useToast(t("toast.cover_upload_failed"), "error");
 			isUploadingCover.value = false;
 			isCoverCropperOpen.value = false;
 		}
@@ -134,16 +135,16 @@
 	 */
 	function tusUpload(files: File[]) {
 		if (!files || files.length === 0) {
-			useToast(t.toast.upload_file_not_found, "error");
+			useToast(t("toast.upload_file_not_found"), "error");
 			return;
 		}
 
 		uploader = new api.video.TusFileUploader(files[0], uploadProgress, isUploadingVideo);
 		uploader.process?.then((videoId: string) => {
 			cloudflareVideoId.value = videoId;
-			useToast(t.toast.uploaded, "success");
+			useToast(t("toast.uploaded"), "success");
 		}).catch((error: unknown) => {
-			useToast(t.toast.upload_failed, "error");
+			useToast(t("toast.upload_failed"), "error");
 			console.error("ERROR", "Upload Failed:", error);
 		});
 	}
@@ -167,24 +168,24 @@
 	 */
 	async function commitVideo() {
 		if (!cloudflareVideoId.value) {
-			useToast(t.toast.upload_not_completed, "error");
+			useToast(t("toast.upload_not_completed"), "error");
 			return;
 		}
 		const uid = useSelfUserInfoStore().userInfo.uid;
 		if (!uid) {
-			useToast(t.toast.upload_must_logged_in, "error");
+			useToast(t("toast.upload_must_logged_in"), "error");
 			return;
 		}
 		if (!title.value) {
-			useToast(t.validation.required.title, "error");
+			useToast(t("validation.required.title"), "error");
 			return;
 		}
 		if (!description.value) {
-			useToast(t.validation.required.description, "error");
+			useToast(t("validation.required.description"), "error");
 			return;
 		}
 		if (!category.value) {
-			useToast(t.validation.required.category, "error");
+			useToast(t("validation.required.category"), "error");
 			return;
 		}
 
@@ -223,7 +224,7 @@
 			}
 		} catch (error) {
 			isCommitButtonLoading.value = false;
-			useToast(t.toast.upload_failed, "error");
+			useToast(t("toast.upload_failed"), "error");
 			console.error("ERROR", "Video submission failed:", error);
 		}
 	}
@@ -299,7 +300,7 @@
 
 <template>
 	<div class="container">
-		<Modal v-model="isCoverCropperOpen" :title="t.select_cover">
+		<Modal v-model="isCoverCropperOpen" :title="$t('select_cover')">
 			<div class="cover-cropper">
 				<ImageCropper
 					ref="cropper"
@@ -313,8 +314,8 @@
 				/>
 			</div>
 			<template #footer-right>
-				<Button class="secondary" @click="isCoverCropperOpen = false">{{ t.step.cancel }}</Button>
-				<Button :loading="isUploadingCover" :disabled="isUploadingCover" @click="handleSubmitCoverImage">{{ t.upload }}</Button>
+				<Button class="secondary" @click="isCoverCropperOpen = false">{{ $t("step.cancel") }}</Button>
+				<Button :loading="isUploadingCover" :disabled="isUploadingCover" @click="handleSubmitCoverImage">{{ $t("upload.title") }}</Button>
 			</template>
 		</Modal>
 
@@ -323,7 +324,7 @@
 
 			<div class="toolbox-card left">
 				<div v-ripple class="cover" @click="thumbnailInput?.click()">
-					<div class="mask">{{ t.select_cover }}</div>
+					<div class="mask">{{ $t("select_cover") }}</div>
 					<NuxtImg
 						v-if="thumbnailUrl"
 						:provider
@@ -334,28 +335,28 @@
 					/>
 				</div>
 
-				<Button icon="disambig">{{ t.associate_existing }}</Button>
+				<Button icon="disambig">{{ $t("associate_existing") }}</Button>
 
 				<Segmented v-model="copyright">
-					<SegmentedItem id="original" icon="fact_check">{{ t.original }}</SegmentedItem>
-					<SegmentedItem id="repost" icon="local_shipping">{{ t.repost }}</SegmentedItem>
+					<SegmentedItem id="original" icon="fact_check">{{ $t("original") }}</SegmentedItem>
+					<SegmentedItem id="repost" icon="local_shipping">{{ $t("repost") }}</SegmentedItem>
 				</Segmented>
 
 				<Contents class="repost-options">
 					<Transition mode="out-in" @enter="onContentEnter" @leave="onContentLeave">
 						<div v-if="copyright === 'original'">
 							<section>
-								<Checkbox v-model:single="ensureOriginal">{{ t.ensure_original }}</Checkbox>
+								<Checkbox v-model:single="ensureOriginal">{{ $t("ensure_original") }}</Checkbox>
 							</section>
 						</div>
 						<div v-else-if="copyright === 'repost'">
 							<section>
-								<Subheader icon="person">{{ t.original_author }}</Subheader>
+								<Subheader icon="person">{{ $t("original_author") }}</Subheader>
 								<TextBox v-model="originalAuthor" required />
 							</section>
 
 							<section>
-								<Subheader icon="link">{{ t.original_link }}</Subheader>
+								<Subheader icon="link">{{ $t("original_link") }}</Subheader>
 								<TextBox v-model="originalLink" required />
 							</section>
 						</div>
@@ -373,12 +374,12 @@
 
 				<div class="toolbox-card">
 					<section>
-						<Subheader icon="header">{{ t.title }}</Subheader>
+						<Subheader icon="header">{{ $t("title") }}</Subheader>
 						<TextBox v-model="title" required />
 					</section>
 
 					<section>
-						<Subheader icon="category">{{ t.category }}</Subheader>
+						<Subheader icon="category">{{ $t("category.title") }}</Subheader>
 						<ComboBox v-model="category">
 							<ComboBoxItem v-for="CATEGORY in VIDEO_CATEGORY" :id="CATEGORY[0]" :key="CATEGORY[0]">
 								{{ CATEGORY[1] }}
@@ -387,7 +388,7 @@
 					</section>
 
 					<section>
-						<Subheader icon="tag">{{ t(2).tag }}</Subheader>
+						<Subheader icon="tag">{{ $t("tag", 2) }}</Subheader>
 						<div class="tags">
 							<Tag
 								v-for="tag in displayTags"
@@ -416,16 +417,16 @@
 						@mouseenter="reshowContextualToolbar"
 						@mouseleave="hideContextualToolbar"
 					>
-						<Button icon="close" @click="removeTag(hoveredTagContent![0])">{{ t.delete }}</Button>
+						<Button icon="close" @click="removeTag(hoveredTagContent![0])">{{ $t("delete") }}</Button>
 					</Flyout>
 
 					<section>
-						<Subheader icon="details">{{ t.description }}</Subheader>
+						<Subheader icon="details">{{ $t("description") }}</Subheader>
 						<TextBox v-model="description" required />
 						<!-- TODO: 这里放简介，需要富文本编辑器 -->
 					</section>
 
-					<ToggleSwitch v-model="pushToFeed" icon="feed">{{ t.push_to_feed }}</ToggleSwitch>
+					<ToggleSwitch v-model="pushToFeed" icon="feed">{{ $t("push_to_feed") }}</ToggleSwitch>
 
 					<div class="submit">
 						<Button
@@ -434,7 +435,7 @@
 							:loading="!cloudflareVideoId || isCommitButtonLoading"
 							@click="commitVideo"
 						>
-							{{ t.upload }}
+							{{ $t("publish") }}
 						</Button>
 					</div>
 				</div>

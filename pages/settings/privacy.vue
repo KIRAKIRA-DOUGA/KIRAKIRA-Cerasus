@@ -1,8 +1,9 @@
 <script setup lang="ts">
+	const { t } = useI18n();
 
 	const enableCookie = computed({
 		get: () => true,
-		set: value => !value && useToast(t.toast.failed_to_disable_cookies, "error"),
+		set: value => !value && useToast(t("toast.failed_to_disable_cookies"), "error"),
 	});
 
 	const isApplyingVisibilitiesSetting = ref(false);
@@ -14,11 +15,11 @@
 	const linkedAccountVisibilities = ref<UserLinkedAccountsVisibilitiesSettingDto[]>([]); // 用户关联平台可视性数据。
 
 	const PRIVARY_VISIBILITIES_SETTING_ITEMS = [
-		{ id: "privary.birthday", name: t.user.birthday, icon: "birthday" },
-		{ id: "privary.age", name: t.user.age, icon: "calendar" },
-		{ id: "privary.follow", name: t.following, icon: "person_add" },
-		{ id: "privary.fans", name: t(0).follower, icon: "person_heart" },
-		{ id: "privary.favorites", name: t(0).collection, icon: "star" },
+		{ id: "privary.birthday", name: t("user.birthday"), icon: "birthday" },
+		{ id: "privary.age", name: t("user.age"), icon: "calendar" },
+		{ id: "privary.follow", name: t("following"), icon: "person_add" },
+		{ id: "privary.fans", name: t("follower", 2), icon: "person_heart" },
+		{ id: "privary.favorites", name: t("collection.title", 2), icon: "star" },
 	];
 
 	/**
@@ -79,11 +80,11 @@
 			};
 			const updateUserSettingsResult = await api.user.updateUserSettings(updateOrCreateUserSettingsRequest);
 			if (updateUserSettingsResult.success)
-				useToast("应用成功", "success");
+				useToast(t("toast.settings_updated"), "success");
 			else
-				useToast("应用用户隐私设置失败，请刷新页面后重试", "error", 5000);
+				useToast(t("toast.something_went_wrong"), "error", 5000);
 		} catch (error) {
-			useToast("应用用户隐私设置时出错", "error", 5000);
+			useToast(t("toast.something_went_wrong"), "error", 5000);
 			console.error("ERROR", "更新用户隐私设置时出错：", error);
 		}
 		isApplyingVisibilitiesSetting.value = false;
@@ -102,7 +103,7 @@
 				linkedAccountVisibilities.value = userSettings.userSettings?.userLinkedAccountsVisibilitiesSetting ?? [];
 			}
 		} catch (error) {
-			useToast("获取用户设置时出错，请刷新页面", "error", 5000);
+			useToast(t("toast.something_went_wrong"), "error", 5000);
 			console.error("ERROR", "获取用户设置时出错出错：", error);
 		}
 		isFetchingVisibilitiesSetting.value = false;
@@ -113,21 +114,21 @@
 
 <template>
 	<div>
-		<InfoBar type="warning" :title="t.severity.warning">
-			{{ t.under_construction.page }}
+		<InfoBar type="warning" :title="$t('severity.warning')">
+			{{ $t("under_construction.page") }}
 		</InfoBar>
 
-		<Subheader icon="cookie">{{ t.privacy.cookie }}</Subheader>
+		<Subheader icon="cookie">{{ $t("privacy.cookie") }}</Subheader>
 		<section list>
-			<ToggleSwitch v-model="enableCookie" v-ripple icon="cookie">{{ t.privacy.allow_cookies }}</ToggleSwitch>
+			<ToggleSwitch v-model="enableCookie" v-ripple icon="cookie">{{ $t("privacy.allow_cookies") }}</ToggleSwitch>
 		</section>
 
 		<div class="privacy-header">
-			<Subheader icon="visibility">{{ t.privacy.info_visibility }}</Subheader>
+			<Subheader icon="visibility">{{ $t("privacy.info_visibility") }}</Subheader>
 			<div class="options">
-				<SoftButton v-tooltip:top="t.privacy.public" icon="visibility" @click="setColonPrivacyVisibility('public')" />
-				<SoftButton v-tooltip:top="t.privacy.following" icon="person_add" @click="setColonPrivacyVisibility('following')" />
-				<SoftButton v-tooltip:top="t.privacy.private" icon="visibility_off" @click="setColonPrivacyVisibility('private')" />
+				<SoftButton v-tooltip:top="$t('privacy.public')" icon="visibility" @click="setColonPrivacyVisibility('public')" />
+				<SoftButton v-tooltip:top="$t('privacy.following')" icon="person_add" @click="setColonPrivacyVisibility('following')" />
+				<SoftButton v-tooltip:top="$t('privacy.private')" icon="visibility_off" @click="setColonPrivacyVisibility('private')" />
 			</div>
 		</div>
 		<section list>
@@ -141,8 +142,8 @@
 		</section>
 
 		<div class="submit">
-			<Button icon="reset" :disabled="isPending" :loading="isReactVisibilitiesSetting" class="secondary" @click="resetColonVisibility()">{{ t.step.reset }}</Button>
-			<Button icon="check" :disabled="isPending" :loading="isApplyingVisibilitiesSetting" @click="applyVisibilitiesSetting">{{ t.step.apply }}</Button>
+			<Button icon="reset" :disabled="isPending" :loading="isReactVisibilitiesSetting" class="secondary" @click="resetColonVisibility()">{{ $t("step.reset") }}</Button>
+			<Button icon="check" :disabled="isPending" :loading="isApplyingVisibilitiesSetting" @click="applyVisibilitiesSetting">{{ $t("step.apply") }}</Button>
 		</div>
 	</div>
 </template>

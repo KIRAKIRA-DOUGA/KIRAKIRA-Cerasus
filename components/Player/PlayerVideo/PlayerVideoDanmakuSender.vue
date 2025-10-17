@@ -67,6 +67,7 @@
 		mode: "rtl",
 		enableRainbow: false,
 	}) as DanmakuFormat;
+	const { t } = useI18n();
 
 	/**
 	 * 插入颜文字。
@@ -100,12 +101,12 @@
 		try {
 			api.danmaku.emitDanmaku(emitDanmakuRequestData).then(emitDanmakuResult => {
 				if (!emitDanmakuResult.success) {
-					useToast(t.toast.something_went_wrong, "error");
+					useToast(t("toast.something_went_wrong"), "error");
 					console.error("ERROR", "Failed to send danmaku.");
 				}
 			});
 		} catch (error) {
-			useToast(t.toast.something_went_wrong, "error");
+			useToast(t("toast.something_went_wrong"), "error");
 			console.error("ERROR", "Failed to send danmaku. Request failed:", error);
 		}
 
@@ -120,10 +121,10 @@
 
 	<Comp role="textbox">
 		<!-- // TODO: 使用多语言 -->
-		<TextBox ref="textBox" v-model="content" :placeholder="editable ? t.danmaku.send : '您已被该用户屏蔽，无法发送弹幕。'" :disabled="!editable">
+		<TextBox ref="textBox" v-model="content" :placeholder="editable ? $t('danmaku.send') : '您已被该用户屏蔽，无法发送弹幕。'" :disabled="!editable">
 			<template #actions>
 				<SoftButton
-					v-tooltip:bottom="t.kaomoji"
+					v-tooltip:bottom="$t('kaomoji.title')"
 					icon="kaomoji"
 					appearance="textbox-trailingicon"
 					:active="!!flyoutKaomoji"
@@ -131,7 +132,7 @@
 					@click="e => flyoutKaomoji = [e, 'y', OFFSET_Y]"
 				/>
 				<SoftButton
-					v-tooltip:bottom="t.format"
+					v-tooltip:bottom="$t('format.title')"
 					icon="text_format"
 					appearance="textbox-trailingicon"
 					:active="!!flyoutFormat"
@@ -139,7 +140,7 @@
 					@click="e => flyoutFormat = [e.currentTarget, 'y', OFFSET_Y]"
 				/>
 				<SoftButton
-					v-tooltip:bottom="t.send"
+					v-tooltip:bottom="$t('send')"
 					:disabled="!content || !editable"
 					icon="send"
 					appearance="textbox-trailingicon"

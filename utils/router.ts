@@ -83,12 +83,8 @@ export function navigate(to: RouteLocationRaw, options?: NavigateToOptions) {
  */
 export function switchLanguage(lang: string) {
 	if (getCurrentLocale() === lang) return;
-	const switchLocalePath = useSwitchLocalePath();
-	switchLocalePath(lang as never);
-	// useRouter().push(switchLocalePath(value)); // 旧方法，不推荐使用。
-	if (lang === "zhs") lang = "/";
-	else lang = `/${lang}/`;
-	const update = () => { useRouter().push(lang + getRoutePath()); };
+	const { setLocale } = useNuxtApp().$i18n;
+	const update = () => { setLocale(lang as never); };
 	if (environment.server) update();
 	else { // 切换语言动画。
 		const settings = document.querySelector(".settings");

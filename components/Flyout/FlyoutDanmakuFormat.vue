@@ -45,7 +45,7 @@
 		<Comp ref="styleContainer" :class="[placement]">
 			<Transition :name="showColorPicker ? 'page-forward' : 'page-backward'" mode="out-in" @enter="onSwitchPageEnter">
 				<div v-if="!showColorPicker" class="page-style">
-					<Subheader icon="palette">{{ t.color }}</Subheader>
+					<Subheader icon="palette">{{ $t("color") }}</Subheader>
 					<section class="color-section">
 						<div class="color current-color" :style="{ backgroundColor: format.color.hashHex }"></div>
 						<div class="color-list">
@@ -73,20 +73,20 @@
 					</section>
 					<ToggleSwitch v-model="format.enableRainbow">
 						<div class="rainbow-example"></div>
-						{{ t.danmaku.format.send_as_creator }}
+						{{ $t("danmaku.format.send_as_creator") }}
 					</ToggleSwitch>
-					<Subheader icon="font_size">{{ t.text.size }}</Subheader>
+					<Subheader icon="font_size">{{ $t("text.size") }}</Subheader>
 					<Segmented v-model="format.fontSize">
-						<SegmentedItem id="small" icon="font_size_small">{{ t.size.small }}</SegmentedItem>
-						<SegmentedItem id="medium" icon="font_size_medium">{{ t.size.medium }}</SegmentedItem>
-						<SegmentedItem id="large" icon="font_size_large">{{ t.size.large }}</SegmentedItem>
+						<SegmentedItem id="small" icon="font_size_small">{{ $t("size.small") }}</SegmentedItem>
+						<SegmentedItem id="medium" icon="font_size_medium">{{ $t("size.medium") }}</SegmentedItem>
+						<SegmentedItem id="large" icon="font_size_large">{{ $t("size.large") }}</SegmentedItem>
 					</Segmented>
-					<Subheader icon="danmaku">{{ t.mode }}</Subheader>
+					<Subheader icon="danmaku">{{ $t("mode") }}</Subheader>
 					<Segmented v-model="format.mode">
-						<SegmentedItem id="rtl" icon="danmaku_rtl">{{ t.danmaku.format.mode.rtl }}</SegmentedItem>
-						<SegmentedItem id="top" icon="danmaku_top">{{ t.danmaku.format.mode.top }}</SegmentedItem>
-						<SegmentedItem id="bottom" icon="danmaku_bottom">{{ t.danmaku.format.mode.bottom }}</SegmentedItem>
-						<SegmentedItem id="ltr" icon="danmaku_ltr">{{ t.danmaku.format.mode.ltr }}</SegmentedItem>
+						<SegmentedItem id="rtl" icon="danmaku_rtl">{{ $t("danmaku.format.mode.rtl") }}</SegmentedItem>
+						<SegmentedItem id="top" icon="danmaku_top">{{ $t("danmaku.format.mode.top") }}</SegmentedItem>
+						<SegmentedItem id="bottom" icon="danmaku_bottom">{{ $t("danmaku.format.mode.bottom") }}</SegmentedItem>
+						<SegmentedItem id="ltr" icon="danmaku_ltr">{{ $t("danmaku.format.mode.ltr") }}</SegmentedItem>
 					</Segmented>
 				</div>
 				<div v-else class="page-color">

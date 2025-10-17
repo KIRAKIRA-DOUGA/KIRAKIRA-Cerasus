@@ -6,9 +6,10 @@
 	const flyout = defineModel<FlyoutModel>();
 	type PageType = "reply" | "mention" | "system";
 	const currentPage = ref<PageType>("reply");
+	const { t } = useI18n();
 	const pages: { name: string; id: PageType; icon: DeclaredIcons }[] = [
-		{ name: t.reply, id: "reply", icon: "reply" },
-		{ name: t.mention, id: "mention", icon: "at" },
+		{ name: t("reply"), id: "reply", icon: "reply" },
+		{ name: t("mention"), id: "mention", icon: "at" },
 	];
 	const transitionName = ref("page-jump-in");
 </script>

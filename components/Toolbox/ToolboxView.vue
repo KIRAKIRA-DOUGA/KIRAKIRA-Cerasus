@@ -4,11 +4,11 @@
 
 <template>
 	<Comp>
-		<Subheader icon="grid">{{ t.view }}</Subheader>
+		<Subheader icon="grid">{{ $t("view.title") }}</Subheader>
 		<Segmented v-model="view">
-			<SegmentedItem id="list" icon="list">{{ t.view.list }}</SegmentedItem>
-			<SegmentedItem id="grid" icon="grid">{{ t.view.grid }}</SegmentedItem>
-			<SegmentedItem id="tile" icon="tile">{{ t.view.tile }}</SegmentedItem>
+			<SegmentedItem id="list" icon="list">{{ $t("view.list") }}</SegmentedItem>
+			<SegmentedItem id="grid" icon="grid">{{ $t("view.grid") }}</SegmentedItem>
+			<SegmentedItem id="tile" icon="tile">{{ $t("view.tile") }}</SegmentedItem>
 		</Segmented>
 	</Comp>
 </template>
