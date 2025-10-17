@@ -83,8 +83,10 @@
 			</div>
 			<div class="right">
 				<SoftButton icon="deletion_history" />
-				<TextBox v-model="search" :placeholder="$t('search')" icon="search" />
-				<Pagination v-model="currentPage" :pages="pageCount" :displayPageCount="7" :disabled="loading" />
+				<template v-if="commentsCount !== 0">
+					<TextBox v-model="search" :placeholder="$t('search')" icon="search" />
+					<Pagination v-model="currentPage" :pages="pageCount" :displayPageCount="7" :disabled="loading" />
+				</template>
 			</div>
 		</div>
 		<div v-if="!error" class="items-container" :class="{ loading }">
@@ -113,6 +115,10 @@
 					<!-- TODO: 评论支持富文本。 -->
 					<div>{{ comment.text }}</div>
 				</CreationCommentsItem>
+				<div v-if="!loading || commentsCount === 0" class="placeholder">
+					<Icon name="chat_bubble" />
+					{{ $t("empty.comments") }}
+				</div>
 			</div>
 			<div v-if="loading" class="loading-indicator">
 				<ProgressRing />
@@ -122,7 +128,7 @@
 			<Icon name="error" />
 			<p>{{ $t("toast.something_went_wrong") }}</p>
 		</div>
-		<div class="toolbar bottom">
+		<div v-if="commentsCount !== 0" class="toolbar bottom">
 			<Pagination v-model="currentPage" :pages="pageCount" :displayPageCount="7" :disabled="loading" />
 		</div>
 	</Comp>
@@ -193,6 +199,22 @@
 
 		&.loading .items {
 			opacity: 0;
+		}
+
+		.placeholder {
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+			align-items: center;
+			width: 100%;
+			padding-block: 32px;
+			color: c(icon-color);
+			font-size: 16px;
+			font-weight: bold;
+
+			.icon {
+				font-size: 64px;
+			}
 		}
 
 		.loading-indicator {
