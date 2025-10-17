@@ -431,8 +431,8 @@ export const adminClearUserInfo = async (adminClearUserInfoRequest: AdminClearUs
 export const checkUserHave2FAByUUID = async (headerCookie: { cookie?: string | undefined }): Promise<CheckUserHave2FAResponseDto> => {
 	// NOTE: use { headers: headerCookie } to passing client-side cookies to backend API when SSR.
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
-	const { data: result } = await useFetch(`${USER_API_URI}/checkUserHave2FAByUUID`, { headers: headerCookie, credentials: "include" });
-	const checkUserHave2FAResponse = result.value as CheckUserHave2FAResponseDto;
+	const result = await $fetch(`${USER_API_URI}/checkUserHave2FAByUUID`, { headers: headerCookie, credentials: "include" });
+	const checkUserHave2FAResponse = result as CheckUserHave2FAResponseDto;
 	if (checkUserHave2FAResponse.success) {
 		const appSettings = useAppSettingsStore();
 		appSettings.authenticatorType = checkUserHave2FAResponse.type || "none";

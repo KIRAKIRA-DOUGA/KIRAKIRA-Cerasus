@@ -73,8 +73,8 @@
 			{ rel: "alternate", href: `${host}?lang=fr`, hreflang: "fr" },
 			{ rel: "alternate", href: `${host}?lang=yue`, hreflang: "zh-yue" },
 			{ rel: "alternate", href: `${host}?lang=yue`, hreflang: "yue" },
-			{ rel: "preconnect", href: "https://rsms.me/" },
-			{ rel: "stylesheet", href: "https://rsms.me/inter/inter.css" },
+			{ rel: "preconnect", href: "https://fastly.jsdelivr.net/" },
+			{ rel: "stylesheet", href: "https://fastly.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-std-dynamic-subset.min.css" },
 		],
 		script: inContextLocalization.value ? [
 			{
