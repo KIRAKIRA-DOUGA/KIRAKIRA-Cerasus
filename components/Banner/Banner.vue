@@ -53,7 +53,7 @@
 				<NuxtImg v-else-if="currentPage === 'user'" class="page-user" :src="banner" :key="banner" />
 				<BannerStandard
 					v-else
-					:name="t(2)[pageListStandard.find(i => i.id === currentPage)!.name]"
+					:name="$t(pageListStandard.find(i => i.id === currentPage)!.name, 2)"
 					:icon="pageListStandard.find(i => i.id === currentPage)!.icon"
 					:englishName="pageListStandard.find(i => i.id === currentPage)!.englishName"
 				/>
