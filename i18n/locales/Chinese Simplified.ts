@@ -140,7 +140,7 @@ export default {
 		},
 	},
 	player: {
-		title: "播放",
+		title: "播放器",
 		speed: {
 			resample: "重采样音频",
 			continuous: "无级变速",
@@ -269,7 +269,7 @@ export default {
 		following: "关注",
 	},
 	upload: {
-		title: "投稿",
+		title: "上传",
 		drag_to_upload: "拖到此处上传",
 		format_info: "支持MP4、WMV、WEBM等主流格式",
 	},

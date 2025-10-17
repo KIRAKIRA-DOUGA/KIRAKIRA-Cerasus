@@ -22,13 +22,13 @@ export default {
 	search: "検索",
 	custom: "カスタム",
 	scheme: {
-		title: "Scheme",
+		title: "スキーム",
 		light: "ライト テーマ",
 		dark: "ダーク テーマ",
 		system: "システムのテーマ設定を使用する",
 	},
 	palette: {
-		title: "Palette",
+		title: "色",
 		pink: "ココア ピンク",
 		blue: "チノ 青",
 		purple: "リゼ 紫",
@@ -61,7 +61,7 @@ export default {
 	off: "オフ",
 	disabled: "無効化されたスイッチ",
 	tag: {
-		title: "タグ | タグ",
+		title: "タグ",
 		search: "タグ検索",
 		new: "タグ新規登録",
 		set_as_original: "オリジナルの名前として設定",
@@ -224,7 +224,7 @@ export default {
 	},
 	guide: "ガイド",
 	about: {
-		title: "About",
+		title: "KIRAKIRAについて",
 		repositories: {
 			title: "リポジトリ",
 			frontend: "GitHubフロントエンド リポジトリ リンク & フィードバック",
@@ -273,7 +273,7 @@ export default {
 		drag_to_upload: "ここにドラッグしてアップロード",
 		format_info: "MP4、WMV、WEBMなどの主な形式をサポートしています",
 	},
-	publish: "公開",
+	publish: "投稿",
 	messages: "メッセージ",
 	notification: "通知",
 	pleaseLogin: "ログインしてください",
@@ -293,7 +293,7 @@ export default {
 	pause: "一時停止",
 	rating: "評価",
 	kaomoji: {
-		title: "Kaomoji",
+		title: "顔文字",
 		happy: "嬉しい",
 		greet: "挨拶",
 		awa: "萌え",
@@ -339,7 +339,7 @@ export default {
 		save: "コレクション登録数",
 	},
 	view: {
-		title: "表示",
+		title: "表示形式",
 		list: "リスト",
 		grid: "グリッド",
 		tile: "タイル",

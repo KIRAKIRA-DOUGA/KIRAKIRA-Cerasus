@@ -9,6 +9,7 @@ export default {
 	rangeDash: " – ",
 	home: "Trang chủ",
 	category: {
+		title: "Danh mục",
 		anime: "Anime",
 		music: "Âm nhạc",
 		otomad: "otoMAD",
@@ -21,6 +22,7 @@ export default {
 	search: "Tìm kiếm",
 	custom: "Tùy chỉnh",
 	scheme: {
+		title: "Chế độ",
 		light: "Chế độ sáng",
 		dark: "Chế độ tối",
 		system: "Theo hệ thống",
@@ -38,12 +40,14 @@ export default {
 	},
 	language: "Ngôn Ngữ",
 	background: {
+		title: "Phông nền",
 		custom: "Phông tùy chỉnh",
 		opacity: "Độ mờ đục",
 		tint: "Màu nhuộm",
 		blur: "Mức độ làm mờ",
 	},
 	appearance: {
+		title: "Giao diện",
 		sharp_mode: "Sắc sảo",
 		flat_mode: "Đơn giản",
 		colorful_navbar: "Thêm màu vào thanh điều hướng",
@@ -57,6 +61,7 @@ export default {
 	off: "Tắt",
 	disabled: "Bị vô hiệu",
 	tag: {
+		title: "Thẻ",
 		search: "Tìm thẻ",
 		new: "Tạo thẻ mới",
 		set_as_original: "Đặt làm tên chính",
@@ -73,6 +78,7 @@ export default {
 	comments: "Bình luận",
 	you_know_too_much: "Biết hơi bị nhiều rồi đấy...",
 	settings: {
+		title: "Cài đặt",
 		search: "Tìm kiếm cài đặt",
 		user: "Cài đặt người dùng",
 		app: "Cài đặt ứng dụng",
@@ -85,12 +91,14 @@ export default {
 	dashboard: "Tổng quan",
 	account: "Tài khoản",
 	profile: {
+		title: "Hồ sơ",
 		edit: "Sửa hồ sơ",
 		edit_banner: "Thay đổi ảnh bìa",
 		edit_avatar: "Thay đổi ảnh đại diện",
 	},
 	traces: "Lịch sử xem",
 	privacy: {
+		title: "Riêng tư",
 		cookie: "Cookie☆",
 		allow_cookies: "Cho phép sử dụng Cookie",
 		info_visibility: "Hiển thị thông tin",
@@ -101,6 +109,7 @@ export default {
 	security: "Bảo mật",
 	login_options: "Tùy chọn đăng nhập",
 	password: {
+		title: "Mật khẩu",
 		forgot: "Quên mật khẩu",
 		reset: "Đặt lại mật khẩu",
 		retype: "Nhập lại mật khẩu",
@@ -131,6 +140,7 @@ export default {
 		},
 	},
 	player: {
+		title: "Trình phát",
 		speed: {
 			resample: "Điều chỉnh cao độ phát",
 			continuous: "Điều chỉnh tốc độ phát",
@@ -196,6 +206,7 @@ export default {
 	experimental: "Thử nghiệm",
 	accessibility: "Trợ năng",
 	shortcut_key: {
+		title: "Phím tắt",
 		player_page: "Trang trình phát",
 		play_pause: "Phát / Dừng",
 		exit_fullscreen: "Thoát chế độ toàn màn hình",
@@ -213,7 +224,9 @@ export default {
 	},
 	guide: "Hướng dẫn",
 	about: {
+		title: "Về chúng tôi",
 		repositories: {
+			title: "Mã nguồn",
 			frontend: "Kho lưu trữ GitHub Frontend và phản hồi về các vấn đề",
 			backend: "Kho lưu trữ GitHub Backend và phản hồi về các vấn đề",
 			markdown: "Kho lưu trữ mã nguồn Markdown của người dùng và phản hồi về các vấn đề",
@@ -256,6 +269,7 @@ export default {
 		following: "Đang theo dõi",
 	},
 	upload: {
+		title: "Tải lên",
 		drag_to_upload: "Kéo vào đây để tải lên video",
 		format_info: "Hỗ trợ các định dạng như MP4, WMV, WEBM",
 	},
@@ -324,6 +338,7 @@ export default {
 		save: "Lượt lưu",
 	},
 	view: {
+		title: "Chế độ hiển thị",
 		list: "Danh sách",
 		grid: "Lưới",
 		tile: "Ô",
@@ -368,6 +383,7 @@ export default {
 	},
 	empty: {},
 	user: {
+		title: "Người dùng",
 		username: "Tên người dùng",
 		username_requirements: "Phải là tên độc lập duy nhất. @:user.nickname_requirements",
 		username_requirements_unique: "Tên người dùng phải là duy nhất.",
@@ -390,18 +406,21 @@ export default {
 	watch_later: "Xem sau",
 	download: "Tải xuống",
 	format: {
+		title: "Định dạng văn bản",
 		bold: "Đậm",
 		italic: "Nghiêng",
 		underline: "Gạch dưới",
 		strikethrough: "Gạch ngang",
 	},
 	text: {
+		title: "Văn bản",
 		size: "Cỡ chữ",
 	},
 	color: "Màu",
 	opacity: "Độ mờ đục",
 	mode: "Chế độ",
 	size: {
+		title: "Cỡ",
 		tiny: "Cực nhỏ",
 		small: "Nhỏ",
 		medium: "Vừa",
@@ -409,6 +428,7 @@ export default {
 		huge: "Cực lớn",
 	},
 	user_page: {
+		title: "Trang cá nhân",
 		title_affix: "Trang cá nhân của {0}",
 	},
 	manage_content: "Quản lý nội dung",
