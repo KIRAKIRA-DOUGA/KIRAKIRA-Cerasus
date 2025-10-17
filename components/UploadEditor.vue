@@ -435,7 +435,7 @@
 							:loading="!cloudflareVideoId || isCommitButtonLoading"
 							@click="commitVideo"
 						>
-							{{ $t("upload.title") }}
+							{{ $t("publish") }}
 						</Button>
 					</div>
 				</div>

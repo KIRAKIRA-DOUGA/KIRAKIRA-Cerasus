@@ -269,6 +269,7 @@ export default {
 		drag_to_upload: "Drag Here to Upload",
 		format_info: "Supports video formats such as MP4, WMV, WEBM",
 	},
+	publish: "Publish",
 	messages: "Messages",
 	notification: "Notification | Notifications",
 	pleaseLogin: "Please Log In",
@@ -377,6 +378,9 @@ export default {
 		language: "Select Language",
 		image: "Select an Image",
 		file: "Select a File",
+	},
+	empty: {
+		comments: "No Comments",
 	},
 	user: {
 		title: "User | Users",
