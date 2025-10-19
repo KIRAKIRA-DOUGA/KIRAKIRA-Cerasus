@@ -7,9 +7,9 @@
 	const pageListStandard = [
 		{ id: "search", name: "search", englishName: "Search", icon: "search" },
 		{ id: "history", name: "history", englishName: "History", icon: "history" },
-		{ id: "collections", name: "collection", englishName: "Collections", icon: "star" },
+		{ id: "collections", name: "collection.title", englishName: "Collections", icon: "star" },
 		{ id: "feed_following", name: "feed.following", englishName: "Following", icon: "feed" },
-		{ id: "upload", name: "upload", englishName: "Upload", icon: "upload" },
+		{ id: "upload", name: "upload.title", englishName: "Upload", icon: "upload" },
 	] as const;
 
 	/**
