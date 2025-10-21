@@ -1,5 +1,6 @@
 <script setup lang="ts">
-	useHead({ title: t.upload });
+	const { t } = useI18n();
+	useHead({ title: t("upload.title") });
 	const fileInput = ref<HTMLInputElement>();
 	const dragover = ref(false);
 	const successfulUploaded = ref(false);
@@ -30,7 +31,7 @@
 	 */
 	function invalidUploaded() {
 		successfulUploaded.value = false;
-		useToast(t.toast.unsupported_file, "error");
+		useToast(t("toast.unsupported_file"), "error");
 		clearFileInput(fileInput);
 	}
 
@@ -87,7 +88,7 @@
 	 */
 	function cancelUpdate() {
 		if (!showEditor.value) return;
-		if (!confirm(t.confirm.cancel_upload)) return;
+		if (!confirm(t("confirm.cancel_upload"))) return;
 		arrayClearAll(files);
 		successfulUploaded.value = false;
 		showEditor.value = false;
@@ -114,8 +115,8 @@
 			</div>
 		</DefineCountCard>
 
-		<InfoBar type="warning" :title="t.severity.warning">
-			{{ t.under_construction.feature_admin_only }}
+		<InfoBar type="warning" :title="$t('severity.warning')">
+			{{ $t("under_construction.feature_admin_only") }}
 		</InfoBar>
 
 		<!-- TODO: 临时 SoftButton，之后请在 UploadEditor 的 Submit 按钮左边放一个取消。 -->
@@ -143,15 +144,15 @@
 					@click="fileInput?.click()"
 				>
 					<div class="content">
-						<h3>{{ t.upload.drag_to_upload }}</h3>
-						<p>{{ t.upload.format_info }}</p>
+						<h3>{{ $t("upload.drag_to_upload") }}</h3>
+						<p>{{ $t("upload.format_info") }}</p>
 					</div>
 					<Icon name="upload" class="upload-icon" />
 					<div class="outline normal"></div>
 					<div class="outline successful"></div>
 				</div>
-				<CountCard :value="0" icon="movie" :name="t(2).video" />
-				<CountCard :value="0" icon="play" :name="t.sort.view" />
+				<CountCard :value="0" icon="movie" :name="$t('video', 2)" />
+				<CountCard :value="0" icon="play" :name="$t('sort.view')" />
 			</div>
 
 			<UploadEditor v-else :files />

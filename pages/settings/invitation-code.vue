@@ -1,4 +1,5 @@
 <script setup lang="ts">
+	const { t } = useI18n();
 	const myInvitationCode = ref<GetMyInvitationCodeResponseDto["invitationCodeResult"]>();
 	const totalInvitationCode = computed(() => myInvitationCode.value?.length ?? 0);
 	const totalUsedInvitationCode = computed(() => myInvitationCode.value?.filter(invitationCode => !!invitationCode.assignee)?.length ?? 0);
@@ -11,13 +12,13 @@
 		const createInvitationCodeResult = await api.user.createInvitationCode();
 
 		if (createInvitationCodeResult.isCoolingDown) {
-			useToast(t.toast.cooling_down, "warning", 5000); // TODO: 需要显示冷却剩余时间，需要API返回。
+			useToast(t("toast.cooling_down"), "warning", 5000); // TODO: 需要显示冷却剩余时间，需要API返回。
 			return;
 		}
 		if (createInvitationCodeResult.success)
 			await getMyInvitationCode();
 		else
-			useToast(t.toast.something_went_wrong, "error");
+			useToast(t("toast.something_went_wrong"), "error");
 	}
 
 	/**
@@ -32,14 +33,14 @@
 
 	/**
 	 * 复制邀请码到剪贴板
-	 * @param invitationCode 要被复制到剪贴板的邀请码
+	 * @param invitationCode - 要被复制到剪贴板的邀请码
 	 */
 	async function copyInvitationCode(invitationCode: string) {
 		try {
 			await navigator.clipboard.writeText(invitationCode);
-			useToast(t.toast.copied, "success");
-		} catch (error) {
-			useToast(t.toast.copy_failed, "error");
+			useToast(t("toast.copied"), "success");
+		} catch {
+			useToast(t("toast.copy_failed"), "error");
 		}
 	}
 
@@ -57,15 +58,15 @@
 		<div class="invitation-code-counts chip">
 			<div>
 				<span>{{ totalInvitationCode }}</span>
-				<p>{{ t.total }}</p>
+				<p>{{ $t("total") }}</p>
 			</div>
 			<div>
 				<span>{{ totalUsedInvitationCode }}</span>
-				<p>{{ t.used }}</p>
+				<p>{{ $t("used") }}</p>
 			</div>
 			<div>
 				<span>{{ totalUnusedInvitationCode }}</span>
-				<p>{{ t.unused }}</p>
+				<p>{{ $t("unused") }}</p>
 			</div>
 		<!-- TODO: Creatable Invitation Code Count -->
 		<!-- <div>
@@ -74,7 +75,7 @@
 		</div> -->
 		</div>
 
-		<SoftButton v-tooltip:bottom="t.create" class="create-button" icon="add" @click="createInvitationCode" />
+		<SoftButton v-tooltip:bottom="$t('create')" class="create-button" icon="add" @click="createInvitationCode" />
 
 		<div class="user-info chip">
 			<SettingsChipItem
@@ -83,7 +84,7 @@
 				icon="gift"
 				trailingIcon="copy"
 				:onTrailingIconClick="() => copyInvitationCode(invitationCode.invitationCode)"
-				:details="invitationCode.assignee !== null && invitationCode.assignee !== undefined ? t.used : t.unused"
+				:details="invitationCode.assignee !== null && invitationCode.assignee !== undefined ? $t('used') : $t('unused')"
 			>
 				{{ invitationCode.invitationCode }}
 			</SettingsChipItem>

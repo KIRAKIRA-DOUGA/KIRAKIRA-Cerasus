@@ -17,17 +17,6 @@
 	"css.validate": false,
 	"less.validate": false,
 	"scss.validate": false,
-	"vue.server.includeLanguages": [
-		"vue",
-		"css",
-		"javascript",
-		"typescript",
-		"javascriptreact",
-		"typescriptreact",
-		"json",
-		"json5",
-		"jsonc"
-	],
 	"stylelint.snippet": [
 		"css",
 		"less",

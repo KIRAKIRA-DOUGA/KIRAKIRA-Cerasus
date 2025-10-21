@@ -55,7 +55,7 @@
 	<Comp :class="{ large: size === 'large', huge: size === 'huge', center, 'link-full': to, 'avatar-inside': avatarInside }">
 		<Transition>
 			<div v-if="pinned" class="pinned">
-				<Icon v-tooltip:bottom="t.pinned" name="pin" />
+				<Icon v-tooltip:bottom="$t('pinned')" name="pin" />
 			</div>
 		</Transition>
 
@@ -80,8 +80,8 @@
 						<div class="icons">
 							<Icon v-if="gender === 'male' " name="male" class="male" />
 							<Icon v-else-if="gender === 'female'" name="female" class="female" />
-							<Icon v-if="roles?.includes('administrator')" v-tooltip="t.role.administrator" name="build_circle" class="administrator" />
-							<Icon v-if="roles?.includes('developer')" v-tooltip="t.role.developer" name="code_circle" class="developer" />
+							<Icon v-if="roles?.includes('administrator')" v-tooltip="$t('role.administrator')" name="build_circle" class="administrator" />
+							<Icon v-if="roles?.includes('developer')" v-tooltip="$t('role.developer')" name="code_circle" class="developer" />
 							<slot name="icons"></slot>
 						</div>
 					</div>

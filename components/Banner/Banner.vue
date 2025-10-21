@@ -7,9 +7,9 @@
 	const pageListStandard = [
 		{ id: "search", name: "search", englishName: "Search", icon: "search" },
 		{ id: "history", name: "history", englishName: "History", icon: "history" },
-		{ id: "collections", name: "collection", englishName: "Collections", icon: "star" },
+		{ id: "collections", name: "collection.title", englishName: "Collections", icon: "star" },
 		{ id: "feed_following", name: "feed.following", englishName: "Following", icon: "feed" },
-		{ id: "upload", name: "upload", englishName: "Upload", icon: "upload" },
+		{ id: "upload", name: "upload.title", englishName: "Upload", icon: "upload" },
 	] as const;
 
 	/**
@@ -53,7 +53,7 @@
 				<NuxtImg v-else-if="currentPage === 'user'" class="page-user" :src="banner" :key="banner" />
 				<BannerStandard
 					v-else
-					:name="t(2)[pageListStandard.find(i => i.id === currentPage)!.name]"
+					:name="$t(pageListStandard.find(i => i.id === currentPage)!.name, 2)"
 					:icon="pageListStandard.find(i => i.id === currentPage)!.icon"
 					:englishName="pageListStandard.find(i => i.id === currentPage)!.englishName"
 				/>

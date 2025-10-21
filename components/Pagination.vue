@@ -255,7 +255,7 @@
 			nonfocusable
 			:style="{ '--position': position }"
 			:text="getPageName(page)"
-			:aria-label="t.switch_page_label(page)"
+			:aria-label="$t('switch_page_label', [page])"
 			:aria-selected="currentPage === page"
 			:aria-current="currentPage === page && 'page'"
 			@click="changePage(page)"
@@ -266,7 +266,7 @@
 		:inert="disabled"
 		role="slider"
 		aria-orientation="horizontal"
-		:aria-label="t.current_page_label(currentPage, pages)"
+		:aria-label="$t('current_page_label', [currentPage, pages])"
 		:aria-valuenow="currentPage"
 		:aria-valuemin="1"
 		:aria-valuemax="pages"

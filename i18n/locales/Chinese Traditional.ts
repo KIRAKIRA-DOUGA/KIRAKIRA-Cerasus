@@ -7,7 +7,6 @@ export default {
 	semicolon: "；",
 	home: "首頁",
 	category: {
-		_: "分區",
 		anime: "動畫",
 		music: "音樂",
 		otomad: "音MAD",
@@ -20,13 +19,11 @@ export default {
 	search: "搜尋",
 	custom: "自訂",
 	scheme: {
-		_: "主題",
 		light: "淺色主題",
 		dark: "深色主題",
 		system: "跟隨系統",
 	},
 	palette: {
-		_: "個性色",
 		pink: "心愛粉",
 		blue: "智乃藍",
 		purple: "理世紫",
@@ -36,14 +33,12 @@ export default {
 		red: "小惠紅",
 	},
 	background: {
-		_: "背景",
 		custom: "自訂背景",
 		opacity: "不透明度",
 		tint: "著色",
 		blur: "模糊強度",
 	},
 	appearance: {
-		_: "外觀",
 		sharp_mode: "直角模式",
 		flat_mode: "扁平模式",
 		colorful_navbar: "彩色導覽列",
@@ -56,7 +51,6 @@ export default {
 	off: "關",
 	disabled: "禁用",
 	tag: {
-		_: "標籤",
 		search: "搜尋標籤",
 		new: "創建新標籤",
 	},
@@ -70,7 +64,7 @@ export default {
 	comments: "評論",
 	you_know_too_much: "你知道的太多了。",
 	settings: {
-		_: "設定",
+		title: "設定",
 		search: "搜尋設定",
 		user: "使用者設定",
 		app: "程式設定",
@@ -79,14 +73,12 @@ export default {
 	dashboard: "數據",
 	account: "帳戶",
 	profile: {
-		_: "資料",
 		edit: "編輯個人資料",
 		edit_banner: "點擊更換封面",
 		edit_avatar: "點擊更換頭像",
 	},
 	traces: "印跡",
 	privacy: {
-		_: "隱私",
 		cookie: "網路曲奇☆",
 		allow_cookies: "允許網站使用Cookies",
 		info_visibility: "資訊可見性",
@@ -97,7 +89,6 @@ export default {
 	security: "安全",
 	login_options: "登入選項",
 	password: {
-		_: "密碼",
 		forgot: "忘記密碼",
 		reset: "重設密碼",
 		retype: "確認密碼",
@@ -123,7 +114,6 @@ export default {
 		},
 	},
 	player: {
-		_: "播放",
 		speed: {
 			resample: "重採樣音訊",
 			continuous: "無級變速",
@@ -132,14 +122,12 @@ export default {
 			auto: "自動畫質",
 		},
 		control_bar: {
-			_: "控制列",
+			title: "控制列",
 		},
 		screenshot: "螢幕截圖",
 		stats: "統計",
 		autoplay: "自動播放",
-		filter: {
-			_: "篩選",
-		},
+		filter: "篩選",
 		error: {
 			getDanmaku: "獲取彈幕列表失敗",
 			loadMedia: "無法加載媒體",
@@ -149,7 +137,7 @@ export default {
 			remove_from_playlist: "從播放清單移除",
 		},
 		playback_order: {
-			_: "播放次序",
+			title: "播放次序",
 			sequential: "順序播放",
 			repeat_all: "列表循環",
 			repeat_one: "重複播放",
@@ -157,7 +145,7 @@ export default {
 		},
 	},
 	danmaku: {
-		_: "彈幕",
+		title: "彈幕",
 		send: "傳送彈幕",
 		history: "彈幕歷史",
 		format: {
@@ -182,7 +170,6 @@ export default {
 	experimental: "實驗",
 	accessibility: "無障礙",
 	shortcut_key: {
-		_: "快速鍵",
 		player_page: "播放頁",
 		play_pause: "播放 / 暫停",
 		exit_fullscreen: "離開全螢幕",
@@ -200,20 +187,11 @@ export default {
 	},
 	guide: "指南",
 	about: {
-		_: "關於",
 		repositories: {
-			_: "原始碼倉庫",
+			title: "原始碼倉庫",
 			frontend: "GitHub前端倉庫位址與問題回饋",
 			backend: "GitHub後端倉庫位址與問題回饋",
 			markdown: "個人主頁Markdown倉庫位址與問題回饋",
-		},
-		team: "創作團隊",
-		staff: {
-			webmistress: "站娘",
-			designer: "設計",
-			frontend: "前端",
-			backend: "後端",
-			translator: "{0} 翻譯",
 		},
 		technologies_used: "使用技術",
 		slogan: "一個可愛的網站，\n獻給可愛的你！",
@@ -237,7 +215,6 @@ export default {
 		following: "已跟隨",
 	},
 	upload: {
-		_: "投稿",
 		drag_to_upload: "拖到此處上傳",
 		format_info: "支援MP4、WMV、WEBM等主流格式",
 	},
@@ -255,7 +232,6 @@ export default {
 	pause: "暫停",
 	rating: "評分",
 	kaomoji: {
-		_: "顏文字",
 		happy: "開心",
 		greet: "問候",
 		awa: "賣萌",
@@ -296,7 +272,6 @@ export default {
 		comment: "評論量",
 	},
 	view: {
-		_: "視圖",
 		list: "列表",
 		grid: "網格",
 		tile: "並排",
@@ -325,15 +300,15 @@ export default {
 		register_email_sent_info: "我們已向您的郵箱中發送了驗證碼，請在此輸入驗證碼。\n如未收到，您可以重新發送。",
 	},
 	unselected: {
-		combobox: "請選擇一項",
 		settings: "請選擇一項設定",
 		tag: "請搜尋標籤",
 		language: "選擇語言",
 		image: "選取影像",
 		file: "選取檔案",
 	},
+	empty: {},
 	user: {
-		_: "使用者",
+		title: "使用者",
 		username: "使用者名稱",
 		username_requirements: "不可重名。@:user.nickname_requirements",
 		username_requirements_unique: "使用者名稱不可重複。",
@@ -355,21 +330,18 @@ export default {
 	watch_later: "稍後觀看",
 	download: "下載",
 	format: {
-		_: "格式",
 		bold: "加粗",
 		italic: "傾斜",
 		underline: "底線",
 		strikethrough: "刪除線",
 	},
 	text: {
-		_: "文本",
 		size: "字型大小",
 	},
 	color: "顏色",
 	opacity: "不透明度",
 	mode: "模式",
 	size: {
-		_: "大小",
 		tiny: "微",
 		small: "小",
 		medium: "中",
@@ -377,7 +349,6 @@ export default {
 		huge: "巨",
 	},
 	user_page: {
-		_: "個人主頁",
 		title_affix: "{0}的個人主頁",
 	},
 	manage_content: "稿件管理",
@@ -393,7 +364,7 @@ export default {
 		tieba: "百度貼吧",
 		cloudmusic: "網易雲音樂",
 		discord: {
-			_: "Discord",
+			title: "Discord",
 		},
 		telegram: "Telegram",
 		midishow: "MidiShow",
@@ -407,7 +378,6 @@ export default {
 	modify_memo: "修改備註",
 	add_to_group: "加入分組",
 	navigation: {
-		_: "導航",
 		back: "返回",
 		return_to_home: "返回首頁",
 	},
@@ -444,10 +414,7 @@ export default {
 	unused: "未使用",
 	create: "創建",
 	creatable: "可創建",
-	invitation_code: {
-		_: "邀請碼",
-		invalid: "無效的邀請碼",
-	},
+	invitation_code: "邀請碼",
 	version: "版本",
 	announcement: {},
 	under_construction: {},

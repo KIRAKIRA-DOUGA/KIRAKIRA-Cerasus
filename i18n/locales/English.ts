@@ -5,7 +5,7 @@ export default {
 	rangeDash: " – ",
 	home: "Home",
 	category: {
-		_: "Category",
+		title: "Category",
 		anime: "Anime",
 		music: "Music",
 		otomad: "Otomad",
@@ -18,13 +18,13 @@ export default {
 	search: "Search",
 	custom: "Custom",
 	scheme: {
-		_: "Scheme",
+		title: "Scheme",
 		light: "Light Theme",
 		dark: "Dark Theme",
 		system: "Follow System Theme",
 	},
 	palette: {
-		_: "Palette",
+		title: "Palette",
 		pink: "Cocoa Pink",
 		blue: "Chino Blue",
 		purple: "Rize Purple",
@@ -36,14 +36,14 @@ export default {
 	},
 	language: "Language",
 	background: {
-		_: "Background",
+		title: "Background",
 		custom: "Custom Background",
 		opacity: "Opacity",
 		tint: "Tint",
 		blur: "Blurriness",
 	},
 	appearance: {
-		_: "Appearance",
+		title: "Appearance",
 		sharp_mode: "Sharp Mode",
 		flat_mode: "Flat Mode",
 		colorful_navbar: "Colorful Navigation Bar",
@@ -57,7 +57,7 @@ export default {
 	off: "Off",
 	disabled: "Disabled",
 	tag: {
-		_: "Tag | Tags",
+		title: "Tag | Tags",
 		search: "Search Tags",
 		new: "New Tag",
 		set_as_original: "Set as Original Name",
@@ -74,7 +74,7 @@ export default {
 	comments: "Comments",
 	you_know_too_much: "You know too much.",
 	settings: {
-		_: "Settings",
+		title: "Settings",
 		search: "Search Settings",
 		user: "User Settings",
 		app: "App Settings",
@@ -87,14 +87,14 @@ export default {
 	dashboard: "Dashboard",
 	account: "Account",
 	profile: {
-		_: "Profile",
+		title: "Profile",
 		edit: "Edit Profile",
 		edit_banner: "Edit Banner",
 		edit_avatar: "Edit Avatar",
 	},
 	traces: "Traces",
 	privacy: {
-		_: "Privacy",
+		title: "Privacy",
 		cookie: "Cookie☆",
 		allow_cookies: "Allow to Use Cookies",
 		info_visibility: "Info Visibility",
@@ -105,7 +105,7 @@ export default {
 	security: "Security",
 	login_options: "Login Options",
 	password: {
-		_: "Password",
+		title: "Password",
 		forgot: "Forgot Password",
 		reset: "Reset Password",
 		retype: "Retype Password",
@@ -116,13 +116,13 @@ export default {
 		hint: "Password Hint",
 	},
 	block_and_hide: {
-		_: "Block and Hide",
+		title: "Block and Hide",
 		block: {
-			_: "Block",
+			title: "Block",
 			description: "Users you don't want to allow to interact with you.",
 		},
 		hide: {
-			_: "Hide",
+			title: "Hide",
 			description: "Hide users you don't want to see (unless you enter their user pages directly).",
 		},
 		tag: {
@@ -136,7 +136,7 @@ export default {
 		},
 	},
 	player: {
-		_: "Player",
+		title: "Player",
 		speed: {
 			resample: "Resample Audio",
 			continuous: "Continuous Control",
@@ -145,7 +145,7 @@ export default {
 			auto: "Auto Quality",
 		},
 		control_bar: {
-			_: "Control Bar",
+			title: "Control Bar",
 			stop: "Show Stop Button",
 			stop_description: "Go to first frame and stop",
 			replay: "Always Show Replay Button",
@@ -159,9 +159,7 @@ export default {
 		screenshot: "Screenshot",
 		stats: "Stats",
 		autoplay: "Autoplay",
-		filter: {
-			_: "Filter",
-		},
+		filter: "Filter",
 		error: {
 			getDanmaku: "Failed to get danmaku list",
 			loadMedia: "Failed to load media",
@@ -171,7 +169,7 @@ export default {
 			remove_from_playlist: "Remove from Playlist",
 		},
 		playback_order: {
-			_: "Playback Order",
+			title: "Playback Order",
 			sequential: "Sequential",
 			repeat_all: "Repeat All",
 			repeat_one: "Repeat One",
@@ -179,7 +177,7 @@ export default {
 		},
 	},
 	danmaku: {
-		_: "Danmaku | Danmakus",
+		title: "Danmaku | Danmakus",
 		send: "Send a Danmaku",
 		history: "Danmaku History",
 		format: {
@@ -204,7 +202,7 @@ export default {
 	experimental: "Experimental",
 	accessibility: "Accessibility",
 	shortcut_key: {
-		_: "Shortcut Key",
+		title: "Shortcut Key",
 		player_page: "Player Page",
 		play_pause: "Play / Pause",
 		exit_fullscreen: "Exit Fullscreen",
@@ -222,20 +220,12 @@ export default {
 	},
 	guide: "Guide",
 	about: {
-		_: "About",
+		title: "About",
 		repositories: {
-			_: "Repositories",
+			title: "Repositories",
 			frontend: "GitHub Frontend Repositories and Issue Feedback",
 			backend: "GitHub Backend Repositories and Issue Feedback",
 			markdown: "User Page Markdown Repositories and Issue Feedback",
-		},
-		team: "Team",
-		staff: {
-			webmistress: "Webmistress",
-			designer: "Designer",
-			frontend: "Frontend",
-			backend: "Backend",
-			translator: "{0} Translator",
 		},
 		technologies_used: "Technologies Used",
 		slogan: "A cute site\xa0\nfor cute people!",
@@ -255,7 +245,7 @@ export default {
 	addition_date: "Addition Date",
 	history: "History",
 	collection: {
-		_: "Collection | Collections",
+		title: "Collection | Collections",
 		verb: "Save to Collection",
 		my: "My Collections",
 		follow: "Follow Collection",
@@ -275,10 +265,11 @@ export default {
 		following: "Following",
 	},
 	upload: {
-		_: "Upload",
+		title: "Upload",
 		drag_to_upload: "Drag Here to Upload",
 		format_info: "Supports video formats such as MP4, WMV, WEBM",
 	},
+	publish: "Publish",
 	messages: "Messages",
 	notification: "Notification | Notifications",
 	pleaseLogin: "Please Log In",
@@ -298,7 +289,7 @@ export default {
 	pause: "Pause",
 	rating: "Rating",
 	kaomoji: {
-		_: "Kaomoji",
+		title: "Kaomoji",
 		happy: "Happy",
 		greet: "Greet",
 		awa: "Moe",
@@ -344,7 +335,7 @@ export default {
 		save: "Save Count",
 	},
 	view: {
-		_: "View",
+		title: "View",
 		list: "List",
 		grid: "Grid",
 		tile: "Tile",
@@ -381,15 +372,18 @@ export default {
 		login_email_info: "Email 2FA is enabled on your account. A verification code has been sent to your email.\nIf you don’t see the email, please check your spam or junk folder.",
 	},
 	unselected: {
-		combobox: "Select a Item",
+		combobox: "Select an Item",
 		settings: "Please select a setting",
 		tag: "Search Tags",
 		language: "Select Language",
 		image: "Select an Image",
 		file: "Select a File",
 	},
+	empty: {
+		comments: "No Comments",
+	},
 	user: {
-		_: "User | Users",
+		title: "User | Users",
 		username: "Username",
 		username_requirements: "Must be unique. @:user.nickname_requirements",
 		username_requirements_unique: "Username must be unique.",
@@ -412,21 +406,21 @@ export default {
 	watch_later: "Watch Later",
 	download: "Download",
 	format: {
-		_: "Format",
+		title: "Format",
 		bold: "Bold",
 		italic: "Italic",
 		underline: "Underline",
 		strikethrough: "Strikethrough",
 	},
 	text: {
-		_: "Text",
+		title: "Text",
 		size: "Text Size",
 	},
 	color: "Color",
 	opacity: "Opacity",
 	mode: "Mode",
 	size: {
-		_: "Size",
+		title: "Size",
 		tiny: "Tiny",
 		small: "Small",
 		medium: "Medium",
@@ -434,7 +428,7 @@ export default {
 		huge: "Huge",
 	},
 	user_page: {
-		_: "User Page",
+		title: "User Page",
 		title_affix: "{0}'s User Page",
 	},
 	manage_content: "Manage Content",
@@ -451,7 +445,7 @@ export default {
 		tieba: "Tieba",
 		cloudmusic: "Cloud Music",
 		discord: {
-			_: "Discord",
+			title: "Discord",
 			server: "Discord Server",
 		},
 		telegram: "Telegram",
@@ -469,7 +463,6 @@ export default {
 	modify_memo: "Modify Memo",
 	add_to_group: "Add to Group",
 	navigation: {
-		_: "Navigation",
 		back: "Back",
 		return_to_home: "Return to Home",
 	},
@@ -510,6 +503,7 @@ export default {
 		comment_sent: "Comment sent~",
 		unsupported_image_format: "Unsupported image format!",
 		profile_updated: "Profile updated~",
+		settings_updated: "Settings updated~",
 		must_remove_totp_first: "You must remove the TOTP authenticator first!",
 		must_verify_email_first: "You must verify your email first!",
 		new_email_same: "The new email cannot be the same as the current one!",
@@ -572,13 +566,10 @@ export default {
 	unused: "Unused",
 	create: "Create",
 	creatable: "Creatable",
-	invitation_code: {
-		_: "Invitation Code",
-		invalid: "Invalid Invitation Code",
-	},
+	invitation_code: "Invitation Code",
 	version: "Version",
 	announcement: {
-		_: "Announcement",
+		title: "Announcement",
 		homepage: "This little site is still growing~! Join our {discord-server} to watch it level up and chat with the devs! (๑˃ᴗ˂)ﻭ\nGot coding power? We'd be super happy if you joined us on this adventure~!! (๑•̀ㅂ•́)و✧",
 	},
 	under_construction: {
@@ -597,14 +588,14 @@ export default {
 		code_403: "You don't have permission to access this page.",
 	},
 	two_factor_authentication: {
-		_: "Two-Factor Authentication (2FA)",
+		title: "Two-Factor Authentication (2FA)",
 		description: "Enabling 2FA enhances your account security. If you need to switch 2FA methods, please disable the current one first.",
 		off_description: "Disabling 2FA will make your account less secure.",
 		email_description: "For sensitive operations, enter the verification code sent to your email to continue.",
 		totp: "Time-based One-Time Password (TOTP)",
 		totp_description: "For sensitive operations, enter the verification code from your authenticator app to continue.",
 		add_totp: {
-			_: "Add a TOTP Authenticator",
+			title: "Add a TOTP Authenticator",
 			warning: "Do not share any content on this page with anyone!",
 			step_install: "Install an Authenticator App",
 			step_install_description: "If you already have an authenticator app, skip this step.\nOtherwise, install an app that supports TOTP on your personal device, such as {ente-auth}, {microsoft-authenticator}, or {google-authenticator}.",
@@ -620,14 +611,14 @@ export default {
 			download: "Download Codes",
 		},
 		remove_totp: {
-			_: "Remove a TOTP Authenticator",
+			title: "Remove a TOTP Authenticator",
 		},
 		enable_email: {
-			_: "Enable Email 2FA",
+			title: "Enable Email 2FA",
 			ensure: "Please make sure you still have access to this email!",
 		},
 		disable_email: {
-			_: "Disable Email 2FA",
+			title: "Disable Email 2FA",
 		},
 	},
 	enable: "Enable",

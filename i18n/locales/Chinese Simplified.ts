@@ -9,7 +9,7 @@ export default {
 	rangeDash: " ~ ",
 	home: "首页",
 	category: {
-		_: "分区",
+		title: "分区",
 		anime: "动画",
 		music: "音乐",
 		otomad: "音MAD",
@@ -22,13 +22,13 @@ export default {
 	search: "搜索",
 	custom: "自定义",
 	scheme: {
-		_: "主题",
+		title: "主题",
 		light: "浅色主题",
 		dark: "深色主题",
 		system: "跟随系统",
 	},
 	palette: {
-		_: "个性色",
+		title: "个性色",
 		pink: "心爱粉",
 		blue: "智乃蓝",
 		purple: "理世紫",
@@ -40,14 +40,14 @@ export default {
 	},
 	language: "语言",
 	background: {
-		_: "背景",
+		title: "背景",
 		custom: "自定义背景",
 		opacity: "不透明度",
 		tint: "着色",
 		blur: "模糊强度",
 	},
 	appearance: {
-		_: "外观",
+		title: "外观",
 		sharp_mode: "直角模式",
 		flat_mode: "扁平模式",
 		colorful_navbar: "彩色导航栏",
@@ -61,7 +61,7 @@ export default {
 	off: "关",
 	disabled: "禁用",
 	tag: {
-		_: "标签",
+		title: "标签",
 		search: "搜索标签",
 		new: "创建新标签",
 		set_as_original: "设为原名",
@@ -78,7 +78,7 @@ export default {
 	comments: "评论",
 	you_know_too_much: "你知道的太多了。",
 	settings: {
-		_: "设置",
+		title: "设置",
 		search: "搜索设置",
 		user: "用户设置",
 		app: "应用设置",
@@ -91,14 +91,14 @@ export default {
 	dashboard: "数据",
 	account: "账号",
 	profile: {
-		_: "资料",
+		title: "资料",
 		edit: "编辑资料",
 		edit_banner: "点击更换封面",
 		edit_avatar: "点击更换头像",
 	},
 	traces: "印迹",
 	privacy: {
-		_: "隐私",
+		title: "隐私",
 		cookie: "网络曲奇☆",
 		allow_cookies: "允许网站使用Cookies",
 		info_visibility: "信息可见性",
@@ -109,7 +109,7 @@ export default {
 	security: "安全",
 	login_options: "登入选项",
 	password: {
-		_: "密码",
+		title: "密码",
 		forgot: "忘记密码",
 		reset: "重设密码",
 		retype: "确认密码",
@@ -120,13 +120,13 @@ export default {
 		hint: "密码提示",
 	},
 	block_and_hide: {
-		_: "屏蔽和隐藏",
+		title: "屏蔽和隐藏",
 		block: {
-			_: "屏蔽",
+			title: "屏蔽",
 			description: "不想与其交流的用户，该用户将被禁止与你互动。",
 		},
 		hide: {
-			_: "隐藏",
+			title: "隐藏",
 			description: "隐藏不想看到的用户（除非你主动进入个人主页）。",
 		},
 		tag: {
@@ -140,7 +140,7 @@ export default {
 		},
 	},
 	player: {
-		_: "播放",
+		title: "播放器",
 		speed: {
 			resample: "重采样音频",
 			continuous: "无级变速",
@@ -149,7 +149,7 @@ export default {
 			auto: "自动画质",
 		},
 		control_bar: {
-			_: "控制栏",
+			title: "控制栏",
 			stop: "显示停止按钮",
 			stop_description: "转到首帧后停止",
 			replay: "始终显示重播按钮",
@@ -163,9 +163,7 @@ export default {
 		screenshot: "截图",
 		stats: "统计信息",
 		autoplay: "自动播放",
-		filter: {
-			_: "滤镜",
-		},
+		filter: "滤镜",
 		error: {
 			getDanmaku: "获取弹幕列表失败",
 			loadMedia: "加载媒体失败",
@@ -175,7 +173,7 @@ export default {
 			remove_from_playlist: "从播放列表中移除",
 		},
 		playback_order: {
-			_: "播放顺序",
+			title: "播放顺序",
 			sequential: "顺序播放",
 			repeat_all: "列表循环",
 			repeat_one: "单个循环",
@@ -183,7 +181,7 @@ export default {
 		},
 	},
 	danmaku: {
-		_: "弹幕",
+		title: "弹幕",
 		send: "发送弹幕",
 		history: "弹幕历史",
 		format: {
@@ -208,7 +206,7 @@ export default {
 	experimental: "实验",
 	accessibility: "无障碍",
 	shortcut_key: {
-		_: "快捷键",
+		title: "快捷键",
 		player_page: "播放页",
 		play_pause: "播放 / 暂停",
 		exit_fullscreen: "退出全屏",
@@ -226,20 +224,12 @@ export default {
 	},
 	guide: "指南",
 	about: {
-		_: "关于",
+		title: "关于",
 		repositories: {
-			_: "代码仓库",
+			title: "代码仓库",
 			frontend: "GitHub前端仓库地址与问题反馈",
 			backend: "GitHub后端仓库地址与问题反馈",
 			markdown: "个人主页Markdown仓库地址与问题反馈",
-		},
-		team: "创作团队",
-		staff: {
-			webmistress: "站娘",
-			designer: "设计",
-			frontend: "前端",
-			backend: "后端",
-			translator: "{0} 翻译",
 		},
 		technologies_used: "使用技术",
 		slogan: "一个可爱的网站，\n献给可爱的你！",
@@ -259,7 +249,7 @@ export default {
 	addition_date: "添加日期",
 	history: "历史",
 	collection: {
-		_: "收藏",
+		title: "收藏",
 		verb: "保存到收藏夹",
 		my: "我的收藏夹",
 		follow: "关注收藏夹",
@@ -279,10 +269,11 @@ export default {
 		following: "关注",
 	},
 	upload: {
-		_: "投稿",
+		title: "上传",
 		drag_to_upload: "拖到此处上传",
 		format_info: "支持MP4、WMV、WEBM等主流格式",
 	},
+	publish: "投稿",
 	messages: "消息",
 	notification: "通知",
 	pleaseLogin: "请登入",
@@ -302,7 +293,7 @@ export default {
 	pause: "暂停",
 	rating: "评分",
 	kaomoji: {
-		_: "颜文字",
+		title: "颜文字",
 		happy: "开心",
 		greet: "问候",
 		awa: "卖萌",
@@ -348,7 +339,7 @@ export default {
 		save: "收藏量",
 	},
 	view: {
-		_: "视图",
+		title: "视图",
 		list: "列表",
 		grid: "网格",
 		tile: "平铺",
@@ -385,15 +376,18 @@ export default {
 		login_email_info: "邮箱双重验证已在账号上启用，验证码已发送到你的邮箱。\n若未收到验证码，请检查垃圾邮件。",
 	},
 	unselected: {
-		combobox: "请选择一项",
+		combobox: "选择一项",
 		settings: "请选择一项设置",
 		tag: "请搜索标签",
 		language: "选择语言",
 		image: "选择图片",
 		file: "选择文件",
 	},
+	empty: {
+		comments: "暂无评论",
+	},
 	user: {
-		_: "用户",
+		title: "用户",
 		username: "用户名",
 		username_requirements: "不允许重名。@:user.nickname_requirements",
 		username_requirements_unique: "用户名不允许重名。",
@@ -416,21 +410,21 @@ export default {
 	watch_later: "稍后观看",
 	download: "下载",
 	format: {
-		_: "格式",
+		title: "格式",
 		bold: "加粗",
 		italic: "倾斜",
 		underline: "下划线",
 		strikethrough: "删除线",
 	},
 	text: {
-		_: "文本",
+		title: "文本",
 		size: "字号",
 	},
 	color: "颜色",
 	opacity: "不透明度",
 	mode: "模式",
 	size: {
-		_: "大小",
+		title: "大小",
 		tiny: "微",
 		small: "小",
 		medium: "中",
@@ -438,7 +432,7 @@ export default {
 		huge: "巨",
 	},
 	user_page: {
-		_: "个人主页",
+		title: "个人主页",
 		title_affix: "{0}的个人主页",
 	},
 	manage_content: "稿件管理",
@@ -455,7 +449,7 @@ export default {
 		tieba: "百度贴吧",
 		cloudmusic: "网易云音乐",
 		discord: {
-			_: "Discord",
+			title: "Discord",
 			server: "Discord服务器",
 		},
 		telegram: "Telegram",
@@ -473,7 +467,6 @@ export default {
 	modify_memo: "修改备注",
 	add_to_group: "加入分组",
 	navigation: {
-		_: "导航",
 		back: "返回",
 		return_to_home: "返回首页",
 	},
@@ -514,6 +507,7 @@ export default {
 		comment_sent: "评论已发送~",
 		unsupported_image_format: "不支持的图片格式！",
 		profile_updated: "资料已更新~",
+		settings_updated: "设置已更新~",
 		must_remove_totp_first: "请先移除身份验证器！",
 		must_verify_email_first: "请先验证邮箱！",
 		new_email_same: "新邮箱不能与当前邮箱相同！",
@@ -555,7 +549,7 @@ export default {
 		},
 		duplicate: {
 			username: "用户名已被占用！",
-			name: "名称已存在 ！",
+			name: "名称已存在！",
 		},
 		invitation_code_invalid_or_used: "无效或已使用的邀请码！",
 		username_invalid_or_taken: "用户名无效或已被占用！",
@@ -576,13 +570,10 @@ export default {
 	unused: "未使用",
 	create: "创建",
 	creatable: "可创建",
-	invitation_code: {
-		_: "邀请码",
-		invalid: "邀请码无效",
-	},
+	invitation_code: "邀请码",
 	version: "版本",
 	announcement: {
-		_: "公告",
+		title: "公告",
 		homepage: "小站还在慢慢进化中～！加入我们的{discord-server}来一起围观开发进展、与开发者交流吧！(๑˃ᴗ˂)ﻭ\n如果你有开发技能，也超级欢迎加入我们来一起打造它～！！(๑•̀ㅂ•́)و✧",
 	},
 	under_construction: {
@@ -601,14 +592,14 @@ export default {
 		code_403: "没有访问此页面的权限",
 	},
 	two_factor_authentication: {
-		_: "双重验证（2FA）",
+		title: "双重验证（2FA）",
 		description: "开启双重验证可以提高账号的安全性，如果你需要切换双重验证类型，必须先将其关闭。",
 		off_description: "关闭双重验证会降低账号的安全性。",
 		email_description: "敏感操作时，需要输入发送到邮箱里的验证码以继续。",
 		totp: "动态令牌（基于时间的一次性密码）",
 		totp_description: "敏感操作时，需要输入动态令牌以继续。",
 		add_totp: {
-			_: "添加身份验证器",
+			title: "添加身份验证器",
 			warning: "不要向他人展示此页面上的任何内容！",
 			step_install: "安装身份验证器应用",
 			step_install_description: "如果你已经有身份验证器应用了，请跳过本步骤。\n如果没有，请在你的个人设备中安装一个支持TOTP的应用，例如{ente-auth}、{microsoft-authenticator}或{google-authenticator}。",
@@ -624,14 +615,14 @@ export default {
 			download: "下载代码",
 		},
 		remove_totp: {
-			_: "移除身份验证器",
+			title: "移除身份验证器",
 		},
 		enable_email: {
-			_: "启用邮箱双重验证",
+			title: "启用邮箱双重验证",
 			ensure: "请确保你仍然可以使用此邮箱！",
 		},
 		disable_email: {
-			_: "禁用邮箱双重验证",
+			title: "禁用邮箱双重验证",
 		},
 	},
 	enable: "启用",

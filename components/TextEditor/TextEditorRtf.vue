@@ -4,6 +4,7 @@
 	import { Underline } from "@tiptap/extension-underline";
 	import VueComponent from "helpers/editor-extension";
 	import { SoftButton } from "#components";
+	const { t } = useI18n();
 
 	const props = defineProps<{
 		/** 视频 ID。 */
@@ -113,14 +114,14 @@
 				editor.value?.commands.clearContent()
 				textLength.value = 0
 				useEvent("videoComment:emitVideoComment", videoComment);
-				useToast(t.toast.comment_sent, "success", 5000);
+				useToast(t("toast.comment_sent"), "success", 5000);
 			} else {
-				useToast(t.toast.something_went_wrong, "error", 5000);
+				useToast(t("toast.something_went_wrong"), "error", 5000);
 				console.error("ERROR", "Failed to send comment: request failed.");
 			}
 			isSendingComment.value = false;
 		} catch (error) {
-			useToast(t.toast.something_went_wrong, "error", 5000);
+			useToast(t("toast.something_went_wrong"), "error", 5000);
 			console.error("ERROR", "Failed to send comment:", error);
 			isSendingComment.value = false;
 		}
@@ -171,17 +172,17 @@
 		</ClientOnly>
 		<div class="toolbar">
 			<div class="left">
-				<ToolItem :tooltip="t.format.bold" icon="format_bold" active="bold" @click="toggleBold" :disabled="!props.editable" />
-				<ToolItem :tooltip="t.format.italic" icon="format_italic" active="italic" @click="toggleItalic" :disabled="!props.editable" />
-				<ToolItem :tooltip="t.format.underline" icon="format_underline" active="underline" @click="toggleUnderline" :disabled="!props.editable" />
-				<ToolItem :tooltip="t.format.strikethrough" icon="format_strikethrough" active="strike" @click="toggleStrike" :disabled="!props.editable" />
-				<ToolItem :tooltip="t.mention" icon="at" @click="showAtList" :disabled="!props.editable" />
-				<ToolItem :tooltip="t.kaomoji" icon="kaomoji" :active="!!flyoutKaomoji" @click="e => flyoutKaomoji = [e, 'y', -3]" :disabled="!props.editable" />
-				<ToolItem :tooltip="t.image" icon="photo" @click="addVueComponents" :disabled="!props.editable" />
+				<ToolItem :tooltip="$t('format.bold')" icon="format_bold" active="bold" @click="toggleBold" :disabled="!props.editable" />
+				<ToolItem :tooltip="$t('format.italic')" icon="format_italic" active="italic" @click="toggleItalic" :disabled="!props.editable" />
+				<ToolItem :tooltip="$t('format.underline')" icon="format_underline" active="underline" @click="toggleUnderline" :disabled="!props.editable" />
+				<ToolItem :tooltip="$t('format.strikethrough')" icon="format_strikethrough" active="strike" @click="toggleStrike" :disabled="!props.editable" />
+				<ToolItem :tooltip="$t('mention')" icon="at" @click="showAtList" :disabled="!props.editable" />
+				<ToolItem :tooltip="$t('kaomoji.title')" icon="kaomoji" :active="!!flyoutKaomoji" @click="e => flyoutKaomoji = [e, 'y', -3]" :disabled="!props.editable" />
+				<ToolItem :tooltip="$t('image')" icon="photo" @click="addVueComponents" :disabled="!props.editable" />
 			</div>
 			<div class="right">
 				<span class="text-length">{{ textLength }}</span>
-				<ToolItem :tooltip="t.send" icon="send" :disabled="!textLength || isSendingComment || !props.editable" :loading="isSendingComment" @click="sendComment" />
+				<ToolItem :tooltip="$t('send')" icon="send" :disabled="!textLength || isSendingComment || !props.editable" :loading="isSendingComment" @click="sendComment" />
 			</div>
 		</div>
 	</Comp>

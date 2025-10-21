@@ -27,27 +27,27 @@
 		<TextBox
 			ref="nameTextBox"
 			v-model="profile.name"
-			:placeholder="t.user.username"
+			:placeholder="$t('user.username')"
 			size="large"
 			icon="person"
 			required
 			:pattern="validChar"
 			:maxLength="20"
 		/>
-		<span>{{ t.user.username_requirements }}</span>
+		<span>{{ $t("user.username_requirements") }}</span>
 	</div>
 
 	<div class="nickname">
 		<TextBox
 			ref="nameTextBox"
 			v-model="profile.nickname"
-			:placeholder="t.user.nickname"
+			:placeholder="$t('user.nickname')"
 			size="large"
 			icon="person"
 			:pattern="validChar"
 			:maxLength="20"
 		/>
-		<span>{{ t.user.nickname_requirements }}</span>
+		<span>{{ $t("user.nickname_requirements") }}</span>
 	</div>
 
 	<!-- <TextBox
@@ -61,12 +61,12 @@
 		:step="1"
 	/> -->
 
-	<TextBox v-model="profile.bio" :placeholder="t.user.bio" icon="edit" />
+	<TextBox v-model="profile.bio" :placeholder="$t('user.bio')" icon="edit" />
 
 	<div class="gender">
 		<div class="gender-subtitle">
 			<Icon name="birthday" class="icon" />
-			<span class="text">{{ t.user.birthday }}</span>
+			<span class="text">{{ $t("user.birthday") }}</span>
 		</div>
 
 		<DatePicker v-model="profile.birthday" />
@@ -75,20 +75,20 @@
 	<div class="gender">
 		<div class="gender-subtitle">
 			<Icon name="gender" class="icon" />
-			<span class="text">{{ t.user.gender }}</span>
+			<span class="text">{{ $t("user.gender") }}</span>
 		</div>
 
 		<div class="gender-radio-group">
-			<RadioButton v-model="profile.gender" value="male">{{ t.user.male }}</RadioButton>
-			<RadioButton v-model="profile.gender" value="female">{{ t.user.female }}</RadioButton>
-			<RadioButton v-model="profile.gender" value="other">{{ t.other }}</RadioButton>
+			<RadioButton v-model="profile.gender" value="male">{{ $t("user.male") }}</RadioButton>
+			<RadioButton v-model="profile.gender" value="female">{{ $t("user.female") }}</RadioButton>
+			<RadioButton v-model="profile.gender" value="other">{{ $t("other") }}</RadioButton>
 		</div>
 	</div>
 
 	<div class="gender">
 		<div class="gender-subtitle">
 			<Icon name="tag" class="icon" />
-			<span class="text">{{ t(profile.tags.length).tag }}</span>
+			<span class="text">{{ $t("tag", profile.tags.length) }}</span>
 		</div>
 		<!-- TODO: 需要改成和投稿页面一致的 TAG 创建逻辑 -->
 		<TagsEditor v-model="profile.tags" />

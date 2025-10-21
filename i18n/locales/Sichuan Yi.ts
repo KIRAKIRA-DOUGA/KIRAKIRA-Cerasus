@@ -9,7 +9,7 @@ export default {
 	rangeDash: "crwdns3552:0crwdne3552:0",
 	home: "crwdns2190:0crwdne2190:0",
 	category: {
-		_: "crwdns2192:0crwdne2192:0",
+		title: "crwdns3702:0crwdne3702:0",
 		anime: "crwdns2194:0crwdne2194:0",
 		music: "crwdns2196:0crwdne2196:0",
 		otomad: "crwdns2198:0crwdne2198:0",
@@ -22,13 +22,13 @@ export default {
 	search: "crwdns2210:0crwdne2210:0",
 	custom: "crwdns2212:0crwdne2212:0",
 	scheme: {
-		_: "crwdns2214:0crwdne2214:0",
+		title: "crwdns3704:0crwdne3704:0",
 		light: "crwdns2216:0crwdne2216:0",
 		dark: "crwdns2218:0crwdne2218:0",
 		system: "crwdns2220:0crwdne2220:0",
 	},
 	palette: {
-		_: "crwdns2222:0crwdne2222:0",
+		title: "crwdns3706:0crwdne3706:0",
 		pink: "crwdns2224:0crwdne2224:0",
 		blue: "crwdns2226:0crwdne2226:0",
 		purple: "crwdns2228:0crwdne2228:0",
@@ -40,14 +40,14 @@ export default {
 	},
 	language: "crwdns3380:0crwdne3380:0",
 	background: {
-		_: "crwdns2254:0crwdne2254:0",
+		title: "crwdns3708:0crwdne3708:0",
 		custom: "crwdns2258:0crwdne2258:0",
 		opacity: "crwdns2952:0crwdne2952:0",
 		tint: "crwdns2954:0crwdne2954:0",
 		blur: "crwdns3382:0crwdne3382:0",
 	},
 	appearance: {
-		_: "crwdns2260:0crwdne2260:0",
+		title: "crwdns3710:0crwdne3710:0",
 		sharp_mode: "crwdns2262:0crwdne2262:0",
 		flat_mode: "crwdns2264:0crwdne2264:0",
 		colorful_navbar: "crwdns2266:0crwdne2266:0",
@@ -61,7 +61,7 @@ export default {
 	off: "crwdns2276:0crwdne2276:0",
 	disabled: "crwdns2278:0crwdne2278:0",
 	tag: {
-		_: "crwdns2280:0crwdne2280:0",
+		title: "crwdns3712:0crwdne3712:0",
 		search: "crwdns2282:0crwdne2282:0",
 		new: "crwdns2284:0crwdne2284:0",
 		set_as_original: "crwdns3206:0crwdne3206:0",
@@ -78,7 +78,7 @@ export default {
 	comments: "crwdns2300:0crwdne2300:0",
 	you_know_too_much: "crwdns2302:0crwdne2302:0",
 	settings: {
-		_: "crwdns2304:0crwdne2304:0",
+		title: "crwdns3714:0crwdne3714:0",
 		search: "crwdns2306:0crwdne2306:0",
 		user: "crwdns2308:0crwdne2308:0",
 		app: "crwdns2310:0crwdne2310:0",
@@ -91,14 +91,14 @@ export default {
 	dashboard: "crwdns2312:0crwdne2312:0",
 	account: "crwdns2314:0crwdne2314:0",
 	profile: {
-		_: "crwdns2316:0crwdne2316:0",
+		title: "crwdns3716:0crwdne3716:0",
 		edit: "crwdns2986:0crwdne2986:0",
 		edit_banner: "crwdns2318:0crwdne2318:0",
 		edit_avatar: "crwdns2320:0crwdne2320:0",
 	},
 	traces: "crwdns2322:0crwdne2322:0",
 	privacy: {
-		_: "crwdns2324:0crwdne2324:0",
+		title: "crwdns3718:0crwdne3718:0",
 		cookie: "crwdns2326:0crwdne2326:0",
 		allow_cookies: "crwdns2328:0crwdne2328:0",
 		info_visibility: "crwdns2330:0crwdne2330:0",
@@ -109,7 +109,7 @@ export default {
 	security: "crwdns2338:0crwdne2338:0",
 	login_options: "crwdns2340:0crwdne2340:0",
 	password: {
-		_: "crwdns2342:0crwdne2342:0",
+		title: "crwdns3720:0crwdne3720:0",
 		forgot: "crwdns2344:0crwdne2344:0",
 		reset: "crwdns2346:0crwdne2346:0",
 		retype: "crwdns2348:0crwdne2348:0",
@@ -120,13 +120,13 @@ export default {
 		hint: "crwdns2358:0crwdne2358:0",
 	},
 	block_and_hide: {
-		_: "crwdns3386:0crwdne3386:0",
+		title: "crwdns3722:0crwdne3722:0",
 		block: {
-			_: "crwdns3388:0crwdne3388:0",
+			title: "crwdns3724:0crwdne3724:0",
 			description: "crwdns3390:0crwdne3390:0",
 		},
 		hide: {
-			_: "crwdns3392:0crwdne3392:0",
+			title: "crwdns3726:0crwdne3726:0",
 			description: "crwdns3394:0crwdne3394:0",
 		},
 		tag: {
@@ -140,7 +140,7 @@ export default {
 		},
 	},
 	player: {
-		_: "crwdns2378:0crwdne2378:0",
+		title: "crwdns3728:0crwdne3728:0",
 		speed: {
 			resample: "crwdns2380:0crwdne2380:0",
 			continuous: "crwdns2382:0crwdne2382:0",
@@ -149,7 +149,7 @@ export default {
 			auto: "crwdns2868:0crwdne2868:0",
 		},
 		control_bar: {
-			_: "crwdns2888:0crwdne2888:0",
+			title: "crwdns3730:0crwdne3730:0",
 			stop: "crwdns3602:0crwdne3602:0",
 			stop_description: "crwdns3654:0crwdne3654:0",
 			replay: "crwdns3636:0crwdne3636:0",
@@ -163,9 +163,7 @@ export default {
 		screenshot: "crwdns2872:0crwdne2872:0",
 		stats: "crwdns2874:0crwdne2874:0",
 		autoplay: "crwdns2884:0crwdne2884:0",
-		filter: {
-			_: "crwdns2892:0crwdne2892:0",
-		},
+		filter: "crwdns3732:0crwdne3732:0",
 		error: {
 			getDanmaku: "crwdns2876:0crwdne2876:0",
 			loadMedia: "crwdns2990:0crwdne2990:0",
@@ -175,7 +173,7 @@ export default {
 			remove_from_playlist: "crwdns2994:0crwdne2994:0",
 		},
 		playback_order: {
-			_: "crwdns2996:0crwdne2996:0",
+			title: "crwdns3734:0crwdne3734:0",
 			sequential: "crwdns2998:0crwdne2998:0",
 			repeat_all: "crwdns3000:0crwdne3000:0",
 			repeat_one: "crwdns3002:0crwdne3002:0",
@@ -183,7 +181,7 @@ export default {
 		},
 	},
 	danmaku: {
-		_: "crwdns2862:0crwdne2862:0",
+		title: "crwdns3736:0crwdne3736:0",
 		send: "crwdns2864:0crwdne2864:0",
 		history: "crwdns2388:0crwdne2388:0",
 		format: {
@@ -208,7 +206,7 @@ export default {
 	experimental: "crwdns2410:0crwdne2410:0",
 	accessibility: "crwdns2412:0crwdne2412:0",
 	shortcut_key: {
-		_: "crwdns2414:0crwdne2414:0",
+		title: "crwdns3738:0crwdne3738:0",
 		player_page: "crwdns2416:0crwdne2416:0",
 		play_pause: "crwdns2418:0crwdne2418:0",
 		exit_fullscreen: "crwdns2420:0crwdne2420:0",
@@ -226,20 +224,12 @@ export default {
 	},
 	guide: "crwdns2430:0crwdne2430:0",
 	about: {
-		_: "crwdns2432:0crwdne2432:0",
+		title: "crwdns3740:0crwdne3740:0",
 		repositories: {
-			_: "crwdns2434:0crwdne2434:0",
+			title: "crwdns3742:0crwdne3742:0",
 			frontend: "crwdns2436:0crwdne2436:0",
 			backend: "crwdns2438:0crwdne2438:0",
 			markdown: "crwdns2440:0crwdne2440:0",
-		},
-		team: "crwdns2442:0crwdne2442:0",
-		staff: {
-			webmistress: "crwdns2444:0crwdne2444:0",
-			designer: "crwdns2446:0crwdne2446:0",
-			frontend: "crwdns2448:0crwdne2448:0",
-			backend: "crwdns2450:0crwdne2450:0",
-			translator: "crwdns2452:0{0}crwdne2452:0",
 		},
 		technologies_used: "crwdns2454:0crwdne2454:0",
 		slogan: "crwdns2456:0crwdne2456:0",
@@ -259,7 +249,7 @@ export default {
 	addition_date: "crwdns2476:0crwdne2476:0",
 	history: "crwdns2478:0crwdne2478:0",
 	collection: {
-		_: "crwdns3556:0crwdne3556:0",
+		title: "crwdns3744:0crwdne3744:0",
 		verb: "crwdns3558:0crwdne3558:0",
 		my: "crwdns3560:0crwdne3560:0",
 		follow: "crwdns3594:0crwdne3594:0",
@@ -279,10 +269,11 @@ export default {
 		following: "crwdns3598:0crwdne3598:0",
 	},
 	upload: {
-		_: "crwdns2514:0crwdne2514:0",
+		title: "crwdns3746:0crwdne3746:0",
 		drag_to_upload: "crwdns2516:0crwdne2516:0",
 		format_info: "crwdns2518:0crwdne2518:0",
 	},
+	publish: "crwdns3748:0crwdne3748:0",
 	messages: "crwdns2520:0crwdne2520:0",
 	notification: "crwdns2860:0crwdne2860:0",
 	pleaseLogin: "crwdns3214:0crwdne3214:0",
@@ -302,7 +293,7 @@ export default {
 	pause: "crwdns2544:0crwdne2544:0",
 	rating: "crwdns2546:0crwdne2546:0",
 	kaomoji: {
-		_: "crwdns2548:0crwdne2548:0",
+		title: "crwdns3750:0crwdne3750:0",
 		happy: "crwdns2550:0crwdne2550:0",
 		greet: "crwdns2552:0crwdne2552:0",
 		awa: "crwdns2554:0crwdne2554:0",
@@ -348,7 +339,7 @@ export default {
 		save: "crwdns3590:0crwdne3590:0",
 	},
 	view: {
-		_: "crwdns2624:0crwdne2624:0",
+		title: "crwdns3752:0crwdne3752:0",
 		list: "crwdns2626:0crwdne2626:0",
 		grid: "crwdns2628:0crwdne2628:0",
 		tile: "crwdns2630:0crwdne2630:0",
@@ -385,15 +376,18 @@ export default {
 		login_email_info: "crwdns3412:0crwdne3412:0",
 	},
 	unselected: {
-		combobox: "crwdns2680:0crwdne2680:0",
+		combobox: "crwdns3754:0crwdne3754:0",
 		settings: "crwdns2682:0crwdne2682:0",
 		tag: "crwdns2684:0crwdne2684:0",
 		language: "crwdns2686:0crwdne2686:0",
 		image: "crwdns2958:0crwdne2958:0",
 		file: "crwdns2960:0crwdne2960:0",
 	},
+	empty: {
+		comments: "crwdns3756:0crwdne3756:0",
+	},
 	user: {
-		_: "crwdns2688:0crwdne2688:0",
+		title: "crwdns3758:0crwdne3758:0",
 		username: "crwdns2922:0crwdne2922:0",
 		username_requirements: "crwdns2942:0crwdne2942:0",
 		username_requirements_unique: "crwdns2934:0crwdne2934:0",
@@ -416,21 +410,21 @@ export default {
 	watch_later: "crwdns2718:0crwdne2718:0",
 	download: "crwdns3204:0crwdne3204:0",
 	format: {
-		_: "crwdns2724:0crwdne2724:0",
+		title: "crwdns3760:0crwdne3760:0",
 		bold: "crwdns2726:0crwdne2726:0",
 		italic: "crwdns2728:0crwdne2728:0",
 		underline: "crwdns2730:0crwdne2730:0",
 		strikethrough: "crwdns2732:0crwdne2732:0",
 	},
 	text: {
-		_: "crwdns2736:0crwdne2736:0",
+		title: "crwdns3762:0crwdne3762:0",
 		size: "crwdns2738:0crwdne2738:0",
 	},
 	color: "crwdns2740:0crwdne2740:0",
 	opacity: "crwdns2886:0crwdne2886:0",
 	mode: "crwdns2742:0crwdne2742:0",
 	size: {
-		_: "crwdns2744:0crwdne2744:0",
+		title: "crwdns3764:0crwdne3764:0",
 		tiny: "crwdns2746:0crwdne2746:0",
 		small: "crwdns2748:0crwdne2748:0",
 		medium: "crwdns2750:0crwdne2750:0",
@@ -438,7 +432,7 @@ export default {
 		huge: "crwdns2754:0crwdne2754:0",
 	},
 	user_page: {
-		_: "crwdns2756:0crwdne2756:0",
+		title: "crwdns3766:0crwdne3766:0",
 		title_affix: "crwdns2758:0{0}crwdne2758:0",
 	},
 	manage_content: "crwdns2760:0crwdne2760:0",
@@ -455,7 +449,7 @@ export default {
 		tieba: "crwdns2780:0crwdne2780:0",
 		cloudmusic: "crwdns2782:0crwdne2782:0",
 		discord: {
-			_: "crwdns3228:0crwdne3228:0",
+			title: "crwdns3768:0crwdne3768:0",
 			server: "crwdns3230:0crwdne3230:0",
 		},
 		telegram: "crwdns2786:0crwdne2786:0",
@@ -473,7 +467,6 @@ export default {
 	modify_memo: "crwdns2802:0crwdne2802:0",
 	add_to_group: "crwdns2804:0crwdne2804:0",
 	navigation: {
-		_: "crwdns2806:0crwdne2806:0",
 		back: "crwdns2808:0crwdne2808:0",
 		return_to_home: "crwdns2810:0crwdne2810:0",
 	},
@@ -514,6 +507,7 @@ export default {
 		comment_sent: "crwdns3292:0crwdne3292:0",
 		unsupported_image_format: "crwdns3296:0crwdne3296:0",
 		profile_updated: "crwdns3306:0crwdne3306:0",
+		settings_updated: "crwdns3770:0crwdne3770:0",
 		must_remove_totp_first: "crwdns3420:0crwdne3420:0",
 		must_verify_email_first: "crwdns3422:0crwdne3422:0",
 		new_email_same: "crwdns3424:0crwdne3424:0",
@@ -576,13 +570,10 @@ export default {
 	unused: "crwdns2916:0crwdne2916:0",
 	create: "crwdns2906:0crwdne2906:0",
 	creatable: "crwdns2918:0crwdne2918:0",
-	invitation_code: {
-		_: "crwdns2938:0crwdne2938:0",
-		invalid: "crwdns2940:0crwdne2940:0",
-	},
+	invitation_code: "crwdns3772:0crwdne3772:0",
 	version: "crwdns2984:0crwdne2984:0",
 	announcement: {
-		_: "crwdns3346:0crwdne3346:0",
+		title: "crwdns3774:0crwdne3774:0",
 		homepage: "crwdns3518:0{discord-server}crwdne3518:0",
 	},
 	under_construction: {
@@ -601,14 +592,14 @@ export default {
 		code_403: "crwdns3366:0crwdne3366:0",
 	},
 	two_factor_authentication: {
-		_: "crwdns3456:0crwdne3456:0",
+		title: "crwdns3776:0crwdne3776:0",
 		description: "crwdns3458:0crwdne3458:0",
 		off_description: "crwdns3460:0crwdne3460:0",
 		email_description: "crwdns3462:0crwdne3462:0",
 		totp: "crwdns3464:0crwdne3464:0",
 		totp_description: "crwdns3466:0crwdne3466:0",
 		add_totp: {
-			_: "crwdns3468:0crwdne3468:0",
+			title: "crwdns3778:0crwdne3778:0",
 			warning: "crwdns3528:0crwdne3528:0",
 			step_install: "crwdns3472:0crwdne3472:0",
 			step_install_description: "crwdns3530:0{ente-auth}crwdnd3530:0{microsoft-authenticator}crwdnd3530:0{google-authenticator}crwdne3530:0",
@@ -624,14 +615,14 @@ export default {
 			download: "crwdns3494:0crwdne3494:0",
 		},
 		remove_totp: {
-			_: "crwdns3496:0crwdne3496:0",
+			title: "crwdns3780:0crwdne3780:0",
 		},
 		enable_email: {
-			_: "crwdns3498:0crwdne3498:0",
+			title: "crwdns3782:0crwdne3782:0",
 			ensure: "crwdns3500:0crwdne3500:0",
 		},
 		disable_email: {
-			_: "crwdns3502:0crwdne3502:0",
+			title: "crwdns3784:0crwdne3784:0",
 		},
 	},
 	enable: "crwdns3504:0crwdne3504:0",

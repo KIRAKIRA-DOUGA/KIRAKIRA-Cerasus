@@ -10,8 +10,7 @@
 	margin-block: 0;
 	margin-inline: 0;
 	font-family: $simplified-chinese-fonts;
-	// font-feature-settings: "ss02" on, "ss01" on, "liga" on, "rlig" on, "dlig" on, "hlig" on, "onum" on, "kern" on; // 开多了有点过分了。
-	font-feature-settings: "ss03" on, "halt" on; // 圆形的逗号、引号。
+	font-feature-settings: "halt" on;
 	font-kerning: normal;
 	font-optical-sizing: auto;
 	// font-variant-east-asian: proportional-width; // 苹方会恶意将全角逗号、冒号、分号等错误地变成半宽，但句号和顿号却莫名其妙地保持不变。
@@ -21,6 +20,7 @@
 	white-space-collapse: discard;
 	text-space-collapse: discard;
 	text-spacing: normal;
+	text-autospace: normal;
 	text-rendering: optimizeLegibility;
 	tab-size: 4;
 	user-select: none;

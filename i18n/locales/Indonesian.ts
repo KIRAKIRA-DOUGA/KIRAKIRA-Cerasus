@@ -9,7 +9,6 @@ export default {
 	rangeDash: " – ",
 	home: "Beranda",
 	category: {
-		_: "Kategori",
 		anime: "Anime",
 		music: "Musik",
 		otomad: "Otomad",
@@ -22,13 +21,12 @@ export default {
 	search: "Cari",
 	custom: "Sesuaikan",
 	scheme: {
-		_: "Skema",
 		light: "Tema Terang",
 		dark: "Tema Gelap",
 		system: "Ikuti Tema Sistem",
 	},
 	palette: {
-		_: "Palet",
+		title: "Palet",
 		pink: "Pink Cocoa",
 		blue: "Biru Chino",
 		purple: "Ungu Rize",
@@ -40,14 +38,12 @@ export default {
 	},
 	language: "Bahasa",
 	background: {
-		_: "Latar",
 		custom: "Latar Kustom",
 		opacity: "Opasitas",
 		tint: "Rona",
 		blur: "Keburaman",
 	},
 	appearance: {
-		_: "Penampilan",
 		sharp_mode: "Mode Tajam",
 		flat_mode: "Mode Dasar",
 		colorful_navbar: "Bilah Navigasi Berwarna",
@@ -61,7 +57,6 @@ export default {
 	off: "Matikan",
 	disabled: "Dinonaktifkan",
 	tag: {
-		_: "Tag",
 		search: "Cari Tag",
 		new: "Buat Tag Baru",
 		set_as_original: "Ubah sebagai Nama Asli",
@@ -78,7 +73,6 @@ export default {
 	comments: "Komentar",
 	you_know_too_much: "Kau tahu terlalu banyak.",
 	settings: {
-		_: "Pengaturan",
 		search: "Cari Pengaturan",
 		user: "Pengaturan Pengguna",
 		app: "Pengaturan Aplikasi",
@@ -91,14 +85,12 @@ export default {
 	dashboard: "Dasbor",
 	account: "Akun",
 	profile: {
-		_: "Profil",
 		edit: "Edit Profil",
 		edit_banner: "Edit Banner",
 		edit_avatar: "Edit Avatar",
 	},
 	traces: "Jejak",
 	privacy: {
-		_: "Privasi",
 		cookie: "Cookie☆",
 		allow_cookies: "Izinkan Cookies",
 		info_visibility: "Visibilitas Info",
@@ -109,7 +101,6 @@ export default {
 	security: "Keamanan",
 	login_options: "Opsi Masuk",
 	password: {
-		_: "Kata Sandi",
 		forgot: "Lupa Kata Sandi",
 		reset: "Reset Kata Sandi",
 		retype: "Ketik Ulang Kata Sandi",
@@ -120,13 +111,13 @@ export default {
 		hint: "Petunjuk Kata Sandi",
 	},
 	block_and_hide: {
-		_: "Blokir dan Sembunyikan",
+		title: "Blokir dan Sembunyikan",
 		block: {
-			_: "Blokir",
+			title: "Blokir",
 			description: "Pengguna yang tidak Anda inginkan untuk berinteraksi dengan Anda.",
 		},
 		hide: {
-			_: "Sembunyikan",
+			title: "Sembunyikan",
 			description: "Sembunyikan pengguna yang tidak ingin Anda lihat (kecuali Anda membuka laman profilnya).",
 		},
 		tag: {
@@ -140,7 +131,7 @@ export default {
 		},
 	},
 	player: {
-		_: "Pemutar",
+		title: "Pemutar",
 		speed: {
 			resample: "Audio Resample",
 			continuous: "Kontrol Berkelanjutan",
@@ -149,7 +140,7 @@ export default {
 			auto: "Kualitas Otomatis",
 		},
 		control_bar: {
-			_: "Bar Kontrol",
+			title: "Bar Kontrol",
 			stop: "Tampilkan Tombol Berhenti",
 			stop_description: "Loncat frame pertama dan berhenti",
 			replay: "Selalu Tampilkan Tombol Ulang",
@@ -163,9 +154,7 @@ export default {
 		screenshot: "Tangkapan Layar",
 		stats: "Statistik",
 		autoplay: "Putar Otomatis",
-		filter: {
-			_: "Filter",
-		},
+		filter: "Filter",
 		error: {
 			getDanmaku: "Gagal mendapatkan daftar danmaku",
 			loadMedia: "Gagal memuat media",
@@ -175,7 +164,7 @@ export default {
 			remove_from_playlist: "Hapus dari Playlist",
 		},
 		playback_order: {
-			_: "Urutan Pemutaran",
+			title: "Urutan Pemutaran",
 			sequential: "Berurutan",
 			repeat_all: "Ulangi Semua",
 			repeat_one: "Ulangi Sekali",
@@ -183,7 +172,7 @@ export default {
 		},
 	},
 	danmaku: {
-		_: "Danmaku",
+		title: "Danmaku",
 		send: "Kirim Danmaku",
 		history: "Riwayat Danmaku",
 		format: {
@@ -208,7 +197,6 @@ export default {
 	experimental: "Eksperimental",
 	accessibility: "Akses",
 	shortcut_key: {
-		_: "Tombol Pintasan",
 		player_page: "Laman Pemutar",
 		play_pause: "Putar / Jeda",
 		exit_fullscreen: "Keluar dari Layar Penuh",
@@ -226,20 +214,10 @@ export default {
 	},
 	guide: "Panduan",
 	about: {
-		_: "Tentang",
 		repositories: {
-			_: "Repositories",
 			frontend: "Repositori Frontend GitHub dan Umpan Balik Masalah",
 			backend: "Repositori Backend GitHub dan Umpan Balik Masalah",
 			markdown: "Repositori Markdown Halaman Pengguna dan Umpan Balik Masalah",
-		},
-		team: "Tim",
-		staff: {
-			webmistress: "Pengelola Web",
-			designer: "Designer",
-			frontend: "Frontend",
-			backend: "Backend",
-			translator: "{0} Penerjemah",
 		},
 		technologies_used: "Teknologi yang Digunakan",
 		slogan: "Situs imut\nuntuk orang imut!",
@@ -259,7 +237,7 @@ export default {
 	addition_date: "Tanggal Penambahan",
 	history: "History",
 	collection: {
-		_: "Koleksi | Koleksi",
+		title: "Koleksi | Koleksi",
 		verb: "Simpan ke Koleksi",
 		my: "Koleksi Saya",
 		follow: "Ikuti Koleksi",
@@ -279,7 +257,6 @@ export default {
 		following: "Mengikuti",
 	},
 	upload: {
-		_: "Unggah",
 		drag_to_upload: "Seret Ke Sini untuk Mengunggah",
 		format_info: "Mendukung format video seperti MP4, WMV, WEBM",
 	},
@@ -302,7 +279,6 @@ export default {
 	pause: "Jeda",
 	rating: "Rating",
 	kaomoji: {
-		_: "Kaomoji",
 		happy: "Senang",
 		greet: "Sapa",
 		awa: "Gemes",
@@ -348,7 +324,6 @@ export default {
 		save: "Jumlah yang Disimpan",
 	},
 	view: {
-		_: "Lihat",
 		list: "Daftar",
 		grid: "Grid",
 		tile: "Ubin",
@@ -385,15 +360,15 @@ export default {
 		login_email_info: "Otentikasi 2 Faktor melalui email telah diaktifkan pada akun Anda. Kode verifikasi telah dikirim ke email Anda. Jika email tidak muncul, harap periksa folder spam atau folder sampah.",
 	},
 	unselected: {
-		combobox: "Pilih Item",
 		settings: "Silakan Pilih Pengaturan",
 		tag: "Silakan Cari Tag",
 		language: "Pilih Bahasa",
 		image: "Pilih Gambar",
 		file: "Pilih berkas",
 	},
+	empty: {},
 	user: {
-		_: "Pengguna",
+		title: "Pengguna",
 		username: "Nama Pengguna",
 		username_requirements: "Harus unik. @:user.nickname_requirements",
 		username_requirements_unique: "Nama pengguna harus unik.",
@@ -416,21 +391,18 @@ export default {
 	watch_later: "Tonton Nanti",
 	download: "Unduh",
 	format: {
-		_: "Format",
 		bold: "Bold",
 		italic: "Italic",
 		underline: "Menggarisbawahi",
 		strikethrough: "Dicoret",
 	},
 	text: {
-		_: "Teks",
 		size: "Ukuran Teks",
 	},
 	color: "Warna",
 	opacity: "Opasitas",
 	mode: "Mode",
 	size: {
-		_: "Ukuran",
 		tiny: "Sangat Kecil",
 		small: "Kecil",
 		medium: "Sedang",
@@ -438,7 +410,6 @@ export default {
 		huge: "Sangat Besar",
 	},
 	user_page: {
-		_: "Laman Pengguna",
 		title_affix: "{0} Laman Pengguna",
 	},
 	manage_content: "Kelola Konten",
@@ -455,7 +426,7 @@ export default {
 		tieba: "Tieba",
 		cloudmusic: "Cloud Music",
 		discord: {
-			_: "Discord",
+			title: "Discord",
 			server: "Server Discord",
 		},
 		telegram: "Telegram",
@@ -473,7 +444,6 @@ export default {
 	modify_memo: "Ubah Memo",
 	add_to_group: "Tambah Ke Grup",
 	navigation: {
-		_: "Navigasi",
 		back: "Kembali",
 		return_to_home: "Kembali ke Beranda",
 	},
@@ -576,13 +546,10 @@ export default {
 	unused: "Tidak Digunakan",
 	create: "Buat",
 	creatable: "Dapat Dibuat",
-	invitation_code: {
-		_: "Kode Undangan",
-		invalid: "Kode Undangan Tidak Valid",
-	},
+	invitation_code: "Kode Undangan",
 	version: "Versi",
 	announcement: {
-		_: "Pengumuman",
+		title: "Pengumuman",
 		homepage: "Situs kecil ini masih berkembang~! Bergabunglah ke {discord-server} kami untuk melihat perkembangannya dan chat sama pengembangnya! (๑˃ᴗ˂)ﻭ Bisa ngoding? Kami akan sangat senang jika kamu bergabung dengan kami dalam petualangan ini~!! (๑•̀ㅂ•́)و✧r",
 	},
 	under_construction: {
@@ -601,14 +568,14 @@ export default {
 		code_403: "Anda tidak memiliki akses ke laman ini.",
 	},
 	two_factor_authentication: {
-		_: "Autentikasi 2 Faktor (2FA)",
+		title: "Autentikasi 2 Faktor (2FA)",
 		description: "Mengaktifkan Autentikasi 2 Faktor dapat meningkatkan keamanan akun Anda. Jika kamu perlu mengganti meotde Autentikasi 2 Faktor, harap dimatikan dulu.",
 		off_description: "Mematikan Autentikasi 2 Faktor akan membuat akun Anda tidak aman.",
 		email_description: "Demi keamanan, silakan masukkan kode yang telah dikirim ke email Anda untuk melanjutkan.",
 		totp: "Algoritma Kata Sandi Sekali-Pakai berbasis Waktu (TOTP).",
 		totp_description: "Demi keamanan, masukkan kode vertifikasi dari aplikasi autentikasi Anda untuk melanjutkan.",
 		add_totp: {
-			_: "Tambahkan Autentikator TOTP",
+			title: "Tambahkan Autentikator TOTP",
 			warning: "Jangan berbagi konten apapun di laman ini!",
 			step_install: "Pasang Aplikasi Autentikasi",
 			step_install_description: "Jika Anda sudah memiliki aplikasi Autentikasi, lewati tahap ini. Jika tidak, pasang aplikasi yang mendukung TOTP di perangkat Anda, seperi {ente-auth}, {microsoft-authenticator}, atau {google-authenticator}.",
@@ -624,14 +591,14 @@ export default {
 			download: "Unduh Kode",
 		},
 		remove_totp: {
-			_: "Hapus Autentikator TOTP",
+			title: "Hapus Autentikator TOTP",
 		},
 		enable_email: {
-			_: "Aktifkan Email Otentikasi 2 Faktor",
+			title: "Aktifkan Email Otentikasi 2 Faktor",
 			ensure: "Harap pastikan Anda masih memiliki akses ke email ini!",
 		},
 		disable_email: {
-			_: "Nonaktifkan Email Otentikasi 2 Faktor",
+			title: "Nonaktifkan Email Otentikasi 2 Faktor",
 		},
 	},
 	enable: "Aktifkan",

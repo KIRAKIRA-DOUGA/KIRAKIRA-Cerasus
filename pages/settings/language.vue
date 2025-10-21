@@ -1,9 +1,9 @@
 <script setup lang="ts">
 	import { useNow } from "@vueuse/core"; // 它与 lodash 同名函数冲突，只得显式引入。
 
-	const { locale: currentLocale, locales } = useI18n();
+	const { locale: currentLocale, locales, t } = useI18n();
 	const date = useNow();
-	const inContextLocalization = isInContextLocalization();
+	const inContextLocalization = computed(() => isInContextLocalization(currentLocale.value));
 
 	const localeModel = computed({
 		get: () => currentLocale.value,
@@ -14,8 +14,8 @@
 		lang: getCurrentLocaleLangCode(locale.code, true),
 		name: locale.name || locale.code,
 		title: (() => {
-			if (isInContextLocalization(locale.code).value)
-				return inContextLocalization.value ? t.translating : t.improve_translation;
+			if (isInContextLocalization(locale.code))
+				return inContextLocalization.value ? t("translating") : t("improve_translation");
 			return getLocaleName(locale.code);
 		})(),
 	})));
@@ -24,7 +24,7 @@
 <template>
 	<div>
 		<div class="date-time">
-			<Subheader icon="time">{{ t.current_time }}</Subheader>
+			<Subheader icon="time">{{ t('current_time') }}</Subheader>
 			<p><DateTime :dateTime="date" showTime /></p>
 		</div>
 		<section grid>
@@ -35,7 +35,7 @@
 				v-model="localeModel"
 				:title="locale.title"
 			>
-				<LogoImproveTranslation v-if="isInContextLocalization(locale.code).value" />
+				<LogoImproveTranslation v-if="isInContextLocalization(locale.code)" />
 				<div v-else class="line" :lang="locale.lang">
 					{{ locale.name }}
 				</div>

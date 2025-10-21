@@ -54,7 +54,7 @@
 	<Comp
 		:class="{ invalid: selectedInvalid }"
 		role="radiogroup"
-		:aria-details="t.selected_item_label + selectedCaption"
+		:aria-details="$t('selected_item_label') + selectedCaption"
 		aria-orientation="horizontal"
 	>
 		<div class="track items-wrapper">
