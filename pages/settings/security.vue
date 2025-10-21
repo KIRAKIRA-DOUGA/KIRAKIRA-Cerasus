@@ -161,7 +161,7 @@
 	}
 
 	/**
-	 * 修改 Email
+	 * 修改密码
 	 */
 	async function updateUserPassword() {
 		if (!oldPassword.value || !newPassword.value || !changePasswordVerificationCode.value) {
@@ -479,7 +479,7 @@
 		</section>
 
 		<!-- 修改邮箱 -->
-		<Modal :open="changeEmailStep !== 'closed'" :title="$t('change_email')" icon="email">
+		<Modal :open="changeEmailStep !== 'closed'" :title="$t('change_email')" icon="email" @close="closeChangeEmailModel">
 			<div class="change-email-modal">
 				<div class="page">
 					<div v-if="showChangeEmailVerficationEmail" class="step">
