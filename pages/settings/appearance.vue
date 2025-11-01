@@ -1,4 +1,5 @@
 <script setup lang="ts">
+	import { fitTypes } from "components/BackgroundImage/BackgroundImageImg.vue";
 	const getPaletteImage = (name: string) => `/static/images/palettes/${name}.png`;
 
 	const themeList = ["light", "dark", "system"] as const;
@@ -150,7 +151,7 @@
 				class="wallpaper-color force-color"
 			>
 				<div class="palette-card">
-					<img :src="backgroundImages.currentImage" :alt="$t('background.title')" />
+					<BackgroundImageImg :src="backgroundImages.currentImage" :alt="$t('background.title')" :fit="backgroundImageSettingsStore.fit" :position="backgroundImageSettingsStore.position" />
 					<div class="overlay light"></div>
 					<div class="overlay color"></div>
 					<div>
@@ -164,7 +165,7 @@
 
 		<ClientOnly>
 			<Subheader icon="wallpaper">{{ $t("background.title") }}</Subheader>
-			<section>
+			<section class="background-image-settings">
 				<Button class="upload-bg-image-btn" icon="upload" @click="addBackgroundImage">{{ $t("file_picker.choose") }}</Button>
 				<section grid force-multi-column class="section-background-images">
 					<TransitionGroup appear>
@@ -178,7 +179,7 @@
 							@contextmenu.prevent="e => item.key !== -1 && (backgroundImageItemMenu = [e, item, e.currentTarget])"
 						>
 							<Icon v-if="item.key === -1" name="prohibited" />
-							<img v-else :src="item.url" alt="" />
+							<BackgroundImageImg v-else :src="item.url" autoAlt :fit="backgroundImageSettingsStore.fit" :position="backgroundImageSettingsStore.position" />
 						</SettingsGridItem>
 					</TransitionGroup>
 				</section>
@@ -213,6 +214,20 @@
 						pending="current"
 						:displayValue="backgroundSliderDisplayValue"
 					>{{ $t("background.blur") }}</SettingsSlider>
+					<SettingsChipItem icon="placeholder" nonclickable>
+						{{ $t("background.fit.title") }}
+						<template #actions>
+							<ComboBox v-model="backgroundImageSettingsStore.fit" :style="{ width: '200px' }">
+								<ComboBoxItem v-for="(_, key) in fitTypes" :key="key" :id="key">{{ $t(`background.fit.${key}`) }}</ComboBoxItem>
+							</ComboBox>
+						</template>
+					</SettingsChipItem>
+					<SettingsChipItem icon="placeholder" nonclickable>
+						{{ $t("background.position") }}
+						<template #actions>
+							<PositionControl v-model="backgroundImageSettingsStore.position" :disabled="backgroundImageSettingsStore.fit === 'stretch'" />
+						</template>
+					</SettingsChipItem>
 				</template>
 			</section>
 
@@ -271,7 +286,7 @@
 	}
 
 	.settings-chip-item {
-		--size: small;
+		--size: middle;
 	}
 
 	.settings-grid-item:deep() {
@@ -438,5 +453,9 @@
 			display: flex;
 			gap: 8px;
 		}
+	}
+
+	.background-image-settings > :last-child {
+		margin-bottom: 8px;
 	}
 </style>

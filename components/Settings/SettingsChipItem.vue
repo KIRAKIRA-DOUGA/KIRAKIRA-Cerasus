@@ -16,13 +16,15 @@
 		onTrailingIconClick?: () => void;
 		/** 点击链接。支持外链和内链。 */
 		href?: string;
+		/** 是否仅展示但不可点击？ */
+		nonclickable?: boolean;
 	}>();
 
 	const isExtenalLink = computed(() => props.href?.includes(":/"));
 </script>
 
 <template>
-	<Comp v-ripple role="listitem">
+	<Comp v-ripple="!nonclickable" role="listitem" :class="{ nonclickable }">
 		<div :class="{ pictorial: image || icon }">
 			<div v-if="image" class="image">
 				<NuxtImg
@@ -41,6 +43,7 @@
 				<label class="title"><slot></slot></label>
 				<label v-if="details || $slots.details" class="details"><slot name="details">{{ details }}</slot></label>
 			</div>
+			<slot name="actions"></slot>
 			<template v-if="trailingIcon">
 				<Icon v-if="!onTrailingIconClick" class="trailing-icon" :name="trailingIcon" />
 				<SoftButton v-else :icon="trailingIcon" :disabled="trailingIconDisabled" class="trailing-icon" @click.stop="onTrailingIconClick" />
@@ -56,7 +59,7 @@
 <style scoped lang="scss">
 	@layer props {
 		:comp {
-			/// 指定组件的尺寸，可选的值为：large | small。
+			/// 指定组件的尺寸，可选的值为：large | middle | small。
 			--size: large;
 		}
 	}
@@ -66,7 +69,7 @@
 		overflow: hidden;
 	}
 
-	:comp:any-hover {
+	:comp:not(.nonclickable):any-hover {
 		background-color: c(hover-overlay);
 	}
 
@@ -130,6 +133,14 @@
 
 			&.pictorial {
 				padding: 14px 24px;
+			}
+		}
+
+		@container style(--size: middle) {
+			padding: 10px 16px;
+
+			.icon {
+				font-size: 24px !important;
 			}
 		}
 
