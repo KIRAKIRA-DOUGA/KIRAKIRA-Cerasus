@@ -62,7 +62,7 @@
 			flex-direction: column;
 			gap: 12px;
 			justify-content: center;
-			align-items: flex-start;
+			align-items: start;
 			min-width: 450px;
 			color: c(accent);
 

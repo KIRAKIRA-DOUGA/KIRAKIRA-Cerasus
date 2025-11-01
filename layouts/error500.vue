@@ -64,7 +64,7 @@
 			--i: 2;
 			display: flex;
 			justify-content: space-between;
-			align-items: flex-end;
+			align-items: end;
 			padding: 50px 60px;
 			background-color: c(main-bg, 50%);
 
@@ -77,7 +77,7 @@
 				display: flex;
 				flex-direction: column;
 				justify-content: space-between;
-				align-items: flex-end;
+				align-items: end;
 				height: 100%;
 
 				.logo-text {

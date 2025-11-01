@@ -103,7 +103,7 @@
 		position: relative;
 		z-index: 20;
 		flex-direction: column;
-		justify-content: flex-start;
+		justify-content: start;
 		padding: 5rem 3rem 0;
 
 		h1 {

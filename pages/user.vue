@@ -201,7 +201,7 @@
 		.actions {
 			display: flex;
 			gap: 16px;
-			justify-content: flex-end;
+			justify-content: end;
 			align-items: center;
 			margin-left: auto;
 
@@ -225,7 +225,7 @@
 	.slot:deep(.container) {
 		display: flex;
 		gap: 20px;
-		align-items: flex-start;
+		align-items: start;
 		padding: $main-margin-top $page-padding-x;
 
 		@include tablet {

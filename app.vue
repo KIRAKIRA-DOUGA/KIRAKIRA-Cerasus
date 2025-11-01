@@ -20,10 +20,10 @@
 			return titleChunk ? `${titleChunk} - KIRAKIRA☆DOUGA` : "KIRAKIRA☆DOUGA";
 		},
 		meta: [
-			{ "http-equiv": "Content-Type", content: "text/html;charset=UTF-8" },
-			{ "http-equiv": "X-UA-Compatible", content: "IE=Edge,chrome=1" },
-			{ name: "viewport", content: "width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" },
-			{ name: "renderer", content: "webkit" },
+			{ charset: "UTF-8" }, // 新式指定字符集的声明，比 `http-equiv="Content-Type" content="text/html; charset=UTF-8"` 更简洁且兼容 IE。
+			{ "http-equiv": "X-UA-Compatible", content: "IE=Edge,chrome=1" }, // IE 使用最新版本文档模式，并启用 Chrome Frame 浏览器插件（如果有）。
+			{ name: "viewport", content: "width=device-width, initial-scale=1" }, // 现在可以在视口元标签中停止使用 user-scalable=no、minimum-scale=1、maximum-scale=1 了。参见：https://lukeplant.me.uk/blog/posts/you-can-stop-using-user-scalable-no-and-maximum-scale-1-in-viewport-meta-tags-now/
+			{ name: "renderer", content: "webkit" }, // 国产双核浏览器使用极速内核。
 			{ name: "description", content: manifest.description },
 			{ name: "keywords", content: "视频,弹幕,字幕,音频,歌词,相簿,相册,照片,视频网站,弹幕视频,二次元,动漫,动画,音乐,动漫音乐,音MAD,AMV,MAD,ANIME,ACG,NOVA" },
 			// 以下内容为各种苹果私有属性。
@@ -34,7 +34,7 @@
 			{ name: "format-detection", content: "telephone=no" }, // 停用手机号码识别 (iOS)
 			{ name: "format-detection", content: "email=no" }, // 停用邮箱识别 (Android)
 			// 以下内容为各种百度私有属性。
-			{ "http-equiv": "Cache-Control", content: "no-siteapp" }, // 百度禁止转码。通过百度手机打开网页时，百度可能会对你的网页进行转码，往你页面贴上它的广告，非常之恶心。
+			{ "http-equiv": "Cache-Control", content: "no-siteapp" }, // 百度禁止转码。通过手机百度打开网页时，百度可能会对你的网页进行转码，往你页面贴上它的广告，非常之恶心。
 			{ name: "referrer", content: "no-referrer" }, // 反防盗链
 			// 以下内容为开放图谱协议 (Open Graph Protocol) 属性。
 			{ property: "og:type", content: "website" },

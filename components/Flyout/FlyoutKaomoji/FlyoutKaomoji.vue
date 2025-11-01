@@ -70,7 +70,7 @@
 				display: grid;
 				grid-template-columns: repeat(3, 1fr);
 				gap: 6px;
-				align-content: flex-start;
+				align-content: start;
 				align-items: baseline;
 				padding: 12px $padding-x;
 				padding-top: 0.25rem;

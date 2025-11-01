@@ -176,7 +176,7 @@
 		@include round-large;
 		$color: c(icon-color);
 		position: relative;
-		align-items: flex-start;
+		align-items: start;
 		min-height: $toolbar-height;
 		overflow: clip;
 		view-transition-name: file-picker;

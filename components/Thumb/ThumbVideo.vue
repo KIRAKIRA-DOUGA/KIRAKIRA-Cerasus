@@ -187,11 +187,11 @@
 			$title-line-height: 22px;
 			// stylelint-disable-next-line value-no-vendor-prefix
 			display: -webkit-box;
+			-webkit-box-orient: vertical;
 			height: $title-line-height * 2;
 			line-height: $title-line-height;
 			-webkit-line-clamp: 2;
 			white-space: normal;
-			-webkit-box-orient: vertical;
 		}
 	}
 
@@ -207,7 +207,7 @@
 		.list & {
 			flex-direction: row;
 			gap: 14px;
-			justify-content: flex-start;
+			justify-content: start;
 		}
 
 		.line {
@@ -224,7 +224,7 @@
 			@include flex-center;
 			flex-shrink: 0;
 			gap: 2px;
-			justify-content: flex-start;
+			justify-content: start;
 
 			.icon {
 				font-size: 16px;
@@ -232,7 +232,7 @@
 		}
 
 		.uploader {
-			justify-content: flex-start;
+			justify-content: start;
 			color: c(icon-color);
 			text-decoration: none;
 

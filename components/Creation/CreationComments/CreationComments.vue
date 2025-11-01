@@ -169,14 +169,14 @@
 		padding-block: 6px;
 
 		&.bottom {
-			justify-content: flex-end;
+			justify-content: end;
 		}
 
 		> * {
 			display: flex;
 			flex-wrap: wrap;
 			gap: 16px;
-			justify-content: flex-end;
+			justify-content: end;
 			align-items: center;
 		}
 

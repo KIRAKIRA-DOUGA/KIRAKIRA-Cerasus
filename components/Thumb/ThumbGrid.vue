@@ -15,13 +15,13 @@
 
 <style scoped lang="scss">
 	:comp {
-		display: grid;
-		grid-gap: 0;
-		grid-template-columns: repeat(auto-fill, minmax(226px, 1fr));
-		align-items: start;
-		justify-content: space-between;
-		margin: 0 -8px;
 		container: thumb-grid / inline-size;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(226px, 1fr));
+		gap: 0;
+		justify-content: space-between;
+		align-items: start;
+		margin: 0 -8px;
 
 		@include mobile {
 			grid-template-columns: repeat(2, 1fr);

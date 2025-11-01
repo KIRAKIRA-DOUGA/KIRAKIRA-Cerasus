@@ -28,6 +28,12 @@ export default {
 				"right": "| <anchor()>",
 				"bottom": "| <anchor()>",
 				"left": "| <anchor()>",
+				"width": "| <anchor-size()>",
+				"height": "| <anchor-size()>",
+				// WARN: https://github.com/stylelint/stylelint/issues/8778
+				"appearance": "| base-select",
+				//
+				"justify-self": "| anchor-center",
 			},
 			types: {
 				// WARN: https://github.com/stylelint/stylelint/issues/8610
@@ -67,7 +73,14 @@ export default {
 		"at-rule-no-unknown": null,
 		"function-no-unknown": null,
 		"property-no-unknown": [true, { "severity": "warning" }],
-		"declaration-property-value-no-unknown": null, // [true, { "severity": "warning" }],
+		"declaration-property-value-no-unknown": [true, {
+			"severity": "warning",
+			"ignoreProperties": {
+				// WARN: https://github.com/stylelint/stylelint/issues/8779
+				// "/.+/": ["/(^|[^\\w-])(attr|if|--[\\w-]+)\\(/"],
+				"/.+/": ["/[()$]/"],
+			},
+		}],
 		"declaration-empty-line-before": null,
 		"custom-property-empty-line-before": null,
 		"selector-pseudo-class-no-unknown": [true, {
@@ -97,6 +110,11 @@ export default {
 			"vw", "vh", "vmin", "vmax", // 请使用 dvw、dvh、dvmin、dvmax 代替之。
 			"cm", "mm", "Q", "in", "pc", "pt", "mozmm", // 你觉得这种单位可能合理吗？
 		],
+		"declaration-property-value-disallowed-list": {
+			"/^(justify|align)-(content|items|self)$/": ["flex-start", "flex-end"], // flex-start、flex-end 与 start、end 没有任何区别，不要使用它们。
+		},
+		"rule-empty-line-before": null,
+		"no-invalid-double-slash-comments": null,
 		"number-max-precision": null,
 		"scss/dollar-variable-empty-line-before": null,
 		"scss/double-slash-comment-empty-line-before": null,

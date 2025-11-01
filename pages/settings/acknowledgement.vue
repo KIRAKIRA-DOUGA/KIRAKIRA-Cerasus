@@ -77,7 +77,7 @@
 
 		a {
 			display: flex;
-			justify-content: flex-start;
+			justify-content: start;
 			align-items: center;
 			width: min-content;
 			max-width: 500px;

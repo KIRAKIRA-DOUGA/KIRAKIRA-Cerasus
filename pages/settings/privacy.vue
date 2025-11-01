@@ -162,7 +162,7 @@
 	.options {
 		display: flex;
 		gap: 8px;
-		justify-content: flex-end;
+		justify-content: end;
 		margin-right: 10px;
 	}
 </style>

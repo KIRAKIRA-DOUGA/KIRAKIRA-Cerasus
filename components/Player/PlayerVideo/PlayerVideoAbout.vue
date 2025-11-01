@@ -63,7 +63,7 @@
 	.right-wrapper {
 		display: flex;
 		flex-direction: column;
-		align-items: flex-end;
+		align-items: end;
 		max-width: 100%;
 	}
 

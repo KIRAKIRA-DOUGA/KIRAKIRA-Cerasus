@@ -608,7 +608,7 @@
 			z-index: 4;
 			display: flex;
 			gap: 8px;
-			justify-content: flex-end;
+			justify-content: end;
 			margin-inline: (-$main-padding-x);
 			margin-bottom: (-$main-padding-x);
 			padding: calc($submit-margin-y / 2) $main-padding-x $submit-margin-y;

@@ -133,7 +133,7 @@
 		}
 
 		.right {
-			justify-content: flex-end;
+			justify-content: end;
 		}
 
 		button {

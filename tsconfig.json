@@ -26,14 +26,6 @@
 		"resolveJsonModule": true,
 		"noErrorTruncation": true,
 		"noUncheckedIndexedAccess": false,
-		"plugins": [
-			{
-				"name": "typescript-plugin-css-modules",
-				"options": {
-					"classnameTransform": "camelCaseOnly"
-				}
-			}
-		],
 		"types": [
 			"@pomsky-lang/unplugin"
 		]
