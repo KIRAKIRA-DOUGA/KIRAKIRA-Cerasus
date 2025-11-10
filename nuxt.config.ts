@@ -243,7 +243,7 @@ export default defineNuxtConfig({
 				provider: "./providers/nuxt-image/cloudflare-images.ts", // Path to custom provider
 				options: {
 					// ... provider options
-					baseURL: "https://starcitizen.rip",
+					baseURL: "https://kirakira-image.starcitizen.rip",
 					accountHash: "nLUFLrrgVwzQdEx8eL5BaA",
 				},
 			},
