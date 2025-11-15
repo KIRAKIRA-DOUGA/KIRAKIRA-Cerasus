@@ -1,6 +1,5 @@
 import fs from "fs/promises";
-import { dirname, resolve } from "path";
-import { fileURLToPath } from "url";
+import { resolve } from "path";
 import { createResolver } from "@nuxt/kit";
 import htmlMinifierTerser from "html-minifier-terser";
 import type { Nuxt } from "nuxt/schema";
@@ -70,12 +69,20 @@ export async function minifyJavaScript(source: string) {
  */
 export async function minifyHtml(source: string) {
 	return await htmlMinifierTerser.minify(source, {
-		removeComments: true,
-		processConditionalComments: true,
+		collapseBooleanAttributes: true,
 		collapseWhitespace: true,
-		collapseInlineTagWhitespace: true,
+		decodeEntities: true,
+		keepClosingSlash: false,
+		removeComments: true,
+		removeRedundantAttributes: true,
+		removeScriptTypeAttributes: true,
+		removeStyleLinkTypeAttributes: true,
+		removeEmptyAttributes: true,
+		useShortDoctype: true,
+		processConditionalComments: true,
 		minifyCSS: true,
 		minifyJS: true,
+		minifyURLs: true,
 	});
 }
 
@@ -103,7 +110,7 @@ export function createReadFileResolver(dirname: string) {
 	return {
 		/**
 		 * 根据路径异步读取文件。
-		 * @param path - 相对路径。
+		 * @param paths - 相对路径。
 		 * @returns 以 UTF-8 编码读取的文件内容。
 		 */
 		readFile: (...paths: string[]) =>
@@ -119,7 +126,7 @@ export function createReadFileResolver(dirname: string) {
 		 *
 		 * @returns 解析后的路径。
 		 *
-		 * @throw {TypeError} 如果任何参数不是字符串，则抛出错误。
+		 * @throws {TypeError} 如果任何参数不是字符串，则抛出错误。
 		 */
 		resolve: currentResolve,
 	};
@@ -132,16 +139,4 @@ export function createReadFileResolver(dirname: string) {
  */
 export function useNuxtHead(nuxt: Nuxt) {
 	return nuxt.options.app.head ??= [] as typeof nuxt.options.app.head;
-}
-
-/**
- * 从 ES Module 中获取类似于 CommonJS 的 __filename 和 __dirname。
- * @param importMetaUrl - `import.meta.url`。
- * @returns 当前模块的文件名和目录名。
- */
-export function getPathFromEsModule(importMetaUrl: string) {
-	const __filename = fileURLToPath(importMetaUrl);
-	const __dirname = dirname(__filename);
-
-	return { __filename, __dirname };
 }

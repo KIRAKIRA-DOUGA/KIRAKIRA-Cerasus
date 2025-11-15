@@ -55,6 +55,7 @@
 	 * 获取指示器的四边位置。
 	 * @param item - 选项卡项目。
 	 * @param maxLength - 指示器的最大长度。
+	 * @throws {ReferenceError} DOM 未完全初始化时不能调用。
 	 * @returns 指示器的四边位置。
 	 */
 	function getIndicatorPositions(item: HTMLElement, maxLength: number) {
@@ -376,8 +377,12 @@
 		height: $thickness;
 		margin-top: -$thickness;
 		background-color: c(accent);
-		// stylelint-disable-next-line declaration-block-no-redundant-longhand-properties
-		transition: scale 200ms $ease-out-expo 0s;
+		transition:
+			scale 200ms $ease-out-expo 0s,
+			--prev-x 300ms $ease-out-circ 0s,
+			--prev-y 300ms $ease-out-circ 0s,
+			--next-x 500ms $ease-in-out-material-emphasized 50ms,
+			--next-x 500ms $ease-in-out-material-emphasized 50ms;
 
 		@container style(--clipped: true) {
 			@include oval(top);

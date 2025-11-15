@@ -208,6 +208,28 @@ hr {
 	display: contents;
 }
 
+input,
+textarea,
+[contenteditable]:not([contenteditable="false"]) {
+	@supports (caret-animation: manual) {
+		caret-animation: manual;
+
+		&:focus {
+			animation: input-caret-blinking 500ms infinite $ease-in-out-max alternate;
+		}
+	}
+}
+
+@keyframes input-caret-blinking {
+	from {
+		caret-color: currentColor;
+	}
+
+	to {
+		caret-color: transparent;
+	}
+}
+
 // 禁用虚拟列表的过渡以免穿帮。
 // stylelint-disable-next-line selector-class-pattern
 .vue-recycle-scroller__item-view {
