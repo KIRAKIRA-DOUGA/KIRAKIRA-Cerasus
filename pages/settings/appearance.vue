@@ -176,7 +176,7 @@
 							v-model="backgroundImages.backgroundImage"
 							class="preview-bg-image force-color"
 							:style="{ '--accent-50': item.color }"
-							@contextmenu.prevent="e => item.key !== -1 && (backgroundImageItemMenu = [e, item, e.currentTarget])"
+							@contextmenu.prevent="e => item.key !== -1 && (backgroundImageItemMenu = [e, item, e.currentTarget as HTMLElement])"
 						>
 							<Icon v-if="item.key === -1" name="prohibited" />
 							<BackgroundImageImg v-else :src="item.url" autoAlt :fit="backgroundImageSettingsStore.fit" :position="backgroundImageSettingsStore.position" />
@@ -214,7 +214,7 @@
 						pending="current"
 						:displayValue="backgroundSliderDisplayValue"
 					>{{ $t("background.blur") }}</SettingsSlider>
-					<SettingsChipItem icon="placeholder" nonclickable>
+					<SettingsChipItem icon="fit" nonclickable>
 						{{ $t("background.fit.title") }}
 						<template #actions>
 							<ComboBox v-model="backgroundImageSettingsStore.fit" :style="{ width: '200px' }">
@@ -222,7 +222,7 @@
 							</ComboBox>
 						</template>
 					</SettingsChipItem>
-					<SettingsChipItem icon="placeholder" nonclickable>
+					<SettingsChipItem icon="location_target" nonclickable>
 						{{ $t("background.position") }}
 						<template #actions>
 							<PositionControl v-model="backgroundImageSettingsStore.position" :disabled="backgroundImageSettingsStore.fit === 'stretch'" />
