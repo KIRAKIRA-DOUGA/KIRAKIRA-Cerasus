@@ -19,7 +19,7 @@
 	header {
 		display: flex;
 		gap: 16px;
-		align-items: flex-end;
+		align-items: end;
 		white-space: nowrap;
 
 		:slotted(svg) {

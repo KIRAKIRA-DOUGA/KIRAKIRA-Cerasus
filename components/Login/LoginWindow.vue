@@ -967,7 +967,7 @@
 		display: flex;
 		flex-direction: row;
 		gap: 1rem;
-		align-items: flex-end;
+		align-items: end;
 
 		:deep(.sub) {
 			--i: 3.5;

@@ -262,7 +262,7 @@
 		}
 
 		.top {
-			justify-content: flex-end;
+			justify-content: end;
 		}
 
 		// 高度太窄时改成绝对定位。

@@ -9,6 +9,7 @@
 	box-sizing: border-box;
 	margin-block: 0;
 	margin-inline: 0;
+	scroll-behavior: smooth;
 	font-family: $simplified-chinese-fonts;
 	font-feature-settings: "halt" on;
 	font-kerning: normal;
@@ -19,16 +20,15 @@
 	white-space-collapse: collapse;
 	white-space-collapse: discard;
 	text-space-collapse: discard;
-	text-spacing: normal;
-	text-autospace: normal;
-	text-rendering: optimizeLegibility;
-	tab-size: 4;
-	user-select: none;
-	transition: $fallback-transitions;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+	tab-size: 4;
 	// -webkit-tap-highlight-color: c(accent, 30%); // 我还是觉得这个触摸样式很丑。
 	-webkit-tap-highlight-color: transparent;
+	user-select: none;
+	transition: $fallback-transitions;
+	forced-color-adjust: none;
 }
 
 :lang(zh-Hant) {
@@ -82,8 +82,11 @@ xmp {
 html,
 body {
 	overflow: hidden;
-	overscroll-behavior-y: none;
+	overscroll-behavior: none;
 	font-size: 14px;
+	text-spacing-trim: trim-start;
+	text-spacing-trim: trim-both;
+	text-autospace: normal;
 	interpolate-size: allow-keywords;
 }
 
@@ -198,11 +201,33 @@ hr {
 
 ::selection {
 	color: white;
-	background-color: c(accent); // WARN: Chromium 111 开始在 `::selection` 设定 `var()` 都会失效。包括 GitHub 和 Edge 的开发工具在内都有这种显示问题。https://bugs.chromium.org/p/chromium/issues/detail?id=1429546
+	background-color: c(accent);
 }
 
 #popovers {
 	display: contents;
+}
+
+input,
+textarea,
+[contenteditable]:not([contenteditable="false"]) {
+	@supports (caret-animation: manual) {
+		caret-animation: manual;
+
+		&:focus {
+			animation: input-caret-blinking 500ms infinite $ease-in-out-max alternate;
+		}
+	}
+}
+
+@keyframes input-caret-blinking {
+	from {
+		caret-color: currentColor;
+	}
+
+	to {
+		caret-color: transparent;
+	}
 }
 
 // 禁用虚拟列表的过渡以免穿帮。

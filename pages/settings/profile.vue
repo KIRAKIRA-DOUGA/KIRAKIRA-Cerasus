@@ -333,7 +333,7 @@
 		z-index: 5;
 		display: flex;
 		gap: 0.75rem;
-		align-items: flex-end;
+		align-items: end;
 		margin: -48px 0 12px 24px;
 		color: c(icon-color);
 		pointer-events: none;

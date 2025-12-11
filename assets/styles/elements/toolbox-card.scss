@@ -44,8 +44,8 @@
 	container: settings-grid / inline-size;
 
 	display: grid;
-	grid-gap: 0;
 	grid-template-columns: repeat(auto-fill, minmax($min-width, 1fr));
+	gap: 0;
 	justify-content: space-between;
 	align-items: start;
 

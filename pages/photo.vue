@@ -136,7 +136,7 @@
 
 	.left {
 		flex-direction: column;
-		justify-content: flex-start;
+		justify-content: start;
 
 		.pitch {
 			margin-bottom: auto;

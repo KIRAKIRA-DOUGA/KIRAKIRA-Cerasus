@@ -453,7 +453,7 @@
 	.card-container {
 		display: flex;
 		gap: $card-gap;
-		align-items: flex-start;
+		align-items: start;
 		margin-top: 16px;
 
 		@include tablet {
@@ -586,7 +586,7 @@
 
 	.submit {
 		display: flex;
-		justify-content: right;
+		justify-content: end;
 	}
 
 	.cover-cropper {

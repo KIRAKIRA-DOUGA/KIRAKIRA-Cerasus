@@ -119,7 +119,7 @@
 
 		display: flex;
 		gap: $gap;
-		align-items: flex-start;
+		align-items: start;
 
 		@include not-mobile {
 			margin-left: -$ball-size * 0.5 + $line-size * 0.5;

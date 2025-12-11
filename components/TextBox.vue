@@ -291,7 +291,7 @@
 					:multiple
 					:name
 					:pattern="pattern?.source"
-					:readonly
+					:readonly="props.readonly"
 					:required
 					:step
 					:inputmode="inputMode"
@@ -525,7 +525,7 @@
 		}
 
 		&:invalid::selection {
-			background-color: c(red); // WARN: Chromium 111 开始在 `::selection` 设定 `var()` 都会失效。包括 GitHub 和 Edge 的开发工具在内都有这种显示问题。https://bugs.chromium.org/p/chromium/issues/detail?id=1429546
+			background-color: c(red);
 		}
 
 		&[disabled] {

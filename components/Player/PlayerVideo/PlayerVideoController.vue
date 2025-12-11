@@ -80,6 +80,7 @@
 	const seekingIcon = ref<DeclaredIcons>();
 	const currentTime = computed(() => new Duration(model.value).toString());
 	const countdownTime = computed(() => new Duration(model.value - props.duration).toString());
+	console.log("​ ​ countdownTime​", model.value, props.duration);
 	const duration = computed(() => new Duration(props.duration).toString());
 	const mobile = () => getResponsiveDevice() === "mobile";
 
@@ -391,7 +392,7 @@
 
 	.left {
 		@include flex-center;
-		justify-content: flex-start;
+		justify-content: start;
 		height: inherit;
 		padding-right: $ripple-fix-padding;
 
@@ -430,7 +431,7 @@
 
 	.right {
 		@include flex-center;
-		justify-content: flex-end;
+		justify-content: end;
 		height: inherit;
 		overflow: clip;
 

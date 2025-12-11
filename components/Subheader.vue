@@ -26,13 +26,13 @@
 	.subheader {
 		@include flex-center;
 		gap: 8px;
-		justify-content: flex-start;
+		justify-content: start;
 	}
 
 	.title {
 		color: c(accent);
-		font-weight: bold;
 		font-size: 16px;
+		font-weight: bold;
 	}
 
 	.icon {
@@ -41,7 +41,7 @@
 	}
 
 	.badge {
-		font-weight: normal;
 		font-size: 14px;
+		font-weight: normal;
 	}
 </style>

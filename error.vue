@@ -5,18 +5,18 @@
 	import type { NuxtError } from "nuxt/dist/app/composables/error";
 
 	const props = withDefaults(defineProps<{
-		error: NuxtError;
+		error: Partial<NuxtError>;
 	}>(), {
-		error: {
+		error: () => ({
 			// @ts-ignore
 			statusCode: 233,
 			message: "乐",
-		},
+		}),
 	});
 
 	/**
 	 * 判断是否是该错误代码。
-	 * @param statusCode - 错误代码。
+	 * @param statusCodes - 错误代码。
 	 * @returns 是否是该错误代码。
 	 */
 	function isStatusCode(...statusCodes: number[]) {
@@ -31,7 +31,7 @@
 	onMounted(() => console.log(props.error));
 
 	useHead({
-		title: httpResponseStatusCodes[props.error.statusCode],
+		title: httpResponseStatusCodes[props.error.statusCode!],
 		titleTemplate: "%s - KIRAKIRA☆DOUGA",
 		bodyAttrs: { class: "no-scroll" },
 	});

@@ -8,7 +8,7 @@
 
 	const localeLink = ref<InstanceType<typeof LocaleLink>>();
 	const active = computed(() => props.href !== undefined && isCurrentPath(props.href));
-	const [onLabelEnter, onLabelLeave] = simpleAnimateSize("width", 600);
+	const [onLabelEnter, onLabelLeave] = simpleAnimateSize("height", 600);
 </script>
 
 <template>
@@ -53,6 +53,7 @@
 				@include flex-center;
 				@include square(var(--ripple-size));
 				@include circle;
+				flex-direction: column;
 				flex-shrink: 0;
 			}
 
@@ -66,9 +67,8 @@
 		}
 
 		label {
-			margin-left: 5px;
 			overflow: clip;
-			font-size: 16px;
+			font-size: 12px;
 			font-weight: bold;
 			white-space: nowrap;
 		}
@@ -78,7 +78,7 @@
 			color: c(accent);
 
 			.icon {
-				font-size: 28px;
+				font-size: 26px;
 			}
 
 			&::before {

@@ -178,7 +178,7 @@
 		}
 
 		.tab-bar.vertical & {
-			justify-content: flex-start;
+			justify-content: start;
 			width: 100%;
 
 			&:any-hover {
@@ -230,7 +230,7 @@
 			}
 
 			.content {
-				justify-content: flex-start;
+				justify-content: start;
 
 				span {
 					transition: $fallback-transitions, font-weight 500ms $ease-out-smooth;

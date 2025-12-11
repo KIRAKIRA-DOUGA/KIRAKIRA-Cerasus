@@ -266,7 +266,7 @@
 	.clear-user {
 		display: flex;
 		gap: 8px;
-		align-items: flex-start;
+		align-items: start;
 
 		.input {
 			display: flex;

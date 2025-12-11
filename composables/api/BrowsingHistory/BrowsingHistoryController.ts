@@ -12,9 +12,9 @@ const BROWSING_HISTORY_API_URI = `${BACK_END_URI}history`;
 export const getUserBrowsingHistoryWithFilter = async (getUserBrowsingHistoryWithFilterRequest: GetUserBrowsingHistoryWithFilterRequestDto, headerCookie: { cookie?: string | undefined }): Promise<GetUserBrowsingHistoryWithFilterResponseDto> => {
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	// NOTE: use { headers: headerCookie } to passing client-side cookies to backend API when SSR.
-	const { data: result } = await useFetch<GetUserBrowsingHistoryWithFilterResponseDto>(`${BROWSING_HISTORY_API_URI}/filter?videoTitle=${getUserBrowsingHistoryWithFilterRequest.videoTitle}`, { headers: headerCookie, credentials: "include" });
-	if (result.value)
-		return result.value;
+	const result = await $fetch<GetUserBrowsingHistoryWithFilterResponseDto>(`${BROWSING_HISTORY_API_URI}/filter?videoTitle=${getUserBrowsingHistoryWithFilterRequest.videoTitle}`, { headers: headerCookie, credentials: "include" });
+	if (result)
+		return result;
 	else
 		return { success: false, message: "获取全部或过滤后的用户浏览历史失败" };
 };
