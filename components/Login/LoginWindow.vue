@@ -64,7 +64,7 @@
 		},
 	});
 	const loginWindow = refComp();
-	const isInvalidEmail = computed(() => !!email.value && !email.value.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]{2,}$/));
+	const isInvalidUserEmail = computed(() => !!email.value && isInvalidEmail(email.value)); // NOTE: 当 email 为空时不显示错误，只是为了美观
 
 	const isCheckingUsername = ref(false);
 	const validChar = makeUsername();
@@ -75,9 +75,35 @@
 	const newPassword = ref(""); // 新密码
 	const confirmNewPassword = ref(""); // 确认新密码
 	const isSendingForgotPasswordVerificationCode = ref(false); // 正在发送忘记密码的验证码
-	const isResetPasssword = ref(false); // 正在重置密码
+	const isResetPassword = ref(false); // 正在重置密码
 
-	const timeout = useSendVerificationCodeTimeout(); // 全局的验证码倒计时
+	const timeouts = useSendVerificationCodeTimeoutStoreObject(); // 验证码倒计时
+	const LOGIN_BUSINESS_NAME = "login";
+	const REGISTRATION_BUSINESS_NAME = "registration";
+	const isLoginTimeouted = computed(() => {
+		if (LOGIN_BUSINESS_NAME in timeouts.timeouts)
+			return timeouts.timeouts[LOGIN_BUSINESS_NAME].isTimeouted;
+		else
+			return true;
+	});
+	const loginTimeoutCountdown = computed(() => {
+		if (LOGIN_BUSINESS_NAME in timeouts.timeouts)
+			return timeouts.timeouts[LOGIN_BUSINESS_NAME].timeout;
+		else
+			return 0;
+	});
+	const isRegistrationTimeouted = computed(() => {
+		if (REGISTRATION_BUSINESS_NAME in timeouts.timeouts)
+			return timeouts.timeouts[REGISTRATION_BUSINESS_NAME].isTimeouted;
+		else
+			return true;
+	});
+	const registrationTimeoutCountdown = computed(() => {
+		if (REGISTRATION_BUSINESS_NAME in timeouts.timeouts)
+			return timeouts.timeouts[REGISTRATION_BUSINESS_NAME].timeout;
+		else
+			return 0;
+	});
 
 	/**
 	 * 更新登录动画中头像向左滑动的距离。
@@ -109,13 +135,14 @@
 				return false;
 			}
 
-			const sendUserEmailAuthenticatorVerificationCodeRequest: SendUserEmailAuthenticatorVerificationCodeRequestDto = {
-				passwordHash,
+			const sendGeneralEmailVerificationCodeRequest: SendGeneralEmailVerificationCodeRequestDto = {
 				email: emailStr,
 				clientLanguage: locale,
+				mailTemplate: "SendLoginVerificationCode",
+				exclusiveBusinessName: LOGIN_BUSINESS_NAME,
 			};
-			const sendUserEmailAuthenticatorVerificationCodeResult = await api.user.sendUserEmailAuthenticatorVerificationCode(sendUserEmailAuthenticatorVerificationCodeRequest);
-			timeout.startTimeout(); // 开始倒计时
+			const sendUserEmailAuthenticatorVerificationCodeResult = await api.user.sendGeneralEmailVerificationCode(sendGeneralEmailVerificationCodeRequest);
+			timeouts.startTimeoutByKey(LOGIN_BUSINESS_NAME); // 开始倒计时
 
 			if (!sendUserEmailAuthenticatorVerificationCodeResult.success) {
 				useToast(t("toast.verification_code_send_failed"), "error", 5000);
@@ -151,7 +178,7 @@
 				return;
 			}
 
-			if (isInvalidEmail.value) {
+			if (isInvalidUserEmail.value) {
 				useToast(t("validation.invalid_format.email"), "error", 5000);
 				isChecking2FA.value = false;
 				return;
@@ -346,7 +373,7 @@
 		try {
 			const emailStr = email.value;
 
-			if (isInvalidEmail.value) {
+			if (isInvalidUserEmail.value) {
 				useToast(t("validation.invalid_format.email"), "error", 5000);
 				isChecking2FA.value = false;
 				return;
@@ -370,7 +397,7 @@
 
 				isSendingForgotPasswordVerificationCode.value = true;
 				const sendResult = await api.user.requestSendForgotPasswordVerificationCode(requestSendForgotPasswordVerificationCodeRequest);
-				timeout.startTimeout(); // 开始倒计时
+				timeouts.startTimeoutByKey("forgot-password"); // 开始倒计时
 				isSendingForgotPasswordVerificationCode.value = false;
 
 				if (sendResult.isCoolingDown)
@@ -395,7 +422,7 @@
 	 * 重置密码。
 	 */
 	async function resetPassword() {
-		isResetPasssword.value = true;
+		isResetPassword.value = true;
 		try {
 			const emailStr = email.value;
 			const password = newPassword.value;
@@ -424,7 +451,7 @@
 			useToast(t("toast.reset_password_failed"), "error");
 			console.error("ERROR", "Reset password failed:", error);
 		}
-		isResetPasssword.value = false;
+		isResetPassword.value = false;
 	}
 
 	/**
@@ -495,7 +522,7 @@
 								type="email"
 								:placeholder="$t('email_address')"
 								icon="email"
-								:invalid="isInvalidEmail"
+								:invalid="isInvalidUserEmail"
 								autoComplete="username"
 								@keyup.enter="check2FA"
 							/>
@@ -511,10 +538,10 @@
 								<Button
 									class="button login-button button-block"
 									:loading="isChecking2FA"
-									:disabled="isChecking2FA || selfUserInfoStore.isLogined || !timeout.isTimeouted"
+									:disabled="isChecking2FA || selfUserInfoStore.isLogined || !isLoginTimeouted"
 									@click="check2FA"
 								>
-									{{ timeout.isTimeouted ? "Link Start!" : `Link Start! (${timeout.timeout})` }}
+									{{ isLoginTimeouted ? "Link Start!" : `Link Start! (${loginTimeoutCountdown})` }}
 								</Button>
 							</div>
 						</form>
@@ -534,7 +561,7 @@
 								type="text"
 								:placeholder="$t('totp_verification_code')"
 								icon="lock"
-								:invalid="isInvalidEmail"
+								:invalid="isInvalidUserEmail"
 								autoComplete="off"
 								@keyup.enter="loginUser"
 							/>
@@ -557,7 +584,7 @@
 								type="text"
 								:placeholder="$t('verification_code')"
 								icon="lock"
-								:invalid="isInvalidEmail"
+								:invalid="isInvalidUserEmail"
 								autoComplete="off"
 								@keyup.enter="loginUser"
 							/>
@@ -618,7 +645,7 @@
 								type="email"
 								:placeholder="$t('email_address')"
 								icon="email"
-								:invalid="isInvalidEmail"
+								:invalid="isInvalidUserEmail"
 								:required="true"
 								autoComplete="email"
 							/>
@@ -658,7 +685,7 @@
 						<HeadingGroup :name="$t('register')" englishName="Register" class="collapse" />
 						<div class="form">
 							<div><Preserves>{{ $t("loginwindow.register_email_sent_info") }}</Preserves></div>
-							<SendVerificationCode v-model="registrationVerificationCode" :email="email" verificationCodeFor="registration" />
+							<SendVerificationCode v-model="registrationVerificationCode" :email="email" :verificationCodeFor="REGISTRATION_BUSINESS_NAME" />
 							<TextBox
 								v-model="confirmPassword"
 								type="password"
@@ -684,7 +711,7 @@
 								type="email"
 								:placeholder="$t('email_address')"
 								icon="email"
-								:invalid="isInvalidEmail"
+								:invalid="isInvalidUserEmail"
 								@keyup.enter="jump2ResetPasswordPage"
 							/>
 						</div>
@@ -695,8 +722,8 @@
 								class="icon-behind"
 								@click="jump2ResetPasswordPage"
 								:loading="isChecking2FA || isSendingForgotPasswordVerificationCode"
-								:disabled="isChecking2FA || isSendingForgotPasswordVerificationCode || !timeout.isTimeouted"
-							>{{ timeout.isTimeouted ? $t("step.next") : `${$t("step.next")} (${timeout.timeout})` }}</Button>
+								:disabled="isChecking2FA || isSendingForgotPasswordVerificationCode || !isRegistrationTimeouted"
+							>{{ isRegistrationTimeouted ? $t("step.next") : `${$t("step.next")} (${registrationTimeoutCountdown})` }}</Button>
 						</div>
 					</div>
 
@@ -729,7 +756,7 @@
 						</div>
 						<div class="action margin-left-inset">
 							<Button icon="arrow_left" class="secondary" @click="currentPage = 'forgot1'">{{ $t("loginwindow.resent_verification_code") }}</Button>
-							<Button icon="check" class="button icon-behind" @click="resetPassword" :loading="isResetPasssword" :disabled="isResetPasssword">{{ $t("step.finish") }}</Button>
+							<Button icon="check" class="button icon-behind" @click="resetPassword" :loading="isResetPassword" :disabled="isResetPassword">{{ $t("step.finish") }}</Button>
 						</div>
 					</div>
 

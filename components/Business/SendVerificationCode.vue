@@ -1,8 +1,8 @@
 <script setup lang="ts">
 	const props = defineProps<{
 		/** 邀请码的用途。 */
-		verificationCodeFor: "registration" | "change-email" | "change-password" | "delete-email-2fa";
-		/** 邮箱。 */ // WARN 当 verificationCodeFor 为 change-password 时无需传递该参数。
+		verificationCodeFor: "registration" | "change-email-verify-new-email" | "change-email-verify-old-email" | "change-password" | "delete-email-2fa";
+		/** 邮箱。// WARN 在某些 verificationCodeFor 类型中必须提供，否则无法发送验证码。 */
 		email?: string;
 		/** 禁用？ */
 		disabled?: boolean;
@@ -15,8 +15,27 @@
 	}>();
 
 	const value = defineModel<string>({ required: true });
-	// const { timeout, isTimeouted, isResent, startTimeout } = useSendVerificationCodeTimeout(); // 垃圾 Pinia 不支持展开。
-	const timeout = useSendVerificationCodeTimeout();
+
+	const timeoutsStore = useSendVerificationCodeTimeoutStoreObject();
+	const isTimeouted = computed(() => {
+		if (props.verificationCodeFor in timeoutsStore.timeouts)
+			return timeoutsStore.timeouts[props.verificationCodeFor].isTimeouted;
+		else
+			return true;
+	});
+	const timeoutCountdown = computed(() => {
+		if (props.verificationCodeFor in timeoutsStore.timeouts)
+			return timeoutsStore.timeouts[props.verificationCodeFor].timeout;
+		else
+			return 0;
+	});
+	const isResent = computed(() => {
+		if (props.verificationCodeFor in timeoutsStore.timeouts)
+			return timeoutsStore.timeouts[props.verificationCodeFor].isResent;
+		else
+			return false;
+	});
+
 	const pattern = /^\d{6}$/;
 	const isSendingEmail = ref(false); // 是否正在发送邮件
 
@@ -29,33 +48,96 @@
 			return;
 		}
 		const locale = getCurrentLocaleLangCode();
-		const requestSendVerificationCodeRequest: RequestSendVerificationCodeRequestDto = {
+		const sendGeneralEmailVerificationCodeRequest: SendGeneralEmailVerificationCodeRequestDto = {
 			email: props.email,
 			clientLanguage: locale,
+			mailTemplate: "SendRegistrationVerificationCode",
+			exclusiveBusinessName: "registration",
 		};
-		const requestSendVerificationCodeResponse = await api.user.requestSendVerificationCode(requestSendVerificationCodeRequest);
-		if (!requestSendVerificationCodeResponse.isTimeout)
-			console.log(requestSendVerificationCodeResponse);
-		else
+		const requestSendRegisterVerificationCodeEmailResult = await api.user.sendGeneralEmailVerificationCode(sendGeneralEmailVerificationCodeRequest);
+		if (!requestSendRegisterVerificationCodeEmailResult) {
+			useToast(t("toast.verification_code_send_failed"), "error", 5000);
+			return;
+		}
+		if (requestSendRegisterVerificationCodeEmailResult.isCoolingDown) {
+			useToast(t("toast.cooling_down"), "warning", 5000);
+			return;
+		}
+		if (requestSendRegisterVerificationCodeEmailResult.isMaxDailyCreateAttempts || requestSendRegisterVerificationCodeEmailResult.isMaxDailyVerifierAttempts) {
 			useToast(t("toast.too_many_requests"), "warning", 5000);
+			return;
+		}
+		if (!requestSendRegisterVerificationCodeEmailResult.success) {
+			useToast(t("toast.verification_code_send_failed"), "error", 5000);
+			return;
+		}
 	}
 
 	/**
-	 * 请求发送修改邮箱的验证码
+	 * 请求发送修改邮箱的验证码到新邮箱
 	 */
-	async function requestSendChangeEmailVerificationCodeEmail() {
+	async function requestSendChangeEmailVerificationCodeToNewEmail() {
 		if (!props.email) {
 			useToast(t("validation.required.email"), "warning", 5000);
 			return;
 		}
 		const locale = getCurrentLocaleLangCode();
-		const requestSendChangeEmailVerificationCodeRequest: RequestSendChangeEmailVerificationCodeRequestDto = {
-			newEmail: props.email,
+		const sendGeneralEmailVerificationCodeRequest: SendGeneralEmailVerificationCodeRequestDto = {
+			email: props.email,
 			clientLanguage: locale,
+			mailTemplate: "SendChangeEmailVerificationCode",
+			exclusiveBusinessName: "update-email",
 		};
-		const requestSendChangeEmailVerificationCodeResult = await api.user.requestSendChangeEmailVerificationCode(requestSendChangeEmailVerificationCodeRequest);
-		if (requestSendChangeEmailVerificationCodeResult.success && requestSendChangeEmailVerificationCodeResult.isCoolingDown)
-			useToast(t("toast.cooling_down"), "error", 5000);
+		const requestSendChangeEmailVerificationCodeToNewEmailResult = await api.user.sendGeneralEmailVerificationCode(sendGeneralEmailVerificationCodeRequest);
+		if (!requestSendChangeEmailVerificationCodeToNewEmailResult) {
+			useToast(t("toast.verification_code_send_failed"), "error", 5000);
+			return;
+		}
+		if (requestSendChangeEmailVerificationCodeToNewEmailResult.isCoolingDown) {
+			useToast(t("toast.cooling_down"), "warning", 5000);
+			return;
+		}
+		if (requestSendChangeEmailVerificationCodeToNewEmailResult.isMaxDailyCreateAttempts || requestSendChangeEmailVerificationCodeToNewEmailResult.isMaxDailyVerifierAttempts) {
+			useToast(t("toast.too_many_requests"), "warning", 5000);
+			return;
+		}
+		if (!requestSendChangeEmailVerificationCodeToNewEmailResult.success) {
+			useToast(t("toast.verification_code_send_failed"), "error", 5000);
+			return;
+		}
+	}
+
+	/**
+	 * 请求发送修改邮箱的验证码到旧邮箱
+	 */
+	async function requestSendChangeEmailVerificationCodeToOldEmail() {
+		const locale = getCurrentLocaleLangCode();
+		const sendGeneral2FAEmailVerificationCodeRequest: SendGeneral2FAEmailVerificationCodeRequestDto = {
+			clientLanguage: locale,
+			mailTemplate: "SendChangeEmailVerificationCode",
+			exclusiveBusinessName: "update-email",
+		};
+		const requestSendChangeEmailVerificationCodeToOldEmailResult = await api.user.sendGeneral2FAEmailVerificationCode(sendGeneral2FAEmailVerificationCodeRequest);
+		if (!requestSendChangeEmailVerificationCodeToOldEmailResult) {
+			useToast(t("toast.verification_code_send_failed"), "error", 5000);
+			return;
+		}
+		if (requestSendChangeEmailVerificationCodeToOldEmailResult.isCoolingDown) {
+			useToast(t("toast.cooling_down"), "warning", 5000);
+			return;
+		}
+		if (requestSendChangeEmailVerificationCodeToOldEmailResult.isMaxDailyCreateAttempts || requestSendChangeEmailVerificationCodeToOldEmailResult.isMaxDailyVerifierAttempts) {
+			useToast(t("toast.too_many_requests"), "warning", 5000);
+			return;
+		}
+		if (requestSendChangeEmailVerificationCodeToOldEmailResult.isUsingOtherVerificationMethodOtherThanEmail) { // 使用了非邮箱的其他验证方式
+			useToast(t("toast.email_2fa_disabled"), "warning", 5000);
+			return;
+		}
+		if (!requestSendChangeEmailVerificationCodeToOldEmailResult.success) {
+			useToast(t("toast.verification_code_send_failed"), "error", 5000);
+			return;
+		}
 	}
 
 	/**
@@ -63,12 +145,32 @@
 	 */
 	async function requestSendChangePasswordVerificationCodeEmail() {
 		const locale = getCurrentLocaleLangCode();
-		const requestSendChangePasswordVerificationCodeRequest: RequestSendChangePasswordVerificationCodeRequestDto = {
+		const sendGeneral2FAEmailVerificationCodeRequest: SendGeneral2FAEmailVerificationCodeRequestDto = {
 			clientLanguage: locale,
+			mailTemplate: "SendChangePasswordVerificationCode",
+			exclusiveBusinessName: "update-password",
 		};
-		const requestSendChangePasswordVerificationCodeResult = await api.user.requestSendChangePasswordVerificationCode(requestSendChangePasswordVerificationCodeRequest);
-		if (requestSendChangePasswordVerificationCodeResult.success && requestSendChangePasswordVerificationCodeResult.isCoolingDown)
-			useToast(t("toast.cooling_down"), "error", 5000);
+		const requestSendChangeEmailVerificationCodeToOldEmailResult = await api.user.sendGeneral2FAEmailVerificationCode(sendGeneral2FAEmailVerificationCodeRequest);
+		if (!requestSendChangeEmailVerificationCodeToOldEmailResult) {
+			useToast(t("toast.verification_code_send_failed"), "error", 5000);
+			return;
+		}
+		if (requestSendChangeEmailVerificationCodeToOldEmailResult.isCoolingDown) {
+			useToast(t("toast.cooling_down"), "warning", 5000);
+			return;
+		}
+		if (requestSendChangeEmailVerificationCodeToOldEmailResult.isMaxDailyCreateAttempts || requestSendChangeEmailVerificationCodeToOldEmailResult.isMaxDailyVerifierAttempts) {
+			useToast(t("toast.too_many_requests"), "warning", 5000);
+			return;
+		}
+		if (requestSendChangeEmailVerificationCodeToOldEmailResult.isUsingOtherVerificationMethodOtherThanEmail) { // 使用了非邮箱的其他验证方式
+			useToast(t("toast.email_2fa_disabled"), "warning", 5000);
+			return;
+		}
+		if (!requestSendChangeEmailVerificationCodeToOldEmailResult.success) {
+			useToast(t("toast.verification_code_send_failed"), "error", 5000);
+			return;
+		}
 	}
 
 	/**
@@ -76,12 +178,32 @@
 	 */
 	async function requestSendDeleteEmail2FAVerificationCodeEmail() {
 		const locale = getCurrentLocaleLangCode();
-		const sendUserDeleteEmailAuthenticatorVerificationCodeRequest: SendUserDeleteEmailAuthenticatorVerificationCodeRequestDto = {
+		const sendGeneral2FAEmailVerificationCodeRequest: SendGeneral2FAEmailVerificationCodeRequestDto = {
 			clientLanguage: locale,
+			mailTemplate: "SendDisableUserEmail2FAVerificationCode",
+			exclusiveBusinessName: "delete-email-2fa",
 		};
-		const sendUserEmailAuthenticatorVerificationCodeResult = await api.user.sendDeleteUserEmailAuthenticatorVerificationCode(sendUserDeleteEmailAuthenticatorVerificationCodeRequest);
-		if (sendUserEmailAuthenticatorVerificationCodeResult.success && sendUserEmailAuthenticatorVerificationCodeResult.isCoolingDown)
-			useToast(t("toast.cooling_down"), "error", 5000);
+		const requestSendChangeEmailVerificationCodeToOldEmailResult = await api.user.sendGeneral2FAEmailVerificationCode(sendGeneral2FAEmailVerificationCodeRequest);
+		if (!requestSendChangeEmailVerificationCodeToOldEmailResult) {
+			useToast(t("toast.verification_code_send_failed"), "error", 5000);
+			return;
+		}
+		if (requestSendChangeEmailVerificationCodeToOldEmailResult.isCoolingDown) {
+			useToast(t("toast.cooling_down"), "warning", 5000);
+			return;
+		}
+		if (requestSendChangeEmailVerificationCodeToOldEmailResult.isMaxDailyCreateAttempts || requestSendChangeEmailVerificationCodeToOldEmailResult.isMaxDailyVerifierAttempts) {
+			useToast(t("toast.too_many_requests"), "warning", 5000);
+			return;
+		}
+		if (requestSendChangeEmailVerificationCodeToOldEmailResult.isUsingOtherVerificationMethodOtherThanEmail) { // 使用了非邮箱的其他验证方式
+			useToast(t("toast.email_2fa_disabled"), "warning", 5000);
+			return;
+		}
+		if (!requestSendChangeEmailVerificationCodeToOldEmailResult.success) {
+			useToast(t("toast.verification_code_send_failed"), "error", 5000);
+			return;
+		}
 	}
 
 	/**
@@ -94,8 +216,11 @@
 				case "registration":
 					await requestSendRegisterVerificationCodeEmail();
 					break;
-				case "change-email":
-					await requestSendChangeEmailVerificationCodeEmail();
+				case "change-email-verify-new-email":
+					await requestSendChangeEmailVerificationCodeToNewEmail();
+					break;
+				case "change-email-verify-old-email":
+					await requestSendChangeEmailVerificationCodeToOldEmail();
 					break;
 				case "change-password":
 					await requestSendChangePasswordVerificationCodeEmail();
@@ -119,7 +244,7 @@
 	 * 开始倒计时
 	 */
 	function startTimeout() {
-		timeout.startTimeout();
+		timeoutsStore.startTimeoutByKey(props.verificationCodeFor);
 	}
 </script>
 
@@ -133,8 +258,8 @@
 		autoComplete="one-time-code"
 	>
 		<template #actions>
-			<Button :disabled="!timeout.isTimeouted || props.disabled === true || isSendingEmail" @click="startTimeout(); sendVerificationCode();">
-				{{ (timeout.isResent ? $t("resend") : $t("send")) + (timeout.isTimeouted ? "" : ` (${timeout.timeout})`) }}
+			<Button :disabled="!isTimeouted || props.disabled === true || isSendingEmail" @click="startTimeout(); sendVerificationCode();">
+				{{ (isResent ? $t("resend") : $t("send")) + (isTimeouted ? "" : ` (${timeoutCountdown})`) }}
 			</Button>
 		</template>
 	</TextBox>

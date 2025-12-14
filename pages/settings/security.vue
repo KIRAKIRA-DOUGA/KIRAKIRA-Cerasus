@@ -7,33 +7,59 @@
 	const appSettingsStore = useAppSettingsStore();
 
 	// 修改邮箱相关
-	type ChangeEmailStep = "verification" | "final" | "closed";
-	type ChangeEmailModelName = "verification-totp" | "verification-email" | "final-totp" | "final-email" | "final-no-2fa" | "closed";
+	type ChangeEmailStep = "verification" | "confirm" | "closed";
+	type ChangeEmailModelName = "verification-email" | "verification-totp" | "confirm-email" | "confirm-totp" | "closed";
 	const changeEmailStep = ref<ChangeEmailStep>("closed");
 	const changeEmailModelName = computed<ChangeEmailModelName>(() => {
+		// 根据 2FA 类型展示不同的验证画面
 		if (changeEmailStep.value === "closed")
 			return "closed";
-		if (changeEmailStep.value === "verification")
-			return appSettingsStore.authenticatorType === "email" ? "verification-email" : "verification-totp";
+		else if (changeEmailStep.value === "verification")
+			return appSettingsStore.authenticatorType === "totp" ? "verification-totp" : "verification-email";
+		else if (changeEmailStep.value === "confirm")
+			return appSettingsStore.authenticatorType === "totp" ? "confirm-totp" : "confirm-email";
 		else
-			if (appSettingsStore.authenticatorType === "email")
-				return "final-email";
-			else if (appSettingsStore.authenticatorType === "totp")
-				return "final-totp";
-			else
-				return "final-no-2fa";
+			return "closed";
 	});
-	const showChangeEmailVerficationEmail = computed(() => changeEmailModelName.value === "verification-email");
-	const showChangeEmailVerficationTotp = computed(() => changeEmailModelName.value === "verification-totp");
-	const showChangeEmailFinalEmail = computed(() => changeEmailModelName.value === "final-email");
-	const showChangeEmailFinalTotp = computed(() => changeEmailModelName.value === "final-totp");
-	const showChangeEmailFinalNo2Fa = computed(() => changeEmailModelName.value === "final-no-2fa");
 	const changeEmailVerificationCode = ref("");
 	const changeEmailNewEmailVerificationCode = ref("");
 	const newEmail = ref("");
-	const isInvalidNewEmail = computed(() => !!newEmail.value && !newEmail.value.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]{2,}$/));
+	const isInvalidNewEmail = computed<boolean | string>(() => {
+		const newEmailLowerCase = newEmail.value?.toLowerCase();
+		const oldEmailLowerCase = selfUserInfoStore.userInfo.email?.toLowerCase();
+		if (!newEmail.value || isInvalidEmail(newEmail.value)) // email 为空或格式不正确
+			return true;
+		else if (newEmailLowerCase === oldEmailLowerCase)
+			return t("validation.invalid_format.new_email_same_as_old_email");
+		else
+			return false;
+	});
 	const changeEmailPassword = ref("");
 	const isChangingEmail = ref(false);
+	const isChangeEmailNextButtonDisabled = computed(() => {
+		if (changeEmailStep.value !== "verification")
+			return true;
+		if (appSettingsStore.authenticatorType !== "totp" && changeEmailVerificationCode.value.length !== 6)
+			return true;
+		if (
+			appSettingsStore.authenticatorType === "totp" &&
+			(changeEmailNewEmailVerificationCode.value.length !== 6 || !!isInvalidNewEmail.value)
+		)
+			return true;
+		return false;
+	});
+	const isChangeEmailApplyButtonDisabled = computed(() => {
+		if (changeEmailStep.value !== "confirm")
+			return true;
+		if (
+			!changeEmailPassword.value ||
+			!!isInvalidNewEmail.value ||
+			changeEmailNewEmailVerificationCode.value.length !== 6 ||
+			changeEmailVerificationCode.value.length !== 6
+		)
+			return true;
+		return false;
+	});
 
 	// 修改密码相关
 	const showChangePassword = ref(false);
@@ -108,7 +134,7 @@
 	 */
 	async function updateUserEmail() {
 		const oldEmail = selfUserInfoStore.userInfo.email ?? "";
-		if (!newEmail.value || !changeEmailPassword.value || !changeEmailVerificationCode.value) {
+		if (!newEmail.value || !changeEmailPassword.value || !changeEmailNewEmailVerificationCode.value) {
 			useToast(t("toast.required_not_filled", 3), "warning", 5000);
 			return;
 		}
@@ -119,11 +145,11 @@
 		isChangingEmail.value = true;
 		const passwordHash = await generateHash(changeEmailPassword.value);
 		const updateUserEmailRequest: UpdateUserEmailRequestDto = {
-			uid: selfUserInfoStore.userInfo.uid ?? -1,
 			oldEmail,
 			newEmail: newEmail.value,
 			passwordHash,
-			verificationCode: changeEmailVerificationCode.value,
+			changeEmailVerificationCode: changeEmailVerificationCode.value,
+			changeEmailNewEmailVerificationCode: changeEmailNewEmailVerificationCode.value,
 		};
 		const updateUserEmailResult = await api.user.updateUserEmail(updateUserEmailRequest);
 		if (updateUserEmailResult.success) {
@@ -132,9 +158,7 @@
 			changeEmailStep.value = "closed";
 		} else
 			useToast(t("toast.something_went_wrong"), "error", 5000);
-		newEmail.value = "";
-		changeEmailPassword.value = "";
-		changeEmailVerificationCode.value = "";
+		closeChangeEmailModel();
 		isChangingEmail.value = false;
 	}
 
@@ -142,10 +166,7 @@
 	 * 根据用户当前的 2FA 类型，开启修改 Email 的模态框并展示不同表单
 	 */
 	function openChangeEmailModel() {
-		if (selfUserInfoStore.userInfo.authenticatorType && ["totp", "email"].includes(selfUserInfoStore.userInfo.authenticatorType))
-			changeEmailStep.value = "verification";
-		else
-			changeEmailStep.value = "final";
+		changeEmailStep.value = "verification";
 	}
 
 	/**
@@ -479,32 +500,35 @@
 		</section>
 
 		<!-- 修改邮箱 -->
+
+		<!-- TODO: 两个画面，第一个画面“验证新邮箱”，第二个画面“最终确认凭据” -->
+		<!-- 不管是那种 2FA（或者没开 2FA），第一个画面都是必须要验证的，第二个画面根据 2FA 类型不同而不同，未开启 2FA 和邮箱 2FA 在第二个画面都会验证旧邮箱，TOTP 2FA 则验证 TOTP -->
 		<Modal :open="changeEmailStep !== 'closed'" :title="$t('change_email')" icon="email" @close="closeChangeEmailModel">
 			<div class="change-email-modal">
 				<div class="page">
-					<div v-if="showChangeEmailVerficationEmail" class="step">
+
+					<!-- step: 1-1 (email-2fa/no-2fa) -->
+					<div v-if="changeEmailModelName === 'verification-email'" class="step">
 						<ShadingIcon icon="email" />
 						<h3><Icon name="counter_1" />验证当前的邮箱</h3>
 						<p>
-							<Preserves>请在下方输入我们发送到你当前绑定邮箱中的验证码。</Preserves>
+							<Preserves>点击发送按钮，然后输入我们发送到你当前绑定的邮箱中的验证码。</Preserves>
 						</p>
 						<br />
 						<form>
-							<TextBox
+							<SendVerificationCode
 								v-model="changeEmailVerificationCode"
-								:required="true"
-								type="text"
-								icon="lock"
-								:placeholder="$t('new_email')"
-								utoComplete="off"
+								verificationCodeFor="change-email-verify-old-email"
 							/>
 						</form>
 					</div>
-					<div v-else-if="showChangeEmailVerficationTotp" class="step">
+
+					<!-- step: 1-2 (totp-2fa) -->
+					<div v-if="changeEmailModelName === 'verification-totp'" class="step">
 						<ShadingIcon icon="email" />
 						<h3><Icon name="counter_1" />验证你的新邮箱</h3>
 						<p>
-							<Preserves>请输入你的新邮箱，然后点击发送按钮，我们将会发送另一封包含验证码的的邮件到你的新邮箱。</Preserves>
+							<Preserves>请输入你的新邮箱并点击发送按钮，然后输入我们发送到新邮箱中的验证码。</Preserves>
 						</p>
 						<br />
 						<form>
@@ -520,16 +544,18 @@
 							<SendVerificationCode
 								v-model="changeEmailNewEmailVerificationCode"
 								:email="newEmail"
-								verificationCodeFor="change-email"
-								:disabled="!newEmail || isInvalidNewEmail"
+								verificationCodeFor="change-email-verify-new-email"
+								:disabled="!newEmail || !!isInvalidNewEmail"
 							/>
 						</form>
 					</div>
-					<div v-else-if="showChangeEmailFinalEmail || showChangeEmailFinalNo2Fa" class="step">
+
+					<!-- step: 2-1 (email-2fa/no-2fa) -->
+					<div v-if="changeEmailModelName === 'confirm-email'" class="step">
 						<ShadingIcon icon="email" />
-						<h3><Icon :name="showChangeEmailFinalEmail ? 'counter_2' : 'counter_1'" />验证凭据和新邮箱</h3>
+						<h3><Icon name="counter_2" />验证你的新邮箱和用户凭据</h3>
 						<p>
-							<Preserves>请输入你的密码，以及你的新邮箱，然后点击发送按钮。验证码会发送至你的新邮箱。</Preserves>
+							<Preserves>请输入你的密码，以及你的新邮箱并点击发送按钮，然后输入我们发送到新邮箱中的验证码。</Preserves>
 						</p>
 						<br />
 						<form>
@@ -553,14 +579,16 @@
 							<SendVerificationCode
 								v-model="changeEmailNewEmailVerificationCode"
 								:email="newEmail"
-								verificationCodeFor="change-email"
-								:disabled="!newEmail || isInvalidNewEmail"
+								verificationCodeFor="change-email-verify-new-email"
+								:disabled="!newEmail || !!isInvalidNewEmail"
 							/>
 						</form>
 					</div>
-					<div v-else-if="showChangeEmailFinalTotp" class="step">
+
+					<!-- step: 2-2 (totp-2fa) -->
+					<div v-if="changeEmailModelName === 'confirm-totp'" class="step">
 						<ShadingIcon icon="email" />
-						<h3><Icon name="counter_2" />验证你的凭据</h3>
+						<h3><Icon name="counter_2" />验证你的用户凭据</h3>
 						<p>
 							<Preserves>请输入你的密码，以及你的 TOTP 双重验证验证码（可以在你绑定的验证设备中找到）。</Preserves>
 						</p>
@@ -584,20 +612,17 @@
 							/>
 						</form>
 					</div>
+
 				</div>
 			</div>
-			<template v-if="showChangeEmailVerficationEmail" #footer-right>
+			<template v-if="changeEmailStep === 'verification'" #footer-right>
 				<Button class="secondary" :disabled="isChangingEmail" @click="closeChangeEmailModel">{{ $t("step.cancel") }}</Button>
-				<Button icon="arrow_right" class="icon-behind" @click="changeEmailStep = 'final'">{{ $t("step.next") }}</Button>
+				<Button icon="arrow_right" class="icon-behind" @click="changeEmailStep = 'confirm'" :disabled="isChangingEmail || isChangeEmailNextButtonDisabled">{{ $t("step.next") }}</Button>
 			</template>
-			<template v-else-if="showChangeEmailVerficationTotp" #footer-right>
+			<template v-else #footer-right>
+				<Button icon="arrow_left" class="secondary" :disabled="isChangingEmail" @click="changeEmailStep = 'verification'">{{ $t("step.previous") }}</Button>
 				<Button class="secondary" :disabled="isChangingEmail" @click="closeChangeEmailModel">{{ $t("step.cancel") }}</Button>
-				<Button icon="arrow_right" class="icon-behind" @click="changeEmailStep = 'final'">{{ $t("step.next") }}</Button>
-			</template>
-			<template v-else-if="showChangeEmailFinalEmail || showChangeEmailFinalTotp || showChangeEmailFinalNo2Fa" #footer-right>
-				<Button v-if="!showChangeEmailFinalNo2Fa" icon="arrow_left" class="secondary" :disabled="isChangingEmail" @click="changeEmailStep = 'verification'">{{ $t("step.previous") }}</Button>
-				<Button class="secondary" :disabled="isChangingEmail" @click="closeChangeEmailModel">{{ $t("step.cancel") }}</Button>
-				<Button @click="closeChangeEmailModel">{{ $t("step.apply") }}</Button>
+				<Button @click="updateUserEmail" :disabled="isChangingEmail || isChangeEmailApplyButtonDisabled" :loading="isChangingEmail">{{ $t("step.apply") }}</Button>
 			</template>
 		</Modal>
 
