@@ -541,6 +541,7 @@ export default {
 		},
 		invalid_format: {
 			email: "crwdns3326:0crwdne3326:0",
+			new_email_same_as_old_email: "crwdns3792:0crwdne3792:0",
 			invitation_code: "crwdns3328:0crwdne3328:0",
 		},
 		too_long: {

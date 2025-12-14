@@ -262,7 +262,7 @@ export default {
 		add: "動画を追加",
 		remove: "コレクションから削除",
 		copy_to: "コピー先",
-		move_to: "移動先:",
+		move_to: "移動先",
 		multi_select: "複数選択",
 	},
 	feed: {
@@ -541,6 +541,7 @@ export default {
 		},
 		invalid_format: {
 			email: "無効なメールアドレス形式です！",
+			new_email_same_as_old_email: "新しいメールアドレスは古いものと同じです！",
 			invitation_code: "無効な招待コード形式です！",
 		},
 		too_long: {

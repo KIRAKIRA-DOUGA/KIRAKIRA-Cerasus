@@ -5,8 +5,11 @@ import type { LocaleIdentifiers } from "./types";
 export default {
 	colon: "：",
 	semicolon: "；",
+	enumerationComma: "、",
+	rangeDash: "～",
 	home: "首頁",
 	category: {
+		title: "類別",
 		anime: "動畫",
 		music: "音樂",
 		otomad: "音MAD",
@@ -19,11 +22,13 @@ export default {
 	search: "搜尋",
 	custom: "自訂",
 	scheme: {
+		title: "主題",
 		light: "淺色主題",
 		dark: "深色主題",
 		system: "跟隨系統",
 	},
 	palette: {
+		title: "調色盤",
 		pink: "心愛粉",
 		blue: "智乃藍",
 		purple: "理世紫",
@@ -31,17 +36,22 @@ export default {
 		yellow: "紗路黃",
 		cyan: "麻耶青",
 		red: "小惠紅",
+		follow_bg: "跟隨背景",
 	},
+	language: "語言",
 	background: {
+		title: "背景",
 		custom: "自訂背景",
 		opacity: "不透明度",
 		tint: "著色",
 		blur: "模糊強度",
 	},
 	appearance: {
+		title: "外觀",
 		sharp_mode: "直角模式",
 		flat_mode: "扁平模式",
 		colorful_navbar: "彩色導覽列",
+		akkarin_guest_avatar: "阿卡林遊客頭像",
 	},
 	confetti: "五彩紙屑",
 	send: "傳送",
@@ -51,6 +61,7 @@ export default {
 	off: "關",
 	disabled: "禁用",
 	tag: {
+		title: "標籤",
 		search: "搜尋標籤",
 		new: "創建新標籤",
 	},

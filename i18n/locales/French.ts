@@ -541,6 +541,7 @@ export default {
 		},
 		invalid_format: {
 			email: "Invalid email format!",
+			new_email_same_as_old_email: "La nouvelle adresse email est la même que l'ancienne !",
 			invitation_code: "Format de code d'invitation invalide !",
 		},
 		too_long: {

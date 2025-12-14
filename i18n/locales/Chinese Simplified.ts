@@ -541,6 +541,7 @@ export default {
 		},
 		invalid_format: {
 			email: "邮箱格式无效！",
+			new_email_same_as_old_email: "新邮箱地址不能与旧邮箱一致！",
 			invitation_code: "邀请码格式无效！",
 		},
 		too_long: {
