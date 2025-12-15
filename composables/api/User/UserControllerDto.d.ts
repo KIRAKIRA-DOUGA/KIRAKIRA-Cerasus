@@ -219,16 +219,6 @@ export type UpdateOrCreateUserInfoResponseDto = {
 };
 
 /**
- * 获取当前登录的用户信息的请求参数
- */
-export type GetSelfUserInfoRequestDto = {
-	/** 用户 ID */
-	uid: number;
-	/** 用户的身分令牌 */
-	token: string;
-};
-
-/**
  * 通过 UUID 获取当前登录的用户信息的请求参数
  */
 export type GetSelfUserInfoByUuidRequestDto = {
@@ -239,9 +229,9 @@ export type GetSelfUserInfoByUuidRequestDto = {
 };
 
 /**
- * 获取当前登录的用户信息的请求响应
+ * 通过 UUID 获取当前登录的用户信息的请求响应
  */
-export type GetSelfUserInfoResponseDto = {
+export type GetSelfUserInfoByUuidResponseDto = {
 	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
 	success: boolean;
 	/** 附加的文本消息 */
@@ -257,6 +247,8 @@ export type GetSelfUserInfoResponseDto = {
 			email?: string;
 			/** 用户创建时间 */
 			userCreateDateTime?: number;
+			/** 密码最后更新的时间戳 */
+			passwordUpdateDateTime?: number;
 			/** 用户的角色 */
 			roles?: string[];
 			/** 2FA 的类型 */
@@ -264,14 +256,9 @@ export type GetSelfUserInfoResponseDto = {
 			/** 使用的邀请码 */
 			invitationCode?: string;
 		}
-		& UpdateOrCreateUserInfoRequestDto
+		& UpdateOrCreateUserInfoResponseDto["result"]
 	);
 };
-
-/**
- * 通过 UUID 获取当前登录的用户信息的请求响应
- */
-export type GetSelfUserInfoByUuidResponseDto = {} & GetSelfUserInfoResponseDto;
 
 /**
  * 通过 UID 获取用户信息的请求载荷
@@ -431,7 +418,7 @@ export type BasicUserSettingsDto = {
 /**
  * 获取用于渲染页面的用户设定的请求参数
  */
-export type GetUserSettingsRequestDto = {} & GetSelfUserInfoRequestDto;
+export type GetUserSettingsRequestDto = { } & GetSelfUserInfoByUuidRequestDto;
 
 /**
  * 获取用于渲染页面的用户设定的请求响应
@@ -471,7 +458,7 @@ export type SendGeneral2FAEmailVerificationCodeRequestDto = {
 	/** 目标邮件模板 */
 	mailTemplate: string;
 	/** 业务名称，用于“独占”验证码 */
-	exclusiveBusinessName?: string;
+	exclusiveBusinessName: string;
 };
 
 /**
@@ -777,7 +764,7 @@ export type AdminGetUserInfoResponseDto = {
 	message?: string;
 	/** 请求响应 */
 	result?: (
-		GetSelfUserInfoResponseDto["result"] & {
+		GetSelfUserInfoByUuidResponseDto["result"] & {
 			uid: number;
 			UUID: string;
 			avatar: string;

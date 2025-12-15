@@ -68,8 +68,9 @@
 	const newPassword = ref("");
 	const confirmNewPassword = ref("");
 	const isChangingPassword = ref(false);
-	const passwordChangeDate = ref(new Date());
-	const passwordChangeDateDisplay = computed(() => formatDateWithLocale(passwordChangeDate.value));
+	// TODO: 使用多语言
+	const passwordChangeDateDisplay = computed(() => selfUserInfoStore.userInfo.passwordUpdateDateTime ? formatDateWithLocale(new Date(selfUserInfoStore.userInfo.passwordUpdateDateTime)) : "未知");
+	const isChangePasswordApplyButtonDisabled = computed(() => isChangingPassword.value || !oldPassword.value || !newPassword.value || !changePasswordVerificationCode.value);
 
 	// 2FA 相关
 	const checkUser2FAResult = ref<CheckUserHave2FAResponseDto>(); // 获取到的用户 2FA 类型
@@ -629,7 +630,20 @@
 		<Modal v-model="showChangePassword" :title="$t('password.change')" icon="password">
 			<div class="change-password-modal">
 				<form>
-					<SendVerificationCode v-model="changePasswordVerificationCode" verificationCodeFor="change-password" />
+					<SendVerificationCode
+						v-if="appSettingsStore.authenticatorType !== 'totp'"
+						v-model="changePasswordVerificationCode"
+						verificationCodeFor="change-password"
+					/>
+					<TextBox
+						v-else
+						v-model="changePasswordVerificationCode"
+						:required="true"
+						type="text"
+						icon="lock"
+						:placeholder="$t('totp_verification_code')"
+						autoComplete="off"
+					/>
 					<TextBox
 						v-model="oldPassword"
 						:required="true"
@@ -658,7 +672,7 @@
 			</div>
 			<template #footer-right>
 				<Button class="secondary" :disabled="isChangingPassword" @click="showChangePassword = false">{{ $t("step.cancel") }}</Button>
-				<Button @click="updateUserPassword" :disabled="isChangingPassword || !oldPassword || !newPassword || !changePasswordVerificationCode" :loading="isChangingPassword">{{ $t("step.apply") }}</Button>
+				<Button @click="updateUserPassword" :disabled="isChangePasswordApplyButtonDisabled" :loading="isChangingPassword">{{ $t("step.apply") }}</Button>
 			</template>
 		</Modal>
 

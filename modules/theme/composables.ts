@@ -8,13 +8,13 @@ import { PALETTE_LIST } from "./types";
  */
 export async function cookieBaker() {
 	// Cookie 键 - 用户认证
-	const uidCookieKey = "uid";
-	const tokenCookieKey = "token";
+	const UUID_COOKIE_KEY = "uuid";
+	const TOKEN_COOKIE_KEY = "token";
 
 	if (environment.server) { // 仅限服务端
 		// Nuxt cookie 对象 - 用户认证
-		const cookieUid = useCookie(uidCookieKey, { sameSite: true });
-		const cookieToken = useCookie(tokenCookieKey, { sameSite: true });
+		const cookieUuid = useCookie(UUID_COOKIE_KEY, { sameSite: true });
+		const cookieToken = useCookie(TOKEN_COOKIE_KEY, { sameSite: true });
 
 		// Nuxt cookie 对象 - 是否同步样式
 		const isAllowSyncThemeSettings = useCookie(COOKIE_KEY.isAllowSyncThemeSettings, DEFAULT_COOKIE_OPTION);
@@ -29,17 +29,17 @@ export async function cookieBaker() {
 		// nuxt cookie 对象 - 是否使用离线样式设置
 		const cookieIsLocalStorage = useCookie(COOKIE_KEY.isOfflineSettingsCookieKey, DEFAULT_COOKIE_OPTION);
 
-		const uid = cookieUid.value;
+		const uuid = cookieUuid.value;
 		const token = cookieToken.value;
 
 		let userSettings: GetUserSettingsResponseDto | undefined = undefined;
 		if (
-			typeof isAllowSyncThemeSettings.value === "boolean" && isAllowSyncThemeSettings.value === true
-			&& uid !== null && uid !== undefined && token
+			typeof isAllowSyncThemeSettings.value === "boolean" && isAllowSyncThemeSettings.value === true &&
+			uuid && token
 		) {
 			// 如果用户允许主题同步，且用户认证 cookie 存在，则通过认证 cookie 获取数据库中存储的用户样式设置，并将获取到的设置信息存储至 cookie
-			const userAuthToken: GetSelfUserInfoRequestDto | GetUserSettingsRequestDto = {
-				uid: uid ? parseInt(uid, 10) : -1,
+			const userAuthToken: GetSelfUserInfoByUuidRequestDto | GetUserSettingsRequestDto = {
+				uuid: uuid || "",
 				token: token || "",
 			};
 			await api.user.getSelfUserInfo({ getSelfUserInfoRequest: userAuthToken, appSettingsStore: useAppSettingsStore(), selfUserInfoStore: useSelfUserInfoStore(), headerCookie: undefined });
@@ -64,7 +64,7 @@ export async function cookieBaker() {
 
 /**
  * 将用户设置追加到浏览器 cookie 中
- * @param userSettings 用户设置
+ * @param userSettings - 用户设置
  */
 export function saveUserSetting2BrowserCookieStore(userSettings: GetUserSettingsResponseDto) {
 	if (environment.client) {
@@ -101,9 +101,10 @@ export type UseKiraCookieOptions = {
 };
 /**
  * 通过 useCookie 创建并返回一个 nuxt 响应式 cookie 对象，并在该响应式 cookie 的值被更新后调用 callback 方法 // TODO: 目前只支持监听在程序代码中显式更新的 cookie，比如通过 cookie.value 为 cookie 重新赋值，而不支持在客户端浏览器中更新的 cookie，或许 nuxt 3.10 之后有办法解决
- * @param cookieKey cookie 的 key
- * @param callback cookie 被显式更新后调用的 callback
- * @param options 设置，详见 UseKiraCookieOptions
+ * @template T - cookie 值的类型
+ * @param cookieKey - cookie 的 key
+ * @param callback - cookie 被显式更新后调用的 callback
+ * @param options - 设置，详见 UseKiraCookieOptions
  * @returns nuxt 响应式 cookie 对象
  */
 export function useKiraCookie<T>(
@@ -161,7 +162,7 @@ export class SyncUserSettings {
 
 	/**
 	 * 发送更新用户的 ThemeType 设置的请求
-	 * @param cookieValue ThemeType 的新的值
+	 * @param cookieValue - ThemeType 的新的值
 	 */
 	public static updateOrCreateUserThemeTypeSetting(cookieValue: ThemeSetType) {
 		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
@@ -174,7 +175,7 @@ export class SyncUserSettings {
 
 	/**
 	 * 发送更新用户的 ThemeColor 设置的请求
-	 * @param cookieValue ThemeColor 的新的值
+	 * @param cookieValue - ThemeColor 的新的值
 	 */
 	public static updateOrCreateUserThemeColorSetting(cookieValue: string) {
 		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
@@ -185,7 +186,7 @@ export class SyncUserSettings {
 
 	/**
 	 * 发送更新用户的 ThemeColorCustom 设置的请求
-	 * @param cookieValue ThemeColor 的新的值
+	 * @param cookieValue - ThemeColor 的新的值
 	 */
 	public static updateOrCreateUserThemeColorCustomSetting(cookieValue: string) {
 		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {
@@ -196,7 +197,7 @@ export class SyncUserSettings {
 
 	/**
 	 * 发送更新用户的 ColoredSidebar 设置的请求
-	 * @param cookieValue ColoredSidebar 的新的值
+	 * @param cookieValue - ColoredSidebar 的新的值
 	 */
 	public static updateOrCreateUserColoredSidebarSetting(cookieValue: boolean) {
 		const updateOrCreateUserSettingsRequest: UpdateOrCreateUserSettingsRequestDto = {

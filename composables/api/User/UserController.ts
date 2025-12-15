@@ -16,7 +16,8 @@ import type {
 	DeleteTotpAuthenticatorByTotpVerificationCodeResponseDto,
 	DeleteUserEmailAuthenticatorRequestDto,
 	DeleteUserEmailAuthenticatorResponseDto, ForgotPasswordRequestDto, ForgotPasswordResponseDto, GetBlockedUserResponseDto, GetMyInvitationCodeResponseDto,
-	GetSelfUserInfoRequestDto, GetSelfUserInfoResponseDto, GetUserAvatarUploadSignedUrlResponseDto,
+	GetSelfUserInfoByUuidRequestDto, GetSelfUserInfoByUuidResponseDto,
+	GetUserAvatarUploadSignedUrlResponseDto,
 	GetUserInfoByUidRequestDto, GetUserInfoByUidResponseDto, GetUserSettingsRequestDto,
 	GetUserSettingsResponseDto, RequestSendForgotPasswordVerificationCodeRequestDto, RequestSendForgotPasswordVerificationCodeResponseDto, SendGeneral2FAEmailVerificationCodeRequestDto, SendGeneral2FAEmailVerificationCodeResponseDto, SendGeneralEmailVerificationCodeRequestDto, SendGeneralEmailVerificationCodeResponseDto, UpdateOrCreateUserInfoResponseDto, UpdateOrCreateUserSettingsRequestDto,
 	UpdateOrCreateUserSettingsResponseDto, UpdateUserEmailRequestDto, UpdateUserEmailResponseDto, UpdateUserPasswordRequestDto,
@@ -80,15 +81,22 @@ export const updateOrCreateUserInfo = async (updateOrCreateUserInfoRequest: Upda
 type AppSettingsStoreType = ReturnType<typeof useAppSettingsStore>;
 type SelfUserInfoStoreType = ReturnType<typeof useSelfUserInfoStore>;
 /**
- * 获取当前登录的用户信息，前提是 token 中包含正确的 uid 和 token，同时丰富全局变量中的用户信息
+ * 获取当前登录的用户信息，前提是 token 中包含正确的 uuid 和 token，同时丰富全局变量中的用户信息
  * @param getSelfUserInfoRequest - 获取当前登录的用户信息的请求参数
  * @param pinia - pinia
  * @returns 用户信息
  */
-export const getSelfUserInfo = async (props: { getSelfUserInfoRequest: GetSelfUserInfoRequestDto | undefined; appSettingsStore: AppSettingsStoreType | undefined; selfUserInfoStore: SelfUserInfoStoreType | undefined; headerCookie: { cookie?: string | undefined } | undefined }): Promise<GetSelfUserInfoResponseDto> => {
+export const getSelfUserInfo = async (
+	props: {
+		getSelfUserInfoRequest: GetSelfUserInfoByUuidRequestDto | undefined;
+		appSettingsStore: AppSettingsStoreType | undefined;
+		selfUserInfoStore: SelfUserInfoStoreType | undefined;
+		headerCookie: { cookie?: string | undefined } | undefined;
+	},
+): Promise<GetSelfUserInfoByUuidResponseDto> => {
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	// NOTE: use { headers: headerCookie } to passing client-side cookies to backend API when SSR.
-	const data = await $fetch<GetSelfUserInfoResponseDto>(
+	const data = await $fetch<GetSelfUserInfoByUuidResponseDto>(
 		`${USER_API_URI}/self`,
 		{
 			method: "POST",
@@ -151,7 +159,7 @@ export const userExistsCheckByUID = async (userExistsCheckByUIDRequest: UserExis
 export const checkUserToken = async (): Promise<CheckUserTokenResponseDto> => {
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	const result = await GET(`${USER_API_URI}/check`, { credentials: "include" }) as CheckUserTokenResponseDto;
-	
+
 	const selfUserInfoStore = useSelfUserInfoStore();
 	if (result.success && result.userTokenOk)
 		selfUserInfoStore.isLogined = true;
@@ -209,7 +217,12 @@ export const uploadUserAvatar = async (fileName: string, avatarBlobData: Blob, s
  * @param getUserSettingsRequest - 用户令牌
  * @returns 用户设置
  */
-export const getUserSettings = async (request?: { getUserSettingsRequest?: GetUserSettingsRequestDto; headerCookie?: { cookie?: string | undefined } }): Promise<GetUserSettingsResponseDto> => {
+export const getUserSettings = async (
+	request?: {
+		getUserSettingsRequest?: GetUserSettingsRequestDto;
+		headerCookie?: { cookie?: string | undefined };
+	},
+): Promise<GetUserSettingsResponseDto> => {
 	// NOTE: use { Cookie: request?.headerCookie?.cookie ?? "" } to passing client-side cookies to backend API when SSR.
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	const userSettings = await POST( // WARN: 此处必须使用原生 fetch 方法，不要使用 useFetch，因为 getUserSettings 被 Nuxt 管辖之外的中间件调用了。
