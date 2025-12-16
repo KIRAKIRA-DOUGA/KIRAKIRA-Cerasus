@@ -638,4 +638,5 @@ export default {
 		choose: "揀選檔案",
 		rechoose: "重新揀選",
 	},
+	unknown: "未知",
 } as const satisfies LocaleIdentifiers;
