@@ -243,7 +243,9 @@ export default {
 	totp_authenticator: "TOTP身份驗證器",
 	totp_verification_code: "動態密碼",
 	current_email: "當前電郵",
-	change_email: "變更電郵",
+	change_email: {
+		title: "變更電郵",
+	},
 	new_email: "新電郵",
 	modification_date: "修改日期",
 	addition_date: "添加日期",

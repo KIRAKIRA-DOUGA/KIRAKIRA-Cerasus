@@ -243,7 +243,9 @@ export default {
 	totp_authenticator: "Xác thực TOTP",
 	totp_verification_code: "Mã Xác Thực",
 	current_email: "Địa chỉ email hiện tại",
-	change_email: "Đổi Email",
+	change_email: {
+		title: "Đổi Email",
+	},
 	new_email: "Email Mới",
 	modification_date: "Ngày chỉnh sửa",
 	addition_date: "Ngày thêm",
@@ -541,6 +543,7 @@ export default {
 		},
 		invalid_format: {
 			email: "Sai định dang email!",
+			new_email_same_as_old_email: "Địa chỉ email mới trùng với cái cũ!",
 			invitation_code: "Sai định dạng mã mời!",
 		},
 		too_long: {

@@ -68,8 +68,7 @@
 	const newPassword = ref("");
 	const confirmNewPassword = ref("");
 	const isChangingPassword = ref(false);
-	// TODO: 使用多语言
-	const passwordChangeDateDisplay = computed(() => selfUserInfoStore.userInfo.passwordUpdateDateTime ? formatDateWithLocale(new Date(selfUserInfoStore.userInfo.passwordUpdateDateTime)) : "未知");
+	const passwordChangeDateDisplay = computed(() => selfUserInfoStore.userInfo.passwordUpdateDateTime ? formatDateWithLocale(new Date(selfUserInfoStore.userInfo.passwordUpdateDateTime)) : $t("unknown"));
 	const isChangePasswordApplyButtonDisabled = computed(() => isChangingPassword.value || !oldPassword.value || !newPassword.value || !changePasswordVerificationCode.value);
 
 	// 2FA 相关
@@ -501,19 +500,16 @@
 		</section>
 
 		<!-- 修改邮箱 -->
-
-		<!-- TODO: 两个画面，第一个画面“验证新邮箱”，第二个画面“最终确认凭据” -->
-		<!-- 不管是那种 2FA（或者没开 2FA），第一个画面都是必须要验证的，第二个画面根据 2FA 类型不同而不同，未开启 2FA 和邮箱 2FA 在第二个画面都会验证旧邮箱，TOTP 2FA 则验证 TOTP -->
-		<Modal :open="changeEmailStep !== 'closed'" :title="$t('change_email')" icon="email" @close="closeChangeEmailModel">
+		<Modal :open="changeEmailStep !== 'closed'" :title="$t('change_email.title')" icon="email" @close="closeChangeEmailModel">
 			<div class="change-email-modal">
 				<div class="page">
 
 					<!-- step: 1-1 (email-2fa/no-2fa) -->
 					<div v-if="changeEmailModelName === 'verification-email'" class="step">
 						<ShadingIcon icon="email" />
-						<h3><Icon name="counter_1" />验证当前的邮箱</h3>
+						<h3><Icon name="counter_1" />{{ $t('change_email.verify_current_email') }}</h3>
 						<p>
-							<Preserves>点击发送按钮，然后输入我们发送到你当前绑定的邮箱中的验证码。</Preserves>
+							<Preserves>{{ $t('change_email.verify_current_email_description') }}</Preserves>
 						</p>
 						<br />
 						<form>
@@ -527,9 +523,9 @@
 					<!-- step: 1-2 (totp-2fa) -->
 					<div v-if="changeEmailModelName === 'verification-totp'" class="step">
 						<ShadingIcon icon="email" />
-						<h3><Icon name="counter_1" />验证你的新邮箱</h3>
+						<h3><Icon name="counter_1" />{{ $t('change_email.verify_new_email') }}</h3>
 						<p>
-							<Preserves>请输入你的新邮箱并点击发送按钮，然后输入我们发送到新邮箱中的验证码。</Preserves>
+							<Preserves>{{ t('change_email.verify_new_email_description') }}</Preserves>
 						</p>
 						<br />
 						<form>
@@ -554,10 +550,10 @@
 					<!-- step: 2-1 (email-2fa/no-2fa) -->
 					<div v-if="changeEmailModelName === 'confirm-email'" class="step">
 						<ShadingIcon icon="email" />
-						<h3><Icon name="counter_2" />验证你的新邮箱和用户凭据</h3>
-						<p>请输入你的密码，以及你的新邮箱并点击发送按钮，然后输入我们发送到新邮箱中的验证码。</p>
+						<h3><Icon name="counter_2" />{{ t('change_email.verify_new_email_and_credentials') }}</h3>
+						<p>{{ t('change_email.verify_new_email_and_credentials_description') }}</p>
 						<p v-if="appSettingsStore.authenticatorType === 'email'">
-							一旦邮箱更新，双重验证绑定的邮箱也会自动更新。
+							{{ t('change_email.email_2fa_auto_update_warning') }}
 						</p>
 						<br />
 						<form>
@@ -590,9 +586,9 @@
 					<!-- step: 2-2 (totp-2fa) -->
 					<div v-if="changeEmailModelName === 'confirm-totp'" class="step">
 						<ShadingIcon icon="email" />
-						<h3><Icon name="counter_2" />验证你的用户凭据</h3>
+						<h3><Icon name="counter_2" />{{ t('change_email.verify_credentials') }}</h3>
 						<p>
-							<Preserves>请输入你的密码，以及你的 TOTP 双重验证验证码（可以在你绑定的验证设备中找到）。</Preserves>
+							<Preserves>{{ t('change_email.verify_credentials_description') }}</Preserves>
 						</p>
 						<br />
 						<form>

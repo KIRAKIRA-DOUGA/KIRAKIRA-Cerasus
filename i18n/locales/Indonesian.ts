@@ -243,7 +243,9 @@ export default {
 	totp_authenticator: "Pengautentikasi TOTP",
 	totp_verification_code: "Kode Verifikasi",
 	current_email: "Email Saat Ini",
-	change_email: "Ganti Email",
+	change_email: {
+		title: "Ganti Email",
+	},
 	new_email: "Email Baru",
 	modification_date: "Tanggal Modifikasi",
 	addition_date: "Tanggal Penambahan",
