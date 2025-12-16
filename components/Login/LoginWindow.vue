@@ -77,9 +77,11 @@
 	const isSendingForgotPasswordVerificationCode = ref(false); // 正在发送忘记密码的验证码
 	const isResetPassword = ref(false); // 正在重置密码
 
-	const timeouts = useSendVerificationCodeTimeoutStoreObject(); // 验证码倒计时
 	const LOGIN_BUSINESS_NAME = "login";
 	const REGISTRATION_BUSINESS_NAME = "registration";
+	const FORGOT_PASSWORD_BUSINESS_NAME = "forgot-password";
+
+	const timeouts = useSendVerificationCodeTimeoutStoreObject(); // 验证码倒计时
 	const isLoginTimeouted = computed(() => {
 		if (LOGIN_BUSINESS_NAME in timeouts.timeouts)
 			return timeouts.timeouts[LOGIN_BUSINESS_NAME].isTimeouted;
@@ -101,6 +103,18 @@
 	const registrationTimeoutCountdown = computed(() => {
 		if (REGISTRATION_BUSINESS_NAME in timeouts.timeouts)
 			return timeouts.timeouts[REGISTRATION_BUSINESS_NAME].timeout;
+		else
+			return 0;
+	});
+	const isForgotPasswordTimeouted = computed(() => {
+		if (FORGOT_PASSWORD_BUSINESS_NAME in timeouts.timeouts)
+			return timeouts.timeouts[FORGOT_PASSWORD_BUSINESS_NAME].isTimeouted;
+		else
+			return true;
+	});
+	const forgotPasswordTimeoutCountdown = computed(() => {
+		if (FORGOT_PASSWORD_BUSINESS_NAME in timeouts.timeouts)
+			return timeouts.timeouts[FORGOT_PASSWORD_BUSINESS_NAME].timeout;
 		else
 			return 0;
 	});
@@ -390,13 +404,16 @@
 			}
 			if (!check2FAByEmailResult.have2FA || check2FAByEmailResult.have2FA && check2FAByEmailResult.type === "email") {
 				const locale = getCurrentLocaleLangCode();
-				const requestSendForgotPasswordVerificationCodeRequest: RequestSendForgotPasswordVerificationCodeRequestDto = {
+
+				const sendGeneralEmailVerificationCodeRequest: SendGeneralEmailVerificationCodeRequestDto = {
 					email: emailStr,
 					clientLanguage: locale,
+					mailTemplate: "SendResetPasswordVerificationCode",
+					exclusiveBusinessName: FORGOT_PASSWORD_BUSINESS_NAME,
 				};
 
 				isSendingForgotPasswordVerificationCode.value = true;
-				const sendResult = await api.user.requestSendForgotPasswordVerificationCode(requestSendForgotPasswordVerificationCodeRequest);
+				const sendResult = await api.user.sendGeneralEmailVerificationCode(sendGeneralEmailVerificationCodeRequest);
 				timeouts.startTimeoutByKey("forgot-password"); // 开始倒计时
 				isSendingForgotPasswordVerificationCode.value = false;
 
@@ -722,8 +739,8 @@
 								class="icon-behind"
 								@click="jump2ResetPasswordPage"
 								:loading="isChecking2FA || isSendingForgotPasswordVerificationCode"
-								:disabled="isChecking2FA || isSendingForgotPasswordVerificationCode || !isRegistrationTimeouted"
-							>{{ isRegistrationTimeouted ? $t("step.next") : `${$t("step.next")} (${registrationTimeoutCountdown})` }}</Button>
+								:disabled="isChecking2FA || isSendingForgotPasswordVerificationCode || !isForgotPasswordTimeouted"
+							>{{ isForgotPasswordTimeouted ? $t("step.next") : `${$t("step.next")} (${forgotPasswordTimeoutCountdown})` }}</Button>
 						</div>
 					</div>
 

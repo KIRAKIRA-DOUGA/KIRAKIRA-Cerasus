@@ -19,7 +19,7 @@ import type {
 	GetSelfUserInfoByUuidRequestDto, GetSelfUserInfoByUuidResponseDto,
 	GetUserAvatarUploadSignedUrlResponseDto,
 	GetUserInfoByUidRequestDto, GetUserInfoByUidResponseDto, GetUserSettingsRequestDto,
-	GetUserSettingsResponseDto, RequestSendForgotPasswordVerificationCodeRequestDto, RequestSendForgotPasswordVerificationCodeResponseDto, SendGeneral2FAEmailVerificationCodeRequestDto, SendGeneral2FAEmailVerificationCodeResponseDto, SendGeneralEmailVerificationCodeRequestDto, SendGeneralEmailVerificationCodeResponseDto, UpdateOrCreateUserInfoResponseDto, UpdateOrCreateUserSettingsRequestDto,
+	GetUserSettingsResponseDto, SendGeneral2FAEmailVerificationCodeRequestDto, SendGeneral2FAEmailVerificationCodeResponseDto, SendGeneralEmailVerificationCodeRequestDto, SendGeneralEmailVerificationCodeResponseDto, UpdateOrCreateUserInfoResponseDto, UpdateOrCreateUserSettingsRequestDto,
 	UpdateOrCreateUserSettingsResponseDto, UpdateUserEmailRequestDto, UpdateUserEmailResponseDto, UpdateUserPasswordRequestDto,
 	UpdateUserPasswordResponseDto,
 	UserEmailExistsCheckRequestDto, UserEmailExistsCheckResponseDto,
@@ -312,16 +312,6 @@ export const getMyInvitationCode = async (headerCookie: { cookie?: string | unde
 export const updateUserPassword = async (updateUserPasswordRequest: UpdateUserPasswordRequestDto): Promise<UpdateUserPasswordResponseDto> => {
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	return await POST(`${USER_API_URI}/update/password`, updateUserPasswordRequest, { credentials: "include" }) as UpdateUserPasswordResponseDto;
-};
-
-/**
- * 请求发送忘记密码的邮箱验证码
- * @param requestSendForgotPasswordVerificationCodeRequest - 请求发送忘记密码的邮箱验证码的请求载荷
- * @returns 请求发送忘记密码的邮箱验证码的请求响应
- */
-export const requestSendForgotPasswordVerificationCode = async (requestSendForgotPasswordVerificationCodeRequest: RequestSendForgotPasswordVerificationCodeRequestDto): Promise<RequestSendForgotPasswordVerificationCodeResponseDto> => {
-	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
-	return await POST(`${USER_API_URI}/requestSendForgotPasswordVerificationCode`, requestSendForgotPasswordVerificationCodeRequest, { credentials: "include" }) as RequestSendForgotPasswordVerificationCodeResponseDto;
 };
 
 /**
