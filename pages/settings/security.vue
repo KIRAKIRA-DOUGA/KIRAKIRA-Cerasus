@@ -555,8 +555,9 @@
 					<div v-if="changeEmailModelName === 'confirm-email'" class="step">
 						<ShadingIcon icon="email" />
 						<h3><Icon name="counter_2" />验证你的新邮箱和用户凭据</h3>
-						<p>
-							<Preserves>请输入你的密码，以及你的新邮箱并点击发送按钮，然后输入我们发送到新邮箱中的验证码。</Preserves>
+						<p>请输入你的密码，以及你的新邮箱并点击发送按钮，然后输入我们发送到新邮箱中的验证码。</p>
+						<p v-if="appSettingsStore.authenticatorType === 'email'">
+							一旦邮箱更新，双重验证绑定的邮箱也会自动更新。
 						</p>
 						<br />
 						<form>
