@@ -30,4 +30,6 @@ export default defineI18nConfig(() => ({
 		yue: ["zht", "zhs"],
 		default: ["en", "zhs", "zht", "ja"],
 	},
+	missingWarn: false,
+	fallbackWarn: false,
 }));
