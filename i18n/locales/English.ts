@@ -41,6 +41,17 @@ export default {
 		opacity: "Opacity",
 		tint: "Tint",
 		blur: "Blurriness",
+		fit: {
+			title: "Fit",
+			cover: "Cover",
+			contain: "Contain",
+			original: "Original",
+			stretch: "Stretch",
+			scaleDown: "Scale down contain",
+			tile: "Tile",
+			tileContain: "Tile contain",
+		},
+		position: "Position",
 	},
 	appearance: {
 		title: "Appearance",
