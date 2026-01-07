@@ -243,7 +243,18 @@ export default {
 	totp_authenticator: "身份验证器",
 	totp_verification_code: "动态令牌",
 	current_email: "当前邮箱",
-	change_email: "更改邮箱",
+	change_email: {
+		title: "更改邮箱",
+		verify_current_email: "验证当前的邮箱",
+		verify_current_email_description: "点击发送按钮，然后输入我们发送到你当前绑定的邮箱中的验证码。",
+		verify_new_email: "验证新邮箱",
+		verify_new_email_description: "请输入你的新邮箱并点击发送按钮，然后输入我们发送到新邮箱中的验证码。",
+		verify_new_email_and_credentials: "验证你的新邮箱和用户凭据",
+		verify_new_email_and_credentials_description: "请输入你的密码，以及你的新邮箱并点击发送按钮，然后输入我们发送到新邮箱中的验证码。",
+		email_2fa_auto_update_warning: "一旦邮箱更新，双重验证绑定的邮箱也会自动更新。",
+		verify_credentials: "验证你的用户凭据",
+		verify_credentials_description: "请输入你的密码，以及你的 TOTP 双重验证验证码（可以在你绑定的验证设备中找到）。",
+	},
 	new_email: "新邮箱",
 	modification_date: "修改日期",
 	addition_date: "添加日期",
@@ -541,6 +552,7 @@ export default {
 		},
 		invalid_format: {
 			email: "邮箱格式无效！",
+			new_email_same_as_old_email: "新邮箱地址不能与旧邮箱一致！",
 			invitation_code: "邀请码格式无效！",
 		},
 		too_long: {
@@ -641,4 +653,5 @@ export default {
 		choose: "选择文件",
 		rechoose: "重新选择",
 	},
+	unknown: "未知",
 } as const satisfies LocaleIdentifiers;

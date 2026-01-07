@@ -243,7 +243,9 @@ export default {
 	totp_authenticator: "Xác thực TOTP",
 	totp_verification_code: "Mã Xác Thực",
 	current_email: "Địa chỉ email hiện tại",
-	change_email: "Đổi Email",
+	change_email: {
+		title: "Đổi Email",
+	},
 	new_email: "Email Mới",
 	modification_date: "Ngày chỉnh sửa",
 	addition_date: "Ngày thêm",
@@ -273,6 +275,7 @@ export default {
 		drag_to_upload: "Kéo vào đây để tải lên video",
 		format_info: "Hỗ trợ các định dạng như MP4, WMV, WEBM",
 	},
+	publish: "Đăng tải",
 	messages: "Tin nhắn",
 	notification: "Thông báo",
 	pleaseLogin: "Vui lòng Đăng nhập",
@@ -375,13 +378,16 @@ export default {
 		login_email_info: "Xác minh hai bước bằng email hiện hành trên tài khoản. Chúng tôi đã gửi mã xác thực đến Email của bạn.\nTrường hợp không thấy email, vui lòng kiểm tra mục spam hoặc thư rác.",
 	},
 	unselected: {
+		combobox: "Chọn một mục",
 		settings: "Chọn một cài đặt",
 		tag: "Tìm kiếm thẻ...",
 		language: "Chọn ngôn ngữ",
 		image: "Chọn ảnh",
 		file: "Chọn tệp tin",
 	},
-	empty: {},
+	empty: {
+		comments: "Chưa có bình luận",
+	},
 	user: {
 		title: "Người dùng",
 		username: "Tên người dùng",
@@ -503,6 +509,7 @@ export default {
 		comment_sent: "Đã gửi bình luận~",
 		unsupported_image_format: "Định dạng ảnh không hỗ trợ!",
 		profile_updated: "Đã cập nhật hồ sơ~",
+		settings_updated: "Đã cập nhật cài đặt~",
 		must_remove_totp_first: "Hãy loại bỏ mã TOTP trước!",
 		must_verify_email_first: "Hãy xác thực email trước!",
 		new_email_same: "Email mới không thể trùng với email cũ!",
@@ -536,6 +543,7 @@ export default {
 		},
 		invalid_format: {
 			email: "Sai định dang email!",
+			new_email_same_as_old_email: "Địa chỉ email mới trùng với cái cũ!",
 			invitation_code: "Sai định dạng mã mời!",
 		},
 		too_long: {

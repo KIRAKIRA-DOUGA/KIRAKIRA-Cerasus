@@ -9,6 +9,7 @@ export default {
 	rangeDash: " – ",
 	home: "Beranda",
 	category: {
+		title: "Kategori",
 		anime: "Anime",
 		music: "Musik",
 		otomad: "Otomad",
@@ -21,6 +22,7 @@ export default {
 	search: "Cari",
 	custom: "Sesuaikan",
 	scheme: {
+		title: "Skema",
 		light: "Tema Terang",
 		dark: "Tema Gelap",
 		system: "Ikuti Tema Sistem",
@@ -38,12 +40,14 @@ export default {
 	},
 	language: "Bahasa",
 	background: {
+		title: "Latar Belakang",
 		custom: "Latar Kustom",
 		opacity: "Opasitas",
 		tint: "Rona",
 		blur: "Keburaman",
 	},
 	appearance: {
+		title: "Penampilan",
 		sharp_mode: "Mode Tajam",
 		flat_mode: "Mode Dasar",
 		colorful_navbar: "Bilah Navigasi Berwarna",
@@ -57,6 +61,7 @@ export default {
 	off: "Matikan",
 	disabled: "Dinonaktifkan",
 	tag: {
+		title: "Tag",
 		search: "Cari Tag",
 		new: "Buat Tag Baru",
 		set_as_original: "Ubah sebagai Nama Asli",
@@ -73,6 +78,7 @@ export default {
 	comments: "Komentar",
 	you_know_too_much: "Kau tahu terlalu banyak.",
 	settings: {
+		title: "Pengaturan",
 		search: "Cari Pengaturan",
 		user: "Pengaturan Pengguna",
 		app: "Pengaturan Aplikasi",
@@ -85,12 +91,14 @@ export default {
 	dashboard: "Dasbor",
 	account: "Akun",
 	profile: {
+		title: "Profil",
 		edit: "Edit Profil",
 		edit_banner: "Edit Banner",
 		edit_avatar: "Edit Avatar",
 	},
 	traces: "Jejak",
 	privacy: {
+		title: "Privasi",
 		cookie: "Cookie☆",
 		allow_cookies: "Izinkan Cookies",
 		info_visibility: "Visibilitas Info",
@@ -101,6 +109,7 @@ export default {
 	security: "Keamanan",
 	login_options: "Opsi Masuk",
 	password: {
+		title: "Kata Sandi",
 		forgot: "Lupa Kata Sandi",
 		reset: "Reset Kata Sandi",
 		retype: "Ketik Ulang Kata Sandi",
@@ -140,7 +149,7 @@ export default {
 			auto: "Kualitas Otomatis",
 		},
 		control_bar: {
-			title: "Bar Kontrol",
+			title: "Bilah Kontrol",
 			stop: "Tampilkan Tombol Berhenti",
 			stop_description: "Loncat frame pertama dan berhenti",
 			replay: "Selalu Tampilkan Tombol Ulang",
@@ -197,6 +206,7 @@ export default {
 	experimental: "Eksperimental",
 	accessibility: "Akses",
 	shortcut_key: {
+		title: "Tombol Shortcut",
 		player_page: "Laman Pemutar",
 		play_pause: "Putar / Jeda",
 		exit_fullscreen: "Keluar dari Layar Penuh",
@@ -214,13 +224,15 @@ export default {
 	},
 	guide: "Panduan",
 	about: {
+		title: "Tentang",
 		repositories: {
+			title: "Repositori",
 			frontend: "Repositori Frontend GitHub dan Umpan Balik Masalah",
 			backend: "Repositori Backend GitHub dan Umpan Balik Masalah",
 			markdown: "Repositori Markdown Halaman Pengguna dan Umpan Balik Masalah",
 		},
 		technologies_used: "Teknologi yang Digunakan",
-		slogan: "Situs imut\nuntuk orang imut!",
+		slogan: "Situs imut \nuntuk orang imut!",
 	},
 	acknowledgement: "Pernyataan",
 	friendly_links: "Tautan Mitra",
@@ -231,7 +243,9 @@ export default {
 	totp_authenticator: "Pengautentikasi TOTP",
 	totp_verification_code: "Kode Verifikasi",
 	current_email: "Email Saat Ini",
-	change_email: "Ganti Email",
+	change_email: {
+		title: "Ganti Email",
+	},
 	new_email: "Email Baru",
 	modification_date: "Tanggal Modifikasi",
 	addition_date: "Tanggal Penambahan",
@@ -257,9 +271,11 @@ export default {
 		following: "Mengikuti",
 	},
 	upload: {
+		title: "Unggah",
 		drag_to_upload: "Seret Ke Sini untuk Mengunggah",
 		format_info: "Mendukung format video seperti MP4, WMV, WEBM",
 	},
+	publish: "Publikasikan",
 	messages: "Pesan",
 	notification: "Notifikasi",
 	pleaseLogin: "Silahkan Masuk",
@@ -279,6 +295,7 @@ export default {
 	pause: "Jeda",
 	rating: "Rating",
 	kaomoji: {
+		title: "Kaomoji",
 		happy: "Senang",
 		greet: "Sapa",
 		awa: "Gemes",
@@ -324,6 +341,7 @@ export default {
 		save: "Jumlah yang Disimpan",
 	},
 	view: {
+		title: "Lihat",
 		list: "Daftar",
 		grid: "Grid",
 		tile: "Ubin",
@@ -355,18 +373,21 @@ export default {
 		register_email_sent_info: "Kami telah mengirimkan kode verifikasi ke email Anda, silakan masukkan kode tersebut di sini.\nJika Anda tidak menerimanya, Anda dapat mengirim ulang.",
 		forgot_info: "Harap masukkan email Anda.\n\nJika kata sandi akun Anda dapat diganti, kami akan mengirim kode verifikasi ke email Anda.",
 		reset_password_info: "Harap masukkan dan ingat kata sandi baru Anda.",
-		reset_password_totp_warning: "Otetikasi 2 Faktor telah diaktifkan pada akun Anda, dan pemulihan kata sandi mandiri saat ini tidak dapat dilakukan.\nJika Anda perlu mengatur ulang kata sandi, silakan hubungi administrator.",
+		reset_password_totp_warning: "Otentikasi 2 Faktor telah diaktifkan pada akun Anda, dan pemulihan kata sandi mandiri saat ini tidak dapat dilakukan.\nJika Anda perlu mengatur ulang kata sandi, silakan hubungi administrator.",
 		login_totp_info: "Otentikasi 2 Faktor telah diaktifkan di akunmu. Harap masukan kode verifikasi untuk melanjutkan. Jika Anda tidak memiliki akses ke perangkat yang terotentikasi, gunakan kode cadangan atau kode pemulihan untuk masuk.\nCatatan: Masuk dengan menggunakan kode pemulihan akan menonaktifkan Otentikasi 2 Faktor setelah masuk.",
 		login_email_info: "Otentikasi 2 Faktor melalui email telah diaktifkan pada akun Anda. Kode verifikasi telah dikirim ke email Anda. Jika email tidak muncul, harap periksa folder spam atau folder sampah.",
 	},
 	unselected: {
+		combobox: "Pilih Item",
 		settings: "Silakan Pilih Pengaturan",
 		tag: "Silakan Cari Tag",
 		language: "Pilih Bahasa",
 		image: "Pilih Gambar",
 		file: "Pilih berkas",
 	},
-	empty: {},
+	empty: {
+		comments: "Tidak Ada Komentar",
+	},
 	user: {
 		title: "Pengguna",
 		username: "Nama Pengguna",
@@ -391,18 +412,21 @@ export default {
 	watch_later: "Tonton Nanti",
 	download: "Unduh",
 	format: {
+		title: "Format",
 		bold: "Bold",
 		italic: "Italic",
 		underline: "Menggarisbawahi",
 		strikethrough: "Dicoret",
 	},
 	text: {
+		title: "Teks",
 		size: "Ukuran Teks",
 	},
 	color: "Warna",
 	opacity: "Opasitas",
 	mode: "Mode",
 	size: {
+		title: "Ukuran",
 		tiny: "Sangat Kecil",
 		small: "Kecil",
 		medium: "Sedang",
@@ -410,6 +434,7 @@ export default {
 		huge: "Sangat Besar",
 	},
 	user_page: {
+		title: "Laman Pengguna",
 		title_affix: "{0} Laman Pengguna",
 	},
 	manage_content: "Kelola Konten",
@@ -484,6 +509,7 @@ export default {
 		comment_sent: "Komentar dikirim~",
 		unsupported_image_format: "Format gambar tidak didukung!",
 		profile_updated: "Profil diperbarui~",
+		settings_updated: "Pengaturan diubah~",
 		must_remove_totp_first: "Anda harus menghapus autentikator TOTP terlebih dahulu!",
 		must_verify_email_first: "Anda harus vertifikasi email terlebih dahulu!",
 		new_email_same: "Email baru tidak boleh sama dengan email saat ini!",
@@ -603,6 +629,7 @@ export default {
 	},
 	enable: "Aktifkan",
 	disable: "Nonaktifkan",
+	sync_color_settings_across_devices: "Sinkronkan Warna Dengan Sistem",
 	role: {
 		administrator: "Pengelola",
 		developer: "Pengembang",

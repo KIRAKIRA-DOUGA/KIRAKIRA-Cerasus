@@ -137,6 +137,7 @@ export function useBackgroundImages() {
 
 /**
  * 将数组项目移至其他位置。
+ * @template T - 数组元素的类型。
  * @param array - 源数组。
  * @param from - 原元素索引。
  * @param to - 新元素索引。

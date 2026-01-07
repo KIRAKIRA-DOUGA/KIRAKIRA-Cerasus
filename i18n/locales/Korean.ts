@@ -42,6 +42,7 @@ export default {
 	about: {
 		repositories: {},
 	},
+	change_email: {},
 	collection: {},
 	feed: {},
 	upload: {},

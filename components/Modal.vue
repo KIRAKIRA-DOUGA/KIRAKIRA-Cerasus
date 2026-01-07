@@ -3,6 +3,7 @@
 </docs>
 
 <script setup lang="ts">
+	const emit = defineEmits<{ (e: "close"): void }>();
 	import { numbers } from "virtual:scss-var:theme/_variables";
 
 	const props = withDefaults(defineProps<{
@@ -96,6 +97,11 @@
 		const [x, y] = translateCssNumberTuple;
 		return { x, y };
 	}
+
+	function closeModel() {
+		open.value = false;
+		emit("close");
+	}
 </script>
 
 <template>
@@ -111,10 +117,10 @@
 			>
 				<div class="titlebar">
 					<div class="title" :class="{ hide: hideTitle }" @pointerdown="onTitleBarDown">
-						<Icon :name="icon" :filled="icon.startsWith('colored-')" @dblclick="open = false" />
+						<Icon :name="icon" :filled="icon.startsWith('colored-')" @dblclick="closeModel" />
 						<span>{{ title }}</span>
 					</div>
-					<button v-if="!hideTitleCloseIcon" class="close-button" :aria-label="$t('step.close')" @click="open = false">
+					<button v-if="!hideTitleCloseIcon" class="close-button" :aria-label="$t('step.close')" @click="closeModel">
 						<Icon name="close" />
 					</button>
 				</div>
@@ -128,8 +134,8 @@
 						</div>
 						<div class="right">
 							<slot name="footer-right">
-								<Button class="secondary" @click="open = false">{{ $t("step.cancel") }}</Button>
-								<Button @click="open = false">{{ $t("step.ok") }}</Button>
+								<Button class="secondary" @click="closeModel">{{ $t("step.cancel") }}</Button>
+								<Button @click="closeModel">{{ $t("step.ok") }}</Button>
 							</slot>
 						</div>
 					</div>

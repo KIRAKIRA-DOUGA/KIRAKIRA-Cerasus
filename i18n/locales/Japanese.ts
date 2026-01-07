@@ -243,7 +243,18 @@ export default {
 	totp_authenticator: "TOTP 認証システム",
 	totp_verification_code: "認証コード",
 	current_email: "現在のメールアドレス",
-	change_email: "メールアドレスの変更",
+	change_email: {
+		title: "メールアドレスの変更",
+		verify_current_email: "現在のメールアドレスを確認する",
+		verify_current_email_description: "送信ボタンをクリックし、現在のメールアドレスに送信した確認コードを入力します。",
+		verify_new_email: "新しいメールアドレスを確認する",
+		verify_new_email_description: "新しいメールアドレスを入力して送信ボタンをクリックし、新しいメールアドレスに送信された確認コードを入力してください。",
+		verify_new_email_and_credentials: "新しいメールアドレスとユーザー認証情報を確認してください",
+		verify_new_email_and_credentials_description: "パスワードと新しいメールアドレスを入力し、送信ボタンをクリックしてください。その後、新しいメールアドレスに送信する確認コードを入力してください。",
+		email_2fa_auto_update_warning: "メールが更新されると、2FAメールも自動的に更新されます。",
+		verify_credentials: "ユーザー資格情報を確認",
+		verify_credentials_description: "パスワードとTOTP 2FAコードを入力してください(認証デバイスに記載されています)。",
+	},
 	new_email: "新しいメールアドレス",
 	modification_date: "変更日",
 	addition_date: "追加日",
@@ -262,7 +273,7 @@ export default {
 		add: "動画を追加",
 		remove: "コレクションから削除",
 		copy_to: "コピー先",
-		move_to: "移動先:",
+		move_to: "移動先",
 		multi_select: "複数選択",
 	},
 	feed: {
@@ -541,6 +552,7 @@ export default {
 		},
 		invalid_format: {
 			email: "無効なメールアドレス形式です！",
+			new_email_same_as_old_email: "新しいメールアドレスは古いものと同じです！",
 			invitation_code: "無効な招待コード形式です！",
 		},
 		too_long: {
@@ -641,4 +653,5 @@ export default {
 		choose: "ファイルを選択",
 		rechoose: "選び直す",
 	},
+	unknown: "不明",
 } as const satisfies LocaleIdentifiers;

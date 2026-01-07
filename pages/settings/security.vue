@@ -3,19 +3,63 @@
 	import QrcodeVue from "qrcode.vue";
 
 	const { t } = useI18n();
-	const passwordChangeDate = ref(new Date());
-	const passwordChangeDateDisplay = computed(() => formatDateWithLocale(passwordChangeDate.value));
 	const selfUserInfoStore = useSelfUserInfoStore();
 	const appSettingsStore = useAppSettingsStore();
-	const selfUserInfo = useSelfUserInfoStore();
 
 	// 修改邮箱相关
-	const showChangeEmail = ref(false);
+	type ChangeEmailStep = "verification" | "confirm" | "closed";
+	type ChangeEmailModelName = "verification-email" | "verification-totp" | "confirm-email" | "confirm-totp" | "closed";
+	const changeEmailStep = ref<ChangeEmailStep>("closed");
+	const changeEmailModelName = computed<ChangeEmailModelName>(() => {
+		// 根据 2FA 类型展示不同的验证画面
+		if (changeEmailStep.value === "closed")
+			return "closed";
+		else if (changeEmailStep.value === "verification")
+			return appSettingsStore.authenticatorType === "totp" ? "verification-totp" : "verification-email";
+		else if (changeEmailStep.value === "confirm")
+			return appSettingsStore.authenticatorType === "totp" ? "confirm-totp" : "confirm-email";
+		else
+			return "closed";
+	});
 	const changeEmailVerificationCode = ref("");
+	const changeEmailNewEmailVerificationCode = ref("");
 	const newEmail = ref("");
-	const isInvalidNewEmail = computed(() => !!newEmail.value && !newEmail.value.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]{2,}$/));
+	const isInvalidNewEmail = computed<boolean | string>(() => {
+		const newEmailLowerCase = newEmail.value?.toLowerCase();
+		const oldEmailLowerCase = selfUserInfoStore.userInfo.email?.toLowerCase();
+		if (!newEmail.value || isInvalidEmail(newEmail.value)) // email 为空或格式不正确
+			return true;
+		else if (newEmailLowerCase === oldEmailLowerCase)
+			return t("validation.invalid_format.new_email_same_as_old_email");
+		else
+			return false;
+	});
 	const changeEmailPassword = ref("");
 	const isChangingEmail = ref(false);
+	const isChangeEmailNextButtonDisabled = computed(() => {
+		if (changeEmailStep.value !== "verification")
+			return true;
+		if (appSettingsStore.authenticatorType !== "totp" && changeEmailVerificationCode.value.length !== 6)
+			return true;
+		if (
+			appSettingsStore.authenticatorType === "totp" &&
+			(changeEmailNewEmailVerificationCode.value.length !== 6 || !!isInvalidNewEmail.value)
+		)
+			return true;
+		return false;
+	});
+	const isChangeEmailApplyButtonDisabled = computed(() => {
+		if (changeEmailStep.value !== "confirm")
+			return true;
+		if (
+			!changeEmailPassword.value ||
+			!!isInvalidNewEmail.value ||
+			changeEmailNewEmailVerificationCode.value.length !== 6 ||
+			changeEmailVerificationCode.value.length !== 6
+		)
+			return true;
+		return false;
+	});
 
 	// 修改密码相关
 	const showChangePassword = ref(false);
@@ -24,6 +68,8 @@
 	const newPassword = ref("");
 	const confirmNewPassword = ref("");
 	const isChangingPassword = ref(false);
+	const passwordChangeDateDisplay = computed(() => selfUserInfoStore.userInfo.passwordUpdateDateTime ? formatDateWithLocale(new Date(selfUserInfoStore.userInfo.passwordUpdateDateTime)) : $t("unknown"));
+	const isChangePasswordApplyButtonDisabled = computed(() => isChangingPassword.value || !oldPassword.value || !newPassword.value || !changePasswordVerificationCode.value);
 
 	// 2FA 相关
 	const checkUser2FAResult = ref<CheckUserHave2FAResponseDto>(); // 获取到的用户 2FA 类型
@@ -53,7 +99,7 @@
 	const isTotp2FADisable = computed(() => checkUser2FAResult.value?.type === "email" || categoryOf2FAComputed.value === "email");
 
 	// 警告相关
-	const isUnsafeAccount = computed(() => selfUserInfo.isLogined && (appSettingsStore.authenticatorType === "none" || !checkUser2FAResult.value?.have2FA));
+	const isUnsafeAccount = computed(() => selfUserInfoStore.isLogined && (appSettingsStore.authenticatorType === "none" || !checkUser2FAResult.value?.have2FA));
 
 	// 创建 TOTP 2FA 相关
 	const showCreateTotpModel = ref(false); // 是否显示创建 TOTP 模态框
@@ -88,7 +134,7 @@
 	 */
 	async function updateUserEmail() {
 		const oldEmail = selfUserInfoStore.userInfo.email ?? "";
-		if (!newEmail.value || !changeEmailPassword.value || !changeEmailVerificationCode.value) {
+		if (!newEmail.value || !changeEmailPassword.value || !changeEmailNewEmailVerificationCode.value) {
 			useToast(t("toast.required_not_filled", 3), "warning", 5000);
 			return;
 		}
@@ -99,27 +145,44 @@
 		isChangingEmail.value = true;
 		const passwordHash = await generateHash(changeEmailPassword.value);
 		const updateUserEmailRequest: UpdateUserEmailRequestDto = {
-			uid: selfUserInfoStore.userInfo.uid ?? -1,
 			oldEmail,
 			newEmail: newEmail.value,
 			passwordHash,
-			verificationCode: changeEmailVerificationCode.value,
+			changeEmailVerificationCode: changeEmailVerificationCode.value,
+			changeEmailNewEmailVerificationCode: changeEmailNewEmailVerificationCode.value,
 		};
 		const updateUserEmailResult = await api.user.updateUserEmail(updateUserEmailRequest);
 		if (updateUserEmailResult.success) {
 			await api.user.getSelfUserInfo({ getSelfUserInfoRequest: undefined, appSettingsStore, selfUserInfoStore, headerCookie: undefined });
 			useToast(t("toast.email_changed"), "success");
-			showChangeEmail.value = false;
+			changeEmailStep.value = "closed";
 		} else
 			useToast(t("toast.something_went_wrong"), "error", 5000);
-		newEmail.value = "";
-		changeEmailPassword.value = "";
-		changeEmailVerificationCode.value = "";
+		closeChangeEmailModel();
 		isChangingEmail.value = false;
 	}
 
 	/**
-	 * 修改 Email
+	 * 根据用户当前的 2FA 类型，开启修改 Email 的模态框并展示不同表单
+	 */
+	function openChangeEmailModel() {
+		changeEmailStep.value = "verification";
+	}
+
+	/**
+	 * 关闭修改 Email 的模态框，并清除相关状态
+	 */
+	function closeChangeEmailModel() {
+		changeEmailStep.value = "closed";
+		newEmail.value = "";
+		changeEmailPassword.value = "";
+		changeEmailVerificationCode.value = "";
+		changeEmailNewEmailVerificationCode.value = "";
+		isChangingEmail.value = false;
+	}
+
+	/**
+	 * 修改密码
 	 */
 	async function updateUserPassword() {
 		if (!oldPassword.value || !newPassword.value || !changePasswordVerificationCode.value) {
@@ -409,7 +472,7 @@
 				icon="email"
 				trailingIcon="edit"
 				:details="$t('current_email') + $t('colon') + selfUserInfoStore.userInfo.email"
-				@trailingIconClick="showChangeEmail = true"
+				@trailingIconClick="openChangeEmailModel"
 			>{{ $t("email_address") }}</SettingsChipItem>
 		</section>
 		<section>
@@ -436,39 +499,148 @@
 			>{{ $t("totp_authenticator") }}</SettingsChipItem>
 		</section>
 
-		<Modal v-model="showChangeEmail" :title="$t('change_email')" icon="email">
+		<!-- 修改邮箱 -->
+		<Modal :open="changeEmailStep !== 'closed'" :title="$t('change_email.title')" icon="email" @close="closeChangeEmailModel">
 			<div class="change-email-modal">
-				<form>
-					<TextBox
-						v-model="newEmail"
-						:required="true"
-						:invalid="isInvalidNewEmail"
-						type="email"
-						icon="email"
-						:placeholder="$t('new_email')"
-						autoComplete="new-email"
-					/>
-					<SendVerificationCode v-model="changeEmailVerificationCode" :email="newEmail" verificationCodeFor="change-email" :disabled="!newEmail || isInvalidNewEmail" />
-					<TextBox
-						v-model="changeEmailPassword"
-						:required="true"
-						type="password"
-						icon="lock"
-						:placeholder="$t('password.title')"
-						autoComplete="current-password"
-					/>
-				</form>
+				<div class="page">
+
+					<!-- step: 1-1 (email-2fa/no-2fa) -->
+					<div v-if="changeEmailModelName === 'verification-email'" class="step">
+						<ShadingIcon icon="email" />
+						<h3><Icon name="counter_1" />{{ $t('change_email.verify_current_email') }}</h3>
+						<p>
+							<Preserves>{{ $t('change_email.verify_current_email_description') }}</Preserves>
+						</p>
+						<br />
+						<form>
+							<SendVerificationCode
+								v-model="changeEmailVerificationCode"
+								verificationCodeFor="change-email-verify-old-email"
+							/>
+						</form>
+					</div>
+
+					<!-- step: 1-2 (totp-2fa) -->
+					<div v-if="changeEmailModelName === 'verification-totp'" class="step">
+						<ShadingIcon icon="email" />
+						<h3><Icon name="counter_1" />{{ $t('change_email.verify_new_email') }}</h3>
+						<p>
+							<Preserves>{{ t('change_email.verify_new_email_description') }}</Preserves>
+						</p>
+						<br />
+						<form>
+							<TextBox
+								v-model="newEmail"
+								:required="true"
+								:invalid="isInvalidNewEmail"
+								type="email"
+								icon="email"
+								:placeholder="$t('new_email')"
+								autoComplete="new-email"
+							/>
+							<SendVerificationCode
+								v-model="changeEmailNewEmailVerificationCode"
+								:email="newEmail"
+								verificationCodeFor="change-email-verify-new-email"
+								:disabled="!newEmail || !!isInvalidNewEmail"
+							/>
+						</form>
+					</div>
+
+					<!-- step: 2-1 (email-2fa/no-2fa) -->
+					<div v-if="changeEmailModelName === 'confirm-email'" class="step">
+						<ShadingIcon icon="email" />
+						<h3><Icon name="counter_2" />{{ t('change_email.verify_new_email_and_credentials') }}</h3>
+						<p>{{ t('change_email.verify_new_email_and_credentials_description') }}</p>
+						<p v-if="appSettingsStore.authenticatorType === 'email'">
+							{{ t('change_email.email_2fa_auto_update_warning') }}
+						</p>
+						<br />
+						<form>
+							<TextBox
+								v-model="changeEmailPassword"
+								:required="true"
+								type="password"
+								icon="lock"
+								:placeholder="$t('password.title')"
+								autoComplete="current-password"
+							/>
+							<TextBox
+								v-model="newEmail"
+								:required="true"
+								:invalid="isInvalidNewEmail"
+								type="email"
+								icon="email"
+								:placeholder="$t('new_email')"
+								autoComplete="new-email"
+							/>
+							<SendVerificationCode
+								v-model="changeEmailNewEmailVerificationCode"
+								:email="newEmail"
+								verificationCodeFor="change-email-verify-new-email"
+								:disabled="!newEmail || !!isInvalidNewEmail"
+							/>
+						</form>
+					</div>
+
+					<!-- step: 2-2 (totp-2fa) -->
+					<div v-if="changeEmailModelName === 'confirm-totp'" class="step">
+						<ShadingIcon icon="email" />
+						<h3><Icon name="counter_2" />{{ t('change_email.verify_credentials') }}</h3>
+						<p>
+							<Preserves>{{ t('change_email.verify_credentials_description') }}</Preserves>
+						</p>
+						<br />
+						<form>
+							<TextBox
+								v-model="changeEmailPassword"
+								:required="true"
+								type="password"
+								icon="lock"
+								:placeholder="$t('password.title')"
+								autoComplete="current-password"
+							/>
+							<TextBox
+								v-model="changeEmailVerificationCode"
+								:required="true"
+								type="text"
+								icon="lock"
+								:placeholder="$t('totp_verification_code')"
+								utoComplete="off"
+							/>
+						</form>
+					</div>
+
+				</div>
 			</div>
-			<template #footer-right>
-				<Button class="secondary" :disabled="isChangingEmail" @click="showChangePassword = false">{{ $t("step.cancel") }}</Button>
-				<Button @click="updateUserEmail" :disabled="isChangingEmail || !newEmail || !changeEmailPassword || !changeEmailVerificationCode" :loading="isChangingEmail">{{ $t("step.apply") }}</Button>
+			<template v-if="changeEmailStep === 'verification'" #footer-right>
+				<Button class="secondary" :disabled="isChangingEmail" @click="closeChangeEmailModel">{{ $t("step.cancel") }}</Button>
+				<Button icon="arrow_right" class="icon-behind" @click="changeEmailStep = 'confirm'" :disabled="isChangingEmail || isChangeEmailNextButtonDisabled">{{ $t("step.next") }}</Button>
+			</template>
+			<template v-else #footer-right>
+				<Button icon="arrow_left" class="secondary" :disabled="isChangingEmail" @click="changeEmailStep = 'verification'">{{ $t("step.previous") }}</Button>
+				<Button class="secondary" :disabled="isChangingEmail" @click="closeChangeEmailModel">{{ $t("step.cancel") }}</Button>
+				<Button @click="updateUserEmail" :disabled="isChangingEmail || isChangeEmailApplyButtonDisabled" :loading="isChangingEmail">{{ $t("step.apply") }}</Button>
 			</template>
 		</Modal>
 
 		<Modal v-model="showChangePassword" :title="$t('password.change')" icon="password">
 			<div class="change-password-modal">
 				<form>
-					<SendVerificationCode v-model="changePasswordVerificationCode" verificationCodeFor="change-password" />
+					<SendVerificationCode
+						v-if="appSettingsStore.authenticatorType !== 'totp'"
+						v-model="changePasswordVerificationCode"
+						verificationCodeFor="change-password"
+					/>
+					<TextBox
+						v-else
+						v-model="changePasswordVerificationCode"
+						:required="true"
+						type="text"
+						icon="lock"
+						:placeholder="$t('totp_verification_code')"
+						autoComplete="off"
+					/>
 					<TextBox
 						v-model="oldPassword"
 						:required="true"
@@ -497,7 +669,7 @@
 			</div>
 			<template #footer-right>
 				<Button class="secondary" :disabled="isChangingPassword" @click="showChangePassword = false">{{ $t("step.cancel") }}</Button>
-				<Button @click="updateUserPassword" :disabled="isChangingPassword || !oldPassword || !newPassword || !changePasswordVerificationCode" :loading="isChangingPassword">{{ $t("step.apply") }}</Button>
+				<Button @click="updateUserPassword" :disabled="isChangePasswordApplyButtonDisabled" :loading="isChangingPassword">{{ $t("step.apply") }}</Button>
 			</template>
 		</Modal>
 
@@ -639,14 +811,15 @@
 </template>
 
 <style scoped lang="scss">
-	.change-password-modal {
+	.change-email-modal {
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
 		gap: 24px;
-		width: 350px;
+		width: 80dvw;
+		max-width: 400px;
 
-		> form {
+		form {
 			display: flex;
 			flex-direction: column;
 			gap: 16px;
@@ -657,7 +830,7 @@
 		}
 	}
 
-	.change-email-modal {
+	.change-password-modal {
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
@@ -693,76 +866,40 @@
 			--size: large;
 		}
 
-		.page {
+		.totp-qrcode-box {
+			@include round-small;
+			@include chip-shadow;
+			display: inline-flex;
+			justify-content: center;
+			align-items: center;
+			width: 150px;
+			height: 150px;
+			padding: 8px;
+			background-color: white;
+
+			> svg {
+				@include square(100%);
+			}
+		}
+
+		.totp-confirm-form {
+			margin-top: 8px;
+		}
+
+		pre {
+			@include round-small;
 			display: flex;
-			flex-direction: column;
-			gap: 8px;
+			align-items: center;
+			height: 36px;
+			margin-top: 4px;
+			padding: 0 12px;
+			background-color: c(gray-10);
+			cursor: text;
 
-			.totp-qrcode-box {
-				@include round-small;
-				@include chip-shadow;
-				display: inline-flex;
-				justify-content: center;
-				align-items: center;
-				width: 150px;
-				height: 150px;
-				padding: 8px;
-				background-color: white;
-
-				> svg {
-					@include square(100%);
-				}
-			}
-
-			.totp-confirm-form {
-				margin-top: 8px;
-			}
-
-			.step {
-				@include chip-shadow;
-				@include round-large;
-				position: relative;
-				padding: 16px;
-				overflow: clip;
-				background-color: c(surface-color);
-
-				.shading-icon {
-					position: absolute;
-					z-index: unset;
-				}
-
-				> *:not(h3) {
-					margin-left: 32px;
-				}
-			}
-
-			h3 {
-				display: flex;
-				gap: 8px;
-				align-items: center;
-				margin-bottom: 6px;
-
-				.icon {
-					color: c(accent);
-					font-size: 24px;
-				}
-			}
-
-			pre {
-				@include round-small;
-				display: flex;
-				align-items: center;
-				height: 36px;
-				margin-top: 4px;
-				padding: 0 12px;
-				background-color: c(gray-10);
-				cursor: text;
-
-				code {
-					display: block;
-					width: 100%;
-					user-select: text;
-				}
+			code {
+				display: block;
+				width: 100%;
+				user-select: text;
 			}
 		}
 	}
@@ -801,6 +938,49 @@
 
 		.text-box {
 			--size: large;
+		}
+	}
+
+	.change-password-modal,
+	.change-email-modal,
+	.create-totp-modal,
+	.delete-totp-modal,
+	.enable-email-2fa-modal,
+	.delete-email-2fa-modal {
+		.page {
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+
+			.step {
+				@include chip-shadow;
+				@include round-large;
+				position: relative;
+				padding: 16px;
+				overflow: clip;
+				background-color: c(surface-color);
+
+				.shading-icon {
+					position: absolute;
+					z-index: unset;
+				}
+
+				> *:not(h3) {
+					margin-left: 32px;
+				}
+			}
+
+			h3 {
+				display: flex;
+				gap: 8px;
+				align-items: center;
+				margin-bottom: 6px;
+
+				.icon {
+					color: c(accent);
+					font-size: 24px;
+				}
+			}
 		}
 	}
 

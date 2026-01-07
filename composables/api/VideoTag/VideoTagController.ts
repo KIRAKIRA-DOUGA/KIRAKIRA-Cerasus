@@ -1,5 +1,5 @@
 import { GET, POST } from "../Common";
-import type { CreateVideoTagResponseDto, GetVideoTagByTagIdRequestDto, GetVideoTagByTagIdResponseDto, SearchVideoTagRequestDto, SearchVideoTagResponseDto } from "./VideoTagControllerDto";
+import type { CreateVideoTagRequestDto, CreateVideoTagResponseDto, GetVideoTagByTagIdRequestDto, GetVideoTagByTagIdResponseDto, SearchVideoTagRequestDto, SearchVideoTagResponseDto } from "./VideoTagControllerDto";
 
 const BACK_END_URI = environment.backendUri;
 const VIDEO_TAG_API_URI = `${BACK_END_URI}video/tag`;

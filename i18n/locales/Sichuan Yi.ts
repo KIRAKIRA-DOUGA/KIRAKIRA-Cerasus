@@ -243,7 +243,18 @@ export default {
 	totp_authenticator: "crwdns3402:0crwdne3402:0",
 	totp_verification_code: "crwdns3546:0crwdne3546:0",
 	current_email: "crwdns2472:0crwdne2472:0",
-	change_email: "crwdns3404:0crwdne3404:0",
+	change_email: {
+		title: "crwdns3794:0crwdne3794:0",
+		verify_current_email: "crwdns3796:0crwdne3796:0",
+		verify_current_email_description: "crwdns3798:0crwdne3798:0",
+		verify_new_email: "crwdns3800:0crwdne3800:0",
+		verify_new_email_description: "crwdns3802:0crwdne3802:0",
+		verify_new_email_and_credentials: "crwdns3804:0crwdne3804:0",
+		verify_new_email_and_credentials_description: "crwdns3806:0crwdne3806:0",
+		email_2fa_auto_update_warning: "crwdns3808:0crwdne3808:0",
+		verify_credentials: "crwdns3810:0crwdne3810:0",
+		verify_credentials_description: "crwdns3812:0crwdne3812:0",
+	},
 	new_email: "crwdns3406:0crwdne3406:0",
 	modification_date: "crwdns2474:0crwdne2474:0",
 	addition_date: "crwdns2476:0crwdne2476:0",
@@ -541,6 +552,7 @@ export default {
 		},
 		invalid_format: {
 			email: "crwdns3326:0crwdne3326:0",
+			new_email_same_as_old_email: "crwdns3792:0crwdne3792:0",
 			invitation_code: "crwdns3328:0crwdne3328:0",
 		},
 		too_long: {
@@ -641,4 +653,5 @@ export default {
 		choose: "crwdns3668:0crwdne3668:0",
 		rechoose: "crwdns3670:0crwdne3670:0",
 	},
+	unknown: "crwdns3814:0crwdne3814:0",
 } as const satisfies LocaleIdentifiers;

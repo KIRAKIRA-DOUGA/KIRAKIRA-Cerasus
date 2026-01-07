@@ -250,7 +250,18 @@ export default {
 	totp_authenticator: "TOTP Authenticator",
 	totp_verification_code: "Verification Code",
 	current_email: "Current Email",
-	change_email: "Change Email",
+	change_email: {
+		title: "Change Email",
+		verify_current_email: "Verify Current Email",
+		verify_current_email_description: "Click the send button, and then enter the verification code that we sent to your currently email.",
+		verify_new_email: "Verify New Email",
+		verify_new_email_description: "Please enter your new email address and click the send button, then enter the verification code we sent to your new email.",
+		verify_new_email_and_credentials: "Verify Your New Email and User Credentials",
+		verify_new_email_and_credentials_description: "Please enter your password and your new email address and click the send button. Then enter the verification code we send to your new email.",
+		email_2fa_auto_update_warning: "Once the email is updated, your 2FA email will also be updated automatically.",
+		verify_credentials: "Verify User Credentials",
+		verify_credentials_description: "Please enter your password and your TOTP 2FA code (which can be found on your authentication device).",
+	},
 	new_email: "New Email",
 	modification_date: "Modification Date",
 	addition_date: "Addition Date",
@@ -548,6 +559,7 @@ export default {
 		},
 		invalid_format: {
 			email: "Invalid email format!",
+			new_email_same_as_old_email: "The new email address is the same as the old one!",
 			invitation_code: "Invalid invitation code format!",
 		},
 		too_long: {
@@ -648,4 +660,5 @@ export default {
 		choose: "Choose File",
 		rechoose: "Rechoose",
 	},
+	unknown: "Unknown",
 } as const;
