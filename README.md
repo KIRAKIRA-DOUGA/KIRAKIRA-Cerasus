@@ -585,7 +585,6 @@ button:any-hover {
 [![VSCode](https://img.shields.io/badge/-Visual%20Studio%20Code-007ACC?style=flat-square&logo=visual-studio-code&logoColor=white)](https://code.visualstudio.com/)\
 [![WebStorm](https://img.shields.io/badge/-WebStorm-000000?style=flat-square&logo=webstorm&logoColor=white)](https://www.jetbrains.com/webstorm/)\
 [![Sublime Text](https://img.shields.io/badge/-Sublime%20Text-FF9800?style=flat-square&logo=sublime-text&logoColor=white)](https://www.sublimetext.com/)\
-[![Fleet](https://img.shields.io/badge/-Fleet-000000?style=flat-square&logo=jetbrains&logoColor=white)](https://www.jetbrains.com/fleet/)
 
 <details>
 <summary>不要使用</summary>
@@ -598,6 +597,8 @@ button:any-hover {
 * Notepad++
 * HBuilder
 * HBuilderX
+* Fleet
+* Emacs
 * Vim
 * 记事本
 * 写字板

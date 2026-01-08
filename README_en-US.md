@@ -575,7 +575,6 @@ It is recommended to use any of the following platforms for development:
 [![VSCode](https://img.shields.io/badge/-Visual%20Studio%20Code-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=white)](https://code.visualstudio.com/)\
 [![WebStorm](https://img.shields.io/badge/-WebStorm-000000?style=for-the-badge&logo=webstorm&logoColor=white)](https://www.jetbrains.com/webstorm/)\
 [![Sublime Text](https://img.shields.io/badge/-Sublime%20Text-FF9800?style=for-the-badge&logo=sublime-text&logoColor=white)](https://www.sublimetext.com/)\
-[![Fleet](https://img.shields.io/badge/-Fleet-000000?style=for-the-badge&logo=jetbrains&logoColor=white)](https://www.jetbrains.com/fleet/)
 
 <details>
 <summary>Never use</summary>
@@ -588,6 +587,8 @@ It is recommended to use any of the following platforms for development:
 * Notepad++
 * HBuilder
 * HBuilderX
+* Fleet
+* Emacs
 * Vim
 * Notepad
 * Wordpad
