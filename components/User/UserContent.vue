@@ -39,8 +39,6 @@
 		avatarInside?: boolean;
 		/** 是否让头像占满整行？ */
 		avatarFullWidth?: boolean;
-		/** 是否让简介允许换行。 */
-		descriptionWrap?: boolean;
 	}>();
 
 	// TODO: 显示备注用户，待后端功能实现。
