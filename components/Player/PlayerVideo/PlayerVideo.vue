@@ -782,6 +782,7 @@
 
 			& video {
 				max-height: calc(100dvh - 36px - 26px * 2);
+				aspect-ratio: 16 / 9;
 			}
 		}
 
