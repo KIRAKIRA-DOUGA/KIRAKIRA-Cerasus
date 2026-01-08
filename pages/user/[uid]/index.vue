@@ -8,6 +8,8 @@
 		urlUid.value = currentUserUid();
 	});
 
+	const selfUserInfoStore = useSelfUserInfoStore();
+
 	const userBirthday = ref(0);
 	const userJoinDate = ref(0);
 	const userId = ref<number>();
@@ -80,6 +82,8 @@
 		</div>
 
 		<div class="right">
+			<Button v-if="urlUid === selfUserInfoStore.userInfo.uid" href="/upload">{{ $t("manage_content") }}</Button>
+
 			<div class="toolbox-card">
 				<div class="user-counts">
 					<div>

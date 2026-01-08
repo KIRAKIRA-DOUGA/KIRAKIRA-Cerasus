@@ -20,23 +20,6 @@
 
 <template>
 	<div>
-		<div class="user-profile">
-			<UserContent
-				v-tooltip="$t('profile.edit')"
-				:avatar="selfUserInfoStore.userInfo.avatar"
-				:username="selfUserInfoStore.userInfo.username"
-				:nickname="selfUserInfoStore.userInfo.userNickname"
-				:gender="selfUserInfoStore.userInfo.gender"
-				:to="'/settings/profile'"
-				size="huge"
-				center
-			>
-				<template #description>
-					{{ selfUserInfoStore.userInfo.signature }}
-				</template>
-			</UserContent>
-		</div>
-
 		<!-- TODO: 请在至少一个计数做完之后启用 -->
 		<!-- <div class="user-counts chip">
 			<div>

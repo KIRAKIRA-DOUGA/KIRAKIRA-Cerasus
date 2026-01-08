@@ -37,6 +37,10 @@
 		center?: boolean;
 		/** 是否让头像不凸出。 */
 		avatarInside?: boolean;
+		/** 是否让头像占满整行？ */
+		avatarFullWidth?: boolean;
+		/** 是否让简介允许换行。 */
+		descriptionWrap?: boolean;
 	}>();
 
 	// TODO: 显示备注用户，待后端功能实现。
@@ -52,7 +56,7 @@
 </script>
 
 <template>
-	<Comp :class="{ large: size === 'large', huge: size === 'huge', center, 'link-full': to, 'avatar-inside': avatarInside }">
+	<Comp :class="{ large: size === 'large', huge: size === 'huge', center, 'link-full': to, 'avatar-inside': avatarInside, 'avatar-full-width': avatarFullWidth }">
 		<Transition>
 			<div v-if="pinned" class="pinned">
 				<Icon v-tooltip:bottom="$t('pinned')" name="pin" />
@@ -60,11 +64,16 @@
 		</Transition>
 
 		<slot v-if="!avatarInside" name="avatar">
-			<UserAvatar :avatar :uid :to />
+			<div class="above">
+				<UserAvatar :avatar :uid :to :class="{ 'avatar-full-width': avatarFullWidth }" />
+				<div v-if="$slots.default" class="action-buttons">
+					<slot name="actionButtons"></slot>
+				</div>
+			</div>
 		</slot>
 
 		<component :is="to ? LocaleLink : 'div'" class="container link lite" :to>
-			<div class="above">
+			<div class="main-line">
 				<div v-if="avatarInside" class="user-avatar">
 					<UserAvatar :avatar :uid :to />
 				</div>
@@ -73,7 +82,6 @@
 					<div class="user">
 						<component :is="uid ? LocaleLink : 'div'" v-if="nickname || username" :to="uid ? `/user/${uid ?? ''}` : undefined" class="names lite">
 							<span v-if="nickname" class="nickname">{{ nickname }}</span>
-							<span v-if="username" class="username">@{{ username }}</span>
 							<!-- <span v-if="memoParen" class="memo" :class="[memoParen]">{{ memo }}</span> -->
 						</component>
 
@@ -85,6 +93,10 @@
 							<slot name="icons"></slot>
 						</div>
 					</div>
+
+					<p v-if="username" class="username">
+						@{{ username }}
+					</p>
 
 					<p v-if="$slots.description" class="description">
 						<slot name="description"></slot>
@@ -129,6 +141,11 @@
 			align-items: center;
 		}
 
+		&.avatar-full-width {
+			flex-direction: column;
+			gap: 16px;
+		}
+
 		* {
 			user-select: text;
 		}
@@ -167,17 +184,36 @@
 		min-width: 0;
 		user-select: text;
 
-		:comp.large &,
-		:comp.huge & {
+		:comp.large & {
 			gap: 4px;
 		}
 
-		:comp:not(.avatar-inside) & {
+		:comp.huge & {
+			gap: 16px;
+		}
+
+		:comp:not(.avatar-inside, .avatar-full-width) & {
 			padding-left: 12px;
 		}
 	}
 
 	.above {
+		display: flex;
+		justify-content: space-between;
+		align-items: end;
+
+		.action-buttons {
+			display: flex;
+			gap: 16px;
+			align-items: center;
+
+			.soft-button {
+				--ripple-size: var(--wrapper-size);
+			}
+		}
+	}
+
+	.main-line {
 		display: flex;
 
 		:comp.avatar-inside & {
@@ -273,10 +309,6 @@
 				font-weight: bold;
 			}
 
-			.username {
-				color: c(icon-color);
-			}
-
 			// .memo {
 			// 	color: c(icon-color);
 
@@ -329,6 +361,11 @@
 				color: c(blue);
 			}
 		}
+	}
+
+	.username {
+		color: c(icon-color);
+		font-family: $monospace-fonts;
 	}
 
 	.description {

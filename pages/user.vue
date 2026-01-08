@@ -130,33 +130,36 @@
 			<div>
 				<div class="content">
 					<UserContent
-						v-tooltip="isSelf ? $t('profile.edit') : undefined"
 						:avatar="isSelf ? selfUserInfoStore.userInfo.avatar : userInfo?.result?.avatar"
 						:username="isSelf ? selfUserInfoStore.userInfo.username : userInfo?.result?.username"
 						:nickname="isSelf ? selfUserInfoStore.userInfo.userNickname : userInfo?.result?.userNickname"
 						:gender="isSelf ? selfUserInfoStore.userInfo.gender : userInfo?.result?.gender"
 						:roles="isSelf ? selfUserInfoStore.userInfo.roles : userInfo?.result?.roles"
-						:to="isSelf ? `/settings/profile` : undefined"
 						size="huge"
-						center
+						avatarFullWidth
 					>
-						<template #description>
-							{{ isSelf ? selfUserInfoStore.userInfo.signature : userInfo?.result?.signature }}
+						{{ isSelf ? selfUserInfoStore.userInfo.signature : userInfo?.result?.signature }}
+						<template #actionButtons>
+							<div class="actions">
+								<!-- <SoftButton v-tooltip:top="'私信'" icon="email" /> -->
+								<SoftButton
+									v-if="!isSelf"
+									v-tooltip:top="$t('more')"
+									icon="more_vert"
+									@click="e => actionMenu = [e, 'y']"
+								/>
+								<Menu v-if="!isSelf" v-model="actionMenu">
+									<MenuItem icon="groups">{{ $t("add_to_group") }}</MenuItem>
+									<MenuItem icon="badge">{{ $t("modify_memo") }}</MenuItem>
+									<hr />
+									<MenuItem icon="flag">{{ $t("report") }}</MenuItem>
+									<MenuItem icon="block" @click="blockUser">{{ $t("block_user") }}</MenuItem>
+								</Menu>
+								<FollowButton v-if="!isSelf" :uid="urlUid" :isFollowing />
+								<SoftButton v-if="isSelf" href="/settings/profile" icon="edit" />
+							</div>
 						</template>
 					</UserContent>
-					<div class="actions">
-						<!-- <SoftButton v-tooltip:top="'私信'" icon="email" /> -->
-						<SoftButton v-if="!isSelf" v-tooltip:top="$t('more')" icon="more_vert" @click="e => actionMenu = [e, 'y']" />
-						<Menu v-if="!isSelf" v-model="actionMenu">
-							<MenuItem icon="groups">{{ $t("add_to_group") }}</MenuItem>
-							<MenuItem icon="badge">{{ $t("modify_memo") }}</MenuItem>
-							<hr />
-							<MenuItem icon="flag">{{ $t("report") }}</MenuItem>
-							<MenuItem icon="block" @click="blockUser">{{ $t("block_user") }}</MenuItem>
-						</Menu>
-						<FollowButton v-if="!isSelf" :uid="urlUid" :isFollowing />
-						<Button v-if="isSelf" href="/upload">{{ $t("manage_content") }}</Button>
-					</div>
 				</div>
 				<TabBar v-model="currentTab">
 					<TabItem v-for="tab in tabs" :id="tab.id" :key="tab.id" :icon="tab.icon" :to="`/user/${urlUid}/${tab.id}`">{{ $t(tab.name || "home", 2) }}</TabItem>
@@ -175,9 +178,9 @@
 
 	header {
 		@include card-shadow;
-		position: sticky;
-		top: 0;
-		z-index: 4;
+		// position: sticky;
+		// top: 0;
+		// z-index: 4;
 		padding: 0 $page-padding-x;
 		background-color: c(surface-color);
 
@@ -195,7 +198,7 @@
 		flex-wrap: wrap;
 		gap: 12px;
 		justify-content: space-between;
-		align-items: center;
+		align-items: start;
 		padding: 24px 0;
 
 		.actions {
@@ -208,6 +211,10 @@
 			.soft-button {
 				--ripple-size: var(--wrapper-size);
 			}
+		}
+
+		.user-content {
+			flex-grow: 1;
 		}
 	}
 
