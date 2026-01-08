@@ -170,6 +170,10 @@ export default defineNuxtConfig({
 				target: "esnext",
 			},
 		},
+		devProxy: {
+			"/api/staging/": { target: "https://stg-rosales.kirafile.com", changeOrigin: true },
+			"/api/production/": { target: "https://rosales.kirakira.moe", changeOrigin: true },
+		},
 	},
 
 	build: {
