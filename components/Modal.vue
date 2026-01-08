@@ -291,7 +291,7 @@
 			@include card-in-card-shadow;
 			display: flex;
 			padding: calc($padding / 3) $padding $padding;
-			overflow: scroll;
+			overflow: auto;
 			background-color: c(main-bg, 45%);
 
 			@include mobile {
