@@ -52,8 +52,8 @@
 			{ name: "twitter:url", content: host },
 		],
 		link: [
-			{ rel: "icon", href: "/favicon.ico", sizes: "48x48" },
-			{ rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
+			{ rel: "icon", href: environment.production ? "/favicon.ico" : "/favicon-dev.ico", sizes: "48x48" },
+			{ rel: "icon", href: environment.production ? "/favicon.svg" : "/favicon-dev.svg", type: "image/svg+xml" },
 			{ rel: "apple-touch-icon", href: "/static/images/icons/apple-touch-icon.png" },
 			{ rel: "manifest", href: "/manifest.json" },
 			{ rel: "alternate", href: host, hreflang: "x-default" },
