@@ -61,7 +61,7 @@
 		:step="1"
 	/> -->
 
-	<TextBox v-model="profile.bio" :placeholder="$t('user.bio')" icon="edit" />
+	<TextBox v-model="profile.bio" :placeholder="$t('user.bio')" icon="edit" :maxLength="200" />
 
 	<div class="gender">
 		<div class="gender-subtitle">
