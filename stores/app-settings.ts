@@ -1,5 +1,3 @@
-import type { fitTypes } from "components/BackgroundImage/BackgroundImageImg.vue";
-
 export const useAppSettingsStore = defineStore("app-settings", {
 	state: () => ({
 		lastSettingPage: "appearance",
@@ -14,8 +12,6 @@ export const useAppSettingsStore = defineStore("app-settings", {
 			opacity: 0.2,
 			tint: 0.75,
 			blur: 0,
-			fit: "cover" as keyof typeof fitTypes,
-			position: [50, 50] as TwoD,
 		},
 
 		player: {

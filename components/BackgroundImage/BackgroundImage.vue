@@ -10,8 +10,8 @@
 				<BackgroundImageImg
 					:src="backgroundImages.currentImage"
 					:autoAlt="false"
-					:fit="backgroundImageSettingsStore.fit"
-					:position="backgroundImageSettingsStore.position"
+					:fit="backgroundImages.fit"
+					:position="backgroundImages.position"
 					:style="{ filter: `blur(${backgroundImageSettingsStore.blur}px)` }"
 				/>
 			</Transition>

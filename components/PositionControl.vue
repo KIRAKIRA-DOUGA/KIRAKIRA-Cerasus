@@ -12,6 +12,8 @@
 
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
+		/** 位置值。 */
+		value: TwoD;
 		/** 禁用？ */
 		disabled?: boolean;
 		/** 默认值。当单击鼠标中键或触摸屏长按组件时还原默认值。 @default [50, 50] */
@@ -21,10 +23,17 @@
 		defaultValue: () => [50, 50],
 	});
 
-	const value = defineModel<TwoD>({ required: true });
+	const emits = defineEmits<{
+		/** 当拖动滑块时触发。 */
+		changing: [value: TwoD];
+		/** 当滑块被拖动后抬起时触发。 */
+		changed: [value: TwoD];
+	}>();
+
 	const thumbEl = ref<HTMLDivElement>(), buttonsEl = ref<HTMLDivElement>();
 	const lastPointerAction = ref<"move" | "down" | "down move" | "up">("up");
-	const smoothValue = useSmoothValue(value, 0.5);
+	const _valueRef = toRef(() => props.value); // smoothValue 需要接受一个 ref 类型的参数，必须先将 prop 转换为 ref。
+	const smoothValue = useSmoothValue(_valueRef, 0.5);
 
 	const getHoveredElements = (e: PointerEvent) => document.elementsFromPoint(e.pageX, e.pageY);
 
@@ -57,23 +66,26 @@
 		setChildrenState(hoveredElements, "pressed");
 		const aborter = new AbortController();
 		target.setPointerCapture(e.pointerId);
-		const eDown = e, oldValue = value.value;
+		const eDown = e, oldValue = props.value;
 		let lastPointerMoveEvent: PointerEvent;
+		let changingValue: TwoD | undefined;
 		const pointerMove = useDebounce((e?: PointerEvent, shiftKey?: boolean) => {
 			if (e) lastPointerMoveEvent = e;
 			e ??= lastPointerMoveEvent;
 			if (lastPointerAction.value === "down" && Math.hypot(e.pageX - eDown.pageX, e.pageY - eDown.pageY) <= POINTER_MOVE_THRESHOLD || !lastPointerAction.value.includes("down")) return;
 			lastPointerAction.value = "down move";
 			setChildrenState([thumb], "pressed");
-			value.value = withShiftKey([
+			changingValue = withShiftKey([
 				clampMap(e.offsetX, targetLeft, targetRight, 0, 100),
 				clampMap(e.offsetY, targetTop, targetBottom, 0, 100),
 			], oldValue, shiftKey ?? e.shiftKey);
+			emits("changing", changingValue);
 		});
 		target.addEventListener("pointermove", pointerMove, { signal: aborter.signal });
 		target.addEventListener("pointerup", () => {
 			aborter.abort();
 			target.releasePointerCapture(e.pointerId);
+			if (changingValue) emits("changed", changingValue);
 		}, { signal: aborter.signal });
 		(["keydown", "keyup"] as const).forEach(type => window.addEventListener(type, e => {
 			if (e.key === "Shift") pointerMove(undefined, type === "keydown");
@@ -98,13 +110,13 @@
 		@pointerleave="handlePointerLeave"
 		@pointerup="handlePointerUp"
 		@pointerdown="handlePointerDown"
-		@auxclick.prevent="value = defaultValue;"
+		@auxclick.prevent="emits('changed', defaultValue)"
 		@contextmenu="stopEvent"
 		:disabled="disabled || undefined"
 	>
 		<div ref="buttonsEl" class="buttons">
 			<template v-for="y in KEY_PERCENT">
-				<button v-for="x in KEY_PERCENT" :key="`${x}% ${y}%`" type="button" :tabIndex="-1" @click="value = [x, y]"></button>
+				<button v-for="x in KEY_PERCENT" :key="`${x}% ${y}%`" type="button" :tabIndex="-1" @click="emits('changed', [x, y])"></button>
 			</template>
 		</div>
 		<div ref="thumbEl" class="thumb" :style="{ '--x': smoothValue[0], '--y': smoothValue[1] }"></div>

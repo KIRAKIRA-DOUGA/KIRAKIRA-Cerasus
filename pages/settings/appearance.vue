@@ -151,7 +151,7 @@
 				class="wallpaper-color force-color"
 			>
 				<div class="palette-card">
-					<BackgroundImageImg :src="backgroundImages.currentImage" :alt="$t('background.title')" :fit="backgroundImageSettingsStore.fit" :position="backgroundImageSettingsStore.position" />
+					<BackgroundImageImg :src="backgroundImages.currentImage" :alt="$t('background.title')" :fit="backgroundImages.fit" :position="backgroundImages.position" />
 					<div class="overlay light"></div>
 					<div class="overlay color"></div>
 					<div>
@@ -173,13 +173,13 @@
 							v-for="item in backgroundImages.items"
 							:id="item.key"
 							:key="item.key"
-							v-model="backgroundImages.backgroundImage"
+							v-model="backgroundImages.currentImageKey"
 							class="preview-bg-image force-color"
 							:style="{ '--accent-50': item.color }"
 							@contextmenu.prevent="e => item.key !== -1 && (backgroundImageItemMenu = [e, item, e.currentTarget as HTMLElement])"
 						>
 							<Icon v-if="item.key === -1" name="prohibited" />
-							<BackgroundImageImg v-else :src="item.url" autoAlt :fit="backgroundImageSettingsStore.fit" :position="backgroundImageSettingsStore.position" />
+							<BackgroundImageImg v-else :src="item.url" autoAlt :fit="item.fit" :position="item.position" />
 						</SettingsGridItem>
 					</TransitionGroup>
 				</section>
@@ -217,7 +217,7 @@
 					<SettingsChipItem icon="fit" nonclickable>
 						{{ $t("background.fit.title") }}
 						<template #actions>
-							<ComboBox v-model="backgroundImageSettingsStore.fit" :style="{ width: '200px' }">
+							<ComboBox v-model="backgroundImages.fit" :style="{ width: '200px' }">
 								<ComboBoxItem v-for="(_, key) in fitTypes" :key="key" :id="key">{{ $t(`background.fit.${key}`) }}</ComboBoxItem>
 							</ComboBox>
 						</template>
@@ -225,7 +225,7 @@
 					<SettingsChipItem icon="location_target" nonclickable>
 						{{ $t("background.position") }}
 						<template #actions>
-							<PositionControl v-model="backgroundImageSettingsStore.position" :disabled="backgroundImageSettingsStore.fit === 'stretch'" />
+							<PositionControl :value="backgroundImages.position" :disabled="backgroundImages.fit === 'stretch'" @changing="value => backgroundImages.setPosition(value, false)" @changed="value => backgroundImages.setPosition(value, true)" />
 						</template>
 					</SettingsChipItem>
 				</template>
