@@ -171,8 +171,13 @@ export default defineNuxtConfig({
 			},
 		},
 		devProxy: {
-			"/api/staging/": { target: "https://stg-rosales.kirafile.com", changeOrigin: true },
-			"/api/production/": { target: "https://rosales.kirakira.moe", changeOrigin: true },
+			"/api/staging/": {
+				target: "https://stg-rosales.kirafile.com",
+				changeOrigin: true,
+				cookieDomainRewrite: {
+					"kirafile.com": "localhost",
+				},
+			},
 		},
 	},
 
