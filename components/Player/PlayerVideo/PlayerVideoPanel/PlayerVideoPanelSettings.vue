@@ -76,6 +76,8 @@
 	const blockWordsToggle = ref(false);
 	const blockWordsSelectedTab = ref("block-keywords");
 	const transitionName = defineModel<string>("transitionName", { default: "page-jump-in" });
+	/** Firefox 可能永远不会支持该属性，因此移除显示。 */
+	const supportMirror = computed(() => environment.server ? true : CSS.supports("-webkit-box-reflect", "right"));
 </script>
 
 <template>
@@ -122,22 +124,24 @@
 
 					<div v-else-if="selectedSettingsTab === 'filters'">
 						<div class="grid">
-							<CheckCard v-for="(filter, key) in filters" :key="key" v-model="filterBooleanProxy[key]">
-								{{ filter }}
-								<template #image>
-									<NuxtImg
-										class="filter-card"
-										:class="new VariableName(key).kebab"
-										:provider="environment.cloudflareImageProvider"
-										:src="thumbnail"
-										:alt="`preview-${filter}`"
-										:draggable="false"
-										format="avif"
-										width="200"
-										height="200"
-									/>
-								</template>
-							</CheckCard>
+							<template v-for="(filter, key) in filters" :key="key">
+								<CheckCard v-if="!(key.includes('Mirror') && !supportMirror)" v-model="filterBooleanProxy[key]">
+									{{ filter }}
+									<template #image>
+										<NuxtImg
+											class="filter-card"
+											:class="new VariableName(key).kebab"
+											:provider="environment.cloudflareImageProvider"
+											:src="thumbnail"
+											:alt="`preview-${filter}`"
+											:draggable="false"
+											format="avif"
+											width="200"
+											height="200"
+										/>
+									</template>
+								</CheckCard>
+							</template>
 						</div>
 					</div>
 
