@@ -146,6 +146,7 @@ export default [
 	// box model 2
 	"object-fit",
 	"object-position",
+	"object-view-box",
 	"overflow",
 	"overflow-block",
 	"overflow-inline",
@@ -462,6 +463,7 @@ export default [
 	"outline-color",
 	"outline-offset",
 	"box-shadow",
+	"box-reflect",
 	"box-decoration-break",
 	"box-snap",
 	"transform",

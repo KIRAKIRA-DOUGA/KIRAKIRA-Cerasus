@@ -18,33 +18,12 @@ export default {
 		"stylelint-order",
 		"@stylistic/stylelint-plugin",
 	],
-	languageOptions: {
+	/* languageOptions: {
 		syntax: {
-			properties: {
-				// WARN: https://github.com/stylelint/stylelint/issues/8607
-				"container-type": "normal | [[size | inline-size] || scroll-state]",
-				// WARN: https://github.com/stylelint/stylelint/issues/8609
-				"top": "| <anchor()>",
-				"right": "| <anchor()>",
-				"bottom": "| <anchor()>",
-				"left": "| <anchor()>",
-				"width": "| <anchor-size()>",
-				"height": "| <anchor-size()>",
-				// WARN: https://github.com/stylelint/stylelint/issues/8778
-				"appearance": "| base-select",
-			},
-			types: {
-				// WARN: https://github.com/stylelint/stylelint/issues/8610
-				"radial-gradient()": "| <color-interpolation-method>",
-				"conic-gradient()": "| <color-interpolation-method>",
-				"repeating-linear-gradient()": "| <color-interpolation-method>",
-				"repeating-radial-gradient()": "| <color-interpolation-method>",
-				"repeating-conic-gradient()": "| <color-interpolation-method>",
-				// WARN: https://github.com/stylelint/stylelint/issues/8609
-				"self-position": "| anchor-center",
-			},
+			properties: {},
+			types: {},
 		},
-	},
+	}, */
 	rules: {
 		"media-feature-name-no-vendor-prefix": true, // 不要使用已被 autoprefixer 支持的浏览器前缀。
 		"at-rule-no-vendor-prefix": true,
@@ -73,14 +52,7 @@ export default {
 		"at-rule-no-unknown": null,
 		"function-no-unknown": null,
 		"property-no-unknown": [true, { "severity": "warning" }],
-		"declaration-property-value-no-unknown": [true, {
-			"severity": "warning",
-			"ignoreProperties": {
-				// WARN: https://github.com/stylelint/stylelint/issues/8779
-				// "/.+/": ["/(^|[^\\w-])(attr|if|--[\\w-]+)\\(/"],
-				"/.+/": ["/[()$]/"],
-			},
-		}],
+		"declaration-property-value-no-unknown": [true, { "severity": "warning" }],
 		"declaration-empty-line-before": null,
 		"custom-property-empty-line-before": null,
 		"selector-pseudo-class-no-unknown": [true, {

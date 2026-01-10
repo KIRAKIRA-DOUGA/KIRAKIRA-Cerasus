@@ -262,12 +262,16 @@ export default [
 			"jsdoc/require-throws-description": "warn",
 			"jsdoc/require-yields-description": "warn",
 			"jsdoc/require-next-description": "warn",
+			"jsdoc/escape-inline-tags": "off",
+			"jsdoc/no-undefined-types": "warn",
 			"@typescript-eslint/no-unused-vars": ["warn", { // 非要使用未使用变量，前面加下划线。
 				"argsIgnorePattern": "^_",
 				"varsIgnorePattern": "^_|^props$|^emits$",
 				"caughtErrorsIgnorePattern": "^_",
 			}],
 			"no-unused-private-class-members": "warn",
+			"no-object-constructor": "error",
+			"no-array-constructor": "error",
 			"@typescript-eslint/no-inferrable-types": ["error", { "ignoreParameters": true, "ignoreProperties": true }],
 			"@typescript-eslint/no-non-null-assertion": "off",
 			"@typescript-eslint/triple-slash-reference": "off",
@@ -293,7 +297,7 @@ export default [
 				"functions": false,
 			}],
 			"@typescript-eslint/no-empty-function": "off",
-			"@typescript-eslint/no-redeclare": "warn",
+			"@typescript-eslint/no-redeclare": "off", // TypeScript 编译器已支持。
 			"@typescript-eslint/no-useless-constructor": "error",
 			"@typescript-eslint/no-this-alias": "off",
 			"@stylistic/indent-binary-ops": "error",
@@ -520,6 +524,9 @@ export default [
 			}, {
 				name: "open",
 				message: "Please use window.open instead.",
+			}, {
+				name: "close",
+				message: "Please use window.close instead.",
 			}, {
 				name: "matchMedia",
 				message: "Please use window.matchMedia instead.",
