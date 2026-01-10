@@ -24,6 +24,12 @@
 		grayscale: "黑白",
 		invert: "反色",
 		sepia: "怀旧",
+		posterize: "色调分离",
+		spectrum: "色谱",
+		thermal: "热成像",
+		emboss: "浮雕",
+		bump: "凹凸",
+		edge: "查找边缘",
 		hue: "调整色相",
 		saturate: "调整饱和度",
 		contrast: "调整对比度",
@@ -246,6 +252,12 @@
 		&.grayscale { filter: grayscale(1); }
 		&.invert { filter: invert(1); }
 		&.sepia { filter: sepia(1); }
+		&.posterize { filter: url("#posterize"); }
+		&.spectrum { filter: url("#spectrum"); }
+		&.thermal { filter: url("#thermal"); }
+		&.emboss { filter: url("#emboss"); }
+		&.bump { filter: url("#bump"); }
+		&.edge { filter: url("#edge"); }
 		&.hue { filter: hue-rotate(180deg); }
 		&.saturate { filter: saturate(5); }
 		&.contrast { filter: contrast(5); }

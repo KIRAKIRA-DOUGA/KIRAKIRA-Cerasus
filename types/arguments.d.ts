@@ -89,6 +89,12 @@ declare global {
 			grayscale: boolean;
 			invert: boolean;
 			sepia: boolean;
+			posterize: boolean;
+			spectrum: boolean;
+			thermal: boolean;
+			emboss: boolean;
+			bump: boolean;
+			edge: boolean;
 			hue: number;
 			saturate: number;
 			contrast: number;

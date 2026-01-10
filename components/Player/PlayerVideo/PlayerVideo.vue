@@ -60,6 +60,12 @@
 			grayscale: false,
 			invert: false,
 			sepia: false,
+			posterize: false,
+			spectrum: false,
+			thermal: false,
+			emboss: false,
+			bump: false,
+			edge: false,
 			hue: 0,
 			saturate: 1,
 			contrast: 1,
@@ -71,13 +77,19 @@
 		const { filter } = settings;
 		const style: CSSProperties = {};
 		const filters: string[] = [];
-		if (filter.grayscale) filters.push("grayscale(1)");
-		if (filter.invert) filters.push("invert(1)");
-		if (filter.sepia) filters.push("sepia(1)");
 		if (filter.hue % 360 !== 0) filters.push(`hue-rotate(${filter.hue}deg)`);
 		if (filter.saturate !== 1) filters.push(`saturate(${filter.saturate})`);
 		if (filter.contrast !== 1) filters.push(`contrast(${filter.contrast})`);
 		if (filter.brightness !== 1) filters.push(`brightness(${filter.brightness})`);
+		if (filter.grayscale) filters.push("grayscale(1)");
+		if (filter.invert) filters.push("invert(1)");
+		if (filter.sepia) filters.push("sepia(1)");
+		if (filter.posterize) filters.push('url("#posterize")');
+		if (filter.spectrum) filters.push('url("#spectrum")');
+		if (filter.thermal) filters.push('url("#thermal")');
+		if (filter.emboss) filters.push('url("#emboss")');
+		if (filter.bump) filters.push('url("#bump")');
+		if (filter.edge) filters.push('url("#edge")');
 		if (filters.length > 0) style.filter = filters.join(" ");
 		return style;
 	});
@@ -654,6 +666,8 @@
 				</AccordionItem>
 			</Accordion>
 		</Modal>
+
+		<SvgFilter />
 
 		<div ref="playerVideoMain" class="main" :class="{ 'hide-cursor': hideCursor, fullscreen }">
 			<div
