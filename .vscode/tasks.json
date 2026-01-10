@@ -11,19 +11,11 @@
 		},
 		{
 			"type": "npm",
-			"script": "dev-stg-demo",
+			"script": "dev-stg",
 			"group": "build",
 			"problemMatcher": [],
 			"label": "npm: dev stg",
 			"detail": "nuxt dev stg - 启动前端开发服务器，连接预生产后端【仅供演示】"
-		},
-		{
-			"type": "npm",
-			"script": "dev-live-demo",
-			"group": "build",
-			"problemMatcher": [],
-			"label": "npm: dev live demo",
-			"detail": "nuxt dev live demo - 启动前端开发服务器，连接生产后端【仅供演示】"
 		},
 		{
 			"type": "npm",
