@@ -141,7 +141,7 @@
 				</Transition>
 			</ScrollContainer>
 		</Comp>
-		<ShadingIcon icon="settings" position="right bottom" rotating :elastic="playing" large />
+		<ShadingIcon icon="settings" position="right bottom" rotating :elastic="playing" size="large" />
 	</div>
 </template>
 

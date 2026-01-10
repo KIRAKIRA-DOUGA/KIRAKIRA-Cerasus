@@ -240,6 +240,7 @@
 			</Menu>
 
 			<Flyout v-model="confirmDeleteBackgroundImageFlyout[0]">
+				<ShadingIcon icon="delete" size="small" fadeIn />
 				<div class="flyout-content">
 					<h4>{{ $t("delete") }}</h4>
 					<!-- TODO: 多语言。 -->

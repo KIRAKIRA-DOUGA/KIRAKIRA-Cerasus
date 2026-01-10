@@ -6,40 +6,49 @@
 	const props = withDefaults(defineProps<{
 		/** 图标。 */
 		icon: DeclaredIcons;
-		/** 是否使用大图标。 */
-		large?: boolean;
+		/** 图标尺寸。 */
+		size?: "small" | "middle" | "large";
 		/** 位置。 */
 		position?: "left top" | "left bottom" | "right top" | "right bottom";
 		/** 是否让图标保持旋转。 */
 		rotating?: boolean;
 		/** 是否在旋转的情况下让图标保持弹性旋转。 */
 		elastic?: boolean;
+		/** 是否淡入图标？ */
+		fadeIn?: boolean;
 	}>(), {
 		position: "right top",
+		size: "middle",
 	});
 </script>
 
 <template>
-	<Comp :class="[position, { large }]" role="img">
-		<Icon :name="icon" :class="{ rotating, elastic }" />
+	<Comp :class="[position, { large: size === 'large', small: size === 'small' }]" role="img">
+		<Icon :name="icon" :class="{ rotating, elastic, 'fade-in': fadeIn }" />
 	</Comp>
 </template>
 
 <style scoped lang="scss">
-	$size: 128px;
+	$small-size: 72px;
+	$middle-size: 128px;
 	$large-size: 256px;
 
 	:comp {
-		@include square($size);
+		@include square(1em);
+		--icon-offset: -25%;
 		position: fixed;
 		z-index: 10;
 		color: c(accent, 15%);
-		font-size: $size;
+		font-size: $middle-size;
 		pointer-events: none;
 
 		&.large {
-			@include square($large-size);
 			font-size: $large-size;
+		}
+
+		&.small {
+			--icon-offset: 0%;
+			font-size: $small-size;
 		}
 
 		@each $direction in top, right, bottom, left {
@@ -47,7 +56,7 @@
 				#{$direction}: 0;
 
 				> .icon {
-					#{$direction}: -25%;
+					#{$direction}: var(--icon-offset);
 				}
 			}
 		}
@@ -62,6 +71,10 @@
 			&.elastic {
 				animation: elastic-rotation $ease-out-expo 16s infinite;
 			}
+		}
+
+		&.fade-in {
+			animation: fade-in linear 2s;
 		}
 	}
 
