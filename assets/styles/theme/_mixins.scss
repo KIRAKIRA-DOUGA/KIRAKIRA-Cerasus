@@ -308,3 +308,29 @@
 		display: none;
 	}
 }
+
+/// 镜像画面，将画面变成对称的。
+/// @param {String} $side - 要镜像的边缘。可能的值是 `left` | `right` | `top` | `bottom`。
+/// @param {String} $unit - 指定调整尺寸的单位。可能的值是 `percent` | `cq`。
+/// @output top, right, bottom, left, width, height, object-position, object-view-box, -webkit-box-reflect
+@mixin mirror($side, $unit: percent) {
+	$percent-unit: $unit == percent;
+
+	@if $side == left or $side == right {
+		$left: $side == left;
+		right: if($left, auto, 0);
+		left: if($left, 0, auto);
+		width: if($percent-unit, 50%, 50cqw);
+		object-position: if($left, right, left);
+		object-view-box: if($left, inset(0 50% 0 0), inset(0 0 0 50%));
+		-webkit-box-reflect: if($left, right, left);
+	} @else if $side == top or $side == bottom {
+		$top: $side == top;
+		top: if($top, 0, auto);
+		bottom: if($top, auto, 0);
+		height: if($percent-unit, 50%, 50cqh);
+		object-position: if($top, bottom, top);
+		object-view-box: if($top, inset(0 0 50% 0), inset(50% 0 0 0));
+		-webkit-box-reflect: if($top, below, above);
+	}
+}

@@ -85,6 +85,7 @@ declare global {
 			hFlip: boolean;
 			vFlip: boolean;
 			rotation: 0 | 90 | 180 | 270;
+			mirror: "left" | "right" | "top" | "bottom" | false;
 			grayscale: boolean;
 			invert: boolean;
 			sepia: boolean;

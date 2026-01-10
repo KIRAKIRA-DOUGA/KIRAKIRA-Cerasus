@@ -8,32 +8,40 @@
 		settings: PlayerVideoSettings;
 	}>();
 
-	type Filters = keyof PlayerVideoSettings["filter"] | "rotate90" | "rotate180" | "rotate270";
+	type Filters = keyof PlayerVideoSettings["filter"] | "rotate90" | "rotate180" | "rotate270" | "hMirrorLeft" | "hMirrorRight" | "vMirrorTop" | "vMirrorBottom";
 
 	/* TODO: 多语言。 */
-	const filters: Record<Exclude<Filters, "rotation">, [name: string, style: CSSProperties]> = {
-		hFlip: ["水平翻转", { scale: "-1 1" }],
-		vFlip: ["垂直翻转", { scale: "1 -1" }],
-		rotate90: ["旋转90°", { rotate: "90deg" }],
-		rotate180: ["旋转180°", { rotate: "180deg" }],
-		rotate270: ["旋转270°", { rotate: "270deg" }],
-		grayscale: ["黑白", { filter: "grayscale(1)" }],
-		invert: ["反色", { filter: "invert(1)" }],
-		sepia: ["怀旧", { filter: "sepia(1)" }],
-		hue: ["调整色相", { filter: "hue-rotate(180deg)" }],
-		saturate: ["调整饱和度", { filter: "saturate(5)" }],
-		contrast: ["调整对比度", { filter: "contrast(5)" }],
-		brightness: ["调整亮度", { filter: "brightness(2)" }],
+	const filters: Record<Exclude<Filters, "rotation" | "mirror">, string> = {
+		hFlip: "水平翻转",
+		vFlip: "垂直翻转",
+		rotate90: "旋转90°",
+		rotate180: "旋转180°",
+		rotate270: "旋转270°",
+		hMirrorLeft: "水平镜像（左）",
+		hMirrorRight: "水平镜像（右）",
+		vMirrorTop: "垂直镜像（上）",
+		vMirrorBottom: "垂直镜像（下）",
+		grayscale: "黑白",
+		invert: "反色",
+		sepia: "怀旧",
+		hue: "调整色相",
+		saturate: "调整饱和度",
+		contrast: "调整对比度",
+		brightness: "调整亮度",
 	};
 
 	const filterBooleanProxy = new Proxy(props.settings.filter, {
 		get(target, prop: Filters) {
-			const propOriginal = (prop.startsWith("rotate") ? "rotation" : prop) as keyof PlayerVideoSettings["filter"];
+			const propOriginal = (prop.startsWith("rotate") ? "rotation" : prop.includes("Mirror") ? "mirror" : prop) as keyof PlayerVideoSettings["filter"];
 			const value = target[propOriginal];
 			return ({
 				rotate90: value === 90,
 				rotate180: value === 180,
 				rotate270: value === 270,
+				hMirrorLeft: value === "left",
+				hMirrorRight: value === "right",
+				vMirrorTop: value === "top",
+				vMirrorBottom: value === "bottom",
 				hue: value as number % 360 !== 0,
 				saturate: value !== 1,
 				contrast: value !== 1,
@@ -48,6 +56,10 @@
 					target.rotation = rotation as never;
 				}
 				return true;
+			} else if (prop.includes("Mirror")) {
+				const side = prop.match(/Mirror(.+)$/)?.[1];
+				if (!newValue || !side) target.mirror = false;
+				else target.mirror = side.toLowerCase() as never;
 			}
 			/* eslint-disable @stylistic/indent */
 			prop === "hue" ? target.hue = newValue ? 180 : 0 :
@@ -110,11 +122,12 @@
 
 					<div v-else-if="selectedSettingsTab === 'filters'">
 						<div class="grid">
-							<CheckCard v-for="([filter, style], key) in filters" :key="key" v-model="filterBooleanProxy[key]">
+							<CheckCard v-for="(filter, key) in filters" :key="key" v-model="filterBooleanProxy[key]">
 								{{ filter }}
 								<template #image>
 									<NuxtImg
-										:style
+										class="filter-card"
+										:class="new VariableName(key).kebab"
 										:provider="environment.cloudflareImageProvider"
 										:src="thumbnail"
 										:alt="`preview-${filter}`"
@@ -214,5 +227,24 @@
 		p.subheading + & {
 			margin-block-start: 0;
 		}
+	}
+
+	.filter-card {
+		&.h-flip { scale: -1 1; }
+		&.v-flip { scale: 1 -1; }
+		&.rotate-90 { rotate: 90deg; }
+		&.rotate-180 { rotate: 180deg; }
+		&.rotate-270 { rotate: 270deg; }
+		&.h-mirror-left { @include mirror(left); }
+		&.h-mirror-right { @include mirror(right); translate: 100%; }
+		&.v-mirror-top { @include mirror(top); }
+		&.v-mirror-bottom { @include mirror(bottom); translate: 0 100%; }
+		&.grayscale { filter: grayscale(1); }
+		&.invert { filter: invert(1); }
+		&.sepia { filter: sepia(1); }
+		&.hue { filter: hue-rotate(180deg); }
+		&.saturate { filter: saturate(5); }
+		&.contrast { filter: contrast(5); }
+		&.brightness { filter: brightness(2); }
 	}
 </style>

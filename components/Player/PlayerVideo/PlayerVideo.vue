@@ -56,6 +56,7 @@
 			hFlip: false,
 			vFlip: false,
 			rotation: 0,
+			mirror: false,
 			grayscale: false,
 			invert: false,
 			sepia: false,
@@ -69,13 +70,6 @@
 	const videoFilterStyle = computed(() => {
 		const { filter } = settings;
 		const style: CSSProperties = {};
-		if (filter.hFlip || filter.vFlip) {
-			const scale: TwoD = [1, 1];
-			if (filter.hFlip) scale[0] = -1;
-			if (filter.vFlip) scale[1] = -1;
-			style.scale = scale.join(" ");
-		}
-		if (filter.rotation) style.rotate = filter.rotation + "deg";
 		const filters: string[] = [];
 		if (filter.grayscale) filters.push("grayscale(1)");
 		if (filter.invert) filters.push("invert(1)");
@@ -91,7 +85,10 @@
 	const videoFilterClass = computed(() => {
 		const { filter } = settings;
 		const classNames = [];
-		if ([90, 270].includes(filter.rotation)) classNames.push("sideways");
+		if (filter.hFlip) classNames.push("h-flip");
+		if (filter.vFlip) classNames.push("v-flip");
+		if (filter.rotation) classNames.push(`rotate-${filter.rotation}`);
+		if (filter.mirror) classNames.push(`mirror-${filter.mirror}`);
 		return classNames;
 	});
 
@@ -659,7 +656,12 @@
 		</Modal>
 
 		<div ref="playerVideoMain" class="main" :class="{ 'hide-cursor': hideCursor, fullscreen }">
-			<div class="screen">
+			<div
+				class="screen"
+				@contextmenu.prevent="e => menu = e"
+				@pointerup.left="onVideoPointerUp"
+				@pointermove="autoHideController"
+			>
 				<video
 					ref="video"
 					class="player"
@@ -673,9 +675,6 @@
 					@progress="updateBuffered"
 					@ended="ended = true"
 					@waiting="waiting = true"
-					@contextmenu.prevent="e => menu = e"
-					@pointerup.left="onVideoPointerUp"
-					@pointermove="autoHideController"
 					:autoplay="settings.autoplay"
 					playsinline
 				></video>
@@ -780,14 +779,45 @@
 		view-transition-name: player-video-main;
 
 		video {
+			$turned: ":where(:is(.rotate-180, .h-flip.v-flip):not(.rotate-180.h-flip.v-flip))";
 			width: 100cqw;
 			height: 100cqh;
 			transition: none;
 
-			&.sideways {
+			&.h-flip:not(.v-flip, .mirror-left, .mirror-right) { scale: -1 1; }
+			&.v-flip:not(.h-flip, .mirror-top, .mirror-bottom) { scale: 1 -1; }
+			&.rotate-90 { rotate: 90deg; }
+			&#{$turned} { rotate: 180deg; }
+			&.rotate-270 { rotate: 270deg; }
+			&.mirror-left { @include mirror(left, cq); translate: -25cqw; }
+			&.mirror-right { @include mirror(right, cq); translate: 25cqw; }
+			&.mirror-top { @include mirror(top, cq); translate: 0 -25cqh; }
+			&.mirror-bottom { @include mirror(bottom, cq); translate: 0 25cqh; }
+
+			&.mirror-left#{$turned} { translate: 25cqw; }
+			&.mirror-right#{$turned} { translate: -25cqw; }
+			&.mirror-top#{$turned} { translate: 0 25cqh; }
+			&.mirror-bottom#{$turned} { translate: 0 -25cqh; }
+
+			&:is(.rotate-90, .rotate-270) {
 				width: 100cqh;
 				height: 100cqw;
+
+				&:is(.mirror-left, .mirror-right) {
+					width: 50cqh;
+					height: 100cqw;
+				}
+
+				&:is(.mirror-top, .mirror-bottom) {
+					width: 100cqh;
+					height: 50cqw;
+				}
 			}
+
+			&:is(.mirror-left.rotate-90, .mirror-right.rotate-270) { translate: 0 -25cqh; }
+			&:is(.mirror-left.rotate-270, .mirror-right.rotate-90) { translate: 0 25cqh; }
+			&:is(.mirror-top.rotate-90, .mirror-bottom.rotate-270) { translate: 25cqw; }
+			&:is(.mirror-top.rotate-270, .mirror-bottom.rotate-90) { translate: -25cqw; }
 		}
 
 		:comp:not(.fullscreen) & {
