@@ -53,8 +53,8 @@
 			autoResumePlayAfterSeeking: false,
 		},
 		filter: {
-			horizontalFlip: false,
-			verticalFlip: false,
+			hFlip: false,
+			vFlip: false,
 			rotation: 0,
 			grayscale: false,
 			invert: false,
@@ -69,10 +69,10 @@
 	const videoFilterStyle = computed(() => {
 		const { filter } = settings;
 		const style: CSSProperties = {};
-		if (filter.horizontalFlip || filter.verticalFlip) {
+		if (filter.hFlip || filter.vFlip) {
 			const scale: TwoD = [1, 1];
-			if (filter.horizontalFlip) scale[0] = -1;
-			if (filter.verticalFlip) scale[1] = -1;
+			if (filter.hFlip) scale[0] = -1;
+			if (filter.vFlip) scale[1] = -1;
 			style.scale = scale.join(" ");
 		}
 		if (filter.rotation) style.rotate = filter.rotation + "deg";
@@ -86,6 +86,13 @@
 		if (filter.brightness !== 1) filters.push(`brightness(${filter.brightness})`);
 		if (filters.length > 0) style.filter = filters.join(" ");
 		return style;
+	});
+
+	const videoFilterClass = computed(() => {
+		const { filter } = settings;
+		const classNames = [];
+		if ([90, 270].includes(filter.rotation)) classNames.push("sideways");
+		return classNames;
 	});
 
 	const tracks = ref<shaka.extern.Track[]>([]);
@@ -656,6 +663,7 @@
 				<video
 					ref="video"
 					class="player"
+					:class="videoFilterClass"
 					:style="videoFilterStyle"
 					@play="playing = true"
 					@pause="playing = false"
@@ -766,23 +774,24 @@
 	}
 
 	.main {
+		container: player-video-main / inline-size;
 		position: relative;
 		pointer-events: auto !important;
 		view-transition-name: player-video-main;
 
 		video {
+			width: 100cqw;
+			height: 100cqh;
 			transition: none;
+
+			&.sideways {
+				width: 100cqh;
+				height: 100cqw;
+			}
 		}
 
 		:comp:not(.fullscreen) & {
-			&,
-			& video {
-				width: 100%;
-			}
-
-			& video {
-				max-height: calc(100dvh - 36px - 26px * 2);
-			}
+			width: 100%;
 		}
 
 		.fullscreen & {
@@ -792,10 +801,6 @@
 
 			.screen {
 				height: 100dvh;
-			}
-
-			video {
-				@include square(100%);
 			}
 		}
 
@@ -819,7 +824,10 @@
 	}
 
 	.screen {
+		@include flex-center;
+		container: player-video-screen / size;
 		position: relative;
+		height: calc(100cqw / 16 * 9);
 		background-color: black;
 
 		.contents {

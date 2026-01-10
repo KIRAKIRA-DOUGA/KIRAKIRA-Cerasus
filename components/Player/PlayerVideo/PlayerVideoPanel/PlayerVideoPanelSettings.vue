@@ -8,15 +8,15 @@
 		settings: PlayerVideoSettings;
 	}>();
 
-	type Filters = keyof PlayerVideoSettings["filter"] | "rotation90" | "rotation180" | "rotation270";
+	type Filters = keyof PlayerVideoSettings["filter"] | "rotate90" | "rotate180" | "rotate270";
 
 	/* TODO: 多语言。 */
-	const filters: Record<Exclude<Filters, "rotation">, [string, CSSProperties]> = {
-		horizontalFlip: ["水平翻转", { scale: "-1 1" }],
-		verticalFlip: ["垂直翻转", { scale: "1 -1" }],
-		rotation90: ["旋转90°", { rotate: "90deg" }],
-		rotation180: ["旋转180°", { rotate: "180deg" }],
-		rotation270: ["旋转270°", { rotate: "270deg" }],
+	const filters: Record<Exclude<Filters, "rotation">, [name: string, style: CSSProperties]> = {
+		hFlip: ["水平翻转", { scale: "-1 1" }],
+		vFlip: ["垂直翻转", { scale: "1 -1" }],
+		rotate90: ["旋转90°", { rotate: "90deg" }],
+		rotate180: ["旋转180°", { rotate: "180deg" }],
+		rotate270: ["旋转270°", { rotate: "270deg" }],
 		grayscale: ["黑白", { filter: "grayscale(1)" }],
 		invert: ["反色", { filter: "invert(1)" }],
 		sepia: ["怀旧", { filter: "sepia(1)" }],
@@ -28,12 +28,12 @@
 
 	const filterBooleanProxy = new Proxy(props.settings.filter, {
 		get(target, prop: Filters) {
-			const propOriginal = (prop.startsWith("rotation") ? "rotation" : prop) as keyof PlayerVideoSettings["filter"];
+			const propOriginal = (prop.startsWith("rotate") ? "rotation" : prop) as keyof PlayerVideoSettings["filter"];
 			const value = target[propOriginal];
 			return ({
-				rotation90: value === 90,
-				rotation180: value === 180,
-				rotation270: value === 270,
+				rotate90: value === 90,
+				rotate180: value === 180,
+				rotate270: value === 270,
 				hue: value as number % 360 !== 0,
 				saturate: value !== 1,
 				contrast: value !== 1,
@@ -41,7 +41,7 @@
 			} as Record<Filters, boolean>)[prop] ?? value as boolean;
 		},
 		set(target, prop: Filters, newValue: boolean) {
-			if (prop.startsWith("rotation")) {
+			if (prop.startsWith("rotate")) {
 				if (!newValue) target.rotation = 0;
 				else {
 					const rotation = +prop.match(/\d+$/)![0];

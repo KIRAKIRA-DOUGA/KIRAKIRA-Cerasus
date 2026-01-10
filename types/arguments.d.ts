@@ -82,8 +82,8 @@ declare global {
 			autoResumePlayAfterSeeking: boolean;
 		};
 		filter: {
-			horizontalFlip: boolean;
-			verticalFlip: boolean;
+			hFlip: boolean;
+			vFlip: boolean;
 			rotation: 0 | 90 | 180 | 270;
 			grayscale: boolean;
 			invert: boolean;
