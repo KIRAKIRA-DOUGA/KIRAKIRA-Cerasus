@@ -42,6 +42,10 @@ export default [
 			globals: {
 				...globals.browser,
 				...globals.node,
+				// https://eslint.vuejs.org/user-guide/#auto-imports-support
+				...Object.fromEntries([
+					"ref", "computed", "watch", "watchEffect", "reactive", "shallowRef",
+				].map(v => [v, "readonly"])),
 			},
 		},
 		files: ["**/*.{js,jsx,ts,tsx,vue}"],
@@ -438,6 +442,8 @@ export default [
 				"singleline": "ignore",
 				"multiline": "below",
 			}],
+			"vue/no-ref-as-operand": "error",
+			"vue/no-watch-after-await": "error",
 			"no-restricted-properties": ["error", {
 				object: "arguments",
 				property: "callee",

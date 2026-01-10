@@ -191,7 +191,6 @@
 		contextualToolbar.value = undefined;
 	}
 
-	const a = ref();
 	/**
 	 * 显示标签的上下文工具栏。
 	 * @param key - 标签键名。
