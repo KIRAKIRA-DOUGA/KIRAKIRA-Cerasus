@@ -23,6 +23,9 @@
 	const currentLanguage = computed(getCurrentLocale); // 当前用户的语言
 	// const recommendations = ref<Videos200ResponseVideosInner[]>();
 
+	const uploaderFollowers = ref(0); // 上传者粉丝数
+	const uploaderFollowing = ref(0); // 上传者关注数
+
 	const playing = ref(false);
 	const currentTime = ref(NaN);
 	const sendDanmaku = ref<DanmakuComment[]>();
@@ -66,10 +69,31 @@
 					copyright: videoData.copyright,
 					image: videoData.image,
 				};
+
+				// 获取上传者的关注数和粉丝数
+				if (videoData.uploaderInfo?.uid) {
+					fetchUploaderStats(videoData.uploaderInfo.uid);
+				}
 			} else
 				handleError(t("toast.video_invalid_result"));
 		} else
 			handleError(t("toast.video_no_id"));
+	}
+
+	/**
+	 * 获取上传者的关注数和粉丝数
+	 */
+	async function fetchUploaderStats(uid: number) {
+		try {
+			const headerCookie = import.meta.server ? useRequestHeaders(["cookie"]) : undefined;
+			const statsResponse = await api.feed.getFollowStats(uid, headerCookie);
+			if (statsResponse.success) {
+				uploaderFollowers.value = statsResponse.followerCount ?? 0;
+				uploaderFollowing.value = statsResponse.followingCount ?? 0;
+			}
+		} catch (error) {
+			console.error("Failed to fetch uploader stats:", error);
+		}
 	}
 
 	watch(() => kvid, fetchVideoData);
@@ -156,8 +180,8 @@
 								:avatar="videoDetails?.uploaderInfo?.avatar"
 								:nickname="videoDetails?.uploaderInfo?.userNickname ?? ''"
 								:username="videoDetails?.uploaderInfo?.username ?? ''"
-								:fans="videoDetails?.uploaderSubscribers ?? 0"
-								:followers="videoDetails?.uploaderFollowers ?? 0"
+								:fans="uploaderFollowing"
+								:followers="uploaderFollowers"
 								:isFollowing="!!videoDetails?.uploaderInfo?.isFollowing"
 								:isSelf="videoDetails?.uploaderInfo?.isSelf"
 							/>
