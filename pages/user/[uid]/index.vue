@@ -156,6 +156,7 @@
 			</ThumbGrid>
 
 			<!-- 关注列表 -->
+<<<<<<< HEAD
 			<UserList
 				v-else-if="currentListType === 'following'"
 				ref="followingListRef"
@@ -171,6 +172,42 @@
 				:target-uid="urlUid"
 				list-type="followers"
 			/>
+=======
+			<div v-else-if="currentListType === 'following'" class="user-list">
+				<UserCard
+					v-for="user in followingList"
+					:key="user.uid"
+					:uid="user.uid"
+					:avatar="user.avatar"
+					:userNickname="user.userNickname"
+					:username="user.username"
+					:isFollowing="true"
+					@update:isFollowing="(value) => { if (!value) { const index = followingList.findIndex(u => u.uid === user.uid); if (index !== -1) followingList.splice(index, 1); followingCount = Math.max(0, followingCount - 1); } }"
+				/>
+				<div v-if="isLoadingList" class="loading">
+					<ProgressRing />
+				</div>
+				<div v-else-if="!hasMoreFollowing && followingList.length === 0" class="empty">¯\_(ツ)_/¯</div>
+			</div>
+
+			<!-- 粉丝列表 -->
+			<div v-else-if="currentListType === 'followers'" class="user-list">
+				<UserCard
+					v-for="user in followerList"
+					:key="user.uid"
+					:uid="user.uid"
+					:avatar="user.avatar"
+					:userNickname="user.userNickname"
+					:username="user.username"
+					:isFollowing="user.isFollowing"
+					@update:isFollowing="(value) => { const targetUser = followerList.find(u => u.uid === user.uid); if (targetUser) targetUser.isFollowing = value; }"
+				/>
+				<div v-if="isLoadingList" class="loading">
+					<ProgressRing />
+				</div>
+				<div v-else-if="!hasMoreFollowers && followerList.length === 0" class="empty">¯\_(ツ)_/¯</div>
+			</div>
+>>>>>>> a82e2d2908f427538e7f8df866c1d8018d6ba6c4
 		</div>
 
 		<div class="right">
@@ -285,6 +322,27 @@
 		overflow: hidden auto;
 	}
 
+<<<<<<< HEAD
+=======
+	.user-list {
+		display: flex;
+		flex-direction: column;
+		gap: 0;
+	}
+
+	.loading {
+		@include flex-center;
+		padding: 32px;
+		color: c(icon-color);
+	}
+
+	.empty {
+		@include flex-center;
+		padding: 32px;
+		color: c(icon-color, 50%);
+	}
+
+>>>>>>> a82e2d2908f427538e7f8df866c1d8018d6ba6c4
 	.user-info-container {
 		position: relative;
 
