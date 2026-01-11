@@ -107,7 +107,7 @@
 	>
 		{{ isFollowing ? $t("following") : $t("follow_verb") }}
 		<Menu v-model="unfollowMenu">
-			<MenuItem icon="close" @click="onUnfollowButtonClick">取消关注</MenuItem>
+			<MenuItem icon="close" @click="onUnfollowButtonClick">{{ $t("unfollow") }}</MenuItem>
 		</Menu>
 	</Button>
 </template>
