@@ -64,6 +64,8 @@
 
 	/**
 	 * 处理用户关注状态更新
+	 * @param uid - 需要关注的用户UID。
+	 * @param value - 是关注还是取消关注？
 	 */
 	async function handleUpdateIsFollowing(uid: number, value: boolean) {
 		if (props.listType === "following") {
@@ -91,10 +93,11 @@
 
 	/**
 	 * 处理滚动，实现无限加载
+	 * @param e - 滚动事件。
 	 */
-	function handleScroll(event: Event) {
+	function handleScroll(e: Event) {
 		// 事件冒泡，实际滚动的是父容器 .toolbox-card.center
-		const target = (event.currentTarget || event.target) as HTMLElement;
+		const target = (e.currentTarget || e.target) as HTMLElement;
 		if (!target) return;
 		const scrollTop = target.scrollTop;
 		const scrollHeight = target.scrollHeight;

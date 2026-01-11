@@ -1,4 +1,6 @@
 <script setup lang="ts">
+	import UserList from "~/components/User/UserList.vue";
+
 	const urlUid = ref<number>(undefined!);
 	// SSR
 	urlUid.value = currentUserUid();
@@ -89,7 +91,6 @@
 		}
 	}
 
-
 	/**
 	 * 处理关注数点击
 	 */
@@ -123,7 +124,7 @@
 	/**
 	 * 处理关注列表中的取消关注事件
 	 */
-	function handleUnfollow(uid: number) {
+	function handleUnfollow() {
 		followingCount.value = Math.max(0, followingCount.value - 1);
 	}
 
@@ -159,8 +160,8 @@
 			<UserList
 				v-else-if="currentListType === 'following'"
 				ref="followingListRef"
-				:target-uid="urlUid"
-				list-type="following"
+				:targetUid="urlUid"
+				listType="following"
 				@unfollow="handleUnfollow"
 			/>
 
@@ -168,8 +169,8 @@
 			<UserList
 				v-else-if="currentListType === 'followers'"
 				ref="followerListRef"
-				:target-uid="urlUid"
-				list-type="followers"
+				:targetUid="urlUid"
+				listType="followers"
 			/>
 		</div>
 
