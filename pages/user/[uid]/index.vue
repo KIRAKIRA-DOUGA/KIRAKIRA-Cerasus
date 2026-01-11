@@ -246,9 +246,7 @@
 				<div v-if="isLoadingList" class="loading">
 					<ProgressRing />
 				</div>
-				<div v-else-if="!hasMoreFollowing && followingList.length === 0" class="empty">
-					这里暂时还没有数据捏~(￣▽￣)~*
-				</div>
+				<div v-else-if="!hasMoreFollowing && followingList.length === 0" class="empty">¯\_(ツ)_/¯</div>
 			</div>
 
 			<!-- 粉丝列表 -->
@@ -266,9 +264,7 @@
 				<div v-if="isLoadingList" class="loading">
 					<ProgressRing />
 				</div>
-				<div v-else-if="!hasMoreFollowers && followerList.length === 0" class="empty">
-					这里暂时还没有数据捏~(￣▽￣)~*
-				</div>
+				<div v-else-if="!hasMoreFollowers && followerList.length === 0" class="empty">¯\_(ツ)_/¯</div>
 			</div>
 		</div>
 
@@ -399,7 +395,7 @@
 	.empty {
 		@include flex-center;
 		padding: 32px;
-		color: c(icon-color);
+		color: c(icon-color, 50%);
 	}
 
 	.user-info-container {
