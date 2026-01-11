@@ -55,7 +55,7 @@ export default {
 		"declaration-property-value-no-unknown": [true, {
 			"severity": "warning",
 			"ignoreProperties": {
-				"/.+/": ["/[\\w-]+\\(/"],
+				"/.+/": ["/[\\w-]+\\(/", "/\\$[\\w-]+/"],
 			},
 		}],
 		"declaration-empty-line-before": null,

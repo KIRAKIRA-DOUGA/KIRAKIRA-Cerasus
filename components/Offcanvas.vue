@@ -9,7 +9,7 @@
 	const drawerItems: { name: string; icon: DeclaredIcons; route?: string }[] = [
 		{ name: t("history"), icon: "history", route: "/history" },
 		{ name: t("collection.title", 2), icon: "star", route: "/collections" },
-		{ name: t("upload"), icon: "upload", route: "/upload" },
+		{ name: t("upload.title"), icon: "upload", route: "/upload" },
 	];
 
 	/**
