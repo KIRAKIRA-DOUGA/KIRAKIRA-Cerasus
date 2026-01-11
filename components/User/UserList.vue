@@ -13,7 +13,7 @@
 
 	const emit = defineEmits<{
 		/** 当关注列表中的用户被取消关注时触发，传递被取消关注的用户 UID */
-		"unfollow": [uid: number];
+		unfollow: [uid: number];
 	}>();
 
 	const userList = ref<UserInfoForFollowList[]>([]);
@@ -33,20 +33,18 @@
 			userList.value = [];
 			hasMore.value = true;
 			// 如果正在加载，先停止当前加载
-			if (isLoadingList.value) {
+			if (isLoadingList.value)
 				isLoadingList.value = false;
-			}
-		} else {
+		} else
 			// 如果不是重置模式，检查是否可以加载
 			if (isLoadingList.value || !hasMore.value) return;
-		}
 
 		isLoadingList.value = true;
 		try {
 			const headerCookie = import.meta.server ? useRequestHeaders(["cookie"]) : undefined;
-			const response = props.listType === "following"
-				? await api.feed.getFollowingList(props.targetUid, currentPage.value, PAGE_SIZE, headerCookie)
-				: await api.feed.getFollowerList(props.targetUid, currentPage.value, PAGE_SIZE, headerCookie);
+			const response = props.listType === "following" ?
+				await api.feed.getFollowingList(props.targetUid, currentPage.value, PAGE_SIZE, headerCookie) :
+				await api.feed.getFollowerList(props.targetUid, currentPage.value, PAGE_SIZE, headerCookie);
 			if (response.success && response.result) {
 				if (reset)
 					userList.value = response.result;
@@ -140,7 +138,7 @@
 			<ProgressRing />
 		</div>
 		<div v-else-if="!hasMore && userList.length === 0" class="empty">
-			这里暂时还没有数据捏~(￣▽￣)~*
+			¯\_(ツ)_/¯
 		</div>
 	</div>
 </template>
@@ -160,8 +158,7 @@
 	.empty {
 		@include flex-center;
 		padding: 40px 20px;
-		color: var(--text-secondary);
+		color: c(icon-color, 50%);
 		text-align: center;
 	}
 </style>
-
