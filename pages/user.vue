@@ -181,7 +181,7 @@
 		// position: sticky;
 		// top: 0;
 		// z-index: 4;
-		padding: 0 $page-padding-x;
+		padding-inline: $page-padding-x;
 		background-color: c(surface-color);
 
 		@include tablet {
@@ -199,7 +199,15 @@
 		gap: 12px;
 		justify-content: space-between;
 		align-items: start;
-		padding: 24px 0;
+		padding: 16px 0;
+
+		@include not-mobile {
+			.user-content.huge:deep(.user-avatar) {
+				--size: 100px;
+				margin-top: -100px;
+				border: 4px solid c(main-bg);
+			}
+		}
 
 		.actions {
 			display: flex;

@@ -141,7 +141,7 @@
 
 		&.avatar-full-width {
 			flex-direction: column;
-			gap: 16px;
+			gap: 10px;
 		}
 
 		* {
