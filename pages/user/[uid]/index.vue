@@ -1,4 +1,6 @@
 <script setup lang="ts">
+	import type { UserInfoForFollowList } from "api/Feed/FeedControllerDto";
+
 	const urlUid = ref();
 	// SSR
 	urlUid.value = currentUserUid();
@@ -18,6 +20,17 @@
 
 	const followingCount = ref(0);
 	const followerCount = ref(0);
+
+	// 列表显示相关
+	const currentListType = ref<"videos" | "following" | "followers">("videos");
+	const followingList = ref<UserInfoForFollowList[]>([]);
+	const followerList = ref<UserInfoForFollowList[]>([]);
+	const isLoadingList = ref(false);
+	const hasMoreFollowing = ref(true);
+	const hasMoreFollowers = ref(true);
+	const followingPage = ref(1);
+	const followerPage = ref(1);
+	const PAGE_SIZE = 18;
 
 	/**
 	 * Fetch all data.
@@ -84,6 +97,121 @@
 		}
 	}
 
+	/**
+	 * 获取关注列表
+	 */
+	async function fetchFollowingList(reset = false) {
+		if (isLoadingList.value || !hasMoreFollowing.value) return;
+		if (reset) {
+			followingPage.value = 1;
+			followingList.value = [];
+			hasMoreFollowing.value = true;
+		}
+
+		isLoadingList.value = true;
+		try {
+			const headerCookie = import.meta.server ? useRequestHeaders(["cookie"]) : undefined;
+			const response = await api.feed.getFollowingList(urlUid.value, followingPage.value, PAGE_SIZE, headerCookie);
+			if (response.success && response.result) {
+				if (reset) {
+					followingList.value = response.result;
+				} else {
+					followingList.value.push(...response.result);
+				}
+				hasMoreFollowing.value = followingList.value.length < (response.totalCount ?? 0);
+				if (hasMoreFollowing.value) {
+					followingPage.value++;
+				}
+			} else {
+				hasMoreFollowing.value = false;
+			}
+		} catch (error) {
+			console.error("Failed to fetch following list:", error);
+			hasMoreFollowing.value = false;
+		}
+		isLoadingList.value = false;
+	}
+
+	/**
+	 * 获取粉丝列表
+	 */
+	async function fetchFollowerList(reset = false) {
+		if (isLoadingList.value || !hasMoreFollowers.value) return;
+		if (reset) {
+			followerPage.value = 1;
+			followerList.value = [];
+			hasMoreFollowers.value = true;
+		}
+
+		isLoadingList.value = true;
+		try {
+			const headerCookie = import.meta.server ? useRequestHeaders(["cookie"]) : undefined;
+			const response = await api.feed.getFollowerList(urlUid.value, followerPage.value, PAGE_SIZE, headerCookie);
+			if (response.success && response.result) {
+				if (reset) {
+					followerList.value = response.result;
+				} else {
+					followerList.value.push(...response.result);
+				}
+				hasMoreFollowers.value = followerList.value.length < (response.totalCount ?? 0);
+				if (hasMoreFollowers.value) {
+					followerPage.value++;
+				}
+			} else {
+				hasMoreFollowers.value = false;
+			}
+		} catch (error) {
+			console.error("Failed to fetch follower list:", error);
+			hasMoreFollowers.value = false;
+		}
+		isLoadingList.value = false;
+	}
+
+	/**
+	 * 处理关注数点击
+	 */
+	function handleFollowingClick() {
+		if (currentListType.value === "following") {
+			currentListType.value = "videos";
+		} else {
+			currentListType.value = "following";
+			if (followingList.value.length === 0) {
+				fetchFollowingList(true);
+			}
+		}
+	}
+
+	/**
+	 * 处理粉丝数点击
+	 */
+	function handleFollowerClick() {
+		if (currentListType.value === "followers") {
+			currentListType.value = "videos";
+		} else {
+			currentListType.value = "followers";
+			if (followerList.value.length === 0) {
+				fetchFollowerList(true);
+			}
+		}
+	}
+
+	/**
+	 * 无限滚动处理
+	 */
+	const listContainer = ref<HTMLElement>();
+	function handleScroll() {
+		if (!listContainer.value || isLoadingList.value) return;
+		const container = listContainer.value;
+		const scrollBottom = container.scrollHeight - container.scrollTop - container.clientHeight;
+		if (scrollBottom < 100) {
+			if (currentListType.value === "following" && hasMoreFollowing.value) {
+				fetchFollowingList();
+			} else if (currentListType.value === "followers" && hasMoreFollowers.value) {
+				fetchFollowerList();
+			}
+		}
+	}
+
 	// 注册刷新函数到父组件，以便在关注/取消关注后刷新数据
 	const refreshFollowStats = inject<Ref<(() => void) | undefined>>("refreshFollowStats");
 	if (refreshFollowStats) {
@@ -96,8 +224,9 @@
 
 <template>
 	<div class="container">
-		<div class="toolbox-card center">
-			<ThumbGrid>
+		<div ref="listContainer" class="toolbox-card center" @scroll="handleScroll">
+			<!-- 视频列表 -->
+			<ThumbGrid v-if="currentListType === 'videos'">
 				<ThumbVideo
 					v-for="video in userVideos?.videos"
 					:key="video.videoId"
@@ -110,6 +239,44 @@
 					:duration="new Duration(0, video.duration ?? 0)"
 				>{{ video.title }}</ThumbVideo>
 			</ThumbGrid>
+
+			<!-- 关注列表 -->
+			<div v-else-if="currentListType === 'following'" class="user-list">
+				<UserCard
+					v-for="user in followingList"
+					:key="user.uid"
+					:uid="user.uid"
+					:avatar="user.avatar"
+					:userNickname="user.userNickname"
+					:username="user.username"
+					:isFollowing="true"
+				/>
+				<div v-if="isLoadingList" class="loading">
+					<Icon name="refresh" class="spinning" />
+				</div>
+				<div v-else-if="!hasMoreFollowing && followingList.length === 0" class="empty">
+					这里暂时还没有数据捏~(￣▽￣)~*
+				</div>
+			</div>
+
+			<!-- 粉丝列表 -->
+			<div v-else-if="currentListType === 'followers'" class="user-list">
+				<UserCard
+					v-for="user in followerList"
+					:key="user.uid"
+					:uid="user.uid"
+					:avatar="user.avatar"
+					:userNickname="user.userNickname"
+					:username="user.username"
+					:isFollowing="user.isFollowing"
+				/>
+				<div v-if="isLoadingList" class="loading">
+					<Icon name="refresh" class="spinning" />
+				</div>
+				<div v-else-if="!hasMoreFollowers && followerList.length === 0" class="empty">
+					这里暂时还没有数据捏~(￣▽￣)~*
+				</div>
+			</div>
 		</div>
 
 		<div class="right">
@@ -117,11 +284,11 @@
 
 			<div class="toolbox-card">
 				<div class="user-counts">
-					<div>
+					<div class="clickable" :class="{ active: currentListType === 'following' }" @click="handleFollowingClick">
 						<span class="value">{{ followingCount }}</span>
 						<p>{{ $t("following", 2) }}</p>
 					</div>
-					<div>
+					<div class="clickable" :class="{ active: currentListType === 'followers' }" @click="handleFollowerClick">
 						<span class="value">{{ followerCount }}</span>
 						<p>{{ $t("follower", 2) }}</p>
 					</div>
@@ -199,6 +366,65 @@
 				color: c(icon-color);
 				font-size: 13px;
 			}
+		}
+
+		.clickable {
+			cursor: pointer;
+			transition: color 0.2s;
+
+			.value {
+				transition: color 0.2s;
+			}
+
+			&:any-hover {
+				.value {
+					color: c(accent);
+				}
+			}
+
+			&.active {
+				.value {
+					color: c(accent);
+				}
+			}
+		}
+	}
+
+	.center {
+		max-height: calc(100vh - 200px);
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+
+	.user-list {
+		display: flex;
+		flex-direction: column;
+		gap: 0;
+	}
+
+	.loading {
+		@include flex-center;
+		padding: 32px;
+		color: c(icon-color);
+
+		.spinning {
+			font-size: 24px;
+			animation: spin 1s linear infinite;
+		}
+	}
+
+	.empty {
+		@include flex-center;
+		padding: 32px;
+		color: c(icon-color);
+	}
+
+	@keyframes spin {
+		from {
+			transform: rotate(0deg);
+		}
+		to {
+			transform: rotate(360deg);
 		}
 	}
 
