@@ -17,6 +17,7 @@ type ApplicationEvents = {
 	"user:login": boolean;
 	"videoComment:emitVideoComment": VideoCommentResult;
 	"videoComment:deleteVideoComment": string;
+	"feed:refreshFollowStats": { uid: number };
 };
 
 const emitter = mitt<ApplicationEvents>();

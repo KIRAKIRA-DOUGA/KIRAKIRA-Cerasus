@@ -201,10 +201,12 @@
 				fetchFollowerList();
 	}
 
-	// 注册刷新函数到父组件，以便在关注/取消关注后刷新数据
-	const refreshFollowStats = inject<Ref<(() => void) | undefined>>("refreshFollowStats");
-	if (refreshFollowStats)
-		refreshFollowStats.value = fetchFollowStats;
+	// 监听事件总线，在关注/取消关注后刷新统计数据
+	useListen("feed:refreshFollowStats", (event) => {
+		if (event.uid === urlUid.value) {
+			fetchFollowStats();
+		}
+	});
 
 	watch(urlUid, fetchData, { deep: true });
 	await fetchData();
@@ -238,6 +240,7 @@
 					:userNickname="user.userNickname"
 					:username="user.username"
 					:isFollowing="true"
+					@update:isFollowing="(value) => { if (!value) { const index = followingList.findIndex(u => u.uid === user.uid); if (index !== -1) followingList.splice(index, 1); followingCount.value = Math.max(0, followingCount.value - 1); } }"
 				/>
 				<div v-if="isLoadingList" class="loading">
 					<ProgressRing />
@@ -257,6 +260,7 @@
 					:userNickname="user.userNickname"
 					:username="user.username"
 					:isFollowing="user.isFollowing"
+					@update:isFollowing="(value) => { const targetUser = followerList.find(u => u.uid === user.uid); if (targetUser) targetUser.isFollowing = value; }"
 				/>
 				<div v-if="isLoadingList" class="loading">
 					<ProgressRing />

@@ -19,6 +19,11 @@
 		isSelf?: boolean;
 	}>();
 
+	const emit = defineEmits<{
+		/** 关注状态变化时触发 */
+		"update:isFollowing": [value: boolean];
+	}>();
+
 	const selfUserInfoStore = useSelfUserInfoStore();
 	const isSelf = computed(() => props.uid === selfUserInfoStore.userInfo.uid);
 </script>
@@ -34,7 +39,7 @@
 			center
 		>
 			<template #actionButtons>
-				<FollowButton v-if="!isSelf && !props.isSelf" :uid="uid" :isFollowing="isFollowing ?? false" />
+				<FollowButton v-if="!isSelf && !props.isSelf" :uid="uid" :isFollowing="isFollowing ?? false" @update:isFollowing="emit('update:isFollowing', $event)" />
 			</template>
 		</UserContent>
 	</Comp>

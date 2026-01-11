@@ -72,10 +72,7 @@
 
 				// 获取上传者的关注数和粉丝数
 				if (videoData.uploaderInfo?.uid) {
-					const uploaderUid = videoData.uploaderInfo.uid;
-					fetchUploaderStats(uploaderUid);
-					// 设置刷新函数
-					refreshFollowStats.value = () => fetchUploaderStats(uploaderUid);
+					fetchUploaderStats(videoData.uploaderInfo.uid);
 				}
 			} else
 				handleError(t("toast.video_invalid_result"));
@@ -99,16 +96,13 @@
 		}
 	}
 
-	// 提供一个刷新关注统计的函数，供子组件调用
-	const refreshFollowStats = ref<(() => void) | undefined>();
-	provide("refreshFollowStats", refreshFollowStats);
-
-	// 注册刷新函数，当上传者 UID 存在时刷新统计数据
-	watch(() => videoDetails.value?.uploaderInfo?.uid, (uid) => {
-		if (uid) {
-			refreshFollowStats.value = () => fetchUploaderStats(uid);
+	// 监听事件总线，在关注/取消关注后刷新统计数据
+	const uploaderUid = computed(() => videoDetails.value?.uploaderInfo?.uid);
+	useListen("feed:refreshFollowStats", (event) => {
+		if (event.uid === uploaderUid.value) {
+			fetchUploaderStats(event.uid);
 		}
-	}, { immediate: true });
+	});
 
 	watch(() => kvid, fetchVideoData);
 	await fetchVideoData();
@@ -198,6 +192,7 @@
 								:followers="uploaderFollowers"
 								:isFollowing="!!videoDetails?.uploaderInfo?.isFollowing"
 								:isSelf="videoDetails?.uploaderInfo?.isSelf"
+								@update:isFollowing="(value) => { if (videoDetails?.uploaderInfo) videoDetails.uploaderInfo.isFollowing = value; }"
 							/>
 						</div>
 					</div>

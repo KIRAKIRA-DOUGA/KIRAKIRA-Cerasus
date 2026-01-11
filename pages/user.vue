@@ -120,10 +120,6 @@
 	await fetchUserData();
 	watch(() => [urlUid.value, selfUid.value], fetchUserData);
 
-	// 提供一个刷新关注统计的函数，供子组件调用
-	const refreshFollowStats = ref<(() => void) | undefined>();
-	provide("refreshFollowStats", refreshFollowStats);
-
 	const titleUserNickname = computed(() => isSelf.value ? selfUserInfoStore.userInfo.userNickname ? t("user_page.title_affix", [selfUserInfoStore.userInfo.userNickname]) : "" : userInfo.value?.result?.userNickname ? t("user_page.title_affix", [userInfo.value?.result?.userNickname]) : "");
 	useHead({ title: titleUserNickname });
 </script>
@@ -159,7 +155,7 @@
 									<MenuItem icon="flag">{{ $t("report") }}</MenuItem>
 									<MenuItem icon="block" @click="blockUser">{{ $t("block_user") }}</MenuItem>
 								</Menu>
-								<FollowButton v-if="!isSelf" :uid="urlUid" :isFollowing />
+								<FollowButton v-if="!isSelf" :uid="urlUid" :isFollowing="isFollowing" @update:isFollowing="isFollowing = $event" />
 								<SoftButton v-if="isSelf" href="/settings/profile" icon="edit" />
 							</div>
 						</template>
