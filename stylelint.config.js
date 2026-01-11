@@ -52,7 +52,12 @@ export default {
 		"at-rule-no-unknown": null,
 		"function-no-unknown": null,
 		"property-no-unknown": [true, { "severity": "warning" }],
-		"declaration-property-value-no-unknown": [true, { "severity": "warning" }],
+		"declaration-property-value-no-unknown": [true, {
+			"severity": "warning",
+			"ignoreProperties": {
+				"/.+/": ["/[\\w-]+\\(/"],
+			},
+		}],
 		"declaration-empty-line-before": null,
 		"custom-property-empty-line-before": null,
 		"selector-pseudo-class-no-unknown": [true, {
