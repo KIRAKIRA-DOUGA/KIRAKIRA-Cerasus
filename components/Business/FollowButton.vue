@@ -17,6 +17,11 @@
 	const followButton = ref<InstanceType<typeof Button>>(); // 关注按钮实例
 	const unfollowMenu = ref<FlyoutModel>(); // 点击「已关注」按钮时会出现的取消关注菜单
 
+	// 监听 props 变化，同步更新内部状态
+	watch(() => props.isFollowing, (newValue) => {
+		isFollowing.value = newValue;
+	});
+
 	// 获取刷新关注统计的函数（如果存在）
 	const refreshFollowStats = inject<Ref<(() => void) | undefined>>("refreshFollowStats", ref(undefined));
 
