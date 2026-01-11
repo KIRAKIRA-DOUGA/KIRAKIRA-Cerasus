@@ -5,17 +5,17 @@
 
 <script setup lang="ts">
 	const props = defineProps<{
-		/** 用户 UID */
+		/** 用户 UID。 */
 		uid: number;
-		/** 用户头像 */
+		/** 用户头像。 */
 		avatar?: string;
-		/** 用户昵称 */
+		/** 用户昵称。 */
 		userNickname?: string;
-		/** 用户名 */
+		/** 用户名。 */
 		username?: string;
-		/** 是否已关注 */
+		/** 是否已关注？ */
 		isFollowing?: boolean;
-		/** 是否是自己 */
+		/** 是否是自己？ */
 		isSelf?: boolean;
 	}>();
 
@@ -49,10 +49,8 @@
 			opacity: 0.8;
 		}
 
-		:deep(.user-content) {
-			.user-avatar {
-				--size: 48px;
-			}
+		:deep(.user-content) .user-avatar {
+			--size: 48px;
 		}
 
 		:deep(.container.link.lite) {
@@ -60,4 +58,3 @@
 		}
 	}
 </style>
-

@@ -1,7 +1,5 @@
 <script setup lang="ts">
-	import type { UserInfoForFollowList } from "api/Feed/FeedControllerDto";
-
-	const urlUid = ref();
+	const urlUid = ref<number>(undefined!);
 	// SSR
 	urlUid.value = currentUserUid();
 	// CSR
@@ -113,18 +111,15 @@
 			const headerCookie = import.meta.server ? useRequestHeaders(["cookie"]) : undefined;
 			const response = await api.feed.getFollowingList(urlUid.value, followingPage.value, PAGE_SIZE, headerCookie);
 			if (response.success && response.result) {
-				if (reset) {
+				if (reset)
 					followingList.value = response.result;
-				} else {
+				else
 					followingList.value.push(...response.result);
-				}
 				hasMoreFollowing.value = followingList.value.length < (response.totalCount ?? 0);
-				if (hasMoreFollowing.value) {
+				if (hasMoreFollowing.value)
 					followingPage.value++;
-				}
-			} else {
+			} else
 				hasMoreFollowing.value = false;
-			}
 		} catch (error) {
 			console.error("Failed to fetch following list:", error);
 			hasMoreFollowing.value = false;
@@ -148,18 +143,16 @@
 			const headerCookie = import.meta.server ? useRequestHeaders(["cookie"]) : undefined;
 			const response = await api.feed.getFollowerList(urlUid.value, followerPage.value, PAGE_SIZE, headerCookie);
 			if (response.success && response.result) {
-				if (reset) {
+				if (reset)
 					followerList.value = response.result;
-				} else {
+				else
 					followerList.value.push(...response.result);
-				}
+
 				hasMoreFollowers.value = followerList.value.length < (response.totalCount ?? 0);
-				if (hasMoreFollowers.value) {
+				if (hasMoreFollowers.value)
 					followerPage.value++;
-				}
-			} else {
+			} else
 				hasMoreFollowers.value = false;
-			}
 		} catch (error) {
 			console.error("Failed to fetch follower list:", error);
 			hasMoreFollowers.value = false;
@@ -171,13 +164,12 @@
 	 * 处理关注数点击
 	 */
 	function handleFollowingClick() {
-		if (currentListType.value === "following") {
+		if (currentListType.value === "following")
 			currentListType.value = "videos";
-		} else {
+		else {
 			currentListType.value = "following";
-			if (followingList.value.length === 0) {
+			if (followingList.value.length === 0)
 				fetchFollowingList(true);
-			}
 		}
 	}
 
@@ -185,13 +177,12 @@
 	 * 处理粉丝数点击
 	 */
 	function handleFollowerClick() {
-		if (currentListType.value === "followers") {
+		if (currentListType.value === "followers")
 			currentListType.value = "videos";
-		} else {
+		else {
 			currentListType.value = "followers";
-			if (followerList.value.length === 0) {
+			if (followerList.value.length === 0)
 				fetchFollowerList(true);
-			}
 		}
 	}
 
@@ -203,20 +194,17 @@
 		if (!listContainer.value || isLoadingList.value) return;
 		const container = listContainer.value;
 		const scrollBottom = container.scrollHeight - container.scrollTop - container.clientHeight;
-		if (scrollBottom < 100) {
-			if (currentListType.value === "following" && hasMoreFollowing.value) {
+		if (scrollBottom < 100)
+			if (currentListType.value === "following" && hasMoreFollowing.value)
 				fetchFollowingList();
-			} else if (currentListType.value === "followers" && hasMoreFollowers.value) {
+			else if (currentListType.value === "followers" && hasMoreFollowers.value)
 				fetchFollowerList();
-			}
-		}
 	}
 
 	// 注册刷新函数到父组件，以便在关注/取消关注后刷新数据
 	const refreshFollowStats = inject<Ref<(() => void) | undefined>>("refreshFollowStats");
-	if (refreshFollowStats) {
+	if (refreshFollowStats)
 		refreshFollowStats.value = fetchFollowStats;
-	}
 
 	watch(urlUid, fetchData, { deep: true });
 	await fetchData();
@@ -252,7 +240,7 @@
 					:isFollowing="true"
 				/>
 				<div v-if="isLoadingList" class="loading">
-					<Icon name="refresh" class="spinning" />
+					<ProgressRing />
 				</div>
 				<div v-else-if="!hasMoreFollowing && followingList.length === 0" class="empty">
 					这里暂时还没有数据捏~(￣▽￣)~*
@@ -271,7 +259,7 @@
 					:isFollowing="user.isFollowing"
 				/>
 				<div v-if="isLoadingList" class="loading">
-					<Icon name="refresh" class="spinning" />
+					<ProgressRing />
 				</div>
 				<div v-else-if="!hasMoreFollowers && followerList.length === 0" class="empty">
 					这里暂时还没有数据捏~(￣▽￣)~*
@@ -286,11 +274,11 @@
 				<div class="user-counts">
 					<div class="clickable" :class="{ active: currentListType === 'following' }" @click="handleFollowingClick">
 						<span class="value">{{ followingCount }}</span>
-						<p>{{ $t("following", 2) }}</p>
+						<p>{{ $t("following", followingCount) }}</p>
 					</div>
 					<div class="clickable" :class="{ active: currentListType === 'followers' }" @click="handleFollowerClick">
 						<span class="value">{{ followerCount }}</span>
-						<p>{{ $t("follower", 2) }}</p>
+						<p>{{ $t("follower", followerCount) }}</p>
 					</div>
 					<div>
 						<span class="value">{{ 0 }}</span>
@@ -370,30 +358,25 @@
 
 		.clickable {
 			cursor: pointer;
-			transition: color 0.2s;
 
+			&,
 			.value {
-				transition: color 0.2s;
+				transition: $fallback-transitions, color $ease-out-expo 200ms;
 			}
 
-			&:any-hover {
-				.value {
-					color: c(accent);
-				}
+			&:any-hover .value {
+				color: c(accent);
 			}
 
-			&.active {
-				.value {
-					color: c(accent);
-				}
+			&.active .value {
+				color: c(accent);
 			}
 		}
 	}
 
 	.center {
-		max-height: calc(100vh - 200px);
-		overflow-y: auto;
-		overflow-x: hidden;
+		max-height: calc(100dvh - 200px);
+		overflow: hidden auto;
 	}
 
 	.user-list {
@@ -406,26 +389,12 @@
 		@include flex-center;
 		padding: 32px;
 		color: c(icon-color);
-
-		.spinning {
-			font-size: 24px;
-			animation: spin 1s linear infinite;
-		}
 	}
 
 	.empty {
 		@include flex-center;
 		padding: 32px;
 		color: c(icon-color);
-	}
-
-	@keyframes spin {
-		from {
-			transform: rotate(0deg);
-		}
-		to {
-			transform: rotate(360deg);
-		}
 	}
 
 	.user-info-container {

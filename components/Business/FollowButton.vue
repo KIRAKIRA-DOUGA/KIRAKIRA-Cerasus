@@ -18,7 +18,7 @@
 	const unfollowMenu = ref<FlyoutModel>(); // 点击「已关注」按钮时会出现的取消关注菜单
 
 	// 监听 props 变化，同步更新内部状态
-	watch(() => props.isFollowing, (newValue) => {
+	watch(() => props.isFollowing, newValue => {
 		isFollowing.value = newValue;
 	});
 
@@ -63,9 +63,8 @@
 			if (response.success) {
 				isFollowing.value = true;
 				// 刷新关注统计
-				if (refreshFollowStats.value) {
+				if (refreshFollowStats.value)
 					refreshFollowStats.value();
-				}
 			} else
 				useToast(t("toast.something_went_wrong"), "error", 5000);
 		} catch (error) {
@@ -88,9 +87,8 @@
 			if (response.success) {
 				isFollowing.value = false;
 				// 刷新关注统计
-				if (refreshFollowStats.value) {
+				if (refreshFollowStats.value)
 					refreshFollowStats.value();
-				}
 			} else {
 				isFollowing.value = true;
 				useToast(t("toast.something_went_wrong"), "error", 5000);
@@ -115,7 +113,7 @@
 	>
 		{{ isFollowing ? $t("following") : $t("follow_verb") }}
 		<Menu v-model="unfollowMenu">
-			<MenuItem icon="close" @click="onUnfollowButtonClick">取消关注</MenuItem>
+			<MenuItem icon="close" @click="onUnfollowButtonClick">{{ $t("unfollow") }}</MenuItem>
 		</Menu>
 	</Button>
 </template>

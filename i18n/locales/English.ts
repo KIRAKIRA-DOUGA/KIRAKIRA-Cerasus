@@ -346,6 +346,7 @@ export default {
 	follower: "Follower | Followers",
 	fans: "Fan | Fans",
 	watched: "View | Views",
+	unfollow: "Unfollow",
 	latest: "Latest",
 	upload_date: "Upload Date",
 	send_date: "Send Date",
