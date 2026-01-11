@@ -97,6 +97,7 @@
 
 	/**
 	 * 获取关注列表
+	 * @param reset - 是否为重新加载？
 	 */
 	async function fetchFollowingList(reset = false) {
 		if (isLoadingList.value || !hasMoreFollowing.value) return;
@@ -129,6 +130,7 @@
 
 	/**
 	 * 获取粉丝列表
+	 * @param reset - 是否为重新加载？
 	 */
 	async function fetchFollowerList(reset = false) {
 		if (isLoadingList.value || !hasMoreFollowers.value) return;
@@ -202,10 +204,9 @@
 	}
 
 	// 监听事件总线，在关注/取消关注后刷新统计数据
-	useListen("feed:refreshFollowStats", (event) => {
-		if (event.uid === urlUid.value) {
+	useListen("feed:refreshFollowStats", event => {
+		if (event.uid === urlUid.value)
 			fetchFollowStats();
-		}
 	});
 
 	watch(urlUid, fetchData, { deep: true });
@@ -240,7 +241,7 @@
 					:userNickname="user.userNickname"
 					:username="user.username"
 					:isFollowing="true"
-					@update:isFollowing="(value) => { if (!value) { const index = followingList.findIndex(u => u.uid === user.uid); if (index !== -1) followingList.splice(index, 1); followingCount.value = Math.max(0, followingCount.value - 1); } }"
+					@update:isFollowing="(value) => { if (!value) { const index = followingList.findIndex(u => u.uid === user.uid); if (index !== -1) followingList.splice(index, 1); followingCount = Math.max(0, followingCount - 1); } }"
 				/>
 				<div v-if="isLoadingList" class="loading">
 					<ProgressRing />

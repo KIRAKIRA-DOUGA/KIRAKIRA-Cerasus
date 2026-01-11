@@ -71,9 +71,8 @@
 				};
 
 				// 获取上传者的关注数和粉丝数
-				if (videoData.uploaderInfo?.uid) {
+				if (videoData.uploaderInfo?.uid)
 					fetchUploaderStats(videoData.uploaderInfo.uid);
-				}
 			} else
 				handleError(t("toast.video_invalid_result"));
 		} else
@@ -82,6 +81,7 @@
 
 	/**
 	 * 获取上传者的关注数和粉丝数
+	 * @param uid - 要获取的上传者的 UID。
 	 */
 	async function fetchUploaderStats(uid: number) {
 		try {
@@ -98,10 +98,9 @@
 
 	// 监听事件总线，在关注/取消关注后刷新统计数据
 	const uploaderUid = computed(() => videoDetails.value?.uploaderInfo?.uid);
-	useListen("feed:refreshFollowStats", (event) => {
-		if (event.uid === uploaderUid.value) {
+	useListen("feed:refreshFollowStats", event => {
+		if (event.uid === uploaderUid.value)
 			fetchUploaderStats(event.uid);
-		}
 	});
 
 	watch(() => kvid, fetchVideoData);

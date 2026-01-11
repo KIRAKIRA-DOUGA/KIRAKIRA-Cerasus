@@ -3,6 +3,8 @@
 </docs>
 
 <script setup lang="ts">
+	import Button from "../Button.vue";
+
 	const props = defineProps<{
 		/** 用户 UID。 */
 		uid: number;
@@ -85,9 +87,8 @@
 				emit("update:isFollowing", false);
 				// 触发事件总线，通知刷新关注统计
 				useEvent("feed:refreshFollowStats", { uid: props.uid });
-			} else {
+			} else
 				useToast(t("toast.something_went_wrong"), "error", 5000);
-			}
 		} catch (error) {
 			useToast(t("toast.something_went_wrong"), "error", 5000);
 			console.error("ERROR", "取消关注用户时出错：", error);

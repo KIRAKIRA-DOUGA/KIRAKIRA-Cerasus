@@ -43,7 +43,7 @@
 	const actionMenu = ref<FlyoutModel>();
 	const currentTab = computed(() => currentUserTab());
 
-	const urlUid = ref(); // URL 中的 UID
+	const urlUid = ref<number>(undefined!); // URL 中的 UID
 	urlUid.value = currentUserUid(); // SSR
 	const nuxtApp = useNuxtApp();
 	nuxtApp.hook("page:finish", () => {
