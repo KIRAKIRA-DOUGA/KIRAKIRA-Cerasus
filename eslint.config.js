@@ -11,7 +11,7 @@ import jsdoc from "eslint-plugin-jsdoc";
 import unicorn from "eslint-plugin-unicorn";
 
 /** @type {import("eslint").Linter.Config[]} */
-export default [
+export default tseslint.config(
 	eslint.configs.recommended,
 	...tseslint.configs.recommended,
 	...pluginVue.configs["flat/essential"],
@@ -27,9 +27,7 @@ export default [
 	{
 		languageOptions: {
 			parserOptions: {
-				parser: {
-					ts: tseslint.parser,
-				},
+				parser: tseslint.parser,
 				ecmaFeatures: {
 					jsx: true,
 				},
@@ -590,4 +588,4 @@ export default [
 			"proto/*",
 		],
 	},
-];
+);
