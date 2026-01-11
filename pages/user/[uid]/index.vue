@@ -21,14 +21,8 @@
 
 	// 列表显示相关
 	const currentListType = ref<"videos" | "following" | "followers">("videos");
-	const followingList = ref<UserInfoForFollowList[]>([]);
-	const followerList = ref<UserInfoForFollowList[]>([]);
-	const isLoadingList = ref(false);
-	const hasMoreFollowing = ref(true);
-	const hasMoreFollowers = ref(true);
-	const followingPage = ref(1);
-	const followerPage = ref(1);
-	const PAGE_SIZE = 18;
+	const followingListRef = ref<InstanceType<typeof UserList>>();
+	const followerListRef = ref<InstanceType<typeof UserList>>();
 
 	/**
 	 * Fetch all data.
@@ -95,72 +89,6 @@
 		}
 	}
 
-	/**
-	 * 获取关注列表
-	 * @param reset - 是否为重新加载？
-	 */
-	async function fetchFollowingList(reset = false) {
-		if (isLoadingList.value || !hasMoreFollowing.value) return;
-		if (reset) {
-			followingPage.value = 1;
-			followingList.value = [];
-			hasMoreFollowing.value = true;
-		}
-
-		isLoadingList.value = true;
-		try {
-			const headerCookie = import.meta.server ? useRequestHeaders(["cookie"]) : undefined;
-			const response = await api.feed.getFollowingList(urlUid.value, followingPage.value, PAGE_SIZE, headerCookie);
-			if (response.success && response.result) {
-				if (reset)
-					followingList.value = response.result;
-				else
-					followingList.value.push(...response.result);
-				hasMoreFollowing.value = followingList.value.length < (response.totalCount ?? 0);
-				if (hasMoreFollowing.value)
-					followingPage.value++;
-			} else
-				hasMoreFollowing.value = false;
-		} catch (error) {
-			console.error("Failed to fetch following list:", error);
-			hasMoreFollowing.value = false;
-		}
-		isLoadingList.value = false;
-	}
-
-	/**
-	 * 获取粉丝列表
-	 * @param reset - 是否为重新加载？
-	 */
-	async function fetchFollowerList(reset = false) {
-		if (isLoadingList.value || !hasMoreFollowers.value) return;
-		if (reset) {
-			followerPage.value = 1;
-			followerList.value = [];
-			hasMoreFollowers.value = true;
-		}
-
-		isLoadingList.value = true;
-		try {
-			const headerCookie = import.meta.server ? useRequestHeaders(["cookie"]) : undefined;
-			const response = await api.feed.getFollowerList(urlUid.value, followerPage.value, PAGE_SIZE, headerCookie);
-			if (response.success && response.result) {
-				if (reset)
-					followerList.value = response.result;
-				else
-					followerList.value.push(...response.result);
-
-				hasMoreFollowers.value = followerList.value.length < (response.totalCount ?? 0);
-				if (hasMoreFollowers.value)
-					followerPage.value++;
-			} else
-				hasMoreFollowers.value = false;
-		} catch (error) {
-			console.error("Failed to fetch follower list:", error);
-			hasMoreFollowers.value = false;
-		}
-		isLoadingList.value = false;
-	}
 
 	/**
 	 * 处理关注数点击
@@ -170,8 +98,10 @@
 			currentListType.value = "videos";
 		else {
 			currentListType.value = "following";
-			if (followingList.value.length === 0)
-				fetchFollowingList(true);
+			// 使用 nextTick 确保组件已渲染
+			nextTick(() => {
+				followingListRef.value?.fetchList(true);
+			});
 		}
 	}
 
@@ -183,24 +113,18 @@
 			currentListType.value = "videos";
 		else {
 			currentListType.value = "followers";
-			if (followerList.value.length === 0)
-				fetchFollowerList(true);
+			// 使用 nextTick 确保组件已渲染
+			nextTick(() => {
+				followerListRef.value?.fetchList(true);
+			});
 		}
 	}
 
 	/**
-	 * 无限滚动处理
+	 * 处理关注列表中的取消关注事件
 	 */
-	const listContainer = ref<HTMLElement>();
-	function handleScroll() {
-		if (!listContainer.value || isLoadingList.value) return;
-		const container = listContainer.value;
-		const scrollBottom = container.scrollHeight - container.scrollTop - container.clientHeight;
-		if (scrollBottom < 100)
-			if (currentListType.value === "following" && hasMoreFollowing.value)
-				fetchFollowingList();
-			else if (currentListType.value === "followers" && hasMoreFollowers.value)
-				fetchFollowerList();
+	function handleUnfollow(uid: number) {
+		followingCount.value = Math.max(0, followingCount.value - 1);
 	}
 
 	// 监听事件总线，在关注/取消关注后刷新统计数据
@@ -215,7 +139,7 @@
 
 <template>
 	<div class="container">
-		<div ref="listContainer" class="toolbox-card center" @scroll="handleScroll">
+		<div class="toolbox-card center">
 			<!-- 视频列表 -->
 			<ThumbGrid v-if="currentListType === 'videos'">
 				<ThumbVideo
@@ -232,44 +156,21 @@
 			</ThumbGrid>
 
 			<!-- 关注列表 -->
-			<div v-else-if="currentListType === 'following'" class="user-list">
-				<UserCard
-					v-for="user in followingList"
-					:key="user.uid"
-					:uid="user.uid"
-					:avatar="user.avatar"
-					:userNickname="user.userNickname"
-					:username="user.username"
-					:isFollowing="true"
-					@update:isFollowing="(value) => { if (!value) { const index = followingList.findIndex(u => u.uid === user.uid); if (index !== -1) followingList.splice(index, 1); followingCount = Math.max(0, followingCount - 1); } }"
-				/>
-				<div v-if="isLoadingList" class="loading">
-					<ProgressRing />
-				</div>
-				<div v-else-if="!hasMoreFollowing && followingList.length === 0" class="empty">
-					这里暂时还没有数据捏~(￣▽￣)~*
-				</div>
-			</div>
+			<UserList
+				v-else-if="currentListType === 'following'"
+				ref="followingListRef"
+				:target-uid="urlUid"
+				list-type="following"
+				@unfollow="handleUnfollow"
+			/>
 
 			<!-- 粉丝列表 -->
-			<div v-else-if="currentListType === 'followers'" class="user-list">
-				<UserCard
-					v-for="user in followerList"
-					:key="user.uid"
-					:uid="user.uid"
-					:avatar="user.avatar"
-					:userNickname="user.userNickname"
-					:username="user.username"
-					:isFollowing="user.isFollowing"
-					@update:isFollowing="(value) => { const targetUser = followerList.find(u => u.uid === user.uid); if (targetUser) targetUser.isFollowing = value; }"
-				/>
-				<div v-if="isLoadingList" class="loading">
-					<ProgressRing />
-				</div>
-				<div v-else-if="!hasMoreFollowers && followerList.length === 0" class="empty">
-					这里暂时还没有数据捏~(￣▽￣)~*
-				</div>
-			</div>
+			<UserList
+				v-else-if="currentListType === 'followers'"
+				ref="followerListRef"
+				:target-uid="urlUid"
+				list-type="followers"
+			/>
 		</div>
 
 		<div class="right">
@@ -382,24 +283,6 @@
 	.center {
 		max-height: calc(100dvh - 200px);
 		overflow: hidden auto;
-	}
-
-	.user-list {
-		display: flex;
-		flex-direction: column;
-		gap: 0;
-	}
-
-	.loading {
-		@include flex-center;
-		padding: 32px;
-		color: c(icon-color);
-	}
-
-	.empty {
-		@include flex-center;
-		padding: 32px;
-		color: c(icon-color);
 	}
 
 	.user-info-container {
