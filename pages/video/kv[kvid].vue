@@ -72,7 +72,10 @@
 
 				// 获取上传者的关注数和粉丝数
 				if (videoData.uploaderInfo?.uid) {
-					fetchUploaderStats(videoData.uploaderInfo.uid);
+					const uploaderUid = videoData.uploaderInfo.uid;
+					fetchUploaderStats(uploaderUid);
+					// 设置刷新函数
+					refreshFollowStats.value = () => fetchUploaderStats(uploaderUid);
 				}
 			} else
 				handleError(t("toast.video_invalid_result"));
@@ -95,6 +98,17 @@
 			console.error("Failed to fetch uploader stats:", error);
 		}
 	}
+
+	// 提供一个刷新关注统计的函数，供子组件调用
+	const refreshFollowStats = ref<(() => void) | undefined>();
+	provide("refreshFollowStats", refreshFollowStats);
+
+	// 注册刷新函数，当上传者 UID 存在时刷新统计数据
+	watch(() => videoDetails.value?.uploaderInfo?.uid, (uid) => {
+		if (uid) {
+			refreshFollowStats.value = () => fetchUploaderStats(uid);
+		}
+	}, { immediate: true });
 
 	watch(() => kvid, fetchVideoData);
 	await fetchVideoData();
