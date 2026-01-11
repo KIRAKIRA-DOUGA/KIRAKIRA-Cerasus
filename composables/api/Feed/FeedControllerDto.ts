@@ -291,3 +291,17 @@ export type GetFeedContentResponseDto = {
 		content: ThumbVideoResponseDto["videos"];
 	};
 };
+
+/**
+ * 获取用户关注数和粉丝数的请求响应
+ */
+export type GetFollowStatsResponseDto = {
+	/** 执行结果 */
+	success: boolean;
+	/** 附加的文本消息 */
+	message?: string;
+	/** 关注数（该用户关注了多少人） */
+	followingCount?: number;
+	/** 粉丝数（有多少人关注了该用户） */
+	followerCount?: number;
+};

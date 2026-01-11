@@ -17,6 +17,9 @@
 	const followButton = ref<InstanceType<typeof Button>>(); // 关注按钮实例
 	const unfollowMenu = ref<FlyoutModel>(); // 点击「已关注」按钮时会出现的取消关注菜单
 
+	// 获取刷新关注统计的函数（如果存在）
+	const refreshFollowStats = inject<Ref<(() => void) | undefined>>("refreshFollowStats", ref(undefined));
+
 	/**
 	 * 关注按钮点击事件。
 	 * @param e - 鼠标事件。
@@ -51,10 +54,14 @@
 			const followingUploaderRequest: FollowingUploaderRequestDto = {
 				followingUid: props.uid ?? -1,
 			};
-			const { data } = await api.feed.followingUploader(followingUploaderRequest);
-			if (data.value?.success)
+			const response = await api.feed.followingUploader(followingUploaderRequest);
+			if (response.success) {
 				isFollowing.value = true;
-			else
+				// 刷新关注统计
+				if (refreshFollowStats.value) {
+					refreshFollowStats.value();
+				}
+			} else
 				useToast(t("toast.something_went_wrong"), "error", 5000);
 		} catch (error) {
 			useToast(t("toast.something_went_wrong"), "error", 5000);
@@ -72,10 +79,14 @@
 			const unfollowingUploaderRequest: UnfollowingUploaderRequestDto = {
 				unfollowingUid: props.uid ?? -1,
 			};
-			const { data } = await api.feed.unfollowingUploader(unfollowingUploaderRequest);
-			if (data.value?.success)
+			const response = await api.feed.unfollowingUploader(unfollowingUploaderRequest);
+			if (response.success) {
 				isFollowing.value = false;
-			else {
+				// 刷新关注统计
+				if (refreshFollowStats.value) {
+					refreshFollowStats.value();
+				}
+			} else {
 				isFollowing.value = true;
 				useToast(t("toast.something_went_wrong"), "error", 5000);
 			}
@@ -99,7 +110,7 @@
 	>
 		{{ isFollowing ? $t("following") : $t("follow_verb") }}
 		<Menu v-model="unfollowMenu">
-			<MenuItem icon="close" @click="onUnfollowButtonClick">{{ $t("unfollow_verb") }}</MenuItem>
+			<MenuItem icon="close" @click="onUnfollowButtonClick">取消关注</MenuItem>
 		</Menu>
 	</Button>
 </template>

@@ -16,6 +16,9 @@
 
 	const userVideos = ref<GetVideoByUidResponseDto>();
 
+	const followingCount = ref(0);
+	const followerCount = ref(0);
+
 	/**
 	 * Fetch all data.
 	 */
@@ -26,7 +29,10 @@
 		const fetchUserVideoDataPromise = new Promise<void>(resolve => {
 			fetchUserVideoData().then(resolve);
 		});
-		await Promise.allSettled([fetchUserDataPromise, fetchUserVideoDataPromise]);
+		const fetchFollowStatsPromise = new Promise<void>(resolve => {
+			fetchFollowStats().then(resolve);
+		});
+		await Promise.allSettled([fetchUserDataPromise, fetchUserVideoDataPromise, fetchFollowStatsPromise]);
 	}
 
 	/**
@@ -59,6 +65,31 @@
 			userVideos.value = videosResponse;
 		} catch (error) { console.error(error); }
 	}
+
+	/**
+	 * Fetch the follow stats (following count and follower count).
+	 */
+	async function fetchFollowStats() {
+		try {
+			if (!urlUid.value) return;
+			// 只在服务端使用 useRequestHeaders，客户端会自动通过 credentials: "include" 传递 cookie
+			const headerCookie = import.meta.server ? useRequestHeaders(["cookie"]) : undefined;
+			const statsResponse = await api.feed.getFollowStats(urlUid.value, headerCookie);
+			if (statsResponse.success) {
+				followingCount.value = statsResponse.followingCount ?? 0;
+				followerCount.value = statsResponse.followerCount ?? 0;
+			}
+		} catch (error) {
+			console.error("Failed to fetch follow stats:", error);
+		}
+	}
+
+	// 注册刷新函数到父组件，以便在关注/取消关注后刷新数据
+	const refreshFollowStats = inject<Ref<(() => void) | undefined>>("refreshFollowStats");
+	if (refreshFollowStats) {
+		refreshFollowStats.value = fetchFollowStats;
+	}
+
 	watch(urlUid, fetchData, { deep: true });
 	await fetchData();
 </script>
@@ -87,11 +118,11 @@
 			<div class="toolbox-card">
 				<div class="user-counts">
 					<div>
-						<span class="value">{{ 0 }}</span>
+						<span class="value">{{ followingCount }}</span>
 						<p>{{ $t("following", 2) }}</p>
 					</div>
 					<div>
-						<span class="value">{{ 0 }}</span>
+						<span class="value">{{ followerCount }}</span>
 						<p>{{ $t("follower", 2) }}</p>
 					</div>
 					<div>

@@ -120,6 +120,10 @@
 	await fetchUserData();
 	watch(() => [urlUid.value, selfUid.value], fetchUserData);
 
+	// 提供一个刷新关注统计的函数，供子组件调用
+	const refreshFollowStats = ref<(() => void) | undefined>();
+	provide("refreshFollowStats", refreshFollowStats);
+
 	const titleUserNickname = computed(() => isSelf.value ? selfUserInfoStore.userInfo.userNickname ? t("user_page.title_affix", [selfUserInfoStore.userInfo.userNickname]) : "" : userInfo.value?.result?.userNickname ? t("user_page.title_affix", [userInfo.value?.result?.userNickname]) : "");
 	useHead({ title: titleUserNickname });
 </script>
