@@ -26,6 +26,7 @@
 	const playing = defineModel("playing", { default: false });
 	const playbackRate = ref(1);
 	const preservesPitch = ref(false);
+	const playReversed = ref(false);
 	const continuousRateControl = ref(false);
 	const volume = ref(1);
 	const muted = ref(false);
@@ -148,7 +149,7 @@
 
 	watch(playbackRate, playbackRate => {
 		if (!video.value) return;
-		video.value.playbackRate = playbackRate;
+		video.value.playbackRate = (playReversed.value && supportPlayReversed ? -1 : 1) * Math.abs(playbackRate);
 	});
 
 	watch(volume, volume => {
@@ -683,7 +684,7 @@
 					:style="videoFilterStyle"
 					@play="playing = true"
 					@pause="playing = false"
-					@ratechange="(video!.playbackRate !== 0) && (playbackRate = video!.playbackRate)"
+					@ratechange="(video!.playbackRate !== 0) && (playReversed = video!.playbackRate < 0, playbackRate = Math.abs(video!.playbackRate))"
 					@timeupdate="onTimeUpdate"
 					@canplay="onCanPlay"
 					@progress="updateBuffered"
@@ -717,6 +718,7 @@
 				v-model:currentTime="currentTime"
 				v-model:playing="playing"
 				v-model:playbackRate="playbackRate"
+				v-model:playReversed="playReversed"
 				v-model:volume="volume"
 				v-model:muted="muted"
 				v-model:resample="resample"

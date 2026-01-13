@@ -151,6 +151,7 @@ export default {
 		speed: {
 			resample: "Resample Audio",
 			continuous: "Continuous Control",
+			reversed: "Play Reversed",
 		},
 		quality: {
 			auto: "Auto Quality",
