@@ -147,9 +147,9 @@
 		playerConfig.rate.continuousControl = continuousRateControl;
 	});
 
-	watch(() => [playbackRate.value, playReversed.value] as const, ([playbackRate, playReversed]) => {
+	watch(playbackRate, playbackRate => {
 		if (!video.value) return;
-		video.value.playbackRate = (playReversed && supportPlayReversed ? -1 : 1) * Math.abs(playbackRate);
+		video.value.playbackRate = (playReversed.value && supportPlayReversed ? -1 : 1) * Math.abs(playbackRate);
 	});
 
 	watch(volume, volume => {
