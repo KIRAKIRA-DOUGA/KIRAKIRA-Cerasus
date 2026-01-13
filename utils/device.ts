@@ -39,18 +39,3 @@ export function getPlatform() {
 	else if (/(Linux)/i.test(platform)) return "Linux";
 	else if (/(Win)/i.test(platform)) return "Windows";
 }
-
-/**
- * 当前浏览器是否支持倒放音视频？
- * @remarks 目前只有 Safari 浏览器支持倒放。
- */
-export const supportPlayReversed = (() => {
-	if (environment.server) return false;
-	const video = document.createElement("video");
-	try {
-		video.playbackRate = -1;
-		return true;
-	} catch {
-		return false;
-	}
-})();
