@@ -39,7 +39,6 @@
 
 	const playing = defineModel<boolean>("playing", { default: false });
 	const playbackRate = defineModel<number>("playbackRate", { default: 1 });
-	const playReversed = defineModel<boolean>("playReversed", { default: false });
 	const volume = defineModel<number>("volume", { default: 1 });
 	const muted = defineModel<boolean>("muted", { default: false });
 	const model = defineModel<number>("currentTime", { default: NaN });
@@ -81,6 +80,7 @@
 	const seekingIcon = ref<DeclaredIcons>();
 	const currentTime = computed(() => new Duration(model.value).toString());
 	const countdownTime = computed(() => new Duration(model.value - props.duration).toString());
+	console.log("​ ​ countdownTime​", model.value, props.duration);
 	const duration = computed(() => new Duration(props.duration).toString());
 	const mobile = () => getResponsiveDevice() === "mobile";
 
@@ -242,7 +242,6 @@
 			<menu @contextmenu.prevent>
 				<ToggleSwitch v-model="resample" v-ripple.overlay icon="tunning">{{ $t("player.speed.resample") }}</ToggleSwitch>
 				<ToggleSwitch v-model="continuousRateControl" v-ripple.overlay icon="speed">{{ $t("player.speed.continuous") }}</ToggleSwitch>
-				<ToggleSwitch v-if="supportPlayReversed" v-model="playReversed" v-ripple.overlay icon="fast_rewind">{{ $t("player.speed.reversed") }}</ToggleSwitch>
 			</menu>
 			<template #slider>
 				<CapsuleSlider v-model="playbackRateLinear" :min="-2" :max="2" :displayValue="playbackRateText" :defaultValue="0" />
