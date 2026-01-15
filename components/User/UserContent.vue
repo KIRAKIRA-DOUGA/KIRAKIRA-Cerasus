@@ -64,7 +64,7 @@
 		<slot v-if="!avatarInside" name="avatar">
 			<div class="above">
 				<UserAvatar :avatar :uid :to :class="{ 'avatar-full-width': avatarFullWidth }" />
-				<div v-if="$slots.default" class="action-buttons">
+				<div v-if="$slots.actionButtons" class="action-buttons">
 					<slot name="actionButtons"></slot>
 				</div>
 			</div>
@@ -80,6 +80,7 @@
 					<div class="user">
 						<component :is="uid ? LocaleLink : 'div'" v-if="nickname || username" :to="uid ? `/user/${uid ?? ''}` : undefined" class="names lite">
 							<span v-if="nickname" class="nickname">{{ nickname }}</span>
+							<span v-if="size !== 'huge'" class="username">@{{ username }}</span>
 							<!-- <span v-if="memoParen" class="memo" :class="[memoParen]">{{ memo }}</span> -->
 						</component>
 
@@ -92,7 +93,7 @@
 						</div>
 					</div>
 
-					<p v-if="username" class="username">
+					<p v-if="username && size === 'huge'" class="username">
 						@{{ username }}
 					</p>
 
@@ -196,9 +197,11 @@
 	}
 
 	.above {
-		display: flex;
-		justify-content: space-between;
-		align-items: end;
+		&:has(.action-buttons) {
+			display: flex;
+			justify-content: space-between;
+			align-items: end;
+		}
 
 		.action-buttons {
 			display: flex;
