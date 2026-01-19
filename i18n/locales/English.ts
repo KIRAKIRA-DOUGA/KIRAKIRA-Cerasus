@@ -318,7 +318,7 @@ export default {
 	publish: "Publish",
 	messages: "Messages",
 	notification: "Notification | Notifications",
-	pleaseLogin: "Please Log In",
+	please_login: "Please Log In",
 	login: "Log In",
 	logout: "Log Out",
 	register: "Register",
