@@ -29,7 +29,7 @@
 		"types": [
 			"@pomsky-lang/unplugin"
 		]
-	}
+	},
 	// "vueCompilerOptions": {
 	// 	"plugins": [
 	// 		"vite-plugin-vue-nested-sfc/tooling"

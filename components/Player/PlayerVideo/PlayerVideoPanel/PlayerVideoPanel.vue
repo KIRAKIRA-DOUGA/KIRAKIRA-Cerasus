@@ -66,7 +66,7 @@
 						</TabBar>
 						<TabBar v-else-if="showSettings" v-model="selectedSettingsTab" @movingForTransition="name => transitionName = name">
 							<TabItem id="player">{{ $t("player.title") }}</TabItem>
-							<TabItem id="filters">{{ $t("player.filter") }}</TabItem>
+							<TabItem id="filters">{{ $t("player.filter.title") }}</TabItem>
 							<TabItem id="block-words">屏蔽词</TabItem>
 						</TabBar>
 					</Transition>

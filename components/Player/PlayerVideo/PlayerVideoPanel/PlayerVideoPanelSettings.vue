@@ -10,31 +10,7 @@
 
 	type Filters = keyof PlayerVideoSettings["filter"] | "rotate90" | "rotate180" | "rotate270" | "hMirrorLeft" | "hMirrorRight" | "vMirrorTop" | "vMirrorBottom";
 
-	/* TODO: 多语言。 */
-	const filters: Record<Exclude<Filters, "rotation" | "mirror">, string> = {
-		hFlip: "水平翻转",
-		vFlip: "垂直翻转",
-		rotate90: "旋转90°",
-		rotate180: "旋转180°",
-		rotate270: "旋转270°",
-		hMirrorLeft: "水平镜像（左）",
-		hMirrorRight: "水平镜像（右）",
-		vMirrorTop: "垂直镜像（上）",
-		vMirrorBottom: "垂直镜像（下）",
-		grayscale: "黑白",
-		invert: "反色",
-		sepia: "怀旧",
-		posterize: "色调分离",
-		spectrum: "色谱",
-		thermal: "热成像",
-		emboss: "浮雕",
-		bump: "凹凸",
-		edge: "查找边缘",
-		hue: "调整色相",
-		saturate: "调整饱和度",
-		contrast: "调整对比度",
-		brightness: "调整亮度",
-	};
+	const filters: Exclude<Filters, "rotation" | "mirror">[] = ["hFlip", "vFlip", "rotate90", "rotate180", "rotate270", "hMirrorLeft", "hMirrorRight", "vMirrorTop", "vMirrorBottom", "grayscale", "invert", "sepia", "posterize", "spectrum", "thermal", "emboss", "bump", "edge", "hue", "saturate", "contrast", "brightness"];
 
 	const filterBooleanProxy = new Proxy(props.settings.filter, {
 		get(target, prop: Filters) {
@@ -130,16 +106,16 @@
 
 					<div v-else-if="selectedSettingsTab === 'filters'">
 						<div class="grid">
-							<template v-for="(filter, key) in filters" :key="key">
-								<CheckCard v-if="!(key.includes('Mirror') && !supportMirror)" v-model="filterBooleanProxy[key]">
-									{{ filter }}
+							<template v-for="filter in filters" :key="filter">
+								<CheckCard v-if="!(filter.includes('Mirror') && !supportMirror)" v-model="filterBooleanProxy[filter]">
+									{{ $t(`player.filter.${new VariableName(filter).snake}`) }}
 									<template #image>
 										<NuxtImg
 											class="filter-card"
-											:class="new VariableName(key).kebab"
+											:class="new VariableName(filter).kebab"
 											:provider="environment.cloudflareImageProvider"
 											:src="thumbnail"
-											:alt="`preview-${filter}`"
+											:alt="`preview-${$t(`player.filter.${new VariableName(filter).snake}`)}`"
 											:draggable="false"
 											format="avif"
 											width="200"

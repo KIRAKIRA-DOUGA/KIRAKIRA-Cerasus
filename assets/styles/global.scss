@@ -24,11 +24,21 @@
 	-moz-osx-font-smoothing: grayscale;
 	text-rendering: optimizeLegibility;
 	tab-size: 4;
+	hyphens: auto;
+	hyphenate-limit-chars: 10;
 	// -webkit-tap-highlight-color: c(accent, 30%); // 我还是觉得这个触摸样式很丑。
 	-webkit-tap-highlight-color: transparent;
 	user-select: none;
 	transition: $fallback-transitions;
 	forced-color-adjust: none;
+}
+
+@layer base {
+	*,
+	::before,
+	::after {
+		text-wrap: pretty;
+	}
 }
 
 :lang(zh-Hant) {
