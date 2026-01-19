@@ -37,6 +37,7 @@ export default defineNuxtConfig({
 		"@nuxtjs/i18n",
 		"@nuxt/image",
 		"@nuxt/icon",
+		"@nuxt/hints",
 		"@vueuse/nuxt",
 		"@chettapong/nuxt-lodash",
 		["@pinia/nuxt", {
@@ -118,6 +119,7 @@ export default defineNuxtConfig({
 				"tus-js-client",
 				"node-vibrant/worker",
 				"@vercel/analytics/nuxt",
+				"@nuxt/hints/runtime/hydration/component",
 			],
 			needsInterop: [
 				"mediainfo.js",
