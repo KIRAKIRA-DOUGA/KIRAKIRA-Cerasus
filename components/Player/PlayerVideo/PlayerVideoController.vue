@@ -80,7 +80,6 @@
 	const seekingIcon = ref<DeclaredIcons>();
 	const currentTime = computed(() => new Duration(model.value).toString());
 	const countdownTime = computed(() => new Duration(model.value - props.duration).toString());
-	console.log("​ ​ countdownTime​", model.value, props.duration);
 	const duration = computed(() => new Duration(props.duration).toString());
 	const mobile = () => getResponsiveDevice() === "mobile";
 
