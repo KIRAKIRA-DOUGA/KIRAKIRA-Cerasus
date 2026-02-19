@@ -214,6 +214,11 @@
 
 				> div > div {
 					background-color: c(accent-hover-overlay);
+
+					&:any-hover,
+					&:active {
+						background-color: c(accent-hover, 16%);
+					}
 				}
 			}
 
