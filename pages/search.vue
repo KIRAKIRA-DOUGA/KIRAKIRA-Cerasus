@@ -17,7 +17,7 @@
 	const displayPageCount = ref(6);
 	const videos = ref<SearchVideoByKeywordResponseDto | ThumbVideoResponseDto>();
 	const searchModes = ["keyword", "tag", "user", "advanced_search"] as const;
-	const querySearchMode = route.query.mode as typeof searchModes[number] ?? "tag";
+	const querySearchMode = route.query.mode as typeof searchModes[number] ?? "keyword";
 	const searchMode = ref<typeof searchModes[number]>(querySearchMode);
 	const searchModesSorted = computed(() => searchModes.toSorted((a, b) =>
 		a === searchMode.value ? -1 : b === searchMode.value ? 1 : 0));
