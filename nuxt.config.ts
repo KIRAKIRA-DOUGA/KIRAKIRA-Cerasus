@@ -183,6 +183,13 @@ export default defineNuxtConfig({
 		},
 	},
 
+	devServer: {
+		https: {
+			key: "server/server.key",
+			cert: "server/server.cer",
+		},
+	},
+
 	build: {
 		vendor: [
 			"vue-cropper",
