@@ -96,7 +96,7 @@
 	const isInvalid = () => input.value?.validity.valid === false; // 注意不要写成 !valid，还需要排除 undefined 的情况。
 	const invalid = ref(false); // 如果使用 computed，则只会调用一次。并不能监测 isInvalid 的变化，所以 computed 功能只是个废物？
 	const isNumberMode = computed(() => props.min !== undefined || props.max !== undefined || ["decimal", "numberic", "tel"].includes(props.inputMode!));
-	const debouncedOnInput = useDebounceFn(onInput, 300); // 防抖 300ms
+	// const debouncedOnInput = useDebounceFn(onInput, 300); // 防抖 300ms
 
 	watch(() => props.invalid, invalid => {
 		if (invalid === undefined || !input.value) return;
@@ -295,7 +295,7 @@
 					:required
 					:step
 					:inputmode="inputMode"
-					@input="debouncedOnInput"
+					@input="onInput"
 					@keydown="e => { stopPropagationExceptKey(e, 'F11'); emits('keydown', e) }"
 					@keyup="e => { stopPropagationExceptKey(e, 'F11'); emits('keyup', e) }"
 				/>
