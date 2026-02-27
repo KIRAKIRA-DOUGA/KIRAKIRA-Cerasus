@@ -271,7 +271,7 @@
 	settings.controller.showFrameByFrame = playerConfig.controller.showFrameByFrame;
 	settings.controller.autoResumePlayAfterSeeking = playerConfig.controller.autoResumePlayAfterSeeking;
 
-	const player = ref<shaka.Player>();
+	const player = shallowRef<shaka.Player>();
 	const playerVersion = ref("");
 
 	onMounted(async () => {
@@ -354,10 +354,17 @@
 		}
 	});
 
+	onBeforeUnmount(async () => {
+		if (player.value) {
+			await player.value.destroy();
+			player.value = undefined;
+		}
+	});
+
 	const selectedTrack = computed({
 		get: () => activeTrack.value,
 		set: track => {
-			player.value?.selectVariantTrack(track, true);
+			player.value?.selectVariantTrack(track!, true);
 			playerConfig.quality.preferred = track!.height!;
 		},
 	});
