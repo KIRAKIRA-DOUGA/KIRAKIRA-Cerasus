@@ -141,7 +141,7 @@
 		"pinia-plugin-persistedstate": "^4.5.0",
 		"qrcode.vue": "^3.6.0",
 		"safe-regex": "^2.1.1",
-		"shaka-player": "^4.16.13",
+		"shaka-player": "^5.0.3",
 		"temporal-polyfill": "^0.3.0",
 		"tus-js-client": "^4.3.1",
 		"variable-name-conversion": "^1.7.0",
