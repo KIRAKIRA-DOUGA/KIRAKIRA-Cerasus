@@ -120,8 +120,7 @@
 	<FlyoutDanmakuFormat v-model="flyoutFormat" v-model:format="format" />
 
 	<Comp role="textbox">
-		<!-- // TODO: 使用多语言 -->
-		<TextBox ref="textBox" v-model="content" :placeholder="editable ? $t('danmaku.send') : '您已被该用户屏蔽，无法发送弹幕。'" :disabled="!editable">
+		<TextBox ref="textBox" v-model="content" :placeholder="$t(editable ? 'danmaku.send' : 'block_and_hide.toasts.cannot_send_danmakus_because_blocked')" :disabled="!editable">
 			<template #actions>
 				<SoftButton
 					v-tooltip:bottom="$t('kaomoji.title')"

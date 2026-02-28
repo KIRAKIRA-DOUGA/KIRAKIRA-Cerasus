@@ -56,7 +56,7 @@
 
 	const selectedSettingsTab = defineModel<string>("selectedSettingsTab", { default: "player" });
 	const blockWordsToggle = ref(false);
-	const blockWordsSelectedTab = ref("block-keywords");
+	const blockWordsSelectedTab = ref("blocked-keywords");
 	const transitionName = defineModel<string>("transitionName", { default: "page-jump-in" });
 	/** Firefox 可能永远不会支持该属性，因此移除显示。 */
 	const supportMirror = computed(() => environment.server ? true : CSS.supports("-webkit-box-reflect", "right"));
@@ -128,13 +128,12 @@
 					</div>
 
 					<div v-else-if="selectedSettingsTab === 'block-words'">
-						<!-- TODO: 使用多语言 -->
-						<ToggleSwitch v-model="blockWordsToggle" v-ripple icon="visibility_off">开启屏蔽</ToggleSwitch>
+						<ToggleSwitch v-model="blockWordsToggle" v-ripple icon="visibility_off">{{ $t("block_and_hide.block.enable") }}</ToggleSwitch>
 
 						<TabBar v-model="blockWordsSelectedTab">
-							<TabItem id="block-keywords">屏蔽文本</TabItem>
-							<TabItem id="block-regex">屏蔽正则</TabItem>
-							<TabItem id="block-users">屏蔽用户</TabItem>
+							<TabItem id="blocked-keywords">{{ $t("block_and_hide.blocked.keyword") }}</TabItem>
+							<TabItem id="blocked-regexps">{{ $t("block_and_hide.blocked.regexp") }}</TabItem>
+							<TabItem id="blocked-users">{{ $t("block_and_hide.blocked.user") }}</TabItem>
 						</TabBar>
 					</div>
 				</Transition>

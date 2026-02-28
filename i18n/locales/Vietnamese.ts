@@ -45,6 +45,7 @@ export default {
 		opacity: "Độ mờ đục",
 		tint: "Màu nhuộm",
 		blur: "Mức độ làm mờ",
+		fit: {},
 	},
 	appearance: {
 		title: "Giao diện",
@@ -124,7 +125,9 @@ export default {
 		block: {
 			title: "Chặn",
 			description: "Người dùng bạn không muốn tương tác.",
+			user: "Chặn người dùng",
 		},
+		blocked: {},
 		hide: {
 			title: "Ẩn",
 			description: "Ẩn người dùng không muốn thấy (trừ phi truy cập trực tiếp lên trang cá nhân)",
@@ -135,9 +138,8 @@ export default {
 		keyword: {
 			description: "Dùng từ khóa để ẩn đi các nội dung không muốn thấy.",
 		},
-		regexp: {
-			description: "Dùng các lệnh sắp xếp để ẩn đi các nội dung không muốn thấy.",
-		},
+		regexp: {},
+		toasts: {},
 	},
 	player: {
 		title: "Trình phát",
@@ -163,7 +165,9 @@ export default {
 		screenshot: "Chụp ảnh màn hình",
 		stats: "Thống kê",
 		autoplay: "Tự động phát",
-		filter: "Bộ lọc",
+		filter: {
+			title: "Bộ lọc",
+		},
 		error: {
 			getDanmaku: "Nhận danh sách Danmaku thất bại",
 			loadMedia: "Không tải được đa phương tiện",
@@ -202,7 +206,10 @@ export default {
 			},
 		},
 	},
-	preference: "Tùy chỉnh",
+	preference: {
+		focus_mode: {},
+		new_window: {},
+	},
 	experimental: "Thử nghiệm",
 	accessibility: "Trợ năng",
 	shortcut_key: {
@@ -245,6 +252,15 @@ export default {
 	current_email: "Địa chỉ email hiện tại",
 	change_email: {
 		title: "Đổi Email",
+		verify_current_email: "Xác thực Email hiện tại",
+		verify_current_email_description: "Nhấn nút gửi, và sau đó nhập mã xác nhận chúng mình đã gửi đến email hiện tại của bạn.",
+		verify_new_email: "Xác thực email mới",
+		verify_new_email_description: "Vui lòng nhập địa chỉ email mới của bạn và bấm nút gửi, sau đó nhập mã xác minh chúng mình đã gửi đến email của bạn.",
+		verify_new_email_and_credentials: "Xác minh Email và Thông tin đăng nhập mới của bạn",
+		verify_new_email_and_credentials_description: "Vui lòng nhập mật khẩu của bạn và địa chỉ email mới của bạn và bấm nút gửi, sau đó nhập mã xác minh chúng mình đã gửi đến email của bạn.",
+		email_2fa_auto_update_warning: "Một khi email được cập nhật, email Xác Thực 2 Yếu Tố (2FA) của bạn sẽ được cập nhật tự động.",
+		verify_credentials: "Xác minh Thông tin đăng nhập người dùng",
+		verify_credentials_description: "Vui lòng nhập mật khẩu của bạn và mã TOTP 2FA (có thề được tìm thấy trên thiết bị xác thực của bạn).",
 	},
 	new_email: "Email Mới",
 	modification_date: "Ngày chỉnh sửa",
@@ -278,7 +294,7 @@ export default {
 	publish: "Đăng tải",
 	messages: "Tin nhắn",
 	notification: "Thông báo",
-	pleaseLogin: "Vui lòng Đăng nhập",
+	please_login: "Vui lòng Đăng nhập",
 	login: "Đăng Nhập",
 	logout: "Đăng Xuất",
 	register: "Đăng ký",
@@ -298,13 +314,10 @@ export default {
 		title: "Kaomoji",
 		happy: "Vui",
 		greet: "Chào hỏi",
-		awa: "Mòe",
 		sad: "Buồn",
 		embarrassed: "Xấu hổ",
 	},
 	associate_existing: "Chia phần video",
-	reply: "Phản hồi",
-	mention: "Đề cập",
 	more: "Xem thêm",
 	delete: "Xóa",
 	remove: "Loại bỏ",
@@ -377,6 +390,7 @@ export default {
 		login_totp_info: "Xác minh hai bước hiện hành trên tài khoản. Vui lòng nhập mã xác thực để tiếp tục.\nTrường hợp không có thiết bị xác thực, vui lòng đăng nhập bằng mã dự phòng hoặc mã khôi phục.\nLưu ý: Sau khi đăng nhập thành công bằng mã khôi phục thì xác minh hai bước sẽ bị vô hiệu",
 		login_email_info: "Xác minh hai bước bằng email hiện hành trên tài khoản. Chúng tôi đã gửi mã xác thực đến Email của bạn.\nTrường hợp không thấy email, vui lòng kiểm tra mục spam hoặc thư rác.",
 	},
+	welcome: {},
 	unselected: {
 		combobox: "Chọn một mục",
 		settings: "Chọn một cài đặt",
@@ -438,7 +452,6 @@ export default {
 		title_affix: "Trang cá nhân của {0}",
 	},
 	manage_content: "Quản lý nội dung",
-	block_user: "Chặn người dùng",
 	platform: {
 		twitter: "Twitter",
 		qq: "QQ",
@@ -494,7 +507,6 @@ export default {
 		copy_failed: "Sao chép thất bại!",
 		modification_failed: "Không thể sửa đổi!",
 		failed_to_disable_cookies: "Không thể vô hiệu các Cookie!",
-		duplicate_tag: "Nhân đôi thẻ!",
 		no_language_selected: "Vui lòng chọn một ngôn ngữ trước tiên!",
 		get_current_logged_in_user_info_failed: "Không thể xác định được thông tin người dùng đang đăng nhập! Hãy thử đăng nhập lại.",
 		comment_delete_success: "Đã xóa bình luận~",
@@ -519,9 +531,6 @@ export default {
 		email_2fa_enabled: "Đã kích hoạt xác thực 2 bước bằng email~",
 		email_2fa_disabled: "Đã vô hiệu xác thực 2 bước bằng email~",
 		video_manifest_file_generate_failed: "Không tạo được tập tin manifest cho video!",
-		video_invalid_result: "Không thể truy xuất được video! Kết quả không hợp lệ.",
-		video_request_failed: "Không thể truy xuất được video! Gửi yêu cầu không thành công.",
-		video_no_id: "Không tìm thấy mã video KVID!",
 		developer_mode_remain_clicks: "Tiếp tục bấm {0} lần nữa để kích hoạt chế độ nhà phát triển.",
 		developer_mode_enabled: "Đã bật Chế độ nhà phát triển",
 		developer_mode_already_enabled: "Chế độ nhà phát triển đã bật.",
@@ -561,6 +570,8 @@ export default {
 	confirm: {
 		cancel_upload: "Bạn có chắc muốn ngừng quá trình đăng tải?",
 		reset_profile: "Bạn có chắc muốn đặt lại hồ sơ của mình?",
+		block_user: {},
+		hide_user: {},
 	},
 	current_time: "Thời gian hiện tại",
 	improve_translation: "Cải thiện bản dịch",
@@ -577,7 +588,7 @@ export default {
 	version: "Phiên bản",
 	announcement: {
 		title: "Thông báo",
-		homepage: "Trang web nhỏ xinh vẫn đang lớn lên từng ngày~! Tham gia {discord-server} để theo dõi tiến độ phát triển và trò chuyện cùng các nhà phát triển! (๑˃ᴗ˂)ﻭ\nBạn biết lập trình...? Chúng tôi rất vinh dự nếu bạn tham gia hành trình này cùng với chúng tôi~!! (๑•̀ㅂ•́)و✧",
+		homepage: "Trang web nhỏ xinh vẫn đang lớn lên từng ngày~! Tham gia {discord-server} để theo dõi tiến độ phát triển và trò chuyện cùng các nhà phát triển! (๑˃ᴗ˂)ﻭ\nBạn biết lập trình...? Chúng mình rất vinh dự nếu bạn tham gia hành trình này cùng với chúng mình~!! (๑•̀ㅂ•́)و✧",
 	},
 	under_construction: {
 		feature: "Tính năng này vẫn chưa hoàn thiện!",
@@ -644,4 +655,5 @@ export default {
 		choose: "Chọn tệp",
 		rechoose: "Chọn lại",
 	},
+	unknown: "Không xác định",
 } as const satisfies LocaleIdentifiers;

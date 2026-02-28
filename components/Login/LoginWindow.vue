@@ -296,13 +296,13 @@
 		isCheckingUsername.value = false;
 	}
 
-	const PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD = "密码提示中不允许包含密码本身"; // TODO: 使用多语言
+	const PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD = t("validation.invalid_format.password_hint_include_password");
 	const INVITATION_CODE_INVALID_TEXT = t("validation.invalid_format.invitation_code");
 	/**
 	 * 用户注册，其二。
 	 */
 	async function checkAndJumpNextPage() {
-		if (!invitationCode.value || !invitationCodeInvalidText) { // 判断邀请码为空或者格式错误
+		if (!invitationCode.value || !invitationCodeInvalidText.value) { // 判断邀请码为空或者格式错误
 			useToast(INVITATION_CODE_INVALID_TEXT, "error");
 			return;
 		}

@@ -1,10 +1,12 @@
 <script setup lang="ts">
+	const { t } = useI18n();
+
 	const selfUserInfo = useSelfUserInfoStore();
 	const currentLanguage = computed(getCurrentLocale); // 当前用户的语言
 
 	const isClickAddButton = ref(false); // 是否点击了添加屏蔽按钮（是否正在获取待屏蔽目标的信息）
 	const isShowAlert = ref(false); // 是否正在显示待屏蔽数据
-	const isAddButtonUnclickalbe = computed(() => isClickAddButton.value || isShowAlert.value); // 不能点击添加按钮的情况
+	const isAddButtonUnclickable = computed(() => isClickAddButton.value || isShowAlert.value); // 不能点击添加按钮的情况
 
 	const blockUserList = ref<GetBlockListResponseDto>(); // 被屏蔽的用户列表
 	const blockUserListPage = ref(1); // 被屏蔽的用户列表的页码
@@ -42,13 +44,13 @@
 	const blockKeywordListPage = ref(0); // 屏蔽的关键词列表页码
 	const blockKeywordListPageSize = ref(0); // 屏蔽的关键词列表每页数量
 	const inputPendingBlockKeyword = ref(""); // 用户输入的待屏蔽关键词
-	const isLooksLikeRegexStringDebounce = useDebounce(isLooksLikeRegexString, 500); // 防抖，检测一个字符串是否看起来像是正则表达式
+	const doesLookLikeRegexStringDebounce = useDebounce(doesLookLikeRegexString, 500); // 防抖，检测一个字符串是否看起来像是正则表达式
 	const isInvalidKeyword = computed(() => { // 用户输入的关键词是否合法
 		const keyword = inputPendingBlockKeyword.value;
 		if (keyword.length > MAX_KEYWORD_LENGTH)
-			return "关键词不能超过 20 个字符"; // TODO: 使用多语言
-		else if (isLooksLikeRegexStringDebounce(keyword))
-			return "禁止输入正则表达式"; // TODO: 使用多语言
+			return t("block_and_hide.toasts.keyword_char_exceed", [MAX_KEYWORD_LENGTH]);
+		else if (doesLookLikeRegexStringDebounce(keyword))
+			return t("block_and_hide.toasts.regexp_in_keyword");
 		else
 			return false;
 	});
@@ -60,13 +62,13 @@
 	const blockRegexListPage = ref(0); // 用于屏蔽内容的正则表达式列表页码
 	const blockRegexListPageSize = ref(0); // 用于屏蔽内容的正则表达式每页数量
 	const inputPendingAddRegex = ref(""); // 用户输入的用于屏蔽内容的正则表达式
-	const isIllegalRegexStringDebounce = useDebounce(isIllegalRegexString, 500); // 防抖，检测是否为非法正则表达式
+	const isInvalidRegexStringDebounce = useDebounce(isInvalidRegexString, 500); // 防抖，检测是否为非法正则表达式
 	const isInvalidRegex = computed(() => {
 		const regex = inputPendingAddRegex.value;
 		if (regex.length > MAX_REGEX_LENGTH)
-			return "正则表达式不能超过 20 个字符"; // TODO: 使用多语言
-		else if (isIllegalRegexStringDebounce(regex))
-			return "您输入的正则表达式不合法"; // TODO: 使用多语言
+			return t("block_and_hide.toasts.regexp_char_exceed", [MAX_REGEX_LENGTH]);
+		else if (isInvalidRegexStringDebounce(regex))
+			return t("block_and_hide.toasts.regexp_invalid");
 		else
 			return false;
 	}); // 用户输入的正则表达式是否非法
@@ -82,9 +84,8 @@
 			const blockUid = parseInt(inputPendingBlockUid.value || "-1", 10);
 
 			if (blockUid === undefined || blockUid === null || blockUid < 1) {
-				console.error("ERROR", "待屏蔽用户的 UID 格式不正确，不能为空或小于零");
-				// TODO: 使用多语言
-				useToast("待屏蔽用户的 UID 格式不正确", "error", 5000);
+				console.error("ERROR", "待屏蔽用户的 UID 格式不正确，不能为空或小于等于零");
+				useToast(t("block_and_hide.toasts.invalid_block_uid"), "error", 5000);
 				isClickAddButton.value = false;
 				return;
 			}
@@ -99,13 +100,11 @@
 				isShowAlert.value = true;
 			} else {
 				console.error("ERROR", "获取待屏蔽用户信息失败");
-				// TODO: 使用多语言
-				useToast("获取待屏蔽用户信息失败", "error", 5000);
+				useToast(t("block_and_hide.toasts.fetch_block_users_failed"), "error", 5000);
 			}
 		} catch (error) {
 			console.error("ERROR", "获取待屏蔽用户信息时出错", error);
-			// TODO: 使用多语言
-			useToast("获取待屏蔽用户信息时出错", "error", 5000);
+			useToast(t("block_and_hide.toasts.fetch_block_users_error"), "error", 5000);
 		}
 		isClickAddButton.value = false;
 	}
@@ -119,17 +118,15 @@
 			const blockUid = parseInt(inputPendingBlockUid.value || "-1", 10);
 
 			if (blockUid === undefined || blockUid === null || blockUid < 1) {
-				console.error("ERROR", "屏蔽用户的 UID 格式不正确，不能为空或小于零");
-				// TODO: 使用多语言
-				useToast("屏蔽用户的 UID 格式不正确", "error", 5000);
+				console.error("ERROR", "屏蔽用户的 UID 格式不正确，不能为空或小于等于零");
+				useToast(t("block_and_hide.toasts.invalid_block_uid"), "error", 5000);
 				isBlockingUser.value = false;
 				return;
 			}
 
 			if (selfUserInfo.userInfo.uid === blockUid) {
 				console.error("ERROR", "不能屏蔽自己");
-				// TODO: 使用多语言
-				useToast("不能屏蔽自己", "error", 5000);
+				useToast(t("block_and_hide.toasts.block_yourself"), "error", 5000);
 				isBlockingUser.value = false;
 				return;
 			}
@@ -141,20 +138,17 @@
 			if (blockUserResult.success) {
 				const blockUserListResult = await getBlockList("block", blockUserListPage.value, blockUserListPageSize.value);
 				if (blockUserListResult && blockUserListResult.success) blockUserList.value = blockUserListResult;
-				// TODO: 使用多语言
-				useToast("屏蔽用户成功", "success");
+				useToast(t("block_and_hide.toasts.block_successfully"), "success");
 				closeBlockUserAlert();
 				inputPendingBlockUid.value = "";
 				pendingBlockUserInfo.value = undefined;
 			} else {
 				console.error("ERROR", "屏蔽用户失败");
-				// TODO: 使用多语言
-				useToast("屏蔽用户失败", "error", 5000);
+				useToast(t("block_and_hide.toasts.block_failed"), "error", 5000);
 			}
 		} catch (error) {
 			console.error("ERROR", "屏蔽用户时出错", error);
-			// TODO: 使用多语言
-			useToast("屏蔽用户时出错", "error", 5000);
+			useToast(t("block_and_hide.toasts.block_error"), "error", 5000);
 		}
 		isBlockingUser.value = false;
 	}
@@ -175,8 +169,7 @@
 		try {
 			if (blockUserUid === undefined || blockUserUid === null || blockUserUid < 1) {
 				console.error("ERROR", "解除屏蔽用户的 UID 格式不正确，不能为空或小于零");
-				// TODO: 使用多语言
-				useToast("解除屏蔽用户的 UID 格式不正确", "error", 5000);
+				useToast(t("block_and_hide.toasts.invalid_unblock_uid"), "error", 5000);
 				return;
 			}
 
@@ -189,17 +182,14 @@
 			if (unblockUserResult.success) {
 				const blockUserListResult = await getBlockList("block", blockUserListPage.value, blockUserListPageSize.value);
 				if (blockUserListResult && blockUserListResult.success) blockUserList.value = blockUserListResult;
-				// TODO: 使用多语言
-				useToast("解除屏蔽用户成功", "success");
+				useToast(t("block_and_hide.toasts.unblock_successfully"), "error", 5000);
 			} else {
 				console.error("ERROR", "解除屏蔽用户失败");
-				// TODO: 使用多语言
-				useToast("解除屏蔽用户失败", "error", 5000);
+				useToast(t("block_and_hide.toasts.unblock_failed"), "error", 5000);
 			}
 		} catch (error) {
 			console.error("ERROR", "解除屏蔽用户时出错", error);
-			// TODO: 使用多语言
-			useToast("解除屏蔽用户时出错", "error", 5000);
+			useToast(t("block_and_hide.toasts.unblock_error"), "error", 5000);
 		}
 		unblockingUserUid.value = undefined;
 	}
@@ -214,8 +204,7 @@
 
 			if (hideUid === undefined || hideUid === null || hideUid < 1) {
 				console.error("ERROR", "待隐藏用户的 UID 格式不正确，不能为空或小于零");
-				// TODO: 使用多语言
-				useToast("待隐藏用户的 UID 格式不正确", "error", 5000);
+				useToast(t("block_and_hide.toasts.invalid_hide_uid"), "error", 5000);
 				isClickAddButton.value = false;
 				return;
 			}
@@ -230,13 +219,11 @@
 				isShowAlert.value = true;
 			} else {
 				console.error("ERROR", "获取待隐藏用户信息失败");
-				// TODO: 使用多语言
-				useToast("获取待隐藏用户信息失败", "error", 5000);
+				useToast(t("block_and_hide.toasts.fetch_hide_users_failed"), "error", 5000);
 			}
 		} catch (error) {
 			console.error("ERROR", "获取待隐藏用户信息时出错", error);
-			// TODO: 使用多语言
-			useToast("获取待隐藏用户信息时出错", "error", 5000);
+			useToast(t("block_and_hide.toasts.fetch_hide_users_error"), "error", 5000);
 		}
 		isClickAddButton.value = false;
 	}
@@ -251,16 +238,14 @@
 
 			if (hideUid === undefined || hideUid === null || hideUid < 1) {
 				console.error("ERROR", "隐藏用户的 UID 格式不正确，不能为空或小于零");
-				// TODO: 使用多语言
-				useToast("隐藏用户的 UID 格式不正确", "error", 5000);
+				useToast(t("block_and_hide.toasts.invalid_hide_uid"), "error", 5000);
 				isHidingUser.value = false;
 				return;
 			}
 
 			if (selfUserInfo.userInfo.uid === hideUid) {
 				console.error("ERROR", "不能隐藏自己");
-				// TODO: 使用多语言
-				useToast("不能隐藏自己", "error", 5000);
+				useToast(t("block_and_hide.toasts.hide_yourself"), "error", 5000);
 				isHidingUser.value = false;
 				return;
 			}
@@ -272,20 +257,17 @@
 			if (hideUserResult.success) {
 				const hideUserListResult = await getBlockList("hide", hideUserListPage.value, hideUserListPageSize.value);
 				if (hideUserListResult && hideUserListResult.success) hideUserList.value = hideUserListResult;
-				// TODO: 使用多语言
-				useToast("隐藏用户成功", "success");
+				useToast(t("block_and_hide.toasts.hide_successfully"), "success");
 				closeHideUserAlert();
 				inputPendingHideUid.value = "";
 				pendingHideUserInfo.value = undefined;
 			} else {
 				console.error("ERROR", "隐藏用户失败");
-				// TODO: 使用多语言
-				useToast("隐藏用户失败", "error", 5000);
+				useToast(t("block_and_hide.toasts.hide_failed"), "error", 5000);
 			}
 		} catch (error) {
 			console.error("ERROR", "隐藏用户时出错", error);
-			// TODO: 使用多语言
-			useToast("隐藏用户时出错", "error", 5000);
+			useToast(t("block_and_hide.toasts.hide_error"), "error", 5000);
 		}
 		isHidingUser.value = false;
 	}
@@ -302,12 +284,11 @@
 	 * 恢复显示用户
 	 * @param hideUserUid - 被屏蔽的用户 UID
 	 */
-	async function showUser(hideUserUid: number) {
+	async function showUser(hideUserUid: number) { // FIXME: 恢复显示的英语单词其实是 unhide，并不是 show。
 		try {
 			if (hideUserUid === undefined || hideUserUid === null || hideUserUid < 1) {
 				console.error("ERROR", "恢复显示用户的 UID 格式不正确，不能为空或小于零");
-				// TODO: 使用多语言
-				useToast("恢复显示用户的 UID 格式不正确", "error", 5000);
+				useToast(t("block_and_hide.toasts.invalid_unhide_uid"), "error", 5000);
 				return;
 			}
 
@@ -320,17 +301,14 @@
 			if (showUserResult.success) {
 				const hideUserListResult = await getBlockList("hide", hideUserListPage.value, hideUserListPageSize.value);
 				if (hideUserListResult && hideUserListResult.success) hideUserList.value = hideUserListResult;
-				// TODO: 使用多语言
-				useToast("恢复显示用户成功", "success");
+				useToast(t("block_and_hide.toasts.unhide_successfully"), "success");
 			} else {
 				console.error("ERROR", "解除屏蔽用户失败");
-				// TODO: 使用多语言
-				useToast("恢复显示用户失败", "error", 5000);
+				useToast(t("block_and_hide.toasts.unhide_failed"), "error", 5000);
 			}
 		} catch (error) {
 			console.error("ERROR", "解除屏蔽用户时出错", error);
-			// TODO: 使用多语言
-			useToast("恢复显示用户时出错", "error", 5000);
+			useToast(t("block_and_hide.toasts.unhide_error"), "error", 5000);
 		}
 
 		showingUserUid.value = undefined;
@@ -363,36 +341,6 @@
 	}
 
 	/**
-	 * 解除屏蔽 TAG
-	 * @param tagId - 标签 ID
-	 */
-	async function removeTag(tagId: number) {
-		try {
-			if (tagId === undefined || tagId === null) return;
-
-			const unblockTagRequest: UnblockTagRequestDto = {
-				tagId,
-			};
-
-			const unblockTagResult = await api.block.unblockTagController(unblockTagRequest);
-
-			if (unblockTagResult.success) {
-				blockTagList.value.delete(tagId);
-				// TODO: 使用多语言
-				useToast("解除屏蔽 TAG 成功", "success");
-			} else {
-				console.error(`解除屏蔽 TAG 失败，请求失败，tagId: '${tagId}', error message: ${unblockTagResult.message}`);
-				// TODO: 使用多语言
-				useToast("解除屏蔽 TAG 失败，请求失败", "error", 5000);
-			}
-		} catch (error) {
-			console.error("解除屏蔽 TAG 失败", error);
-			// TODO: 使用多语言
-			useToast("解除屏蔽 TAG 失败", "error", 5000);
-		}
-	}
-
-	/**
 	 * 屏蔽一个 TAG
 	 * @param tag - 标签
 	 */
@@ -408,17 +356,41 @@
 
 			if (blockTagResult.success) {
 				blockTagList.value.set(tag.tagId, tag);
-				// TODO: 使用多语言
-				useToast("屏蔽 TAG 成功", "success");
+				useToast(t("block_and_hide.toasts.block_tag_successfully"), "success");
 			} else {
 				console.error("屏蔽 TAG 失败，请求失败", blockTagResult.message);
-				// TODO: 使用多语言
-				useToast("屏蔽 TAG 失败，请求失败", "error", 5000);
+				useToast(t("block_and_hide.toasts.block_tag_failed_request"), "error", 5000);
 			}
 		} catch (error) {
 			console.error("屏蔽 TAG 失败", error);
-			// TODO: 使用多语言
-			useToast("屏蔽 TAG 失败", "error", 5000);
+			useToast(t("block_and_hide.toasts.block_tag_failed"), "error", 5000);
+		}
+	}
+
+	/**
+	 * 解除屏蔽 TAG
+	 * @param tagId - 标签 ID
+	 */
+	async function removeTag(tagId: number) {
+		try {
+			if (tagId === undefined || tagId === null) return;
+
+			const unblockTagRequest: UnblockTagRequestDto = {
+				tagId,
+			};
+
+			const unblockTagResult = await api.block.unblockTagController(unblockTagRequest);
+
+			if (unblockTagResult.success) {
+				blockTagList.value.delete(tagId);
+				useToast(t("block_and_hide.toasts.unblock_tag_successfully"), "success");
+			} else {
+				console.error(`解除屏蔽 TAG 失败，请求失败，tagId: '${tagId}', error message: ${unblockTagResult.message}`);
+				useToast(t("block_and_hide.toasts.unblock_tag_failed_request"), "error", 5000);
+			}
+		} catch (error) {
+			console.error("解除屏蔽 TAG 失败", error);
+			useToast(t("block_and_hide.toasts.unblock_tag_failed"), "error", 5000);
 		}
 	}
 
@@ -438,7 +410,7 @@
 			const keyword = inputPendingBlockKeyword.value.trim();
 			if (!keyword) {
 				isBlockKeyword.value = false;
-				useToast("关键词不合法", "error", 5000);
+				useToast(t("block_and_hide.toasts.keyword_invalid"), "error", 5000);
 				return;
 			}
 
@@ -450,18 +422,15 @@
 			const blockKeywordListResult = await getBlockList("keyword", blockKeywordListPage.value, blockKeywordListPageSize.value);
 			if (blockKeywordListResult.success) blockKeywordList.value = blockKeywordListResult.result;
 			if (blockKeywordResult.success)
-				// TODO: 使用多语言
-				useToast("屏蔽关键词成功", "success");
+				useToast(t("block_and_hide.toasts.block_keyword_successfully"), "success");
 			else {
 				console.error(`屏蔽关键词失败, error: ${blockKeywordResult.message}`);
-				// TODO: 使用多语言
-				useToast("屏蔽关键词失败，请求失败", "error", 5000);
+				useToast(t("block_and_hide.toasts.block_keyword_failed_request"), "error", 5000);
 			}
 			inputPendingBlockKeyword.value = "";
 		} catch (error) {
 			console.error("屏蔽关键词失败", error);
-			// TODO: 使用多语言
-			useToast("屏蔽关键词失败", "error", 5000);
+			useToast(t("block_and_hide.toasts.block_keyword_failed"), "error", 5000);
 		}
 		isBlockKeyword.value = false;
 	}
@@ -484,17 +453,14 @@
 			const blockKeywordListResult = await getBlockList("keyword", blockKeywordListPage.value, blockKeywordListPageSize.value);
 			if (blockKeywordListResult.success) blockKeywordList.value = blockKeywordListResult.result;
 			if (unblockKeywordResult.success)
-				// TODO: 使用多语言
-				useToast("解除屏蔽关键词成功", "success");
+				useToast(t("block_and_hide.toasts.unblock_keyword_successfully"), "success");
 			else {
 				console.error(`解除屏蔽关键词失败, error: ${unblockKeywordResult.message}`);
-				// TODO: 使用多语言
-				useToast("解除屏蔽关键词失败，请求失败", "error", 5000);
+				useToast(t("block_and_hide.toasts.unblock_keyword_failed_request"), "error", 5000);
 			}
 		} catch (error) {
 			console.error("解除屏蔽关键词失败", error);
-			// TODO: 使用多语言
-			useToast("解除屏蔽关键词失败", "error", 5000);
+			useToast(t("block_and_hide.toasts.unblock_keyword_failed"), "error", 5000);
 		}
 		unblockingKeyword.value = "";
 	}
@@ -508,7 +474,7 @@
 			const regex = inputPendingAddRegex.value.trim();
 			if (!regex) {
 				isAddRegex.value = false;
-				useToast("正则表达式不合法", "error", 5000);
+				useToast(t("block_and_hide.toasts.regexp_invalid"), "error", 5000);
 				return;
 			}
 
@@ -520,18 +486,15 @@
 			const blockRegexListResult = await getBlockList("regex", blockRegexListPage.value, blockRegexListPageSize.value);
 			if (blockRegexListResult.success) blockRegexList.value = blockRegexListResult.result;
 			if (addRegexResult.success)
-				// TODO: 使用多语言
-				useToast("添加正则表达式成功", "success");
+				useToast(t("block_and_hide.toasts.block_regexp_successfully"), "success");
 			else {
 				console.error(`添加正则表达式失败, error: ${addRegexResult.message}`);
-				// TODO: 使用多语言
-				useToast("添加正则表达式失败，请求失败", "error", 5000);
+				useToast(t("block_and_hide.toasts.block_regexp_failed_request"), "error", 5000);
 			}
 			inputPendingAddRegex.value = "";
 		} catch (error) {
 			console.error("添加正则表达式失败", error);
-			// TODO: 使用多语言
-			useToast("添加正则表达式失败", "error", 5000);
+			useToast(t("block_and_hide.toasts.block_regexp_failed"), "error", 5000);
 		}
 		isAddRegex.value = false;
 	}
@@ -554,17 +517,14 @@
 			const blockRegexListResult = await getBlockList("regex", blockRegexListPage.value, blockRegexListPageSize.value);
 			if (blockRegexListResult.success) blockRegexList.value = blockRegexListResult.result;
 			if (removeRegexResult.success)
-				// TODO: 使用多语言
-				useToast("移除正则表达式成功", "success");
+				useToast(t("block_and_hide.toasts.unblock_regexp_successfully"), "success");
 			else {
 				console.error(`移除正则表达式失败, error: ${removeRegexResult.message}`);
-				// TODO: 使用多语言
-				useToast("移除正则表达式失败，请求失败", "error", 5000);
+				useToast(t("block_and_hide.toasts.unblock_regexp_failed_request"), "error", 5000);
 			}
 		} catch (error) {
 			console.error("移除正则表达式失败", error);
-			// TODO: 使用多语言
-			useToast("移除正则表达式失败", "error", 5000);
+			useToast(t("block_and_hide.toasts.unblock_regexp_failed"), "error", 5000);
 		}
 		removingRegex.value = "";
 	}
@@ -619,8 +579,7 @@
 			if (blockRegexListResult && blockRegexListResult.success) blockRegexList.value = blockRegexListResult.result;
 		} catch (error) {
 			console.error("ERROR", "获取黑名单失败", error);
-			// TODO: 使用多语言
-			useToast("获取黑名单失败", "error", 5000);
+			useToast(t("block_and_hide.toasts.fetch_blocklist_failed"), "error", 5000);
 		}
 	}
 
@@ -662,7 +621,7 @@
 		<Pagination v-if="blockUserList?.blocklistCount" v-model="blockUserListPage" :pages="blockUserListPageCount" :displayPageCount="7" />
 		<div class="add">
 			<TextBox v-model="inputPendingBlockUid" type="number" icon="person" />
-			<Button icon="add" @click="getPendingBlockUserInfo" :disabled="isAddButtonUnclickalbe" :loading="isFetchPendingBlockUserInfo">{{ $t("step.add") }}</Button>
+			<Button icon="add" @click="getPendingBlockUserInfo" :disabled="isAddButtonUnclickable" :loading="isFetchPendingBlockUserInfo">{{ $t("step.add") }}</Button>
 		</div>
 
 		<Subheader icon="visibility_off">{{ $t("block_and_hide.hide.title") }}</Subheader>
@@ -682,12 +641,12 @@
 		<Pagination v-if="hideUserList?.blocklistCount" v-model="hideUserListPage" :pages="hideUserListPageCount" :displayPageCount="7" />
 		<div class="add">
 			<TextBox v-model="inputPendingHideUid" type="number" icon="person" />
-			<Button icon="add" @click="getPendingHideUserInfo" :disabled="isAddButtonUnclickalbe" :loading="isFetchPendingHideUserInfo">{{ $t("step.add") }}</Button>
+			<Button icon="add" @click="getPendingHideUserInfo" :disabled="isAddButtonUnclickable" :loading="isFetchPendingHideUserInfo">{{ $t("step.add") }}</Button>
 		</div>
 
 		<hr />
 
-		<Subheader icon="tag">{{ $t("tag", 2) }}</Subheader>
+		<Subheader icon="tag">{{ $t("tag.title", 2) }}</Subheader>
 		<span>{{ $t("block_and_hide.tag.description") }}</span>
 
 		<div class="tags">
@@ -703,13 +662,13 @@
 					<div v-if="tag.originTagName" class="original-tag-name">{{ tag.originTagName }}</div>
 				</div>
 			</Tag>
-			<Tag v-if="!isAddButtonUnclickalbe" key="add-block-tag-button" class="add-tag" :checkable="false" @click="e => flyoutTag = [e, 'y']">
+			<Tag v-if="!isAddButtonUnclickable" key="add-block-tag-button" class="add-tag" :checkable="false" @click="e => flyoutTag = [e, 'y']">
 				<Icon name="add" />
 			</Tag>
 		</div>
 		<FlyoutTag v-model="flyoutTag" v-model:tags="blockTagList" @addNewTag="handleAddNewBlockTag" />
 		<Flyout
-			v-if="!isAddButtonUnclickalbe"
+			v-if="!isAddButtonUnclickable"
 			v-model="contextualToolbar"
 			noPadding
 			class="contextual-toolbar"
@@ -733,12 +692,11 @@
 		</section>
 		<div class="add">
 			<TextBox v-model="inputPendingBlockKeyword" :invalid="isInvalidKeyword" icon="key" />
-			<Button icon="add" :disabled="isAddButtonUnclickalbe || isBlockKeyword" :loading="isBlockKeyword" @click="addBlockKeyword">{{ $t("step.add") }}</Button>
+			<Button icon="add" :disabled="isAddButtonUnclickable || isBlockKeyword" :loading="isBlockKeyword" @click="addBlockKeyword">{{ $t("step.add") }}</Button>
 		</div>
 
 		<Subheader icon="regexp">{{ $t("regexp") }}</Subheader>
-		<!-- TODO: 使用多语言 -->
-		<span>{{ $t("block_and_hide.regexp.description") + "（前后无需添加斜线 '/'）" }}</span>
+		<span>{{ $t("block_and_hide.regexp.description") }}</span>
 		<section>
 			<SettingsChipItem
 				v-for="(blockRegex, index) in blockRegexList"
@@ -751,12 +709,12 @@
 		</section>
 		<div class="add">
 			<TextBox v-model="inputPendingAddRegex" :invalid="isInvalidRegex" icon="regexp" />
-			<Button icon="add" :disabled="isAddButtonUnclickalbe || isAddRegex" :loading="isAddRegex" @click="addRegex">{{ $t("step.add") }}</Button>
+			<Button icon="add" :disabled="isAddButtonUnclickable || isAddRegex" :loading="isAddRegex" @click="addRegex">{{ $t("step.add") }}</Button>
 		</div>
 
 		<Alert v-model="isShowAddBlockUserAlert" static>
-			<!-- TODO: 使用多语言 -->
-			<h4>确定要屏蔽这个用户吗？</h4>
+			<h4>{{ $t("confirm.block_user.title") }}</h4>
+			<!-- TODO: 此 user-info-alert-display 需要和下面的隐藏一起封装在一个组件内，省得写两遍性别图标等信息。 -->
 			<div class="user-info-alert-display">
 				<div class="user">
 					<UserAvatar :avatar="pendingBlockUserInfo?.avatar" />
@@ -775,16 +733,15 @@
 				</div>
 			</div>
 			<template #footer-left>
-				<Button @click="blockUser" :loading="isBlockingUser" :disabled="isBlockingUser">确认屏蔽</Button>
+				<Button @click="blockUser" :loading="isBlockingUser" :disabled="isBlockingUser">{{ $t("confirm.block_user.ok") }}</Button>
 			</template>
 			<template #footer-right>
-				<Button @click="closeBlockUserAlert" class="secondary">取消</Button>
+				<Button @click="closeBlockUserAlert" class="secondary">{{ $t("step.cancel") }}</Button>
 			</template>
 		</Alert>
 
 		<Alert v-model="isShowAddHideUserAlert" static>
-			<!-- TODO: 使用多语言 -->
-			<h4>确定要隐藏这个用户吗？</h4>
+			<h4>{{ $t("confirm.hide_user.title") }}</h4>
 			<div class="user-info-alert-display">
 				<div class="user">
 					<UserAvatar :avatar="pendingHideUserInfo?.avatar" />
@@ -803,10 +760,10 @@
 				</div>
 			</div>
 			<template #footer-left>
-				<Button @click="hideUser" :loading="isHidingUser" :disabled="isHidingUser">确认隐藏</Button>
+				<Button @click="hideUser" :loading="isHidingUser" :disabled="isHidingUser">{{ $t("confirm.hide_user.ok") }}</Button>
 			</template>
 			<template #footer-right>
-				<Button @click="closeHideUserAlert" class="secondary">取消</Button>
+				<Button @click="closeHideUserAlert" class="secondary">{{ $t("step.cancel") }}</Button>
 			</template>
 		</Alert>
 	</div>

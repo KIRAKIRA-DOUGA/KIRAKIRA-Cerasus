@@ -5,12 +5,19 @@
 </docs>
 
 <script lang="tsx">
+	import type { RemovedIndexResources, JsonPaths } from "@intlify/core-base";
+	import type { DefineLocaleMessage } from "@nuxtjs/i18n/dist/runtime/composables";
+
+	type KeyPath = JsonPaths<{
+		[K in keyof RemovedIndexResources<DefineLocaleMessage>]: RemovedIndexResources<DefineLocaleMessage>[K]
+	}>;
+
 	export default defineComponent({
 		inheritAttrs: false,
 		props: {
 			/** i18n 键。 */
 			keypath: {
-				type: String,
+				type: String as PropType<KeyPath>,
 				required: true,
 			},
 		},

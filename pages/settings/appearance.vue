@@ -232,9 +232,8 @@
 			</section>
 
 			<Menu v-model="backgroundImageItemMenu[0]">
-				<!-- TODO: 多语言。 -->
-				<MenuItem icon="arrow_left" :disabled="backgroundImageItemMenu[1].displayIndex <= 0" @click="backgroundImages.reorder(backgroundImageItemMenu[1].key, backgroundImageItemMenu[1].displayIndex - 1)">往前挪</MenuItem>
-				<MenuItem icon="arrow_right" :disabled="backgroundImageItemMenu[1].displayIndex >= backgroundImages.items.length - 2" @click="backgroundImages.reorder(backgroundImageItemMenu[1].key, backgroundImageItemMenu[1].displayIndex + 1)">往后挪</MenuItem>
+				<MenuItem icon="arrow_left" :disabled="backgroundImageItemMenu[1].displayIndex <= 0" @click="backgroundImages.reorder(backgroundImageItemMenu[1].key, backgroundImageItemMenu[1].displayIndex - 1)">{{ $t("move_forward") }}</MenuItem>
+				<MenuItem icon="arrow_right" :disabled="backgroundImageItemMenu[1].displayIndex >= backgroundImages.items.length - 2" @click="backgroundImages.reorder(backgroundImageItemMenu[1].key, backgroundImageItemMenu[1].displayIndex + 1)">{{ $t("move_backward") }}</MenuItem>
 				<hr />
 				<MenuItem icon="delete" @click="confirmDeleteBackgroundImageFlyout = [[backgroundImageItemMenu[2], 'y'], () => backgroundImages.delete(backgroundImageItemMenu[1].key)]">{{ $t("delete") }}</MenuItem>
 			</Menu>
@@ -243,8 +242,7 @@
 				<ShadingIcon icon="delete" size="small" fadeIn />
 				<div class="flyout-content">
 					<h4>{{ $t("delete") }}</h4>
-					<!-- TODO: 多语言。 -->
-					<p>确定要删除该背景图像吗？</p>
+					<p>{{ $t("confirm.delete_background_image") }}</p>
 					<div class="flyout-buttons">
 						<Button @click="confirmDeleteBackgroundImageFlyout[0] = undefined">{{ $t("step.cancel") }}</Button>
 						<Button @click="confirmDeleteBackgroundImageFlyout[0] = undefined; confirmDeleteBackgroundImageFlyout[1]();" :style="{ '--appearance': 'secondary' }">{{ $t("step.ok") }}</Button>

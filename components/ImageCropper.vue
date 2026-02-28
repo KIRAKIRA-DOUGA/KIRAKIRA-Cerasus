@@ -76,7 +76,7 @@
 		fillColor: undefined,
 	});
 
-	const cropper = ref();
+	const cropper = ref<InstanceType<typeof VueCropper>>();
 	/**
 	 * 获取被裁减的图片结果
 	 * @returns Blob 格式存储的被裁剪后的图片

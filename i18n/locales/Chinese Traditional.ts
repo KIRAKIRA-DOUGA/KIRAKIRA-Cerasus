@@ -45,6 +45,9 @@ export default {
 		opacity: "不透明度",
 		tint: "著色",
 		blur: "模糊強度",
+		fit: {
+			tile: "並排",
+		},
 	},
 	appearance: {
 		title: "外觀",
@@ -125,6 +128,7 @@ export default {
 			title: "封鎖",
 			description: "不想與其交流的使用者，其將被禁止與你互動。",
 		},
+		blocked: {},
 		hide: {
 			title: "隱藏",
 			description: "隱藏你不想見到的用戶（除非你主動進入其個人頁面）。",
@@ -135,9 +139,8 @@ export default {
 		keyword: {
 			description: "使用關鍵字隱藏不想看到的內容。",
 		},
-		regexp: {
-			description: "使用規則運算式隱藏不想看到的內容。",
-		},
+		regexp: {},
+		toasts: {},
 	},
 	player: {
 		title: "播放器",
@@ -163,7 +166,9 @@ export default {
 		screenshot: "螢幕截圖",
 		stats: "統計",
 		autoplay: "自動播放",
-		filter: "篩選",
+		filter: {
+			title: "篩選",
+		},
 		error: {
 			getDanmaku: "獲取彈幕列表失敗",
 			loadMedia: "無法加載媒體",
@@ -202,7 +207,10 @@ export default {
 			},
 		},
 	},
-	preference: "偏好",
+	preference: {
+		focus_mode: {},
+		new_window: {},
+	},
 	experimental: "實驗",
 	accessibility: "無障礙",
 	shortcut_key: {
@@ -243,7 +251,18 @@ export default {
 	totp_authenticator: "TOTP驗證器",
 	totp_verification_code: "動態密碼",
 	current_email: "當前郵箱",
-	change_email: {},
+	change_email: {
+		title: "變更電郵",
+		verify_current_email: "驗證當前電郵",
+		verify_current_email_description: "點選發送按鈕，然後輸入我們發送到你已綁定電郵的驗證碼。",
+		verify_new_email: "驗證新電郵",
+		verify_new_email_description: "輸入你的新電郵並點選發送按鈕，然後輸入發送到你新電郵的驗證碼。",
+		verify_new_email_and_credentials: "驗證你的新電郵和用戶憑證",
+		verify_new_email_and_credentials_description: "輸入你的密碼和新電郵，然後點選發送按鈕，之後輸入發送到新電郵的驗證碼。",
+		email_2fa_auto_update_warning: "電郵地址更新後，您的雙重驗證電郵地址也會自動更新。",
+		verify_credentials: "驗證用戶憑證",
+		verify_credentials_description: "請輸入您的密碼和TOTP雙因素認證代碼（可在您的身份驗證裝置上找到）。",
+	},
 	new_email: "新電子郵件地址",
 	modification_date: "修改日期",
 	addition_date: "添加日期",
@@ -276,7 +295,7 @@ export default {
 	publish: "投稿",
 	messages: "訊息",
 	notification: "通知",
-	pleaseLogin: "請登入",
+	please_login: "請登入",
 	login: "登入",
 	logout: "登出",
 	register: "註冊",
@@ -296,13 +315,10 @@ export default {
 		title: "顔文字",
 		happy: "開心",
 		greet: "問候",
-		awa: "賣萌",
 		sad: "憂傷",
 		embarrassed: "無語",
 	},
 	associate_existing: "關聯現有內容",
-	reply: "回復",
-	mention: "提及",
 	more: "更多",
 	delete: "刪除",
 	remove: "移除",
@@ -370,7 +386,9 @@ export default {
 		reset_title: "重設密碼",
 		register_email_sent_info: "我們已向您的郵箱中發送了驗證碼，請在此輸入驗證碼。\n如未收到，您可以重新發送。",
 		forgot_info: "請輸入您的電子郵件地址。\n\n若您的帳號可以重設密碼，我們將會寄送驗證碼至您的電子郵件地址。",
+		reset_password_info: "輸入並記住你的新密碼。",
 	},
+	welcome: {},
 	unselected: {
 		settings: "請選擇一項設定",
 		tag: "請搜尋標籤",
@@ -465,7 +483,6 @@ export default {
 		copied: "已複製～",
 		modification_failed: "修改失敗！",
 		failed_to_disable_cookies: "禁用Cookie失敗！",
-		duplicate_tag: "標籤重複！",
 		no_language_selected: "請先選擇語言！",
 	},
 	validation: {
@@ -477,6 +494,8 @@ export default {
 	},
 	confirm: {
 		cancel_upload: "確定要取消本次上傳嗎？",
+		block_user: {},
+		hide_user: {},
 	},
 	current_time: "現在時間",
 	set_as_default: "設定為預設值",
@@ -495,8 +514,12 @@ export default {
 	two_factor_authentication: {
 		add_totp: {},
 		remove_totp: {},
-		enable_email: {},
-		disable_email: {},
+		enable_email: {
+			title: "啓用電郵雙因素認證",
+		},
+		disable_email: {
+			title: "停用電郵雙因素認證",
+		},
 	},
 	role: {},
 	calendar: {},

@@ -33,7 +33,7 @@
 			VueComponent.ThumbVideo,
 			VueComponent.CursorShadow,
 		],
-		content: !props.editable ? '您已被该用户屏蔽，无法发送评论。' : undefined, // TODO: 使用多语言
+		content: !props.editable ? t("block_and_hide.toasts.cannot_send_comments_because_blocked") : undefined,
 		/* content: `
 			<p>我正在用 Vue.js 运行 Tiptap。🎉</p>
 			<p>你看到了吗？这是 Vue 组件。我们真的生活在未来。</p>

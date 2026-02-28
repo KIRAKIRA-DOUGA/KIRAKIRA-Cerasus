@@ -51,7 +51,7 @@
 		const image = fileInput?.files?.[0];
 
 		if (image) {
-			if (!/\.(a?png|jpe?g|jfif|pjp(eg)?|gif|svg|webp)$/i.test(fileInput.value)) {
+			if (!/\.(a?png|jpe?g|jpe|jfif|pjp(eg)?|gif|svg|bmp|tiff?|webp|avif|hei[cf]s?)$/i.test(fileInput.value)) {
 				useToast(t("toast.unsupported_image_format"), "error");
 				console.error("ERROR", t("toast.unsupported_image_format"));
 				return;

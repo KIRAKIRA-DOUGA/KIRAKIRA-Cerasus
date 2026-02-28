@@ -43,7 +43,7 @@
 	const actionMenu = ref<FlyoutModel>();
 	const currentTab = computed(() => currentUserTab());
 
-	const urlUid = ref(); // URL 中的 UID
+	const urlUid = ref<number>(0); // URL 中的 UID
 	urlUid.value = currentUserUid(); // SSR
 	const nuxtApp = useNuxtApp();
 	nuxtApp.hook("page:finish", () => {
@@ -59,17 +59,15 @@
 		try {
 			const blockUid = urlUid.value;
 
-			if (blockUid === undefined || blockUid === null || blockUid < 1) {
-				console.error("ERROR", "屏蔽用户的 UID 格式不正确，不能为空或小于零");
-				// TODO: 使用多语言
-				useToast("屏蔽用户的 UID 格式不正确", "error", 5000);
+			if (blockUid == null || blockUid <= 0) {
+				console.error("ERROR", "屏蔽用户的 UID 格式不正确，不能为空或小于等于零");
+				useToast(t("block_and_hide.toasts.invalid_block_uid"), "error", 5000);
 				return;
 			}
 
 			if (selfUserInfoStore.userInfo.uid === blockUid) {
 				console.error("ERROR", "不能屏蔽自己");
-				// TODO: 使用多语言
-				useToast("不能屏蔽自己", "error", 5000);
+				useToast(t("block_and_hide.toasts.block_yourself"), "error", 5000);
 				return;
 			}
 
@@ -78,18 +76,15 @@
 			};
 			const blockUserResult = await api.block.blockUserController(blockUserByUidRequest);
 			if (blockUserResult.success) {
-				// TODO: 使用多语言
-				useToast("屏蔽用户成功", "success");
+				useToast(t("block_and_hide.toasts.block_successfully"), "success");
 				navigate("/");
 			} else {
 				console.error("ERROR", "屏蔽用户失败");
-				// TODO: 使用多语言
-				useToast("屏蔽用户失败", "error", 5000);
+				useToast(t("block_and_hide.toasts.block_failed"), "error", 5000);
 			}
 		} catch (error) {
 			console.error("ERROR", "屏蔽用户时出错", error);
-			// TODO: 使用多语言
-			useToast("屏蔽用户时出错", "error", 5000);
+			useToast(t("block_and_hide.toasts.block_error"), "error", 5000);
 		}
 	}
 
@@ -107,7 +102,7 @@
 			const headerCookie = useRequestHeaders(["cookie"]);
 			const userInfoResult = await api.user.getUserInfo(getUserInfoByUidRequest, headerCookie);
 			if (!userInfoResult.success)
-				useToast("获取用户信息失败", "error", 5000); // TODO: 使用多语言
+				useToast(t("toast.failed_to_fetch_user_info"), "error", 5000);
 
 			if (userInfoResult.isBlocked)
 				navigateToErrorPage(404);
@@ -153,7 +148,7 @@
 									<MenuItem icon="badge">{{ $t("modify_memo") }}</MenuItem>
 									<hr />
 									<MenuItem icon="flag">{{ $t("report") }}</MenuItem>
-									<MenuItem icon="block" @click="blockUser">{{ $t("block_user") }}</MenuItem>
+									<MenuItem icon="block" @click="blockUser">{{ $t("block_and_hide.block.user") }}</MenuItem>
 								</Menu>
 								<FollowButton v-if="!isSelf" :uid="urlUid" :isFollowing />
 								<SoftButton v-if="isSelf" href="/settings/profile" icon="edit" />

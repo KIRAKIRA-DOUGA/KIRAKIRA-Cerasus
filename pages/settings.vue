@@ -76,7 +76,7 @@
 			{ id: "appearance", icon: "palette", nameKey: "appearance.title" },
 			{ id: "player", icon: "play", nameKey: "player.title" },
 			{ id: "danmaku", icon: "danmaku", nameKey: "danmaku.title" },
-			{ id: "preference", icon: "star", nameKey: "preference" },
+			{ id: "preference", icon: "star", nameKey: "preference.title" },
 			{ id: "language", icon: "translate", nameKey: "language" },
 			{ id: "experimental", icon: "science", nameKey: "experimental" },
 			{ id: "shortcut-key", icon: "keyboard", nameKey: "shortcut_key.title" },
@@ -111,7 +111,7 @@
 		return current.nameKey ? t(current.nameKey) : current.name ?? null;
 	});
 	const htmlTitle = computed(() => {
-		if (title) return title.value + " - " + t("settings.title");
+		if (title.value) return title.value + " - " + t("settings.title");
 		else return t("settings-title");
 	});
 	useHead({ title: htmlTitle });

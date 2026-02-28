@@ -73,7 +73,7 @@
 				if (i === index) continue;
 				if (curTag === normalizedTag) {
 					duplicated = true;
-					useToast(t("toast.duplicate_tag"), "warning");
+					useToast(t("toast.duplicate_tags"), "warning");
 					break;
 				}
 			}
@@ -86,15 +86,15 @@
 				if (result?.success && result.result && result.result.length > 0) {
 					const hasSameWithInput = checkTagUnique(text, result.result);
 					if (hasSameWithInput) {
-						useToast("不允许 TAG 名重复，请更换。", "warning"); // TODO: 使用多语言
-						console.warn("WARN", "WARNING", "查找到重复的 TAG 名");
+						useToast(t("toast.duplicate_tag_names"), "warning");
+						console.warn("WARN", "WARNING", "查找到重复的标签名");
 						tagsWithKey.delete(index);
 						return;
 					}
 				}
 			} catch (error) {
-				useToast("查找重复 TAG 失败", "error"); // TODO: 使用多语言
-				console.error("ERROR", "查找重复 TAG 时出错：", error);
+				useToast(t("toast.failed_to_search_duplicate_tags"), "error");
+				console.error("ERROR", "查找重复标签时出错：", error);
 				return;
 			}
 		}

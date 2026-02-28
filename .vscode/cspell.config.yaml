@@ -1,0 +1,139 @@
+version: "0.2"
+ignorePaths: []
+dictionaryDefinitions: []
+dictionaries: []
+import: []
+language: en,vi
+includeRegExpList:
+  - /[\p{Script_Extensions=Latin}\p{ASCII}]+/gu
+words:
+  - bahasa
+  - bg
+  - bilibili
+  - blocklist
+  - blocklists
+  - cjk
+  - danmaku
+  - danmakus
+  - douga
+  - Dto
+  - ente
+  - fullwidth
+  - halfwidth
+  - kaomoji
+  - kaomojis
+  - kirakira
+  - kwai
+  - ltr
+  - niconico
+  - nonclickable
+  - nuxtjs
+  - otomad
+  - pixiv
+  - posterize
+  - rechoose
+  - rednote
+  - repost
+  - rtl
+  - tieba
+  - tiptap
+  - totp
+  - unclickable
+  - unhiding
+  - wechat
+  - weibo
+  - zh
+ignoreWords:
+  - chiya
+  - megu
+  - rize
+  - syaro
+  - cloudmusic
+  - midishow
+  - loginwindow
+  - kvid
+  - trailingicon
+  - º
+  - ᴗ
+flagWords:
+  - colour -> color
+  - canot -> cannot
+  - cancelled -> canceled
+  - tunning -> tuning
+  - seting -> setting
+  - od -> of
+  - draging -> dragging
+  - splited -> split
+  - splitted -> split
+  - pesudo -> pseudo
+  - exitting -> exiting
+  - trailling -> trailing
+  - condif -> config
+  - comflict -> conflict
+  - typoef -> typeof
+  - grey -> gray
+  - oe -> or
+  - filed -> field
+  - interupt -> interrupt
+  - prefered -> preferred
+  - preffered -> preferred
+  - evaluatable -> evaluable
+  - accidently -> accidentally
+  - infomation -> information
+  - paning -> panning
+  - coed -> code
+  - spped -> speed
+  - positon -> position
+  - expoer -> export
+  - interger -> integer
+  - intergers -> integers
+  - togglable -> toggleable
+  - bluring -> blurring
+  - stirng -> string
+  - writeable -> writable
+  - disablable -> canBeDisabled
+  - disableable -> canBeDisabled
+  - disabledable -> canBeDisabled
+  - Disablable -> CanBeDisabled
+  - Disableable -> CanBeDisabled
+  - Disabledable -> CanBeDisabled
+  - formated -> formatted
+  - perfix -> prefix
+  - licence -> license
+  - depply -> deeply
+  - rtue -> true
+  - typw -> type
+  - hors -> hours
+  - hor -> hour
+  - efault -> default
+  - unioned -> in a union
+  - collasped -> collapsed
+  - collaspe -> collapse
+  - elastique -> élastique
+  - agogo -> agogô
+  - guiro -> güiro
+  - cuica -> cuíca
+  - cajon -> cajón
+  - mimicing -> mimicking
+  - nonfocusable -> nonFocusable
+  - focusless -> nonFocusable
+  - solfege -> solfège
+  - solfeges -> solfèges
+  - glissandos -> glissandi
+  - glissandoes -> glissandi
+  - vibratos -> vibrati
+  - useable -> usable
+  - reuseable -> reusable
+  - unuseable -> unusable
+  - forcely -> forcibly
+  - froms -> forms
+  - putted -> put
+  - beaf -> beef
+  - unapplicable -> inapplicable
+  - indention -> indentation
+  - miragate -> migrate
+  - migarate -> migrate
+  - blacklist -> blocklist
+  - whitelist -> allowlist
+  - blacklists -> blocklists
+  - whitelists -> allowlists

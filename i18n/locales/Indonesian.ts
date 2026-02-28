@@ -45,6 +45,7 @@ export default {
 		opacity: "Opasitas",
 		tint: "Rona",
 		blur: "Keburaman",
+		fit: {},
 	},
 	appearance: {
 		title: "Penampilan",
@@ -63,7 +64,7 @@ export default {
 	tag: {
 		title: "Tag",
 		search: "Cari Tag",
-		new: "Buat Tag Baru",
+		new: "Tag Baru",
 		set_as_original: "Ubah sebagai Nama Asli",
 		unset_as_original: "Batalkan sebagai Nama Asli",
 	},
@@ -124,7 +125,9 @@ export default {
 		block: {
 			title: "Blokir",
 			description: "Pengguna yang tidak Anda inginkan untuk berinteraksi dengan Anda.",
+			user: "Blokir Pengguna",
 		},
+		blocked: {},
 		hide: {
 			title: "Sembunyikan",
 			description: "Sembunyikan pengguna yang tidak ingin Anda lihat (kecuali Anda membuka laman profilnya).",
@@ -135,9 +138,8 @@ export default {
 		keyword: {
 			description: "Gunakan kata kunci untuk menyembunyikan konten yang tidak ingin Anda lihat.",
 		},
-		regexp: {
-			description: "Gunakan kata kunci untuk menyembunyikan konten yang tidak ingin Anda lihat.",
-		},
+		regexp: {},
+		toasts: {},
 	},
 	player: {
 		title: "Pemutar",
@@ -163,7 +165,9 @@ export default {
 		screenshot: "Tangkapan Layar",
 		stats: "Statistik",
 		autoplay: "Putar Otomatis",
-		filter: "Filter",
+		filter: {
+			title: "Filter",
+		},
 		error: {
 			getDanmaku: "Gagal mendapatkan daftar danmaku",
 			loadMedia: "Gagal memuat media",
@@ -202,7 +206,10 @@ export default {
 			},
 		},
 	},
-	preference: "Prefensi",
+	preference: {
+		focus_mode: {},
+		new_window: {},
+	},
 	experimental: "Eksperimental",
 	accessibility: "Akses",
 	shortcut_key: {
@@ -278,7 +285,7 @@ export default {
 	publish: "Publikasikan",
 	messages: "Pesan",
 	notification: "Notifikasi",
-	pleaseLogin: "Silahkan Masuk",
+	please_login: "Silahkan Masuk",
 	login: "Masuk",
 	logout: "Keluar",
 	register: "Daftar",
@@ -298,13 +305,11 @@ export default {
 		title: "Kaomoji",
 		happy: "Senang",
 		greet: "Sapa",
-		awa: "Gemes",
+		moe: "Gemes",
 		sad: "Sedih",
 		embarrassed: "Malu",
 	},
 	associate_existing: "Asosiasi yang sudah ada",
-	reply: "Balas",
-	mention: "Sebut",
 	more: "Lainnya",
 	delete: "Hapus",
 	remove: "Hapus",
@@ -377,6 +382,7 @@ export default {
 		login_totp_info: "Otentikasi 2 Faktor telah diaktifkan di akunmu. Harap masukan kode verifikasi untuk melanjutkan. Jika Anda tidak memiliki akses ke perangkat yang terotentikasi, gunakan kode cadangan atau kode pemulihan untuk masuk.\nCatatan: Masuk dengan menggunakan kode pemulihan akan menonaktifkan Otentikasi 2 Faktor setelah masuk.",
 		login_email_info: "Otentikasi 2 Faktor melalui email telah diaktifkan pada akun Anda. Kode verifikasi telah dikirim ke email Anda. Jika email tidak muncul, harap periksa folder spam atau folder sampah.",
 	},
+	welcome: {},
 	unselected: {
 		combobox: "Pilih Item",
 		settings: "Silakan Pilih Pengaturan",
@@ -438,7 +444,6 @@ export default {
 		title_affix: "{0} Laman Pengguna",
 	},
 	manage_content: "Kelola Konten",
-	block_user: "Blokir Pengguna",
 	platform: {
 		twitter: "Twitter",
 		qq: "QQ",
@@ -494,7 +499,6 @@ export default {
 		copy_failed: "Gagal menyalin!",
 		modification_failed: "Modifikasi gagal",
 		failed_to_disable_cookies: "Gagal menonaktifkan cookie!",
-		duplicate_tag: "Duplikat tag!",
 		no_language_selected: "Tolong pilih bahasa dahulu!",
 		get_current_logged_in_user_info_failed: "Gagal mendapatkan informasi akun! Harap masuk kembali.",
 		comment_delete_success: "Komentar dihapus~",
@@ -519,9 +523,6 @@ export default {
 		email_2fa_enabled: "Email Otentikasi 2 Faktor diaktifkan~",
 		email_2fa_disabled: "Email Otentikasi 2 Faktor dinonaktifkan~",
 		video_manifest_file_generate_failed: "Gagal membuat file manifest video!",
-		video_invalid_result: "Gagal mendapatkan video! Hasil tidak valid.",
-		video_request_failed: "Gagal mendapatkan video! Request tidak valid.",
-		video_no_id: "KVID Tidak Ada!",
 		developer_mode_remain_clicks: "Tekan {0} kali untuk memasuki mode pengembang.",
 		developer_mode_enabled: "Mode pengembang diaktifkan~",
 		developer_mode_already_enabled: "Mode pengembang sudah diaktifkan.",
@@ -560,6 +561,8 @@ export default {
 	confirm: {
 		cancel_upload: "Apakah Anda yakin ingin membatalkan Unggah?",
 		reset_profile: "Apakah Anda yakin ingin mengatur ulang profil Anda?",
+		block_user: {},
+		hide_user: {},
 	},
 	current_time: "Waktu Saat Ini",
 	improve_translation: "Improvisasikan terjemahan",

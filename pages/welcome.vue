@@ -3,10 +3,12 @@
 </docs>
 
 <script setup lang="ts">
-	useHead({ title: "欢迎加入KIRAKIRA☆DOUGA大家庭" }); // TODO: 多语言
-	const next = Array.isArray(useRoute().query.next) ?
-		useRoute().query.next?.[0] ?? "/" :
-		useRoute().query.next as string ?? "/"; // FIXME: Array.isArray 为什么推断不出来问号表达式第三位一定不是 Array 类型
+	const { t } = useI18n();
+	useHead({ title: t("welcome.title", { kirakira: "KIRAKIRA☆DOUGA" }) });
+	const { next: _next } = useRoute().query;
+	const next = Array.isArray(_next) ?
+		_next?.[0] ?? "/" :
+		_next ?? "/";
 
 	const container = ref<HTMLDivElement>();
 
@@ -52,7 +54,7 @@
 			}
 		} catch (error) {
 			isUpdatingUserInfo.value = false;
-			useToast("用户信息更新失败！", "error"); // TODO: 使用多语言
+			useToast(t("toast.failed_to_update_user_info"), "error");
 			console.error("用户信息更新失败！", error);
 		}
 
@@ -87,11 +89,11 @@
 					isUploadingUserAvatar.value = false;
 				}
 			} else {
-				useToast("无法获取裁切后的图片！", "error"); // TODO: 使用多语言
+				useToast(t("toast.unable_to_get_cropped_picture"), "error");
 				console.error("ERROR", "无法获取裁切后的图片");
 			}
 		} catch (error) {
-			useToast("头像上传失败！", "error"); // TODO: 使用多语言
+			useToast(t("toast.avatar_upload_failed"), "error");
 			console.error("ERROR", "在上传用户头像时出错", error);
 			isUploadingUserAvatar.value = false;
 		}
@@ -116,8 +118,8 @@
 		const image = fileInput?.files?.[0];
 
 		if (image) {
-			if (!/\.(a?png|jpe?g|jfif|pjp(eg)?|gif|svg|webp)$/i.test(fileInput.value)) {
-				useToast("只能上传图片文件！", "error"); // TODO: 使用多语言
+			if (!/\.(a?png|jpe?g|jpe|jfif|pjp(eg)?|gif|svg|bmp|tiff?|webp|avif|hei[cf]s?)$/i.test(fileInput.value)) {
+				useToast(t("toast.unsupported_image_format"), "error");
 				console.error("ERROR", "不支持所选头像图片格式！");
 				return;
 			}
@@ -142,8 +144,7 @@
 </script>
 
 <template>
-	<!-- TODO: 使用多语言 -->
-	<Modal v-model="isAvatarCropperOpened" title="更新头像">
+	<Modal v-model="isAvatarCropperOpened" :title="$t('profile.update_avatar')">
 		<div class="avatar-cropper">
 			<ImageCropper
 				ref="cropper"
@@ -157,33 +158,45 @@
 			/>
 		</div>
 		<template #footer-right>
-			<!-- TODO: 使用多语言 -->
-			<Button class="secondary" @click="isAvatarCropperOpened = false">取消</Button>
-			<!-- TODO: 使用多语言 -->
-			<Button :loading="isUploadingUserAvatar" @click="handleSubmitAvatarImage">更新头像</Button>
+			<Button class="secondary" @click="isAvatarCropperOpened = false">{{ $t("step.cancel") }}</Button>
+			<Button :loading="isUploadingUserAvatar" @click="handleSubmitAvatarImage">{{ $t("profile.update_avatar") }}</Button>
 		</template>
 	</Modal>
 
 	<div class="banner">
 		<LogoCover noAnimation noTitle />
-		<h1>欢迎加入<LogoText />大家庭</h1>
+		<h1>
+			<TransInterpolation keypath="welcome.title">
+				<template #kirakira>
+					<LogoText />
+				</template>
+			</TransInterpolation>
+		</h1>
 	</div>
 	<div ref="container" class="container">
 		<div class="card">
 			<div class="card-rectangle"></div>
-			<h2>完善个人信息</h2>
+			<h2>{{ $t("welcome.improve_personal_info") }}</h2>
 			<div class="items">
 				<div class="avatar">
 					<UserAvatar :avatar="avatarBlob" @click="handleUploadAvatarImage" />
-					<span>上传头像</span>
+					<span>{{ $t("profile.upload_avatar") }}</span>
 					<input ref="userAvatarFileInput" type="file" accept="image/*" hidden />
 				</div>
 
 				<SettingsUserProfile v-model="profile" />
 
-				<Checkbox v-model:single="isRead">我已阅读并同意<PopupWindowLink href="https://otomad.github.io/cssc/license.htm">《KIRAKIRA☆DOUGA用户协议》</PopupWindowLink></Checkbox>
+				<Checkbox v-model:single="isRead">
+					<TransInterpolation keypath="welcome.agree_agreement">
+						<template #agreement>
+							<PopupWindowLink class="agreement-link" href="https://otomad.github.io/cssc/license.htm">
+								{{ $t("welcome.agreement", { kirakira: "KIRAKIRA☆DOUGA" }) }}
+							</PopupWindowLink>
+						</template>
+					</TransInterpolation>
+				</Checkbox>
 
-				<Button icon="check" :disabled="!validData || isUpdatingUserInfo" :loading="isUpdatingUserInfo" @click="finish">开始畅游KIRAKIRA☆DOUGA</Button>
+				<Button icon="check" :disabled="!validData || isUpdatingUserInfo" :loading="isUpdatingUserInfo" @click="finish">{{ $t("welcome.exploring", { kirakira: "KIRAKIRA☆DOUGA" }) }}</Button>
 			</div>
 		</div>
 	</div>
@@ -195,7 +208,7 @@
 			</div>
 			<div class="content-wrapper">
 				<div v-for="i in 2" :key="i" class="content" :class="{ 'content-visible': i === 2 }">
-					<p class="welcome-text">欢迎加入</p>
+					<p class="welcome-text">{{ $t("welcome.to_join") }}</p>
 					<p class="name">{{ profile.name }}</p>
 				</div>
 			</div>
@@ -417,5 +430,10 @@
 			--size: 80dvw;
 			// 对于图片切割器，不建议使用响应式，因为切割器内部被切割的图片不会随之改变尺寸，但考虑到极端小尺寸的适配问题，且在上传图片时浏览器宽度发生剧烈变化的概率较小，故保留本功能。
 		}
+	}
+
+	.agreement-link {
+		font-style: italic;
+		font-synthesis-style: none;
 	}
 </style>

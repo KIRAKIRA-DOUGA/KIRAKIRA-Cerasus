@@ -42,7 +42,7 @@
 		replayAnimation(e.currentTarget as HTMLDivElement, "active");
 		clearAllToast();
 		if (isDevMode?.value) {
-			useToast(t("toast.developer_mode_already_enabled"), "info");
+			useToast(t("toast.developer_mode_already_enabled"), "success");
 			return;
 		} else if (remainingClick.value) {
 			useToast(t("toast.developer_mode_remain_clicks", [remainingClick.value--]), "info");

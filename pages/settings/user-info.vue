@@ -147,10 +147,7 @@
 
 <template>
 	<div>
-		<!-- TODO: 使用多语言 -->
-		<!-- WARN: 该页面需要多语言支持 -->
-		<!-- TODO: 使用多语言 -->
-
+		<!-- NOTE: 缺少多语言，但本页已废弃。 -->
 		<Alert v-model="showClearUserInfoAlert" static>
 			<h4>确定要清除这个用户的信息吗？</h4>
 			<p>该用户的用户名、昵称、头像、签名、性别、用户 TAG 和 生日等用户信息将会被清空。</p>
