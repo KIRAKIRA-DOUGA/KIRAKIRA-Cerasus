@@ -194,4 +194,43 @@
 	"vue.inlayHints.missingProps": true,
 	"vue.inlayHints.optionsWrapper": true,
 	"vue.inlayHints.vBindShorthand": true,
+	"editor.tokenColorCustomizations": {
+		"textMateRules": [
+			{
+				"scope": [
+					// following will be in italic (=FlottFlott)
+					"comment",
+					"entity.name.type.class", //class names
+					"keyword", //import, export, return…
+					// "constant", //String, Number, Boolean…, this, super
+					"storage.modifier", //static keyword
+					"storage.type.class", //class keyword
+					"storage.type.function",
+					"entity.name.method",
+					"entity.name.class",
+					"entity.name.function",
+					"entity.name.tag.doctype",
+					"entity.other.attribute-name",
+					"entity.other.attribute-name.tag",
+				],
+				"settings": {
+					"fontStyle": "italic",
+				},
+			},
+			{
+				"scope": [
+					// following will be excluded from italics (VSCode has some defaults for italics)
+					"invalid",
+					"keyword.operator",
+					"constant.numeric.css",
+					"keyword.other.unit",
+					"constant.numeric.decimal.js",
+					"constant.numeric.json",
+				],
+				"settings": {
+					"fontStyle": "",
+				},
+			},
+		],
+	},
 }
