@@ -146,7 +146,7 @@ export class TusFileUploader {
 				removeFingerprintOnSuccess: true, // 上传成功后移除用于恢复上传的 key
 				metadata: {
 					name: file.name,
-					maxDurationSeconds: "1800", // 最大视频长度，1800 秒（30 分钟）
+					maxDurationSeconds: "3600", // 最大视频长度，3600 秒（60 分钟）
 					expiry: getCloudflareRFC3339ExpiryDateTime(3600), // 最大上传耗时，3600 秒（1 小时）
 				},
 				onError: error => {
