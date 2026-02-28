@@ -532,13 +532,13 @@
 
 	/**
 	 * 切换全屏。
-	 * @param isFullbrowser - 是否是网页全屏？
+	 * @param isFullBrowser - 是否是网页全屏？
 	 */
-	async function toggleFullscreen(isFullbrowser: boolean = false) {
+	async function toggleFullscreen(isFullBrowser: boolean = false) {
 		// 触发全屏 API
 		if (fullscreen.value)
 			await exitFullscreen();
-		else if (!isFullbrowser)
+		else if (!isFullBrowser)
 			await enterFullscreen();
 
 		// 处理 tab 失能问题（不然全屏状态下按 tab 键甚至会聚焦到评论区去）

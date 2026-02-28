@@ -16,12 +16,6 @@
 
 	const insertDanmaku = defineModel<DanmakuListItem[]>("insertDanmaku");
 
-	/** @deprecated - 测试数据。 */
-	const counts = reactive({
-		danmaku: 10000n,
-		watching: 1n,
-	});
-
 	const showTabBar = ref(false);
 	const showSettings = ref(false);
 	const selectedTab = ref("danmaku-list");
