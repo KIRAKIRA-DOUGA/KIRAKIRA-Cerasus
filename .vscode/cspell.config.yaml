@@ -7,6 +7,7 @@ language: en,vi
 includeRegExpList:
   - /[\p{Script_Extensions=Latin}\p{ASCII}]+/gu
 words:
+  - akkarin
   - bahasa
   - bg
   - bilibili
@@ -22,6 +23,7 @@ words:
   - halfwidth
   - kaomoji
   - kaomojis
+  - kira
   - kirakira
   - kwai
   - ltr

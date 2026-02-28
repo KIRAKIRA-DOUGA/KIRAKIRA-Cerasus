@@ -177,11 +177,16 @@
 		"statusBar.background": "#00c16a1f",
 	},
 	"material-icon-theme.activeIconPack": "vue_vuex",
-	"cSpell.words": [
-		"kira",
-		"nuxt",
-		"akkarin"
+	"cSpell.import": [
+		"${workspaceFolder}/.vscode/cspell.config.yaml"
 	],
+	"cSpell.language": "en,vi",
+	"cSpell.minWordLength": 1,
+	"emmet.showAbbreviationSuggestions": false,
+	"cSpell.enabledFileTypes": {
+		"svg": false,
+		"html": false,
+	},
 	"vue.suggest.componentNameCasing": "preferPascalCase",
 	"vue.suggest.propNameCasing": "preferCamelCase",
 	"vue.inlayHints.destructuredProps": true,
