@@ -74,7 +74,7 @@
 	function copyDanmaku() {
 		if (!currentDanmaku.value) return;
 		copy(currentDanmaku.value.content);
-		useToast($t("toast.copied"), "success");
+		useToast(t("toast.copied"), "success");
 	}
 
 	/**

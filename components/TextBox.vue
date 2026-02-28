@@ -93,6 +93,9 @@
 	});
 	const input = ref<HTMLInputElement>();
 	const showClearAll = computed(() => !props.hideClearAll && value.value !== "");
+	const slots = useSlots();
+	const hasTrailingActions = computed(() => !!slots.actions?.().length);
+	const hasTrailingIcons = computed(() => showClearAll.value || props.type === "password" || invalid.value || hasTrailingActions.value);
 	const isInvalid = () => input.value?.validity.valid === false; // 注意不要写成 !valid，还需要排除 undefined 的情况。
 	const invalid = ref(false); // 如果使用 computed，则只会调用一次。并不能监测 isInvalid 的变化，所以 computed 功能只是个废物？
 	const isNumberMode = computed(() => props.min !== undefined || props.max !== undefined || ["decimal", "numberic", "tel"].includes(props.inputMode!));
@@ -270,7 +273,7 @@
 
 <template>
 	<Comp role="textbox">
-		<div>
+		<div :class="{ 'is-invalid': invalid, 'is-disabled': disabled }">
 			<div class="wrapper">
 				<Icon v-if="icon" :name="icon" class="leading-icon" />
 				<span class="prefix">{{ prefix }}</span>
@@ -299,7 +302,7 @@
 					@keydown="e => { stopPropagationExceptKey(e, 'F11'); emits('keydown', e) }"
 					@keyup="e => { stopPropagationExceptKey(e, 'F11'); emits('keyup', e) }"
 				/>
-				<span class="suffix">{{ suffix }}</span>
+				<span :class="['suffix', { 'no-trailing-icons': !hasTrailingIcons }]">{{ suffix }}</span>
 				<label>{{ placeholder }}</label>
 				<Contents class="trailing-icons">
 					<TrailingIcon
@@ -373,7 +376,7 @@
 			border-radius: 0;
 		}
 
-		&:has(input:invalid) {
+		&.is-invalid {
 			.focus-stripe {
 				background-color: c(red) !important;
 				scale: 1;
@@ -385,7 +388,7 @@
 			}
 		}
 
-		&:has(input:focus) {
+		&:focus-within {
 			.focus-stripe {
 				background-color: c(accent);
 				scale: 1;
@@ -401,7 +404,7 @@
 			}
 		}
 
-		&:has(input[disabled]) {
+		&.is-disabled {
 			background-color: c(main-fg, 4%);
 			opacity: 0.5;
 			cursor: not-allowed;
@@ -448,7 +451,7 @@
 			margin-left: $start-indent;
 		}
 
-		.suffix:has(~ .trailing-icons:empty) {
+		.suffix.no-trailing-icons {
 			margin-right: $start-indent;
 		}
 	}
