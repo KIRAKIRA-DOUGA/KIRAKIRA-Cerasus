@@ -115,7 +115,7 @@
 					<!-- TODO: 评论支持富文本。 -->
 					<div>{{ comment.text }}</div>
 				</CreationCommentsItem>
-				<div v-if="!loading || commentsCount === 0" class="placeholder">
+				<div v-if="!loading && commentsCount === 0" class="placeholder">
 					<Icon name="chat_bubble" />
 					{{ $t("empty.comments") }}
 				</div>
