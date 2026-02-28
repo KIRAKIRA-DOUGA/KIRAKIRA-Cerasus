@@ -15,7 +15,7 @@
 	/**
 	 * 更新弹幕列表。
 	 */
-	function updateDamakuList() {
+	function updateDanmakuList() {
 		if (!insertDanmaku.value) return;
 		danmakuList.value = danmakuList.value.concat(insertDanmaku.value.map(e => {
 			const key = e.content + e.sendTime.valueOf();
@@ -24,7 +24,7 @@
 		danmakuListKey.value = new Date().valueOf();
 	}
 
-	watch(insertDanmaku, updateDamakuList, { immediate: true });
+	watch(insertDanmaku, updateDanmakuList, { immediate: true });
 
 	/**
 	 * 单击表头排序。
