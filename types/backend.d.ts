@@ -25,7 +25,7 @@ declare global {
 	// VideoTagControllerDto
 	export type { CreateVideoTagRequestDto, GetVideoTagByTagIdRequestDto, VideoTag } from "api/VideoTag/VideoTagControllerDto";
 	// FeedControllerDto
-	export type { FollowingUploaderRequestDto, UnfollowingUploaderRequestDto } from "api/Feed/FeedControllerDto";
+	export type { FollowingUploaderRequestDto, UnfollowingUploaderRequestDto, UserInfoForFollowList } from "api/Feed/FeedControllerDto";
 	// BlockListDto
 	export type { AddRegexRequestDto, BlockKeywordRequestDto, BlockTagRequestDto, BlockUserByUidRequestDto, GetBlockListRequestDto, GetBlockListResponseDto, HideUserByUidRequestDto, RemoveRegexRequestDto, ShowUserByUidRequestDto, UnblockKeywordRequestDto, UnblockTagRequestDto, UnblockUserByUidRequestDto } from "api/BlockList/BlockControllerDto";
 	// BlockListDto

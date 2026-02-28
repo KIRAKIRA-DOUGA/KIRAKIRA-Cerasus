@@ -4,7 +4,7 @@
 
 	const route = useRoute();
 
-	const urlUid = ref();
+	const urlUid = ref<number>(undefined!);
 	// SSR
 	urlUid.value = currentUserUid();
 	// CSR

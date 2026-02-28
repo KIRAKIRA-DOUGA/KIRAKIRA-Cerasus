@@ -17,6 +17,11 @@
 		/** 用户 UID。 */
 		uid: number;
 	}>();
+
+	const emit = defineEmits<{
+		/** 关注状态变化时触发 */
+		"update:isFollowing": [value: boolean];
+	}>();
 </script>
 
 <template>
@@ -26,7 +31,7 @@
 				{{ followers }} {{ $t("follower", followers) }}
 			</template>
 		</UserContent>
-		<FollowButton v-if="!isSelf" :uid :isFollowing />
+		<FollowButton v-if="!isSelf" :uid :isFollowing="isFollowing" @update:isFollowing="emit('update:isFollowing', $event)" />
 	</Comp>
 </template>
 

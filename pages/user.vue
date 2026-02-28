@@ -43,7 +43,7 @@
 	const actionMenu = ref<FlyoutModel>();
 	const currentTab = computed(() => currentUserTab());
 
-	const urlUid = ref(); // URL 中的 UID
+	const urlUid = ref<number>(undefined!); // URL 中的 UID
 	urlUid.value = currentUserUid(); // SSR
 	const nuxtApp = useNuxtApp();
 	nuxtApp.hook("page:finish", () => {
@@ -155,7 +155,7 @@
 									<MenuItem icon="flag">{{ $t("report") }}</MenuItem>
 									<MenuItem icon="block" @click="blockUser">{{ $t("block_user") }}</MenuItem>
 								</Menu>
-								<FollowButton v-if="!isSelf" :uid="urlUid" :isFollowing />
+								<FollowButton v-if="!isSelf" :uid="urlUid" :isFollowing="isFollowing" @update:isFollowing="isFollowing = $event" />
 								<SoftButton v-if="isSelf" href="/settings/profile" icon="edit" />
 							</div>
 						</template>

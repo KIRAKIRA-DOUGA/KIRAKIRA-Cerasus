@@ -1,4 +1,4 @@
-import type { FollowingUploaderRequestDto, FollowingUploaderResponseDto, UnfollowingUploaderRequestDto, UnfollowingUploaderResponseDto } from "./FeedControllerDto";
+import type { FollowingUploaderRequestDto, FollowingUploaderResponseDto, UnfollowingUploaderRequestDto, UnfollowingUploaderResponseDto, GetFollowStatsResponseDto, GetFollowingListResponseDto, GetFollowerListResponseDto } from "./FeedControllerDto";
 
 const BACK_END_URI = environment.backendUri;
 const FEED_API_URI = `${BACK_END_URI}feed`;
@@ -33,6 +33,64 @@ export const unfollowingUploader = (unfollowingUploaderRequest: UnfollowingUploa
 			method: "POST",
 			body: { ...unfollowingUploaderRequest },
 			credentials: "include",
+		},
+	);
+};
+
+/**
+ * 获取用户关注数和粉丝数
+ * @param targetUid - 目标用户的 UID
+ * @param headerCookie - 请求头中的 cookie（可选，用于已登录用户）
+ * @returns 获取用户关注数和粉丝数的请求响应
+ */
+export const getFollowStats = (targetUid: number, headerCookie?: Record<string, string>) => {
+	return $fetch<GetFollowStatsResponseDto>(
+		`${FEED_API_URI}/stats`,
+		{
+			method: "GET",
+			query: { targetUid },
+			credentials: "include",
+			headers: headerCookie,
+		},
+	);
+};
+
+/**
+ * 获取用户关注列表
+ * @param targetUid - 目标用户的 UID
+ * @param page - 当前页码
+ * @param pageSize - 每页显示数量
+ * @param headerCookie - 请求头中的 cookie（可选，用于已登录用户）
+ * @returns 获取用户关注列表的请求响应
+ */
+export const getFollowingList = (targetUid: number, page: number, pageSize: number, headerCookie?: Record<string, string>) => {
+	return $fetch<GetFollowingListResponseDto>(
+		`${FEED_API_URI}/following/list`,
+		{
+			method: "GET",
+			query: { targetUid, page, pageSize },
+			credentials: "include",
+			headers: headerCookie,
+		},
+	);
+};
+
+/**
+ * 获取用户粉丝列表
+ * @param targetUid - 目标用户的 UID
+ * @param page - 当前页码
+ * @param pageSize - 每页显示数量
+ * @param headerCookie - 请求头中的 cookie（可选，用于已登录用户）
+ * @returns 获取用户粉丝列表的请求响应
+ */
+export const getFollowerList = (targetUid: number, page: number, pageSize: number, headerCookie?: Record<string, string>) => {
+	return $fetch<GetFollowerListResponseDto>(
+		`${FEED_API_URI}/follower/list`,
+		{
+			method: "GET",
+			query: { targetUid, page, pageSize },
+			credentials: "include",
+			headers: headerCookie,
 		},
 	);
 };

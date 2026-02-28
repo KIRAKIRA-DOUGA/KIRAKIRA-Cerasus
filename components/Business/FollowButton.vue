@@ -3,6 +3,8 @@
 </docs>
 
 <script setup lang="ts">
+	import Button from "../Button.vue";
+
 	const props = defineProps<{
 		/** 用户 UID。 */
 		uid: number;
@@ -10,9 +12,13 @@
 		isFollowing: boolean;
 	}>();
 
+	const emit = defineEmits<{
+		/** 关注状态变化时触发 */
+		"update:isFollowing": [value: boolean];
+	}>();
+
 	const { t } = useI18n();
 
-	const isFollowing = ref(props.isFollowing); // 是否正在关注
 	const isTogglingFollow = ref(false); // 是否正在发送关注或取消关注用户的请求
 	const followButton = ref<InstanceType<typeof Button>>(); // 关注按钮实例
 	const unfollowMenu = ref<FlyoutModel>(); // 点击「已关注」按钮时会出现的取消关注菜单
@@ -23,7 +29,7 @@
 	 */
 	async function onFollowButtonClick(e: MouseEvent) {
 		const button = e.target as HTMLButtonElement;
-		if (!isFollowing.value)
+		if (!props.isFollowing)
 			await animateSize(button, async () => {
 				await followingUser();
 			});
@@ -51,10 +57,13 @@
 			const followingUploaderRequest: FollowingUploaderRequestDto = {
 				followingUid: props.uid ?? -1,
 			};
-			const { data } = await api.feed.followingUploader(followingUploaderRequest);
-			if (data.value?.success)
-				isFollowing.value = true;
-			else
+			const response = await api.feed.followingUploader(followingUploaderRequest);
+			if (response.success) {
+				// 通知父组件更新关注状态
+				emit("update:isFollowing", true);
+				// 触发事件总线，通知刷新关注统计
+				useEvent("feed:refreshFollowStats", { uid: props.uid });
+			} else
 				useToast(t("toast.something_went_wrong"), "error", 5000);
 		} catch (error) {
 			useToast(t("toast.something_went_wrong"), "error", 5000);
@@ -72,15 +81,15 @@
 			const unfollowingUploaderRequest: UnfollowingUploaderRequestDto = {
 				unfollowingUid: props.uid ?? -1,
 			};
-			const { data } = await api.feed.unfollowingUploader(unfollowingUploaderRequest);
-			if (data.value?.success)
-				isFollowing.value = false;
-			else {
-				isFollowing.value = true;
+			const response = await api.feed.unfollowingUploader(unfollowingUploaderRequest);
+			if (response.success) {
+				// 通知父组件更新关注状态
+				emit("update:isFollowing", false);
+				// 触发事件总线，通知刷新关注统计
+				useEvent("feed:refreshFollowStats", { uid: props.uid });
+			} else
 				useToast(t("toast.something_went_wrong"), "error", 5000);
-			}
 		} catch (error) {
-			isFollowing.value = true;
 			useToast(t("toast.something_went_wrong"), "error", 5000);
 			console.error("ERROR", "取消关注用户时出错：", error);
 		}
@@ -99,7 +108,7 @@
 	>
 		{{ isFollowing ? $t("following") : $t("follow_verb") }}
 		<Menu v-model="unfollowMenu">
-			<MenuItem icon="close" @click="onUnfollowButtonClick">{{ $t("unfollow_verb") }}</MenuItem>
+			<MenuItem icon="close" @click="onUnfollowButtonClick">{{ $t("unfollow") }}</MenuItem>
 		</Menu>
 	</Button>
 </template>

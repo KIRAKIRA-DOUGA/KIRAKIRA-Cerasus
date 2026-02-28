@@ -32,12 +32,12 @@
 
 		&:not(.sub) {
 			margin-bottom: -2px;
-			font-weight: 900;
 			font-size: 40px;
+			font-weight: 900;
+			font-variant-caps: small-caps;
 			text-transform: capitalize;
 			transform: skewX(-10deg); // 不要使用 `font-style: italic;`，因为太斜了。
 			transform-origin: left bottom;
-			font-variant-caps: small-caps;
 			transition: none;
 
 			&:lang-latin {
@@ -49,9 +49,9 @@
 
 		&.sub {
 			margin-bottom: 1px;
-			font-weight: bold;
-			font-size: 30px;
 			font-family: $english-logo-fonts;
+			font-size: 30px;
+			font-weight: bold;
 			font-style: italic;
 			text-transform: uppercase;
 

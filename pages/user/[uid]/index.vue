@@ -1,5 +1,7 @@
 <script setup lang="ts">
-	const urlUid = ref();
+	import UserList from "~/components/User/UserList.vue";
+
+	const urlUid = ref<number>(undefined!);
 	// SSR
 	urlUid.value = currentUserUid();
 	// CSR
@@ -16,6 +18,14 @@
 
 	const userVideos = ref<GetVideoByUidResponseDto>();
 
+	const followingCount = ref(0);
+	const followerCount = ref(0);
+
+	// 列表显示相关
+	const currentListType = ref<"videos" | "following" | "followers">("videos");
+	const followingListRef = ref<InstanceType<typeof UserList>>();
+	const followerListRef = ref<InstanceType<typeof UserList>>();
+
 	/**
 	 * Fetch all data.
 	 */
@@ -26,7 +36,10 @@
 		const fetchUserVideoDataPromise = new Promise<void>(resolve => {
 			fetchUserVideoData().then(resolve);
 		});
-		await Promise.allSettled([fetchUserDataPromise, fetchUserVideoDataPromise]);
+		const fetchFollowStatsPromise = new Promise<void>(resolve => {
+			fetchFollowStats().then(resolve);
+		});
+		await Promise.allSettled([fetchUserDataPromise, fetchUserVideoDataPromise, fetchFollowStatsPromise]);
 	}
 
 	/**
@@ -59,6 +72,68 @@
 			userVideos.value = videosResponse;
 		} catch (error) { console.error(error); }
 	}
+
+	/**
+	 * Fetch the follow stats (following count and follower count).
+	 */
+	async function fetchFollowStats() {
+		try {
+			if (!urlUid.value) return;
+			// 只在服务端使用 useRequestHeaders，客户端会自动通过 credentials: "include" 传递 cookie
+			const headerCookie = import.meta.server ? useRequestHeaders(["cookie"]) : undefined;
+			const statsResponse = await api.feed.getFollowStats(urlUid.value, headerCookie);
+			if (statsResponse.success) {
+				followingCount.value = statsResponse.followingCount ?? 0;
+				followerCount.value = statsResponse.followerCount ?? 0;
+			}
+		} catch (error) {
+			console.error("Failed to fetch follow stats:", error);
+		}
+	}
+
+	/**
+	 * 处理关注数点击
+	 */
+	function handleFollowingClick() {
+		if (currentListType.value === "following")
+			currentListType.value = "videos";
+		else {
+			currentListType.value = "following";
+			// 使用 nextTick 确保组件已渲染
+			nextTick(() => {
+				followingListRef.value?.fetchList(true);
+			});
+		}
+	}
+
+	/**
+	 * 处理粉丝数点击
+	 */
+	function handleFollowerClick() {
+		if (currentListType.value === "followers")
+			currentListType.value = "videos";
+		else {
+			currentListType.value = "followers";
+			// 使用 nextTick 确保组件已渲染
+			nextTick(() => {
+				followerListRef.value?.fetchList(true);
+			});
+		}
+	}
+
+	/**
+	 * 处理关注列表中的取消关注事件
+	 */
+	function handleUnfollow() {
+		followingCount.value = Math.max(0, followingCount.value - 1);
+	}
+
+	// 监听事件总线，在关注/取消关注后刷新统计数据
+	useListen("feed:refreshFollowStats", event => {
+		if (event.uid === urlUid.value)
+			fetchFollowStats();
+	});
+
 	watch(urlUid, fetchData, { deep: true });
 	await fetchData();
 </script>
@@ -66,7 +141,8 @@
 <template>
 	<div class="container">
 		<div class="toolbox-card center">
-			<ThumbGrid>
+			<!-- 视频列表 -->
+			<ThumbGrid v-if="currentListType === 'videos'">
 				<ThumbVideo
 					v-for="video in userVideos?.videos"
 					:key="video.videoId"
@@ -79,6 +155,23 @@
 					:duration="new Duration(0, video.duration ?? 0)"
 				>{{ video.title }}</ThumbVideo>
 			</ThumbGrid>
+
+			<!-- 关注列表 -->
+			<UserList
+				v-else-if="currentListType === 'following'"
+				ref="followingListRef"
+				:targetUid="urlUid"
+				listType="following"
+				@unfollow="handleUnfollow"
+			/>
+
+			<!-- 粉丝列表 -->
+			<UserList
+				v-else-if="currentListType === 'followers'"
+				ref="followerListRef"
+				:targetUid="urlUid"
+				listType="followers"
+			/>
 		</div>
 
 		<div class="right">
@@ -86,13 +179,13 @@
 
 			<div class="toolbox-card">
 				<div class="user-counts">
-					<div>
-						<span class="value">{{ 0 }}</span>
-						<p>{{ $t("following", 2) }}</p>
+					<div class="clickable" :class="{ active: currentListType === 'following' }" @click="handleFollowingClick">
+						<span class="value">{{ followingCount }}</span>
+						<p>{{ $t("following", followingCount) }}</p>
 					</div>
-					<div>
-						<span class="value">{{ 0 }}</span>
-						<p>{{ $t("follower", 2) }}</p>
+					<div class="clickable" :class="{ active: currentListType === 'followers' }" @click="handleFollowerClick">
+						<span class="value">{{ followerCount }}</span>
+						<p>{{ $t("follower", followerCount) }}</p>
 					</div>
 					<div>
 						<span class="value">{{ 0 }}</span>
@@ -169,6 +262,28 @@
 				font-size: 13px;
 			}
 		}
+
+		.clickable {
+			cursor: pointer;
+
+			&,
+			.value {
+				transition: $fallback-transitions, color $ease-out-expo 200ms;
+			}
+
+			&:any-hover .value {
+				color: c(accent);
+			}
+
+			&.active .value {
+				color: c(accent);
+			}
+		}
+	}
+
+	.center {
+		max-height: calc(100dvh - 200px);
+		overflow: hidden auto;
 	}
 
 	.user-info-container {
