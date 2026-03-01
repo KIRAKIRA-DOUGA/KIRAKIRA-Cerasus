@@ -21,7 +21,14 @@
 
 <template>
 	<Comp>
-		<UserContent :avatar="avatar" :nickname="nickname" :followers="followers" :uid="uid" center>
+		<UserContent
+			:avatar
+			:nickname
+			:username
+			:followers
+			:uid
+			center
+		>
 			<template #description>
 				{{ followers }} {{ $t("follower", followers) }}
 			</template>

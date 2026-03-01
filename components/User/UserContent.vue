@@ -285,9 +285,8 @@
 
 		.names {
 			display: flex;
-			gap: 4px;
+			gap: 8px;
 			align-items: center;
-			width: fit-content;
 			overflow: hidden;
 
 			> * {
@@ -306,8 +305,15 @@
 			}
 
 			.nickname {
+				flex-grow: 1;
+				flex-shrink: 1;
 				color: c(text-color);
 				font-weight: bold;
+			}
+
+			.username {
+				flex-grow: 0;
+				flex-shrink: 100;
 			}
 
 			// .memo {
