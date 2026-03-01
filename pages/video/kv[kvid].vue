@@ -156,7 +156,6 @@
 								:avatar="videoDetails?.uploaderInfo?.avatar"
 								:nickname="videoDetails?.uploaderInfo?.userNickname ?? ''"
 								:username="videoDetails?.uploaderInfo?.username ?? ''"
-								:fans="videoDetails?.uploaderSubscribers ?? 0"
 								:followers="videoDetails?.uploaderFollowers ?? 0"
 								:isFollowing="!!videoDetails?.uploaderInfo?.isFollowing"
 								:isSelf="videoDetails?.uploaderInfo?.isSelf"
