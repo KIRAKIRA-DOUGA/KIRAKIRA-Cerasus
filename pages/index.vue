@@ -1,4 +1,5 @@
 <script setup lang="ts">
+	const { t } = useI18n();
 	const videos = ref<ThumbVideoResponseDto>();
 	const route = useRoute();
 	const { query } = route;
@@ -22,7 +23,7 @@
 		} catch (error) {
 			// TODO: anyting can do if data fetch field in the home page? -add a 'refresh' button?
 			console.error("ERROR", "Unable to fetch home page video data", error);
-			useToast("获取视频数据失败，请刷新页面。", "error", 5000);
+			useToast(t("toast.something_went_wrong"), "error", 5000);
 		}
 	}
 
@@ -60,24 +61,24 @@
 		<TabBar v-model="data.selectedTab" @movingForTransition="name => transitionName = name">
 			<TabItem
 				id="Home"
-			>{{ t.home }}</TabItem>
+			>{{ $t("home") }}</TabItem>
 			<TabItem
 				v-for="cat in categoryList"
 				:id="cat"
 				:key="cat"
 				:badge="categories?.get(cat.toLowerCase())"
 			>
-				{{ t.category[cat.toLowerCase()] }}
+				{{ $t(`category.${cat.toLowerCase()}`) }}
 			</TabItem>
 		</TabBar>
-		<InfoBar :title="t.announcement" lite>
+		<InfoBar :title="$t('announcement.title')" lite>
 			<TransInterpolation keypath="announcement.homepage">
 				<template #discord-server>
-					<a href="https://discord.gg/uVd9ZJzEy7" target="_blank">{{ t.platform.discord.server }}</a>
+					<a href="https://discord.gg/uVd9ZJzEy7" target="_blank">{{ $t("platform.discord.server") }}</a>
 				</template>
 			</TransInterpolation>
 		</InfoBar>
-		<Subheader icon="upload" :badge="categoryItemCount">{{ t.latest }}</Subheader>
+		<Subheader icon="upload" :badge="categoryItemCount">{{ $t("latest") }}</Subheader>
 		<Transition :name="transitionName" mode="out-in">
 			<ThumbGrid :key="resultTimestamp">
 				<ThumbVideo

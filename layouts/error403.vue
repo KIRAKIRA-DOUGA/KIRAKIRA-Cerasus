@@ -32,8 +32,8 @@
 		<div class="content">
 			<h2>{{ message }}</h2>
 			<h1>{{ statusCode }}</h1>
-			<h3>{{ t.http_status_code.code_403 }}</h3>
-			<Button href="/">{{ t.navigation.return_to_home }}</Button>
+			<h3>{{ $t("http_status_code.code_403") }}</h3>
+			<Button href="/">{{ $t("navigation.return_to_home") }}</Button>
 		</div>
 	</div>
 </template>
@@ -62,7 +62,7 @@
 			flex-direction: column;
 			gap: 12px;
 			justify-content: center;
-			align-items: flex-start;
+			align-items: start;
 			min-width: 450px;
 			color: c(accent);
 

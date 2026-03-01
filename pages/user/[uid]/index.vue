@@ -8,6 +8,8 @@
 		urlUid.value = currentUserUid();
 	});
 
+	const selfUserInfoStore = useSelfUserInfoStore();
+
 	const userBirthday = ref(0);
 	const userJoinDate = ref(0);
 	const userId = ref<number>();
@@ -80,37 +82,39 @@
 		</div>
 
 		<div class="right">
+			<Button v-if="urlUid === selfUserInfoStore.userInfo.uid" href="/upload">{{ $t("manage_content") }}</Button>
+
 			<div class="toolbox-card">
 				<div class="user-counts">
 					<div>
 						<span class="value">{{ 0 }}</span>
-						<p>{{ t(0).following }}</p>
+						<p>{{ $t("following", 2) }}</p>
 					</div>
 					<div>
 						<span class="value">{{ 0 }}</span>
-						<p>{{ t(0).follower }}</p>
+						<p>{{ $t("follower", 2) }}</p>
 					</div>
 					<div>
 						<span class="value">{{ 0 }}</span>
-						<p>{{ t(0).watched }}</p>
+						<p>{{ $t("watched", 2) }}</p>
 					</div>
 					<div>
 						<span class="value">{{ 0 }}</span>
-						<p>{{ t(0).rating }}</p>
+						<p>{{ $t("rating", 2) }}</p>
 					</div>
 				</div>
 			</div>
 
 			<div class="toolbox-card user-info-container">
 				<div class="user-info">
-					<h3>{{ t.user.info }}</h3>
+					<h3>{{ $t("user.info") }}</h3>
 					<div class="items">
-						<div v-if="userBirthday" v-tooltip:x="t.user.birthday" class="birthday">
+						<div v-if="userBirthday" v-tooltip:x="$t('user.birthday')" class="birthday">
 							<Icon name="birthday" />
 							<DateTime :dateTime="new Date(userBirthday)" />
 						</div>
 
-						<div v-if="userJoinDate" v-tooltip:x="t.user.join_time" class="join-time">
+						<div v-if="userJoinDate" v-tooltip:x="$t('user.join_time')" class="join-time">
 							<Icon name="history" />
 							<DateTime :dateTime="new Date(userJoinDate)" />
 						</div>
@@ -220,7 +224,7 @@
 		}
 
 		.join-time .icon {
-			color: c(orange);
+			color: c(yellow);
 		}
 
 		.uid .icon {

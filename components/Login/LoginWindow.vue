@@ -9,6 +9,8 @@
 		open?: boolean;
 	}>();
 
+	const { t } = useI18n();
+
 	const { avatarSize, avatarGap, avatarMinLeft } = useScssVariables().numbers;
 	const selfUserInfoStore = useSelfUserInfoStore();
 	const model = defineModel<boolean>();
@@ -44,7 +46,7 @@
 	const invitationCodeInvalidText = computed(() => {
 		const invitationCodeRegex = /^KIRA-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
 		if (invitationCode.value && !invitationCodeRegex.test(invitationCode.value))
-			return t.invitation_code.invalid;
+			return t("validation.invitation_code_invalid_or_used");
 		else
 			return false;
 	});
@@ -62,7 +64,7 @@
 		},
 	});
 	const loginWindow = refComp();
-	const isInvalidEmail = computed(() => !!email.value && !email.value.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]{2,}$/));
+	const isInvalidUserEmail = computed(() => !!email.value && isInvalidEmail(email.value)); // NOTE: 当 email 为空时不显示错误，只是为了美观
 
 	const isCheckingUsername = ref(false);
 	const validChar = makeUsername();
@@ -73,9 +75,49 @@
 	const newPassword = ref(""); // 新密码
 	const confirmNewPassword = ref(""); // 确认新密码
 	const isSendingForgotPasswordVerificationCode = ref(false); // 正在发送忘记密码的验证码
-	const isResetPasssword = ref(false); // 正在重置密码
+	const isResetPassword = ref(false); // 正在重置密码
 
-	const timeout = useSendVerificationCodeTimeout(); // 全局的验证码倒计时
+	const LOGIN_BUSINESS_NAME = "login";
+	const REGISTRATION_BUSINESS_NAME = "registration";
+	const FORGOT_PASSWORD_BUSINESS_NAME = "forgot-password";
+
+	const timeouts = useSendVerificationCodeTimeoutStoreObject(); // 验证码倒计时
+	const isLoginTimeouted = computed(() => {
+		if (LOGIN_BUSINESS_NAME in timeouts.timeouts)
+			return timeouts.timeouts[LOGIN_BUSINESS_NAME].isTimeouted;
+		else
+			return true;
+	});
+	const loginTimeoutCountdown = computed(() => {
+		if (LOGIN_BUSINESS_NAME in timeouts.timeouts)
+			return timeouts.timeouts[LOGIN_BUSINESS_NAME].timeout;
+		else
+			return 0;
+	});
+	const isRegistrationTimeouted = computed(() => {
+		if (REGISTRATION_BUSINESS_NAME in timeouts.timeouts)
+			return timeouts.timeouts[REGISTRATION_BUSINESS_NAME].isTimeouted;
+		else
+			return true;
+	});
+	const registrationTimeoutCountdown = computed(() => {
+		if (REGISTRATION_BUSINESS_NAME in timeouts.timeouts)
+			return timeouts.timeouts[REGISTRATION_BUSINESS_NAME].timeout;
+		else
+			return 0;
+	});
+	const isForgotPasswordTimeouted = computed(() => {
+		if (FORGOT_PASSWORD_BUSINESS_NAME in timeouts.timeouts)
+			return timeouts.timeouts[FORGOT_PASSWORD_BUSINESS_NAME].isTimeouted;
+		else
+			return true;
+	});
+	const forgotPasswordTimeoutCountdown = computed(() => {
+		if (FORGOT_PASSWORD_BUSINESS_NAME in timeouts.timeouts)
+			return timeouts.timeouts[FORGOT_PASSWORD_BUSINESS_NAME].timeout;
+		else
+			return 0;
+	});
 
 	/**
 	 * 更新登录动画中头像向左滑动的距离。
@@ -103,33 +145,34 @@
 			const locale = getCurrentLocaleLangCode();
 
 			if (!passwordStr || !emailStr || !passwordHash) {
-				useToast(t.validation.required.email_and_password, "error", 5000);
+				useToast(t("validation.required.email_and_password"), "error", 5000);
 				return false;
 			}
 
-			const sendUserEmailAuthenticatorVerificationCodeRequest: SendUserEmailAuthenticatorVerificationCodeRequestDto = {
-				passwordHash,
+			const sendGeneralEmailVerificationCodeRequest: SendGeneralEmailVerificationCodeRequestDto = {
 				email: emailStr,
 				clientLanguage: locale,
+				mailTemplate: "SendLoginVerificationCode",
+				exclusiveBusinessName: LOGIN_BUSINESS_NAME,
 			};
-			const sendUserEmailAuthenticatorVerificationCodeResult = await api.user.sendUserEmailAuthenticatorVerificationCode(sendUserEmailAuthenticatorVerificationCodeRequest);
-			timeout.startTimeout(); // 开始倒计时
+			const sendUserEmailAuthenticatorVerificationCodeResult = await api.user.sendGeneralEmailVerificationCode(sendGeneralEmailVerificationCodeRequest);
+			timeouts.startTimeoutByKey(LOGIN_BUSINESS_NAME); // 开始倒计时
 
 			if (!sendUserEmailAuthenticatorVerificationCodeResult.success) {
-				useToast(t.toast.verification_code_send_failed, "error", 5000);
+				useToast(t("toast.verification_code_send_failed"), "error", 5000);
 				currentPage.value = "login1";
 				return false;
 			}
 
 			if (sendUserEmailAuthenticatorVerificationCodeResult.isCoolingDown) {
-				useToast(t.toast.cooling_down, "warning", 5000);
+				useToast(t("toast.cooling_down"), "warning", 5000);
 				currentPage.value = "login1";
 				return false;
 			}
 
 			return true;
-		} catch (error) {
-			useToast(t.toast.something_went_wrong, "error", 5000);
+		} catch {
+			useToast(t("toast.something_went_wrong"), "error", 5000);
 			currentPage.value = "login1";
 			return false;
 		}
@@ -144,13 +187,13 @@
 			const passwordStr = password.value;
 			const emailStr = email.value;
 			if (!passwordStr || !emailStr) {
-				useToast(t.validation.required.email_and_password, "error", 5000);
+				useToast(t("validation.required.email_and_password"), "error", 5000);
 				isChecking2FA.value = false;
 				return;
 			}
 
-			if (isInvalidEmail.value) {
-				useToast(t.validation.invalid_format.email, "error", 5000);
+			if (isInvalidUserEmail.value) {
+				useToast(t("validation.invalid_format.email"), "error", 5000);
 				isChecking2FA.value = false;
 				return;
 			}
@@ -161,7 +204,7 @@
 			const check2FAByEmailResult = await api.user.checkUserHave2FAByEmail(checkUserHave2FARequest);
 
 			if (!check2FAByEmailResult.success) { // 查询用户是否开启 2FA 失败，通常是因为用户不存在
-				useToast(t.validation.failed.user_info, "error", 5000);
+				useToast(t("validation.failed.user_info"), "error", 5000);
 				isChecking2FA.value = false;
 				return;
 			}
@@ -177,8 +220,8 @@
 
 			else
 				await loginUser();
-		} catch (error) {
-			useToast(t.toast.login_failed, "error");
+		} catch {
+			useToast(t("toast.login_failed"), "error");
 		}
 		isChecking2FA.value = false;
 	}
@@ -212,14 +255,14 @@
 					useEvent("user:login", true);
 					isLogining.value = true;
 				} else {
-					useToast(t.toast.login_failed, "error", 5000);
-					if (loginResponse.passwordHint) useToast(`${t.password.hint}: ${loginResponse.passwordHint}`, "info", 10000);
+					useToast(t("toast.login_failed"), "error", 5000);
+					if (loginResponse.passwordHint) useToast(`${t("password.hint")}: ${loginResponse.passwordHint}`, "info", 10000);
 				}
-			} catch (error) {
-				useToast(t.toast.login_failed, "error");
+			} catch {
+				useToast(t("toast.login_failed"), "error");
 			}
 		} else
-			useToast(t.validation.required.email_and_password, "error");
+			useToast(t("validation.required.email_and_password"), "error");
 		isTryingLogin.value = false;
 	}
 
@@ -228,17 +271,17 @@
 	 */
 	async function checkUsernameAndJumpNextPage() {
 		if (!username.value && username.value.length <= 0) {
-			useToast(t.validation.required.username, "error");
+			useToast(t("validation.required.username"), "error");
 			return;
 		}
 
 		if (username.value.length > 200) {
-			useToast(t.validation.too_long.username, "error");
+			useToast(t("validation.too_long.username"), "error");
 			return;
 		}
 
 		if (nickname.value?.length > 200) {
-			useToast(t.validation.too_long.nickname, "error");
+			useToast(t("validation.too_long.nickname"), "error");
 			return;
 		}
 		isCheckingUsername.value = true;
@@ -249,17 +292,17 @@
 		if (checkUsernameResult.success && checkUsernameResult.isAvailableUsername)
 			currentPage.value = "register2";
 		else
-			useToast(t.validation.username_invalid_or_taken, "warning", 5000);
+			useToast(t("validation.username_invalid_or_taken"), "warning", 5000);
 		isCheckingUsername.value = false;
 	}
 
-	const PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD = "密码提示中不允许包含密码本身"; // TODO: 使用多语言
-	const INVITATION_CODE_INVALID_TEXT = t.validation.invalid_format.invitation_code;
+	const PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD = t("validation.invalid_format.password_hint_include_password");
+	const INVITATION_CODE_INVALID_TEXT = t("validation.invalid_format.invitation_code");
 	/**
 	 * 用户注册，其二。
 	 */
 	async function checkAndJumpNextPage() {
-		if (!invitationCode.value || !invitationCodeInvalidText) { // 判断邀请码为空或者格式错误
+		if (!invitationCode.value || !invitationCodeInvalidText.value) { // 判断邀请码为空或者格式错误
 			useToast(INVITATION_CODE_INVALID_TEXT, "error");
 			return;
 		}
@@ -282,15 +325,15 @@
 						isCheckingEmail.value = false;
 						currentPage.value = "register3";
 					} else
-						useToast(t.validation.invitation_code_invalid_or_used, "error", 5000);
+						useToast(t("validation.invitation_code_invalid_or_used"), "error", 5000);
 				} else
-					useToast(t.validation.email_registered, "error", 5000);
+					useToast(t("validation.email_registered"), "error", 5000);
 			} catch (error) {
-				useToast(t.toast.something_went_wrong, "error");
+				useToast(t("toast.something_went_wrong"), "error");
 				console.error("ERROR", "Registration failed:", error);
 			}
 		} else
-			useToast(t.validation.required.email_and_password, "error");
+			useToast(t("validation.required.email_and_password"), "error");
 		isCheckingEmail.value = false;
 	}
 
@@ -299,11 +342,11 @@
 	 */
 	async function registerUser() {
 		if (!registrationVerificationCode.value) {
-			useToast(t.validation.required.verification_code, "error");
+			useToast(t("validation.required.verification_code"), "error");
 			return;
 		}
 		if (password.value !== confirmPassword.value) {
-			useToast(t.toast.password_mismatch, "error");
+			useToast(t("toast.password_mismatch"), "error");
 			return;
 		}
 
@@ -328,9 +371,9 @@
 				open.value = false; // 关闭登录页
 				currentPage.value = "login1"; // 将登录页设为登录窗口默认页
 			} else
-				useToast(t.toast.something_went_wrong, "error");
+				useToast(t("toast.something_went_wrong"), "error");
 		} catch (error) {
-			useToast(t.toast.something_went_wrong, "error");
+			useToast(t("toast.something_went_wrong"), "error");
 			console.error("ERROR", "Registration failed:", error);
 		}
 		isTryingRegistration.value = false; // 停止注册按钮加载动画
@@ -344,8 +387,8 @@
 		try {
 			const emailStr = email.value;
 
-			if (isInvalidEmail.value) {
-				useToast(t.validation.invalid_format.email, "error", 5000);
+			if (isInvalidUserEmail.value) {
+				useToast(t("validation.invalid_format.email"), "error", 5000);
 				isChecking2FA.value = false;
 				return;
 			}
@@ -355,26 +398,29 @@
 			};
 			const check2FAByEmailResult = await api.user.checkUserHave2FAByEmail(checkUserHave2FARequest);
 			if (!check2FAByEmailResult.success) { // 查询用户是否开启 2FA 失败，通常是因为用户不存在
-				useToast(t.validation.failed.user_info, "error", 5000);
+				useToast(t("validation.failed.user_info"), "error", 5000);
 				isChecking2FA.value = false;
 				return;
 			}
 			if (!check2FAByEmailResult.have2FA || check2FAByEmailResult.have2FA && check2FAByEmailResult.type === "email") {
 				const locale = getCurrentLocaleLangCode();
-				const requestSendForgotPasswordVerificationCodeRequest: RequestSendForgotPasswordVerificationCodeRequestDto = {
+
+				const sendGeneralEmailVerificationCodeRequest: SendGeneralEmailVerificationCodeRequestDto = {
 					email: emailStr,
 					clientLanguage: locale,
+					mailTemplate: "SendResetPasswordVerificationCode",
+					exclusiveBusinessName: FORGOT_PASSWORD_BUSINESS_NAME,
 				};
 
 				isSendingForgotPasswordVerificationCode.value = true;
-				const sendResult = await api.user.requestSendForgotPasswordVerificationCode(requestSendForgotPasswordVerificationCodeRequest);
-				timeout.startTimeout(); // 开始倒计时
+				const sendResult = await api.user.sendGeneralEmailVerificationCode(sendGeneralEmailVerificationCodeRequest);
+				timeouts.startTimeoutByKey("forgot-password"); // 开始倒计时
 				isSendingForgotPasswordVerificationCode.value = false;
-				
+
 				if (sendResult.isCoolingDown)
-					useToast(t.toast.cooling_down, "error", 5000);
+					useToast(t("toast.cooling_down"), "error", 5000);
 				else if (!sendResult.success)
-					useToast(t.toast.verification_code_send_failed, "error", 5000);
+					useToast(t("toast.verification_code_send_failed"), "error", 5000);
 				else
 					currentPage.value = "forgot2-email";
 			} else
@@ -384,7 +430,7 @@
 		} catch (error) {
 			isSendingForgotPasswordVerificationCode.value = false;
 			isChecking2FA.value = false;
-			useToast(t.toast.reset_password_failed, "error");
+			useToast(t("toast.reset_password_failed"), "error");
 			console.error("ERROR", "Reset password failed:", error);
 		}
 	}
@@ -393,14 +439,14 @@
 	 * 重置密码。
 	 */
 	async function resetPassword() {
-		isResetPasssword.value = true;
+		isResetPassword.value = true;
 		try {
 			const emailStr = email.value;
 			const password = newPassword.value;
 			const confirmPassword = confirmNewPassword.value;
 			const resetPasswordVerificationCodeStr = resetPasswordVerificationCode.value;
 			if (password !== confirmPassword) {
-				useToast(t.toast.password_mismatch, "error");
+				useToast(t("toast.password_mismatch"), "error");
 				return;
 			}
 
@@ -414,15 +460,15 @@
 
 			const forgotAndResetPasswordResult = await api.user.forgotAndResetPassword(forgotPasswordRequest);
 			if (forgotAndResetPasswordResult.success) {
-				useToast(t.toast.password_changed, "success");
+				useToast(t("toast.password_changed"), "success");
 				currentPage.value = "login1";
 			} else
-				useToast(t.toast.reset_password_failed, "error");
+				useToast(t("toast.reset_password_failed"), "error");
 		} catch (error) {
-			useToast(t.toast.reset_password_failed, "error");
+			useToast(t("toast.reset_password_failed"), "error");
 			console.error("ERROR", "Reset password failed:", error);
 		}
-		isResetPasssword.value = false;
+		isResetPassword.value = false;
 	}
 
 	/**
@@ -486,21 +532,21 @@
 				<div class="main left">
 					<!-- 登录 其一 Login #1 -->
 					<div class="login1">
-						<HeadingGroup :name="t.login" englishName="Login" />
+						<HeadingGroup :name="$t('login')" englishName="Login" />
 						<form class="form">
 							<TextBox
 								v-model="email"
 								type="email"
-								:placeholder="t.email_address"
+								:placeholder="$t('email_address')"
 								icon="email"
-								:invalid="isInvalidEmail"
+								:invalid="isInvalidUserEmail"
 								autoComplete="username"
 								@keyup.enter="check2FA"
 							/>
 							<TextBox
 								v-model="password"
 								type="password"
-								:placeholder="t.password"
+								:placeholder="$t('password.title')"
 								icon="lock"
 								autoComplete="current-password"
 								@keyup.enter="check2FA"
@@ -509,30 +555,30 @@
 								<Button
 									class="button login-button button-block"
 									:loading="isChecking2FA"
-									:disabled="isChecking2FA || selfUserInfoStore.isLogined || !timeout.isTimeouted"
+									:disabled="isChecking2FA || selfUserInfoStore.isLogined || !isLoginTimeouted"
 									@click="check2FA"
 								>
-									{{ timeout.isTimeouted ? "Link Start!" : `Link Start! (${timeout.timeout})` }}
+									{{ isLoginTimeouted ? "Link Start!" : `Link Start! (${loginTimeoutCountdown})` }}
 								</Button>
 							</div>
 						</form>
 						<div class="action margin-left-inset margin-right-inset">
-							<Button @click="currentPage = 'forgot1'">{{ t.loginwindow.login_to_forgot }}</Button>
-							<Button @click="currentPage = 'register1'">{{ t.loginwindow.login_to_register }}</Button>
+							<Button @click="currentPage = 'forgot1'">{{ $t("loginwindow.login_to_forgot") }}</Button>
+							<Button @click="currentPage = 'register1'">{{ $t("loginwindow.login_to_register") }}</Button>
 						</div>
 					</div>
 
 					<!-- 登录 其二点一 Login #2.1 -->
 					<div class="login2-2fa">
-						<HeadingGroup :name="t.login" englishName="Login" />
-						<span><Preserves>{{ t.loginwindow.login_totp_info }}</Preserves></span>
+						<HeadingGroup :name="$t('login')" englishName="Login" />
+						<span><Preserves>{{ $t("loginwindow.login_totp_info") }}</Preserves></span>
 						<form class="form">
 							<TextBox
 								v-model="clientOtp"
 								type="text"
-								:placeholder="t.totp_verification_code"
+								:placeholder="$t('totp_verification_code')"
 								icon="lock"
-								:invalid="isInvalidEmail"
+								:invalid="isInvalidUserEmail"
 								autoComplete="off"
 								@keyup.enter="loginUser"
 							/>
@@ -541,21 +587,21 @@
 							</div>
 						</form>
 						<div class="action margin-left-inset margin-right-inset">
-							<Button @click="currentPage = 'login1'">{{ t.navigation.back }}</Button>
-							<Button>{{ t.need_help }}</Button>
+							<Button @click="currentPage = 'login1'">{{ $t("navigation.back") }}</Button>
+							<Button>{{ $t("need_help") }}</Button>
 						</div>
 					</div>
 					<!-- 登录 其二点二 Login #2.2 -->
 					<div class="login2-email">
-						<HeadingGroup :name="t.login" englishName="Login" />
-						<span>{{ t.loginwindow.login_email_info }}</span>
+						<HeadingGroup :name="$t('login')" englishName="Login" />
+						<span>{{ $t("loginwindow.login_email_info") }}</span>
 						<form class="form">
 							<TextBox
 								v-model="loginVerificationCode"
 								type="text"
-								:placeholder="t.verification_code"
+								:placeholder="$t('verification_code')"
 								icon="lock"
-								:invalid="isInvalidEmail"
+								:invalid="isInvalidUserEmail"
 								autoComplete="off"
 								@keyup.enter="loginUser"
 							/>
@@ -564,8 +610,8 @@
 							</div>
 						</form>
 						<div class="action margin-left-inset margin-right-inset">
-							<Button @click="currentPage = 'login1'">{{ t.navigation.back }}</Button>
-							<Button>{{ t.need_help }}</Button>
+							<Button @click="currentPage = 'login1'">{{ $t("navigation.back") }}</Button>
+							<Button>{{ $t("need_help") }}</Button>
 						</div>
 					</div>
 				</div>
@@ -573,27 +619,27 @@
 				<div class="main right">
 					<!-- 注册 其一 Register #1 -->
 					<div class="register1">
-						<HeadingGroup :name="t.register" englishName="Register" class="collapse" />
+						<HeadingGroup :name="$t('register')" englishName="Register" class="collapse" />
 						<div class="form textbox-with-span">
-							<span>{{ t.user.username_nickname_requirements }}</span>
+							<span>{{ $t("user.username_nickname_requirements") }}</span>
 							<div>
 								<TextBox
 									ref="nameTextBox"
 									v-model="username"
-									:placeholder="t.user.username"
+									:placeholder="$t('user.username')"
 									size="large"
 									icon="person"
 									required
 									:pattern="validChar"
 									:maxLength="20"
 								/>
-								<span>{{ t.user.username_requirements_unique }}</span>
+								<span>{{ $t("user.username_requirements_unique") }}</span>
 							</div>
 							<div>
 								<TextBox
 									ref="nameTextBox"
 									v-model="nickname"
-									:placeholder="t.user.nickname"
+									:placeholder="$t('user.nickname')"
 									size="large"
 									icon="person"
 									:pattern="validChar"
@@ -602,28 +648,28 @@
 							</div>
 						</div>
 						<div class="action margin-left-inset">
-							<Button @click="currentPage = 'login1'">{{ t.loginwindow.register_to_login }}</Button>
-							<Button icon="arrow_right" class="button icon-behind" :loading="isCheckingUsername" :disabled="isCheckingUsername" @click="checkUsernameAndJumpNextPage">{{ t.step.next }}</Button>
+							<Button @click="currentPage = 'login1'">{{ $t("loginwindow.register_to_login") }}</Button>
+							<Button icon="arrow_right" class="button icon-behind" :loading="isCheckingUsername" :disabled="isCheckingUsername" @click="checkUsernameAndJumpNextPage">{{ $t("step.next") }}</Button>
 						</div>
 					</div>
 
 					<!-- 注册 其二 Register #2 -->
 					<div class="register2">
-						<HeadingGroup :name="t.register" englishName="Register" class="collapse" />
+						<HeadingGroup :name="$t('register')" englishName="Register" class="collapse" />
 						<div class="form">
 							<TextBox
 								v-model="email"
 								type="email"
-								:placeholder="t.email_address"
+								:placeholder="$t('email_address')"
 								icon="email"
-								:invalid="isInvalidEmail"
+								:invalid="isInvalidUserEmail"
 								:required="true"
 								autoComplete="email"
 							/>
 							<TextBox
 								v-model="password"
 								type="password"
-								:placeholder="t.password"
+								:placeholder="$t('password.title')"
 								icon="lock"
 								:required="true"
 								autoComplete="new-password"
@@ -639,115 +685,115 @@
 							<TextBox
 								v-model="invitationCode"
 								type="text"
-								:placeholder="t.invitation_code"
+								:placeholder="$t('invitation_code')"
 								icon="gift"
 								:required="true"
 								:invalid="invitationCodeInvalidText"
 							/>
 						</div>
 						<div class="action margin-left-inset">
-							<Button icon="arrow_left" class="button" @click="currentPage = 'register1'">{{ t.step.previous }}</Button>
-							<Button icon="arrow_right" class="button icon-behind" :loading="isCheckingEmail" :disabled="isCheckingEmail" @click="checkAndJumpNextPage">{{ t.step.next }}</Button>
+							<Button icon="arrow_left" class="button" @click="currentPage = 'register1'">{{ $t("step.previous") }}</Button>
+							<Button icon="arrow_right" class="button icon-behind" :loading="isCheckingEmail" :disabled="isCheckingEmail" @click="checkAndJumpNextPage">{{ $t("step.next") }}</Button>
 						</div>
 					</div>
 
 					<!-- 注册 其三 Register #3 -->
 					<div class="register3">
-						<HeadingGroup :name="t.register" englishName="Register" class="collapse" />
+						<HeadingGroup :name="$t('register')" englishName="Register" class="collapse" />
 						<div class="form">
-							<div><Preserves>{{ t.loginwindow.register_email_sent_info }}</Preserves></div>
-							<SendVerificationCode v-model="registrationVerificationCode" :email="email" verificationCodeFor="registration" />
+							<div><Preserves>{{ $t("loginwindow.register_email_sent_info") }}</Preserves></div>
+							<SendVerificationCode v-model="registrationVerificationCode" :email="email" :verificationCodeFor="REGISTRATION_BUSINESS_NAME" />
 							<TextBox
 								v-model="confirmPassword"
 								type="password"
-								:placeholder="t.password.retype"
+								:placeholder="$t('password.retype')"
 								icon="lock"
 								:required="true"
 								autoComplete="current-password"
 							/>
 						</div>
 						<div class="action margin-left-inset">
-							<Button icon="arrow_left" class="button" @click="currentPage = 'register2'">{{ t.step.previous }}</Button>
-							<Button icon="arrow_right" class="button icon-behind" :loading="isTryingRegistration" :disabled="isTryingRegistration" @click="registerUser">{{ t.step.next }}</Button>
+							<Button icon="arrow_left" class="button" @click="currentPage = 'register2'">{{ $t("step.previous") }}</Button>
+							<Button icon="arrow_right" class="button icon-behind" :loading="isTryingRegistration" :disabled="isTryingRegistration" @click="registerUser">{{ $t("step.next") }}</Button>
 						</div>
 					</div>
 
 					<!-- 忘记密码 其一 Forgot Password #1 -->
 					<div class="forgot1">
-						<HeadingGroup :name="t.loginwindow.forgot_title" englishName="forgot" class="collapse" />
+						<HeadingGroup :name="$t('loginwindow.forgot_title')" englishName="forgot" class="collapse" />
 						<div class="form">
-							<div><Preserves>{{ t.loginwindow.forgot_info }}</Preserves></div>
+							<div><Preserves>{{ $t("loginwindow.forgot_info") }}</Preserves></div>
 							<TextBox
 								v-model="email"
 								type="email"
-								:placeholder="t.email_address"
+								:placeholder="$t('email_address')"
 								icon="email"
-								:invalid="isInvalidEmail"
+								:invalid="isInvalidUserEmail"
 								@keyup.enter="jump2ResetPasswordPage"
 							/>
 						</div>
 						<div class="action margin-left-inset">
-							<Button icon="arrow_left" @click="currentPage = 'login1'">{{ t.loginwindow.forgot_to_login }}</Button>
+							<Button icon="arrow_left" @click="currentPage = 'login1'">{{ $t("loginwindow.forgot_to_login") }}</Button>
 							<Button
 								icon="arrow_right"
 								class="icon-behind"
 								@click="jump2ResetPasswordPage"
 								:loading="isChecking2FA || isSendingForgotPasswordVerificationCode"
-								:disabled="isChecking2FA || isSendingForgotPasswordVerificationCode || !timeout.isTimeouted"
-							>{{ timeout.isTimeouted ? t.step.next : `${t.step.next} (${timeout.timeout})` }}</Button>
+								:disabled="isChecking2FA || isSendingForgotPasswordVerificationCode || !isForgotPasswordTimeouted"
+							>{{ isForgotPasswordTimeouted ? $t("step.next") : `${$t("step.next")} (${forgotPasswordTimeoutCountdown})` }}</Button>
 						</div>
 					</div>
 
 					<!-- 重设密码 其二点一 Forgot Passsword (Email) #2.1 -->
 					<div class="forgot2-email">
-						<HeadingGroup :name="t.loginwindow.forgot_title" englishName="forgot" class="collapse" />
+						<HeadingGroup :name="$t('loginwindow.forgot_title')" englishName="forgot" class="collapse" />
 						<div class="form">
-							<div><Preserves>{{ t.loginwindow.reset_password_info }}</Preserves></div>
+							<div><Preserves>{{ $t("loginwindow.reset_password_info") }}</Preserves></div>
 							<TextBox
 								v-model="resetPasswordVerificationCode"
 								type="text"
-								:placeholder="t.verification_code"
+								:placeholder="$t('verification_code')"
 								:required="true"
 								icon="verified"
 							/>
 							<TextBox
 								v-model="newPassword"
 								type="password"
-								:placeholder="t.password"
+								:placeholder="$t('password.title')"
 								:required="true"
 								icon="lock"
 							/>
 							<TextBox
 								v-model="confirmNewPassword"
 								type="password"
-								:placeholder="t.password.retype"
+								:placeholder="$t('password.retype')"
 								:required="true"
 								icon="lock"
 							/>
 						</div>
 						<div class="action margin-left-inset">
-							<Button icon="arrow_left" class="secondary" @click="currentPage = 'forgot1'">{{ t.loginwindow.resent_verification_code }}</Button>
-							<Button icon="check" class="button icon-behind" @click="resetPassword" :loading="isResetPasssword" :disabled="isResetPasssword">{{ t.step.finish }}</Button>
+							<Button icon="arrow_left" class="secondary" @click="currentPage = 'forgot1'">{{ $t("loginwindow.resent_verification_code") }}</Button>
+							<Button icon="check" class="button icon-behind" @click="resetPassword" :loading="isResetPassword" :disabled="isResetPassword">{{ $t("step.finish") }}</Button>
 						</div>
 					</div>
 
 					<!-- 重设密码 其二点二 Forgot Passsword (Totp) #2.2 -->
 					<div class="forgot2-totp">
-						<HeadingGroup :name="t.loginwindow.forgot_title" englishName="forgot" class="collapse" />
+						<HeadingGroup :name="$t('loginwindow.forgot_title')" englishName="forgot" class="collapse" />
 						<div class="form">
-							<div><Preserves>{{ t.loginwindow.reset_password_totp_warning }}</Preserves></div>
+							<div><Preserves>{{ $t("loginwindow.reset_password_totp_warning") }}</Preserves></div>
 						</div>
 						<div class="action margin-left-inset">
-							<Button icon="arrow_left" class="secondary" @click="currentPage = 'login1'">{{ t.loginwindow.back_to_login }}</Button>
-							<Button icon="link" class="button" @click="jump2GitHub">{{ t.platform.github }}</Button>
+							<Button icon="arrow_left" class="secondary" @click="currentPage = 'login1'">{{ $t("loginwindow.back_to_login") }}</Button>
+							<Button icon="link" class="button" @click="jump2GitHub">{{ $t("platform.github") }}</Button>
 						</div>
 					</div>
 
 					<div class="register-title">
-						<HeadingGroup :name="t.register" englishName="Register" />
+						<HeadingGroup :name="$t('register')" englishName="Register" />
 					</div>
 					<div class="forgot-title">
-						<HeadingGroup :name="currentPage === 'forgot1' ? t.loginwindow.forgot_title : t.loginwindow.reset_title" :englishName="currentPage === 'forgot1' ? 'forgot' : 'reset'" />
+						<HeadingGroup :name="currentPage === 'forgot1' ? $t('loginwindow.forgot_title') : $t('loginwindow.reset_title')" :englishName="currentPage === 'forgot1' ? 'forgot' : 'reset'" />
 					</div>
 				</div>
 
@@ -770,7 +816,7 @@
 						<Icon v-else name="person" />
 					</div>
 					<div ref="loginAnimationText" class="texts">
-						<div class="welcome">{{ t.loginwindow.login_welcome }}</div>
+						<div class="welcome">{{ $t("loginwindow.login_welcome") }}</div>
 						<div class="name">{{ selfUserInfoStore.userInfo.userNickname }}</div>
 					</div>
 				</div>
@@ -896,7 +942,7 @@
 
 				@include page(".register2", ".register1", left);
 				@include page(".register3", ".register2", left);
-				
+
 				@include page(".forgot2-email", ".forgot1", left);
 				@include page(".forgot2-totp", ".forgot1", left);
 
@@ -965,7 +1011,7 @@
 		display: flex;
 		flex-direction: row;
 		gap: 1rem;
-		align-items: flex-end;
+		align-items: end;
 
 		:deep(.sub) {
 			--i: 3.5;

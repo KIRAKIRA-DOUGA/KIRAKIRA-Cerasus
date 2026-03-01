@@ -71,7 +71,7 @@
 
 	/**
 	 * 开启删除待审核视频的警告框
-	 * @param videoId 视频 ID
+	 * @param videoId - 视频 ID
 	 */
 	async function openDeletePendingVideoAlert(videoId: number) {
 		if (videoId < 0) {
@@ -118,7 +118,7 @@
 
 	/**
 	 * 根据 videoId 通过一个待审核视频
-	 * @param videoId 视频 ID
+	 * @param videoId - 视频 ID
 	 */
 	async function approvePendingReviewVideo(videoId: number) {
 		if (videoId < 0) {
@@ -220,7 +220,7 @@
 
 		<div class="delete-video">
 			<div class="input">
-				<!-- TODO: 使用多语言 -->
+				<!-- NOTE: 缺少多语言，但本页已废弃。 -->
 				<TextBox
 					type="number"
 					v-model="deletedVideoId"
@@ -228,7 +228,6 @@
 					size="large"
 					icon="delete"
 				/>
-				<!-- TODO: 使用多语言 -->
 				<span>输入要删除的视频的 KV 号，例如 kv1 只需输入数字 1 即可。</span>
 			</div>
 			<Button
@@ -240,7 +239,6 @@
 			</Button>
 		</div>
 
-		<!-- TODO: 使用多语言 -->
 		<Subheader icon="block">新上传的视频</Subheader>
 		<h4>新上传待审核的视频</h4>
 		<ThumbGrid :key="resultTimestamp">
@@ -291,7 +289,7 @@
 	.delete-video {
 		display: flex;
 		gap: 8px;
-		align-items: flex-start;
+		align-items: start;
 
 		.input {
 			display: flex;

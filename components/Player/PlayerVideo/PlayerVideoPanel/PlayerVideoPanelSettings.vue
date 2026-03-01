@@ -8,32 +8,22 @@
 		settings: PlayerVideoSettings;
 	}>();
 
-	type Filters = keyof PlayerVideoSettings["filter"] | "rotation90" | "rotation180" | "rotation270";
+	type Filters = keyof PlayerVideoSettings["filter"] | "rotate90" | "rotate180" | "rotate270" | "hMirrorLeft" | "hMirrorRight" | "vMirrorTop" | "vMirrorBottom";
 
-	/* TODO: 多语言。 */
-	const filters: Record<Exclude<Filters, "rotation">, [string, CSSProperties]> = {
-		horizontalFlip: ["水平翻转", { scale: "-1 1" }],
-		verticalFlip: ["垂直翻转", { scale: "1 -1" }],
-		rotation90: ["旋转90°", { rotate: "90deg" }],
-		rotation180: ["旋转180°", { rotate: "180deg" }],
-		rotation270: ["旋转270°", { rotate: "270deg" }],
-		grayscale: ["黑白", { filter: "grayscale(1)" }],
-		invert: ["反色", { filter: "invert(1)" }],
-		sepia: ["怀旧", { filter: "sepia(1)" }],
-		hue: ["调整色相", { filter: "hue-rotate(180deg)" }],
-		saturate: ["调整饱和度", { filter: "saturate(5)" }],
-		contrast: ["调整对比度", { filter: "contrast(5)" }],
-		brightness: ["调整亮度", { filter: "brightness(2)" }],
-	};
+	const filters: Exclude<Filters, "rotation" | "mirror">[] = ["hFlip", "vFlip", "rotate90", "rotate180", "rotate270", "hMirrorLeft", "hMirrorRight", "vMirrorTop", "vMirrorBottom", "grayscale", "invert", "sepia", "posterize", "spectrum", "thermal", "emboss", "bump", "edge", "hue", "saturate", "contrast", "brightness"];
 
 	const filterBooleanProxy = new Proxy(props.settings.filter, {
 		get(target, prop: Filters) {
-			const propOriginal = (prop.startsWith("rotation") ? "rotation" : prop) as keyof PlayerVideoSettings["filter"];
+			const propOriginal = (prop.startsWith("rotate") ? "rotation" : prop.includes("Mirror") ? "mirror" : prop) as keyof PlayerVideoSettings["filter"];
 			const value = target[propOriginal];
 			return ({
-				rotation90: value === 90,
-				rotation180: value === 180,
-				rotation270: value === 270,
+				rotate90: value === 90,
+				rotate180: value === 180,
+				rotate270: value === 270,
+				hMirrorLeft: value === "left",
+				hMirrorRight: value === "right",
+				vMirrorTop: value === "top",
+				vMirrorBottom: value === "bottom",
 				hue: value as number % 360 !== 0,
 				saturate: value !== 1,
 				contrast: value !== 1,
@@ -41,13 +31,17 @@
 			} as Record<Filters, boolean>)[prop] ?? value as boolean;
 		},
 		set(target, prop: Filters, newValue: boolean) {
-			if (prop.startsWith("rotation")) {
+			if (prop.startsWith("rotate")) {
 				if (!newValue) target.rotation = 0;
 				else {
 					const rotation = +prop.match(/\d+$/)![0];
 					target.rotation = rotation as never;
 				}
 				return true;
+			} else if (prop.includes("Mirror")) {
+				const side = prop.match(/Mirror(.+)$/)?.[1];
+				if (!newValue || !side) target.mirror = false;
+				else target.mirror = side.toLowerCase() as never;
 			}
 			/* eslint-disable @stylistic/indent */
 			prop === "hue" ? target.hue = newValue ? 180 : 0 :
@@ -62,8 +56,10 @@
 
 	const selectedSettingsTab = defineModel<string>("selectedSettingsTab", { default: "player" });
 	const blockWordsToggle = ref(false);
-	const blockWordsSelectedTab = ref("block-keywords");
+	const blockWordsSelectedTab = ref("blocked-keywords");
 	const transitionName = defineModel<string>("transitionName", { default: "page-jump-in" });
+	/** Firefox 可能永远不会支持该属性，因此移除显示。 */
+	const supportMirror = computed(() => environment.server ? true : CSS.supports("-webkit-box-reflect", "right"));
 </script>
 
 <template>
@@ -73,76 +69,77 @@
 				<Transition :name="transitionName" mode="out-in">
 					<div v-if="selectedSettingsTab === 'player' " class="page-player">
 						<!-- TODO: 需详细阐述是自动播放啥？分 P、合集的下一集、还是相关视频？ -->
-						<ToggleSwitch v-model="settings.autoplay" v-ripple icon="autoplay">{{ t.player.autoplay }}</ToggleSwitch>
-						<p class="subheading">{{ t.danmaku }}</p>
-						<!-- TODO: 多语言。检查字号缩放功能的可用性并显示缩放数值。 -->
+						<ToggleSwitch v-model="settings.autoplay" v-ripple icon="autoplay">{{ $t("player.autoplay") }}</ToggleSwitch>
+						<p class="subheading">{{ $t("danmaku.title") }}</p>
+						<!-- TODO: 检查字号缩放功能的可用性并显示缩放数值。 -->
 						<SettingsSlider
 							v-model="settings.danmaku.fontSizeScale"
 							:min="0"
 							:max="2"
 							:defaultValue="1"
 							icon="font_size"
-						>字号缩放</SettingsSlider>
+						>{{ $t("text.size") }}</SettingsSlider>
 						<SettingsSlider
 							v-model="settings.danmaku.opacity"
 							:min="0"
 							:max="1"
 							:defaultValue="1"
 							icon="opacity"
-						>{{ t.opacity }}</SettingsSlider>
-						<p class="subheading">{{ t.player.control_bar }}</p>
+						>{{ $t("opacity") }}</SettingsSlider>
+						<p class="subheading">{{ $t("player.control_bar.title") }}</p>
 						<ToggleSwitch v-model="settings.controller.showStop" v-ripple icon="stop">
-							{{ !settings.controller.showFrameByFrame ? t.player.control_bar.stop : t.player.control_bar.first_last_frame }}
-							<template #details>{{ !settings.controller.showFrameByFrame ? t.player.control_bar.stop_description : t.player.control_bar.first_last_frame_description }}</template>
+							{{ !settings.controller.showFrameByFrame ? $t("player.control_bar.stop") : $t("player.control_bar.first_last_frame") }}
+							<template #details>{{ !settings.controller.showFrameByFrame ? $t("player.control_bar.stop_description") : $t("player.control_bar.first_last_frame_description") }}</template>
 						</ToggleSwitch>
 						<ToggleSwitch v-model="settings.controller.showReplay" v-ripple icon="replay">
-							{{ t.player.control_bar.replay }}
-							<template #details>{{ t.player.control_bar.replay_description }}</template>
+							{{ $t("player.control_bar.replay") }}
+							<template #details>{{ $t("player.control_bar.replay_description") }}</template>
 						</ToggleSwitch>
 						<ToggleSwitch v-model="settings.controller.showFrameByFrame" v-ripple icon="slow_forward">
-							{{ t.player.control_bar.frame_by_frame }}
-							<template #details>{{ t.player.control_bar.frame_by_frame_description }}</template>
+							{{ $t("player.control_bar.frame_by_frame") }}
+							<template #details>{{ $t("player.control_bar.frame_by_frame_description") }}</template>
 						</ToggleSwitch>
 						<ToggleSwitch v-model="settings.controller.autoResumePlayAfterSeeking" v-ripple icon="play">
-							{{ t.player.control_bar.auto_resume_play_after_seeking }}
+							{{ $t("player.control_bar.auto_resume_play_after_seeking") }}
 						</ToggleSwitch>
 					</div>
 
 					<div v-else-if="selectedSettingsTab === 'filters'">
 						<div class="grid">
-							<CheckCard v-for="([filter, style], key) in filters" :key="key" v-model="filterBooleanProxy[key]">
-								{{ filter }}
-								<template #image>
-									<NuxtImg
-										:style
-										:provider="environment.cloudflareImageProvider"
-										:src="thumbnail"
-										:alt="`preview-${filter}`"
-										:draggable="false"
-										format="avif"
-										width="200"
-										height="200"
-										:placeholder="[20, 20, 100, 2]"
-									/>
-								</template>
-							</CheckCard>
+							<template v-for="filter in filters" :key="filter">
+								<CheckCard v-if="!(filter.includes('Mirror') && !supportMirror)" v-model="filterBooleanProxy[filter]">
+									{{ $t(`player.filter.${new VariableName(filter).snake}`) }}
+									<template #image>
+										<NuxtImg
+											class="filter-card"
+											:class="new VariableName(filter).kebab"
+											:provider="environment.cloudflareImageProvider"
+											:src="thumbnail"
+											:alt="`preview-${$t(`player.filter.${new VariableName(filter).snake}`)}`"
+											:draggable="false"
+											format="avif"
+											width="200"
+											height="200"
+										/>
+									</template>
+								</CheckCard>
+							</template>
 						</div>
 					</div>
 
 					<div v-else-if="selectedSettingsTab === 'block-words'">
-						<!-- TODO: 使用多语言 -->
-						<ToggleSwitch v-model="blockWordsToggle" v-ripple icon="visibility_off">开启屏蔽</ToggleSwitch>
+						<ToggleSwitch v-model="blockWordsToggle" v-ripple icon="visibility_off">{{ $t("block_and_hide.block.enable") }}</ToggleSwitch>
 
 						<TabBar v-model="blockWordsSelectedTab">
-							<TabItem id="block-keywords">屏蔽文本</TabItem>
-							<TabItem id="block-regex">屏蔽正则</TabItem>
-							<TabItem id="block-users">屏蔽用户</TabItem>
+							<TabItem id="blocked-keywords">{{ $t("block_and_hide.blocked.keyword") }}</TabItem>
+							<TabItem id="blocked-regexps">{{ $t("block_and_hide.blocked.regexp") }}</TabItem>
+							<TabItem id="blocked-users">{{ $t("block_and_hide.blocked.user") }}</TabItem>
 						</TabBar>
 					</div>
 				</Transition>
 			</ScrollContainer>
 		</Comp>
-		<ShadingIcon icon="settings" position="right bottom" rotating :elastic="playing" large />
+		<ShadingIcon icon="settings" position="right bottom" rotating :elastic="playing" size="large" />
 	</div>
 </template>
 
@@ -215,5 +212,30 @@
 		p.subheading + & {
 			margin-block-start: 0;
 		}
+	}
+
+	.filter-card {
+		&.h-flip { scale: -1 1; }
+		&.v-flip { scale: 1 -1; }
+		&.rotate-90 { rotate: 90deg; }
+		&.rotate-180 { rotate: 180deg; }
+		&.rotate-270 { rotate: 270deg; }
+		&.h-mirror-left { @include mirror(left); }
+		&.h-mirror-right { @include mirror(right); translate: 100%; }
+		&.v-mirror-top { @include mirror(top); }
+		&.v-mirror-bottom { @include mirror(bottom); translate: 0 100%; }
+		&.grayscale { filter: grayscale(1); }
+		&.invert { filter: invert(1); }
+		&.sepia { filter: sepia(1); }
+		&.posterize { filter: url("#posterize"); }
+		&.spectrum { filter: url("#spectrum"); }
+		&.thermal { filter: url("#thermal"); }
+		&.emboss { filter: url("#emboss"); }
+		&.bump { filter: url("#bump"); }
+		&.edge { filter: url("#edge"); }
+		&.hue { filter: hue-rotate(180deg); }
+		&.saturate { filter: saturate(5); }
+		&.contrast { filter: contrast(5); }
+		&.brightness { filter: brightness(2); }
 	}
 </style>

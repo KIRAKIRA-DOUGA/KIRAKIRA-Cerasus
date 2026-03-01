@@ -110,6 +110,7 @@
 <template>
 	<div>
 		<Alert v-model="showBlockUserAlert" static>
+			<!-- NOTE: 缺少多语言，但本页已废弃。 -->
 			<h4>确定要封禁这个用户吗？</h4>
 			<div class="block-user-display">
 				<div class="user">
@@ -138,7 +139,6 @@
 
 		<div class="block-user">
 			<div class="input">
-				<!-- TODO: 使用多语言 -->
 				<TextBox
 					type="number"
 					v-model="criminalUid"
@@ -146,13 +146,11 @@
 					size="large"
 					icon="person"
 				/>
-				<!-- TODO: 使用多语言 -->
 				<span>输入要封禁的用户的 UID，例如 UID114 只需输入数字 114 即可。</span>
 			</div>
 			<Button @click="openBlockUserAlert" :disabled="!isAdmin || isOpeningBlockUserAlert" :loading="isOpeningBlockUserAlert">封禁用户</Button>
 		</div>
 
-		<!-- TODO: 使用多语言 -->
 		<Subheader icon="block">已封禁用户</Subheader>
 		<section>
 			<SettingsChipItem
@@ -175,7 +173,7 @@
 	.block-user {
 		display: flex;
 		gap: 8px;
-		align-items: flex-start;
+		align-items: start;
 
 		.input {
 			display: flex;

@@ -4,9 +4,11 @@
 		message: string;
 	}>();
 
+	const { t } = useI18n();
+
 	const message = computed(() => props.message
-		.replace(/^Page Not Found:\s*/i, t.page_not_found_info + t.colon)
-		.replace(/^Page Not Found(?=\s|$)/i, t.page_not_found_info));
+		.replace(/^Page Not Found:\\s*/i, t("page_not_found_info") + t("colon"))
+		.replace(/^Page Not Found(?=\\s|$)/i, t("page_not_found_info")));
 	const mouse = useMouse();
 	const gsensor = useDeviceOrientation(); // Safari 不支持加速度传感器（重力感应），散了吧。
 	const inited = ref(false);
@@ -69,7 +71,7 @@
 			<!-- <div>test pointer: {{ parallax.x }}, {{ parallax.y }}</div>
 			<div>test gsensor: {{ gsensor.alpha }}, {{ gsensor.beta }}, {{ gsensor.gamma }}</div>
 			<div>{{ rotationDeg }}</div> -->
-			<Button href="/">{{ t.navigation.return_to_home }}</Button>
+			<Button href="/">{{ $t("navigation.return_to_home") }}</Button>
 		</div>
 	</main>
 </template>
@@ -101,7 +103,7 @@
 		position: relative;
 		z-index: 20;
 		flex-direction: column;
-		justify-content: flex-start;
+		justify-content: start;
 		padding: 5rem 3rem 0;
 
 		h1 {

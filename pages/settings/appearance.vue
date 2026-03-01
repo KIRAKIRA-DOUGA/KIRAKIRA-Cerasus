@@ -1,4 +1,5 @@
 <script setup lang="ts">
+	import { fitTypes } from "components/BackgroundImage/BackgroundImageImg.vue";
 	const getPaletteImage = (name: string) => `/static/images/palettes/${name}.png`;
 
 	const themeList = ["light", "dark", "system"] as const;
@@ -77,7 +78,7 @@
 			</div>
 		</Flyout>
 
-		<Subheader icon="brightness_medium">{{ t.scheme }}</Subheader>
+		<Subheader icon="brightness_medium">{{ $t("scheme.title") }}</Subheader>
 		<div class="chip sample">
 			<PlayerVideoController :currentTime="30" :duration="110" :buffered="[[0, 60]]" />
 		</div>
@@ -87,21 +88,21 @@
 				:id="item"
 				:key="item"
 				v-model="cookieThemeType"
-				:title="t.scheme[item]"
+				:title="$t(`scheme.${item}`)"
 				:ripple="false"
 			>
 				<LogoThemePreview :theme="item" />
 			</SettingsGridItem>
 		</section>
 
-		<Subheader icon="palette">{{ t.palette }}</Subheader>
+		<Subheader icon="palette">{{ $t("palette.title") }}</Subheader>
 		<section ref="paletteSection" grid>
 			<SettingsGridItem
 				v-for="item in paletteList"
 				:id="item.color"
 				:key="item.color"
 				v-model="cookieThemeColor"
-				:title="t.palette[item.color]"
+				:title="$t(`palette.${item.color}`)"
 				class="force-color"
 				:class="[item.color]"
 				:checked="item.color === DEFAULT_PALETTE && cookieThemeColor === 'wallpaper' && !backgroundImages.shown || undefined"
@@ -118,7 +119,7 @@
 					<div class="overlay light"></div>
 					<div class="overlay color"></div>
 					<div>
-						<h3>{{ t.palette[item.color] }}</h3>
+						<h3>{{ $t(`palette.${item.color}`) }}</h3>
 						<p lang="ja">{{ item.subtitle }}</p>
 					</div>
 					<Icon name="palette" />
@@ -128,14 +129,14 @@
 				id="custom"
 				key="custom"
 				v-model="cookieThemeColor"
-				:title="t.custom"
+				:title="$t('custom')"
 				class="custom-color"
 				@click="e => flyoutColorPicker = [e]"
 			>
 				<div class="palette-card">
 					<div class="hue-gradient"></div>
 					<div>
-						<h3>{{ t.custom }}</h3>
+						<h3>{{ $t("custom") }}</h3>
 						<p lang="en">Make It Yours</p>
 					</div>
 					<Icon name="edit" />
@@ -146,16 +147,16 @@
 				id="wallpaper"
 				key="wallpaper"
 				v-model="cookieThemeColor"
-				:title="t.background"
+				:title="$t('background.title')"
 				class="wallpaper-color force-color"
 			>
 				<div class="palette-card">
-					<img :src="backgroundImages.currentImage" :alt="t.background" />
+					<BackgroundImageImg :src="backgroundImages.currentImage" :alt="$t('background.title')" :fit="backgroundImages.fit" :position="backgroundImages.position" />
 					<div class="overlay light"></div>
 					<div class="overlay color"></div>
 					<div>
-						<h3>{{ t.background }}</h3>
-						<p>{{ t.palette.follow_bg }}</p>
+						<h3>{{ $t("background.title") }}</h3>
+						<p>{{ $t("palette.follow_bg") }}</p>
 					</div>
 					<Icon name="wallpaper" />
 				</div>
@@ -163,22 +164,22 @@
 		</section>
 
 		<ClientOnly>
-			<Subheader icon="wallpaper">{{ t.background }}</Subheader>
-			<section>
-				<Button class="upload-bg-image-btn" icon="upload" @click="addBackgroundImage">{{ t.file_picker.choose }}</Button>
+			<Subheader icon="wallpaper">{{ $t("background.title") }}</Subheader>
+			<section class="background-image-settings">
+				<Button class="upload-bg-image-btn" icon="upload" @click="addBackgroundImage">{{ $t("file_picker.choose") }}</Button>
 				<section grid force-multi-column class="section-background-images">
 					<TransitionGroup appear>
 						<SettingsGridItem
 							v-for="item in backgroundImages.items"
 							:id="item.key"
 							:key="item.key"
-							v-model="backgroundImages.backgroundImage"
+							v-model="backgroundImages.currentImageKey"
 							class="preview-bg-image force-color"
 							:style="{ '--accent-50': item.color }"
-							@contextmenu.prevent="e => item.key !== -1 && (backgroundImageItemMenu = [e, item, e.currentTarget])"
+							@contextmenu.prevent="e => item.key !== -1 && (backgroundImageItemMenu = [e, item, e.currentTarget as HTMLElement])"
 						>
 							<Icon v-if="item.key === -1" name="prohibited" />
-							<img v-else :src="item.url" alt="" />
+							<BackgroundImageImg v-else :src="item.url" autoAlt :fit="item.fit" :position="item.position" />
 						</SettingsGridItem>
 					</TransitionGroup>
 				</section>
@@ -192,7 +193,7 @@
 						icon="opacity"
 						pending="current"
 						:displayValue="backgroundSliderDisplayValue"
-					>{{ t.background.opacity }}</SettingsSlider>
+					>{{ $t("background.opacity") }}</SettingsSlider>
 					<SettingsSlider
 						v-model="backgroundImageSettingsStore.tint"
 						:min="0"
@@ -202,7 +203,7 @@
 						icon="join_inner"
 						pending="current"
 						:displayValue="backgroundSliderDisplayValue"
-					>{{ t.background.tint }}</SettingsSlider>
+					>{{ $t("background.tint") }}</SettingsSlider>
 					<SettingsSlider
 						v-model="backgroundImageSettingsStore.blur"
 						:min="0"
@@ -212,35 +213,48 @@
 						icon="blur"
 						pending="current"
 						:displayValue="backgroundSliderDisplayValue"
-					>{{ t.background.blur }}</SettingsSlider>
+					>{{ $t("background.blur") }}</SettingsSlider>
+					<SettingsChipItem icon="fit" nonclickable>
+						{{ $t("background.fit.title") }}
+						<template #actions>
+							<ComboBox v-model="backgroundImages.fit" :style="{ width: '200px' }">
+								<ComboBoxItem v-for="(_, key) in fitTypes" :key="key" :id="key">{{ $t(`background.fit.${key}`) }}</ComboBoxItem>
+							</ComboBox>
+						</template>
+					</SettingsChipItem>
+					<SettingsChipItem icon="location_target" nonclickable>
+						{{ $t("background.position") }}
+						<template #actions>
+							<PositionControl :value="backgroundImages.position" :disabled="backgroundImages.fit === 'stretch'" @changing="value => backgroundImages.setPosition(value, false)" @changed="value => backgroundImages.setPosition(value, true)" />
+						</template>
+					</SettingsChipItem>
 				</template>
 			</section>
 
 			<Menu v-model="backgroundImageItemMenu[0]">
-				<!-- TODO: 多语言。 -->
-				<MenuItem icon="arrow_left" :disabled="backgroundImageItemMenu[1].displayIndex <= 0" @click="backgroundImages.reorder(backgroundImageItemMenu[1].key, backgroundImageItemMenu[1].displayIndex - 1)">往前挪</MenuItem>
-				<MenuItem icon="arrow_right" :disabled="backgroundImageItemMenu[1].displayIndex >= backgroundImages.items.length - 2" @click="backgroundImages.reorder(backgroundImageItemMenu[1].key, backgroundImageItemMenu[1].displayIndex + 1)">往后挪</MenuItem>
+				<MenuItem icon="arrow_left" :disabled="backgroundImageItemMenu[1].displayIndex <= 0" @click="backgroundImages.reorder(backgroundImageItemMenu[1].key, backgroundImageItemMenu[1].displayIndex - 1)">{{ $t("move_forward") }}</MenuItem>
+				<MenuItem icon="arrow_right" :disabled="backgroundImageItemMenu[1].displayIndex >= backgroundImages.items.length - 2" @click="backgroundImages.reorder(backgroundImageItemMenu[1].key, backgroundImageItemMenu[1].displayIndex + 1)">{{ $t("move_backward") }}</MenuItem>
 				<hr />
-				<MenuItem icon="delete" @click="confirmDeleteBackgroundImageFlyout = [[backgroundImageItemMenu[2], 'y'], () => backgroundImages.delete(backgroundImageItemMenu[1].key)]">{{ t.delete }}</MenuItem>
+				<MenuItem icon="delete" @click="confirmDeleteBackgroundImageFlyout = [[backgroundImageItemMenu[2], 'y'], () => backgroundImages.delete(backgroundImageItemMenu[1].key)]">{{ $t("delete") }}</MenuItem>
 			</Menu>
 
 			<Flyout v-model="confirmDeleteBackgroundImageFlyout[0]">
+				<ShadingIcon icon="delete" size="small" fadeIn />
 				<div class="flyout-content">
-					<h4>{{ t.delete }}</h4>
-					<!-- TODO: 多语言。 -->
-					<p>确定要删除该背景图像吗？</p>
+					<h4>{{ $t("delete") }}</h4>
+					<p>{{ $t("confirm.delete_background_image") }}</p>
 					<div class="flyout-buttons">
-						<Button @click="confirmDeleteBackgroundImageFlyout[0] = undefined">{{ t.step.cancel }}</Button>
-						<Button @click="confirmDeleteBackgroundImageFlyout[0] = undefined; confirmDeleteBackgroundImageFlyout[1]();" :style="{ '--appearance': 'secondary' }">{{ t.step.ok }}</Button>
+						<Button @click="confirmDeleteBackgroundImageFlyout[0] = undefined">{{ $t("step.cancel") }}</Button>
+						<Button @click="confirmDeleteBackgroundImageFlyout[0] = undefined; confirmDeleteBackgroundImageFlyout[1]();" :style="{ '--appearance': 'secondary' }">{{ $t("step.ok") }}</Button>
 					</div>
 				</div>
 			</Flyout>
 		</ClientOnly>
 
-		<Subheader icon="more_horiz">{{ t(2).other }}</Subheader>
+		<Subheader icon="more_horiz">{{ $t("other", 2) }}</Subheader>
 		<section list>
-			<ToggleSwitch v-model="cookieColoredSidebar" v-ripple icon="dehaze">{{ t.appearance.colorful_navbar }}</ToggleSwitch>
-			<ToggleSwitch v-model="appSettings.akkarinGuestAvatar" v-ripple :icon="appSettings.akkarinGuestAvatar ? 'akkarin' : 'person'">{{ t.appearance.akkarin_guest_avatar }}</ToggleSwitch>
+			<ToggleSwitch v-model="cookieColoredSidebar" v-ripple icon="dehaze">{{ $t("appearance.colorful_navbar") }}</ToggleSwitch>
+			<ToggleSwitch v-model="appSettings.akkarinGuestAvatar" v-ripple :icon="appSettings.akkarinGuestAvatar ? 'akkarin' : 'person'">{{ $t("appearance.akkarin_guest_avatar") }}</ToggleSwitch>
 		</section>
 
 		<section list>
@@ -250,7 +264,7 @@
 				:disabled="!selfUserInfoStore.isLogined"
 				icon="sync"
 			>
-				{{ t.sync_color_settings_across_devices }}
+				{{ $t("sync_color_settings_across_devices") }}
 			</ToggleSwitch>
 		</section>
 	</div>
@@ -271,7 +285,7 @@
 	}
 
 	.settings-chip-item {
-		--size: small;
+		--size: middle;
 	}
 
 	.settings-grid-item:deep() {
@@ -438,5 +452,9 @@
 			display: flex;
 			gap: 8px;
 		}
+	}
+
+	.background-image-settings > :last-child {
+		margin-bottom: 8px;
 	}
 </style>

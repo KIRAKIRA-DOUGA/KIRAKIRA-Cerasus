@@ -19,6 +19,7 @@
 		thumbnail: string;
 	}>();
 
+	const { t } = useI18n();
 	const windowSize = useWindowSize();
 	const isMobileWidth = computed(() => windowSize.width.value <= numbers.tabletMaxWidth);
 
@@ -52,12 +53,19 @@
 			autoResumePlayAfterSeeking: false,
 		},
 		filter: {
-			horizontalFlip: false,
-			verticalFlip: false,
+			hFlip: false,
+			vFlip: false,
 			rotation: 0,
+			mirror: false,
 			grayscale: false,
 			invert: false,
 			sepia: false,
+			posterize: false,
+			spectrum: false,
+			thermal: false,
+			emboss: false,
+			bump: false,
+			edge: false,
 			hue: 0,
 			saturate: 1,
 			contrast: 1,
@@ -68,23 +76,32 @@
 	const videoFilterStyle = computed(() => {
 		const { filter } = settings;
 		const style: CSSProperties = {};
-		if (filter.horizontalFlip || filter.verticalFlip) {
-			const scale: TwoD = [1, 1];
-			if (filter.horizontalFlip) scale[0] = -1;
-			if (filter.verticalFlip) scale[1] = -1;
-			style.scale = scale.join(" ");
-		}
-		if (filter.rotation) style.rotate = filter.rotation + "deg";
 		const filters: string[] = [];
-		if (filter.grayscale) filters.push("grayscale(1)");
-		if (filter.invert) filters.push("invert(1)");
-		if (filter.sepia) filters.push("sepia(1)");
 		if (filter.hue % 360 !== 0) filters.push(`hue-rotate(${filter.hue}deg)`);
 		if (filter.saturate !== 1) filters.push(`saturate(${filter.saturate})`);
 		if (filter.contrast !== 1) filters.push(`contrast(${filter.contrast})`);
 		if (filter.brightness !== 1) filters.push(`brightness(${filter.brightness})`);
+		if (filter.grayscale) filters.push("grayscale(1)");
+		if (filter.invert) filters.push("invert(1)");
+		if (filter.sepia) filters.push("sepia(1)");
+		if (filter.posterize) filters.push('url("#posterize")');
+		if (filter.spectrum) filters.push('url("#spectrum")');
+		if (filter.thermal) filters.push('url("#thermal")');
+		if (filter.emboss) filters.push('url("#emboss")');
+		if (filter.bump) filters.push('url("#bump")');
+		if (filter.edge) filters.push('url("#edge")');
 		if (filters.length > 0) style.filter = filters.join(" ");
 		return style;
+	});
+
+	const videoFilterClass = computed(() => {
+		const { filter } = settings;
+		const classNames = [];
+		if (filter.hFlip) classNames.push("h-flip");
+		if (filter.vFlip) classNames.push("v-flip");
+		if (filter.rotation) classNames.push(`rotate-${filter.rotation}`);
+		if (filter.mirror) classNames.push(`mirror-${filter.mirror}`);
+		return classNames;
 	});
 
 	const tracks = ref<shaka.extern.Track[]>([]);
@@ -223,7 +240,7 @@
 				}));
 			}
 		} catch (error) {
-			useToast(t.player.error.getDanmaku, "error");
+			useToast(t("player.error.getDanmaku"), "error");
 			console.error("ERROR", "Failed to get danmaku:", error);
 		}
 	}
@@ -254,7 +271,7 @@
 	settings.controller.showFrameByFrame = playerConfig.controller.showFrameByFrame;
 	settings.controller.autoResumePlayAfterSeeking = playerConfig.controller.autoResumePlayAfterSeeking;
 
-	const player = ref<shaka.Player>();
+	const player = shallowRef<shaka.Player>();
 	const playerVersion = ref("");
 
 	onMounted(async () => {
@@ -337,10 +354,17 @@
 		}
 	});
 
+	onBeforeUnmount(async () => {
+		if (player.value) {
+			await player.value.destroy();
+			player.value = undefined;
+		}
+	});
+
 	const selectedTrack = computed({
 		get: () => activeTrack.value,
 		set: track => {
-			player.value?.selectVariantTrack(track, true);
+			player.value?.selectVariantTrack(track!, true);
 			playerConfig.quality.preferred = track!.height!;
 		},
 	});
@@ -508,13 +532,13 @@
 
 	/**
 	 * 切换全屏。
-	 * @param isFullbrowser - 是否是网页全屏？
+	 * @param isFullBrowser - 是否是网页全屏？
 	 */
-	async function toggleFullscreen(isFullbrowser: boolean = false) {
+	async function toggleFullscreen(isFullBrowser: boolean = false) {
 		// 触发全屏 API
 		if (fullscreen.value)
 			await exitFullscreen();
-		else if (!isFullbrowser)
+		else if (!isFullBrowser)
 			await enterFullscreen();
 
 		// 处理 tab 失能问题（不然全屏状态下按 tab 键甚至会聚焦到评论区去）
@@ -567,7 +591,7 @@
 
 <template>
 	<Comp :class="{ fullscreen, dark: fullscreen }">
-		<Modal v-model="showStats" icon="info" :title="t.player.stats" hideFooter>
+		<Modal v-model="showStats" icon="info" :title="$t('player.stats')" hideFooter>
 			<Accordion class="stats">
 				<AccordionItem title="Video File" shown noPadding>
 					<table>
@@ -650,11 +674,19 @@
 			</Accordion>
 		</Modal>
 
+		<SvgFilter />
+
 		<div ref="playerVideoMain" class="main" :class="{ 'hide-cursor': hideCursor, fullscreen }">
-			<div class="screen">
+			<div
+				class="screen"
+				@contextmenu.prevent="e => menu = e"
+				@pointerup.left="onVideoPointerUp"
+				@pointermove="autoHideController"
+			>
 				<video
 					ref="video"
 					class="player"
+					:class="videoFilterClass"
 					:style="videoFilterStyle"
 					@play="playing = true"
 					@pause="playing = false"
@@ -664,9 +696,6 @@
 					@progress="updateBuffered"
 					@ended="ended = true"
 					@waiting="waiting = true"
-					@contextmenu.prevent="e => menu = e"
-					@pointerup.left="onVideoPointerUp"
-					@pointermove="autoHideController"
 					:autoplay="settings.autoplay"
 					playsinline
 				></video>
@@ -737,14 +766,14 @@
 				<template #fallback>
 					<div class="danmaku-loading">
 						<LogoDanmakuLoading />
-						<span>{{ t.danmaku.list.loading }}</span>
+						<span>{{ $t("danmaku.list.loading") }}</span>
 					</div>
 				</template>
 			</ClientOnly>
 		</div>
 		<Menu v-model="menu" noFade>
-			<MenuItem icon="camera" @click="() => getScreenshot()">{{ t.player.screenshot }}</MenuItem>
-			<MenuItem icon="info" @click="showStats = true">{{ t.player.stats }}</MenuItem>
+			<MenuItem icon="camera" @click="() => getScreenshot()">{{ $t("player.screenshot") }}</MenuItem>
+			<MenuItem icon="info" @click="showStats = true">{{ $t("player.stats") }}</MenuItem>
 			<hr />
 			<MenuItem icon="yozora" class="version" @click="showAboutPlayer = true">YOZORA PLAYER</MenuItem>
 		</Menu>
@@ -765,23 +794,55 @@
 	}
 
 	.main {
+		container: player-video-main / inline-size;
 		position: relative;
 		pointer-events: auto !important;
 		view-transition-name: player-video-main;
 
 		video {
+			$turned: ":where(:is(.rotate-180, .h-flip.v-flip):not(.rotate-180.h-flip.v-flip))";
+			width: 100cqw;
+			height: 100cqh;
 			transition: none;
+
+			&.h-flip:not(.v-flip, .mirror-left, .mirror-right) { scale: -1 1; }
+			&.v-flip:not(.h-flip, .mirror-top, .mirror-bottom) { scale: 1 -1; }
+			&.rotate-90 { rotate: 90deg; }
+			&#{$turned} { rotate: 180deg; }
+			&.rotate-270 { rotate: 270deg; }
+			&.mirror-left { @include mirror(left, cq); translate: -25cqw; }
+			&.mirror-right { @include mirror(right, cq); translate: 25cqw; }
+			&.mirror-top { @include mirror(top, cq); translate: 0 -25cqh; }
+			&.mirror-bottom { @include mirror(bottom, cq); translate: 0 25cqh; }
+
+			&.mirror-left#{$turned} { translate: 25cqw; }
+			&.mirror-right#{$turned} { translate: -25cqw; }
+			&.mirror-top#{$turned} { translate: 0 25cqh; }
+			&.mirror-bottom#{$turned} { translate: 0 -25cqh; }
+
+			&:is(.rotate-90, .rotate-270) {
+				width: 100cqh;
+				height: 100cqw;
+
+				&:is(.mirror-left, .mirror-right) {
+					width: 50cqh;
+					height: 100cqw;
+				}
+
+				&:is(.mirror-top, .mirror-bottom) {
+					width: 100cqh;
+					height: 50cqw;
+				}
+			}
+
+			&:is(.mirror-left.rotate-90, .mirror-right.rotate-270) { translate: 0 -25cqh; }
+			&:is(.mirror-left.rotate-270, .mirror-right.rotate-90) { translate: 0 25cqh; }
+			&:is(.mirror-top.rotate-90, .mirror-bottom.rotate-270) { translate: 25cqw; }
+			&:is(.mirror-top.rotate-270, .mirror-bottom.rotate-90) { translate: -25cqw; }
 		}
 
 		:comp:not(.fullscreen) & {
-			&,
-			& video {
-				width: 100%;
-			}
-
-			& video {
-				max-height: calc(100dvh - 36px - 26px * 2);
-			}
+			width: 100%;
 		}
 
 		.fullscreen & {
@@ -791,10 +852,6 @@
 
 			.screen {
 				height: 100dvh;
-			}
-
-			video {
-				@include square(100%);
 			}
 		}
 
@@ -818,7 +875,10 @@
 	}
 
 	.screen {
+		@include flex-center;
+		container: player-video-screen / size;
 		position: relative;
+		height: calc(100cqw / 16 * 9);
 		background-color: black;
 
 		.contents {

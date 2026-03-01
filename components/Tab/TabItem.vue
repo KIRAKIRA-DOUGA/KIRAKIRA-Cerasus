@@ -178,7 +178,7 @@
 		}
 
 		.tab-bar.vertical & {
-			justify-content: flex-start;
+			justify-content: start;
 			width: 100%;
 
 			&:any-hover {
@@ -214,6 +214,11 @@
 
 				> div > div {
 					background-color: c(accent-hover-overlay);
+
+					&:any-hover,
+					&:active {
+						background-color: c(accent-hover, 16%);
+					}
 				}
 			}
 
@@ -230,7 +235,7 @@
 			}
 
 			.content {
-				justify-content: flex-start;
+				justify-content: start;
 
 				span {
 					transition: $fallback-transitions, font-weight 500ms $ease-out-smooth;

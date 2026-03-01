@@ -3,6 +3,7 @@
 </docs>
 
 <script setup lang="ts">
+	const { t } = useI18n();
 	/** 指定默认的标签值，如为 null 表示未设定默认值，如为 undefined 表示当前组件不适用默认值。 */
 	const def = defineModel<[number, string] | null | undefined>("default");
 	/** 指定标签值的原文，如为 null 表示未设定原文，如为 undefined 表示当前组件不适用原文。 */
@@ -72,7 +73,7 @@
 				if (i === index) continue;
 				if (curTag === normalizedTag) {
 					duplicated = true;
-					useToast(t.toast.duplicate_tag, "warning");
+					useToast(t("toast.duplicate_tags"), "warning");
 					break;
 				}
 			}
@@ -85,15 +86,15 @@
 				if (result?.success && result.result && result.result.length > 0) {
 					const hasSameWithInput = checkTagUnique(text, result.result);
 					if (hasSameWithInput) {
-						useToast("不允许 TAG 名重复，请更换。", "warning"); // TODO: 使用多语言
-						console.warn("WARN", "WARNING", "查找到重复的 TAG 名");
+						useToast(t("toast.duplicate_tag_names"), "warning");
+						console.warn("WARN", "WARNING", "查找到重复的标签名");
 						tagsWithKey.delete(index);
 						return;
 					}
 				}
 			} catch (error) {
-				useToast("查找重复 TAG 失败", "error"); // TODO: 使用多语言
-				console.error("ERROR", "查找重复 TAG 时出错：", error);
+				useToast(t("toast.failed_to_search_duplicate_tags"), "error");
+				console.error("ERROR", "查找重复标签时出错：", error);
 				return;
 			}
 		}
@@ -190,7 +191,6 @@
 		contextualToolbar.value = undefined;
 	}
 
-	const a = ref();
 	/**
 	 * 显示标签的上下文工具栏。
 	 * @param key - 标签键名。
@@ -228,8 +228,8 @@
 
 	/**
 	 * 判断一个 TAG 是否为默认 TAG 并高亮。
-	 * @param def 默认 TAG
-	 * @param tag TAG
+	 * @param def - 默认 TAG
+	 * @param tag - TAG
 	 * @returns 是默认返回 true, 否则返回 false
 	 */
 	function isDefaultTag(def: [number, string] | null | undefined, tag: [number, string]): boolean {
@@ -238,8 +238,8 @@
 
 	/**
 	 * 判断一个 TAG 是否为 TAG 原文。
-	 * @param original 原文 TAG
-	 * @param tag TAG
+	 * @param original - 原文 TAG
+	 * @param tag - TAG
 	 * @returns 是默认返回 true, 否则返回 false
 	 */
 	function isOriginalTag(original: [number, string] | null | undefined, tag: [number, string]): boolean {
@@ -259,7 +259,7 @@
 				v-for="[key, tag] in tagsWithKey"
 				:key="key"
 				v-model:input="tagsWithKeyProxy[key]"
-				:placeholder="t.press_enter_to_add"
+				:placeholder="$t('press_enter_to_add')"
 				:checked="isDefaultTag(def, [key, tag])"
 				:original="isOriginalTag(original, [key, tag])"
 				@change="updateTags(key)"
@@ -276,11 +276,11 @@
 			@mouseenter="reshowContextualToolbar"
 			@mouseleave="hideContextualToolbar"
 		>
-			<Button v-if="def !== undefined && hoveredTagContent && !isDefaultTag(def, hoveredTagContent) && !original && !isOriginalTag(editorOriginal, hoveredTagContent)" icon="check" @click="setToDefault()">{{ t.set_as_default }}</Button>
-			<Button v-if="hoveredTagContent && !isOriginalTag(editorOriginal, hoveredTagContent) && isDefaultTag(def, hoveredTagContent)" icon="close" @click="clearDefault()">{{ t.unset_as_default }}</Button>
-			<Button v-if="!original && hoveredTagContent && isDefaultTag(def, hoveredTagContent) && !isOriginalTag(editorOriginal, hoveredTagContent)" icon="star" @click="setToOriginal()">{{ t.tag.set_as_original }}</Button>
-			<Button v-if="hoveredTagContent && isDefaultTag(def, hoveredTagContent) && isOriginalTag(editorOriginal, hoveredTagContent)" icon="close" @click="clearOriginal()">{{ t.tag.unset_as_original }}</Button>
-			<Button icon="close" @click="updateTags(hoveredTagContent![0], '')">{{ t.delete }}</Button>
+			<Button v-if="def !== undefined && hoveredTagContent && !isDefaultTag(def, hoveredTagContent) && !original && !isOriginalTag(editorOriginal, hoveredTagContent)" icon="check" @click="setToDefault()">{{ $t("set_as_default") }}</Button>
+			<Button v-if="hoveredTagContent && !isOriginalTag(editorOriginal, hoveredTagContent) && isDefaultTag(def, hoveredTagContent)" icon="close" @click="clearDefault()">{{ $t("unset_as_default") }}</Button>
+			<Button v-if="!original && hoveredTagContent && isDefaultTag(def, hoveredTagContent) && !isOriginalTag(editorOriginal, hoveredTagContent)" icon="star" @click="setToOriginal()">{{ $t("tag.set_as_original") }}</Button>
+			<Button v-if="hoveredTagContent && isDefaultTag(def, hoveredTagContent) && isOriginalTag(editorOriginal, hoveredTagContent)" icon="close" @click="clearOriginal()">{{ $t("tag.unset_as_original") }}</Button>
+			<Button icon="close" @click="updateTags(hoveredTagContent![0], '')">{{ $t("delete") }}</Button>
 		</Flyout>
 	</Comp>
 </template>

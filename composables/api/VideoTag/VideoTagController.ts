@@ -1,5 +1,5 @@
 import { GET, POST } from "../Common";
-import type { CreateVideoTagResponseDto, GetVideoTagByTagIdRequestDto, GetVideoTagByTagIdResponseDto, SearchVideoTagRequestDto, SearchVideoTagResponseDto } from "./VideoTagControllerDto";
+import type { CreateVideoTagRequestDto, CreateVideoTagResponseDto, GetVideoTagByTagIdRequestDto, GetVideoTagByTagIdResponseDto, SearchVideoTagRequestDto, SearchVideoTagResponseDto } from "./VideoTagControllerDto";
 
 const BACK_END_URI = environment.backendUri;
 const VIDEO_TAG_API_URI = `${BACK_END_URI}video/tag`;
@@ -29,12 +29,12 @@ export async function searchVideoTag(searchVideoTagRequest: SearchVideoTagReques
  */
 export const getTagsByTagIds = async (getVideoTagByTagIdRequest: GetVideoTagByTagIdRequestDto): Promise<GetVideoTagByTagIdResponseDto> => {
 	if (getVideoTagByTagIdRequest && getVideoTagByTagIdRequest.tagId) {
-		const { data: result } = await useFetch<GetVideoTagByTagIdResponseDto>(`${VIDEO_TAG_API_URI}/get`, {
+		const result = await $fetch<GetVideoTagByTagIdResponseDto>(`${VIDEO_TAG_API_URI}/get`, {
 			method: "POST",
 			body: { tagId: getVideoTagByTagIdRequest.tagId },
 		});
-		if (result.value)
-			return result.value;
+		if (result)
+			return result;
 		else
 			return { success: false, message: "根据 TAG ID 获取 TAG 失败" };
 	} else

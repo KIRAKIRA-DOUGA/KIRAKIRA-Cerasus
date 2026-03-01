@@ -29,7 +29,7 @@
 		<Comp :class="[placement]">
 			<TabBar v-model="selected" @movingForTransition="name => transitionName = name">
 				<TabItem :id="RECENT_ID" icon="history" />
-				<TabItem v-for="tab in tabs" :id="tab" :key="tab">{{ t.kaomoji[tab] }}</TabItem>
+				<TabItem v-for="tab in tabs" :id="tab" :key="tab">{{ $t(`kaomoji.${tab}`) }}</TabItem>
 			</TabBar>
 			<div>
 				<Transition :name="transitionName" mode="out-in">
@@ -70,7 +70,7 @@
 				display: grid;
 				grid-template-columns: repeat(3, 1fr);
 				gap: 6px;
-				align-content: flex-start;
+				align-content: start;
 				align-items: baseline;
 				padding: 12px $padding-x;
 				padding-top: 0.25rem;

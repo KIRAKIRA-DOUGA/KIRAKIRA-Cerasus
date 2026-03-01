@@ -120,6 +120,7 @@
 
 	@mixin router-link-active {
 		@include accent-ripple;
+		background-color: c(accent-hover-overlay);
 
 		> * {
 			color: c(accent) !important;
@@ -131,7 +132,7 @@
 
 		&:any-hover,
 		&:active {
-			background-color: c(accent-hover-overlay);
+			background-color: c(accent-hover, 16%);
 		}
 	}
 

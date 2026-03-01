@@ -16,12 +16,6 @@
 
 	const insertDanmaku = defineModel<DanmakuListItem[]>("insertDanmaku");
 
-	/** @deprecated - 测试数据。 */
-	const counts = reactive({
-		danmaku: 10000n,
-		watching: 1n,
-	});
-
 	const showTabBar = ref(false);
 	const showSettings = ref(false);
 	const selectedTab = ref("danmaku-list");
@@ -49,25 +43,24 @@
 		<div class="top">
 			<div class="top-bar">
 				<div class="counts">
-					<!-- <CountItem v-tooltip:bottom="t(counts.watching).are_watching(counts.watching)" icon="person" :value="getCompactDecimal(counts.watching)" /> -->
-					<CountItem v-tooltip:bottom="t(insertDanmaku?.length ?? 0).danmaku" icon="danmaku" :value="getCompactDecimal(insertDanmaku?.length ?? 0)" />
+					<CountItem v-tooltip:bottom="$t('danmaku.title', insertDanmaku?.length ?? 0)" icon="danmaku" :value="getCompactDecimal(insertDanmaku?.length ?? 0)" />
 				</div>
 				<div class="buttons">
-					<SoftButton v-tooltip:bottom="t.danmaku.history" icon="history" class="button-history" />
-					<SoftButton v-tooltip:bottom="t.settings" :icon="showSettings ? 'close' : 'settings'" class="button-settings" :active="showSettings" @click="showSettings = !showSettings" />
+					<SoftButton v-tooltip:bottom="$t('danmaku.history')" icon="history" class="button-history" />
+					<SoftButton v-tooltip:bottom="$t('settings.title')" :icon="showSettings ? 'close' : 'settings'" class="button-settings" :active="showSettings" @click="showSettings = !showSettings" />
 				</div>
 			</div>
 			<Transition>
 				<div v-if="showTabBar || showSettings" class="tab-wrapper">
 					<Transition :name="showSettings ? 'page-jump-out' : 'page-jump-in'" mode="out-in">
 						<TabBar v-if="showTabBar && !showSettings" v-model="selectedTab" @movingForTransition="name => transitionName = name">
-							<TabItem id="danmaku-list">{{ t(0).danmaku }}</TabItem>
+							<TabItem id="danmaku-list">{{ $t("danmaku.title", 2) }}</TabItem>
 							<TabItem id="chapters">分段章节</TabItem>
 							<TabItem id="playlist">播放列表</TabItem>
 						</TabBar>
 						<TabBar v-else-if="showSettings" v-model="selectedSettingsTab" @movingForTransition="name => transitionName = name">
-							<TabItem id="player">{{ t.player }}</TabItem>
-							<TabItem id="filters">{{ t.player.filter }}</TabItem>
+							<TabItem id="player">{{ $t("player.title") }}</TabItem>
+							<TabItem id="filters">{{ $t("player.filter.title") }}</TabItem>
 							<TabItem id="block-words">屏蔽词</TabItem>
 						</TabBar>
 					</Transition>

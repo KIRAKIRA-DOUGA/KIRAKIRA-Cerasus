@@ -172,34 +172,24 @@ pnpm dev-local
 
 #### 与线上后端一起运行
 
-您可以在本地启动前端开发服务器，并连接**线上**后端 API，无需在本地启动后端服务。\
+您可以在本地启动前端开发服务器，并使用 Nuxt 的 `devProxy` 连接**预**生产环境的**线上**后端 API，并进行代理和对 Cookie 域名进行重写，无需在本地启动后端服务。\
 KIRAKIRA 拥有**预**生产环境和生产环境两个线上后端，预生产环境包含测试数据和正在开发中的功能，而生产环境就是您访问的 kirakira.moe 官网。
 
 **无论如何，请务必阅读下方使用限制：**
 
 > [!WARNING]\
-> 对于**预生产环境**演示模式的使用限制：
-> 1. 预生产环境演示模式，除开发团队成员外，任何测试、篡改行为仍将被视为滥用。
+> 对于**预生产环境**线上后端模式的使用限制：
+> 1. 预生产环境线上后端模式，除开发团队成员外，任何测试、篡改行为仍将被视为滥用。
 > 2. 用户在预生产环境中产生的数据皆授权 KIRAKIRA 开发团队使用，不得撤销。
 > 3. 用户因使用预生产环境造成的任何人身及财产损失与 KIRAKIRA 无关。
 
-> [!WARNING]\
-> 对于**生产环境**演示模式的使用限制：
-> 1. 您仍然与 KIRAKIRA 官方线上环境交互，KIRAKIRA 用户协议及免责条款仍然适用。
-
 > [!NOTE]\
-> 目前演示模式存在 Cookie 跨域问题，您无法登录您的账户。
+> 目前在线后端模式会直接使用 localhost:3000 的地址去连接，如果你的本地端口号不是 3000，请参考下方的自定义启动命令来自行修改。
 
-启动**预生产环境**演示模式的命令为：
-
-```bash
-pnpm dev-stg-demo
-```
-
-启动**生产环境**演示模式的命令为：
+启动**预生产环境**线上后端模式的命令为：
 
 ```bash
-pnpm dev-live-demo
+pnpm dev-stg
 ```
 
 启动后，您应该能够在这个地址访问：https://localhost:3000/
@@ -584,8 +574,7 @@ button:any-hover {
 
 [![VSCode](https://img.shields.io/badge/-Visual%20Studio%20Code-007ACC?style=flat-square&logo=visual-studio-code&logoColor=white)](https://code.visualstudio.com/)\
 [![WebStorm](https://img.shields.io/badge/-WebStorm-000000?style=flat-square&logo=webstorm&logoColor=white)](https://www.jetbrains.com/webstorm/)\
-[![Sublime Text](https://img.shields.io/badge/-Sublime%20Text-FF9800?style=flat-square&logo=sublime-text&logoColor=white)](https://www.sublimetext.com/)\
-[![Fleet](https://img.shields.io/badge/-Fleet-000000?style=flat-square&logo=jetbrains&logoColor=white)](https://www.jetbrains.com/fleet/)
+[![Sublime Text](https://img.shields.io/badge/-Sublime%20Text-FF9800?style=flat-square&logo=sublime-text&logoColor=white)](https://www.sublimetext.com/)
 
 <details>
 <summary>不要使用</summary>
@@ -598,6 +587,8 @@ button:any-hover {
 * Notepad++
 * HBuilder
 * HBuilderX
+* Fleet
+* Emacs
 * Vim
 * 记事本
 * 写字板

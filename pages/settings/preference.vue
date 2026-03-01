@@ -12,45 +12,42 @@
 
 <template>
 	<div>
-		<!-- WARN: 使用多语言，该页面严重缺乏国际化 -->
-		<!-- TODO: 使用多语言 -->
-		<InfoBar type="warning" :title="t.severity.warning">
-			{{ t.under_construction.page }}
+		<InfoBar type="warning" :title="$t('severity.warning')">
+			{{ $t("under_construction.page") }}
 			<ol>
 				<li>可用功能：在新窗口打开视频、同步外观样式、使用阿卡林游客头像、使用相对时间。</li>
 				<li>除上述功能外其它功能都用不了。</li>
 				<li>本页面缺乏国际化。</li>
 			</ol>
-			<!-- TODO: 使用多语言 -->
 		</InfoBar>
+		<!-- NOTE: 缺少多语言，但该功能似乎并容易实现，如不能实现可删除该功能。 -->
 		<Subheader icon="placeholder">流量节省程序模式</Subheader>
-		<!-- 该功能似乎并容易实现，如不能实现可删除该功能。 -->
 		<section list>
 			<RadioButton v-model="dataSaverMode" v-ripple value="economical" details="不会显示图片，不会自动加载视频。">省流模式</RadioButton>
 			<RadioButton v-model="dataSaverMode" v-ripple value="standard">标准模式</RadioButton>
 			<RadioButton v-model="dataSaverMode" v-ripple value="consumption" details="将一次性加载大量图片，提前加载靠后几页的评论。以防网络突然中断。">极速模式</RadioButton>
 		</section>
 
-		<Subheader icon="placeholder">专注模式</Subheader>
+		<Subheader icon="placeholder">{{ $t("preference.focus_mode.title") }}</Subheader>
 		<section list>
-			<ToggleSwitch v-model="focusMode.noSearchRecommendations" v-ripple value="noSearchRecommendations" icon="placeholder">禁用搜索推荐</ToggleSwitch>
-			<ToggleSwitch v-model="focusMode.noRelatedVideos" v-ripple value="noRelatedVideos" icon="placeholder">禁用相关视频</ToggleSwitch>
+			<ToggleSwitch v-model="focusMode.noSearchRecommendations" v-ripple value="noSearchRecommendations" icon="placeholder">{{ $t("preference.focus_mode.no_search_recommendations") }}</ToggleSwitch>
+			<ToggleSwitch v-model="focusMode.noRelatedVideos" v-ripple value="noRelatedVideos" icon="placeholder">{{ $t("preference.focus_mode.no_related_videos") }}</ToggleSwitch>
 		</section>
 
-		<Subheader icon="shield">隐私</Subheader>
+		<Subheader icon="shield">{{ $t("privacy.title") }}</Subheader>
 		<section list>
-			<ToggleSwitch v-model="focusMode.noRecentSearch" v-ripple value="noRecentSearch" icon="placeholder">停止显示搜索历史</ToggleSwitch>
-			<ToggleSwitch v-model="focusMode.noViewHistory" v-ripple value="noViewHistory" icon="placeholder">停用历史记录</ToggleSwitch>
+			<ToggleSwitch v-model="focusMode.noRecentSearch" v-ripple value="noRecentSearch" icon="placeholder">{{ $t("preference.focus_mode.no_recent_search") }}</ToggleSwitch>
+			<ToggleSwitch v-model="focusMode.noViewHistory" v-ripple value="noViewHistory" icon="placeholder">{{ $t("preference.focus_mode.no_view_history") }}</ToggleSwitch>
 		</section>
 
-		<Subheader icon="placeholder">新窗口</Subheader>
+		<Subheader icon="placeholder">{{ $t("preference.new_window.title") }}</Subheader>
 		<section list>
-			<ToggleSwitch v-model="appSettings.isOpenVideoInNewTab" icon="placeholder">在新标签页打开视频</ToggleSwitch>
+			<ToggleSwitch v-model="appSettings.isOpenVideoInNewTab" icon="placeholder">{{ $t("preference.new_window.open_video_in_new_tab") }}</ToggleSwitch>
 		</section>
 
-		<Subheader icon="placeholder">？？？</Subheader>
+		<Subheader icon="placeholder">{{ $t("preference.misc") }}</Subheader>
 		<section list>
-			<ToggleSwitch v-model="appSettings.relativeDate" icon="time">使用相对时间</ToggleSwitch>
+			<ToggleSwitch v-model="appSettings.relativeDate" icon="time">{{ $t("preference.relative_date") }}</ToggleSwitch>
 		</section>
 	</div>
 </template>

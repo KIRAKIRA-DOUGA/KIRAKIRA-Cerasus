@@ -71,20 +71,22 @@
 	<Comp>
 		<HeadingComments :count="commentsCount" />
 		<div class="send">
-			<UserAvatar :avatar="selfUserInfoStore.userAvatar" />
+			<UserAvatar :avatar="selfUserInfoStore.userInfo.avatar" />
 			<TextEditorRtf :videoId :editable />
 		</div>
 		<div class="toolbar">
 			<div class="left">
 				<Sort v-model="sort">
-					<SortItem id="rating">{{ t.rating }}</SortItem>
-					<SortItem id="date">{{ t.send_date }}</SortItem>
+					<SortItem id="rating">{{ $t("rating") }}</SortItem>
+					<SortItem id="date">{{ $t("send_date") }}</SortItem>
 				</Sort>
 			</div>
 			<div class="right">
 				<SoftButton icon="deletion_history" />
-				<TextBox v-model="search" :placeholder="t.search" icon="search" />
-				<Pagination v-model="currentPage" :pages="pageCount" :displayPageCount="7" :disabled="loading" />
+				<template v-if="commentsCount !== 0">
+					<TextBox v-model="search" :placeholder="$t('search')" icon="search" />
+					<Pagination v-model="currentPage" :pages="pageCount" :displayPageCount="7" :disabled="loading" />
+				</template>
 			</div>
 		</div>
 		<div v-if="!error" class="items-container" :class="{ loading }">
@@ -113,6 +115,10 @@
 					<!-- TODO: 评论支持富文本。 -->
 					<div>{{ comment.text }}</div>
 				</CreationCommentsItem>
+				<div v-if="!loading && commentsCount === 0" class="placeholder">
+					<Icon name="chat_bubble" />
+					{{ $t("empty.comments") }}
+				</div>
 			</div>
 			<div v-if="loading" class="loading-indicator">
 				<ProgressRing />
@@ -120,9 +126,9 @@
 		</div>
 		<div v-else class="error">
 			<Icon name="error" />
-			<p>{{ t.toast.something_went_wrong }}</p>
+			<p>{{ $t("toast.something_went_wrong") }}</p>
 		</div>
-		<div class="toolbar bottom">
+		<div v-if="commentsCount !== 0" class="toolbar bottom">
 			<Pagination v-model="currentPage" :pages="pageCount" :displayPageCount="7" :disabled="loading" />
 		</div>
 	</Comp>
@@ -163,14 +169,14 @@
 		padding-block: 6px;
 
 		&.bottom {
-			justify-content: flex-end;
+			justify-content: end;
 		}
 
 		> * {
 			display: flex;
 			flex-wrap: wrap;
 			gap: 16px;
-			justify-content: flex-end;
+			justify-content: end;
 			align-items: center;
 		}
 
@@ -193,6 +199,22 @@
 
 		&.loading .items {
 			opacity: 0;
+		}
+
+		.placeholder {
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+			align-items: center;
+			width: 100%;
+			padding-block: 32px;
+			color: c(icon-color);
+			font-size: 16px;
+			font-weight: bold;
+
+			.icon {
+				font-size: 64px;
+			}
 		}
 
 		.loading-indicator {

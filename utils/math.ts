@@ -23,6 +23,20 @@ export function map(x: number, min: number, max: number, a: number, b: number) {
 }
 
 /**
+ * 该函数合并 {@link clamp} 函数与 {@link map} 函数为一体。
+ *
+ * @param x - 待转换的原标度数值。
+ * @param min - 原标度值（小）。
+ * @param max - 原标度值（大）。
+ * @param a - 新标度值（小）。
+ * @param b - 新标度值（大）。
+ * @returns 转换后且限制在范围内的新标度数值。
+ */
+export function clampMap(x: number, min: number, max: number, a: number, b: number) {
+	return map(clamp(x, min, max), min, max, a, b);
+}
+
+/**
  * 生成给定两个数之间随机的整数。
  * @param min - 最小值。
  * @param max - 最大值。

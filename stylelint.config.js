@@ -18,27 +18,12 @@ export default {
 		"stylelint-order",
 		"@stylistic/stylelint-plugin",
 	],
-	languageOptions: {
+	/* languageOptions: {
 		syntax: {
-			properties: {
-				// WARN: https://github.com/stylelint/stylelint/issues/8607
-				"container-type": "normal | [[size | inline-size] || scroll-state]",
-				// WARN: https://github.com/stylelint/stylelint/issues/8609
-				"top": "| <anchor()>",
-				"right": "| <anchor()>",
-				"bottom": "| <anchor()>",
-				"left": "| <anchor()>",
-			},
-			types: {
-				// WARN: https://github.com/stylelint/stylelint/issues/8610
-				"radial-gradient()": "| <color-interpolation-method>",
-				"conic-gradient()": "| <color-interpolation-method>",
-				"repeating-linear-gradient()": "| <color-interpolation-method>",
-				"repeating-radial-gradient()": "| <color-interpolation-method>",
-				"repeating-conic-gradient()": "| <color-interpolation-method>",
-			},
+			properties: {},
+			types: {},
 		},
-	},
+	}, */
 	rules: {
 		"media-feature-name-no-vendor-prefix": true, // 不要使用已被 autoprefixer 支持的浏览器前缀。
 		"at-rule-no-vendor-prefix": true,
@@ -67,7 +52,12 @@ export default {
 		"at-rule-no-unknown": null,
 		"function-no-unknown": null,
 		"property-no-unknown": [true, { "severity": "warning" }],
-		"declaration-property-value-no-unknown": null, // [true, { "severity": "warning" }],
+		"declaration-property-value-no-unknown": [true, {
+			"severity": "warning",
+			"ignoreProperties": {
+				"/.+/": ["/[\\w-]+\\(/", "/\\$[\\w-]+/"],
+			},
+		}],
 		"declaration-empty-line-before": null,
 		"custom-property-empty-line-before": null,
 		"selector-pseudo-class-no-unknown": [true, {
@@ -97,6 +87,11 @@ export default {
 			"vw", "vh", "vmin", "vmax", // 请使用 dvw、dvh、dvmin、dvmax 代替之。
 			"cm", "mm", "Q", "in", "pc", "pt", "mozmm", // 你觉得这种单位可能合理吗？
 		],
+		"declaration-property-value-disallowed-list": {
+			"/^(justify|align)-(content|items|self)$/": ["flex-start", "flex-end"], // flex-start、flex-end 与 start、end 没有任何区别，不要使用它们。
+		},
+		"rule-empty-line-before": null,
+		"no-invalid-double-slash-comments": null,
 		"number-max-precision": null,
 		"scss/dollar-variable-empty-line-before": null,
 		"scss/double-slash-comment-empty-line-before": null,

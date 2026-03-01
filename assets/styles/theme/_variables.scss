@@ -33,7 +33,7 @@ $fallback-fonts: sans-serif, $emoji-fonts, $pan-unicode-fonts;
 /// Droid Sans、Open Sans、Tahoma、Geneva、Verdana、Helvetica Neue、Helvetica、Arial 为非现代字体，不应继续使用。\
 /// 注意：英语、越南语、印尼语等非中日韩语言会沿用简体中文字体。\
 /// 注意：我们听说在远东地区，当那里的人们在 Windows Vista / 7 中使用 Windows 经典主题时，默认字体会显示为如此古老而又复古的光栅字体宋体或明体，这简直糟透了。噢天呐，看在上帝的份上，千万不要使用 system-ui 通用字体族，否则整个界面就会变得和珍妮婶婶做的苹果派一样烂了，真是该死。因此我们决定，为了保证网站的一致性体验，我们不能将用户甩出复印机与窗口，我们必须将 system-ui 从字体堆栈中踢出去！见 https://github.com/twbs/bootstrap/issues/22328 和 https://github.com/w3c/csswg-drafts/issues/3658 。
-$english-fonts: "Yozora Sans", -apple-system, BlinkMacSystemFont, InterVariable, Inter, "Segoe UI", "Roboto Flex", Roboto, "Noto Sans", "Fira Sans";
+$english-fonts: "Yozora Sans", -apple-system, BlinkMacSystemFont, "Pretendard Std Variable", "Segoe UI", "Roboto Flex", Roboto, "Noto Sans", "Fira Sans";
 /// 简体中文字体。
 $simplified-chinese-fonts: $english-fonts, map.get($source-han-sans-fonts, simplified-chinese), map.get($source-han-sans-fonts, merged), "PingFang SC", "Microsoft YaHei", $fallback-fonts;
 /// 台湾繁体中文字体。
@@ -61,7 +61,7 @@ $hue-linear: linear-gradient(to right, red 0%, yellow $-sixth, lime $-sixth * 2,
 // #endregion
 
 /// 侧边栏宽度
-$sidebar-width: 48px;
+$sidebar-width: 56px;
 
 /// 移动端标题栏和导航栏高度
 $mobile-toolbar-height: 56px;

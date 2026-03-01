@@ -9,9 +9,9 @@
 	box-sizing: border-box;
 	margin-block: 0;
 	margin-inline: 0;
+	scroll-behavior: smooth;
 	font-family: $simplified-chinese-fonts;
-	// font-feature-settings: "ss02" on, "ss01" on, "liga" on, "rlig" on, "dlig" on, "hlig" on, "onum" on, "kern" on; // 开多了有点过分了。
-	font-feature-settings: "ss03" on, "halt" on; // 圆形的逗号、引号。
+	font-feature-settings: "halt" on;
 	font-kerning: normal;
 	font-optical-sizing: auto;
 	// font-variant-east-asian: proportional-width; // 苹方会恶意将全角逗号、冒号、分号等错误地变成半宽，但句号和顿号却莫名其妙地保持不变。
@@ -20,15 +20,25 @@
 	white-space-collapse: collapse;
 	white-space-collapse: discard;
 	text-space-collapse: discard;
-	text-spacing: normal;
-	text-rendering: optimizeLegibility;
-	tab-size: 4;
-	user-select: none;
-	transition: $fallback-transitions;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+	tab-size: 4;
+	hyphens: auto;
+	hyphenate-limit-chars: 10;
 	// -webkit-tap-highlight-color: c(accent, 30%); // 我还是觉得这个触摸样式很丑。
 	-webkit-tap-highlight-color: transparent;
+	user-select: none;
+	transition: $fallback-transitions;
+	forced-color-adjust: none;
+}
+
+@layer base {
+	*,
+	::before,
+	::after {
+		text-wrap: pretty;
+	}
 }
 
 :lang(zh-Hant) {
@@ -82,8 +92,12 @@ xmp {
 html,
 body {
 	overflow: hidden;
-	overscroll-behavior-y: none;
+	overscroll-behavior: none;
 	font-size: 14px;
+	text-spacing-trim: trim-start;
+	text-spacing-trim: trim-both;
+	text-autospace: normal;
+	interpolate-size: allow-keywords;
 }
 
 body {
@@ -197,11 +211,33 @@ hr {
 
 ::selection {
 	color: white;
-	background-color: c(accent); // WARN: Chromium 111 开始在 `::selection` 设定 `var()` 都会失效。包括 GitHub 和 Edge 的开发工具在内都有这种显示问题。https://bugs.chromium.org/p/chromium/issues/detail?id=1429546
+	background-color: c(accent);
 }
 
 #popovers {
 	display: contents;
+}
+
+input,
+textarea,
+[contenteditable]:not([contenteditable="false"]) {
+	@supports (caret-animation: manual) {
+		caret-animation: manual;
+
+		&:focus {
+			animation: input-caret-blinking 500ms infinite $ease-in-out-max alternate;
+		}
+	}
+}
+
+@keyframes input-caret-blinking {
+	from {
+		caret-color: currentColor;
+	}
+
+	to {
+		caret-color: transparent;
+	}
 }
 
 // 禁用虚拟列表的过渡以免穿帮。

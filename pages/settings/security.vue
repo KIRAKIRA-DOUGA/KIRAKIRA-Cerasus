@@ -2,19 +2,64 @@
 	import type { Level, RenderAs } from "qrcode.vue";
 	import QrcodeVue from "qrcode.vue";
 
-	const passwordChangeDate = ref(new Date());
-	const passwordChangeDateDisplay = computed(() => formatDateWithLocale(passwordChangeDate.value));
+	const { t } = useI18n();
 	const selfUserInfoStore = useSelfUserInfoStore();
 	const appSettingsStore = useAppSettingsStore();
-	const selfUserInfo = useSelfUserInfoStore();
 
 	// 修改邮箱相关
-	const showChangeEmail = ref(false);
+	type ChangeEmailStep = "verification" | "confirm" | "closed";
+	type ChangeEmailModelName = "verification-email" | "verification-totp" | "confirm-email" | "confirm-totp" | "closed";
+	const changeEmailStep = ref<ChangeEmailStep>("closed");
+	const changeEmailModelName = computed<ChangeEmailModelName>(() => {
+		// 根据 2FA 类型展示不同的验证画面
+		if (changeEmailStep.value === "closed")
+			return "closed";
+		else if (changeEmailStep.value === "verification")
+			return appSettingsStore.authenticatorType === "totp" ? "verification-totp" : "verification-email";
+		else if (changeEmailStep.value === "confirm")
+			return appSettingsStore.authenticatorType === "totp" ? "confirm-totp" : "confirm-email";
+		else
+			return "closed";
+	});
 	const changeEmailVerificationCode = ref("");
+	const changeEmailNewEmailVerificationCode = ref("");
 	const newEmail = ref("");
-	const isInvalidNewEmail = computed(() => !!newEmail.value && !newEmail.value.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]{2,}$/));
+	const isInvalidNewEmail = computed<boolean | string>(() => {
+		const newEmailLowerCase = newEmail.value?.toLowerCase();
+		const oldEmailLowerCase = selfUserInfoStore.userInfo.email?.toLowerCase();
+		if (!newEmail.value || isInvalidEmail(newEmail.value)) // email 为空或格式不正确
+			return true;
+		else if (newEmailLowerCase === oldEmailLowerCase)
+			return t("validation.invalid_format.new_email_same_as_old_email");
+		else
+			return false;
+	});
 	const changeEmailPassword = ref("");
 	const isChangingEmail = ref(false);
+	const isChangeEmailNextButtonDisabled = computed(() => {
+		if (changeEmailStep.value !== "verification")
+			return true;
+		if (appSettingsStore.authenticatorType !== "totp" && changeEmailVerificationCode.value.length !== 6)
+			return true;
+		if (
+			appSettingsStore.authenticatorType === "totp" &&
+			(changeEmailNewEmailVerificationCode.value.length !== 6 || !!isInvalidNewEmail.value)
+		)
+			return true;
+		return false;
+	});
+	const isChangeEmailApplyButtonDisabled = computed(() => {
+		if (changeEmailStep.value !== "confirm")
+			return true;
+		if (
+			!changeEmailPassword.value ||
+			!!isInvalidNewEmail.value ||
+			changeEmailNewEmailVerificationCode.value.length !== 6 ||
+			changeEmailVerificationCode.value.length !== 6
+		)
+			return true;
+		return false;
+	});
 
 	// 修改密码相关
 	const showChangePassword = ref(false);
@@ -23,6 +68,8 @@
 	const newPassword = ref("");
 	const confirmNewPassword = ref("");
 	const isChangingPassword = ref(false);
+	const passwordChangeDateDisplay = computed(() => selfUserInfoStore.userInfo.passwordUpdateDateTime ? formatDateWithLocale(new Date(selfUserInfoStore.userInfo.passwordUpdateDateTime)) : $t("unknown"));
+	const isChangePasswordApplyButtonDisabled = computed(() => isChangingPassword.value || !oldPassword.value || !newPassword.value || !changePasswordVerificationCode.value);
 
 	// 2FA 相关
 	const checkUser2FAResult = ref<CheckUserHave2FAResponseDto>(); // 获取到的用户 2FA 类型
@@ -35,12 +82,12 @@
 		set(newValue: string) {
 			if (appSettingsStore.authenticatorType === "totp" && newValue !== "totp" && checkUser2FAResult.value?.type === "totp") {
 				// 当响应式变量从 totp 改变为其他非 totp 的值，且用户的 2FA 类型为 totp 时，打开解绑 TOTP 的模态框，且不会导致导致响应式变量的变更
-				useToast(t.toast.must_remove_totp_first, "warning", 5000);
+				useToast(t("toast.must_remove_totp_first"), "warning", 5000);
 				openDeleteTotpModel();
 			} else if (appSettingsStore.authenticatorType === "email" && newValue !== "email" && checkUser2FAResult.value?.type === "email") {
 				// 当响应式变量从 email 改变为其他非 email 的值，且用户的 2FA 类型为 email 时，打开删除 Email 2FA 的模态框，且不会导致导致响应式变量的变更
 				openDeleteEmail2FAModel();
-				useToast(t.toast.must_verify_email_first, "warning", 5000);
+				useToast(t("toast.must_verify_email_first"), "warning", 5000);
 			} else if (newValue === "email" && appSettingsStore.authenticatorType !== "email" && checkUser2FAResult.value?.type !== "email")
 				openCreateEmail2FAModel();
 			else
@@ -52,7 +99,7 @@
 	const isTotp2FADisable = computed(() => checkUser2FAResult.value?.type === "email" || categoryOf2FAComputed.value === "email");
 
 	// 警告相关
-	const isUnsafeAccount = computed(() => selfUserInfo.isLogined && (appSettingsStore.authenticatorType === "none" || !checkUser2FAResult.value?.have2FA));
+	const isUnsafeAccount = computed(() => selfUserInfoStore.isLogined && (appSettingsStore.authenticatorType === "none" || !checkUser2FAResult.value?.have2FA));
 
 	// 创建 TOTP 2FA 相关
 	const showCreateTotpModel = ref(false); // 是否显示创建 TOTP 模态框
@@ -87,46 +134,63 @@
 	 */
 	async function updateUserEmail() {
 		const oldEmail = selfUserInfoStore.userInfo.email ?? "";
-		if (!newEmail.value || !changeEmailPassword.value || !changeEmailVerificationCode.value) {
-			useToast(t(3).toast.required_not_filled, "warning", 5000);
+		if (!newEmail.value || !changeEmailPassword.value || !changeEmailNewEmailVerificationCode.value) {
+			useToast(t("toast.required_not_filled", 3), "warning", 5000);
 			return;
 		}
 		if (oldEmail === newEmail.value) {
-			useToast(t.toast.new_email_same, "warning", 5000);
+			useToast(t("toast.new_email_same"), "warning", 5000);
 			return;
 		}
 		isChangingEmail.value = true;
 		const passwordHash = await generateHash(changeEmailPassword.value);
 		const updateUserEmailRequest: UpdateUserEmailRequestDto = {
-			uid: selfUserInfoStore.userInfo.uid ?? -1,
 			oldEmail,
 			newEmail: newEmail.value,
 			passwordHash,
-			verificationCode: changeEmailVerificationCode.value,
+			changeEmailVerificationCode: changeEmailVerificationCode.value,
+			changeEmailNewEmailVerificationCode: changeEmailNewEmailVerificationCode.value,
 		};
 		const updateUserEmailResult = await api.user.updateUserEmail(updateUserEmailRequest);
 		if (updateUserEmailResult.success) {
 			await api.user.getSelfUserInfo({ getSelfUserInfoRequest: undefined, appSettingsStore, selfUserInfoStore, headerCookie: undefined });
-			useToast(t.toast.email_changed, "success");
-			showChangeEmail.value = false;
+			useToast(t("toast.email_changed"), "success");
+			changeEmailStep.value = "closed";
 		} else
-			useToast(t.toast.something_went_wrong, "error", 5000);
-		newEmail.value = "";
-		changeEmailPassword.value = "";
-		changeEmailVerificationCode.value = "";
+			useToast(t("toast.something_went_wrong"), "error", 5000);
+		closeChangeEmailModel();
 		isChangingEmail.value = false;
 	}
 
 	/**
-	 * 修改 Email
+	 * 根据用户当前的 2FA 类型，开启修改 Email 的模态框并展示不同表单
+	 */
+	function openChangeEmailModel() {
+		changeEmailStep.value = "verification";
+	}
+
+	/**
+	 * 关闭修改 Email 的模态框，并清除相关状态
+	 */
+	function closeChangeEmailModel() {
+		changeEmailStep.value = "closed";
+		newEmail.value = "";
+		changeEmailPassword.value = "";
+		changeEmailVerificationCode.value = "";
+		changeEmailNewEmailVerificationCode.value = "";
+		isChangingEmail.value = false;
+	}
+
+	/**
+	 * 修改密码
 	 */
 	async function updateUserPassword() {
 		if (!oldPassword.value || !newPassword.value || !changePasswordVerificationCode.value) {
-			useToast(t(3).toast.required_not_filled, "warning");
+			useToast(t("toast.required_not_filled", 3), "warning");
 			return;
 		}
 		if (newPassword.value !== confirmNewPassword.value) {
-			useToast(t.toast.password_mismatch, "warning");
+			useToast(t("toast.password_mismatch"), "warning");
 			return;
 		}
 		isChangingPassword.value = true;
@@ -141,11 +205,11 @@
 		if (updateUserPasswordResult.success) {
 			isChangingPassword.value = false;
 			showChangePassword.value = false;
-			useToast(t.toast.password_changed, "success");
+			useToast(t("toast.password_changed"), "success");
 			await api.user.userLogout({ appSettingsStore, selfUserInfoStore });
 			useEvent("app:requestLogin");
 		} else
-			useToast(t.toast.something_went_wrong, "error");
+			useToast(t("toast.something_went_wrong"), "error");
 	}
 
 	/**
@@ -183,22 +247,22 @@
 			const headerCookie = useRequestHeaders(["cookie"]);
 			const createEmail2FAResult = await api.user.createEmail2FA(headerCookie);
 			if (!createEmail2FAResult.success) {
-				useToast(t.toast.something_went_wrong, "error", 5000);
+				useToast(t("toast.something_went_wrong"), "error", 5000);
 				isCreatingEmail2FA.value = false;
 			}
 
 			if (createEmail2FAResult.isExists) {
-				useToast(t.toast.exists_2fa, "warning", 5000);
+				useToast(t("toast.exists_2fa"), "warning", 5000);
 				isCreatingEmail2FA.value = false;
 			}
 
 			isCreatingEmail2FA.value = false;
 			showCreateEmail2FAModel.value = false;
 			appSettingsStore.authenticatorType = "email";
-			useToast(t.toast.email_2fa_enabled, "success", 3000);
+			useToast(t("toast.email_2fa_enabled"), "success", 3000);
 			checkUserHave2FAByUUID();
 		} catch (error) {
-			useToast(t.toast.something_went_wrong, "error", 5000);
+			useToast(t("toast.something_went_wrong"), "error", 5000);
 			console.error("ERRRR", "Failed to enable email 2FA:", error);
 			checkUserHave2FAByUUID();
 		}
@@ -229,7 +293,7 @@
 		try {
 			if (!deleteEmail2FAPassword.value || !deleteEmail2FAVerificationCode.value) {
 				isDeletingEmail2FA.value = false;
-				useToast(t(2).toast.required_not_filled, "error", 5000);
+				useToast(t("toast.required_not_filled", 2), "error", 5000);
 				return;
 			}
 
@@ -240,16 +304,16 @@
 			const headerCookie = useRequestHeaders(["cookie"]);
 			const deleteEmail2FAResult = await api.user.deleteEmail2FA(deleteUserEmailAuthenticatorRequest, headerCookie);
 			if (deleteEmail2FAResult.success) {
-				useToast(t.toast.email_2fa_disabled, "success", 5000);
+				useToast(t("toast.email_2fa_disabled"), "success", 5000);
 				closeDeleteEmail2FAModel();
 				await checkUserHave2FAByUUID();
 			} else {
 				isDeletingEmail2FA.value = false;
-				useToast(t.toast.something_went_wrong, "error", 5000);
+				useToast(t("toast.something_went_wrong"), "error", 5000);
 			}
 		} catch (error) {
 			isDeletingEmail2FA.value = false;
-			useToast(t.toast.something_went_wrong, "error", 5000);
+			useToast(t("toast.something_went_wrong"), "error", 5000);
 			console.error("ERRRR", "Failed to disable email 2FA:", error);
 		}
 	}
@@ -301,7 +365,7 @@
 	 */
 	async function handleClickConfirmTotp() {
 		if (!confirmTotpVerificationCode.value) {
-			useToast(t.validation.required.totp_verification_code, "error");
+			useToast(t("validation.required.totp_verification_code"), "error");
 			return;
 		}
 
@@ -322,7 +386,7 @@
 			await checkUserHave2FAByUUID();
 		} catch (error) {
 			isConfirmTotp.value = false;
-			useToast(t.toast.something_went_wrong, "error", 5000);
+			useToast(t("toast.something_went_wrong"), "error", 5000);
 			console.error("ERRRR", "Failed to add TOTP authenticator:", error);
 		}
 		isConfirmTotp.value = false;
@@ -332,7 +396,7 @@
 	 * 下载 TOTP 生成的备份码和恢复码。
 	 */
 	function downloadBackupCodeAndRecoveryCode() {
-		const backupCodeAndRecoveryCode = `${t.two_factor_authentication.add_totp.backup_code}\n${displayBackupCode.value}\n\n${t.two_factor_authentication.add_totp.recovery_code}\n${recoveryCode.value}`;
+		const backupCodeAndRecoveryCode = `${t("two_factor_authentication.add_totp.backup_code", 5)}\n${displayBackupCode.value}\n\n${t("two_factor_authentication.add_totp.recovery_code")}\n${recoveryCode.value}`;
 		const filename = `KIRAKIRA TOTP CODE ${selfUserInfoStore.userInfo.username} (UID ${selfUserInfoStore.userInfo.uid}) ${new Date().getTime()}`;
 		downloadTxtFileFromString(backupCodeAndRecoveryCode, filename);
 	}
@@ -359,12 +423,12 @@
 	 */
 	async function deleteTotpByVerification() {
 		if (!deleteTotpPassword.value) {
-			useToast(t.validation.required.password, "error");
+			useToast(t("validation.required.password"), "error");
 			return;
 		}
 
 		if (!deleteTotpVerificationCode.value) {
-			useToast(t.validation.required.totp_verification_code, "error");
+			useToast(t("validation.required.totp_verification_code"), "error");
 			return;
 		}
 
@@ -379,17 +443,17 @@
 			const deleteTotpByVerificationCodeResult = await api.user.deleteTotpByVerificationCode(deleteTotpAuthenticatorByTotpVerificationCodeRequest, headerCookie);
 
 			if (deleteTotpByVerificationCodeResult.isCoolingDown)
-				useToast(t.toast.cooling_down, "warning");
+				useToast(t("toast.cooling_down"), "warning");
 
 			if (deleteTotpByVerificationCodeResult.success) {
 				closeDeleteTotpModel();
 				await checkUserHave2FAByUUID();
 			} else
-				useToast(t.toast.something_went_wrong, "error", 5000);
+				useToast(t("toast.something_went_wrong"), "error", 5000);
 
 			isDeletingTotp.value = false;
 		} catch (error) {
-			useToast(t.toast.something_went_wrong, "error", 5000);
+			useToast(t("toast.something_went_wrong"), "error", 5000);
 			console.error("ERRRR", "Failed to remove TOTP authenticator:", error);
 			isDeletingTotp.value = false;
 		}
@@ -400,80 +464,189 @@
 
 <template>
 	<div>
-		<InfoBar v-if="isUnsafeAccount" type="warning" :title="t.severity.warning">
-			<Preserves>{{ t.settings.security.is_unsafe_2fa }}</Preserves>
+		<InfoBar v-if="isUnsafeAccount" type="warning" :title="$t('severity.warning')">
+			<Preserves>{{ $t("settings.security.is_unsafe_2fa") }}</Preserves>
 		</InfoBar>
 		<section>
 			<SettingsChipItem
 				icon="email"
 				trailingIcon="edit"
-				:details="t.current_email + t.colon + selfUserInfoStore.userInfo.email"
-				@trailingIconClick="showChangeEmail = true"
-			>{{ t.email_address }}</SettingsChipItem>
+				:details="$t('current_email') + $t('colon') + selfUserInfoStore.userInfo.email"
+				@trailingIconClick="openChangeEmailModel"
+			>{{ $t("email_address") }}</SettingsChipItem>
 		</section>
 		<section>
 			<SettingsChipItem
 				icon="password"
 				trailingIcon="edit"
-				:details="t.modification_date + t.colon + passwordChangeDateDisplay"
+				:details="$t('modification_date') + $t('colon') + passwordChangeDateDisplay"
 				@trailingIconClick="showChangePassword = true"
-			>{{ t.password }}</SettingsChipItem>
+			>{{ $t("password.title") }}</SettingsChipItem>
 		</section>
-		<Subheader icon="lock">{{ t.two_factor_authentication }}</Subheader>
-		<span>{{ t.two_factor_authentication.description }}</span>
+		<Subheader icon="lock">{{ $t("two_factor_authentication.title") }}</Subheader>
+		<span>{{ $t("two_factor_authentication.description") }}</span>
 		<section list>
-			<RadioButton v-model="categoryOf2FAComputed" v-ripple value="none" :details="t.two_factor_authentication.off_description">{{ t.off }}</RadioButton>
-			<RadioButton v-model="categoryOf2FAComputed" v-ripple value="email" :details="t.two_factor_authentication.email_description" :disabled="isEmail2FADisable">{{ t.email }}</RadioButton>
-			<RadioButton v-model="categoryOf2FAComputed" v-ripple value="totp" :details="t.two_factor_authentication.totp_description" :disabled="isTotp2FADisable">{{ t.two_factor_authentication.totp }}</RadioButton>
+			<RadioButton v-model="categoryOf2FAComputed" v-ripple value="none" :details="$t('two_factor_authentication.off_description')">{{ $t("off") }}</RadioButton>
+			<RadioButton v-model="categoryOf2FAComputed" v-ripple value="email" :details="$t('two_factor_authentication.email_description')" :disabled="isEmail2FADisable">{{ $t("email") }}</RadioButton>
+			<RadioButton v-model="categoryOf2FAComputed" v-ripple value="totp" :details="$t('two_factor_authentication.totp_description')" :disabled="isTotp2FADisable">{{ $t("two_factor_authentication.totp") }}</RadioButton>
 		</section>
 		<section v-if="categoryOf2FAComputed === 'totp'">
 			<SettingsChipItem
 				icon="lock"
 				:trailingIcon="hasBoundTotp ? 'delete' : 'add'"
-				:details="checkUser2FAResult?.totpCreationDateTime ? t.addition_date + t.colon + authenticatorAddDateDisplay : undefined"
+				:details="checkUser2FAResult?.totpCreationDateTime ? $t('addition_date') + $t('colon') + authenticatorAddDateDisplay : undefined"
 				@trailingIconClick="openTotpModel"
-			>{{ t.totp_authenticator }}</SettingsChipItem>
+			>{{ $t("totp_authenticator") }}</SettingsChipItem>
 		</section>
 
-		<Modal v-model="showChangeEmail" :title="t.change_email" icon="email">
+		<!-- 修改邮箱 -->
+		<Modal :open="changeEmailStep !== 'closed'" :title="$t('change_email.title')" icon="email" @close="closeChangeEmailModel">
 			<div class="change-email-modal">
-				<form>
-					<TextBox
-						v-model="newEmail"
-						:required="true"
-						:invalid="isInvalidNewEmail"
-						type="email"
-						icon="email"
-						:placeholder="t.new_email"
-						autoComplete="new-email"
-					/>
-					<SendVerificationCode v-model="changeEmailVerificationCode" :email="newEmail" verificationCodeFor="change-email" :disabled="!newEmail || isInvalidNewEmail" />
-					<TextBox
-						v-model="changeEmailPassword"
-						:required="true"
-						type="password"
-						icon="lock"
-						:placeholder="t.password._"
-						autoComplete="current-password"
-					/>
-				</form>
+				<div class="page">
+
+					<!-- step: 1-1 (email-2fa/no-2fa) -->
+					<div v-if="changeEmailModelName === 'verification-email'" class="step">
+						<ShadingIcon icon="email" />
+						<h3><Icon name="counter_1" />{{ $t('change_email.verify_current_email') }}</h3>
+						<p>
+							<Preserves>{{ $t('change_email.verify_current_email_description') }}</Preserves>
+						</p>
+						<br />
+						<form>
+							<SendVerificationCode
+								v-model="changeEmailVerificationCode"
+								verificationCodeFor="change-email-verify-old-email"
+							/>
+						</form>
+					</div>
+
+					<!-- step: 1-2 (totp-2fa) -->
+					<div v-if="changeEmailModelName === 'verification-totp'" class="step">
+						<ShadingIcon icon="email" />
+						<h3><Icon name="counter_1" />{{ $t('change_email.verify_new_email') }}</h3>
+						<p>
+							<Preserves>{{ t('change_email.verify_new_email_description') }}</Preserves>
+						</p>
+						<br />
+						<form>
+							<TextBox
+								v-model="newEmail"
+								:required="true"
+								:invalid="isInvalidNewEmail"
+								type="email"
+								icon="email"
+								:placeholder="$t('new_email')"
+								autoComplete="new-email"
+							/>
+							<SendVerificationCode
+								v-model="changeEmailNewEmailVerificationCode"
+								:email="newEmail"
+								verificationCodeFor="change-email-verify-new-email"
+								:disabled="!newEmail || !!isInvalidNewEmail"
+							/>
+						</form>
+					</div>
+
+					<!-- step: 2-1 (email-2fa/no-2fa) -->
+					<div v-if="changeEmailModelName === 'confirm-email'" class="step">
+						<ShadingIcon icon="email" />
+						<h3><Icon name="counter_2" />{{ t('change_email.verify_new_email_and_credentials') }}</h3>
+						<p>{{ t('change_email.verify_new_email_and_credentials_description') }}</p>
+						<p v-if="appSettingsStore.authenticatorType === 'email'">
+							{{ t('change_email.email_2fa_auto_update_warning') }}
+						</p>
+						<br />
+						<form>
+							<TextBox
+								v-model="changeEmailPassword"
+								:required="true"
+								type="password"
+								icon="lock"
+								:placeholder="$t('password.title')"
+								autoComplete="current-password"
+							/>
+							<TextBox
+								v-model="newEmail"
+								:required="true"
+								:invalid="isInvalidNewEmail"
+								type="email"
+								icon="email"
+								:placeholder="$t('new_email')"
+								autoComplete="new-email"
+							/>
+							<SendVerificationCode
+								v-model="changeEmailNewEmailVerificationCode"
+								:email="newEmail"
+								verificationCodeFor="change-email-verify-new-email"
+								:disabled="!newEmail || !!isInvalidNewEmail"
+							/>
+						</form>
+					</div>
+
+					<!-- step: 2-2 (totp-2fa) -->
+					<div v-if="changeEmailModelName === 'confirm-totp'" class="step">
+						<ShadingIcon icon="email" />
+						<h3><Icon name="counter_2" />{{ t('change_email.verify_credentials') }}</h3>
+						<p>
+							<Preserves>{{ t('change_email.verify_credentials_description') }}</Preserves>
+						</p>
+						<br />
+						<form>
+							<TextBox
+								v-model="changeEmailPassword"
+								:required="true"
+								type="password"
+								icon="lock"
+								:placeholder="$t('password.title')"
+								autoComplete="current-password"
+							/>
+							<TextBox
+								v-model="changeEmailVerificationCode"
+								:required="true"
+								type="text"
+								icon="lock"
+								:placeholder="$t('totp_verification_code')"
+								utoComplete="off"
+							/>
+						</form>
+					</div>
+
+				</div>
 			</div>
-			<template #footer-right>
-				<Button class="secondary" :disabled="isChangingEmail" @click="showChangePassword = false">{{ t.step.cancel }}</Button>
-				<Button @click="updateUserEmail" :disabled="isChangingEmail || !newEmail || !changeEmailPassword || !changeEmailVerificationCode" :loading="isChangingEmail">{{ t.step.apply }}</Button>
+			<template v-if="changeEmailStep === 'verification'" #footer-right>
+				<Button class="secondary" :disabled="isChangingEmail" @click="closeChangeEmailModel">{{ $t("step.cancel") }}</Button>
+				<Button icon="arrow_right" class="icon-behind" @click="changeEmailStep = 'confirm'" :disabled="isChangingEmail || isChangeEmailNextButtonDisabled">{{ $t("step.next") }}</Button>
+			</template>
+			<template v-else #footer-right>
+				<Button icon="arrow_left" class="secondary" :disabled="isChangingEmail" @click="changeEmailStep = 'verification'">{{ $t("step.previous") }}</Button>
+				<Button class="secondary" :disabled="isChangingEmail" @click="closeChangeEmailModel">{{ $t("step.cancel") }}</Button>
+				<Button @click="updateUserEmail" :disabled="isChangingEmail || isChangeEmailApplyButtonDisabled" :loading="isChangingEmail">{{ $t("step.apply") }}</Button>
 			</template>
 		</Modal>
 
-		<Modal v-model="showChangePassword" :title="t.password.change" icon="password">
+		<Modal v-model="showChangePassword" :title="$t('password.change')" icon="password">
 			<div class="change-password-modal">
 				<form>
-					<SendVerificationCode v-model="changePasswordVerificationCode" verificationCodeFor="change-password" />
+					<SendVerificationCode
+						v-if="appSettingsStore.authenticatorType !== 'totp'"
+						v-model="changePasswordVerificationCode"
+						verificationCodeFor="change-password"
+					/>
+					<TextBox
+						v-else
+						v-model="changePasswordVerificationCode"
+						:required="true"
+						type="text"
+						icon="lock"
+						:placeholder="$t('totp_verification_code')"
+						autoComplete="off"
+					/>
 					<TextBox
 						v-model="oldPassword"
 						:required="true"
 						type="password"
 						icon="lock"
-						:placeholder="t.password.current"
+						:placeholder="$t('password.current')"
 						autoComplete="current-password"
 					/>
 					<TextBox
@@ -481,7 +654,7 @@
 						:required="true"
 						type="password"
 						icon="lock"
-						:placeholder="t.password.new"
+						:placeholder="$t('password.new')"
 						autoComplete="new-password"
 					/>
 					<TextBox
@@ -489,28 +662,28 @@
 						:required="true"
 						type="password"
 						icon="lock"
-						:placeholder="t.password.new_retype"
+						:placeholder="$t('password.new_retype')"
 						autoComplete="new-password"
 					/>
 				</form>
 			</div>
 			<template #footer-right>
-				<Button class="secondary" :disabled="isChangingPassword" @click="showChangePassword = false">{{ t.step.cancel }}</Button>
-				<Button @click="updateUserPassword" :disabled="isChangingPassword || !oldPassword || !newPassword || !changePasswordVerificationCode" :loading="isChangingPassword">{{ t.step.apply }}</Button>
+				<Button class="secondary" :disabled="isChangingPassword" @click="showChangePassword = false">{{ $t("step.cancel") }}</Button>
+				<Button @click="updateUserPassword" :disabled="isChangePasswordApplyButtonDisabled" :loading="isChangingPassword">{{ $t("step.apply") }}</Button>
 			</template>
 		</Modal>
 
-		<Modal v-model="showCreateTotpModel" :title="t.two_factor_authentication.add_totp" icon="lock" :hideTitleCloseIcon="true">
+		<Modal v-model="showCreateTotpModel" :title="$t('two_factor_authentication.add_totp.title')" icon="lock" :hideTitleCloseIcon="true">
 			<div class="create-totp-modal">
-				<InfoBar type="warning" :title="t.severity.warning">
-					{{ t.two_factor_authentication.add_totp.warning }}
+				<InfoBar type="warning" :title="$t('severity.warning')">
+					{{ $t("two_factor_authentication.add_totp.warning") }}
 				</InfoBar>
 				<div v-if="!backupCode || backupCode.length <= 0 || !recoveryCode" class="page">
 					<div class="step">
 						<ShadingIcon icon="download" />
-						<h3><Icon name="counter_1" />{{ t.two_factor_authentication.add_totp.step_install }}</h3>
+						<h3><Icon name="counter_1" />{{ $t("two_factor_authentication.add_totp.step_install") }}</h3>
 						<p>
-							<TransInterpolation keypath="t.two_factor_authentication.add_totp.step_install_description">
+							<TransInterpolation keypath="two_factor_authentication.add_totp.step_install_description">
 								<template #ente-auth>
 									<a href="https://ente.io/auth/" target="_blank">Ente Auth</a>
 								</template>
@@ -525,16 +698,16 @@
 					</div>
 					<div class="step">
 						<ShadingIcon icon="qr_code_scanner" />
-						<h3><Icon name="counter_2" />{{ t.two_factor_authentication.add_totp.step_scan }}</h3>
+						<h3><Icon name="counter_2" />{{ $t("two_factor_authentication.add_totp.step_scan") }}</h3>
 						<div class="totp-qrcode-box">
 							<QrcodeVue v-if="otpAuth" :value="otpAuth" :level="totpQrcodeLevel" :renderAs="totpQrcodeRenderAs" :size="totpQrcodeSize" />
 						</div>
 					</div>
 					<div class="step">
 						<ShadingIcon icon="edit" />
-						<h3><Icon name="counter_3" />{{ t.two_factor_authentication.add_totp.step_enter_code }}</h3>
+						<h3><Icon name="counter_3" />{{ $t("two_factor_authentication.add_totp.step_enter_code") }}</h3>
 						<p>
-							<Preserves>{{ t.two_factor_authentication.add_totp.step_enter_code_description }}</Preserves>
+							<Preserves>{{ $t("two_factor_authentication.add_totp.step_enter_code_description") }}</Preserves>
 						</p>
 						<form class="totp-confirm-form">
 							<TextBox
@@ -542,7 +715,7 @@
 								:required="true"
 								type="text"
 								icon="verified"
-								:placeholder="t.totp_verification_code"
+								:placeholder="$t('totp_verification_code')"
 								autocomplete="off"
 							/>
 						</form>
@@ -551,33 +724,33 @@
 				<div v-else class="page">
 					<div class="step">
 						<ShadingIcon icon="lock_reset" />
-						<h3><Icon name="counter_4" />{{ t.two_factor_authentication.add_totp.step_save }}</h3>
+						<h3><Icon name="counter_4" />{{ $t("two_factor_authentication.add_totp.step_save") }}</h3>
 						<p>
-							<Preserves>{{ t.two_factor_authentication.add_totp.step_save_description }}</Preserves>
+							<Preserves>{{ $t("two_factor_authentication.add_totp.step_save_description") }}</Preserves>
 						</p>
 						<br />
-						<p>{{ t(2).two_factor_authentication.add_totp.backup_code }}</p>
-						<label class="details">{{ t.two_factor_authentication.add_totp.backup_code_description }}</label>
+						<p>{{ $t("two_factor_authentication.add_totp.backup_code", 5) }}</p>
+						<label class="details">{{ $t("two_factor_authentication.add_totp.backup_code_description") }}</label>
 						<pre><code>{{ displayBackupCode }}</code></pre>
 						<br />
-						<p>{{ t.two_factor_authentication.add_totp.recovery_code }}</p>
-						<label class="details">{{ t.two_factor_authentication.add_totp.recovery_code_description }}</label>
+						<p>{{ $t("two_factor_authentication.add_totp.recovery_code") }}</p>
+						<label class="details">{{ $t("two_factor_authentication.add_totp.recovery_code_description") }}</label>
 						<pre><code>{{ recoveryCode }}</code></pre>
 					</div>
 				</div>
 			</div>
 
 			<template v-if="!backupCode || backupCode.length <= 0 || !recoveryCode" #footer-right>
-				<Button class="secondary" @click="closeCreateTotpModel" :disabled="isConfirmTotp">{{ t.step.cancel }}</Button>
-				<Button icon="arrow_right" class="icon-behind" @click="handleClickConfirmTotp" :disabled="isConfirmTotp || !confirmTotpVerificationCode" :loading="isConfirmTotp">{{ t.step.next }}</Button>
+				<Button class="secondary" @click="closeCreateTotpModel" :disabled="isConfirmTotp">{{ $t("step.cancel") }}</Button>
+				<Button icon="arrow_right" class="icon-behind" @click="handleClickConfirmTotp" :disabled="isConfirmTotp || !confirmTotpVerificationCode" :loading="isConfirmTotp">{{ $t("step.next") }}</Button>
 			</template>
 			<template v-else #footer-right>
-				<Button icon="download" class="secondary" @click="downloadBackupCodeAndRecoveryCode">{{ t.two_factor_authentication.add_totp.download }}</Button>
-				<Button icon="check" @click="closeCreateTotpModel" :disabled="isConfirmTotp" :loading="isConfirmTotp">{{ t.step.finish }}</Button>
+				<Button icon="download" class="secondary" @click="downloadBackupCodeAndRecoveryCode">{{ $t("two_factor_authentication.add_totp.download") }}</Button>
+				<Button icon="check" @click="closeCreateTotpModel" :disabled="isConfirmTotp" :loading="isConfirmTotp">{{ $t("step.finish") }}</Button>
 			</template>
 		</Modal>
 
-		<Modal v-model="showDeleteTotpModel" :title="t.two_factor_authentication.remove_totp" icon="delete">
+		<Modal v-model="showDeleteTotpModel" :title="$t('two_factor_authentication.remove_totp.title')" icon="delete">
 			<div class="delete-totp-modal">
 				<form>
 					<TextBox
@@ -585,7 +758,7 @@
 						:required="true"
 						type="password"
 						icon="lock"
-						:placeholder="t.password"
+						:placeholder="$t('password.title')"
 						autoComplete="current-password"
 					/>
 					<TextBox
@@ -593,29 +766,29 @@
 						:required="true"
 						type="text"
 						icon="lock"
-						:placeholder="t.totp_verification_code"
+						:placeholder="$t('totp_verification_code')"
 						autocomplete="off"
 					/>
 				</form>
 			</div>
 			<template #footer-right>
-				<Button class="secondary" :disabled="isDeletingTotp" @click="closeDeleteTotpModel">{{ t.step.cancel }}</Button>
-				<Button severity="danger" icon="delete" @click="deleteTotpByVerification" :disabled="isDeletingTotp || !deleteTotpVerificationCode" :loading="isDeletingTotp">{{ t.remove }}</Button>
+				<Button class="secondary" :disabled="isDeletingTotp" @click="closeDeleteTotpModel">{{ $t("step.cancel") }}</Button>
+				<Button severity="danger" icon="delete" @click="deleteTotpByVerification" :disabled="isDeletingTotp || !deleteTotpVerificationCode" :loading="isDeletingTotp">{{ $t("remove") }}</Button>
 			</template>
 		</Modal>
 
-		<Modal v-model="showCreateEmail2FAModel" :title="t.two_factor_authentication.enable_email" icon="lock">
+		<Modal v-model="showCreateEmail2FAModel" :title="$t('two_factor_authentication.enable_email.title')" icon="lock">
 			<div class="enable-email-2fa-modal">
-				<p>{{ t.current_email + t.colon + selfUserInfoStore.userInfo.email }}</p>
-				<p class="danger-text">{{ t.two_factor_authentication.enable_email.ensure }}</p>
+				<p>{{ $t("current_email") + $t("colon") + selfUserInfoStore.userInfo.email }}</p>
+				<p class="danger-text">{{ $t("two_factor_authentication.enable_email.ensure") }}</p>
 			</div>
 			<template #footer-right>
-				<Button class="secondary" :disabled="isCreatingEmail2FA" @click="closeCreateEmail2FAModel">{{ t.step.cancel }}</Button>
-				<Button severity="warning" @click="createEmail2FA" :disabled="isCreatingEmail2FA" :loading="isCreatingEmail2FA">{{ t.enable }}</Button>
+				<Button class="secondary" :disabled="isCreatingEmail2FA" @click="closeCreateEmail2FAModel">{{ $t("step.cancel") }}</Button>
+				<Button severity="warning" @click="createEmail2FA" :disabled="isCreatingEmail2FA" :loading="isCreatingEmail2FA">{{ $t("enable") }}</Button>
 			</template>
 		</Modal>
 
-		<Modal v-model="showDeleteEmail2FAModel" :title="t.two_factor_authentication.disable_email" icon="delete">
+		<Modal v-model="showDeleteEmail2FAModel" :title="$t('two_factor_authentication.disable_email.title')" icon="delete">
 			<div class="delete-email-2fa-modal">
 				<form>
 					<TextBox
@@ -623,29 +796,30 @@
 						:required="true"
 						type="password"
 						icon="lock"
-						:placeholder="t.password"
+						:placeholder="$t('password.title')"
 						autoComplete="current-password"
 					/>
 					<SendVerificationCode v-model="deleteEmail2FAVerificationCode" verificationCodeFor="delete-email-2fa" />
 				</form>
 			</div>
 			<template #footer-right>
-				<Button class="secondary" :disabled="isDeletingEmail2FA" @click="closeDeleteEmail2FAModel">{{ t.step.cancel }}</Button>
-				<Button severity="danger" @click="deleteEmail2FAByVerification" :disabled="isDeletingEmail2FA || !deleteEmail2FAPassword || !deleteEmail2FAVerificationCode" :loading="isDeletingEmail2FA">{{ t.disable }}</Button>
+				<Button class="secondary" :disabled="isDeletingEmail2FA" @click="closeDeleteEmail2FAModel">{{ $t("step.cancel") }}</Button>
+				<Button severity="danger" @click="deleteEmail2FAByVerification" :disabled="isDeletingEmail2FA || !deleteEmail2FAPassword || !deleteEmail2FAVerificationCode" :loading="isDeletingEmail2FA">{{ $t("disable") }}</Button>
 			</template>
 		</Modal>
 	</div>
 </template>
 
 <style scoped lang="scss">
-	.change-password-modal {
+	.change-email-modal {
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
 		gap: 24px;
-		width: 350px;
+		width: 80dvw;
+		max-width: 400px;
 
-		> form {
+		form {
 			display: flex;
 			flex-direction: column;
 			gap: 16px;
@@ -656,7 +830,7 @@
 		}
 	}
 
-	.change-email-modal {
+	.change-password-modal {
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
@@ -692,76 +866,40 @@
 			--size: large;
 		}
 
-		.page {
+		.totp-qrcode-box {
+			@include round-small;
+			@include chip-shadow;
+			display: inline-flex;
+			justify-content: center;
+			align-items: center;
+			width: 150px;
+			height: 150px;
+			padding: 8px;
+			background-color: white;
+
+			> svg {
+				@include square(100%);
+			}
+		}
+
+		.totp-confirm-form {
+			margin-top: 8px;
+		}
+
+		pre {
+			@include round-small;
 			display: flex;
-			flex-direction: column;
-			gap: 8px;
+			align-items: center;
+			height: 36px;
+			margin-top: 4px;
+			padding: 0 12px;
+			background-color: c(gray-10);
+			cursor: text;
 
-			.totp-qrcode-box {
-				@include round-small;
-				@include chip-shadow;
-				display: inline-flex;
-				justify-content: center;
-				align-items: center;
-				width: 150px;
-				height: 150px;
-				padding: 8px;
-				background-color: white;
-
-				> svg {
-					@include square(100%);
-				}
-			}
-
-			.totp-confirm-form {
-				margin-top: 8px;
-			}
-
-			.step {
-				@include chip-shadow;
-				@include round-large;
-				position: relative;
-				padding: 16px;
-				overflow: clip;
-				background-color: c(surface-color);
-
-				.shading-icon {
-					position: absolute;
-					z-index: unset;
-				}
-
-				> *:not(h3) {
-					margin-left: 32px;
-				}
-			}
-
-			h3 {
-				display: flex;
-				gap: 8px;
-				align-items: center;
-				margin-bottom: 6px;
-
-				.icon {
-					color: c(accent);
-					font-size: 24px;
-				}
-			}
-
-			pre {
-				@include round-small;
-				display: flex;
-				align-items: center;
-				height: 36px;
-				margin-top: 4px;
-				padding: 0 12px;
-				background-color: c(gray-10);
-				cursor: text;
-
-				code {
-					display: block;
-					width: 100%;
-					user-select: text;
-				}
+			code {
+				display: block;
+				width: 100%;
+				user-select: text;
 			}
 		}
 	}
@@ -800,6 +938,49 @@
 
 		.text-box {
 			--size: large;
+		}
+	}
+
+	.change-password-modal,
+	.change-email-modal,
+	.create-totp-modal,
+	.delete-totp-modal,
+	.enable-email-2fa-modal,
+	.delete-email-2fa-modal {
+		.page {
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+
+			.step {
+				@include chip-shadow;
+				@include round-large;
+				position: relative;
+				padding: 16px;
+				overflow: clip;
+				background-color: c(surface-color);
+
+				.shading-icon {
+					position: absolute;
+					z-index: unset;
+				}
+
+				> *:not(h3) {
+					margin-left: 32px;
+				}
+			}
+
+			h3 {
+				display: flex;
+				gap: 8px;
+				align-items: center;
+				margin-bottom: 6px;
+
+				.icon {
+					color: c(accent);
+					font-size: 24px;
+				}
+			}
 		}
 	}
 

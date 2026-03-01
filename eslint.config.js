@@ -11,34 +11,25 @@ import jsdoc from "eslint-plugin-jsdoc";
 import unicorn from "eslint-plugin-unicorn";
 
 /** @type {import("eslint").Linter.Config[]} */
-export default [
+export default tseslint.config(
 	eslint.configs.recommended,
 	...tseslint.configs.recommended,
 	...pluginVue.configs["flat/essential"],
 	importPlugin.flatConfigs.warnings,
 	jsdoc.configs["flat/recommended-typescript"],
+	// Stylistic 简单规则
 	stylistic.configs.customize({
 		indent: "tab",
 		quotes: "double",
 		semi: true,
 	}),
+	// 主规则
 	{
-		/* extends: [
-			"@nuxtjs/eslint-config-typescript",
-			"plugin:nuxt/recommended",
-			"eslint:recommended",
-			"plugin:@typescript-eslint/recommended",
-			"plugin:vue/vue3-essential",
-		], */
-		// ↑ Legacy ESLint configuration backup
-		plugins: {
-			"typescript-eslint": tseslint.plugin,
-			unicorn,
-		},
 		languageOptions: {
 			parserOptions: {
-				parser: {
-					ts: tseslint.parser,
+				parser: tseslint.parser,
+				ecmaFeatures: {
+					jsx: true,
 				},
 				project: true,
 				tsconfigRootDir: import.meta.dirname,
@@ -49,9 +40,20 @@ export default [
 			globals: {
 				...globals.browser,
 				...globals.node,
+				// https://eslint.vuejs.org/user-guide/#auto-imports-support
+				...Object.fromEntries([
+					"ref", "computed", "watch", "watchEffect", "reactive", "shallowRef",
+				].map(v => [v, "readonly"])),
 			},
 		},
 		files: ["**/*.{js,jsx,ts,tsx,vue}"],
+		plugins: {
+			unicorn,
+		},
+		linterOptions: {
+			reportUnusedInlineConfigs: "error",
+			reportUnusedDisableDirectives: "error",
+		},
 		settings: {
 			react: {
 				version: "detect",
@@ -65,6 +67,9 @@ export default [
 					remark: "remarks",
 					notes: "note",
 					warning: "warn",
+					throw: "throws",
+					yield: "yields",
+					defaults: "default",
 				},
 			},
 		},
@@ -179,12 +184,6 @@ export default [
 			"default-case-last": "off",
 			"no-useless-constructor": "off", // private constructor() { } 你跟我说无用？
 			"@stylistic/no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0, "maxBOF": 0 }],
-			"no-unused-expressions": ["error", {
-				"allowShortCircuit": true,
-				"allowTernary": true,
-				"allowTaggedTemplates": true,
-				"enforceForJSX": true,
-			}],
 			"@stylistic/max-statements-per-line": "off",
 			// "no-useless-assignment": "error", // 不支持 Vue 模板变量引用。
 			"no-control-regex": "off",
@@ -195,6 +194,8 @@ export default [
 				"method": { "before": true, "after": false },
 			}],
 			"prefer-rest-params": "off",
+			"no-empty-pattern": "off",
+			"no-misleading-character-class": ["error", { "allowEscape": true }],
 			"import/order": ["warn", {
 				"alphabetize": { "order": "asc", "orderImportKind": "asc", "caseInsensitive": false },
 				"named": true,
@@ -216,11 +217,16 @@ export default [
 			"unicorn/no-document-cookie": "error",
 			"unicorn/prefer-string-replace-all": "error",
 			"unicorn/no-useless-length-check": "error",
-			"jsdoc/require-jsdoc": "off",
+			"jsdoc/require-jsdoc": ["off", {
+				contexts: ["TSDeclareFunction"],
+				exemptOverloadedImplementations: true,
+				skipInterveningOverloadedDeclarations: true,
+			}],
 			"jsdoc/tag-lines": "off",
-			"jsdoc/require-param": ["warn", {
+			"jsdoc/require-param": ["error", {
 				"enableFixer": false,
 				"checkDestructuredRoots": false,
+				"exemptedBy": ["inheritdoc", "deprecated", "see"],
 			}],
 			"jsdoc/check-param-names": ["warn", {
 				"checkDestructured": false,
@@ -228,12 +234,12 @@ export default [
 				"disableExtraPropertyReporting": true,
 			}],
 			"jsdoc/check-tag-names": ["error", {
-				"definedTags": ["note", "remarks", "memberOf", "category", "warn", "notdeprecated"],
+				"definedTags": ["note", "remarks", "memberOf", "category", "warn"],
 			}],
 			"jsdoc/require-hyphen-before-param-description": ["error", "always", { "tags": { "template": "always" } }],
 			"jsdoc/require-returns": ["warn", {
 				"checkGetters": false,
-				"exemptedBy": ["inheritdoc", "deprecated"],
+				"exemptedBy": ["inheritdoc", "deprecated", "see"],
 			}],
 			"jsdoc/require-asterisk-prefix": "error",
 			"jsdoc/no-multi-asterisks": ["error", { "allowWhitespace": true }],
@@ -242,12 +248,32 @@ export default [
 			// }],
 			"jsdoc/require-returns-check": "off",
 			"jsdoc/empty-tags": "off",
+			"jsdoc/require-template": ["error", {
+				"requireSeparateTemplates": true,
+				"exemptedBy": ["inheritdoc", "deprecated", "see"],
+			}],
+			"jsdoc/require-throws": ["error", {
+				"exemptedBy": ["inheritdoc", "deprecated", "see"],
+			}],
+			"jsdoc/require-yields": ["error", {
+				"exemptedBy": ["inheritdoc", "deprecated", "see"],
+			}],
+			"jsdoc/require-throws-type": "warn",
+			"jsdoc/require-yields-type": "warn",
+			"jsdoc/require-next-type": "warn",
+			"jsdoc/require-throws-description": "warn",
+			"jsdoc/require-yields-description": "warn",
+			"jsdoc/require-next-description": "warn",
+			"jsdoc/escape-inline-tags": "off",
+			"jsdoc/no-undefined-types": "warn",
 			"@typescript-eslint/no-unused-vars": ["warn", { // 非要使用未使用变量，前面加下划线。
 				"argsIgnorePattern": "^_",
 				"varsIgnorePattern": "^_|^props$|^emits$",
 				"caughtErrorsIgnorePattern": "^_",
 			}],
 			"no-unused-private-class-members": "warn",
+			"no-object-constructor": "error",
+			"no-array-constructor": "error",
 			"@typescript-eslint/no-inferrable-types": ["error", { "ignoreParameters": true, "ignoreProperties": true }],
 			"@typescript-eslint/no-non-null-assertion": "off",
 			"@typescript-eslint/triple-slash-reference": "off",
@@ -273,7 +299,7 @@ export default [
 				"functions": false,
 			}],
 			"@typescript-eslint/no-empty-function": "off",
-			"@typescript-eslint/no-redeclare": "warn",
+			"@typescript-eslint/no-redeclare": "off", // TypeScript 编译器已支持。
 			"@typescript-eslint/no-useless-constructor": "error",
 			"@typescript-eslint/no-this-alias": "off",
 			"@stylistic/indent-binary-ops": "error",
@@ -414,6 +440,8 @@ export default [
 				"singleline": "ignore",
 				"multiline": "below",
 			}],
+			"vue/no-ref-as-operand": "error",
+			"vue/no-watch-after-await": "error",
 			"no-restricted-properties": ["error", {
 				object: "arguments",
 				property: "callee",
@@ -501,6 +529,9 @@ export default [
 				name: "open",
 				message: "Please use window.open instead.",
 			}, {
+				name: "close",
+				message: "Please use window.close instead.",
+			}, {
 				name: "matchMedia",
 				message: "Please use window.matchMedia instead.",
 			}, {
@@ -519,6 +550,7 @@ export default [
 			}],
 		},
 	},
+	// ESLint 和 StyleLint 的规则属性名建议加引号以保持统一
 	{
 		files: ["*.config.{js,ts}"],
 		rules: {
@@ -526,6 +558,7 @@ export default [
 			"import/order": "off",
 		},
 	},
+	// 类型声明文件中可以用 any
 	{
 		files: ["**/*.d.ts"],
 		rules: {
@@ -534,8 +567,9 @@ export default [
 			"no-var": "off", // 在 globalThis 中声明成员时必须要用 var（不能使用 let 或 const）！参见：https://stackoverflow.com/a/69429093/19553213
 		},
 	},
+	// JavaScript 源文件需要在 JSDoc 中写类型
 	{
-		files: ["*.{js,jsx}"],
+		files: ["**/*.{js,jsx}"],
 		rules: {
 			"jsdoc/check-tag-names": "off",
 			"jsdoc/no-types": "off",
@@ -544,6 +578,7 @@ export default [
 			"jsdoc/require-property-type": "error",
 		},
 	},
+	// 排除列表
 	{
 		ignores: [
 			"**/dist/*",
@@ -553,4 +588,4 @@ export default [
 			"proto/*",
 		],
 	},
-];
+);

@@ -37,6 +37,7 @@ export default defineNuxtConfig({
 		"@nuxtjs/i18n",
 		"@nuxt/image",
 		"@nuxt/icon",
+		"@nuxt/hints",
 		"@vueuse/nuxt",
 		"@chettapong/nuxt-lodash",
 		["@pinia/nuxt", {
@@ -117,6 +118,8 @@ export default defineNuxtConfig({
 				"mitt",
 				"tus-js-client",
 				"node-vibrant/worker",
+				"@vercel/analytics/nuxt",
+				"@nuxt/hints/runtime/hydration/component",
 			],
 			needsInterop: [
 				"mediainfo.js",
@@ -169,6 +172,22 @@ export default defineNuxtConfig({
 				target: "esnext",
 			},
 		},
+		devProxy: {
+			"/api/staging/": {
+				target: "https://stg-rosales.kirafile.com",
+				changeOrigin: true,
+				cookieDomainRewrite: {
+					"kirafile.com": "localhost",
+				},
+			},
+		},
+	},
+
+	devServer: {
+		https: {
+			key: "server/server.key",
+			cert: "server/server.cer",
+		},
 	},
 
 	build: {
@@ -197,9 +216,9 @@ export default defineNuxtConfig({
 
 	i18n: {
 		locales: [
+			{ code: "en", language: "en-US", name: "English" },
 			{ code: "zhs", language: "zh-CN", name: "简体中文" },
 			{ code: "zht", language: "zh-TW", name: "繁體中文" },
-			{ code: "en", language: "en-US", name: "English" },
 			{ code: "ja", name: "日本語" },
 			{ code: "ko", name: "한국어" },
 			{ code: "vi", name: "Tiếng Việt" },
@@ -208,11 +227,13 @@ export default defineNuxtConfig({
 			{ code: "yue", name: "廣東話" },
 			{ code: "ii", name: "ꆈꌠꉙ" }, // In Context Language
 		],
-		defaultLocale: "zhs",
+		defaultLocale: "en",
 		vueI18n: "./i18n.config.ts",
+		strategy: "no_prefix",
 		detectBrowserLanguage: {
 			cookieKey: "language",
 			alwaysRedirect: true,
+			redirectOn: "all",
 		},
 		bundle: {
 			// 非预期错误，临时解决办法。参考：https://github.com/intlify/bundle-tools/issues/423#issuecomment-2525540710
@@ -240,7 +261,7 @@ export default defineNuxtConfig({
 				provider: "./providers/nuxt-image/cloudflare-images.ts", // Path to custom provider
 				options: {
 					// ... provider options
-					baseURL: "https://starcitizen.rip",
+					baseURL: "https://kirakira-image.starcitizen.rip",
 					accountHash: "nLUFLrrgVwzQdEx8eL5BaA",
 				},
 			},

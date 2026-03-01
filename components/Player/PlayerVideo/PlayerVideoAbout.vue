@@ -44,9 +44,10 @@
 	.logo-text {
 		--form: full;
 		position: absolute;
-		top: 16px;
-		right: 16px;
+		top: 12px;
+		right: 10px;
 		z-index: 2;
+		font-size: 22px;
 		animation: float-left 1s 200ms + $animation-wait-shown $ease-out-smooth backwards;
 	}
 
@@ -62,7 +63,7 @@
 	.right-wrapper {
 		display: flex;
 		flex-direction: column;
-		align-items: flex-end;
+		align-items: end;
 		max-width: 100%;
 	}
 

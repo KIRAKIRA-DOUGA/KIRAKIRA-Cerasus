@@ -5,7 +5,7 @@ const MEDIA_INFO_MODULE_WASM = "MediaInfoModule.wasm";
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
 	if (environment.client && environment.development)
-		console.log("to", to, "\nfrom", from, "\nrouteBaseName(to)", useNuxtApp().$getRouteBaseName(to));
+		console.log("to", to, "\nfrom", from, "\nrouteBaseName(to)", useNuxtApp().$routeBaseName(to));
 
 	if (environment.client)
 		document.getElementById(STOP_TRANSITION_ID)?.remove();
@@ -95,6 +95,7 @@ async function checkKvid(kvidString: string): Promise<true | Error> {
  * 如果用户已登录，则根据 cookie 中的 uid 和 token 来获取用户信息（同时具有验证用户 token 的功能）。
  * 如果未登录或验证不成功，则清空全局变量中的用户信息并清空残留 cookie。
  * @param uid - 显式指定其他用户的 UID。
+ * @returns 指定 UID 用户存在则返回该 UID 的 bigint，否则返回一个 Error。
  */
 async function getUserInfo(uid?: string) {
 	// 指定了 UID，打开该 UID 用户主页。

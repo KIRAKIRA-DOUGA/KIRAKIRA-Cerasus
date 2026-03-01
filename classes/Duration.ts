@@ -85,9 +85,11 @@ export class Duration {
 		const options: Intl.DurationFormatOptions = { style: "digital", hours: "2-digit", hoursDisplay: "auto" };
 		if (!this.valid)
 			return new Intl.DurationFormat(locale, { ...options, numberingSystem: "latn" }).format({ seconds: 0 }).replaceAll("0", Duration.dash);
-		return new Intl.DurationFormat(locale, options).format({
+		let result = new Intl.DurationFormat(locale, options).format({
 			hours: this.h, minutes: this.m, seconds: this.s,
 		});
+		if (this.negative) result = Duration.minus + result; // `Intl.DurationFormat` doesn't support negative value.
+		return result;
 	}
 
 	/**

@@ -4,11 +4,12 @@
 
 <script setup lang="ts">
 	const shown = defineModel<boolean>({ default: false });
+	const { t } = useI18n();
 
 	const drawerItems: { name: string; icon: DeclaredIcons; route?: string }[] = [
-		{ name: t.history, icon: "history", route: "/history" },
-		{ name: t(2).collection, icon: "star", route: "/collections" },
-		{ name: t.upload, icon: "upload", route: "/upload" },
+		{ name: t("history"), icon: "history", route: "/history" },
+		{ name: t("collection.title", 2), icon: "star", route: "/collections" },
+		{ name: t("upload.title"), icon: "upload", route: "/upload" },
 	];
 
 	/**
@@ -37,11 +38,11 @@
 	<Comp>
 		<div class="user">
 			<UserAvatar
-				v-tooltip="selfUserInfoStore.isLogined ? selfUserInfoStore.userInfo.userNickname : t.login"
+				v-tooltip="selfUserInfoStore.isLogined ? selfUserInfoStore.userInfo.userNickname : $t('login')"
 				:avatar="selfUserInfoStore.isLogined ? selfUserInfoStore.userInfo.avatar : undefined"
 				@click="onClickUser"
 			/>
-			<p class="nickname">{{ selfUserInfoStore.isLogined ? selfUserInfoStore.userInfo.userNickname : t.pleaseLogin }}</p>
+			<p class="nickname">{{ selfUserInfoStore.isLogined ? selfUserInfoStore.userInfo.userNickname : $t("please_login") }}</p>
 			<p v-if="selfUserInfoStore.isLogined" class="username">@{{ selfUserInfoStore.userInfo.username }}</p>
 			<p v-if="selfUserInfoStore.isLogined && selfUserInfoStore.userInfo.signature" class="bio">{{ selfUserInfoStore.userInfo.signature }}</p>
 		</div>
@@ -52,7 +53,7 @@
 			</div>
 		</div>
 		<div class="tab-bar vertical"><!-- 假装是 TabBar -->
-			<TabItem id="settings" v-ripple icon="settings" _internalIsVertical @click="to('/settings')">{{ t.settings }}</TabItem>
+			<TabItem id="settings" v-ripple icon="settings" _internalIsVertical @click="to('/settings')">{{ $t("settings.title") }}</TabItem>
 		</div>
 	</Comp>
 </template>

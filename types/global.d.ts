@@ -38,15 +38,15 @@ declare global {
 	/**
 	 * 表示二维点的元组。
 	 */
-	type TwoD = [number, number];
+	type TwoD = [x: number, y: number];
 	/**
 	 * 表示三维点的元组。
 	 */
-	type ThreeD = [number, number, number];
+	type ThreeD = [x: number, y: number, z: number];
 	/**
 	 * 表示四维点的元组。
 	 */
-	type FourD = [number, number, number, number];
+	type FourD = [x: number, y: number, z: number, w: number];
 	/**
 	 * 指定类型或一个无参数函数返回为指定类型。
 	 * @template T - 指定类型及无参数函数返回的这个类型。

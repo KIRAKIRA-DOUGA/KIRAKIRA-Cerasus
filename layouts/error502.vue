@@ -37,7 +37,7 @@
 			position: relative;
 			z-index: 20;
 			flex-direction: column;
-			justify-content: flex-start;
+			justify-content: start;
 			padding-top: 5rem;
 			color: c(accent);
 

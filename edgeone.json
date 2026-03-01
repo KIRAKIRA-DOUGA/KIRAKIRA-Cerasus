@@ -1,0 +1,10 @@
+{
+	"nodeVersion": "22.17.1",
+	"redirects": [
+		{
+			"source": "$host",
+			"destination": "$wwwhost",
+			"statusCode": 301
+		}
+	]
+}

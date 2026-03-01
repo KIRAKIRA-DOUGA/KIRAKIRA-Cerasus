@@ -12,9 +12,9 @@ const VIDEO_API_URI = `${BACK_END_URI}video`;
 export const getHomePageThumbVideo = async (headerCookie: { cookie?: string | undefined }): Promise<ThumbVideoResponseDto> => {
 	// NOTE: use { headers: headerCookie } to passing client-side cookies to backend API when SSR.
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
-	const { data: result } = await useFetch<ThumbVideoResponseDto>(`${VIDEO_API_URI}/home`, { headers: headerCookie, credentials: "include" });
-	if (result.value)
-		return result.value;
+	const result = await $fetch<ThumbVideoResponseDto>(`${VIDEO_API_URI}/home`, { headers: headerCookie, credentials: "include" });
+	if (result)
+		return result;
 	else
 		return { success: false, videosCount: 0, videos: [], message: "获取首页视频失败" };
 };
@@ -26,9 +26,9 @@ export const getHomePageThumbVideo = async (headerCookie: { cookie?: string | un
  */
 export const checkVideoExistByKvid = async (CheckVideoExistRequest: CheckVideoExistRequestDto): Promise<CheckVideoExistResponseDto> => {
 	if (CheckVideoExistRequest && CheckVideoExistRequest.videoId) {
-		const { data: result } = await useFetch<CheckVideoExistResponseDto>(`${VIDEO_API_URI}/exists?videoId=${CheckVideoExistRequest.videoId}`, { credentials: "include" });
-		if (result.value)
-			return result.value;
+		const result = await $fetch<CheckVideoExistResponseDto>(`${VIDEO_API_URI}/exists?videoId=${CheckVideoExistRequest.videoId}`, { credentials: "include" });
+		if (result)
+			return result;
 		else
 			return { success: false, message: "视频不存在", exist: false };
 	} else
@@ -45,9 +45,9 @@ export const getVideoByKvid = async (getVideoByKvidRequest: GetVideoByKvidReques
 	if (getVideoByKvidRequest && getVideoByKvidRequest.videoId) {
 		// NOTE: use { headers: headerCookie } to passing client-side cookies to backend API when SSR.
 		// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
-		const { data: result } = await useFetch<GetVideoByKvidResponseDto>(`${VIDEO_API_URI}?videoId=${getVideoByKvidRequest.videoId}`, { headers: headerCookie, credentials: "include" });
-		if (result.value)
-			return result.value;
+		const result = await $fetch<GetVideoByKvidResponseDto>(`${VIDEO_API_URI}?videoId=${getVideoByKvidRequest.videoId}`, { headers: headerCookie, credentials: "include" });
+		if (result)
+			return result;
 		else
 			return { success: false, message: "获取视频失败", isBlockedByOther: false, isBlocked: false, isHidden: false };
 	} else
@@ -61,9 +61,9 @@ export const getVideoByKvid = async (getVideoByKvidRequest: GetVideoByKvidReques
  */
 export const getVideoByUid = async (getVideoByUidRequest: GetVideoByUidRequestDto): Promise<GetVideoByUidResponseDto> => {
 	if (getVideoByUidRequest && getVideoByUidRequest.uid) {
-		const { data: result } = await useFetch<GetVideoByUidResponseDto>(`${VIDEO_API_URI}/user?uid=${getVideoByUidRequest.uid}`);
-		if (result.value)
-			return result.value;
+		const result = await $fetch<GetVideoByUidResponseDto>(`${VIDEO_API_URI}/user?uid=${getVideoByUidRequest.uid}`);
+		if (result)
+			return result;
 		else
 			return { success: false, message: "获取用户上传的视频失败", videosCount: 0, videos: [], isBlockedByOther: false, isBlocked: false, isHidden: false };
 	} else
@@ -77,9 +77,9 @@ export const getVideoByUid = async (getVideoByUidRequest: GetVideoByUidRequestDt
  */
 export const searchVideoByKeyword = async (searchVideoByKeywordRequest: SearchVideoByKeywordRequestDto): Promise<SearchVideoByKeywordResponseDto> => {
 	if (searchVideoByKeywordRequest && searchVideoByKeywordRequest.keyword) {
-		const { data: result } = await useFetch<SearchVideoByKeywordResponseDto>(`${VIDEO_API_URI}/search?keyword=${searchVideoByKeywordRequest.keyword}`);
-		if (result.value)
-			return result.value;
+		const result = await $fetch<SearchVideoByKeywordResponseDto>(`${VIDEO_API_URI}/search?keyword=${searchVideoByKeywordRequest.keyword}`);
+		if (result)
+			return result;
 		else
 			return { success: false, message: "根据关键字搜索视频失败", videosCount: 0, videos: [] };
 	} else
@@ -93,12 +93,12 @@ export const searchVideoByKeyword = async (searchVideoByKeywordRequest: SearchVi
  */
 export const searchVideoByTagIds = async (searchVideoByVideoTagIdRequest: SearchVideoByVideoTagIdRequestDto): Promise<SearchVideoByVideoTagIdResponseDto> => {
 	if (searchVideoByVideoTagIdRequest && searchVideoByVideoTagIdRequest.tagId) {
-		const { data: result } = await useFetch<SearchVideoByVideoTagIdResponseDto>(`${VIDEO_API_URI}/search/tag`, {
+		const result = await $fetch<SearchVideoByVideoTagIdResponseDto>(`${VIDEO_API_URI}/search/tag`, {
 			method: "POST",
 			body: { tagId: searchVideoByVideoTagIdRequest.tagId },
 		});
-		if (result.value)
-			return result.value;
+		if (result)
+			return result;
 		else
 			return { success: false, message: "根据 TAG ID 搜索视频失败", videosCount: 0, videos: [] };
 	} else
@@ -123,8 +123,9 @@ export class TusFileUploader {
 	constructor(file: File, progress: Ref<number>, isUploadingVideo: Ref<boolean>) {
 		if (!file) {
 			this.step = "error";
-			useToast(t.toast.upload_file_not_found, "error");
-			throw new Error(t.toast.upload_file_not_found);
+			const { t } = useI18n();
+			useToast(t("toast.upload_file_not_found"), "error");
+			throw new Error(t("toast.upload_file_not_found"));
 		}
 		this.isUploadingVideo = isUploadingVideo;
 		this.process = new Promise<string>((resolve, reject) => {
@@ -145,7 +146,7 @@ export class TusFileUploader {
 				removeFingerprintOnSuccess: true, // 上传成功后移除用于恢复上传的 key
 				metadata: {
 					name: file.name,
-					maxDurationSeconds: "1800", // 最大视频长度，1800 秒（30 分钟）
+					maxDurationSeconds: "3600", // 最大视频长度，3600 秒（60 分钟）
 					expiry: getCloudflareRFC3339ExpiryDateTime(3600), // 最大上传耗时，3600 秒（1 小时）
 				},
 				onError: error => {
@@ -268,8 +269,8 @@ export async function deleteVideo(deleteVideoRequest: DeleteVideoRequestDto): Pr
 export const getPendingReviewVideo = async (headerCookie: { cookie?: string | undefined }): Promise<PendingReviewVideoResponseDto> => {
 	// NOTE: use { headers: headerCookie } to passing client-side cookies to backend API when SSR.
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
-	const { data: result } = await useFetch(`${VIDEO_API_URI}/pending`, { headers: headerCookie, credentials: "include" });
-	return result.value as PendingReviewVideoResponseDto;
+	const result = await $fetch(`${VIDEO_API_URI}/pending`, { headers: headerCookie, credentials: "include" });
+	return result as PendingReviewVideoResponseDto;
 };
 
 /**

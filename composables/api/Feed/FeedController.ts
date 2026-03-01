@@ -10,7 +10,7 @@ const FEED_API_URI = `${BACK_END_URI}feed`;
  */
 export const followingUploader = (followingUploaderRequest: FollowingUploaderRequestDto) => {
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
-	return useFetch<FollowingUploaderResponseDto>(
+	return $fetch<FollowingUploaderResponseDto>(
 		`${FEED_API_URI}/following`,
 		{
 			method: "POST",
@@ -27,7 +27,7 @@ export const followingUploader = (followingUploaderRequest: FollowingUploaderReq
  */
 export const unfollowingUploader = (unfollowingUploaderRequest: UnfollowingUploaderRequestDto) => {
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
-	return useFetch<UnfollowingUploaderResponseDto>(
+	return $fetch<UnfollowingUploaderResponseDto>(
 		`${FEED_API_URI}/unfollowing`,
 		{
 			method: "POST",

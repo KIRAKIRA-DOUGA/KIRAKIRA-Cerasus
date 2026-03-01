@@ -3,7 +3,7 @@
 		/** 内容占位符，当选中的一项不是任何一项有效的标识符时显示。 */
 		placeholder?: string;
 	}>(), {
-		placeholder: () => t.unselected.combobox, // 注意看，如果在 prop 的默认值中使用 i18n 则必须这样写。
+		placeholder: () => useI18n().t("unselected.combobox"),
 	});
 
 	const selected = defineModel<string>({ required: true });
@@ -16,6 +16,8 @@
 	const selectedContent = computed(() => items.value.find(item => item.id === selected.value)?.content);
 	const selectedIndexStatic = ref(0);
 	const isSelectionValid = computed(() => selectedIndex.value !== -1);
+	const id = useId();
+	const anchorName = computed(() => `--combo-box-${id}`);
 
 	const showMenu = ref(false);
 	watch(showMenu, showMenu => getShown.value = showMenu);
@@ -30,7 +32,7 @@
 	};
 	const getMenuCssVars = (el: Element) => {
 		const { height, menuPadding } = arrayMapObjectConst(["height", "menuPadding"],
-			i => parseFloat(useCssVar(new VariableName(i).cssVar, el as HTMLElement).value));
+			i => parseFloat(useCssVar(new VariableName(i).cssVar, el as HTMLElement).value!));
 		const top = 0;
 		const translateY = -height * selectedIndexStatic.value;
 		const finalHeight = height + 2 * menuPadding;
@@ -43,6 +45,11 @@
 	const getMenuCard = (el: Element) => el.querySelector<HTMLDivElement>(".menu")!;
 	const getMenuItems = (el: Element) => el.querySelector<HTMLDivElement>(".items")!;
 	const clipPathUnset = { clipPath: "inset(0 round 4px)" } as const;
+
+	function getEnterFromLeaveToTop(top: number) {
+		const supportAnchorApi = CSS.supports("anchor-name", "--anchor");
+		return !supportAnchorApi ? `${top}px` : `calc(anchor(top) + ${top}px)`;
+	}
 
 	/**
 	 * 在元素被插入到 DOM 之后的下一帧被调用。
@@ -57,7 +64,7 @@
 			duration: 250,
 			easing: eases.easeOutMax,
 			withoutAdjustPadding: "both",
-			startStyle: { top: `${top}px` },
+			startStyle: { top: getEnterFromLeaveToTop(top) },
 			attachAnimations: [[getMenuItems(el), [{ clipPath }, clipPathUnset]]],
 		});
 		done();
@@ -76,7 +83,7 @@
 			duration: 100,
 			easing: eases.linear,
 			withoutAdjustPadding: "both",
-			endStyle: { top: `${top}px` },
+			endStyle: { top: getEnterFromLeaveToTop(top) },
 			attachAnimations: [[getMenuItems(el), [clipPathUnset, { clipPath }]]],
 		});
 		done();
@@ -152,8 +159,8 @@
 		@include round-large;
 		@include chip-shadow;
 		display: flex;
-		align-items: center;
 		justify-content: space-between;
+		align-items: center;
 		height: var(--height);
 		padding: 0 $start-indent;
 		color: c(text-color);
@@ -204,7 +211,7 @@
 		position: absolute;
 		z-index: 70;
 		width: calc(100% + 2 * $menu-padding);
-		margin: (-$menu-padding) (-$menu-padding);
+		margin: -$menu-padding;
 		padding: $menu-padding 0;
 		overflow: clip;
 		color: c(text-color);
@@ -229,6 +236,27 @@
 			height: var(--height);
 			min-height: var(--height);
 			padding: 0 $start-indent;
+		}
+	}
+
+	@supports (anchor-name: --anchor) {
+		.wrapper {
+			anchor-name: v-bind(anchorName);
+		}
+
+		.menu,
+		.items {
+			position: fixed;
+			position-anchor: v-bind(anchorName);
+			top: calc(anchor(top) - v-bind(selectedIndexStatic) * var(--height));
+		}
+
+		.menu {
+			width: calc(anchor-size(width) + 2 * $menu-padding);
+		}
+
+		.items {
+			width: anchor-size(width);
 		}
 	}
 </style>

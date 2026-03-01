@@ -61,7 +61,7 @@
 		@include flex-center;
 		flex-shrink: 0;
 		gap: $menu-padding + 2px;
-		justify-content: flex-start;
+		justify-content: start;
 		width: calc(100% - 2 * $menu-padding);
 		min-height: $menu-item-height;
 		margin-inline: $menu-padding;

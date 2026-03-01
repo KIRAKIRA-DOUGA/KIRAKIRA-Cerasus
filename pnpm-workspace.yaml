@@ -7,4 +7,3 @@ onlyBuiltDependencies:
 
 patchedDependencies:
   nuxt: patches/nuxt.patch
-  shaka-player: patches/shaka-player.patch

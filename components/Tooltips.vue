@@ -109,6 +109,7 @@
 			max-width: 50dvw;
 			padding: 8px 10px;
 			color: c(text-color);
+			// stylelint-disable-next-line property-no-deprecated
 			word-wrap: break-word; // 尽量保持单词完整，一行都展示不下这个单词就会换行。
 			overflow-wrap: break-word; // word-wrap 别名，CSS3 属性，都写上，万一以后 word-wrap 去掉了呢。
 		}
@@ -123,23 +124,23 @@
 		}
 
 		&.top {
-			align-items: flex-end;
 			justify-content: center;
+			align-items: end;
 		}
 
 		&.bottom {
-			align-items: flex-start;
 			justify-content: center;
+			align-items: start;
 		}
 
 		&.right {
+			justify-content: start;
 			align-items: center;
-			justify-content: flex-start;
 		}
 
 		&.left {
+			justify-content: end;
 			align-items: center;
-			justify-content: flex-end;
 		}
 	}
 </style>

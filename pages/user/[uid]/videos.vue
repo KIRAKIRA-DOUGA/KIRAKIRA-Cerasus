@@ -13,6 +13,8 @@
 		urlUid.value = currentUserUid();
 	});
 
+	const selfUserInfoStore = useSelfUserInfoStore();
+
 	const videos = ref<GetVideoByUidResponseDto>();
 	const { query } = route;
 
@@ -61,20 +63,24 @@
 			</ThumbGrid>
 		</div>
 
-		<div class="toolbox-card right">
-			<section>
-				<Subheader icon="sort">{{ t.sort.by }}</Subheader>
-				<Sort v-model="sort">
-					<SortItem id="upload_date" preferOrder="descending">{{ t.upload_date }}</SortItem>
-					<SortItem id="view" preferOrder="descending">{{ t.sort.view }}</SortItem>
-					<SortItem id="danmaku" preferOrder="descending">{{ t.sort.danmaku }}</SortItem>
-					<SortItem id="comment" preferOrder="descending">{{ t.sort.comment }}</SortItem>
-					<SortItem id="save" preferOrder="descending">{{ t.sort.save }}</SortItem>
-					<SortItem id="duration" preferOrder="descending">{{ t.duration }}</SortItem>
-					<SortItem id="rating">{{ t.rating }}</SortItem>
-				</Sort>
-			</section>
-			<Pagination v-model="data.page" :pages :displayPageCount enableArrowKeyMove />
+		<div class="right">
+			<Button v-if="urlUid === selfUserInfoStore.userInfo.uid" href="/upload">{{ $t("manage_content") }}</Button>
+
+			<div class="toolbox-card">
+				<section>
+					<Subheader icon="sort">{{ $t("sort.by") }}</Subheader>
+					<Sort v-model="sort">
+						<SortItem id="upload_date" preferOrder="descending">{{ $t("upload_date") }}</SortItem>
+						<SortItem id="view" preferOrder="descending">{{ $t("sort.view") }}</SortItem>
+						<SortItem id="danmaku" preferOrder="descending">{{ $t("sort.danmaku") }}</SortItem>
+						<SortItem id="comment" preferOrder="descending">{{ $t("sort.comment") }}</SortItem>
+						<SortItem id="save" preferOrder="descending">{{ $t("sort.save") }}</SortItem>
+						<SortItem id="duration" preferOrder="descending">{{ $t("duration") }}</SortItem>
+						<SortItem id="rating">{{ $t("rating") }}</SortItem>
+					</Sort>
+				</section>
+				<Pagination v-model="data.page" :pages :displayPageCount enableArrowKeyMove />
+			</div>
 		</div>
 	</div>
 </template>
@@ -82,4 +88,14 @@
 <style scoped lang="scss">
 	$header-height: 134px;
 	$main-margin-top: 32px;
+
+	.right {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+
+		@include tablet {
+			width: 100%;
+		}
+	}
 </style>

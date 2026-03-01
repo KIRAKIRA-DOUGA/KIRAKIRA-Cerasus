@@ -5,7 +5,7 @@ import safeRegex from "safe-regex";
  * @param str - 待测试字符串。
  * @returns 字符串是否看起来像正则表达式？
  */
-export function isLooksLikeRegexString(str: string) {
+export function doesLookLikeRegexString(str: string) {
 	// 1. 基本格式：以斜杠开头、斜杠结尾，可跟 0~6 位正则标志
 	const regexSyntax = /^\/(.+)\/([gimsuy]*)$/;
 	const match = str.match(regexSyntax);
@@ -25,11 +25,11 @@ export function isLooksLikeRegexString(str: string) {
  * @param str - 待检测的正则表达式字符串。
  * @returns 正则表达式是否非法？
  */
-export function isIllegalRegexString(str: string) {
+export function isInvalidRegexString(str: string) {
 	try {
 		return !safeRegex(str);
 	} catch (error) {
-		console.warn("WARN", "WARNING", "Error in isIllegalRegexString, default result is 'true' (your regex is illegal)", error);
+		console.warn("WARN", "WARNING", "Error in isInvalidRegexString, default result is 'true' (your regex is invalid)", error);
 		return true;
 	}
 }

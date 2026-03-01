@@ -21,7 +21,7 @@
 	const smoothMain = useSmoothValue(main, 0.5);
 	const auxiliary = ref(0);
 	const opacity = ref(1);
-	const model = ref(specificModel.value!);
+	const model = ref(specificModel.value);
 	const values = ref<ThreeD>([255, 0, 0]);
 	const hex = ref("FF0000");
 	const hashHex = computed(() => color.value.hashHex);
@@ -166,7 +166,7 @@
 <template>
 	<div class="title">
 		<slot name="navigation-back"></slot>
-		<Subheader icon="palette">{{ t.color_picker }}</Subheader>
+		<Subheader icon="palette">{{ $t("color_picker") }}</Subheader>
 	</div>
 	<Comp
 		:class="{

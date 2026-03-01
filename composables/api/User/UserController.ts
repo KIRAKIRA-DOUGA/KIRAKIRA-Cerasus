@@ -16,16 +16,10 @@ import type {
 	DeleteTotpAuthenticatorByTotpVerificationCodeResponseDto,
 	DeleteUserEmailAuthenticatorRequestDto,
 	DeleteUserEmailAuthenticatorResponseDto, ForgotPasswordRequestDto, ForgotPasswordResponseDto, GetBlockedUserResponseDto, GetMyInvitationCodeResponseDto,
-	GetSelfUserInfoRequestDto, GetSelfUserInfoResponseDto, GetUserAvatarUploadSignedUrlResponseDto,
+	GetSelfUserInfoByUuidRequestDto, GetSelfUserInfoByUuidResponseDto,
+	GetUserAvatarUploadSignedUrlResponseDto,
 	GetUserInfoByUidRequestDto, GetUserInfoByUidResponseDto, GetUserSettingsRequestDto,
-	GetUserSettingsResponseDto, RequestSendChangeEmailVerificationCodeRequestDto,
-	RequestSendChangeEmailVerificationCodeResponseDto, RequestSendChangePasswordVerificationCodeRequestDto,
-	RequestSendChangePasswordVerificationCodeResponseDto, RequestSendForgotPasswordVerificationCodeRequestDto, RequestSendForgotPasswordVerificationCodeResponseDto, RequestSendVerificationCodeRequestDto,
-	RequestSendVerificationCodeResponseDto,
-	SendDeleteUserEmailAuthenticatorVerificationCodeRequestDto,
-	SendDeleteUserEmailAuthenticatorVerificationCodeResponseDto,
-	SendUserEmailAuthenticatorVerificationCodeRequestDto,
-	SendUserEmailAuthenticatorVerificationCodeResponseDto, UpdateOrCreateUserInfoResponseDto, UpdateOrCreateUserSettingsRequestDto,
+	GetUserSettingsResponseDto, SendGeneral2FAEmailVerificationCodeRequestDto, SendGeneral2FAEmailVerificationCodeResponseDto, SendGeneralEmailVerificationCodeRequestDto, SendGeneralEmailVerificationCodeResponseDto, UpdateOrCreateUserInfoResponseDto, UpdateOrCreateUserSettingsRequestDto,
 	UpdateOrCreateUserSettingsResponseDto, UpdateUserEmailRequestDto, UpdateUserEmailResponseDto, UpdateUserPasswordRequestDto,
 	UpdateUserPasswordResponseDto,
 	UserEmailExistsCheckRequestDto, UserEmailExistsCheckResponseDto,
@@ -87,15 +81,22 @@ export const updateOrCreateUserInfo = async (updateOrCreateUserInfoRequest: Upda
 type AppSettingsStoreType = ReturnType<typeof useAppSettingsStore>;
 type SelfUserInfoStoreType = ReturnType<typeof useSelfUserInfoStore>;
 /**
- * 获取当前登录的用户信息，前提是 token 中包含正确的 uid 和 token，同时丰富全局变量中的用户信息
+ * 获取当前登录的用户信息，前提是 token 中包含正确的 uuid 和 token，同时丰富全局变量中的用户信息
  * @param getSelfUserInfoRequest - 获取当前登录的用户信息的请求参数
  * @param pinia - pinia
  * @returns 用户信息
  */
-export const getSelfUserInfo = async (props: { getSelfUserInfoRequest: GetSelfUserInfoRequestDto | undefined; appSettingsStore: AppSettingsStoreType | undefined; selfUserInfoStore: SelfUserInfoStoreType | undefined; headerCookie: { cookie?: string | undefined } | undefined }): Promise<GetSelfUserInfoResponseDto> => {
+export const getSelfUserInfo = async (
+	props: {
+		getSelfUserInfoRequest: GetSelfUserInfoByUuidRequestDto | undefined;
+		appSettingsStore: AppSettingsStoreType | undefined;
+		selfUserInfoStore: SelfUserInfoStoreType | undefined;
+		headerCookie: { cookie?: string | undefined } | undefined;
+	},
+): Promise<GetSelfUserInfoByUuidResponseDto> => {
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	// NOTE: use { headers: headerCookie } to passing client-side cookies to backend API when SSR.
-	const { data } = await useFetch<GetSelfUserInfoResponseDto>(
+	const data = await $fetch<GetSelfUserInfoByUuidResponseDto>(
 		`${USER_API_URI}/self`,
 		{
 			method: "POST",
@@ -104,18 +105,18 @@ export const getSelfUserInfo = async (props: { getSelfUserInfoRequest: GetSelfUs
 			credentials: "include",
 		},
 	);
-	const selfUserInfoResult = data.value?.result;
-	if (data.value?.success && selfUserInfoResult) {
+	const selfUserInfoResult = data.result;
+	if (data.success && selfUserInfoResult) {
 		if (props.appSettingsStore)
 			props.appSettingsStore.authenticatorType = selfUserInfoResult.authenticatorType || "none";
 		if (props.selfUserInfoStore) {
 			props.selfUserInfoStore.isEffectiveCheckOnce = true; // 成功 fetch 用户信息时才能设为 true
 			props.selfUserInfoStore.isLogined = true;
-			props.selfUserInfoStore.userInfo = data.value.result ?? {};
+			props.selfUserInfoStore.userInfo = data.result ?? {};
 		}
 	} else if (props.appSettingsStore && props.selfUserInfoStore)
 		await userLogout({ appSettingsStore: props.appSettingsStore, selfUserInfoStore: props.selfUserInfoStore });
-	return data.value as GetSelfUserInfoResponseDto;
+	return data;
 };
 
 /**
@@ -145,8 +146,8 @@ export const getUserInfo = async (getUserInfoByUidRequest: GetUserInfoByUidReque
  */
 export const userExistsCheckByUID = async (userExistsCheckByUIDRequest: UserExistsCheckByUIDRequestDto): Promise<UserExistsCheckByUIDResponseDto> => {
 	if (userExistsCheckByUIDRequest && userExistsCheckByUIDRequest.uid) {
-		const { data: result } = await useFetch(`${USER_API_URI}/exists?uid=${userExistsCheckByUIDRequest.uid}`, { credentials: "include" }); // 使用 useFetch 以启用服务端渲染
-		return result.value as UserExistsCheckByUIDResponseDto;
+		const result = await $fetch(`${USER_API_URI}/exists?uid=${userExistsCheckByUIDRequest.uid}`, { credentials: "include" });
+		return result as UserExistsCheckByUIDResponseDto;
 	}
 	return { success: false, message: "未传入 UID", exists: false };
 };
@@ -158,7 +159,7 @@ export const userExistsCheckByUID = async (userExistsCheckByUIDRequest: UserExis
 export const checkUserToken = async (): Promise<CheckUserTokenResponseDto> => {
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	const result = await GET(`${USER_API_URI}/check`, { credentials: "include" }) as CheckUserTokenResponseDto;
-	
+
 	const selfUserInfoStore = useSelfUserInfoStore();
 	if (result.success && result.userTokenOk)
 		selfUserInfoStore.isLogined = true;
@@ -216,7 +217,12 @@ export const uploadUserAvatar = async (fileName: string, avatarBlobData: Blob, s
  * @param getUserSettingsRequest - 用户令牌
  * @returns 用户设置
  */
-export const getUserSettings = async (request?: { getUserSettingsRequest?: GetUserSettingsRequestDto; headerCookie?: { cookie?: string | undefined } }): Promise<GetUserSettingsResponseDto> => {
+export const getUserSettings = async (
+	request?: {
+		getUserSettingsRequest?: GetUserSettingsRequestDto;
+		headerCookie?: { cookie?: string | undefined };
+	},
+): Promise<GetUserSettingsResponseDto> => {
 	// NOTE: use { Cookie: request?.headerCookie?.cookie ?? "" } to passing client-side cookies to backend API when SSR.
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	const userSettings = await POST( // WARN: 此处必须使用原生 fetch 方法，不要使用 useFetch，因为 getUserSettings 被 Nuxt 管辖之外的中间件调用了。
@@ -243,13 +249,23 @@ export const updateUserSettings = async (updateOrCreateUserSettingsRequest: Upda
 };
 
 /**
- * 请求发送验证码
- * @param requestSendVerificationCodeRequest - 请求发送验证码的请求载荷
- * @returns 请求发送验证码的请求响应
+ * 发送通用 2FA 邮箱验证码
+ * @param sendGeneral2FAEmailVerificationCodeRequest - 发送通用 2FA 邮箱验证码请求载荷
+ * @returns 发送通用 2FA 邮箱验证码请求响应
  */
-export const requestSendVerificationCode = async (requestSendVerificationCodeRequest: RequestSendVerificationCodeRequestDto): Promise<RequestSendVerificationCodeResponseDto> => {
+export const sendGeneral2FAEmailVerificationCode = async (sendGeneral2FAEmailVerificationCodeRequest: SendGeneral2FAEmailVerificationCodeRequestDto): Promise<SendGeneral2FAEmailVerificationCodeResponseDto> => {
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
-	return await POST(`${USER_API_URI}/requestSendVerificationCode`, requestSendVerificationCodeRequest, { credentials: "include" }) as RequestSendVerificationCodeResponseDto;
+	return await POST(`${USER_API_URI}/sendGeneral2FAEmailVerificationCode `, sendGeneral2FAEmailVerificationCodeRequest, { credentials: "include" }) as SendGeneral2FAEmailVerificationCodeResponseDto;
+};
+
+/**
+ * 发送通用邮箱验证码
+ * @param sendGeneralEmailVerificationCodeRequest - 发送通用邮箱验证码请求载荷
+ * @returns 发送通用邮箱验证码请求响应
+ */
+export const sendGeneralEmailVerificationCode = async (sendGeneralEmailVerificationCodeRequest: SendGeneralEmailVerificationCodeRequestDto): Promise<SendGeneralEmailVerificationCodeResponseDto> => {
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	return await POST(`${USER_API_URI}/sendGeneralEmailVerificationCode `, sendGeneralEmailVerificationCodeRequest, { credentials: "include" }) as SendGeneralEmailVerificationCodeResponseDto;
 };
 
 /**
@@ -280,32 +296,12 @@ export const getMyInvitationCode = async (headerCookie: { cookie?: string | unde
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	// NOTE: use { headers: headerCookie } to passing client-side cookies to backend API when SSR.
 	try {
-		const { data: result } = await useFetch(`${USER_API_URI}/myInvitationCode`, { headers: headerCookie, credentials: "include" });
-		return result.value as GetMyInvitationCodeResponseDto;
+		const result = await $fetch(`${USER_API_URI}/myInvitationCode`, { headers: headerCookie, credentials: "include" });
+		return result as GetMyInvitationCodeResponseDto;
 	} catch (error) {
 		console.error("ERROR", "获取用户邀请码失败", error);
 		return { success: false, message: "获取用户邀请码失败", invitationCodeResult: [] };
 	}
-};
-
-/**
- * 请求发送修改邮箱的邮箱验证码
- * @param requestSendChangeEmailVerificationCodeRequest - 请求发送修改邮箱的邮箱验证码的请求载荷
- * @returns 请求发送修改邮箱的邮箱验证码的请求响应
- */
-export const requestSendChangeEmailVerificationCode = async (requestSendChangeEmailVerificationCodeRequest: RequestSendChangeEmailVerificationCodeRequestDto): Promise<RequestSendChangeEmailVerificationCodeResponseDto> => {
-	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
-	return await POST(`${USER_API_URI}/requestSendChangeEmailVerificationCode`, requestSendChangeEmailVerificationCodeRequest, { credentials: "include" }) as RequestSendChangeEmailVerificationCodeResponseDto;
-};
-
-/**
- * 请求发送修改密码的邮箱验证码
- * @param requestSendChangePasswordVerificationCodeRequest - 请求发送修改密码的邮箱验证码的请求载荷
- * @returns 请求发送修改密码的邮箱验证码的请求响应
- */
-export const requestSendChangePasswordVerificationCode = async (requestSendChangePasswordVerificationCodeRequest: RequestSendChangePasswordVerificationCodeRequestDto): Promise<RequestSendChangePasswordVerificationCodeResponseDto> => {
-	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
-	return await POST(`${USER_API_URI}/requestSendChangePasswordVerificationCode`, requestSendChangePasswordVerificationCodeRequest, { credentials: "include" }) as RequestSendChangePasswordVerificationCodeResponseDto;
 };
 
 /**
@@ -316,16 +312,6 @@ export const requestSendChangePasswordVerificationCode = async (requestSendChang
 export const updateUserPassword = async (updateUserPasswordRequest: UpdateUserPasswordRequestDto): Promise<UpdateUserPasswordResponseDto> => {
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	return await POST(`${USER_API_URI}/update/password`, updateUserPasswordRequest, { credentials: "include" }) as UpdateUserPasswordResponseDto;
-};
-
-/**
- * 请求发送忘记密码的邮箱验证码
- * @param requestSendForgotPasswordVerificationCodeRequest - 请求发送忘记密码的邮箱验证码的请求载荷
- * @returns 请求发送忘记密码的邮箱验证码的请求响应
- */
-export const requestSendForgotPasswordVerificationCode = async (requestSendForgotPasswordVerificationCodeRequest: RequestSendForgotPasswordVerificationCodeRequestDto): Promise<RequestSendForgotPasswordVerificationCodeResponseDto> => {
-	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
-	return await POST(`${USER_API_URI}/requestSendForgotPasswordVerificationCode`, requestSendForgotPasswordVerificationCodeRequest, { credentials: "include" }) as RequestSendForgotPasswordVerificationCodeResponseDto;
 };
 
 /**
@@ -376,8 +362,8 @@ export const checkUsername = async (checkUsernameRequest: CheckUsernameRequestDt
 export const getBlockedUser = async (headerCookie: { cookie?: string | undefined }): Promise<GetBlockedUserResponseDto> => {
 	// NOTE: use { headers: headerCookie } to passing client-side cookies to backend API when SSR.
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
-	const { data: result } = await useFetch(`${USER_API_URI}/blocked/info`, { headers: headerCookie, credentials: "include" });
-	const userInfoResult = result.value as GetBlockedUserResponseDto;
+	const result = await $fetch(`${USER_API_URI}/blocked/info`, { headers: headerCookie, credentials: "include" });
+	const userInfoResult = result as GetBlockedUserResponseDto;
 	const finalUserInfoResult = userInfoResult?.result?.map(userInfo => {
 		const finalResult = {
 			avatar: "",
@@ -399,8 +385,8 @@ export const getBlockedUser = async (headerCookie: { cookie?: string | undefined
 export const adminGetUserInfo = async (isOnlyShowUserInfoUpdatedAfterReview: boolean, page: number, pageSize: number, headerCookie: { cookie?: string | undefined }): Promise<AdminGetUserInfoResponseDto> => {
 	// NOTE: use { headers: headerCookie } to passing client-side cookies to backend API when SSR.
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
-	const { data: result } = await useFetch(`${USER_API_URI}/adminGetUserInfo?isOnlyShowUserInfoUpdatedAfterReview=${isOnlyShowUserInfoUpdatedAfterReview}&page=${page}&pageSize=${pageSize}`, { headers: headerCookie, credentials: "include" });
-	return result.value as AdminGetUserInfoResponseDto;
+	const result = await $fetch(`${USER_API_URI}/adminGetUserInfo?isOnlyShowUserInfoUpdatedAfterReview=${isOnlyShowUserInfoUpdatedAfterReview}&page=${page}&pageSize=${pageSize}`, { headers: headerCookie, credentials: "include" });
+	return result as AdminGetUserInfoResponseDto;
 };
 
 /**
@@ -431,8 +417,8 @@ export const adminClearUserInfo = async (adminClearUserInfoRequest: AdminClearUs
 export const checkUserHave2FAByUUID = async (headerCookie: { cookie?: string | undefined }): Promise<CheckUserHave2FAResponseDto> => {
 	// NOTE: use { headers: headerCookie } to passing client-side cookies to backend API when SSR.
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
-	const { data: result } = await useFetch(`${USER_API_URI}/checkUserHave2FAByUUID`, { headers: headerCookie, credentials: "include" });
-	const checkUserHave2FAResponse = result.value as CheckUserHave2FAResponseDto;
+	const result = await $fetch(`${USER_API_URI}/checkUserHave2FAByUUID`, { headers: headerCookie, credentials: "include" });
+	const checkUserHave2FAResponse = result as CheckUserHave2FAResponseDto;
 	if (checkUserHave2FAResponse.success) {
 		const appSettings = useAppSettingsStore();
 		appSettings.authenticatorType = checkUserHave2FAResponse.type || "none";
@@ -446,8 +432,8 @@ export const checkUserHave2FAByUUID = async (headerCookie: { cookie?: string | u
  * @returns 通过 Email 检查用户是否已开启 2FA 身份验证器的请求响应
  */
 export const checkUserHave2FAByEmail = async (checkUserHave2FARequest: CheckUserHave2FARequestDto): Promise<CheckUserHave2FAResponseDto> => {
-	const { data: result } = await useFetch(`${USER_API_URI}/checkUserHave2FAByEmail?email=${checkUserHave2FARequest.email}`);
-	return result.value as CheckUserHave2FAResponseDto;
+	const result = await $fetch(`${USER_API_URI}/checkUserHave2FAByEmail?email=${checkUserHave2FARequest.email}`);
+	return result as CheckUserHave2FAResponseDto;
 };
 
 /**
@@ -458,8 +444,8 @@ export const checkUserHave2FAByEmail = async (checkUserHave2FARequest: CheckUser
 export const createTotpAuthenticator = async (headerCookie: { cookie?: string | undefined }): Promise<CreateUserTotpAuthenticatorResponseDto> => {
 	// NOTE: use { headers: headerCookie } to passing client-side cookies to backend API when SSR.
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
-	const { data: result } = await useFetch(`${USER_API_URI}/createTotpAuthenticator`, { method: "POST", headers: headerCookie, credentials: "include" });
-	return result.value as CreateUserTotpAuthenticatorResponseDto;
+	const result = await $fetch(`${USER_API_URI}/createTotpAuthenticator`, { method: "POST", headers: headerCookie, credentials: "include" });
+	return result as CreateUserTotpAuthenticatorResponseDto;
 };
 
 /**
@@ -471,7 +457,7 @@ export const createTotpAuthenticator = async (headerCookie: { cookie?: string | 
 export const confirmUserTotpAuthenticator = async (confirmUserTotpAuthenticatorRequest: ConfirmUserTotpAuthenticatorRequestDto, headerCookie: { cookie?: string | undefined }): Promise<ConfirmUserTotpAuthenticatorResponseDto> => {
 	// NOTE: use { headers: headerCookie } to passing client-side cookies to backend API when SSR.
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
-	const { data: result } = await useFetch(
+	const result = await $fetch(
 		`${USER_API_URI}/confirmUserTotpAuthenticator`,
 		{
 			method: "POST",
@@ -480,7 +466,7 @@ export const confirmUserTotpAuthenticator = async (confirmUserTotpAuthenticatorR
 			credentials: "include",
 		},
 	);
-	return result.value as ConfirmUserTotpAuthenticatorResponseDto;
+	return result as ConfirmUserTotpAuthenticatorResponseDto;
 };
 
 /**
@@ -492,7 +478,7 @@ export const confirmUserTotpAuthenticator = async (confirmUserTotpAuthenticatorR
 export const deleteTotpByVerificationCode = async (deleteTotpAuthenticatorByTotpVerificationCodeRequest: DeleteTotpAuthenticatorByTotpVerificationCodeRequestDto, headerCookie: { cookie?: string | undefined }): Promise<DeleteTotpAuthenticatorByTotpVerificationCodeResponseDto> => {
 	// NOTE: use { headers: headerCookie } to passing client-side cookies to backend API when SSR.
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
-	const { data: result } = await useFetch(
+	const result = await $fetch(
 		`${USER_API_URI}/deleteTotpAuthenticatorByTotpVerificationCodeController`,
 		{
 			method: "DELETE",
@@ -501,7 +487,7 @@ export const deleteTotpByVerificationCode = async (deleteTotpAuthenticatorByTotp
 			credentials: "include",
 		},
 	);
-	return result.value as DeleteTotpAuthenticatorByTotpVerificationCodeResponseDto;
+	return result as DeleteTotpAuthenticatorByTotpVerificationCodeResponseDto;
 };
 
 /**
@@ -512,7 +498,7 @@ export const deleteTotpByVerificationCode = async (deleteTotpAuthenticatorByTotp
 export const createEmail2FA = async (headerCookie: { cookie?: string | undefined }): Promise<CreateUserEmailAuthenticatorResponseDto> => {
 	// NOTE: use { headers: headerCookie } to passing client-side cookies to backend API when SSR.
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
-	const { data: result } = await useFetch(
+	const result = await $fetch(
 		`${USER_API_URI}/createEmailAuthenticator`,
 		{
 			method: "POST",
@@ -521,27 +507,7 @@ export const createEmail2FA = async (headerCookie: { cookie?: string | undefined
 		},
 	);
 
-	return result.value as CreateUserEmailAuthenticatorResponseDto;
-};
-
-/**
- * 发送 Email 身份验证器验证码
- * @param sendUserEmailAuthenticatorVerificationCodeRequest - 发送 Email 身份验证器验证码的请求载荷
- * @returns 发送 Email 身份验证器验证码的请求响应
- */
-export const sendUserEmailAuthenticatorVerificationCode = async (sendUserEmailAuthenticatorVerificationCodeRequest: SendUserEmailAuthenticatorVerificationCodeRequestDto): Promise<SendUserEmailAuthenticatorVerificationCodeResponseDto> => {
-	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
-	return await POST(`${USER_API_URI}/sendUserEmailAuthenticator`, sendUserEmailAuthenticatorVerificationCodeRequest, { credentials: "include" }) as SendUserEmailAuthenticatorVerificationCodeResponseDto;
-};
-
-/**
- * 发送删除 Email 身份验证器验证码
- * @param sendDeleteUserEmailAuthenticatorVerificationCodeRequest - 发送删除 Email 身份验证器验证码的请求载荷
- * @returns 发送删除 Email 身份验证器验证码的请求响应
- */
-export const sendDeleteUserEmailAuthenticatorVerificationCode = async (sendDeleteUserEmailAuthenticatorVerificationCodeRequest: SendDeleteUserEmailAuthenticatorVerificationCodeRequestDto): Promise<SendDeleteUserEmailAuthenticatorVerificationCodeResponseDto> => {
-	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
-	return await POST(`${USER_API_URI}/sendDeleteUserEmailAuthenticator`, sendDeleteUserEmailAuthenticatorVerificationCodeRequest, { credentials: "include" }) as SendUserEmailAuthenticatorVerificationCodeResponseDto;
+	return result as CreateUserEmailAuthenticatorResponseDto;
 };
 
 /**
@@ -553,7 +519,7 @@ export const sendDeleteUserEmailAuthenticatorVerificationCode = async (sendDelet
 export const deleteEmail2FA = async (deleteUserEmailAuthenticatorRequest: DeleteUserEmailAuthenticatorRequestDto, headerCookie: { cookie?: string | undefined }): Promise<DeleteUserEmailAuthenticatorResponseDto> => {
 	// NOTE: use { headers: headerCookie } to passing client-side cookies to backend API when SSR.
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
-	const { data: result } = await useFetch(
+	const result = await $fetch(
 		`${USER_API_URI}/deleteUserEmailAuthenticator`,
 		{
 			method: "DELETE",
@@ -563,5 +529,5 @@ export const deleteEmail2FA = async (deleteUserEmailAuthenticatorRequest: Delete
 		},
 	);
 
-	return result.value as CreateUserEmailAuthenticatorResponseDto;
+	return result as CreateUserEmailAuthenticatorResponseDto;
 };

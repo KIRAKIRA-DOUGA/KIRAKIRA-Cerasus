@@ -26,18 +26,10 @@
 		"resolveJsonModule": true,
 		"noErrorTruncation": true,
 		"noUncheckedIndexedAccess": false,
-		"plugins": [
-			{
-				"name": "typescript-plugin-css-modules",
-				"options": {
-					"classnameTransform": "camelCaseOnly"
-				}
-			}
-		],
 		"types": [
 			"@pomsky-lang/unplugin"
 		]
-	}
+	},
 	// "vueCompilerOptions": {
 	// 	"plugins": [
 	// 		"vite-plugin-vue-nested-sfc/tooling"

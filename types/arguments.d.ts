@@ -82,12 +82,19 @@ declare global {
 			autoResumePlayAfterSeeking: boolean;
 		};
 		filter: {
-			horizontalFlip: boolean;
-			verticalFlip: boolean;
+			hFlip: boolean;
+			vFlip: boolean;
 			rotation: 0 | 90 | 180 | 270;
+			mirror: "left" | "right" | "top" | "bottom" | false;
 			grayscale: boolean;
 			invert: boolean;
 			sepia: boolean;
+			posterize: boolean;
+			spectrum: boolean;
+			thermal: boolean;
+			emboss: boolean;
+			bump: boolean;
+			edge: boolean;
 			hue: number;
 			saturate: number;
 			contrast: number;

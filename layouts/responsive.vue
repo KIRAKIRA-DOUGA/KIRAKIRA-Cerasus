@@ -5,8 +5,6 @@
 <script setup lang="ts">
 	import { Analytics } from "@vercel/analytics/nuxt";
 
-	const backgroundImageSettingsStore = useAppSettingsStore().backgroundImage;
-	const backgroundImages = useBackgroundImages();
 	const showDrawer = ref(false);
 	const isSettingsPage = ref(false);
 
@@ -16,6 +14,8 @@
 	const hideBottomNav = ref(false);
 	const appBarTitle = ref<string | undefined>();
 
+	const { t } = useI18n();
+
 	function pageLoaded() {
 		isSettingsPage.value = !!currentSettingsPage();
 		hideAppBar.value = Boolean(route.meta.hideAppBar);
@@ -23,7 +23,7 @@
 		hideBottomNav.value = Boolean(route.meta.hideBottomNav);
 
 		const appBarTitleTemp = route.meta.appBarTitle as string | undefined;
-		if (appBarTitleTemp?.startsWith("t.")) appBarTitle.value = t(2)[appBarTitleTemp.slice(2)];
+		if (appBarTitleTemp?.startsWith("t.")) appBarTitle.value = t(appBarTitleTemp.slice(2), 2);
 		else appBarTitle.value = route.meta.appBarTitle as string | undefined;
 	}
 
@@ -39,14 +39,7 @@
 </script>
 
 <template>
-	<ClientOnly>
-		<div v-if="backgroundImages.shown" class="background" :style="{ opacity: backgroundImageSettingsStore.opacity }">
-			<Transition appear>
-				<img :src="backgroundImages.currentImage" :style="{ filter: `blur(${backgroundImageSettingsStore.blur}px)` }" />
-			</Transition>
-			<div class="overlay" :style="{ opacity: backgroundImageSettingsStore.tint }"></div>
-		</div>
-	</ClientOnly>
+	<BackgroundImage />
 	<Transition>
 		<LogoOffcanvasStar v-if="showDrawer" />
 	</Transition>
@@ -55,7 +48,7 @@
 	</Transition>
 	<div class="viewport">
 		<Analytics />
-		<SideBar :hideAppBar :flatAppBar :hideBottomNav :isSettingsPage :overrideLogoText="showDrawer ? t.navigation.back : undefined" />
+		<SideBar :hideAppBar :flatAppBar :hideBottomNav :isSettingsPage :overrideLogoText="showDrawer ? $t('navigation.back') : undefined" />
 		<ScrollContainer
 			scrollElId="mainScroller"
 			class="container"
@@ -130,44 +123,9 @@
 		transition: background-color $ease-out-max 250ms;
 	}
 
-	.background {
-		position: fixed;
-		inset: 0;
-		z-index: 0;
-		opacity: 0.2;
-		transition: $fallback-transitions, scale $ease-out-max 1s;
-
-		img {
-			@include square(100%);
-			position: fixed;
-			inset: 0;
-			object-fit: cover;
-
-			&.v-enter-from,
-			&.v-leave-to {
-				scale: 1.1;
-				opacity: 0;
-			}
-
-			&.v-enter-active,
-			&.v-leave-active {
-				transition: scale $ease-out-smooth 1s, opacity ease 1s;
-			}
-		}
-
-		.overlay {
-			@include square(100%);
-			position: fixed;
-			inset: 0;
-			background-color: c(accent);
-			opacity: 0.75;
-			mix-blend-mode: screen;
-		}
-
-		&:has(~ .offcanvas:not(.v-leave-to)) {
-			scale: 1.08;
-			transition: $fallback-transitions, scale $ease-out-max 500ms;
-		}
+	.background:has(~ .offcanvas:not(.v-leave-to)) {
+		scale: 1.08;
+		transition: $fallback-transitions, scale $ease-out-max 500ms;
 	}
 
 	@include not-mobile {

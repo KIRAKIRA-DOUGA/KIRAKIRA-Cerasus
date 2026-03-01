@@ -6,7 +6,7 @@
 		// { id: "posts", name: "post", icon: "post" }, // 帖子
 		// { id: "audios", icon: "music" }, // 音频
 		// { id: "albums", icon: "photo_library" }, // 相簿或者相册，类似QQ空间相册，所有帖子配图默认也会放在这里，相簿名称可以直接叫「帖子」。
-		{ id: "collections", name: "collection", icon: "star" },
+		{ id: "collections", name: "collection.title", icon: "star" },
 	];
 </script>
 
@@ -31,6 +31,7 @@
 		},
 	});
 
+	const { t } = useI18n();
 	const selfUserInfoStore = useSelfUserInfoStore();
 
 	const headerCookie = useRequestHeaders(["cookie"]);
@@ -42,7 +43,7 @@
 	const actionMenu = ref<FlyoutModel>();
 	const currentTab = computed(() => currentUserTab());
 
-	const urlUid = ref(); // URL 中的 UID
+	const urlUid = ref<number>(0); // URL 中的 UID
 	urlUid.value = currentUserUid(); // SSR
 	const nuxtApp = useNuxtApp();
 	nuxtApp.hook("page:finish", () => {
@@ -58,17 +59,15 @@
 		try {
 			const blockUid = urlUid.value;
 
-			if (blockUid === undefined || blockUid === null || blockUid < 1) {
-				console.error("ERROR", "屏蔽用户的 UID 格式不正确，不能为空或小于零");
-				// TODO: 使用多语言
-				useToast("屏蔽用户的 UID 格式不正确", "error", 5000);
+			if (blockUid == null || blockUid <= 0) {
+				console.error("ERROR", "屏蔽用户的 UID 格式不正确，不能为空或小于等于零");
+				useToast(t("block_and_hide.toasts.invalid_block_uid"), "error", 5000);
 				return;
 			}
 
 			if (selfUserInfoStore.userInfo.uid === blockUid) {
 				console.error("ERROR", "不能屏蔽自己");
-				// TODO: 使用多语言
-				useToast("不能屏蔽自己", "error", 5000);
+				useToast(t("block_and_hide.toasts.block_yourself"), "error", 5000);
 				return;
 			}
 
@@ -77,24 +76,21 @@
 			};
 			const blockUserResult = await api.block.blockUserController(blockUserByUidRequest);
 			if (blockUserResult.success) {
-				// TODO: 使用多语言
-				useToast("屏蔽用户成功", "success");
+				useToast(t("block_and_hide.toasts.block_successfully"), "success");
 				navigate("/");
 			} else {
 				console.error("ERROR", "屏蔽用户失败");
-				// TODO: 使用多语言
-				useToast("屏蔽用户失败", "error", 5000);
+				useToast(t("block_and_hide.toasts.block_failed"), "error", 5000);
 			}
 		} catch (error) {
 			console.error("ERROR", "屏蔽用户时出错", error);
-			// TODO: 使用多语言
-			useToast("屏蔽用户时出错", "error", 5000);
+			useToast(t("block_and_hide.toasts.block_error"), "error", 5000);
 		}
 	}
 
 	/**
 	 * fetch user profile data
-	*/
+	 */
 	async function fetchUserData() {
 		if (urlUid.value === selfUserInfoStore.userInfo.uid)
 			isSelf.value = true;
@@ -106,7 +102,7 @@
 			const headerCookie = useRequestHeaders(["cookie"]);
 			const userInfoResult = await api.user.getUserInfo(getUserInfoByUidRequest, headerCookie);
 			if (!userInfoResult.success)
-				useToast("获取用户信息失败", "error", 5000); // TODO: 使用多语言
+				useToast(t("toast.failed_to_fetch_user_info"), "error", 5000);
 
 			if (userInfoResult.isBlocked)
 				navigateToErrorPage(404);
@@ -119,8 +115,7 @@
 	await fetchUserData();
 	watch(() => [urlUid.value, selfUid.value], fetchUserData);
 
-	const titleAffixString = t.user_page.title_affix; // HACK: Bypass "A composable that requires access to the Nuxt instance was called outside of a plugin."
-	const titleUserNickname = computed(() => isSelf.value ? selfUserInfoStore.userInfo.userNickname ? titleAffixString(selfUserInfoStore.userInfo.userNickname) : "" : userInfo.value?.result?.userNickname ? titleAffixString(userInfo.value?.result?.userNickname) : "");
+	const titleUserNickname = computed(() => isSelf.value ? selfUserInfoStore.userInfo.userNickname ? t("user_page.title_affix", [selfUserInfoStore.userInfo.userNickname]) : "" : userInfo.value?.result?.userNickname ? t("user_page.title_affix", [userInfo.value?.result?.userNickname]) : "");
 	useHead({ title: titleUserNickname });
 </script>
 
@@ -130,36 +125,39 @@
 			<div>
 				<div class="content">
 					<UserContent
-						v-tooltip="isSelf ? t.profile.edit : undefined"
 						:avatar="isSelf ? selfUserInfoStore.userInfo.avatar : userInfo?.result?.avatar"
 						:username="isSelf ? selfUserInfoStore.userInfo.username : userInfo?.result?.username"
 						:nickname="isSelf ? selfUserInfoStore.userInfo.userNickname : userInfo?.result?.userNickname"
 						:gender="isSelf ? selfUserInfoStore.userInfo.gender : userInfo?.result?.gender"
 						:roles="isSelf ? selfUserInfoStore.userInfo.roles : userInfo?.result?.roles"
-						:to="isSelf ? `/settings/profile` : undefined"
 						size="huge"
-						center
+						avatarFullWidth
 					>
-						<template #description>
-							{{ isSelf ? selfUserInfoStore.userInfo.signature : userInfo?.result?.signature }}
+						{{ isSelf ? selfUserInfoStore.userInfo.signature : userInfo?.result?.signature }}
+						<template #actionButtons>
+							<div class="actions">
+								<!-- <SoftButton v-tooltip:top="'私信'" icon="email" /> -->
+								<SoftButton
+									v-if="!isSelf"
+									v-tooltip:top="$t('more')"
+									icon="more_vert"
+									@click="e => actionMenu = [e, 'y']"
+								/>
+								<Menu v-if="!isSelf" v-model="actionMenu">
+									<MenuItem icon="groups">{{ $t("add_to_group") }}</MenuItem>
+									<MenuItem icon="badge">{{ $t("modify_memo") }}</MenuItem>
+									<hr />
+									<MenuItem icon="flag">{{ $t("report") }}</MenuItem>
+									<MenuItem icon="block" @click="blockUser">{{ $t("block_and_hide.block.user") }}</MenuItem>
+								</Menu>
+								<FollowButton v-if="!isSelf" :uid="urlUid" :isFollowing />
+								<SoftButton v-if="isSelf" href="/settings/profile" icon="edit" />
+							</div>
 						</template>
 					</UserContent>
-					<div class="actions">
-						<!-- <SoftButton v-tooltip:top="'私信'" icon="email" /> -->
-						<SoftButton v-if="!isSelf" v-tooltip:top="t.more" icon="more_vert" @click="e => actionMenu = [e, 'y']" />
-						<Menu v-if="!isSelf" v-model="actionMenu">
-							<MenuItem icon="groups">{{ t.add_to_group }}</MenuItem>
-							<MenuItem icon="badge">{{ t.modify_memo }}</MenuItem>
-							<hr />
-							<MenuItem icon="flag">{{ t.report }}</MenuItem>
-							<MenuItem icon="block" @click="blockUser">{{ t.block_user }}</MenuItem>
-						</Menu>
-						<FollowButton v-if="!isSelf" :uid="urlUid" :isFollowing />
-						<Button v-if="isSelf" href="/upload">{{ t.manage_content }}</Button>
-					</div>
 				</div>
 				<TabBar v-model="currentTab">
-					<TabItem v-for="tab in tabs" :id="tab.id" :key="tab.id" :icon="tab.icon" :to="`/user/${urlUid}/${tab.id}`">{{ t(2)[tab.name || "home"] }}</TabItem>
+					<TabItem v-for="tab in tabs" :id="tab.id" :key="tab.id" :icon="tab.icon" :to="`/user/${urlUid}/${tab.id}`">{{ $t(tab.name || "home", 2) }}</TabItem>
 				</TabBar>
 			</div>
 		</header>
@@ -175,10 +173,10 @@
 
 	header {
 		@include card-shadow;
-		position: sticky;
-		top: 0;
-		z-index: 4;
-		padding: 0 $page-padding-x;
+		// position: sticky;
+		// top: 0;
+		// z-index: 4;
+		padding-inline: $page-padding-x;
 		background-color: c(surface-color);
 
 		@include tablet {
@@ -195,19 +193,31 @@
 		flex-wrap: wrap;
 		gap: 12px;
 		justify-content: space-between;
-		align-items: center;
-		padding: 24px 0;
+		align-items: start;
+		padding: 16px 0;
+
+		@include not-mobile {
+			.user-content.huge:deep(.user-avatar) {
+				--size: 100px;
+				margin-top: -100px;
+				border: 4px solid c(main-bg);
+			}
+		}
 
 		.actions {
 			display: flex;
 			gap: 16px;
-			justify-content: flex-end;
+			justify-content: end;
 			align-items: center;
 			margin-left: auto;
 
 			.soft-button {
 				--ripple-size: var(--wrapper-size);
 			}
+		}
+
+		.user-content {
+			flex-grow: 1;
 		}
 	}
 
@@ -225,7 +235,7 @@
 	.slot:deep(.container) {
 		display: flex;
 		gap: 20px;
-		align-items: flex-start;
+		align-items: start;
 		padding: $main-margin-top $page-padding-x;
 
 		@include tablet {

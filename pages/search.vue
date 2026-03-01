@@ -1,5 +1,6 @@
 <script setup lang="ts">
-	useHead({ title: t.search });
+	const { t } = useI18n();
+	useHead({ title: t("search") });
 	const router = useRouter(), route = useRoute();
 	const querySearch = computed(() => route.query.query ?? "");
 	const tagSearch = computed(() => {
@@ -16,7 +17,7 @@
 	const displayPageCount = ref(6);
 	const videos = ref<SearchVideoByKeywordResponseDto | ThumbVideoResponseDto>();
 	const searchModes = ["keyword", "tag", "user", "advanced_search"] as const;
-	const querySearchMode = route.query.mode as typeof searchModes[number] ?? "tag";
+	const querySearchMode = route.query.mode as typeof searchModes[number] ?? "keyword";
 	const searchMode = ref<typeof searchModes[number]>(querySearchMode);
 	const searchModesSorted = computed(() => searchModes.toSorted((a, b) =>
 		a === searchMode.value ? -1 : b === searchMode.value ? 1 : 0));
@@ -40,7 +41,7 @@
 
 	/**
 	 * 通过关键字搜索视频，并赋值给 video
-	 * @param keyword 关键字
+	 * @param keyword - 关键字
 	 */
 	async function searchVideoByKeyword(keyword: string) {
 		const searchVideoByKeywordRequest: SearchVideoByKeywordRequestDto = { keyword };
@@ -53,7 +54,7 @@
 
 	/**
 	 * 通过关键字搜索视频，并赋值给 video
-	 * @param tagIds 关键字
+	 * @param tagIds - 关键字
 	 */
 	async function searchVideoByTagIds(tagIds: number[]) {
 		const searchVideoByVideoTagIdRequest: SearchVideoByVideoTagIdRequestDto = { tagId: tagIds };
@@ -84,7 +85,7 @@
 
 	/**
 	 * 从视频 TAG 列表中移除一个 TAG（注意，此时 TAG 列表没有传递给后端数据库存储）
-	 * @param tagId TAG 编号
+	 * @param tagId - TAG 编号
 	 */
 	function removeTag(tagId: number) {
 		if (tagId !== undefined || tagId !== null) tags.delete(tagId);
@@ -143,14 +144,14 @@
 			}
 
 			case "user": {
-				useToast(t.under_construction.search_mode, "error", 10000);
+				useToast(t("under_construction.search_mode"), "error", 10000);
 				console.warn("no support search mode: user");
 				await getHomeVideo();
 				break;
 			}
 
 			case "advanced_search": {
-				useToast(t.under_construction.search_mode, "error", 10000);
+				useToast(t("under_construction.search_mode"), "error", 10000);
 				console.warn("no support search mode: advanced_search");
 				await getHomeVideo();
 				break;
@@ -234,7 +235,7 @@
 
 			<div class="right">
 				<div class="toolbox-card search">
-					<TextBox v-if="searchMode !== 'tag'" v-model="data.search" :placeholder="t.search" icon="search" />
+					<TextBox v-if="searchMode !== 'tag'" v-model="data.search" :placeholder="$t('search')" icon="search" />
 					<div v-else class="search-item-tags">
 						<Tag
 							v-for="tag in displayTags"
@@ -261,7 +262,7 @@
 						@mouseenter="reshowContextualToolbar"
 						@mouseleave="hideContextualToolbar"
 					>
-						<Button icon="close" @click="removeTag(hoveredTagContent![0])">{{ t.delete }}</Button>
+						<Button icon="close" @click="removeTag(hoveredTagContent![0])">{{ $t("delete") }}</Button>
 					</Flyout>
 
 					<div class="tags">
@@ -271,7 +272,7 @@
 								:key="mode"
 								:checked="searchMode === mode"
 								@click="searchMode = mode"
-							>{{ t[mode] }}</Tag>
+							>{{ $t(mode) }}</Tag>
 						</TransitionGroup>
 					</div>
 				</div>
@@ -282,15 +283,15 @@
 					</section>
 
 					<section>
-						<Subheader icon="sort">{{ t.sort.by }}</Subheader>
+						<Subheader icon="sort">{{ $t("sort.by") }}</Subheader>
 						<Sort v-model="data.sort">
-							<SortItem id="upload_date" preferOrder="descending">{{ t.upload_date }}</SortItem>
-							<SortItem id="view" preferOrder="descending">{{ t.sort.view }}</SortItem>
-							<SortItem id="danmaku" preferOrder="descending">{{ t.sort.danmaku }}</SortItem>
-							<SortItem id="comment" preferOrder="descending">{{ t.sort.comment }}</SortItem>
-							<SortItem id="save" preferOrder="descending">{{ t.sort.save }}</SortItem>
-							<SortItem id="duration" preferOrder="descending">{{ t.duration }}</SortItem>
-							<SortItem id="rating">{{ t.rating }}</SortItem>
+							<SortItem id="upload_date" preferOrder="descending">{{ $t("upload_date") }}</SortItem>
+							<SortItem id="view" preferOrder="descending">{{ $t("sort.view") }}</SortItem>
+							<SortItem id="danmaku" preferOrder="descending">{{ $t("sort.danmaku") }}</SortItem>
+							<SortItem id="comment" preferOrder="descending">{{ $t("sort.comment") }}</SortItem>
+							<SortItem id="save" preferOrder="descending">{{ $t("sort.save") }}</SortItem>
+							<SortItem id="duration" preferOrder="descending">{{ $t("duration") }}</SortItem>
+							<SortItem id="rating">{{ $t("rating") }}</SortItem>
 						</Sort>
 					</section>
 					<Pagination v-model="data.page" :pages="data.pages" :displayPageCount enableArrowKeyMove />
