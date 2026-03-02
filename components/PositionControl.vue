@@ -137,6 +137,7 @@
 		writing-mode: horizontal-tb;
 		background-color: c(inset-bg);
 		background-clip: padding-box;
+		touch-action: none;
 
 		&::after { // Intercept pointer events.
 			content: "";
