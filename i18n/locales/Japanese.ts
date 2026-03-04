@@ -514,6 +514,7 @@ export default {
 	},
 	empty: {
 		comments: "コメントはありません",
+		search: "結果がありません",
 	},
 	user: {
 		title: "ユーザー",
@@ -606,7 +607,7 @@ export default {
 	click_to_refresh: "クリックして再読込",
 	toast: {
 		finish: "操作が完了しました~",
-		something_went_wrong: "エラーが発生しました！ (；´д｀)ゞページを再読み込みしてください。",
+		something_went_wrong: "エラーが発生しました！ (；´д｀)ゞ",
 		too_many_requests: "リクエストが多すぎます! ( o﹃o ) しばらくしてからもう一度お試しください。",
 		cooling_down: "クールダウン中! (・_・;) 後でもう一度お試しください。",
 		unsupported_file: "サポートされていないファイル形式です！",

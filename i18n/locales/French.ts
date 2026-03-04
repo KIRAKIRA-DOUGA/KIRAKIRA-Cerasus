@@ -514,6 +514,7 @@ export default {
 	},
 	empty: {
 		comments: "Aucun commentaire",
+		search: "Aucun résultat",
 	},
 	user: {
 		title: "Utilisateur | Utilisateurs",
@@ -606,7 +607,7 @@ export default {
 	click_to_refresh: "Appuyez pour actualiser",
 	toast: {
 		finish: "Opération terminée avec succès~",
-		something_went_wrong: "Quelque chose s'est mal passé! (; ́д`)<unk> <unk> Veuillez actualiser la page et réessayer.",
+		something_went_wrong: "Quelque chose s'est mal passé ! (；´д｀)ゞ",
 		too_many_requests: "Trop de requêtes! ( o<unk> o ) Veuillez réessayer plus tard.",
 		cooling_down: "Refroidissement! (・_・;) Veuillez réessayer plus tard.",
 		unsupported_file: "Format de fichier non pris en charge !",

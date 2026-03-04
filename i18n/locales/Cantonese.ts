@@ -500,7 +500,7 @@ export default {
 	click_to_refresh: "撳低重新整理",
 	toast: {
 		finish: "攪掂晒~",
-		something_went_wrong: "大鑊，出咗錯！(；´д｀)ゞ 請重新整理頁面跟住試多次。",
+		something_went_wrong: "大鑊，出咗錯！(；´д｀)ゞ",
 		too_many_requests: "撳得太快喇！( º﹃º ) 唔該陣間試多次。",
 		cooling_down: "冷卻緊！(・_・;) 唔該陣間試多次。",
 		unsupported_file: "唔支援此檔案格式！",

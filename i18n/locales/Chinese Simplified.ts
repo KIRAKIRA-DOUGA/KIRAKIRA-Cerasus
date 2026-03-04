@@ -516,6 +516,7 @@ export default {
 	},
 	empty: {
 		comments: "暂无评论",
+		search: "未找到相关结果",
 	},
 	user: {
 		title: "用户",
@@ -608,7 +609,7 @@ export default {
 	click_to_refresh: "点击刷新",
 	toast: {
 		finish: "操作成功完成~",
-		something_went_wrong: "呜呜，出错了！(；´д｀)ゞ 请刷新页面并重试",
+		something_went_wrong: "呜呜，出错了！(；´д｀)ゞ",
 		too_many_requests: "点的太快啦！( º﹃º ) 请稍后再试",
 		cooling_down: "冷却中！(・_・;) 请稍后再试",
 		unsupported_file: "不支持的文件格式！",

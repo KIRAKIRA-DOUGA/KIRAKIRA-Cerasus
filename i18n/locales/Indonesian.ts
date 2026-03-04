@@ -485,7 +485,7 @@ export default {
 	click_to_refresh: "Klik untuk refresh",
 	toast: {
 		finish: "Operasi berhasil~",
-		something_went_wrong: "Ada yang salah! (；´д｀)ゞ Harap muat ulang laman dan coba lagi.",
+		something_went_wrong: "Ada yang salah! (；´д｀)ゞ",
 		too_many_requests: "Terlalu banyak request! ( º﹃º ) Coba lagi nanti.",
 		cooling_down: "Sedang cooldown! (・_・;) Coba lagi nanti.",
 		unsupported_file: "Format file tidak didukung!",

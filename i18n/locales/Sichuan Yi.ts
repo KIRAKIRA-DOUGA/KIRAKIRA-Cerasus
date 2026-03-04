@@ -516,6 +516,7 @@ export default {
 	},
 	empty: {
 		comments: "crwdns3756:0crwdne3756:0",
+		search: "crwdns4092:0crwdne4092:0",
 	},
 	user: {
 		title: "crwdns3758:0crwdne3758:0",
@@ -608,7 +609,7 @@ export default {
 	click_to_refresh: "crwdns2822:0crwdne2822:0",
 	toast: {
 		finish: "crwdns3232:0crwdne3232:0",
-		something_went_wrong: "crwdns3532:0crwdne3532:0",
+		something_went_wrong: "crwdns4094:0crwdne4094:0",
 		too_many_requests: "crwdns3374:0crwdne3374:0",
 		cooling_down: "crwdns3376:0crwdne3376:0",
 		unsupported_file: "crwdns3378:0crwdne3378:0",

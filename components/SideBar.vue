@@ -147,7 +147,6 @@
 				href="/settings"
 				:active="isSettingsPage"
 			/>
-			<SoftButton v-tooltip="$t('search')" class="pe" icon="search" href="/search" />
 		</div>
 
 		<LoginWindow v-model="showLogin" />
@@ -159,6 +158,7 @@
 				<BottomNavItem icon="home" href="/">{{ $t("home") }}</BottomNavItem>
 				<BottomNavItem icon="category" href="/category">{{ $t("category.title") }}</BottomNavItem>
 				<BottomNavItem icon="feed" href="/feed/following">{{ $t("feed.following") }}</BottomNavItem>
+				<BottomNavItem icon="search" href="/search">{{ $t("search") }}</BottomNavItem>
 			</div>
 		</nav>
 	</Transition>
