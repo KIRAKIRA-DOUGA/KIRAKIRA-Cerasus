@@ -23,17 +23,9 @@
 
 <style scoped lang="scss">
 :comp {
+	@include page-padding-x;
 	display: flex;
 	align-items: center;
-	padding: 0 $page-padding-x;
-
-	@include tablet {
-		padding: 0 $page-padding-x-tablet;
-	}
-
-	@include mobile {
-		padding: 0 $page-padding-x-mobile;
-	}
 
 	.shading-icon {
 		position: absolute;

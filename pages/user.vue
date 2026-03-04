@@ -173,19 +173,11 @@
 
 	header {
 		@include card-shadow;
+		@include page-padding-x;
 		// position: sticky;
 		// top: 0;
 		// z-index: 4;
-		padding-inline: $page-padding-x;
 		background-color: c(surface-color);
-
-		@include tablet {
-			padding: 0 $page-padding-x-tablet;
-		}
-
-		@include mobile {
-			padding: 0 $page-padding-x-mobile;
-		}
 	}
 
 	.content {
