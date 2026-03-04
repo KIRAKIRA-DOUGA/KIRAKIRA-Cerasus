@@ -115,19 +115,13 @@
 					<!-- TODO: 评论支持富文本。 -->
 					<div>{{ comment.text }}</div>
 				</CreationCommentsItem>
-				<div v-if="!loading && commentsCount === 0" class="placeholder">
-					<Icon name="chat_bubble" />
-					{{ $t("empty.comments") }}
-				</div>
+				<ContentUnavailable v-if="!loading && commentsCount === 0" icon="chat_bubble" :title="$t('empty.comments')" />
 			</div>
 			<div v-if="loading" class="loading-indicator">
 				<ProgressRing />
 			</div>
 		</div>
-		<div v-else class="error">
-			<Icon name="error" />
-			<p>{{ $t("toast.something_went_wrong") }}</p>
-		</div>
+		<ContentUnavailable v-else type="error" />
 		<div v-if="commentsCount !== 0" class="toolbar bottom">
 			<Pagination v-model="currentPage" :pages="pageCount" :displayPageCount="7" :disabled="loading" />
 		</div>
@@ -201,22 +195,6 @@
 			opacity: 0;
 		}
 
-		.placeholder {
-			display: flex;
-			flex-direction: column;
-			gap: 8px;
-			align-items: center;
-			width: 100%;
-			padding-block: 32px;
-			color: c(icon-color);
-			font-size: 16px;
-			font-weight: bold;
-
-			.icon {
-				font-size: 64px;
-			}
-		}
-
 		.loading-indicator {
 			position: absolute;
 			top: 0;
@@ -224,25 +202,7 @@
 			left: 0;
 			display: flex;
 			justify-content: center;
-			padding-block: 32px;
-
-			.progress-ring {
-				--size: 30px;
-				--thickness: 3px;
-			}
-		}
-	}
-
-	.error {
-		display: flex;
-		flex-direction: column;
-		gap: 12px;
-		align-items: center;
-		padding-block: 32px;
-		color: c(red);
-
-		.icon {
-			font-size: 48px;
+			padding-block: 48px;
 		}
 	}
 </style>
