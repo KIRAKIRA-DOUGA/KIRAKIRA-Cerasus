@@ -240,7 +240,7 @@
 
 	onMounted(() => {
 		invalid.value = isInvalid();
-		input.value?.focus();
+		if (props.autoFocus) input.value?.focus();
 	});
 
 	const TrailingIcon = ((textBoxProps: typeof props) => {
