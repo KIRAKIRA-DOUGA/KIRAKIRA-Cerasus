@@ -251,8 +251,14 @@
 				font-size: 20px;
 				font-weight: 600;
 
-				@media (height >= 678px) {
+				@include mobile {
 					--form: visible;
+				}
+
+				@include not-mobile {
+					@media (height >= 678px) {
+						--form: visible;
+					}
 				}
 
 				:deep(.logo-shape) {
