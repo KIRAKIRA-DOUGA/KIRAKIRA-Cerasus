@@ -286,7 +286,7 @@
 		.names {
 			display: flex;
 			gap: 8px;
-			align-items: center;
+			align-items: baseline;
 			overflow: hidden;
 
 			> * {
