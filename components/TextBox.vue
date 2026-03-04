@@ -240,6 +240,7 @@
 
 	onMounted(() => {
 		invalid.value = isInvalid();
+		input.value?.focus();
 	});
 
 	const TrailingIcon = ((textBoxProps: typeof props) => {
@@ -394,11 +395,6 @@
 				scale: 1;
 			}
 
-			label {
-				color: c(accent);
-				scale: 0.7;
-			}
-
 			.leading-icon {
 				color: c(accent);
 			}
@@ -506,6 +502,7 @@
 
 		&:not(:placeholder-shown) ~ label,
 		&:focus ~ label {
+			color: c(accent);
 			translate: 0 calc($large-height / -2 + 12px);
 			scale: 0.7;
 		}
