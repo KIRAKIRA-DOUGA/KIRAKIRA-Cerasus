@@ -6,11 +6,23 @@
 	const shown = defineModel<boolean>({ default: false });
 	const { t } = useI18n();
 
-	const drawerItems: { name: string; icon: DeclaredIcons; route?: string }[] = [
-		{ name: t("history"), icon: "history", route: "/history" },
-		{ name: t("collection.title", 2), icon: "star", route: "/collections" },
-		{ name: t("upload.title"), icon: "upload", route: "/upload" },
-	];
+	const drawerItems: Record<string, { id: string; name: string; icon: DeclaredIcons; route?: string }[]> = {
+		general: [
+			{ id: "history", name: t("history"), icon: "history", route: "/history" },
+			{ id: "collections", name: t("collection.title", 2), icon: "star", route: "/collections" },
+			{ id: "upload", name: t("upload.title"), icon: "upload", route: "/upload" },
+		],
+		extra: [
+			{ id: "settings", name: t("settings.title"), icon: "settings", route: "/settings" },
+		],
+	};
+
+	const currentPageRequested = ref("");
+	const currentRoute = computed(() => getRoutePath());
+	watch(currentRoute, route => {
+		const firstSegment = route.split("/")[0] ?? "";
+		currentPageRequested.value = firstSegment;
+	}, { immediate: true });
 
 	/**
 	 * 前往路由。
@@ -46,15 +58,27 @@
 			<p v-if="selfUserInfoStore.isLogined" class="username">@{{ selfUserInfoStore.userInfo.username }}</p>
 			<p v-if="selfUserInfoStore.isLogined && selfUserInfoStore.userInfo.signature" class="bio">{{ selfUserInfoStore.userInfo.signature }}</p>
 		</div>
-		<div class="grid">
-			<div v-for="item in drawerItems" :key="item.icon" v-ripple class="drawer-item" @click="to(item.route)">
-				<Icon :name="item.icon" />
-				<label>{{ item.name }}</label>
-			</div>
-		</div>
-		<div class="tab-bar vertical"><!-- 假装是 TabBar -->
-			<TabItem id="settings" v-ripple icon="settings" _internalIsVertical @click="to('/settings')">{{ $t("settings.title") }}</TabItem>
-		</div>
+		<TabBar v-model="currentPageRequested" vertical>
+			<template v-if="selfUserInfoStore.isLogined">
+				<TabItem
+					v-for="item in drawerItems.general"
+					:id="item.id"
+					:key="item.id"
+					:icon="item.icon"
+					:to="item.route"
+					@click="shown = false"
+				>{{ item.name }}</TabItem>
+			</template>
+			<hr v-if="selfUserInfoStore.isLogined" />
+			<TabItem
+				v-for="item in drawerItems.extra"
+				:id="item.id"
+				:key="item.id"
+				:icon="item.icon"
+				:to="item.route"
+				@click="shown = false"
+			>{{ item.name }}</TabItem>
+		</TabBar>
 	</Comp>
 </template>
 
@@ -86,40 +110,28 @@
 		}
 	}
 
-	.tab-bar {
-		margin-inline: -14px;
+	@keyframes scale-y-in {
+		from {
+			scale: 1 0;
+		}
 	}
 
-	.grid {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 8px;
-		margin-block: 12px;
+	.tab-bar {
+		margin-block-start: 12px;
+		margin-inline: -14px;
 
-		.drawer-item {
-			@include round-large;
-			@include card-in-card-shadow;
-			display: flex;
-			flex-direction: column;
-			gap: 4px;
-			align-items: center;
-			padding-block: 12px;
-			color: c(icon-color);
-			font-size: 13px;
-			background-color: c(main-bg, 50%);
-			cursor: pointer;
+		.offcanvas.v-enter-active &:deep(.indicator) {
+			display: none;
+		}
 
-			.icon {
-				font-size: 32px;
-			}
+		.offcanvas:not(.v-enter-active) &:deep(.indicator) {
+			animation: scale-y-in 200ms $ease-out-expo backwards 100ms;
+		}
 
-			&:any-hover {
-				@include chip-shadow;
-			}
-
-			&:active {
-				@include button-scale-pressed;
-			}
+		hr {
+			width: calc(100% - 28px);
+			margin-block: 6px;
+			margin-inline: 14px;
 		}
 	}
 </style>
