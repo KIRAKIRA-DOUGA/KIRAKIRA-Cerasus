@@ -8,16 +8,6 @@
 		flatAppBar: true,
 	});
 	const router = useRouter(), route = useRoute();
-	const querySearch = computed(() => route.query.query ?? "");
-	const tagSearch = computed(() => {
-		const tagIds = route.query.tagId;
-		if (Array.isArray(tagIds))
-			return tagIds.map(tagId => parseInt(tagId!, 10));
-		else if (typeof tagIds === "string")
-			return [parseInt(tagIds, 10)];
-		else
-			return [];
-	});
 
 	const windowSize = useWindowSize();
 	const isMobileWidth = computed(() => windowSize.width.value <= numbers.tabletMaxWidth);
@@ -37,9 +27,6 @@
 		user: "user.title",
 		advanced_search: "advanced_search",
 	};
-	// const searchModesSorted = computed(() => searchModes.toSorted((a, b) =>
-	// 	a === searchMode.value ? -1 : b === searchMode.value ? 1 : 0));
-	// 注意：请更新你的 Node.js 版本为 20 及以上才能支持该函数，否则会报错。 // 02: 确实！
 	const currentLanguage = computed(getCurrentLocale); // 当前用户的语言
 	const flyoutTag = ref<FlyoutModel>(); // 绑定到 FlyoutTag 上的参数，当 target 不为空时会显示 Flyout
 	const tags = reactive<Map<VideoTag["tagId"], VideoTag>>(new Map()); // 视频标签
@@ -49,11 +36,11 @@
 	const hideExceptMe = ref(false);
 	const hideTimeoutId = ref<Timeout>();
 	const flyoutSort = ref<FlyoutModel>(); // 排序选择浮窗
+	const keywordQueryString = ref(""); // 搜索关键词输入框绑定的响应式变量，注意它和 URL 中的 query.keyword 不是同一个变量，但它们的值会相互同步
 
-	const data = reactive({
-		selectedTab: "Home",
-		search: querySearch.value,
+	const settings = reactive({ // TODO: 某些设置项可以迁移到设置页
 		sort: ref<SortModel>(["upload_date", "descending"]),
+		isDynamicUrl: ref(true), // 是否在用户输入搜索条件时动态更新 URL 中的 query 参数，默认为 true // TODO: 暂时无法更改，计划迁移到设置页
 		page: 1,
 		pages: 99,
 	});
@@ -70,7 +57,7 @@
 		loading.value = false;
 		if (videoResult && videoResult.success) {
 			videos.value = videoResult;
-			data.pages = Math.max(1, Math.ceil(videoResult.videosCount / 50));
+			settings.pages = Math.max(1, Math.ceil(videoResult.videosCount / 50));
 		} else
 			error.value = true;
 	}
@@ -87,7 +74,7 @@
 		loading.value = false;
 		if (videoResult && videoResult.success) {
 			videos.value = videoResult;
-			data.pages = Math.max(1, Math.ceil(videoResult.videosCount / 50));
+			settings.pages = Math.max(1, Math.ceil(videoResult.videosCount / 50));
 		} else
 			error.value = true;
 	}
@@ -96,10 +83,11 @@
 	 * 像首页一样获取视频，并赋值给 video
 	 */
 	async function getHomeVideo() {
-		const videoResult = await api.video.getHomePageThumbVideo();
+		const headerCookie = useRequestHeaders(["cookie"]);
+		const videoResult = await api.video.getHomePageThumbVideo(headerCookie);
 		if (videoResult && videoResult.success) {
 			videos.value = videoResult;
-			data.pages = Math.max(1, Math.ceil(videoResult.videosCount / 50));
+			settings.pages = Math.max(1, Math.ceil(videoResult.videosCount / 50));
 		}
 	}
 
@@ -148,97 +136,122 @@
 	}
 
 	/**
-	 * 搜索视频数据
+	 * 根据用户的输入更新 URL(可选),然后搜索视频
 	 */
-	async function searchVideo() {
-		const query = querySearch.value; // 关键词
-		const tag = tagSearch.value; // 视频标签
-		switch (searchMode.value) {
+	async function updateUrlAndSearch() {
+		const mode = searchMode.value;
+		const keyword = keywordQueryString.value.trim();
+		const tagIdList = displayTags.value.map(tag => tag.tagId);
+
+		switch (mode) {
 			case "keyword": {
-				if (query) {
+				if (keyword) {
+					if (settings.isDynamicUrl)
+						router.push({ path: route.path, query: { mode, keyword } });
+					await searchVideoByKeyword(keyword);
 					showResult.value = true;
-					await searchVideoByKeyword(query as string);
 				}
-				// else
-				// 	await getHomeVideo();
 				break;
 			}
-
 			case "tag": {
-				if (tag?.length) {
+				if (
+					Array.isArray(tagIdList) &&
+					tagIdList.every((tagId): tagId is number => typeof tagId === "number") &&
+					tagIdList.length > 0
+				) {
+					if (settings.isDynamicUrl)
+						router.push({ path: route.path, query: { mode, tagId: tagIdList } });
+					await searchVideoByTagIds(tagIdList);
 					showResult.value = true;
-					await searchVideoByTagIds(tag);
 				}
-				// else
-				// 	await getHomeVideo();
 				break;
 			}
-
-			case "user": {
+			case "user":
+			case "advanced_search":
 				useToast(t("under_construction.search_mode"), "error", 10000);
-				console.warn("no support search mode: user");
+				console.warn(`no support search mode: ${mode}`);
 				await getHomeVideo();
 				break;
-			}
-
-			case "advanced_search": {
-				useToast(t("under_construction.search_mode"), "error", 10000);
-				console.warn("no support search mode: advanced_search");
-				await getHomeVideo();
-				break;
-			}
 
 			default:
 				break;
 		}
 	}
 
-	/** 监听路由中的关键词，如果发生变化，则防抖搜索视频 */
-	watch(querySearch, searchVideo);
-
-	/** 监听路由中的 TAG ID，如果发生变化，则防抖搜索视频 */
-	watch(tagSearch, searchVideo);
-
-	function onSearch() {
-		// 如果当前是关键字搜索模式，向 URL 中更新搜索的关键字
-		if (searchMode.value === "keyword")
-			router.push({ path: route.path, query: { ...route.query, query: data.search || undefined } });
-	}
-
-	// 如果当前是 TAG 搜索模式，并且 TAG 发生变化，则向 URL 中更新 tagIds
-	watch(() => displayTags.value, tags => {
-		if (searchMode.value === "tag") {
-			const tagIds = tags.map(tag => tag.tagId);
-			router.push({ path: route.path, query: { ...route.query, tagId: tagIds } });
+	/**
+	 * 搜索模式改变时的处理函数
+	 * @param mode - 搜索模式
+	 */
+	function handleSearchModeChange(mode: typeof searchModes[number]) {
+		switch (mode) {
+			case "keyword":
+				keywordQueryString.value = "";
+				searchMode.value = mode;
+				if (settings.isDynamicUrl)
+					router.push({ path: route.path, query: { mode } });
+				break;
+			case "tag":
+				tags.clear();
+				searchMode.value = mode;
+				if (settings.isDynamicUrl)
+					router.push({ path: route.path, query: { mode } });
+				break;
+			case "user":
+			case "advanced_search":
+				useToast(t("under_construction.search_mode"), "error", 10000);
+				console.warn(`no support search mode: ${mode}`);
+				break;
+			default:
+				break;
 		}
-	});
-
-	// 向路由中更新当前的搜索模式，立即执行
-	watch(() => searchMode.value, searchMode => {
-		router.push({ path: route.path, query: { ...route.query, mode: searchMode } });
-	});
-
-	// 页面初始化后设置 URL Query 中包含搜索模式
-	onMounted(() => {
-		router.push({ path: route.path, query: { ...route.query, mode: searchMode.value } });
-	});
+	}
 
 	/**
 	 * 搜索页初始化时要执行的一系列操作
 	 */
 	async function searchPageInit() {
-		// SSR 时搜索视频
-		await searchVideo();
+		const mode = route.query.mode as typeof searchModes[number];
+		switch (mode) {
+			case "keyword": {
+				const originKeywordInUrl = route.query.keyword;
+				const keywordInUrl = typeof originKeywordInUrl === "string" ? originKeywordInUrl : "";
+				if (keywordInUrl) keywordQueryString.value = keywordInUrl;
+				break;
+			}
 
-		if (tagSearch.value.length > 0) {
-			const getVideoTagByTagIdRequest: GetVideoTagByTagIdRequestDto = { tagId: tagSearch.value };
-			const tagsResult = await api.videoTag.getTagsByTagIds(getVideoTagByTagIdRequest);
-			if (tagsResult.success && tagsResult.result)
-				tagsResult.result.map(tag => tags.set(tag.tagId, tag));
+			case "tag": {
+				const originTagIdListInUrl = route.query.tagId;
+
+				let urlTagIdList: number[] = [];
+				if (Array.isArray(originTagIdListInUrl))
+					urlTagIdList = originTagIdListInUrl.map(tagId => parseInt(tagId!, 10));
+				else if (typeof originTagIdListInUrl === "string")
+					urlTagIdList = [parseInt(originTagIdListInUrl, 10)];
+
+				if (urlTagIdList.length > 0) {
+					const getVideoTagByTagIdRequest: GetVideoTagByTagIdRequestDto = { tagId: urlTagIdList };
+					const tagsResult = await api.videoTag.getTagsByTagIds(getVideoTagByTagIdRequest);
+					if (tagsResult.success && tagsResult.result)
+						tagsResult.result.forEach(tag => tags.set(tag.tagId, tag));
+				}
+				break;
+			}
+			case "user":
+			case "advanced_search": {
+				useToast(t("under_construction.search_mode"), "error", 10000);
+				console.warn(`no support search mode: ${mode}`);
+				await getHomeVideo();
+				break;
+			}
+			default:
+				break;
 		}
 	}
-	await searchPageInit();
 
+	const debounceUpdateUrlAndSearch = useDebounce(updateUrlAndSearch, 300); // 防抖函数，在特定模式下需要避免用户频繁更新 URL 和搜索视频
+	watch(keywordQueryString, debounceUpdateUrlAndSearch); // 监听搜索关键词输入框的变化，并在用户停止输入 300ms 后执行搜索（更新 URL 和搜索视频）
+	watch(tags, updateUrlAndSearch); // TAG 模式不需要防抖
+	await searchPageInit(); // WARN: searchPageInit 一定要在 watch 后面
 	const [DefineSearchForm, SearchForm] = createReusableTemplate();
 </script>
 
@@ -252,14 +265,14 @@
 							v-for="mode in searchModes"
 							:key="mode"
 							:checked="searchMode === mode"
-							@click="searchMode = mode"
+							@click="handleSearchModeChange(mode)"
 						>{{ $t(searchModeI18nKey[mode]) }}</Tag>
 					</TransitionGroup>
 				</div>
-				<form v-if="searchMode !== 'tag'" @submit.prevent="onSearch">
-					<TextBox v-model="data.search" :placeholder="$t('search')" autoFocus>
+				<form v-if="searchMode !== 'tag'" @submit.prevent="updateUrlAndSearch">
+					<TextBox v-model="keywordQueryString" :placeholder="$t('search')" autoFocus>
 						<template #actions>
-							<SoftButton icon="search" @click="onSearch" />
+							<SoftButton icon="search" @click="updateUrlAndSearch" />
 						</template>
 					</TextBox>
 				</form>
@@ -331,7 +344,7 @@
 									</template>
 									<section>
 										<Subheader v-if="isMobileWidth" icon="sort">{{ $t("sort.by") }}</Subheader>
-										<Sort v-model="data.sort">
+										<Sort v-model="settings.sort">
 											<SortItem id="upload_date" preferOrder="descending">{{ $t("upload_date") }}</SortItem>
 											<SortItem id="view" preferOrder="descending">{{ $t("sort.view") }}</SortItem>
 											<SortItem id="danmaku" preferOrder="descending">{{ $t("sort.danmaku") }}</SortItem>
@@ -344,7 +357,7 @@
 								</div>
 							</Flyout>
 						</div>
-						<Pagination v-model="data.page" :pages="data.pages" :displayPageCount enableArrowKeyMove />
+						<Pagination v-model="settings.page" :pages="settings.pages" :displayPageCount enableArrowKeyMove />
 					</div>
 				</header>
 				<div class="videos-container" :class="{ loading }">
