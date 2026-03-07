@@ -148,6 +148,8 @@
 				if (keyword) {
 					if (settings.isDynamicUrl)
 						router.push({ path: route.path, query: { mode, keyword } });
+					else
+						clearUrlQuery();
 					await searchVideoByKeyword(keyword);
 					showResult.value = true;
 				}
@@ -161,6 +163,8 @@
 				) {
 					if (settings.isDynamicUrl)
 						router.push({ path: route.path, query: { mode, tagId: tagIdList } });
+					else
+						clearUrlQuery();
 					await searchVideoByTagIds(tagIdList);
 					showResult.value = true;
 				}
@@ -189,12 +193,16 @@
 				searchMode.value = mode;
 				if (settings.isDynamicUrl)
 					router.push({ path: route.path, query: { mode } });
+				else
+					clearUrlQuery();
 				break;
 			case "tag":
 				tags.clear();
 				searchMode.value = mode;
 				if (settings.isDynamicUrl)
 					router.push({ path: route.path, query: { mode } });
+				else
+					clearUrlQuery();
 				break;
 			case "user":
 			case "advanced_search":
@@ -204,6 +212,13 @@
 			default:
 				break;
 		}
+	}
+
+	/**
+	 * 清理 URL 中的查询参数
+	 */
+	function clearUrlQuery() {
+		router.push({ path: route.path, query: {} });
 	}
 
 	/**
@@ -246,10 +261,9 @@
 			default:
 				break;
 		}
+		updateUrlAndSearch();
 	}
 
-	const debounceUpdateUrlAndSearch = useDebounce(updateUrlAndSearch, 300); // 防抖函数，在特定模式下需要避免用户频繁更新 URL 和搜索视频
-	watch(keywordQueryString, debounceUpdateUrlAndSearch); // 监听搜索关键词输入框的变化，并在用户停止输入 300ms 后执行搜索（更新 URL 和搜索视频）
 	watch(tags, updateUrlAndSearch); // TAG 模式不需要防抖
 	await searchPageInit(); // WARN: searchPageInit 一定要在 watch 后面
 	const [DefineSearchForm, SearchForm] = createReusableTemplate();
