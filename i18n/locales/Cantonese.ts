@@ -215,6 +215,7 @@ export default {
 		focus_mode: {},
 		new_window: {},
 		misc: "綜合",
+		search: {},
 	},
 	experimental: "實驗",
 	accessibility: "輔助使用",

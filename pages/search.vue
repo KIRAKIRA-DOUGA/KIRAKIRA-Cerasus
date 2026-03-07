@@ -38,9 +38,9 @@
 	const flyoutSort = ref<FlyoutModel>(); // 排序选择浮窗
 	const keywordQueryString = ref(""); // 搜索关键词输入框绑定的响应式变量，注意它和 URL 中的 query.keyword 不是同一个变量，但它们的值会相互同步
 
+	const appSettingsStore = useAppSettingsStore();
 	const settings = reactive({ // TODO: 某些设置项可以迁移到设置页
 		sort: ref<SortModel>(["upload_date", "descending"]),
-		isDynamicUrl: ref(true), // 是否在用户输入搜索条件时动态更新 URL 中的 query 参数，默认为 true // TODO: 暂时无法更改，计划迁移到设置页
 		page: 1,
 		pages: 99,
 	});
@@ -146,7 +146,7 @@
 		switch (mode) {
 			case "keyword": {
 				if (keyword) {
-					if (settings.isDynamicUrl)
+					if (appSettingsStore.search.isDynamicUrl)
 						router.push({ path: route.path, query: { mode, keyword } });
 					else
 						clearUrlQuery();
@@ -161,7 +161,7 @@
 					tagIdList.every((tagId): tagId is number => typeof tagId === "number") &&
 					tagIdList.length > 0
 				) {
-					if (settings.isDynamicUrl)
+					if (appSettingsStore.search.isDynamicUrl)
 						router.push({ path: route.path, query: { mode, tagId: tagIdList } });
 					else
 						clearUrlQuery();
@@ -191,7 +191,7 @@
 			case "keyword":
 				keywordQueryString.value = "";
 				searchMode.value = mode;
-				if (settings.isDynamicUrl)
+				if (appSettingsStore.search.isDynamicUrl)
 					router.push({ path: route.path, query: { mode } });
 				else
 					clearUrlQuery();
@@ -199,7 +199,7 @@
 			case "tag":
 				tags.clear();
 				searchMode.value = mode;
-				if (settings.isDynamicUrl)
+				if (appSettingsStore.search.isDynamicUrl)
 					router.push({ path: route.path, query: { mode } });
 				else
 					clearUrlQuery();

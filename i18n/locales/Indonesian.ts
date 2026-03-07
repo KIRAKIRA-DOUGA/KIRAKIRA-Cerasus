@@ -209,6 +209,7 @@ export default {
 	preference: {
 		focus_mode: {},
 		new_window: {},
+		search: {},
 	},
 	experimental: "Eksperimental",
 	accessibility: "Akses",

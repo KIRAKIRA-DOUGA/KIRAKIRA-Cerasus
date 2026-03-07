@@ -312,6 +312,7 @@ export default {
 		},
 		misc: "Khác",
 		relative_date: "Dùng ngày tháng liên quan",
+		search: {},
 	},
 	experimental: "Thử nghiệm",
 	accessibility: "Trợ năng",
@@ -516,6 +517,7 @@ export default {
 	},
 	empty: {
 		comments: "Chưa có bình luận",
+		search: "Không có kết quả",
 	},
 	user: {
 		title: "Người dùng",

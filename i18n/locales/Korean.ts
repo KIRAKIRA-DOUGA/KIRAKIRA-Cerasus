@@ -201,6 +201,7 @@ export default {
 		focus_mode: {},
 		new_window: {},
 		misc: "기타",
+		search: {},
 	},
 	experimental: "실험",
 	accessibility: "접근성",

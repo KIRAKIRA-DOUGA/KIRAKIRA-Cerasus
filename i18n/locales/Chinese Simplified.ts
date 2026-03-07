@@ -312,6 +312,9 @@ export default {
 		},
 		misc: "杂项",
 		relative_date: "使用相对日期",
+		search: {
+			dynamic_url: "将搜索条件实时同步到 URL",
+		},
 	},
 	experimental: "实验",
 	accessibility: "无障碍",

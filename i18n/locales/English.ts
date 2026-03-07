@@ -308,6 +308,9 @@ export default {
 		},
 		misc: "Misc",
 		relative_date: "Use Relative Date",
+		search: {
+			dynamic_url: "Dynamically Update URL When Changing Search Conditions",
+		},
 	},
 	experimental: "Experimental",
 	accessibility: "Accessibility",

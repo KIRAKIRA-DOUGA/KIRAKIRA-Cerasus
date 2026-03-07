@@ -312,6 +312,9 @@ export default {
 		},
 		misc: "crwdns4022:0crwdne4022:0",
 		relative_date: "crwdns4024:0crwdne4024:0",
+		search: {
+			dynamic_url: "crwdns4096:0crwdne4096:0",
+		},
 	},
 	experimental: "crwdns2410:0crwdne2410:0",
 	accessibility: "crwdns2412:0crwdne2412:0",
