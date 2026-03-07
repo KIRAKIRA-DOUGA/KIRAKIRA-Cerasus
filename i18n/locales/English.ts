@@ -310,6 +310,7 @@ export default {
 		relative_date: "Use Relative Date",
 		search: {
 			dynamic_url: "Dynamically Update URL When Changing Search Conditions",
+			apply_url_search_criteria: "Apply Search Conditions from URL\nIf disabled, entering a URL with search conditions in the browser's address bar will not automatically trigger a search.",
 		},
 	},
 	experimental: "Experimental",

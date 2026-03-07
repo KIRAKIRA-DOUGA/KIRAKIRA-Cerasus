@@ -314,6 +314,7 @@ export default {
 		relative_date: "使用相对日期",
 		search: {
 			dynamic_url: "将搜索条件实时同步到 URL",
+			apply_url_search_criteria: "识别 URL 中的搜索条件\n如果关闭，在浏览器地址栏中输入带有搜索条件的 URL 后将不会自动触发搜索。",
 		},
 	},
 	experimental: "实验",

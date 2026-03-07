@@ -19,6 +19,8 @@
 			},
 			/** URL Hash (#). */
 			hash: { type: String, default: undefined },
+			/** URL State (windows.history.state). */
+			state: { type: Object, default: undefined },
 		},
 		setup(props) {
 			const localePath = useLocalePath();
@@ -41,6 +43,7 @@
 				path: localePath(props.to),
 				hash: props.hash,
 				query: props.query,
+				state: props.state,
 			} as RouteLocation));
 
 			return {

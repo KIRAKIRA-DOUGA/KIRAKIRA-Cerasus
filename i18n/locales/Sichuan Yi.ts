@@ -314,6 +314,7 @@ export default {
 		relative_date: "crwdns4024:0crwdne4024:0",
 		search: {
 			dynamic_url: "crwdns4096:0crwdne4096:0",
+			apply_url_search_criteria: "crwdns4098:0crwdne4098:0",
 		},
 	},
 	experimental: "crwdns2410:0crwdne2410:0",

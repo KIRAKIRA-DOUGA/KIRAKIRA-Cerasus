@@ -312,6 +312,7 @@ export default {
 		relative_date: "Utiliser une date relative",
 		search: {
 			dynamic_url: "Mettre à jour dynamiquement l'URL lors de la modification des conditions de recherche",
+			apply_url_search_criteria: "Appliquer les conditions de recherche à partir de l'URL\nSi désactivé, entrer une URL avec des conditions de recherche dans la barre d'adresse du navigateur ne déclenchera pas automatiquement une recherche.",
 		},
 	},
 	experimental: "Expérimental",

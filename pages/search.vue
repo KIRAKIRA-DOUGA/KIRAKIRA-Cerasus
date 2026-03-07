@@ -218,54 +218,83 @@
 	 * 清理 URL 中的查询参数
 	 */
 	function clearUrlQuery() {
-		router.push({ path: route.path, query: {} });
+		try {
+			router.push({ path: route.path, query: {} });
+		} catch (error) {
+			console.error("ERROR", "清理 URL 查询参数时发生错误：", error);
+		}
+	}
+
+	/**
+	 * 清理 window.history.state 中的 routeFromTag 字段。
+	 */
+	function clearRouteFromTag4WindowHistoryState() {
+		try {
+			const originalState = import.meta.client ? window.history.state : undefined;
+			router.push({ state: { ...originalState, routeFromTag: false } });
+		} catch (error) {
+			console.error("ERROR", "清理 URL 查询参数时发生错误：", error);
+		}
 	}
 
 	/**
 	 * 搜索页初始化时要执行的一系列操作
 	 */
 	async function searchPageInit() {
-		const mode = route.query.mode as typeof searchModes[number];
-		switch (mode) {
-			case "keyword": {
-				const originKeywordInUrl = route.query.keyword;
-				const keywordInUrl = typeof originKeywordInUrl === "string" ? originKeywordInUrl : "";
-				if (keywordInUrl) keywordQueryString.value = keywordInUrl;
-				break;
+		try {
+			const routeFromTag = import.meta.client ? window.history.state?.routeFromTag : undefined;
+			console.log("!appSettingsStore.search.isApplyUrlSearchCriteria", !appSettingsStore.search.isApplyUrlSearchCriteria);
+			if (!routeFromTag && !appSettingsStore.search.isApplyUrlSearchCriteria) {
+				clearUrlQuery();
+				return;
 			}
 
-			case "tag": {
-				const originTagIdListInUrl = route.query.tagId;
+			clearRouteFromTag4WindowHistoryState(); // 一旦开始初始化，则将 routeFromTag 标识设为 false
 
-				let urlTagIdList: number[] = [];
-				if (Array.isArray(originTagIdListInUrl))
-					urlTagIdList = originTagIdListInUrl.map(tagId => parseInt(tagId!, 10));
-				else if (typeof originTagIdListInUrl === "string")
-					urlTagIdList = [parseInt(originTagIdListInUrl, 10)];
-
-				if (urlTagIdList.length > 0) {
-					const getVideoTagByTagIdRequest: GetVideoTagByTagIdRequestDto = { tagId: urlTagIdList };
-					const tagsResult = await api.videoTag.getTagsByTagIds(getVideoTagByTagIdRequest);
-					if (tagsResult.success && tagsResult.result)
-						tagsResult.result.forEach(tag => tags.set(tag.tagId, tag));
+			const mode = route.query.mode as typeof searchModes[number];
+			switch (mode) {
+				case "keyword": {
+					const originKeywordInUrl = route.query.keyword;
+					const keywordInUrl = typeof originKeywordInUrl === "string" ? originKeywordInUrl : "";
+					if (keywordInUrl) keywordQueryString.value = keywordInUrl;
+					break;
 				}
-				break;
+
+				case "tag": {
+					const originTagIdListInUrl = route.query.tagId;
+
+					let urlTagIdList: number[] = [];
+					if (Array.isArray(originTagIdListInUrl))
+						urlTagIdList = originTagIdListInUrl.map(tagId => parseInt(tagId!, 10));
+					else if (typeof originTagIdListInUrl === "string")
+						urlTagIdList = [parseInt(originTagIdListInUrl, 10)];
+
+					if (urlTagIdList.length > 0) {
+						const getVideoTagByTagIdRequest: GetVideoTagByTagIdRequestDto = { tagId: urlTagIdList };
+						const tagsResult = await api.videoTag.getTagsByTagIds(getVideoTagByTagIdRequest);
+						if (tagsResult.success && tagsResult.result)
+							tagsResult.result.forEach(tag => tags.set(tag.tagId, tag));
+					}
+					break;
+				}
+				case "user":
+				case "advanced_search": {
+					useToast(t("under_construction.search_mode"), "error", 10000);
+					console.warn(`no support search mode: ${mode}`);
+					await getHomeVideo();
+					break;
+				}
+				default:
+					break;
 			}
-			case "user":
-			case "advanced_search": {
-				useToast(t("under_construction.search_mode"), "error", 10000);
-				console.warn(`no support search mode: ${mode}`);
-				await getHomeVideo();
-				break;
-			}
-			default:
-				break;
+			updateUrlAndSearch();
+		} catch (error) {
+			console.error("ERROR", "搜索页初始化发生错误：", error);
 		}
-		updateUrlAndSearch();
 	}
 
 	watch(tags, updateUrlAndSearch); // TAG 模式不需要防抖
-	await searchPageInit(); // WARN: searchPageInit 一定要在 watch 后面
+	import.meta.client && await searchPageInit(); // WARN: searchPageInit 一定要在 watch 后面
 	const [DefineSearchForm, SearchForm] = createReusableTemplate();
 </script>
 

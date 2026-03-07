@@ -42,6 +42,7 @@ export const useAppSettingsStore = defineStore("app-settings", {
 
 		search: {
 			isDynamicUrl: true, // 是否在用户更改搜索条件时动态更新 URL 以便用户分享搜索，默认为 true
+			isApplyUrlSearchCriteria: true, // 是否在用户访问带有搜索条件的 URL 时读取 URL 中的搜索条件并应用，默认为 true
 		},
 
 		authenticatorType: "none", // 2FA 的类型
