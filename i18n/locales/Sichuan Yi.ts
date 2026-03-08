@@ -312,6 +312,10 @@ export default {
 		},
 		misc: "crwdns4022:0crwdne4022:0",
 		relative_date: "crwdns4024:0crwdne4024:0",
+		search: {
+			dynamic_url: "crwdns4096:0crwdne4096:0",
+			apply_url_search_criteria: "crwdns4098:0crwdne4098:0",
+		},
 	},
 	experimental: "crwdns2410:0crwdne2410:0",
 	accessibility: "crwdns2412:0crwdne2412:0",
@@ -516,6 +520,7 @@ export default {
 	},
 	empty: {
 		comments: "crwdns3756:0crwdne3756:0",
+		search: "crwdns4092:0crwdne4092:0",
 	},
 	user: {
 		title: "crwdns3758:0crwdne3758:0",
@@ -608,7 +613,7 @@ export default {
 	click_to_refresh: "crwdns2822:0crwdne2822:0",
 	toast: {
 		finish: "crwdns3232:0crwdne3232:0",
-		something_went_wrong: "crwdns3532:0crwdne3532:0",
+		something_went_wrong: "crwdns4094:0crwdne4094:0",
 		too_many_requests: "crwdns3374:0crwdne3374:0",
 		cooling_down: "crwdns3376:0crwdne3376:0",
 		unsupported_file: "crwdns3378:0crwdne3378:0",

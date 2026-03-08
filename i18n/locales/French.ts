@@ -310,6 +310,10 @@ export default {
 		},
 		misc: "Divers",
 		relative_date: "Utiliser une date relative",
+		search: {
+			dynamic_url: "Mettre à jour dynamiquement l'URL lors de la modification des conditions de recherche",
+			apply_url_search_criteria: "Appliquer les conditions de recherche à partir de l'URL\nSi désactivé, entrer une URL avec des conditions de recherche dans la barre d'adresse du navigateur ne déclenchera pas automatiquement une recherche.",
+		},
 	},
 	experimental: "Expérimental",
 	accessibility: "Accessibilité",
@@ -514,6 +518,7 @@ export default {
 	},
 	empty: {
 		comments: "Aucun commentaire",
+		search: "Aucun résultat",
 	},
 	user: {
 		title: "Utilisateur | Utilisateurs",
@@ -606,7 +611,7 @@ export default {
 	click_to_refresh: "Appuyez pour actualiser",
 	toast: {
 		finish: "Opération terminée avec succès~",
-		something_went_wrong: "Quelque chose s'est mal passé! (; ́д`)<unk> <unk> Veuillez actualiser la page et réessayer.",
+		something_went_wrong: "Quelque chose s'est mal passé ! (；´д｀)ゞ",
 		too_many_requests: "Trop de requêtes! ( o<unk> o ) Veuillez réessayer plus tard.",
 		cooling_down: "Refroidissement! (・_・;) Veuillez réessayer plus tard.",
 		unsupported_file: "Format de fichier non pris en charge !",

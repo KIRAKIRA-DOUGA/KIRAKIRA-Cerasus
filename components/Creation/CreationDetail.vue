@@ -177,7 +177,7 @@
 				v-for="tag in tags"
 				:key="tag.tagId"
 				link="/search"
-				:query="{ q: tag.tagId }"
+				:query="{ mode: 'tag', tagId: tag.tagId }"
 			>
 				<div v-if="tag.tagId >= 0" class="display-tag">
 					<div v-if="tag.mainTagName">{{ tag.mainTagName }}</div>

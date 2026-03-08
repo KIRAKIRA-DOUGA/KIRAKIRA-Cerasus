@@ -312,6 +312,7 @@ export default {
 		},
 		misc: "Khác",
 		relative_date: "Dùng ngày tháng liên quan",
+		search: {},
 	},
 	experimental: "Thử nghiệm",
 	accessibility: "Trợ năng",
@@ -516,6 +517,7 @@ export default {
 	},
 	empty: {
 		comments: "Chưa có bình luận",
+		search: "Không có kết quả",
 	},
 	user: {
 		title: "Người dùng",
@@ -608,7 +610,7 @@ export default {
 	click_to_refresh: "Bấm để tải lại",
 	toast: {
 		finish: "Thực hiện thành công~",
-		something_went_wrong: "Có lỗi xảy ra (；´д｀)ゞ Hãy tải lại trang rồi thử lại.",
+		something_went_wrong: "Có lỗi xảy ra (；´д｀)ゞ",
 		too_many_requests: "Quá nhiều yêu cầu ( º﹃º ) Hãy thử lại sau.",
 		cooling_down: "Đang hạ hỏa... (・_・;) Hãy thử lại sau.",
 		unsupported_file: "Định dạng file không được hỗ trợ!",

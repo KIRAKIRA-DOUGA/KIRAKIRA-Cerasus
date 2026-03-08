@@ -210,6 +210,7 @@ export default {
 	preference: {
 		focus_mode: {},
 		new_window: {},
+		search: {},
 	},
 	experimental: "實驗",
 	accessibility: "無障礙",

@@ -312,6 +312,10 @@ export default {
 		},
 		misc: "杂项",
 		relative_date: "使用相对日期",
+		search: {
+			dynamic_url: "将搜索条件实时同步到 URL",
+			apply_url_search_criteria: "识别 URL 中的搜索条件\n如果关闭，在浏览器地址栏中输入带有搜索条件的 URL 后将不会自动触发搜索。",
+		},
 	},
 	experimental: "实验",
 	accessibility: "无障碍",
@@ -516,6 +520,7 @@ export default {
 	},
 	empty: {
 		comments: "暂无评论",
+		search: "未找到相关结果",
 	},
 	user: {
 		title: "用户",
@@ -608,7 +613,7 @@ export default {
 	click_to_refresh: "点击刷新",
 	toast: {
 		finish: "操作成功完成~",
-		something_went_wrong: "呜呜，出错了！(；´д｀)ゞ 请刷新页面并重试",
+		something_went_wrong: "呜呜，出错了！(；´д｀)ゞ",
 		too_many_requests: "点的太快啦！( º﹃º ) 请稍后再试",
 		cooling_down: "冷却中！(・_・;) 请稍后再试",
 		unsupported_file: "不支持的文件格式！",

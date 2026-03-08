@@ -308,6 +308,10 @@ export default {
 		},
 		misc: "Misc",
 		relative_date: "Use Relative Date",
+		search: {
+			dynamic_url: "Dynamically Update URL When Changing Search Conditions",
+			apply_url_search_criteria: "Apply Search Conditions from URL\nIf disabled, entering a URL with search conditions in the browser's address bar will not automatically trigger a search.",
+		},
 	},
 	experimental: "Experimental",
 	accessibility: "Accessibility",
@@ -512,6 +516,7 @@ export default {
 	},
 	empty: {
 		comments: "No Comments",
+		search: "No Results",
 	},
 	user: {
 		title: "User | Users",
@@ -604,7 +609,7 @@ export default {
 	click_to_refresh: "Click to Refresh",
 	toast: {
 		finish: "Operation Completed Successfully~",
-		something_went_wrong: "Something went wrong! (；´д｀)ゞ Please refresh the page and try again.",
+		something_went_wrong: "Something went wrong! (；´д｀)ゞ",
 		too_many_requests: "Too many requests! ( º﹃º ) Please try again later.",
 		cooling_down: "Cooling down! (・_・;) Please try again later.",
 		unsupported_file: "Unsupported file format!",

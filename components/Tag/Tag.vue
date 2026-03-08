@@ -59,6 +59,7 @@
 		:class="{ checked: isChecked, editable }"
 		:to="link"
 		:query
+		:state="{ routeFromTag: true }"
 		draggable="false"
 		tabindex="0"
 		role="checkbox"
@@ -164,7 +165,8 @@
 		}
 	}
 
-	.check-wrapper, .original-wrapper {
+	.check-wrapper,
+	.original-wrapper {
 		display: inline;
 		width: $check-icon-size;
 		height: $check-icon-size;
@@ -176,7 +178,8 @@
 			scale: 0;
 		}
 
-		.check, .original {
+		.check,
+		.original {
 			color: white;
 			font-size: $check-icon-size;
 		}
@@ -211,8 +214,8 @@
 		padding: $padding;
 
 		&:empty::before {
-			color: c(placeholder-color);
 			content: attr(data-placeholder);
+			color: c(placeholder-color);
 		}
 
 		.tag.checked &::selection {
