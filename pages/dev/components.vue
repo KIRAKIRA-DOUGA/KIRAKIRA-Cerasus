@@ -200,6 +200,10 @@
 			<hr />
 			<HeadingComments :count="233" />
 			<hr />
+			<ContentUnavailable icon="chat_bubble" :title="$t('empty.comments')" />
+			<ContentUnavailable icon="danmaku" title="自定义标题" description="自定义注释" />
+			<ContentUnavailable type="error" />
+			<hr />
 			<Subheader>加载条</Subheader>
 			<ToggleSwitch v-model="showProgress">开启加载</ToggleSwitch>
 			<p>大小</p><Slider v-model="progressRingSize" :min="1" :max="150" />

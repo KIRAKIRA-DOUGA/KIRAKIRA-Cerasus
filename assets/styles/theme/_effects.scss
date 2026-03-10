@@ -273,3 +273,17 @@
 	}
 }
 // #endregion
+
+/// 为元素应用全局横向内边距。
+/// @output padding-inline
+@mixin page-padding-x {
+	padding-inline: $page-padding-x;
+
+	@include tablet {
+		padding-inline: $page-padding-x-tablet;
+	}
+
+	@include mobile {
+		padding-inline: $page-padding-x-mobile;
+	}
+}

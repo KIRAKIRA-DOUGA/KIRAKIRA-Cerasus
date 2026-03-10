@@ -120,6 +120,7 @@ export default defineNuxtConfig({
 				"node-vibrant/worker",
 				"@vercel/analytics/nuxt",
 				"@nuxt/hints/runtime/hydration/component",
+				"@vue/devtools-kit",
 			],
 			needsInterop: [
 				"mediainfo.js",

@@ -161,7 +161,9 @@ export default {
 		toasts: {
 			cannot_send_danmakus_because_blocked: "このユーザーによってブロックされているため、danmakusを送ることはできません。",
 			cannot_send_comments_because_blocked: "このユーザーによってブロックされているため、コメントを送信できません。",
+			keyword_char_exceed: "キーワードは {0} 文字を超えることはできません。",
 			regexp_in_keyword: "正規表現をキーワードにしないでください。",
+			regexp_char_exceed: "正規表現は {0} 文字を超えることはできません。",
 			regexp_invalid: "入力した正規表現は無効です。",
 			keyword_invalid: "入力したキーワードは無効です。",
 			invalid_uid_requirements: "空またはゼロ以下にはできません。",
@@ -310,6 +312,9 @@ export default {
 		},
 		misc: "その他",
 		relative_date: "相対日付を使用",
+		search: {
+			dynamic_url: "検索条件を変更する際にURLを動的に更新",
+		},
 	},
 	experimental: "実験的",
 	accessibility: "アクセシビリティ",
@@ -514,6 +519,7 @@ export default {
 	},
 	empty: {
 		comments: "コメントはありません",
+		search: "結果がありません",
 	},
 	user: {
 		title: "ユーザー",
@@ -606,7 +612,7 @@ export default {
 	click_to_refresh: "クリックして再読込",
 	toast: {
 		finish: "操作が完了しました~",
-		something_went_wrong: "エラーが発生しました！ (；´д｀)ゞページを再読み込みしてください。",
+		something_went_wrong: "エラーが発生しました！ (；´д｀)ゞ",
 		too_many_requests: "リクエストが多すぎます! ( o﹃o ) しばらくしてからもう一度お試しください。",
 		cooling_down: "クールダウン中! (・_・;) 後でもう一度お試しください。",
 		unsupported_file: "サポートされていないファイル形式です！",

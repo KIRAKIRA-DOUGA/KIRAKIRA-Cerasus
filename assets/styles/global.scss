@@ -9,7 +9,7 @@
 	box-sizing: border-box;
 	margin-block: 0;
 	margin-inline: 0;
-	scroll-behavior: smooth;
+	// scroll-behavior: smooth; // 禁止启用，会造成自定义滚动条（ScrollContainer）拖动不顺滑。
 	font-family: $simplified-chinese-fonts;
 	font-feature-settings: "halt" on;
 	font-kerning: normal;

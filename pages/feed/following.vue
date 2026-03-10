@@ -23,7 +23,7 @@
 				:key="i"
 				:uid="1"
 				nickname="占位符"
-				username="占位符"
+				username="LoremIpsum0123"
 				avatarInside
 			>
 				<template #description>

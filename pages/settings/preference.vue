@@ -15,12 +15,12 @@
 		<InfoBar type="warning" :title="$t('severity.warning')">
 			{{ $t("under_construction.page") }}
 			<ol>
-				<li>可用功能：在新窗口打开视频、同步外观样式、使用阿卡林游客头像、使用相对时间。</li>
+				<li>可用功能：「{{ $t("preference.new_window.open_video_in_new_tab") }}」、「{{ $t("preference.relative_date") }}」和「{{ $t("search") }}」组中的设置。</li>
 				<li>除上述功能外其它功能都用不了。</li>
 				<li>本页面缺乏国际化。</li>
 			</ol>
 		</InfoBar>
-		<!-- NOTE: 缺少多语言，但该功能似乎并容易实现，如不能实现可删除该功能。 -->
+		<!-- NOTE: 缺少多语言，但该功能似乎并非容易实现，如不能实现可删除该功能。 -->
 		<Subheader icon="placeholder">流量节省程序模式</Subheader>
 		<section list>
 			<RadioButton v-model="dataSaverMode" v-ripple value="economical" details="不会显示图片，不会自动加载视频。">省流模式</RadioButton>
@@ -48,6 +48,14 @@
 		<Subheader icon="placeholder">{{ $t("preference.misc") }}</Subheader>
 		<section list>
 			<ToggleSwitch v-model="appSettings.relativeDate" icon="time">{{ $t("preference.relative_date") }}</ToggleSwitch>
+		</section>
+
+		<Subheader icon="search">{{ $t("search") }}</Subheader>
+		<section list>
+			<ToggleSwitch v-model="appSettings.search.isDynamicUrl" icon="link">{{ $t("preference.search.dynamic_url") }}</ToggleSwitch>
+			<ToggleSwitch v-model="appSettings.search.isApplyUrlSearchCriteria" icon="search">
+				<Preserves>{{ $t("preference.search.apply_url_search_criteria") }}</Preserves>
+			</ToggleSwitch>
 		</section>
 	</div>
 </template>

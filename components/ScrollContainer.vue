@@ -114,6 +114,7 @@
 
 	/**
 	 * 鼠标进入滚动条区域。
+	 * @param e - 指针事件。
 	 */
 	function onBarPointerEnter(e: PointerEvent) {
 		pointerType.value = e.pointerType;

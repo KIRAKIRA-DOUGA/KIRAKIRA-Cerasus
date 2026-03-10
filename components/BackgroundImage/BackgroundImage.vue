@@ -26,6 +26,7 @@
 		inset: 0;
 		z-index: 0;
 		opacity: 0.2;
+		pointer-events: none;
 		transition: $fallback-transitions, scale $ease-out-max 1s;
 
 		img {

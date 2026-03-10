@@ -2,6 +2,7 @@
 	const { t } = useI18n();
 	const searchText = ref(""); // 用户输入的搜索字符
 	const browsingHistory = ref<GetUserBrowsingHistoryWithFilterResponseDto["result"]>([]); // 获取到的浏览历史
+	const todayDayString = computed(() => formatLocalizationSemanticDateTime(Date.now(), 2));
 	const browsingHistoryGroupedByDays = computed(() => { // 将浏览历史按当前语言所在时区的日期按天分组
 		return browsingHistory.value?.reduce((acc, video) => {
 			const date = formatLocalizationSemanticDateTime(video.lastUpdateDateTime, 2);
@@ -35,7 +36,7 @@
 				<div class="line"></div>
 				<section v-for="browsingHistory, dayString in browsingHistoryGroupedByDays" :key="dayString">
 					<div class="sticky" :key="dayString">
-						<div class="ball"></div>
+						<div class="ball" :class="{ today: dayString === todayDayString }"></div>
 						<span class="day-string">{{ dayString }}</span>
 					</div>
 					<ThumbGrid>
