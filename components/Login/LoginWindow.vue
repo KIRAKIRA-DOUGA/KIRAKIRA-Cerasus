@@ -302,7 +302,7 @@
 	 * 用户注册，其二。
 	 */
 	async function checkAndJumpNextPage() {
-		if (!invitationCode.value || !invitationCodeInvalidText.value) { // 判断邀请码为空或者格式错误
+		if (!invitationCode.value || invitationCodeInvalidText.value) { // 判断邀请码为空或者格式错误
 			useToast(INVITATION_CODE_INVALID_TEXT, "error");
 			return;
 		}
