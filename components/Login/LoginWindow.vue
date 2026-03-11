@@ -508,173 +508,170 @@
 </script>
 
 <template>
-	<Mask v-model="open" position="center" :zIndex="40">
-		<Transition>
-			<Comp
-				v-if="open"
-				ref="loginWindow"
-				:class="[
-					currentPage,
-					{
-						'move-left': coverMoveLeft,
-						logining: isLogining,
-					},
-				]"
-				role="dialog"
-				aria-modal="true"
-				:aria-label="currentPage"
-				:style="{
-					'--avatar-movement': avatarMovement + 'px',
-					'--text-padding-left': textPaddingLeft + 'px',
-				}"
-			>
+	<Comp
+		v-if="open"
+		ref="loginWindow"
+		:class="[
+			currentPage,
+			{
+				'move-left': coverMoveLeft,
+				logining: isLogining,
+			},
+		]"
+		role="dialog"
+		aria-modal="true"
+		:aria-label="currentPage"
+		:style="{
+			'--avatar-movement': avatarMovement + 'px',
+			'--text-padding-left': textPaddingLeft + 'px',
+		}"
+	>
 
-				<div class="main left">
-					<!-- 登录 其一 Login #1 -->
-					<div class="login1">
-						<HeadingGroup :name="$t('login')" englishName="Login" />
-						<form class="form">
-							<TextBox
-								v-model="email"
-								type="email"
-								:placeholder="$t('email_address')"
-								icon="email"
-								:invalid="isInvalidUserEmail"
-								autoComplete="username"
-								@keyup.enter="check2FA"
-							/>
-							<TextBox
-								v-model="password"
-								type="password"
-								:placeholder="$t('password.title')"
-								icon="lock"
-								autoComplete="current-password"
-								@keyup.enter="check2FA"
-							/>
-							<div class="button login-button-placeholder">
-								<Button
-									class="button login-button button-block"
-									:loading="isChecking2FA"
-									:disabled="isChecking2FA || selfUserInfoStore.isLogined || !isLoginTimeouted"
-									@click="check2FA"
-								>
-									{{ isLoginTimeouted ? "Link Start!" : `Link Start! (${loginTimeoutCountdown})` }}
-								</Button>
-							</div>
-						</form>
-						<div class="action margin-left-inset margin-right-inset">
-							<Button @click="currentPage = 'forgot1'">{{ $t("loginwindow.login_to_forgot") }}</Button>
-							<Button @click="currentPage = 'register1'">{{ $t("loginwindow.login_to_register") }}</Button>
-						</div>
+		<div class="main left">
+			<!-- 登录 其一 Login #1 -->
+			<div class="login1">
+				<HeadingGroup :name="$t('login')" englishName="Login" />
+				<form @submit.prevent="check2FA">
+					<TextBox
+						v-model="email"
+						type="email"
+						:placeholder="$t('email_address')"
+						icon="email"
+						:invalid="isInvalidUserEmail"
+						autoComplete="username"
+					/>
+					<TextBox
+						v-model="password"
+						type="password"
+						:placeholder="$t('password.title')"
+						icon="lock"
+						autoComplete="current-password"
+					/>
+					<div class="button login-button-placeholder">
+						<Button
+							type="submit"
+							class="button login-button button-block"
+							:loading="isChecking2FA"
+							:disabled="isChecking2FA || selfUserInfoStore.isLogined || !isLoginTimeouted"
+						>
+							{{ isLoginTimeouted ? "Link Start!" : `Link Start! (${loginTimeoutCountdown})` }}
+						</Button>
 					</div>
-
-					<!-- 登录 其二点一 Login #2.1 -->
-					<div class="login2-2fa">
-						<HeadingGroup :name="$t('login')" englishName="Login" />
-						<span><Preserves>{{ $t("loginwindow.login_totp_info") }}</Preserves></span>
-						<form class="form">
-							<TextBox
-								v-model="clientOtp"
-								type="text"
-								:placeholder="$t('totp_verification_code')"
-								icon="lock"
-								:invalid="isInvalidUserEmail"
-								autoComplete="off"
-								@keyup.enter="loginUser"
-							/>
-							<div class="button login-button-placeholder">
-								<Button class="button login-button button-block" :loading="isTryingLogin" :disabled="isTryingLogin || selfUserInfoStore.isLogined" @click="loginUser">Link Start!</Button>
-							</div>
-						</form>
-						<div class="action margin-left-inset margin-right-inset">
-							<Button @click="currentPage = 'login1'">{{ $t("navigation.back") }}</Button>
-							<Button>{{ $t("need_help") }}</Button>
-						</div>
-					</div>
-					<!-- 登录 其二点二 Login #2.2 -->
-					<div class="login2-email">
-						<HeadingGroup :name="$t('login')" englishName="Login" />
-						<span>{{ $t("loginwindow.login_email_info") }}</span>
-						<form class="form">
-							<TextBox
-								v-model="loginVerificationCode"
-								type="text"
-								:placeholder="$t('verification_code')"
-								icon="lock"
-								:invalid="isInvalidUserEmail"
-								autoComplete="off"
-								@keyup.enter="loginUser"
-							/>
-							<div class="button login-button-placeholder">
-								<Button class="button login-button button-block" :loading="isTryingLogin" :disabled="isTryingLogin || selfUserInfoStore.isLogined" @click="loginUser">Link Start!</Button>
-							</div>
-						</form>
-						<div class="action margin-left-inset margin-right-inset">
-							<Button @click="currentPage = 'login1'">{{ $t("navigation.back") }}</Button>
-							<Button>{{ $t("need_help") }}</Button>
-						</div>
-					</div>
+				</form>
+				<div class="action margin-left-inset margin-right-inset">
+					<Button @click="currentPage = 'forgot1'">{{ $t("loginwindow.login_to_forgot") }}</Button>
+					<Button @click="currentPage = 'register1'">{{ $t("loginwindow.login_to_register") }}</Button>
 				</div>
+			</div>
 
-				<div class="main right">
-					<!-- 注册 其一 Register #1 -->
-					<div class="register1">
-						<HeadingGroup :name="$t('register')" englishName="Register" class="collapse" />
-						<div class="form textbox-with-span">
-							<span>{{ $t("user.username_nickname_requirements") }}</span>
-							<div>
-								<TextBox
-									ref="nameTextBox"
-									v-model="username"
-									:placeholder="$t('user.username')"
-									size="large"
-									icon="person"
-									required
-									:pattern="validChar"
-									:maxLength="20"
-								/>
-								<span>{{ $t("user.username_requirements_unique") }}</span>
-							</div>
-							<div>
-								<TextBox
-									ref="nameTextBox"
-									v-model="nickname"
-									:placeholder="$t('user.nickname')"
-									size="large"
-									icon="person"
-									:pattern="validChar"
-									:maxLength="20"
-								/>
-							</div>
-						</div>
-						<div class="action margin-left-inset">
-							<Button @click="currentPage = 'login1'">{{ $t("loginwindow.register_to_login") }}</Button>
-							<Button icon="arrow_right" class="button icon-behind" :loading="isCheckingUsername" :disabled="isCheckingUsername" @click="checkUsernameAndJumpNextPage">{{ $t("step.next") }}</Button>
-						</div>
+			<!-- 登录 其二点一 Login #2.1 -->
+			<div class="login2-2fa">
+				<HeadingGroup :name="$t('login')" englishName="Login" />
+				<span><Preserves>{{ $t("loginwindow.login_totp_info") }}</Preserves></span>
+				<form @submit.prevent="loginUser">
+					<TextBox
+						v-model="clientOtp"
+						type="text"
+						:placeholder="$t('totp_verification_code')"
+						icon="lock"
+						:invalid="isInvalidUserEmail"
+						autoComplete="one-time-code"
+					/>
+					<div class="button login-button-placeholder">
+						<Button type="submit" class="button login-button button-block" :loading="isTryingLogin" :disabled="isTryingLogin || selfUserInfoStore.isLogined">Link Start!</Button>
 					</div>
+				</form>
+				<div class="action margin-left-inset margin-right-inset">
+					<Button @click="currentPage = 'login1'">{{ $t("navigation.back") }}</Button>
+					<Button>{{ $t("need_help") }}</Button>
+				</div>
+			</div>
+			<!-- 登录 其二点二 Login #2.2 -->
+			<div class="login2-email">
+				<HeadingGroup :name="$t('login')" englishName="Login" />
+				<span>{{ $t("loginwindow.login_email_info") }}</span>
+				<form @submit.prevent="loginUser">
+					<TextBox
+						v-model="loginVerificationCode"
+						type="text"
+						:placeholder="$t('verification_code')"
+						icon="lock"
+						:invalid="isInvalidUserEmail"
+						autoComplete="one-time-code"
+					/>
+					<div class="button login-button-placeholder">
+						<Button type="submit" class="button login-button button-block" :loading="isTryingLogin" :disabled="isTryingLogin || selfUserInfoStore.isLogined">Link Start!</Button>
+					</div>
+				</form>
+				<div class="action margin-left-inset margin-right-inset">
+					<Button @click="currentPage = 'login1'">{{ $t("navigation.back") }}</Button>
+					<Button>{{ $t("need_help") }}</Button>
+				</div>
+			</div>
+		</div>
 
-					<!-- 注册 其二 Register #2 -->
-					<div class="register2">
-						<HeadingGroup :name="$t('register')" englishName="Register" class="collapse" />
-						<div class="form">
-							<TextBox
-								v-model="email"
-								type="email"
-								:placeholder="$t('email_address')"
-								icon="email"
-								:invalid="isInvalidUserEmail"
-								:required="true"
-								autoComplete="email"
-							/>
-							<TextBox
-								v-model="password"
-								type="password"
-								:placeholder="$t('password.title')"
-								icon="lock"
-								:required="true"
-								autoComplete="new-password"
-							/>
-							<!-- <TextBox
+		<div class="main right">
+			<!-- 注册 其一 Register #1 -->
+			<div class="register1">
+				<HeadingGroup :name="$t('register')" englishName="Register" class="collapse" />
+				<form class="textbox-with-span" @submit.prevent="checkUsernameAndJumpNextPage">
+					<span>{{ $t("user.username_nickname_requirements") }}</span>
+					<div>
+						<TextBox
+							ref="nameTextBox"
+							v-model="username"
+							:placeholder="$t('user.username')"
+							size="large"
+							icon="person"
+							required
+							:pattern="validChar"
+							:maxLength="20"
+							autoComplete="off"
+						/>
+						<span>{{ $t("user.username_requirements_unique") }}</span>
+					</div>
+					<div>
+						<TextBox
+							ref="nameTextBox"
+							v-model="nickname"
+							:placeholder="$t('user.nickname')"
+							size="large"
+							icon="person"
+							:pattern="validChar"
+							:maxLength="20"
+							autoComplete="off"
+						/>
+					</div>
+					<button type="submit" hidden></button>
+				</form>
+				<div class="action margin-left-inset">
+					<Button @click="currentPage = 'login1'">{{ $t("loginwindow.register_to_login") }}</Button>
+					<Button icon="arrow_right" class="button icon-behind" :loading="isCheckingUsername" :disabled="isCheckingUsername" @click="checkUsernameAndJumpNextPage">{{ $t("step.next") }}</Button>
+				</div>
+			</div>
+
+			<!-- 注册 其二 Register #2 -->
+			<div class="register2">
+				<HeadingGroup :name="$t('register')" englishName="Register" class="collapse" />
+				<form @submit.prevent="checkAndJumpNextPage">
+					<TextBox
+						v-model="email"
+						type="email"
+						:placeholder="$t('email_address')"
+						icon="email"
+						:invalid="isInvalidUserEmail"
+						:required="true"
+						autoComplete="email"
+					/>
+					<TextBox
+						v-model="password"
+						type="password"
+						:placeholder="$t('password.title')"
+						icon="lock"
+						:required="true"
+						autoComplete="new-password"
+					/>
+					<!-- <TextBox
 								v-model="passwordHint"
 								type="text"
 								:placeholder="t.password.hint"
@@ -682,147 +679,152 @@
 								:invalid="passwordHintInvalidText"
 								@input="checkPasswordHintIncludesPassword"
 							/> -->
-							<TextBox
-								v-model="invitationCode"
-								type="text"
-								:placeholder="$t('invitation_code')"
-								icon="gift"
-								:required="true"
-								:invalid="invitationCodeInvalidText"
-							/>
-						</div>
-						<div class="action margin-left-inset">
-							<Button icon="arrow_left" class="button" @click="currentPage = 'register1'">{{ $t("step.previous") }}</Button>
-							<Button icon="arrow_right" class="button icon-behind" :loading="isCheckingEmail" :disabled="isCheckingEmail" @click="checkAndJumpNextPage">{{ $t("step.next") }}</Button>
-						</div>
-					</div>
-
-					<!-- 注册 其三 Register #3 -->
-					<div class="register3">
-						<HeadingGroup :name="$t('register')" englishName="Register" class="collapse" />
-						<div class="form">
-							<div><Preserves>{{ $t("loginwindow.register_email_sent_info") }}</Preserves></div>
-							<SendVerificationCode v-model="registrationVerificationCode" :email="email" :verificationCodeFor="REGISTRATION_BUSINESS_NAME" />
-							<TextBox
-								v-model="confirmPassword"
-								type="password"
-								:placeholder="$t('password.retype')"
-								icon="lock"
-								:required="true"
-								autoComplete="current-password"
-							/>
-						</div>
-						<div class="action margin-left-inset">
-							<Button icon="arrow_left" class="button" @click="currentPage = 'register2'">{{ $t("step.previous") }}</Button>
-							<Button icon="arrow_right" class="button icon-behind" :loading="isTryingRegistration" :disabled="isTryingRegistration" @click="registerUser">{{ $t("step.next") }}</Button>
-						</div>
-					</div>
-
-					<!-- 忘记密码 其一 Forgot Password #1 -->
-					<div class="forgot1">
-						<HeadingGroup :name="$t('loginwindow.forgot_title')" englishName="forgot" class="collapse" />
-						<div class="form">
-							<div><Preserves>{{ $t("loginwindow.forgot_info") }}</Preserves></div>
-							<TextBox
-								v-model="email"
-								type="email"
-								:placeholder="$t('email_address')"
-								icon="email"
-								:invalid="isInvalidUserEmail"
-								@keyup.enter="jump2ResetPasswordPage"
-							/>
-						</div>
-						<div class="action margin-left-inset">
-							<Button icon="arrow_left" @click="currentPage = 'login1'">{{ $t("loginwindow.forgot_to_login") }}</Button>
-							<Button
-								icon="arrow_right"
-								class="icon-behind"
-								@click="jump2ResetPasswordPage"
-								:loading="isChecking2FA || isSendingForgotPasswordVerificationCode"
-								:disabled="isChecking2FA || isSendingForgotPasswordVerificationCode || !isForgotPasswordTimeouted"
-							>{{ isForgotPasswordTimeouted ? $t("step.next") : `${$t("step.next")} (${forgotPasswordTimeoutCountdown})` }}</Button>
-						</div>
-					</div>
-
-					<!-- 重设密码 其二点一 Forgot Passsword (Email) #2.1 -->
-					<div class="forgot2-email">
-						<HeadingGroup :name="$t('loginwindow.forgot_title')" englishName="forgot" class="collapse" />
-						<div class="form">
-							<div><Preserves>{{ $t("loginwindow.reset_password_info") }}</Preserves></div>
-							<TextBox
-								v-model="resetPasswordVerificationCode"
-								type="text"
-								:placeholder="$t('verification_code')"
-								:required="true"
-								icon="verified"
-							/>
-							<TextBox
-								v-model="newPassword"
-								type="password"
-								:placeholder="$t('password.title')"
-								:required="true"
-								icon="lock"
-							/>
-							<TextBox
-								v-model="confirmNewPassword"
-								type="password"
-								:placeholder="$t('password.retype')"
-								:required="true"
-								icon="lock"
-							/>
-						</div>
-						<div class="action margin-left-inset">
-							<Button icon="arrow_left" class="secondary" @click="currentPage = 'forgot1'">{{ $t("loginwindow.resent_verification_code") }}</Button>
-							<Button icon="check" class="button icon-behind" @click="resetPassword" :loading="isResetPassword" :disabled="isResetPassword">{{ $t("step.finish") }}</Button>
-						</div>
-					</div>
-
-					<!-- 重设密码 其二点二 Forgot Passsword (Totp) #2.2 -->
-					<div class="forgot2-totp">
-						<HeadingGroup :name="$t('loginwindow.forgot_title')" englishName="forgot" class="collapse" />
-						<div class="form">
-							<div><Preserves>{{ $t("loginwindow.reset_password_totp_warning") }}</Preserves></div>
-						</div>
-						<div class="action margin-left-inset">
-							<Button icon="arrow_left" class="secondary" @click="currentPage = 'login1'">{{ $t("loginwindow.back_to_login") }}</Button>
-							<Button icon="link" class="button" @click="jump2GitHub">{{ $t("platform.github") }}</Button>
-						</div>
-					</div>
-
-					<div class="register-title">
-						<HeadingGroup :name="$t('register')" englishName="Register" />
-					</div>
-					<div class="forgot-title">
-						<HeadingGroup :name="currentPage === 'forgot1' ? $t('loginwindow.forgot_title') : $t('loginwindow.reset_title')" :englishName="currentPage === 'forgot1' ? 'forgot' : 'reset'" />
-					</div>
+					<TextBox
+						v-model="invitationCode"
+						type="text"
+						:placeholder="$t('invitation_code')"
+						icon="gift"
+						:required="true"
+						:invalid="invitationCodeInvalidText"
+						autoComplete="off"
+					/>
+					<button type="submit" hidden></button>
+				</form>
+				<div class="action margin-left-inset">
+					<Button icon="arrow_left" class="button" @click="currentPage = 'register1'">{{ $t("step.previous") }}</Button>
+					<Button icon="arrow_right" class="button icon-behind" :loading="isCheckingEmail" :disabled="isCheckingEmail" @click="checkAndJumpNextPage">{{ $t("step.next") }}</Button>
 				</div>
+			</div>
 
-				<div class="cover-wrapper">
-					<LogoCover :welcome="isWelcome" />
+			<!-- 注册 其三 Register #3 -->
+			<div class="register3">
+				<HeadingGroup :name="$t('register')" englishName="Register" class="collapse" />
+				<form @submit.prevent="registerUser">
+					<div><Preserves>{{ $t("loginwindow.register_email_sent_info") }}</Preserves></div>
+					<SendVerificationCode v-model="registrationVerificationCode" :email="email" :verificationCodeFor="REGISTRATION_BUSINESS_NAME" />
+					<TextBox
+						v-model="confirmPassword"
+						type="password"
+						:placeholder="$t('password.retype')"
+						icon="lock"
+						:required="true"
+						autoComplete="current-password"
+					/>
+					<button type="submit" hidden></button>
+				</form>
+				<div class="action margin-left-inset">
+					<Button icon="arrow_left" class="button" @click="currentPage = 'register2'">{{ $t("step.previous") }}</Button>
+					<Button icon="arrow_right" class="button icon-behind" :loading="isTryingRegistration" :disabled="isTryingRegistration" @click="registerUser">{{ $t("step.next") }}</Button>
 				</div>
+			</div>
 
-				<!-- 登录动画 Login Animation -->
-				<div class="login-animation">
-					<div class="add"></div>
-					<div class="burst">
-						<div v-for="i in 6" :key="i" v-i="i - 1" class="line"></div>
-					</div>
-					<div class="stripes">
-						<div class="line"></div>
-						<div class="line"></div>
-					</div>
-					<div class="avatar">
-						<NuxtImg v-if="selfUserInfoStore.userInfo.avatar" :provider="environment.cloudflareImageProvider" :src="selfUserInfoStore.userInfo.avatar" alt="avatar" />
-						<Icon v-else name="person" />
-					</div>
-					<div ref="loginAnimationText" class="texts">
-						<div class="welcome">{{ $t("loginwindow.login_welcome") }}</div>
-						<div class="name">{{ selfUserInfoStore.userInfo.userNickname }}</div>
-					</div>
+			<!-- 忘记密码 其一 Forgot Password #1 -->
+			<div class="forgot1">
+				<HeadingGroup :name="$t('loginwindow.forgot_title')" englishName="forgot" class="collapse" />
+				<form @submit.prevent="jump2ResetPasswordPage">
+					<div><Preserves>{{ $t("loginwindow.forgot_info") }}</Preserves></div>
+					<TextBox
+						v-model="email"
+						type="email"
+						:placeholder="$t('email_address')"
+						icon="email"
+						:invalid="isInvalidUserEmail"
+						autoComplete="username"
+					/>
+				</form>
+				<div class="action margin-left-inset">
+					<Button icon="arrow_left" @click="currentPage = 'login1'">{{ $t("loginwindow.forgot_to_login") }}</Button>
+					<Button
+						icon="arrow_right"
+						class="icon-behind"
+						@click="jump2ResetPasswordPage"
+						:loading="isChecking2FA || isSendingForgotPasswordVerificationCode"
+						:disabled="isChecking2FA || isSendingForgotPasswordVerificationCode || !isForgotPasswordTimeouted"
+					>{{ isForgotPasswordTimeouted ? $t("step.next") : `${$t("step.next")} (${forgotPasswordTimeoutCountdown})` }}</Button>
 				</div>
-			</Comp>
-		</Transition>
-	</Mask>
+			</div>
+
+			<!-- 重设密码 其二点一 Forgot Passsword (Email) #2.1 -->
+			<div class="forgot2-email">
+				<HeadingGroup :name="$t('loginwindow.forgot_title')" englishName="forgot" class="collapse" />
+				<form @submit.prevent="resetPassword">
+					<div><Preserves>{{ $t("loginwindow.reset_password_info") }}</Preserves></div>
+					<TextBox
+						v-model="resetPasswordVerificationCode"
+						type="text"
+						:placeholder="$t('verification_code')"
+						:required="true"
+						icon="verified"
+						autoComplete="one-time-code"
+					/>
+					<TextBox
+						v-model="newPassword"
+						type="password"
+						:placeholder="$t('password.title')"
+						:required="true"
+						icon="lock"
+						autoComplete="new-password"
+					/>
+					<TextBox
+						v-model="confirmNewPassword"
+						type="password"
+						:placeholder="$t('password.retype')"
+						:required="true"
+						icon="lock"
+						autoComplete="new-password"
+					/>
+					<button type="submit" hidden></button>
+				</form>
+				<div class="action margin-left-inset">
+					<Button icon="arrow_left" class="secondary" @click="currentPage = 'forgot1'">{{ $t("loginwindow.resent_verification_code") }}</Button>
+					<Button icon="check" class="button icon-behind" @click="resetPassword" :loading="isResetPassword" :disabled="isResetPassword">{{ $t("step.finish") }}</Button>
+				</div>
+			</div>
+
+			<!-- 重设密码 其二点二 Forgot Passsword (Totp) #2.2 -->
+			<div class="forgot2-totp">
+				<HeadingGroup :name="$t('loginwindow.forgot_title')" englishName="forgot" class="collapse" />
+				<div class="form">
+					<div><Preserves>{{ $t("loginwindow.reset_password_totp_warning") }}</Preserves></div>
+				</div>
+				<div class="action margin-left-inset">
+					<Button icon="arrow_left" class="secondary" @click="currentPage = 'login1'">{{ $t("loginwindow.back_to_login") }}</Button>
+					<Button icon="link" class="button" @click="jump2GitHub">{{ $t("platform.github") }}</Button>
+				</div>
+			</div>
+
+			<div class="register-title">
+				<HeadingGroup :name="$t('register')" englishName="Register" />
+			</div>
+			<div class="forgot-title">
+				<HeadingGroup :name="currentPage === 'forgot1' ? $t('loginwindow.forgot_title') : $t('loginwindow.reset_title')" :englishName="currentPage === 'forgot1' ? 'forgot' : 'reset'" />
+			</div>
+		</div>
+
+		<div class="cover-wrapper">
+			<LogoCover :welcome="isWelcome" />
+		</div>
+
+		<!-- 登录动画 Login Animation -->
+		<div class="login-animation">
+			<div class="add"></div>
+			<div class="burst">
+				<div v-for="i in 6" :key="i" v-i="i - 1" class="line"></div>
+			</div>
+			<div class="stripes">
+				<div class="line"></div>
+				<div class="line"></div>
+			</div>
+			<div class="avatar">
+				<NuxtImg v-if="selfUserInfoStore.userInfo.avatar" :provider="environment.cloudflareImageProvider" :src="selfUserInfoStore.userInfo.avatar" alt="avatar" />
+				<Icon v-else name="person" />
+			</div>
+			<div ref="loginAnimationText" class="texts">
+				<div class="welcome">{{ $t("loginwindow.login_welcome") }}</div>
+				<div class="name">{{ selfUserInfoStore.userInfo.userNickname }}</div>
+			</div>
+		</div>
+	</Comp>
 </template>
 
 <style scoped lang="scss">
@@ -885,7 +887,7 @@
 			$move-distance: $width * 0.5;
 			translate: if($direction == left, -$move-distance, $move-distance);
 			opacity: 0;
-			pointer-events: none;
+			visibility: hidden;
 			transition: all $transition-ease $enter-duration;
 			animation: none !important;
 		}
@@ -969,7 +971,7 @@
 					left: 0;
 					translate: $width * -0.25 0;
 					opacity: 0;
-					pointer-events: none;
+					visibility: hidden;
 
 					@media #{$narrow-screen} {
 						translate: $width * -0.5 0;
@@ -1018,6 +1020,7 @@
 		}
 	}
 
+	form,
 	.form {
 		display: flex;
 		flex-direction: column;
@@ -1135,6 +1138,7 @@
 	}
 
 	.heading-group :deep(> *),
+	form > *,
 	.form > *,
 	.action {
 		animation: float-left 500ms calc(var(--i) * 100ms) $ease-out-max backwards;
