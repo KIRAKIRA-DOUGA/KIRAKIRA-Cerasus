@@ -12,9 +12,9 @@
 	const toastList = reactive<ToastEventWithTimestamp[]>([]);
 	const TRANSLATE_VALUE = 50;
 	const icons = new Map<ToastEvent["severity"] | undefined, DeclaredIcons>([
-		["success", "check"],
-		["warning", "exclamation"],
-		["error", "close"],
+		["success", "check_circle"],
+		["warning", "warning"],
+		["error", "error"],
 		["info", "info"],
 		[undefined, "info"],
 	]);
