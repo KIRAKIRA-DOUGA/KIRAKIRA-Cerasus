@@ -284,6 +284,7 @@ export default {
 		drag_to_upload: "드래그 하여 업로드",
 		format_info: "MP4, WMV, WEBM 등의 비디오 형식을 지원합니다",
 	},
+	login_prompt: {},
 	publish: "게시",
 	messages: "메시지",
 	notification: "알림 | 알림들",

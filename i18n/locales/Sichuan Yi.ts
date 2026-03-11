@@ -398,6 +398,12 @@ export default {
 		drag_to_upload: "crwdns2516:0crwdne2516:0",
 		format_info: "crwdns2518:0crwdne2518:0",
 	},
+	login_prompt: {
+		history: "crwdns4100:0crwdne4100:0",
+		collections: "crwdns4102:0crwdne4102:0",
+		following_feed: "crwdns4104:0crwdne4104:0",
+		upload: "crwdns4106:0crwdne4106:0",
+	},
 	publish: "crwdns3748:0crwdne3748:0",
 	messages: "crwdns2520:0crwdne2520:0",
 	notification: "crwdns2860:0crwdne2860:0",

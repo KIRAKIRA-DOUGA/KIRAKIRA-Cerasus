@@ -103,7 +103,15 @@
 </script>
 
 <template>
-	<div class="container" :class="{ 'no-scroll': !showEditor }">
+	<ContentUnavailable
+		v-if="!selfUserInfoStore.isLogined"
+		icon="upload"
+		:title="$t('upload.title')"
+		:description="$t('login_prompt.upload')"
+		page
+		needLogin
+	/>
+	<div v-else class="container" :class="{ 'no-scroll': !showEditor }">
 
 		<DefineCountCard v-slot="{ value, icon, name }">
 			<div class="count-card">

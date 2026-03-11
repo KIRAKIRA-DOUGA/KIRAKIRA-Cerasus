@@ -283,6 +283,7 @@ export default {
 		drag_to_upload: "Seret Ke Sini untuk Mengunggah",
 		format_info: "Mendukung format video seperti MP4, WMV, WEBM",
 	},
+	login_prompt: {},
 	publish: "Publikasikan",
 	messages: "Pesan",
 	notification: "Notifikasi",

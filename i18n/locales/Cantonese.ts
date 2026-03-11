@@ -298,6 +298,7 @@ export default {
 		drag_to_upload: "拖到嚟呢度去po嘢",
 		format_info: "支援MP4、WMV、WEBM等主流格式",
 	},
+	login_prompt: {},
 	publish: "投稿",
 	messages: "消息",
 	notification: "通知",

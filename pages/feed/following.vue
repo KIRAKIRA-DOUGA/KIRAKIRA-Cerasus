@@ -8,13 +8,22 @@
 </docs>
 
 <script setup lang="ts">
+	const selfUserInfoStore = useSelfUserInfoStore();
 	const loadingMore = ref(false);
 	const reachedEnd = ref(true);
 	const refreshing = ref(false);
 </script>
 
 <template>
-	<div class="container">
+	<ContentUnavailable
+		v-if="!selfUserInfoStore.isLogined"
+		icon="feed"
+		:title="$t('feed.following')"
+		:description="$t('login_prompt.following_feed')"
+		page
+		needLogin
+	/>
+	<div v-else class="container">
 		<PullToRefresh v-model:refreshing="refreshing" />
 		<!-- TODO: 切换视图 -->
 		<div class="feed">

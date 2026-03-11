@@ -398,6 +398,12 @@ export default {
 		drag_to_upload: "拖到此处上传",
 		format_info: "支持MP4、WMV、WEBM等主流格式",
 	},
+	login_prompt: {
+		history: "登录以查看你的历史",
+		collections: "登录以收藏你喜欢的内容",
+		following_feed: "登录以查看你关注的所有动态",
+		upload: "登录以分享你的内容",
+	},
 	publish: "投稿",
 	messages: "消息",
 	notification: "通知",

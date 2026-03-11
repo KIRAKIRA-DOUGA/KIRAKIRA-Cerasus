@@ -1,5 +1,6 @@
 <script setup lang="ts">
 	const { t } = useI18n();
+	const selfUserInfoStore = useSelfUserInfoStore();
 	const searchText = ref(""); // 用户输入的搜索字符
 	const browsingHistory = ref<GetUserBrowsingHistoryWithFilterResponseDto["result"]>([]); // 获取到的浏览历史
 	const todayDayString = computed(() => formatLocalizationSemanticDateTime(Date.now(), 2));
@@ -30,7 +31,15 @@
 </script>
 
 <template>
-	<div class="container">
+	<ContentUnavailable
+		v-if="!selfUserInfoStore.isLogined"
+		icon="history"
+		:title="$t('history')"
+		:description="$t('login_prompt.history')"
+		page
+		needLogin
+	/>
+	<div v-else class="container">
 		<div class="card-container">
 			<div class="center">
 				<div class="line"></div>

@@ -6,6 +6,8 @@
 		icon?: string;
 		title?: string;
 		description?: string;
+		needLogin?: boolean;
+		page?: boolean;
 	}>();
 
 	const icon = computed(() => props.icon ?? props.type ?? "info");
@@ -27,10 +29,11 @@
 </script>
 
 <template>
-	<Comp :class="{ error: type === 'error' }">
+	<Comp :class="{ error: type === 'error', page }">
 		<Icon :name="icon" />
 		<p v-if="title" class="title">{{ title }}</p>
 		<p v-if="description" class="description">{{ description }}</p>
+		<Button v-if="needLogin" @click="useEvent('app:requestLogin');">{{ t("login") }}</Button>
 	</Comp>
 </template>
 
@@ -48,13 +51,21 @@
 			color: c(red);
 		}
 
+		&.page {
+			height: 70vh;
+		}
+
 		.icon {
-			font-size: 56px;
+			font-size: 64px;
 		}
 
 		.title {
 			font-size: 24px;
 			font-weight: bold;
+		}
+
+		button {
+			--appearance: secondary;
 		}
 	}
 </style>

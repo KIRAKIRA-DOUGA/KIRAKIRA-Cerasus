@@ -293,6 +293,7 @@ export default {
 		drag_to_upload: "拖到此處上傳",
 		format_info: "支援MP4、WMV、WEBM等主流格式",
 	},
+	login_prompt: {},
 	publish: "投稿",
 	messages: "訊息",
 	notification: "通知",

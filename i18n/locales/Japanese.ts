@@ -397,6 +397,12 @@ export default {
 		drag_to_upload: "ここにドラッグしてアップロード",
 		format_info: "MP4、WMV、WEBMなどの主な形式をサポートしています",
 	},
+	login_prompt: {
+		history: "ログインして履歴を表示",
+		collections: "コレクションを表示するにはログインしてください",
+		following_feed: "ログインして、フォロー中のすべての更新情報を確認する",
+		upload: "あなたのコンテンツを共有するにはログインしてください",
+	},
 	publish: "投稿",
 	messages: "メッセージ",
 	notification: "通知",

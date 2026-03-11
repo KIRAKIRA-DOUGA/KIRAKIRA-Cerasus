@@ -59,17 +59,15 @@
 			<p v-if="selfUserInfoStore.isLogined && selfUserInfoStore.userInfo.signature" class="bio">{{ selfUserInfoStore.userInfo.signature }}</p>
 		</div>
 		<TabBar v-model="currentPageRequested" vertical>
-			<template v-if="selfUserInfoStore.isLogined">
-				<TabItem
-					v-for="item in drawerItems.general"
-					:id="item.id"
-					:key="item.id"
-					:icon="item.icon"
-					:to="item.route"
-					@click="shown = false"
-				>{{ item.name }}</TabItem>
-			</template>
-			<hr v-if="selfUserInfoStore.isLogined" />
+			<TabItem
+				v-for="item in drawerItems.general"
+				:id="item.id"
+				:key="item.id"
+				:icon="item.icon"
+				:to="item.route"
+				@click="shown = false"
+			>{{ item.name }}</TabItem>
+			<hr />
 			<TabItem
 				v-for="item in drawerItems.extra"
 				:id="item.id"

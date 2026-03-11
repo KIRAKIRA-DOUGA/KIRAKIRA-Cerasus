@@ -394,6 +394,12 @@ export default {
 		drag_to_upload: "Drag Here to Upload",
 		format_info: "Supports video formats such as MP4, WMV, WEBM",
 	},
+	login_prompt: {
+		history: "Log in to view your history",
+		collections: "Log in to view your collections",
+		following_feed: "Log in to see updates from everything you follow",
+		upload: "Log in to share your content",
+	},
 	publish: "Publish",
 	messages: "Messages",
 	notification: "Notification | Notifications",

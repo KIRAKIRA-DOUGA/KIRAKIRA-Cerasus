@@ -396,6 +396,12 @@ export default {
 		drag_to_upload: "Glisser ici pour télécharger",
 		format_info: "Prise en charge des formats vidéo tels que MP4, WMV, WEBM",
 	},
+	login_prompt: {
+		history: "Connectez-vous pour voir votre historique",
+		collections: "Connectez-vous pour voir vos collections",
+		following_feed: "Connectez-vous pour voir les mises à jour de tout ce que vous suivez",
+		upload: "Connectez-vous pour partager votre contenu",
+	},
 	publish: "Publier",
 	messages: "Messages",
 	notification: "Notification | Notifications",
