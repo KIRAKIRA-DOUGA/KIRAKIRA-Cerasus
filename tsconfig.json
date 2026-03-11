@@ -7,13 +7,14 @@
 		"module": "ESNext",
 		"target": "ESNext",
 		"noImplicitAny": true,
-		"moduleResolution": "Node",
+		"moduleResolution": "Bundler",
 		"lib": [
 			"ESNext",
 			"ESNext.AsyncIterable",
 			"ES2015.Promise",
 			"DOM",
-			"DOM.Iterable"
+			"DOM.Iterable",
+			"WebWorker"
 		],
 		"esModuleInterop": true,
 		"allowJs": false,
@@ -26,6 +27,8 @@
 		"resolveJsonModule": true,
 		"noErrorTruncation": true,
 		"noUncheckedIndexedAccess": false,
+		"allowImportingTsExtensions": true,
+		"isolatedModules": true,
 		"types": [
 			"@pomsky-lang/unplugin"
 		]

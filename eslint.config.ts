@@ -1,5 +1,6 @@
 // env
 import globals from "globals";
+import { defineConfig } from "eslint/config";
 // extends
 import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
@@ -10,8 +11,7 @@ import jsdoc from "eslint-plugin-jsdoc";
 // plugins
 import unicorn from "eslint-plugin-unicorn";
 
-/** @type {import("eslint").Linter.Config[]} */
-export default tseslint.config(
+export default defineConfig(
 	eslint.configs.recommended,
 	...tseslint.configs.recommended,
 	...pluginVue.configs["flat/essential"],
@@ -157,7 +157,7 @@ export default tseslint.config(
 			"@stylistic/template-curly-spacing": "error",
 			"no-undef": "off", // 这波 nuxt 的锅。
 			"@stylistic/multiline-ternary": "off",
-			"@stylistic/operator-linebreak": ["error", "after"],
+			"@stylistic/operator-linebreak": ["error", "after", { "overrides": { "|": "ignore" } }],
 			"@stylistic/no-trailing-spaces": ["error", { "skipBlankLines": true }],
 			"one-var": "off",
 			"@stylistic/arrow-parens": ["error", "as-needed"],

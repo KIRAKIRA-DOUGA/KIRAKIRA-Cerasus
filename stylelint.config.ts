@@ -1,6 +1,6 @@
-import propertiesOrder from "./stylelint-properties-order.js";
+import type { Config } from "stylelint";
+import propertiesOrder from "./stylelint-properties-order.ts";
 
-/** @type {import("stylelint").Config} */
 export default {
 	defaultSeverity: "error",
 	extends: [
@@ -18,12 +18,14 @@ export default {
 		"stylelint-order",
 		"@stylistic/stylelint-plugin",
 	],
-	/* languageOptions: {
+	languageOptions: {
 		syntax: {
-			properties: {},
+			properties: {
+				"container-type": "| anchored",
+			},
 			types: {},
 		},
-	}, */
+	},
 	rules: {
 		"media-feature-name-no-vendor-prefix": true, // 不要使用已被 autoprefixer 支持的浏览器前缀。
 		"at-rule-no-vendor-prefix": true,
@@ -146,4 +148,4 @@ export default {
 		],
 		"order/properties-order": [propertiesOrder, { "unspecified": "bottom", "severity": "warning" }],
 	},
-};
+} satisfies Config;

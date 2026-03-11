@@ -1,16 +1,16 @@
+import type { UserConfig } from "@commitlint/types";
 import { RuleConfigSeverity } from "@commitlint/types";
 
-/** @type {import("@commitlint/types").UserConfig} */
-export default {
+const Configuration: UserConfig = {
 	extends: ["@commitlint/config-conventional"],
 	rules: {
-		"body-full-stop": [RuleConfigSeverity.Disabled, "never", [".", "。"]],
+		"body-full-stop": [RuleConfigSeverity.Disabled, "never", "."], // [".", "。"]
 		"body-leading-blank": [RuleConfigSeverity.Error, "always"],
 		"body-max-line-length": [RuleConfigSeverity.Warning, "always", 100000],
 		"subject-case": [RuleConfigSeverity.Error, "never",
 			["sentence-case", "start-case", "pascal-case", "upper-case", "snake-case"],
 		],
-		"subject-full-stop": [RuleConfigSeverity.Error, "never", [".", "。"]],
+		"subject-full-stop": [RuleConfigSeverity.Error, "never", "."], // [".", "。"]
 		"scope-case": [RuleConfigSeverity.Error, "always", "lower-case"],
 		"type-enum": [RuleConfigSeverity.Error, "always",
 			["build", "chore", "conflict", "ci", "delete", "docs", "feat", "fix", "font", "perf", "refactor", "revert", "stash", "style", "test", "try"],
@@ -145,3 +145,5 @@ export default {
 		},
 	},
 };
+
+export default Configuration;
