@@ -34,6 +34,10 @@
 	const Esc = computed(() => isApple ? "esc" : "Esc");
 	const Shift = computed(() => isApple ? "⇧" : "Shift");
 	const Enter = computed(() => isApple ? "⏎" : "Enter");
+	const Up = computed(() => isApple ? "▲" : "↑");
+	const Down = computed(() => isApple ? "▼" : "↓");
+	const Left = computed(() => isApple ? "◀" : "←");
+	const Right = computed(() => isApple ? "▶" : "→");
 	const [DefineKbd, Kbd] = createReusableTemplate();
 	const [DefineH, H] = createReusableTemplate();
 	const [DefineP, P] = createReusableTemplate();
@@ -128,20 +132,20 @@
 			<p><Kbd>M</Kbd></p>
 
 			<P>{{ $t("shortcut_key.volume") }}</P>
-			<p><Kbd>↑</Kbd> <Kbd>↓</Kbd></p>
+			<p><Kbd>{{ Up }}</Kbd> <Kbd>{{ Down }}</Kbd></p>
 
 			<P>{{ $t("shortcut_key.fast_rewind") }} / {{ $t("shortcut_key.fast_forward") }}</P>
-			<p><Kbd>←</Kbd> <Kbd>→</Kbd></p>
+			<p><Kbd>{{ Left }}</Kbd> <Kbd>{{ Right }}</Kbd></p>
 
 			<P>{{ $t("shortcut_key.slow_down") }} / {{ $t("shortcut_key.speed_up") }}</P>
-			<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>←</Kbd> <Kbd>→</Kbd></p>
+			<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>{{ Left }}</Kbd> <Kbd>{{ Right }}</Kbd></p>
 			<!-- #endregion -->
 
 			<!-- #region 分页器 -->
 			<H>{{ $t("shortcut_key.pagination") }}</H>
 
 			<P>{{ $t("shortcut_key.page_turning") }}</P>
-			<p><Kbd>←</Kbd> <Kbd>→</Kbd></p>
+			<p><Kbd>{{ Left }}</Kbd> <Kbd>{{ Right }}</Kbd></p>
 			<!-- #endregion -->
 
 			<!-- #region 评论区 -->
