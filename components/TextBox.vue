@@ -300,8 +300,8 @@
 					:step
 					:inputmode="inputMode"
 					@input="onInput"
-					@keydown="e => { stopPropagationExceptKey(e, 'F11'); emits('keydown', e) }"
-					@keyup="e => { stopPropagationExceptKey(e, 'F11'); emits('keyup', e) }"
+					@keydown="e => { stopPropagationExceptKey(e, 'F11', 'Enter'); emits('keydown', e) }"
+					@keyup="e => { stopPropagationExceptKey(e, 'F11', 'Enter'); emits('keyup', e) }"
 				/>
 				<span :class="['suffix', { 'no-trailing-icons': !hasTrailingIcons }]">{{ suffix }}</span>
 				<label>{{ placeholder }}</label>

@@ -149,7 +149,11 @@
 			/>
 		</div>
 
-		<LoginWindow v-model="showLogin" />
+		<Mask v-model="showLogin" position="center" :zIndex="40">
+			<Transition>
+				<LoginWindow v-if="showLogin" v-model="showLogin" />
+			</Transition>
+		</Mask>
 	</aside>
 
 	<Transition>
