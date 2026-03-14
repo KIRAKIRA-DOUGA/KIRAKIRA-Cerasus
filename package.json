@@ -113,7 +113,7 @@
 	},
 	"dependencies": {
 		"@number-flow/vue": "^0.5.0",
-		"@nuxt/image": "^1.11.0",
+		"@nuxt/image": "^2.0.0",
 		"@nuxtjs/robots": "^5.7.1",
 		"@nuxtjs/svg-sprite": "^1.0.2",
 		"@pinia/nuxt": "^0.11.3",

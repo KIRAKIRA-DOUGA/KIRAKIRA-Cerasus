@@ -1,6 +1,6 @@
+import { createOperationsGenerator, defineProvider } from "@nuxt/image/runtime";
 import { encodeQueryItem, joinURL } from "ufo";
 import type { ProviderGetImage } from "./types";
-import { createOperationsGenerator } from "#image";
 
 const operationsGenerator = createOperationsGenerator({
 	keyMap: {
@@ -33,8 +33,8 @@ const operationsGenerator = createOperationsGenerator({
 
 const defaultModifiers = {};
 
-// https://developers.cloudflare.com/images/image-resizing/url-format/
-export const getImage: ProviderGetImage = (src, {
+// For cloudflare images url format, please refer to: https://developers.cloudflare.com/images/image-resizing/url-format/
+const getImage: ProviderGetImage = (src, {
 	modifiers = {},
 	baseURL = "/",
 	accountHash = "",
@@ -49,3 +49,7 @@ export const getImage: ProviderGetImage = (src, {
 		url,
 	};
 };
+
+export default defineProvider({
+	getImage,
+});
