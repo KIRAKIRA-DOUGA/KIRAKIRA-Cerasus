@@ -10,7 +10,7 @@
 		page?: boolean;
 	}>();
 
-	const icon = computed(() => props.icon ?? props.type ?? "info");
+	const icon = computed(() => props.icon ?? props.type ?? undefined);
 
 	const title = computed(() =>
 		props.title ?? (
@@ -30,10 +30,16 @@
 
 <template>
 	<Comp :class="{ error: type === 'error', page }">
-		<Icon :name="icon" />
+		<div v-if="icon || $slots.icon" class="icon-container">
+			<slot name="icon">
+				<Icon v-if="icon" :name="icon" />
+			</slot>
+		</div>
 		<p v-if="title" class="title">{{ title }}</p>
 		<p v-if="description" class="description">{{ description }}</p>
-		<Button v-if="needLogin" @click="useEvent('app:requestLogin');">{{ t("login") }}</Button>
+		<slot name="actions">
+			<Button v-if="needLogin" @click="useEvent('app:requestLogin');">{{ t("login") }}</Button>
+		</slot>
 	</Comp>
 </template>
 
@@ -53,19 +59,21 @@
 
 		&.page {
 			height: 70vh;
+			transition: none;
 		}
+	}
 
-		.icon {
-			font-size: 64px;
-		}
+	.icon-container {
+		@include flex-center;
+		font-size: 64px;
+	}
 
-		.title {
-			font-size: 24px;
-			font-weight: bold;
-		}
+	.title {
+		font-size: 24px;
+		font-weight: bold;
+	}
 
-		button {
-			--appearance: secondary;
-		}
+	button {
+		--appearance: secondary;
 	}
 </style>

@@ -11,7 +11,7 @@
 		viewBox="0 0 512 512"
 		fill="none"
 		xmlns="http://www.w3.org/2000/svg"
-		class="icon"
+		class="logo-settings icon"
 		:class="{ rotating }"
 	>
 		<g clip-path="url(#clip0_3293_20384)">
@@ -59,7 +59,7 @@
 </template>
 
 <style scoped lang="scss">
-	.icon {
+	.logo-settings {
 		filter: drop-shadow(0 4px 4px c(black, 30%));
 	}
 

@@ -12,12 +12,7 @@
 		<section list>
 		</section>
 	</div> -->
-	<div class="no-settings">
-		<Icon name="science" />
-
-		<h2>{{ $t("experimental") }}</h2>
-		<p>{{ $t("settings.no_experimental_features") }}</p>
-	</div>
+	<ContentUnavailable icon="science" :title="$t('experimental')" :description="$t('settings.no_experimental_features')" page />
 </template>
 
 <style scoped lang="scss">

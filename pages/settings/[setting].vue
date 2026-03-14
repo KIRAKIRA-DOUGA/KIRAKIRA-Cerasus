@@ -3,21 +3,9 @@
 </docs>
 
 <template>
-	<div class="no-settings">
-		<LogoSettings />
-
-		<h2>{{ $t("settings.title") }}</h2>
-		<p>{{ $t("unselected.settings") }}</p>
-	</div>
+	<ContentUnavailable :title="$t('settings.title')" :description="$t('unselected.settings')" page>
+		<template #icon>
+			<LogoSettings />
+		</template>
+	</ContentUnavailable>
 </template>
-
-<style scoped lang="scss">
-	.no-settings {
-		@include flex-center;
-		flex-direction: column;
-		gap: 1rem;
-		height: 70dvh;
-		color: c(icon-color);
-		transition: none;
-	}
-</style>
