@@ -42,18 +42,18 @@
 
 		<Subheader icon="placeholder">{{ $t("preference.new_window.title") }}</Subheader>
 		<section list>
-			<ToggleSwitch v-model="appSettings.isOpenVideoInNewTab" icon="placeholder">{{ $t("preference.new_window.open_video_in_new_tab") }}</ToggleSwitch>
+			<ToggleSwitch v-model="appSettings.isOpenVideoInNewTab" v-ripple icon="placeholder">{{ $t("preference.new_window.open_video_in_new_tab") }}</ToggleSwitch>
 		</section>
 
 		<Subheader icon="placeholder">{{ $t("preference.misc") }}</Subheader>
 		<section list>
-			<ToggleSwitch v-model="appSettings.relativeDate" icon="time">{{ $t("preference.relative_date") }}</ToggleSwitch>
+			<ToggleSwitch v-model="appSettings.relativeDate" v-ripple icon="time">{{ $t("preference.relative_date") }}</ToggleSwitch>
 		</section>
 
 		<Subheader icon="search">{{ $t("search") }}</Subheader>
 		<section list>
-			<ToggleSwitch v-model="appSettings.search.isDynamicUrl" icon="link">{{ $t("preference.search.dynamic_url") }}</ToggleSwitch>
-			<ToggleSwitch v-model="appSettings.search.isApplyUrlSearchCriteria" icon="search">
+			<ToggleSwitch v-model="appSettings.search.isDynamicUrl" v-ripple icon="link">{{ $t("preference.search.dynamic_url") }}</ToggleSwitch>
+			<ToggleSwitch v-model="appSettings.search.isApplyUrlSearchCriteria" v-ripple icon="search">
 				<Preserves>{{ $t("preference.search.apply_url_search_criteria") }}</Preserves>
 			</ToggleSwitch>
 		</section>
