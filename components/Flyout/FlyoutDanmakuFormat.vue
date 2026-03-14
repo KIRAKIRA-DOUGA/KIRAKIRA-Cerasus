@@ -90,7 +90,7 @@
 					</Segmented>
 				</div>
 				<div v-else class="page-color">
-					<ColorPicker v-model="format.color" v-model:model="colorModel">
+					<ColorPicker v-model="format.color" v-model:colorModel="colorModel">
 						<template #navigation-back>
 							<SoftButton class="back" icon="arrow_left" @click="showColorPicker = false" />
 						</template>

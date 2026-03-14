@@ -15,7 +15,7 @@
 	}>();
 
 	const color = defineModel<Color | UnwrapRef<Color>>({ required: true });
-	const specificModel = defineModel<ColorModel>("model", { default: "hsl" });
+	const specificModel = defineModel<ColorModel>("colorModel", { default: "hsl" });
 
 	const main = ref<TwoD>([1, 1]);
 	const smoothMain = useSmoothValue(main, 0.5);
