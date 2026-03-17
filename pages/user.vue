@@ -105,7 +105,7 @@
 				useToast(t("toast.failed_to_fetch_user_info"), "error", 5000);
 
 			if (userInfoResult.isBlocked)
-				navigateToErrorPage(404);
+				throw createError({ status: 404, data: { type: "user" } });
 
 			isFollowing.value = !!userInfoResult.result?.isFollowing;
 			userInfo.value = userInfoResult;

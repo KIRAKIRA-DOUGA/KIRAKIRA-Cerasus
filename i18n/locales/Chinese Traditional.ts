@@ -471,7 +471,10 @@ export default {
 	add_to_group: "加入分組",
 	navigation: {
 		back: "返回",
-		return_to_home: "返回首頁",
+		back_to_home: "返回首頁",
+	},
+	error: {
+		not_found: {},
 	},
 	other: "其它",
 	color_picker: "調色板",

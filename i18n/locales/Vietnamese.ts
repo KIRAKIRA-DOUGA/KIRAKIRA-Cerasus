@@ -398,7 +398,12 @@ export default {
 		drag_to_upload: "Kéo vào đây để tải lên video",
 		format_info: "Hỗ trợ các định dạng như MP4, WMV, WEBM",
 	},
-	login_prompt: {},
+	login_prompt: {
+		history: "Đăng nhập để xem lịch sử của bạn",
+		collections: "Đang nhập để xem bộ sưu tập của bạn",
+		following_feed: "Đăng nhập để xem cập nhật từ mọi thứ bạn theo dõi",
+		upload: "Đăng nhập để chia sẻ nội dung của bạn",
+	},
 	publish: "Đăng tải",
 	messages: "Tin nhắn",
 	notification: "Thông báo",
@@ -604,7 +609,14 @@ export default {
 	add_to_group: "Thêm vào nhóm",
 	navigation: {
 		back: "Quay lại",
-		return_to_home: "Trở về trang chủ",
+		back_to_home: "Trở về trang chủ",
+	},
+	error: {
+		not_found: {
+			page: "Không Tìm Thấy Trang",
+			user: "Không Tìm Thấy Người Dùng",
+			video: "Không Tìm Thấy Video",
+		},
 	},
 	other: "Khác",
 	color_picker: "Chọn màu",

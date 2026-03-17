@@ -605,7 +605,14 @@ export default {
 	add_to_group: "Add to Group",
 	navigation: {
 		back: "Back",
-		return_to_home: "Return to Home",
+		back_to_home: "Back to Home",
+	},
+	error: {
+		not_found: {
+			page: "Page Not Found",
+			user: "User Not Found",
+			video: "Video Not Found",
+		},
 	},
 	other: "Other | Others",
 	color_picker: "Color Picker",

@@ -477,7 +477,10 @@ export default {
 	add_to_group: "Tambah Ke Grup",
 	navigation: {
 		back: "Kembali",
-		return_to_home: "Kembali ke Beranda",
+		back_to_home: "Kembali ke Beranda",
+	},
+	error: {
+		not_found: {},
 	},
 	other: "Lainnya",
 	color_picker: "Pemilih warna",

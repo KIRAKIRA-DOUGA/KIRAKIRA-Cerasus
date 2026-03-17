@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	const props = defineProps<{
-		statusCode: number | string;
-		message: string;
+		status: number | string;
+		statusText: string;
 	}>();
 
 	const iconWrapper = ref<HTMLDivElement>();
@@ -30,10 +30,10 @@
 			<div class="icon">☝️</div>
 		</div>
 		<div class="content">
-			<h2>{{ message }}</h2>
-			<h1>{{ statusCode }}</h1>
+			<h2>{{ status }}</h2>
+			<h1>{{ statusText }}</h1>
 			<h3>{{ $t("http_status_code.code_403") }}</h3>
-			<Button href="/">{{ $t("navigation.return_to_home") }}</Button>
+			<Button href="/">{{ $t("navigation.back_to_home") }}</Button>
 		</div>
 	</div>
 </template>

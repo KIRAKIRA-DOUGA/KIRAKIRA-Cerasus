@@ -607,7 +607,14 @@ export default {
 	add_to_group: "Ajouter au groupe",
 	navigation: {
 		back: "Précédent",
-		return_to_home: "Retour à Accueil",
+		back_to_home: "Retour à la page d'accueil",
+	},
+	error: {
+		not_found: {
+			page: "Page introuvable",
+			user: "Utilisateur introuvable",
+			video: "Vidéo introuvable",
+		},
 	},
 	other: "Autre | Autres",
 	color_picker: "Palette de couleurs",

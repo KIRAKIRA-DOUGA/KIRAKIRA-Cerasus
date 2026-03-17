@@ -609,7 +609,14 @@ export default {
 	add_to_group: "crwdns2804:0crwdne2804:0",
 	navigation: {
 		back: "crwdns2808:0crwdne2808:0",
-		return_to_home: "crwdns2810:0crwdne2810:0",
+		back_to_home: "crwdns4114:0crwdne4114:0",
+	},
+	error: {
+		not_found: {
+			page: "crwdns4108:0crwdne4108:0",
+			user: "crwdns4110:0crwdne4110:0",
+			video: "crwdns4112:0crwdne4112:0",
+		},
 	},
 	other: "crwdns2812:0crwdne2812:0",
 	color_picker: "crwdns2814:0crwdne2814:0",

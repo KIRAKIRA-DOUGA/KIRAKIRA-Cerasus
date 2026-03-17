@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	const props = defineProps<{
-		statusCode: number | string;
-		message: string;
+		status: number | string;
+		statusText: string;
 	}>();
 </script>
 
@@ -9,8 +9,8 @@
 	<div class="card">
 		<LogoElementPyro class="fire" />
 		<div class="content">
-			<h1>{{ statusCode }}</h1>
-			<h2>{{ message }}</h2>
+			<h1>{{ status }}</h1>
+			<h2>{{ statusText }}</h2>
 		</div>
 	</div>
 </template>

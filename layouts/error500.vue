@@ -1,13 +1,13 @@
 <script setup lang="ts">
 	import { httpResponseStatusCodes } from "helpers/http-status";
 	const props = defineProps<{
-		statusCode: number | string;
-		message: string;
+		status: number | string;
+		statusText: string;
 		stack: string;
 	}>();
 
-	const title = computed(() => httpResponseStatusCodes[props.statusCode]);
-	const is500 = computed(() => +props.statusCode === 500);
+	const title = computed(() => httpResponseStatusCodes[props.status]);
+	const is500 = computed(() => +props.status === 500);
 
 	const selfUserInfoStore = useSelfUserInfoStore();
 	const isAdmin = computed(() => selfUserInfoStore.userInfo.roles?.includes("administrator"));
@@ -17,14 +17,14 @@
 	<div class="container">
 		<div class="card">
 			<div class="stack">
-				<h2>{{ message }}</h2>
+				<h2>{{ statusText }}</h2>
 				<div v-text="stack"></div>
 			</div>
 			<div class="card-bottom">
 				<div class="bottom-left">
 					<LogoAira class="qrcode" />
 					<div class="title">
-						<h1>{{ statusCode }}</h1>
+						<h1>{{ status }}</h1>
 						<p>{{ title }}</p>
 					</div>
 				</div>

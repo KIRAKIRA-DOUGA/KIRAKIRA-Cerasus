@@ -30,7 +30,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 			if (!routeSlug[1] || routeSlug.length >= 3 && !to.name)
 				return navigate(`/video/${routeSlug[1]}`);
 		} else
-			return navigateToErrorPage(301);
+			throw createError({ status: 404, data: { type: "video" } });
 	}
 	if (routeSlug[0] === "user") {
 		const uid = await getUserInfo(routeSlug[1]);
@@ -38,7 +38,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 			if (!routeSlug[1] || routeSlug.length >= 3 && !to.name)
 				return navigate(`/user/${uid}`);
 		} else
-			return navigateToErrorPage(404);
+			throw createError({ status: 404, data: { type: "user" } });
 	}
 	if (routeSlug.at(-1) === MEDIA_INFO_MODULE_WASM)
 		return navigateTo(`/${MEDIA_INFO_MODULE_WASM}`);

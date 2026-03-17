@@ -314,6 +314,7 @@ export default {
 		relative_date: "相対日付を使用",
 		search: {
 			dynamic_url: "検索条件を変更する際にURLを動的に更新",
+			apply_url_search_criteria: "URLからの検索条件の適用\n無効になっている場合、ブラウザのアドレスバーで検索条件を含むURLをアクセスしても自動的に検索を行いません。",
 		},
 	},
 	experimental: "実験的",
@@ -608,7 +609,14 @@ export default {
 	add_to_group: "グループに追加",
 	navigation: {
 		back: "戻る",
-		return_to_home: "ホーム",
+		back_to_home: "ホーム",
+	},
+	error: {
+		not_found: {
+			page: "ページが見つかりません",
+			user: "ユーザーが見つかりません",
+			video: "ビデオが見つかりません",
+		},
 	},
 	other: "その他",
 	color_picker: "カラー選択",

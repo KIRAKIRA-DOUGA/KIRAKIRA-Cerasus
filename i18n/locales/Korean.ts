@@ -326,6 +326,9 @@ export default {
 		discord: {},
 	},
 	navigation: {},
+	error: {
+		not_found: {},
+	},
 	toast: {},
 	validation: {
 		required: {},

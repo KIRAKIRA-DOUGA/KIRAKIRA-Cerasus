@@ -48,7 +48,7 @@
 				handleError(t("toast.video_request_failed"));
 
 			if (videoDataResponse.isBlocked)
-				navigateToErrorPage(404);
+				throw createError({ status: 404, data: { type: "video" } });
 
 			isBlockedByUploader.value = videoDataResponse.isBlockedByOther;
 			const videoData = videoDataResponse.video;

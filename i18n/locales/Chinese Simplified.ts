@@ -609,7 +609,14 @@ export default {
 	add_to_group: "加入分组",
 	navigation: {
 		back: "返回",
-		return_to_home: "返回首页",
+		back_to_home: "返回首页",
+	},
+	error: {
+		not_found: {
+			page: "找不到页面",
+			user: "找不到用户",
+			video: "找不到视频",
+		},
 	},
 	other: "其它",
 	color_picker: "调色板",
