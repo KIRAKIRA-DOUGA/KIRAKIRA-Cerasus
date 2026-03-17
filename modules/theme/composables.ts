@@ -5,6 +5,7 @@ import { PALETTE_LIST } from "./types";
  * 服务端渲染时，获取请求时传递的用户 token cookie
  * 如果用户 token 通过验证，则请求最新用户设置并用最新值更新到 cookie 中（这回导致本次 SSR 渲染响应到达客户端时，客户端 cookie 也随之更新），然后续期 cookie
  * 如果用户 token 未通过验证，则续期 cookie
+ * @returns 如果用户 token 通过验证，则返回最新用户设置，否则返回 undefined
  */
 export async function cookieBaker() {
 	// Cookie 键 - 用户认证
@@ -17,46 +18,55 @@ export async function cookieBaker() {
 		const cookieToken = useCookie(TOKEN_COOKIE_KEY, { sameSite: true });
 
 		// Nuxt cookie 对象 - 是否同步样式
-		const isAllowSyncThemeSettings = useCookie(COOKIE_KEY.isAllowSyncThemeSettings, DEFAULT_COOKIE_OPTION);
+		const isAllowSyncThemeSettings = useCookie<boolean>(COOKIE_KEY.isAllowSyncThemeSettings, DEFAULT_COOKIE_OPTION);
 
 		// Nuxt cookie 对象 - 用户样式设置
 		const cookieThemeType = useCookie(COOKIE_KEY.themeTypeCookieKey, DEFAULT_COOKIE_OPTION);
 		const cookieThemeColor = useCookie(COOKIE_KEY.themeColorCookieKey, DEFAULT_COOKIE_OPTION);
 		const cookieThemeColorCustom = useCookie(COOKIE_KEY.themeColorCustomCookieKey, DEFAULT_COOKIE_OPTION);
-		const cookieColoredSidebar = useCookie(COOKIE_KEY.coloredSidebarCookieKey, DEFAULT_COOKIE_OPTION);
+		const cookieColoredSidebar = useCookie<boolean>(COOKIE_KEY.coloredSidebarCookieKey, DEFAULT_COOKIE_OPTION);
 		// HACK: 5 在此处添加
 
 		// nuxt cookie 对象 - 是否使用离线样式设置
-		const cookieIsLocalStorage = useCookie(COOKIE_KEY.isOfflineSettingsCookieKey, DEFAULT_COOKIE_OPTION);
+		const cookieIsLocalStorage = useCookie<boolean>(COOKIE_KEY.isOfflineSettingsCookieKey, DEFAULT_COOKIE_OPTION);
 
 		const uuid = cookieUuid.value;
 		const token = cookieToken.value;
 
 		let userSettings: GetUserSettingsResponseDto | undefined = undefined;
 		if (
-			typeof isAllowSyncThemeSettings.value === "boolean" && isAllowSyncThemeSettings.value === true &&
-			uuid && token
+			(
+				typeof isAllowSyncThemeSettings.value === "boolean" && isAllowSyncThemeSettings.value ||
+				typeof isAllowSyncThemeSettings.value === "string" && isAllowSyncThemeSettings.value === "true"
+			) && uuid && token
 		) {
 			// 如果用户允许主题同步，且用户认证 cookie 存在，则通过认证 cookie 获取数据库中存储的用户样式设置，并将获取到的设置信息存储至 cookie
 			const userAuthToken: GetSelfUserInfoByUuidRequestDto | GetUserSettingsRequestDto = {
 				uuid: uuid || "",
 				token: token || "",
 			};
-			await api.user.getSelfUserInfo({ getSelfUserInfoRequest: userAuthToken, appSettingsStore: useAppSettingsStore(), selfUserInfoStore: useSelfUserInfoStore(), headerCookie: undefined });
+
+			const selfUserInfoStore = useSelfUserInfoStore();
+
+			await api.user.getSelfUserInfo({ getSelfUserInfoRequest: userAuthToken, appSettingsStore: useAppSettingsStore(), selfUserInfoStore, headerCookie: undefined });
+
 			userSettings = await api.user.getUserSettings({ getUserSettingsRequest: userAuthToken });
 
 			cookieThemeType.value = userSettings?.userSettings?.themeType || THEME_ENV.SYSTEM_THEME;
 			cookieThemeColor.value = userSettings?.userSettings?.themeColor ? (PALETTE_LIST as unknown as string[]).includes(userSettings.userSettings.themeColor) ? userSettings.userSettings.themeColor : THEME_ENV.CUSTOM_THEME_COLOR : THEME_ENV.DEFAULT_THEME_COLOR;
 			cookieThemeColorCustom.value = userSettings?.userSettings?.themeColorCustom || THEME_ENV.DEFAULT_CUSTOM_THEME_COLOR;
-			cookieColoredSidebar.value = `${userSettings?.userSettings?.coloredSideBar === true}`;
+			cookieColoredSidebar.value = userSettings?.userSettings?.coloredSideBar === true;
 			// HACK: 6 在此处添加
 
-			cookieIsLocalStorage.value = "false";
-		} else if (typeof isAllowSyncThemeSettings.value === "boolean" && isAllowSyncThemeSettings.value === false)
-			cookieIsLocalStorage.value = "true";
+			cookieIsLocalStorage.value = false;
+		} else if (
+			typeof isAllowSyncThemeSettings.value === "boolean" && isAllowSyncThemeSettings.value ||
+			typeof isAllowSyncThemeSettings.value === "string" && isAllowSyncThemeSettings.value === "false"
+		)
+			cookieIsLocalStorage.value = true;
 		else {
-			isAllowSyncThemeSettings.value = THEME_ENV.ALLOW_SYNC_THEME_SETTINGS;
-			cookieIsLocalStorage.value = "true";
+			isAllowSyncThemeSettings.value = THEME_ENV.ALLOW_SYNC_THEME_SETTINGS === "true";
+			cookieIsLocalStorage.value = true;
 		}
 		return userSettings;
 	}
