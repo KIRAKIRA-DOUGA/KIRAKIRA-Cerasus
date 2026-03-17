@@ -71,7 +71,7 @@
 			<!-- <div>test pointer: {{ parallax.x }}, {{ parallax.y }}</div>
 			<div>test gsensor: {{ gsensor.alpha }}, {{ gsensor.beta }}, {{ gsensor.gamma }}</div>
 			<div>{{ rotationDeg }}</div> -->
-			<Button href="/">{{ $t("navigation.return_to_home") }}</Button>
+			<Button href="/">{{ $t("navigation.back_to_home") }}</Button>
 		</div>
 	</main>
 </template>
