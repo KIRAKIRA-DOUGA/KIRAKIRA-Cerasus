@@ -1,5 +1,6 @@
 <docs>
-	# 响应式布局
+	# 默认布局
+	响应式布局。
 </docs>
 
 <script setup lang="ts">

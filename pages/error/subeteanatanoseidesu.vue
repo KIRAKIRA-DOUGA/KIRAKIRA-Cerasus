@@ -2,6 +2,10 @@
 	import music from "assets/audios/全都是你的所作所为.aac";
 	import { httpResponseStatusCodes } from "helpers/http-status";
 
+	definePageMeta({
+		layout: "immersive",
+	});
+
 	const props = withDefaults(defineProps<{
 		statusCode?: 301;
 		/** 错误原因。 */
@@ -23,6 +27,8 @@
 
 	const INVERSE_BULLET_SIZE = 90;
 	const inverseBulletMaskId = useId();
+
+	useHead({ title: "大変申し訳ありませんが" });
 </script>
 
 <template>
@@ -43,7 +49,7 @@
 	</div>
 	<div class="foreground">
 		<div class="top">
-			<h1>啊？不见了‽</h1>
+			<h1 lang="ja">大変申<small>し</small>訳<small>ありませんが</small></h1>
 		</div>
 		<div class="ellipsis-container" @click="togglePlayMusic">
 			<div class="ellipsis-container-relative">
@@ -58,7 +64,7 @@
 		</div>
 		<div class="ellipsis-container-shadow"></div>
 		<div class="bottom">
-			<h2>{{ message }}</h2>
+			<!-- <h2>{{ message }}</h2> -->
 			<Button href="/">{{ $t("navigation.back_to_home") }}</Button>
 		</div>
 	</div>
@@ -289,7 +295,7 @@
 		h1 {
 			color: c(accent);
 			font-size: 5rem;
-			font-weight: bold;
+			font-weight: 900;
 
 			@starting-style {
 				translate: 0 -50px;

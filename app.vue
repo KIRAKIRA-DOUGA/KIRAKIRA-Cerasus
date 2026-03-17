@@ -1,6 +1,5 @@
 <script setup lang="ts">
 	import crowdinLogoSvg from "assets/svg/crowdin.svg";
-	import { useDynamicLayout } from "helpers/page-transition";
 	import manifest from "public/manifest.json";
 
 	const host = useRequestURL().host;
@@ -103,8 +102,6 @@
 			globalThis.jipt[enableJipt ? "start" : "stop"]();
 	});
 
-	const layout = useDynamicLayout();
-
 	const backgroundImages = useBackgroundImages();
 	watch(() => backgroundImages.currentDominantColor, color => {
 		document.documentElement.style.setProperty("--accent-wallpaper", color || null);
@@ -131,7 +128,7 @@
 </script>
 
 <template>
-	<NuxtLayout :name="layout">
+	<NuxtLayout>
 		<NuxtPage />
 	</NuxtLayout>
 

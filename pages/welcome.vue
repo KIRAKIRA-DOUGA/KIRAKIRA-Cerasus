@@ -3,6 +3,10 @@
 </docs>
 
 <script setup lang="ts">
+	definePageMeta({
+		layout: "immersive",
+	});
+
 	const { t } = useI18n();
 	useHead({ title: t("welcome.title", { kirakira: "KIRAKIRA☆DOUGA" }) });
 	const { next: _next } = useRoute().query;
