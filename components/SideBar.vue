@@ -123,9 +123,12 @@
 			<div class="stripes">
 				<div v-for="i in 2" :key="i" class="stripe"></div>
 			</div>
+			<LocaleLink to="/" class="logo-text-wrapper lite pc">
+				<LogoText />
+			</LocaleLink>
 			<Transition mode="out-in">
-				<p v-if="props.overrideLogoText" class="logo-text">{{ props.overrideLogoText }}</p>
-				<LocaleLink v-else to="/" class="logo-text-wrapper lite">
+				<p v-if="props.overrideLogoText" class="logo-text pe">{{ props.overrideLogoText }}</p>
+				<LocaleLink v-else to="/" class="logo-text-wrapper lite pe">
 					<LogoText />
 				</LocaleLink>
 			</Transition>
@@ -333,7 +336,7 @@
 
 		@include not-mobile {
 			.pe {
-				display: none;
+				display: none !important;
 			}
 		}
 
@@ -342,7 +345,7 @@
 
 			.top,
 			.pc {
-				display: none;
+				display: none !important;
 			}
 
 			> * {

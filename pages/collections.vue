@@ -7,6 +7,9 @@
 		},
 	});
 
+	const { t } = useI18n();
+	useHead({ title: t("collection.title", 2) });
+
 	const selfUserInfoStore = useSelfUserInfoStore();
 </script>
 

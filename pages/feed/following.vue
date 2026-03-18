@@ -16,6 +16,9 @@
 		},
 	});
 
+	const { t } = useI18n();
+	useHead({ title: t("feed.following") });
+
 	const selfUserInfoStore = useSelfUserInfoStore();
 	const loadingMore = ref(false);
 	const reachedEnd = ref(true);
