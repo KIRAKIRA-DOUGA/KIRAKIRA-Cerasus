@@ -315,6 +315,7 @@
 						<Button v-tooltip="'缺省设定位置则会自动寻找离页边最远的方向'">全方向缺省</Button>
 						<Button v-tooltip="longTextTest">长文本</Button>
 					</div>
+					改动：必须显式指定方向。
 				</AccordionItem>
 				<AccordionItem title="浮窗测试">
 					<div class="tooltip-test">

@@ -260,6 +260,7 @@ export default {
 			loadMedia: "Failed to load media",
 		},
 		playlist: {
+			title: "Playlist",
 			add_to_playlist: "Add to Playlist",
 			remove_from_playlist: "Remove from Playlist",
 		},
@@ -269,6 +270,10 @@ export default {
 			repeat_all: "Repeat All",
 			repeat_one: "Repeat One",
 			shuffle: "Shuffle",
+		},
+		block_words: "Block Words",
+		chapter: {
+			title: "Chapter | Chapters",
 		},
 	},
 	danmaku: {

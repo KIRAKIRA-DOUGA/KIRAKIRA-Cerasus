@@ -131,7 +131,7 @@
 	<div class="gender">
 		<div class="gender-subtitle">
 			<Icon name="tag" class="icon" />
-			<span class="text">{{ $t("tag", profile.tags.length) }}</span>
+			<span class="text">{{ $t("tag.title", profile.tags.length) }}</span>
 		</div>
 		<!-- TODO: 需要改成和投稿页面一致的 TAG 创建逻辑 -->
 		<TagsEditor v-model="profile.tags" />

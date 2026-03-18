@@ -7,6 +7,7 @@ import docsLoader from "./plugins/vite/docs";
 import vitePluginScssVariables from "./plugins/vite/scss-variables";
 import scssVariablesLoader from "./plugins/vite/scss-variables-loader";
 import devtoolsJson from "vite-plugin-devtools-json";
+import autoImportConfig from "./auto-import.config";
 /* import vueNestedSFC from "vite-plugin-vue-nested-sfc"; */
 type OriginalNuxtConfig = Parameters<typeof defineNuxtConfig>[0];
 type BroadNuxtConfig = OriginalNuxtConfig & Record<Exclude<string, keyof OriginalNuxtConfig>, object | string>; // 还敢报错吗？
@@ -46,6 +47,11 @@ export default defineNuxtConfig({
 		"modules/theme/module.ts",
 		"modules/noscript/module.ts",
 		"modules/unsupported-browsers/module.ts",
+		["modules/auto-import-components/module.ts", {
+			"@number-flow/vue": [
+				["default", "NumberFlow"],
+			],
+		}],
 		dev && "modules/components-globalized/module.ts",
 		"@nuxtjs/robots",
 		"@nuxtjs/sitemap",
@@ -302,6 +308,7 @@ export default defineNuxtConfig({
 			"classes",
 			"stores",
 		],
+		presets: autoImportConfig,
 	},
 
 	postcss: {

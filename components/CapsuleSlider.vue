@@ -90,8 +90,8 @@
 	}
 
 	const displayValue = computed(() =>
-		(typeof props.displayValue === "function" ? props.displayValue(smoothOriginalValue.value) : props.displayValue)
-		?? smoothOriginalValue.value);
+		(typeof props.displayValue === "function" ? props.displayValue(model.value) : props.displayValue) ??
+		model.value);
 </script>
 
 <template>
@@ -107,9 +107,9 @@
 		@contextmenu="onLongPress"
 	>
 		<div class="value-container">
-			<div class="value">{{ displayValue }}</div>
+			<PatternedNumberFlow class="value" :value="displayValue" />
 			<div class="value passed"></div>
-			<div class="value value-on">{{ displayValue }}</div>
+			<PatternedNumberFlow class="value value-on" :value="displayValue" />
 		</div>
 	</Comp>
 </template>

@@ -23,10 +23,10 @@ declare module "vue" {
 	/**
 	 * 在此处声明自定义 HTML 属性。
 	 */
-	export interface HTMLAttributes {
-		"v-ripple"?: boolean;
-		"v-i"?: number;
-		"v-tooltip"?: VTooltipBindingValue;
+	export interface ComponentCustomProperties {
+		vRipple?: boolean;
+		vI?: number;
+		vTooltip?: VTooltipBindingValue;
 	}
 
 	export interface ComponentOptionsBase {
@@ -77,7 +77,7 @@ declare global {
 			emit: Emits;
 			/** 组件暴露对象。 */
 			expose: (exposed?: Record<string, unknown>) => void;
-		}
+		},
 	) => JSX.Element;
 
 	type DirectiveEffectHookInferElement<D extends Directive> = D extends Directive<infer T> ? T : HTMLElement;
