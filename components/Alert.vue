@@ -4,6 +4,8 @@
 		open?: boolean;
 		/** 标题。 */
 		title?: string;
+		/** 图标。默认为 info。 */
+		icon?: string;
 		/** 聚焦内容。是否**不要**单击空白处关闭。 */
 		static?: boolean;
 	}>();
@@ -31,7 +33,7 @@
 			>
 				<ScrollContainer overflowX="clip">
 					<div class="body">
-						<Icon name="info" />
+						<Icon :name="icon || 'info'" />
 						<div class="content-part">
 							<h2>{{ title ?? "KIRAKIRA 提示您" }}</h2>
 							<div class="content">
