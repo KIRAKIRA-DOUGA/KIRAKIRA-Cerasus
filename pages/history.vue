@@ -1,4 +1,12 @@
 <script setup lang="ts">
+	definePageMeta({
+		layout: {
+			props: {
+				appBarTitle: "t.history",
+			},
+		},
+	});
+
 	const { t } = useI18n();
 	const selfUserInfoStore = useSelfUserInfoStore();
 	const searchText = ref(""); // 用户输入的搜索字符

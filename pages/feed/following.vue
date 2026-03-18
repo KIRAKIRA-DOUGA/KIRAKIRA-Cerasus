@@ -8,6 +8,14 @@
 </docs>
 
 <script setup lang="ts">
+	definePageMeta({
+		layout: {
+			props: {
+				appBarTitle: "t.feed.following",
+			},
+		},
+	});
+
 	const selfUserInfoStore = useSelfUserInfoStore();
 	const loadingMore = ref(false);
 	const reachedEnd = ref(true);

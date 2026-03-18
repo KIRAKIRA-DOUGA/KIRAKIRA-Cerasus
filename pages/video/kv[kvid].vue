@@ -4,8 +4,12 @@
 	import { ScrollContainer } from "#components";
 
 	definePageMeta({
-		flatAppBar: true,
-		hideBottomNav: true,
+		layout: {
+			props: {
+				flatAppBar: true,
+				hideBottomNav: true,
+			},
+		},
 	});
 
 	const windowSize = useWindowSize();

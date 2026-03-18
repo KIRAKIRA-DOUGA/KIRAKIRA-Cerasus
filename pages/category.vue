@@ -1,4 +1,12 @@
 <script setup lang="ts">
+	definePageMeta({
+		layout: {
+			props: {
+				appBarTitle: "t.category.title",
+			},
+		},
+	});
+
 	const categories = [
 		{ id: "anime", icon: "movie" },
 		{ id: "music", icon: "music" },

@@ -1,11 +1,15 @@
 <script setup lang="ts">
 	const { t } = useI18n();
 	definePageMeta({
-		hideAppBar: true,
-		hideBottomNav: true,
 		pageTransition: {
 			name: "settings",
 			mode: "out-in",
+		},
+		layout: {
+			props: {
+				hideAppBar: true,
+				hideBottomNav: true,
+			},
 		},
 	});
 
@@ -449,10 +453,10 @@
 	}
 
 	.nav-header {
-		margin-inline: (-$nav-padding-x);
 		margin-bottom: -10px;
-		padding-inline: $nav-padding-x;
+		margin-inline: (-$nav-padding-x);
 		padding-bottom: 10px;
+		padding-inline: $nav-padding-x;
 		background-color: c(gray-5, 80%);
 
 		h1 {
@@ -472,10 +476,10 @@
 		background-color: c(main-bg, 80%);
 
 		@include not-mobile {
-			margin-inline: (-$main-padding-x);
 			margin-bottom: -0.5rem;
-			padding-inline: $main-padding-x;
+			margin-inline: (-$main-padding-x);
 			padding-bottom: 0.5rem;
+			padding-inline: $main-padding-x;
 		}
 
 		@include mobile {
@@ -609,8 +613,8 @@
 			display: flex;
 			gap: 8px;
 			justify-content: end;
-			margin-inline: (-$main-padding-x);
 			margin-bottom: (-$main-padding-x);
+			margin-inline: (-$main-padding-x);
 			padding: calc($submit-margin-y / 2) $main-padding-x $submit-margin-y;
 			background-color: c(main-bg, 80%);
 			backdrop-filter: $backdrop-filter;

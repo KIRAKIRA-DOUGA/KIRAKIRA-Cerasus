@@ -6,26 +6,25 @@
 <script setup lang="ts">
 	import { Analytics } from "@vercel/analytics/nuxt";
 
+	const props = defineProps<{
+		hideAppBar?: boolean;
+		flatAppBar?: boolean;
+		hideBottomNav?: boolean;
+		appBarTitle?: string;
+	}>();
+
 	const showDrawer = ref(false);
 	const isSettingsPage = ref(false);
 
-	const route = useRoute();
-	const hideAppBar = ref(false);
-	const flatAppBar = ref(false);
-	const hideBottomNav = ref(false);
 	const appBarTitle = ref<string | undefined>();
 
 	const { t } = useI18n();
 
 	function pageLoaded() {
 		isSettingsPage.value = !!currentSettingsPage();
-		hideAppBar.value = Boolean(route.meta.hideAppBar);
-		flatAppBar.value = Boolean(route.meta.flatAppBar);
-		hideBottomNav.value = Boolean(route.meta.hideBottomNav);
-
-		const appBarTitleTemp = route.meta.appBarTitle as string | undefined;
+		const appBarTitleTemp = props.appBarTitle;
 		if (appBarTitleTemp?.startsWith("t.")) appBarTitle.value = t(appBarTitleTemp.slice(2), 2);
-		else appBarTitle.value = route.meta.appBarTitle as string | undefined;
+		else appBarTitle.value = props.appBarTitle;
 	}
 
 	// SSR
@@ -49,7 +48,7 @@
 	</Transition>
 	<div class="viewport">
 		<Analytics />
-		<SideBar :hideAppBar :flatAppBar :hideBottomNav :isSettingsPage :overrideLogoText="showDrawer ? $t('navigation.back') : undefined" />
+		<SideBar :hideAppBar :flatAppBar :hideBottomNav :isSettingsPage :overrideLogoText="showDrawer ? $t('navigation.back') : appBarTitle ?? undefined" />
 		<ScrollContainer
 			scrollElId="mainScroller"
 			class="container"

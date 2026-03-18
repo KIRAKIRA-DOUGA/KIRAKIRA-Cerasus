@@ -4,8 +4,12 @@
 	const { t } = useI18n();
 	useHead({ title: t("search") });
 	definePageMeta({
-		hideAppBar: true,
-		flatAppBar: true,
+		layout: {
+			props: {
+				hideAppBar: true,
+				flatAppBar: true,
+			},
+		},
 	});
 	const router = useRouter(), route = useRoute();
 
