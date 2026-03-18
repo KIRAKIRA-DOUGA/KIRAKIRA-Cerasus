@@ -1,4 +1,6 @@
 <script setup lang="ts">
+	import { validateUsernameAndNickname } from "components/Settings/SettingsUserProfile.vue";
+
 	const { t } = useI18n();
 	const banner = "static/images/banner-20220717.png";
 
@@ -12,8 +14,8 @@
 	const isAvatarCropperOpen = ref(false); // 用户头像图片裁剪器是否开启
 	const newAvatarImageBlob = ref<Blob>(); // 用户裁剪后的头像
 	const userAvatarFileInput = ref<HTMLInputElement>(); // 隐藏的图片上传 Input 元素
-	const isUpdateUserInfo = ref<boolean>(false); // 是否正在上传用户信息
-	const isResetUserInfo = ref<boolean>(false); // 是否正在重置用户信息
+	const isUpdatingUserInfo = ref<boolean>(false); // 是否正在上传用户信息
+	const isResettingUserInfo = ref<boolean>(false); // 是否正在重置用户信息
 	const profile = reactive({
 		name: selfUserInfoStore.userInfo.username?.normalize() ?? "",
 		nickname: selfUserInfoStore.userInfo.userNickname?.normalize() ?? "",
@@ -139,39 +141,42 @@
 	 * Update the user profile.
 	 */
 	async function updateProfile() {
-		isUpdateUserInfo.value = true;
-		if (newAvatarImageBlob.value)
-			try {
-				await handleSubmitAvatarImage();
-			} catch (error) {
-				useToast(t("toast.avatar_upload_failed"), "error");
-				console.error("ERROR", "Failed to upload avatar.", error);
-			}
-
-		const updateOrCreateUserInfoRequest: UpdateOrCreateUserInfoRequestDto = {
-			avatar: correctAvatar.value,
-			username: profile.name.normalize(),
-			userNickname: profile.nickname.normalize(),
-			signature: profile.bio.normalize(),
-			gender: profile.gender.normalize(),
-			userBirthday: profile.birthday.toString(),
-			label: profile.tags?.map((tag, index) => ({ id: index, labelName: tag.normalize() })),
-		};
+		isUpdatingUserInfo.value = true;
 		try {
-			const updateOrCreateUserInfoResult = await api.user.updateOrCreateUserInfo(updateOrCreateUserInfoRequest);
-			if (updateOrCreateUserInfoResult.success) {
-				await api.user.getSelfUserInfo({ getSelfUserInfoRequest: undefined, appSettingsStore, selfUserInfoStore, headerCookie: undefined });
-				isUpdateUserInfo.value = false;
-				newAvatarImageBlob.value = undefined;
-				useToast(t("toast.profile_updated"), "success");
-			} else {
-				isUpdateUserInfo.value = false;
+			if (!await validateUsernameAndNickname(profile.name, profile.nickname, t))
+				return;
+
+			if (newAvatarImageBlob.value)
+				try {
+					await handleSubmitAvatarImage();
+				} catch (error) {
+					useToast(t("toast.avatar_upload_failed"), "error");
+					console.error("ERROR", "Failed to upload avatar.", error);
+				}
+
+			const updateOrCreateUserInfoRequest: UpdateOrCreateUserInfoRequestDto = {
+				avatar: correctAvatar.value,
+				username: profile.name.normalize(),
+				userNickname: profile.nickname.normalize(),
+				signature: profile.bio.normalize(),
+				gender: profile.gender.normalize(),
+				userBirthday: profile.birthday.toString(),
+				label: profile.tags?.map((tag, index) => ({ id: index, labelName: tag.normalize() })),
+			};
+			try {
+				const updateOrCreateUserInfoResult = await api.user.updateOrCreateUserInfo(updateOrCreateUserInfoRequest);
+				if (updateOrCreateUserInfoResult.success) {
+					await api.user.getSelfUserInfo({ getSelfUserInfoRequest: undefined, appSettingsStore, selfUserInfoStore, headerCookie: undefined });
+					newAvatarImageBlob.value = undefined;
+					useToast(t("toast.profile_updated"), "success");
+				} else
+					useToast(t("toast.something_went_wrong"), "error");
+			} catch (error) {
 				useToast(t("toast.something_went_wrong"), "error");
+				console.error("Failed to update profile.", error);
 			}
-		} catch (error) {
-			isUpdateUserInfo.value = false;
-			useToast(t("toast.something_went_wrong"), "error");
-			console.error("Failed to update profile.", error);
+		} finally {
+			isUpdatingUserInfo.value = false;
 		}
 	}
 
@@ -188,7 +193,7 @@
 	 * 请求旧用户信息，并修改 Pinia 中的用户数据，然后触发上方的监听
 	 */
 	async function reset() {
-		isResetUserInfo.value = true;
+		isResettingUserInfo.value = true;
 		const updateOrCreateUserInfoRequest: UpdateOrCreateUserInfoRequestDto = {
 			avatar: "",
 			userNickname: "",
@@ -201,16 +206,14 @@
 			const updateOrCreateUserInfoResult = await api.user.updateOrCreateUserInfo(updateOrCreateUserInfoRequest);
 			if (updateOrCreateUserInfoResult.success) {
 				await api.user.getSelfUserInfo({ getSelfUserInfoRequest: undefined, appSettingsStore, selfUserInfoStore, headerCookie: undefined });
-				isResetUserInfo.value = false;
 				showConfirmResetAlert.value = false;
-			} else {
-				isResetUserInfo.value = false;
+			} else
 				useToast(t("toast.something_went_wrong"), "error");
-			}
 		} catch (error) {
-			isResetUserInfo.value = false;
 			useToast(t("toast.something_went_wrong"), "error");
 			console.error("Failed to reset profile.", error);
+		} finally {
+			isResettingUserInfo.value = false;
 		}
 	}
 
@@ -241,7 +244,7 @@
 		<Alert v-model="showConfirmResetAlert" static>
 			{{ $t("confirm.reset_profile") }}
 			<template #footer-left>
-				<Button @click="reset" :loading="isResetUserInfo" :disabled="isUpdateUserInfo || isResetUserInfo">{{ $t("step.ok") }}</Button>
+				<Button @click="reset" :loading="isResettingUserInfo" :disabled="isUpdatingUserInfo || isResettingUserInfo">{{ $t("step.ok") }}</Button>
 			</template>
 			<template #footer-right>
 				<Button @click="showConfirmResetAlert = false" class="secondary">{{ $t("step.cancel") }}</Button>
@@ -283,8 +286,8 @@
 		</div>
 
 		<div class="submit">
-			<Button icon="delete" class="secondary" @click="resetConfirm" :disabled="isUpdateUserInfo || isResetUserInfo">{{ $t("step.reset") }}</Button>
-			<Button icon="check" @click="updateProfile" :loading="isUpdateUserInfo" :disabled="isUpdateUserInfo || isResetUserInfo">{{ $t("step.save") }}</Button>
+			<Button icon="delete" class="secondary" @click="resetConfirm" :disabled="isUpdatingUserInfo || isResettingUserInfo">{{ $t("step.reset") }}</Button>
+			<Button icon="check" @click="updateProfile" :loading="isUpdatingUserInfo" :disabled="isUpdatingUserInfo || isResettingUserInfo">{{ $t("step.save") }}</Button>
 		</div>
 	</div>
 </template>

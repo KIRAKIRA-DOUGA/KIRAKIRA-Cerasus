@@ -531,7 +531,7 @@ export default {
 		username_requirements_unique: "Username must be unique.",
 		nickname: "Nickname",
 		nickname_requirements: '1~20 characters, including only numbers, upper & lower case Latin letters, Vietnamese letters, CJK characters, common Hiragana/Katakana, modern Hangul syllables, special symbols "-", "_", non leading, trailing, continuous spaces.',
-		username_nickname_requirements: "Usernames and nicknames must be @:user.nickname_requirements",
+		username_nickname_requirements: "Username and nickname must be @:user.nickname_requirements",
 		bio: "Bio",
 		gender: "Gender",
 		memo: "Memo",
@@ -693,6 +693,8 @@ export default {
 			new_email_same_as_old_email: "The new email address is the same as the old one!",
 			invitation_code: "Invalid invitation code format!",
 			password_hint_include_password: "The password hint cannot include the password itself!",
+			username: "Username contains invalid characters!\nIt must be @:user.nickname_requirements",
+			nickname: "Nickname contains invalid characters!\nIt must be @:user.nickname_requirements",
 		},
 		too_long: {
 			username: "Username is too long!",

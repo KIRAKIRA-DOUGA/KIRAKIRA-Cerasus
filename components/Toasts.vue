@@ -102,11 +102,19 @@
 				@include flex-center;
 				gap: 8px;
 				padding: 12px 16px;
-				text-align: justify;
 
 				.icon {
 					margin-left: -2px;
 					font-size: 24px;
+				}
+
+				> span {
+					white-space: pre-line;
+					text-align: start;
+
+					&:lang-justify {
+						text-align: justify;
+					}
 				}
 			}
 
