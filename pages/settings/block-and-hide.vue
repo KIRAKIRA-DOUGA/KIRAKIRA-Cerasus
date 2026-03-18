@@ -182,7 +182,7 @@
 			if (unblockUserResult.success) {
 				const blockUserListResult = await getBlockList("block", blockUserListPage.value, blockUserListPageSize.value);
 				if (blockUserListResult && blockUserListResult.success) blockUserList.value = blockUserListResult;
-				useToast(t("block_and_hide.toasts.unblock_successfully"), "error", 5000);
+				useToast(t("block_and_hide.toasts.unblock_successfully"), "success", 5000);
 			} else {
 				console.error("ERROR", "解除屏蔽用户失败");
 				useToast(t("block_and_hide.toasts.unblock_failed"), "error", 5000);
