@@ -27,6 +27,7 @@
 </script>
 
 <template>
+	<!-- TODO: 缺少入场动画。 -->
 	<div class="container">
 		<DefinePluses>
 			<svg

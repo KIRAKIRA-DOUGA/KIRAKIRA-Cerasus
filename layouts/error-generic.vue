@@ -1,12 +1,12 @@
 <script setup lang="ts">
 	const props = defineProps<{
-		statusCode: number | string;
-		message: string;
+		status: number | string;
+		statusText: string;
 	}>();
 
 	const { t } = useI18n();
 
-	const message = computed(() => props.message
+	const statusText = computed(() => props.statusText
 		.replace(/^Page Not Found:\\s*/i, t("page_not_found_info") + t("colon"))
 		.replace(/^Page Not Found(?=\\s|$)/i, t("page_not_found_info")));
 	const mouse = useMouse();
@@ -66,8 +66,8 @@
 		</div>
 		<div class="spotlight"></div>
 		<div class="content">
-			<h1>{{ statusCode }}</h1>
-			<p>{{ message }}</p>
+			<h1>{{ status }}</h1>
+			<p>{{ statusText }}</p>
 			<!-- <div>test pointer: {{ parallax.x }}, {{ parallax.y }}</div>
 			<div>test gsensor: {{ gsensor.alpha }}, {{ gsensor.beta }}, {{ gsensor.gamma }}</div>
 			<div>{{ rotationDeg }}</div> -->

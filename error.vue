@@ -14,6 +14,8 @@
 		}),
 	});
 
+	const errorTitle = computed(() => httpResponseStatusCodes[props.error.status!]);
+
 	/**
 	 * 判断是否是该错误代码。
 	 * @param statusCodes - 错误代码。
@@ -31,7 +33,7 @@
 	onMounted(() => console.log(props.error));
 
 	useHead({
-		title: httpResponseStatusCodes[props.error.status!],
+		title: errorTitle,
 		titleTemplate: "%s - KIRAKIRA☆DOUGA",
 		bodyAttrs: { class: "no-scroll" },
 	});
@@ -39,8 +41,9 @@
 
 <template>
 	<!-- TODO: 对于 404 错误页面的设计，可能需要一个新的参数来传递视频被删除的原因或者是用户隐藏了等。 -->
-	<NuxtLayout v-if="isStatusCode(404, 233)" name="error404" :status="error.status" :type="error.data?.type" />
-	<NuxtLayout v-else-if="isStatusCode(403)" name="error403" :status="error.status" :statusText="error.statusText" />
-	<NuxtLayout v-else-if="isStatusCode(502)" name="error502" :status="error.status" :statusText="error.statusText" />
-	<NuxtLayout v-else name="error500" :status="error.status" :statusText="error.statusText" :stack="error.stack ?? ''" />
+	<NuxtLayout v-if="isStatusCode(404)" name="error404" :status="error.status" :statusText="error.statusText || errorTitle" :type="error.data?.type" />
+	<NuxtLayout v-else-if="isStatusCode(403)" name="error403" :status="error.status" :statusText="error.statusText || errorTitle" :stack="error.stack ?? ''" />
+	<NuxtLayout v-else-if="isStatusCode(502)" name="error502" :status="error.status" :statusText="error.statusText || errorTitle" :stack="error.stack ?? ''" />
+	<NuxtLayout v-else-if="isStatusCode(500)" name="error500" :status="error.status" :statusText="error.statusText || errorTitle" :stack="error.stack ?? ''" />
+	<NuxtLayout v-else name="error-generic" :status="error.status" :statusText="error.statusText || errorTitle" :stack="error.stack ?? ''" />
 </template>
