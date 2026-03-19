@@ -177,7 +177,7 @@
 	aside {
 		@include flex-center;
 		--color: #{c(accent)};
-		z-index: 30;
+		z-index: $z-sidebar;
 		flex-direction: column;
 		justify-content: space-between;
 		padding: $icons-gap 0;
@@ -483,7 +483,7 @@
 
 	nav {
 		@include sidebar-shadow;
-		z-index: 30;
+		z-index: $z-sidebar;
 		padding: $icons-gap 0;
 		overflow: clip;
 		background-color: c(main-bg, 75%);

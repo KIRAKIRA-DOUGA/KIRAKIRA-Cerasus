@@ -1,5 +1,5 @@
 <docs>
-	# 角落里的底纹图标
+	# 边角底纹图标
 </docs>
 
 <script setup lang="ts">
@@ -37,7 +37,7 @@
 		@include square(1em);
 		--icon-offset: -25%;
 		position: fixed;
-		z-index: 10;
+		z-index: $z-shading-icon;
 		color: c(accent, 15%);
 		font-size: $middle-size;
 		pointer-events: none;

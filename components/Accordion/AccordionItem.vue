@@ -79,11 +79,11 @@
 	.header {
 		position: relative;
 		display: flex;
-		align-items: center;
 		justify-content: space-between;
+		align-items: center;
 		overflow: clip;
-		font-weight: normal;
 		font-size: inherit;
+		font-weight: normal;
 		cursor: pointer;
 
 		> * {
@@ -97,8 +97,8 @@
 			margin-left: -4px;
 			color: c(icon-color);
 			font-size: 20px;
-			backface-visibility: hidden;
 			perspective: 1000;
+			backface-visibility: hidden;
 			transition: $fallback-transitions, all $ease-out-smooth 500ms;
 		}
 

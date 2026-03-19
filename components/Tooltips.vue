@@ -97,7 +97,7 @@
 		@include acrylic-background;
 		--offset: 10px;
 		position: fixed;
-		z-index: 80;
+		z-index: $z-tooltip;
 		display: flex;
 		flex-shrink: 0;
 		max-width: 50dvw;

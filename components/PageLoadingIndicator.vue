@@ -21,7 +21,7 @@
 		top: 0;
 		right: -4px;
 		left: 0;
-		z-index: calc(infinity);
+		z-index: $z-topmost;
 		pointer-events: none;
 
 		.progress-bar {

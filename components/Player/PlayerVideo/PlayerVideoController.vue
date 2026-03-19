@@ -352,7 +352,7 @@
 
 	:comp {
 		position: relative;
-		z-index: 10;
+		z-index: $z-player-controller;
 		display: flex;
 		align-items: center;
 		height: $thickness;

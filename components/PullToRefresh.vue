@@ -103,7 +103,7 @@
 		top: $mobile-toolbar-height;
 		right: 0;
 		left: 0;
-		z-index: 29;
+		z-index: $z-sidebar - 1;
 		transform: translateY(-48px);
 		transition: $fallback-transitions, transform $ease-out-spring 800ms;
 

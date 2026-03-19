@@ -183,7 +183,7 @@
 	.hide-drawer-mask {
 		position: absolute;
 		inset: 0;
-		z-index: 99;
+		z-index: $z-noscript - 1;
 		cursor: pointer;
 	}
 </style>

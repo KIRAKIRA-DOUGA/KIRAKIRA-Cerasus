@@ -177,7 +177,7 @@
 
 		&.fixed {
 			position: fixed;
-			z-index: 90;
+			z-index: $z-player-menu;
 		}
 
 		@include mobile {
@@ -202,7 +202,7 @@
 		@include round-large;
 		@include acrylic-background;
 		@include hide-if-empty;
-		z-index: 70;
+		z-index: $z-context-menu;
 		padding: $menu-padding;
 
 		@include not-mobile {
