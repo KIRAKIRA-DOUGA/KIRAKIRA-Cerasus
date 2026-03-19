@@ -8,13 +8,14 @@
 
 	const localeLink = ref<InstanceType<typeof LocaleLink>>();
 	const active = computed(() => props.href !== undefined && isCurrentPath(props.href));
+	const slot = useSlots().default?.()?.[0]?.children;
 	const [onLabelEnter, onLabelLeave] = simpleAnimateSize("height", 600);
 </script>
 
 <template>
 	<LocaleLink ref="localeLink" activable :to="href || '#'" class="bottom-nav-item lite">
 		<div>
-			<div v-ripple>
+			<div v-ripple v-tooltip:top="{ title: active ? undefined : slot, offset: -35 }">
 				<Icon :name="icon" />
 				<Transition @enter="onLabelEnter" @leave="onLabelLeave">
 					<label v-if="active"><slot></slot></label>
