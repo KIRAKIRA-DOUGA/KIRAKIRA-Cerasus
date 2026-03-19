@@ -105,6 +105,7 @@ export class AnchorNameList implements Iterable<string> {
 	}
 }
 
+// NOTE: 下面的类比上面的类使用起来更方便，但截止至2026/03/20 Safari并不支持using全新语法，故暂未启用。
 /**
  * A DOM element-bound utility for managing CSS anchor-name property.
  *

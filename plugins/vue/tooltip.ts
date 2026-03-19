@@ -2,6 +2,8 @@
  * 使用 `v-tooltip`，为元素添加自定义的工具提示。
  */
 
+import { AnchorNameList } from "classes/anchor-name";
+
 type VTooltipBindingValueNoPlain = {
 	title?: string;
 	placement?: Placement;
@@ -36,8 +38,10 @@ export default defineNuxtPlugin(nuxt => {
 	const refresh = () => useEvent("component:refreshTooltip", elementBinding);
 	nuxt.vueApp.directive("tooltip", {
 		mounted(element, binding) {
-			const anchorName = DEFAULT_TOOLTIP_ANCHOR_PREFIX + crypto.randomUUID(); // Cannot use `useId()`.
-			element.style.anchorName = anchorName;
+			const anchorName = DEFAULT_TOOLTIP_ANCHOR_PREFIX + crypto.randomUUID(); // Cannot use `useId()` in `mounted`, but `crypto.randomUUID()` not support SSR.
+			const anchorList = new AnchorNameList(element.style.anchorName);
+			anchorList.add(anchorName);
+			element.style.anchorName = anchorList.toString();
 			setElementBinding(element, binding.value, binding.arg, anchorName);
 			addEventListeners(element, "mouseenter", "focusin", () => {
 				if (!elementBinding.has(element)) return;
