@@ -102,6 +102,10 @@
 			globalThis.jipt[enableJipt ? "start" : "stop"]();
 	});
 
+	// Polyfill View Transition API
+	if (environment.client && !document.startViewTransition)
+		import("view-transitions-polyfill" as string);
+
 	const backgroundImages = useBackgroundImages();
 	watch(() => backgroundImages.currentDominantColor, color => {
 		document.documentElement.style.setProperty("--accent-wallpaper", color || null);
@@ -128,6 +132,7 @@
 </script>
 
 <template>
+	<NuxtLoadingIndicator />
 	<NuxtLayout>
 		<NuxtPage />
 	</NuxtLayout>

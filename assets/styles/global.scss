@@ -350,10 +350,14 @@ html[style*="--cursor"] {
 // #endregion
 
 // #region 主题过渡
-::view-transition-old(root),
-::view-transition-new(root) {
-	mix-blend-mode: normal;
-	animation: none;
+:active-view-transition-type(instant) {
+	@layer base {
+		&::view-transition-old(root),
+		&::view-transition-new(root) {
+			mix-blend-mode: normal;
+			animation-name: none;
+		}
+	}
 }
 // #endregion
 

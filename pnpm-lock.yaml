@@ -112,6 +112,9 @@ importers:
       variable-name-conversion:
         specifier: ^1.7.0
         version: 1.7.0
+      view-transitions-polyfill:
+        specifier: ^1.0.6
+        version: 1.0.6
       vue-audio-visual:
         specifier: ^3.0.11
         version: 3.0.11(typescript@5.9.3)
@@ -6338,7 +6341,6 @@ packages:
 
   shaka-player@5.0.5:
     resolution: {integrity: sha512-dvqzCoL4ViV/F4ytm1OC1hjxu/0t+J9TepQ2qJAJKjYGjY+SWwvu2xyi/xG0MOezavoPfOHhW7t8nziTWvakVg==}
-    engines: {node: '>=18'}
 
   sharp@0.34.5:
     resolution: {integrity: sha512-Ou9I5Ft9WNcCbXrU9cMgPBcCK8LiwLqcbywW3t4oDV37n1pzpuNLsYiAV8eODnjbtQlSDwZ2cUEeQz4E54Hltg==}
@@ -7016,6 +7018,9 @@ packages:
 
   variable-name-conversion@1.7.0:
     resolution: {integrity: sha512-ozRnRUjiqsr/CWakvZqCm3PTYsR4BYbKiR/6B/Uwjx9rg7YLyfnjWzudS9yLvfsEkL+suaGd3CgSJf2kET+1CQ==}
+
+  view-transitions-polyfill@1.0.6:
+    resolution: {integrity: sha512-9sALUJX12sbcWhzV8DCye4r70v4/Y8wDHDQ4AzaYJRnlkNel0FlghWoWXWglhXwk2Rp81pHrGbqrtuEqcL+M4g==}
 
   vite-dev-rpc@1.1.0:
     resolution: {integrity: sha512-pKXZlgoXGoE8sEKiKJSng4hI1sQ4wi5YT24FCrwrLt6opmkjlqPPVmiPWWJn8M8byMxRGzp1CrFuqQs4M/Z39A==}
@@ -14969,6 +14974,8 @@ snapshots:
   uuid@11.1.0: {}
 
   variable-name-conversion@1.7.0: {}
+
+  view-transitions-polyfill@1.0.6: {}
 
   vite-dev-rpc@1.1.0(vite@7.3.1(@types/node@25.5.0)(jiti@2.6.1)(less@4.4.2)(sass@1.77.6)(stylus@0.62.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)):
     dependencies:
