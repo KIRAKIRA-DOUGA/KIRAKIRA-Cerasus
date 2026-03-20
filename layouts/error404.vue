@@ -87,6 +87,7 @@
 		height: 100%;
 		overflow: clip;
 		color: c(accent);
+		animation: intro 600ms $ease-out-smooth backwards;
 
 		@include computer {
 			@include page-padding-x;
@@ -107,6 +108,7 @@
 		flex-direction: column;
 		justify-content: space-between;
 		padding: 32px;
+		animation: intro 600ms $ease-out-smooth backwards;
 
 		> div {
 			display: flex;
@@ -127,7 +129,7 @@
 
 		.shading-icon {
 			display: contents;
-			color: c(accent, 30%);
+			color: c(accent-20);
 
 			.main-icon {
 				position: absolute;
@@ -135,6 +137,7 @@
 				bottom: -140px;
 				font-size: 550px;
 				rotate: -15deg;
+				animation: main-icon 1s $ease-out-expo backwards;
 			}
 
 			.question-mark-icon {
@@ -144,6 +147,7 @@
 				font-size: 128px;
 				rotate: 15deg;
 				transition: $fallback-transitions, rotate 5s $ease-out-spring;
+				animation: question-mark 1s $ease-out-expo backwards;
 
 				&:hover {
 					rotate: calc(2.5turn + 15deg);
@@ -180,6 +184,15 @@
 		flex-direction: column;
 		gap: 32px;
 		align-items: start;
+
+		> *,
+		> .title > * {
+			animation: float-up 500ms calc(var(--i) * 100ms) $ease-out-expo backwards;
+		}
+
+		> button {
+			--i: 2;
+		}
 	}
 
 	.title {
@@ -187,11 +200,13 @@
 		flex-direction: column;
 
 		.message-decoration {
+			--i: 0;
 			font-family: $english-logo-fonts;
 			font-weight: 600;
 		}
 
 		.message-main {
+			--i: 1;
 			font-size: 64px;
 			font-weight: bold;
 			line-height: 1;
@@ -203,6 +218,29 @@
 			&:lang-latin {
 				font-family: $english-logo-fonts;
 			}
+		}
+	}
+
+	@keyframes float-up {
+		from {
+			translate: 0 50px;
+			opacity: 0;
+		}
+	}
+
+	@keyframes main-icon {
+		from {
+			translate: 50px 100px;
+			rotate: 5deg;
+			opacity: 0;
+		}
+	}
+
+	@keyframes question-mark {
+		from {
+			translate: -50px 100px;
+			rotate: -20deg;
+			opacity: 0;
 		}
 	}
 </style>
