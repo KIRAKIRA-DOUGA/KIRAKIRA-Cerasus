@@ -120,6 +120,7 @@ export default defineNuxtConfig({
 				"tus-js-client",
 				"node-vibrant/worker",
 				"@vercel/analytics/nuxt",
+				"view-transitions-polyfill",
 			],
 			needsInterop: [
 				"mediainfo.js",
