@@ -33,7 +33,7 @@
 	const flyoutTag = ref<FlyoutModel>(); // 绑定到 FlyoutTag 上的参数，当 target 不为空时会显示 Flyout
 	const tags = reactive<Map<VideoTag["tagId"], VideoTag>>(new Map()); // 视频标签
 	const displayTags = computed<DisplayVideoTag[]>(() => [...tags.values()].map(tagName => getDisplayVideoTagWithCurrentLanguage(currentLanguage.value, tagName))); // 用于显示的 TAG，相较于上方的 tags 数据结构更简单。
-	const contextualToolbar = ref<FlyoutModel>(); // TAG 的工具烂浮窗
+	const contextualToolbar = ref<FlyoutModel>(); // TAG 的工具栏浮窗
 	const hoveredTagContent = ref<[number, string]>(); // 鼠标 hover 的 TAG
 	const hideExceptMe = ref(false);
 	const hideTimeoutId = ref<Timeout>();
@@ -154,7 +154,7 @@
 						clearUrlQuery();
 					await searchVideoByKeyword(keyword);
 				} else
-					videos.value = undefined;
+					backToBigSearchLayout();
 				break;
 			}
 			case "tag": {
@@ -169,7 +169,7 @@
 						clearUrlQuery();
 					await searchVideoByTagIds(tagIdList);
 				} else
-					videos.value = undefined;
+					backToBigSearchLayout();
 				break;
 			}
 			case "user":
@@ -225,6 +225,11 @@
 			default:
 				break;
 		}
+	}
+
+	function backToBigSearchLayout() {
+		clearUrlQuery();
+		videos.value = undefined;
 	}
 
 	/**
@@ -555,9 +560,14 @@
 		}
 	}
 
-	.thumb-video:not(.switching-layout *) {
+	.thumb-video:not(.switching-layout *),
+	.content-unavailable:not(.switching-layout *) {
 		view-transition-name: match-element;
 		view-transition-class: search-thumb-video;
+
+		&.content-unavailable {
+			view-transition-name: content-unavailable;
+		}
 	}
 
 	.sort {
