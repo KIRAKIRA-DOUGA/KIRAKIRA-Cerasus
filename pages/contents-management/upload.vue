@@ -1,4 +1,12 @@
 <script setup lang="ts">
+	definePageMeta({
+		layout: {
+			props: {
+				appBarTitle: "t.upload.title",
+			},
+		},
+	});
+
 	const { t } = useI18n();
 	useHead({ title: t("upload.title") });
 	const fileInput = ref<HTMLInputElement>();
@@ -140,27 +148,45 @@
 
 		<Transition name="page-jump-in" mode="out-in">
 			<div v-if="!showEditor" class="upload-wrapper">
-				<div
-					v-ripple
-					class="upload"
-					:class="{ dragover, successful: successfulUploaded }"
-					@dragover.stop.prevent="dragover = true"
-					@dragenter.stop.prevent="dragover = true"
-					@dragleave.stop.prevent="dragover = false"
-					@dragend.stop.prevent="dragover = false"
-					@drop.stop.prevent="onDrop"
-					@click="fileInput?.click()"
-				>
-					<div class="content">
-						<h3>{{ $t("upload.drag_to_upload") }}</h3>
-						<p>{{ $t("upload.format_info") }}</p>
+				<div class="row">
+					<div
+						v-ripple
+						class="upload"
+						:class="{ dragover, successful: successfulUploaded }"
+						@dragover.stop.prevent="dragover = true"
+						@dragenter.stop.prevent="dragover = true"
+						@dragleave.stop.prevent="dragover = false"
+						@dragend.stop.prevent="dragover = false"
+						@drop.stop.prevent="onDrop"
+						@click="fileInput?.click()"
+					>
+						<div class="content">
+							<h3>{{ $t("upload.drag_to_upload") }}</h3>
+							<p>{{ $t("upload.format_info") }}</p>
+						</div>
+						<Icon name="upload" class="upload-icon" />
+						<div class="outline normal"></div>
+						<div class="outline successful"></div>
 					</div>
-					<Icon name="upload" class="upload-icon" />
-					<div class="outline normal"></div>
-					<div class="outline successful"></div>
+					<CountCard :value="0" icon="movie" :name="$t('video', 2)" />
+					<CountCard :value="0" icon="play" :name="$t('sort.view')" />
 				</div>
-				<CountCard :value="0" icon="movie" :name="$t('video', 2)" />
-				<CountCard :value="0" icon="play" :name="$t('sort.view')" />
+				<ClientOnly>
+					<div class="video-list">
+						<ContentsManagementVideoCard
+							v-for="i in 2"
+							:key="i"
+							title="Video Name"
+							:videoId="i"
+							:viewCount="2333"
+							:upvoteCount="2333"
+							:downvoteCount="2333"
+							:commentCount="100"
+							:danmakuCount="200"
+							:collectCount="300"
+						/>
+					</div>
+				</ClientOnly>
 			</div>
 
 			<UploadEditor v-else :files />
@@ -184,10 +210,11 @@
 	}
 
 	.upload-wrapper {
-		@include flex-center;
-		gap: 16px;
-		// flex-direction: column;
-		margin-top: 1rem;
+		.row {
+			@include flex-center;
+			gap: 16px;
+			margin-top: 1rem;
+		}
 
 		.upload {
 			@include flex-center;
@@ -279,6 +306,13 @@
 			font-weight: bold;
 			line-height: 1;
 		}
+	}
+
+	.video-list {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		margin-block: 16px;
 	}
 
 	@keyframes rotation {

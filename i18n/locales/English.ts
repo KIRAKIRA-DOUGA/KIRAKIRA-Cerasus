@@ -725,6 +725,10 @@ export default {
 			ok: "Confirm Hiding",
 		},
 		delete_background_image: "Are you sure you want to delete this background image?",
+		delete_video: {
+			title: "Are you sure you want to delete this video?",
+			content: "It will be lost forever! (A long time!)",
+		},
 	},
 	current_time: "Current Time",
 	improve_translation: "Improve Translation",
