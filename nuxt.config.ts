@@ -338,8 +338,8 @@ export default defineNuxtConfig({
 			name: "page-jump-in",
 			mode: "out-in",
 		},
-		rootId: "root",
-		teleportId: "popovers",
+		rootAttrs: { id: "root" },
+		teleportAttrs: { id: "popovers" },
 	},
 
 	runtimeConfig: {

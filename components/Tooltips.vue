@@ -62,8 +62,8 @@
 </script>
 
 <template>
-	<Teleport to="#popovers">
-		<Comp role="none">
+	<Teleport to="#popover-tooltips">
+		<Comp role="none" :class="{ debug: DEBUG_MODE }">
 			<TransitionGroup appear>
 				<div
 					v-for="tooltip in tooltipList"
@@ -89,6 +89,10 @@
 	:comp {
 		display: contents;
 		pointer-events: none;
+
+		&.debug {
+			pointer-events: auto;
+		}
 	}
 
 	.tooltip {
