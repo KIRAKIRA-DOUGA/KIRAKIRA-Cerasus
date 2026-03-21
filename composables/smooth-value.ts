@@ -46,7 +46,6 @@ export function useSmoothValue<T extends SmoothValueAcceptType>(current: MaybeRe
 					if (cur.length === prev.length && cur.every((c, i) => isValueNotChanged(c, prev[i]))) break;
 				}
 				_smoothValue.value = cur;
-				console.log(cur);
 				return;
 			} while (false);
 			options.onStopChange?.(cur, prev);
