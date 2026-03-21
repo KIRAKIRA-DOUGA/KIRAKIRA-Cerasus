@@ -301,9 +301,9 @@
 		</div>
 		<div class="right">
 			<div class="time" @click="countdown = !countdown">
-				<PatternedNumberFlow class="current" :value="countdown ? countdownTime : currentTime" />
+				<span class="current">{{ countdown ? countdownTime : currentTime }} </span>
 				<span class="divide">/</span>
-				<PatternedNumberFlow class="duration" :value="duration" />
+				<span class="duration">{{ duration }}</span>
 			</div>
 			<SoftButton
 				v-if="selectedTrack && selectedTrack.height"
