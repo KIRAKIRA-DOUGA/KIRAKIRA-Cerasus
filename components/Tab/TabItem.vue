@@ -14,8 +14,7 @@
 		icon?: DeclaredIcons;
 		/** 超链接目标地址，可选。 */
 		to?: string;
-		/** @internal 仅内部使用！是否是垂直选项卡？ */
-		// eslint-disable-next-line vue/prop-name-casing
+		/** @private 仅内部使用！是否是垂直选项卡？ */
 		_internalIsVertical?: boolean;
 	}>(), {
 		direction: "horizontal",
@@ -32,8 +31,8 @@
 	const active = computed(() => parent?.props.modelValue === props.id);
 	const flexDirection = computed(() => props.direction === "horizontal" ? undefined :
 		props.direction.replace("horizontal", "row").replace("vertical", "column") as Property.FlexDirection);
-	const vertical = computed(() => props._internalIsVertical !== undefined ? props._internalIsVertical :
-		!!parent?.props.vertical);
+	// const vertical = computed(() => props._internalIsVertical !== undefined ? props._internalIsVertical :
+	// 	!!parent?.props.vertical);
 
 	/**
 	 * 单击切换选项卡事件。
