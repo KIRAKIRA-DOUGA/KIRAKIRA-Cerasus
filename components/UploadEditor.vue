@@ -2,33 +2,50 @@
 	import type { TusFileUploader } from "~/composables/api/Video/VideoController";
 	const { t } = useI18n();
 
-	const props = defineProps<{
-		files: File[];
-	}>();
-
 	const BASE_THUMBNAIL_URL = "static/images/thumbnail.png"; // FIXME: Nuxt Image 的 src 为 undefined 或 "" 时会出错，见 https://github.com/nuxt/image/issues/1299
 	const BASE_THUMBNAIL_ID = environment.cloudflareImageProvider === "cloudflare-prod" ? "f907a7bd-3247-4415-1f5e-a67a5d3ea100" : "ea693cd1-5e58-4e07-1391-49c133e30300";
 
-	const copyright = ref<Copyright>("original"); // 视频版权
-	const title = ref(""); // 视频标题
-	const category = ref(""); // 视频分类
-	const originalAuthor = ref(""); // 原作者
-	const originalLink = ref(""); // 原视频链接
-	const pushToFeed = ref(true); // 是否发布到动态
-	const ensureOriginal = ref(false); // 声明为原创
+	const props = defineProps<{
+		isEditing: boolean;
+
+		files?: File[];
+
+		videoInfo?: {
+			videoId: number;
+			copyright: Copyright; // 视频版权
+			title: string; // 视频标题
+			category: string; // 视频分类
+			originalAuthor: string; // 原作者
+			originalLink: string; // 原视频链接
+			pushToFeed: boolean; // 是否发布到动态
+			ensureOriginal: boolean; // 是否声明为原创
+			thumbnailUrl: string; // 封面图 URL
+			tags: Map<VideoTag["tagId"], VideoTag>; // 视频标签
+			description: string; // 视频简介
+			cloudflareVideoId: string; // Cloudflare 视频 ID
+		};
+	}>();
+
+	const copyright = ref<Copyright>(props.videoInfo?.copyright || "original"); // 视频版权
+	const title = ref(props.videoInfo?.title || ""); // 视频标题
+	const category = ref(props.videoInfo?.category || ""); // 视频分类
+	const originalAuthor = ref(props.videoInfo?.originalAuthor || ""); // 原作者
+	const originalLink = ref(props.videoInfo?.originalLink || ""); // 原视频链接
+	const pushToFeed = ref(props.videoInfo?.pushToFeed !== undefined ? props.videoInfo.pushToFeed : true); // 是否发布到动态
+	const ensureOriginal = ref(props.videoInfo?.ensureOriginal !== undefined ? props.videoInfo.ensureOriginal : false); // 声明为原创
 	const thumbnailBlob = ref<string>(); // 封面图 Blob
-	const thumbnailUrl = ref<string>(BASE_THUMBNAIL_URL); // 封面图 Blob 或 URL
+	const thumbnailUrl = ref<string>(props.videoInfo?.thumbnailUrl || BASE_THUMBNAIL_URL); // 封面图 Blob 或 URL
 	const thumbnailInput = ref<HTMLInputElement>();
 	const currentLanguage = computed(getCurrentLocale); // 当前用户的语言
-	const tags = reactive<Map<VideoTag["tagId"], VideoTag>>(new Map()); // 视频标签
+	const tags = reactive<Map<VideoTag["tagId"], VideoTag>>(props.videoInfo?.tags || new Map()); // 视频标签
 	const displayTags = computed<DisplayVideoTag[]>(() => [...tags.values()].map(tagName => getDisplayVideoTagWithCurrentLanguage(currentLanguage.value, tagName))); // 用于显示的 TAG，相较于上方的 tags 数据结构更简单。
-	const description = ref(""); // 视频简介
+	const description = ref(props.videoInfo?.description || ""); // 视频简介
 	const uploadProgress = ref(0); // 视频上传进度
-	const cloudflareVideoId = ref<string>(); // Cloudflare 视频 ID
+	const cloudflareVideoId = ref<string>(props.videoInfo?.cloudflareVideoId || ""); // Cloudflare 视频 ID
 	const isCommitButtonLoading = ref<boolean>(false); // 投稿按钮是否在 loading 状态
 	const isCoverCropperOpen = ref<boolean>(false); // 封面图裁剪器是否开启状态
 	const isUploadingCover = ref<boolean>(false); // 是否正在上传封面图
-	const cropper = ref(); // 图片裁剪器对象
+	const cropper = ref<InstanceType<typeof ImageCropper>>(); // 图片裁剪器对象
 	const isNetworkImage = computed(() => thumbnailUrl.value !== BASE_THUMBNAIL_URL); // 封面图是静态资源图片还是网图，即用户是否已经完成封面图上传
 	const provider = computed(() => isNetworkImage.value ? environment.cloudflareImageProvider : undefined); // 根据 isNetworkImage 的值判断是否使用 cloudflare 作为 Nuxt Image 提供商
 	// 视频分类
@@ -57,6 +74,7 @@
 	}
 
 	watch(() => props.files, files => {
+		if (!files || files.length === 0) return;
 		const file = files[0];
 		const basename = path.fileRoot(file.name);
 		title.value = basename;
@@ -107,7 +125,12 @@
 	 */
 	async function handleSubmitCoverImage() {
 		isUploadingCover.value = true;
-		const blobImageData = await cropper.value?.getCropBlobData();
+		if (!cropper.value) {
+			useToast(t("toast.cover_upload_failed"), "error");
+			isUploadingCover.value = false;
+			return;
+		}
+		const blobImageData = await cropper.value.getCropBlobData();
 		const coverUploadSignedUrlResult = await api.video.getVideoCoverUploadSignedUrl();
 		const filename = coverUploadSignedUrlResult?.result?.fileName;
 		const signedUrl = coverUploadSignedUrlResult?.result?.signedUrl;
@@ -186,6 +209,11 @@
 		}
 		if (!category.value) {
 			useToast(t("validation.required.category"), "error");
+			return;
+		}
+
+		if (!props.files || props.files.length === 0) {
+			useToast(t("toast.upload_file_not_found"), "error");
 			return;
 		}
 
@@ -291,6 +319,10 @@
 	 * 组件加载后等待三秒开始上传视频文件
 	 */
 	onMounted(() => setTimeout(() => {
+		if (!props.files || props.files.length === 0) {
+			useToast(t("toast.upload_file_not_found"), "error");
+			return;
+		}
 		tusUpload(props.files);
 	}, 3000));
 
