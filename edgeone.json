@@ -1,9 +1,9 @@
 {
-	"nodeVersion": "22.17.1",
+	"nodeVersion": "24.5.0",
 	"redirects": [
 		{
-			"source": "$host",
-			"destination": "$wwwhost",
+			"source": "$wwwhost",
+			"destination": "$host",
 			"statusCode": 301
 		}
 	]
