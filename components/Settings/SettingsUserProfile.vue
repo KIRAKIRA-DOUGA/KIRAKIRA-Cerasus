@@ -2,11 +2,52 @@
 	将用户个人信息编辑封装到一个单独组件。
 </docs>
 
-<script setup lang="ts">
+<script lang="ts">
 	import makeUsername from "pomsky/username.pom";
-
-	// const test = ref("");
 	const validChar = makeUsername();
+
+	export async function validateUsernameAndNickname(username: MaybeRef<string>, nickname: MaybeRef<string>, t: ReturnType<typeof useI18n>["t"]): Promise<boolean> {
+		username = toValue(username);
+		nickname = toValue(nickname);
+
+		if (!username?.length) {
+			useToast(t("validation.required.username"), "error");
+			return false;
+		}
+
+		if (username.length > 200) {
+			useToast(t("validation.too_long.username"), "error");
+			return false;
+		}
+
+		if (!validChar.exec(username)) {
+			useToast(t("validation.invalid_format.username"), "error");
+			return false;
+		}
+
+		if (nickname?.length > 200) {
+			useToast(t("validation.too_long.nickname"), "error");
+			return false;
+		}
+
+		if (!validChar.exec(nickname)) {
+			useToast(t("validation.invalid_format.nickname"), "error");
+			return false;
+		}
+
+		const checkUsernameRequest: CheckUsernameRequestDto = { username };
+		const checkUsernameResult = await api.user.checkUsername(checkUsernameRequest);
+
+		if (!checkUsernameResult.success || !checkUsernameResult.isAvailableUsername) {
+			useToast(t("validation.username_invalid_or_taken"), "warning", 5000);
+			return false;
+		}
+
+		return true;
+	}
+</script>
+
+<script setup lang="ts">
 	const profile = defineModel<{
 		name: string;
 		nickname: string;
@@ -16,7 +57,9 @@
 		birthday: Temporal.PlainDate;
 		tags: string[];
 	}>({ required: true });
+
 	const nameTextBox = ref<InstanceType<typeof TextBox>>();
+
 	watch(() => profile.value.name, () => {
 		profile.value.nameValid = nameTextBox.value?.isInvalid() === false; // 在值为 true 和 undefined 的情况下返回 false。
 	}, { immediate: true });
@@ -88,7 +131,7 @@
 	<div class="gender">
 		<div class="gender-subtitle">
 			<Icon name="tag" class="icon" />
-			<span class="text">{{ $t("tag", profile.tags.length) }}</span>
+			<span class="text">{{ $t("tag.title", profile.tags.length) }}</span>
 		</div>
 		<!-- TODO: 需要改成和投稿页面一致的 TAG 创建逻辑 -->
 		<TagsEditor v-model="profile.tags" />

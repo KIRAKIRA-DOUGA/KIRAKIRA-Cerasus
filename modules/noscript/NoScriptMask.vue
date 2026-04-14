@@ -45,7 +45,7 @@
 		position: fixed;
 		top: 0;
 		left: 0;
-		z-index: 100;
+		z-index: $z-noscript;
 		background-color: c(white, 50%);
 		backdrop-filter: blur(5px);
 	}

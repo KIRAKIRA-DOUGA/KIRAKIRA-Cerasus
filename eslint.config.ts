@@ -358,7 +358,7 @@ export default defineConfig(
 			"vue/component-definition-name-casing": ["error", "PascalCase"],
 			"vue/no-multi-spaces": "error",
 			"vue/no-spaces-around-equal-signs-in-attribute": "error",
-			"vue/prop-name-casing": ["error", "camelCase"],
+			"vue/prop-name-casing": ["error", "camelCase", { "ignoreProps": [String(/^_[a-z]+$/iu)] }],
 			"vue/v-slot-style": "error",
 			"vue/html-closing-bracket-spacing": "error",
 			"vue/html-closing-bracket-newline": ["error", {

@@ -87,8 +87,8 @@
 						<div class="icons">
 							<Icon v-if="gender === 'male' " name="male" class="male" />
 							<Icon v-else-if="gender === 'female'" name="female" class="female" />
-							<Icon v-if="roles?.includes('administrator')" v-tooltip="$t('role.administrator')" name="build_circle" class="administrator" />
-							<Icon v-if="roles?.includes('developer')" v-tooltip="$t('role.developer')" name="code_circle" class="developer" />
+							<Icon v-if="roles?.includes('administrator')" v-tooltip:bottom="$t('role.administrator')" name="build_circle" class="administrator" />
+							<Icon v-if="roles?.includes('developer')" v-tooltip:bottom="$t('role.developer')" name="code_circle" class="developer" />
 							<slot name="icons"></slot>
 						</div>
 					</div>

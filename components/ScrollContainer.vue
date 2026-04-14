@@ -373,7 +373,7 @@
 		$mouse-size: 12px;
 		$mouse-size-dragging: 16px;
 		position: absolute;
-		z-index: 29;
+		z-index: $z-sidebar - 1;
 		opacity: 0;
 		visibility: hidden;
 		cursor: default;

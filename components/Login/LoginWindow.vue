@@ -3,7 +3,9 @@
 </docs>
 
 <script setup lang="ts">
+	import { validateUsernameAndNickname } from "components/Settings/SettingsUserProfile.vue";
 	import makeUsername from "pomsky/username.pom";
+
 	const props = defineProps<{
 		/** 已打开，单向绑定使用。 */
 		open?: boolean;
@@ -270,30 +272,13 @@
 	 * 用户注册，其一。
 	 */
 	async function checkUsernameAndJumpNextPage() {
-		if (!username.value && username.value.length <= 0) {
-			useToast(t("validation.required.username"), "error");
-			return;
-		}
-
-		if (username.value.length > 200) {
-			useToast(t("validation.too_long.username"), "error");
-			return;
-		}
-
-		if (nickname.value?.length > 200) {
-			useToast(t("validation.too_long.nickname"), "error");
-			return;
-		}
 		isCheckingUsername.value = true;
-		const checkUsernameRequest: CheckUsernameRequestDto = {
-			username: username.value,
-		};
-		const checkUsernameResult = await api.user.checkUsername(checkUsernameRequest);
-		if (checkUsernameResult.success && checkUsernameResult.isAvailableUsername)
-			currentPage.value = "register2";
-		else
-			useToast(t("validation.username_invalid_or_taken"), "warning", 5000);
-		isCheckingUsername.value = false;
+		try {
+			if (await validateUsernameAndNickname(username, nickname, t))
+				currentPage.value = "register2";
+		} finally {
+			isCheckingUsername.value = false;
+		}
 	}
 
 	const PASSWORD_HINT_DO_NOT_ALLOW_INCLUDES_PASSWORD = t("validation.invalid_format.password_hint_include_password");

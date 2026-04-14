@@ -1,0 +1,33 @@
+// # `z-index` 全局占用声明
+// 在此处注册需 `position: absolute;` 或 `position: fixed;` 在全局范围内依照指定的高度显示的元素。
+
+/// 背景动画层、公共区域
+$z-base: 0;
+/// 设置导航栏
+$z-settings-nav: 0;
+/// 边角底纹图标
+$z-shading-icon: 10;
+/// 播放器控制栏
+$z-player-controller: 10;
+/// 侧边栏
+$z-sidebar: 30;
+/// 全屏内容
+$z-fullscreen: 32;
+/// 浮出层默认高度
+$z-flyout: 35;
+/// 登录窗
+$z-login-window: 40;
+/// 浮动窗：警告框、模态框
+$z-alert: 50;
+/// 消息框
+$z-toast: 60;
+/// 上下文菜单
+$z-context-menu: 70;
+/// 播放器浮出菜单：音量控制、速度控制
+$z-player-menu: 75;
+/// 工具提示
+$z-tooltip: 80;
+/// JavaScript 被禁用警告
+$z-noscript: 100;
+/// 浅色主题 过渡视图 (∞)
+$z-topmost: calc(infinity);

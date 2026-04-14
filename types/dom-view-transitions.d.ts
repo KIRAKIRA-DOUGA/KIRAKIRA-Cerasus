@@ -14,5 +14,6 @@ declare global {
 
 	interface CSSStyleDeclaration {
 		viewTransitionName: string;
+		[x: string]: string | undefined;
 	}
 }

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-	import NumberFlow from "@number-flow/vue";
-
 	const props = defineProps<{
 		/** 视频 ID。 */
 		videoId: number;
@@ -55,13 +53,13 @@
 					<Transition :name="showSettings ? 'page-jump-out' : 'page-jump-in'" mode="out-in">
 						<TabBar v-if="showTabBar && !showSettings" v-model="selectedTab" @movingForTransition="name => transitionName = name">
 							<TabItem id="danmaku-list">{{ $t("danmaku.title", 2) }}</TabItem>
-							<TabItem id="chapters">分段章节</TabItem>
-							<TabItem id="playlist">播放列表</TabItem>
+							<TabItem id="chapters">{{ $t("player.chapter.title", 2) }}</TabItem>
+							<TabItem id="playlist">{{ $t("player.playlist.title", 2) }}</TabItem>
 						</TabBar>
 						<TabBar v-else-if="showSettings" v-model="selectedSettingsTab" @movingForTransition="name => transitionName = name">
 							<TabItem id="player">{{ $t("player.title") }}</TabItem>
 							<TabItem id="filters">{{ $t("player.filter.title") }}</TabItem>
-							<TabItem id="block-words">屏蔽词</TabItem>
+							<TabItem id="block-words">{{ $t("player.block_words") }}</TabItem>
 						</TabBar>
 					</Transition>
 				</div>

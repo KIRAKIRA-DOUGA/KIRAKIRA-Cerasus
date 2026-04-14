@@ -88,7 +88,7 @@
 	<DefineAvatar>
 		<UserAvatar
 			v-if="selfUserInfoStore.isEffectiveCheckOnce"
-			v-tooltip="selfUserInfoStore.isLogined ? selfUserInfoStore.userInfo.userNickname : $t('login')"
+			v-tooltip:right="selfUserInfoStore.isLogined ? selfUserInfoStore.userInfo.userNickname : $t('login')"
 			:avatar="selfUserInfoStore.isLogined && !selfUserInfoStore.tempHideAvatarFromSidebar ? selfUserInfoStore.userInfo.avatar : undefined"
 			hoverable
 		/>
@@ -107,12 +107,12 @@
 		aria-orientation="vertical"
 	>
 		<div class="top icons">
-			<SoftButton v-tooltip="$t('home')" icon="home" href="/" />
-			<SoftButton v-tooltip="$t('search')" icon="search" href="/search" />
-			<SoftButton v-tooltip="$t('history')" icon="history" href="/history" />
-			<SoftButton v-tooltip="$t('collection.title', 2)" icon="star" href="/collections" />
-			<SoftButton v-tooltip="$t('feed.following')" icon="feed" href="/feed/following" />
-			<SoftButton v-tooltip="$t('upload.title')" icon="upload" href="/upload" />
+			<SoftButton v-tooltip:right="$t('home')" icon="home" href="/" />
+			<SoftButton v-tooltip:right="$t('search')" icon="search" href="/search" />
+			<SoftButton v-tooltip:right="$t('history')" icon="history" href="/history" />
+			<SoftButton v-tooltip:right="$t('collection.title', 2)" icon="star" href="/collections" />
+			<SoftButton v-tooltip:right="$t('feed.following')" icon="feed" href="/feed/following" />
+			<SoftButton v-tooltip:right="$t('upload.title')" icon="upload" href="/upload" />
 		</div>
 
 		<div class="center">
@@ -123,9 +123,12 @@
 			<div class="stripes">
 				<div v-for="i in 2" :key="i" class="stripe"></div>
 			</div>
+			<LocaleLink to="/" class="logo-text-wrapper lite pc">
+				<LogoText />
+			</LocaleLink>
 			<Transition mode="out-in">
-				<p v-if="props.overrideLogoText" class="logo-text">{{ props.overrideLogoText }}</p>
-				<LocaleLink v-else to="/" class="logo-text-wrapper lite">
+				<p v-if="props.overrideLogoText" class="logo-text pe">{{ props.overrideLogoText }}</p>
+				<LocaleLink v-else to="/" class="logo-text-wrapper lite pe">
 					<LogoText />
 				</LocaleLink>
 			</Transition>
@@ -135,13 +138,13 @@
 			<Avatar class="pc" @click="onClickUser" />
 			<SoftButton
 				v-if="selfUserInfoStore.isLogined"
-				v-tooltip="$t('notification', 2)"
+				v-tooltip:right="$t('notification', 2)"
 				icon="notifications"
 				:active="!!flyoutNotifications"
 				@click="e => flyoutNotifications = [e]"
 			/>
 			<SoftButton
-				v-tooltip="$t('settings.title')"
+				v-tooltip:right="$t('settings.title')"
 				class="pc icon-settings"
 				icon="settings"
 				href="/settings"
@@ -174,7 +177,7 @@
 	aside {
 		@include flex-center;
 		--color: #{c(accent)};
-		z-index: 30;
+		z-index: $z-sidebar;
 		flex-direction: column;
 		justify-content: space-between;
 		padding: $icons-gap 0;
@@ -333,7 +336,7 @@
 
 		@include not-mobile {
 			.pe {
-				display: none;
+				display: none !important;
 			}
 		}
 
@@ -342,7 +345,7 @@
 
 			.top,
 			.pc {
-				display: none;
+				display: none !important;
 			}
 
 			> * {
@@ -480,7 +483,7 @@
 
 	nav {
 		@include sidebar-shadow;
-		z-index: 30;
+		z-index: $z-sidebar;
 		padding: $icons-gap 0;
 		overflow: clip;
 		background-color: c(main-bg, 75%);

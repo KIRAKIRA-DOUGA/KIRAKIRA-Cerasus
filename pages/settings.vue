@@ -1,11 +1,15 @@
 <script setup lang="ts">
 	const { t } = useI18n();
 	definePageMeta({
-		hideAppBar: true,
-		hideBottomNav: true,
 		pageTransition: {
 			name: "settings",
 			mode: "out-in",
+		},
+		layout: {
+			props: {
+				hideAppBar: true,
+				hideBottomNav: true,
+			},
 		},
 	});
 
@@ -255,7 +259,7 @@
 		position: absolute;
 		top: 0;
 		left: 0;
-		z-index: 5;
+		z-index: $z-settings-nav;
 		width: $nav-width;
 		height: 100%;
 		margin-left: var(--side-width);
@@ -264,7 +268,7 @@
 			@include system-card;
 			@include acrylic-background;
 			position: fixed;
-			z-index: 30;
+			z-index: $z-sidebar;
 			transition-duration: $show-drawer-duration;
 
 			&:not(.show) {
@@ -337,7 +341,7 @@
 	.card {
 		@include square(100%);
 		position: absolute;
-		z-index: 5;
+		z-index: $z-settings-nav;
 		pointer-events: none;
 
 		@include computer {
@@ -439,7 +443,7 @@
 	.title {
 		position: sticky;
 		top: 0;
-		z-index: 11;
+		z-index: $z-shading-icon + 1;
 		padding-top: $title-padding-top;
 
 		&.nav-header,
@@ -449,10 +453,10 @@
 	}
 
 	.nav-header {
-		margin-inline: (-$nav-padding-x);
 		margin-bottom: -10px;
-		padding-inline: $nav-padding-x;
+		margin-inline: (-$nav-padding-x);
 		padding-bottom: 10px;
+		padding-inline: $nav-padding-x;
 		background-color: c(gray-5, 80%);
 
 		h1 {
@@ -472,10 +476,10 @@
 		background-color: c(main-bg, 80%);
 
 		@include not-mobile {
-			margin-inline: (-$main-padding-x);
 			margin-bottom: -0.5rem;
-			padding-inline: $main-padding-x;
+			margin-inline: (-$main-padding-x);
 			padding-bottom: 0.5rem;
+			padding-inline: $main-padding-x;
 		}
 
 		@include mobile {
@@ -526,7 +530,7 @@
 
 	.mask {
 		@include fullscreen(fixed);
-		z-index: 4;
+		z-index: $z-settings-nav - 1;
 		background-color: c(main-bg, 50%);
 		transition-duration: $show-drawer-duration;
 
@@ -605,12 +609,12 @@
 			position: sticky;
 			right: 0;
 			bottom: 0;
-			z-index: 4;
+			z-index: $z-settings-nav - 1;
 			display: flex;
 			gap: 8px;
 			justify-content: end;
-			margin-inline: (-$main-padding-x);
 			margin-bottom: (-$main-padding-x);
+			margin-inline: (-$main-padding-x);
 			padding: calc($submit-margin-y / 2) $main-padding-x $submit-margin-y;
 			background-color: c(main-bg, 80%);
 			backdrop-filter: $backdrop-filter;

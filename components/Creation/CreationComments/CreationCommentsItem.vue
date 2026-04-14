@@ -1,6 +1,4 @@
 <script setup lang="ts">
-	import NumberFlow from "@number-flow/vue";
-
 	const props = withDefaults(defineProps<{
 		/** 评论唯一 ID */
 		commentId: string;

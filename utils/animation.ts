@@ -311,7 +311,7 @@ export function stopTransition({ includesViewTransitions = false }: {
 			transition: none !important;
 		}
 
-		/* Chromium 不爱将 webkit 和 moz 写在一起（写一起的话就 Chromium 异常，Firefox 不会）。 */
+		/* 不能 webkit 和 moz 写在一起，因为它们互不认识对方。 */
 		::-moz-progress-bar {
 			-moz-transition: none !important;
 			transition: none !important;
@@ -338,7 +338,7 @@ export function stopTransition({ includesViewTransitions = false }: {
 }
 
 type ColorViewTransitionAnimationOption = Override<KeyframeAnimationOptions, {
-	pseudoElement?: "::view-transition-new(root)" | "::view-transition-old(root)" | (string & {}) | null;
+	pseudoElement?: "::view-transition-new(root)" | "::view-transition-old(root)" | string & {} | null;
 }>;
 
 interface ColorViewTransitionAnimationFallbackDefaultOption extends ColorViewTransitionAnimationOption {
@@ -346,6 +346,11 @@ interface ColorViewTransitionAnimationFallbackDefaultOption extends ColorViewTra
 	cursor?: Cursor;
 	/** 在整个过渡期间，附加其它静态 CSS 样式。 */
 	staticStyle?: string;
+	/**
+	 * 字符串数组。这些字符串充当转换的类名或标识符，允许您根据发生的转换类型选择性地应用 CSS 样式或运行不同的 JavaScript 逻辑。
+	 * @default ["instant"]
+	 */
+	types?: string | string[];
 }
 
 /**
@@ -355,22 +360,27 @@ interface ColorViewTransitionAnimationFallbackDefaultOption extends ColorViewTra
  * @param defaultOptions - 缺省设定各动画选项。你还可以设置过渡时的光标指针。
  * @returns 在动画播放完成之后可执行析构函数。
  */
-export async function startColorViewTransition(changeFunc: () => MaybePromise<void | unknown>, animations: [keyframes: Keyframe[] | PropertyIndexedKeyframes, options?: ColorViewTransitionAnimationOption][], defaultOptions: ColorViewTransitionAnimationFallbackDefaultOption = {}) {
+export async function startColorViewTransition(changeFunc: () => MaybePromise<void | unknown>, animations: [keyframes: Keyframe[] | PropertyIndexedKeyframes, options?: ColorViewTransitionAnimationOption][], { cursor, staticStyle, types, evaluateContrastPalette = false, ...defaultOptions }: ColorViewTransitionAnimationFallbackDefaultOption = {}) {
 	if (!document.startViewTransition) {
 		await changeFunc();
 		return;
 	}
 
+	const INSTANT_TYPE = "instant";
 	defaultOptions.duration ??= 300;
 	defaultOptions.easing ??= eases.easeInOutSmooth;
 	defaultOptions.pseudoElement ??= "::view-transition-new(root)";
+	types = types ? wrapIfNotArray(types) : [INSTANT_TYPE];
 
 	const restoreTransitions = stopTransition({ includesViewTransitions: true });
-	const removeStyle = defaultOptions.staticStyle ? addStyle(defaultOptions.staticStyle) : undefined;
+	const removeStyle = staticStyle ? addStyle(staticStyle) : undefined;
 
 	try {
-		if (defaultOptions.cursor) forceCursor(defaultOptions.cursor);
-		const transition = document.startViewTransition(changeFunc);
+		if (cursor) forceCursor(cursor);
+		const transition = document.startViewTransition({
+			update: changeFunc,
+			types,
+		});
 		await transition.ready;
 
 		await Promise.all(animations.map(async ([keyframes, options]) => {
@@ -380,7 +390,7 @@ export async function startColorViewTransition(changeFunc: () => MaybePromise<vo
 	} finally {
 		restoreTransitions();
 		removeStyle?.();
-		if (defaultOptions.cursor) forceCursor(null);
+		if (cursor) forceCursor(null);
 	}
 }
 

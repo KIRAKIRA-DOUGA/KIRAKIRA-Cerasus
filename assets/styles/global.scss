@@ -128,14 +128,14 @@ time {
 
 iframe.noscript-mask {
 	@include fullscreen;
-	z-index: 100;
+	z-index: $z-noscript;
 	border: none;
 
 	+ form {
 		position: fixed;
 		right: 32px;
 		bottom: 32px;
-		z-index: 101;
+		z-index: $z-noscript + 1;
 		animation: noscript-refresh-enter 500ms 1s $ease-out-smooth both;
 
 		button {
@@ -304,7 +304,7 @@ img.jipt-loader-logo {
 		position: fixed;
 		top: 0;
 		left: 0;
-		z-index: 35;
+		z-index: $z-flyout;
 	}
 }
 
@@ -350,10 +350,14 @@ html[style*="--cursor"] {
 // #endregion
 
 // #region 主题过渡
-::view-transition-old(root),
-::view-transition-new(root) {
-	mix-blend-mode: normal;
-	animation: none;
+:active-view-transition-type(instant) {
+	@layer base {
+		&::view-transition-old(root),
+		&::view-transition-new(root) {
+			mix-blend-mode: normal;
+			animation-name: none;
+		}
+	}
 }
 // #endregion
 

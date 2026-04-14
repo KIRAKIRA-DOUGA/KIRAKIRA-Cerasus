@@ -20,6 +20,6 @@ export function loadDevGlobal() {
 				document.head.querySelector(`style[data-vite-dev-id*="${component}" i]`);
 		};
 
-		global.Temporal = Temporal;
+		global.Temporal ??= Temporal;
 	}
 }

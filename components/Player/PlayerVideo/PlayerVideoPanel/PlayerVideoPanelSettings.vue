@@ -150,7 +150,7 @@
 
 	:comp {
 		position: relative;
-		z-index: 11;
+		z-index: $z-player-controller + 1;
 		flex-grow: 1;
 		height: 100%;
 		contain: strict;

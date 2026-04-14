@@ -4,20 +4,22 @@
 	const { t } = useI18n();
 	useHead({ title: t("search") });
 	definePageMeta({
-		hideAppBar: true,
-		flatAppBar: true,
+		layout: {
+			props: {
+				hideAppBar: true,
+				flatAppBar: true,
+			},
+		},
 	});
 	const router = useRouter(), route = useRoute();
 
 	const windowSize = useWindowSize();
 	const isMobileWidth = computed(() => windowSize.width.value <= numbers.tabletMaxWidth);
 
-	const showResult = ref(false);
-	const loading = ref(false);
-	const error = ref(false);
 	const view = ref<ViewType>("grid");
 	const displayPageCount = ref(6);
-	const videos = ref<SearchVideoByKeywordResponseDto | ThumbVideoResponseDto>();
+	type VideoItem = SearchVideoByKeywordResponseDto | ThumbVideoResponseDto;
+	const videos = ref<VideoItem>(), _videos = ref<VideoItem>();
 	const searchModes = ["keyword", "tag", "user", "advanced_search"] as const;
 	const querySearchMode = route.query.mode as typeof searchModes[number] ?? "keyword";
 	const searchMode = ref<typeof searchModes[number]>(querySearchMode);
@@ -31,7 +33,7 @@
 	const flyoutTag = ref<FlyoutModel>(); // 绑定到 FlyoutTag 上的参数，当 target 不为空时会显示 Flyout
 	const tags = reactive<Map<VideoTag["tagId"], VideoTag>>(new Map()); // 视频标签
 	const displayTags = computed<DisplayVideoTag[]>(() => [...tags.values()].map(tagName => getDisplayVideoTagWithCurrentLanguage(currentLanguage.value, tagName))); // 用于显示的 TAG，相较于上方的 tags 数据结构更简单。
-	const contextualToolbar = ref<FlyoutModel>(); // TAG 的工具烂浮窗
+	const contextualToolbar = ref<FlyoutModel>(); // TAG 的工具栏浮窗
 	const hoveredTagContent = ref<[number, string]>(); // 鼠标 hover 的 TAG
 	const hideExceptMe = ref(false);
 	const hideTimeoutId = ref<Timeout>();
@@ -45,21 +47,22 @@
 		pages: 99,
 	});
 
+	const { start: startLoading, finish: endLoading, isLoading, error: isError } = useLoadingIndicator();
+
 	/**
 	 * 通过关键字搜索视频，并赋值给 video
 	 * @param keyword - 关键字
 	 */
 	async function searchVideoByKeyword(keyword: string) {
 		const searchVideoByKeywordRequest: SearchVideoByKeywordRequestDto = { keyword };
-		loading.value = true;
-		error.value = false;
+		startLoading({ force: true });
 		const videoResult = await api.video.searchVideoByKeyword(searchVideoByKeywordRequest);
-		loading.value = false;
 		if (videoResult && videoResult.success) {
 			videos.value = videoResult;
 			settings.pages = Math.max(1, Math.ceil(videoResult.videosCount / 50));
+			endLoading({ force: true });
 		} else
-			error.value = true;
+			endLoading({ force: true, error: true });
 	}
 
 	/**
@@ -68,15 +71,14 @@
 	 */
 	async function searchVideoByTagIds(tagIds: number[]) {
 		const searchVideoByVideoTagIdRequest: SearchVideoByVideoTagIdRequestDto = { tagId: tagIds };
-		loading.value = true;
-		error.value = false;
+		startLoading({ force: true });
 		const videoResult = await api.video.searchVideoByTagIds(searchVideoByVideoTagIdRequest);
-		loading.value = false;
 		if (videoResult && videoResult.success) {
 			videos.value = videoResult;
 			settings.pages = Math.max(1, Math.ceil(videoResult.videosCount / 50));
+			endLoading({ force: true });
 		} else
-			error.value = true;
+			endLoading({ force: true, error: true });
 	}
 
 	/**
@@ -151,8 +153,8 @@
 					else
 						clearUrlQuery();
 					await searchVideoByKeyword(keyword);
-					showResult.value = true;
-				}
+				} else
+					backToBigSearchLayout();
 				break;
 			}
 			case "tag": {
@@ -166,8 +168,8 @@
 					else
 						clearUrlQuery();
 					await searchVideoByTagIds(tagIdList);
-					showResult.value = true;
-				}
+				} else
+					backToBigSearchLayout();
 				break;
 			}
 			case "user":
@@ -182,6 +184,17 @@
 		}
 	}
 
+	const switchingLayout = ref(false);
+	watch(videos, (videos, prevVideos) => {
+		switchingLayout.value = !videos !== !prevVideos;
+		document.startViewTransition(async () => {
+			_videos.value = videos;
+			await nextTick();
+		}).finished.then(() => {
+			switchingLayout.value = false;
+		});
+	});
+
 	/**
 	 * 搜索模式改变时的处理函数
 	 * @param mode - 搜索模式
@@ -189,7 +202,7 @@
 	function handleSearchModeChange(mode: typeof searchModes[number]) {
 		switch (mode) {
 			case "keyword":
-				keywordQueryString.value = "";
+				// keywordQueryString.value = "";
 				searchMode.value = mode;
 				if (appSettingsStore.search.isDynamicUrl)
 					router.push({ path: route.path, query: { mode } });
@@ -197,7 +210,7 @@
 					clearUrlQuery();
 				break;
 			case "tag":
-				tags.clear();
+				// tags.clear();
 				searchMode.value = mode;
 				if (appSettingsStore.search.isDynamicUrl)
 					router.push({ path: route.path, query: { mode } });
@@ -212,6 +225,11 @@
 			default:
 				break;
 		}
+	}
+
+	function backToBigSearchLayout() {
+		clearUrlQuery();
+		videos.value = undefined;
 	}
 
 	/**
@@ -299,7 +317,7 @@
 </script>
 
 <template>
-	<div>
+	<div :class="switchingLayout && 'switching-layout'">
 		<DefineSearchForm>
 			<div class="search-form">
 				<div class="tags">
@@ -352,83 +370,83 @@
 
 		<ShadingIcon icon="search" position="right top" />
 
-		<Transition name="page-jump-in" mode="out-in">
-			<!-- 大搜索页 -->
-			<div v-if="!showResult" class="search-home-page">
-				<div class="content">
-					<div class="logo">
-						<LogoText />
-						<div class="title">
-							<span class="line"></span>
-							<h2>Search</h2>
-							<span class="line"></span>
-						</div>
+		<!-- 大搜索页 -->
+		<div v-if="!_videos" class="search-home-page">
+			<div class="content">
+				<div class="logo">
+					<LogoText />
+					<div class="title">
+						<span class="line"></span>
+						<h2>Search</h2>
+						<span class="line"></span>
 					</div>
-					<SearchForm />
 				</div>
+				<SearchForm />
 			</div>
+		</div>
 
-			<!-- 结果页 -->
-			<div v-else class="search-result-page">
-				<header>
-					<SearchForm />
-					<div class="toolbar">
-						<div class="left">
-							<ViewSwitch v-model="view" />
-							<Button icon="sort" @click="e => flyoutSort = [e, 'y']">{{ $t("sort.by") }}</Button>
-							<SoftButton icon="slider_3" @click="e => flyoutSort = [e, 'y']" />
-							<Flyout v-model="flyoutSort">
-								<div class="flyout-sort">
-									<template v-if="isMobileWidth">
-										<section>
-											<Subheader icon="grid">{{ $t("view.title") }}</Subheader>
-											<ViewSwitch v-model="view" />
-										</section>
-									</template>
+		<!-- 结果页 -->
+		<div v-else class="search-result-page">
+			<header>
+				<SearchForm />
+				<div class="toolbar">
+					<div class="left">
+						<ViewSwitch v-model="view" />
+						<Button icon="sort" @click="e => flyoutSort = [e, 'y']">{{ $t("sort.by") }}</Button>
+						<SoftButton icon="slider_3" @click="e => flyoutSort = [e, 'y']" />
+						<Flyout v-model="flyoutSort">
+							<div class="flyout-sort">
+								<template v-if="isMobileWidth">
 									<section>
-										<Subheader v-if="isMobileWidth" icon="sort">{{ $t("sort.by") }}</Subheader>
-										<Sort v-model="settings.sort">
-											<SortItem id="upload_date" preferOrder="descending">{{ $t("upload_date") }}</SortItem>
-											<SortItem id="view" preferOrder="descending">{{ $t("sort.view") }}</SortItem>
-											<SortItem id="danmaku" preferOrder="descending">{{ $t("sort.danmaku") }}</SortItem>
-											<SortItem id="comment" preferOrder="descending">{{ $t("sort.comment") }}</SortItem>
-											<SortItem id="save" preferOrder="descending">{{ $t("sort.save") }}</SortItem>
-											<SortItem id="duration" preferOrder="descending">{{ $t("duration") }}</SortItem>
-											<SortItem id="rating">{{ $t("rating") }}</SortItem>
-										</Sort>
+										<Subheader icon="grid">{{ $t("view.title") }}</Subheader>
+										<ViewSwitch v-model="view" />
 									</section>
-								</div>
-							</Flyout>
-						</div>
-						<Pagination v-model="settings.page" :pages="settings.pages" :displayPageCount enableArrowKeyMove />
+								</template>
+								<section>
+									<Subheader v-if="isMobileWidth" icon="sort">{{ $t("sort.by") }}</Subheader>
+									<Sort v-model="settings.sort">
+										<SortItem id="upload_date" preferOrder="descending">{{ $t("upload_date") }}</SortItem>
+										<SortItem id="view" preferOrder="descending">{{ $t("sort.view") }}</SortItem>
+										<SortItem id="danmaku" preferOrder="descending">{{ $t("sort.danmaku") }}</SortItem>
+										<SortItem id="comment" preferOrder="descending">{{ $t("sort.comment") }}</SortItem>
+										<SortItem id="save" preferOrder="descending">{{ $t("sort.save") }}</SortItem>
+										<SortItem id="duration" preferOrder="descending">{{ $t("duration") }}</SortItem>
+										<SortItem id="rating">{{ $t("rating") }}</SortItem>
+									</Sort>
+								</section>
+							</div>
+						</Flyout>
 					</div>
-				</header>
-				<div class="videos-container" :class="{ loading }">
-					<div v-if="loading" class="loading-indicator">
-						<ProgressRing />
-					</div>
-					<ContentUnavailable v-if="!loading && (!videos || videos.videosCount === 0)" type="search" />
-					<ContentUnavailable v-else-if="error" type="error" />
-					<ThumbGrid :view :inert="loading">
-						<ThumbVideo
-							v-for="video in videos?.videos"
-							:key="video.videoId"
-							:videoId="video.videoId"
-							:uploader="video.uploader ?? ''"
-							:uploaderId="video.uploaderId"
-							:image="video.image"
-							:date="new Date(video.uploadDate || 0)"
-							:watchedCount="video.watchedCount"
-							:duration="new Duration(0, video.duration ?? 0)"
-						>{{ video.title }}</ThumbVideo>
-					</ThumbGrid>
+					<Pagination v-model="settings.page" :pages="settings.pages" :displayPageCount enableArrowKeyMove />
 				</div>
+			</header>
+			<div class="videos-container" :class="{ loading: isLoading }">
+				<div v-if="isLoading" class="loading-indicator">
+					<ProgressRing />
+				</div>
+				<ContentUnavailable v-if="!isLoading && (!_videos || _videos.videosCount === 0)" type="search" />
+				<ContentUnavailable v-else-if="isError" type="error" />
+				<ThumbGrid :view :inert="isLoading">
+					<ThumbVideo
+						v-for="video in _videos?.videos"
+						:key="video.videoId"
+						:videoId="video.videoId"
+						:uploader="video.uploader ?? ''"
+						:uploaderId="video.uploaderId"
+						:image="video.image"
+						:date="new Date(video.uploadDate || 0)"
+						:watchedCount="video.watchedCount"
+						:duration="new Duration(0, video.duration ?? 0)"
+					>{{ video.title }}</ThumbVideo>
+				</ThumbGrid>
 			</div>
-		</Transition>
+		</div>
 	</div>
 </template>
 
 <style scoped lang="scss">
+	$transition-duration: 500ms;
+
 	.search-home-page {
 		@include flex-center;
 		@include page-padding-x;
@@ -444,6 +462,7 @@
 			.logo {
 				@include flex-center;
 				flex-direction: column;
+				view-transition-name: search-logo;
 
 				.logo-text {
 					--form: visible;
@@ -477,12 +496,17 @@
 		}
 	}
 
+	.switching-layout * {
+		view-transition-class: switching-layout;
+	}
+
 	.search-form {
 		display: flex;
 		flex-direction: column;
 		gap: 16px;
 		width: 100%;
 		max-width: 560px;
+		view-transition-name: search-form;
 
 		.text-box {
 			--size: large;
@@ -506,15 +530,22 @@
 			gap: 16px;
 			padding-block: 16px;
 			background-color: c(surface-color);
+			view-transition-name: search-header;
+
+			.toolbar {
+				view-transition-name: search-toolbar;
+			}
 		}
 
 		.videos-container {
 			@include page-padding-x;
 			position: relative;
 			padding-block: 16px;
+			view-transition-name: search-videos-container;
 
 			&.loading .thumb-grid {
-				opacity: 0;
+				opacity: 0.25;
+				filter: blur(2px);
 			}
 		}
 
@@ -526,6 +557,16 @@
 			display: flex;
 			justify-content: center;
 			padding-block: 48px;
+		}
+	}
+
+	.thumb-video:not(.switching-layout *),
+	.content-unavailable:not(.switching-layout *) {
+		view-transition-name: match-element;
+		view-transition-class: search-thumb-video;
+
+		&.content-unavailable {
+			view-transition-name: content-unavailable;
 		}
 	}
 
@@ -618,5 +659,97 @@
 			flex-direction: column;
 			gap: 8px;
 		}
+	}
+
+	:global(::view-transition-group(search-form)) {
+		z-index: 1;
+		animation-duration: $transition-duration;
+		animation-timing-function: $ease-in-out-material-emphasized;
+	}
+
+	:global(::view-transition-group(.search-thumb-video)) {
+		animation-duration: $transition-duration;
+		animation-timing-function: $ease-in-out-material-emphasized;
+	}
+
+	@mixin enter-from($name, $is-class: false) {
+		$animation-options: $transition-duration $ease-out-material-emphasized both;
+
+		@if not $is-class {
+			:global(::view-transition-old(#{$name}.switching-layout)) {
+				animation: #{$name}-out $animation-options;
+			}
+
+			:global(::view-transition-new(#{$name}.switching-layout)) {
+				animation: #{$name}-in $animation-options;
+			}
+		} @else {
+			:global(::view-transition-old(.#{$name})) {
+				animation: #{$name}-out $animation-options;
+			}
+
+			:global(::view-transition-new(.#{$name})) {
+				animation: #{$name}-in $animation-options;
+			}
+		}
+
+		@keyframes #{$name}-in {
+			from {
+				@content;
+			}
+		}
+
+		@keyframes #{$name}-out {
+			to {
+				@content;
+			}
+		}
+	}
+
+	@include enter-from(search-logo) {
+		translate: 0 -200px;
+		scale: 0.5;
+		opacity: 0;
+		filter: blur(10px);
+	}
+
+	@include enter-from(search-header) {
+		translate: 0 -100%;
+		opacity: 0;
+	}
+
+	@include enter-from(search-toolbar) {
+		translate: 0 -300%;
+		opacity: 0;
+		filter: blur(2px);
+	}
+
+	@keyframes search-toolbar-in-1 {
+		from {
+			translate: 0 -300%;
+		}
+	}
+
+	@keyframes search-toolbar-in-2 {
+		from {
+			opacity: 0;
+			filter: blur(2px);
+		}
+	}
+
+	@include enter-from(search-videos-container) {
+		translate: 0 100lvh;
+	}
+
+	@include enter-from(search-thumb-video, true) {
+		scale: 0.75;
+		opacity: 0;
+		filter: blur(5px);
+	}
+
+	:global(::view-transition-new(search-toolbar.switching-layout)) {
+		animation:
+			search-toolbar-in-1 ($transition-duration * 1.5) $ease-out-material-emphasized both,
+			search-toolbar-in-2 $transition-duration ($transition-duration * 0.5) $ease-out-material-emphasized both;
 	}
 </style>

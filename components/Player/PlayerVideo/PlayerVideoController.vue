@@ -74,23 +74,24 @@
 	const volumeMenu = ref<MenuModel>();
 	const rateMenu = ref<MenuModel>();
 	const qualityMenu = ref<MenuModel>();
-	const tracksSorted = computed(() => props.tracks.sort((a, b) => (b.height || 0) - (a.height || 0)));
+	const tracksSorted = computed(() => props.tracks.toSorted((a, b) => (b.height || 0) - (a.height || 0)));
 	const isDraggingSlider = ref(false);
 	const pendingTime = ref<number>(NaN);
 	const seekingIcon = ref<DeclaredIcons>();
-	const currentTime = computed(() => new Duration(model.value).toString());
-	const countdownTime = computed(() => new Duration(model.value - props.duration).toString());
-	const duration = computed(() => new Duration(props.duration).toString());
+	const currentTime = computed(() => new Duration(model.value));
+	const countdownTime = computed(() => new Duration(model.value - props.duration));
+	const duration = computed(() => new Duration(props.duration));
 	const mobile = () => getResponsiveDevice() === "mobile";
 
 	/**
 	 * 点击速度按钮时，在速度中循环。
+	 * @throws {RangeError} 在 playbackRates 速度列表中未包含原速 1。
 	 */
 	function switchSpeed() {
 		let index = loopedPlaybackRates.indexOf(playbackRate.value);
 		if (index === -1) {
 			index = loopedPlaybackRates.indexOf(1);
-			if (index === -1) throw new Error("在 playbackRates 速度列表中必须包含原速 1。");
+			if (index === -1) throw new RangeError("在 playbackRates 速度列表中必须包含原速 1。");
 		} else index = (index + 1) % loopedPlaybackRates.length;
 		const newRate = loopedPlaybackRates[index];
 		playbackRate.value = newRate;
@@ -351,7 +352,7 @@
 
 	:comp {
 		position: relative;
-		z-index: 10;
+		z-index: $z-player-controller;
 		display: flex;
 		align-items: center;
 		height: $thickness;

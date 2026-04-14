@@ -139,3 +139,20 @@ export function arrayMapObject<T, K extends PropertyKey, U>(array: T[], callback
 export function arrayToRemoveDuplicates<T>(array: T[]) {
 	return [...new Set(array)];
 }
+
+/**
+ * If the passed parameter is not an array, wrap it into an array that only one element,
+ * otherwise return the array parameter itself.\
+ * To ensure that the returned object is always an array.
+ * @template T - Maybe an array, or something else.
+ * @param maybeArray - Maybe an array, or something else.
+ * @returns The original array or an array containing only one original parameter.
+ * @example
+ * ```typescript
+ * wrapIfNotArray(["foo", "bar", "baz"]); // ["foo", "bar", "baz"]
+ * wrapIfNotArray("foo"); // ["foo"]
+ * ```
+ */
+export function wrapIfNotArray<T>(maybeArray: T): T extends Any[] ? T : [T] {
+	return (Array.isArray(maybeArray) ? maybeArray : [maybeArray]) as never;
+}

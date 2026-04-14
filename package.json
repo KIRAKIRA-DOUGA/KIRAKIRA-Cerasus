@@ -145,6 +145,7 @@
 		"temporal-polyfill": "^0.3.2",
 		"tus-js-client": "^4.3.1",
 		"variable-name-conversion": "^1.7.0",
+		"view-transitions-polyfill": "^1.0.6",
 		"vue-audio-visual": "^3.0.11",
 		"vue-cropper": "^1.1.4",
 		"vue-router-better-scroller": "^0.0.0",

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-	import { Contents } from "#components";
-	import { Teleport } from "vue";
-	import type { FlyoutModelNS } from "types/arguments";
 	import { getLocation } from "components/Flyout/Flyout.vue";
 	import { getPosition } from "plugins/vue/tooltip";
+	import type { FlyoutModelNS } from "types/arguments";
+	import { Teleport } from "vue";
+	import { Contents } from "#components";
 
 	const props = defineProps<{
 		/** 是否避免在鼠标移开菜单时降低不透明度？ */
@@ -141,7 +141,7 @@
 		@include acrylic-background;
 		top: 0;
 		left: 0;
-		z-index: 70;
+		z-index: $z-context-menu;
 		width: fit-content;
 		margin: 0;
 		padding: $menu-padding 0;

@@ -17,13 +17,13 @@ declare global {
 	 * 移除只读修饰符。
 	 * @template T - 源对象。
 	 */
-	type Writeable<T> = { -readonly [P in keyof T]: T[P] };
+	type Writable<T> = { -readonly [P in keyof T]: T[P] };
 
 	/**
 	 * 深层移除只读修饰符。
 	 * @template T - 源对象。
 	 */
-	type DeepWriteable<T> = { -readonly [P in keyof T]: DeepWriteable<T[P]> };
+	type DeepWritable<T> = { -readonly [P in keyof T]: DeepWritable<T[P]> };
 
 	/**
 	 * 类型去空。相当于 `!`。

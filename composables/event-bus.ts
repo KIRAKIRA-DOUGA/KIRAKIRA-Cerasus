@@ -11,7 +11,7 @@ type ApplicationEvents = {
 	"component:showTooltip": TooltipEvent;
 	"component:hideTooltip": HTMLElement;
 	"component:updateTooltip": TooltipEvent;
-	"component:refreshTooltip": WeakMap<HTMLElement, { value: VTooltipBindingValue; symbol: symbol }>;
+	"component:refreshTooltip": WeakMap<HTMLElement, { value: VTooltipBindingValue; anchorName: string }>;
 	"component:hideAllPlayerVideoMenu": void;
 	"component:hideAllContextualToolbar": void;
 	"user:login": boolean;

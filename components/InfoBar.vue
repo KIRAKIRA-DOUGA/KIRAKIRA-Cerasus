@@ -52,8 +52,14 @@
 		display: flex;
 		flex-direction: column;
 		gap: 4px;
+		text-align: start;
+
+		&:lang-justify {
+			text-align: justify;
+		}
 
 		:deep(*) {
+			white-space: pre-line;
 			user-select: text;
 		}
 	}

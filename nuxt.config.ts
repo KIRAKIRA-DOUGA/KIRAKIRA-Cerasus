@@ -1,4 +1,4 @@
-// https://v3.nuxtjs.org/api/configuration/nuxt.config
+// https://nuxt.com/docs/5.x/api/nuxt-config
 
 import pomsky from "@pomsky-lang/unplugin";
 import defineAlias from "./helpers/alias";
@@ -7,6 +7,7 @@ import docsLoader from "./plugins/vite/docs";
 import vitePluginScssVariables from "./plugins/vite/scss-variables";
 import scssVariablesLoader from "./plugins/vite/scss-variables-loader";
 import devtoolsJson from "vite-plugin-devtools-json";
+import { autoImportConfig, autoVueComponent } from "./auto-import.config";
 /* import vueNestedSFC from "vite-plugin-vue-nested-sfc"; */
 type OriginalNuxtConfig = Parameters<typeof defineNuxtConfig>[0];
 type BroadNuxtConfig = OriginalNuxtConfig & Record<Exclude<string, keyof OriginalNuxtConfig>, object | string>; // 还敢报错吗？
@@ -46,6 +47,7 @@ export default defineNuxtConfig({
 		"modules/theme/module.ts",
 		"modules/noscript/module.ts",
 		"modules/unsupported-browsers/module.ts",
+		["modules/auto-import-components/module.ts", autoVueComponent],
 		dev && "modules/components-globalized/module.ts",
 		"@nuxtjs/robots",
 		"@nuxtjs/sitemap",
@@ -118,6 +120,7 @@ export default defineNuxtConfig({
 				"tus-js-client",
 				"node-vibrant/worker",
 				"@vercel/analytics/nuxt",
+				"view-transitions-polyfill",
 			],
 			needsInterop: [
 				"mediainfo.js",
@@ -243,7 +246,7 @@ export default defineNuxtConfig({
 	},
 
 	image: {
-		format: ["avif", "webp"], // 只适用于 <NuxtImg>，对 <NuxtImg> 无效。
+		format: ["avif", "webp"], // 只适用于 <NuxtPicture>，对 <NuxtImg> 无效。
 		providers: {
 			cloudflareProd: {
 				name: "cloudflare-prod", // optional value to overrider provider name
@@ -302,6 +305,7 @@ export default defineNuxtConfig({
 			"classes",
 			"stores",
 		],
+		presets: autoImportConfig,
 	},
 
 	postcss: {
@@ -334,8 +338,8 @@ export default defineNuxtConfig({
 			name: "page-jump-in",
 			mode: "out-in",
 		},
-		rootId: "root",
-		teleportId: "popovers",
+		rootAttrs: { id: "root" },
+		teleportAttrs: { id: "popovers" },
 	},
 
 	runtimeConfig: {

@@ -18,7 +18,10 @@ words:
   - danmakus
   - douga
   - Dto
+  - dvh
+  - dvw
   - ente
+  - flyouts
   - fullwidth
   - halfwidth
   - kaomoji
@@ -30,16 +33,20 @@ words:
   - niconico
   - nonclickable
   - numberish
+  - nuxt
   - nuxtjs
   - otomad
   - pinia
   - pixiv
+  - pomsky
   - posterize
   - rechoose
   - rednote
   - repost
   - rtl
+  - sfc
   - tieba
+  - timecode
   - tiptap
   - totp
   - unclickable
@@ -141,3 +148,6 @@ flagWords:
   - whitelist -> allowlist
   - blacklists -> blocklists
   - whitelists -> allowlists
+  - lte -> leq
+  - gte -> geq
+  - grammer -> grammar

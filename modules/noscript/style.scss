@@ -8,6 +8,7 @@
 @use "../../assets/styles/theme/mixins" as *;
 @use "../../assets/styles/theme/effects" as *;
 @use "../../assets/styles/theme/variables" as *;
+@use "../../assets/styles/theme/z-indexes" as *;
 @import "../../assets/styles/global-colors";
 @import "../../assets/styles/elements/hyperlink";
 @import "../../assets/styles/elements/reset";
@@ -50,7 +51,7 @@ html:lang(yue) span:lang(yue) {
 	position: fixed;
 	top: 0;
 	left: 0;
-	z-index: 100;
+	z-index: $z-noscript;
 	background-color: c(white, 50%);
 	-webkit-backdrop-filter: blur(5px);
 	backdrop-filter: blur(5px);

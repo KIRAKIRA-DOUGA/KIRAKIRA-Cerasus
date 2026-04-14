@@ -2,6 +2,8 @@
  * 使用 `v-tooltip`，为元素添加自定义的工具提示。
  */
 
+import { AnchorNameList } from "classes/anchor-name";
+
 type VTooltipBindingValueNoPlain = {
 	title?: string;
 	placement?: Placement;
@@ -12,29 +14,35 @@ export type VTooltipBindingValue = VTooltipBindingValueNoPlain | string | undefi
 
 export type TooltipEvent = VTooltipBindingValueNoPlain & {
 	element: HTMLElement;
-	symbol: symbol;
+	anchorName: string;
 };
+
+const DEFAULT_TOOLTIP_ANCHOR_PREFIX = "--tooltip-anchor-";
 
 export default defineNuxtPlugin(nuxt => {
 	type D = Directive<HTMLElement, VTooltipBindingValue>;
-	const elementBinding = new WeakMap<HTMLElement, { value: VTooltipBindingValueNoPlain; symbol: symbol }>();
+	const elementBinding = new WeakMap<HTMLElement, { value: VTooltipBindingValueNoPlain; anchorName: string }>();
 	const createEvent = (element: HTMLElement) => {
 		const binding = elementBinding.get(element)!;
-		const { value, symbol } = binding;
-		return { ...value, element, symbol } as TooltipEvent;
+		const { value, anchorName } = binding;
+		return { ...value, element, anchorName } as TooltipEvent;
 	};
 	const isPlacement = (arg?: string): arg is Placement => ["top", "right", "bottom", "left", "x", "y"].includes(arg!);
-	const setElementBinding = (element: HTMLElement, _value: VTooltipBindingValue, arg?: string) => {
+	const setElementBinding = (element: HTMLElement, _value: VTooltipBindingValue, arg?: string, anchorName: string = "") => {
 		const mapValue = elementBinding.get(element);
 		const value = typeof _value === "object" ? _value : { title: _value };
 		if (isPlacement(arg)) value.placement ??= arg;
-		if (!mapValue) elementBinding.set(element, { value, symbol: Symbol(element.id) });
+		if (!mapValue) elementBinding.set(element, { value, anchorName });
 		else mapValue.value = value;
 	};
 	const refresh = () => useEvent("component:refreshTooltip", elementBinding);
 	nuxt.vueApp.directive("tooltip", {
 		mounted(element, binding) {
-			setElementBinding(element, binding.value, binding.arg);
+			const anchorName = DEFAULT_TOOLTIP_ANCHOR_PREFIX + crypto.randomUUID(); // Cannot use `useId()` in `mounted`, but `crypto.randomUUID()` not support SSR.
+			const anchorList = new AnchorNameList(element.style.anchorName);
+			anchorList.add(anchorName);
+			element.style.anchorName = anchorList.toString();
+			setElementBinding(element, binding.value, binding.arg, anchorName);
 			addEventListeners(element, "mouseenter", "focusin", () => {
 				if (!elementBinding.has(element)) return;
 				useEvent("component:showTooltip", createEvent(element));

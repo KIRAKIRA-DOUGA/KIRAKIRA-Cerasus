@@ -82,7 +82,7 @@
 <style scoped lang="scss">
 	:comp {
 		@include flex-center;
-		z-index: 60;
+		z-index: $z-toast;
 		flex-direction: column;
 		width: 100%;
 		margin-top: 12px;
@@ -102,11 +102,19 @@
 				@include flex-center;
 				gap: 8px;
 				padding: 12px 16px;
-				text-align: justify;
 
 				.icon {
 					margin-left: -2px;
 					font-size: 24px;
+				}
+
+				> span {
+					white-space: pre-line;
+					text-align: start;
+
+					&:lang-justify {
+						text-align: justify;
+					}
 				}
 			}
 

@@ -209,7 +209,7 @@
 		@include dropdown-flyouts;
 		@include round-large;
 		position: absolute;
-		z-index: 70;
+		z-index: $z-context-menu;
 		width: calc(100% + 2 * $menu-padding);
 		margin: -$menu-padding;
 		padding: $menu-padding 0;
@@ -229,7 +229,7 @@
 
 	.items {
 		position: absolute;
-		z-index: 71;
+		z-index: $z-context-menu + 1;
 		width: 100%;
 
 		.item {

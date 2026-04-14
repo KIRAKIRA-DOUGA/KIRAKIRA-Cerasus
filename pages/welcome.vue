@@ -3,6 +3,8 @@
 </docs>
 
 <script setup lang="ts">
+	import { validateUsernameAndNickname } from "components/Settings/SettingsUserProfile.vue";
+
 	definePageMeta({
 		layout: "immersive",
 	});
@@ -51,15 +53,22 @@
 			label: profile.tags.map((tag, index) => ({ id: index, labelName: tag.normalize() })),
 		};
 		try {
+			if (!await validateUsernameAndNickname(profile.name, profile.nickname, t))
+				return;
+
 			const updateOrCreateUserInfoResult = await api.user.updateOrCreateUserInfo(updateOrCreateUserInfoRequest);
-			if (updateOrCreateUserInfoResult.success) {
-				await api.user.getSelfUserInfo({ getSelfUserInfoRequest: undefined, appSettingsStore: useAppSettingsStore(), selfUserInfoStore: useSelfUserInfoStore(), headerCookie: undefined });
-				isUpdatingUserInfo.value = false;
-			}
+			if (updateOrCreateUserInfoResult.success)
+				await api.user.getSelfUserInfo({
+					getSelfUserInfoRequest: undefined,
+					appSettingsStore: useAppSettingsStore(),
+					selfUserInfoStore: useSelfUserInfoStore(),
+					headerCookie: undefined,
+				});
 		} catch (error) {
-			isUpdatingUserInfo.value = false;
 			useToast(t("toast.failed_to_update_user_info"), "error");
 			console.error("用户信息更新失败！", error);
+		} finally {
+			isUpdatingUserInfo.value = false;
 		}
 
 		const main = container.value?.parentElement;

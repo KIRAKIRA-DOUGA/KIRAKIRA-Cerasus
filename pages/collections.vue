@@ -1,4 +1,15 @@
 <script setup lang="ts">
+	definePageMeta({
+		layout: {
+			props: {
+				appBarTitle: "t.collection.title",
+			},
+		},
+	});
+
+	const { t } = useI18n();
+	useHead({ title: t("collection.title", 2) });
+
 	const selfUserInfoStore = useSelfUserInfoStore();
 </script>
 

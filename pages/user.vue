@@ -136,10 +136,10 @@
 						{{ isSelf ? selfUserInfoStore.userInfo.signature : userInfo?.result?.signature }}
 						<template #actionButtons>
 							<div class="actions">
-								<!-- <SoftButton v-tooltip:top="'私信'" icon="email" /> -->
+								<!-- <SoftButton v-tooltip:y="'私信'" icon="email" /> -->
 								<SoftButton
 									v-if="!isSelf"
-									v-tooltip:top="$t('more')"
+									v-tooltip:y="$t('more')"
 									icon="more_vert"
 									@click="e => actionMenu = [e, 'y']"
 								/>

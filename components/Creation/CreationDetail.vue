@@ -1,6 +1,4 @@
 <script setup lang="ts">
-	import NumberFlow from "@number-flow/vue";
-
 	const props = withDefaults(defineProps<{
 		/** 投稿日期？修改日期？ */ // TODO: 投稿日期？修改日期？两个日期我觉得应该都要显示。
 		date: Date;

@@ -273,7 +273,7 @@
 				position: absolute;
 				top: 0;
 				right: 0;
-				z-index: 10;
+				z-index: $z-player-controller;
 				width: $click-width;
 				height: 100%;
 				translate: calc(($click-width - 1px) / 2);

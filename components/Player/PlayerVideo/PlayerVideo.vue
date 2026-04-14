@@ -789,7 +789,7 @@
 		&.fullscreen {
 			position: fixed;
 			inset: 0;
-			z-index: 32;
+			z-index: $z-fullscreen;
 		}
 	}
 

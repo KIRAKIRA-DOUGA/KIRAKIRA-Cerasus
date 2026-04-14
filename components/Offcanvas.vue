@@ -50,7 +50,7 @@
 	<Comp>
 		<div class="user">
 			<UserAvatar
-				v-tooltip="selfUserInfoStore.isLogined ? selfUserInfoStore.userInfo.userNickname : $t('login')"
+				v-tooltip:y="selfUserInfoStore.isLogined ? selfUserInfoStore.userInfo.userNickname : $t('login')"
 				:avatar="selfUserInfoStore.isLogined ? selfUserInfoStore.userInfo.avatar : undefined"
 				@click="onClickUser"
 			/>

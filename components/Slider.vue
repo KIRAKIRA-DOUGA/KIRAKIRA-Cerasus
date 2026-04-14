@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	const props = withDefaults(defineProps < {
+	const props = withDefaults(defineProps<{
 		/** 滑块最小值。 */
 		min?: number;
 		/** 滑块最大值。 */
@@ -261,8 +261,10 @@
 	$large-thumb-size: 24px;
 
 	@layer props {
-		/// 滑动条尺寸，可选的值为：small | large。
-		--size: small;
+		:comp {
+			/// 滑动条尺寸，可选的值为：small | large。
+			--size: small;
+		}
 	}
 
 	:comp {
