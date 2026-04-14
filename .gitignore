@@ -40,3 +40,6 @@ types/icons.d.ts
 
 # Env tokens
 scripts/crowdin/token.ts
+
+#local
+local
