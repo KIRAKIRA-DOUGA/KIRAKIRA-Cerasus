@@ -15,7 +15,7 @@
 
 <template>
 	<ContentUnavailable
-		v-if="!selfUserInfoStore.isLogined"
+		v-if="!selfUserInfoStore.isLoggedIn"
 		icon="star"
 		:title="$t('collection.title')"
 		:description="$t('login_prompt.collections')"
@@ -27,5 +27,5 @@
 </template>
 
 <style scoped lang="scss">
-
+	// TODO ? // FIXME
 </style>

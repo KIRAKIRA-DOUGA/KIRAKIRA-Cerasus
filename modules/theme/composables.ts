@@ -2,20 +2,20 @@ import type { CookieRef } from "nuxt/app";
 import { PALETTE_LIST } from "./types";
 
 /**
- * 服务端渲染时，获取请求时传递的用户 token cookie
- * 如果用户 token 通过验证，则请求最新用户设置并用最新值更新到 cookie 中（这回导致本次 SSR 渲染响应到达客户端时，客户端 cookie 也随之更新），然后续期 cookie
- * 如果用户 token 未通过验证，则续期 cookie
- * @returns 如果用户 token 通过验证，则返回最新用户设置，否则返回 undefined
+ * 服务端渲染时，获取请求时传递的用户 bootstrap hint cookie
+ * 如果用户 bootstrap hint 通过验证，则请求最新用户设置并用最新值更新到 cookie 中（这回导致本次 SSR 渲染响应到达客户端时，客户端 cookie 也随之更新），然后续期 cookie
+ * 如果用户 bootstrap hint 未通过验证，则续期 cookie
+ * @returns 如果用户 bootstrap hint 通过验证，则返回最新用户设置，否则返回 undefined
  */
 export async function cookieBaker() {
 	// Cookie 键 - 用户认证
-	const UUID_COOKIE_KEY = "uuid";
-	const TOKEN_COOKIE_KEY = "token";
+	const UID_COOKIE_KEY = "uid";
+	const BOOTSTRAP_HINT_COOKIE_KEY = "user-data-bootstrap-hint";
 
 	if (environment.server) { // 仅限服务端
 		// Nuxt cookie 对象 - 用户认证
-		const cookieUuid = useCookie(UUID_COOKIE_KEY, { sameSite: true });
-		const cookieToken = useCookie(TOKEN_COOKIE_KEY, { sameSite: true });
+		const cookieUid = useCookie(UID_COOKIE_KEY, { sameSite: "lax" });	// NOTE: sameSite 是 lax 而不是 strict
+		const cookieBootstrapHint = useCookie(BOOTSTRAP_HINT_COOKIE_KEY, { sameSite: "lax" }); // NOTE: sameSite 是 lax 而不是 strict
 
 		// Nuxt cookie 对象 - 是否同步样式
 		const isAllowSyncThemeSettings = useCookie<boolean>(COOKIE_KEY.isAllowSyncThemeSettings, DEFAULT_COOKIE_OPTION);
@@ -30,32 +30,31 @@ export async function cookieBaker() {
 		// nuxt cookie 对象 - 是否使用离线样式设置
 		const cookieIsLocalStorage = useCookie<boolean>(COOKIE_KEY.isOfflineSettingsCookieKey, DEFAULT_COOKIE_OPTION);
 
-		const uuid = cookieUuid.value;
-		const token = cookieToken.value;
+		const uid = parseInt(cookieUid.value ?? "-1", 10);
+		const userDataBootstrapHint = cookieBootstrapHint.value;
 
-		let userSettings: GetUserSettingsResponseDto | undefined = undefined;
 		if (
 			(
 				typeof isAllowSyncThemeSettings.value === "boolean" && isAllowSyncThemeSettings.value ||
 				typeof isAllowSyncThemeSettings.value === "string" && isAllowSyncThemeSettings.value === "true"
-			) && uuid && token
+			) && uid && userDataBootstrapHint
 		) {
 			// 如果用户允许主题同步，且用户认证 cookie 存在，则通过认证 cookie 获取数据库中存储的用户样式设置，并将获取到的设置信息存储至 cookie
-			const userAuthToken: GetSelfUserInfoByUuidRequestDto | GetUserSettingsRequestDto = {
-				uuid: uuid || "",
-				token: token || "",
+			const getUserBootstrapDataByHintRequest: GetUserBootstrapDataByHintRequestDto = {
+				uid,
+				userDataBootstrapHint,
 			};
-
 			const selfUserInfoStore = useSelfUserInfoStore();
+			const appSettingsStore = useAppSettingsStore();
+			const userBootstrapDataByHint = await api.user.getUserBootstrapDataByHint({ getUserBootstrapDataByHintRequest, appSettingsStore, selfUserInfoStore, headerCookie: undefined });
 
-			await api.user.getSelfUserInfo({ getSelfUserInfoRequest: userAuthToken, appSettingsStore: useAppSettingsStore(), selfUserInfoStore, headerCookie: undefined });
+			if (!userBootstrapDataByHint || !userBootstrapDataByHint.success || !userBootstrapDataByHint.result)
+				return undefined;
 
-			userSettings = await api.user.getUserSettings({ getUserSettingsRequest: userAuthToken });
-
-			cookieThemeType.value = userSettings?.userSettings?.themeType || THEME_ENV.SYSTEM_THEME;
-			cookieThemeColor.value = userSettings?.userSettings?.themeColor ? (PALETTE_LIST as unknown as string[]).includes(userSettings.userSettings.themeColor) ? userSettings.userSettings.themeColor : THEME_ENV.CUSTOM_THEME_COLOR : THEME_ENV.DEFAULT_THEME_COLOR;
-			cookieThemeColorCustom.value = userSettings?.userSettings?.themeColorCustom || THEME_ENV.DEFAULT_CUSTOM_THEME_COLOR;
-			cookieColoredSidebar.value = userSettings?.userSettings?.coloredSideBar === true;
+			cookieThemeType.value = userBootstrapDataByHint.result.themeType || THEME_ENV.SYSTEM_THEME;
+			cookieThemeColor.value = userBootstrapDataByHint.result.themeColor ? (PALETTE_LIST as unknown as string[]).includes(userBootstrapDataByHint.result.themeColor) ? userBootstrapDataByHint.result.themeColor : THEME_ENV.CUSTOM_THEME_COLOR : THEME_ENV.DEFAULT_THEME_COLOR;
+			cookieThemeColorCustom.value = userBootstrapDataByHint.result.themeColorCustom || THEME_ENV.DEFAULT_CUSTOM_THEME_COLOR;
+			cookieColoredSidebar.value = userBootstrapDataByHint.result.coloredSideBar === true;
 			// HACK: 6 在此处添加
 
 			cookieIsLocalStorage.value = false;
@@ -65,11 +64,21 @@ export async function cookieBaker() {
 		)
 			cookieIsLocalStorage.value = true;
 		else {
-			isAllowSyncThemeSettings.value = THEME_ENV.ALLOW_SYNC_THEME_SETTINGS === "true";
+			isAllowSyncThemeSettings.value = true;
 			cookieIsLocalStorage.value = true;
 		}
-		return userSettings;
+
+		return undefined;
 	}
+}
+
+/**
+ * 设置浏览器 cookie 的辅助函数
+ * @param cookieString - cookie 字符串
+ */
+function setCookie(cookieString: string) {
+	// eslint-disable-next-line unicorn/no-document-cookie
+	document.cookie = cookieString;
 }
 
 /**
@@ -85,11 +94,11 @@ export function saveUserSetting2BrowserCookieStore(userSettings: GetUserSettings
 		// HACK: 7 在此处添加
 
 		const userSettingsCookieBasicOption = `; expires=${new Date("9999/9/9").toUTCString()}; path=/; SameSite=Strict`;
-		document.cookie = `${COOKIE_KEY.isOfflineSettingsCookieKey}=false${userSettingsCookieBasicOption}`;
-		if (currentThemeType) document.cookie = `${COOKIE_KEY.themeTypeCookieKey}=${currentThemeType}${userSettingsCookieBasicOption}`;
-		if (themeColor) document.cookie = `${COOKIE_KEY.themeColorCookieKey}=${themeColor}${userSettingsCookieBasicOption}`;
-		if (themeColorCustom) document.cookie = `${COOKIE_KEY.themeColorCustomCookieKey}=${themeColorCustom}${userSettingsCookieBasicOption}`;
-		if (isColoredSidebar !== undefined && isColoredSidebar !== null) document.cookie = `${COOKIE_KEY.coloredSidebarCookieKey}=${isColoredSidebar}${userSettingsCookieBasicOption}`;
+		setCookie(`${COOKIE_KEY.isOfflineSettingsCookieKey}=false${userSettingsCookieBasicOption}`);
+		if (currentThemeType) setCookie(`${COOKIE_KEY.themeTypeCookieKey}=${currentThemeType}${userSettingsCookieBasicOption}`);
+		if (themeColor) setCookie(`${COOKIE_KEY.themeColorCookieKey}=${themeColor}${userSettingsCookieBasicOption}`);
+		if (themeColorCustom) setCookie(`${COOKIE_KEY.themeColorCustomCookieKey}=${themeColorCustom}${userSettingsCookieBasicOption}`);
+		if (isColoredSidebar !== undefined && isColoredSidebar !== null) setCookie(`${COOKIE_KEY.coloredSidebarCookieKey}=${isColoredSidebar}${userSettingsCookieBasicOption}`);
 		// HACK: 8 在此处添加
 	}
 }
@@ -133,7 +142,7 @@ export function useKiraCookie<T>(
 
 	try {
 		const selfUserInfoStore = useSelfUserInfoStore();
-		const isAllowSyncThemeSettings = computed(() => isAllowSyncThemeSettingsCookieValue.value && selfUserInfoStore.isLogined && isSyncSettings);
+		const isAllowSyncThemeSettings = computed(() => isAllowSyncThemeSettingsCookieValue.value && selfUserInfoStore.isLoggedIn && isSyncSettings);
 
 		let correctCallback = callback;
 		let correctCookieBinding = cookieBinding;

@@ -116,7 +116,7 @@ async function getUserInfo(uid?: string) {
 		try {
 			const selfUserInfoStore = useSelfUserInfoStore();
 			await api.user.getSelfUserInfo({ getSelfUserInfoRequest: undefined, appSettingsStore: useAppSettingsStore(), selfUserInfoStore, headerCookie: undefined });
-			if (!selfUserInfoStore.isLogined || selfUserInfoStore.userInfo.uid === undefined) throw new Error("Unlogined");
+			if (!selfUserInfoStore.isLoggedIn || selfUserInfoStore.userInfo.uid === undefined) throw new Error("Unlogined");
 			return BigInt(selfUserInfoStore.userInfo.uid);
 		} catch (error) { return new Error("你的登录信息已失效，请重新登录"); }
 	else return new Error("你尚未登录，请登录后再试");

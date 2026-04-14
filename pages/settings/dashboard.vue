@@ -53,7 +53,7 @@
 			<SettingsChipItem
 				v-if="selfUserInfoStore.userInfo.uid"
 				icon="fingerprint"
-				:details="selfUserInfoStore.isLogined ? selfUserInfoStore.userInfo.uid : undefined"
+				:details="selfUserInfoStore.isLoggedIn ? selfUserInfoStore.userInfo.uid : undefined"
 				trailingIcon="copy"
 				:onTrailingIconClick="() => copy(selfUserInfoStore.userInfo.uid!)"
 			>

@@ -131,7 +131,7 @@
 				v-model="cookieThemeColor"
 				:title="$t('custom')"
 				class="custom-color"
-				@click="e => flyoutColorPicker = [e]"
+				@click="(e: MouseEvent) => flyoutColorPicker = [e]"
 			>
 				<div class="palette-card">
 					<div class="hue-gradient"></div>
@@ -176,7 +176,7 @@
 							v-model="backgroundImages.currentImageKey"
 							class="preview-bg-image force-color"
 							:style="{ '--accent-50': item.color }"
-							@contextmenu.prevent="e => item.key !== -1 && (backgroundImageItemMenu = [e, item, e.currentTarget as HTMLElement])"
+							@contextmenu.prevent="(e: MouseEvent) => item.key !== -1 && (backgroundImageItemMenu = [e, item, e.currentTarget as HTMLElement])"
 						>
 							<Icon v-if="item.key === -1" name="prohibited" />
 							<BackgroundImageImg v-else :src="item.url" autoAlt :fit="item.fit" :position="item.position" />
@@ -261,7 +261,7 @@
 			<ToggleSwitch
 				v-model="isAllowSyncThemeSettings"
 				v-ripple
-				:disabled="!selfUserInfoStore.isLogined"
+				:disabled="!selfUserInfoStore.isLoggedIn"
 				icon="sync"
 			>
 				{{ $t("sync_color_settings_across_devices") }}

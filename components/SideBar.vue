@@ -36,7 +36,7 @@
 	}
 
 	/**
-	 * 如果用户已登录，则根据 cookie 中的 uid 和 token 来获取用户信息（同时具有验证用户 token 的功能）
+	 * 如果用户已登录，则根据 cookie 中的 uuid 和 token 来获取用户信息（同时具有验证用户 token 的功能）
 	 * 如果未登录或验证不成功，则清空全局变量中的用户信息并清空残留 cookie
 	 */
 	async function getUserInfo() {
@@ -57,10 +57,10 @@
 	}
 
 	/**
-	 * 点击用户头像事件。未登录时提示登录，已登录时导航到个人主页。
+	 * 点击用户头像事件。未获取初始化数据时提示登录，已获取初始化数据时导航到个人主页。
 	 */
 	function onClickUser() {
-		if (!selfUserInfoStore.isLogined) showLogin.value = true;
+		if (!selfUserInfoStore.isBootstrapDataReady || !selfUserInfoStore.userInfo.uid) showLogin.value = true;
 		else navigate(`/user/${selfUserInfoStore.userInfo.uid}`);
 	}
 
@@ -87,9 +87,9 @@
 <template>
 	<DefineAvatar>
 		<UserAvatar
-			v-if="selfUserInfoStore.isEffectiveCheckOnce"
-			v-tooltip:right="selfUserInfoStore.isLogined ? selfUserInfoStore.userInfo.userNickname : $t('login')"
-			:avatar="selfUserInfoStore.isLogined && !selfUserInfoStore.tempHideAvatarFromSidebar ? selfUserInfoStore.userInfo.avatar : undefined"
+			v-if="selfUserInfoStore.isBootstrapDataReady"
+			v-tooltip:right="selfUserInfoStore.isBootstrapDataReady ? selfUserInfoStore.userInfo.userNickname : $t('login')"
+			:avatar="!selfUserInfoStore.tempHideAvatarFromSidebar ? selfUserInfoStore.userInfo.avatar : undefined"
 			hoverable
 		/>
 	</DefineAvatar>
@@ -137,7 +137,7 @@
 		<div class="bottom icons">
 			<Avatar class="pc" @click="onClickUser" />
 			<SoftButton
-				v-if="selfUserInfoStore.isLogined"
+				v-if="selfUserInfoStore.isBootstrapDataReady"
 				v-tooltip:right="$t('notification', 2)"
 				icon="notifications"
 				:active="!!flyoutNotifications"

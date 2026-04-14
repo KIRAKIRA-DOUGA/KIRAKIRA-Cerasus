@@ -27,7 +27,7 @@
 
 <template>
 	<ContentUnavailable
-		v-if="!selfUserInfoStore.isLogined"
+		v-if="!selfUserInfoStore.isLoggedIn"
 		icon="feed"
 		:title="$t('feed.following')"
 		:description="$t('login_prompt.following_feed')"

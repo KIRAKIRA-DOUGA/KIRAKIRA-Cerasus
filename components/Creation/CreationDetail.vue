@@ -69,18 +69,18 @@
 	 * 收藏。
 	 */
 	function saveToCollection() {
-		if (selfUserInfoStore.isLogined)
+		if (selfUserInfoStore.isLoggedIn)
 			useToast(t("under_construction.feature"), "warning", 5000); // DELETE 请在收藏功能完成后删除该提示
 		else
 			useEvent("app:requestLogin");
 	}
 
 	/**
-	 * 收藏。
+	 * 稍后再看。
 	 */
 	function watchLater() {
-		if (selfUserInfoStore.isLogined)
-			useToast(t("under_construction.feature"), "warning", 5000); // DELETE 请在收藏功能完成后删除该提示
+		if (selfUserInfoStore.isLoggedIn)
+			useToast(t("under_construction.feature"), "warning", 5000); // DELETE 请在稍后再看功能完成后删除该提示
 		else
 			useEvent("app:requestLogin");
 	}
@@ -103,8 +103,7 @@
 		if (props.cover) {
 			const image = useImage();
 			const IMAGE_MAX_WIDTH = 999999;
-			window.open(image(props.cover, { width: IMAGE_MAX_WIDTH }, { provider: environment.cloudflareImageProvider }), "_blank"); // TODO: 先暂时改为在新标签页中直接打开图片的样式，而非下载图片
-			// downloadFile(props.cover, `${props.title} (kv${props.videoId})`);
+			window.open(image(props.cover, { width: IMAGE_MAX_WIDTH }, { provider: environment.cloudflareImageProvider }), "_blank"); // FIXME: 上游已知问题：provider 类型只支持 ipx 的问题：https://github.com/nuxt/image/issues/2174
 		} else useToast(t("toast.something_went_wrong"), "error");
 	}
 
@@ -112,7 +111,7 @@
 	 * 举报。
 	 */
 	function report() {
-		if (selfUserInfoStore.isLogined)
+		if (selfUserInfoStore.isLoggedIn)
 			useToast(t("under_construction.feature"), "warning", 5000); // DELETE 请在举报功能完成后删除该提示
 		else
 			useEvent("app:requestLogin");
