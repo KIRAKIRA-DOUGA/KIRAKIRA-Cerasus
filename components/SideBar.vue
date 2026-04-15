@@ -87,7 +87,6 @@
 <template>
 	<DefineAvatar>
 		<UserAvatar
-			v-if="selfUserInfoStore.isBootstrapDataReady"
 			v-tooltip:right="selfUserInfoStore.isBootstrapDataReady ? selfUserInfoStore.userInfo.userNickname : $t('login')"
 			:avatar="!selfUserInfoStore.tempHideAvatarFromSidebar ? selfUserInfoStore.userInfo.avatar : undefined"
 			hoverable

@@ -33,24 +33,25 @@ export async function cookieBaker() {
 		const uid = parseInt(cookieUid.value ?? "-1", 10);
 		const userDataBootstrapHint = cookieBootstrapHint.value;
 
+		if (!uid || !userDataBootstrapHint)
+			return undefined;
+
+		// 如果用户允许主题同步，且用户认证 cookie 存在，则通过认证 cookie 获取数据库中存储的用户样式设置，并将获取到的设置信息存储至 cookie
+		const getUserBootstrapDataByHintRequest: GetUserBootstrapDataByHintRequestDto = {
+			uid,
+			userDataBootstrapHint,
+		};
+		const selfUserInfoStore = useSelfUserInfoStore();
+		const appSettingsStore = useAppSettingsStore();
+		const userBootstrapDataByHint = await api.user.getUserBootstrapDataByHint({ getUserBootstrapDataByHintRequest, appSettingsStore, selfUserInfoStore, headerCookie: undefined });
+
+		if (!userBootstrapDataByHint || !userBootstrapDataByHint.success || !userBootstrapDataByHint.result)
+			return undefined;
+
 		if (
-			(
-				typeof isAllowSyncThemeSettings.value === "boolean" && isAllowSyncThemeSettings.value ||
-				typeof isAllowSyncThemeSettings.value === "string" && isAllowSyncThemeSettings.value === "true"
-			) && uid && userDataBootstrapHint
+			typeof isAllowSyncThemeSettings.value === "boolean" && isAllowSyncThemeSettings.value ||
+			typeof isAllowSyncThemeSettings.value === "string" && isAllowSyncThemeSettings.value === "true"
 		) {
-			// 如果用户允许主题同步，且用户认证 cookie 存在，则通过认证 cookie 获取数据库中存储的用户样式设置，并将获取到的设置信息存储至 cookie
-			const getUserBootstrapDataByHintRequest: GetUserBootstrapDataByHintRequestDto = {
-				uid,
-				userDataBootstrapHint,
-			};
-			const selfUserInfoStore = useSelfUserInfoStore();
-			const appSettingsStore = useAppSettingsStore();
-			const userBootstrapDataByHint = await api.user.getUserBootstrapDataByHint({ getUserBootstrapDataByHintRequest, appSettingsStore, selfUserInfoStore, headerCookie: undefined });
-
-			if (!userBootstrapDataByHint || !userBootstrapDataByHint.success || !userBootstrapDataByHint.result)
-				return undefined;
-
 			cookieThemeType.value = userBootstrapDataByHint.result.themeType || THEME_ENV.SYSTEM_THEME;
 			cookieThemeColor.value = userBootstrapDataByHint.result.themeColor ? (PALETTE_LIST as unknown as string[]).includes(userBootstrapDataByHint.result.themeColor) ? userBootstrapDataByHint.result.themeColor : THEME_ENV.CUSTOM_THEME_COLOR : THEME_ENV.DEFAULT_THEME_COLOR;
 			cookieThemeColorCustom.value = userBootstrapDataByHint.result.themeColorCustom || THEME_ENV.DEFAULT_CUSTOM_THEME_COLOR;
