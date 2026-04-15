@@ -146,6 +146,7 @@
 
 	/**
 	 * 监测要不改变的参数。
+	 * @template T - 监测的参数的类型。
 	 * @param param - 要改变的参数名称。
 	 * @param callback - 回调函数。
 	 * @returns 产生的 watch 回调函数。
