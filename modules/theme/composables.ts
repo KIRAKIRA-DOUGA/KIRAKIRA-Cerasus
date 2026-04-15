@@ -59,10 +59,10 @@ export async function cookieBaker() {
 
 			cookieIsLocalStorage.value = false;
 		} else if (
-			typeof isAllowSyncThemeSettings.value === "boolean" && isAllowSyncThemeSettings.value ||
+			typeof isAllowSyncThemeSettings.value === "boolean" && !isAllowSyncThemeSettings.value ||
 			typeof isAllowSyncThemeSettings.value === "string" && isAllowSyncThemeSettings.value === "false"
 		)
-			cookieIsLocalStorage.value = true;
+			cookieIsLocalStorage.value = false;
 		else {
 			isAllowSyncThemeSettings.value = true;
 			cookieIsLocalStorage.value = true;
@@ -107,6 +107,8 @@ export type UseKiraCookieOptions = {
 	isListenLoginEvent?: boolean;
 	/** 如果不为假值，则防抖更新数据以及向后端同步数据，防抖的等待时间为该参数的值（单位：毫秒），默认为 undefined 不开启防抖 */
 	debounceWait?: number;
+	/** 设置 cookie 时，sameSite 属性的值，默认为 "strict" */
+	sameSite?: "strict" | "lax" | "none" | boolean;
 };
 /**
  * 通过 useCookie 创建并返回一个 nuxt 响应式 cookie 对象，并在该响应式 cookie 的值被更新后调用 callback 方法 // TODO: 目前只支持监听在程序代码中显式更新的 cookie，比如通过 cookie.value 为 cookie 重新赋值，而不支持在客户端浏览器中更新的 cookie，或许 nuxt 3.10 之后有办法解决
@@ -124,8 +126,9 @@ export function useKiraCookie<T>(
 		isSyncSettings = true,
 		isListenLoginEvent = false,
 		debounceWait = undefined,
+		sameSite = "strict",
 	}: UseKiraCookieOptions = {}): CookieRef<T> {
-	const userSettingsCookieBasicOption = { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false, watch: true };
+	const userSettingsCookieBasicOption = { expires: new Date("9999/9/9"), sameSite, httpOnly: false, watch: true };
 	const cookie = useCookie<T>(cookieKey, userSettingsCookieBasicOption);
 
 	const isAllowSyncThemeSettingsCookieValue = useCookie<T>(COOKIE_KEY.isAllowSyncThemeSettings, userSettingsCookieBasicOption);
