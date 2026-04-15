@@ -31,10 +31,13 @@ export default defineNuxtModule({
 		addImports({ name: "useKiraCookie", as: "useKiraCookie", from: composablesRoute });
 		addImports({ name: "SyncUserSettings", as: "SyncUserSettings", from: composablesRoute });
 		const cookieBindingRoute = resolve("theme-cookie-binding");
-		addImports({ name: "DEFAULT_COOKIE_OPTION", as: "DEFAULT_COOKIE_OPTION", from: cookieBindingRoute });
+		addImports({ name: "DEFAULT_LAX_COOKIE_OPTION", as: "DEFAULT_LAX_COOKIE_OPTION", from: cookieBindingRoute });
+		addImports({ name: "userSettingsCookieStrictOption", as: "userSettingsCookieStrictOption", from: cookieBindingRoute });
+		addImports({ name: "userSettingsCookieLaxOption", as: "userSettingsCookieLaxOption", from: cookieBindingRoute });
 		addImports({ name: "THEME_ENV", as: "THEME_ENV", from: cookieBindingRoute });
 		addImports({ name: "COOKIE_KEY", as: "COOKIE_KEY", from: cookieBindingRoute });
 		addImports({ name: "cookieBinding", as: "cookieBinding", from: cookieBindingRoute });
+		addImports({ name: "setCookie", as: "setCookie", from: cookieBindingRoute });
 
 		let cookieBanderContent = `(function (autoCall = true) {${getFunctionBody(cookieBinding, false)}})();`;
 		cookieBanderContent = await minifyJavaScript(cookieBanderContent);

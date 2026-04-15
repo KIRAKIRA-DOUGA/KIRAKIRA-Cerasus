@@ -14,21 +14,21 @@ export async function cookieBaker() {
 
 	if (environment.server) { // 仅限服务端
 		// Nuxt cookie 对象 - 用户认证
-		const cookieUid = useCookie(UID_COOKIE_KEY, { sameSite: "lax" });	// NOTE: sameSite 是 lax 而不是 strict
-		const cookieBootstrapHint = useCookie(BOOTSTRAP_HINT_COOKIE_KEY, { sameSite: "lax" }); // NOTE: sameSite 是 lax 而不是 strict
+		const cookieUid = useCookie(UID_COOKIE_KEY, DEFAULT_LAX_COOKIE_OPTION);	// NOTE: sameSite 是 lax 而不是 strict
+		const cookieBootstrapHint = useCookie(BOOTSTRAP_HINT_COOKIE_KEY, DEFAULT_LAX_COOKIE_OPTION); // NOTE: sameSite 是 lax 而不是 strict
 
 		// Nuxt cookie 对象 - 是否同步样式
-		const isAllowSyncThemeSettings = useCookie<boolean>(COOKIE_KEY.isAllowSyncThemeSettings, DEFAULT_COOKIE_OPTION);
+		const isAllowSyncThemeSettings = useCookie<boolean>(COOKIE_KEY.isAllowSyncThemeSettings, DEFAULT_LAX_COOKIE_OPTION);
 
 		// Nuxt cookie 对象 - 用户样式设置
-		const cookieThemeType = useCookie(COOKIE_KEY.themeTypeCookieKey, DEFAULT_COOKIE_OPTION);
-		const cookieThemeColor = useCookie(COOKIE_KEY.themeColorCookieKey, DEFAULT_COOKIE_OPTION);
-		const cookieThemeColorCustom = useCookie(COOKIE_KEY.themeColorCustomCookieKey, DEFAULT_COOKIE_OPTION);
-		const cookieColoredSidebar = useCookie<boolean>(COOKIE_KEY.coloredSidebarCookieKey, DEFAULT_COOKIE_OPTION);
+		const cookieThemeType = useCookie(COOKIE_KEY.themeTypeCookieKey, DEFAULT_LAX_COOKIE_OPTION);
+		const cookieThemeColor = useCookie(COOKIE_KEY.themeColorCookieKey, DEFAULT_LAX_COOKIE_OPTION);
+		const cookieThemeColorCustom = useCookie(COOKIE_KEY.themeColorCustomCookieKey, DEFAULT_LAX_COOKIE_OPTION);
+		const cookieColoredSidebar = useCookie<boolean>(COOKIE_KEY.coloredSidebarCookieKey, DEFAULT_LAX_COOKIE_OPTION);
 		// HACK: 5 在此处添加
 
 		// nuxt cookie 对象 - 是否使用离线样式设置
-		const cookieIsLocalStorage = useCookie<boolean>(COOKIE_KEY.isOfflineSettingsCookieKey, DEFAULT_COOKIE_OPTION);
+		const cookieIsLocalStorage = useCookie<boolean>(COOKIE_KEY.isOfflineSettingsCookieKey, DEFAULT_LAX_COOKIE_OPTION);
 
 		const uid = parseInt(cookieUid.value ?? "-1", 10);
 		const userDataBootstrapHint = cookieBootstrapHint.value;
@@ -73,15 +73,6 @@ export async function cookieBaker() {
 }
 
 /**
- * 设置浏览器 cookie 的辅助函数
- * @param cookieString - cookie 字符串
- */
-function setCookie(cookieString: string) {
-	// eslint-disable-next-line unicorn/no-document-cookie
-	document.cookie = cookieString;
-}
-
-/**
  * 将用户设置追加到浏览器 cookie 中
  * @param userSettings - 用户设置
  */
@@ -93,12 +84,11 @@ export function saveUserSetting2BrowserCookieStore(userSettings: GetUserSettings
 		const isColoredSidebar = userSettings?.userSettings?.coloredSideBar || false;
 		// HACK: 7 在此处添加
 
-		const userSettingsCookieBasicOption = `; expires=${new Date("9999/9/9").toUTCString()}; path=/; SameSite=Strict`;
-		setCookie(`${COOKIE_KEY.isOfflineSettingsCookieKey}=false${userSettingsCookieBasicOption}`);
-		if (currentThemeType) setCookie(`${COOKIE_KEY.themeTypeCookieKey}=${currentThemeType}${userSettingsCookieBasicOption}`);
-		if (themeColor) setCookie(`${COOKIE_KEY.themeColorCookieKey}=${themeColor}${userSettingsCookieBasicOption}`);
-		if (themeColorCustom) setCookie(`${COOKIE_KEY.themeColorCustomCookieKey}=${themeColorCustom}${userSettingsCookieBasicOption}`);
-		if (isColoredSidebar !== undefined && isColoredSidebar !== null) setCookie(`${COOKIE_KEY.coloredSidebarCookieKey}=${isColoredSidebar}${userSettingsCookieBasicOption}`);
+		setCookie(`${COOKIE_KEY.isOfflineSettingsCookieKey}=false${userSettingsCookieLaxOption}`);
+		if (currentThemeType) setCookie(`${COOKIE_KEY.themeTypeCookieKey}=${currentThemeType}${userSettingsCookieLaxOption}`);
+		if (themeColor) setCookie(`${COOKIE_KEY.themeColorCookieKey}=${themeColor}${userSettingsCookieLaxOption}`);
+		if (themeColorCustom) setCookie(`${COOKIE_KEY.themeColorCustomCookieKey}=${themeColorCustom}${userSettingsCookieLaxOption}`);
+		if (isColoredSidebar !== undefined && isColoredSidebar !== null) setCookie(`${COOKIE_KEY.coloredSidebarCookieKey}=${isColoredSidebar}${userSettingsCookieLaxOption}`);
 		// HACK: 8 在此处添加
 	}
 }

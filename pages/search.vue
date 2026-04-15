@@ -261,7 +261,6 @@
 	async function searchPageInit() {
 		try {
 			const routeFromTag = import.meta.client ? window.history.state?.routeFromTag : undefined;
-			console.log("!appSettingsStore.search.isApplyUrlSearchCriteria", !appSettingsStore.search.isApplyUrlSearchCriteria);
 			if (!routeFromTag && !appSettingsStore.search.isApplyUrlSearchCriteria) {
 				clearUrlQuery();
 				return;
@@ -342,7 +341,7 @@
 						v-for="tag in displayTags"
 						:key="tag.tagId"
 						:query="{ q: tag.tagId }"
-						@mouseenter="e => showContextualToolbar(tag.tagId, tag.mainTagName, e)"
+						@mouseenter="(e: MouseEvent) => showContextualToolbar(tag.tagId, tag.mainTagName, e)"
 						@mouseleave="hideContextualToolbar"
 					>
 						<div v-if="tag.tagId >= 0" class="display-tag">
@@ -350,7 +349,7 @@
 							<div v-if="tag.originTagName" class="original-tag-name">{{ tag.originTagName }}</div>
 						</div>
 					</Tag>
-					<Tag key="add-tag-button" class="add-tag" :checkable="false" @click="e => flyoutTag = [e, 'y']">
+					<Tag key="add-tag-button" class="add-tag" :checkable="false" @click="(e: MouseEvent) => flyoutTag = [e, 'y']">
 						<Icon name="add" />
 					</Tag>
 				</div>
