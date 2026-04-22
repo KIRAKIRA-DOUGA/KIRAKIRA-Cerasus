@@ -41,7 +41,7 @@
 	 */
 	function onClickUser() {
 		shown.value = false;
-		if (!selfUserInfoStore.isLogined) useEvent("app:requestLogin");
+		if (!selfUserInfoStore.isLoggedIn) useEvent("app:requestLogin");
 		else to("/user");
 	}
 </script>
@@ -50,13 +50,13 @@
 	<Comp>
 		<div class="user">
 			<UserAvatar
-				v-tooltip:y="selfUserInfoStore.isLogined ? selfUserInfoStore.userInfo.userNickname : $t('login')"
-				:avatar="selfUserInfoStore.isLogined ? selfUserInfoStore.userInfo.avatar : undefined"
+				v-tooltip:y="selfUserInfoStore.isLoggedIn ? selfUserInfoStore.userInfo.userNickname : $t('login')"
+				:avatar="selfUserInfoStore.isLoggedIn ? selfUserInfoStore.userInfo.avatar : undefined"
 				@click="onClickUser"
 			/>
-			<p class="nickname">{{ selfUserInfoStore.isLogined ? selfUserInfoStore.userInfo.userNickname : $t("please_login") }}</p>
-			<p v-if="selfUserInfoStore.isLogined" class="username">@{{ selfUserInfoStore.userInfo.username }}</p>
-			<p v-if="selfUserInfoStore.isLogined && selfUserInfoStore.userInfo.signature" class="bio">{{ selfUserInfoStore.userInfo.signature }}</p>
+			<p class="nickname">{{ selfUserInfoStore.isLoggedIn ? selfUserInfoStore.userInfo.userNickname : $t("please_login") }}</p>
+			<p v-if="selfUserInfoStore.isLoggedIn" class="username">@{{ selfUserInfoStore.userInfo.username }}</p>
+			<p v-if="selfUserInfoStore.isLoggedIn && selfUserInfoStore.userInfo.signature" class="bio">{{ selfUserInfoStore.userInfo.signature }}</p>
 		</div>
 		<TabBar v-model="currentPageRequested" vertical>
 			<TabItem

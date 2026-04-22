@@ -5,12 +5,12 @@
 
 	const { t } = useI18n();
 
-	const useSyncKiraCookieOptions = { isWatchCookieRef: true, isSyncSettings: true, isListenLoginEvent: true };
+	const useSyncLaxKiraCookieOptions = { isWatchCookieRef: true, isSyncSettings: true, isListenLoginEvent: true, sameSite: "lax" } as const;
 
 	// 主题
-	const cookieThemeType = useKiraCookie<ThemeSetType>(COOKIE_KEY.themeTypeCookieKey, SyncUserSettings.updateOrCreateUserThemeTypeSetting, useSyncKiraCookieOptions);
+	const cookieThemeType = useKiraCookie<ThemeSetType>(COOKIE_KEY.themeTypeCookieKey, SyncUserSettings.updateOrCreateUserThemeTypeSetting, useSyncLaxKiraCookieOptions);
 	// 个性色
-	const cookieThemeColor = useKiraCookie<string>(COOKIE_KEY.themeColorCookieKey, SyncUserSettings.updateOrCreateUserThemeColorSetting, useSyncKiraCookieOptions);
+	const cookieThemeColor = useKiraCookie<string>(COOKIE_KEY.themeColorCookieKey, SyncUserSettings.updateOrCreateUserThemeColorSetting, useSyncLaxKiraCookieOptions);
 
 	const page = ref(1);
 	const pages = ref(99);

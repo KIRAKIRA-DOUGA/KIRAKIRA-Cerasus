@@ -148,3 +148,6 @@ flagWords:
   - whitelist -> allowlist
   - blacklists -> blocklists
   - whitelists -> allowlists
+  - lte -> leq
+  - gte -> geq
+  - grammer -> grammar

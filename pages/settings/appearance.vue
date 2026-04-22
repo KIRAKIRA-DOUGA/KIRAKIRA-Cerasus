@@ -18,16 +18,16 @@
 	// HACK: 16 请参照此部分 ↓ ↓ ↓
 
 	// 允许同步的 kira cookie 设置
-	const useSyncKiraCookieOptions = { isWatchCookieRef: true, isSyncSettings: true, isListenLoginEvent: true };
+	const useSyncLaxKiraCookieOptions = { isWatchCookieRef: true, isSyncSettings: true, isListenLoginEvent: true, sameSite: "lax" } as const;
 
 	// 主题
-	const cookieThemeType = useKiraCookie<ThemeSetType>(COOKIE_KEY.themeTypeCookieKey, SyncUserSettings.updateOrCreateUserThemeTypeSetting, useSyncKiraCookieOptions);
+	const cookieThemeType = useKiraCookie<ThemeSetType>(COOKIE_KEY.themeTypeCookieKey, SyncUserSettings.updateOrCreateUserThemeTypeSetting, useSyncLaxKiraCookieOptions);
 	// 个性色
-	const cookieThemeColor = useKiraCookie<string>(COOKIE_KEY.themeColorCookieKey, SyncUserSettings.updateOrCreateUserThemeColorSetting, useSyncKiraCookieOptions);
+	const cookieThemeColor = useKiraCookie<string>(COOKIE_KEY.themeColorCookieKey, SyncUserSettings.updateOrCreateUserThemeColorSetting, useSyncLaxKiraCookieOptions);
 	// 自定义个性色
-	const cookieThemeCustomColor = useKiraCookie<string>(COOKIE_KEY.themeColorCustomCookieKey, SyncUserSettings.updateOrCreateUserThemeColorCustomSetting, { ...useSyncKiraCookieOptions, debounceWait: 500 }); // 自定义颜色增加了防抖
+	const cookieThemeCustomColor = useKiraCookie<string>(COOKIE_KEY.themeColorCustomCookieKey, SyncUserSettings.updateOrCreateUserThemeColorCustomSetting, { ...useSyncLaxKiraCookieOptions, debounceWait: 500 }); // 自定义颜色增加了防抖
 	// 彩色侧边栏
-	const cookieColoredSidebar = useKiraCookie<boolean>(COOKIE_KEY.coloredSidebarCookieKey, SyncUserSettings.updateOrCreateUserColoredSidebarSetting, useSyncKiraCookieOptions);
+	const cookieColoredSidebar = useKiraCookie<boolean>(COOKIE_KEY.coloredSidebarCookieKey, SyncUserSettings.updateOrCreateUserColoredSidebarSetting, useSyncLaxKiraCookieOptions);
 
 	// HACK: 16 请参照此部分 ↑ ↑ ↑
 
@@ -49,9 +49,9 @@
 			await backgroundImages.add(file);
 	}
 
-	const useCookieAndLocalStorageOptions = { isWatchCookieRef: true, isSyncSettings: false };
+	const useLaxCookieAndLocalStorageOptions = { isWatchCookieRef: true, isSyncSettings: false, sameSite: "lax" } as const;
 	// 在 cookie 和 localStorage 中同步的 Cookie，是否开启主题同步
-	const isAllowSyncThemeSettings = useKiraCookie<boolean>(COOKIE_KEY.isAllowSyncThemeSettings, undefined, useCookieAndLocalStorageOptions);
+	const isAllowSyncThemeSettings = useKiraCookie<boolean>(COOKIE_KEY.isAllowSyncThemeSettings, undefined, useLaxCookieAndLocalStorageOptions);
 	watch(isAllowSyncThemeSettings, () => {
 		// 用户选择开启或关闭 isAllowSyncThemeSettings 的时候会载入数据
 		api.user.getUserSettings().then(userSettings => {
@@ -131,7 +131,7 @@
 				v-model="cookieThemeColor"
 				:title="$t('custom')"
 				class="custom-color"
-				@click="e => flyoutColorPicker = [e]"
+				@click="(e: MouseEvent) => flyoutColorPicker = [e]"
 			>
 				<div class="palette-card">
 					<div class="hue-gradient"></div>
@@ -176,7 +176,7 @@
 							v-model="backgroundImages.currentImageKey"
 							class="preview-bg-image force-color"
 							:style="{ '--accent-50': item.color }"
-							@contextmenu.prevent="e => item.key !== -1 && (backgroundImageItemMenu = [e, item, e.currentTarget as HTMLElement])"
+							@contextmenu.prevent="(e: MouseEvent) => item.key !== -1 && (backgroundImageItemMenu = [e, item, e.currentTarget as HTMLElement])"
 						>
 							<Icon v-if="item.key === -1" name="prohibited" />
 							<BackgroundImageImg v-else :src="item.url" autoAlt :fit="item.fit" :position="item.position" />
@@ -257,7 +257,7 @@
 			<ToggleSwitch
 				v-model="isAllowSyncThemeSettings"
 				v-ripple
-				:disabled="!selfUserInfoStore.isLogined"
+				:disabled="!selfUserInfoStore.isLoggedIn"
 				icon="sync"
 			>
 				{{ $t("sync_color_settings_across_devices") }}

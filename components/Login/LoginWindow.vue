@@ -59,7 +59,7 @@
 			avatarMovement.value = 0;
 			textPaddingLeft.value = 0;
 			if (isLogining.value) useEvent("user:login", true);
-			if (isLogining.value) selfUserInfoStore.isLogined = true;
+			if (isLogining.value) selfUserInfoStore.isLoggedIn = true;
 			if (!value) selfUserInfoStore.tempHideAvatarFromSidebar = false;
 			isLogining.value = false;
 			currentPage.value = "login1";
@@ -537,7 +537,7 @@
 							type="submit"
 							class="button login-button button-block"
 							:loading="isChecking2FA"
-							:disabled="isChecking2FA || selfUserInfoStore.isLogined || !isLoginTimeouted"
+							:disabled="isChecking2FA || selfUserInfoStore.isLoggedIn || !isLoginTimeouted"
 						>
 							{{ isLoginTimeouted ? "Link Start!" : `Link Start! (${loginTimeoutCountdown})` }}
 						</Button>
@@ -563,7 +563,7 @@
 						autoComplete="one-time-code"
 					/>
 					<div class="button login-button-placeholder">
-						<Button type="submit" class="button login-button button-block" :loading="isTryingLogin" :disabled="isTryingLogin || selfUserInfoStore.isLogined">Link Start!</Button>
+						<Button type="submit" class="button login-button button-block" :loading="isTryingLogin" :disabled="isTryingLogin || selfUserInfoStore.isLoggedIn">Link Start!</Button>
 					</div>
 				</form>
 				<div class="action margin-left-inset margin-right-inset">
@@ -585,7 +585,7 @@
 						autoComplete="one-time-code"
 					/>
 					<div class="button login-button-placeholder">
-						<Button type="submit" class="button login-button button-block" :loading="isTryingLogin" :disabled="isTryingLogin || selfUserInfoStore.isLogined">Link Start!</Button>
+						<Button type="submit" class="button login-button button-block" :loading="isTryingLogin" :disabled="isTryingLogin || selfUserInfoStore.isLoggedIn">Link Start!</Button>
 					</div>
 				</form>
 				<div class="action margin-left-inset margin-right-inset">
