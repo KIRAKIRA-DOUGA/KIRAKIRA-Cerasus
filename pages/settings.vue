@@ -112,7 +112,7 @@
 		const allSettings = Object.values(settings).flat();
 		const current = allSettings.find(setting => setting.id === currentSettingsRendered.value);
 		if (!current) return null;
-		return current.nameKey ? t(current.nameKey) : current.name ?? null;
+		return current.nameKey ? t(current.nameKey) : current.id ?? null;
 	});
 	const htmlTitle = computed(() => {
 		if (title.value) return title.value + " - " + t("settings.title");
@@ -120,8 +120,8 @@
 	});
 	useHead({ title: htmlTitle });
 
-	watch(() => selfUserInfoStore.isEffectiveCheckOnce, () => {
-		if (environment.client && !selfUserInfoStore.isLogined && settings.personal.some(setting => setting.id === currentSettingsRequested.value))
+	watch(() => selfUserInfoStore.isBootstrapDataReady, () => {
+		if (environment.client && !selfUserInfoStore.isLoggedIn && settings.personal.some(setting => setting.id === currentSettingsRequested.value))
 			navigate("/settings/appearance");
 	});
 
@@ -148,8 +148,8 @@
 							<TextBox v-model="search" type="search" :placeholder="$t('settings.search')" icon="search" />
 						</header>
 						<TabBar v-model="currentSettingsRequested" vertical>
-							<Subheader v-if="selfUserInfoStore.isLogined" icon="person">{{ $t("settings.user") }}</Subheader>
-							<template v-if="selfUserInfoStore.isLogined">
+							<Subheader v-if="selfUserInfoStore.isLoggedIn" icon="person">{{ $t("settings.user") }}</Subheader>
+							<template v-if="selfUserInfoStore.isLoggedIn">
 								<TabItem
 									v-for="setting in settings.personal"
 									:id="setting.id"
@@ -186,7 +186,7 @@
 								<Button icon="build" href="/dev">{{ $t("development_test_page") }}</Button>
 								<Button icon="apps" href="/dev/components">{{ $t("components_test_page") }}</Button>
 							</template>
-							<Button v-if="selfUserInfoStore.isLogined" icon="logout" @click="logout">{{ $t("logout") }}</Button>
+							<Button v-if="selfUserInfoStore.isLoggedIn" icon="logout" @click="logout">{{ $t("logout") }}</Button>
 						</div>
 					</ScrollContainer>
 				</header>

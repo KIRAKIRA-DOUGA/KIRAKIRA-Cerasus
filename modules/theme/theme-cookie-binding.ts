@@ -1,7 +1,18 @@
 // WARN 在开始编写本文件之前，请参阅：modules\theme\README.md
 
 // 默认 cookie 设置，该设置在 useCookie 时传入
-export const DEFAULT_COOKIE_OPTION = { expires: new Date("9999/9/9"), sameSite: true, httpOnly: false };
+export const DEFAULT_LAX_COOKIE_OPTION = { expires: new Date("9999/9/9"), sameSite: "lax", httpOnly: false } as const;
+export const userSettingsCookieStrictOption = `; expires=${new Date("9999/9/9").toUTCString()}; path=/; SameSite=Strict`; // 以后可能会用到
+export const userSettingsCookieLaxOption = `; expires=${new Date("9999/9/9").toUTCString()}; path=/; SameSite=Lax`;
+
+/**
+ * 设置浏览器 cookie 的辅助函数
+ * @param cookieString - cookie 字符串
+ */
+export function setCookie(cookieString: string) {
+	// eslint-disable-next-line unicorn/no-document-cookie
+	document.cookie = cookieString; // NOTE: 并非最佳实践：此处强制忽略了对 document.cookie 的 eslint 检查，因为我们确实需要直接操作 cookie。
+}
 
 // theme 常量或默认值，请保持和下方 cookieBinding 函数中的局部变量的值一致
 export const THEME_ENV = {
@@ -115,15 +126,14 @@ export function cookieBinding() {
 			// HACK: 10 在此处添加
 
 			// 将最新的 localStorage 存储回 cookie
-			const setIfCookie = (key: string, value: string) => {
-				const userSettingsCookieBasicOption = `; expires=${new Date("9999/9/9").toUTCString()}; path=/; SameSite=Strict`;
-				if (value) document.cookie = `${key}=${value}${userSettingsCookieBasicOption}`;
+			const setIfCookie = (key: string, value: string, optionString: string) => {
+				if (value) setCookie(`${key}=${value}${optionString}`);
 			};
 
-			setIfCookie(themeTypeCookieKey, currentThemeType);
-			setIfCookie(themeColorCookieKey, themeColor);
-			setIfCookie(themeColorCustomCookieKey, themeColorCustom);
-			setIfCookie(coloredSidebarCookieKey, isColoredSidebar);
+			setIfCookie(themeTypeCookieKey, currentThemeType, userSettingsCookieLaxOption);
+			setIfCookie(themeColorCookieKey, themeColor, userSettingsCookieLaxOption);
+			setIfCookie(themeColorCustomCookieKey, themeColorCustom, userSettingsCookieLaxOption);
+			setIfCookie(coloredSidebarCookieKey, isColoredSidebar, userSettingsCookieLaxOption);
 			// HACK: 11 在此处添加
 		} else { // 在线（远程同步）样式，从 cookie 中获取样式并拷贝到 localStorage 中
 			// 获取 cookie 中的用户样式设置

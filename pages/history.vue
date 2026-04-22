@@ -40,7 +40,7 @@
 
 <template>
 	<ContentUnavailable
-		v-if="!selfUserInfoStore.isLogined"
+		v-if="!selfUserInfoStore.isLoggedIn"
 		icon="history"
 		:title="$t('history')"
 		:description="$t('login_prompt.history')"

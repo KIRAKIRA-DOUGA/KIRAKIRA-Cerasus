@@ -104,7 +104,7 @@
 
 <template>
 	<ContentUnavailable
-		v-if="!selfUserInfoStore.isLogined"
+		v-if="!selfUserInfoStore.isLoggedIn"
 		icon="upload"
 		:title="$t('upload.title')"
 		:description="$t('login_prompt.upload')"

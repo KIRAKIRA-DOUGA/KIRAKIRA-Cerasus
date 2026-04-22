@@ -30,6 +30,12 @@ export type UserRegistrationResponseDto = {
 	uid?: number;
 	/** 如果注册成功，则返回一个 token，如果注册失败，则 token 是一个假值（undefined、null 或 ""） */
 	token?: string;
+	/**
+	 * 用户数据初始化提示标识。
+	 * 会被设为 lax 级别的 cookie 存储，用于在获取一些不涉及隐私的数据时的用户凭证，而无需 token 。
+	 * （例如 SSR 时获取主题配色，验证该用户是否曾经在改设别登录，获取首屏视频/搜索推荐等） - 非空
+	 */
+	userDataBootstrapHint?: string;
 	/** 附加的文本消息 */
 	message?: string;
 };
@@ -62,6 +68,12 @@ export type UserLoginResponseDto = {
 	uid?: number;
 	/** 如果登录成功，则返回一个 token，如果登录失败，则 token 是一个假值（undefined、null 或 ""） */
 	token?: string;
+	/**
+	 * 用户数据初始化提示标识。
+	 * 会被设为 lax 级别的 cookie 存储，用于在获取一些不涉及隐私的数据时的用户凭证，而无需 token 。
+	 * （例如 SSR 时获取主题配色，验证该用户是否曾经在改设别登录，获取首屏视频/搜索推荐等） - 非空
+	 */
+	userDataBootstrapHint?: string;
 	/** 密码提示 */
 	passwordHint?: string;
 	/** 附加的文本消息 */
@@ -237,7 +249,7 @@ export type GetSelfUserInfoByUuidResponseDto = {
 	/** 附加的文本消息 */
 	message?: string;
 	/** 请求结果 */
-	result?: (
+	result?:
 		{
 			/** 用户 ID */
 			uid?: number;
@@ -255,9 +267,91 @@ export type GetSelfUserInfoByUuidResponseDto = {
 			authenticatorType?: string;
 			/** 使用的邀请码 */
 			invitationCode?: string;
-		}
-		& UpdateOrCreateUserInfoResponseDto["result"]
-	);
+			/** 用户数据初始化提示标识。 */
+			userDataBootstrapHint?: string;
+		} &
+		UpdateOrCreateUserInfoResponseDto["result"]
+	;
+};
+
+/**
+ * 根据 uid 和标识获取用户初始化数据的请求载荷
+ */
+export type GetUserBootstrapDataByHintRequestDto = {
+	/** 用户 UID */
+	uid: number;
+	/** 用户数据初始化提示标识 */
+	userDataBootstrapHint: string;
+};
+
+/**
+ * 根据 uid 和标识获取用户初始化数据的请求响应
+ */
+export type GetUserBootstrapDataByHintResponseDto = {
+	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
+	success: boolean;
+	/** 附加的文本消息 */
+	message?: string;
+	/** 请求结果 */
+	result?: {
+		/** 用户 UID */
+		uid?: number;
+		/** 用户 UUID */
+		uuid?: string;
+		/** 用户创建日期 */
+		userCreateDateTime?: number;
+		/** 用户的角色 */
+		roles?: string[];
+		/** 用户数据初始化提示标识。 */
+		userDataBootstrapHint?: string;
+		/** 用户名 */
+		username?: string;
+		/** 用户昵称 */
+		userNickname?: string;
+		/** 用户头像 */
+		avatar?: string;
+		/** 用户的背景图 */
+		userBannerImage?: string;
+		/** 用户的个性签名 */
+		signature?: string;
+
+		/** 是否允许 cookie */
+		enableCookie?: boolean;
+		/** 主题外观设置（主题类型） - 可选的值：{light: 浅色, dark: 深色, system: 跟随系统} */
+		themeType?: "light" | "dark" | "system";
+		/** 用户的主题颜色，颜色字符串 */
+		themeColor?: string;
+		/** 用户自定义主题颜色 - HAX 颜色字符串，不包含井号 */
+		themeColorCustom?: string;
+		/** // TODO: 背景图 URL */
+		wallpaper?: string;
+		/** 是否启用彩色导航栏 */
+		coloredSideBar?: boolean;
+		/** 节流模式 */
+		dataSaverMode?: string;
+		/** 是否禁用搜索推荐 */
+		noSearchRecommendations?: boolean;
+		/** 禁用相关视频推荐 */
+		noRelatedVideos?: boolean;
+		/** 禁用搜索历史 */
+		noRecentSearch?: boolean;
+		/** 禁用观看历史 */
+		noViewHistory?: boolean;
+		/** 在新窗口中打开链接 */
+		openInNewWindow?: boolean;
+		/** 当前语言环境 */
+		currentLocale?: string;
+		/** 时区 */
+		timezone?: string;
+		/** 单位系统类型 */
+		unitSystemType?: string;
+		/** 是否进入开发者模式 */
+		devMode?: boolean;
+		/** 实验性：启用直角模式 */
+		sharpAppearanceMode?: boolean;
+		/** 实验性：启用扁平模式 */
+		flatAppearanceMode?: boolean;
+	};
 };
 
 /**
@@ -307,7 +401,7 @@ export type GetUserInfoByUidResponseDto = {
 		 * 查询的用户是否是自己。
 		 * 如果该字段的值为 true，则通常意味着发生了错误的请求，因为有专用的接口用于查询用户自己的信息。
 		 */
-		isSlef: boolean;
+		isSelf: boolean;
 	};
 } & BlockState;
 
@@ -980,6 +1074,26 @@ export type CheckUserExistsByUuidResponseDto = {
 	success: boolean;
 	/** 用户是否已存在 */
 	exists: boolean;
+	/** 附加的文本消息 */
+	message?: string;
+};
+
+/**
+ * 管理员批量重置用户 Token 的请求响应
+ */
+export type AdminRotationAllUserTokenResponseDto = {
+	/** 执行结果 */
+	success: boolean;
+	/** 附加的文本消息 */
+	message?: string;
+};
+
+/**
+ * 管理员批量重置用户 Token 的请求响应
+ */
+export type AdminRotationAllUserDataBootstrapHintResponseDto = {
+	/** 执行结果 */
+	success: boolean;
 	/** 附加的文本消息 */
 	message?: string;
 };
