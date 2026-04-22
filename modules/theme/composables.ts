@@ -3,20 +3,16 @@ import { PALETTE_LIST } from "./types";
 
 /**
  * 服务端渲染时，获取请求时传递的用户 bootstrap hint cookie
- * 如果用户 bootstrap hint 通过验证，则请求最新用户设置并用最新值更新到 cookie 中（这回导致本次 SSR 渲染响应到达客户端时，客户端 cookie 也随之更新），然后续期 cookie
+ * 如果用户 bootstrap hint 通过验证，则请求最新用户 Bootstrap Data 并用最新值更新到 cookie 中（这会导致本次 SSR 渲染响应到达客户端时，客户端 cookie 也随之更新），然后续期 cookie
  * 如果用户 bootstrap hint 未通过验证，则续期 cookie
- * @returns 如果用户 bootstrap hint 通过验证，则返回最新用户设置，否则返回 undefined
+ * @returns 如果用户 bootstrap hint 通过验证，则返回最新用户 Bootstrap Data，否则返回 undefined
  */
-export async function cookieBaker() {
+export async function cookieBaker(): Promise<void | GetUserBootstrapDataByHintResponseDto["result"]> {
 	// Cookie 键 - 用户认证
 	const UID_COOKIE_KEY = "uid";
 	const BOOTSTRAP_HINT_COOKIE_KEY = "user-data-bootstrap-hint";
 
 	if (environment.server) { // 仅限服务端
-		// Nuxt cookie 对象 - 用户认证
-		const cookieUid = useCookie(UID_COOKIE_KEY, DEFAULT_LAX_COOKIE_OPTION);	// NOTE: sameSite 是 lax 而不是 strict
-		const cookieBootstrapHint = useCookie(BOOTSTRAP_HINT_COOKIE_KEY, DEFAULT_LAX_COOKIE_OPTION); // NOTE: sameSite 是 lax 而不是 strict
-
 		// Nuxt cookie 对象 - 是否同步样式
 		const isAllowSyncThemeSettings = useCookie<boolean>(COOKIE_KEY.isAllowSyncThemeSettings, DEFAULT_LAX_COOKIE_OPTION);
 
@@ -28,48 +24,54 @@ export async function cookieBaker() {
 		// HACK: 5 在此处添加
 
 		// nuxt cookie 对象 - 是否使用离线样式设置
-		const cookieIsLocalStorage = useCookie<boolean>(COOKIE_KEY.isOfflineSettingsCookieKey, DEFAULT_LAX_COOKIE_OPTION);
-
-		const uid = parseInt(cookieUid.value ?? "-1", 10);
-		const userDataBootstrapHint = cookieBootstrapHint.value;
-
-		if (!uid || !userDataBootstrapHint)
-			return undefined;
-
-		// 如果用户允许主题同步，且用户认证 cookie 存在，则通过认证 cookie 获取数据库中存储的用户样式设置，并将获取到的设置信息存储至 cookie
-		const getUserBootstrapDataByHintRequest: GetUserBootstrapDataByHintRequestDto = {
-			uid,
-			userDataBootstrapHint,
-		};
-		const selfUserInfoStore = useSelfUserInfoStore();
-		const appSettingsStore = useAppSettingsStore();
-		const userBootstrapDataByHint = await api.user.getUserBootstrapDataByHint({ getUserBootstrapDataByHintRequest, appSettingsStore, selfUserInfoStore, headerCookie: undefined });
-
-		if (!userBootstrapDataByHint || !userBootstrapDataByHint.success || !userBootstrapDataByHint.result)
-			return undefined;
+		const isOfflineSettings = useCookie<boolean>(COOKIE_KEY.isOfflineSettingsCookieKey, DEFAULT_LAX_COOKIE_OPTION);
 
 		if (
 			typeof isAllowSyncThemeSettings.value === "boolean" && isAllowSyncThemeSettings.value ||
 			typeof isAllowSyncThemeSettings.value === "string" && isAllowSyncThemeSettings.value === "true"
 		) {
+			// Nuxt cookie 对象 - 用户认证
+			const cookieUid = useCookie(UID_COOKIE_KEY, DEFAULT_LAX_COOKIE_OPTION);	// NOTE: sameSite 是 lax 而不是 strict
+			const cookieBootstrapHint = useCookie(BOOTSTRAP_HINT_COOKIE_KEY, DEFAULT_LAX_COOKIE_OPTION); // NOTE: sameSite 是 lax 而不是 strict
+
+			const uid = parseInt(cookieUid.value ?? "-1", 10);
+			const userDataBootstrapHint = cookieBootstrapHint.value;
+
+			if (!uid || !userDataBootstrapHint)
+				return undefined;
+
+			// 如果用户允许主题同步，且用户认证 cookie 存在，则通过认证 cookie 获取数据库中存储的用户样式设置，并将获取到的设置信息存储至 cookie
+			const getUserBootstrapDataByHintRequest: GetUserBootstrapDataByHintRequestDto = {
+				uid,
+				userDataBootstrapHint,
+			};
+			const selfUserInfoStore = useSelfUserInfoStore();
+			const appSettingsStore = useAppSettingsStore();
+			const userBootstrapDataByHint = await api.user.getUserBootstrapDataByHint({ getUserBootstrapDataByHintRequest, appSettingsStore, selfUserInfoStore, headerCookie: undefined });
+
+			if (!userBootstrapDataByHint || !userBootstrapDataByHint.success || !userBootstrapDataByHint.result)
+				return undefined;
+
 			cookieThemeType.value = userBootstrapDataByHint.result.themeType || THEME_ENV.SYSTEM_THEME;
 			cookieThemeColor.value = userBootstrapDataByHint.result.themeColor ? (PALETTE_LIST as unknown as string[]).includes(userBootstrapDataByHint.result.themeColor) ? userBootstrapDataByHint.result.themeColor : THEME_ENV.CUSTOM_THEME_COLOR : THEME_ENV.DEFAULT_THEME_COLOR;
 			cookieThemeColorCustom.value = userBootstrapDataByHint.result.themeColorCustom || THEME_ENV.DEFAULT_CUSTOM_THEME_COLOR;
 			cookieColoredSidebar.value = userBootstrapDataByHint.result.coloredSideBar === true;
 			// HACK: 6 在此处添加
 
-			cookieIsLocalStorage.value = false;
+			isOfflineSettings.value = false;
+
+			return userBootstrapDataByHint.result;
 		} else if (
 			typeof isAllowSyncThemeSettings.value === "boolean" && !isAllowSyncThemeSettings.value ||
 			typeof isAllowSyncThemeSettings.value === "string" && isAllowSyncThemeSettings.value === "false"
-		)
-			cookieIsLocalStorage.value = false;
-		else {
+		) {
+			isOfflineSettings.value = false;
+			return undefined;
+		} else {
 			isAllowSyncThemeSettings.value = true;
-			cookieIsLocalStorage.value = true;
+			isOfflineSettings.value = true;
+			return undefined;
 		}
-
-		return undefined;
 	}
 }
 
