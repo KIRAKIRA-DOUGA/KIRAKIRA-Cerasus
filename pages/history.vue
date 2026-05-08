@@ -87,14 +87,10 @@
 	$line-size: 6px;
 	$ball-size: 24px;
 
-	.container {
-		position: relative;
-	}
-
 	.line {
-		@include oval(top);
+		@include oval;
 		position: absolute;
-		top: 38px;
+		top: 0;
 		bottom: 0;
 		width: $line-size;
 		background-color: c(accent);
@@ -113,6 +109,7 @@
 		}
 
 		.center {
+			position: relative;
 			width: 100%;
 		}
 

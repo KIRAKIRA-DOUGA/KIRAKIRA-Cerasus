@@ -8,11 +8,14 @@
 
 kbd {
 	@include set-box-shadow(gray-30, gray-40);
-	display: inline-block;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	min-width: 2em;
 	margin: 0 0.1em;
 	padding: 0.1em 0.6em;
 	color: c(text-color);
-	font-family: "SF Compact", $monospace-fonts;
+	font-family: "SF Compact", $english-fonts;
 	font-size: 100%;
 	line-height: 1.4;
 	background-color: c(gray-5);
@@ -21,6 +24,14 @@ kbd {
 	html.dark & {
 		@include set-box-shadow(gray-10, gray-5);
 		background-color: c(gray-20);
+	}
+
+	&.long {
+		padding: 0.1em 1.4em;
+	}
+
+	&.longlong {
+		padding: 0.1em 3.5em;
 	}
 
 	&:active {

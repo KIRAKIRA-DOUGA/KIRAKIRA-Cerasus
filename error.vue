@@ -30,9 +30,14 @@
 		return false;
 	}
 
-	onMounted(() => console.log(props.error));
+	// onMounted(() => console.log(props.error));
+
+	const langCode = computed(() => getCurrentLocaleLangCode());
 
 	useHead({
+		htmlAttrs: {
+			lang: langCode.value,
+		},
 		title: errorTitle,
 		titleTemplate: "%s - KIRAKIRA☆DOUGA",
 		bodyAttrs: { class: "no-scroll" },

@@ -117,7 +117,7 @@
 			<H>{{ $t("shortcut_key.player_page") }}</H>
 
 			<P>{{ $t("shortcut_key.play_pause") }}</P>
-			<p><Kbd>␣</Kbd></p>
+			<p><Kbd class="longlong">␣</Kbd></p>
 
 			<P>{{ $t("shortcut_key.exit_fullscreen") }}</P>
 			<p><Kbd>{{ Esc }}</Kbd></p>
@@ -161,13 +161,13 @@
 			<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>U</Kbd></p>
 
 			<P>{{ $t("format.strikethrough") }}</P>
-			<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>{{ Shift }}</Kbd> + <Kbd>X</Kbd></p>
+			<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd class="long">{{ Shift }}</Kbd> + <Kbd>X</Kbd></p>
 
 			<P>{{ $t("shortcut_key.quick_insert_kaomoji") }}</P>
 			<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>M</Kbd></p>
 
 			<P>{{ $t("send") }}</P>
-			<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd>{{ Enter }}</Kbd></p>
+			<p><Kbd>{{ Ctrl }}</Kbd> + <Kbd class="long">{{ Enter }}</Kbd></p>
 			<!-- #endregion -->
 		</div>
 	</div>
