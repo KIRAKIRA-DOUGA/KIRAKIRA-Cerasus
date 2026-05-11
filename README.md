@@ -202,7 +202,7 @@ pnpm dev-stg
 一个典型的自定义启动命令看起来像：
 ```bash
 # 以下命令等价于 'pnpm dev-local'
-pnpm cross-env VITE_BACKEND_URI=https://localhost:9999 VITE_CLOUDFLARE_IMAGES_PROVIDER=cloudflare-stg VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://customer-o9xrvgnj5fidyfm4.cloudflarestream.com/ nuxi dev --host --https --ssl-cert server/server.cer --ssl-key server/server.key
+pnpm cross-env VITE_BACKEND_URI=https://localhost:30000 VITE_CLOUDFLARE_IMAGES_PROVIDER=cloudflare-stg VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://customer-o9xrvgnj5fidyfm4.cloudflarestream.com/ nuxi dev --host --https --ssl-cert server/server.cer --ssl-key server/server.key
 ```
 
 启动后，您应该能够在这个地址访问：https://localhost:3000/
@@ -210,8 +210,8 @@ pnpm cross-env VITE_BACKEND_URI=https://localhost:9999 VITE_CLOUDFLARE_IMAGES_PR
 上述命令的解析：
 1. `cross-env`\
   设置跨平台的环境变量，确保命令在不同操作系统（如 Windows 和 Linux）下都能正常执行。
-2. `VITE_BACKEND_URI=https://localhost:9999`\
-  注入一个名为 `VITE_BACKEND_URI` 的环境变量，其值为 `https://localhost:9999`，即后端 API 的 URI。
+2. `VITE_BACKEND_URI=https://localhost:3000`\
+  注入一个名为 `VITE_BACKEND_URI` 的环境变量，其值为 `https://localhost:3000`，即后端 API 的 URI。
 3. `VITE_CLOUDFLARE_IMAGES_PROVIDER=cloudflare-stg`\
   注入一个名为 `VITE_CLOUDFLARE_IMAGES_PROVIDER` 的环境变量，其值为 `cloudflare-stg`。\
   这代表您使用名为 `cloudflare-stg` 的 [NuxtImage Custom Provider](https://image.nuxt.com/advanced/custom-provider)。\
