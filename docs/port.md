@@ -10,7 +10,7 @@ https://localhost:4000/ -->
 https://localhost:9000/ -->
 
 ## [KIRAKIRA-Rosales](https://github.com/KIRAKIRA-DOUGA/KIRAKIRA-Rosales)
-https://localhost:9999/
+https://localhost:30000/
 
 ## KIRAKIRA-I18n-Editor
 https://localhost:5000/
