@@ -72,11 +72,9 @@
 			</TabItem>
 		</TabBar>
 		<InfoBar :title="$t('announcement.title')" lite>
-			<TransInterpolation keypath="announcement.homepage">
-				<template #discord-server>
-					<a href="https://discord.gg/uVd9ZJzEy7" target="_blank">{{ $t("platform.discord.server") }}</a>
-				</template>
-			</TransInterpolation>
+			中国站前端已搭建完成，后端还是没有！如果你有充足的时间和开发力量请在B站等各大社媒联系站长 @艾了个拉。
+			<br />
+			<NuxtLink to="http://beian.miit.gov.cn/">沪ICP备2026002283号</NuxtLink>
 		</InfoBar>
 		<Subheader icon="upload" :badge="categoryItemCount">{{ $t("latest") }}</Subheader>
 		<Transition :name="transitionName" mode="out-in">
