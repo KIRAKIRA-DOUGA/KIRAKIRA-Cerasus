@@ -131,7 +131,6 @@
 
 	watch(() => backgroundImages.shown, shown => {
 		backgroundShown.value = shown;
-		console.log("WATCH", shown);
 	});
 </script>
 
