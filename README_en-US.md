@@ -199,7 +199,7 @@ Sometimes, the preset quick start command does not meet your needs. In this case
 A typical custom startup command looks like:
 ```bash
 # The following command is equivalent to 'pnpm dev-local'
-pnpm cross-env VITE_BACKEND_URI=https://localhost:9999 VITE_CLOUDFLARE_IMAGES_PROVIDER=cloudflare-stg VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://customer-o9xrvgnj5fidyfm4.cloudflarestream.com/ nuxi dev --host --https --ssl-cert server/server.cer --ssl-key server/server.key
+pnpm cross-env VITE_BACKEND_URI=https://localhost:30000 VITE_CLOUDFLARE_IMAGES_PROVIDER=cloudflare-stg VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://customer-o9xrvgnj5fidyfm4.cloudflarestream.com/ nuxi dev --host --https --ssl-cert server/server.cer --ssl-key server/server.key
 ```
 
 After it started, you should be able to preview at this URL: https://localhost:3000/
@@ -207,8 +207,8 @@ After it started, you should be able to preview at this URL: https://localhost:3
 Parsing of the above command:
 1. `cross-env`\
 Set cross-platform environment variables to ensure that the command can be executed normally under different operating systems (such as Windows and Linux).
-2. `VITE_BACKEND_URI=https://localhost:9999`\
-Injects an environment variable named `VITE_BACKEND_URI` with the value `https://localhost:9999`, which is the URI of the backend API.
+2. `VITE_BACKEND_URI=https://localhost:30000`\
+Injects an environment variable named `VITE_BACKEND_URI` with the value `https://localhost:30000`, which is the URI of the backend API.
 3. `VITE_CLOUDFLARE_IMAGES_PROVIDER=cloudflare-stg`\
 Injects an environment variable named `VITE_CLOUDFLARE_IMAGES_PROVIDER` with the value `cloudflare-stg`. \
 This indicates that you are using the [NuxtImage Custom Provider](https://image.nuxt.com/advanced/custom-provider) named `cloudflare-stg`. \
