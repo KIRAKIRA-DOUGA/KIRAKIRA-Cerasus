@@ -294,7 +294,7 @@
 				:buffered="buffered?.map(timeRanges => timeRanges.map(seconds => seconds / props.duration)) as Buffered"
 				:waiting
 				pending="cursor"
-				:displayValue="pending => new Duration(pending * props.duration).toString()"
+				:displayValue="pending => new Duration(pending).toString()"
 				@changing="(value) => { onSeeking(true); setSeekingIcon(value - model); }"
 				@changed="onSeeking(false)"
 			/>

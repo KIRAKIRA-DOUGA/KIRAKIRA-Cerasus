@@ -12,7 +12,7 @@ export const environment = {
 	get development() { return process.env.NODE_ENV === "development"; },
 	/** 后端接口 URI 地址 */
 	get backendUri() {
-		const DEFAULT_BACKEND_URI = "https://localhost:9999/";
+		const DEFAULT_BACKEND_URI = "https://localhost:30000/";
 		try {
 			const backendUriInput = import.meta.env.VITE_BACKEND_URI;
 			if (!backendUriInput) {

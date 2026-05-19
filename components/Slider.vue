@@ -61,8 +61,10 @@
 			clamp(map(n, props.min, props.max, 0, 1), 0, 1) :
 			nanValue;
 	};
+	const toNormalized = (n: number | undefined, nanValue: number) => restrict(n, nanValue);
+	const fromNormalized = (normalized: number) => map(normalized, 0, 1, props.min, props.max);
 
-	const value = computed(() => restrict(model.value, 0));
+	const value = computed(() => toNormalized(model.value, 0));
 	const smoothValue = useSmoothValue(value, 0.5); // 修改这个参数可以调整滑动条的平滑移动值。
 	const thumbEl = ref<HTMLDivElement>(), trackEl = ref<HTMLDivElement>();
 
@@ -90,7 +92,7 @@
 			for (const event of ["update:modelValue", "changing", "changed"] as const)
 				emits(event as "changing", props.defaultValue, model.value);
 			if (props.pending === "current")
-				pendingValue.value = props.defaultValue;
+				pendingValue.value = toNormalized(props.defaultValue, pendingValue.value);
 		}
 	}
 
@@ -114,8 +116,8 @@
 			const steppedValue = roundToStep(value, props.step);
 			const lastValue = model.value;
 			model.value = steppedValue;
-			pendingValue.value = map(steppedValue, props.min, props.max, 0, 1);
-			emits("changing", value, lastValue);
+			pendingValue.value = toNormalized(steppedValue, pendingValue.value);
+			emits("changing", steppedValue, lastValue);
 		};
 		const pointerUp = (e: PointerEvent) => {
 			document.removeEventListener("pointermove", pointerMove);
@@ -164,7 +166,7 @@
 		if (showPendingState.value === "")
 			showPendingState.value = "hovering";
 		if (showPendingState.value === "hovering")
-			pendingValue.value = props.pending === "cursor" ? map(getPointerOnTrackValue(e), props.min, props.max, 0, 1) : value.value;
+			pendingValue.value = props.pending === "cursor" ? toNormalized(getPointerOnTrackValue(e), pendingValue.value) : value.value;
 	}
 
 	/**
@@ -195,9 +197,10 @@
 		resetToDefault(e);
 	}
 
-	const displayValue = computed(() =>
-		(typeof props.displayValue === "function" ? props.displayValue(pendingValue.value) : props.displayValue) ??
-		map(pendingValue.value, 0, 1, props.min, props.max));
+	const displayValue = computed(() => {
+		const rawValue = fromNormalized(pendingValue.value);
+		return (typeof props.displayValue === "function" ? props.displayValue(rawValue) : props.displayValue) ?? rawValue;
+	});
 </script>
 
 <template>

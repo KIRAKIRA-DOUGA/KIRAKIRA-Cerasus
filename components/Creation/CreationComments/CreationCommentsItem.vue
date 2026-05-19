@@ -75,7 +75,7 @@
 			return;
 		}
 
-		if (!userSelfInfoStore.isLogined) { // 如果用户未登录，则不允许加分/减分
+		if (!userSelfInfoStore.isLoggedIn) { // 如果用户未登录，则不允许加分/减分
 			useEvent("app:requestLogin");
 			return;
 		}
