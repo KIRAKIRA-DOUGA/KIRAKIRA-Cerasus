@@ -264,6 +264,7 @@ export default {
 			loadMedia: "加载媒体失败",
 		},
 		playlist: {
+			title: "播放列表",
 			add_to_playlist: "添加到播放列表",
 			remove_from_playlist: "从播放列表中移除",
 		},
@@ -273,6 +274,10 @@ export default {
 			repeat_all: "列表循环",
 			repeat_one: "单个循环",
 			shuffle: "随机播放",
+		},
+		block_words: "屏蔽词",
+		chapter: {
+			title: "章节",
 		},
 	},
 	danmaku: {
@@ -535,7 +540,7 @@ export default {
 		username_requirements_unique: "用户名不允许重名。",
 		nickname: "昵称",
 		nickname_requirements: "1~20个字符，仅可包含数字、大小写拉丁字母、越南语字母、汉字、常用平/片假名、现代谚文音节、特殊符号 ｢-｣ ｢_｣ 以及非前导尾随连续空格。",
-		username_nickname_requirements: "用户名和昵称必须为@:user.nickname_requirements",
+		username_nickname_requirements: "用户名和昵称必须为 @:user.nickname_requirements",
 		bio: "个性签名",
 		gender: "性别",
 		memo: "备注",
@@ -697,6 +702,8 @@ export default {
 			new_email_same_as_old_email: "新邮箱地址不能与旧邮箱一致！",
 			invitation_code: "邀请码格式无效！",
 			password_hint_include_password: "密码提示中不能包含密码本身！",
+			username: "用户名包含无效字符！\n必须为 @:user.nickname_requirements",
+			nickname: "昵称包含无效字符！\n必须为 @:user.nickname_requirements",
 		},
 		too_long: {
 			username: "用户名太长了！",
@@ -722,6 +729,10 @@ export default {
 			ok: "确认隐藏",
 		},
 		delete_background_image: "真的要删除该背景图像吗？",
+		delete_video: {
+			title: "真的要删除该视频吗？",
+			content: "它将会永久消失！（真的很久！）",
+		},
 	},
 	current_time: "现在时间",
 	improve_translation: "改进翻译",
@@ -806,4 +817,5 @@ export default {
 		rechoose: "重新选择",
 	},
 	unknown: "未知",
+	edit_video: "编辑视频",
 } as const satisfies LocaleIdentifiers;

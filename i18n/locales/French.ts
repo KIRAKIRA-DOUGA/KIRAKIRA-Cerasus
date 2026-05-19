@@ -272,6 +272,7 @@ export default {
 			repeat_one: "Répéter une fois",
 			shuffle: "Aléatoire",
 		},
+		chapter: {},
 	},
 	danmaku: {
 		title: "Danmaku | Danmakus",
@@ -533,7 +534,6 @@ export default {
 		username_requirements_unique: "Un nom d'utilisateur doit être unique.",
 		nickname: "Surnom",
 		nickname_requirements: "1~20 caractères, incluant uniquement des chiffres, des lettres latines majuscules et minuscules, des lettres vietnamiennes, des caractères CJK, commune Hiragana/Katakana, syllabes Hangul modernes, symboles spéciaux \"-\", \"_\", non leading, trailing, continuous espaces.",
-		username_nickname_requirements: "Les noms d'utilisateur et les surnoms doivent être @:user.nickname_requirements",
 		bio: "Bio",
 		gender: "Genre",
 		memo: "Mémo",
@@ -720,6 +720,10 @@ export default {
 			ok: "Confirmer le masquage",
 		},
 		delete_background_image: "Êtes-vous sûr de vouloir supprimer cette image de fond ?",
+		delete_video: {
+			title: "Êtes-vous sûr de vouloir supprimer cette vidéo ?",
+			content: "Elle sera perdue pour toujours! (Un long moment!)",
+		},
 	},
 	current_time: "Temps présent",
 	improve_translation: "Améliorer la traduction",

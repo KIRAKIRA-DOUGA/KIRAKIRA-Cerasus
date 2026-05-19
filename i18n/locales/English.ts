@@ -813,4 +813,5 @@ export default {
 		rechoose: "Rechoose",
 	},
 	unknown: "Unknown",
+	edit_video: "Edit video",
 } as const;

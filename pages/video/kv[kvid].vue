@@ -69,6 +69,7 @@
 					videoCategory: videoData.videoCategory ?? "",
 					copyright: videoData.copyright,
 					image: videoData.image,
+					uploaderId: videoData.uploaderId,
 				};
 			} else
 				handleError(t("toast.video_invalid_result"));
@@ -145,6 +146,7 @@
 								:category="videoDetails?.videoCategory!"
 								:title="videoDetails?.title ?? ''"
 								:videoId="videoDetails?.videoId ?? NaN"
+								:uploaderId="videoDetails?.uploaderId ?? -1"
 								:copyright="(videoDetails?.copyright! as Copyright)"
 								:tags="videoDetails?.videoTagList.map(tag => getDisplayVideoTagWithCurrentLanguage(currentLanguage, tag)) ?? []"
 								:cover="videoDetails?.image"

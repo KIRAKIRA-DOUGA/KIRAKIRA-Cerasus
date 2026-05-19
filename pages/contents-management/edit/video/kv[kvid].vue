@@ -5,7 +5,8 @@
 
 <template>
 	<div class="container">
-		<p>{{ kvid }}</p>
-		<p>UPLOAD EDITOR HERE</p>
+		<p>{{ kvid }}</p> <!-- DELETE ME: 移除该 debug 文本 -->
+		<p>UPLOAD EDITOR HERE</p> <!-- DELETE ME: 移除该 debug 文本 -->
+		<UploadEditor isEditing :kvid />
 	</div>
 </template>

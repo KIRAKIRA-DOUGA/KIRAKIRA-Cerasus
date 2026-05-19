@@ -264,6 +264,7 @@ export default {
 			loadMedia: "crwdns2990:0crwdne2990:0",
 		},
 		playlist: {
+			title: "crwdns4129:0crwdne4129:0",
 			add_to_playlist: "crwdns2992:0crwdne2992:0",
 			remove_from_playlist: "crwdns2994:0crwdne2994:0",
 		},
@@ -273,6 +274,10 @@ export default {
 			repeat_all: "crwdns3000:0crwdne3000:0",
 			repeat_one: "crwdns3002:0crwdne3002:0",
 			shuffle: "crwdns3004:0crwdne3004:0",
+		},
+		block_words: "crwdns4131:0crwdne4131:0",
+		chapter: {
+			title: "crwdns4133:0crwdne4133:0",
 		},
 	},
 	danmaku: {
@@ -535,7 +540,7 @@ export default {
 		username_requirements_unique: "crwdns2934:0crwdne2934:0",
 		nickname: "crwdns2930:0crwdne2930:0",
 		nickname_requirements: "crwdns3188:0crwdne3188:0",
-		username_nickname_requirements: "crwdns2944:0crwdne2944:0",
+		username_nickname_requirements: "crwdns4135:0crwdne4135:0",
 		bio: "crwdns2694:0crwdne2694:0",
 		gender: "crwdns2696:0crwdne2696:0",
 		memo: "crwdns2698:0crwdne2698:0",
@@ -697,6 +702,8 @@ export default {
 			new_email_same_as_old_email: "crwdns3792:0crwdne3792:0",
 			invitation_code: "crwdns3328:0crwdne3328:0",
 			password_hint_include_password: "crwdns4064:0crwdne4064:0",
+			username: "crwdns4137:0crwdne4137:0",
+			nickname: "crwdns4139:0crwdne4139:0",
 		},
 		too_long: {
 			username: "crwdns3330:0crwdne3330:0",
@@ -722,6 +729,10 @@ export default {
 			ok: "crwdns4072:0crwdne4072:0",
 		},
 		delete_background_image: "crwdns4074:0crwdne4074:0",
+		delete_video: {
+			title: "crwdns4116:0crwdne4116:0",
+			content: "crwdns4126:0crwdne4126:0",
+		},
 	},
 	current_time: "crwdns2846:0crwdne2846:0",
 	improve_translation: "crwdns3452:0crwdne3452:0",
@@ -806,4 +817,5 @@ export default {
 		rechoose: "crwdns3670:0crwdne3670:0",
 	},
 	unknown: "crwdns3814:0crwdne3814:0",
+	edit_video: "crwdns4141:0crwdne4141:0",
 } as const satisfies LocaleIdentifiers;

@@ -189,7 +189,7 @@
 				</ClientOnly>
 			</div>
 
-			<UploadEditor v-else :files />
+			<UploadEditor v-else :isEditing="false" :files="files" />
 		</Transition>
 	</div>
 </template>
