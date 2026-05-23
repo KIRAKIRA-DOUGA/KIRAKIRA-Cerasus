@@ -13,26 +13,6 @@
 			isEditing: true;
 			kvid: number;
 		}
-	// {
-	// 	isEditing: boolean;
-
-	// 	files?: File[];
-
-	// 	// videoInfo?: {
-	// 	// 	videoId: number;
-	// 	// 	copyright: Copyright; // 视频版权
-	// 	// 	title: string; // 视频标题
-	// 	// 	category: string; // 视频分类
-	// 	// 	originalAuthor: string; // 原作者
-	// 	// 	originalLink: string; // 原视频链接
-	// 	// 	pushToFeed: boolean; // 是否发布到动态
-	// 	// 	ensureOriginal: boolean; // 是否声明为原创
-	// 	// 	thumbnailUrl: string; // 封面图 URL
-	// 	// 	tags: Map<VideoTag["tagId"], VideoTag>; // 视频标签
-	// 	// 	description: string; // 视频简介
-	// 	// 	cloudflareVideoId: string; // Cloudflare 视频 ID
-	// 	// };
-	// }
 	>();
 
 	const copyright = ref<Copyright>("original"); // 视频版权
@@ -329,15 +309,15 @@
 					videoId: props.kvid,
 				};
 				const headerCookie = useRequestHeaders(["cookie"]);
-				const videoInfo = await api.video.getVideoByKvid(getVideoByKvidRequest, headerCookie); // TODO use new API to get video detail info
+				const videoInfo = await api.video.uploaderGetVideoByKvid(getVideoByKvidRequest, headerCookie); // TODO use new API to get video detail info
 				if (videoInfo?.success && videoInfo?.video) {
 					copyright.value = videoInfo.video.copyright as Copyright;
 					title.value = videoInfo.video.title;
 					category.value = videoInfo.video.videoCategory;
-					originalAuthor.value = ""; // TODO use new API get originalAuthor
-					originalLink.value = ""; // TODO use new API get originalLink
-					pushToFeed.value = true; // TODO use new API get pushToFeed
-					ensureOriginal.value = false; // TODO use new API get ensureOriginal
+					originalAuthor.value = videoInfo.video.originalAuthor;
+					originalLink.value = videoInfo.video.originalLink;
+					pushToFeed.value = videoInfo.video.pushToFeed;
+					ensureOriginal.value = videoInfo.video.ensureOriginal;
 					thumbnailUrl.value = videoInfo.video.image || BASE_THUMBNAIL_URL;
 					tags.clear();
 					for (const tag of videoInfo.video.videoTagList)

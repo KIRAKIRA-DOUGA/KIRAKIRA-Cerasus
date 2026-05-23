@@ -1,6 +1,6 @@
 import * as tus from "tus-js-client";
 import { DELETE, GET, POST, uploadFile2CloudflareImages } from "../Common";
-import type { ApprovePendingReviewVideoRequestDto, ApprovePendingReviewVideoResponseDto, CheckVideoExistRequestDto, CheckVideoExistResponseDto, DeleteVideoRequestDto, DeleteVideoResponseDto, GetVideoByKvidRequestDto, GetVideoByKvidResponseDto, GetVideoByUidRequestDto, GetVideoByUidResponseDto, GetVideoCoverUploadSignedUrlResponseDto, PendingReviewVideoResponseDto, SearchVideoByVideoTagIdRequestDto, SearchVideoByVideoTagIdResponseDto, ThumbVideoResponseDto, UploadVideoRequestDto, UploadVideoResponseDto } from "./VideoControllerDto";
+import type { ApprovePendingReviewVideoRequestDto, ApprovePendingReviewVideoResponseDto, CheckVideoExistRequestDto, CheckVideoExistResponseDto, DeleteVideoRequestDto, DeleteVideoResponseDto, GetVideoByKvidRequestDto, GetVideoByKvidResponseDto, GetVideoByUidRequestDto, GetVideoByUidResponseDto, GetVideoCoverUploadSignedUrlResponseDto, PendingReviewVideoResponseDto, SearchVideoByVideoTagIdRequestDto, SearchVideoByVideoTagIdResponseDto, ThumbVideoResponseDto, UploadVideoRequestDto, UploadVideoResponseDto, UploaderGetVideoByKvidRequestDto, UploaderGetVideoByKvidResponseDto } from "./VideoControllerDto";
 
 const BACK_END_URI = environment.backendUri;
 const VIDEO_API_URI = `${BACK_END_URI}video`;
@@ -52,6 +52,25 @@ export const getVideoByKvid = async (getVideoByKvidRequest: GetVideoByKvidReques
 			return { success: false, message: "获取视频失败", isBlockedByOther: false, isBlocked: false, isHidden: false };
 	} else
 		return { success: false, message: "未提供 KVID", isBlockedByOther: false, isBlocked: false, isHidden: false };
+};
+
+/**
+ * 视频发布者根据 kvid 获取视频详细信息
+ * @param uploaderGetVideoByKvidRequest - 从视频 ID 获取视频的请求参数
+ * @param headerCookie - 从客户端发起 SSR 请求时传递的 Header 中的 Cookie 部分，在 SSR 时将其转交给后端 API
+ * @returns 视频页面需要的响应
+ */
+export const uploaderGetVideoByKvid = async (uploaderGetVideoByKvidRequest: UploaderGetVideoByKvidRequestDto, headerCookie?: { cookie?: string | undefined }): Promise<UploaderGetVideoByKvidResponseDto> => {
+	if (uploaderGetVideoByKvidRequest && uploaderGetVideoByKvidRequest.videoId) {
+		// NOTE: use { headers: headerCookie } to passing client-side cookies to backend API when SSR.
+		// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+		const result = await $fetch<UploaderGetVideoByKvidResponseDto>(`${VIDEO_API_URI}/uploaderGetVideoByKvid?videoId=${uploaderGetVideoByKvidRequest.videoId}`, { headers: headerCookie, credentials: "include" });
+		if (result)
+			return result;
+		else
+			return { success: false, message: "视频发布者根据 kvid 获取视频详细信息失败，获取视频失败" };
+	} else
+		return { success: false, message: "视频发布者根据 kvid 获取视频详细信息视频，未提供 KVID" };
 };
 
 /**
