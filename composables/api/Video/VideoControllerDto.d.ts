@@ -56,9 +56,18 @@ export type UploadVideoResponseDto = {
 	videoId?: number;
 };
 
-// export type ThumbVideoRequestDto = {
-// 	username: string;
-// }
+/**
+ * 编辑视频信息的请求载荷。// TODO: 暂时不包含视频分 P 文件、上传者和时长等文件相关字段
+ */
+export type EditVideoRequestDto = Omit<UploadVideoRequestDto, "videoPart" | "uploaderId" | "duration"> & {
+	/** 视频 ID (KVID) */
+	videoId: number;
+};
+
+/**
+ * 编辑视频信息的请求响应
+ */
+export type EditVideoResponseDto = UploadVideoResponseDto & {};
 
 /**
  * 展示视频卡片需要的返回参数

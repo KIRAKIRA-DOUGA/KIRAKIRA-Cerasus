@@ -244,6 +244,58 @@
 	}
 
 	/**
+	 * 编辑视频信息（提交修改）
+	 */
+	async function editVideo() {
+		if (!("kvid" in props) || !props.kvid) {
+			useToast(t("toast.edit_failed"), "error");
+			return;
+		}
+		if (!title.value) {
+			useToast(t("validation.required.title"), "error");
+			return;
+		}
+		if (!description.value) {
+			useToast(t("validation.required.description"), "error");
+			return;
+		}
+		if (!category.value) {
+			useToast(t("validation.required.category"), "error");
+			return;
+		}
+
+		const editVideoRequest: EditVideoRequestDto = {
+			videoId: props.kvid,
+			title: title.value,
+			image: isNetworkImage.value ? thumbnailUrl.value : BASE_THUMBNAIL_ID, // 没上传封面时使用默认封面图 ID // TODO: 自动获取视频截图作为封面
+			description: description.value,
+			videoCategory: category.value,
+			copyright: copyright.value,
+			originalAuthor: originalAuthor.value,
+			originalLink: originalLink.value,
+			pushToFeed: pushToFeed.value,
+			ensureOriginal: ensureOriginal.value,
+			videoTagList: tags ? [...tags.values()] : [],
+		};
+		isCommitButtonLoading.value = true;
+		try {
+			const editVideoResult = await api.video.editVideo(editVideoRequest);
+			const videoId = editVideoResult?.videoId;
+			if (editVideoResult.success && videoId) { // TODO: 视频更新成功后要做的操作（TODO: 暂时是等待 1 秒后跳转到视频页，以后可能需要修改）
+				console.info("INFO", `视频更新成功, KVID: ${videoId}`);
+				setTimeout(() => {
+					isCommitButtonLoading.value = false;
+					navigate(`/video/kv${videoId}`);
+				}, 1000);
+			}
+		} catch (error) {
+			isCommitButtonLoading.value = false;
+			useToast(t("toast.edit_failed"), "error");
+			console.error("ERROR", "Video edit failed:", error);
+		}
+	}
+
+	/**
 	 * 用户在修改版权选项时，清理其反向对应的版权设置的相关信息。例如，用户在选择为「原创」时，清理“原作者名”和“原视频地址”数据，用户在选择为「搬运」时，将“我声明为原创”取消勾选
 	 * @param copyright - 版权选项
 	 */
@@ -426,7 +478,7 @@
 			</div>
 
 			<div class="center">
-				<div class="progress-card toolbox-card">
+				<div v-if="!props.isEditing" class="progress-card toolbox-card">
 					<!-- 在这里上传和管理分 P -->
 					<ProgressBar class="progress" :value="uploadProgress" />
 					<SoftButton icon="pause" v-if="isUploadingVideo" :disabled="!!cloudflareVideoId" @click="stopUploading" />
@@ -492,9 +544,14 @@
 					<div class="submit">
 						<Button
 							icon="send"
-							:disabled="!cloudflareVideoId || isCommitButtonLoading"
-							:loading="!cloudflareVideoId || isCommitButtonLoading"
-							@click="commitVideo"
+							:disabled="(!props.isEditing && !cloudflareVideoId) || isCommitButtonLoading"
+							:loading="(!props.isEditing && !cloudflareVideoId) || isCommitButtonLoading"
+							@click="() => {
+								if (props.isEditing)
+									editVideo();
+								else
+									commitVideo();
+							}"
 						>
 							{{ $t("publish") }}
 						</Button>

@@ -12,6 +12,8 @@
 		},
 	});
 
+	type VideoData = GetVideoByKvidResponseDto["video"];
+
 	const windowSize = useWindowSize();
 	const isMobileWidth = computed(() => windowSize.width.value <= numbers.tabletMaxWidth);
 
@@ -31,8 +33,6 @@
 	const currentTime = ref(NaN);
 	const sendDanmaku = ref<DanmakuComment[]>();
 	const insertDanmaku = ref<DanmakuListItem[]>();
-
-	type VideoData = GetVideoByKvidResponseDto["video"];
 
 	/**
 	 * Fetch video data.

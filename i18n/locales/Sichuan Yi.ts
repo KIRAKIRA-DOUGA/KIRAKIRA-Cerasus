@@ -651,6 +651,7 @@ export default {
 		comment_delete_success: "crwdns3258:0crwdne3258:0",
 		uploaded: "crwdns3268:0crwdne3268:0",
 		upload_failed: "crwdns3270:0crwdne3270:0",
+		edit_failed: "crwdns4143:0crwdne4143:0",
 		upload_not_completed: "crwdns3274:0crwdne3274:0",
 		cover_upload_failed: "crwdns3264:0crwdne3264:0",
 		upload_file_not_found: "crwdns3266:0crwdne3266:0",

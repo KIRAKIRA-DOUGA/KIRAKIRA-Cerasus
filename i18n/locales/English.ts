@@ -647,6 +647,7 @@ export default {
 		comment_delete_success: "Comment deleted~",
 		uploaded: "Uploaded~",
 		upload_failed: "Upload failed!",
+		edit_failed: "Edit failed!",
 		upload_not_completed: "Upload not completed!",
 		cover_upload_failed: "Failed to upload cover!",
 		upload_file_not_found: "Failed to upload! File not found.",

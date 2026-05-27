@@ -185,7 +185,7 @@ export default {
 			hide_successfully: "ユーザーを非表示にしました",
 			hide_failed: "ユーザーを非表示に失敗しました！",
 			hide_error: "ユーザーの非表示中にエラーが発生しました！",
-			invalid_unhide_uid: "非表示のユーザーの UID フォーマットが正しくありません。@:block_and_hide.toasts.invalid_uid_requirements",
+			invalid_unhide_uid: "非表示解除のユーザーの UID フォーマットが正しくありません。@:block_and_hide.toasts.invalid_uid_requirements",
 			unhide_successfully: "ユーザーの非表示を解除しました！",
 			unhide_failed: "ユーザーの非表示解除に失敗しました！",
 			unhide_error: "ユーザー非表示の解除中にエラーが発生しました！",
@@ -264,6 +264,7 @@ export default {
 			loadMedia: "メディアの読み込みに失敗しました",
 		},
 		playlist: {
+			title: "プレイリスト",
 			add_to_playlist: "再生リストに追加",
 			remove_from_playlist: "再生リストから削除",
 		},
@@ -274,7 +275,10 @@ export default {
 			repeat_one: "リピート再生：１つだけ",
 			shuffle: "シャフル再生",
 		},
-		chapter: {},
+		block_words: "NGワード",
+		chapter: {
+			title: "チャプター",
+		},
 	},
 	danmaku: {
 		title: "弾幕",
@@ -302,7 +306,7 @@ export default {
 		title: "設定",
 		focus_mode: {
 			title: "フォーカスモード",
-			no_search_recommendations: "検索のおすすめを無効にする",
+			no_search_recommendations: "サジェスト検索を無効にする",
 			no_related_videos: "関連動画を無効にする",
 			no_recent_search: "最近の検索を非表示",
 			no_view_history: "視聴履歴を一時停止する",
@@ -536,6 +540,7 @@ export default {
 		username_requirements_unique: "ユーザー名は一意である必要があります。",
 		nickname: "ニックネーム",
 		nickname_requirements: "1〜20文字、大小英数字、CJK統合漢字、ひらがな/カタカナ、 現代ハングル文字、ベトナム文字、特殊記号の「-」、「_」、そして先頭や末尾ではないの連続スペース。",
+		username_nickname_requirements: "ユーザー名とニックネームは @:user.nickname_requirements でなければなりません",
 		bio: "自己紹介",
 		gender: "性別",
 		memo: "メモ",
@@ -646,6 +651,7 @@ export default {
 		comment_delete_success: "コメントを削除しました~",
 		uploaded: "アップロードしました",
 		upload_failed: "アップロードに失敗しました！",
+		edit_failed: "編集に失敗しました",
 		upload_not_completed: "アップロードが完了していません！",
 		cover_upload_failed: "カバーのアップロードに失敗しました！",
 		upload_file_not_found: "アップロードに失敗しました！ファイルが見つかりません。",
@@ -697,6 +703,8 @@ export default {
 			new_email_same_as_old_email: "このメールアドレスはすでに使われています！",
 			invitation_code: "無効な招待コード形式です！",
 			password_hint_include_password: "パスワードのヒントにはパスワード自体を含めることはできません！",
+			username: "ユーザー名に無効な文字が含まれています！\n@:user.nickname_requirements",
+			nickname: "ニックネームに無効な文字が含まれています！\n@:user.nickname_requirements",
 		},
 		too_long: {
 			username: "ユーザー名が長すぎます！",
@@ -810,4 +818,5 @@ export default {
 		rechoose: "選び直す",
 	},
 	unknown: "不明",
+	edit_video: "ビデオを編集",
 } as const satisfies LocaleIdentifiers;

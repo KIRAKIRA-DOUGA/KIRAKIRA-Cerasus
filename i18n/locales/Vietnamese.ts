@@ -264,6 +264,7 @@ export default {
 			loadMedia: "Không tải được đa phương tiện",
 		},
 		playlist: {
+			title: "Danh sách phát",
 			add_to_playlist: "Thêm vào Danh sách phát",
 			remove_from_playlist: "Xóa khỏi Danh sách phát",
 		},
@@ -274,7 +275,10 @@ export default {
 			repeat_one: "Lặp lại một lần",
 			shuffle: "Xáo trộn",
 		},
-		chapter: {},
+		block_words: "Chặn từ khoá",
+		chapter: {
+			title: "Chương",
+		},
 	},
 	danmaku: {
 		title: "Danmaku",
@@ -532,10 +536,11 @@ export default {
 	user: {
 		title: "Người dùng",
 		username: "Tên người dùng",
-		username_requirements: "Phải là tên độc lập duy nhất. @:user.nickname_requirements",
+		username_requirements: "Phải là tên độc nhất. @:user.nickname_requirements",
 		username_requirements_unique: "Tên người dùng phải là độc nhất.",
 		nickname: "Biệt danh",
 		nickname_requirements: "1~20 ký tự, chỉ bao gồm số, chữ cái Latin in hoa và thường, chữ cái tiếng Việt, chữ CJK, chữ Hiragana/Katakana thông dụng, âm tiết Hangul hiện đại, ký hiệu đặc biệt \"-\", \"_\", không có khoảng trắng đầu, cuối, liên tục.",
+		username_nickname_requirements: "Tên người dùng và biệt danh phải có từ @:user.nickname_requirements",
 		bio: "Giới thiệu",
 		gender: "Giới tính",
 		memo: "Phụ chú",
@@ -697,6 +702,8 @@ export default {
 			new_email_same_as_old_email: "Địa chỉ email mới trùng với cái cũ!",
 			invitation_code: "Sai định dạng mã mời!",
 			password_hint_include_password: "Không chứa mật khẩu trong gợi ý mật khẩu!",
+			username: "Tên người dùng chứa ký tự không hợp lệ!\nNó phải có từ @:user.nickname_requirements",
+			nickname: "Biệt danh chứa ký tự không hợp lệ!\nNó phải @:user.nickname_requirements",
 		},
 		too_long: {
 			username: "Tên đăng nhập quá dài!",
@@ -810,4 +817,5 @@ export default {
 		rechoose: "Chọn lại",
 	},
 	unknown: "Không xác định",
+	edit_video: "Chỉnh sửa video",
 } as const satisfies LocaleIdentifiers;

@@ -1,6 +1,6 @@
 import * as tus from "tus-js-client";
 import { DELETE, GET, POST, uploadFile2CloudflareImages } from "../Common";
-import type { ApprovePendingReviewVideoRequestDto, ApprovePendingReviewVideoResponseDto, CheckVideoExistRequestDto, CheckVideoExistResponseDto, DeleteVideoRequestDto, DeleteVideoResponseDto, GetVideoByKvidRequestDto, GetVideoByKvidResponseDto, GetVideoByUidRequestDto, GetVideoByUidResponseDto, GetVideoCoverUploadSignedUrlResponseDto, PendingReviewVideoResponseDto, SearchVideoByVideoTagIdRequestDto, SearchVideoByVideoTagIdResponseDto, ThumbVideoResponseDto, UploadVideoRequestDto, UploadVideoResponseDto, UploaderGetVideoByKvidRequestDto, UploaderGetVideoByKvidResponseDto } from "./VideoControllerDto";
+import type { ApprovePendingReviewVideoRequestDto, ApprovePendingReviewVideoResponseDto, CheckVideoExistRequestDto, CheckVideoExistResponseDto, DeleteVideoRequestDto, DeleteVideoResponseDto, EditVideoRequestDto, EditVideoResponseDto, GetVideoByKvidRequestDto, GetVideoByKvidResponseDto, GetVideoByUidRequestDto, GetVideoByUidResponseDto, GetVideoCoverUploadSignedUrlResponseDto, PendingReviewVideoResponseDto, SearchVideoByVideoTagIdRequestDto, SearchVideoByVideoTagIdResponseDto, ThumbVideoResponseDto, UploadVideoRequestDto, UploadVideoResponseDto, UploaderGetVideoByKvidRequestDto, UploaderGetVideoByKvidResponseDto } from "./VideoControllerDto";
 
 const BACK_END_URI = environment.backendUri;
 const VIDEO_API_URI = `${BACK_END_URI}video`;
@@ -72,6 +72,16 @@ export const uploaderGetVideoByKvid = async (uploaderGetVideoByKvidRequest: Uplo
 	} else
 		return { success: false, message: "视频发布者根据 kvid 获取视频详细信息视频，未提供 KVID" };
 };
+
+/**
+ * 编辑视频信息
+ * @param editVideoRequest - 新的视频数据
+ * @returns 编辑视频信息的请求响应
+ */
+export async function editVideo(editVideoRequest: EditVideoRequestDto): Promise<EditVideoResponseDto> {
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
+	return await POST(`${VIDEO_API_URI}/edit`, editVideoRequest, { credentials: "include" }) as EditVideoResponseDto;
+}
 
 /**
  * 根据 UID 获取该用户上传的视频
@@ -242,6 +252,7 @@ export class TusFileUploader {
  * @returns 用于上传视频封面图的预签名 URL 请求响应
  */
 export async function getVideoCoverUploadSignedUrl(): Promise<GetVideoCoverUploadSignedUrlResponseDto> {
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	return (await GET(`${VIDEO_API_URI}/cover/preUpload`, { credentials: "include" })) as GetVideoCoverUploadSignedUrlResponseDto;
 }
 
@@ -268,6 +279,7 @@ export async function uploadVideoCover(fileName: string, videoCoverBlobData: Blo
  * @returns 上传视频的请求响应
  */
 export async function commitVideo(uploadVideoRequest: UploadVideoRequestDto): Promise<UploadVideoResponseDto> {
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	return await POST(`${VIDEO_API_URI}/upload`, uploadVideoRequest, { credentials: "include" }) as UploadVideoResponseDto;
 }
 
@@ -277,6 +289,7 @@ export async function commitVideo(uploadVideoRequest: UploadVideoRequestDto): Pr
  * @returns 删除一个视频的请求响应
  */
 export async function deleteVideo(deleteVideoRequest: DeleteVideoRequestDto): Promise<DeleteVideoResponseDto> {
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	return await DELETE(`${VIDEO_API_URI}/delete`, deleteVideoRequest, { credentials: "include" }) as DeleteVideoResponseDto;
 }
 
@@ -298,5 +311,6 @@ export const getPendingReviewVideo = async (headerCookie: { cookie?: string | un
  * @returns 通过一个待审核视频的请求响应
  */
 export async function approvePendingReviewVideo(approvePendingReviewVideoRequest: ApprovePendingReviewVideoRequestDto): Promise<ApprovePendingReviewVideoResponseDto> {
+	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	return await POST(`${VIDEO_API_URI}/pending/approved`, approvePendingReviewVideoRequest, { credentials: "include" }) as ApprovePendingReviewVideoResponseDto;
 }

@@ -651,6 +651,7 @@ export default {
 		comment_delete_success: "评论已删除~",
 		uploaded: "已上传~",
 		upload_failed: "上传失败！",
+		edit_failed: "更新失败！",
 		upload_not_completed: "上传未完成！",
 		cover_upload_failed: "上传封面失败！",
 		upload_file_not_found: "上传失败！找不到文件",
