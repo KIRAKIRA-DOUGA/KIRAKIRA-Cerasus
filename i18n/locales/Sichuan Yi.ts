@@ -410,6 +410,7 @@ export default {
 		upload: "crwdns4106:0crwdne4106:0",
 	},
 	publish: "crwdns3748:0crwdne3748:0",
+	update: "crwdns4145:0crwdne4145:0",
 	messages: "crwdns2520:0crwdne2520:0",
 	notification: "crwdns2860:0crwdne2860:0",
 	please_login: "crwdns4026:0crwdne4026:0",

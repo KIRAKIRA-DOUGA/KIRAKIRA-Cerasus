@@ -408,6 +408,7 @@ export default {
 		upload: "Connectez-vous pour partager votre contenu",
 	},
 	publish: "Publier",
+	update: "Mise à jour",
 	messages: "Messages",
 	notification: "Notification | Notifications",
 	please_login: "Veuillez vous connecter",

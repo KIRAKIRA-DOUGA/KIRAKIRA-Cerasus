@@ -15,7 +15,24 @@
 	const showEditor = ref(false);
 	const files = reactive<File[]>([]);
 
+	const videos = ref<GetVideoByUidResponseDto>();
+	const videoPages = ref(1);
+
 	const selfUserInfoStore = useSelfUserInfoStore();
+
+	/**
+	 * fetch the videos according to the query.
+	 */
+	async function fetchUserVideoData() {
+		try {
+			const getVideoByUidRequest: GetVideoByUidRequestDto = {
+				uid: selfUserInfoStore.userInfo.uid,
+			};
+			const videosResponse = await api.video.getVideoByUid(getVideoByUidRequest);
+			videoPages.value = Math.max(1, Math.ceil(videosResponse.videosCount / 50));
+			videos.value = videosResponse;
+		} catch (error) { console.error(error); }
+	}
 
 	/**
 	 * 成功上传文件。
@@ -79,7 +96,7 @@
 	function onChangeFile(e: Event) {
 		const input = e.target as HTMLInputElement;
 		const files = getValidFiles(input.files);
-		// DELETE ME: 改判定仅测试阶段使用
+		// DELETE ME: 该判定仅测试阶段使用
 		if (!selfUserInfoStore.userInfo.roles?.includes("administrator")) {
 			useToast("测试阶段该功能仅限管理员使用。", "warning", 5000);
 			return;
@@ -108,6 +125,8 @@
 		icon: DeclaredIcons;
 		name: string;
 	}>();
+	
+	await fetchUserVideoData();
 </script>
 
 <template>
@@ -119,8 +138,7 @@
 		page
 		needLogin
 	/>
-	<div v-else class="container" :class="{ 'no-scroll': !showEditor }">
-
+	<div v-else class="container">
 		<DefineCountCard v-slot="{ value, icon, name }">
 			<div class="count-card">
 				<div class="title">
@@ -174,11 +192,16 @@
 				<ClientOnly>
 					<div class="video-list">
 						<ContentsManagementVideoCard
-							v-for="i in 2"
-							:key="i"
-							title="Video Name"
-							:videoId="i"
-							:viewCount="2333"
+							v-for="video in videos?.videos"
+							:key="video.videoId"
+							:title="video.title"
+							:videoId="video.videoId"
+							:uploader="video.uploader ?? ''"
+							:uploaderId="video.uploaderId"
+							:image="video.image"
+							:date="new Date()"
+							:viewCount="video.watchedCount"
+							:duration="new Duration(0, video.duration ?? 0)"
 							:upvoteCount="2333"
 							:downvoteCount="2333"
 							:commentCount="100"

@@ -553,7 +553,7 @@
 									commitVideo();
 							}"
 						>
-							{{ $t("publish") }}
+							{{ props.isEditing ? $t("update") : $t("publish") }}
 						</Button>
 					</div>
 				</div>

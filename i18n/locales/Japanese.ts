@@ -410,6 +410,7 @@ export default {
 		upload: "コンテンツを共有するにはログインしてください",
 	},
 	publish: "投稿",
+	update: "更新",
 	messages: "メッセージ",
 	notification: "通知",
 	please_login: "ログインしてください",

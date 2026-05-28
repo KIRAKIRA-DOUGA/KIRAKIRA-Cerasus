@@ -7,7 +7,7 @@
 		videoId: number;
 		title: string;
 		image?: string;
-		date?: Date;
+		date?: Date; // 上传日期
 		category?: string;
 		viewCount?: number;
 		upvoteCount?: number;

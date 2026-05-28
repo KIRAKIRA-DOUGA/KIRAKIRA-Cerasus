@@ -410,6 +410,7 @@ export default {
 		upload: "登入以分享你的内容",
 	},
 	publish: "投稿",
+	update: "更新",
 	messages: "消息",
 	notification: "通知",
 	please_login: "请登入",

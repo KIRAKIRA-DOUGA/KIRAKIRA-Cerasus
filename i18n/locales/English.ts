@@ -406,6 +406,7 @@ export default {
 		upload: "Log in to share your content",
 	},
 	publish: "Publish",
+	update: "Update",
 	messages: "Messages",
 	notification: "Notification | Notifications",
 	please_login: "Please Log In",
