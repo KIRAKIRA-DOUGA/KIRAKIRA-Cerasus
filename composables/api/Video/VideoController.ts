@@ -171,11 +171,11 @@ export class TusFileUploader {
 				},
 				retryDelays: [0, 3000, 5000, 10000, 20000], // 重试超时
 				chunkSize: 52428800, // 视频分片大小
-				storeFingerprintForResuming: true, // 存储用于恢复上传的 key // WARN: 正常运行时，应该为 True
+				storeFingerprintForResuming: true, // 存储用于恢复上传的 key
 				removeFingerprintOnSuccess: true, // 上传成功后移除用于恢复上传的 key
 				metadata: {
 					name: file.name,
-					maxDurationSeconds: "3600", // 最大视频长度，3600 秒（60 分钟）
+					maxDurationSeconds: "18000", // 最大视频长度，18000 秒（5 小时） // FIXME: 这对吗？这不应该由后端控制吗？目前仅限管理员上传还好，如果普通用户也能上传五个小时，那上传两个视频就能给我 cf 额度消耗完了。
 					expiry: getCloudflareRFC3339ExpiryDateTime(3600), // 最大上传耗时，3600 秒（1 小时）
 				},
 				onError: error => {
