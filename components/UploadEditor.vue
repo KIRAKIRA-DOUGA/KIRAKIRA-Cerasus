@@ -1,5 +1,11 @@
+<docs>
+	### 视频上传与编辑
+</docs>
+
 <script setup lang="ts">
+	import { type JSONContent } from "@tiptap/vue-3";
 	import type { TusFileUploader } from "../composables/api/Video/VideoController";
+
 	const { t } = useI18n();
 
 	const BASE_THUMBNAIL_URL = "static/images/thumbnail.png"; // FIXME: Nuxt Image 的 src 为 undefined 或 "" 时会出错，见 https://github.com/nuxt/image/issues/1299
@@ -352,6 +358,15 @@
 	}
 
 	/**
+	 * 视频简介更新事件的处理函数
+	 * @param contentJson - 更新后的视频简介内容（JSONContent 格式）
+	 * @param contentText - 更新后的视频简介内容（纯文本格式）
+	 */
+	function handleUpdateDescription(contentJson: JSONContent, contentText: string) {
+		description.value = JSON.stringify(contentJson);
+	}
+
+	/**
 	 * 如果是编辑视频，则需要获取视频信息
 	 */
 	async function getVideoInfoForUploader() {
@@ -535,7 +550,11 @@
 
 					<section>
 						<Subheader icon="details">{{ $t("description") }}</Subheader>
-						<TextBox v-model="description" required />
+						<TextEditorRtf
+							:editorFeatures="['bold', 'italic', 'underline', 'strike', 'mention', 'kaomoji', 'video-component']"
+							:editable="true"
+							@update="handleUpdateDescription"
+						/>
 						<!-- TODO: 这里放简介，需要富文本编辑器 -->
 					</section>
 

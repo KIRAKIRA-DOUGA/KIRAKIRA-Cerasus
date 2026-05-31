@@ -70,6 +70,7 @@
 					copyright: videoData.copyright,
 					image: videoData.image,
 					uploaderId: videoData.uploaderId,
+					description: videoData.description,
 				};
 			} else
 				handleError(t("toast.video_invalid_result"));
@@ -151,9 +152,7 @@
 								:tags="videoDetails?.videoTagList.map(tag => getDisplayVideoTagWithCurrentLanguage(currentLanguage, tag)) ?? []"
 								:cover="videoDetails?.image"
 							/>
-							<p class="description">
-								<Preserves>{{ videoDetails?.description }}</Preserves>
-							</p>
+							<TextEditorRtfReadonly :contentJsonString="videoDetails?.description" :editable="false" />
 							<Comments v-if="!isMobileWidth" />
 						</div>
 						<div class="right">
