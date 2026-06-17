@@ -428,17 +428,47 @@ export type UserLogoutResponseDto = {
 };
 
 /**
- * 获取用于用户上传头像的预签名 URL, 上传限时 60 秒
+ * 获取用于用户上传头像（火山引擎 TOS）的 POST 上传签名，签名默认有效期约 11 分钟（660 秒）
  */
 export type GetUserAvatarUploadSignedUrlResponseDto = {
 	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
 	success: boolean;
-	/** 用于用户上传头像的预签名 URL */
-	userAvatarUploadSignedUrl?: string;
-	/** 用于用户上传头像文件名 */
-	userAvatarFilename?: string;
 	/** 附加的文本消息 */
 	message?: string;
+	/** TOS 的 POST 上传地址 */
+	userAvatarUploadSignedUrl?: string;
+	/** 上传方法，固定为 POST */
+	userAvatarUploadMethod?: "POST";
+	/** 对象名，confirm 时需原样回传 */
+	userAvatarFilename?: string;
+	/** 最终公开访问 URL（confirm 成功后才生效） */
+	userAvatarUrl?: string;
+	/** POST 表单签名字段（上传时所有字段需先 append，file 放最后） */
+	userAvatarUploadFields?: Record<string, string>;
+	/** 最大字节数（2 MiB） */
+	userAvatarMaxSize?: number;
+	/** 已签名的 Content-Type */
+	userAvatarContentType?: string;
+};
+
+/**
+ * 确认用户头像上传（写库）的请求载荷
+ */
+export type ConfirmUserAvatarUploadRequestDto = {
+	/** 用 preUpload 返回的 userAvatarFilename 原样回传 */
+	fileName: string;
+};
+
+/**
+ * 确认用户头像上传（写库）的请求响应
+ */
+export type ConfirmUserAvatarUploadResponseDto = {
+	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
+	success: boolean;
+	/** 附加的文本消息 */
+	message?: string;
+	/** 成功后返回的最终头像 URL，用这个去刷新展示 */
+	userAvatarUrl?: string;
 };
 
 /**

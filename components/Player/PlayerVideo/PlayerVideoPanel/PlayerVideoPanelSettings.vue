@@ -113,7 +113,7 @@
 										<NuxtImg
 											class="filter-card"
 											:class="new VariableName(filter).kebab"
-											:provider="environment.cloudflareImageProvider"
+											:provider="getImageProvider(thumbnail)"
 											:src="thumbnail"
 											:alt="`preview-${$t(`player.filter.${new VariableName(filter).snake}`)}`"
 											:draggable="false"

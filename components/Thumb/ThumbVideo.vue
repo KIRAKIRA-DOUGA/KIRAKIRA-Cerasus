@@ -46,7 +46,7 @@
 				<div class="cover-wrapper">
 					<NuxtImg
 						v-if="image"
-						:provider="environment.cloudflareImageProvider"
+						:provider="getImageProvider(image)"
 						:src="image"
 						alt="cover"
 						class="cover"

@@ -103,7 +103,7 @@
 		if (props.cover) {
 			const image = useImage();
 			const IMAGE_MAX_WIDTH = 999999;
-			window.open(image(props.cover, { width: IMAGE_MAX_WIDTH }, { provider: environment.cloudflareImageProvider }), "_blank"); // FIXME: 上游已知问题：provider 类型只支持 ipx 的问题：https://github.com/nuxt/image/issues/2174
+			window.open(image(props.cover, { width: IMAGE_MAX_WIDTH }, { provider: getImageProvider(props.cover) }), "_blank"); // FIXME: 上游已知问题：provider 类型只支持 ipx 的问题：https://github.com/nuxt/image/issues/2174
 		} else useToast(t("toast.something_went_wrong"), "error");
 	}
 

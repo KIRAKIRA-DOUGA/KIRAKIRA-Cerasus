@@ -30,7 +30,7 @@
 	const isUploadingCover = ref<boolean>(false); // 是否正在上传封面图
 	const cropper = ref(); // 图片裁剪器对象
 	const isNetworkImage = computed(() => thumbnailUrl.value !== BASE_THUMBNAIL_URL); // 封面图是静态资源图片还是网图，即用户是否已经完成封面图上传
-	const provider = computed(() => isNetworkImage.value ? environment.cloudflareImageProvider : undefined); // 根据 isNetworkImage 的值判断是否使用 cloudflare 作为 Nuxt Image 提供商
+	const provider = computed(() => isNetworkImage.value ? getImageProvider(thumbnailUrl.value) : undefined); // 上传后的封面是 TOS 完整 URL，直接原样渲染；非网络图（默认本地封面）不走提供商
 	// 视频分类
 	const VIDEO_CATEGORY = new Map([
 		["anime", t("category.anime")],
@@ -108,13 +108,13 @@
 	async function handleSubmitCoverImage() {
 		isUploadingCover.value = true;
 		const blobImageData = await cropper.value?.getCropBlobData();
-		const coverUploadSignedUrlResult = await api.video.getVideoCoverUploadSignedUrl();
-		const filename = coverUploadSignedUrlResult?.result?.fileName;
-		const signedUrl = coverUploadSignedUrlResult?.result?.signedUrl;
-		if (coverUploadSignedUrlResult?.success && filename && signedUrl) {
-			const uploadVideoCoverResult = await api.video.uploadVideoCover(filename, blobImageData, signedUrl);
+		const contentType = blobImageData?.type || "image/png";
+		const coverUploadSignedUrlResult = await api.video.getVideoCoverUploadSignedUrl(contentType);
+		const result = coverUploadSignedUrlResult?.result;
+		if (coverUploadSignedUrlResult?.success && result?.uploadUrl && result?.uploadFields && result?.url && blobImageData) {
+			const uploadVideoCoverResult = await api.video.uploadVideoCover(result.uploadUrl, result.uploadFields, blobImageData);
 			if (uploadVideoCoverResult) {
-				thumbnailUrl.value = filename;
+				thumbnailUrl.value = result.url;
 				isUploadingCover.value = false;
 				isCoverCropperOpen.value = false;
 				clearBlobUrl(); // 释放内存

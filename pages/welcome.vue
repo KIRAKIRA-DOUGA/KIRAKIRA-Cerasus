@@ -89,15 +89,20 @@
 			isUploadingUserAvatar.value = true;
 			const blobImageData = await cropper.value?.getCropBlobData();
 			if (blobImageData) {
-				const userAvatarUploadSignedUrlResult = await api.user.getUserAvatarUploadSignedUrl();
+				const contentType = blobImageData.type || "image/png";
+				const userAvatarUploadSignedUrlResult = await api.user.getUserAvatarUploadSignedUrl(contentType);
 				const userAvatarUploadSignedUrl = userAvatarUploadSignedUrlResult.userAvatarUploadSignedUrl;
+				const userAvatarUploadFields = userAvatarUploadSignedUrlResult.userAvatarUploadFields;
 				const userAvatarUploadFilename = userAvatarUploadSignedUrlResult.userAvatarFilename;
-				if (userAvatarUploadSignedUrlResult.success && userAvatarUploadSignedUrl && userAvatarUploadFilename) {
-					const uploadResult = await api.user.uploadUserAvatar(userAvatarUploadFilename, blobImageData, userAvatarUploadSignedUrl);
+				if (userAvatarUploadSignedUrlResult.success && userAvatarUploadSignedUrl && userAvatarUploadFields && userAvatarUploadFilename) {
+					const uploadResult = await api.user.uploadUserAvatar(userAvatarUploadSignedUrl, userAvatarUploadFields, blobImageData);
 					if (uploadResult) {
-						avatarBlob.value = userAvatarUploadFilename;
-						isAvatarCropperOpened.value = false;
-						clearBlobUrl(); // 释放内存
+						const confirmResult = await api.user.confirmUserAvatarUpload({ fileName: userAvatarUploadFilename });
+						if (confirmResult.success && confirmResult.userAvatarUrl) {
+							avatarBlob.value = confirmResult.userAvatarUrl;
+							isAvatarCropperOpened.value = false;
+							clearBlobUrl(); // 释放内存
+						}
 					}
 					isUploadingUserAvatar.value = false;
 				}

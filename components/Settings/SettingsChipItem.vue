@@ -29,7 +29,7 @@
 			<div v-if="image" class="image">
 				<NuxtImg
 					:src="image"
-					:provider="environment.cloudflareImageProvider"
+					:provider="getImageProvider(image)"
 					alt="image"
 					draggable="false"
 					format="avif"

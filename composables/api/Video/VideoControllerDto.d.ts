@@ -247,19 +247,35 @@ export type GetVideoFileTusEndpointRequestDto = {
 };
 
 /**
- * 获取用于上传视频封面图的预签名 URL 的响应结果
+ * 获取用于上传视频封面图（火山引擎 TOS）的 POST 上传签名的响应结果
  */
 export type GetVideoCoverUploadSignedUrlResponseDto = {
 	/** 请求是否成功，成功返回 true，否则返回 false */
 	success: boolean;
 	/** 附加的文本消息 */
 	message?: string;
-	/** 请求到的视频封面图上传预签名 URL 数据 */
+	/** 请求到的视频封面图 TOS 上传签名数据 */
 	result?: {
-		/** 预签名 URL */
+		/** TOS 的 POST 上传地址 */
 		signedUrl: string;
-		/** 文件名 */
+		/** 同 signedUrl，二选一即可 */
+		uploadUrl: string;
+		/** 对象名 */
 		fileName: string;
+		/** 最终公开访问 URL */
+		url: string;
+		/** 同 url */
+		publicUrl: string;
+		/** POST 表单签名字段（上传时所有字段需先 append，file 放最后） */
+		fields: Record<string, string>;
+		/** 同 fields */
+		uploadFields: Record<string, string>;
+		/** 上传方法，固定为 POST */
+		uploadMethod: "POST";
+		/** 最大字节数（2 MiB） */
+		maxSize: number;
+		/** 已签名的 Content-Type */
+		contentType: string;
 	};
 };
 

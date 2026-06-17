@@ -93,14 +93,19 @@
 		try {
 			const blobImageData = newAvatarImageBlob.value;
 			if (blobImageData) {
-				const userAvatarUploadSignedUrlResult = await api.user.getUserAvatarUploadSignedUrl();
+				const contentType = blobImageData.type || "image/png";
+				const userAvatarUploadSignedUrlResult = await api.user.getUserAvatarUploadSignedUrl(contentType);
 				const userAvatarUploadSignedUrl = userAvatarUploadSignedUrlResult.userAvatarUploadSignedUrl;
+				const userAvatarUploadFields = userAvatarUploadSignedUrlResult.userAvatarUploadFields;
 				const userAvatarUploadFilename = userAvatarUploadSignedUrlResult.userAvatarFilename;
-				if (userAvatarUploadSignedUrlResult.success && userAvatarUploadSignedUrl && userAvatarUploadFilename) {
-					const uploadResult = await api.user.uploadUserAvatar(userAvatarUploadFilename, blobImageData, userAvatarUploadSignedUrl);
+				if (userAvatarUploadSignedUrlResult.success && userAvatarUploadSignedUrl && userAvatarUploadFields && userAvatarUploadFilename) {
+					const uploadResult = await api.user.uploadUserAvatar(userAvatarUploadSignedUrl, userAvatarUploadFields, blobImageData);
 					if (uploadResult) {
-						newAvatar.value = userAvatarUploadFilename;
-						clearBlobUrl(); // 释放内存
+						const confirmResult = await api.user.confirmUserAvatarUpload({ fileName: userAvatarUploadFilename });
+						if (confirmResult.success && confirmResult.userAvatarUrl) {
+							newAvatar.value = confirmResult.userAvatarUrl;
+							clearBlobUrl(); // 释放内存
+						}
 					}
 				}
 			} else {

@@ -1,5 +1,5 @@
 import * as tus from "tus-js-client";
-import { DELETE, GET, POST, uploadFile2CloudflareImages } from "../Common";
+import { DELETE, GET, POST, uploadFile2TOS } from "../Common";
 import type { ApprovePendingReviewVideoRequestDto, ApprovePendingReviewVideoResponseDto, CheckVideoExistRequestDto, CheckVideoExistResponseDto, DeleteVideoRequestDto, DeleteVideoResponseDto, GetVideoByKvidRequestDto, GetVideoByKvidResponseDto, GetVideoByUidRequestDto, GetVideoByUidResponseDto, GetVideoCoverUploadSignedUrlResponseDto, PendingReviewVideoResponseDto, SearchVideoByVideoTagIdRequestDto, SearchVideoByVideoTagIdResponseDto, ThumbVideoResponseDto, UploadVideoRequestDto, UploadVideoResponseDto } from "./VideoControllerDto";
 
 const BACK_END_URI = environment.backendUri;
@@ -219,26 +219,27 @@ export class TusFileUploader {
 }
 
 /**
- * 获取用于上传视频封面图的预签名 URL, 上传限时 60 秒
- * @returns 用于上传视频封面图的预签名 URL 请求响应
+ * 获取用于上传视频封面图（火山引擎 TOS）的 POST 上传签名，签名默认有效期约 11 分钟
+ * @param contentType - 封面图片的 MIME 类型，例如 'image/png'，必填
+ * @returns 用于上传视频封面图的 TOS 上传签名请求响应
  */
-export async function getVideoCoverUploadSignedUrl(): Promise<GetVideoCoverUploadSignedUrlResponseDto> {
-	return (await GET(`${VIDEO_API_URI}/cover/preUpload`, { credentials: "include" })) as GetVideoCoverUploadSignedUrlResponseDto;
+export async function getVideoCoverUploadSignedUrl(contentType: string): Promise<GetVideoCoverUploadSignedUrlResponseDto> {
+	return (await GET(`${VIDEO_API_URI}/cover/preUpload?contentType=${encodeURIComponent(contentType)}`, { credentials: "include" })) as GetVideoCoverUploadSignedUrlResponseDto;
 }
 
 /**
- * 通过预签名 URL 上传视频封面图
- * @param fileName - 头像文件名
- * @param videoCoverBlobData - 用 Blob 编码的用户头像文件
- * @param signedUrl - 预签名 URL
+ * 通过 POST 表单将视频封面图直传到火山引擎 TOS（无 confirm 步骤，上传成功后直接使用 result.url）
+ * @param uploadUrl - preUpload 返回的 TOS 上传地址（result.uploadUrl）
+ * @param uploadFields - preUpload 返回的签名表单字段（result.uploadFields）
+ * @param videoCoverBlobData - 用 Blob 编码的视频封面文件
  * @returns boolean 上传结果
  */
-export async function uploadVideoCover(fileName: string, videoCoverBlobData: Blob, signedUrl: string): Promise<boolean> {
+export async function uploadVideoCover(uploadUrl: string, uploadFields: Record<string, string>, videoCoverBlobData: Blob): Promise<boolean> {
 	try {
-		await uploadFile2CloudflareImages(fileName, signedUrl, videoCoverBlobData, 60000);
+		await uploadFile2TOS(uploadUrl, uploadFields, videoCoverBlobData, 60000);
 		return true;
 	} catch (error) {
-		console.error("视频封面上传失败，错误信息：", error, { videoCoverBlobData, signedUrl });
+		console.error("视频封面上传失败，错误信息：", error, { videoCoverBlobData, uploadUrl });
 		return false;
 	}
 }
