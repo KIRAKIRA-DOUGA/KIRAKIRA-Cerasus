@@ -199,7 +199,7 @@ Sometimes, the preset quick start command does not meet your needs. In this case
 A typical custom startup command looks like:
 ```bash
 # The following command is equivalent to 'pnpm dev-local'
-pnpm cross-env VITE_BACKEND_URI=https://localhost:30000 VITE_CLOUDFLARE_IMAGES_PROVIDER=cloudflare-stg VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://customer-o9xrvgnj5fidyfm4.cloudflarestream.com/ nuxi dev --host --https --ssl-cert server/server.cer --ssl-key server/server.key
+pnpm cross-env VITE_BACKEND_URI=https://localhost:30000 VITE_CLOUDFLARE_IMAGES_PROVIDER=cloudflare-stg VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://customer-o9xrvgnj5fidyfm4.cloudflarestream.com/ VITE_TOS_IMAGE_BASE_URL=https://test-image.kiravideo.com nuxi dev --host --https --ssl-cert server/server.cer --ssl-key server/server.key
 ```
 
 After it started, you should be able to preview at this URL: https://localhost:3000/
@@ -216,11 +216,14 @@ To modify the configuration of the NuxtImage Custom Provider, go to the `image.p
 4. `VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://custom...stream.com/`\
 Inject an environment variable named `VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN` with a value of `https://custom...stream.com/`. \
 This environment variable specifies the custom subdomain of the Cloudflare Stream service.
-5. `nuxi dev`\
+5. `VITE_TOS_IMAGE_BASE_URL=https://test-image.kiravideo.com`\
+Injects an environment variable named `VITE_TOS_IMAGE_BASE_URL` whose value is the public base URL of Volcengine TOS images (must match the backend `TOS_IMAGE_PUBLIC_BASE_URL` / `TOS_IMAGE_CDN_BASE_URL`). \
+It is used to recognize TOS images and map the requested width to the multi-resolution variants pre-generated at upload time (`{key}.w{N}.webp`) for progressive loading. If left unset, TOS images will not load by size tier correctly.
+6. `nuxi dev`\
 Start Nuxt development server. Optional parameters can refer to [this official document](https://nuxt.com/docs/api/commands/dev).
-6. `--host`\
+7. `--host`\
 No parameters are specified after `--host`, indicating that the development server listens to all hosts. For details, please refer to the "Mobile Webpage Testing & Preview" section below
-7. `--https --ssl-cert server/server.cer --ssl-key server/server.key`\
+8. `--https --ssl-cert server/server.cer --ssl-key server/server.key`\
 Among them, `--https` indicates that HTTPS is enabled. `--ssl-cert XXX.cer --ssl-key YYY.key` specifies the path of the certificate.
 
 #### Mobile Webpage Testing & Preview

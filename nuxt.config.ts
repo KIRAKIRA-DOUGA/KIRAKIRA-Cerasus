@@ -266,6 +266,14 @@ export default defineNuxtConfig({
 					accountHash: "nLUFLrrgVwzQdEx8eL5BaA",
 				},
 			},
+			tos: {
+				name: "tos", // 火山引擎 TOS 图片处理
+				provider: "./providers/nuxt-image/tos-images.ts",
+				options: {
+					// 数据库存的是对象名（key），provider 用它拼出完整 URL。须与 utils/environment.ts 的 tosImageBaseUrl 一致
+					baseURL: process.env.VITE_TOS_IMAGE_BASE_URL,
+				},
+			},
 		},
 	},
 

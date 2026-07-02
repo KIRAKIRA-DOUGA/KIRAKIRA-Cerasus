@@ -202,7 +202,7 @@ pnpm dev-stg
 一个典型的自定义启动命令看起来像：
 ```bash
 # 以下命令等价于 'pnpm dev-local'
-pnpm cross-env VITE_BACKEND_URI=https://localhost:30000 VITE_CLOUDFLARE_IMAGES_PROVIDER=cloudflare-stg VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://customer-o9xrvgnj5fidyfm4.cloudflarestream.com/ nuxi dev --host --https --ssl-cert server/server.cer --ssl-key server/server.key
+pnpm cross-env VITE_BACKEND_URI=https://localhost:30000 VITE_CLOUDFLARE_IMAGES_PROVIDER=cloudflare-stg VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://customer-o9xrvgnj5fidyfm4.cloudflarestream.com/ VITE_TOS_IMAGE_BASE_URL=https://test-image.kiravideo.com nuxi dev --host --https --ssl-cert server/server.cer --ssl-key server/server.key
 ```
 
 启动后，您应该能够在这个地址访问：https://localhost:3000/
@@ -219,11 +219,14 @@ pnpm cross-env VITE_BACKEND_URI=https://localhost:30000 VITE_CLOUDFLARE_IMAGES_P
 4. `VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://custom...stream.com/`\
   注入一个名为 `VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN` 的环境变量，其值为 `https://custom...stream.com/`。\
   该环境变量指定了 Cloudflare Stream 服务的自定义子域名。
-5. `nuxi dev`\
+5. `VITE_TOS_IMAGE_BASE_URL=https://test-image.kiravideo.com`\
+  注入一个名为 `VITE_TOS_IMAGE_BASE_URL` 的环境变量，其值为火山引擎 TOS 图片的公开访问基址（须与后端 `TOS_IMAGE_PUBLIC_BASE_URL` / `TOS_IMAGE_CDN_BASE_URL` 一致）。\
+  该地址用于识别 TOS 图片，并按请求宽度映射到上传时预生成的多分辨率变体（`{key}.w{N}.webp`），实现渐进加载。若不配置，TOS 图片将无法正确按档位加载。
+6. `nuxi dev`\
   启动 Nuxt 的开发服务器。可选参数可以参考[这篇官方文档](https://nuxt.com/docs/api/commands/dev)。
-6. `--host`\
+7. `--host`\
   在 `--host` 后没有指定参数，表示开发服务器监听所有主机。详情请参见下方”在移动端网页测试和预览“章节
-7. `--https --ssl-cert server/server.cer --ssl-key server/server.key`\
+8. `--https --ssl-cert server/server.cer --ssl-key server/server.key`\
   其中，`--https` 表明启动 HTTPS。`--ssl-cert XXX.cer --ssl-key YYY.key` 指定了证书的路径。
 
 
