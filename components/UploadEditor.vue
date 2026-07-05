@@ -30,7 +30,7 @@
 	const isUploadingCover = ref<boolean>(false); // 是否正在上传封面图
 	const cropper = ref(); // 图片裁剪器对象
 	const isNetworkImage = computed(() => thumbnailUrl.value !== BASE_THUMBNAIL_URL); // 封面图是静态资源图片还是网图，即用户是否已经完成封面图上传
-	const provider = computed(() => isNetworkImage.value ? getImageProvider(thumbnailUrl.value) : undefined); // 上传后的封面是 TOS 完整 URL，直接原样渲染；非网络图（默认本地封面）不走提供商
+	const provider = computed(() => isNetworkImage.value && !isFullImageUrl(thumbnailUrl.value) ? getImageProvider(thumbnailUrl.value) : undefined); // 上传后的封面是 TOS 完整 URL，其多分辨率变体要到投稿提交时才由后端生成，此时必须原样渲染原图，否则预览 404；非网络图（默认本地封面）不走提供商
 	// 视频分类
 	const VIDEO_CATEGORY = new Map([
 		["anime", t("category.anime")],
@@ -107,25 +107,33 @@
 	 */
 	async function handleSubmitCoverImage() {
 		isUploadingCover.value = true;
-		const blobImageData = await cropper.value?.getCropBlobData();
-		const contentType = blobImageData?.type || "image/png";
-		const coverUploadSignedUrlResult = await api.video.getVideoCoverUploadSignedUrl(contentType);
-		const result = coverUploadSignedUrlResult?.result;
-		if (coverUploadSignedUrlResult?.success && result?.uploadUrl && result?.uploadFields && result?.url && blobImageData) {
-			const uploadVideoCoverResult = await api.video.uploadVideoCover(result.uploadUrl, result.uploadFields, blobImageData);
-			if (uploadVideoCoverResult) {
-				thumbnailUrl.value = result.url;
-				isUploadingCover.value = false;
-				isCoverCropperOpen.value = false;
-				clearBlobUrl(); // 释放内存
+		try {
+			const blobImageData = await cropper.value?.getCropBlobData();
+			if (!blobImageData) {
+				useToast(t("toast.unable_to_get_cropped_picture"), "error");
+				console.error("ERROR", "无法获取裁切后的封面图");
+				return;
+			}
+			const contentType = blobImageData.type || "image/png";
+			const coverUploadSignedUrlResult = await api.video.getVideoCoverUploadSignedUrl(contentType);
+			const result = coverUploadSignedUrlResult?.result;
+			if (coverUploadSignedUrlResult?.success && result?.uploadUrl && result?.uploadFields && result?.url) {
+				const uploadVideoCoverResult = await api.video.uploadVideoCover(result.uploadUrl, result.uploadFields, blobImageData);
+				if (uploadVideoCoverResult) {
+					thumbnailUrl.value = result.url;
+					isCoverCropperOpen.value = false;
+					clearBlobUrl(); // 释放内存
+				} else
+					useToast(t("toast.cover_upload_failed"), "error");
 			} else {
 				useToast(t("toast.cover_upload_failed"), "error");
-				isUploadingCover.value = false;
+				isCoverCropperOpen.value = false;
 			}
-		} else {
+		} catch (error) {
 			useToast(t("toast.cover_upload_failed"), "error");
+			console.error("ERROR", "上传视频封面时出错", error);
+		} finally {
 			isUploadingCover.value = false;
-			isCoverCropperOpen.value = false;
 		}
 	}
 

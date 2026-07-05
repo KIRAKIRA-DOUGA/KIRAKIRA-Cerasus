@@ -49,7 +49,7 @@ export const environment = {
 	get tosImageBaseUrl() {
 		const base = import.meta.env.VITE_TOS_IMAGE_BASE_URL as string;
 		if (!base) {
-			console.error("ERROR", "Server startup failed, the value of the environment variable TOS_IMAGE_BASE_URL was not specified.");
+			console.error("ERROR", "Server startup failed, the value of the environment variable VITE_TOS_IMAGE_BASE_URL was not specified.");
 			return "";
 		}
 		return base.trim();
