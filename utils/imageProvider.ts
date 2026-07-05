@@ -68,6 +68,6 @@ export function getImageProvider(src?: string): string | undefined {
 	if (/^(blob:|data:)/i.test(src)) return undefined;
 	if (isTosImageUrl(src)) return environment.tosImageProvider; // 旧数据：TOS 完整 URL
 	if (/^https?:/i.test(src)) return undefined; // 其它外链原样渲染
-	if (isTosImageKey(src)) return environment.tosImageProvider; // 新数据：TOS 对象名
+	if (isTosImageKey(src)) return getTosImageHost() ? environment.tosImageProvider : undefined; // 新数据：TOS 对象名；基址未配置或非法时无法拼出完整地址，降级为 undefined 以免 tos provider 用空基址拼出相对路径静默 404（getTosImageHost 内部保证只报错一次）
 	return environment.cloudflareImageProvider; // 裸 Cloudflare 图片 ID（旧数据 / 默认封面）
 }

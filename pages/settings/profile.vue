@@ -108,7 +108,7 @@
 				console.error("ERROR", "Failed to get avatar upload signature.", userAvatarUploadSignedUrlResult);
 				return false;
 			}
-			const uploadResult = await api.user.uploadUserAvatar(userAvatarUploadSignedUrl, userAvatarUploadFields, blobImageData);
+			const uploadResult = await api.user.uploadUserAvatar(userAvatarUploadSignedUrl, userAvatarUploadFields, blobImageData.type ? blobImageData : new Blob([blobImageData], { type: contentType }));
 			if (!uploadResult) {
 				useToast(t("toast.avatar_upload_failed"), "error");
 				return false;

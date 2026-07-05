@@ -19,7 +19,7 @@
 		return Number.isFinite(uid) ? `/user/${uid}` : props.to;
 	});
 
-	const provider = computed(() => getImageProvider(props.avatar)); // TOS 完整 URL / blob 直接渲染，旧的 Cloudflare 图片 ID 走 Cloudflare 提供商
+	const provider = computed(() => getImageProvider(props.avatar)); // blob:/data: 直接渲染；TOS 对象名（key）与 TOS 完整 URL 走 TOS 提供商映射到预生成变体；旧的 Cloudflare 图片 ID 走 Cloudflare 提供商
 	const appSettings = useAppSettingsStore();
 </script>
 

@@ -103,7 +103,7 @@
 				console.error("ERROR", "获取头像上传签名失败", userAvatarUploadSignedUrlResult);
 				return;
 			}
-			const uploadResult = await api.user.uploadUserAvatar(userAvatarUploadSignedUrl, userAvatarUploadFields, blobImageData);
+			const uploadResult = await api.user.uploadUserAvatar(userAvatarUploadSignedUrl, userAvatarUploadFields, blobImageData.type ? blobImageData : new Blob([blobImageData], { type: contentType }));
 			if (!uploadResult) {
 				useToast(t("toast.avatar_upload_failed"), "error");
 				return;

@@ -233,8 +233,4 @@
 			},
 		],
 	},
-	"i18n-ally.localesPaths": [
-		"i18n",
-		"i18n/locales"
-	],
 }

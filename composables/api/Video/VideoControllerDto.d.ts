@@ -254,21 +254,15 @@ export type GetVideoCoverUploadSignedUrlResponseDto = {
 	success: boolean;
 	/** 附加的文本消息 */
 	message?: string;
-	/** 请求到的视频封面图 TOS 上传签名数据 */
+	/** 请求到的视频封面图 TOS 上传签名数据（后端另返回 signedUrl/publicUrl/fields 三个同义字段，前端不使用，不在此声明） */
 	result?: {
 		/** TOS 的 POST 上传地址 */
-		signedUrl: string;
-		/** 同 signedUrl，二选一即可 */
 		uploadUrl: string;
 		/** 对象名 */
 		fileName: string;
 		/** 最终公开访问 URL */
 		url: string;
-		/** 同 url */
-		publicUrl: string;
 		/** POST 表单签名字段（上传时所有字段需先 append，file 放最后） */
-		fields: Record<string, string>;
-		/** 同 fields */
 		uploadFields: Record<string, string>;
 		/** 上传方法，固定为 POST */
 		uploadMethod: "POST";

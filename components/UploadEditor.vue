@@ -28,7 +28,7 @@
 	const isCommitButtonLoading = ref<boolean>(false); // 投稿按钮是否在 loading 状态
 	const isCoverCropperOpen = ref<boolean>(false); // 封面图裁剪器是否开启状态
 	const isUploadingCover = ref<boolean>(false); // 是否正在上传封面图
-	const cropper = ref(); // 图片裁剪器对象
+	const cropper = ref<InstanceType<typeof ImageCropper>>(); // 图片裁剪器实例
 	const isNetworkImage = computed(() => thumbnailUrl.value !== BASE_THUMBNAIL_URL); // 封面图是静态资源图片还是网图，即用户是否已经完成封面图上传
 	const provider = computed(() => isNetworkImage.value && !isFullImageUrl(thumbnailUrl.value) ? getImageProvider(thumbnailUrl.value) : undefined); // 上传后的封面是 TOS 完整 URL，其多分辨率变体要到投稿提交时才由后端生成，此时必须原样渲染原图，否则预览 404；非网络图（默认本地封面）不走提供商
 	// 视频分类
@@ -118,7 +118,7 @@
 			const coverUploadSignedUrlResult = await api.video.getVideoCoverUploadSignedUrl(contentType);
 			const result = coverUploadSignedUrlResult?.result;
 			if (coverUploadSignedUrlResult?.success && result?.uploadUrl && result?.uploadFields && result?.url) {
-				const uploadVideoCoverResult = await api.video.uploadVideoCover(result.uploadUrl, result.uploadFields, blobImageData);
+				const uploadVideoCoverResult = await api.video.uploadVideoCover(result.uploadUrl, result.uploadFields, blobImageData.type ? blobImageData : new Blob([blobImageData], { type: contentType }));
 				if (uploadVideoCoverResult) {
 					thumbnailUrl.value = result.url;
 					isCoverCropperOpen.value = false;

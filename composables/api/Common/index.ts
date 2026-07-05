@@ -184,29 +184,3 @@ export async function uploadFile2TOS(uploadUrl: string, uploadFields: Record<str
 		throw error;
 	}
 }
-
-/**
- * 发送 POST 请求向 Cloudflare Image 上传文件
- * @param fileName - 上传的文件名
- * @param signedUrl - R2 用于上传文件的预编译 URL
- * @param body - 上传的文件的 Blob
- * @param timeout - 请求超时时间（毫秒），默认：30000ms
- * @returns 请求结果，上传成功 true，否则 false
- */
-export async function uploadFile2CloudflareImages(fileName: string, signedUrl: string, body: Blob, timeout: number = 30000): Promise<void> {
-	try {
-		const formData = new FormData();
-		formData.append("file", body);
-		await fetchWithTimeout(signedUrl, {
-			method: "POST",
-			mode: "cors",
-			headers: {
-				"Access-Control-Allow-Origin": "*",
-			},
-			body: formData,
-		}, timeout);
-	} catch (error) {
-		console.error("ERROR", `something wrong in 'uploadFile2CloudflareImage', URL: ${signedUrl}`, error); // TODO: Remove Console Output?
-		throw error;
-	}
-}
