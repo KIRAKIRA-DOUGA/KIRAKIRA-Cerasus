@@ -271,7 +271,7 @@ export default defineNuxtConfig({
 				provider: "./providers/nuxt-image/tos-images.ts",
 				options: {
 					// 数据库存的是对象名（key），provider 用它拼出完整 URL。须与 utils/environment.ts 的 tosImageBaseUrl 一致
-					baseURL: process.env.VITE_TOS_IMAGE_BASE_URL,
+					baseURL: (process.env.VITE_TOS_IMAGE_BASE_URL || "").trim(),
 				},
 			},
 		},
