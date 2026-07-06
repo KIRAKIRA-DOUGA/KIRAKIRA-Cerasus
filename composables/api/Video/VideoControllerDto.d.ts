@@ -172,6 +172,14 @@ export type GetVideoByKvidResponseDto = {
 		copyright: string;
 		/** 视频 TAG */
 		videoTagList: VideoTag[];
+		/** 视频点赞数 */
+		videoUpvoteCount: number;
+		/** 视频点踩数 */
+		videoDownvoteCount: number;
+		/** 当前用户是否点赞 */
+		userHasUpvoted: boolean;
+		/** 当前用户是否点踩 */
+		userHasDownvoted: boolean;
 	};
 } & BlockState;
 
@@ -247,26 +255,32 @@ export type GetVideoFileTusEndpointRequestDto = {
 };
 
 /**
- * 获取用于上传视频封面图（火山引擎 TOS）的 POST 上传签名的响应结果
+ * 获取用于上传视频封面图的预签名 URL 的响应结果
  */
 export type GetVideoCoverUploadSignedUrlResponseDto = {
 	/** 请求是否成功，成功返回 true，否则返回 false */
 	success: boolean;
 	/** 附加的文本消息 */
 	message?: string;
-	/** 请求到的视频封面图 TOS 上传签名数据（后端另返回 signedUrl/publicUrl/fields 三个同义字段，前端不使用，不在此声明） */
+	/** 请求到的视频封面图上传预签名 URL 数据 */
 	result?: {
-		/** TOS 的 POST 上传地址 */
+		/** 预签名 URL */
+		signedUrl: string;
+		/** POST 上传 URL */
 		uploadUrl: string;
-		/** 对象名 */
+		/** 文件名 */
 		fileName: string;
-		/** 最终公开访问 URL */
+		/** 图片对象 URL */
 		url: string;
-		/** POST 表单签名字段（上传时所有字段需先 append，file 放最后） */
+		/** 图片公开 URL */
+		publicUrl: string;
+		/** POST 上传表单字段 */
+		fields: Record<string, string>;
+		/** POST 上传表单字段 */
 		uploadFields: Record<string, string>;
-		/** 上传方法，固定为 POST */
+		/** 上传方法 */
 		uploadMethod: "POST";
-		/** 最大字节数（2 MiB） */
+		/** 图片最大上传大小，单位 byte */
 		maxSize: number;
 		/** 已签名的 Content-Type */
 		contentType: string;
