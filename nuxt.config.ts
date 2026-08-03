@@ -248,29 +248,11 @@ export default defineNuxtConfig({
 	image: {
 		format: ["avif", "webp"], // 只适用于 <NuxtPicture>，对 <NuxtImg> 无效。
 		providers: {
-			cloudflareProd: {
-				name: "cloudflare-prod", // optional value to overrider provider name
-				provider: "./providers/nuxt-image/cloudflare-images.ts", // Path to custom provider
-				options: {
-					// ... provider options
-					baseURL: "https://kirafile.com",
-					accountHash: "Gyz90amG54C4b_dtJiRpYg",
-				},
-			},
-			cloudflareStg: {
-				name: "cloudflare-stg", // optional value to overrider provider name
-				provider: "./providers/nuxt-image/cloudflare-images.ts", // Path to custom provider
-				options: {
-					// ... provider options
-					baseURL: "https://kirakira-image.starcitizen.rip",
-					accountHash: "nLUFLrrgVwzQdEx8eL5BaA",
-				},
-			},
 			tos: {
 				name: "tos", // 火山引擎 TOS 图片处理
 				provider: "./providers/nuxt-image/tos-images.ts",
 				options: {
-					// 数据库存的是对象名（key），provider 用它拼出完整 URL。须与 utils/environment.ts 的 tosImageBaseUrl 一致
+					// 数据库存的是对象名（key），provider 用它拼出完整 URL。
 					baseURL: (process.env.VITE_TOS_IMAGE_BASE_URL || "").trim(),
 				},
 			},

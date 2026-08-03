@@ -29,7 +29,7 @@
 			<div v-if="image" class="image">
 				<NuxtImg
 					:src="image"
-					:provider="getImageProvider(image)"
+					provider="tos"
 					alt="image"
 					draggable="false"
 					format="avif"

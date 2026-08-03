@@ -46,7 +46,7 @@
 				<div class="cover-wrapper">
 					<NuxtImg
 						v-if="image"
-						:provider="getImageProvider(image)"
+						provider="tos"
 						:src="image"
 						alt="cover"
 						class="cover"

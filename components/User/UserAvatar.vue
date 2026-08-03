@@ -19,15 +19,24 @@
 		return Number.isFinite(uid) ? `/user/${uid}` : props.to;
 	});
 
-	const provider = computed(() => getImageProvider(props.avatar)); // blob:/data: 直接渲染；TOS 对象名（key）与 TOS 完整 URL 走 TOS 提供商映射到预生成变体；旧的 Cloudflare 图片 ID 走 Cloudflare 提供商
+	const isLocalPreview = computed(() => /^(blob:|data:)/i.test(props.avatar ?? ""));
 	const appSettings = useAppSettingsStore();
 </script>
 
 <template>
 	<Comp v-ripple="Boolean(userLink) || Boolean(hoverable)" :class="{ hoverable }">
+		<img
+			v-if="avatar && isLocalPreview"
+			:src="avatar"
+			alt="avatar"
+			draggable="false"
+			width="100"
+			height="100"
+			:class="{ hoverable }"
+		/>
 		<NuxtImg
-			v-if="avatar"
-			:provider
+			v-else-if="avatar"
+			provider="tos"
 			:src="avatar"
 			alt="avatar"
 			draggable="false"

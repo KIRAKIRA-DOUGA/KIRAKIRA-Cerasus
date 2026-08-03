@@ -6,8 +6,7 @@
 		files: File[];
 	}>();
 
-	const BASE_THUMBNAIL_URL = "static/images/thumbnail.png"; // FIXME: Nuxt Image 的 src 为 undefined 或 "" 时会出错，见 https://github.com/nuxt/image/issues/1299
-	const BASE_THUMBNAIL_ID = environment.cloudflareImageProvider === "cloudflare-prod" ? "f907a7bd-3247-4415-1f5e-a67a5d3ea100" : "ea693cd1-5e58-4e07-1391-49c133e30300";
+	const DEFAULT_THUMBNAIL_URL = "static/images/thumbnail.png";
 
 	const copyright = ref<Copyright>("original"); // 视频版权
 	const title = ref(""); // 视频标题
@@ -17,7 +16,7 @@
 	const pushToFeed = ref(true); // 是否发布到动态
 	const ensureOriginal = ref(false); // 声明为原创
 	const thumbnailBlob = ref<string>(); // 封面图 Blob
-	const thumbnailUrl = ref<string>(BASE_THUMBNAIL_URL); // 封面图 Blob 或 URL
+	const thumbnailUrl = ref<string>(DEFAULT_THUMBNAIL_URL); // 封面图 Blob 或 URL
 	const thumbnailInput = ref<HTMLInputElement>();
 	const currentLanguage = computed(getCurrentLocale); // 当前用户的语言
 	const tags = reactive<Map<VideoTag["tagId"], VideoTag>>(new Map()); // 视频标签
@@ -29,8 +28,7 @@
 	const isCoverCropperOpen = ref<boolean>(false); // 封面图裁剪器是否开启状态
 	const isUploadingCover = ref<boolean>(false); // 是否正在上传封面图
 	const cropper = ref<InstanceType<typeof ImageCropper>>(); // 图片裁剪器实例
-	const isNetworkImage = computed(() => thumbnailUrl.value !== BASE_THUMBNAIL_URL); // 封面图是静态资源图片还是网图，即用户是否已经完成封面图上传
-	const provider = computed(() => isNetworkImage.value && !isFullImageUrl(thumbnailUrl.value) ? getImageProvider(thumbnailUrl.value) : undefined); // 上传后的封面是 TOS 完整 URL，其多分辨率变体要到投稿提交时才由后端生成，此时必须原样渲染原图，否则预览 404；非网络图（默认本地封面）不走提供商
+	const isCoverUploaded = computed(() => thumbnailUrl.value !== DEFAULT_THUMBNAIL_URL);
 	// 视频分类
 	const VIDEO_CATEGORY = new Map([
 		["anime", t("category.anime")],
@@ -196,6 +194,10 @@
 			useToast(t("validation.required.category"), "error");
 			return;
 		}
+		if (!isCoverUploaded.value) {
+			useToast(t("toast.no_cover"), "error");
+			return;
+		}
 
 		const uploadVideoRequest: UploadVideoRequestDto = {
 			videoPart: [
@@ -206,7 +208,7 @@
 				},
 			],
 			title: title.value,
-			image: isNetworkImage.value ? thumbnailUrl.value : BASE_THUMBNAIL_ID, // 没上传封面时使用默认封面图 ID // TODO: 自动获取视频截图作为封面
+			image: thumbnailUrl.value,
 			uploaderId: uid,
 			duration: 300, // TODO: 视频时长
 			description: description.value,
@@ -333,9 +335,8 @@
 			<div class="toolbox-card left">
 				<div v-ripple class="cover" @click="thumbnailInput?.click()">
 					<div class="mask">{{ $t("select_cover") }}</div>
-					<NuxtImg
+					<img
 						v-if="thumbnailUrl"
-						:provider
 						:src="thumbnailUrl"
 						:width="350"
 						alt="thumbnail"

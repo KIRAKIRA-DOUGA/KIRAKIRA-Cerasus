@@ -23,7 +23,7 @@
 	const selectedTab = ref("info");
 	const transitionName = ref("page-jump-in");
 	const title = computed(() => videoDetails.value?.title ?? "");
-	const thumbnail = computed(() => videoDetails.value?.image || defaultThumbnail);
+	const thumbnail = computed(() => videoDetails.value?.image ?? ""); // 这里需要一个在 TOS 中上传的默认封面
 	const currentLanguage = computed(getCurrentLocale); // 当前用户的语言
 	// const recommendations = ref<Videos200ResponseVideosInner[]>();
 
@@ -83,7 +83,7 @@
 	const img = useImage();
 	const ogImage = computed(() => {
 		const cover = videoDetails.value?.image;
-		return cover ? img(cover, { width: 1280, height: 720 }, { provider: getImageProvider(cover) }) : undefined;
+		return cover ? img(cover, { width: 1280, height: 720 }, { provider: "tos" }) : undefined;
 	});
 
 	useHead({

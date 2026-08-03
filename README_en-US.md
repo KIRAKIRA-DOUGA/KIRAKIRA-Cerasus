@@ -70,7 +70,7 @@ flowchart TD
     %% External Systems
     subgraph "External Systems"
         Backend["KIRAKIRA-Rosales Backend"]:::external
-        CloudflareImages["Cloudflare Images"]:::external
+        TOSImages["Volcengine TOS"]:::external
         CloudflareStream["Cloudflare Stream"]:::external
     end
 
@@ -80,7 +80,7 @@ flowchart TD
     Modules -->|"affects"| NuxtApp
     PluginsProviders -->|"middleware"| NuxtApp
     ComposablesStores -->|"fetch_API"| Backend
-    PluginsProviders -->|"integrates"| CloudflareImages
+    PluginsProviders -->|"integrates"| TOSImages
     PluginsProviders -->|"integrates"| CloudflareStream
     UIComponents -->|"directive_binding"| PluginsProviders
     AssetsStyling -->|"styles"| UIComponents
@@ -160,10 +160,10 @@ You can also run the following command in the root directory to start:
 pnpm dev-local
 ```
 > [!WARNING]\
-> Although you connect to the local backend, you will still request image asset files from the official staging environment Cloudflare Images service, and use the official staging environment Cloudflare Stream subdomain template when uploading videos. If you want to use your own Cloudflare Images and Cloudflare Stream services, please refer to the "Custom startup command" section below.
+> Although you connect to the local backend, you will still request image assets from the official staging Volcengine TOS service and use the official staging Cloudflare Stream subdomain template when uploading videos. If you want to use your own TOS and Cloudflare Stream services, please refer to the "Custom startup command" section below.
 
 > [!WARNING]\
-> For developers with access to the production environment, you can also use the `pnpm run dev-local-prod` command to connect to the production environment Cloudflare Images and Cloudflare Stream services.
+> Developers with production access can also use `pnpm run dev-local-prod` to connect to the production TOS and Cloudflare Stream services.
 
 After it started, you should be able to preview at this URL: https://localhost:3000/
 
@@ -199,7 +199,7 @@ Sometimes, the preset quick start command does not meet your needs. In this case
 A typical custom startup command looks like:
 ```bash
 # The following command is equivalent to 'pnpm dev-local'
-pnpm cross-env VITE_BACKEND_URI=https://localhost:30000 VITE_CLOUDFLARE_IMAGES_PROVIDER=cloudflare-stg VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://customer-o9xrvgnj5fidyfm4.cloudflarestream.com/ VITE_TOS_IMAGE_BASE_URL=https://test-image.kiravideo.com nuxi dev --host --https --ssl-cert server/server.cer --ssl-key server/server.key
+pnpm cross-env VITE_BACKEND_URI=https://localhost:30000 VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://customer-o9xrvgnj5fidyfm4.cloudflarestream.com/ VITE_TOS_IMAGE_BASE_URL=https://test-image.kiravideo.com nuxi dev --host --https --ssl-cert server/server.cer --ssl-key server/server.key
 ```
 
 After it started, you should be able to preview at this URL: https://localhost:3000/
@@ -209,21 +209,17 @@ Parsing of the above command:
 Set cross-platform environment variables to ensure that the command can be executed normally under different operating systems (such as Windows and Linux).
 2. `VITE_BACKEND_URI=https://localhost:30000`\
 Injects an environment variable named `VITE_BACKEND_URI` with the value `https://localhost:30000`, which is the URI of the backend API.
-3. `VITE_CLOUDFLARE_IMAGES_PROVIDER=cloudflare-stg`\
-Injects an environment variable named `VITE_CLOUDFLARE_IMAGES_PROVIDER` with the value `cloudflare-stg`. \
-This indicates that you are using the [NuxtImage Custom Provider](https://image.nuxt.com/advanced/custom-provider) named `cloudflare-stg`. \
-To modify the configuration of the NuxtImage Custom Provider, go to the `image.providers` section in file `nuxt.config.ts` in the root directory.
-4. `VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://custom...stream.com/`\
+3. `VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://custom...stream.com/`\
 Inject an environment variable named `VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN` with a value of `https://custom...stream.com/`. \
 This environment variable specifies the custom subdomain of the Cloudflare Stream service.
-5. `VITE_TOS_IMAGE_BASE_URL=https://test-image.kiravideo.com`\
+4. `VITE_TOS_IMAGE_BASE_URL=https://test-image.kiravideo.com`\
 Injects an environment variable named `VITE_TOS_IMAGE_BASE_URL` whose value is the public base URL of Volcengine TOS images (must match the backend `TOS_IMAGE_PUBLIC_BASE_URL` / `TOS_IMAGE_CDN_BASE_URL`). \
-It is used to recognize TOS images and map the requested width to the multi-resolution variants pre-generated at upload time (`{key}.w{N}.webp`) for progressive loading. If left unset, TOS images will not load by size tier correctly.
-6. `nuxi dev`\
+The TOS image provider uses this base URL to resolve object keys and map requested widths to the multi-resolution variants generated at upload time (`{key}.w{N}.webp`). If omitted, TOS object keys cannot be resolved to accessible URLs.
+5. `nuxi dev`\
 Start Nuxt development server. Optional parameters can refer to [this official document](https://nuxt.com/docs/api/commands/dev).
-7. `--host`\
+6. `--host`\
 No parameters are specified after `--host`, indicating that the development server listens to all hosts. For details, please refer to the "Mobile Webpage Testing & Preview" section below
-8. `--https --ssl-cert server/server.cer --ssl-key server/server.key`\
+7. `--https --ssl-cert server/server.cer --ssl-key server/server.key`\
 Among them, `--https` indicates that HTTPS is enabled. `--ssl-cert XXX.cer --ssl-key YYY.key` specifies the path of the certificate.
 
 #### Mobile Webpage Testing & Preview
