@@ -44,7 +44,6 @@
 	async function finish() {
 		isUpdatingUserInfo.value = true;
 		const updateOrCreateUserInfoRequest: UpdateOrCreateUserInfoRequestDto = {
-			avatar: avatarBlob.value,
 			username: profile.name.normalize(),
 			userNickname: profile.nickname.normalize(),
 			signature: profile.bio.normalize(),

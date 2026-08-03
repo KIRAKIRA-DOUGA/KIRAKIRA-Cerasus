@@ -164,10 +164,9 @@
 
 			if (newAvatarImageBlob.value)
 				if (!await handleSubmitAvatarImage())
-					return; // 头像上传失败时中止保存，否则 correctAvatar 仍是本地 blob: 预览地址，会被写进用户资料
+					return; // 头像由 confirmUpload 单独写库；上传失败时中止保存其余资料。
 
 			const updateOrCreateUserInfoRequest: UpdateOrCreateUserInfoRequestDto = {
-				avatar: correctAvatar.value,
 				username: profile.name.normalize(),
 				userNickname: profile.nickname.normalize(),
 				signature: profile.bio.normalize(),
@@ -207,7 +206,6 @@
 	async function reset() {
 		isResettingUserInfo.value = true;
 		const updateOrCreateUserInfoRequest: UpdateOrCreateUserInfoRequestDto = {
-			avatar: "",
 			userNickname: "",
 			signature: "",
 			gender: "",
