@@ -1,4 +1,5 @@
 import { Point } from "classes/Point";
+import { type MaybeRef, type Ref, computed, onMounted, onUnmounted, readonly, ref, toRef, toValue } from "vue";
 
 type SmoothValueAcceptType = number | number[] | Point;
 type SmoothValueChangeHandler<T extends SmoothValueAcceptType> = (current: T, previous: T) => void;
@@ -25,7 +26,7 @@ const isValueNotChanged = (cur: number, prev: number) => Math.abs(cur - prev) < 
 export function useSmoothValue<T extends SmoothValueAcceptType>(current: MaybeRef<T>, spring: number, options: SmoothValueOptions<T> = {}) {
 	const reduceMotion = options.disabled || (environment.server ? false : isPrefersReducedMotion());
 	if (spring <= 0 || spring > 1)
-		throw new RangeError(`useSmoothValue speed 参数取值范围错误。参数值必须在 (0 ~ 1] 区间内，当前值为 ${spring}。`);
+		throw new RangeError(`\`useSmoothValue\` \`spring\` parameter value range error\nThe parameter value must be within the range of (0, 1], the current value is ${spring}.`);
 	const animationId = ref<number>();
 	const prevTimestamp = ref<DOMHighResTimeStamp>();
 	const _smoothValue = ref(toValue(current)) as Ref<T>;
@@ -36,24 +37,19 @@ export function useSmoothValue<T extends SmoothValueAcceptType>(current: MaybeRe
 			options.onChange?.(cur, prev);
 			do {
 				if (typeof cur === "number") {
-					asserts<number>(prev);
-					if (isValueNotChanged(cur, prev)) break;
-				} else if (cur instanceof Point) {
-					asserts<Point>(prev);
-					if (isValueNotChanged(cur.x, prev.x) && isValueNotChanged(cur.y, prev.y)) break;
-				} else {
-					asserts<number[]>(prev);
-					if (cur.length === prev.length && cur.every((c, i) => isValueNotChanged(c, prev[i]))) break;
-				}
+					if (isValueNotChanged(cur, prev as number)) break;
+				} else if (Array.isArray(cur))
+					if (cur.length === (prev as number[]).length && cur.every((c, i) => isValueNotChanged(c, (prev as number[])[i]))) break;
+
 				_smoothValue.value = cur;
 				return;
 			} while (false);
-			options.onStopChange?.(cur, prev);
+			options.onStopChange?.(cur as T, prev);
 			_smoothValue.value = toValue(current);
 		},
 	});
 	onMounted(() => {
-		const animation = (timestamp?: number) => {
+		const animation = (timestamp?: DOMHighResTimeStamp) => {
 			const value = toValue(current);
 			const getNewValue = (cur: number, prev: number) => {
 				if (!Number.isFinite(cur) || !Number.isFinite(prev)) return cur;
@@ -63,15 +59,11 @@ export function useSmoothValue<T extends SmoothValueAcceptType>(current: MaybeRe
 			if (typeof value === "number") {
 				const prev = smoothValue as Ref<number>;
 				smoothValue.value = getNewValue(value, prev.value) as T;
-			} else if (value instanceof Point) {
-				const prev = smoothValue as Ref<Point>;
-				prev.value.x = getNewValue(value.x, prev.value.x);
-				prev.value.y = getNewValue(value.y, prev.value.y);
-			} else {
+			} else if (Array.isArray(value)) {
 				const prev = smoothValue as Ref<number[]>;
 				prev.value = prev.value.map((prev, i) => getNewValue(value[i], prev));
 			}
-			animationId.value = requestAnimationFrame(animation); // 注意 `requestAnimationFrame` 速度取决于您的显示器 FPS。
+			animationId.value = requestAnimationFrame(animation); // Note that `requestAnimationFrame` speed depends on your monitor FPS.
 		};
 		if (!reduceMotion) animation();
 	});
