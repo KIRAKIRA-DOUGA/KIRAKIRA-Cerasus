@@ -142,6 +142,7 @@
 		"qrcode.vue": "^3.8.0",
 		"safe-regex": "^2.1.1",
 		"shaka-player": "^5.0.5",
+		"smooth-value": "^1.1.0",
 		"temporal-polyfill": "^0.3.2",
 		"tus-js-client": "^4.3.1",
 		"variable-name-conversion": "^1.7.0",

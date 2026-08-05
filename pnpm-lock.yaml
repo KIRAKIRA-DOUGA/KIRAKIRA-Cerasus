@@ -103,6 +103,9 @@ importers:
       shaka-player:
         specifier: ^5.0.5
         version: 5.0.5
+      smooth-value:
+        specifier: ^1.1.0
+        version: 1.1.0
       temporal-polyfill:
         specifier: ^0.3.2
         version: 0.3.2
@@ -6413,6 +6416,9 @@ packages:
   smob@1.6.1:
     resolution: {integrity: sha512-KAkBqZl3c2GvNgNhcoyJae1aKldDW0LO279wF9bk1PnluRTETKBq0WyzRXxEhoQLk56yHaOY4JCBEKDuJIET5g==}
     engines: {node: '>=20.0.0'}
+
+  smooth-value@1.1.0:
+    resolution: {integrity: sha512-mKlwmFjgXucUdVxGmj48h0EH/dajPfqU7U8Kt8S1W6Lvhm9c65DQEh9Oa0EGYEioLAaWNcM8qSWEUs4at4GIhQ==}
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -14265,6 +14271,8 @@ snapshots:
       is-fullwidth-code-point: 3.0.0
 
   smob@1.6.1: {}
+
+  smooth-value@1.1.0: {}
 
   source-map-js@1.2.1: {}
 
