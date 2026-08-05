@@ -18,7 +18,7 @@
 	const specificModel = defineModel<ColorModel>("colorModel", { default: "hsl" });
 
 	const main = ref<TwoD>([1, 1]);
-	const smoothMain = useSmoothValue(main, 0.5);
+	const smoothMain = useSmoothValue(main);
 	const auxiliary = ref(0);
 	const opacity = ref(1);
 	const model = ref(specificModel.value);

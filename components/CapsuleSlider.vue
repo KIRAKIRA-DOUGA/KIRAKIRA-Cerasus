@@ -38,7 +38,7 @@
 
 	const restrict = (n: number | undefined, nanValue: number) => Number.isFinite(n) ? clamp(map(n!, props.min, props.max, 0, 1), 0, 1) : nanValue;
 	const value = computed(() => restrict(model.value, 0));
-	const smoothValue = useSmoothValue(value, 0.5); // 修改这个参数可以调整滑动条的平滑移动值。
+	const smoothValue = useSmoothValue(value); // 修改这个参数可以调整滑动条的平滑移动值。
 	const adjustedValue = computed(() => { // 由于 clip-path 造成视觉上的白边，因此对数值进行小幅调整。
 		const TINY = 0.005;
 		return (1 - smoothValue.value) * (1 + TINY) - TINY;
