@@ -96,6 +96,7 @@
 		"postcss": "^8.5.8",
 		"postcss-combine-media-query": "^2.1.0",
 		"postcss-html": "^1.8.1",
+		"postcss-pseudo-hover": "^1.2.0",
 		"postcss-viewport-unit-fallback": "^1.0.1",
 		"protobufjs": "^7.5.4",
 		"rimraf": "^6.1.3",

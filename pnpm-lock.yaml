@@ -236,6 +236,9 @@ importers:
       postcss-html:
         specifier: ^1.8.1
         version: 1.8.1
+      postcss-pseudo-hover:
+        specifier: ^1.2.0
+        version: 1.2.0
       postcss-viewport-unit-fallback:
         specifier: ^1.0.1
         version: 1.0.1
@@ -5877,6 +5880,9 @@ packages:
     peerDependencies:
       postcss: ^8.4.32
 
+  postcss-pseudo-hover@1.2.0:
+    resolution: {integrity: sha512-BeINw595z73Ruk3qDNsU1Da0sfwo5WGz4gxM2gfsqPRfmn1+jrbqK/PZzQDKNYs9O1kdQNResRAU0JmXPanQEQ==}
+
   postcss-reduce-initial@7.0.6:
     resolution: {integrity: sha512-G6ZyK68AmrPdMB6wyeA37ejnnRG2S8xinJrZJnOv+IaRKf6koPAVbQsiC7MfkmXaGmF1UO+QCijb27wfpxuRNg==}
     engines: {node: ^18.12.0 || ^20.9.0 || >=22.0}
@@ -5916,6 +5922,10 @@ packages:
 
   postcss-selector-parser@7.1.1:
     resolution: {integrity: sha512-orRsuYpJVw8LdAwqqLykBj9ecS5/cRHlI5+nvTo8LcCKmzDmqVORXtOIYEEQuL9D4BxtA1lm5isAqzQZCoQ6Eg==}
+    engines: {node: '>=4'}
+
+  postcss-selector-parser@7.1.5:
+    resolution: {integrity: sha512-KvvtD7SrlBP7dlgkBghEE3r84CABm5SmV2aNcG4oCA+qDnJ/tvKonFVvwWAyyWUEwxuNawdfEAZKP9zM3oZ2Uw==}
     engines: {node: '>=4'}
 
   postcss-sorting@9.1.0:
@@ -13605,6 +13615,13 @@ snapshots:
       postcss: 8.5.8
       postcss-value-parser: 4.2.0
 
+  postcss-pseudo-hover@1.2.0:
+    dependencies:
+      '@csstools/css-parser-algorithms': 4.0.0(@csstools/css-tokenizer@4.0.0)
+      '@csstools/css-tokenizer': 4.0.0
+      '@csstools/media-query-list-parser': 5.0.0(@csstools/css-parser-algorithms@4.0.0(@csstools/css-tokenizer@4.0.0))(@csstools/css-tokenizer@4.0.0)
+      postcss-selector-parser: 7.1.5
+
   postcss-reduce-initial@7.0.6(postcss@8.5.8):
     dependencies:
       browserslist: 4.28.1
@@ -13636,6 +13653,11 @@ snapshots:
       util-deprecate: 1.0.2
 
   postcss-selector-parser@7.1.1:
+    dependencies:
+      cssesc: 3.0.0
+      util-deprecate: 1.0.2
+
+  postcss-selector-parser@7.1.5:
     dependencies:
       cssesc: 3.0.0
       util-deprecate: 1.0.2

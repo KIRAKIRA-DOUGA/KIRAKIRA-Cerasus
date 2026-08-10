@@ -311,7 +311,7 @@ export default defineNuxtConfig({
 	postcss: {
 		plugins: {
 			"./plugins/postcss/component-root": true,
-			"./plugins/postcss/any-hover": true,
+			"postcss-pseudo-hover": true,
 			"./plugins/postcss/lang-latin": true,
 			"postcss-combine-media-query": false,
 			"postcss-viewport-unit-fallback": true,
