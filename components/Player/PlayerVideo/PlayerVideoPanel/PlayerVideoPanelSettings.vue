@@ -111,9 +111,10 @@
 									{{ $t(`player.filter.${new VariableName(filter).snake}`) }}
 									<template #image>
 										<NuxtImg
+											v-if="thumbnail"
 											class="filter-card"
 											:class="new VariableName(filter).kebab"
-											:provider="environment.cloudflareImageProvider"
+											provider="tos"
 											:src="thumbnail"
 											:alt="`preview-${$t(`player.filter.${new VariableName(filter).snake}`)}`"
 											:draggable="false"

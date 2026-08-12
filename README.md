@@ -70,7 +70,7 @@ flowchart TD
     %% 外部系统
     subgraph "外部系统"
         Backend["KIRAKIRA-Rosales 后端"]:::external
-        CloudflareImages["Cloudflare 图片"]:::external
+        TOSImages["火山引擎 TOS"]:::external
         CloudflareStream["Cloudflare 流媒体"]:::external
     end
 
@@ -80,7 +80,7 @@ flowchart TD
     Modules -->|"影响"| NuxtApp
     PluginsProviders -->|"中间件"| NuxtApp
     ComposablesStores -->|"获取接口"| Backend
-    PluginsProviders -->|"整合"| CloudflareImages
+    PluginsProviders -->|"整合"| TOSImages
     PluginsProviders -->|"整合"| CloudflareStream
     UIComponents -->|"指令绑定"| PluginsProviders
     AssetsStyling -->|"妆饰"| UIComponents
@@ -163,10 +163,10 @@ pnpm dev-local
 ```
 
 > [!WARNING]\
-> 虽然您连接了本地后端，但仍会向官方提供的预生产环境 Cloudflare Images 服务请求图片资源文件，并在视频上传时使用官方预生产环境的 Cloudflare Stream 子域名模板。如果您想要使用您自己的 Cloudflare Images 和 Cloudflare Stream 服务，请参考下方的“自定义启动命令”章节。
+> 虽然您连接了本地后端，但仍会向官方提供的预生产环境火山引擎 TOS 服务请求图片资源文件，并在视频上传时使用官方预生产环境的 Cloudflare Stream 子域名模板。如果您想要使用自己的 TOS 和 Cloudflare Stream 服务，请参考下方的“自定义启动命令”章节。
 
 > [!WARNING]\
-> 对于有生产环境访问权限的开发者，您也可以使用 `pnpm run dev-local-prod` 命令来连接生产环境的 Cloudflare Images 和 Cloudflare Stream 服务。
+> 对于有生产环境访问权限的开发者，您也可以使用 `pnpm run dev-local-prod` 命令来连接生产环境的 TOS 和 Cloudflare Stream 服务。
 
 启动后，您应该能够在这个地址访问：https://localhost:3000/
 
@@ -202,7 +202,7 @@ pnpm dev-stg
 一个典型的自定义启动命令看起来像：
 ```bash
 # 以下命令等价于 'pnpm dev-local'
-pnpm cross-env VITE_BACKEND_URI=https://localhost:30000 VITE_CLOUDFLARE_IMAGES_PROVIDER=cloudflare-stg VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://customer-o9xrvgnj5fidyfm4.cloudflarestream.com/ nuxi dev --host --https --ssl-cert server/server.cer --ssl-key server/server.key
+pnpm cross-env VITE_BACKEND_URI=https://localhost:30000 VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://customer-o9xrvgnj5fidyfm4.cloudflarestream.com/ VITE_TOS_IMAGE_BASE_URL=https://test-image.kiravideo.com nuxi dev --host --https --ssl-cert server/server.cer --ssl-key server/server.key
 ```
 
 启动后，您应该能够在这个地址访问：https://localhost:3000/
@@ -212,13 +212,12 @@ pnpm cross-env VITE_BACKEND_URI=https://localhost:30000 VITE_CLOUDFLARE_IMAGES_P
   设置跨平台的环境变量，确保命令在不同操作系统（如 Windows 和 Linux）下都能正常执行。
 2. `VITE_BACKEND_URI=https://localhost:3000`\
   注入一个名为 `VITE_BACKEND_URI` 的环境变量，其值为 `https://localhost:3000`，即后端 API 的 URI。
-3. `VITE_CLOUDFLARE_IMAGES_PROVIDER=cloudflare-stg`\
-  注入一个名为 `VITE_CLOUDFLARE_IMAGES_PROVIDER` 的环境变量，其值为 `cloudflare-stg`。\
-  这代表您使用名为 `cloudflare-stg` 的 [NuxtImage Custom Provider](https://image.nuxt.com/advanced/custom-provider)。\
-  如需修改 NuxtImage Custom Provider 的配置，请前往根目录中的 `nuxt.config.ts` 中 `image.providers` 部分。
-4. `VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://custom...stream.com/`\
+3. `VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://custom...stream.com/`\
   注入一个名为 `VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN` 的环境变量，其值为 `https://custom...stream.com/`。\
   该环境变量指定了 Cloudflare Stream 服务的自定义子域名。
+4. `VITE_TOS_IMAGE_BASE_URL=https://test-image.kiravideo.com`\
+  注入一个名为 `VITE_TOS_IMAGE_BASE_URL` 的环境变量，其值为火山引擎 TOS 图片的公开访问基址（须与后端 `TOS_IMAGE_PUBLIC_BASE_URL` / `TOS_IMAGE_CDN_BASE_URL` 一致）。\
+  TOS 图片 Provider 使用该地址拼接对象名，并按请求宽度映射到上传时预生成的多分辨率变体（`{key}.w{N}.webp`），实现渐进加载。若不配置，TOS 对象名将无法生成可访问的完整地址。
 5. `nuxi dev`\
   启动 Nuxt 的开发服务器。可选参数可以参考[这篇官方文档](https://nuxt.com/docs/api/commands/dev)。
 6. `--host`\

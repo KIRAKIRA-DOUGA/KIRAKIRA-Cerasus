@@ -25,9 +25,9 @@
 	"author": "KIRAKIRA Project Team",
 	"scripts": {
 		"dev-local": "cross-env pnpm run dev-local-stg",
-		"dev-local-stg": "cross-env VITE_BACKEND_URI=https://localhost:30000 VITE_CLOUDFLARE_IMAGES_PROVIDER=cloudflare-stg VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://customer-o9xrvgnj5fidyfm4.cloudflarestream.com/ nuxt dev --host",
-		"dev-local-prod": "cross-env VITE_BACKEND_URI=https://localhost:30000 VITE_CLOUDFLARE_IMAGES_PROVIDER=cloudflare-prod VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://customer-yvgxn6arnuae3q89.cloudflarestream.com/ nuxt dev --host",
-		"dev-stg": "cross-env VITE_BACKEND_URI=https://localhost:3000/api/staging VITE_CLOUDFLARE_IMAGES_PROVIDER=cloudflare-stg VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://customer-o9xrvgnj5fidyfm4.cloudflarestream.com/ nuxt dev --host",
+		"dev-local-stg": "cross-env VITE_BACKEND_URI=https://localhost:30000 VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://customer-o9xrvgnj5fidyfm4.cloudflarestream.com/ VITE_TOS_IMAGE_BASE_URL=https://test-image.kiravideo.com nuxt dev --host",
+		"dev-local-prod": "cross-env VITE_BACKEND_URI=https://localhost:30000 VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://customer-yvgxn6arnuae3q89.cloudflarestream.com/ VITE_TOS_IMAGE_BASE_URL=https://kirakira-images.tos-cn-beijing.volces.com nuxt dev --host",
+		"dev-stg": "cross-env VITE_BACKEND_URI=https://localhost:3000/api/staging VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://customer-o9xrvgnj5fidyfm4.cloudflarestream.com/ VITE_TOS_IMAGE_BASE_URL=https://test-image.kiravideo.com nuxt dev --host",
 		"build": "nuxt build",
 		"generate": "nuxt generate",
 		"preview": "nuxt preview",

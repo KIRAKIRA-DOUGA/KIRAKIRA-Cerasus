@@ -88,28 +88,44 @@
 
 	/**
 	 * 修改头像事件，向服务器提交新的图片。
+	 * @returns 是否上传并确认成功。失败时 newAvatar 仍是本地 blob: 预览地址，不可提交到服务器。
 	 */
-	async function handleSubmitAvatarImage() {
+	async function handleSubmitAvatarImage(): Promise<boolean> {
 		try {
 			const blobImageData = newAvatarImageBlob.value;
-			if (blobImageData) {
-				const userAvatarUploadSignedUrlResult = await api.user.getUserAvatarUploadSignedUrl();
-				const userAvatarUploadSignedUrl = userAvatarUploadSignedUrlResult.userAvatarUploadSignedUrl;
-				const userAvatarUploadFilename = userAvatarUploadSignedUrlResult.userAvatarFilename;
-				if (userAvatarUploadSignedUrlResult.success && userAvatarUploadSignedUrl && userAvatarUploadFilename) {
-					const uploadResult = await api.user.uploadUserAvatar(userAvatarUploadFilename, blobImageData, userAvatarUploadSignedUrl);
-					if (uploadResult) {
-						newAvatar.value = userAvatarUploadFilename;
-						clearBlobUrl(); // 释放内存
-					}
-				}
-			} else {
+			if (!blobImageData) {
 				useToast(t("toast.something_went_wrong"), "error");
 				console.error("ERROR", "Failed to get cropped image data.");
+				return false;
 			}
+			const contentType = blobImageData.type || "image/png";
+			const userAvatarUploadSignedUrlResult = await api.user.getUserAvatarUploadSignedUrl(contentType);
+			const userAvatarUploadSignedUrl = userAvatarUploadSignedUrlResult.userAvatarUploadSignedUrl;
+			const userAvatarUploadFields = userAvatarUploadSignedUrlResult.userAvatarUploadFields;
+			const userAvatarUploadFilename = userAvatarUploadSignedUrlResult.userAvatarFilename;
+			if (!userAvatarUploadSignedUrlResult.success || !userAvatarUploadSignedUrl || !userAvatarUploadFields || !userAvatarUploadFilename) {
+				useToast(t("toast.avatar_upload_failed"), "error");
+				console.error("ERROR", "Failed to get avatar upload signature.", userAvatarUploadSignedUrlResult);
+				return false;
+			}
+			const uploadResult = await api.user.uploadUserAvatar(userAvatarUploadSignedUrl, userAvatarUploadFields, blobImageData.type ? blobImageData : new Blob([blobImageData], { type: contentType }));
+			if (!uploadResult) {
+				useToast(t("toast.avatar_upload_failed"), "error");
+				return false;
+			}
+			const confirmResult = await api.user.confirmUserAvatarUpload({ fileName: userAvatarUploadFilename });
+			if (!confirmResult.success || !confirmResult.userAvatarUrl) {
+				useToast(t("toast.avatar_upload_failed"), "error");
+				console.error("ERROR", "Failed to confirm avatar upload.", confirmResult);
+				return false;
+			}
+			newAvatar.value = confirmResult.userAvatarUrl;
+			clearBlobUrl(); // 释放内存
+			return true;
 		} catch (error) {
 			useToast(t("toast.avatar_upload_failed"), "error");
 			console.error("ERROR", "Failed to upload avatar.", error);
+			return false;
 		}
 	}
 
@@ -147,15 +163,10 @@
 				return;
 
 			if (newAvatarImageBlob.value)
-				try {
-					await handleSubmitAvatarImage();
-				} catch (error) {
-					useToast(t("toast.avatar_upload_failed"), "error");
-					console.error("ERROR", "Failed to upload avatar.", error);
-				}
+				if (!await handleSubmitAvatarImage())
+					return; // 头像由 confirmUpload 单独写库；上传失败时中止保存其余资料。
 
 			const updateOrCreateUserInfoRequest: UpdateOrCreateUserInfoRequestDto = {
-				avatar: correctAvatar.value,
 				username: profile.name.normalize(),
 				userNickname: profile.nickname.normalize(),
 				signature: profile.bio.normalize(),
@@ -195,7 +206,6 @@
 	async function reset() {
 		isResettingUserInfo.value = true;
 		const updateOrCreateUserInfoRequest: UpdateOrCreateUserInfoRequestDto = {
-			avatar: "",
 			userNickname: "",
 			signature: "",
 			gender: "",

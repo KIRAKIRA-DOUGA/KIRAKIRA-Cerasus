@@ -44,7 +44,6 @@
 	async function finish() {
 		isUpdatingUserInfo.value = true;
 		const updateOrCreateUserInfoRequest: UpdateOrCreateUserInfoRequestDto = {
-			avatar: avatarBlob.value,
 			username: profile.name.normalize(),
 			userNickname: profile.nickname.normalize(),
 			signature: profile.bio.normalize(),
@@ -85,29 +84,42 @@
 	 * 修改头像事件，向服务器提交新的图片。
 	 */
 	async function handleSubmitAvatarImage() {
+		isUploadingUserAvatar.value = true;
 		try {
-			isUploadingUserAvatar.value = true;
 			const blobImageData = await cropper.value?.getCropBlobData();
-			if (blobImageData) {
-				const userAvatarUploadSignedUrlResult = await api.user.getUserAvatarUploadSignedUrl();
-				const userAvatarUploadSignedUrl = userAvatarUploadSignedUrlResult.userAvatarUploadSignedUrl;
-				const userAvatarUploadFilename = userAvatarUploadSignedUrlResult.userAvatarFilename;
-				if (userAvatarUploadSignedUrlResult.success && userAvatarUploadSignedUrl && userAvatarUploadFilename) {
-					const uploadResult = await api.user.uploadUserAvatar(userAvatarUploadFilename, blobImageData, userAvatarUploadSignedUrl);
-					if (uploadResult) {
-						avatarBlob.value = userAvatarUploadFilename;
-						isAvatarCropperOpened.value = false;
-						clearBlobUrl(); // 释放内存
-					}
-					isUploadingUserAvatar.value = false;
-				}
-			} else {
+			if (!blobImageData) {
 				useToast(t("toast.unable_to_get_cropped_picture"), "error");
 				console.error("ERROR", "无法获取裁切后的图片");
+				return;
 			}
+			const contentType = blobImageData.type || "image/png";
+			const userAvatarUploadSignedUrlResult = await api.user.getUserAvatarUploadSignedUrl(contentType);
+			const userAvatarUploadSignedUrl = userAvatarUploadSignedUrlResult.userAvatarUploadSignedUrl;
+			const userAvatarUploadFields = userAvatarUploadSignedUrlResult.userAvatarUploadFields;
+			const userAvatarUploadFilename = userAvatarUploadSignedUrlResult.userAvatarFilename;
+			if (!userAvatarUploadSignedUrlResult.success || !userAvatarUploadSignedUrl || !userAvatarUploadFields || !userAvatarUploadFilename) {
+				useToast(t("toast.avatar_upload_failed"), "error");
+				console.error("ERROR", "获取头像上传签名失败", userAvatarUploadSignedUrlResult);
+				return;
+			}
+			const uploadResult = await api.user.uploadUserAvatar(userAvatarUploadSignedUrl, userAvatarUploadFields, blobImageData.type ? blobImageData : new Blob([blobImageData], { type: contentType }));
+			if (!uploadResult) {
+				useToast(t("toast.avatar_upload_failed"), "error");
+				return;
+			}
+			const confirmResult = await api.user.confirmUserAvatarUpload({ fileName: userAvatarUploadFilename });
+			if (!confirmResult.success || !confirmResult.userAvatarUrl) {
+				useToast(t("toast.avatar_upload_failed"), "error");
+				console.error("ERROR", "确认头像上传失败", confirmResult);
+				return;
+			}
+			avatarBlob.value = confirmResult.userAvatarUrl;
+			isAvatarCropperOpened.value = false;
+			clearBlobUrl(); // 释放内存
 		} catch (error) {
 			useToast(t("toast.avatar_upload_failed"), "error");
 			console.error("ERROR", "在上传用户头像时出错", error);
+		} finally {
 			isUploadingUserAvatar.value = false;
 		}
 	}

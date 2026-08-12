@@ -6,8 +6,7 @@
 		files: File[];
 	}>();
 
-	const BASE_THUMBNAIL_URL = "static/images/thumbnail.png"; // FIXME: Nuxt Image 的 src 为 undefined 或 "" 时会出错，见 https://github.com/nuxt/image/issues/1299
-	const BASE_THUMBNAIL_ID = environment.cloudflareImageProvider === "cloudflare-prod" ? "f907a7bd-3247-4415-1f5e-a67a5d3ea100" : "ea693cd1-5e58-4e07-1391-49c133e30300";
+	const DEFAULT_THUMBNAIL_URL = "static/images/thumbnail.png";
 
 	const copyright = ref<Copyright>("original"); // 视频版权
 	const title = ref(""); // 视频标题
@@ -17,7 +16,7 @@
 	const pushToFeed = ref(true); // 是否发布到动态
 	const ensureOriginal = ref(false); // 声明为原创
 	const thumbnailBlob = ref<string>(); // 封面图 Blob
-	const thumbnailUrl = ref<string>(BASE_THUMBNAIL_URL); // 封面图 Blob 或 URL
+	const thumbnailUrl = ref<string>(DEFAULT_THUMBNAIL_URL); // 封面图 Blob 或 URL
 	const thumbnailInput = ref<HTMLInputElement>();
 	const currentLanguage = computed(getCurrentLocale); // 当前用户的语言
 	const tags = reactive<Map<VideoTag["tagId"], VideoTag>>(new Map()); // 视频标签
@@ -28,9 +27,8 @@
 	const isCommitButtonLoading = ref<boolean>(false); // 投稿按钮是否在 loading 状态
 	const isCoverCropperOpen = ref<boolean>(false); // 封面图裁剪器是否开启状态
 	const isUploadingCover = ref<boolean>(false); // 是否正在上传封面图
-	const cropper = ref(); // 图片裁剪器对象
-	const isNetworkImage = computed(() => thumbnailUrl.value !== BASE_THUMBNAIL_URL); // 封面图是静态资源图片还是网图，即用户是否已经完成封面图上传
-	const provider = computed(() => isNetworkImage.value ? environment.cloudflareImageProvider : undefined); // 根据 isNetworkImage 的值判断是否使用 cloudflare 作为 Nuxt Image 提供商
+	const cropper = ref<InstanceType<typeof ImageCropper>>(); // 图片裁剪器实例
+	const isCoverUploaded = computed(() => thumbnailUrl.value !== DEFAULT_THUMBNAIL_URL);
 	// 视频分类
 	const VIDEO_CATEGORY = new Map([
 		["anime", t("category.anime")],
@@ -107,25 +105,33 @@
 	 */
 	async function handleSubmitCoverImage() {
 		isUploadingCover.value = true;
-		const blobImageData = await cropper.value?.getCropBlobData();
-		const coverUploadSignedUrlResult = await api.video.getVideoCoverUploadSignedUrl();
-		const filename = coverUploadSignedUrlResult?.result?.fileName;
-		const signedUrl = coverUploadSignedUrlResult?.result?.signedUrl;
-		if (coverUploadSignedUrlResult?.success && filename && signedUrl) {
-			const uploadVideoCoverResult = await api.video.uploadVideoCover(filename, blobImageData, signedUrl);
-			if (uploadVideoCoverResult) {
-				thumbnailUrl.value = filename;
-				isUploadingCover.value = false;
-				isCoverCropperOpen.value = false;
-				clearBlobUrl(); // 释放内存
+		try {
+			const blobImageData = await cropper.value?.getCropBlobData();
+			if (!blobImageData) {
+				useToast(t("toast.unable_to_get_cropped_picture"), "error");
+				console.error("ERROR", "无法获取裁切后的封面图");
+				return;
+			}
+			const contentType = blobImageData.type || "image/png";
+			const coverUploadSignedUrlResult = await api.video.getVideoCoverUploadSignedUrl(contentType);
+			const result = coverUploadSignedUrlResult?.result;
+			if (coverUploadSignedUrlResult?.success && result?.uploadUrl && result?.uploadFields && result?.url) {
+				const uploadVideoCoverResult = await api.video.uploadVideoCover(result.uploadUrl, result.uploadFields, blobImageData.type ? blobImageData : new Blob([blobImageData], { type: contentType }));
+				if (uploadVideoCoverResult) {
+					thumbnailUrl.value = result.url;
+					isCoverCropperOpen.value = false;
+					clearBlobUrl(); // 释放内存
+				} else
+					useToast(t("toast.cover_upload_failed"), "error");
 			} else {
 				useToast(t("toast.cover_upload_failed"), "error");
-				isUploadingCover.value = false;
+				isCoverCropperOpen.value = false;
 			}
-		} else {
+		} catch (error) {
 			useToast(t("toast.cover_upload_failed"), "error");
+			console.error("ERROR", "上传视频封面时出错", error);
+		} finally {
 			isUploadingCover.value = false;
-			isCoverCropperOpen.value = false;
 		}
 	}
 
@@ -188,6 +194,10 @@
 			useToast(t("validation.required.category"), "error");
 			return;
 		}
+		if (!isCoverUploaded.value) {
+			useToast(t("toast.no_cover"), "error");
+			return;
+		}
 
 		const uploadVideoRequest: UploadVideoRequestDto = {
 			videoPart: [
@@ -198,7 +208,7 @@
 				},
 			],
 			title: title.value,
-			image: isNetworkImage.value ? thumbnailUrl.value : BASE_THUMBNAIL_ID, // 没上传封面时使用默认封面图 ID // TODO: 自动获取视频截图作为封面
+			image: thumbnailUrl.value,
 			uploaderId: uid,
 			duration: 300, // TODO: 视频时长
 			description: description.value,
@@ -325,9 +335,8 @@
 			<div class="toolbox-card left">
 				<div v-ripple class="cover" @click="thumbnailInput?.click()">
 					<div class="mask">{{ $t("select_cover") }}</div>
-					<NuxtImg
+					<img
 						v-if="thumbnailUrl"
-						:provider
 						:src="thumbnailUrl"
 						:width="350"
 						alt="thumbnail"

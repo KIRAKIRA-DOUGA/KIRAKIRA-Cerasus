@@ -198,8 +198,6 @@ export type UpdateOrCreateUserInfoRequestDto = {
 	username?: string;
 	/** 用户昵称 */
 	userNickname?: string;
-	/** 用户头像的链接 */
-	avatar?: string;
 	/** 用户背景图片的链接 */
 	userBannerImage?: string;
 	/** 用户的个性签名 */
@@ -227,7 +225,7 @@ export type UpdateOrCreateUserInfoResponseDto = {
 	/** 附加的文本消息 */
 	message?: string;
 	/** 请求结果 */
-	result?: {} & UpdateOrCreateUserInfoRequestDto;
+	result?: { avatar?: string } & UpdateOrCreateUserInfoRequestDto;
 };
 
 /**
@@ -435,10 +433,40 @@ export type GetUserAvatarUploadSignedUrlResponseDto = {
 	success: boolean;
 	/** 用于用户上传头像的预签名 URL */
 	userAvatarUploadSignedUrl?: string;
+	/** 用户头像上传方法 */
+	userAvatarUploadMethod?: "POST";
 	/** 用于用户上传头像文件名 */
 	userAvatarFilename?: string;
+	/** 用户头像图片对象 URL */
+	userAvatarUrl?: string;
+	/** POST 上传表单字段 */
+	userAvatarUploadFields?: Record<string, string>;
+	/** 头像最大上传大小，单位 byte */
+	userAvatarMaxSize?: number;
+	/** 已签名的头像 Content-Type */
+	userAvatarContentType?: string;
 	/** 附加的文本消息 */
 	message?: string;
+};
+
+/**
+ * 确认用户头像已上传并写入数据库的请求载荷
+ */
+export type ConfirmUserAvatarUploadRequestDto = {
+	/** 已上传到 TOS 的对象名 */
+	fileName: string;
+};
+
+/**
+ * 确认用户头像已上传并写入数据库的请求响应
+ */
+export type ConfirmUserAvatarUploadResponseDto = {
+	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
+	success: boolean;
+	/** 附加的文本消息 */
+	message?: string;
+	/** 用户头像图片对象 URL */
+	userAvatarUrl?: string;
 };
 
 /**
@@ -1089,7 +1117,7 @@ export type AdminRotationAllUserTokenResponseDto = {
 };
 
 /**
- * 管理员批量重置用户 Token 的请求响应
+ * 管理员批量重置用户 BootstrapHint 的请求响应
  */
 export type AdminRotationAllUserDataBootstrapHintResponseDto = {
 	/** 执行结果 */
