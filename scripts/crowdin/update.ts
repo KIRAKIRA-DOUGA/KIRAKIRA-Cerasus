@@ -4,7 +4,6 @@ import consoleColors from "../console-colors";
 import { sourceFilesApi, uploadStorageApi } from "./crowdin";
 import { projectId } from "./token";
 
-const __dirname = import.meta.dirname;
 const SOURCE_LANGUAGE = "English";
 
 async function updateFile(projectId: number, fileName: string, fileContent: string) {
@@ -21,7 +20,7 @@ async function updateFile(projectId: number, fileName: string, fileContent: stri
 }
 
 const file = await (async () => {
-	let path = __dirname;
+	let path = import.meta.dirname;
 	while (true) {
 		const files = await readdir(path);
 		if (path === resolve(path, "/")) throw new Error("Could not find project path");

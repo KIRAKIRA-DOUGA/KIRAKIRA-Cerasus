@@ -97,4 +97,25 @@ declare global {
 	 * @template T - 可能是承诺的类型。
 	 */
 	type MaybePromise<T> = T | Promise<T>;
+
+	/* eslint-disable @typescript-eslint/no-wrapper-object-types */
+	/**
+	 * 将原始值类型与其包装对象类型联合起来。
+	 * @template T - 原始值类型。
+	 *
+	 * @example
+	 * ```typescript
+	 * type Test = WithWrapperType<string | number | bigint>;
+	 * //   ^?
+	 * type Test = string | number | bigint | String | Number | BigInt;
+	 * ```
+	 */
+	type WithWrapperType<T> = T |
+		(T extends object ? Object : never) |
+		(T extends string ? String : never) |
+		(T extends number ? Number : never) |
+		(T extends boolean ? Boolean : never) |
+		(T extends symbol ? Symbol : never) |
+		(T extends bigint ? BigInt : never);
+	/* eslint-enable @typescript-eslint/no-wrapper-object-types */
 }

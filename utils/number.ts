@@ -2,31 +2,41 @@
  * 标准化数字。拒绝傻逼科学计数法。
  * @param num - 数字。
  * @returns 标准化的数字。
+ * @note `-0` 会被转换成 `"0"`。
  */
-export function normalizeNumber(num: number | bigint | string) {
-	let s = String(num);
-	const regexp = (num: string) => num.trim().toLowerCase().replaceAll("+", "").replaceAll(/(?<=e|-|^)0*|(?<=\.[^e]*)0*(?=e|$)/g, "").replace(/(?<=-|^)\./, "0.").replaceAll(/\.(?=e|$)/g, "");
-	s = regexp(s);
-	if (s.includes("e")) {
-		let [base, exp_str] = s.split("e");
-		const exp = +exp_str;
-		const move = (float: string, direct: number) => {
-			float += "";
-			let dot = float.indexOf(".");
-			if (dot === -1) dot = float.length;
-			dot = direct > 0 ? dot + 1 : dot - 1;
-			float = float.replace(".", "");
-			if (dot === float.length) void 0;
-			else if (dot > float.length) float += "0";
-			else if (dot === 0) float = "0." + float;
-			else float = float.slice(0, dot) + "." + float.slice(dot);
-			return float;
-		};
-		for (let i = 0; i < Math.abs(exp); i++) base = move(base, exp);
-		s = regexp(base);
-	}
-	if (s === "-" || s === "") s = "0";
-	return s;
+export function normalizeNumber(num: WithWrapperType<number | bigint | string>) {
+	num = num.valueOf();
+	return (() => {
+		if (typeof num === "string")
+			if (num.match(/^(NaN|[+-]?Infinity)$/)) return num;
+			else if (num.match(/^0[box]/i)) try { num = BigInt(num); } catch { }
+		if (!isValidNumber(num)) return "NaN";
+		return ("" + num).replace(/([+-]?)(\d*)\.?(\d*)e([+-]?\d+)/i,
+			(_, sign, int, frac, exp) => exp < 0 ?
+				sign + "0." + Array(1 - exp - int.length).join("0") + int + frac :
+				sign + int + frac + Array(exp - frac.length + 1).join("0"));
+	})().replace(/^\+/, "");
+}
+
+/**
+ * 验证值是否为有效数字。
+ *
+ * value | returns
+ * --- | :--:
+ * `-123.45e-56` | true
+ * `"1.0e-8"` | true
+ * `256n` | true
+ * `"0xDeadBeef"` | true
+ * `""` | false
+ * `NaN` | false
+ * `Infinity` | false
+ *
+ * @param value - 要验证的值。可以是任何类型。
+ * @returns 该值是有效的有限数字、表示数字的非空字符串或大数吗？
+ */
+export function isValidNumber(value: unknown) {
+	// eslint-disable-next-line no-restricted-globals
+	return value !== "" && ["number", "string"].includes(typeof value) && isFinite(value as number) || typeof value === "bigint";
 }
 
 /**
