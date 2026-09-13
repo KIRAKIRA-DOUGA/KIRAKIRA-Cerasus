@@ -10,7 +10,7 @@ const fileRoot = (filename: string) => parse(filename).name;
 export default defineNuxtModule({
 	setup(_options, nuxt) {
 		if (process.env.NODE_ENV === "production") return;
-		const { resolve: localResolve } = createResolver(import.meta.url);
+		const { resolve: localResolve } = createResolver(import.meta.dirname);
 		const { resolve } = createResolver(localResolve("../../.nuxt"));
 
 		const registered = {

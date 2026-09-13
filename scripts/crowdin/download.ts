@@ -1,14 +1,12 @@
-import extract from "extract-zip";
 import { createWriteStream, existsSync } from "fs";
 import { copyFile, mkdir, readdir, rm, stat } from "fs/promises";
 import https from "https";
 import { tmpdir } from "os";
 import { join, resolve } from "path";
+import extract from "extract-zip";
 import consoleColors from "../console-colors";
 import { translationsApi } from "./crowdin";
 import { projectId } from "./token";
-
-const __dirname = import.meta.dirname;
 
 async function getDownloadTranslationsUrl(projectId: number) {
 	const result = await translationsApi.buildProject(projectId);
@@ -66,7 +64,7 @@ async function moveLocaleFiles(extractedPath: string, projectFolderName: string)
 		const stats = await stat(path);
 		if (!stats.isDirectory()) throw new Error(`Path is not a directory: ${path}`);
 		const files = await readdir(path);
-		if (!files.length) throw new Error(`Could not find any files in ${path}`);
+		if (files.length === 0) throw new Error(`Could not find any files in ${path}`);
 		if (files.includes("i18n")) {
 			const i18nPath = resolve(path, "i18n");
 			const i18nStats = await stat(i18nPath);
@@ -99,7 +97,7 @@ async function moveLocaleFiles(extractedPath: string, projectFolderName: string)
 		}
 		if (!foundDir) throw new Error(`No directory found in ${path}`);
 	}
-	let projectPath = __dirname;
+	let projectPath = import.meta.dirname;
 	while (true) {
 		const files = await readdir(projectPath);
 		if (projectPath === resolve(projectPath, "/")) throw new Error("Could not find project path");

@@ -1,7 +1,7 @@
 import { dirname } from "path";
 import { addImports, addPlugin, addTemplate, createResolver, defineNuxtModule } from "@nuxt/kit";
+import { minifyJavaScript } from "js-build-utils";
 import { PREFERENTIAL_BASE_URL, PREFERENTIAL_TEMPLATE_PATH } from "../shared/constants";
-import { minifyJavaScript } from "../shared/encode";
 import { THEME_COOKIE_BANDER_SCRIPT_TEMPLATE_NAME } from "./constants";
 import { cookieBinding } from "./theme-cookie-binding";
 
@@ -20,8 +20,8 @@ export function getFunctionBody(func: Function, compressed: boolean) {
 }
 
 export default defineNuxtModule({
-	async setup(_options, nuxt) {
-		const { resolve } = createResolver(import.meta.url);
+	setup(_options, nuxt) {
+		const { resolve } = createResolver(import.meta.dirname);
 
 		// 主题同步相关的全局导出
 		addPlugin(resolve("plugin"));
@@ -40,7 +40,7 @@ export default defineNuxtModule({
 		addImports({ name: "setCookie", as: "setCookie", from: cookieBindingRoute });
 
 		let cookieBanderContent = `(function (autoCall = true) {${getFunctionBody(cookieBinding, false)}})();`;
-		cookieBanderContent = await minifyJavaScript(cookieBanderContent);
+		cookieBanderContent = minifyJavaScript(cookieBanderContent, "oxc", "classic");
 		const cookieBanderTemplate = addTemplate({
 			filename: PREFERENTIAL_TEMPLATE_PATH + THEME_COOKIE_BANDER_SCRIPT_TEMPLATE_NAME,
 			write: true,

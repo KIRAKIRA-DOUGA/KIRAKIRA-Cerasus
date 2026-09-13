@@ -23,17 +23,17 @@
 		deg = deg / 24 * 360; // deg
 		return deg;
 	});
-	const parallaxRough = computed(() => {
+	const parallaxRough = computed<TwoD>(() => {
 		if (environment.server || !mouse.x.value && !mouse.y.value && gsensor.beta.value === null)
-			return new Point(0, 0);
-		else if (gsensor.beta.value === null) return new Point(
+			return [0, 0];
+		else if (gsensor.beta.value === null) return [
 			mouse.x.value / window.innerWidth * 2 - 1,
 			mouse.y.value / window.innerHeight,
-		);
-		else return new Point(
+		];
+		else return [
 			(gsensor.gamma.value ?? 0) / 45,
 			1 - clamp(gsensor.beta.value ?? 90, 0, 90) / 90,
-		);
+		];
 	});
 	const parallax = useSmoothValue(parallaxRough, 0.1); // 视差平滑移动
 
@@ -59,7 +59,7 @@
 			<LogoMoon />
 			<LogoSun />
 		</div>
-		<div class="mountains" :style="{ '--x': parallax.x, '--y': parallax.y }">
+		<div class="mountains" :style="{ '--x': parallax[0], '--y': parallax[1] }">
 			<div v-for="i in 11" :key="i">
 				<div></div>
 			</div>

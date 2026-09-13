@@ -1,5 +1,5 @@
 onlyBuiltDependencies:
-  - '@parcel/watcher'
+  - "@parcel/watcher"
   - esbuild
   - protobufjs
   - sharp

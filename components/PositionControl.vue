@@ -33,7 +33,7 @@
 	const thumbEl = ref<HTMLDivElement>(), buttonsEl = ref<HTMLDivElement>();
 	const lastPointerAction = ref<"move" | "down" | "down move" | "up">("up");
 	const _valueRef = toRef(() => props.value); // smoothValue 需要接受一个 ref 类型的参数，必须先将 prop 转换为 ref。
-	const smoothValue = useSmoothValue(_valueRef, 0.5);
+	const smoothValue = useSmoothValue(_valueRef);
 
 	const getHoveredElements = (e: PointerEvent) => document.elementsFromPoint(e.pageX, e.pageY);
 

@@ -65,12 +65,12 @@
 	const fromNormalized = (normalized: number) => map(normalized, 0, 1, props.min, props.max);
 
 	const value = computed(() => toNormalized(model.value, 0));
-	const smoothValue = useSmoothValue(value, 0.5); // 修改这个参数可以调整滑动条的平滑移动值。
+	const smoothValue = useSmoothValue(value); // 修改这个参数可以调整滑动条的平滑移动值。
 	const thumbEl = ref<HTMLDivElement>(), trackEl = ref<HTMLDivElement>();
 
 	const showPendingState = ref<"" | "hovering" | "dragging">("");
 	const pendingValue = ref(0);
-	const smoothPendingValue = useSmoothValue(pendingValue, 0.5);
+	const smoothPendingValue = useSmoothValue(pendingValue);
 
 	/**
 	 * 根据步长取整值。

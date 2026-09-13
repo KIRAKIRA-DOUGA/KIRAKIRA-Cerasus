@@ -1,11 +1,8 @@
 import { readFile, writeFile } from "fs/promises";
-import { dirname, resolve } from "path";
-import { fileURLToPath } from "url";
+import { resolve } from "path";
 import VariableName from "variable-name-conversion";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const stylesPath = resolve(__dirname, "../assets/styles/theme");
+const stylesPath = resolve(import.meta.dirname, "../assets/styles/theme");
 
 const scss = await readFile(resolve(stylesPath, "_eases.scss"), "utf-8");
 const variables = scss.match(/(?<=\$).*(?=:)/g);
