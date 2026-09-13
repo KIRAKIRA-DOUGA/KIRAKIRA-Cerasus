@@ -12,6 +12,8 @@
 		},
 	});
 
+	type VideoData = GetVideoByKvidResponseDto["video"];
+
 	const windowSize = useWindowSize();
 	const isMobileWidth = computed(() => windowSize.width.value <= numbers.tabletMaxWidth);
 
@@ -31,8 +33,6 @@
 	const currentTime = ref(NaN);
 	const sendDanmaku = ref<DanmakuComment[]>();
 	const insertDanmaku = ref<DanmakuListItem[]>();
-
-	type VideoData = GetVideoByKvidResponseDto["video"];
 
 	/**
 	 * Fetch video data.
@@ -69,6 +69,8 @@
 					videoCategory: videoData.videoCategory ?? "",
 					copyright: videoData.copyright,
 					image: videoData.image,
+					uploaderId: videoData.uploaderId,
+					description: videoData.description,
 				};
 			} else
 				handleError(t("toast.video_invalid_result"));
@@ -145,13 +147,12 @@
 								:category="videoDetails?.videoCategory!"
 								:title="videoDetails?.title ?? ''"
 								:videoId="videoDetails?.videoId ?? NaN"
+								:uploaderId="videoDetails?.uploaderId ?? -1"
 								:copyright="(videoDetails?.copyright! as Copyright)"
 								:tags="videoDetails?.videoTagList.map(tag => getDisplayVideoTagWithCurrentLanguage(currentLanguage, tag)) ?? []"
 								:cover="videoDetails?.image"
 							/>
-							<p class="description">
-								<Preserves>{{ videoDetails?.description }}</Preserves>
-							</p>
+							<TextEditorRtfReadonly :contentJsonString="videoDetails?.description" :editable="false" />
 							<Comments v-if="!isMobileWidth" />
 						</div>
 						<div class="right">

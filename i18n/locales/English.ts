@@ -406,6 +406,7 @@ export default {
 		upload: "Log in to share your content",
 	},
 	publish: "Publish",
+	update: "Update",
 	messages: "Messages",
 	notification: "Notification | Notifications",
 	please_login: "Please Log In",
@@ -647,6 +648,7 @@ export default {
 		comment_delete_success: "Comment deleted~",
 		uploaded: "Uploaded~",
 		upload_failed: "Upload failed!",
+		edit_failed: "Edit failed!",
 		upload_not_completed: "Upload not completed!",
 		cover_upload_failed: "Failed to upload cover!",
 		upload_file_not_found: "Failed to upload! File not found.",
@@ -725,6 +727,10 @@ export default {
 			ok: "Confirm Hiding",
 		},
 		delete_background_image: "Are you sure you want to delete this background image?",
+		delete_video: {
+			title: "Are you sure you want to delete this video?",
+			content: "It will be lost forever! (A long time!)",
+		},
 	},
 	current_time: "Current Time",
 	improve_translation: "Improve Translation",
@@ -809,4 +815,5 @@ export default {
 		rechoose: "Rechoose",
 	},
 	unknown: "Unknown",
+	edit_video: "Edit video",
 } as const;

@@ -3,6 +3,10 @@
 </docs>
 
 <script setup lang="ts">
+	import type { JSONContent } from "@tiptap/vue-3";
+
+	const { t } = useI18n();
+
 	const props = withDefaults(defineProps<{
 		/** 视频 ID。 */
 		videoId: number;
@@ -21,22 +25,59 @@
 	const pinned = ref(false);
 	const search = ref("");
 	const pageCount = computed(() => Math.max(1, Math.ceil(commentsCount.value / pageSize)));
-	const selfUserInfoStore = useSelfUserInfoStore();
 	const sort = ref<SortModel>(["rating", "descending"]); // 排序方式
+	const isSendingComment = ref(false); // 是否正在发送评论？
+		
+	const selfUserInfoStore = useSelfUserInfoStore();
 
 	/**
-	 * 发送评论，将发送的评论添加到评论列表中
+	 * 发送评论
+	 * @param contentJson - 评论内容（JSON）
+	 * @param contentText - 评论内容（纯文本）
+	 * @param clearContent - 清空内容的回调函数，调用后会清空编辑器内容并将文本长度重置为 0
+	 */
+	async function sendComment(contentJson: JSONContent, contentText: string, clearContent: () => void) {
+		try {
+			isSendingComment.value = true;
+			// TODO: // WARN 需要对用户输入的文字进行 Base64 编码
+			const emitVideoCommentRequest: EmitVideoCommentRequestDto = {
+				videoId: props.videoId,
+				text: contentJson ? JSON.stringify(contentJson) : "", // 发送转化为字符串的 JSON 内容
+			};
+			// TODO: 虽然我很想非阻塞地发送评论，但是楼层号必须在评论成功提交给后端后才会获得。emmmm...
+			const emitVideoCommentResult = await api.videoComment.emitVideoComment(emitVideoCommentRequest);
+			const videoComment = emitVideoCommentResult.videoComment;
+			if (emitVideoCommentResult?.success && videoComment) {
+				clearContent();
+				useEvent("videoComment:emitVideoComment", videoComment);
+				useToast(t("toast.comment_sent"), "success", 5000);
+			} else {
+				useToast(t("toast.something_went_wrong"), "error", 5000);
+				console.error("ERROR", "Failed to send comment: request failed.");
+			}
+			isSendingComment.value = false;
+		} catch (error) {
+			useToast(t("toast.something_went_wrong"), "error", 5000);
+			console.error("ERROR", "Failed to send comment:", error);
+			isSendingComment.value = false;
+		}
+	}
+
+	/**
+	 * 监听发送评论事件，将发送的评论添加到评论列表中
 	 */
 	useListen("videoComment:emitVideoComment", videoComment => {
 		comments.value.push(videoComment);
+		commentsCount.value++;
 	});
 
 	/**
-	 * 删除评论，根据被删除的评论路由来过滤评论列表
+	 * 监听删除评论事件，根据被删除的评论路由来过滤评论列表
 	 * // TODO: 性能改进
 	 */
 	useListen("videoComment:deleteVideoComment", commentRoute => {
 		comments.value = comments.value.filter(comment => comment.commentRoute !== commentRoute);
+		commentsCount.value--;
 	});
 
 	/**
@@ -72,7 +113,13 @@
 		<HeadingComments :count="commentsCount" />
 		<div class="send">
 			<UserAvatar :avatar="selfUserInfoStore.userInfo.avatar" />
-			<TextEditorRtf :videoId :editable />
+			<TextEditorRtf
+				:editorFeatures="['bold', 'italic', 'underline', 'strike', 'mention', 'kaomoji', 'video-component']"
+				:submittable="true"
+				:isSubmitting="isSendingComment"
+				:editable="props.editable"
+				@handleSubmit="sendComment"
+			/>
 		</div>
 		<div class="toolbar">
 			<div class="left">
@@ -110,10 +157,7 @@
 					:date="new Date(comment.editDateTime)"
 					:upvote_score="comment.upvoteCount"
 				>
-					<!-- eslint-disable-next-line vue/no-v-html -->
-					<!-- <div v-html="comment.text"></div> -->
-					<!-- TODO: 评论支持富文本。 -->
-					<div>{{ comment.text }}</div>
+					<TextEditorRtfReadonly :contentJsonString="comment.text" :editable="false" />
 				</CreationCommentsItem>
 				<ContentUnavailable v-if="!loading && commentsCount === 0" icon="chat_bubble" :title="$t('empty.comments')" />
 			</div>

@@ -1,4 +1,12 @@
 <script setup lang="ts">
+	definePageMeta({
+		layout: {
+			props: {
+				appBarTitle: "t.upload.title",
+			},
+		},
+	});
+
 	const { t } = useI18n();
 	useHead({ title: t("upload.title") });
 	const fileInput = ref<HTMLInputElement>();
@@ -7,7 +15,24 @@
 	const showEditor = ref(false);
 	const files = reactive<File[]>([]);
 
+	const videos = ref<GetVideoByUidResponseDto>();
+	const videoPages = ref(1);
+
 	const selfUserInfoStore = useSelfUserInfoStore();
+
+	/**
+	 * fetch the videos according to the query.
+	 */
+	async function fetchUserVideoData() {
+		try {
+			const getVideoByUidRequest: GetVideoByUidRequestDto = {
+				uid: selfUserInfoStore.userInfo.uid,
+			};
+			const videosResponse = await api.video.getVideoByUid(getVideoByUidRequest);
+			videoPages.value = Math.max(1, Math.ceil(videosResponse.videosCount / 50));
+			videos.value = videosResponse;
+		} catch (error) { console.error(error); }
+	}
 
 	/**
 	 * 成功上传文件。
@@ -71,7 +96,7 @@
 	function onChangeFile(e: Event) {
 		const input = e.target as HTMLInputElement;
 		const files = getValidFiles(input.files);
-		// DELETE ME: 改判定仅测试阶段使用
+		// DELETE ME: 该判定仅测试阶段使用
 		if (!selfUserInfoStore.userInfo.roles?.includes("administrator")) {
 			useToast("测试阶段该功能仅限管理员使用。", "warning", 5000);
 			return;
@@ -100,6 +125,8 @@
 		icon: DeclaredIcons;
 		name: string;
 	}>();
+	
+	await fetchUserVideoData();
 </script>
 
 <template>
@@ -111,8 +138,7 @@
 		page
 		needLogin
 	/>
-	<div v-else class="container" :class="{ 'no-scroll': !showEditor }">
-
+	<div v-else class="container">
 		<DefineCountCard v-slot="{ value, icon, name }">
 			<div class="count-card">
 				<div class="title">
@@ -140,30 +166,53 @@
 
 		<Transition name="page-jump-in" mode="out-in">
 			<div v-if="!showEditor" class="upload-wrapper">
-				<div
-					v-ripple
-					class="upload"
-					:class="{ dragover, successful: successfulUploaded }"
-					@dragover.stop.prevent="dragover = true"
-					@dragenter.stop.prevent="dragover = true"
-					@dragleave.stop.prevent="dragover = false"
-					@dragend.stop.prevent="dragover = false"
-					@drop.stop.prevent="onDrop"
-					@click="fileInput?.click()"
-				>
-					<div class="content">
-						<h3>{{ $t("upload.drag_to_upload") }}</h3>
-						<p>{{ $t("upload.format_info") }}</p>
+				<div class="row">
+					<div
+						v-ripple
+						class="upload"
+						:class="{ dragover, successful: successfulUploaded }"
+						@dragover.stop.prevent="dragover = true"
+						@dragenter.stop.prevent="dragover = true"
+						@dragleave.stop.prevent="dragover = false"
+						@dragend.stop.prevent="dragover = false"
+						@drop.stop.prevent="onDrop"
+						@click="fileInput?.click()"
+					>
+						<div class="content">
+							<h3>{{ $t("upload.drag_to_upload") }}</h3>
+							<p>{{ $t("upload.format_info") }}</p>
+						</div>
+						<Icon name="upload" class="upload-icon" />
+						<div class="outline normal"></div>
+						<div class="outline successful"></div>
 					</div>
-					<Icon name="upload" class="upload-icon" />
-					<div class="outline normal"></div>
-					<div class="outline successful"></div>
+					<CountCard :value="0" icon="movie" :name="$t('video', 2)" />
+					<CountCard :value="0" icon="play" :name="$t('sort.view')" />
 				</div>
-				<CountCard :value="0" icon="movie" :name="$t('video', 2)" />
-				<CountCard :value="0" icon="play" :name="$t('sort.view')" />
+				<ClientOnly>
+					<div class="video-list">
+						<ContentsManagementVideoCard
+							v-for="video in videos?.videos"
+							:key="video.videoId"
+							:title="video.title"
+							:videoId="video.videoId"
+							:uploader="video.uploader ?? ''"
+							:uploaderId="video.uploaderId"
+							:image="video.image"
+							:date="new Date()"
+							:viewCount="video.watchedCount"
+							:duration="new Duration(0, video.duration ?? 0)"
+							:upvoteCount="2333"
+							:downvoteCount="2333"
+							:commentCount="100"
+							:danmakuCount="200"
+							:collectCount="300"
+						/>
+					</div>
+				</ClientOnly>
 			</div>
 
-			<UploadEditor v-else :files />
+			<UploadEditor v-else :isEditing="false" :files="files" />
 		</Transition>
 	</div>
 </template>
@@ -184,10 +233,11 @@
 	}
 
 	.upload-wrapper {
-		@include flex-center;
-		gap: 16px;
-		// flex-direction: column;
-		margin-top: 1rem;
+		.row {
+			@include flex-center;
+			gap: 16px;
+			margin-top: 1rem;
+		}
 
 		.upload {
 			@include flex-center;
@@ -279,6 +329,13 @@
 			font-weight: bold;
 			line-height: 1;
 		}
+	}
+
+	.video-list {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		margin-block: 16px;
 	}
 
 	@keyframes rotation {
