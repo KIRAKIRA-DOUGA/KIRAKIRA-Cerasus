@@ -2,7 +2,7 @@ import type CSSType from "csstype";
 import * as _lottieWeb from "lottie-web";
 import * as _nuxt_app from "nuxt/app";
 import { VTooltipBindingValue } from "plugins/vue/tooltip";
-import { AllowedComponentProps, DirectiveBinding } from "vue";
+import { AllowedComponentProps, Directive, DirectiveBinding } from "vue";
 import * as _vueRouter from "#vue-router";
 
 type EventHandlers<E> = {
@@ -24,9 +24,9 @@ declare module "vue" {
 	 * 在此处声明自定义 HTML 属性。
 	 */
 	export interface ComponentCustomProperties {
-		vRipple?: boolean;
-		vI?: number;
-		vTooltip?: VTooltipBindingValue;
+		"v-ripple"?: Directive<HTMLElement, boolean, never, { overlay?: boolean }>;
+		"v-i"?: Directive<HTMLElement, number>;
+		"v-tooltip"?: Directive<HTMLElement, VTooltipBindingValue, Placement>;
 	}
 
 	export interface ComponentOptionsBase {
