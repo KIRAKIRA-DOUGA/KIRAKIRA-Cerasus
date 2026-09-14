@@ -56,9 +56,18 @@ export type UploadVideoResponseDto = {
 	videoId?: number;
 };
 
-// export type ThumbVideoRequestDto = {
-// 	username: string;
-// }
+/**
+ * 编辑视频信息的请求载荷。// TODO: 暂时不包含视频分 P 文件、上传者和时长等文件相关字段
+ */
+export type EditVideoRequestDto = Omit<UploadVideoRequestDto, "videoPart" | "uploaderId" | "duration"> & {
+	/** 视频 ID (KVID) */
+	videoId: number;
+};
+
+/**
+ * 编辑视频信息的请求响应
+ */
+export type EditVideoResponseDto = UploadVideoResponseDto & {};
 
 /**
  * 展示视频卡片需要的返回参数
@@ -133,6 +142,48 @@ type UploaderInfoDto = {
 type BlockState = { isBlockedByOther: boolean; isBlocked: boolean; isHidden: boolean };
 
 /**
+ * 视频信息
+ */
+type VideoInfo = {
+	/** 视频 ID (KVID) */
+	videoId: number;
+	/** 视频分 P 数据 */
+	videoPart: VideoPartDto[];
+	/** 视频标题 */
+	title: string;
+	/** 封面图链接 */
+	image?: string;
+	/** 视频上传的日期，时间戳格式 */
+	uploadDate?: number;
+	/** 视频播放量 */
+	watchedCount?: number;
+	/** 视频作者 ID */
+	uploader?: string;
+	/** 创作者 UID */
+	uploaderId?: number;
+	/** 视频作者信息 */
+	uploaderInfo?: UploaderInfoDto;
+	/** 视频时长，单位 ms */
+	duration?: number;
+	/** 视频描述 */
+	description?: string;
+	/** 视频分区 */
+	videoCategory: string;
+	/** 视频版权 */
+	copyright: string;
+	/** 视频 TAG */
+	videoTagList: VideoTag[];
+	/** 视频点赞数 */
+	videoUpvoteCount: number;
+	/** 视频点踩数 */
+	videoDownvoteCount: number;
+	/** 当前用户是否点赞 */
+	userHasUpvoted: boolean;
+	/** 当前用户是否点踩 */
+	userHasDownvoted: boolean;
+};
+
+/**
  * 视频页面需要的响应
  */
 export type GetVideoByKvidResponseDto = {
@@ -141,39 +192,37 @@ export type GetVideoByKvidResponseDto = {
 	/** 附加的文本消息 */
 	message?: string;
 	/** 请求到的视频的数据 */
-	video?: {
-		/** 视频 ID (KVID) */
-		videoId: number;
-		/** 视频分 P 数据 */
-		videoPart: VideoPartDto[];
-		/** 视频标题 */
-		title: string;
-		/** 封面图链接 */
-		image?: string;
-		/** 视频上传的日期，时间戳格式 */
-		uploadDate?: number;
-		/** 视频播放量 */
-		watchedCount?: number;
-		/** 视频作者 ID */
-		uploader?: string;
-		/** 创作者 UUID */
-		uploaderUUID?: string;
-		/** 创作者 UID */
-		uploaderId?: number;
-		/** 视频作者信息 */
-		uploaderInfo?: UploaderInfoDto;
-		/** 视频时长，单位 ms */
-		duration?: number;
-		/** 视频描述 */
-		description?: string;
-		/** 视频分区 */
-		videoCategory: string;
-		/** 视频版权 */
-		copyright: string;
-		/** 视频 TAG */
-		videoTagList: VideoTag[];
-	};
+	video?: VideoInfo;
 } & BlockState;
+
+/**
+ * 视频发布者根据 kvid 获取视频详细信息的请求载荷
+ */
+export type UploaderGetVideoByKvidRequestDto = {
+	/** 视频 ID (KVID) */
+	videoId: number;
+};
+
+/**
+ * 视频发布者根据 kvid 获取视频详细信息的请求响应
+ */
+export type UploaderGetVideoByKvidResponseDto = {
+	/** 是否请求成功 */
+	success: boolean;
+	/** 附加的文本消息 */
+	message?: string;
+	/** 请求到的视频的数据 */
+	video?: VideoInfo & {
+		/** 原作者 */
+		originalAuthor?: string;
+		/** 原视频链接 */
+		originalLink?: string;
+		/** 是否发布到动态 */
+		pushToFeed: boolean;
+		/** 声明为原创 */
+		ensureOriginal: boolean;
+	};
+};
 
 /**
  * 根据视频 ID (KVID) 检查视频是否存在的请求载荷

@@ -173,6 +173,7 @@ export default {
 			repeat_one: "반복",
 			shuffle: "섞기",
 		},
+		chapter: {},
 	},
 	danmaku: {
 		title: "탄막",
@@ -340,6 +341,7 @@ export default {
 	confirm: {
 		block_user: {},
 		hide_user: {},
+		delete_video: {},
 	},
 	announcement: {},
 	under_construction: {},

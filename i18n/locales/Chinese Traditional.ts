@@ -184,6 +184,7 @@ export default {
 			repeat_one: "重複播放",
 			shuffle: "隨機播放",
 		},
+		chapter: {},
 	},
 	danmaku: {
 		title: "彈幕",
@@ -405,7 +406,6 @@ export default {
 		username_requirements: "不可重名。@:user.nickname_requirements",
 		username_requirements_unique: "使用者名稱不可重複。",
 		nickname: "暱稱",
-		username_nickname_requirements: "使用者名稱及暱稱必須為@:user.nickname_requirements",
 		bio: "個性簽名",
 		gender: "性別",
 		memo: "備註",
@@ -501,6 +501,7 @@ export default {
 		cancel_upload: "確定要取消本次上傳嗎？",
 		block_user: {},
 		hide_user: {},
+		delete_video: {},
 	},
 	current_time: "現在時間",
 	set_as_default: "設定為預設值",

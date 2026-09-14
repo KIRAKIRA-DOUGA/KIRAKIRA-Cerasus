@@ -238,17 +238,13 @@
 				<MenuItem icon="delete" @click="confirmDeleteBackgroundImageFlyout = [[backgroundImageItemMenu[2], 'y'], () => backgroundImages.delete(backgroundImageItemMenu[1].key)]">{{ $t("delete") }}</MenuItem>
 			</Menu>
 
-			<Flyout v-model="confirmDeleteBackgroundImageFlyout[0]">
-				<ShadingIcon icon="delete" size="small" fadeIn />
-				<div class="flyout-content">
-					<h4>{{ $t("delete") }}</h4>
-					<p>{{ $t("confirm.delete_background_image") }}</p>
-					<div class="flyout-buttons">
-						<Button @click="confirmDeleteBackgroundImageFlyout[0] = undefined">{{ $t("step.cancel") }}</Button>
-						<Button @click="confirmDeleteBackgroundImageFlyout[0] = undefined; confirmDeleteBackgroundImageFlyout[1]();" :style="{ '--appearance': 'secondary' }">{{ $t("step.ok") }}</Button>
-					</div>
-				</div>
-			</Flyout>
+			<FlyoutConfirm v-model="confirmDeleteBackgroundImageFlyout[0]" icon="delete" :title="$t('delete')">
+				{{ $t("confirm.delete_background_image") }}
+				<template #footer>
+					<Button @click="confirmDeleteBackgroundImageFlyout[0] = undefined">{{ $t("step.cancel") }}</Button>
+					<Button @click="confirmDeleteBackgroundImageFlyout[0] = undefined; confirmDeleteBackgroundImageFlyout[1]();" :style="{ '--appearance': 'secondary' }">{{ $t("step.ok") }}</Button>
+				</template>
+			</FlyoutConfirm>
 		</ClientOnly>
 
 		<Subheader icon="more_horiz">{{ $t("other", 2) }}</Subheader>
@@ -439,18 +435,6 @@
 
 		&.v-leave-active {
 			position: absolute;
-		}
-	}
-
-	.flyout-content {
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-		min-width: min(250px, 100dvw);
-
-		.flyout-buttons {
-			display: flex;
-			gap: 8px;
 		}
 	}
 

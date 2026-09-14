@@ -111,7 +111,7 @@
 			<SoftButton v-tooltip:right="$t('history')" icon="history" href="/history" />
 			<SoftButton v-tooltip:right="$t('collection.title', 2)" icon="star" href="/collections" />
 			<SoftButton v-tooltip:right="$t('feed.following')" icon="feed" href="/feed/following" />
-			<SoftButton v-tooltip:right="$t('upload.title')" icon="upload" href="/upload" />
+			<SoftButton v-tooltip:right="$t('upload.title')" icon="upload" href="/contents-management/upload" />
 		</div>
 
 		<div class="center">

@@ -1,13 +1,25 @@
-<script setup lang="ts">
-	import type { TusFileUploader } from "~/composables/api/Video/VideoController";
-	const { t } = useI18n();
+<docs>
+	### 视频上传与编辑
+</docs>
 
-	const props = defineProps<{
-		files: File[];
-	}>();
+<script setup lang="ts">
+	import { type JSONContent } from "@tiptap/vue-3";
+	import type { TusFileUploader } from "../composables/api/Video/VideoController";
+
+	const { t } = useI18n();
 
 	const BASE_THUMBNAIL_URL = "static/images/thumbnail.png"; // FIXME: Nuxt Image 的 src 为 undefined 或 "" 时会出错，见 https://github.com/nuxt/image/issues/1299
 	const BASE_THUMBNAIL_ID = environment.cloudflareImageProvider === "cloudflare-prod" ? "f907a7bd-3247-4415-1f5e-a67a5d3ea100" : "ea693cd1-5e58-4e07-1391-49c133e30300";
+
+	const props = defineProps<
+		{
+			isEditing: false;
+			files: File[];
+		} | {
+			isEditing: true;
+			kvid: number;
+		}
+	>();
 
 	const copyright = ref<Copyright>("original"); // 视频版权
 	const title = ref(""); // 视频标题
@@ -18,17 +30,16 @@
 	const ensureOriginal = ref(false); // 声明为原创
 	const thumbnailBlob = ref<string>(); // 封面图 Blob
 	const thumbnailUrl = ref<string>(BASE_THUMBNAIL_URL); // 封面图 Blob 或 URL
-	const thumbnailInput = ref<HTMLInputElement>();
 	const currentLanguage = computed(getCurrentLocale); // 当前用户的语言
 	const tags = reactive<Map<VideoTag["tagId"], VideoTag>>(new Map()); // 视频标签
 	const displayTags = computed<DisplayVideoTag[]>(() => [...tags.values()].map(tagName => getDisplayVideoTagWithCurrentLanguage(currentLanguage.value, tagName))); // 用于显示的 TAG，相较于上方的 tags 数据结构更简单。
-	const description = ref(""); // 视频简介
+	const description = ref<string>(""); // 视频简介
+
 	const uploadProgress = ref(0); // 视频上传进度
-	const cloudflareVideoId = ref<string>(); // Cloudflare 视频 ID
+	const cloudflareVideoId = ref<string>(""); // Cloudflare 视频 ID
 	const isCommitButtonLoading = ref<boolean>(false); // 投稿按钮是否在 loading 状态
 	const isCoverCropperOpen = ref<boolean>(false); // 封面图裁剪器是否开启状态
 	const isUploadingCover = ref<boolean>(false); // 是否正在上传封面图
-	const cropper = ref(); // 图片裁剪器对象
 	const isNetworkImage = computed(() => thumbnailUrl.value !== BASE_THUMBNAIL_URL); // 封面图是静态资源图片还是网图，即用户是否已经完成封面图上传
 	const provider = computed(() => isNetworkImage.value ? environment.cloudflareImageProvider : undefined); // 根据 isNetworkImage 的值判断是否使用 cloudflare 作为 Nuxt Image 提供商
 	// 视频分类
@@ -48,6 +59,11 @@
 	let uploader: TusFileUploader;
 	const isUploadingVideo = ref(false);
 
+	// Element refs
+	const flyoutTag = ref<FlyoutModel>();
+	const thumbnailInput = ref<HTMLInputElement>();
+	const cropper = ref<InstanceType<typeof ImageCropper>>(); // 图片裁剪器对象
+
 	/**
 	 * 上传文件无效。
 	 */
@@ -55,12 +71,6 @@
 		useToast(t("toast.unsupported_file"), "error");
 		clearFileInput(thumbnailInput);
 	}
-
-	watch(() => props.files, files => {
-		const file = files[0];
-		const basename = path.fileRoot(file.name);
-		title.value = basename;
-	}, { immediate: true });
 
 	/**
 	 * 验证 MIME 类型。
@@ -107,7 +117,12 @@
 	 */
 	async function handleSubmitCoverImage() {
 		isUploadingCover.value = true;
-		const blobImageData = await cropper.value?.getCropBlobData();
+		if (!cropper.value) {
+			useToast(t("toast.cover_upload_failed"), "error");
+			isUploadingCover.value = false;
+			return;
+		}
+		const blobImageData = await cropper.value.getCropBlobData();
 		const coverUploadSignedUrlResult = await api.video.getVideoCoverUploadSignedUrl();
 		const filename = coverUploadSignedUrlResult?.result?.fileName;
 		const signedUrl = coverUploadSignedUrlResult?.result?.signedUrl;
@@ -189,6 +204,11 @@
 			return;
 		}
 
+		if (!("files" in props) || !props.files || props.files.length === 0) {
+			useToast(t("toast.upload_file_not_found"), "error");
+			return;
+		}
+
 		const uploadVideoRequest: UploadVideoRequestDto = {
 			videoPart: [
 				{
@@ -226,6 +246,58 @@
 			isCommitButtonLoading.value = false;
 			useToast(t("toast.upload_failed"), "error");
 			console.error("ERROR", "Video submission failed:", error);
+		}
+	}
+
+	/**
+	 * 编辑视频信息（提交修改）
+	 */
+	async function editVideo() {
+		if (!("kvid" in props) || !props.kvid) {
+			useToast(t("toast.edit_failed"), "error");
+			return;
+		}
+		if (!title.value) {
+			useToast(t("validation.required.title"), "error");
+			return;
+		}
+		if (!description.value) {
+			useToast(t("validation.required.description"), "error");
+			return;
+		}
+		if (!category.value) {
+			useToast(t("validation.required.category"), "error");
+			return;
+		}
+
+		const editVideoRequest: EditVideoRequestDto = {
+			videoId: props.kvid,
+			title: title.value,
+			image: isNetworkImage.value ? thumbnailUrl.value : BASE_THUMBNAIL_ID, // 没上传封面时使用默认封面图 ID // TODO: 自动获取视频截图作为封面
+			description: description.value,
+			videoCategory: category.value,
+			copyright: copyright.value,
+			originalAuthor: originalAuthor.value,
+			originalLink: originalLink.value,
+			pushToFeed: pushToFeed.value,
+			ensureOriginal: ensureOriginal.value,
+			videoTagList: tags ? [...tags.values()] : [],
+		};
+		isCommitButtonLoading.value = true;
+		try {
+			const editVideoResult = await api.video.editVideo(editVideoRequest);
+			const videoId = editVideoResult?.videoId;
+			if (editVideoResult.success && videoId) { // TODO: 视频更新成功后要做的操作（TODO: 暂时是等待 1 秒后跳转到视频页，以后可能需要修改）
+				console.info("INFO", `视频更新成功, KVID: ${videoId}`);
+				setTimeout(() => {
+					isCommitButtonLoading.value = false;
+					navigate(`/video/kv${videoId}`);
+				}, 1000);
+			}
+		} catch (error) {
+			isCommitButtonLoading.value = false;
+			useToast(t("toast.edit_failed"), "error");
+			console.error("ERROR", "Video edit failed:", error);
 		}
 	}
 
@@ -285,17 +357,73 @@
 		hideContextualToolbar();
 	}
 
+	/**
+	 * 视频简介更新事件的处理函数
+	 * @param contentJson - 更新后的视频简介内容（JSONContent 格式）
+	 * @param contentText - 更新后的视频简介内容（纯文本格式）
+	 */
+	function handleUpdateDescription(contentJson: JSONContent, contentText: string) {
+		description.value = JSON.stringify(contentJson);
+	}
+
+	/**
+	 * 如果是编辑视频，则需要获取视频信息
+	 */
+	async function getVideoInfoForUploader() {
+		try {
+			if ("isEditing" in props && props.isEditing && "kvid" in props && props.kvid > 0) {
+				const getVideoByKvidRequest: GetVideoByKvidRequestDto = {
+					videoId: props.kvid,
+				};
+				const headerCookie = useRequestHeaders(["cookie"]);
+				const videoInfo = await api.video.uploaderGetVideoByKvid(getVideoByKvidRequest, headerCookie); // TODO use new API to get video detail info
+				if (videoInfo?.success && videoInfo?.video) {
+					copyright.value = videoInfo.video.copyright as Copyright;
+					title.value = videoInfo.video.title;
+					category.value = videoInfo.video.videoCategory;
+					originalAuthor.value = videoInfo.video.originalAuthor;
+					originalLink.value = videoInfo.video.originalLink;
+					pushToFeed.value = videoInfo.video.pushToFeed;
+					ensureOriginal.value = videoInfo.video.ensureOriginal;
+					thumbnailUrl.value = videoInfo.video.image || BASE_THUMBNAIL_URL;
+					tags.clear();
+					for (const tag of videoInfo.video.videoTagList)
+						tags.set(tag.tagId, tag);
+					description.value = videoInfo.video.description || "";
+				}
+			}
+		} catch (error) {
+			console.error("ERROR", "Failed to fetch video info for uploader:", error);
+		}
+	}
+
+	if ("isEditing" in props && props.isEditing && "kvid" in props && props.kvid > 0)
+		await getVideoInfoForUploader();
+
+	if ("files" in props)
+		watch(() => props.files, files => {
+			if (!files || files.length === 0) return;
+			const file = files[0];
+			const basename = path.fileRoot(file.name);
+			title.value = basename;
+		}, { immediate: true });
+
 	watch(copyright, copyright => clearCopyrightData(copyright));
 
 	/**
 	 * 组件加载后等待三秒开始上传视频文件
 	 */
 	onMounted(() => setTimeout(() => {
-		tusUpload(props.files);
+		if ("files" in props && !props.isEditing) {
+			if (!props.files || props.files.length === 0) {
+				useToast(t("toast.upload_file_not_found"), "error");
+				return;
+			}
+			tusUpload(props.files);
+		}
 	}, 3000));
 
 	const [onContentEnter, onContentLeave] = simpleAnimateSize("height", 500, eases.easeInOutSmooth);
-	const flyoutTag = ref<FlyoutModel>();
 </script>
 
 <template>
@@ -365,7 +493,7 @@
 			</div>
 
 			<div class="center">
-				<div class="progress-card toolbox-card">
+				<div v-if="!props.isEditing" class="progress-card toolbox-card">
 					<!-- 在这里上传和管理分 P -->
 					<ProgressBar class="progress" :value="uploadProgress" />
 					<SoftButton icon="pause" v-if="isUploadingVideo" :disabled="!!cloudflareVideoId" @click="stopUploading" />
@@ -394,7 +522,7 @@
 								v-for="tag in displayTags"
 								:key="tag.tagId"
 								:query="{ q: tag.tagId }"
-								@mouseenter="e => showContextualToolbar(tag.tagId, tag.mainTagName, e)"
+								@mouseenter="(e: MouseEvent) => showContextualToolbar(tag.tagId, tag.mainTagName, e)"
 								@mouseleave="hideContextualToolbar"
 							>
 								<div v-if="tag.tagId >= 0" class="display-tag">
@@ -402,7 +530,7 @@
 									<div v-if="tag.originTagName" class="original-tag-name">{{ tag.originTagName }}</div>
 								</div>
 							</Tag>
-							<Tag key="add-tag-button" class="add-tag" :checkable="false" @click="e => flyoutTag = [e, 'y']">
+							<Tag key="add-tag-button" class="add-tag" :checkable="false" @click="(e: MouseEvent) => flyoutTag = [e, 'y']">
 								<Icon name="add" />
 							</Tag>
 						</div>
@@ -422,7 +550,11 @@
 
 					<section>
 						<Subheader icon="details">{{ $t("description") }}</Subheader>
-						<TextBox v-model="description" required />
+						<TextEditorRtf
+							:editorFeatures="['bold', 'italic', 'underline', 'strike', 'mention', 'kaomoji', 'video-component']"
+							:editable="true"
+							@update="handleUpdateDescription"
+						/>
 						<!-- TODO: 这里放简介，需要富文本编辑器 -->
 					</section>
 
@@ -431,11 +563,16 @@
 					<div class="submit">
 						<Button
 							icon="send"
-							:disabled="!cloudflareVideoId || isCommitButtonLoading"
-							:loading="!cloudflareVideoId || isCommitButtonLoading"
-							@click="commitVideo"
+							:disabled="(!props.isEditing && !cloudflareVideoId) || isCommitButtonLoading"
+							:loading="(!props.isEditing && !cloudflareVideoId) || isCommitButtonLoading"
+							@click="() => {
+								if (props.isEditing)
+									editVideo();
+								else
+									commitVideo();
+							}"
 						>
-							{{ $t("publish") }}
+							{{ props.isEditing ? $t("update") : $t("publish") }}
 						</Button>
 					</div>
 				</div>

@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-	import { useEditor, EditorContent } from "@tiptap/vue-3";
+	import { useEditor, EditorContent, type JSONContent } from "@tiptap/vue-3";
 	import StarterKit from "@tiptap/starter-kit";
 	import { Underline } from "@tiptap/extension-underline";
 	import VueComponent from "helpers/editor-extension";
@@ -7,13 +7,39 @@
 	const { t } = useI18n();
 
 	const props = defineProps<{
-		/** 视频 ID。 */
-		videoId: number;
 		/** 是否可以编辑 */
 		editable: boolean;
+		/** 开启的编辑功能列表 */
+		editorFeatures:
+			"_ALL_" | // "_ALL_" 代表启用全部功能
+			(
+				"bold" | // 加粗
+				"italic" | // 斜体
+				"underline" | // 下划线
+				"strike" | 	// 删除线
+				"mention" | // 提及（艾特 @）
+				"kaomoji" | // 颜文字
+				"video-component" // 插入视频组件
+			)[];
+		/** 是否必填 */
+		required?: boolean; // TODO: 暂时没有实现必填功能
+		/** 是否可提交（如果为假值，则不显示提交按钮，适用于仅需要编辑功能的场景，如视频简介编辑） */
+		submittable?: boolean;
+		/** 是否正在提交 */
+		isSubmitting?: boolean;
 	}>();
 
 	const emits = defineEmits<{
+		/** 提交 */
+		handleSubmit: [
+			contentJson: JSONContent, // 编辑器当前的 JSON 内容
+			contentText: string, // 编辑器当前的纯文本内容
+			clearContent: () => void, // 清空内容的回调函数，调用后会清空编辑器内容并将文本长度重置为 0
+		];
+		update: [ // 内容更新时触发
+			contentJson: JSONContent, // 编辑器当前的 JSON 内容
+			contentText: string, // 编辑器当前的纯文本内容
+		];
 		input: [e: InputEvent];
 		keydown: [e: KeyboardEvent];
 		keyup: [e: KeyboardEvent];
@@ -24,7 +50,6 @@
 	const flyoutKaomoji = ref<FlyoutModel>();
 	const flyoutKaomojiMini = ref<FlyoutModel>();
 	const textLength = ref(0);
-	const isSendingComment = ref(false);
 
 	const editor = useEditor({
 		extensions: [
@@ -42,7 +67,10 @@
 		editable: props.editable,
 		injectCSS: false,
 		onUpdate(props) {
-			textLength.value = props.editor.getText().length;
+			const contentText = props.editor.getText();
+			const contentJson = props.editor.getJSON();
+			textLength.value = contentText.length;
+			emits("update", contentJson, contentText);
 		},
 		onCreate({ editor }) {
 			const proseMirror = editor.view.dom;
@@ -54,21 +82,23 @@
 	});
 
 	/** 切换文本加粗。 */
-	const toggleBold = () => { editor.value?.chain().focus().toggleBold().run(); };
+	const toggleBold = () => { checkFeatureEnabled("bold") && editor.value?.chain().focus().toggleBold().run(); };
 	/** 切换文本倾斜。 */
-	const toggleItalic = () => { editor.value?.chain().focus().toggleItalic().run(); };
+	const toggleItalic = () => { checkFeatureEnabled("italic") && editor.value?.chain().focus().toggleItalic().run(); };
 	/** 切换文本下划线。 */
-	const toggleUnderline = () => { editor.value?.chain().focus().toggleUnderline().run(); };
+	const toggleUnderline = () => { checkFeatureEnabled("underline") && editor.value?.chain().focus().toggleUnderline().run(); };
 	// 不知道为什么 StarterKit 中没提供 toggleUnderline，所以只能额外安装 @tiptap/extension-underline。
 	/** 切换文本删除线。 */
-	const toggleStrike = () => { editor.value?.chain().focus().toggleStrike().run(); };
+	const toggleStrike = () => { checkFeatureEnabled("strike") && editor.value?.chain().focus().toggleStrike().run(); };
 
 	/** 在富文本编辑器光标处追加一个 Vue 组件。 */
-	const addVueComponents = () => { editor.value?.commands.insertContent("<thumb-video></thumb-video>"); };
+	const addVueComponents = () => { checkFeatureEnabled("video-component") && editor.value?.commands.insertContent("<thumb-video></thumb-video>"); };
 	/** 在光标处打开迷你颜文字输入面板。 */
-	const showRecentKaomojis = () => { flyoutKaomojiMini.value = [getCursorPixel(), "y"]; };
+	const showRecentKaomojis = () => { checkFeatureEnabled("kaomoji") && (flyoutKaomojiMini.value = [getCursorPixel(), "y"]); };
 	/** 打开提及面板。 */
-	const showAtList = () => { };
+	const showAtList = () => {
+		checkFeatureEnabled("mention") && true // TODO: 打开提及面板
+	};
 
 	/**
 	 * 插入颜文字。
@@ -96,35 +126,28 @@
 	}
 
 	/**
-	 * sends comment to the backend.
+	 * 检查富文本功能是否启用
+	 * @param feature 
 	 */
-	async function sendComment() {
-		try {
-			isSendingComment.value = true;
-			// TODO: // WARN 需要对用户输入的文字进行 Base64 编码
-			const content = editor.value?.getText() ?? ""; // Get plain text currently to avoid web attack.
-			const emitVideoCommentRequest: EmitVideoCommentRequestDto = {
-				videoId: props.videoId,
-				text: content,
-			};
-			// TODO: 虽然我很想非阻塞地发送评论，但是楼层号必须在评论成功提交给后端后才会获得。emmmm...
-			const emitVideoCommentResult = await api.videoComment.emitVideoComment(emitVideoCommentRequest);
-			const videoComment = emitVideoCommentResult.videoComment;
-			if (emitVideoCommentResult?.success && videoComment) {
-				editor.value?.commands.clearContent()
-				textLength.value = 0
-				useEvent("videoComment:emitVideoComment", videoComment);
-				useToast(t("toast.comment_sent"), "success", 5000);
-			} else {
-				useToast(t("toast.something_went_wrong"), "error", 5000);
-				console.error("ERROR", "Failed to send comment: request failed.");
-			}
-			isSendingComment.value = false;
-		} catch (error) {
-			useToast(t("toast.something_went_wrong"), "error", 5000);
-			console.error("ERROR", "Failed to send comment:", error);
-			isSendingComment.value = false;
-		}
+	function checkFeatureEnabled(feature: string) {
+		return (typeof props.editorFeatures === "string" && props.editorFeatures === "_ALL_") || (Array.isArray(props.editorFeatures) && props.editorFeatures.includes(feature));
+	}
+
+	/**
+	 * 清理编辑器内容并重置文本长度。
+	 */
+	function clearContent() {
+		editor.value?.commands.clearContent();
+		textLength.value = 0;
+	}
+
+	/**
+	 * 提交内容。
+	 * 将编辑器中的文本内容发送给父组件，并提供一个回调函数以清空编辑器内容和重置文本长度。
+	 */
+	function submit() {
+		if (!props.editable || !textLength.value || props.isSubmitting) return;
+		emits("handleSubmit", editor.value?.getJSON() ?? {}, editor.value?.getText() ?? "", clearContent);
 	}
 
 	/**
@@ -172,17 +195,17 @@
 		</ClientOnly>
 		<div class="toolbar">
 			<div class="left">
-				<ToolItem :tooltip="$t('format.bold')" icon="format_bold" active="bold" @click="toggleBold" :disabled="!props.editable" />
-				<ToolItem :tooltip="$t('format.italic')" icon="format_italic" active="italic" @click="toggleItalic" :disabled="!props.editable" />
-				<ToolItem :tooltip="$t('format.underline')" icon="format_underline" active="underline" @click="toggleUnderline" :disabled="!props.editable" />
-				<ToolItem :tooltip="$t('format.strikethrough')" icon="format_strikethrough" active="strike" @click="toggleStrike" :disabled="!props.editable" />
-				<ToolItem :tooltip="$t('mention')" icon="at" @click="showAtList" :disabled="!props.editable" />
-				<ToolItem :tooltip="$t('kaomoji.title')" icon="kaomoji" :active="!!flyoutKaomoji" @click="e => flyoutKaomoji = [e, 'y', -3]" :disabled="!props.editable" />
-				<ToolItem :tooltip="$t('image')" icon="photo" @click="addVueComponents" :disabled="!props.editable" />
+				<ToolItem v-if="checkFeatureEnabled('bold')" :tooltip="$t('format.bold')" icon="format_bold" active="bold" @click="toggleBold" :disabled="!props.editable" />
+				<ToolItem v-if="checkFeatureEnabled('italic')" :tooltip="$t('format.italic')" icon="format_italic" active="italic" @click="toggleItalic" :disabled="!props.editable" />
+				<ToolItem v-if="checkFeatureEnabled('underline')" :tooltip="$t('format.underline')" icon="format_underline" active="underline" @click="toggleUnderline" :disabled="!props.editable" />
+				<ToolItem v-if="checkFeatureEnabled('strike')" :tooltip="$t('format.strikethrough')" icon="format_strikethrough" active="strike" @click="toggleStrike" :disabled="!props.editable" />
+				<ToolItem v-if="checkFeatureEnabled('mention')" :tooltip="$t('mention')" icon="at" @click="showAtList" :disabled="!props.editable" />
+				<ToolItem v-if="checkFeatureEnabled('kaomoji')" :tooltip="$t('kaomoji.title')" icon="kaomoji" :active="!!flyoutKaomoji" @click="(e: MouseEvent) => flyoutKaomoji = [e, 'y', -3]" :disabled="!props.editable" />
+				<ToolItem v-if="checkFeatureEnabled('video-component')" :tooltip="$t('image')" icon="photo" @click="addVueComponents" :disabled="!props.editable" />
 			</div>
 			<div class="right">
 				<span class="text-length">{{ textLength }}</span>
-				<ToolItem :tooltip="$t('send')" icon="send" :disabled="!textLength || isSendingComment || !props.editable" :loading="isSendingComment" @click="sendComment" />
+				<ToolItem v-if="submittable" :tooltip="$t('send')" icon="send" :disabled="!textLength || isSubmitting || !props.editable" :loading="isSubmitting" @click="submit" />
 			</div>
 		</div>
 	</Comp>

@@ -10,6 +10,8 @@
 		title: string;
 		/** 视频 ID。 */
 		videoId: number;
+		/** 上传者 UID */
+		uploaderId: number;
 		/** 标签们。 */
 		tags?: DisplayVideoTag[];
 		/** 封面地址 */
@@ -24,6 +26,7 @@
 	const selfUserInfoStore = useSelfUserInfoStore();
 	const flyoutTag = ref<FlyoutModel>();
 	const menuMoreAction = ref<FlyoutModel>();
+	const isSelfVideo = computed(() => props.uploaderId === selfUserInfoStore.userInfo.uid);
 
 	const count = reactive({
 		play: 0,
@@ -108,6 +111,15 @@
 	}
 
 	/**
+	 * 导航到视频编辑页面。
+	 */
+	function editVideo() {
+		// TODO: 导航守卫
+		if (isSelfVideo.value)
+			navigate(`/contents-management/edit/video/kv${props.videoId}`);
+	}
+
+	/**
 	 * 举报。
 	 */
 	function report() {
@@ -160,6 +172,14 @@
 				<SoftButton v-tooltip:bottom="$t('view_cover')" icon="photo" class="pc" @click="downloadCover" />
 				<SoftButton v-tooltip:bottom="$t('download')" icon="download" class="pc" />
 				<SoftButton v-tooltip:bottom="$t('report')" icon="flag" class="pc" @click="report" />
+				<SoftButton
+					v-if="isSelfVideo"
+					:disabled="!isSelfVideo"
+					v-tooltip:bottom="$t('edit_video')"
+					icon="edit"
+					class="pc"
+					@click="editVideo"
+				/>
 
 				<Menu v-model="menuMoreAction">
 					<MenuItem icon="share">{{ $t("share") }}</MenuItem>
@@ -181,7 +201,7 @@
 					<div v-if="tag.originTagName" class="original-tag-name">{{ tag.originTagName }}</div>
 				</div>
 			</Tag>
-			<Tag class="add-tag" @click="e => flyoutTag = [e, 'y']"><Icon name="add" /></Tag>
+			<Tag class="add-tag" @click="(e: MouseEvent) => flyoutTag = [e, 'y']"><Icon name="add" /></Tag>
 		</div>
 		<FlyoutTag v-model="flyoutTag" />
 	</Comp>
