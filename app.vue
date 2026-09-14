@@ -2,7 +2,8 @@
 	import crowdinLogoSvg from "assets/svg/crowdin.svg";
 	import manifest from "public/manifest.json";
 
-	const host = useRequestURL().host;
+	const { host } = useRequestURL();
+	const route = useRoute();
 	const { locale } = useI18n();
 	const inContextLocalization = computed(() => isInContextLocalization(locale.value));
 
@@ -18,37 +19,43 @@
 		titleTemplate: titleChunk => {
 			return titleChunk ? `${titleChunk} - KIRAKIRA☆DOUGA` : "KIRAKIRA☆DOUGA";
 		},
+		// 根据 2026 年 HTML 样板代码更新 meta / link 标签。参见：
+		// https://matuzo.at/blog/2026/html-boilerplate
+		// https://vale.rocks/posts/html-relics
 		meta: [
 			{ charset: "UTF-8" }, // 新式指定字符集的声明，比 `http-equiv="Content-Type" content="text/html; charset=UTF-8"` 更简洁且兼容 IE。
 			{ "http-equiv": "X-UA-Compatible", content: "IE=Edge,chrome=1" }, // IE 使用最新版本文档模式，并启用 Chrome Frame 浏览器插件（如果有）。
-			{ name: "viewport", content: "width=device-width, initial-scale=1" }, // 现在可以在视口元标签中停止使用 user-scalable=no、minimum-scale=1、maximum-scale=1 了。参见：https://lukeplant.me.uk/blog/posts/you-can-stop-using-user-scalable-no-and-maximum-scale-1-in-viewport-meta-tags-now/
+			{ name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
+			// 现在可以在视口元标签中停止使用 user-scalable=no、minimum-scale=1、maximum-scale=1 了。参见：https://lukeplant.me.uk/blog/posts/you-can-stop-using-user-scalable-no-and-maximum-scale-1-in-viewport-meta-tags-now/
+			// 使用 viewport-fit=cover 可使网页覆盖到 iPhone 的全屏区域，包括刘海和圆角。
 			{ name: "renderer", content: "webkit" }, // 国产双核浏览器使用极速内核。
 			{ name: "description", content: manifest.description },
 			{ name: "keywords", content: "视频,弹幕,字幕,音频,歌词,相簿,相册,照片,视频网站,弹幕视频,二次元,动漫,动画,音乐,动漫音乐,音MAD,AMV,MAD,ANIME,ACG,NOVA" },
-			// 以下内容为各种苹果私有属性。
-			{ name: "apple-mobile-web-app-title", content: "KIRAKIRA" }, // 添加到主屏后的标题 (iOS)
-			{ name: "apple-mobile-web-app-capable", content: "yes" }, // 启用 WebApp 全屏模式 (iOS)
-			{ name: "apple-touch-fullscreen", content: "yes" }, // 启用 WebApp 全屏模式 (iOS)
-			{ name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" }, // 设置状态栏的背景颜色 (iOS)
-			{ name: "format-detection", content: "telephone=no" }, // 停用手机号码识别 (iOS)
-			{ name: "format-detection", content: "email=no" }, // 停用邮箱识别 (Android)
+			{ name: "canonical", content: () => `https://kirakira.moe${route.path}` }, // 使用规范网址链接元素，通过指定多个 URL 上可用页面的原始来源，来防止因重复内容而导致的 SEO 问题。
+			// 以下内容为各种苹果私有属性。更新：已被现代定义淘汰。
+			// { name: "apple-mobile-web-app-title", content: "KIRAKIRA" }, // 添加到主屏后的标题 (iOS)
+			// { name: "apple-mobile-web-app-capable", content: "yes" }, // 启用 WebApp 全屏模式 (iOS)
+			// { name: "apple-touch-fullscreen", content: "yes" }, // 启用 WebApp 全屏模式 (iOS)
+			// { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" }, // 设置状态栏的背景颜色 (iOS)
+			// { name: "format-detection", content: "telephone=no" }, // 停用手机号码识别 (iOS)。更新：现在写这个基本不会起作用了，无法改变浏览器的默认行为。
+			// { name: "format-detection", content: "email=no" }, // 停用邮箱识别 (Android)。更新：现在写这个基本不会起作用了，无法改变浏览器的默认行为。
 			// 以下内容为各种百度私有属性。
-			{ "http-equiv": "Cache-Control", content: "no-siteapp" }, // 百度禁止转码。通过手机百度打开网页时，百度可能会对你的网页进行转码，往你页面贴上它的广告，非常之恶心。
-			{ name: "referrer", content: "no-referrer" }, // 反防盗链
+			{ "http-equiv": "Cache-Control", content: "no-siteapp,no-transform" }, // 百度禁止转码。通过手机百度打开网页时，百度可能会对你的网页进行转码，往你页面贴上它的广告，非常之恶心。
+			// { name: "referrer", content: "no-referrer" }, // 反防盗链。更新：Chrome 85+、Firefox 90+ 开始已完全忽略此标签。
 			// 以下内容为开放图谱协议 (Open Graph Protocol) 属性。
 			{ property: "og:type", content: "website" },
 			{ property: "og:site_name", content: manifest.name },
-			{ property: "og:title", content: manifest.name }, // 这里得放页面的 title。
+			// { property: "og:title", content: manifest.name }, // 这里得放页面的 title。更新：不指定则会自动复用页面 title。
 			{ property: "og:description", content: manifest.description },
 			{ property: "og:image", content: `${host}/static/images/thumbnail.png` },
 			{ property: "og:url", content: host },
-			// 以下内容为推特私有内容属性。
-			{ name: "twitter:card", content: "summary" },
-			{ name: "twitter:site", content: manifest.name },
-			{ name: "twitter:title", content: manifest.name }, // 这里得放页面的 title。
-			{ name: "twitter:description", content: manifest.description },
-			{ name: "twitter:image", content: `${host}/static/images/thumbnail.png` },
-			{ name: "twitter:url", content: host },
+			// 以下内容为推特私有内容属性。更新：推特自更名 X 以来已全面改用 OG 协议，不再使用私有属性。
+			// { name: "twitter:card", content: "summary" },
+			// { name: "twitter:site", content: manifest.name },
+			// { name: "twitter:title", content: manifest.name }, // 这里得放页面的 title。
+			// { name: "twitter:description", content: manifest.description },
+			// { name: "twitter:image", content: `${host}/static/images/thumbnail.png` },
+			// { name: "twitter:url", content: host },
 		],
 		link: [
 			{ rel: "icon", href: environment.production ? "/favicon.ico" : "/favicon-dev.ico", sizes: "48x48" },
@@ -72,22 +79,36 @@
 			{ rel: "alternate", href: `${host}?lang=fr`, hreflang: "fr" },
 			{ rel: "alternate", href: `${host}?lang=yue`, hreflang: "zh-yue" },
 			{ rel: "alternate", href: `${host}?lang=yue`, hreflang: "yue" },
+			// Pretendard Std Variable 字体
 			{ rel: "preconnect", href: "https://fastly.jsdelivr.net/" },
 			{ rel: "stylesheet", href: "https://fastly.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-std-dynamic-subset.min.css" },
 		],
-		script: inContextLocalization.value ? [
+		script: [
+			// 页面秒开代码。参见：https://mp.weixin.qq.com/s/W_hqrBuM62fI-Bu9wmAT0Q
 			{
-				innerHTML: `(${() => {
-					globalThis._jipt = Object.entries({
-						project: "kirakira",
-						escape() {
-							globalThis.location.pathname = "/settings/language";
-						},
-					});
-				}})()`,
+				type: "speculationrules",
+				innerHTML: JSON.stringify({
+					prerender: [{
+						source: "document",
+						eagerness: "moderate",
+					}],
+				}),
 			},
-			{ src: "https://cdn.crowdin.com/jipt/jipt.js", tagPriority: "low" },
-		] : undefined,
+			// Crowdin 语境翻译
+			...inContextLocalization.value ? [
+				{
+					innerHTML: `(${() => {
+						globalThis._jipt = Object.entries({
+							project: "kirakira",
+							escape() {
+								globalThis.location.pathname = "/settings/language";
+							},
+						});
+					}})()`,
+				},
+				{ src: "https://cdn.crowdin.com/jipt/jipt.js", tagPriority: "low" } as const,
+			] : [],
+		],
 	});
 
 	watch(inContextLocalization, enableJipt => {
