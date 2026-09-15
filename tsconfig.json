@@ -30,7 +30,8 @@
 		"allowImportingTsExtensions": true,
 		"isolatedModules": true,
 		"types": [
-			"@pomsky-lang/unplugin"
+			"@pomsky-lang/unplugin",
+			"vue-directive-ripple/client",
 		]
 	},
 	// "vueCompilerOptions": {

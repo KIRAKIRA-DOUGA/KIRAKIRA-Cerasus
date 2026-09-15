@@ -1,3 +1,7 @@
+/*
+ * 注意：这不是一个已经被使用了的 Vue Directive 插件，而是一份样板代码。用于在开发其它插件时参考用。
+ */
+
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { DirectiveBinding, VNode } from "nuxt/dist/app/compat/capi";
 
@@ -36,7 +40,7 @@ export default defineNuxtPlugin(nuxt => {
 				document.onmouseup = function (event) {
 					document.onmousemove = document.onmouseup = null;
 					lastTime = new Date().getTime();
-					if ((lastTime - firstTime) > 200) {
+					if (lastTime - firstTime > 200) {
 						odiv.setAttribute("ele-flag", "true");
 						event.stopPropagation();
 					}
