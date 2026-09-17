@@ -14,9 +14,12 @@ const autoImport: AutoImportConfig = {
 	"temporal-polyfill": [
 		"Temporal",
 	],
-	["smooth-value/vue"]: [
+	"smooth-value/vue": [
 		"useSmoothValue",
 		"getSpringByFps",
+	],
+	"to-plain": [
+		["default", "toPlain"],
 	],
 };
 

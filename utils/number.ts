@@ -1,45 +1,4 @@
 /**
- * 标准化数字。拒绝傻逼科学计数法。
- * @param num - 数字。
- * @returns 标准化的数字。
- * @note `-0` 会被转换成 `"0"`。
- */
-export function normalizeNumber(num: WithWrapperType<number | bigint | string>) {
-	num = num.valueOf();
-	return (() => {
-		if (typeof num === "string")
-			if (num.match(/^(NaN|[+-]?Infinity)$/)) return num;
-			else if (num.match(/^0[box]/i)) try { num = BigInt(num); } catch { }
-		if (!isValidNumber(num)) return "NaN";
-		return ("" + num).replace(/([+-]?)(\d*)\.?(\d*)e([+-]?\d+)/i,
-			(_, sign, int, frac, exp) => exp < 0 ?
-				sign + "0." + Array(1 - exp - int.length).join("0") + int + frac :
-				sign + int + frac + Array(exp - frac.length + 1).join("0"));
-	})().replace(/^\+/, "");
-}
-
-/**
- * 验证值是否为有效数字。
- *
- * value | returns
- * --- | :--:
- * `-123.45e-56` | true
- * `"1.0e-8"` | true
- * `256n` | true
- * `"0xDeadBeef"` | true
- * `""` | false
- * `NaN` | false
- * `Infinity` | false
- *
- * @param value - 要验证的值。可以是任何类型。
- * @returns 该值是有效的有限数字、表示数字的非空字符串或大数吗？
- */
-export function isValidNumber(value: unknown) {
-	// eslint-disable-next-line no-restricted-globals
-	return value !== "" && ["number", "string"].includes(typeof value) && isFinite(value as number) || typeof value === "bigint";
-}
-
-/**
  * 数字转中文数字。
  * @param n - 数字。
  * @param upperCase - 是否以大写数字输出。
@@ -47,7 +6,7 @@ export function isValidNumber(value: unknown) {
  * @returns 中文数字。
  */
 export function digitCase(n: number | bigint, upperCase: boolean = false, amountMode: boolean = false) {
-	let s = normalizeNumber(n);
+	let s = toPlain(n);
 	const fraction = ["角", "分", "厘", "毫", "丝", "忽", "微", "纤", "沙", "尘", "埃", "渺", "漠", "模糊", "逡巡", "须臾", "瞬息", "弹指", "刹那", "六德", "虚空", "清静", "阿赖耶", "阿摩罗", "涅槃寂静"];
 	const arabic = "0123456789";
 	const lower = "〇一二三四五六七八九元十百千万亿";
