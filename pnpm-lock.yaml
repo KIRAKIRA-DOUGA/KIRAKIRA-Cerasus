@@ -128,8 +128,8 @@ importers:
         specifier: ^1.1.4
         version: 1.1.4
       vue-directive-ripple:
-        specifier: ^1.0.1
-        version: 1.0.1
+        specifier: ^1.1.0
+        version: 1.1.0
       vue-router-better-scroller:
         specifier: ^0.0.0
         version: 0.0.0(vue-router@5.0.3(@vue/compiler-sfc@3.5.30)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.30(typescript@5.9.3)))(vue@3.5.30(typescript@5.9.3)))(vue@3.5.30(typescript@5.9.3))
@@ -5657,8 +5657,8 @@ packages:
     resolution: {integrity: sha512-LA4ZjwlnUblHVgq0oBF3Jl/6h/Nvs5fzBLwdEF4nuxnFdsfajde4WfxtJr3CaiH+F6ewcIB/q4jQ4UzPyid+CQ==}
     hasBin: true
 
-  node-mock-http@1.0.4:
-    resolution: {integrity: sha512-8DY+kFsDkNXy1sJglUfuODx1/opAGJGyrTuFqEoN90oRc2Vk0ZbD4K2qmKXBBEhZQzdKHIVfEJpDU8Ak2NJEvQ==}
+  node-mock-http@1.0.5:
+    resolution: {integrity: sha512-KQyt/wLjG3TAc7DOUhpqWzgd4ERxR80JOlTK5VE5R1S12IaPVN5qkj4klBce9HPG1Njuup4Sb5bljaT34lIyjw==}
 
   node-releases@2.0.36:
     resolution: {integrity: sha512-TdC8FSgHz8Mwtw9g5L4gR/Sh9XhSP/0DEkQxfEFXOpiul5IiHgHan2VhYYb6agDSfp4KuvltmGApc8HMgUrIkA==}
@@ -7508,8 +7508,8 @@ packages:
   vue-devtools-stub@0.1.0:
     resolution: {integrity: sha512-RutnB7X8c5hjq39NceArgXg28WZtZpGc3+J16ljMiYnFhKvd8hITxSWQSQ5bvldxMDU6gG5mkxl1MTQLXckVSQ==}
 
-  vue-directive-ripple@1.0.1:
-    resolution: {integrity: sha512-l3NtQVTTDepW2sskuhyAmjDap4hoWA8NyKGrBloVBhBr56u5KfEyk72xq529OcCix0xTelOQCgWr/jG0MnAcng==}
+  vue-directive-ripple@1.1.0:
+    resolution: {integrity: sha512-ticCSl9VWtNVI/QXaC02MwOlo1D6EmpjfG95opQ9f2/52OoZ44BJanqb1kDjSDq4MYv5NcyXz1O1F9yHuk+ayw==}
 
   vue-eslint-parser@10.1.3:
     resolution: {integrity: sha512-dbCBnd2e02dYWsXoqX5yKUZlOt+ExIpq7hmHKPb5ZqKcjf++Eo0hMseFTZMLKThrUk61m+Uv6A2YSBve6ZvuDQ==}
@@ -12303,7 +12303,7 @@ snapshots:
       defu: 6.1.4
       destr: 2.0.5
       iron-webcrypto: 1.2.1
-      node-mock-http: 1.0.4
+      node-mock-http: 1.0.5
       radix3: 1.1.2
       ufo: 1.6.3
       uncrypto: 0.1.3
@@ -13250,7 +13250,7 @@ snapshots:
       mime: 4.1.0
       mlly: 1.8.1
       node-fetch-native: 1.6.7
-      node-mock-http: 1.0.4
+      node-mock-http: 1.0.5
       ofetch: 1.5.1
       ohash: 2.0.11
       pathe: 2.0.3
@@ -13340,7 +13340,7 @@ snapshots:
 
   node-gyp-build@4.8.4: {}
 
-  node-mock-http@1.0.4: {}
+  node-mock-http@1.0.5: {}
 
   node-releases@2.0.36: {}
 
@@ -15667,7 +15667,7 @@ snapshots:
 
   vue-devtools-stub@0.1.0: {}
 
-  vue-directive-ripple@1.0.1: {}
+  vue-directive-ripple@1.1.0: {}
 
   vue-eslint-parser@10.1.3(eslint@9.39.4(jiti@2.6.1)):
     dependencies:
