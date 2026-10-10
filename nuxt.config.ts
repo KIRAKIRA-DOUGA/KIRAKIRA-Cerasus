@@ -28,7 +28,7 @@ export default defineNuxtConfig({
 	},
 
 	plugins: [
-		"plugins/vue/ripple.ts",
+		{ src: "plugins/vue/ripple.ts", mode: "client" },
 		"plugins/vue/css-var-i.ts",
 		"plugins/vue/tooltip.ts",
 		"plugins/vue/gesture.ts",
