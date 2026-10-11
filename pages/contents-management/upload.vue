@@ -16,7 +16,8 @@
 	const files = reactive<File[]>([]);
 
 	const videos = ref<GetVideoByUidResponseDto>();
-	const videoPages = ref(1);
+	const totalViewCount = computed(() => videos.value?.videos.reduce((total, video) => total + (video.watchedCount ?? 0), 0));
+	let videoRequestId = 0;
 
 	const selfUserInfoStore = useSelfUserInfoStore();
 
@@ -24,14 +25,29 @@
 	 * fetch the videos according to the query.
 	 */
 	async function fetchUserVideoData() {
+		const requestId = ++videoRequestId;
+		const uid = selfUserInfoStore.userInfo.uid;
+		videos.value = undefined;
+		if (!selfUserInfoStore.isLoggedIn || !uid) return;
 		try {
 			const getVideoByUidRequest: GetVideoByUidRequestDto = {
-				uid: selfUserInfoStore.userInfo.uid,
+				uid,
 			};
 			const videosResponse = await api.video.getVideoByUid(getVideoByUidRequest);
-			videoPages.value = Math.max(1, Math.ceil(videosResponse.videosCount / 50));
+			if (requestId !== videoRequestId) return;
+			if (!videosResponse.success) throw new Error(videosResponse.message);
 			videos.value = videosResponse;
 		} catch (error) { console.error(error); }
+	}
+
+	/**
+	 * 删除成功后同步列表和统计，避免等待副本刷新后又显示已经删除的视频。
+	 * @param videoId - 已删除的视频 ID。
+	 */
+	function removeVideo(videoId: number) {
+		if (!videos.value) return;
+		const remainingVideos = videos.value.videos.filter(video => video.videoId !== videoId);
+		videos.value = { ...videos.value, videos: remainingVideos, videosCount: remainingVideos.length };
 	}
 
 	/**
@@ -126,6 +142,7 @@
 		name: string;
 	}>();
 	
+	watch([() => selfUserInfoStore.isLoggedIn, () => selfUserInfoStore.userInfo.uid], fetchUserVideoData);
 	await fetchUserVideoData();
 </script>
 
@@ -186,8 +203,8 @@
 						<div class="outline normal"></div>
 						<div class="outline successful"></div>
 					</div>
-					<CountCard :value="0" icon="movie" :name="$t('video', 2)" />
-					<CountCard :value="0" icon="play" :name="$t('sort.view')" />
+					<CountCard :value="videos?.videosCount ?? '—'" icon="movie" :name="$t('video', 2)" />
+					<CountCard :value="totalViewCount ?? '—'" icon="play" :name="$t('sort.view')" />
 				</div>
 				<ClientOnly>
 					<div class="video-list">
@@ -199,14 +216,10 @@
 							:uploader="video.uploader ?? ''"
 							:uploaderId="video.uploaderId"
 							:image="video.image"
-							:date="new Date()"
+							:date="video.uploadDate !== undefined ? new Date(video.uploadDate) : undefined"
 							:viewCount="video.watchedCount"
 							:duration="new Duration(0, video.duration ?? 0)"
-							:upvoteCount="2333"
-							:downvoteCount="2333"
-							:commentCount="100"
-							:danmakuCount="200"
-							:collectCount="300"
+							@deleted="removeVideo"
 						/>
 					</div>
 				</ClientOnly>

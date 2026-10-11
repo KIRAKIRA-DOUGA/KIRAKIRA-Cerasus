@@ -3,6 +3,8 @@
 </docs>
 
 <script setup lang="ts">
+	const { t } = useI18n();
+
 	const props = defineProps<{
 		videoId: number;
 		title: string;
@@ -19,11 +21,32 @@
 		uploaderId?: number;
 		duration?: Duration;
 	}>();
+	const emits = defineEmits<{
+		deleted: [videoId: number];
+	}>();
 
 	const flyoutDeleteConfirm = ref<FlyoutModel>();
+	const isDeleting = ref(false);
 
-	function deleteVideo() {
-		flyoutDeleteConfirm.value = undefined;
+	/** 删除成功后通知列表移除视频；失败时保留确认框以便重试。 */
+	async function deleteVideo() {
+		if (isDeleting.value) return;
+		isDeleting.value = true;
+		try {
+			const result = await api.video.deleteSelfVideo({ videoId: props.videoId });
+			if (!result?.success) {
+				useToast(t("toast.video_delete_failed"), "error");
+				return;
+			}
+			flyoutDeleteConfirm.value = undefined;
+			emits("deleted", props.videoId);
+			useToast(t("toast.video_delete_success"), "success");
+		} catch (error) {
+			useToast(t("toast.video_delete_failed"), "error");
+			console.error("ERROR", "Failed to delete video:", error);
+		} finally {
+			isDeleting.value = false;
+		}
 	}
 
 	const [DefineCountItem, CountItem] = createReusableTemplate<{
@@ -61,15 +84,15 @@
 			<div class="text-wrapper">
 				<div>
 					<LocaleLink :to="`/video/kv${videoId}`" class="title lite">{{ title }}</LocaleLink>
-					<p class="date">2333/33/33 33:33:33</p>
+					<p class="date"><DateTime :dateTime="date ?? null" showTime /></p>
 				</div>
 				<p class="counts">
-					<CountItem v-if="viewCount" icon="play" :value="viewCount" />
-					<CountItem v-if="upvoteCount" icon="thumb_up" :value="upvoteCount" />
-					<CountItem v-if="downvoteCount" icon="thumb_down" :value="downvoteCount" />
-					<CountItem v-if="commentCount" icon="chat_bubble" :value="commentCount" />
-					<CountItem v-if="danmakuCount" icon="danmaku" :value="danmakuCount" />
-					<CountItem v-if="collectCount" icon="star" :value="collectCount" />
+					<CountItem v-if="viewCount !== undefined" icon="play" :value="viewCount" />
+					<CountItem v-if="upvoteCount !== undefined" icon="thumb_up" :value="upvoteCount" />
+					<CountItem v-if="downvoteCount !== undefined" icon="thumb_down" :value="downvoteCount" />
+					<CountItem v-if="commentCount !== undefined" icon="chat_bubble" :value="commentCount" />
+					<CountItem v-if="danmakuCount !== undefined" icon="danmaku" :value="danmakuCount" />
+					<CountItem v-if="collectCount !== undefined" icon="star" :value="collectCount" />
 				</p>
 			</div>
 		</div>
@@ -79,7 +102,7 @@
 			<FlyoutConfirm v-model="flyoutDeleteConfirm" :title="$t('confirm.delete_video.title')" icon="delete">
 				{{ $t('confirm.delete_video.content', [title]) }}
 				<template #footer>
-					<Button @click="deleteVideo" severity="danger">{{ $t('delete') }}</Button>
+					<Button @click="deleteVideo" severity="danger" :loading="isDeleting" :disabled="isDeleting">{{ $t('delete') }}</Button>
 				</template>
 			</FlyoutConfirm>
 		</div>

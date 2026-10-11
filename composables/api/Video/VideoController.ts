@@ -294,6 +294,15 @@ export async function deleteVideo(deleteVideoRequest: DeleteVideoRequestDto): Pr
 }
 
 /**
+ * 删除当前登录用户自己上传的视频，权限由后端根据登录身份验证。
+ * @param deleteVideoRequest - 要删除的视频 ID。
+ * @returns 删除结果。
+ */
+export async function deleteSelfVideo(deleteVideoRequest: DeleteVideoRequestDto): Promise<DeleteVideoResponseDto> {
+	return await DELETE(`${VIDEO_API_URI}/deleteSelf`, deleteVideoRequest, { credentials: "include" }) as DeleteVideoResponseDto;
+}
+
+/**
  * 获取待审核视频列表
  * @param headerCookie  - 从客户端发起 SSR 请求时传递的 Header 中的 Cookie 部分，在 SSR 时将其转交给后端 API
  * @returns 获取待审核视频列表的请求响应

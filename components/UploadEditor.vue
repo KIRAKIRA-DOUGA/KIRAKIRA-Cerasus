@@ -34,6 +34,7 @@
 	const tags = reactive<Map<VideoTag["tagId"], VideoTag>>(new Map()); // 视频标签
 	const displayTags = computed<DisplayVideoTag[]>(() => [...tags.values()].map(tagName => getDisplayVideoTagWithCurrentLanguage(currentLanguage.value, tagName))); // 用于显示的 TAG，相较于上方的 tags 数据结构更简单。
 	const description = ref<string>(""); // 视频简介
+	const descriptionEditor = ref<InstanceType<typeof TextEditorRtf>>();
 
 	const uploadProgress = ref(0); // 视频上传进度
 	const cloudflareVideoId = ref<string>(""); // Cloudflare 视频 ID
@@ -182,6 +183,7 @@
 	 * 提交视频（确认投稿）
 	 */
 	async function commitVideo() {
+		if (isCommitButtonLoading.value) return;
 		if (!cloudflareVideoId.value) {
 			useToast(t("toast.upload_not_completed"), "error");
 			return;
@@ -195,7 +197,7 @@
 			useToast(t("validation.required.title"), "error");
 			return;
 		}
-		if (!description.value) {
+		if (!descriptionEditor.value?.validate()) {
 			useToast(t("validation.required.description"), "error");
 			return;
 		}
@@ -234,18 +236,19 @@
 		try {
 			const commitVideoResult = await api.video.commitVideo(uploadVideoRequest);
 			const videoId = commitVideoResult?.videoId;
-			if (commitVideoResult.success && videoId) { // TODO: 视频投稿成功后要做的操作（TODO: 暂时是等待 1 秒后显示纸屑然后跳转到视频页，以后可能需要修改）
-				console.info("INFO", `视频投稿成功, KVID: ${videoId}`);
-				setTimeout(() => {
-					isCommitButtonLoading.value = false;
-					showConfetti(); // 显示五彩纸屑。
-					navigate(`/video/kv${videoId}`);
-				}, 1000);
+			if (!commitVideoResult?.success || !videoId) {
+				useToast(t("toast.upload_failed"), "error");
+				return;
 			}
+			console.info("INFO", `视频投稿成功, KVID: ${videoId}`);
+			await delay(1000);
+			showConfetti(); // 显示五彩纸屑。
+			await navigate(`/video/kv${videoId}`);
 		} catch (error) {
-			isCommitButtonLoading.value = false;
 			useToast(t("toast.upload_failed"), "error");
 			console.error("ERROR", "Video submission failed:", error);
+		} finally {
+			isCommitButtonLoading.value = false;
 		}
 	}
 
@@ -253,6 +256,7 @@
 	 * 编辑视频信息（提交修改）
 	 */
 	async function editVideo() {
+		if (isCommitButtonLoading.value) return;
 		if (!("kvid" in props) || !props.kvid) {
 			useToast(t("toast.edit_failed"), "error");
 			return;
@@ -261,7 +265,7 @@
 			useToast(t("validation.required.title"), "error");
 			return;
 		}
-		if (!description.value) {
+		if (!descriptionEditor.value?.validate()) {
 			useToast(t("validation.required.description"), "error");
 			return;
 		}
@@ -287,17 +291,18 @@
 		try {
 			const editVideoResult = await api.video.editVideo(editVideoRequest);
 			const videoId = editVideoResult?.videoId;
-			if (editVideoResult.success && videoId) { // TODO: 视频更新成功后要做的操作（TODO: 暂时是等待 1 秒后跳转到视频页，以后可能需要修改）
-				console.info("INFO", `视频更新成功, KVID: ${videoId}`);
-				setTimeout(() => {
-					isCommitButtonLoading.value = false;
-					navigate(`/video/kv${videoId}`);
-				}, 1000);
+			if (!editVideoResult?.success || !videoId) {
+				useToast(t("toast.edit_failed"), "error");
+				return;
 			}
+			console.info("INFO", `视频更新成功, KVID: ${videoId}`);
+			await delay(1000);
+			await navigate(`/video/kv${videoId}`);
 		} catch (error) {
-			isCommitButtonLoading.value = false;
 			useToast(t("toast.edit_failed"), "error");
 			console.error("ERROR", "Video edit failed:", error);
+		} finally {
+			isCommitButtonLoading.value = false;
 		}
 	}
 
@@ -360,9 +365,9 @@
 	/**
 	 * 视频简介更新事件的处理函数
 	 * @param contentJson - 更新后的视频简介内容（JSONContent 格式）
-	 * @param contentText - 更新后的视频简介内容（纯文本格式）
+	 * @param _contentText - 更新后的视频简介内容（纯文本格式）
 	 */
-	function handleUpdateDescription(contentJson: JSONContent, contentText: string) {
+	function handleUpdateDescription(contentJson: JSONContent, _contentText: string) {
 		description.value = JSON.stringify(contentJson);
 	}
 
@@ -551,11 +556,18 @@
 					<section>
 						<Subheader icon="details">{{ $t("description") }}</Subheader>
 						<TextEditorRtf
-							:editorFeatures="['bold', 'italic', 'underline', 'strike', 'mention', 'kaomoji', 'video-component']"
+							ref="descriptionEditor"
+							:editorFeatures="{
+								direct: ['bold', 'italic', 'underline', 'link', 'strike', 'code-block', 'kaomoji', 'video-component'],
+								menu: ['heading', 'text-color', 'code', 'blockquote', 'bullet-list', 'ordered-list', 'clear-format'],
+							}"
 							:editable="true"
+							:maxLength="2000"
+							:maxContentHeight="240"
+							:initialContent="description"
+							required
 							@update="handleUpdateDescription"
 						/>
-						<!-- TODO: 这里放简介，需要富文本编辑器 -->
 					</section>
 
 					<ToggleSwitch v-model="pushToFeed" icon="feed">{{ $t("push_to_feed") }}</ToggleSwitch>
@@ -591,6 +603,7 @@
 		display: flex;
 		gap: $card-gap;
 		align-items: start;
+		width: 100%;
 		margin-top: 16px;
 
 		@include tablet {
@@ -613,6 +626,8 @@
 		flex-direction: column;
 		flex-grow: 1;
 		gap: $card-gap;
+		min-width: 0;
+		max-width: 100%;
 
 		.progress-card {
 			display: flex;
@@ -627,6 +642,8 @@
 		}
 
 		.toolbox-card {
+			min-width: 0;
+			max-width: 100%;
 			padding: $center-card-padding;
 		}
 	}

@@ -232,6 +232,9 @@
 		}
 
 		.info {
+			min-width: 0;
+			max-width: 100%;
+
 			@include computer {
 				display: flex;
 				margin-top: 24px;
@@ -261,7 +264,16 @@
 	}
 
 	.left {
+		flex: 1 1 0;
 		width: 100%;
+		min-width: 0;
+		max-width: 100%;
+
+		.text-editor-rtf-readonly {
+			min-width: 0;
+			max-width: 100%;
+			overflow-wrap: anywhere;
+		}
 
 		.creation-comments {
 			margin-top: 32px;

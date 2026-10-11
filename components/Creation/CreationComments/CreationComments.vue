@@ -114,10 +114,15 @@
 		<div class="send">
 			<UserAvatar :avatar="selfUserInfoStore.userInfo.avatar" />
 			<TextEditorRtf
-				:editorFeatures="['bold', 'italic', 'underline', 'strike', 'mention', 'kaomoji', 'video-component']"
+				:editorFeatures="{
+					direct: ['bold', 'italic', 'underline', 'link', 'strike', 'code-block', 'kaomoji'],
+				}"
 				:submittable="true"
 				:isSubmitting="isSendingComment"
 				:editable="props.editable"
+				:maxLength="1000"
+				:maxContentHeight="240"
+				required
 				@handleSubmit="sendComment"
 			/>
 		</div>

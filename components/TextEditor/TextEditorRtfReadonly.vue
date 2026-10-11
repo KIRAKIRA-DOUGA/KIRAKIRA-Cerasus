@@ -11,8 +11,12 @@
 
 	const editor = useEditor({
 		extensions: [
-			StarterKit,
+			StarterKit.configure({
+				hardBreak: { HTMLAttributes: { class: "soft-break" } },
+			}),
 			Underline,
+			VueComponent.Link,
+			VueComponent.TextColor,
 			VueComponent.ThumbVideo,
 			VueComponent.CursorShadow,
 		],
@@ -64,13 +68,67 @@
 	:comp {
 		@include round-large;
 		@include control-inner-shadow;
+		min-width: 0;
+		max-width: 100%;
 		overflow: clip;
 		// background-color: c(inset-bg);
 
 		> :first-child {
 			display: block;
+			min-width: 0;
+			max-width: 100%;
 			min-height: 3em;
 			// padding: 12px;
+		}
+
+		:deep(.tiptap) {
+			min-width: 0;
+			max-width: 100%;
+			overflow-wrap: anywhere;
+		}
+
+		// Enter has the normal line height. Shift+Enter uses a tighter hard break.
+		:deep(br.soft-break) {
+			content: "";
+			display: block;
+			margin-top: -0.22em;
+		}
+
+		:deep(code) {
+			padding: 0 0.3em;
+			color: c(text-color);
+			font-size: 0.9em;
+			line-height: 1.2;
+			background-color: c(main-fg, 10%);
+			border-radius: 3px;
+			box-shadow: 0 0 0 1px c(main-fg, 18%) inset;
+			box-decoration-break: clone;
+		}
+
+		:deep(pre) {
+			@include round-small;
+			max-width: 100%;
+			margin-block: 0.75em;
+			padding: 12px 14px;
+			overflow: auto;
+			color: c(text-color);
+			background-color: c(main-fg, 8%);
+			border: 1px solid c(main-fg, 18%);
+			white-space: pre-wrap;
+			overflow-wrap: normal;
+			word-break: normal;
+			tab-size: 4;
+
+			code {
+				padding: 0;
+				font-size: inherit;
+				line-height: inherit;
+				background: none;
+				border: 0;
+				border-radius: 0;
+				box-shadow: none;
+				white-space: inherit;
+			}
 		}
 	}
 </style>
