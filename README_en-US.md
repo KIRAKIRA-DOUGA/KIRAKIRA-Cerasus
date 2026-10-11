@@ -157,13 +157,13 @@ Press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd> on your keyboard and sel
 
 You can also run the following command in the root directory to start:
 ```bash
-pnpm dev-local
+pnpm dev:local
 ```
 > [!WARNING]\
 > Although you connect to the local backend, you will still request image asset files from the official staging environment Cloudflare Images service, and use the official staging environment Cloudflare Stream subdomain template when uploading videos. If you want to use your own Cloudflare Images and Cloudflare Stream services, please refer to the "Custom startup command" section below.
 
 > [!WARNING]\
-> For developers with access to the production environment, you can also use the `pnpm run dev-local-prod` command to connect to the production environment Cloudflare Images and Cloudflare Stream services.
+> For developers with access to the production environment, you can also use the `pnpm run dev:local-prod` command to connect to the production environment Cloudflare Images and Cloudflare Stream services.
 
 After it started, you should be able to preview at this URL: https://localhost:3000/
 
@@ -187,7 +187,7 @@ KIRAKIRA has two online backends: staging environment and production environment
 The command to start the **staging** environment mode is:
 
 ```bash
-pnpm dev-stg
+pnpm dev:stg
 ```
 After it started, you should be able to preview at this URL: https://localhost:3000/
 
@@ -198,7 +198,7 @@ Sometimes, the preset quick start command does not meet your needs. In this case
 
 A typical custom startup command looks like:
 ```bash
-# The following command is equivalent to 'pnpm dev-local'
+# The following command is equivalent to 'pnpm dev:local'
 pnpm cross-env VITE_BACKEND_URI=https://localhost:30000 VITE_CLOUDFLARE_IMAGES_PROVIDER=cloudflare-stg VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://customer-o9xrvgnj5fidyfm4.cloudflarestream.com/ nuxi dev --host --https --ssl-cert server/server.cer --ssl-key server/server.key
 ```
 

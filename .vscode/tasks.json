@@ -3,7 +3,7 @@
 	"tasks": [
 		{
 			"type": "npm",
-			"script": "dev-local",
+			"script": "dev:local",
 			"group": "build",
 			"problemMatcher": [],
 			"label": "npm: dev local",
@@ -11,7 +11,7 @@
 		},
 		{
 			"type": "npm",
-			"script": "dev-stg",
+			"script": "dev:stg",
 			"group": "build",
 			"problemMatcher": [],
 			"label": "npm: dev stg",
