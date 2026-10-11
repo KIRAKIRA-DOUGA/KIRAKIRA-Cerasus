@@ -71,6 +71,13 @@
 		useEvent("app:showDrawer");
 	}
 
+	/**
+	 * 如果当前位于搜索页面，则此时清空搜索内容并返回大搜索布局。
+	 */
+	function clearSearchContent() {
+		useEvent("route:clearSearchContent");
+	}
+
 	// 事件总线
 	// 发生尝试唤起登录窗口事件，唤起登录窗口
 	useListen("app:requestLogin", () => showLogin.value = true);
@@ -107,7 +114,7 @@
 	>
 		<div class="top icons">
 			<SoftButton v-tooltip:right="$t('home')" icon="home" href="/" />
-			<SoftButton v-tooltip:right="$t('search')" icon="search" href="/search" />
+			<SoftButton v-tooltip:right="$t('search')" icon="search" href="/search" @click="clearSearchContent" />
 			<SoftButton v-tooltip:right="$t('history')" icon="history" href="/history" />
 			<SoftButton v-tooltip:right="$t('collection.title', 2)" icon="star" href="/collections" />
 			<SoftButton v-tooltip:right="$t('feed.following')" icon="feed" href="/feed/following" />
@@ -164,7 +171,7 @@
 				<BottomNavItem icon="home" href="/">{{ $t("home") }}</BottomNavItem>
 				<BottomNavItem icon="category" href="/category">{{ $t("category.title") }}</BottomNavItem>
 				<BottomNavItem icon="feed" href="/feed/following">{{ $t("feed.following") }}</BottomNavItem>
-				<BottomNavItem icon="search" href="/search">{{ $t("search") }}</BottomNavItem>
+				<BottomNavItem icon="search" href="/search" @click="clearSearchContent">{{ $t("search") }}</BottomNavItem>
 			</div>
 		</nav>
 	</Transition>

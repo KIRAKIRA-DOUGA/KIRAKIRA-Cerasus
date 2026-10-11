@@ -17,6 +17,7 @@ type ApplicationEvents = {
 	"user:login": boolean;
 	"videoComment:emitVideoComment": VideoCommentResult;
 	"videoComment:deleteVideoComment": string;
+	"route:clearSearchContent": void;
 };
 
 const emitter = mitt<ApplicationEvents>();

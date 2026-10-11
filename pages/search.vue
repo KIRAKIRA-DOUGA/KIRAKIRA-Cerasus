@@ -139,7 +139,7 @@
 	}
 
 	/**
-	 * 根据用户的输入更新 URL(可选),然后搜索视频
+	 * 根据用户的输入更新 URL，然后搜索视频。
 	 */
 	async function updateUrlAndSearch() {
 		const mode = searchMode.value;
@@ -147,7 +147,7 @@
 		const tagIdList = displayTags.value.map(tag => tag.tagId);
 
 		switch (mode) {
-			case "keyword": {
+			case "keyword":
 				if (keyword) {
 					if (appSettingsStore.search.isDynamicUrl)
 						router.push({ path: route.path, query: { mode, keyword } });
@@ -155,35 +155,83 @@
 						clearUrlQuery();
 					await searchVideoByKeyword(keyword);
 				} else
-					backToBigSearchLayout();
+					backToBigSearchLayout(true);
 				break;
-			}
-			case "tag": {
+			case "tag":
 				if (
-					Array.isArray(tagIdList) &&
-					tagIdList.every((tagId): tagId is number => typeof tagId === "number") &&
-					tagIdList.length > 0
+					tagIdList.length > 0 &&
+					tagIdList.every(tagId => typeof tagId === "number")
 				) {
 					if (appSettingsStore.search.isDynamicUrl)
-						router.push({ path: route.path, query: { mode, tagId: tagIdList } });
+						router.push({ path: route.path, query: { mode, tagId: tagIdList.join(",") } });
 					else
 						clearUrlQuery();
 					await searchVideoByTagIds(tagIdList);
 				} else
-					backToBigSearchLayout();
+					backToBigSearchLayout(true);
 				break;
-			}
 			case "user":
 			case "advanced_search":
 				useToast(t("under_construction.search_mode"), "error", 10000);
 				console.warn(`no support search mode: ${mode}`);
 				await getHomeVideo();
 				break;
-
 			default:
 				break;
 		}
 	}
+
+	/**
+	 * 根据 URL Search Params，然后搜索视频。
+	 */
+	async function getSearchParamsAndSearch() {
+		const params = new URLSearchParams(location.search);
+		const mode = params.get("mode"), keyword = params.get("keyword");
+		switch (mode) {
+			case "keyword": {
+				searchMode.value = mode;
+				if (keyword) {
+					keywordQueryString.value = keyword;
+					await searchVideoByKeyword(keyword);
+				} else {
+					keywordQueryString.value = "";
+					backToBigSearchLayout(false);
+				}
+				break;
+			}
+			case "tag": {
+				searchMode.value = mode;
+				const tagIdList = params.get("tagId")?.split(",").map(tagId => parseInt(tagId, 10)) ?? [];
+				if (tagIdList.length > 0) {
+					const getVideoTagByTagIdRequest: GetVideoTagByTagIdRequestDto = { tagId: tagIdList };
+					const tagsResult = await api.videoTag.getTagsByTagIds(getVideoTagByTagIdRequest);
+					if (tagsResult.success && tagsResult.result) {
+						tagsResult.result.forEach(tag => tags.set(tag.tagId, tag));
+						await searchVideoByTagIds(tagIdList);
+					} else
+						backToBigSearchLayout(false);
+				} else {
+					tags.clear();
+					backToBigSearchLayout(false);
+				}
+				break;
+			}
+			default:
+				backToBigSearchLayout(false);
+				break;
+		}
+	}
+
+	useEventListener("window", "popstate", () => {
+		// route.query 此时并不可靠。
+		getSearchParamsAndSearch();
+	});
+
+	useListen("route:clearSearchContent", () => {
+		keywordQueryString.value = "";
+		tags.clear();
+		backToBigSearchLayout(true);
+	});
 
 	const switchingLayout = ref(false);
 	watch(videos, (videos, prevVideos) => {
@@ -228,8 +276,12 @@
 		}
 	}
 
-	function backToBigSearchLayout() {
-		clearUrlQuery();
+	/**
+	 * 返回大搜索布局。
+	 * @param shouldClearUrlQuery - 是否要顺便清除 URL Search Params？
+	 */
+	function backToBigSearchLayout(shouldClearUrlQuery: boolean) {
+		if (shouldClearUrlQuery) clearUrlQuery();
 		videos.value = undefined;
 	}
 
@@ -279,13 +331,11 @@
 				}
 
 				case "tag": {
-					const originTagIdListInUrl = route.query.tagId;
+					let originTagIdListInUrl = route.query.tagId;
+					if (Array.isArray(originTagIdListInUrl)) originTagIdListInUrl = originTagIdListInUrl[0];
 
 					let urlTagIdList: number[] = [];
-					if (Array.isArray(originTagIdListInUrl))
-						urlTagIdList = originTagIdListInUrl.map(tagId => parseInt(tagId!, 10));
-					else if (typeof originTagIdListInUrl === "string")
-						urlTagIdList = [parseInt(originTagIdListInUrl, 10)];
+					urlTagIdList = originTagIdListInUrl?.split(",").map(tagId => parseInt(tagId, 10)) ?? [];
 
 					if (urlTagIdList.length > 0) {
 						const getVideoTagByTagIdRequest: GetVideoTagByTagIdRequestDto = { tagId: urlTagIdList };
