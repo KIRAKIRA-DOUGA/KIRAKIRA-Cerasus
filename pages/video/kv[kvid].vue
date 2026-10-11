@@ -23,7 +23,7 @@
 	const selectedTab = ref("info");
 	const transitionName = ref("page-jump-in");
 	const title = computed(() => videoDetails.value?.title ?? "");
-	const thumbnail = computed(() => videoDetails.value?.image || defaultThumbnail);
+	const thumbnail = computed(() => videoDetails.value?.image ?? ""); // 这里需要一个在 TOS 中上传的默认封面
 	const currentLanguage = computed(getCurrentLocale); // 当前用户的语言
 	// const recommendations = ref<Videos200ResponseVideosInner[]>();
 
@@ -79,18 +79,25 @@
 	watch(() => kvid, fetchVideoData);
 	await fetchVideoData();
 
+	// 封面在数据库里存的是 TOS 对象名（key），og:image 需要拼成完整 URL（TOS 图会落到预生成的 w1280 变体）
+	const img = useImage();
+	const ogImage = computed(() => {
+		const cover = videoDetails.value?.image;
+		return cover ? img(cover, { width: 1280, height: 720 }, { provider: "tos" }) : undefined;
+	});
+
 	useHead({
 		title: title.value,
 		meta: [
 			{ property: "og:type", content: "video" },
 			{ property: "og:title", content: title },
 			{ property: "og:description", content: videoDetails.value?.description },
-			{ property: "og:image", content: videoDetails.value?.image },
+			{ property: "og:image", content: ogImage },
 			{ property: "og:image:width", content: 1280 },
 			{ property: "og:image:height", content: 720 },
 			{ name: "twitter:title", content: title },
 			{ name: "twitter:description", content: videoDetails.value?.description },
-			{ name: "twitter:image", content: videoDetails.value?.image },
+			{ name: "twitter:image", content: ogImage },
 		],
 	});
 

@@ -1,4 +1,4 @@
-import { GET, POST, uploadFile2CloudflareImages } from "api/Common";
+import { GET, POST, uploadFile2TOS } from "api/Common";
 import type {
 	AdminClearUserInfoRequestDto,
 	AdminClearUserInfoResponseDto, AdminGetUserInfoResponseDto,
@@ -8,6 +8,7 @@ import type {
 	CheckUserHave2FAResponseDto,
 	CheckUserTokenResponseDto,
 	CheckUsernameRequestDto, CheckUsernameResponseDto,
+	ConfirmUserAvatarUploadRequestDto, ConfirmUserAvatarUploadResponseDto,
 	ConfirmUserTotpAuthenticatorRequestDto,
 	ConfirmUserTotpAuthenticatorResponseDto, CreateInvitationCodeResponseDto,
 	CreateUserEmailAuthenticatorResponseDto,
@@ -227,28 +228,38 @@ export async function userLogout(props: { appSettingsStore: AppSettingsStoreType
 }
 
 /**
- * 更新用户头像：获取用于用户上传头像的预签名 URL, 上传限时 60 秒
- * @returns - 获取用户头像上传的预签名 URL 的请求响应
+ * 更新用户头像：获取用于用户上传头像（火山引擎 TOS）的 POST 上传签名，签名默认有效期约 11 分钟
+ * @param contentType - 头像图片的 MIME 类型，例如 'image/png'，必填
+ * @returns - 获取用户头像上传签名的请求响应
  */
-export const getUserAvatarUploadSignedUrl = async (): Promise<GetUserAvatarUploadSignedUrlResponseDto> => {
-	return await GET(`${USER_API_URI}/avatar/preUpload`, { credentials: "include" }) as GetUserAvatarUploadSignedUrlResponseDto;
+export const getUserAvatarUploadSignedUrl = async (contentType: string): Promise<GetUserAvatarUploadSignedUrlResponseDto> => {
+	return await GET(`${USER_API_URI}/avatar/preUpload?contentType=${encodeURIComponent(contentType)}`, { credentials: "include" }) as GetUserAvatarUploadSignedUrlResponseDto;
 };
 
 /**
- * 根据预签名 URL 上传用户头像
- * @param fileName - 头像文件名
+ * 通过 POST 表单将用户头像直传到火山引擎 TOS
+ * @param uploadUrl - preUpload 返回的 TOS 上传地址（userAvatarUploadSignedUrl）
+ * @param uploadFields - preUpload 返回的签名表单字段（userAvatarUploadFields）
  * @param avatarBlobData - 用 Blob 编码的用户头像文件
- * @param signedUrl - 预签名 URL
  * @returns - 是否上传成功，成功返回 true，失败返回 false
  */
-export const uploadUserAvatar = async (fileName: string, avatarBlobData: Blob, signedUrl: string): Promise<boolean> => {
+export const uploadUserAvatar = async (uploadUrl: string, uploadFields: Record<string, string>, avatarBlobData: Blob): Promise<boolean> => {
 	try {
-		await uploadFile2CloudflareImages(fileName, signedUrl, avatarBlobData, 60000);
+		await uploadFile2TOS(uploadUrl, uploadFields, avatarBlobData, 60000);
 		return true;
 	} catch (error) {
-		console.error("ERROR", "Failed to upload avatar:", error, { avatarBlobData, signedUrl });
+		console.error("ERROR", "Failed to upload avatar:", error, { avatarBlobData, uploadUrl });
 		return false;
 	}
+};
+
+/**
+ * 确认头像上传并写库
+ * @param confirmUserAvatarUploadRequest - 确认头像上传的请求载荷（携带 preUpload 返回的 fileName）
+ * @returns - 确认头像上传的请求响应，成功时返回最终头像 URL
+ */
+export const confirmUserAvatarUpload = async (confirmUserAvatarUploadRequest: ConfirmUserAvatarUploadRequestDto): Promise<ConfirmUserAvatarUploadResponseDto> => {
+	return await POST(`${USER_API_URI}/avatar/confirmUpload`, confirmUserAvatarUploadRequest, { credentials: "include" }) as ConfirmUserAvatarUploadResponseDto;
 };
 
 /**

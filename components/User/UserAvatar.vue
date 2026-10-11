@@ -19,15 +19,24 @@
 		return Number.isFinite(uid) ? `/user/${uid}` : props.to;
 	});
 
-	const provider = computed(() => props.avatar?.startsWith("blob:http") ? undefined : environment.cloudflareImageProvider);
+	const isLocalPreview = computed(() => /^(blob:|data:)/i.test(props.avatar ?? ""));
 	const appSettings = useAppSettingsStore();
 </script>
 
 <template>
 	<Comp v-ripple="Boolean(userLink) || Boolean(hoverable)" :class="{ hoverable }">
+		<img
+			v-if="avatar && isLocalPreview"
+			:src="avatar"
+			alt="avatar"
+			draggable="false"
+			width="100"
+			height="100"
+			:class="{ hoverable }"
+		/>
 		<NuxtImg
-			v-if="avatar"
-			:provider
+			v-else-if="avatar"
+			provider="tos"
 			:src="avatar"
 			alt="avatar"
 			draggable="false"

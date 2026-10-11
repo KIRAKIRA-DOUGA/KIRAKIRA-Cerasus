@@ -158,27 +158,29 @@ export async function uploadFile2R2(signedUrl: string, body: Blob, contentType: 
 // multipart/form-data: 用于表单数据，尤其是包含文件上传时。
 
 /**
- * 发送 POST 请求向 Cloudflare Image 上传文件
- * @param fileName - 上传的文件名
- * @param signedUrl - R2 用于上传文件的预编译 URL
- * @param body - 上传的文件的 Blob
+ * 以 POST 表单（multipart/form-data）方式将文件直传到火山引擎 TOS（兼容 S3）。
+ *
+ * TOS 的 POST 直传对表单字段顺序有要求：所有签名字段必须先 append，`file` 字段必须放在最后，否则会被拒绝。
+ * @param uploadUrl - 后端返回的 TOS 上传地址
+ * @param uploadFields - 后端返回的签名表单字段（已包含 key、policy、x-tos-signature、Content-Type 等）
+ * @param body - 要上传的文件的 Blob
  * @param timeout - 请求超时时间（毫秒），默认：30000ms
- * @returns 请求结果，上传成功 true，否则 false
  */
-export async function uploadFile2CloudflareImages(fileName: string, signedUrl: string, body: Blob, timeout: number = 30000): Promise<void> {
+export async function uploadFile2TOS(uploadUrl: string, uploadFields: Record<string, string>, body: Blob, timeout: number = 30000): Promise<void> {
 	try {
 		const formData = new FormData();
+		// 1) 先把所有签名字段塞进去（key、policy、x-tos-signature、Content-Type 等都在这里）
+		for (const [key, value] of Object.entries(uploadFields))
+			formData.append(key, value);
+		// 2) file 必须放在最后
 		formData.append("file", body);
-		await fetchWithTimeout(signedUrl, {
+		// 注意：不要手动设置 Content-Type，让浏览器自动带上 multipart 的 boundary；也不要携带 cookie（这是直传对象存储，不是打后端）。
+		await fetchWithTimeout(uploadUrl, {
 			method: "POST",
-			mode: "cors",
-			headers: {
-				"Access-Control-Allow-Origin": "*",
-			},
 			body: formData,
 		}, timeout);
 	} catch (error) {
-		console.error("ERROR", `something wrong in 'uploadFile2CloudflareImage', URL: ${signedUrl}`, error); // TODO: Remove Console Output?
+		console.error("ERROR", `something wrong in 'uploadFile2TOS', URL: ${uploadUrl}`, error); // TODO: Remove Console Output?
 		throw error;
 	}
 }

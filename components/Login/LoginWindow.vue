@@ -801,7 +801,7 @@
 				<div class="line"></div>
 			</div>
 			<div class="avatar">
-				<NuxtImg v-if="selfUserInfoStore.userInfo.avatar" :provider="environment.cloudflareImageProvider" :src="selfUserInfoStore.userInfo.avatar" alt="avatar" />
+				<NuxtImg v-if="selfUserInfoStore.userInfo.avatar" provider="tos" :src="selfUserInfoStore.userInfo.avatar" alt="avatar" />
 				<Icon v-else name="person" />
 			</div>
 			<div ref="loginAnimationText" class="texts">
