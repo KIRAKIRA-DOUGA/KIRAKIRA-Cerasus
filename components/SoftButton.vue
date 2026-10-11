@@ -58,7 +58,7 @@
 
 <template>
 	<Comp role="button" :aria-label="icon">
-		<div :class="[appearance]">
+		<div :class="appearance">
 			<component
 				:is="href ? LocaleLink : 'button'"
 				ref="wrapper"

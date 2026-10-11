@@ -15,6 +15,7 @@
 
 	const windowSize = useWindowSize();
 	const isMobileWidth = computed(() => windowSize.width.value <= numbers.tabletMaxWidth);
+	const mobile = isMobile();
 
 	const view = ref<ViewType>("grid");
 	const displayPageCount = ref(6);
@@ -311,7 +312,7 @@
 	}
 
 	watch(tags, updateUrlAndSearch); // TAG 模式不需要防抖
-	import.meta.client && await searchPageInit(); // WARN: searchPageInit 一定要在 watch 后面
+	if (import.meta.client) await searchPageInit(); // WARN: searchPageInit 一定要在 watch 后面
 	const [DefineSearchForm, SearchForm] = createReusableTemplate();
 </script>
 
@@ -330,7 +331,7 @@
 					</TransitionGroup>
 				</div>
 				<form v-if="searchMode !== 'tag'" @submit.prevent="updateUrlAndSearch">
-					<TextBox v-model="keywordQueryString" :placeholder="$t('search')" autoFocus>
+					<TextBox v-model="keywordQueryString" :placeholder="$t('search')" :autoFocus="!mobile">
 						<template #actions>
 							<SoftButton icon="search" @click="updateUrlAndSearch" />
 						</template>
