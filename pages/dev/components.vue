@@ -4,6 +4,7 @@
 	import animationData from "lotties/spinner-dev1.json";
 
 	const { t } = useI18n();
+	const selfUserInfoStore = useSelfUserInfoStore();
 
 	const useSyncLaxKiraCookieOptions = { isWatchCookieRef: true, isSyncSettings: true, isListenLoginEvent: true, sameSite: "lax" } as const;
 
@@ -347,6 +348,11 @@
 						<marquee direction="down" width="250" height="200" behavior="alternate" class="marquee">
 							<marquee behavior="alternate">DVD</marquee>
 						</marquee>
+					</section>
+				</AccordionItem>
+				<AccordionItem title="移除头像">
+					<section class="marquee-section">
+						<Button severity="danger" :disabled="!selfUserInfoStore?.isLoggedIn" @click="async () => { try { await api.user.updateOrCreateUserInfo({ avatar: '', username: selfUserInfoStore?.userInfo?.username }); useToast('头像已移除', 'success'); } catch { useToast('移除头像失败', 'error') } }">移除自己的头像</Button>
 					</section>
 				</AccordionItem>
 			</Accordion>
