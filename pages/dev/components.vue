@@ -4,6 +4,7 @@
 	import animationData from "lotties/spinner-dev1.json";
 
 	const { t } = useI18n();
+	const selfUserInfoStore = useSelfUserInfoStore();
 
 	const useSyncLaxKiraCookieOptions = { isWatchCookieRef: true, isSyncSettings: true, isListenLoginEvent: true, sameSite: "lax" } as const;
 
@@ -172,7 +173,7 @@
 			<TextBox v-model="inputValue" placeholder="小小的软软的香香的" :style="{ '--size': 'small' }" />
 			<TextBox v-model="inputValue" icon="kaomoji" required placeholder="正常的" />
 			<TextBox v-model="inputValue" icon="emotions" placeholder="XL TECHNO -More Dance Remix-" :style="{ '--size': 'large' }" />
-			<SendVerificationCode v-model="inputValue" />
+			<SendVerificationCode v-model="inputValue" verificationCodeFor="registration" />
 			<em>所有输入框的内容同时输入属正常现象，因为懒得做三个变量。</em>
 			<hr />
 			<p>他有没有可能是演的，他是不是演的呢？</p>
@@ -347,6 +348,11 @@
 						<marquee direction="down" width="250" height="200" behavior="alternate" class="marquee">
 							<marquee behavior="alternate">DVD</marquee>
 						</marquee>
+					</section>
+				</AccordionItem>
+				<AccordionItem title="移除头像">
+					<section class="marquee-section">
+						<Button severity="danger" :disabled="!selfUserInfoStore?.isLoggedIn" @click="async () => { try { await api.user.updateOrCreateUserInfo({ avatar: '', username: selfUserInfoStore?.userInfo?.username }); useToast('头像已移除', 'success'); } catch { useToast('移除头像失败', 'error') } }">移除自己的头像</Button>
 					</section>
 				</AccordionItem>
 			</Accordion>

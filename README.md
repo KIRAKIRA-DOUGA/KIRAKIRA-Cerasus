@@ -159,14 +159,14 @@ KIRAKIRA Cerasus 的开发服务器具有多种模式供您选择。\
 您也可以在程序根目录中执行以下命令来启动：
 
 ```bash
-pnpm dev-local
+pnpm dev:local
 ```
 
 > [!WARNING]\
 > 虽然您连接了本地后端，但仍会向官方提供的预生产环境 Cloudflare Images 服务请求图片资源文件，并在视频上传时使用官方预生产环境的 Cloudflare Stream 子域名模板。如果您想要使用您自己的 Cloudflare Images 和 Cloudflare Stream 服务，请参考下方的“自定义启动命令”章节。
 
 > [!WARNING]\
-> 对于有生产环境访问权限的开发者，您也可以使用 `pnpm run dev-local-prod` 命令来连接生产环境的 Cloudflare Images 和 Cloudflare Stream 服务。
+> 对于有生产环境访问权限的开发者，您也可以使用 `pnpm run dev:local-prod` 命令来连接生产环境的 Cloudflare Images 和 Cloudflare Stream 服务。
 
 启动后，您应该能够在这个地址访问：https://localhost:3000/
 
@@ -189,7 +189,7 @@ KIRAKIRA 拥有**预**生产环境和生产环境两个线上后端，预生产�
 启动**预生产环境**线上后端模式的命令为：
 
 ```bash
-pnpm dev-stg
+pnpm dev:stg
 ```
 
 启动后，您应该能够在这个地址访问：https://localhost:3000/
@@ -201,7 +201,7 @@ pnpm dev-stg
 
 一个典型的自定义启动命令看起来像：
 ```bash
-# 以下命令等价于 'pnpm dev-local'
+# 以下命令等价于 'pnpm dev:local'
 pnpm cross-env VITE_BACKEND_URI=https://localhost:30000 VITE_CLOUDFLARE_IMAGES_PROVIDER=cloudflare-stg VITE_CLOUDFLARE_STREAM_CUSTOMER_SUBDOMAIN=https://customer-o9xrvgnj5fidyfm4.cloudflarestream.com/ nuxi dev --host --https --ssl-cert server/server.cer --ssl-key server/server.key
 ```
 
