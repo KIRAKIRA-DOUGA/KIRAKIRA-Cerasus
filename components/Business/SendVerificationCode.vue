@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	const props = defineProps<{
-		/** 邀请码的用途。 */
+		/** 验证码的用途。 */
 		verificationCodeFor: "registration" | "change-email-verify-new-email" | "change-email-verify-old-email" | "change-password" | "delete-email-2fa";
 		/** 邮箱。// WARN 在某些 verificationCodeFor 类型中必须提供，否则无法发送验证码。 */
 		email?: string;
@@ -17,7 +17,7 @@
 	const value = defineModel<string>({ required: true });
 
 	const timeoutsStore = useSendVerificationCodeTimeoutStoreObject();
-	const isTimeouted = computed(() => {
+	const isTimeout = computed(() => {
 		if (props.verificationCodeFor in timeoutsStore.timeouts)
 			return timeoutsStore.timeouts[props.verificationCodeFor].isTimeouted;
 		else
@@ -258,8 +258,8 @@
 		autoComplete="one-time-code"
 	>
 		<template #actions>
-			<Button :disabled="!isTimeouted || props.disabled === true || isSendingEmail" @click="startTimeout(); sendVerificationCode();">
-				{{ (isResent ? $t("resend") : $t("send")) + (isTimeouted ? "" : ` (${timeoutCountdown})`) }}
+			<Button :disabled="!isTimeout || props.disabled === true || isSendingEmail" @click="startTimeout(); sendVerificationCode();">
+				{{ (isResent ? $t("resend") : $t("send")) + (isTimeout ? "" : ` (${timeoutCountdown})`) }}
 			</Button>
 		</template>
 	</TextBox>

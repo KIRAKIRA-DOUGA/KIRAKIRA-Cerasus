@@ -173,7 +173,7 @@
 			<TextBox v-model="inputValue" placeholder="小小的软软的香香的" :style="{ '--size': 'small' }" />
 			<TextBox v-model="inputValue" icon="kaomoji" required placeholder="正常的" />
 			<TextBox v-model="inputValue" icon="emotions" placeholder="XL TECHNO -More Dance Remix-" :style="{ '--size': 'large' }" />
-			<SendVerificationCode v-model="inputValue" />
+			<SendVerificationCode v-model="inputValue" verificationCodeFor="registration" />
 			<em>所有输入框的内容同时输入属正常现象，因为懒得做三个变量。</em>
 			<hr />
 			<p>他有没有可能是演的，他是不是演的呢？</p>
