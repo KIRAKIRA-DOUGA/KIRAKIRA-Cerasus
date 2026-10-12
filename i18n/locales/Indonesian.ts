@@ -183,6 +183,7 @@ export default {
 			repeat_one: "Ulangi Sekali",
 			shuffle: "Acak",
 		},
+		chapter: {},
 	},
 	danmaku: {
 		title: "Danmaku",
@@ -403,7 +404,6 @@ export default {
 		username_requirements_unique: "Nama pengguna harus unik.",
 		nickname: "Nama Panggilan",
 		nickname_requirements: "1~20 karakter, sertakan hanya angka, upper & lower case huruf Latin, huruf Vietnam, karakter CJK, Hiragana/Katakana umum, suku kata Hangul modern, simbol spesial \"-\", \"_\".",
-		username_nickname_requirements: "Nama Pengguna dan Nama Panggilan harus @:user.nickname_requirements",
 		bio: "Bio",
 		gender: "Gender",
 		memo: "Memo",
@@ -568,6 +568,7 @@ export default {
 		reset_profile: "Apakah Anda yakin ingin mengatur ulang profil Anda?",
 		block_user: {},
 		hide_user: {},
+		delete_video: {},
 	},
 	current_time: "Waktu Saat Ini",
 	improve_translation: "Improvisasikan terjemahan",

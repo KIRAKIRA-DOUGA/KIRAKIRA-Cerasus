@@ -264,6 +264,7 @@ export default {
 			loadMedia: "Không tải được đa phương tiện",
 		},
 		playlist: {
+			title: "Danh sách phát",
 			add_to_playlist: "Thêm vào Danh sách phát",
 			remove_from_playlist: "Xóa khỏi Danh sách phát",
 		},
@@ -273,6 +274,10 @@ export default {
 			repeat_all: "Lặp lại tất cả",
 			repeat_one: "Lặp lại một lần",
 			shuffle: "Xáo trộn",
+		},
+		block_words: "Chặn từ khoá",
+		chapter: {
+			title: "Chương",
 		},
 	},
 	danmaku: {
@@ -531,11 +536,11 @@ export default {
 	user: {
 		title: "Người dùng",
 		username: "Tên người dùng",
-		username_requirements: "Phải là tên độc lập duy nhất. @:user.nickname_requirements",
-		username_requirements_unique: "Tên người dùng phải là duy nhất.",
+		username_requirements: "Phải là tên độc nhất. @:user.nickname_requirements",
+		username_requirements_unique: "Tên người dùng phải là độc nhất.",
 		nickname: "Biệt danh",
 		nickname_requirements: "1~20 ký tự, chỉ bao gồm số, chữ cái Latin in hoa và thường, chữ cái tiếng Việt, chữ CJK, chữ Hiragana/Katakana thông dụng, âm tiết Hangul hiện đại, ký hiệu đặc biệt \"-\", \"_\", không có khoảng trắng đầu, cuối, liên tục.",
-		username_nickname_requirements: "Tên người dùng và biệt danh phải là @:user.nickname_requirements",
+		username_nickname_requirements: "Tên người dùng và biệt danh phải có từ @:user.nickname_requirements",
 		bio: "Giới thiệu",
 		gender: "Giới tính",
 		memo: "Phụ chú",
@@ -697,6 +702,8 @@ export default {
 			new_email_same_as_old_email: "Địa chỉ email mới trùng với cái cũ!",
 			invitation_code: "Sai định dạng mã mời!",
 			password_hint_include_password: "Không chứa mật khẩu trong gợi ý mật khẩu!",
+			username: "Tên người dùng chứa ký tự không hợp lệ!\nNó phải có từ @:user.nickname_requirements",
+			nickname: "Biệt danh chứa ký tự không hợp lệ!\nNó phải @:user.nickname_requirements",
 		},
 		too_long: {
 			username: "Tên đăng nhập quá dài!",
@@ -722,6 +729,10 @@ export default {
 			ok: "Xác nhận ẩn",
 		},
 		delete_background_image: "Bạn có chắc muốn xóa hình nền này?",
+		delete_video: {
+			title: "Bạn có chắc chắn muốn xoá video này không?",
+			content: "Nó sẽ biến mất mãi mãi! (Một thời gian dài!)",
+		},
 	},
 	current_time: "Thời gian hiện tại",
 	improve_translation: "Cải thiện bản dịch",
@@ -771,7 +782,7 @@ export default {
 			step_enter_code: "Nhập mã xác thực",
 			step_enter_code_description: "Sau khi quét mã QR, hệ thống sẽ tạo mã xác thực trong ứng dụng xác thực.\nNhập vào dưới đây và nhấn OK trước khi hết thời hạn.",
 			step_save: "Lưu các mã dự phòng và mã khôi phục",
-			step_save_description: "Vui lòng lưu trữ các mã ở nơi an toàn. Mỗi mã dự phòng/khôi phục chỉ được dùng 1 lần, một khi rời khỏi trang này thì các mã sẽ không còn được hiển thị. Trường hợp bị mất (không thể truy nhập) ứng dụng xác thực, bạn có thể dùng các mã này để đăng nhập.",
+			step_save_description: "Vui lòng lưu trữ các mã ở nơi an toàn. Mỗi mã dự phòng/khôi phục chỉ được dùng 1 lần, một khi rời khỏi trang này thì các mã sẽ không còn được hiển thị. Trường hợp bị mất (không thể truy cập) ứng dụng xác thực, bạn có thể dùng các mã này để đăng nhập.",
 			backup_code: "Mã dự phòng",
 			backup_code_description: "Có thể dùng thay mã xác thực TOTP.",
 			recovery_code: "Mã khôi phục",
@@ -783,7 +794,7 @@ export default {
 		},
 		enable_email: {
 			title: "Kích hoạt xác thực 2 bước bằng email",
-			ensure: "Hãy chắc chắn rằng bạn còn truy nhập được địa chỉ email này!",
+			ensure: "Hãy chắc chắn rằng bạn còn truy cập được địa chỉ email này!",
 		},
 		disable_email: {
 			title: "Vô hiệu xác thực 2 bước bằng email",
@@ -806,4 +817,5 @@ export default {
 		rechoose: "Chọn lại",
 	},
 	unknown: "Không xác định",
+	edit_video: "Chỉnh sửa video",
 } as const satisfies LocaleIdentifiers;
