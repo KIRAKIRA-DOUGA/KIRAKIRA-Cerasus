@@ -14,6 +14,7 @@
 	const { t } = useI18n();
 
 	const { avatarSize, avatarGap, avatarMinLeft } = useScssVariables().numbers;
+	const img = useImage();
 	const selfUserInfoStore = useSelfUserInfoStore();
 	const model = defineModel<boolean>();
 	type PageType = "login1" | "login2-2fa" | "login2-email" | "register1" | "register2" | "register3" | "forgot1" | "forgot2-email" | "forgot2-totp";
@@ -30,13 +31,13 @@
 	const loginAnimationText = ref<HTMLDivElement>();
 	const avatarMovement = ref(0);
 	const textPaddingLeft = ref(0);
-	const _isLogining = ref(false);
-	const isLogining = computed({
-		get: () => _isLogining.value,
+	const _isLoggingIn = ref(false);
+	const isLoggingIn = computed({
+		get: () => _isLoggingIn.value,
 		set: async value => {
 			if (value) updateAvatarMovement();
 			await nextTick();
-			_isLogining.value = value;
+			_isLoggingIn.value = value;
 			if (value) closeLater();
 		},
 	});
@@ -58,15 +59,22 @@
 			model.value = value;
 			avatarMovement.value = 0;
 			textPaddingLeft.value = 0;
-			if (isLogining.value) useEvent("user:login", true);
-			if (isLogining.value) selfUserInfoStore.isLoggedIn = true;
+			if (isLoggingIn.value) useEvent("user:login", true);
+			if (isLoggingIn.value) selfUserInfoStore.isLoggedIn = true;
 			if (!value) selfUserInfoStore.tempHideAvatarFromSidebar = false;
-			isLogining.value = false;
+			isLoggingIn.value = false;
 			currentPage.value = "login1";
 		},
 	});
 	const loginWindow = refComp();
 	const isInvalidUserEmail = computed(() => !!email.value && isInvalidEmail(email.value)); // NOTE: 当 email 为空时不显示错误，只是为了美观
+	const avatarOnLoggingInBlobSrc = ref<string>();
+	const clearAvatarOnLoggingInBlobSrc = () => {
+		if (avatarOnLoggingInBlobSrc.value) {
+			URL.revokeObjectURL(avatarOnLoggingInBlobSrc.value);
+			avatarOnLoggingInBlobSrc.value = undefined;
+		}
+	};
 
 	const isCheckingUsername = ref(false);
 	const validChar = makeUsername();
@@ -84,7 +92,7 @@
 	const FORGOT_PASSWORD_BUSINESS_NAME = "forgot-password";
 
 	const timeouts = useSendVerificationCodeTimeoutStoreObject(); // 验证码倒计时
-	const isLoginTimeouted = computed(() => {
+	const isLoginTimeout = computed(() => {
 		if (LOGIN_BUSINESS_NAME in timeouts.timeouts)
 			return timeouts.timeouts[LOGIN_BUSINESS_NAME].isTimeouted;
 		else
@@ -96,7 +104,7 @@
 		else
 			return 0;
 	});
-	const isRegistrationTimeouted = computed(() => {
+	const isRegistrationTimeout = computed(() => {
 		if (REGISTRATION_BUSINESS_NAME in timeouts.timeouts)
 			return timeouts.timeouts[REGISTRATION_BUSINESS_NAME].isTimeouted;
 		else
@@ -108,7 +116,7 @@
 		else
 			return 0;
 	});
-	const isForgotPasswordTimeouted = computed(() => {
+	const isForgotPasswordTimeout = computed(() => {
 		if (FORGOT_PASSWORD_BUSINESS_NAME in timeouts.timeouts)
 			return timeouts.timeouts[FORGOT_PASSWORD_BUSINESS_NAME].isTimeouted;
 		else
@@ -232,6 +240,7 @@
 	 * 登录账户，其二。
 	 */
 	async function loginUser() {
+		clearAvatarOnLoggingInBlobSrc();
 		if (password.value && email.value) {
 			const passwordHash = await generateHash(password.value);
 			const userLoginRequest: UserLoginRequestDto = {
@@ -253,9 +262,20 @@
 					saveUserSetting2BrowserCookieStore(userSettings);
 					cookieBinding();
 
+					// 加速获取用户头像以在动画中展示。
+					const userInfo = await api.user.getUserInfo({ uid: loginResponse.uid });
+					if (userInfo.success && userInfo.result?.avatar) {
+						// @ts-expect-error
+						// WARN: See https://github.com/nuxt/image/issues/2174
+						const src = img(userInfo.result.avatar, {}, { provider: environment.cloudflareImageProvider });
+						const response = await fetch(src, { priority: "high" });
+						const data = await response.blob();
+						avatarOnLoggingInBlobSrc.value = await fileToBlob(data);
+					}
+
 					// NOTE: 触发用户登录事件，应当放在最后，等待上方的一系列业务逻辑执行完成之后在发送事件
 					useEvent("user:login", true);
-					isLogining.value = true;
+					isLoggingIn.value = true;
 				} else {
 					useToast(t("toast.login_failed"), "error", 5000);
 					if (loginResponse.passwordHint) useToast(`${t("password.hint")}: ${loginResponse.passwordHint}`, "info", 10000);
@@ -467,13 +487,17 @@
 	 * 稍后关闭。
 	 */
 	async function closeLater() {
-		await nextTick();
-		if (!loginWindow.value) return;
-		const finishes = loginWindow.value.getAnimations().map(animation => animation.finished);
 		try {
-			await Promise.all(finishes);
-		} catch { return; }
-		open.value = false;
+			await nextTick();
+			if (!loginWindow.value) return;
+			const finishes = loginWindow.value.getAnimations().map(animation => animation.finished);
+			try {
+				await Promise.all(finishes);
+			} catch { return; }
+			open.value = false;
+		} finally {
+			clearAvatarOnLoggingInBlobSrc();
+		}
 	}
 
 	const passwordHintInvalidText = ref<string | boolean>();
@@ -500,7 +524,7 @@
 			currentPage,
 			{
 				'move-left': coverMoveLeft,
-				logining: isLogining,
+				'logging-in': isLoggingIn,
 			},
 		]"
 		role="dialog"
@@ -537,9 +561,9 @@
 							type="submit"
 							class="button login-button button-block"
 							:loading="isChecking2FA"
-							:disabled="isChecking2FA || selfUserInfoStore.isLoggedIn || !isLoginTimeouted"
+							:disabled="isChecking2FA || selfUserInfoStore.isLoggedIn || !isLoginTimeout"
 						>
-							{{ isLoginTimeouted ? "Link Start!" : `Link Start! (${loginTimeoutCountdown})` }}
+							{{ isLoginTimeout ? "Link Start!" : `Link Start! (${loginTimeoutCountdown})` }}
 						</Button>
 					</div>
 				</form>
@@ -724,12 +748,12 @@
 						class="icon-behind"
 						@click="jump2ResetPasswordPage"
 						:loading="isChecking2FA || isSendingForgotPasswordVerificationCode"
-						:disabled="isChecking2FA || isSendingForgotPasswordVerificationCode || !isForgotPasswordTimeouted"
-					>{{ isForgotPasswordTimeouted ? $t("step.next") : `${$t("step.next")} (${forgotPasswordTimeoutCountdown})` }}</Button>
+						:disabled="isChecking2FA || isSendingForgotPasswordVerificationCode || !isForgotPasswordTimeout"
+					>{{ isForgotPasswordTimeout ? $t("step.next") : `${$t("step.next")} (${forgotPasswordTimeoutCountdown})` }}</Button>
 				</div>
 			</div>
 
-			<!-- 重设密码 其二点一 Forgot Passsword (Email) #2.1 -->
+			<!-- 重设密码 其二点一 Forgot Password (Email) #2.1 -->
 			<div class="forgot2-email">
 				<HeadingGroup :name="$t('loginwindow.forgot_title')" englishName="forgot" class="collapse" />
 				<form @submit.prevent="resetPassword">
@@ -801,7 +825,7 @@
 				<div class="line"></div>
 			</div>
 			<div class="avatar">
-				<NuxtImg v-if="selfUserInfoStore.userInfo.avatar" :provider="environment.cloudflareImageProvider" :src="selfUserInfoStore.userInfo.avatar" alt="avatar" />
+				<img v-if="avatarOnLoggingInBlobSrc" :src="avatarOnLoggingInBlobSrc" alt="avatar" :draggable="false" />
 				<Icon v-else name="person" />
 			</div>
 			<div ref="loginAnimationText" class="texts">
@@ -891,7 +915,7 @@
 		height: 100%;
 		overflow: clip;
 
-		.logining > & {
+		.logging-in > & {
 			overflow: visible;
 		}
 
@@ -1169,6 +1193,7 @@
 		overflow: clip;
 		background-color: c(accent-20);
 		scale: 0;
+		-webkit-user-drag: none;
 
 		> .icon {
 			color: c(accent-90);
@@ -1243,7 +1268,7 @@
 		}
 	}
 
-	.logining {
+	.logging-in {
 		$ease-login-button: cubic-bezier(0.4, 0, 0, 1);
 		$ease-scaler-or-mover: cubic-bezier(0.3, 0, 0, 1);
 		$ease-burst: cubic-bezier(0.1, 0, 0, 1);
@@ -1452,7 +1477,7 @@
 	@keyframes move-avatar-to-corner {
 		to {
 			$scale: calc(40px / $avatar-size);
-			translate: calc(-50dvw + 4px + (#{$avatar-size} / 2 + var(--avatar-movement)) * #{$scale}) var(--corner-y);
+			translate: calc(-50dvw + 8px + (#{$avatar-size} / 2 + var(--avatar-movement)) * #{$scale}) var(--corner-y);
 			scale: $scale;
 		}
 	}

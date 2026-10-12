@@ -7,6 +7,8 @@
 	// const avatar = "/static/images/avatars/aira.webp";
 	const selfUserInfoStore = useSelfUserInfoStore();
 	const appSettingsStore = useAppSettingsStore();
+	const isAdmin = computed(() => !!selfUserInfoStore?.userInfo.roles?.includes("administrator"));
+	const isLoggedIn = computed(() => !!selfUserInfoStore?.isLoggedIn);
 
 	const newAvatar = ref<string>(); // 新上传的头像
 	const correctAvatar = computed(() => newAvatar.value ?? selfUserInfoStore.userInfo.avatar); // 正确显示的头像（如果用户没有新上传头像，则使用全局变量中的旧头像）
@@ -14,8 +16,10 @@
 	const isAvatarCropperOpen = ref(false); // 用户头像图片裁剪器是否开启
 	const newAvatarImageBlob = ref<Blob>(); // 用户裁剪后的头像
 	const userAvatarFileInput = ref<HTMLInputElement>(); // 隐藏的图片上传 Input 元素
-	const isUpdatingUserInfo = ref<boolean>(false); // 是否正在上传用户信息
-	const isResettingUserInfo = ref<boolean>(false); // 是否正在重置用户信息
+	const isUpdatingUserInfo = ref(false); // 是否正在上传用户信息
+	const isResettingUserInfo = ref(false); // 是否正在重置用户信息
+	const isRemovingUserAvatar = ref(false); // 是否正在移除用户头像
+	const shouldPreventSubmit = computed(() => isUpdatingUserInfo.value || isResettingUserInfo.value || isRemovingUserAvatar.value);
 	const profile = reactive({
 		name: selfUserInfoStore.userInfo.username?.normalize() ?? "",
 		nickname: selfUserInfoStore.userInfo.userNickname?.normalize() ?? "",
@@ -138,7 +142,7 @@
 	}
 
 	/**
-	 * Update the user profile.
+	 * 更新用户信息。
 	 */
 	async function updateProfile() {
 		isUpdatingUserInfo.value = true;
@@ -218,6 +222,26 @@
 	}
 
 	/**
+	 * 移除当前头像。
+	 *
+	 * 暂时仅管理员可用。
+	 */
+	async function removeAvatar() {
+		if (!isLoggedIn.value || !isAdmin.value) return;
+		isRemovingUserAvatar.value = true;
+		try {
+			await api.user.updateOrCreateUserInfo({ avatar: "", username: selfUserInfoStore?.userInfo?.username });
+			useToast("头像已移除", "success");
+			if (selfUserInfoStore?.userInfo) selfUserInfoStore.userInfo.avatar = undefined;
+			newAvatar.value = undefined;
+		} catch {
+			useToast("移除头像失败", "error");
+		} finally {
+			isRemovingUserAvatar.value = false;
+		}
+	}
+
+	/**
 	 * 将 Pinia 中的用户数据拷贝到当前组件的响应式变量 "profile" 中
 	 */
 	function copyPiniaUserInfoToProfile() {
@@ -251,7 +275,7 @@
 			</template>
 		</Alert>
 
-		<Modal v-model="isAvatarCropperOpen" :title="$t('profile.edit_avatar')">
+		<Modal v-model="isAvatarCropperOpen" :title="$t('profile.crop_avatar')">
 			<div class="avatar-cropper">
 				<ImageCropper
 					ref="cropper"
@@ -261,7 +285,7 @@
 					:full="true"
 					:centerBox="true"
 					:infoTrue="true"
-					:mode="'contain '"
+					mode="contain"
 				/>
 			</div>
 			<template #footer-right>
@@ -286,8 +310,26 @@
 		</div>
 
 		<div class="submit">
-			<Button icon="delete" class="secondary" @click="resetConfirm" :disabled="isUpdatingUserInfo || isResettingUserInfo">{{ $t("step.reset") }}</Button>
-			<Button icon="check" @click="updateProfile" :loading="isUpdatingUserInfo" :disabled="isUpdatingUserInfo || isResettingUserInfo">{{ $t("step.save") }}</Button>
+			<Button
+				v-if="isLoggedIn && isAdmin"
+				severity="danger"
+				class="remove-avatar-btn"
+				:loading="isRemovingUserAvatar"
+				:disabled="shouldPreventSubmit || !selfUserInfoStore.userInfo.avatar"
+				@click="removeAvatar"
+			>{{ $t('profile.remove_own_avatar') }}</Button>
+			<Button
+				icon="delete"
+				class="secondary"
+				:disabled="shouldPreventSubmit"
+				@click="resetConfirm"
+			>{{ $t("step.reset") }}</Button>
+			<Button
+				icon="check"
+				:loading="isUpdatingUserInfo"
+				:disabled="shouldPreventSubmit"
+				@click="updateProfile"
+			>{{ $t("step.save") }}</Button>
 		</div>
 	</div>
 </template>
@@ -370,5 +412,14 @@
 			--size: 80dvw;
 			// 对于图片切割器，不建议使用响应式，因为切割器内部被切割的图片不会随之改变尺寸，但考虑到极端小尺寸的适配问题，且在上传图片时浏览器宽度发生剧烈变化的概率较小，故保留本功能。
 		}
+	}
+
+	.remove-avatar-btn {
+		--appearance: secondary;
+		margin-right: auto;
+	}
+
+	.submit {
+		z-index: 1;
 	}
 </style>

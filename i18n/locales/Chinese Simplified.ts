@@ -108,6 +108,8 @@ export default {
 		edit_avatar: "点击更换头像",
 		update_avatar: "更新头像",
 		upload_avatar: "上传头像",
+		crop_avatar: "裁剪头像",
+		remove_own_avatar: "移除自己的头像",
 	},
 	traces: "印迹",
 	privacy: {

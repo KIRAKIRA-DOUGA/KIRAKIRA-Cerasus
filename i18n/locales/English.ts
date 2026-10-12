@@ -104,6 +104,8 @@ export default {
 		edit_avatar: "Edit Avatar",
 		update_avatar: "Update Avatar",
 		upload_avatar: "Upload Avatar",
+		crop_avatar: "Crop Avatar",
+		remove_own_avatar: "Remove Own Avatar",
 	},
 	traces: "Traces",
 	privacy: {
