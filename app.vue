@@ -158,8 +158,11 @@
 		<NuxtPage />
 	</NuxtLayout>
 
-	<Toasts />
-	<Tooltips />
+	<!-- 这些浮层由浏览器事件触发，等待应用挂载后再渲染。 -->
+	<ClientOnly>
+		<Toasts />
+		<Tooltips />
+	</ClientOnly>
 
 	<PageLoadingIndicator />
 	<div id="large-viewport-size"></div>

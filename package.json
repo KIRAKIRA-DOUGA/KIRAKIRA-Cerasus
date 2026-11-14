@@ -3,7 +3,7 @@
 	"version": "0.0.0-alpha",
 	"description": "KIRAKIRA-Cerasus, The PC/PE Front-end Created by Nuxt3.",
 	"engines": {
-		"node": ">=20.9.0"
+		"node": "^22.22.3 || ^24.15.0 || >=26.0.0"
 	},
 	"packageManager": "pnpm@10.32.1+sha512.a706938f0e89ac1456b6563eab4edf1d1faf3368d1191fc5c59790e96dc918e4456ab2e67d613de1043d2e8c81f87303e6b40d4ffeca9df15ef1ad567348f2be",
 	"private": true,
@@ -69,8 +69,8 @@
 		"@crowdin/crowdin-api-client": "^1.52.0",
 		"@eslint/js": "^9.39.4",
 		"@nuxt/icon": "2.2.1",
-		"@nuxt/kit": "^4.4.2",
-		"@nuxtjs/i18n": "^10.2.3",
+		"@nuxt/kit": "^4.6.4",
+		"@nuxtjs/i18n": "^10.6.0",
 		"@nuxtjs/sitemap": "^7.6.0",
 		"@pomsky-lang/unplugin": "^1.2.10",
 		"@stylistic/eslint-plugin": "^5.10.0",
@@ -92,7 +92,7 @@
 		"inquirer": "9.0.0",
 		"js-build-utils": "^3.0.0",
 		"lightningcss": "^1.33.0",
-		"nuxt": "^4.4.2",
+		"nuxt": "^4.6.4",
 		"nuxt-typed-router": "^4.0.7",
 		"oxc-minify": "^0.149.0",
 		"pbjs": "^0.0.14",
@@ -100,6 +100,7 @@
 		"postcss-combine-media-query": "^2.1.0",
 		"postcss-html": "^1.8.1",
 		"postcss-pseudo-hover": "^1.2.0",
+		"postcss-selector-parser": "^7.2.1",
 		"postcss-viewport-unit-fallback": "^1.0.1",
 		"protobufjs": "^7.5.4",
 		"rimraf": "^6.1.3",
@@ -113,8 +114,8 @@
 		"tsx": "^4.21.0",
 		"typescript": "^5.9.3",
 		"typescript-eslint": "^8.57.0",
-		"vite-plugin-devtools-json": "^1.0.0",
-		"vue": "^3.5.30"
+		"vite-plugin-devtools-json": "^1.1.2",
+		"vue": "^3.5.45"
 	},
 	"dependencies": {
 		"@number-flow/vue": "^0.5.0",

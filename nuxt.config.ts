@@ -125,8 +125,10 @@ export default defineNuxtConfig({
 			needsInterop: [
 				"mediainfo.js",
 			],
-			esbuildOptions: {
-				target: "esnext",
+			rolldownOptions: {
+				transform: {
+					target: "esnext",
+				},
 			},
 		},
 		vue: {

@@ -8,12 +8,16 @@ export default function plaintextLoaderPluginGenerator(pluginName: string, fileR
 	return () => ({
 		name: pluginName,
 
-		transform(src: string, id: string) {
-			if (fileRegex.test(id))
-				return {
-					code: `export default ${JSON.stringify(src)};`,
-					map: null, // provide source map if available
-				};
+		transform: {
+			// 在 Nuxt 的 SSR 样式提取插件解析这些模块之前，先将纯文本转换成 JavaScript。
+			order: "pre" as const,
+			handler(src: string, id: string) {
+				if (fileRegex.test(id))
+					return {
+						code: `export default ${JSON.stringify(src)};`,
+						map: null, // provide source map if available
+					};
+			},
 		},
 	});
 }
