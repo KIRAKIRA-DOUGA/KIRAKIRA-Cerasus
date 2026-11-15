@@ -14,7 +14,7 @@
 			<p>比较遗憾的是，Tiptap 原生不支持 Markdown 格式的输入和输出，仅支持 JSON 或者 HTML 字符串。</p>
 		</div>
 
-		<TextEditorRtf />
+		<TextEditorRtf editable editorFeatures="_ALL_" />
 	</div>
 </template>
 

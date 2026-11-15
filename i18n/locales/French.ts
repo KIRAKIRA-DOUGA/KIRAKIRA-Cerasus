@@ -262,6 +262,7 @@ export default {
 			loadMedia: "Échec de lecture du média",
 		},
 		playlist: {
+			title: "Liste de lecture",
 			add_to_playlist: "Ajouter à la playlist",
 			remove_from_playlist: "Supprimer de la Playlist",
 		},
@@ -271,6 +272,10 @@ export default {
 			repeat_all: "Tout répéter",
 			repeat_one: "Répéter une fois",
 			shuffle: "Aléatoire",
+		},
+		block_words: "Bloquer les mots",
+		chapter: {
+			title: "Chapitre | Chapitres",
 		},
 	},
 	danmaku: {
@@ -403,6 +408,7 @@ export default {
 		upload: "Connectez-vous pour partager votre contenu",
 	},
 	publish: "Publier",
+	update: "Mise à jour",
 	messages: "Messages",
 	notification: "Notification | Notifications",
 	please_login: "Veuillez vous connecter",
@@ -533,7 +539,7 @@ export default {
 		username_requirements_unique: "Un nom d'utilisateur doit être unique.",
 		nickname: "Surnom",
 		nickname_requirements: "1~20 caractères, incluant uniquement des chiffres, des lettres latines majuscules et minuscules, des lettres vietnamiennes, des caractères CJK, commune Hiragana/Katakana, syllabes Hangul modernes, symboles spéciaux \"-\", \"_\", non leading, trailing, continuous espaces.",
-		username_nickname_requirements: "Les noms d'utilisateur et les surnoms doivent être @:user.nickname_requirements",
+		username_nickname_requirements: "Le nom d'utilisateur et le pseudo doivent être @:user.nickname_requirements",
 		bio: "Bio",
 		gender: "Genre",
 		memo: "Mémo",
@@ -644,6 +650,7 @@ export default {
 		comment_delete_success: "Commentaire supprimé~",
 		uploaded: "Envoyé~",
 		upload_failed: "Échec du téléversement !",
+		edit_failed: "Échec de la modification !",
 		upload_not_completed: "Envoi non terminé !",
 		cover_upload_failed: "Échec du téléchargement de la couverture !",
 		upload_file_not_found: "Échec du téléchargement! Fichier introuvable.",
@@ -695,6 +702,8 @@ export default {
 			new_email_same_as_old_email: "La nouvelle adresse email est la même que l'ancienne !",
 			invitation_code: "Format de code d'invitation invalide !",
 			password_hint_include_password: "L'indice de mot de passe ne peut pas inclure le mot de passe lui-même !",
+			username: "Le nom d'utilisateur contient des caractères invalides !\nIl doit être @:user.nickname_requirements",
+			nickname: "Le pseudo contient des caractères invalides !\nIl doit être @:user.nickname_requirements",
 		},
 		too_long: {
 			username: "Le nom d'utilisateur est trop long !",
@@ -720,6 +729,10 @@ export default {
 			ok: "Confirmer le masquage",
 		},
 		delete_background_image: "Êtes-vous sûr de vouloir supprimer cette image de fond ?",
+		delete_video: {
+			title: "Êtes-vous sûr de vouloir supprimer cette vidéo ?",
+			content: "Elle sera perdue pour toujours! (Un long moment!)",
+		},
 	},
 	current_time: "Temps présent",
 	improve_translation: "Améliorer la traduction",
@@ -804,4 +817,5 @@ export default {
 		rechoose: "Rechoisir",
 	},
 	unknown: "Inconnu",
+	edit_video: "Modifier la vidéo",
 } as const satisfies LocaleIdentifiers;
