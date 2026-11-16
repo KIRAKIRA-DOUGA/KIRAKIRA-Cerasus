@@ -40,9 +40,7 @@ export default defineNuxtConfig({
 		"@nuxt/icon",
 		"@vueuse/nuxt",
 		"@chettapong/nuxt-lodash",
-		["@pinia/nuxt", {
-			autoImports: ["defineStore", "storeToRefs"],
-		}],
+		"@pinia/nuxt",
 		"pinia-plugin-persistedstate/nuxt",
 		"modules/theme/module.ts",
 		"modules/noscript/module.ts",
@@ -82,7 +80,7 @@ export default defineNuxtConfig({
 		"styles/global.scss",
 		"styles/global-colors.scss",
 		"styles/elements/_index.scss",
-		"vue-virtual-scroller/dist/vue-virtual-scroller.css",
+		"vue-virtual-scroller/index.css",
 		"vue-cropper/dist/index.css",
 	],
 
@@ -110,16 +108,15 @@ export default defineNuxtConfig({
 				"shaka-player",
 				"@tiptap/vue-3",
 				"@tiptap/starter-kit",
-				"@tiptap/extension-underline",
 				"safe-regex",
 				"path-browserify-es",
 				"variable-name-conversion",
-				"temporal-polyfill",
+				"temporal-polyfill/full",
 				"@vueuse/gesture",
 				"mitt",
 				"tus-js-client",
 				"node-vibrant/worker",
-				"@vercel/analytics/nuxt",
+				"@vercel/analytics/nuxt/runtime",
 				"view-transitions-polyfill",
 			],
 			needsInterop: [
@@ -194,6 +191,7 @@ export default defineNuxtConfig({
 	},
 
 	build: {
+		transpile: ["@vercel/analytics"],
 		vendor: [
 			"vue-cropper",
 		],

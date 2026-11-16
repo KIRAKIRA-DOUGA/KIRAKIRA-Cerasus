@@ -17,7 +17,7 @@
 		{ name: "Vue", version: nuxt.versions.vue || "3", ability: "Progressive Framework for Frontend", icon: "vue", link: "https://vuejs.org/" },
 		{ name: "Koa", version: "3", ability: "Web Framework for Backend", icon: "koa", monochrome: true, link: "https://koajs.com/" },
 		{ name: "Node.js", version: "20", ability: "JavaScript Runtime Environment", icon: "nodejs", link: "https://nodejs.org/" },
-		{ name: "TypeScript", version: "5", ability: "JavaScript with Syntax for Types", icon: "typescript", link: "https://www.typescriptlang.org/" },
+		{ name: "TypeScript", version: "6", ability: "JavaScript with Syntax for Types", icon: "typescript", link: "https://www.typescriptlang.org/" },
 		{ name: "Vercel", ability: "Website Hosting Services", icon: "vercel", monochrome: true, link: "https://vercel.com/" },
 		// 基于前端运行时的版本号可以自动识别，后端和编译时的版本号只能委屈你自己手打了。
 	];

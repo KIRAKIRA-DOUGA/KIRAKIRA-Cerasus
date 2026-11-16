@@ -1,7 +1,6 @@
 <script setup lang="tsx">
 	import { useEditor, EditorContent } from "@tiptap/vue-3";
 	import StarterKit from "@tiptap/starter-kit";
-	import { Underline } from "@tiptap/extension-underline";
 	import VueComponent from "helpers/editor-extension";
 	import { SoftButton } from "#components";
 	const { t } = useI18n();
@@ -28,8 +27,11 @@
 
 	const editor = useEditor({
 		extensions: [
-			StarterKit,
-			Underline,
+			StarterKit.configure({
+				link: false,
+				listKeymap: false,
+				trailingNode: false,
+			}),
 			VueComponent.ThumbVideo,
 			VueComponent.CursorShadow,
 		],
@@ -59,7 +61,6 @@
 	const toggleItalic = () => { editor.value?.chain().focus().toggleItalic().run(); };
 	/** 切换文本下划线。 */
 	const toggleUnderline = () => { editor.value?.chain().focus().toggleUnderline().run(); };
-	// 不知道为什么 StarterKit 中没提供 toggleUnderline，所以只能额外安装 @tiptap/extension-underline。
 	/** 切换文本删除线。 */
 	const toggleStrike = () => { editor.value?.chain().focus().toggleStrike().run(); };
 
@@ -111,8 +112,8 @@
 			const emitVideoCommentResult = await api.videoComment.emitVideoComment(emitVideoCommentRequest);
 			const videoComment = emitVideoCommentResult.videoComment;
 			if (emitVideoCommentResult?.success && videoComment) {
-				editor.value?.commands.clearContent()
-				textLength.value = 0
+				editor.value?.commands.clearContent(false);
+				textLength.value = 0;
 				useEvent("videoComment:emitVideoComment", videoComment);
 				useToast(t("toast.comment_sent"), "success", 5000);
 			} else {

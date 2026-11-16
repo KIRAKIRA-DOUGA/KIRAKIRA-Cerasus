@@ -5,7 +5,7 @@ import { defineConfig } from "eslint/config";
 import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
 import stylistic from "@stylistic/eslint-plugin";
-import importPlugin from "eslint-plugin-import";
+import importPlugin from "eslint-plugin-import-x";
 import pluginVue from "eslint-plugin-vue";
 import jsdoc from "eslint-plugin-jsdoc";
 // plugins
@@ -196,14 +196,15 @@ export default defineConfig(
 			"prefer-rest-params": "off",
 			"no-empty-pattern": "off",
 			"no-misleading-character-class": ["error", { "allowEscape": true }],
-			"import/order": ["warn", {
+			"import-x/order": ["warn", {
 				"alphabetize": { "order": "asc", "orderImportKind": "asc", "caseInsensitive": false },
 				"named": true,
 			}],
-			"import/first": "off", // 与 Vue 特性冲突。
-			"import/named": "off", // 与 TypeScript 特性冲突。
-			"import/no-named-as-default": "off", // 似乎与文件命名方式有点出入。
-			"import/no-named-as-default-member": "off", // 某些库在导出成员时用 TS 命名空间欺诈。
+			"import-x/first": "off", // 与 Vue 特性冲突。
+			"import-x/named": "off", // 与 TypeScript 特性冲突。
+			"import-x/no-named-as-default": "off", // 似乎与文件命名方式有点出入。
+			"import-x/no-rename-default": "off",
+			"import-x/no-named-as-default-member": "off", // 某些库在导出成员时用 TS 命名空间欺诈。
 			"n/no-callback-literal": "off", // 这是啥？
 			"unicorn/escape-case": ["error", "lowercase"],
 			"unicorn/number-literal-case": ["error", { "hexadecimalValue": "lowercase" }],
@@ -555,7 +556,7 @@ export default defineConfig(
 		files: ["*.config.{js,ts}"],
 		rules: {
 			"@stylistic/quote-props": "off",
-			"import/order": "off",
+			"import-x/order": "off",
 		},
 	},
 	// 类型声明文件中可以用 any

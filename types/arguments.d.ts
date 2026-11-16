@@ -2,7 +2,7 @@ import { useDrag } from "@vueuse/gesture";
 import type Danmaku from "danmaku";
 import * as themeTypes from "modules/theme/types";
 import { AcceptedPlugin } from "postcss";
-import "temporal-polyfill/global";
+import "temporal-polyfill/full/global";
 
 export namespace FlyoutModelNS {
 	export type Target = MaybeRef<MouseEvent | PointerEvent | TwoD | HTMLElement | EventTarget | DOMRect | undefined | null>;
