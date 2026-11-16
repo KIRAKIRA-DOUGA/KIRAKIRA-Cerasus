@@ -73,7 +73,7 @@
 		thumbVerticalScaleX.value = verticalScale;
 
 		/** 超出边界时固定在边缘 */
-		let newThumbTopPercentage = 0;
+		let newThumbTopPercentage: number;
 		if (scrollTop < 0)
 			newThumbTopPercentage = 0;
 		else if (scrollTop > maxScrollTop)
@@ -100,7 +100,7 @@
 		thumbHorizontalScaleY.value = horizontalScale;
 
 		/** 超出边界时固定在边缘 */
-		let newThumbLeftPercentage = 0;
+		let newThumbLeftPercentage: number;
 		if (scrollLeft < 0)
 			newThumbLeftPercentage = 0;
 		else if (scrollLeft > maxScrollLeft)

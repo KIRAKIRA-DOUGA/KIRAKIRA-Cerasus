@@ -57,7 +57,7 @@
 		>
 			<Banner />
 			<div class="router-view">
-				<slot></slot>
+				<slot />
 			</div>
 		</ScrollContainer>
 		<div v-if="showDrawer" class="hide-drawer-mask" @click="showDrawer = false"></div>
