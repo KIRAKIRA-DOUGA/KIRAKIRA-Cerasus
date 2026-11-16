@@ -10,6 +10,8 @@ Use `assets/` for bundled images, icons, fonts, and styles and `public/` for fil
 
 Use the Node LTS release selected by `.nvmrc` and the pnpm version pinned in `package.json`. Run commands from the repository root.
 
+Use the computer's existing pnpm store for dependency operations. Keep task-created temporary files, logs, and verification artifacts under the repository's `node_modules/.cache/`. Do not create temporary pnpm stores or place task artifacts in `/tmp`, `/private/tmp`, or `$TMPDIR`.
+
 - `pnpm install` installs dependencies and prepares Nuxt's generated files.
 - `pnpm dev:local` starts the HTTPS frontend, usually at `https://localhost:3000`, and expects a separate Rosales backend at `https://localhost:30000`.
 - `pnpm dev:stg` proxies requests to the staging backend. See the usage restrictions in [README_en-US.md](README_en-US.md#running-with-online-backend).
