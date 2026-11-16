@@ -8,6 +8,9 @@ patchedDependencies:
   nuxt:
     hash: c41dad7dc01a22f140325d9ded7f92c4bc84274e683211fc35cd05adc9f8e40e
     path: patches/nuxt.patch
+  postcss-viewport-unit-fallback@1.0.1:
+    hash: 8b2680fb0c688b23526cae34481622a4155e4b287b1a8f6f7f43b5db6d6c190d
+    path: patches/postcss-viewport-unit-fallback@1.0.1.patch
 
 importers:
 
@@ -265,7 +268,7 @@ importers:
         version: 7.2.1
       postcss-viewport-unit-fallback:
         specifier: ^1.0.1
-        version: 1.0.1
+        version: 1.0.1(patch_hash=8b2680fb0c688b23526cae34481622a4155e4b287b1a8f6f7f43b5db6d6c190d)
       protobufjs:
         specifier: ^8.8.1
         version: 8.8.1
@@ -16012,7 +16015,7 @@ snapshots:
 
   postcss-value-parser@4.2.0: {}
 
-  postcss-viewport-unit-fallback@1.0.1: {}
+  postcss-viewport-unit-fallback@1.0.1(patch_hash=8b2680fb0c688b23526cae34481622a4155e4b287b1a8f6f7f43b5db6d6c190d): {}
 
   postcss@8.5.33:
     dependencies:
