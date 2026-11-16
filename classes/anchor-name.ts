@@ -21,7 +21,7 @@ export class AnchorNameList implements Iterable<string> {
 			.map(item => item.trim())
 			.filter(Boolean);
 
-		parsed.forEach(this.#anchors.add);
+		parsed.forEach(anchor => this.#anchors.add(anchor));
 	}
 
 	/**
