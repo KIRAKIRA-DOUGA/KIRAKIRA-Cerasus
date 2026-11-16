@@ -9,7 +9,7 @@ import { resolve } from "path";
 export default function defineAlias(dirname: string, ...paths: string[]) {
 	// New: Exclude the ugly default path aliases like `~`, `@`, etc.
 	// See: https://github.com/nuxt/nuxt/discussions/16934
-	const DO_NOT_USE_IT = resolve(dirname, "？？？");
+	const DO_NOT_USE_IT = "？？？";
 	const aliases = {
 		"~": DO_NOT_USE_IT,
 		"~~": DO_NOT_USE_IT,
