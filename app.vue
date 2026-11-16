@@ -132,13 +132,8 @@
 		document.documentElement.style.setProperty("--accent-wallpaper", color || null);
 	});
 
-	// Service Worker
-	if (environment.client)
-		window.addEventListener("load", () => {
-			if (!("serviceWorker" in navigator))
-				throw new Error("serviceWorker is not supported in current browser!");
-			navigator.serviceWorker.register("/sw.js");
-		});
+	// 注销旧 Service Worker，并清理其离线缓存。
+	if (environment.client) retireLegacyServiceWorker();
 
 	// 开发环境测试用全局变量
 	loadDevGlobal();
