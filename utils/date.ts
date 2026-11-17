@@ -1,4 +1,4 @@
-import { toTemporalInstant } from "temporal-polyfill";
+import { toTemporalInstant } from "temporal-polyfill/full";
 
 /**
  * 根据指定的格式来格式化日期时间。

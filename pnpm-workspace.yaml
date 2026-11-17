@@ -7,3 +7,4 @@ onlyBuiltDependencies:
 
 patchedDependencies:
   nuxt: patches/nuxt.patch
+  postcss-viewport-unit-fallback@1.0.1: patches/postcss-viewport-unit-fallback@1.0.1.patch

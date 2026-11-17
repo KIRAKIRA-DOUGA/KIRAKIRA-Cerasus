@@ -13,7 +13,7 @@ export default defineNuxtPlugin(nuxt => {
 		declareInnerHeight();
 		window.addEventListener("load", declareInnerHeight);
 		window.addEventListener("resize", async () => {
-			let height = NaN, prevHeight = NaN;
+			let height = NaN, prevHeight: number;
 			do {
 				prevHeight = height;
 				height = declareInnerHeight();

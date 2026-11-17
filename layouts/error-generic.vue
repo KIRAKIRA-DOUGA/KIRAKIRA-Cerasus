@@ -12,7 +12,7 @@
 	const mouse = useMouse();
 	const gsensor = useDeviceOrientation(); // Safari 不支持加速度传感器（重力感应），散了吧。
 	const inited = ref(false);
-	const timestamp = useTimestamp({ interval: 1_000 });
+	const timestamp = useTimestamp({ scheduler: update => useIntervalFn(update, 1_000) });
 	const dayNight = ref<HTMLDivElement>();
 	const rotationDeg = computed(() => {
 		const date = new Date(timestamp.value);

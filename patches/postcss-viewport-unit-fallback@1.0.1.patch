@@ -1,0 +1,12 @@
+diff --git a/index.js b/index.js
+--- a/index.js
++++ b/index.js
+@@ -9,7 +9,7 @@ module.exports = () => {
+       root.walkDecls((decl) => {
+         if (typeof decl.value === "string" && decl.value.match(viewportUnitRegex)) {
+           const value = decl.value.replace(viewportUnitRegex, '$1$2');
+-          decl.before(` ${decl.prop}: ${value}`);
++          decl.cloneBefore({ value });
+         }
+       });
+     },

@@ -678,7 +678,7 @@
 				<InfoBar type="warning" :title="$t('severity.warning')">
 					{{ $t("two_factor_authentication.add_totp.warning") }}
 				</InfoBar>
-				<div v-if="!backupCode || backupCode.length <= 0 || !recoveryCode" class="page">
+				<div v-if="!backupCode || backupCode.length === 0 || !recoveryCode" class="page">
 					<div class="step">
 						<ShadingIcon icon="download" />
 						<h3><Icon name="counter_1" />{{ $t("two_factor_authentication.add_totp.step_install") }}</h3>
@@ -740,7 +740,7 @@
 				</div>
 			</div>
 
-			<template v-if="!backupCode || backupCode.length <= 0 || !recoveryCode" #footer-right>
+			<template v-if="!backupCode || backupCode.length === 0 || !recoveryCode" #footer-right>
 				<Button class="secondary" @click="closeCreateTotpModel" :disabled="isConfirmTotp">{{ $t("step.cancel") }}</Button>
 				<Button icon="arrow_right" class="icon-behind" @click="handleClickConfirmTotp" :disabled="isConfirmTotp || !confirmTotpVerificationCode" :loading="isConfirmTotp">{{ $t("step.next") }}</Button>
 			</template>

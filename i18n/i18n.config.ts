@@ -1,4 +1,4 @@
-/* eslint-disable import/order */
+/* eslint-disable import-x/order */
 import en from "./locales/English";
 import zhs from "./locales/Chinese Simplified";
 import zht from "./locales/Chinese Traditional";

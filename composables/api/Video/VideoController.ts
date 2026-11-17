@@ -119,6 +119,7 @@ export class TusFileUploader {
 	 * @param file - 文件
 	 * @param progress - 进度（Vue 响应式状态）
 	 * @param isUploadingVideo - 是否正在上传视频（Vue 响应式状态）
+	 * @throws {Error} 未提供上传文件时抛出。
 	 */
 	constructor(file: File, progress: Ref<number>, isUploadingVideo: Ref<boolean>) {
 		if (!file) {

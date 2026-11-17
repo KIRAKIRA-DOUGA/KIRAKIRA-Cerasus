@@ -11,7 +11,7 @@ const autoImport: AutoImportConfig = {
 	"variable-name-conversion": [
 		["default", "VariableName"],
 	],
-	"temporal-polyfill": [
+	"temporal-polyfill/full": [
 		"Temporal",
 	],
 	"smooth-value/vue": [

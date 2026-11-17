@@ -1,7 +1,7 @@
 import path from "path";
 import parser from "postcss-selector-parser";
 import VariableName from "variable-name-conversion";
-import { arrayClearAll } from "../../utils/array";
+import { arrayClearAll } from "../../utils/array.ts";
 
 const KIRA_COMPONENT_TAGNAME = "kira-component";
 

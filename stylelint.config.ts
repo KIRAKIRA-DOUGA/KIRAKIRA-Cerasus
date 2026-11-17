@@ -1,5 +1,46 @@
 import type { Config } from "stylelint";
+import { defineStylistic, type RulesInput } from "@stylistic/stylelint-plugin";
 import propertiesOrder from "./stylelint-properties-order.ts";
+
+const stylisticRules = {
+	"color-hex-case": "lower", // 颜色值要小写。
+	"indentation": ["tab", { baseIndentLevel: "auto" }],
+	"value-list-comma-newline-after": null,
+	"max-line-length": null,
+	"no-eol-whitespace": [true, { "ignore": ["empty-lines"] }],
+	"string-quotes": "double",
+	"block-opening-brace-space-before": "always",
+	"block-closing-brace-empty-line-before": "never",
+	"number-leading-zero": "always",
+	"unit-case": "lower",
+	"declaration-block-trailing-semicolon": "always",
+	"declaration-block-semicolon-space-after": "always-single-line",
+	"declaration-block-semicolon-space-before": "never",
+	"declaration-colon-space-after": "always-single-line",
+	"declaration-colon-space-before": "never",
+	"function-comma-space-after": "always-single-line",
+	"function-comma-space-before": "never",
+	"function-parentheses-space-inside": "never-single-line",
+	"media-feature-colon-space-after": "always",
+	"media-feature-colon-space-before": "never",
+	"media-feature-parentheses-space-inside": "never",
+	"media-feature-range-operator-space-after": "always",
+	"media-feature-range-operator-space-before": "always",
+	"media-query-list-comma-space-after": "always-single-line",
+	"media-query-list-comma-space-before": "never",
+	"selector-attribute-brackets-space-inside": "never",
+	"selector-attribute-operator-space-after": "never",
+	"selector-attribute-operator-space-before": "never",
+	"selector-combinator-space-after": "always",
+	"selector-combinator-space-before": "always",
+	"selector-list-comma-newline-after": "always",
+	"selector-list-comma-newline-before": "never-multi-line",
+	"selector-list-comma-space-after": "always-single-line",
+	"selector-list-comma-space-before": "never",
+	"selector-pseudo-class-parentheses-space-inside": "never",
+	"value-list-comma-space-after": "always-single-line",
+	"value-list-comma-space-before": "never",
+} satisfies RulesInput;
 
 export default {
 	defaultSeverity: "error",
@@ -11,6 +52,12 @@ export default {
 		{
 			files: ["**/*.{vue,html}"],
 			customSyntax: "postcss-html",
+		},
+		{
+			files: ["assets/styles/global.scss"],
+			rules: {
+				"selector-no-deprecated": [true, { ignoreSelectors: ["tt", "xmp"] }], // 保留旧版 HTML 元素的等宽样式。
+			},
 		},
 	],
 	plugins: [
@@ -27,29 +74,21 @@ export default {
 		},
 	},
 	rules: {
+		...defineStylistic({ rules: stylisticRules }),
+		...defineStylistic({ syntax: "scss", rules: stylisticRules }),
 		"media-feature-name-no-vendor-prefix": true, // 不要使用已被 autoprefixer 支持的浏览器前缀。
 		"at-rule-no-vendor-prefix": true,
 		"selector-no-vendor-prefix": true,
 		"property-no-vendor-prefix": true,
 		"value-no-vendor-prefix": true,
-		"@stylistic/color-hex-case": "lower", // 颜色值要小写。
 		"color-hex-length": "short", // 颜色值能短则短。
 		"color-named": "always-where-possible", // 颜色若有名字则必须写为其名字。
 		"function-disallowed-list": [/^rgb/, /^hsl/, /^hwb/], // 只允许用 16 进制表示颜色，不允许使用 rgb、rgba 等表示颜色。
-		"@stylistic/indentation": ["tab", { baseIndentLevel: "auto" }],
 		"length-zero-no-unit": true,
 		// "selector-class-pattern": /^[A-Za-z0-9]+$/, // 换回连字符了。
 		"value-keyword-case": null, // 与 v-bind 冲突了。
-		"@stylistic/value-list-comma-newline-after": null,
-		"@stylistic/max-line-length": null,
-		"@stylistic/no-eol-whitespace": [true, { "ignore": ["empty-lines"] }],
 		"no-descending-specificity": null,
 		"function-url-quotes": "always",
-		"@stylistic/string-quotes": "double",
-		"@stylistic/block-opening-brace-space-before": "always",
-		"@stylistic/block-closing-brace-empty-line-before": "never",
-		"@stylistic/number-leading-zero": "always",
-		"@stylistic/unit-case": "lower",
 		"import-notation": null,
 		"at-rule-no-unknown": null,
 		"function-no-unknown": null,
@@ -107,33 +146,6 @@ export default {
 			"ignore": ["comments", "imports"],
 			"except": ["root", "function"],
 		}], */
-		"@stylistic/declaration-block-trailing-semicolon": "always",
-		"@stylistic/declaration-block-semicolon-space-after": "always-single-line",
-		"@stylistic/declaration-block-semicolon-space-before": "never",
-		"@stylistic/declaration-colon-space-after": "always-single-line",
-		"@stylistic/declaration-colon-space-before": "never",
-		"@stylistic/function-comma-space-after": "always-single-line",
-		"@stylistic/function-comma-space-before": "never",
-		"@stylistic/function-parentheses-space-inside": "never-single-line",
-		"@stylistic/media-feature-colon-space-after": "always",
-		"@stylistic/media-feature-colon-space-before": "never",
-		"@stylistic/media-feature-parentheses-space-inside": "never",
-		"@stylistic/media-feature-range-operator-space-after": "always",
-		"@stylistic/media-feature-range-operator-space-before": "always",
-		"@stylistic/media-query-list-comma-space-after": "always-single-line",
-		"@stylistic/media-query-list-comma-space-before": "never",
-		"@stylistic/selector-attribute-brackets-space-inside": "never",
-		"@stylistic/selector-attribute-operator-space-after": "never",
-		"@stylistic/selector-attribute-operator-space-before": "never",
-		"@stylistic/selector-combinator-space-after": "always",
-		"@stylistic/selector-combinator-space-before": "always",
-		"@stylistic/selector-list-comma-newline-after": "always",
-		"@stylistic/selector-list-comma-newline-before": "never-multi-line",
-		"@stylistic/selector-list-comma-space-after": "always-single-line",
-		"@stylistic/selector-list-comma-space-before": "never",
-		"@stylistic/selector-pseudo-class-parentheses-space-inside": "never",
-		"@stylistic/value-list-comma-space-after": "always-single-line",
-		"@stylistic/value-list-comma-space-before": "never",
 		"order/order": [
 			{
 				"type": "at-rule",
