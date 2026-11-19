@@ -13,10 +13,13 @@
 	});
 
 	const { menuItemCount, itemHeight } = useScssVariables().numbers;
-	const model = defineModel<Record<string, Readable>>({ required: true });
+	const model = defineModel<Record<string, Readable>>();
+	const emit = defineEmits<{
+		open: [];
+		close: [confirmed: boolean];
+	}>();
 	const showMenu = ref<DOMRect>();
 	const menu = ref<HTMLElement>();
-	const hide = () => showMenu.value = undefined;
 	const previousValue = ref<Record<string, Readable>>();
 	const menuValuesKeys = ["noumenon", "shadow"] as const;
 	const menuValues = reactive<Record<ValueOf<typeof menuValuesKeys>, Record<string, HTMLDivElement | undefined | null>>>(arrayMapObjectConst(menuValuesKeys, () => ({})));
@@ -25,23 +28,32 @@
 	const dash = "‒" as const;
 	const widthChangingTransitionTimeoutId = ref<Timeout>();
 
-	const backupValue = () => previousValue.value = model.value;
-	const restoreValue = () => previousValue.value && (model.value = previousValue.value);
+	function openMenu(e: MouseEvent) {
+		previousValue.value = model.value;
+		emit("open");
+		showMenu.value = (e.currentTarget as HTMLElement).getBoundingClientRect();
+	}
+
+	function closeMenu(confirmed: boolean) {
+		if (!confirmed && previousValue.value)
+			model.value = previousValue.value;
+		showMenu.value = undefined;
+		emit("close", confirmed);
+	}
 
 	useEventListener("window", "pointerdown", e => {
 		if (!menu.value || !showMenu.value) return;
-		const clickOutside = !isInPath(e, menu);
-		if (clickOutside) {
-			restoreValue(); // 去掉该行，则点击屏幕外缘将会保存设置而不是恢复设置。
-			hide();
-		}
+		if (!isInPath(e, menu)) closeMenu(false);
+	});
+
+	useEventListener("window", "keydown", e => {
+		if (showMenu.value && e.key === "Escape") closeMenu(false);
 	});
 
 	const visibleValues = computed(() => arrayMapObject(props.fields.filter(field => !("text" in field)) as BaseDateTimePickerField[], ({ name, values, loopable }) => {
 		if (typeof values === "function") values = values();
-		const currentValue = model.value[name];
-		let currentIndex = values.indexOf(currentValue);
-		if (currentIndex === -1) currentIndex = 0;
+		const currentValue = model.value?.[name];
+		const currentIndex = currentValue === undefined ? 0 : Math.max(0, values.indexOf(currentValue));
 		const result: Readable[] = [];
 		for (let i = currentIndex - (menuItemCount - 1); i <= currentIndex + (menuItemCount - 1); i++) {
 			const index = loopable ? floorMod(i, values.length) : i;
@@ -100,11 +112,12 @@
 		ref="buttonEl"
 		role="application"
 		v-ripple
-		:aria-expanded="showMenu"
+		:aria-expanded="!!showMenu"
 		tabindex="0"
-		@click="e => { backupValue(); showMenu = e.currentTarget.getBoundingClientRect(); }"
+		@click="openMenu"
 	>
-		<template v-for="({ name, sep, minWidth, placeholderLength, ...field }, index) in fields" :key="name">
+		<p v-if="!model" class="value">{{ $t("unselected.combobox") }}</p>
+		<template v-for="({ name, sep, minWidth, placeholderLength, ...field }, index) in fields" v-else :key="name">
 			<p v-if="'values' in field" class="value" :style="{ minWidth: toValue(minWidth) }">
 				{{ model[name] == null ? dash.repeat(placeholderLength ?? 2) : field.getDisplayValue?.(model[name]) ?? model[name] }}
 			</p>
@@ -114,7 +127,7 @@
 		<ClientOnlyTeleport to="#popovers">
 			<Transition :duration="{ enter: 250, leave: 125 }">
 				<div
-					v-if="showMenu"
+					v-if="showMenu && model"
 					ref="menu"
 					class="menu"
 					:style="{
@@ -142,8 +155,8 @@
 							</template>
 						</div>
 						<div class="buttons">
-							<button v-ripple @click="hide(); restoreValue();"><Icon name="close" /></button>
-							<button v-ripple @click="hide()"><Icon name="check" /></button>
+							<button v-ripple @click="closeMenu(false)"><Icon name="close" /></button>
+							<button v-ripple @click="closeMenu(true)"><Icon name="check" /></button>
 						</div>
 					</div>
 				</div>

@@ -8,7 +8,8 @@
 		const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "2-digit", day: "2-digit", numberingSystem: "latn" };
 		const formatted = new Intl.DateTimeFormat(locale, options).format(go);
 		const [, num1, sep, num2, num3] = formatted.match(/(\d+)(.*?)(\d+).*?(\d+)/)!;
-		const ymd = [num1, num2, num3].map(num => ({ 2006: "y", "01": "m", "02": "d" })[num]!).join("");
+		const dateParts: Record<string, string> = { 2006: "y", "01": "m", "02": "d" };
+		const ymd = [num1, num2, num3].map(num => dateParts[num]).join("");
 		const weekdayAfter = !new Intl.DateTimeFormat(locale, { ...options, weekday: "short" }).format(go).match(/\d$/);
 		const weekdays = forMap(7, date => new Intl.DateTimeFormat(locale, { weekday: "short" }).format(new Date(2006, 0 /* CAUTION: 0 表示 1 月！ */, date)), 1);
 		return { ymd, sep: sep.trim(), weekdayAfter, weekdays };
@@ -39,18 +40,36 @@
 
 <script setup lang="ts">
 	const { t } = useI18n();
-	const value = defineModel<Temporal.PlainDate>({ required: true });
+	const selected = defineModel<Temporal.PlainDate>();
+	const openingDate = shallowRef<Temporal.PlainDate>();
+	const draft = shallowRef<Temporal.PlainDate>();
+	// 打开菜单后，异步读到的生日优先于当天，已手选的日期优先于两者。
+	const value = computed(() => {
+		const date = draft.value ?? selected.value ?? openingDate.value;
+		return date?.calendarId === "iso8601" ? date.withCalendar("gregory") : date;
+	});
+
+	function openMenu() {
+		openingDate.value = Temporal.Now.plainDateISO().withCalendar("gregory");
+	}
+
+	function closeMenu(confirmed: boolean) {
+		if (confirmed && value.value) selected.value = value.value;
+		draft.value = undefined;
+		openingDate.value = undefined;
+	}
+
 	const locale = getCurrentLocaleLangCode(undefined, true);
 	const useHanzi = computed(() => locale.startsWith("zh") || locale === "ja"); // 中文（包括简中、繁中、粤语）和日语可以使用汉字。
-	const isChineseCalendar = computed(() => value.value.calendarId === "chinese");
+	const isChineseCalendar = computed(() => value.value?.calendarId === "chinese");
 	const format = computed(() => getLocaleDateFormat(locale));
 	const staticFields = {
 		calendar: { name: "calendar", values: availableCalendars, getDisplayValue: calendar => t(`calendar.${calendar}`) } satisfies BaseDateTimePickerField<string>,
-		weekday: { name: "weekday", text: () => format.value.weekdays[value.value.dayOfWeek % 7], minWidth: "2em" },
+		weekday: { name: "weekday", text: () => value.value ? format.value.weekdays[value.value.dayOfWeek % 7] : "", minWidth: "2em" },
 		y: {
 			name: "year",
 			sep: format.value.sep,
-			values: () => forMap(21, Number, value.value.year - 10),
+			values: () => value.value ? forMap(21, Number, value.value.year - 10) : [],
 			placeholderLength: 4,
 			getDisplayValue: year => {
 				if (isChineseCalendar.value && useHanzi.value) return toHanziDecimal(year, locale);
@@ -60,7 +79,10 @@
 		m: {
 			name: "month",
 			sep: format.value.sep,
-			values: () => forMap(value.value.monthsInYear, month => value.value.toPlainYearMonth().with({ month }).monthCode, 1),
+			values: () => {
+				const date = value.value;
+				return date ? forMap(date.monthsInYear, month => date.toPlainYearMonth().with({ month }).monthCode, 1) : [];
+			},
 			getDisplayValue: monthCode => {
 				if (isChineseCalendar.value && useHanzi.value) return toChineseCalendarMonth(monthCode, locale);
 				return monthCode.match(/\d+/)![0].padStart(2, "0") + (monthCode.endsWith("L") ? "+" : "");
@@ -71,7 +93,7 @@
 		d: {
 			name: "date",
 			sep: format.value.sep,
-			values: () => forMap(value.value.daysInMonth, Number, 1),
+			values: () => forMap(value.value?.daysInMonth ?? 0, Number, 1),
 			getDisplayValue: date => {
 				if (isChineseCalendar.value && useHanzi.value) return toHanziDays(date, locale);
 				return padTo2Digit(date);
@@ -88,24 +110,28 @@
 		...format.value.weekdayAfter ? [staticFields.weekday] : [],
 	]);
 	const model = computed({
-		get: () => ({
+		get: () => value.value ? {
 			calendar: value.value.calendarId,
 			year: value.value.year,
 			month: value.value.monthCode,
 			date: value.value.day,
-		}),
-		set: ({ calendar, year, month, date }) =>
-			value.value = calendar === value.value.calendarId ?
+		} : undefined,
+		set: fields => {
+			const current = value.value;
+			if (!current || !fields) return;
+			const { calendar, year, month, date } = fields;
+			draft.value = calendar === current.calendarId ?
 				Temporal.PlainDate.from({
 					calendar,
 					year,
 					monthCode: month,
 					day: clamp(date, 1, Temporal.PlainYearMonth.from({ calendar, year, monthCode: month }).daysInMonth),
 				}) :
-				value.value.withCalendar(calendar),
+				current.withCalendar(calendar);
+		},
 	});
 </script>
 
 <template>
-	<BaseDateTimePicker :fields v-model="model" />
+	<BaseDateTimePicker :fields v-model="model" @open="openMenu" @close="closeMenu" />
 </template>

@@ -54,7 +54,7 @@
 		nameValid?: boolean;
 		bio: string;
 		gender: string;
-		birthday: Temporal.PlainDate;
+		birthday?: Temporal.PlainDate;
 		tags: string[];
 	}>({ required: true });
 

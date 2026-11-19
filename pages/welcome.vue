@@ -19,14 +19,13 @@
 
 	const container = ref<HTMLDivElement>();
 
-	const birthdayPreview = Temporal.Now.plainDateISO().withCalendar("gregory");
 	const profile = reactive({
 		name: "",
 		nameValid: false,
 		nickname: "",
 		bio: "",
 		gender: "",
-		birthday: birthdayPreview,
+		birthday: shallowRef<Temporal.PlainDate>(),
 		tags: [] as string[],
 	});
 	const isRead = ref(false);
@@ -51,7 +50,7 @@
 			userNickname: profile.nickname.normalize(),
 			signature: profile.bio.normalize(),
 			gender: profile.gender.normalize(),
-			...(Temporal.PlainDate.compare(profile.birthday, birthdayPreview) !== 0 ? { userBirthday: profile.birthday.toString() } : {}),
+			userBirthday: profile.birthday?.toString(),
 			label: profile.tags.map((tag, index) => ({ id: index, labelName: tag.normalize() })),
 		};
 		try {
