@@ -1,5 +1,6 @@
 <docs>
 	首次登录且没有昵称时、或昵称违规后显示的页面。
+	@deprecated 已弃用。保留旧路由，请勿在新流程中引用。
 </docs>
 
 <script setup lang="ts">
@@ -18,13 +19,14 @@
 
 	const container = ref<HTMLDivElement>();
 
+	const birthdayPreview = Temporal.Now.plainDateISO().withCalendar("gregory");
 	const profile = reactive({
 		name: "",
 		nameValid: false,
 		nickname: "",
 		bio: "",
 		gender: "",
-		birthday: Temporal.Now.plainDateISO().withCalendar("gregory"),
+		birthday: birthdayPreview,
 		tags: [] as string[],
 	});
 	const isRead = ref(false);
@@ -49,7 +51,7 @@
 			userNickname: profile.nickname.normalize(),
 			signature: profile.bio.normalize(),
 			gender: profile.gender.normalize(),
-			userBirthday: Temporal.Now.plainDateISO().withCalendar("gregory").toString(),
+			...(Temporal.PlainDate.compare(profile.birthday, birthdayPreview) !== 0 ? { userBirthday: profile.birthday.toString() } : {}),
 			label: profile.tags.map((tag, index) => ({ id: index, labelName: tag.normalize() })),
 		};
 		try {
