@@ -6,7 +6,12 @@
 	import makeUsername from "pomsky/username.pom";
 	const validChar = makeUsername();
 
-	export async function validateUsernameAndNickname(username: MaybeRef<string>, nickname: MaybeRef<string>, t: ReturnType<typeof useI18n>["t"]): Promise<boolean> {
+	export async function validateUsernameAndNickname(
+		username: MaybeRef<string>,
+		nickname: MaybeRef<string | undefined>,
+		t: ReturnType<typeof useI18n>["t"],
+		currentUsername?: string,
+	): Promise<boolean> {
 		username = toValue(username);
 		nickname = toValue(nickname);
 
@@ -25,15 +30,17 @@
 			return false;
 		}
 
-		if (nickname?.length > 200) {
+		if (nickname !== undefined && nickname.length > 200) {
 			useToast(t("validation.too_long.nickname"), "error");
 			return false;
 		}
 
-		if (!validChar.exec(nickname)) {
+		if (nickname !== undefined && !validChar.exec(nickname)) {
 			useToast(t("validation.invalid_format.nickname"), "error");
 			return false;
 		}
+
+		if (username.normalize() === currentUsername?.normalize()) return true;
 
 		const checkUsernameRequest: CheckUsernameRequestDto = { username };
 		const checkUsernameResult = await api.user.checkUsername(checkUsernameRequest);

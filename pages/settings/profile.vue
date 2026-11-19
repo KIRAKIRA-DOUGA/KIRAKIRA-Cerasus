@@ -159,7 +159,7 @@
 	async function updateProfile() {
 		isUpdatingUserInfo.value = true;
 		try {
-			if (!await validateUsernameAndNickname(profile.name, profile.nickname, t))
+			if (!await validateUsernameAndNickname(profile.name, profile.nickname || undefined, t, selfUserInfoStore.userInfo.username))
 				return;
 
 			if (newAvatarImageBlob.value)
@@ -200,29 +200,42 @@
 	 * 弹出确认重置的警告框
 	 */
 	function resetConfirm() {
+		if (!isLoggedIn.value) {
+			useEvent("app:requestLogin");
+			return;
+		}
 		showConfirmResetAlert.value = true;
 	}
 
-	/**
-	 * reset all user info.
-	 * 重置用户设置
-	 * 请求旧用户信息，并修改 Pinia 中的用户数据，然后触发上方的监听
-	 */
+	/** 保留账户用户名，清空可重设的资料字段和本地草稿。 */
 	async function reset() {
+		const username = selfUserInfoStore.userInfo.username;
+		if (!username) {
+			useToast(t("toast.get_current_logged_in_user_info_failed"), "error");
+			return;
+		}
 		isResettingUserInfo.value = true;
 		const updateOrCreateUserInfoRequest: UpdateOrCreateUserInfoRequestDto = {
+			username,
 			avatar: "",
 			userNickname: "",
 			signature: "",
 			gender: "",
-			userBirthday: undefined,
+			userBirthday: "",
 			label: [],
 		};
 		try {
 			const updateOrCreateUserInfoResult = await api.user.updateOrCreateUserInfo(updateOrCreateUserInfoRequest);
 			if (updateOrCreateUserInfoResult.success) {
-				await api.user.getSelfUserInfo({ getSelfUserInfoRequest: undefined, appSettingsStore, selfUserInfoStore, headerCookie: undefined });
+				profile.birthday = undefined;
+				if (newAvatar.value?.startsWith("blob:")) URL.revokeObjectURL(newAvatar.value);
+				newAvatar.value = undefined;
+				newAvatarImageBlob.value = undefined;
+				clearBlobUrl();
+				selfUserInfoStore.userInfo = { ...selfUserInfoStore.userInfo, ...updateOrCreateUserInfoRequest };
 				showConfirmResetAlert.value = false;
+				useToast(t("toast.profile_updated"), "success");
+				await getSelfUserInfoController();
 			} else
 				useToast(t("toast.something_went_wrong"), "error");
 		} catch (error) {
