@@ -53,8 +53,12 @@
 		openingDate.value = Temporal.Now.plainDateISO().withCalendar("gregory");
 	}
 
-	function closeMenu(confirmed: boolean) {
-		if (confirmed && value.value) selected.value = value.value;
+	function confirmSelection() {
+		if (value.value) selected.value = value.value;
+		clearDraft();
+	}
+
+	function clearDraft() {
 		draft.value = undefined;
 		openingDate.value = undefined;
 	}
@@ -133,5 +137,12 @@
 </script>
 
 <template>
-	<BaseDateTimePicker :fields :placeholderValues="{ calendar: 'gregory' }" v-model="model" @open="openMenu" @close="closeMenu" />
+	<BaseDateTimePicker
+		:fields
+		:placeholderValues="{ calendar: 'gregory' }"
+		v-model="model"
+		@open="openMenu"
+		@confirm="confirmSelection"
+		@cancel="clearDraft"
+	/>
 </template>

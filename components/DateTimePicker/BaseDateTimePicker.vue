@@ -18,7 +18,8 @@
 	const model = defineModel<Record<string, Readable>>();
 	const emit = defineEmits<{
 		open: [];
-		close: [confirmed: boolean];
+		confirm: [];
+		cancel: [];
 	}>();
 	const showMenu = ref<DOMRect>();
 	const menu = ref<HTMLElement>();
@@ -38,20 +39,26 @@
 		showMenu.value = (e.currentTarget as HTMLElement).getBoundingClientRect();
 	}
 
-	function closeMenu(confirmed: boolean) {
-		if (!confirmed && previousValue.value)
+	function confirmSelection() {
+		showMenu.value = undefined;
+		emit("confirm");
+	}
+
+	function cancelSelection() {
+		if (previousValue.value)
 			model.value = previousValue.value;
 		showMenu.value = undefined;
-		emit("close", confirmed);
+		emit("cancel");
 	}
 
 	useEventListener("window", "pointerdown", e => {
 		if (!menu.value || !showMenu.value) return;
-		if (!isInPath(e, menu)) closeMenu(false);
+		const clickOutside = !isInPath(e, menu);
+		if (clickOutside) cancelSelection();
 	});
 
 	useEventListener("window", "keydown", e => {
-		if (showMenu.value && e.key === "Escape") closeMenu(false);
+		if (showMenu.value && e.key === "Escape") cancelSelection();
 	});
 
 	const visibleValues = computed(() => arrayMapObject(props.fields.filter(field => !("text" in field)) as BaseDateTimePickerField[], ({ name, values, loopable }) => {
@@ -158,8 +165,8 @@
 							</template>
 						</div>
 						<div class="buttons">
-							<button v-ripple @click="closeMenu(false)"><Icon name="close" /></button>
-							<button v-ripple @click="closeMenu(true)"><Icon name="check" /></button>
+							<button v-ripple @click="cancelSelection"><Icon name="close" /></button>
+							<button v-ripple @click="confirmSelection"><Icon name="check" /></button>
 						</div>
 					</div>
 				</div>
