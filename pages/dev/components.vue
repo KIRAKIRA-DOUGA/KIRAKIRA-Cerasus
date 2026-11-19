@@ -61,6 +61,7 @@
 	const timecode = ref(new Duration(0));
 	const time = ref(Temporal.Now.plainTimeISO());
 	const date = ref(Temporal.Now.plainDateISO().withCalendar("gregory"));
+	const dateRange = { gregory: { min: { year: 1900, month: 1, day: 1 }, max: { year: 2100, month: 12, day: 31 } } };
 
 	/**
 	 * 单击按钮事件。
@@ -197,7 +198,7 @@
 			<hr />
 			<p>时间码</p><TimecodePicker v-model="timecode" />
 			<p>时间</p><TimePicker v-model="time" />
-			<p>日期</p><DatePicker v-model="date" />
+			<p>日期</p><DatePicker v-model="date" :range="dateRange" />
 			<hr />
 			<HeadingComments :count="233" />
 			<hr />

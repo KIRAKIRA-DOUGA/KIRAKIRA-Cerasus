@@ -39,15 +39,23 @@
 </script>
 
 <script setup lang="ts">
+	import { type DatePickerRange, clampPickerDate, getDatePickerOptions, resolveDatePickerRanges } from "utils/date-picker-range";
+
 	const { t } = useI18n();
+	const props = defineProps<{ range: DatePickerRange }>();
+	const ranges = computed(() => resolveDatePickerRanges(props.range));
 	const selected = defineModel<Temporal.PlainDate>();
 	const openingDate = shallowRef<Temporal.PlainDate>();
 	const draft = shallowRef<Temporal.PlainDate>();
 	// 打开菜单后，异步读到的生日优先于当天，已手选的日期优先于两者。
+	const selection = computed(() => draft.value ?? selected.value ?? openingDate.value);
+	const calendar = computed(() => selection.value?.calendarId === "chinese" ? "chinese" : "gregory");
 	const value = computed(() => {
-		const date = draft.value ?? selected.value ?? openingDate.value;
-		return date?.calendarId === "iso8601" ? date.withCalendar("gregory") : date;
+		if (!selection.value) return;
+		const date = selection.value.withCalendar(calendar.value);
+		return openingDate.value ? clampPickerDate(date, ranges.value[calendar.value]) : date;
 	});
+	const options = computed(() => openingDate.value && value.value ? getDatePickerOptions(value.value, ranges.value[calendar.value]) : undefined);
 
 	function openMenu() {
 		openingDate.value = Temporal.Now.plainDateISO().withCalendar("gregory");
@@ -65,7 +73,7 @@
 
 	const locale = getCurrentLocaleLangCode(undefined, true);
 	const useHanzi = computed(() => locale.startsWith("zh") || locale === "ja"); // 中文（包括简中、繁中、粤语）和日语可以使用汉字。
-	const isChineseCalendar = computed(() => value.value?.calendarId === "chinese");
+	const isChineseCalendar = computed(() => calendar.value === "chinese");
 	const format = computed(() => getLocaleDateFormat(locale));
 	const staticFields = {
 		calendar: { name: "calendar", values: availableCalendars, getDisplayValue: calendar => t(`calendar.${calendar}`) } satisfies BaseDateTimePickerField<string>,
@@ -73,39 +81,36 @@
 		y: {
 			name: "year",
 			sep: format.value.sep,
-			values: () => value.value ? forMap(21, Number, value.value.year - 10) : [],
+			values: () => options.value?.years ?? [],
 			placeholderLength: 4,
 			getDisplayValue: year => {
 				if (isChineseCalendar.value && useHanzi.value) return toHanziDecimal(year, locale);
-				return year.toString().padStart(4, "0");
+				return (year < 0 ? "-" : "") + Math.abs(year).toString().padStart(4, "0");
 			},
 		} satisfies BaseDateTimePickerField<number>,
 		m: {
 			name: "month",
 			sep: format.value.sep,
-			values: () => {
-				const date = value.value;
-				return date ? forMap(date.monthsInYear, month => date.toPlainYearMonth().with({ month }).monthCode, 1) : [];
-			},
+			values: () => options.value?.months ?? [],
 			getDisplayValue: monthCode => {
 				if (isChineseCalendar.value && useHanzi.value) return toChineseCalendarMonth(monthCode, locale);
 				return monthCode.match(/\d+/)![0].padStart(2, "0") + (monthCode.endsWith("L") ? "+" : "");
 			},
-			loopable: true,
+			get loopable() { return options.value?.loopMonths ?? false; },
 			minWidth: () => isChineseCalendar.value && useHanzi.value ? "2em" : undefined,
 		} satisfies BaseDateTimePickerField<string>,
 		d: {
 			name: "date",
 			sep: format.value.sep,
-			values: () => forMap(value.value?.daysInMonth ?? 0, Number, 1),
+			values: () => options.value?.days ?? [],
 			getDisplayValue: date => {
 				if (isChineseCalendar.value && useHanzi.value) return toHanziDays(date, locale);
 				return padTo2Digit(date);
 			},
-			loopable: true,
+			get loopable() { return options.value?.loopDays ?? false; },
 		} satisfies BaseDateTimePickerField<number>,
 	} satisfies Record<string, BaseDateTimePickerField | BaseDateTimePickerFieldPlain>;
-	const fields: (BaseDateTimePickerField | BaseDateTimePickerFieldPlain)[] = reactive([
+	const fields = computed<(BaseDateTimePickerField | BaseDateTimePickerFieldPlain)[]>(() => [
 		staticFields.calendar,
 		...!format.value.weekdayAfter ? [staticFields.weekday] : [],
 		staticFields[format.value.ymd[0] as "y"],
@@ -123,15 +128,12 @@
 		set: fields => {
 			const current = value.value;
 			if (!current || !fields) return;
-			const { calendar, year, month, date } = fields;
-			draft.value = calendar === current.calendarId ?
-				Temporal.PlainDate.from({
-					calendar,
-					year,
-					monthCode: month,
-					day: clamp(date, 1, Temporal.PlainYearMonth.from({ calendar, year, monthCode: month }).daysInMonth),
-				}) :
-				current.withCalendar(calendar);
+			const { year, month, date } = fields;
+			const nextCalendar = fields.calendar === "chinese" ? "chinese" : "gregory";
+			const next = nextCalendar === current.calendarId ?
+				current.with({ year, monthCode: month, day: date }, { overflow: "constrain" }) :
+				current.withCalendar(nextCalendar);
+			draft.value = clampPickerDate(next, ranges.value[nextCalendar]);
 		},
 	});
 </script>

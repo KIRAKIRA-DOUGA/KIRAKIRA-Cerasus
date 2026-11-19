@@ -55,6 +55,16 @@
 </script>
 
 <script setup lang="ts">
+	const firstBirthday = { year: 1900, month: 1, day: 1 };
+	const today = useDateFormat(useNow({ interval: 1000 }), "YYYY-MM-DD");
+	const birthdayRange = computed(() => {
+		const max = Temporal.PlainDate.from(today.value);
+		return {
+			gregory: { min: firstBirthday, max },
+			chinese: { min: firstBirthday, max: max.withCalendar("chinese") },
+		};
+	});
+
 	const profile = defineModel<{
 		name: string;
 		nickname: string;
@@ -119,7 +129,7 @@
 			<span class="text">{{ $t("user.birthday") }}</span>
 		</div>
 
-		<DatePicker v-model="profile.birthday" />
+		<DatePicker v-model="profile.birthday" :range="birthdayRange" />
 	</div>
 
 	<div class="gender">
