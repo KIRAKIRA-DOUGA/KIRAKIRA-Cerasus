@@ -20,20 +20,29 @@
 	const isResettingUserInfo = ref(false); // 是否正在重置用户信息
 	const isRemovingUserAvatar = ref(false); // 是否正在移除用户头像
 	const shouldPreventSubmit = computed(() => isUpdatingUserInfo.value || isResettingUserInfo.value || isRemovingUserAvatar.value);
+	// 未设置生日时仅用当天作为选择器的初始日期，不作为待保存的值。
+	const birthdayPreview = Temporal.Now.plainDateISO().withCalendar("gregory");
+	const storedBirthday = shallowRef(birthdayPreview);
 	const profile = reactive({
 		name: selfUserInfoStore.userInfo.username?.normalize() ?? "",
 		nickname: selfUserInfoStore.userInfo.userNickname?.normalize() ?? "",
 		bio: selfUserInfoStore.userInfo.signature?.normalize() ?? "",
 		gender: selfUserInfoStore.userInfo.gender?.normalize() ?? "",
-		birthday: (() => {
-			try {
-				return Temporal.PlainDate.from(selfUserInfoStore.userInfo.userBirthday!);
-			} catch {
-				return Temporal.Now.plainDateISO().withCalendar("gregory");
-			}
-		})(),
+		birthday: birthdayPreview,
 		tags: selfUserInfoStore.userInfo.label?.map(label => label.labelName?.normalize()) ?? [],
 	});
+	// 只比较日期，不把切换历法视为修改生日。
+	const birthdayChanged = computed(() => Temporal.PlainDate.compare(profile.birthday, storedBirthday.value) !== 0);
+	watch(() => selfUserInfoStore.userInfo.userBirthday, birthday => {
+		const hasDraft = birthdayChanged.value;
+		try {
+			storedBirthday.value = birthday ? Temporal.PlainDate.from(birthday) : birthdayPreview;
+		} catch {
+			storedBirthday.value = birthdayPreview;
+		}
+		if (!hasDraft)
+			profile.birthday = storedBirthday.value;
+	}, { immediate: true });
 	const cropper = ref<InstanceType<typeof ImageCropper>>(); // 图片裁剪器实例
 	const isUploadingUserAvatar = ref(false); // 是否正在上传头像
 	const showConfirmResetAlert = ref(false); // 是否显示重置警告框
@@ -164,7 +173,7 @@
 				userNickname: profile.nickname.normalize(),
 				signature: profile.bio.normalize(),
 				gender: profile.gender.normalize(),
-				userBirthday: profile.birthday.toString(),
+				...(birthdayChanged.value ? { userBirthday: profile.birthday.toString() } : {}),
 				label: profile.tags?.map((tag, index) => ({ id: index, labelName: tag.normalize() })),
 			};
 			try {
