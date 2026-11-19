@@ -6,6 +6,8 @@
 	const props = withDefaults(defineProps<{
 		/** 基础日期时间选择器字段。 */
 		fields: (BaseDateTimePickerField | BaseDateTimePickerFieldPlain)[];
+		/** 未选择时仅供显示的字段值，其余字段以横线占位。 */
+		placeholderValues?: Record<string, Readable>;
 		/** 缺省分隔符。默认为间隔号。 */
 		defaultSep?: string;
 	}>(), {
@@ -27,6 +29,8 @@
 	const buttonElSizeObserver = ref<ResizeObserver>();
 	const dash = "‒" as const;
 	const widthChangingTransitionTimeoutId = ref<Timeout>();
+	const displayValues = computed<Record<string, Readable>>(() => model.value ?? props.placeholderValues ?? {});
+	const displayFields = computed(() => props.fields.filter(field => !("text" in field) || toValue(field.text) !== ""));
 
 	function openMenu(e: MouseEvent) {
 		previousValue.value = model.value;
@@ -116,13 +120,12 @@
 		tabindex="0"
 		@click="openMenu"
 	>
-		<p v-if="!model" class="value">{{ $t("unselected.combobox") }}</p>
-		<template v-for="({ name, sep, minWidth, placeholderLength, ...field }, index) in fields" v-else :key="name">
+		<template v-for="({ name, sep, minWidth, placeholderLength, ...field }, index) in displayFields" :key="name">
 			<p v-if="'values' in field" class="value" :style="{ minWidth: toValue(minWidth) }">
-				{{ model[name] == null ? dash.repeat(placeholderLength ?? 2) : field.getDisplayValue?.(model[name]) ?? model[name] }}
+				{{ displayValues[name] == null ? dash.repeat(placeholderLength ?? 2) : field.getDisplayValue?.(displayValues[name]) ?? displayValues[name] }}
 			</p>
-			<p v-else-if="String(toValue(field.text))" class="value" :style="{ minWidth: toValue(minWidth) }">{{ toValue(field.text) }}</p>
-			<p v-if="(sep || defaultSep) && index < fields.length - 1" class="sep">{{ sep || defaultSep }}</p>
+			<p v-else class="value" :style="{ minWidth: toValue(minWidth) }">{{ toValue(field.text) }}</p>
+			<p v-if="(sep || defaultSep) && index < displayFields.length - 1" class="sep">{{ sep || defaultSep }}</p>
 		</template>
 		<ClientOnlyTeleport to="#popovers">
 			<Transition :duration="{ enter: 250, leave: 125 }">

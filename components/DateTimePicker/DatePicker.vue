@@ -133,5 +133,5 @@
 </script>
 
 <template>
-	<BaseDateTimePicker :fields v-model="model" @open="openMenu" @close="closeMenu" />
+	<BaseDateTimePicker :fields :placeholderValues="{ calendar: 'gregory' }" v-model="model" @open="openMenu" @close="closeMenu" />
 </template>
