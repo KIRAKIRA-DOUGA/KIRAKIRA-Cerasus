@@ -42,7 +42,7 @@
 	import { type DatePickerRange, clampPickerDate, getDatePickerOptions, resolveDatePickerRanges } from "utils/date-picker-range";
 
 	const { t } = useI18n();
-	const props = defineProps<{ range: DatePickerRange }>();
+	const props = defineProps<{ range?: DatePickerRange }>();
 	const ranges = computed(() => resolveDatePickerRanges(props.range));
 	const selected = defineModel<Temporal.PlainDate>();
 	const openingDate = shallowRef<Temporal.PlainDate>();

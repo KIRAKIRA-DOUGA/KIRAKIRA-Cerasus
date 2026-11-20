@@ -57,13 +57,10 @@
 <script setup lang="ts">
 	const firstBirthday = { year: 1900, month: 1, day: 1 };
 	const today = useDateFormat(useNow({ interval: 1000 }), "YYYY-MM-DD");
-	const birthdayRange = computed(() => {
-		const max = Temporal.PlainDate.from(today.value);
-		return {
-			gregory: { min: firstBirthday, max },
-			chinese: { min: firstBirthday, max: max.withCalendar("chinese") },
-		};
-	});
+	const birthdayRange = computed(() => ({
+		min: { gregory: firstBirthday, chinese: firstBirthday },
+		max: { gregory: Temporal.PlainDate.from(today.value) },
+	}));
 
 	const profile = defineModel<{
 		name: string;

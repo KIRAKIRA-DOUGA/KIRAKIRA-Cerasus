@@ -61,7 +61,10 @@
 	const timecode = ref(new Duration(0));
 	const time = ref(Temporal.Now.plainTimeISO());
 	const date = ref(Temporal.Now.plainDateISO().withCalendar("gregory"));
-	const dateRange = { gregory: { min: { year: 1900, month: 1, day: 1 }, max: { year: 2100, month: 12, day: 31 } } };
+	const dateRange = {
+		min: { gregory: { year: 1900, month: 1, day: 1 } },
+		max: { gregory: { year: 2100, month: 12, day: 31 } },
+	};
 
 	/**
 	 * 单击按钮事件。

@@ -3,44 +3,51 @@ import { forMap } from "./object.ts";
 
 type PickerCalendar = "gregory" | "chinese";
 type CalendarDay = { year: number; day: number } & ({ month: number } | { monthCode: string });
-type CalendarRange = { min: CalendarDay; max: CalendarDay };
-type ResolvedRange = { min: Temporal.PlainDate; max: Temporal.PlainDate };
+type CalendarBound =
+	| { gregory: CalendarDay; chinese?: CalendarDay }
+	| { gregory?: CalendarDay; chinese: CalendarDay };
+type ResolvedRange = { min?: Temporal.PlainDate; max?: Temporal.PlainDate };
 
-/** 端点使用所属历法的年月日，农历闰月也可用 monthCode 指定。 */
-export type DatePickerRange =
-	| { gregory: CalendarRange; chinese?: CalendarRange }
-	| { chinese: CalendarRange; gregory?: CalendarRange };
+/** 上下限均可省略。每个端点至少指定一种历法，农历闰月可用 monthCode 指定。 */
+export type DatePickerRange = { min?: CalendarBound; max?: CalendarBound };
 
 function readDay(fields: CalendarDay, calendar: PickerCalendar) {
 	const month = "monthCode" in fields ? { monthCode: fields.monthCode } : { month: fields.month };
 	return Temporal.PlainDate.from({ calendar, year: fields.year, ...month, day: fields.day }, { overflow: "reject" });
 }
 
-export function resolveDatePickerRanges(config: DatePickerRange) {
+function resolveBound(bound?: CalendarBound) {
+	if (bound === undefined) return;
+	const gregory = bound.gregory && readDay(bound.gregory, "gregory");
+	const chinese = bound.chinese && readDay(bound.chinese, "chinese");
+	if (gregory) return { gregory, chinese: chinese ?? gregory.withCalendar("chinese") };
+	if (chinese) return { gregory: chinese.withCalendar("gregory"), chinese };
+	throw new TypeError("DatePicker: each bound requires a Gregorian or Chinese date");
+}
+
+export function resolveDatePickerRanges(config: DatePickerRange = {}) {
+	const lower = resolveBound(config.min);
+	const upper = resolveBound(config.max);
 	function resolve(calendar: PickerCalendar): ResolvedRange {
-		const other = calendar === "gregory" ? "chinese" : "gregory";
-		const source = config[calendar] ? calendar : other;
-		const range = config[source];
-		if (!range) throw new TypeError("DatePicker requires a Gregorian or Chinese date range");
-		const min = readDay(range.min, source).withCalendar(calendar);
-		const max = readDay(range.max, source).withCalendar(calendar);
-		if (Temporal.PlainDate.compare(min, max) > 0) throw new RangeError(`DatePicker: ${source} minimum exceeds maximum`);
+		const min = lower?.[calendar];
+		const max = upper?.[calendar];
+		if (min && max && Temporal.PlainDate.compare(min, max) > 0) throw new RangeError(`DatePicker: ${calendar} minimum exceeds maximum`);
 		return { min, max };
 	}
 	return { gregory: resolve("gregory"), chinese: resolve("chinese") };
 }
 
 export function clampPickerDate(date: Temporal.PlainDate, { min, max }: ResolvedRange) {
-	if (Temporal.PlainDate.compare(date, min) < 0) return min;
-	if (Temporal.PlainDate.compare(date, max) > 0) return max;
+	if (min && Temporal.PlainDate.compare(date, min) < 0) return min;
+	if (max && Temporal.PlainDate.compare(date, max) > 0) return max;
 	return date;
 }
 
 export function getDatePickerOptions(date: Temporal.PlainDate, { min, max }: ResolvedRange) {
-	const firstYear = Math.max(min.year, date.year - 10);
-	const lastYear = Math.min(max.year, date.year + 10);
-	const inFirstYear = date.year === min.year;
-	const inLastYear = date.year === max.year;
+	const firstYear = Math.max(min?.year ?? -Infinity, date.year - 10);
+	const lastYear = Math.min(max?.year ?? Infinity, date.year + 10);
+	const inFirstYear = date.year === min?.year;
+	const inLastYear = date.year === max?.year;
 	const firstMonth = inFirstYear ? min.month : 1;
 	const lastMonth = inLastYear ? max.month : date.monthsInYear;
 	const inFirstMonth = inFirstYear && date.month === min.month;
