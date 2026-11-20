@@ -39,17 +39,26 @@
 </script>
 
 <script setup lang="ts">
-	import { type DatePickerRange, clampPickerDate, getDatePickerOptions, resolveDatePickerRanges } from "utils/date-picker-range";
+	import { type DatePickerRange, type PickerCalendar, clampPickerDate, getDatePickerOptions, resolveDatePickerRanges } from "utils/date-picker-range";
 
 	const { t } = useI18n();
-	const props = defineProps<{ range?: DatePickerRange }>();
+	const props = defineProps<{
+		range?: DatePickerRange;
+		/** 指定历法时固定使用该历法，省略历法选择列。 */
+		fixedCalendar?: PickerCalendar;
+		/** 隐藏显示框和菜单中的星期。 */
+		hideWeekday?: boolean;
+	}>();
 	const ranges = computed(() => resolveDatePickerRanges(props.range));
 	const selected = defineModel<Temporal.PlainDate>();
 	const openingDate = shallowRef<Temporal.PlainDate>();
 	const draft = shallowRef<Temporal.PlainDate>();
 	// 打开菜单后，异步读到的生日优先于当天，已手选的日期优先于两者。
 	const selection = computed(() => draft.value ?? selected.value ?? openingDate.value);
-	const calendar = computed(() => selection.value?.calendarId === "chinese" ? "chinese" : "gregory");
+	function resolveCalendar(calendarId?: string): PickerCalendar {
+		return props.fixedCalendar ?? (calendarId === "chinese" ? "chinese" : "gregory");
+	}
+	const calendar = computed(() => resolveCalendar(selection.value?.calendarId));
 	const value = computed(() => {
 		if (!selection.value) return;
 		const date = selection.value.withCalendar(calendar.value);
@@ -111,12 +120,12 @@
 		} satisfies BaseDateTimePickerField<number>,
 	} satisfies Record<string, BaseDateTimePickerField | BaseDateTimePickerFieldPlain>;
 	const fields = computed<(BaseDateTimePickerField | BaseDateTimePickerFieldPlain)[]>(() => [
-		staticFields.calendar,
-		...!format.value.weekdayAfter ? [staticFields.weekday] : [],
+		...props.fixedCalendar ? [] : [staticFields.calendar],
+		...!props.hideWeekday && !format.value.weekdayAfter ? [staticFields.weekday] : [],
 		staticFields[format.value.ymd[0] as "y"],
 		staticFields[format.value.ymd[1] as "m"],
 		{ ...staticFields[format.value.ymd[2] as "d"], sep: undefined },
-		...format.value.weekdayAfter ? [staticFields.weekday] : [],
+		...!props.hideWeekday && format.value.weekdayAfter ? [staticFields.weekday] : [],
 	]);
 	const model = computed({
 		get: () => value.value ? {
@@ -129,7 +138,7 @@
 			const current = value.value;
 			if (!current || !fields) return;
 			const { year, month, date } = fields;
-			const nextCalendar = fields.calendar === "chinese" ? "chinese" : "gregory";
+			const nextCalendar = resolveCalendar(fields.calendar);
 			const next = nextCalendar === current.calendarId ?
 				current.with({ year, monthCode: month, day: date }, { overflow: "constrain" }) :
 				current.withCalendar(nextCalendar);

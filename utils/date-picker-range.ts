@@ -1,7 +1,7 @@
 import { Temporal } from "temporal-polyfill/full";
 import { forMap } from "./object.ts";
 
-type PickerCalendar = "gregory" | "chinese";
+export type PickerCalendar = "gregory" | "chinese";
 type CalendarDay = { year: number; day: number } & ({ month: number } | { monthCode: string });
 type CalendarBound =
 	| { gregory: CalendarDay; chinese?: CalendarDay }

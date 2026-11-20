@@ -202,6 +202,7 @@
 			<p>时间码</p><TimecodePicker v-model="timecode" />
 			<p>时间</p><TimePicker v-model="time" />
 			<p>日期</p><DatePicker v-model="date" :range="dateRange" />
+			<p id="gregorian-date-picker">{{ $t("calendar.gregory") }}</p><DatePicker v-model="date" :range="dateRange" fixedCalendar="gregory" hideWeekday />
 			<hr />
 			<HeadingComments :count="233" />
 			<hr />
