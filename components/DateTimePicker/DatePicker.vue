@@ -55,10 +55,10 @@
 	}>();
 	const ranges = computed(() => resolveDatePickerRanges(props.range));
 	const selected = defineModel<Temporal.PlainDate>();
-	const openingDate = shallowRef<Temporal.PlainDate>();
+	const currentDate = shallowRef<Temporal.PlainDate>();
 	const draft = shallowRef<Temporal.PlainDate>();
 	// 优先使用本次手动选择的日期，其次使用外部传入的日期，两者都为空时才使用打开菜单当天的日期。
-	const selection = computed(() => draft.value ?? selected.value ?? openingDate.value);
+	const selection = computed(() => draft.value ?? selected.value ?? currentDate.value);
 	function resolveCalendar(calendarId?: string): PickerCalendar {
 		return props.fixedCalendar ?? (calendarId === "chinese" ? "chinese" : "gregory");
 	}
@@ -66,12 +66,12 @@
 	const value = computed(() => {
 		if (!selection.value) return;
 		const date = selection.value.withCalendar(calendar.value);
-		return openingDate.value ? clampPickerDate(date, ranges.value[calendar.value]) : date;
+		return currentDate.value ? clampPickerDate(date, ranges.value[calendar.value]) : date;
 	});
-	const options = computed(() => openingDate.value && value.value ? getDatePickerOptions(value.value, ranges.value[calendar.value]) : undefined);
+	const options = computed(() => currentDate.value && value.value ? getDatePickerOptions(value.value, ranges.value[calendar.value]) : undefined);
 
 	function openMenu() {
-		openingDate.value = Temporal.Now.plainDateISO().withCalendar("gregory");
+		currentDate.value = Temporal.Now.plainDateISO().withCalendar("gregory");
 	}
 
 	function confirmSelection() {
@@ -81,7 +81,7 @@
 
 	function clearDraft() {
 		draft.value = undefined;
-		openingDate.value = undefined;
+		currentDate.value = undefined;
 	}
 
 	const locale = getCurrentLocaleLangCode(undefined, true);
