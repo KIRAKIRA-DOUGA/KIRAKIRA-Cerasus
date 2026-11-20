@@ -492,6 +492,7 @@ export default {
 		add: "添加",
 		apply: "应用",
 		reset: "重设",
+		clear: "清空",
 	},
 	loginwindow: {
 		login_welcome: "欢迎回家",
@@ -714,7 +715,7 @@ export default {
 	},
 	confirm: {
 		cancel_upload: "真的要取消本次上传吗？",
-		reset_profile: "真的要重置你的资料吗？",
+		clear_profile: "确定要清空你的个人资料吗？（不会移除头像，此操作不可恢复）",
 		block_user: {
 			title: "真的要屏蔽该用户吗？",
 			ok: "确认屏蔽",

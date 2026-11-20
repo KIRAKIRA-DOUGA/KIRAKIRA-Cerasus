@@ -17,9 +17,9 @@
 	const newAvatarImageBlob = ref<Blob>(); // 用户裁剪后的头像
 	const userAvatarFileInput = ref<HTMLInputElement>(); // 隐藏的图片上传 Input 元素
 	const isUpdatingUserInfo = ref(false); // 是否正在上传用户信息
-	const isResettingUserInfo = ref(false); // 是否正在重置用户信息
+	const isClearingProfile = ref(false); // 是否正在清空用户资料
 	const isRemovingUserAvatar = ref(false); // 是否正在移除用户头像
-	const shouldPreventSubmit = computed(() => isUpdatingUserInfo.value || isResettingUserInfo.value || isRemovingUserAvatar.value);
+	const shouldPreventSubmit = computed(() => isUpdatingUserInfo.value || isClearingProfile.value || isRemovingUserAvatar.value);
 	const storedBirthday = shallowRef<Temporal.PlainDate>();
 	const profile = reactive({
 		name: selfUserInfoStore.userInfo.username?.normalize() ?? "",
@@ -48,7 +48,7 @@
 	}, { immediate: true });
 	const cropper = ref<InstanceType<typeof ImageCropper>>(); // 图片裁剪器实例
 	const isUploadingUserAvatar = ref(false); // 是否正在上传头像
-	const showConfirmResetAlert = ref(false); // 是否显示重置警告框
+	const showClearProfileAlert = ref(false);
 
 	/**
 	 * 点击头像事件，模拟点击文件上传并唤起文件资源管理器
@@ -197,27 +197,26 @@
 	}
 
 	/**
-	 * 弹出确认重置的警告框
+	 * 打开清空资料确认框。
 	 */
-	function resetConfirm() {
+	function openClearProfileAlert() {
 		if (!isLoggedIn.value) {
 			useEvent("app:requestLogin");
 			return;
 		}
-		showConfirmResetAlert.value = true;
+		showClearProfileAlert.value = true;
 	}
 
-	/** 保留账户用户名，清空可重设的资料字段和本地草稿。 */
-	async function reset() {
+	/** 清空昵称、签名、性别、生日和标签。 */
+	async function clearProfile() {
 		const username = selfUserInfoStore.userInfo.username;
 		if (!username) {
 			useToast(t("toast.get_current_logged_in_user_info_failed"), "error");
 			return;
 		}
-		isResettingUserInfo.value = true;
+		isClearingProfile.value = true;
 		const updateOrCreateUserInfoRequest: UpdateOrCreateUserInfoRequestDto = {
 			username,
-			avatar: "",
 			userNickname: "",
 			signature: "",
 			gender: "",
@@ -228,21 +227,17 @@
 			const updateOrCreateUserInfoResult = await api.user.updateOrCreateUserInfo(updateOrCreateUserInfoRequest);
 			if (updateOrCreateUserInfoResult.success) {
 				profile.birthday = undefined;
-				if (newAvatar.value?.startsWith("blob:")) URL.revokeObjectURL(newAvatar.value);
-				newAvatar.value = undefined;
-				newAvatarImageBlob.value = undefined;
-				clearBlobUrl();
 				selfUserInfoStore.userInfo = { ...selfUserInfoStore.userInfo, ...updateOrCreateUserInfoRequest };
-				showConfirmResetAlert.value = false;
+				showClearProfileAlert.value = false;
 				useToast(t("toast.profile_updated"), "success");
 				await getSelfUserInfoController();
 			} else
 				useToast(t("toast.something_went_wrong"), "error");
 		} catch (error) {
 			useToast(t("toast.something_went_wrong"), "error");
-			console.error("Failed to reset profile.", error);
+			console.error("Failed to clear profile.", error);
 		} finally {
-			isResettingUserInfo.value = false;
+			isClearingProfile.value = false;
 		}
 	}
 
@@ -290,13 +285,13 @@
 
 <template>
 	<div>
-		<Alert v-model="showConfirmResetAlert" static>
-			{{ $t("confirm.reset_profile") }}
+		<Alert v-model="showClearProfileAlert" :title="$t('step.clear')" static>
+			{{ $t("confirm.clear_profile") }}
 			<template #footer-left>
-				<Button @click="reset" :loading="isResettingUserInfo" :disabled="isUpdatingUserInfo || isResettingUserInfo">{{ $t("step.ok") }}</Button>
+				<Button @click="clearProfile" :loading="isClearingProfile" :disabled="shouldPreventSubmit">{{ $t("step.clear") }}</Button>
 			</template>
 			<template #footer-right>
-				<Button @click="showConfirmResetAlert = false" class="secondary">{{ $t("step.cancel") }}</Button>
+				<Button @click="showClearProfileAlert = false" class="secondary">{{ $t("step.cancel") }}</Button>
 			</template>
 		</Alert>
 
@@ -347,8 +342,8 @@
 				icon="delete"
 				class="secondary"
 				:disabled="shouldPreventSubmit"
-				@click="resetConfirm"
-			>{{ $t("step.reset") }}</Button>
+				@click="openClearProfileAlert"
+			>{{ $t("step.clear") }}</Button>
 			<Button
 				icon="check"
 				:loading="isUpdatingUserInfo"

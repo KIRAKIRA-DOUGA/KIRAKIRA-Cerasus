@@ -490,6 +490,7 @@ export default {
 		add: "追加",
 		apply: "適用",
 		reset: "リセット",
+		clear: "消去",
 	},
 	loginwindow: {
 		login_welcome: "ようこそ",
@@ -712,7 +713,7 @@ export default {
 	},
 	confirm: {
 		cancel_upload: "アップロードをキャンセルしますか？",
-		reset_profile: "プロファイルをリセットしてもよろしいですか？",
+		clear_profile: "プロフィールの内容を消去しますか？（アバターはそのまま残ります。この操作は取り消せません。）",
 		block_user: {
 			title: "このユーザーをブロックしてもよろしいですか？",
 			ok: "ブロックの確認",

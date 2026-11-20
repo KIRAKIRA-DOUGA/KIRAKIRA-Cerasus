@@ -490,6 +490,7 @@ export default {
 		add: "crwdns2652:0crwdne2652:0",
 		apply: "crwdns2654:0crwdne2654:0",
 		reset: "crwdns2656:0crwdne2656:0",
+		clear: "crwdns4147:0crwdne4147:0",
 	},
 	loginwindow: {
 		login_welcome: "crwdns2658:0crwdne2658:0",
@@ -712,7 +713,7 @@ export default {
 	},
 	confirm: {
 		cancel_upload: "crwdns2844:0crwdne2844:0",
-		reset_profile: "crwdns3344:0crwdne3344:0",
+		clear_profile: "crwdns4149:0crwdne4149:0",
 		block_user: {
 			title: "crwdns4066:0crwdne4066:0",
 			ok: "crwdns4068:0crwdne4068:0",
