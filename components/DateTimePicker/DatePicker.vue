@@ -43,6 +43,10 @@
 
 	const { t } = useI18n();
 	const props = defineProps<{
+		/**
+		 * 最早可选日期（`min`）和最晚可选日期（`max`）均可省略。
+		 * 每个界限至少指定一种历法。只指定一种时自动换算另一种，公历和农历都指定时分别使用传入的日期。
+		 */
 		range?: DatePickerRange;
 		/** 指定历法时固定使用该历法，省略历法选择列。 */
 		fixedCalendar?: PickerCalendar;
