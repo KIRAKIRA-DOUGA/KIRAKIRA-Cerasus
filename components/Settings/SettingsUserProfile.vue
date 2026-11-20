@@ -5,6 +5,7 @@
 <script lang="ts">
 	import makeUsername from "pomsky/username.pom";
 	const validChar = makeUsername();
+	const maxNameLength = 20;
 
 	export async function validateUsernameAndNickname(
 		username: MaybeRef<string>,
@@ -20,7 +21,7 @@
 			return false;
 		}
 
-		if (username.length > 200) {
+		if (username.length > maxNameLength) {
 			useToast(t("validation.too_long.username"), "error");
 			return false;
 		}
@@ -30,7 +31,7 @@
 			return false;
 		}
 
-		if (nickname !== undefined && nickname.length > 200) {
+		if (nickname !== undefined && nickname.length > maxNameLength) {
 			useToast(t("validation.too_long.nickname"), "error");
 			return false;
 		}
@@ -89,7 +90,7 @@
 			icon="person"
 			required
 			:pattern="validChar"
-			:maxLength="20"
+			:maxLength="maxNameLength"
 		/>
 		<span>{{ $t("user.username_requirements") }}</span>
 	</div>
@@ -102,7 +103,7 @@
 			size="large"
 			icon="person"
 			:pattern="validChar"
-			:maxLength="20"
+			:maxLength="maxNameLength"
 		/>
 		<span>{{ $t("user.nickname_requirements") }}</span>
 	</div>
