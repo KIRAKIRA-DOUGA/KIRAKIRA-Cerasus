@@ -53,7 +53,7 @@
 	const selected = defineModel<Temporal.PlainDate>();
 	const openingDate = shallowRef<Temporal.PlainDate>();
 	const draft = shallowRef<Temporal.PlainDate>();
-	// 打开菜单后，异步读到的生日优先于当天，已手选的日期优先于两者。
+	// 优先使用本次手动选择的日期，其次使用外部传入的日期，两者都为空时才使用打开菜单当天的日期。
 	const selection = computed(() => draft.value ?? selected.value ?? openingDate.value);
 	function resolveCalendar(calendarId?: string): PickerCalendar {
 		return props.fixedCalendar ?? (calendarId === "chinese" ? "chinese" : "gregory");
