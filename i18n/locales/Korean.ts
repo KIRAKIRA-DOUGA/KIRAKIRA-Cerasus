@@ -312,7 +312,9 @@ export default {
 	},
 	sort: {},
 	view: {},
-	step: {},
+	step: {
+		clear: "지우기",
+	},
 	loginwindow: {},
 	welcome: {},
 	unselected: {},
@@ -338,6 +340,7 @@ export default {
 		duplicate: {},
 	},
 	confirm: {
+		clear_profile: "프로필 정보를 지우시겠어요? (아바타는 유지되며, 이 작업은 되돌릴 수 없습니다.)",
 		block_user: {},
 		hide_user: {},
 	},

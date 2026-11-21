@@ -5,8 +5,14 @@
 <script lang="ts">
 	import makeUsername from "pomsky/username.pom";
 	const validChar = makeUsername();
+	const MAX_NAME_LENGTH = 20;
 
-	export async function validateUsernameAndNickname(username: MaybeRef<string>, nickname: MaybeRef<string>, t: ReturnType<typeof useI18n>["t"]): Promise<boolean> {
+	export async function validateUsernameAndNickname(
+		username: MaybeRef<string>,
+		nickname: MaybeRef<string | undefined>,
+		t: ReturnType<typeof useI18n>["t"],
+		currentUsername?: string,
+	): Promise<boolean> {
 		username = toValue(username);
 		nickname = toValue(nickname);
 
@@ -15,7 +21,7 @@
 			return false;
 		}
 
-		if (username.length > 200) {
+		if (username.length > MAX_NAME_LENGTH) {
 			useToast(t("validation.too_long.username"), "error");
 			return false;
 		}
@@ -25,15 +31,17 @@
 			return false;
 		}
 
-		if (nickname?.length > 200) {
+		if (nickname !== undefined && nickname.length > MAX_NAME_LENGTH) {
 			useToast(t("validation.too_long.nickname"), "error");
 			return false;
 		}
 
-		if (!validChar.exec(nickname)) {
+		if (nickname !== undefined && !validChar.exec(nickname)) {
 			useToast(t("validation.invalid_format.nickname"), "error");
 			return false;
 		}
+
+		if (username.normalize() === currentUsername?.normalize()) return true;
 
 		const checkUsernameRequest: CheckUsernameRequestDto = { username };
 		const checkUsernameResult = await api.user.checkUsername(checkUsernameRequest);
@@ -48,13 +56,20 @@
 </script>
 
 <script setup lang="ts">
+	const firstBirthday = { year: 1870, month: 1, day: 1 };
+	const today = useDateFormat(useNow({ scheduler: callback => useIntervalFn(callback, 1000) }), "YYYY-MM-DD");
+	const birthdayRange = computed(() => ({
+		min: { gregory: firstBirthday, chinese: firstBirthday },
+		max: { gregory: Temporal.PlainDate.from(today.value) },
+	}));
+
 	const profile = defineModel<{
 		name: string;
 		nickname: string;
 		nameValid?: boolean;
 		bio: string;
 		gender: string;
-		birthday: Temporal.PlainDate;
+		birthday?: Temporal.PlainDate;
 		tags: string[];
 	}>({ required: true });
 
@@ -75,7 +90,7 @@
 			icon="person"
 			required
 			:pattern="validChar"
-			:maxLength="20"
+			:maxLength="MAX_NAME_LENGTH"
 		/>
 		<span>{{ $t("user.username_requirements") }}</span>
 	</div>
@@ -88,7 +103,7 @@
 			size="large"
 			icon="person"
 			:pattern="validChar"
-			:maxLength="20"
+			:maxLength="MAX_NAME_LENGTH"
 		/>
 		<span>{{ $t("user.nickname_requirements") }}</span>
 	</div>
@@ -112,7 +127,7 @@
 			<span class="text">{{ $t("user.birthday") }}</span>
 		</div>
 
-		<DatePicker v-model="profile.birthday" />
+		<DatePicker v-model="profile.birthday" :range="birthdayRange" />
 	</div>
 
 	<div class="gender">

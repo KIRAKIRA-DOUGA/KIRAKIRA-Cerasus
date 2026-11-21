@@ -366,6 +366,7 @@ export default {
 		add: "Tambahkan",
 		apply: "Terapkan",
 		reset: "Atur Ulang",
+		clear: "Kosongkan",
 	},
 	loginwindow: {
 		login_welcome: "Selamat Datang!",
@@ -565,7 +566,7 @@ export default {
 	},
 	confirm: {
 		cancel_upload: "Apakah Anda yakin ingin membatalkan Unggah?",
-		reset_profile: "Apakah Anda yakin ingin mengatur ulang profil Anda?",
+		clear_profile: "Yakin ingin mengosongkan profil Anda? (Avatar Anda akan tetap tersimpan. Tindakan ini tidak dapat dibatalkan.)",
 		block_user: {},
 		hide_user: {},
 	},
