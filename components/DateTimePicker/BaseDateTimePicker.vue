@@ -6,8 +6,6 @@
 	const props = withDefaults(defineProps<{
 		/** 基础日期时间选择器字段。 */
 		fields: (BaseDateTimePickerField | BaseDateTimePickerFieldPlain)[];
-		/** 未选择时仅供显示的字段值，其余字段以横线占位。 */
-		placeholderValues?: Record<string, Readable>;
 		/** 缺省分隔符。默认为间隔号。 */
 		defaultSep?: string;
 	}>(), {
@@ -30,8 +28,14 @@
 	const buttonElSizeObserver = ref<ResizeObserver>();
 	const dash = "‒" as const;
 	const widthChangingTransitionTimeoutId = ref<Timeout>();
-	const displayValues = computed<Record<string, Readable>>(() => model.value ?? props.placeholderValues ?? {});
 	const displayFields = computed(() => props.fields.filter(field => !("text" in field) || toValue(field.text) !== ""));
+
+	function getFieldText(field: BaseDateTimePickerField | BaseDateTimePickerFieldPlain) {
+		if ("text" in field) return toValue(field.text);
+		const value = model.value == null ? field.placeholderValue : model.value[field.name];
+		if (value == null) return dash.repeat(field.placeholderLength ?? 2);
+		return field.getDisplayValue?.(value) ?? value;
+	}
 
 	function openMenu(e: MouseEvent) {
 		previousValue.value = model.value;
@@ -127,12 +131,9 @@
 		tabindex="0"
 		@click="openMenu"
 	>
-		<template v-for="({ name, sep, minWidth, placeholderLength, ...field }, index) in displayFields" :key="name">
-			<p v-if="'values' in field" class="value" :style="{ minWidth: toValue(minWidth) }">
-				{{ displayValues[name] == null ? dash.repeat(placeholderLength ?? 2) : field.getDisplayValue?.(displayValues[name]) ?? displayValues[name] }}
-			</p>
-			<p v-else class="value" :style="{ minWidth: toValue(minWidth) }">{{ toValue(field.text) }}</p>
-			<p v-if="(sep || defaultSep) && index < displayFields.length - 1" class="sep">{{ sep || defaultSep }}</p>
+		<template v-for="(field, index) in displayFields" :key="field.name">
+			<p class="value" :style="{ minWidth: toValue(field.minWidth) }">{{ getFieldText(field) }}</p>
+			<p v-if="(field.sep || defaultSep) && index < displayFields.length - 1" class="sep">{{ field.sep || defaultSep }}</p>
 		</template>
 		<ClientOnlyTeleport to="#popovers">
 			<Transition :duration="{ enter: 250, leave: 125 }">

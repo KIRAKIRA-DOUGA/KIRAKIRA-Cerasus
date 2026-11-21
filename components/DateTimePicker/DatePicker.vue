@@ -150,7 +150,12 @@
 	const isChineseCalendar = computed(() => calendar.value === "chinese");
 	const format = computed(() => getLocaleDateFormat(locale));
 	const staticFields = {
-		calendar: { name: "calendar", values: availableCalendars, getDisplayValue: calendar => t(`calendar.${calendar}`) } satisfies BaseDateTimePickerField<string>,
+		calendar: {
+			name: "calendar",
+			values: availableCalendars,
+			placeholderValue: "gregory",
+			getDisplayValue: calendar => t(`calendar.${calendar}`),
+		} satisfies BaseDateTimePickerField<PickerCalendar>,
 		weekday: { name: "weekday", text: () => value.value ? format.value.weekdays[value.value.dayOfWeek % 7] : "", minWidth: "2em" },
 		y: {
 			name: "year",
@@ -215,7 +220,6 @@
 <template>
 	<BaseDateTimePicker
 		:fields
-		:placeholderValues="{ calendar: 'gregory' }"
 		v-model="model"
 		@open="openMenu"
 		@confirm="confirmSelection"

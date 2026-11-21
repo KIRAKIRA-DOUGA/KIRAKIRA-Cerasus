@@ -103,7 +103,11 @@ declare global {
 	};
 	/** 媒体缓冲加载进度数组。 */
 	type Buffered = [start: number, end: number][];
-	/** 基础日期时间选择器字段。 */
+	/**
+	 * 基础日期时间选择器字段。
+	 * @template TValue - 字段的可选值和占位值的类型。
+	 * @template TDisplay - 字段格式化后的显示值类型。
+	 */
 	interface BaseDateTimePickerField<TValue extends Readable = Readable, TDisplay extends Readable = Readable> {
 		/** 字段组名。如：year、month、date。 */
 		name: string;
@@ -117,7 +121,9 @@ declare global {
 		minWidth?: string | (() => string | undefined);
 		/** 从 `values` 内数据值转换到本地化显示文本值的函数，如果未提供则直接显示 `values` 内的数据值。 */
 		getDisplayValue?(value: TValue): TDisplay;
-		/** 当值为 undefined 时显示的占位符长度。默认为 2。 */
+		/** 用户未选择时仅供显示的字段值，可通过 `getDisplayValue` 格式化。省略时以横线占位。 */
+		placeholderValue?: TValue;
+		/** 使用横线占位时的长度，默认为 2。 */
 		placeholderLength?: number;
 	}
 	/** 基础日期时间选择器只读纯文本字段。 */
