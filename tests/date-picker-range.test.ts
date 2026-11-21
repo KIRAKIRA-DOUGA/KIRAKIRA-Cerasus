@@ -1,7 +1,23 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { registerHooks } from "node:module";
 import { test } from "node:test";
+import { fileURLToPath } from "node:url";
 import { Temporal } from "temporal-polyfill/full";
-import { clampPickerDate, getDatePickerOptions, resolveDatePickerRanges } from "../utils/date-picker-range.ts";
+import { compileScript, parse } from "vue/compiler-sfc";
+
+// 用 Vue 编译器加载组件，让 Node 测试直接使用选择器里的日期范围计算。
+const vueLoader = registerHooks({
+	load(url, context, nextLoad) {
+		if (!url.endsWith(".vue")) return nextLoad(url, context);
+		const filename = fileURLToPath(url);
+		const { descriptor } = parse(readFileSync(filename, "utf8"), { filename });
+		const { content } = compileScript(descriptor, { id: filename });
+		return { format: "module-typescript", source: content, shortCircuit: true };
+	},
+});
+const { clampPickerDate, getDatePickerOptions, resolveDatePickerRanges } = await import("../components/DateTimePicker/DatePicker.vue");
+vueLoader.deregister();
 
 const first = { year: 1900, month: 1, day: 1 };
 const twentieth = { year: 1900, month: 1, day: 20 };
