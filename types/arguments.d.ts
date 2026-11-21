@@ -122,7 +122,7 @@ declare global {
 		/** 从 `values` 内数据值转换到本地化显示文本值的函数，如果未提供则直接显示 `values` 内的数据值。 */
 		getDisplayValue?(value: TValue): TDisplay;
 		/** 用户未选择时仅供显示的字段值，可通过 `getDisplayValue` 格式化。省略时以横线占位。 */
-		placeholderValue?: TValue;
+		placeholder?: TValue;
 		/** 使用横线占位时的长度，默认为 2。 */
 		placeholderLength?: number;
 	}

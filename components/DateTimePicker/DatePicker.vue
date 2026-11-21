@@ -105,41 +105,52 @@
 	const { t } = useI18n();
 	const props = defineProps<{
 		/**
+		 * 用户可以选择的日期区间（上限与下限）
 		 * 最早可选日期（`min`）和最晚可选日期（`max`）均可省略。
 		 * 每个界限至少指定一种历法。只指定一种时自动换算另一种，公历和农历都指定时分别使用传入的日期。
 		 */
 		range?: DatePickerRange;
-		/** 指定历法时固定使用该历法，省略历法选择列。 */
+		/** 指定使用一个历法。若指定，将会省略历法选择列。 */
 		fixedCalendar?: PickerCalendar;
 		/** 隐藏显示框和菜单中的星期。 */
 		hideWeekday?: boolean;
 	}>();
-	const ranges = computed(() => resolveDatePickerRanges(props.range));
-	const selected = defineModel<Temporal.PlainDate>();
-	const currentDate = shallowRef<Temporal.PlainDate>();
-	const draft = shallowRef<Temporal.PlainDate>();
-	// 优先使用本次手动选择的日期，其次使用外部传入的日期，两者都为空时才使用打开菜单当天的日期。
-	const selection = computed(() => draft.value ?? selected.value ?? currentDate.value);
-	function resolveCalendar(calendarId?: string): PickerCalendar {
-		return props.fixedCalendar ?? (calendarId === "chinese" ? "chinese" : "gregory");
-	}
-	const calendar = computed(() => resolveCalendar(selection.value?.calendarId));
-	const value = computed(() => {
+	const ranges = computed(() => resolveDatePickerRanges(props.range)); // （解析后的）用户可以选择的日期区间
+	const selected = defineModel<Temporal.PlainDate>(); // 传入的或者用户选择的日期。
+	const currentDate = shallowRef<Temporal.PlainDate>(); // 打开菜单时记录的公历当天，作为备用日期。
+	function openMenu() { currentDate.value = Temporal.Now.plainDateISO().withCalendar("gregory"); }
+	const draft = shallowRef<Temporal.PlainDate>(); // 用户在菜单中点击或滚动选中、尚未确认的日期。
+	const selection = computed(() => draft.value ?? selected.value ?? currentDate.value); // 优先使用本次手选的日期，其次使用外部传入或已确认的日期，最后使用打开菜单当天的日期。
+	const calendar = computed(() => resolveCalendar(selection.value?.calendarId)); // 用于显示日期的历法。
+	const value = computed(() => { // 将选用的日期转换为显示历法。菜单打开时，超出可选范围的日期取最近的边界值。
 		if (!selection.value) return;
 		const date = selection.value.withCalendar(calendar.value);
 		return currentDate.value ? clampPickerDate(date, ranges.value[calendar.value]) : date;
 	});
 	const options = computed(() => currentDate.value && value.value ? getDatePickerOptions(value.value, ranges.value[calendar.value]) : undefined);
 
-	function openMenu() {
-		currentDate.value = Temporal.Now.plainDateISO().withCalendar("gregory");
+	/**
+	 * 获取历法。
+	 * 若指定了固定历法，则使用固定历法。
+	 * @param calendarId - 历法
+	 * @returns 历法
+	 */
+	function resolveCalendar(calendarId?: string): PickerCalendar {
+		return props.fixedCalendar ?? (calendarId === "chinese" ? "chinese" : "gregory");
 	}
 
+	/**
+	 * 确认选择日期。
+	 * 由于日期已确认，因此清空待确认日期选择和打开菜单时记录的当天日期。
+	 */
 	function confirmSelection() {
 		if (value.value) selected.value = value.value;
 		clearDraft();
 	}
 
+	/**
+	 * 清除待确认的日期选择和打开菜单时记录的当天日期。
+	 */
 	function clearDraft() {
 		draft.value = undefined;
 		currentDate.value = undefined;
@@ -153,7 +164,7 @@
 		calendar: {
 			name: "calendar",
 			values: availableCalendars,
-			placeholderValue: "gregory",
+			placeholder: "gregory",
 			getDisplayValue: calendar => t(`calendar.${calendar}`),
 		} satisfies BaseDateTimePickerField<PickerCalendar>,
 		weekday: { name: "weekday", text: () => value.value ? format.value.weekdays[value.value.dayOfWeek % 7] : "", minWidth: "2em" },

@@ -5,7 +5,7 @@
 <script lang="ts">
 	import makeUsername from "pomsky/username.pom";
 	const validChar = makeUsername();
-	const maxNameLength = 20;
+	const MAX_NAME_LENGTH = 20;
 
 	export async function validateUsernameAndNickname(
 		username: MaybeRef<string>,
@@ -21,7 +21,7 @@
 			return false;
 		}
 
-		if (username.length > maxNameLength) {
+		if (username.length > MAX_NAME_LENGTH) {
 			useToast(t("validation.too_long.username"), "error");
 			return false;
 		}
@@ -31,7 +31,7 @@
 			return false;
 		}
 
-		if (nickname !== undefined && nickname.length > maxNameLength) {
+		if (nickname !== undefined && nickname.length > MAX_NAME_LENGTH) {
 			useToast(t("validation.too_long.nickname"), "error");
 			return false;
 		}
@@ -56,8 +56,8 @@
 </script>
 
 <script setup lang="ts">
-	const firstBirthday = { year: 1900, month: 1, day: 1 };
-	const today = useDateFormat(useNow({ interval: 1000 }), "YYYY-MM-DD");
+	const firstBirthday = { year: 1870, month: 1, day: 1 };
+	const today = useDateFormat(useNow({ scheduler: callback => useIntervalFn(callback, 1000) }), "YYYY-MM-DD");
 	const birthdayRange = computed(() => ({
 		min: { gregory: firstBirthday, chinese: firstBirthday },
 		max: { gregory: Temporal.PlainDate.from(today.value) },
@@ -90,7 +90,7 @@
 			icon="person"
 			required
 			:pattern="validChar"
-			:maxLength="maxNameLength"
+			:maxLength="MAX_NAME_LENGTH"
 		/>
 		<span>{{ $t("user.username_requirements") }}</span>
 	</div>
@@ -103,7 +103,7 @@
 			size="large"
 			icon="person"
 			:pattern="validChar"
-			:maxLength="maxNameLength"
+			:maxLength="MAX_NAME_LENGTH"
 		/>
 		<span>{{ $t("user.nickname_requirements") }}</span>
 	</div>

@@ -4,7 +4,10 @@
 
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
-		/** 基础日期时间选择器字段。 */
+		/**
+		 * 基础日期时间选择器字段。
+		 * 设置各列的可选值或只读文本。
+		 */
 		fields: (BaseDateTimePickerField | BaseDateTimePickerFieldPlain)[];
 		/** 缺省分隔符。默认为间隔号。 */
 		defaultSep?: string;
@@ -13,58 +16,23 @@
 	});
 
 	const { menuItemCount, itemHeight } = useScssVariables().numbers;
-	const model = defineModel<Record<string, Readable>>();
-	const emit = defineEmits<{
-		open: [];
-		confirm: [];
-		cancel: [];
+	const model = defineModel<Record<string, Readable>>(); // 日期选择器的值
+	const emit = defineEmits<{ // 日期选择器的事件
+		open: []; // 开启日期选择菜单
+		confirm: []; // 确认选择日期
+		cancel: []; // 取消选择日期
 	}>();
-	const showMenu = ref<DOMRect>();
-	const menu = ref<HTMLElement>();
-	const previousValue = ref<Record<string, Readable>>();
-	const menuValuesKeys = ["noumenon", "shadow"] as const;
-	const menuValues = reactive<Record<ValueOf<typeof menuValuesKeys>, Record<string, HTMLDivElement | undefined | null>>>(arrayMapObjectConst(menuValuesKeys, () => ({})));
+	const showMenu = ref<DOMRect>(); // 菜单是否显示，以及菜单的定位信息
+	const menu = ref<HTMLElement>(); // 菜单元素
+	const previousValue = ref<Record<string, Readable>>(); // 记录打开菜单时的值，用于取消选择时恢复
+	const menuValuesKeys = ["noumenon", "shadow"] as const; // 日期选择器的默认滚动条和高亮栏中的滚动条
+	const menuValues = reactive<Record<ValueOf<typeof menuValuesKeys>, Record<string, HTMLDivElement | undefined | null>>>(arrayMapObjectConst(menuValuesKeys, () => ({}))); // 日期选择器中可滚动的元素（滚动层和高亮层）
 	const buttonEl = ref<InstanceType<typeof Comp>>();
 	const buttonElSizeObserver = ref<ResizeObserver>();
 	const dash = "‒" as const;
 	const widthChangingTransitionTimeoutId = ref<Timeout>();
-	const displayFields = computed(() => props.fields.filter(field => !("text" in field) || toValue(field.text) !== ""));
-
-	function getFieldText(field: BaseDateTimePickerField | BaseDateTimePickerFieldPlain) {
-		if ("text" in field) return toValue(field.text);
-		const value = model.value == null ? field.placeholderValue : model.value[field.name];
-		if (value == null) return dash.repeat(field.placeholderLength ?? 2);
-		return field.getDisplayValue?.(value) ?? value;
-	}
-
-	function openMenu(e: MouseEvent) {
-		previousValue.value = model.value;
-		emit("open");
-		showMenu.value = (e.currentTarget as HTMLElement).getBoundingClientRect();
-	}
-
-	function confirmSelection() {
-		showMenu.value = undefined;
-		emit("confirm");
-	}
-
-	function cancelSelection() {
-		if (previousValue.value)
-			model.value = previousValue.value;
-		showMenu.value = undefined;
-		emit("cancel");
-	}
-
-	useEventListener("window", "pointerdown", e => {
-		if (!menu.value || !showMenu.value) return;
-		const clickOutside = !isInPath(e, menu);
-		if (clickOutside) cancelSelection();
-	});
-
-	useEventListener("window", "keydown", e => {
-		if (showMenu.value && e.key === "Escape") cancelSelection();
-	});
-
+	const displayFields = computed(() => props.fields.filter(field => !("text" in field) || toValue(field.text) !== "")); // 显示框中的列，略过文本为空的只读列
+	/** 各可选列当前在滚轮中展示的候选值（可以滚动的那个） */
 	const visibleValues = computed(() => arrayMapObject(props.fields.filter(field => !("text" in field)) as BaseDateTimePickerField[], ({ name, values, loopable }) => {
 		if (typeof values === "function") values = values();
 		const currentValue = model.value?.[name];
@@ -77,6 +45,47 @@
 		}
 		return [name, result];
 	}));
+
+	/**
+	 * 获取字段在显示框中的文本。
+	 * @param field - 日期选择器字段
+	 * @returns 显示文本
+	 */
+	function getFieldText(field: BaseDateTimePickerField | BaseDateTimePickerFieldPlain) {
+		if ("text" in field) return toValue(field.text);
+		const value = model.value == null ? field.placeholder : model.value[field.name];
+		if (value == null) return dash.repeat(field.placeholderLength ?? 2);
+		return field.getDisplayValue?.(value) ?? value;
+	}
+
+	/**
+	 * 开启日期选择器菜单
+	 * @param e - 鼠标（点击）事件
+	 */
+	function openMenu(e: MouseEvent) {
+		previousValue.value = model.value;
+		emit("open");
+		showMenu.value = (e.currentTarget as HTMLElement).getBoundingClientRect();
+	}
+
+	/**
+	 * 确认选择日期
+	 * 关闭菜单并发出 confirm 事件
+	 */
+	function confirmSelection() {
+		showMenu.value = undefined;
+		emit("confirm");
+	}
+
+	/**
+	 * 取消选择日期并关闭日期选择器菜单
+	 */
+	function cancelSelection() {
+		if (previousValue.value)
+			model.value = previousValue.value;
+		showMenu.value = undefined;
+		emit("cancel");
+	}
 
 	function setField(name: string, value: Readable) {
 		model.value = { ...model.value, [name]: value };
@@ -91,7 +100,9 @@
 		}
 	}
 
-	const getOffsetFromIndex = (index: number) => index - menuItemCount + 1;
+	function getOffsetFromIndex(index: number) {
+		return index - menuItemCount + 1;
+	}
 
 	async function spining(fieldName: string, offset: number) {
 		await nextTick();
@@ -105,6 +116,18 @@
 			easing: eases.easeOutMax,
 		}).finished.catch(useNoop)));
 	}
+
+	// 监听用户是否点击到日期选择器菜单外部，如果点击到外部则视为取消选择
+	useEventListener("window", "pointerdown", e => {
+		if (!menu.value || !showMenu.value) return;
+		const clickOutside = !isInPath(e, menu);
+		if (clickOutside) cancelSelection();
+	});
+
+	// 监听用户是否按下了 ESC 键，如果按下了则视为取消选择
+	useEventListener("window", "keydown", e => {
+		if (showMenu.value && e.key === "Escape") cancelSelection();
+	});
 
 	onMounted(() => {
 		const WIDTH_CHANGING = "width-changing";
