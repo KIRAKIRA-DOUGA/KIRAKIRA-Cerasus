@@ -3,9 +3,6 @@
 </docs>
 
 <script lang="ts">
-	import { Temporal } from "temporal-polyfill/full";
-	import { forMap } from "../../utils/object.ts";
-
 	function getLocaleDateFormat(locale: string | Intl.Locale) {
 		const go = new Date("2006-01-02T15:04:05"); // 幽默 Golang 的日期时间格式化字符串。
 		const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "2-digit", day: "2-digit", numberingSystem: "latn" };

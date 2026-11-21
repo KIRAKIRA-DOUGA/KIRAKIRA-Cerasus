@@ -9,11 +9,17 @@ import { compileScript, parse } from "vue/compiler-sfc";
 // 用 Vue 编译器加载组件，让 Node 测试直接使用选择器里的日期范围计算。
 const vueLoader = registerHooks({
 	load(url, context, nextLoad) {
-		if (!url.endsWith(".vue")) return nextLoad(url, context);
+		if (!url.endsWith("/DateTimePicker/DatePicker.vue")) return nextLoad(url, context);
 		const filename = fileURLToPath(url);
 		const { descriptor } = parse(readFileSync(filename, "utf8"), { filename });
 		const { content } = compileScript(descriptor, { id: filename });
-		return { format: "module-typescript", source: content, shortCircuit: true };
+		// 独立运行的 Node 测试需要补上 Nuxt 在构建组件时注入的依赖。
+		const source = [
+			`import { Temporal } from "${import.meta.resolve("temporal-polyfill/full")}";`,
+			`import { forMap } from "${import.meta.resolve("../utils/object.ts")}";`,
+			content,
+		].join("\n");
+		return { format: "module-typescript", source, shortCircuit: true };
 	},
 });
 const { clampPickerDate, getDatePickerOptions, resolveDatePickerRanges } = await import("../components/DateTimePicker/DatePicker.vue");
