@@ -101,6 +101,7 @@
 					v-model:pinned="pinned"
 					:videoId
 					:uid="comment.uid"
+					:isSelf="comment.isSelf"
 					:index="comment.commentIndex"
 					:commentRoute="comment.commentRoute"
 					:nickname="comment.userInfo?.userNickname"

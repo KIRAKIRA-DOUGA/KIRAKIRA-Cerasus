@@ -16,6 +16,8 @@
 		date?: Date;
 		/** 用户 UID。 */
 		uid: number;
+		/** 是否由当前登录用户发表 */
+		isSelf: boolean;
 		/** 评论的业务唯一标识 */
 		commentRoute: string;
 	}>(), {
@@ -44,7 +46,6 @@
 	const voteLock = ref(false);
 
 	const userSelfInfoStore = useSelfUserInfoStore();
-	const isSelfComment = computed(() => props.uid === userSelfInfoStore.userInfo.uid); // 这条评论是否是自己发送的
 	const isAdmin = computed(() => userSelfInfoStore.userInfo.roles?.includes("administrator")); // 用户是否是管理员
 
 	/**
@@ -250,7 +251,7 @@
 				<SoftButton v-tooltip:bottom="$t('reply')" icon="reply" />
 				<SoftButton v-tooltip:bottom="$t('more')" icon="more_vert" @click="e => menu = [e, 'y']" />
 				<Menu v-model="menu">
-					<MenuItem v-if="isSelfComment" icon="delete" @click="deleteSelfComment(commentRoute, videoId)">{{ $t("delete") }}</MenuItem>
+					<MenuItem v-if="isSelf" icon="delete" @click="deleteSelfComment(commentRoute, videoId)">{{ $t("delete") }}</MenuItem>
 					<MenuItem v-if="isAdmin" icon="delete" @click="adminDeleteVideoComment(commentRoute, videoId)">{{ $t("delete") }}{{ $t("admin_operation_suffix") }}</MenuItem>
 					<MenuItem :icon="unpinnedCaption" @click="pinned = !pinned">{{ $t(unpinnedCaption) }}</MenuItem>
 					<hr />

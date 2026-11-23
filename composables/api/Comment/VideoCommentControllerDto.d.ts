@@ -144,6 +144,8 @@ export type VideoCommentResult = {
 	videoId: number;
 	/** 评论发送者的用户的 UID */
 	uid: number;
+	/** 这条评论是否由当前登录用户发表 */
+	isSelf: boolean;
 	/** 评论发送者的信息，如 用户名、头像 等 */
 	userInfo?: CommentSenderUserInfo;
 	/** 发送评论的时间 */
