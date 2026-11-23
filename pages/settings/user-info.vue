@@ -57,11 +57,11 @@
 
 	/**
 	 * 管理员通过用户信息审核
-	 * @param UUID - 用户 UUID
+	 * @param uid - 用户公开 UID
 	 */
-	async function approveUserInfo(UUID: string) {
+	async function approveUserInfo(uid: number) {
 		const approveUserInfoRequest: ApproveUserInfoRequestDto = {
-			UUID,
+			uid,
 		};
 		const approveUserInfoResult = await api.user.approveUserInfo(approveUserInfoRequest);
 		if (approveUserInfoResult.success) {
@@ -151,8 +151,8 @@
 		<Alert v-model="showClearUserInfoAlert" static>
 			<h4>确定要清除这个用户的信息吗？</h4>
 			<p>该用户的用户名、昵称、头像、签名、性别、用户 TAG 和 生日等用户信息将会被清空。</p>
-			<p>被清空的用户将会使用 UUID 作为用户名。</p>
-			<p>如果该用户的 UUID 被占用，则无法清空，请联系开发组解决。</p>
+			<p>清空资料后，系统将生成一个随机用户名。</p>
+
 			<div class="clear-user-display">
 				<div class="user">
 					<UserAvatar :avatar="clearedUserInfo?.avatar" />
@@ -215,7 +215,7 @@
 				:key="user.uid"
 				:image="user.avatar"
 				icon="account_circle"
-				:details="`UID ${user.uid}, UUID ${user.UUID}` + (user.signature?.trim() ? ` - ${user.signature}` : '')"
+				:details="`UID ${user.uid}` + (user.signature?.trim() ? ` - ${user.signature}` : '')"
 				trailingIcon="open_in_new"
 				:href="`/user/${user.uid}`"
 			>
@@ -237,9 +237,9 @@
 				:key="user.uid"
 				:image="user.avatar"
 				icon="account_circle"
-				:details="`UID ${user.uid}, UUID ${user.UUID}` + (user.signature?.trim() ? ` - ${user.signature}` : '')"
+				:details="`UID ${user.uid}` + (user.signature?.trim() ? ` - ${user.signature}` : '')"
 				trailingIcon="check"
-				@trailingIconClick="() => approveUserInfo(user.UUID)"
+				@trailingIconClick="() => approveUserInfo(user.uid)"
 			>
 				<div class="name">
 					<span class="nickname">{{ user.userNickname }}</span>

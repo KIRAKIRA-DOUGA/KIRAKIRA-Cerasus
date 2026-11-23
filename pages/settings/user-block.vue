@@ -49,7 +49,7 @@
 		isBlockingUser.value = true;
 		const adminUpdateUserRoleRequest: AdminUpdateUserRoleRequestDto = {
 			uid,
-			uuid: undefined as never,
+
 			newRoles: ["blocked"],
 		};
 		const setUserRoleToBlockedResult = await api.rbac.adminUpdateUserRoleController(adminUpdateUserRoleRequest);
@@ -70,7 +70,7 @@
 	async function reactivateUserByUID(uid: number) {
 		const adminUpdateUserRoleRequest: AdminUpdateUserRoleRequestDto = {
 			uid,
-			uuid: undefined as never,
+
 			newRoles: ["user"],
 		};
 		const setUserRoleToBlockedResult = await api.rbac.adminUpdateUserRoleController(adminUpdateUserRoleRequest);

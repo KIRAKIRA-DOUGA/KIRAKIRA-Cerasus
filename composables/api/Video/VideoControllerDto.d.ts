@@ -22,8 +22,6 @@ export type UploadVideoRequestDto = {
 	title: string;
 	/** 封面图链接 */
 	image: string;
-	/** 创作者 UID */
-	uploaderId: number;
 	/** 视频时长，单位 ms */
 	duration: number;
 	/** 视频描述 */
@@ -156,8 +154,6 @@ export type GetVideoByKvidResponseDto = {
 		watchedCount?: number;
 		/** 视频作者 ID */
 		uploader?: string;
-		/** 创作者 UUID */
-		uploaderUUID?: string;
 		/** 创作者 UID */
 		uploaderId?: number;
 		/** 视频作者信息 */

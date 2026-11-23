@@ -9,7 +9,6 @@ import { PALETTE_LIST } from "./types";
  */
 export async function cookieBaker(): Promise<void | GetUserBootstrapDataByHintResponseDto["result"]> {
 	// Cookie 键 - 用户认证
-	const UID_COOKIE_KEY = "uid";
 	const BOOTSTRAP_HINT_COOKIE_KEY = "user-data-bootstrap-hint";
 
 	if (environment.server) { // 仅限服务端
@@ -31,23 +30,19 @@ export async function cookieBaker(): Promise<void | GetUserBootstrapDataByHintRe
 			typeof isAllowSyncThemeSettings.value === "string" && isAllowSyncThemeSettings.value === "true"
 		) {
 			// Nuxt cookie 对象 - 用户认证
-			const cookieUid = useCookie(UID_COOKIE_KEY, DEFAULT_LAX_COOKIE_OPTION);	// NOTE: sameSite 是 lax 而不是 strict
 			const cookieBootstrapHint = useCookie(BOOTSTRAP_HINT_COOKIE_KEY, DEFAULT_LAX_COOKIE_OPTION); // NOTE: sameSite 是 lax 而不是 strict
 
-			const uid = parseInt(cookieUid.value ?? "-1", 10);
 			const userDataBootstrapHint = cookieBootstrapHint.value;
 
-			if (!uid || !userDataBootstrapHint)
+			if (!userDataBootstrapHint)
 				return undefined;
 
 			// 如果用户允许主题同步，且用户认证 cookie 存在，则通过认证 cookie 获取数据库中存储的用户样式设置，并将获取到的设置信息存储至 cookie
 			const getUserBootstrapDataByHintRequest: GetUserBootstrapDataByHintRequestDto = {
-				uid,
 				userDataBootstrapHint,
 			};
 			const selfUserInfoStore = useSelfUserInfoStore();
-			const appSettingsStore = useAppSettingsStore();
-			const userBootstrapDataByHint = await api.user.getUserBootstrapDataByHint({ getUserBootstrapDataByHintRequest, appSettingsStore, selfUserInfoStore, headerCookie: undefined });
+			const userBootstrapDataByHint = await api.user.getUserBootstrapDataByHint({ getUserBootstrapDataByHintRequest, selfUserInfoStore, headerCookie: undefined });
 
 			if (!userBootstrapDataByHint || !userBootstrapDataByHint.success || !userBootstrapDataByHint.result)
 				return undefined;

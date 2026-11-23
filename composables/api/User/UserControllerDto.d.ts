@@ -275,17 +275,15 @@ export type GetSelfUserInfoByUuidResponseDto = {
 };
 
 /**
- * 根据 uid 和标识获取用户初始化数据的请求载荷
+ * 根据页面初始化标识获取用户展示数据的请求载荷
  */
 export type GetUserBootstrapDataByHintRequestDto = {
-	/** 用户 UID */
-	uid: number;
 	/** 用户数据初始化提示标识 */
 	userDataBootstrapHint: string;
 };
 
 /**
- * 根据 uid 和标识获取用户初始化数据的请求响应
+ * 根据页面初始化标识获取用户展示数据的请求响应
  */
 export type GetUserBootstrapDataByHintResponseDto = {
 	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
@@ -296,14 +294,10 @@ export type GetUserBootstrapDataByHintResponseDto = {
 	result?: {
 		/** 用户 UID */
 		uid?: number;
-		/** 用户 UUID */
-		uuid?: string;
 		/** 用户创建日期 */
 		userCreateDateTime?: number;
 		/** 用户的角色 */
 		roles?: string[];
-		/** 用户数据初始化提示标识。 */
-		userDataBootstrapHint?: string;
 		/** 用户名 */
 		username?: string;
 		/** 用户昵称 */
@@ -406,7 +400,7 @@ export type GetUserInfoByUidResponseDto = {
 } & BlockState;
 
 /**
- * 通过 UID 和 TOKEN 校验用户的返回结果
+ * 通过 UUID 和 token 校验用户的返回结果
  */
 export type CheckUserTokenResponseDto = {
 	/** 执行结果，程序执行成功，返回 true，程序执行失败，返回 false */
@@ -503,10 +497,12 @@ export type BasicUserSettingsDto = {
 	userPrivaryVisibilitiesSetting?: UserPrivaryVisibilitiesSettingDto[];
 	/** 用户关联账户的隐私设置 */
 	userLinkedAccountsVisibilitiesSetting?: UserLinkedAccountsVisibilitiesSettingDto[];
-	// /** 实验性：启用直角模式 - 布尔 */
-	// sharpAppearanceMode?: boolean;
-	// /** 实验性：启用扁平模式 - 布尔 */
-	// flatAppearanceMode?: boolean;
+	/** 兼容旧客户端的动态背景设置 */
+	showCssDoodle?: boolean;
+	/** 实验性直角模式 */
+	sharpAppearanceMode?: boolean;
+	/** 实验性扁平模式 */
+	flatAppearanceMode?: boolean;
 };
 
 /**
@@ -602,8 +598,6 @@ export type SendGeneralEmailVerificationCodeResponseDto = {
 type InvitationCode = {
 	/** 生成邀请码的用户 UID - 非空 */
 	creatorUid: number;
-	/** 生成邀请码的用户 UUID - 非空 */
-	creatorUUID: string;
 	/** 邀请码 - 非空 */
 	invitationCode: string;
 	/** 生成邀请码的时间 - 非空 */
@@ -656,8 +650,6 @@ export type AdminGetUserByInvitationCodeResponseDto = {
 	userInfoResult: {
 		/** 用户 UID */
 		uid?: number;
-		/** 用户 UUID */
-		uuid?: string;
 	};
 };
 
@@ -798,7 +790,6 @@ export type GetBlockedUserResponseDto = {
 	result?: (
 		GetUserInfoByUidResponseDto["result"] & {
 			uid: number;
-			UUID: string;
 		}
 	)[];
 	/** 数据总长度 */
@@ -836,13 +827,17 @@ export type AdminGetUserInfoResponseDto = {
 	message?: string;
 	/** 请求响应 */
 	result?: (
-		GetSelfUserInfoByUuidResponseDto["result"] & {
+		GetUserInfoByUidResponseDto["result"] & {
 			uid: number;
-			UUID: string;
+			/** 审核页面显示的邮箱 */
+			email?: string;
+			/** 注册时使用的邀请码 */
+			invitationCode?: string;
+			/** 个人资料中的生日 */
+			userBirthday?: string;
 			avatar: string;
 			userBannerImage: string;
 			editDateTime: number;
-			editOperatorUUID: string;
 			isUpdatedAfterReview: boolean;
 		}
 	)[];
@@ -854,8 +849,8 @@ export type AdminGetUserInfoResponseDto = {
  * 管理员通过用户信息审核的请求载荷
  */
 export type ApproveUserInfoRequestDto = {
-	/** 用户的 UUID */
-	UUID: string;
+	/** 用户的公开 UID */
+	uid: number;
 };
 
 /**

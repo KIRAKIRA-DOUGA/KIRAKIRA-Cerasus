@@ -1,9 +1,7 @@
 /**
  * 通过 RBAC 检查用户的权限的参数
  */
-export type CheckUserRbacParams =
-	| { uuid: string; apiPath: string }
-	| { uid: number; apiPath: string };
+export type CheckUserRbacParams = { uuid: string; apiPath: string };
 
 /**
  * 通过 RBAC 检查用户的权限的结果
@@ -27,10 +25,6 @@ type RbacApiPath = {
 	apiPathColor?: string;
 	/** API 路径的描述 */
 	apiPathDescription?: string;
-	/** API 路径创建者 - 非空 */
-	creatorUuid: string;
-	/** API 路径最后更新者 - 非空 */
-	lastEditorUuid: string;
 	/** 系统专用字段-创建时间 - 非空 */
 	createDateTime: number;
 	/** 系统专用字段-最后编辑时间 - 非空 */
@@ -145,10 +139,6 @@ type RbacRole = {
 	roleDescription?: string;
 	/** 这个角色有哪些 API 路径的访问权 */
 	apiPathPermissions: string[];
-	/** API 路径创建者 - 非空 */
-	creatorUuid: string;
-	/** API 路径最后更新者 - 非空 */
-	lastEditorUuid: string;
 	/** 系统专用字段-创建时间 - 非空 */
 	createDateTime: number;
 	/** 系统专用字段-最后编辑时间 - 非空 */
@@ -282,8 +272,6 @@ export type AdminGetUserRolesByUidResponseDto = {
 	result?: {
 		/** 用户的 UID */
 		uid: number;
-		/** 用户的 UUID */
-		uuid: string;
 		/** 用户名 */
 		username: string;
 		/** 用户昵称 */
@@ -296,31 +284,14 @@ export type AdminGetUserRolesByUidResponseDto = {
 };
 
 /**
- * 管理员使用 UUID 更新用户角色
- */
-type AdminUpdateUserRoleByUUID = {
-	/** 要被更新角色的用户的 UUID，不带有 UID */
-	uuid: string;
-	uid: never;
-	/** 新的角色 */
-	newRoles: string[];
-};
-
-/**
- * 管理员使用 UID 更新用户角色
- */
-type AdminUpdateUserRoleByUID = {
-	/** 要被更新角色的用户的 UID，不带有 UUID */
-	uid: number;
-	uuid: never;
-	/** 新的角色 */
-	newRoles: string[];
-};
-
-/**
  * 管理员更新用户角色的请求载荷
  */
-export type AdminUpdateUserRoleRequestDto = AdminUpdateUserRoleByUUID | AdminUpdateUserRoleByUID;
+export type AdminUpdateUserRoleRequestDto = {
+	/** 目标用户的公开 UID */
+	uid: number;
+	/** 新的角色 */
+	newRoles: string[];
+};
 
 /**
  * 管理员更新用户角色的请求响应

@@ -122,22 +122,21 @@ export const getSelfUserInfo = async (
 };
 
 /**
- * 根据 uid 和标识获取用户初始化数据。
+ * 根据页面初始化标识获取展示数据。
  * 这些数据通常会被直接存放到 pinia 全局变量中，以供程序的其他部分使用。该函数不应多次调用。
  * @param props - 参数
- * @returns - 根据 uid 和标识获取用户初始化数据的结果
+ * @returns - 根据页面初始化标识获取展示数据的结果
  */
 export const getUserBootstrapDataByHint = async (
 	props: {
 		getUserBootstrapDataByHintRequest: GetUserBootstrapDataByHintRequestDto;
-		appSettingsStore: AppSettingsStoreType | undefined;
 		selfUserInfoStore: SelfUserInfoStoreType | undefined;
 		headerCookie: { cookie?: string | undefined } | undefined;
 	},
 ): Promise<GetUserBootstrapDataByHintResponseDto> => {
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	// NOTE: use { headers: headerCookie } to passing client-side cookies to backend API when SSR.
-	const data = await $fetch<GetSelfUserInfoByUuidResponseDto>(
+	const data = await $fetch<GetUserBootstrapDataByHintResponseDto>(
 		`${USER_API_URI}/getUserBootstrapDataByHintController`,
 		{
 			method: "POST",
@@ -147,14 +146,9 @@ export const getUserBootstrapDataByHint = async (
 		},
 	);
 	const selfUserInfoResult = data.result;
-	if (data.success && selfUserInfoResult) {
-		if (props.appSettingsStore)
-			props.appSettingsStore.authenticatorType = selfUserInfoResult.authenticatorType || "none";
-		if (props.selfUserInfoStore) {
-			props.selfUserInfoStore.isBootstrapDataReady = true; // 成功 fetch 用户信息时才能设为 true
-			// props.selfUserInfoStore.isLoggedIn = true;
-			props.selfUserInfoStore.userInfo = data.result ?? {};
-		}
+	if (data.success && selfUserInfoResult && props.selfUserInfoStore) {
+		props.selfUserInfoStore.isBootstrapDataReady = true;
+		props.selfUserInfoStore.userInfo = selfUserInfoResult;
 	}
 	return data;
 };
