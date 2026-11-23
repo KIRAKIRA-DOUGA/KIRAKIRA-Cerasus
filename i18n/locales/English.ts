@@ -493,6 +493,7 @@ export default {
 		add: "Add",
 		apply: "Apply",
 		reset: "Reset",
+		clear: "Clear",
 	},
 	loginwindow: {
 		login_welcome: "Welcome",
@@ -717,7 +718,7 @@ export default {
 	},
 	confirm: {
 		cancel_upload: "Are you sure you want to cancel this upload?",
-		reset_profile: "Are you sure you want to reset your profile?",
+		clear_profile: "Are you sure you want to clear your profile? (Your avatar will be kept. This action cannot be undone.)",
 		block_user: {
 			title: "Are you sure you want to block this user?",
 			ok: "Confirm Blocking",

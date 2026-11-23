@@ -488,6 +488,7 @@ export default {
 		add: "Ajouter",
 		apply: "Appliquer",
 		reset: "Réinitialiser",
+		clear: "Effacer",
 	},
 	loginwindow: {
 		login_welcome: "Bienvenue",
@@ -710,7 +711,7 @@ export default {
 	},
 	confirm: {
 		cancel_upload: "Êtes-vous sûr de vouloir annuler cet envoi de fichier ?",
-		reset_profile: "Êtes-vous sûr de vouloir réinitialiser votre profil ?",
+		clear_profile: "Voulez-vous vraiment effacer les informations de votre profil ? (Votre avatar sera conservé. Cette action est irréversible.)",
 		block_user: {
 			title: "Êtes-vous sûr de vouloir bloquer cet utilisateur ?",
 			ok: "Confirmer le blocage",

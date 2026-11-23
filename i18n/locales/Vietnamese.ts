@@ -490,6 +490,7 @@ export default {
 		add: "Thêm",
 		apply: "Áp dụng",
 		reset: "Đặt lại",
+		clear: "Xóa",
 	},
 	loginwindow: {
 		login_welcome: "Chào mừng trở lại",
@@ -712,7 +713,7 @@ export default {
 	},
 	confirm: {
 		cancel_upload: "Bạn có chắc muốn ngừng quá trình đăng tải?",
-		reset_profile: "Bạn có chắc muốn đặt lại hồ sơ của mình?",
+		clear_profile: "Bạn có chắc muốn xóa thông tin hồ sơ của mình không? (Ảnh đại diện sẽ được giữ lại. Thao tác này không thể hoàn tác.)",
 		block_user: {
 			title: "Bạn có chắc muốn chặn người dùng này?",
 			ok: "Xác nhận chặn",

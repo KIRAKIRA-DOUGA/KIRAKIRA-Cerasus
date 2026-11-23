@@ -1,5 +1,6 @@
 <docs>
 	首次登录且没有昵称时、或昵称违规后显示的页面。
+	@deprecated 已弃用。保留旧路由，请勿在新流程中引用。
 </docs>
 
 <script setup lang="ts">
@@ -24,7 +25,7 @@
 		nickname: "",
 		bio: "",
 		gender: "",
-		birthday: Temporal.Now.plainDateISO().withCalendar("gregory"),
+		birthday: shallowRef<Temporal.PlainDate>(),
 		tags: [] as string[],
 	});
 	const isRead = ref(false);
@@ -49,7 +50,7 @@
 			userNickname: profile.nickname.normalize(),
 			signature: profile.bio.normalize(),
 			gender: profile.gender.normalize(),
-			userBirthday: Temporal.Now.plainDateISO().withCalendar("gregory").toString(),
+			userBirthday: profile.birthday?.toString(),
 			label: profile.tags.map((tag, index) => ({ id: index, labelName: tag.normalize() })),
 		};
 		try {

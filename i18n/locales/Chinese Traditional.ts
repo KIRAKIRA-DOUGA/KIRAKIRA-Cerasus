@@ -375,6 +375,7 @@ export default {
 		add: "添加",
 		apply: "套用",
 		reset: "重設",
+		clear: "清空",
 	},
 	loginwindow: {
 		login_welcome: "歡迎回家",
@@ -499,6 +500,7 @@ export default {
 	},
 	confirm: {
 		cancel_upload: "確定要取消本次上傳嗎？",
+		clear_profile: "確定要清空你的個人資料嗎？（不會移除頭像，此操作無法復原）",
 		block_user: {},
 		hide_user: {},
 	},
