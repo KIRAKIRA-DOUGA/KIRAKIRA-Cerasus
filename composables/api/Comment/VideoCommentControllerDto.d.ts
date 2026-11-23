@@ -47,8 +47,8 @@ export type GetVideoCommentUpvoteResultDto = {
 	videoCommentUpvoteResult: {
 		/** KVID 视频 ID */
 		videoId: number;
-		/** 评论的ID */
-		commentId: string;
+		/** 评论的业务唯一标识 */
+		commentRoute: string;
 		/** 评论点赞者的用户的 UID */
 		uid: number;
 		/** 系统专用字段-最后编辑时间 */
@@ -78,8 +78,8 @@ export type GetVideoCommentDownvoteResultDto = {
 	videoCommentDownvoteResult: {
 		/** KVID 视频 ID */
 		videoId: number;
-		/** 评论的ID */
-		commentId: string;
+		/** 评论的业务唯一标识 */
+		commentRoute: string;
 		/** 评论点踩者的用户的 UID */
 		uid: number;
 		/** 系统专用字段-最后编辑时间 */
@@ -103,12 +103,12 @@ export type GetVideoCommentByKvidRequestDto = {
 };
 
 /**
- * 视频评论 ID 的类型（用作主评论的子评论）
+ * 父评论中保存的子评论信息
  */
 type VideoCommentIdDto = {
-	/** 评论的路由 */ /** 如：1.2.3（第一号视频的第二个评论的第三个子回复） */
+	/** 评论的业务唯一标识，例如 `1.2.3` 表示 1 号视频第 2 条评论的第 3 条回复。 */
 	commentRoute: string;
-	/** 评论 ID */
+	/** 子评论点赞数 */
 	upvoteCount: string;
 	/** 评论楼层数 */
 	commentIndex: number;
@@ -136,9 +136,9 @@ type CommentSenderUserInfo = {
  * 一条请求到视频评论
  */
 export type VideoCommentResult = {
-	/** MongoDB 生成的唯一 ID */
+	/** MongoDB 文档 ID。评论业务操作使用 `commentRoute`。 */
 	_id: string;
-	/** 评论的路由 */ /** 如：1.2.3（第一号视频的第二个评论的第三个子回复） */
+	/** 评论的业务唯一标识，例如 `1.2.3` 表示 1 号视频第 2 条评论的第 3 条回复。 */
 	commentRoute: string;
 	/** KVID 视频 ID */
 	videoId: number;
@@ -183,11 +183,11 @@ export type GetVideoCommentByKvidResponseDto = {
 };
 
 /**
- * 为视频评论点赞的请求的请求参数
+ * 视频评论点赞的请求参数
  */
 export type EmitVideoCommentUpvoteRequestDto = {
-	/** 评论的唯一 ID */
-	id: string;
+	/** 评论的业务唯一标识 */
+	commentRoute: string;
 	/** KVID 视频 ID */
 	videoId: number;
 };
@@ -203,11 +203,11 @@ export type EmitVideoCommentUpvoteResponseDto = {
 };
 
 /**
- * 为视频评论点赞的请求的请求参数
+ * 取消视频评论点赞的请求参数
  */
 export type CancelVideoCommentUpvoteRequestDto = {
-	/** 评论的唯一 ID */
-	id: string;
+	/** 评论的业务唯一标识 */
+	commentRoute: string;
 	/** KVID 视频 ID */
 	videoId: number;
 };
@@ -223,11 +223,11 @@ export type CancelVideoCommentUpvoteResponseDto = {
 };
 
 /**
- * 为视频评论点踩的请求的请求参数
+ * 视频评论点踩的请求参数
  */
 export type EmitVideoCommentDownvoteRequestDto = {
-	/** 评论的唯一 ID */
-	id: string;
+	/** 评论的业务唯一标识 */
+	commentRoute: string;
 	/** KVID 视频 ID */
 	videoId: number;
 };
@@ -243,11 +243,11 @@ export type EmitVideoCommentDownvoteResponseDto = {
 };
 
 /**
- * 为视频评论点踩的请求的请求参数
+ * 取消视频评论点踩的请求参数
  */
 export type CancelVideoCommentDownvoteRequestDto = {
-	/** 评论的唯一 ID */
-	id: string;
+	/** 评论的业务唯一标识 */
+	commentRoute: string;
 	/** KVID 视频 ID */
 	videoId: number;
 };
