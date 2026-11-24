@@ -83,10 +83,9 @@ export const updateOrCreateUserInfo = async (updateOrCreateUserInfoRequest: Upda
 type AppSettingsStoreType = ReturnType<typeof useAppSettingsStore>;
 type SelfUserInfoStoreType = ReturnType<typeof useSelfUserInfoStore>;
 /**
- * 获取当前登录的用户信息，前提是 token 中包含正确的 uuid 和 token，同时丰富全局变量中的用户信息
- * @param getSelfUserInfoRequest - 获取当前登录的用户信息的请求参数
- * @param pinia - pinia
- * @returns 用户信息
+ * 获取当前登录用户的资料，并同步到传入的状态仓库。
+ * @param props - 登录凭据、服务端转发的 Cookie 和待更新的状态仓库
+ * @returns 当前登录用户的资料查询结果
  */
 export const getSelfUserInfo = async (
 	props: {
@@ -246,9 +245,9 @@ export const uploadUserAvatar = async (fileName: string, avatarBlobData: Blob, s
 };
 
 /**
- * 获取用户设置，如果传入了 getUserSettingsRequest 且为提供 cookie（uid, token），则使用 getUserSettingsRequest 中的参数
- * @param getUserSettingsRequest - 用户令牌
- * @returns - 用户设置
+ * 查询本人的设置。服务端优先从 Cookie 读取 UUID 和 token，也接受请求中提供的登录凭据。
+ * @param request - 可选的登录凭据和服务端转发的 Cookie
+ * @returns 当前登录用户的设置查询结果
  */
 export const getUserSettings = async (
 	request?: {

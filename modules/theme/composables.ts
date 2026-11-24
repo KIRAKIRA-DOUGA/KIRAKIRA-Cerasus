@@ -2,13 +2,10 @@ import type { CookieRef } from "nuxt/app";
 import { PALETTE_LIST } from "./types";
 
 /**
- * 服务端渲染时，获取请求时传递的用户 bootstrap hint cookie
- * 如果用户 bootstrap hint 通过验证，则请求最新用户 Bootstrap Data 并用最新值更新到 cookie 中（这会导致本次 SSR 渲染响应到达客户端时，客户端 cookie 也随之更新），然后续期 cookie
- * 如果用户 bootstrap hint 未通过验证，则续期 cookie
- * @returns 如果用户 bootstrap hint 通过验证，则返回最新用户 Bootstrap Data，否则返回 undefined
+ * 服务端渲染时，按用户的主题同步设置和页面初始化标识更新主题 Cookie。
+ * @returns 查询成功时返回页面展示数据
  */
 export async function cookieBaker(): Promise<void | GetUserBootstrapDataByHintResponseDto["result"]> {
-	// Cookie 键 - 用户认证
 	const BOOTSTRAP_HINT_COOKIE_KEY = "user-data-bootstrap-hint";
 
 	if (environment.server) { // 仅限服务端
@@ -29,7 +26,6 @@ export async function cookieBaker(): Promise<void | GetUserBootstrapDataByHintRe
 			typeof isAllowSyncThemeSettings.value === "boolean" && isAllowSyncThemeSettings.value ||
 			typeof isAllowSyncThemeSettings.value === "string" && isAllowSyncThemeSettings.value === "true"
 		) {
-			// Nuxt cookie 对象 - 用户认证
 			const cookieBootstrapHint = useCookie(BOOTSTRAP_HINT_COOKIE_KEY, DEFAULT_LAX_COOKIE_OPTION); // NOTE: sameSite 是 lax 而不是 strict
 
 			const userDataBootstrapHint = cookieBootstrapHint.value;
@@ -37,7 +33,6 @@ export async function cookieBaker(): Promise<void | GetUserBootstrapDataByHintRe
 			if (!userDataBootstrapHint)
 				return undefined;
 
-			// 如果用户允许主题同步，且用户认证 cookie 存在，则通过认证 cookie 获取数据库中存储的用户样式设置，并将获取到的设置信息存储至 cookie
 			const getUserBootstrapDataByHintRequest: GetUserBootstrapDataByHintRequestDto = {
 				userDataBootstrapHint,
 			};

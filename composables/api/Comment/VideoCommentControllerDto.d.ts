@@ -26,68 +26,6 @@ export type EmitVideoCommentResponseDto = {
 };
 
 /**
- * 获取某个用户在对某个视频的评论的点赞情况的参数
- */
-export type GetVideoCommentUpvotePropsDto = {
-	/** KVID 视频 ID */
-	videoId: number;
-	/** 视频评论点赞者的用户的 UID */
-	uid: number;
-};
-
-/**
- * 获取某个用户在对某个视频的评论的点赞情况的结果
- */
-export type GetVideoCommentUpvoteResultDto = {
-	/** 是否请求成功 */
-	success: boolean;
-	/** 附加的文本消息 */
-	message?: string;
-	/** 某个用户在对某个视频的评论的点赞情况 */
-	videoCommentUpvoteResult: {
-		/** KVID 视频 ID */
-		videoId: number;
-		/** 评论的业务唯一标识 */
-		commentRoute: string;
-		/** 评论点赞者的用户的 UID */
-		uid: number;
-		/** 系统专用字段-最后编辑时间 */
-		editDateTime: number;
-	}[];
-};
-
-/**
- * 获取某个用户在对某个视频的评论的点踩情况的参数
- */
-export type GetVideoCommentDownvotePropsDto = {
-	/** KVID 视频 ID */
-	videoId: number;
-	/** 视频评论点踩者的用户的 UID */
-	uid: number;
-};
-
-/**
- * 获取某个用户在对某个视频的评论的点踩情况的结果
- */
-export type GetVideoCommentDownvoteResultDto = {
-	/** 是否请求成功 */
-	success: boolean;
-	/** 附加的文本消息 */
-	message?: string;
-	/** 某个用户在对某个视频的评论的点踩情况 */
-	videoCommentDownvoteResult: {
-		/** KVID 视频 ID */
-		videoId: number;
-		/** 评论的业务唯一标识 */
-		commentRoute: string;
-		/** 评论点踩者的用户的 UID */
-		uid: number;
-		/** 系统专用字段-最后编辑时间 */
-		editDateTime: number;
-	}[];
-};
-
-/**
  * 根据 KVID 获取视频评论的请求的参数
  */
 export type GetVideoCommentByKvidRequestDto = {

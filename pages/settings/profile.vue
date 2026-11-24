@@ -130,9 +130,7 @@
 	}
 
 	/**
-	 * 根据 cookie 中的 uid 和 token 来获取用户信息。
-	 *
-	 * 同时具有验证用户 token 的功能。
+	 * 使用登录会话获取本人的资料并同步到本地状态。
 	 */
 	async function getSelfUserInfoController() {
 		try {
