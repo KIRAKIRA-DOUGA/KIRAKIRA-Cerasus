@@ -83,10 +83,9 @@ export const updateOrCreateUserInfo = async (updateOrCreateUserInfoRequest: Upda
 type AppSettingsStoreType = ReturnType<typeof useAppSettingsStore>;
 type SelfUserInfoStoreType = ReturnType<typeof useSelfUserInfoStore>;
 /**
- * 获取当前登录的用户信息，前提是 token 中包含正确的 uuid 和 token，同时丰富全局变量中的用户信息
- * @param getSelfUserInfoRequest - 获取当前登录的用户信息的请求参数
- * @param pinia - pinia
- * @returns 用户信息
+ * 获取当前登录用户的资料，并同步到传入的状态仓库。
+ * @param props - 登录凭据、服务端转发的 Cookie 和待更新的状态仓库
+ * @returns 当前登录用户的资料查询结果
  */
 export const getSelfUserInfo = async (
 	props: {
@@ -122,22 +121,21 @@ export const getSelfUserInfo = async (
 };
 
 /**
- * 根据 uid 和标识获取用户初始化数据。
+ * 根据页面初始化标识获取展示数据。
  * 这些数据通常会被直接存放到 pinia 全局变量中，以供程序的其他部分使用。该函数不应多次调用。
  * @param props - 参数
- * @returns - 根据 uid 和标识获取用户初始化数据的结果
+ * @returns - 根据页面初始化标识获取展示数据的结果
  */
 export const getUserBootstrapDataByHint = async (
 	props: {
 		getUserBootstrapDataByHintRequest: GetUserBootstrapDataByHintRequestDto;
-		appSettingsStore: AppSettingsStoreType | undefined;
 		selfUserInfoStore: SelfUserInfoStoreType | undefined;
 		headerCookie: { cookie?: string | undefined } | undefined;
 	},
 ): Promise<GetUserBootstrapDataByHintResponseDto> => {
 	// TODO: use { credentials: "include" } to allow save/read cookies from cross-origin domains. Maybe we should remove it before deployment to production env.
 	// NOTE: use { headers: headerCookie } to passing client-side cookies to backend API when SSR.
-	const data = await $fetch<GetSelfUserInfoByUuidResponseDto>(
+	const data = await $fetch<GetUserBootstrapDataByHintResponseDto>(
 		`${USER_API_URI}/getUserBootstrapDataByHintController`,
 		{
 			method: "POST",
@@ -147,14 +145,9 @@ export const getUserBootstrapDataByHint = async (
 		},
 	);
 	const selfUserInfoResult = data.result;
-	if (data.success && selfUserInfoResult) {
-		if (props.appSettingsStore)
-			props.appSettingsStore.authenticatorType = selfUserInfoResult.authenticatorType || "none";
-		if (props.selfUserInfoStore) {
-			props.selfUserInfoStore.isBootstrapDataReady = true; // 成功 fetch 用户信息时才能设为 true
-			// props.selfUserInfoStore.isLoggedIn = true;
-			props.selfUserInfoStore.userInfo = data.result ?? {};
-		}
+	if (data.success && selfUserInfoResult && props.selfUserInfoStore) {
+		props.selfUserInfoStore.isBootstrapDataReady = true;
+		props.selfUserInfoStore.userInfo = selfUserInfoResult;
 	}
 	return data;
 };
@@ -252,9 +245,9 @@ export const uploadUserAvatar = async (fileName: string, avatarBlobData: Blob, s
 };
 
 /**
- * 获取用户设置，如果传入了 getUserSettingsRequest 且为提供 cookie（uid, token），则使用 getUserSettingsRequest 中的参数
- * @param getUserSettingsRequest - 用户令牌
- * @returns - 用户设置
+ * 查询本人的设置。服务端优先从 Cookie 读取 UUID 和 token，也接受请求中提供的登录凭据。
+ * @param request - 可选的登录凭据和服务端转发的 Cookie
+ * @returns 当前登录用户的设置查询结果
  */
 export const getUserSettings = async (
 	request?: {

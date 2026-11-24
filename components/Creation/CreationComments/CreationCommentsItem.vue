@@ -1,7 +1,5 @@
 <script setup lang="ts">
 	const props = withDefaults(defineProps<{
-		/** 评论唯一 ID */
-		commentId: string;
 		/** 评论所在的视频的 ID */
 		videoId: number;
 		/** 评论发布者头像网址。 */
@@ -18,7 +16,9 @@
 		date?: Date;
 		/** 用户 UID。 */
 		uid: number;
-		/** 评论的路由 */
+		/** 是否由当前登录用户发表 */
+		isSelf: boolean;
+		/** 评论的业务唯一标识 */
 		commentRoute: string;
 	}>(), {
 		avatar: undefined,
@@ -46,7 +46,6 @@
 	const voteLock = ref(false);
 
 	const userSelfInfoStore = useSelfUserInfoStore();
-	const isSelfComment = computed(() => props.uid === userSelfInfoStore.userInfo.uid); // 这条评论是否是自己发送的
 	const isAdmin = computed(() => userSelfInfoStore.userInfo.roles?.includes("administrator")); // 用户是否是管理员
 
 	/**
@@ -62,10 +61,10 @@
 		// value.value += gain;
 		// if (isActive && states[`${another}Clicked`].value && !noNestingDolls) onClickUpvote(another, true);
 
-		const commentId = props.commentId; // 视频评论 ID
+		const commentRoute = props.commentRoute;
 		const videoId = props.videoId; // 视频 ID
 
-		if (!props.index || !commentId || videoId === undefined || videoId === null) { // 非空验证
+		if (!commentRoute || !Number.isSafeInteger(videoId) || videoId < 1) { // 非空验证
 			useToast(t("toast.something_went_wrong"), "error");
 			return;
 		}
@@ -83,27 +82,27 @@
 		if (button === "upvote") // 判断是加分还是减分
 			if (isUpvoted.value) // 如果被加分的视频评论此前已经被加分，则取消加分，否则加分
 				// 取消加分
-				cancelVideoCommentUpvote(commentId, videoId);
+				cancelVideoCommentUpvote(commentRoute, videoId);
 			else
 				// 加分
-				emitVideoCommentUpvote(commentId, videoId);
+				emitVideoCommentUpvote(commentRoute, videoId);
 		else
 			if (isDownvoted.value) // 如果被减分的视频评论此前已经被减分，则取消减分，否则减分
 				// 取消减分
-				cancelVideoCommentDownvote(commentId, videoId);
+				cancelVideoCommentDownvote(commentRoute, videoId);
 			else
 				// 减分
-				emitVideoCommentDownvote(commentId, videoId);
+				emitVideoCommentDownvote(commentRoute, videoId);
 	}
 
 	/**
 	 * 视频评论加分
-	 * @param commentId - 视频评论 ID
+	 * @param commentRoute - 评论的业务唯一标识
 	 * @param videoId - 视频 ID
 	 */
-	function emitVideoCommentUpvote(commentId: string, videoId: number) {
+	function emitVideoCommentUpvote(commentRoute: string, videoId: number) {
 		voteLock.value = true; // 请求锁：锁定
-		const emitVideoCommentUpvoteRequest: EmitVideoCommentUpvoteRequestDto = { id: commentId, videoId };
+		const emitVideoCommentUpvoteRequest: EmitVideoCommentUpvoteRequestDto = { commentRoute, videoId };
 		api.videoComment.emitVideoCommentUpvote(emitVideoCommentUpvoteRequest).catch(error => {
 			voteLock.value = false; // 请求锁：释放
 			useToast(t("toast.something_went_wrong"), "error");
@@ -122,12 +121,12 @@
 
 	/**
 	 * 取消视频评论加分
-	 * @param commentId - 视频评论 ID
+	 * @param commentRoute - 评论的业务唯一标识
 	 * @param videoId - 视频 ID
 	 */
-	function cancelVideoCommentUpvote(commentId: string, videoId: number) {
+	function cancelVideoCommentUpvote(commentRoute: string, videoId: number) {
 		voteLock.value = true; // 请求锁：锁定
-		const cancelVideoCommentUpvoteRequest: CancelVideoCommentUpvoteRequestDto = { id: commentId, videoId };
+		const cancelVideoCommentUpvoteRequest: CancelVideoCommentUpvoteRequestDto = { commentRoute, videoId };
 		api.videoComment.cancelVideoCommentUpvote(cancelVideoCommentUpvoteRequest).catch(error => {
 			voteLock.value = false; // 请求锁：释放
 			useToast(t("toast.something_went_wrong"), "error");
@@ -142,12 +141,12 @@
 
 	/**
 	 * 视频评论减分
-	 * @param commentId - 视频评论 ID
+	 * @param commentRoute - 评论的业务唯一标识
 	 * @param videoId - 视频 ID
 	 */
-	function emitVideoCommentDownvote(commentId: string, videoId: number) {
+	function emitVideoCommentDownvote(commentRoute: string, videoId: number) {
 		voteLock.value = true; // 请求锁：锁定
-		const emitVideoCommentDownvoteRequest: EmitVideoCommentDownvoteRequestDto = { id: commentId, videoId };
+		const emitVideoCommentDownvoteRequest: EmitVideoCommentDownvoteRequestDto = { commentRoute, videoId };
 		api.videoComment.emitVideoCommentDownvote(emitVideoCommentDownvoteRequest).catch(error => {
 			voteLock.value = false; // 请求锁：释放
 			useToast(t("toast.something_went_wrong"), "error");
@@ -166,12 +165,12 @@
 
 	/**
 	 * 取消视频评论减分
-	 * @param commentId - 视频评论 ID
+	 * @param commentRoute - 评论的业务唯一标识
 	 * @param videoId - 视频 ID
 	 */
-	function cancelVideoCommentDownvote(commentId: string, videoId: number) {
+	function cancelVideoCommentDownvote(commentRoute: string, videoId: number) {
 		voteLock.value = true; // 请求锁：锁定
-		const cancelVideoCommentDownvoteRequest: CancelVideoCommentDownvoteRequestDto = { id: commentId, videoId };
+		const cancelVideoCommentDownvoteRequest: CancelVideoCommentDownvoteRequestDto = { commentRoute, videoId };
 		api.videoComment.cancelVideoCommentDownvote(cancelVideoCommentDownvoteRequest).catch(error => {
 			voteLock.value = false; // 请求锁：释放
 			useToast(t("toast.something_went_wrong"), "error");
@@ -237,7 +236,7 @@
 			:pinned
 		>
 			<div class="comments">
-				<slot></slot>
+				<slot />
 			</div>
 
 			<template #footerLeft>
@@ -252,7 +251,7 @@
 				<SoftButton v-tooltip:bottom="$t('reply')" icon="reply" />
 				<SoftButton v-tooltip:bottom="$t('more')" icon="more_vert" @click="e => menu = [e, 'y']" />
 				<Menu v-model="menu">
-					<MenuItem v-if="isSelfComment" icon="delete" @click="deleteSelfComment(commentRoute, videoId)">{{ $t("delete") }}</MenuItem>
+					<MenuItem v-if="isSelf" icon="delete" @click="deleteSelfComment(commentRoute, videoId)">{{ $t("delete") }}</MenuItem>
 					<MenuItem v-if="isAdmin" icon="delete" @click="adminDeleteVideoComment(commentRoute, videoId)">{{ $t("delete") }}{{ $t("admin_operation_suffix") }}</MenuItem>
 					<MenuItem :icon="unpinnedCaption" @click="pinned = !pinned">{{ $t(unpinnedCaption) }}</MenuItem>
 					<hr />

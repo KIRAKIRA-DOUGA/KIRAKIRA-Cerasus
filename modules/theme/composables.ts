@@ -2,14 +2,12 @@ import type { CookieRef } from "nuxt/app";
 import { PALETTE_LIST } from "./types";
 
 /**
- * 服务端渲染时，获取请求时传递的用户 bootstrap hint cookie
- * 如果用户 bootstrap hint 通过验证，则请求最新用户 Bootstrap Data 并用最新值更新到 cookie 中（这会导致本次 SSR 渲染响应到达客户端时，客户端 cookie 也随之更新），然后续期 cookie
- * 如果用户 bootstrap hint 未通过验证，则续期 cookie
- * @returns 如果用户 bootstrap hint 通过验证，则返回最新用户 Bootstrap Data，否则返回 undefined
+ * 服务端渲染时，从请求的 Cookie 读取页面初始化标识。
+ * 用户允许主题同步且查询成功时，用最新设置更新主题 Cookie，浏览器会随本次 SSR 响应收到这些更新。
+ * @returns 主题同步成功时返回页面展示数据，否则返回 undefined。
  */
 export async function cookieBaker(): Promise<void | GetUserBootstrapDataByHintResponseDto["result"]> {
-	// Cookie 键 - 用户认证
-	const UID_COOKIE_KEY = "uid";
+	// Cookie 键 - 页面初始化标识
 	const BOOTSTRAP_HINT_COOKIE_KEY = "user-data-bootstrap-hint";
 
 	if (environment.server) { // 仅限服务端
@@ -30,24 +28,20 @@ export async function cookieBaker(): Promise<void | GetUserBootstrapDataByHintRe
 			typeof isAllowSyncThemeSettings.value === "boolean" && isAllowSyncThemeSettings.value ||
 			typeof isAllowSyncThemeSettings.value === "string" && isAllowSyncThemeSettings.value === "true"
 		) {
-			// Nuxt cookie 对象 - 用户认证
-			const cookieUid = useCookie(UID_COOKIE_KEY, DEFAULT_LAX_COOKIE_OPTION);	// NOTE: sameSite 是 lax 而不是 strict
+			// Nuxt cookie 对象 - 页面初始化标识
 			const cookieBootstrapHint = useCookie(BOOTSTRAP_HINT_COOKIE_KEY, DEFAULT_LAX_COOKIE_OPTION); // NOTE: sameSite 是 lax 而不是 strict
 
-			const uid = parseInt(cookieUid.value ?? "-1", 10);
 			const userDataBootstrapHint = cookieBootstrapHint.value;
 
-			if (!uid || !userDataBootstrapHint)
+			if (!userDataBootstrapHint)
 				return undefined;
 
-			// 如果用户允许主题同步，且用户认证 cookie 存在，则通过认证 cookie 获取数据库中存储的用户样式设置，并将获取到的设置信息存储至 cookie
+			// 用户允许主题同步且已有页面初始化标识时，按该标识查询保存的样式设置并写入主题 Cookie
 			const getUserBootstrapDataByHintRequest: GetUserBootstrapDataByHintRequestDto = {
-				uid,
 				userDataBootstrapHint,
 			};
 			const selfUserInfoStore = useSelfUserInfoStore();
-			const appSettingsStore = useAppSettingsStore();
-			const userBootstrapDataByHint = await api.user.getUserBootstrapDataByHint({ getUserBootstrapDataByHintRequest, appSettingsStore, selfUserInfoStore, headerCookie: undefined });
+			const userBootstrapDataByHint = await api.user.getUserBootstrapDataByHint({ getUserBootstrapDataByHintRequest, selfUserInfoStore, headerCookie: undefined });
 
 			if (!userBootstrapDataByHint || !userBootstrapDataByHint.success || !userBootstrapDataByHint.result)
 				return undefined;

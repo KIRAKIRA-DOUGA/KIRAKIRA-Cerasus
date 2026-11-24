@@ -130,9 +130,8 @@
 	}
 
 	/**
-	 * 根据 cookie 中的 uid 和 token 来获取用户信息。
-	 *
-	 * 同时具有验证用户 token 的功能。
+	 * 根据 Cookie 中的 UUID 和 token 获取本人的资料并同步到本地状态。
+	 * 服务端同时验证用户的 token。
 	 */
 	async function getSelfUserInfoController() {
 		try {

@@ -171,8 +171,7 @@
 			useToast(t("toast.upload_not_completed"), "error");
 			return;
 		}
-		const uid = useSelfUserInfoStore().userInfo.uid;
-		if (!uid) {
+		if (!useSelfUserInfoStore().isLoggedIn) {
 			useToast(t("toast.upload_must_logged_in"), "error");
 			return;
 		}
@@ -199,7 +198,6 @@
 			],
 			title: title.value,
 			image: isNetworkImage.value ? thumbnailUrl.value : BASE_THUMBNAIL_ID, // 没上传封面时使用默认封面图 ID // TODO: 自动获取视频截图作为封面
-			uploaderId: uid,
 			duration: 300, // TODO: 视频时长
 			description: description.value,
 			videoCategory: category.value,

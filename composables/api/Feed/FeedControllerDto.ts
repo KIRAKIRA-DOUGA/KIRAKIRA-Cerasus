@@ -60,10 +60,8 @@ type FeedGroup = {
 	feedGroupUuid: string;
 	/** 动态分组的名称 - 非空 */
 	feedGroupName: string;
-	/** 动态分组创建者 UUID - 非空 */
-	feedGroupCreatorUuid: string;
-	/** 动态分组中的用户 - 非空 */
-	uuidList: string[];
+	/** 动态分组中成员的公开 UID - 非空 */
+	uidList: number[];
 	/** 动态分组的自定义封面 */
 	customCover?: string;
 	/** 系统专用字段-最后编辑时间 - 非空 */

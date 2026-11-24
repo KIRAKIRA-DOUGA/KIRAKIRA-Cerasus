@@ -371,7 +371,7 @@
 			const registrationResponse = await api.user.registration(userRegistrationRequest);
 
 			if (registrationResponse.success) { // 如果注册成功
-				await api.user.getSelfUserInfo({ getSelfUserInfoRequest: undefined, appSettingsStore: useAppSettingsStore(), selfUserInfoStore: useSelfUserInfoStore(), headerCookie: undefined }); // 根据获取到的用户 UID 和 Token 获取用户数据，相当于自动登录
+				await api.user.getSelfUserInfo({ getSelfUserInfoRequest: undefined, appSettingsStore: useAppSettingsStore(), selfUserInfoStore: useSelfUserInfoStore(), headerCookie: undefined }); // 根据注册时写入 Cookie 的 UUID 和 token 获取用户数据，完成自动登录
 				isTryingRegistration.value = false; // 停止注册按钮加载动画
 				open.value = false; // 关闭登录页
 				currentPage.value = "login1"; // 将登录页设为登录窗口默认页

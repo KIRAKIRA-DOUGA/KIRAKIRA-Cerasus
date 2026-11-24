@@ -92,10 +92,9 @@ async function checkKvid(kvidString: string): Promise<true | Error> {
 }
 
 /**
- * 如果用户已登录，则根据 cookie 中的 uid 和 token 来获取用户信息（同时具有验证用户 token 的功能）。
- * 如果未登录或验证不成功，则清空全局变量中的用户信息并清空残留 cookie。
- * @param uid - 显式指定其他用户的 UID。
- * @returns 指定 UID 用户存在则返回该 UID 的 bigint，否则返回一个 Error。
+ * 确认用户主页所属的公开 UID。访问自己的主页时先验证登录会话。
+ * @param uid - 路由中的公开 UID，省略时查询当前登录用户
+ * @returns 用户主页对应的 UID（bigint），查询失败时返回 Error。
  */
 async function getUserInfo(uid?: string) {
 	// 指定了 UID，打开该 UID 用户主页。

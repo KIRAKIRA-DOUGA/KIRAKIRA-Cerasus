@@ -1,5 +1,10 @@
 # Repository Guidelines
 
+## User Identity and Privacy
+
+- Authenticate actions on the caller's own account with the private user UUID and a verified session or token. Read the caller's identity from that session. A public UID or a user identifier in the request body cannot establish who is calling.
+- Use the public UID to look up, display, or interact with another user. Only the authenticated owner may receive their own user UUID. This also applies to administrators, nested response data, error messages, public URLs, and filenames. Keep user UUIDs used for database joins on the server. UUIDs belonging to resources such as roles and groups are separate identifiers.
+
 ## Project Structure
 
 KIRAKIRA Cerasus is a Nuxt and Vue frontend with source at the repository root. `app.vue` is the entry point, `pages/` defines routes, and `components/` and `layouts/` contain shared UI. Put reusable Vue logic in `composables/`, API clients in `composables/api/`, Pinia state in `stores/`, and general helpers in `utils/`. Nuxt modules and build plugins live in `modules/` and `plugins/`.

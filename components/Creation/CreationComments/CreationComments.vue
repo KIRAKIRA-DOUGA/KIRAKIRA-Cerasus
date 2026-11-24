@@ -93,15 +93,15 @@
 			<div class="items" :inert="loading">
 				<CreationCommentsItem
 					v-for="comment in comments"
-					:key="comment._id"
+					:key="comment.commentRoute"
 					v-model:upvote="comment.upvoteCount"
 					v-model:downvote="comment.downvoteCount"
 					v-model:isUpvoted="comment.isUpvote"
 					v-model:isDownvoted="comment.isDownvote"
 					v-model:pinned="pinned"
-					:commentId="comment._id"
 					:videoId
 					:uid="comment.uid"
+					:isSelf="comment.isSelf"
 					:index="comment.commentIndex"
 					:commentRoute="comment.commentRoute"
 					:nickname="comment.userInfo?.userNickname"
