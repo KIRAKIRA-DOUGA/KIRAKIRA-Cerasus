@@ -94,7 +94,7 @@ async function checkKvid(kvidString: string): Promise<true | Error> {
 /**
  * 确认用户主页所属的公开 UID。访问自己的主页时先验证登录会话。
  * @param uid - 路由中的公开 UID，省略时查询当前登录用户
- * @returns 用户主页对应的 UID，查询失败时返回错误
+ * @returns 用户主页对应的 UID（bigint），查询失败时返回 Error。
  */
 async function getUserInfo(uid?: string) {
 	// 指定了 UID，打开该 UID 用户主页。

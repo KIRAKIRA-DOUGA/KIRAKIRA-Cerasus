@@ -130,7 +130,8 @@
 	}
 
 	/**
-	 * 使用登录会话获取本人的资料并同步到本地状态。
+	 * 根据 Cookie 中的 UUID 和 token 获取本人的资料并同步到本地状态。
+	 * 服务端同时验证用户的 token。
 	 */
 	async function getSelfUserInfoController() {
 		try {

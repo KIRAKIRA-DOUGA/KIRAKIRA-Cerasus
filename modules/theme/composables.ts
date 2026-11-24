@@ -2,10 +2,12 @@ import type { CookieRef } from "nuxt/app";
 import { PALETTE_LIST } from "./types";
 
 /**
- * 服务端渲染时，按用户的主题同步设置和页面初始化标识更新主题 Cookie。
- * @returns 查询成功时返回页面展示数据
+ * 服务端渲染时，从请求的 Cookie 读取页面初始化标识。
+ * 用户允许主题同步且查询成功时，用最新设置更新主题 Cookie，浏览器会随本次 SSR 响应收到这些更新。
+ * @returns 主题同步成功时返回页面展示数据，否则返回 undefined。
  */
 export async function cookieBaker(): Promise<void | GetUserBootstrapDataByHintResponseDto["result"]> {
+	// Cookie 键 - 页面初始化标识
 	const BOOTSTRAP_HINT_COOKIE_KEY = "user-data-bootstrap-hint";
 
 	if (environment.server) { // 仅限服务端
@@ -26,6 +28,7 @@ export async function cookieBaker(): Promise<void | GetUserBootstrapDataByHintRe
 			typeof isAllowSyncThemeSettings.value === "boolean" && isAllowSyncThemeSettings.value ||
 			typeof isAllowSyncThemeSettings.value === "string" && isAllowSyncThemeSettings.value === "true"
 		) {
+			// Nuxt cookie 对象 - 页面初始化标识
 			const cookieBootstrapHint = useCookie(BOOTSTRAP_HINT_COOKIE_KEY, DEFAULT_LAX_COOKIE_OPTION); // NOTE: sameSite 是 lax 而不是 strict
 
 			const userDataBootstrapHint = cookieBootstrapHint.value;
@@ -33,6 +36,7 @@ export async function cookieBaker(): Promise<void | GetUserBootstrapDataByHintRe
 			if (!userDataBootstrapHint)
 				return undefined;
 
+			// 用户允许主题同步且已有页面初始化标识时，按该标识查询保存的样式设置并写入主题 Cookie
 			const getUserBootstrapDataByHintRequest: GetUserBootstrapDataByHintRequestDto = {
 				userDataBootstrapHint,
 			};
