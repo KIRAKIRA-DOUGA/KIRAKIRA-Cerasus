@@ -140,6 +140,7 @@ export default defineNuxtConfig({
 		},
 		build: {
 			target: "esnext",
+			cssMinify: "esbuild", // 禁用默认的 Lightning CSS 压缩代码，它处理 CSS 能力的问题比 ESBuild 更多。
 		},
 		worker: {
 			format: "es",
