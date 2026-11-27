@@ -23,7 +23,7 @@
 	const selectedTab = ref("info");
 	const transitionName = ref("page-jump-in");
 	const title = computed(() => videoDetails.value?.title ?? "");
-	const thumbnail = computed(() => videoDetails.value?.image || defaultThumbnail);
+	const thumbnail = computed(() => videoDetails.value?.image || "/static/images/thumbnail.png");
 	const currentLanguage = computed(getCurrentLocale); // 当前用户的语言
 	// const recommendations = ref<Videos200ResponseVideosInner[]>();
 

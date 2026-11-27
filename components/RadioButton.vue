@@ -112,7 +112,7 @@
 			</div>
 		</div>
 		<div v-if="hasLabel" class="content">
-			<label><slot></slot></label>
+			<label><slot /></label>
 			<label v-if="details || $slots.details" class="details"><slot name="details">{{ details }}</slot></label>
 		</div>
 	</Comp>
@@ -292,8 +292,8 @@
 				scale: 1;
 			}
 
-			@if $key != "" {
-				to {
+			to {
+				@if $key != "" {
 					scale: 0.5;
 				}
 			}
